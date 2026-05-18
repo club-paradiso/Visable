@@ -89,7 +89,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "TB-1",
@@ -125,7 +126,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-1",
@@ -149,7 +151,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-2",
@@ -173,7 +176,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-3",
@@ -197,7 +201,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-4",
@@ -219,7 +224,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-5",
@@ -249,7 +255,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "SCN-6",
@@ -273,7 +280,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "OVS-1",
@@ -302,7 +310,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "NHIS-1",
@@ -358,7 +367,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "FAQ-1",
@@ -399,7 +409,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "FAQ-2",
@@ -439,7 +450,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "FAQ-3",
@@ -467,7 +479,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "FAQ-4",
@@ -491,7 +504,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "VW-1",
@@ -552,7 +566,8 @@
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "COM-1",
@@ -584,7 +599,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "B-1",
@@ -708,7 +724,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "B-2",
@@ -853,7 +870,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "C-3",
@@ -1405,7 +1423,8 @@
         "name": "기타 체류목적 입증서류",
         "note": "별도 소명자료"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "C-4",
@@ -1524,7 +1543,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-1",
@@ -1685,7 +1705,8 @@
         "name": "연수계속 입증서류",
         "note": "출석부, 진도표 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-2",
@@ -2273,7 +2294,8 @@
         "name": "은행 잔고증명서",
         "note": "최근 30일 이내 발급본"
       }
-    ]
+    ],
+    "hikorea_task_type": "체류기간 연장허가"
   },
   {
     "code": "D-3",
@@ -2453,7 +2475,8 @@
         "name": "연수계속 입증서류",
         "note": "출석부, 진도표 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-4",
@@ -2706,7 +2729,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "체류기간 연장허가"
   },
   {
     "code": "D-4-2K",
@@ -2898,7 +2922,8 @@
         "name": "출석확인서",
         "note": "출석률 명시"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-7",
@@ -3129,7 +3154,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-8",
@@ -3354,7 +3380,8 @@
         "name": "부가가치세 과세표준증명",
         "note": "최근 1년"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-9",
@@ -3562,7 +3589,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-10",
@@ -3797,7 +3825,8 @@
         "name": "결핵건강진단서",
         "note": "보건소/지정병원, 고위험 35개국 필수"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-1",
@@ -3963,7 +3992,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-2",
@@ -4170,7 +4200,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-3",
@@ -4339,7 +4370,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-4",
@@ -4495,7 +4527,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-5",
@@ -4644,7 +4677,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-6",
@@ -4842,7 +4876,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-7",
@@ -5148,7 +5183,8 @@
         "name": "고용보험 가입자 명부",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "체류기간 연장허가"
   },
   {
     "code": "E-8",
@@ -5308,7 +5344,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-9",
@@ -5577,7 +5614,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "E-10",
@@ -5765,7 +5803,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-1",
@@ -6008,7 +6047,8 @@
         "name": "소득금액증명원 등 소득입증서류",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-2",
@@ -6227,7 +6267,8 @@
         "name": "국세·지방세 납세증명서",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-3",
@@ -6406,7 +6447,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-4",
@@ -6668,7 +6710,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-5",
@@ -6892,7 +6935,8 @@
         "name": "신원보증서",
         "note": "보증기간 명시"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "F-6",
@@ -7426,7 +7470,8 @@
         "name": "주민등록등본",
         "note": "해당 시"
       }
-    ]
+    ],
+    "hikorea_task_type": "체류기간 연장허가"
   },
   {
     "code": "G-1",
@@ -7643,7 +7688,8 @@
         "name": "수수료",
         "note": "정부수입인지, 절차별 금액은 수수료 안내 확인"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "RF-1",
@@ -7716,7 +7762,8 @@
     "changeReqDocs": [],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "H-1",
@@ -7863,7 +7910,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "H-2",
@@ -8012,7 +8060,8 @@
         "name": "사회통합프로그램(KIIP) 이수증/합격증",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "A-1",
@@ -8114,7 +8163,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "A-2",
@@ -8215,7 +8265,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "A-3",
@@ -8318,7 +8369,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "C-1",
@@ -8426,7 +8478,8 @@
       }
     ],
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-5",
@@ -8574,7 +8627,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-6",
@@ -8722,7 +8776,8 @@
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "D-4-2K",
@@ -8866,7 +8921,8 @@
         "name": "재직증명서",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "K-STAR",
@@ -9154,7 +9210,8 @@
         "name": "소득금액증명원 등 소득입증서류",
         "note": "DATA_MISSING"
       }
-    ]
+    ],
+    "hikorea_task_type": "DATA_MISSING"
   },
   {
     "code": "REGION-S",
@@ -9257,6 +9314,7 @@
     },
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING"
+    "documents_extension": "DATA_MISSING",
+    "hikorea_task_type": "DATA_MISSING"
   }
 ]
