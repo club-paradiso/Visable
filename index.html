@@ -9,6 +9,23 @@
     <link rel="apple-touch-icon" href="assets/brand/paradiso-favicon-o.png?v=2">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
     <style>
+/* === PART 2 GAP ANALYSIS — Figma Make file N695iXnoavEOSHITttdCCu ===
+   Source: https://www.figma.com/make/N695iXnoavEOSHITttdCCu/Paradiso-후보
+   Reference components (Figma Make): HeroGateway.tsx, Landing.tsx, FooterCTA.tsx
+
+   | Section                      | Current State                                                                 | Figma Design                                                                          | Action         |
+   |------------------------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------|
+   | 1. Header / navigation bar   | top-ctrls (city/lang/theme) + full hero w/ logo, headline, A/B entry rail     | Simple <nav>: LogoSVG left + single "로그인" pill button right                          | KEEP           |
+   | 2. Search input field        | .sbar pill, border-radius:6px (searched) / 9999px (landing), glass bg         | rounded-2xl (~16px) glass pill, inline 자주찾는 toggle + green 탐색하기 CTA              | IMPROVE        |
+   | 3. Search results card       | .vc, border-radius:4px, overflow:hidden, header inner radius 16/16/0/0        | rounded-2xl/3xl (16–24px) glass tiles w/ subtle shadow + accent hover                  | IMPROVE        |
+   | 4. Document checklist tabs   | .docs-tabs three-tab section (initial/registration/extension) — Part 1 polish | No equivalent in Figma Make landing prototype                                          | DATA_MISSING   |
+   | 5. Footer                    | .ft single-line legal disclaimer (베타 안내, 1345 안내)                          | Minimal: Paradiso wordmark + Terms/Privacy/Contact links + © 2026                       | KEEP           |
+
+   Notes:
+   - Header KEEP: current implementation is a full product header (language menu, city/time, theme, entry rail) — strictly superior to Figma's marketing-only nav. Touching it would regress JS-bound controls.
+   - Footer KEEP: current footer carries beta disclaimer + 1345 hotline required for legal compliance. Figma's Terms/Privacy/Contact links would need real routes — flagged as future work.
+   - Document checklist DATA_MISSING: Figma Make does not contain a documents tab; Part 1 work is the source of truth and is retained as-is.
+*/
 /* paradiso-design-tokens — additive, prefixed, no overrides */
 :root {
   /* palette */
@@ -145,6 +162,9 @@ body, input, button, textarea, select { font-family: var(--ff) !important; }
 body { background: transparent !important; color: var(--t1); line-height: 1.65; min-height: 100vh; overflow-x: hidden; max-width: 100%; transition: color 0.3s; }
 img, svg, video, canvas { max-width: 100%; height: auto; }
 
+/* Figma review: Header / navigation bar — current implementation retained, no change needed
+   (Figma Make's nav is a marketing-only LogoSVG + login pill; current top-ctrls
+   carries language/city/time/theme controls bound to JS and is strictly richer.) */
 /* Top Controls */
 .top-ctrls { position: fixed; top: 1.2rem; right: 1.2rem; z-index: 100; display: flex; gap: 0.5rem; align-items: center; }
 .city-btn { background: var(--bg2); border: 1px solid var(--bd); color: var(--t1); height: var(--btn-h-md); padding: var(--btn-pad-sm); border-radius: var(--btn-r-md); cursor: pointer; font-weight: 600; transition: var(--btn-tr); font-family: var(--ff); display: inline-flex; align-items: center; gap: var(--sp-2); font-size: 0.85rem; line-height: 1; }
@@ -248,7 +268,9 @@ body.searched .logo-brand .al .tgt { opacity: 0; }
 /* Search Area */
 .search-wrap { width: 100%; position: relative; transition: all 0.7s cubic-bezier(0.4,0,0.2,1); }
 body.searched .search-wrap { max-width: 480px; flex: 1; min-width: 180px; }
-.sbar { position: relative; display: flex; align-items: center; background: color-mix(in srgb, var(--bg1) 94%, white); border: 1px solid var(--bd); border-radius: 6px; box-shadow: 0 6px 20px color-mix(in srgb, var(--ac) 8%, transparent); transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; z-index: 20; }
+/* Figma frame: HeroGateway.tsx search panel — softening searched-mode pill from 6px → 14px to match Figma rounded-2xl glass aesthetic
+   mobile: DATA_MISSING — no dedicated mobile frame in Figma Make; existing landing-mode pill override (body:not(.searched) .sbar { border-radius: 1rem; } at the ≤768px breakpoint) is retained */
+.sbar { position: relative; display: flex; align-items: center; background: color-mix(in srgb, var(--bg1) 94%, white); border: 1px solid var(--bd); border-radius: 14px; box-shadow: 0 6px 20px color-mix(in srgb, var(--ac) 8%, transparent); transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease; z-index: 20; }
 .sbar:focus-within { border-color: var(--ac); box-shadow: var(--shG), 0 10px 26px color-mix(in srgb, var(--ac) 14%, transparent); transform: translateY(-1px); }
 .sbar-icon { position: absolute; left: 1rem; color: var(--t3); width: 18px; height: 18px; transition: color 0.2s; flex-shrink: 0; }
 .sbar:focus-within .sbar-icon { color: var(--ac); }
@@ -315,7 +337,9 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 
 /* Result List */
 .rlist { display: flex; flex-direction: column; gap: 0.85rem; padding-bottom: 5rem; padding-top: 0.5rem; }
-.vc { background: color-mix(in srgb, var(--bg1) 98%, white); border: 1px solid var(--bd2); border-radius: 4px; box-shadow: none; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), box-shadow 0.28s cubic-bezier(0.4,0,0.2,1), border-color 0.28s; animation: cIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 40ms); overflow: hidden; }
+/* Figma frame: HeroGateway.tsx GatewayTile / Landing.tsx StatCard — softening result card from 4px → 14px to match Figma rounded-2xl tiles (inner .vc-h already assumes 16px)
+   mobile: DATA_MISSING — no dedicated mobile frame in Figma Make; radius bump inherits to all viewports without override */
+.vc { background: color-mix(in srgb, var(--bg1) 98%, white); border: 1px solid var(--bd2); border-radius: 14px; box-shadow: none; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), box-shadow 0.28s cubic-bezier(0.4,0,0.2,1), border-color 0.28s; animation: cIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 40ms); overflow: hidden; }
 [data-theme="dark"] .vc { box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 .vc:hover { transform: none; box-shadow: none; border-color: color-mix(in srgb, var(--ac) 18%, var(--bd2)); }
 [data-theme="dark"] .vc:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3); }
@@ -365,6 +389,10 @@ mark.h { background: color-mix(in srgb, var(--ac) 22%, transparent); color: var(
 .es { text-align: center; padding: 4.5rem 1rem; }
 .es-t { font-weight: 800; font-size: 1.05rem; color: var(--t2); margin-bottom: 0.35rem; }
 .es-d { font-size: 0.88rem; color: var(--t3); line-height: 1.6; }
+/* Figma review: Footer — current implementation retained, no change needed
+   (Figma's minimal Terms/Privacy/Contact links would need real routes; current
+   .ft carries the legally required beta + 1345 hotline disclaimer.)
+   BLOCKED: replacing with Figma's link-based footer requires routing decisions, flagged for separate PR */
 .ft { text-align: center; padding: 1.5rem 1rem; font-size: 0.68rem; color: var(--t3); border-top: 1px solid var(--bd); max-width: 1160px; margin: 0 auto; opacity: 0; transition: opacity 0.4s ease 0.3s; }
 body.searched .ft { opacity: 1; }
 .ft-logo { font-family: var(--ff-logo) !important; font-size: 0.8rem; font-weight: 400; color: var(--t3); }
@@ -1147,6 +1175,11 @@ body.searched .section-divider { display: none; }
 .sep-note { font-size: 0.74rem; color: var(--t3); line-height: 1.55; margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
 .procedure-doc-count { margin: 0.12rem 0 0.6rem; font-size: 0.74rem; color: var(--t3); }
 
+/* Figma review: Document checklist tab section — current implementation retained, no change needed
+   DATA_MISSING: Figma Make N695iXnoavEOSHITttdCCu landing prototype contains no document
+   checklist tabs; Part 1 work (three-tab initial/registration/extension structure) is the
+   source of truth and is preserved.
+   mobile: DATA_MISSING — no change applied (existing 768px accordion fallback retained) */
 /* === Required-documents three-tab section (documents_initial / _registration / _extension) === */
 .docs-section { display: flex; flex-direction: column; gap: 0.65rem; }
 .docs-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; border-bottom: 1px solid var(--bd2); padding-bottom: 0.45rem; }
