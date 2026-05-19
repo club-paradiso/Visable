@@ -1858,5 +1858,70 @@ class CitationVerificationPhase3Tests(unittest.TestCase):
         self.assertEqual(resp.status_code, 400, resp.text)
 
 
+class LawGroundingPhase4IntentTests(unittest.TestCase):
+    def test_should_attempt_detects_explicit_legal_signals(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        result = should_attempt_law_grounding("출입국관리법 제10조 법적 근거와 legal basis 알려줘")
+        self.assertTrue(result["should_attempt"])
+        self.assertTrue(result["reasons"])
+
+    def test_should_attempt_rejects_generic_documents_question(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        result = should_attempt_law_grounding("D-2 연장 서류 알려줘")
+        self.assertFalse(result["should_attempt"])
+        self.assertEqual(result["reasons"], [])
+
+
+class AskLawGroundingPhase4Tests(unittest.TestCase):
+    def test_disabled_mode_does_not_attempt_law_grounding(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "출입국관리법 제10조 근거는?"})
+        self.assertEqual(resp.status_code, 503)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail.get("law_grounding_attempted", False))
+
+    def test_audit_mode_generic_d2_question_not_attempted(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "D-2 연장 서류가 뭐야?", "visa_code": "D-2"})
+        self.assertEqual(resp.status_code, 503)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail.get("law_grounding_attempted", False))
+
+    def test_audit_mode_legal_basis_question_attempted(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "출입국관리법 제10조 법적 근거 알려줘"})
+        self.assertEqual(resp.status_code, 503)
+        detail = resp.json()["detail"]
+        self.assertTrue(detail.get("law_grounding_attempted", False))
+
+    def test_manual_grounding_priority_for_d2_extension(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "D-2 연장 서류", "visa_code": "D-2"})
+        self.assertEqual(resp.status_code, 503)
+        detail = resp.json()["detail"]
+        self.assertTrue(detail.get("grounding_used"))
+        self.assertFalse(detail.get("law_grounding_attempted", False))
+
+    def test_debug_endpoint_still_works(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={"question": "출입국관리법 제10조"})
+        self.assertEqual(resp.status_code, 200)
+
+    def test_api_output_does_not_leak_law_api_key(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ["LAW_API_KEY"] = "super-secret-key"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "출입국관리법 제10조 법적 근거"})
+        self.assertEqual(resp.status_code, 503)
+        self.assertNotIn("super-secret-key", resp.text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
