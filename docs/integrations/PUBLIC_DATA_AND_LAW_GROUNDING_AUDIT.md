@@ -315,3 +315,4 @@ Reuse boundary:
 - Manual grounding remains higher-priority for procedure and required-document guidance.
 - Law grounding is supplemental only and explicitly not used to infer required document lists, deadlines, fees, or operational procedures.
 - Added mock-based tests only; no live external API calls are required by test coverage.
+- Safety rule in `/api/ask`: manual/HiKorea/procedure-grounded sources remain authoritative for required documents, fees, deadlines, and procedural steps.
