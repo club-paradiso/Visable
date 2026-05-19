@@ -64,8 +64,28 @@ Or run the full repo validator:
 bash scripts/check_repo.sh
 ```
 
-`check_repo.sh` now auto-detects missing backend test dependencies (`fastapi`, `httpx`, `pydantic`).
+`check_repo.sh` auto-detects missing backend test dependencies (`fastapi`, `httpx`, `pydantic`).
 If missing, it bootstraps a local `.venv-check` and installs `backend/requirements.txt` there, then runs backend regression tests and golden eval with that interpreter.
+
+### Network-restricted validation mode
+
+In restricted environments (sandbox, proxy, or blocked package index), dependency bootstrap may fail even when repository code is healthy. In that case, run:
+
+```bash
+ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh
+```
+
+What this does:
+- Runs all static/data validation checks as usual.
+- If backend dependency bootstrap fails, it runs offline-safe Python syntax checks with `py_compile` on:
+  - `backend/services/*.py`
+  - `backend/paradiso_backend.py`
+  - `backend/tests/test_paradiso_backend.py`
+- Skips backend regression tests and golden eval with explicit warnings.
+
+Important:
+- Skip mode is for **restricted environments only**.
+- Strict CI / production validation should run without `ALLOW_BACKEND_TEST_SKIP` so backend regression tests execute fully.
 
 If you previously saw `ModuleNotFoundError: No module named 'fastapi'`, either:
 
@@ -80,6 +100,12 @@ bash scripts/check_repo.sh
 ```
 
 which will provision `.venv-check` automatically.
+
+To run backend tests directly after dependencies are available:
+
+```bash
+python3 backend/tests/test_paradiso_backend.py
+```
 
 ## Required and optional environment variables
 
