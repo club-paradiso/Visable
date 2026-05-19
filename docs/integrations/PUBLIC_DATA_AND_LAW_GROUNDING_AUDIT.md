@@ -315,3 +315,19 @@ Reuse boundary:
 - Manual grounding remains higher-priority for procedure and required-document guidance.
 - Law grounding is supplemental only and explicitly not used to infer required document lists, deadlines, fees, or operational procedures.
 - Added mock-based tests only; no live external API calls are required by test coverage.
+- Safety rule in `/api/ask`: manual/HiKorea/procedure-grounded sources remain authoritative for required documents, fees, deadlines, and procedural steps.
+
+
+## Phase 5 source-panel grounding metadata (2026-05-19)
+
+- Added a minimal user-facing source panel for `/api/ask` responses in `index.html` and `ai.html`.
+- Source metadata is separated into three categories:
+  - 행정 매뉴얼 근거 (Manual / Immigration procedure source)
+  - 법령 인용 검증 (Legal citation verification)
+  - 공공데이터 근거 (Public-data source placeholder for future metadata)
+- Law verification display is supplemental and conservative:
+  - if law grounding was attempted but unavailable, UI shows a small "확인 필요" indicator.
+  - if law grounding is disabled and not attempted, the panel does not add clutter.
+- Raw technical warning codes are mapped to user-friendly labels, with raw values only in collapsed technical details.
+- Default mode remains unchanged: `LAW_GROUNDING_MODE=disabled`.
+- No live external API dependency was added for this phase.
