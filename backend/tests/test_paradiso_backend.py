@@ -1634,5 +1634,59 @@ class GoldenEvalSuiteTests(unittest.TestCase):
         self.assertIsNone(grounding)
 
 
+class LawPublicDataScaffoldTests(unittest.TestCase):
+    def test_default_grounding_config_mode_is_disabled(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_GROUNDING_TIMEOUT_SECONDS", None)
+        os.environ.pop("LAW_GROUNDING_CACHE_TTL_SECONDS", None)
+        from services.grounding_config import load_grounding_config
+
+        cfg = load_grounding_config()
+        self.assertEqual(cfg.mode, "disabled")
+        self.assertGreater(cfg.timeout_seconds, 0)
+        self.assertGreater(cfg.cache_ttl_seconds, 0)
+
+    def test_disabled_law_grounding_returns_empty(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        from services.law_grounding import build_law_grounding_context
+
+        ctx = build_law_grounding_context("출입국관리법 제10조 알려줘")
+        self.assertFalse(ctx["law_grounding_used"])
+        self.assertEqual(ctx["law_grounding"], [])
+        self.assertIn("LAW_GROUNDING_DISABLED", ctx["grounding_warnings"])
+
+    def test_missing_law_api_key_in_audit_mode_is_unavailable(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ.pop("LAW_API_KEY", None)
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+
+        client = KoreanLawClient(load_grounding_config())
+        result = client.search_law("국적법 제5조")
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIn("LAW_API_KEY_MISSING", result["warnings"])
+
+    def test_citation_extraction_detects_simple_korean_legal_citation(self):
+        from services.citation_verifier import extract_korean_legal_citations
+
+        result = extract_korean_legal_citations("출입국관리법 제10조 및 국적법 제5조를 확인")
+        self.assertEqual(result["status"], "extracted_only")
+        self.assertIn("CITATION_VERIFICATION_NOT_WIRED", result["warnings"])
+        self.assertGreaterEqual(len(result["citations"]), 2)
+        self.assertEqual(result["citations"][0]["law_name"], "출입국관리법")
+
+    def test_health_endpoint_still_passes(self):
+        client, _ = _client()
+        resp = client.get("/health")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(resp.json().get("status"), "ok")
+
+    def test_api_ask_behavior_unchanged_no_provider(self):
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "D-2 비자 연장"})
+        self.assertEqual(resp.status_code, 503, resp.text)
+        self.assertEqual(resp.json()["detail"]["error"], "no_llm_provider_configured")
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
