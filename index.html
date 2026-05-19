@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <!-- pages-refresh: 2026-05-19-design-round2 -->
+<!-- pages-refresh: 2026-05-19-reminder-feature -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -3911,6 +3912,231 @@ body:not(.searched) .lh:hover {
   font-weight: 780;
 }
 
+/* === Deadline reminder feature === */
+.p-reminder-banner {
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  background: linear-gradient(135deg, #FFE9B0, #FFD073);
+  color: #2A1B00;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+.p-reminder-banner__inner {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0.65rem 1rem;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.p-reminder-banner__icon { font-size: 1.15rem; }
+.p-reminder-banner__text { flex: 1; line-height: 1.35; }
+.p-reminder-banner__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 0.95rem;
+  border-radius: 999px;
+  background: #1F3A2D;
+  color: #FFF;
+  font-weight: 800;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.p-reminder-banner__close {
+  min-width: 40px;
+  min-height: 40px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: inherit;
+}
+
+.p-reminder-form {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--p-line-2);
+  border-radius: var(--p-r-lg);
+  background: rgba(255, 250, 244, 0.85);
+}
+.p-reminder-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.p-reminder-field label {
+  font-weight: 800;
+  font-size: 0.95rem;
+  color: var(--p-ink);
+}
+.p-reminder-optional {
+  font-weight: 600;
+  color: var(--p-ink-2);
+  font-size: 0.85rem;
+}
+.p-reminder-field input,
+.p-reminder-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 0.85rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--p-line-2);
+  background: #FFF;
+  font-size: 1rem;
+  color: var(--p-ink);
+  box-sizing: border-box;
+}
+.p-reminder-field input:focus,
+.p-reminder-field select:focus {
+  outline: 3px solid color-mix(in srgb, var(--color-accent, #FF6B5B) 50%, transparent);
+  border-color: var(--color-accent, #FF6B5B);
+}
+.p-reminder-help {
+  color: var(--p-ink-2);
+  font-size: 0.8rem;
+}
+.p-reminder-submit {
+  grid-column: 1 / -1;
+  min-height: 52px;
+  padding: 0 1.4rem;
+  border-radius: 14px;
+  border: none;
+  background: #1F3A2D;
+  color: #FFF;
+  font-weight: 850;
+  font-size: 1.02rem;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+.p-reminder-submit:hover { filter: brightness(1.08); }
+.p-reminder-error {
+  grid-column: 1 / -1;
+  color: #B0271A;
+  font-weight: 700;
+  margin: 0;
+}
+.p-reminder-success {
+  margin-top: 0.85rem;
+  padding: 0.7rem 0.95rem;
+  border-radius: 12px;
+  background: #E6F6EC;
+  color: #115C36;
+  border: 1.5px solid #6CC28A;
+  font-weight: 800;
+}
+.p-reminder-saved { margin-top: 1.5rem; }
+.p-reminder-listtitle {
+  font-size: 1.05rem;
+  font-weight: 850;
+  margin: 0 0 0.65rem;
+  color: var(--p-ink);
+}
+.p-reminder-empty {
+  color: var(--p-ink-2);
+  margin: 0.4rem 0;
+}
+.p-reminder-items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.7rem;
+}
+.p-reminder-item {
+  border: 1px solid var(--p-line-2);
+  border-radius: var(--p-r-lg);
+  background: #FFF;
+  padding: 0.95rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.55rem 1rem;
+  align-items: center;
+}
+.p-reminder-item__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+.p-reminder-item__type {
+  font-weight: 850;
+  font-size: 1rem;
+  color: var(--p-ink);
+}
+.p-reminder-item__memo {
+  color: var(--p-ink-2);
+  font-size: 0.9rem;
+}
+.p-reminder-item__date {
+  font-variant-numeric: tabular-nums;
+  color: var(--p-ink-2);
+  font-size: 0.92rem;
+  margin-top: 0.15rem;
+}
+.p-reminder-item__dday {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 78px;
+  min-height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  font-weight: 850;
+  font-size: 0.98rem;
+  background: #E6F6EC;
+  color: #115C36;
+}
+.p-reminder-item__dday[data-urgency="soon"] { background: #FFF1CE; color: #6B4900; }
+.p-reminder-item__dday[data-urgency="urgent"] { background: #FFD8D2; color: #8C1F12; }
+.p-reminder-item__dday[data-urgency="past"] { background: #ECECEC; color: #555; }
+.p-reminder-item__actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.p-reminder-item__btn {
+  min-height: 48px;
+  padding: 0 0.95rem;
+  border-radius: 12px;
+  border: 1.5px solid var(--p-line-2);
+  background: #FFF;
+  color: var(--p-ink);
+  font-weight: 750;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+.p-reminder-item__btn--primary {
+  background: #1F3A2D;
+  color: #FFF;
+  border-color: #1F3A2D;
+}
+.p-reminder-item__btn--danger {
+  color: #8C1F12;
+  border-color: #E1A89F;
+}
+.p-reminder-foot {
+  margin-top: 1rem;
+  color: var(--p-ink-2);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 720px) {
+  .p-reminder-form { grid-template-columns: 1fr; padding: 1rem; }
+  .p-reminder-item { grid-template-columns: 1fr; }
+  .p-reminder-item__dday { justify-self: start; }
+  .p-reminder-banner__inner { flex-wrap: wrap; padding: 0.6rem 0.8rem; }
+  .p-reminder-banner__text { flex-basis: 100%; order: -1; }
+}
+
 .p-footer-cta {
   padding: clamp(2rem, 5vw, 3rem);
   border-radius: var(--p-r-xl);
@@ -6713,6 +6939,16 @@ body.searched .smeta {
 <body class="landing" data-theme="light">
 <canvas id="starCanvas"></canvas>
 
+<!-- Deadline reminder banner: shown when a saved date is within 30 days -->
+<div id="reminderBanner" class="p-reminder-banner" role="status" aria-live="polite" hidden>
+    <div class="p-reminder-banner__inner">
+        <span class="p-reminder-banner__icon" aria-hidden="true">⏰</span>
+        <div class="p-reminder-banner__text" id="reminderBannerText"></div>
+        <a href="#reminderSection" class="p-reminder-banner__cta">알림 보기</a>
+        <button type="button" id="reminderBannerClose" class="p-reminder-banner__close" aria-label="오늘은 그만 보기">✕</button>
+    </div>
+</div>
+
 <!-- Top-right controls -->
 <header role="banner" class="top-ctrls" id="topCtrls">
     <div id="cityWrap" style="position:relative;">
@@ -7260,25 +7496,49 @@ body.searched .smeta {
         </div>
     </section>
 
-    <section class="p-section p-reminder-section" aria-labelledby="pReminderTitle">
+    <section class="p-section p-reminder-section" id="reminderSection" aria-labelledby="pReminderTitle">
         <div class="p-section-head">
             <div>
-                <p class="p-kicker">Roadmap</p>
-                <h2 class="p-section-title" id="pReminderTitle">놓치기 쉬운 기한은 앞으로 알림으로 관리합니다.</h2>
+                <p class="p-kicker">기한 알림</p>
+                <h2 class="p-section-title" id="pReminderTitle">중요한 날짜를 미리 알려드립니다.</h2>
             </div>
-            <p class="p-section-copy">아래 항목은 계획 중인 기능이며, 현재 제공되는 공식 알림 서비스가 아닙니다.</p>
+            <p class="p-section-copy">날짜를 저장하면 이 사이트에 방문할 때마다 남은 일수를 보여드리고, 휴대폰 캘린더에 저장해 알림을 받을 수 있습니다.</p>
         </div>
-        <div class="p-reminder-grid">
-            <article class="p-reminder-card"><h3>체류기간 연장</h3><p>만료 전 확인 시점과 서류 준비 흐름.</p></article>
-            <article class="p-reminder-card"><h3>주소 이전 신고</h3><p>전입 후 신고 기한과 관할 확인.</p></article>
-            <article class="p-reminder-card"><h3>근무처 변경</h3><p>변동 신고와 취업 정보 확인.</p></article>
+
+        <form id="reminderForm" class="p-reminder-form" novalidate>
+            <div class="p-reminder-field">
+                <label for="reminderType">어떤 기한입니까?</label>
+                <select id="reminderType" required>
+                    <option value="">선택하세요</option>
+                    <option value="visa">체류기간 만료일</option>
+                    <option value="arc">외국인등록증 갱신일</option>
+                    <option value="appointment">방문 예약 날짜</option>
+                </select>
+            </div>
+            <div class="p-reminder-field">
+                <label for="reminderDate">날짜</label>
+                <input type="date" id="reminderDate" required>
+                <span class="p-reminder-help">예: 2026-12-31</span>
+            </div>
+            <div class="p-reminder-field">
+                <label for="reminderMemo">메모 <span class="p-reminder-optional">(선택)</span></label>
+                <input type="text" id="reminderMemo" maxlength="40" placeholder="예: 김민수 비자">
+            </div>
+            <button type="submit" class="p-reminder-submit">알림 저장</button>
+            <p id="reminderFormError" class="p-reminder-error" role="alert" hidden></p>
+        </form>
+
+        <div id="reminderSaveStatus" class="p-reminder-success" role="status" aria-live="polite" hidden>
+            <span aria-hidden="true">✅</span> 저장되었습니다.
         </div>
-        <div class="p-reminder-list" aria-label="계획 중인 알림 항목">
-            <span class="p-reminder-pill">여권정보 변경</span>
-            <span class="p-reminder-pill">캘린더 내보내기</span>
-            <span class="p-reminder-pill">이메일·SMS 알림</span>
-            <span class="p-reminder-pill">방문 준비 카드</span>
+
+        <div class="p-reminder-saved">
+            <h3 class="p-reminder-listtitle">저장된 기한</h3>
+            <p id="reminderEmpty" class="p-reminder-empty">아직 저장된 기한이 없습니다. 위에서 추가해 보세요.</p>
+            <ul id="reminderItems" class="p-reminder-items" aria-live="polite"></ul>
         </div>
+
+        <p class="p-reminder-foot">저장된 기한은 이 기기·브라우저에만 저장됩니다. 다른 기기에 옮기려면 캘린더에 저장하세요.</p>
     </section>
 
     <div class="section-divider" aria-hidden="true"></div>
@@ -10817,12 +11077,7 @@ function applyLanguage(code, options = {}) {
     setText('#medFinderErrorText', tx('medError'));
     setText('#medFinderShowMore', tx('medShowMore'));
     if (typeof window.updateMedFinderLanguage === 'function') window.updateMedFinderLanguage();
-    setText('#pReminderTitle', tx('reminderTitle'));
-    setText('.p-reminder-section .p-section-copy', tx('reminderCopy'));
-    setAttr('.p-reminder-list', 'aria-label', tx('reminderAria'));
-    setIndexedText('.p-reminder-card h3', txArray('reminderCardTitles'));
-    setIndexedText('.p-reminder-card p', txArray('reminderCardDescs'));
-    setIndexedText('.p-reminder-pill', txArray('reminderPills'));
+    // Reminder feature: Korean-only UI text managed in markup; i18n keys removed (out of scope for MVP).
     setText('#aboutMeTitle', tx('aboutTitle'));
     setAttr('#anagram', 'aria-label', tx('anagramAria'));
     setHtml('.anagram-right h3', tx('philosophyTitle'));
@@ -11957,6 +12212,251 @@ function showVisaDocForAction(visaCode) {
   }
   if (retryBtn) retryBtn.addEventListener('click', loadDataset);
   loadDataset();
+})();
+
+/* === Deadline reminder feature ===
+ * Stores user-entered deadlines in localStorage (key: paradisoReminders).
+ * On every visit, shows a banner if any deadline is within 30 days.
+ * Each saved item can be exported to the user's calendar via .ics download
+ * or Google Calendar deep link — those native calendars fire the actual
+ * push notifications (we have no notification server).
+ */
+(function () {
+  'use strict';
+  var STORAGE_KEY = 'paradisoReminders';
+  var DISMISS_KEY = 'paradisoReminderBannerDismiss';
+  var TYPE_LABELS = {
+    visa: '체류기간 만료일',
+    arc: '외국인등록증 갱신일',
+    appointment: '방문 예약 날짜'
+  };
+
+  var form = document.getElementById('reminderForm');
+  if (!form) return;
+  var typeEl = document.getElementById('reminderType');
+  var dateEl = document.getElementById('reminderDate');
+  var memoEl = document.getElementById('reminderMemo');
+  var errorEl = document.getElementById('reminderFormError');
+  var successEl = document.getElementById('reminderSaveStatus');
+  var listEl = document.getElementById('reminderItems');
+  var emptyEl = document.getElementById('reminderEmpty');
+  var banner = document.getElementById('reminderBanner');
+  var bannerText = document.getElementById('reminderBannerText');
+  var bannerClose = document.getElementById('reminderBannerClose');
+
+  function load() {
+    try {
+      var raw = localStorage.getItem(STORAGE_KEY);
+      var arr = raw ? JSON.parse(raw) : [];
+      return Array.isArray(arr) ? arr : [];
+    } catch (e) { return []; }
+  }
+  function save(items) {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (e) {}
+  }
+  function uid() { return 'r_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+  function daysUntil(isoDate) {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var target = new Date(isoDate + 'T00:00:00');
+    return Math.round((target - today) / 86400000);
+  }
+  function formatKoreanDate(isoDate) {
+    var d = new Date(isoDate + 'T00:00:00');
+    return d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+  function ddayLabel(n) {
+    if (n === 0) return 'D-DAY';
+    if (n > 0) return 'D-' + n;
+    return 'D+' + Math.abs(n);
+  }
+  function urgency(n) {
+    if (n < 0) return 'past';
+    if (n <= 7) return 'urgent';
+    if (n <= 30) return 'soon';
+    return 'ok';
+  }
+
+  function buildIcs(item) {
+    var d = item.date.replace(/-/g, '');
+    var nextDay = new Date(item.date + 'T00:00:00');
+    nextDay.setDate(nextDay.getDate() + 1);
+    var dEnd = nextDay.toISOString().slice(0, 10).replace(/-/g, '');
+    var stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    var summary = (TYPE_LABELS[item.type] || '기한 알림') + (item.memo ? ' - ' + item.memo : '');
+    summary = summary.replace(/([,;\\])/g, '\\$1');
+    var lines = [
+      'BEGIN:VCALENDAR',
+      'VERSION:2.0',
+      'PRODID:-//Paradiso//Deadline Reminder//KO',
+      'CALSCALE:GREGORIAN',
+      'METHOD:PUBLISH',
+      'BEGIN:VEVENT',
+      'UID:' + item.id + '@paradiso',
+      'DTSTAMP:' + stamp,
+      'DTSTART;VALUE=DATE:' + d,
+      'DTEND;VALUE=DATE:' + dEnd,
+      'SUMMARY:' + summary,
+      'DESCRIPTION:Paradiso 기한 알림',
+      'BEGIN:VALARM',
+      'TRIGGER:-P7D',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + summary + ' (7일 전)',
+      'END:VALARM',
+      'BEGIN:VALARM',
+      'TRIGGER:-P1D',
+      'ACTION:DISPLAY',
+      'DESCRIPTION:' + summary + ' (1일 전)',
+      'END:VALARM',
+      'END:VEVENT',
+      'END:VCALENDAR'
+    ];
+    return lines.join('\r\n');
+  }
+  function downloadIcs(item) {
+    var blob = new Blob([buildIcs(item)], { type: 'text/calendar;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'paradiso-reminder-' + item.date + '.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function googleCalUrl(item) {
+    var d = item.date.replace(/-/g, '');
+    var nextDay = new Date(item.date + 'T00:00:00');
+    nextDay.setDate(nextDay.getDate() + 1);
+    var dEnd = nextDay.toISOString().slice(0, 10).replace(/-/g, '');
+    var title = (TYPE_LABELS[item.type] || '기한 알림') + (item.memo ? ' - ' + item.memo : '');
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+      + '&text=' + encodeURIComponent(title)
+      + '&dates=' + d + '/' + dEnd
+      + '&details=' + encodeURIComponent('Paradiso 기한 알림');
+  }
+
+  function render() {
+    var items = load().slice().sort(function (a, b) {
+      return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+    });
+    listEl.innerHTML = '';
+    if (items.length === 0) {
+      emptyEl.hidden = false;
+    } else {
+      emptyEl.hidden = true;
+      items.forEach(function (item) {
+        var n = daysUntil(item.date);
+        var li = document.createElement('li');
+        li.className = 'p-reminder-item';
+
+        var info = document.createElement('div');
+        var head = document.createElement('div');
+        head.className = 'p-reminder-item__head';
+        var typeSpan = document.createElement('span');
+        typeSpan.className = 'p-reminder-item__type';
+        typeSpan.textContent = TYPE_LABELS[item.type] || '기한';
+        head.appendChild(typeSpan);
+        if (item.memo) {
+          var memoSpan = document.createElement('span');
+          memoSpan.className = 'p-reminder-item__memo';
+          memoSpan.textContent = item.memo;
+          head.appendChild(memoSpan);
+        }
+        info.appendChild(head);
+        var dateP = document.createElement('div');
+        dateP.className = 'p-reminder-item__date';
+        dateP.textContent = formatKoreanDate(item.date);
+        info.appendChild(dateP);
+        li.appendChild(info);
+
+        var dday = document.createElement('span');
+        dday.className = 'p-reminder-item__dday';
+        dday.dataset.urgency = urgency(n);
+        dday.textContent = ddayLabel(n);
+        li.appendChild(dday);
+
+        var actions = document.createElement('div');
+        actions.className = 'p-reminder-item__actions';
+
+        var icsBtn = document.createElement('button');
+        icsBtn.type = 'button';
+        icsBtn.className = 'p-reminder-item__btn p-reminder-item__btn--primary';
+        icsBtn.textContent = '내 캘린더에 저장';
+        icsBtn.addEventListener('click', function () { downloadIcs(item); });
+        actions.appendChild(icsBtn);
+
+        var gBtn = document.createElement('a');
+        gBtn.className = 'p-reminder-item__btn';
+        gBtn.href = googleCalUrl(item);
+        gBtn.target = '_blank';
+        gBtn.rel = 'noopener';
+        gBtn.textContent = 'Google 캘린더에 추가';
+        actions.appendChild(gBtn);
+
+        var delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'p-reminder-item__btn p-reminder-item__btn--danger';
+        delBtn.textContent = '삭제';
+        delBtn.addEventListener('click', function () {
+          if (!confirm('이 기한을 삭제하시겠습니까?')) return;
+          save(load().filter(function (it) { return it.id !== item.id; }));
+          render();
+          showBanner();
+        });
+        actions.appendChild(delBtn);
+
+        li.appendChild(actions);
+        listEl.appendChild(li);
+      });
+    }
+    showBanner();
+  }
+
+  function showBanner() {
+    if (!banner) return;
+    var today = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem(DISMISS_KEY) === today) { banner.hidden = true; return; }
+    var items = load().map(function (it) {
+      return { it: it, n: daysUntil(it.date) };
+    }).filter(function (x) { return x.n >= 0 && x.n <= 30; })
+      .sort(function (a, b) { return a.n - b.n; });
+    if (items.length === 0) { banner.hidden = true; return; }
+    var first = items[0];
+    var label = TYPE_LABELS[first.it.type] || '기한';
+    var memo = first.it.memo ? ' (' + first.it.memo + ')' : '';
+    var dleft = first.n === 0 ? '오늘입니다' : first.n + '일 남았습니다';
+    bannerText.textContent = label + memo + ' — ' + dleft + '.';
+    banner.hidden = false;
+  }
+
+  if (bannerClose) {
+    bannerClose.addEventListener('click', function () {
+      var today = new Date().toISOString().slice(0, 10);
+      try { localStorage.setItem(DISMISS_KEY, today); } catch (e) {}
+      banner.hidden = true;
+    });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorEl.hidden = true;
+    var type = typeEl.value;
+    var date = dateEl.value;
+    var memo = (memoEl.value || '').trim();
+    if (!type) { errorEl.textContent = '기한 종류를 선택해 주세요.'; errorEl.hidden = false; typeEl.focus(); return; }
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { errorEl.textContent = '날짜를 입력해 주세요.'; errorEl.hidden = false; dateEl.focus(); return; }
+    var items = load();
+    items.push({ id: uid(), type: type, date: date, memo: memo, createdAt: Date.now() });
+    save(items);
+    form.reset();
+    render();
+    successEl.hidden = false;
+    setTimeout(function () { successEl.hidden = true; }, 3500);
+  });
+
+  render();
 })();
 </script>
 </body>
