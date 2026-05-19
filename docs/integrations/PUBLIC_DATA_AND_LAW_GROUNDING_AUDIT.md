@@ -269,3 +269,27 @@ Status and guarantees:
 Recommended Phase 2:
 - Implement real law/public-data HTTP calls in `audit` mode only first,
   with short timeouts and structured warning markers for graceful degradation.
+
+## Phase 2 audit-mode HTTP clients (2026-05-19)
+
+Implemented in `backend/services/`:
+- `korean_law_client.py` now includes audit-mode HTTP methods for `search_law` and `get_article`.
+- `public_data_client.py` now includes audit-mode HTTP methods for visa/job public-data fetches.
+- `grounding_config.py` now supports optional endpoint env configuration:
+  - `LAW_API_BASE_URL`, `LAW_API_SEARCH_PATH`, `LAW_API_ARTICLE_PATH`
+  - `PUBLIC_DATA_BASE_URL`, `PUBLIC_DATA_VISA_PATH`, `PUBLIC_DATA_JOB_PATH`
+
+Safety posture:
+- Default mode is still `LAW_GROUNDING_MODE=disabled`.
+- No external calls occur in disabled mode.
+- `/api/ask` is still not wired to these clients.
+- Error handling is structured with warning markers (timeout/http/parse/unavailable).
+- API keys are not echoed in result payloads or warnings.
+
+Testing posture:
+- Mock-based tests cover audit-mode success/error paths without live external API access.
+- Live endpoint validation is deferred and requires real keys plus controlled smoke testing.
+
+Reuse boundary:
+- No `korean-law-mcp` dependency added.
+- No source code copied from `korean-law-mcp`.

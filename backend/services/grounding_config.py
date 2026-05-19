@@ -16,6 +16,12 @@ class GroundingConfig:
     mode: str = "disabled"
     timeout_seconds: float = _DEFAULT_TIMEOUT_SECONDS
     cache_ttl_seconds: int = _DEFAULT_CACHE_TTL_SECONDS
+    law_api_base_url: str = ""
+    law_api_search_path: str = ""
+    law_api_article_path: str = ""
+    public_data_base_url: str = ""
+    public_data_visa_path: str = ""
+    public_data_job_path: str = ""
     warnings: List[str] = field(default_factory=list)
 
 
@@ -52,5 +58,11 @@ def load_grounding_config() -> GroundingConfig:
         mode=mode,
         timeout_seconds=_parse_timeout(os.environ.get("LAW_GROUNDING_TIMEOUT_SECONDS")),
         cache_ttl_seconds=_parse_cache_ttl(os.environ.get("LAW_GROUNDING_CACHE_TTL_SECONDS")),
+        law_api_base_url=(os.environ.get("LAW_API_BASE_URL") or "").strip(),
+        law_api_search_path=(os.environ.get("LAW_API_SEARCH_PATH") or "").strip(),
+        law_api_article_path=(os.environ.get("LAW_API_ARTICLE_PATH") or "").strip(),
+        public_data_base_url=(os.environ.get("PUBLIC_DATA_BASE_URL") or "").strip(),
+        public_data_visa_path=(os.environ.get("PUBLIC_DATA_VISA_PATH") or "").strip(),
+        public_data_job_path=(os.environ.get("PUBLIC_DATA_JOB_PATH") or "").strip(),
         warnings=warnings,
     )
