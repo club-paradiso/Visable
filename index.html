@@ -5223,6 +5223,115 @@ body:not(.searched) .visa-track-card:hover {
    END FIGMA LANGUAGE MIGRATION
    ============================================================ */
 
+/* ============================================================
+   UI ADDITIONS ROUND 1
+   ============================================================ */
+
+/* TASK 1 — STEP 0-A: HiKorea 회원가입 준비 */
+.step0a-section { display: flex; flex-direction: column; gap: 0; }
+.step0a-block { padding: 0.85rem 0; }
+.step0a-block + .step0a-block { border-top: 1px solid var(--bd2); }
+.step0a-block-title {
+  font-size: 1rem; font-weight: 800; color: var(--t1);
+  margin: 0 0 0.55rem; letter-spacing: -0.01em;
+}
+.step0a-body { font-size: 1rem; color: var(--t2); line-height: 1.65; margin: 0 0 0.5rem; }
+.step0a-body:last-child { margin-bottom: 0; }
+.step0a-check-row {
+  display: flex; align-items: center; gap: 0.75rem;
+  min-height: 48px; padding: 0.4rem 0;
+  font-size: 1rem; color: var(--t1); line-height: 1.45;
+}
+.step0a-checkbox {
+  flex-shrink: 0; width: 22px; height: 22px;
+  border: 2px solid var(--bd); border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--t3); font-size: 0.82rem;
+  background: var(--bg1); user-select: none; aria-hidden: true;
+}
+.step0a-check-text { flex: 1; }
+.step0a-example {
+  display: inline-block; margin-top: 0.35rem; padding: 0.3rem 0.7rem;
+  background: color-mix(in srgb, var(--ac) 10%, var(--bg0));
+  border: 1px solid color-mix(in srgb, var(--ac) 25%, var(--bd2));
+  border-radius: 6px; font-size: 0.9rem; color: var(--ac); font-weight: 700;
+}
+.step0a-gmail-btn {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 44px; padding: 0.5rem 1rem;
+  background: #4285F4; color: #fff;
+  border-radius: 8px; border: none; text-decoration: none;
+  font-size: 0.92rem; font-weight: 800; font-family: var(--ff) !important;
+  transition: filter 0.18s; margin: 0.5rem 0;
+}
+.step0a-gmail-btn:hover { filter: brightness(1.1); }
+.step0a-warn {
+  display: flex; gap: 0.5rem; align-items: flex-start;
+  padding: 0.6rem 0.75rem; border-radius: 6px;
+  background: color-mix(in srgb, #ff6b6b 8%, var(--bg0));
+  border: 1px solid color-mix(in srgb, #ff6b6b 25%, var(--bd2));
+  font-size: 0.9rem; color: var(--t1); margin-top: 0.55rem;
+}
+@media (max-width: 480px) {
+  .step0a-check-row { font-size: 1rem; }
+  .step0a-body { font-size: 1rem; }
+}
+
+/* TASK 2 — HiKorea Landing CTA */
+.hikorea-landing-cta {
+  width: 100%; max-width: 680px;
+  margin-top: var(--sp-4);
+  border-radius: var(--btn-r-lg);
+  background: linear-gradient(135deg, #0b8f6c 0%, #0EA37B 60%, #12b88c 100%);
+  box-shadow: 0 4px 16px rgba(14,163,123,0.22);
+  border: 1px solid rgba(255,255,255,0.15);
+  overflow: hidden;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.hikorea-landing-cta:hover { box-shadow: 0 6px 24px rgba(14,163,123,0.32); transform: translateY(-1px); }
+body.searched .hikorea-landing-cta { display: none; }
+.hikorea-cta-inner {
+  display: flex; align-items: center; gap: 0.9rem;
+  padding: 1rem 1.1rem; flex-wrap: wrap;
+}
+.hikorea-cta-icon { font-size: 1.8rem; flex-shrink: 0; line-height: 1; }
+.hikorea-cta-text { flex: 1; min-width: 160px; display: flex; flex-direction: column; gap: 0.18rem; }
+.hikorea-cta-title { font-size: 1rem; font-weight: 800; color: #fff; line-height: 1.3; }
+.hikorea-cta-sub { font-size: 0.82rem; color: rgba(255,255,255,0.85); line-height: 1.4; word-break: keep-all; }
+.hikorea-cta-btn {
+  flex-shrink: 0; min-height: 48px; padding: 0 1.1rem;
+  background: rgba(255,255,255,0.18); backdrop-filter: blur(4px);
+  border: 1.5px solid rgba(255,255,255,0.45); border-radius: 10px;
+  color: #fff; font-size: 0.9rem; font-weight: 800; font-family: var(--ff) !important;
+  cursor: pointer; transition: background 0.18s, border-color 0.18s;
+  white-space: nowrap;
+}
+.hikorea-cta-btn:hover { background: rgba(255,255,255,0.28); border-color: rgba(255,255,255,0.75); }
+@media (max-width: 480px) {
+  .hikorea-cta-inner { flex-direction: column; align-items: flex-start; gap: 0.7rem; }
+  .hikorea-cta-btn { width: 100%; text-align: center; }
+}
+
+/* TASK 3 — Jeju city region filter pills */
+.jeju-region-filter {
+  display: flex; gap: 0.45rem; flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+.jeju-region-pill {
+  height: 38px; padding: 0 1rem;
+  border-radius: 999px; border: 1.5px solid var(--bd2);
+  background: var(--bg0); color: var(--t2);
+  font-size: 0.85rem; font-weight: 700; font-family: var(--ff) !important;
+  cursor: pointer; transition: all 0.16s ease;
+  display: inline-flex; align-items: center;
+}
+.jeju-region-pill:hover { border-color: var(--ac); color: var(--ac); background: color-mix(in srgb, var(--ac) 6%, var(--bg0)); }
+.jeju-region-pill.jeju-pill-active { background: var(--ac); color: #fff; border-color: var(--ac); }
+.jeju-region-pill.jeju-pill-active:hover { background: var(--ac2); border-color: var(--ac2); }
+
+/* TASK 4 — ai.html header logo */
+.ai-header-logo { height: 18px; width: auto; display: block; opacity: 0.92; flex-shrink: 0; }
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -5351,6 +5460,18 @@ body:not(.searched) .visa-track-card:hover {
                 <span class="hero-action-icon">🏛</span>
                 <span class="hero-action-label">관할 출입국관서 조회</span>
             </button>
+        </div>
+
+        <!-- TASK 2: HiKorea Landing CTA — hidden in body.searched state -->
+        <div class="hikorea-landing-cta" id="hikoreaLandingCta" role="region" aria-label="HiKorea 방문예약 안내">
+            <div class="hikorea-cta-inner">
+                <span class="hikorea-cta-icon" aria-hidden="true">📋</span>
+                <div class="hikorea-cta-text">
+                    <strong class="hikorea-cta-title" id="hikoreaCTATitle">HiKorea 방문예약 안내</strong>
+                    <span class="hikorea-cta-sub" id="hikoreaCTASub">출입국사무소 방문 전 온라인 예약이 필요합니다.</span>
+                </div>
+                <button type="button" class="hikorea-cta-btn" id="hikoreaCTABtn" data-action="open-hikorea-guide">예약 도우미 열기</button>
+            </div>
         </div>
 
         <section id="visaManualSection" class="visa-manual-section in-hero">
@@ -5685,6 +5806,13 @@ body:not(.searched) .visa-track-card:hover {
             <span id="agentFinderDisclaimerText">Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.</span>
             <a class="p-agent-finder__official-link" href="https://www.hikorea.go.kr/cvlappl/CvlapplAgentInfo.pt" target="_blank" rel="noopener noreferrer">하이코리아 공식 조회</a>
         </p>
+        <!-- TASK 3: Jeju city region filter pills -->
+        <div class="jeju-region-filter" id="jejuRegionFilter" role="group" aria-label="제주 지역 필터">
+            <button type="button" class="jeju-region-pill jeju-pill-active" data-jeju-city="" aria-pressed="true">전체</button>
+            <button type="button" class="jeju-region-pill" data-jeju-city="제주시" aria-pressed="false">제주시</button>
+            <button type="button" class="jeju-region-pill" data-jeju-city="서귀포시" aria-pressed="false">서귀포시</button>
+        </div>
+
         <div class="p-agent-finder__controls" role="search" aria-controls="agentFinderList">
             <label class="sr-only" for="agentFinderRegion">지역</label>
             <select id="agentFinderRegion" aria-label="지역 선택">
@@ -7877,6 +8005,7 @@ function openHikoreaGuide(vcode) {
     hikoreaGuideState.expDate = ''; hikoreaGuideState.emailOk = false; hikoreaGuideState.pwOk = false; hikoreaGuideState.expOk = false; hikoreaGuideState.savedOk = false;
     renderHikoreaGuide(); openModal('hikoreaGuideOverlay');
 }
+function hikoreaStepLabel(s) { return s === 1 ? '0-A' : s <= 1 ? String(s) : String(s - 1); }
 function renderHikoreaGuide() {
     const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
     const langBtns = [['ko','한국어'],['en','English'],['zh','中文'],['vi','Tiếng Việt']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
@@ -7888,7 +8017,31 @@ function renderHikoreaGuide() {
         ${hikoreaHotlineStrip()}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide" disabled>${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
         return;
     }
-    const stepContent = [/*0*/`<ul><li>⚠️ 예약은 내일부터 가능합니다. 오늘 당일 예약은 불가합니다.</li><li>⚠️ 예약 시간에서 5분이 지나면 예약이 무효 처리될 수 있습니다.</li><li>⚠️ 방문예약 당일에는 취소가 불가능합니다.</li><li>⚠️ 예약 확인증을 출력하거나 스마트폰 화면에 저장하세요.<br>(출력물 또는 스마트폰 화면 모두 현장에서 사용할 수 있도록 준비하세요.)</li></ul>`,
+    const gtx = (key) => { const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || UI_TRANSLATIONS.ko; const v = p[key] ?? UI_TRANSLATIONS.ko[key] ?? key; return v; };
+    const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
+    const step0aHtml = '<div class="step0a-section">'
+        + '<div class="step0a-block"><p class="step0a-block-title">A · ' + escapeHtml(gtx('step0aSecATitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecABody')) + '</p>'
+        + '<div class="step0a-check-row"><span class="step0a-checkbox">✓</span><span>' + escapeHtml(gtx('step0aNoEmail')) + ': ' + escapeHtml(gtx('step0aGmail')) + '</span></div>'
+        + '<a class="step0a-gmail-btn" href="https://accounts.google.com/signup" target="_blank" rel="noopener">📧 ' + escapeHtml(gtx('step0aGmailBtn')) + '</a>'
+        + '<div class="step0a-check-row"><span class="step0a-checkbox">✓</span><span>' + escapeHtml(gtx('step0aBorrow')) + '</span></div>'
+        + '<div class="step0a-warn"><span>ℹ️</span><span>' + escapeHtml(gtx('step0aHasEmail')) + '</span></div></div>'
+        + '<div class="step0a-block"><p class="step0a-block-title">B · ' + escapeHtml(gtx('step0aSecBTitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecBBody')) + '</p>'
+        + gtxArr('step0aIdRules').map(r => '<div class="step0a-check-row"><span class="step0a-checkbox"></span><span>' + escapeHtml(r) + '</span></div>').join('')
+        + '<p class="step0a-body" style="margin-top:.45rem;font-size:.88rem">' + escapeHtml(gtx('step0aIdNote')) + '</p></div>'
+        + '<div class="step0a-block"><p class="step0a-block-title">C · ' + escapeHtml(gtx('step0aSecCTitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecCBody')) + '</p>'
+        + gtxArr('step0aPwRules').map(r => '<div class="step0a-check-row"><span class="step0a-checkbox"></span><span>' + escapeHtml(r) + '</span></div>').join('')
+        + '<p class="step0a-body" style="margin-top:.35rem">' + escapeHtml(gtx('step0aPwGood')) + ': <span class="step0a-example">' + escapeHtml(gtx('step0aPwExample')) + '</span></p>'
+        + '<p class="step0a-body" style="font-size:.88rem">' + escapeHtml(gtx('step0aPwNote')) + '</p></div>'
+        + '<div class="step0a-block"><p class="step0a-block-title">D · ' + escapeHtml(gtx('step0aSecDTitle')) + '</p><ul>'
+        + '<li>' + escapeHtml(gtx('step0aEmailVerify1')) + '</li>'
+        + '<li>' + escapeHtml(gtx('step0aEmailVerify2')) + '</li>'
+        + '<li>' + escapeHtml(gtx('step0aEmailVerify3')) + '</li></ul></div>'
+        + '<div class="step0a-block"><p class="step0a-block-title">E · ' + escapeHtml(gtx('step0aSecETitle')) + '</p>'
+        + '<p class="step0a-body"><a href="tel:1345" style="color:var(--ac);font-weight:700">' + escapeHtml(gtx('step0aHelpLine')) + '</a></p></div>'
+        + '</div>';
+    const stepContent = [
+    /*0*/`<ul><li>⚠️ 예약은 내일부터 가능합니다. 오늘 당일 예약은 불가합니다.</li><li>⚠️ 예약 시간에서 5분이 지나면 예약이 무효 처리될 수 있습니다.</li><li>⚠️ 방문예약 당일에는 취소가 불가능합니다.</li><li>⚠️ 예약 확인증을 출력하거나 스마트폰 화면에 저장하세요.<br>(출력물 또는 스마트폰 화면 모두 현장에서 사용할 수 있도록 준비하세요.)</li></ul>`,
+    /*0-A*/step0aHtml,
     /*1*/`<ul><li>www.hikorea.go.kr 에 접속하세요</li><li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea 바로가기</a></li><li>회원 아이디와 비밀번호로 로그인하세요</li><li>처음 가입 후 이메일 수신함을 열어 '인증하기' 버튼을 누르세요</li></ul>`,
     /*2*/`<ul><li>로그인 후 메인 화면에서 '방문예약' 버튼을 누르세요</li></ul><div class="guide-screenshot" data-step="2">[스크린샷 준비 중]</div>`,
     /* TODO: 실제 딥링크 URL로 교체 필요 — 담당자 직접 확인 */
@@ -7897,7 +8050,7 @@ function renderHikoreaGuide() {
     /*5*/`<ul><li>원하는 날짜와 시간을 선택하세요</li><li>체류기간 만료일 이전 날짜로 예약하세요</li><li>입력한 만료일: ${escapeHtml(hikoreaGuideState.expDate || '미입력')}</li><li>예약은 내일부터 가능합니다.</li></ul><div class="guide-screenshot" data-step="5">[스크린샷 준비 중]</div>`,
     /*6*/`<ul><li>예약번호를 메모하거나 화면을 캡처하세요</li><li>예약 확인증을 출력하거나 PDF로 저장하세요</li><li>방문 당일 예약 시간 10분 전에 도착하세요</li></ul><label><input id="hkSavedOk" type="checkbox"> 예약 확인증을 저장했습니다</label><div class="guide-screenshot" data-step="6">[스크린샷 준비 중]</div>`
     ][hikoreaGuideState.step] || '';
-    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div><div class="hikorea-progress">STEP ${hikoreaGuideState.step}/6</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip()}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===6?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===6 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
+    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div><div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/7</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip()}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
 }
 
 function renderManualActions(v, isVisaCode) {
@@ -8431,7 +8584,25 @@ const UI_TRANSLATIONS = {
         closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jurisdictionTitle: '🏛 관할 출입국관서 조회',
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
-        sourceStructuredData: '구조화 데이터', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 메타데이터 미확인', sourceEvidenceTitle: '출처 및 근거', sourceUnverifiedNote: '출처 메타데이터 미확인. 현재 표시 정보는 구조화 데이터 기준이며, 세부 제출서류는 공식 매뉴얼/HiKorea 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건'
+        sourceStructuredData: '구조화 데이터', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 메타데이터 미확인', sourceEvidenceTitle: '출처 및 근거', sourceUnverifiedNote: '출처 메타데이터 미확인. 현재 표시 정보는 구조화 데이터 기준이며, 세부 제출서류는 공식 매뉴얼/HiKorea 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건',
+        /* STEP 0-A: HiKorea 회원가입 준비 */
+        step0aTitle: 'STEP 0-A · HiKorea 회원가입 준비',
+        step0aSecATitle: '이메일 계정 준비', step0aSecABody: 'HiKorea 가입에는 이메일 주소가 필요합니다.',
+        step0aNoEmail: '이메일이 없는 경우', step0aGmail: 'Gmail(구글 이메일)을 무료로 만들 수 있습니다.',
+        step0aGmailBtn: 'Gmail 만들기', step0aBorrow: '가족이나 지인의 이메일을 빌려도 됩니다.',
+        step0aHasEmail: '이미 이메일이 있으면 다음 항목으로 넘어가세요.',
+        step0aSecBTitle: '아이디 준비', step0aSecBBody: '로그인에 사용할 아이디를 직접 만들어야 합니다.',
+        step0aIdRules: ['영문 소문자 또는 숫자만 사용', '4자리 이상', '예시: jeju2024, minho77'],
+        step0aIdNote: '아이디는 나중에 바꾸기 어려우니 기억하기 쉬운 것으로 만드세요.',
+        step0aSecCTitle: '비밀번호 준비', step0aSecCBody: '비밀번호는 아래 조건을 모두 충족해야 합니다.',
+        step0aPwRules: ['10자리 이상 12자리 이하', '영문자 포함 (예: abc)', '숫자 포함 (예: 123)', '특수문자 포함 (예: ! @ # $)'],
+        step0aPwGood: '좋은 예시', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: '이 비밀번호를 어딘가에 적어두세요. 잊으면 찾기 어렵습니다.',
+        step0aSecDTitle: '이메일 인증 안내', step0aEmailVerify1: "가입 후 이메일 수신함을 열어 '인증하기' 버튼을 눌러야 합니다.",
+        step0aEmailVerify2: '인증하지 않으면 예약이 불가능합니다.', step0aEmailVerify3: '이메일이 안 보이면 스팸함을 확인하세요.',
+        step0aSecETitle: '도움 안내', step0aHelpLine: '혼자 하기 어려우시면 ☎ 1345 (평일 9시–18시)',
+        hikoreaCTATitle: 'HiKorea 방문예약 안내', hikoreaCTASub: '출입국사무소 방문 전 온라인 예약이 필요합니다.', hikoreaCTABtn: '예약 도우미 열기',
+        jejuFilterAll: '전체', jejuFilterJeju: '제주시', jejuFilterSeogwipo: '서귀포시'
     },
     en: {
         languageButton: 'Language settings', languageMenu: 'Choose language', languageChanged: 'Language changed to English.',
@@ -8528,7 +8699,24 @@ const UI_TRANSLATIONS = {
         closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jurisdictionTitle: '🏛 Find your immigration office',
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
-        sourceStructuredData: 'Structured data', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source metadata unavailable', sourceEvidenceTitle: 'Source & Evidence', sourceUnverifiedNote: 'Source metadata unavailable. This result is based on structured data; detailed document requirements should be checked against official manuals/HiKorea.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents'
+        sourceStructuredData: 'Structured data', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source metadata unavailable', sourceEvidenceTitle: 'Source & Evidence', sourceUnverifiedNote: 'Source metadata unavailable. This result is based on structured data; detailed document requirements should be checked against official manuals/HiKorea.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents',
+        step0aTitle: 'STEP 0-A · HiKorea Account Setup Preparation',
+        step0aSecATitle: 'Prepare an email account', step0aSecABody: 'You need an email address to register on HiKorea.',
+        step0aNoEmail: 'If you do not have an email', step0aGmail: 'You can create a Gmail (Google email) for free.',
+        step0aGmailBtn: 'Create Gmail', step0aBorrow: 'You may also borrow an email address from a family member or friend.',
+        step0aHasEmail: 'If you already have an email, move on to the next item.',
+        step0aSecBTitle: 'Prepare a username (ID)', step0aSecBBody: 'You need to create your own login ID.',
+        step0aIdRules: ['Lowercase letters or numbers only', '4 characters or more', 'Examples: jeju2024, minho77'],
+        step0aIdNote: 'Choose an ID that is easy to remember — it is difficult to change later.',
+        step0aSecCTitle: 'Prepare a password', step0aSecCBody: 'Your password must meet all of the following requirements.',
+        step0aPwRules: ['Between 10 and 12 characters', 'Include letters (e.g. abc)', 'Include numbers (e.g. 123)', 'Include special characters (e.g. ! @ # $)'],
+        step0aPwGood: 'Good example', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: 'Write this password down somewhere. It is difficult to recover if forgotten.',
+        step0aSecDTitle: 'Email verification', step0aEmailVerify1: "After registering, open your email inbox and click the 'Verify' button.",
+        step0aEmailVerify2: 'You cannot make a reservation without completing verification.', step0aEmailVerify3: 'If you do not see the email, check your spam folder.',
+        step0aSecETitle: 'Need help?', step0aHelpLine: 'If you need assistance, call ☎ 1345 (weekdays 9 AM – 6 PM)',
+        hikoreaCTATitle: 'HiKorea Appointment Guide', hikoreaCTASub: 'Online reservation is required before visiting the immigration office.', hikoreaCTABtn: 'Open Booking Assistant',
+        jejuFilterAll: 'All', jejuFilterJeju: 'Jeju-si', jejuFilterSeogwipo: 'Seogwipo-si'
     },
     zh: {
         languageButton: '语言设置', languageMenu: '选择语言', languageChanged: '语言已切换为简体中文。',
@@ -8550,7 +8738,24 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso基于公开法律和手册提供参考信息，不构成法律咨询或代办服务。最终判断请向出入境机构、HiKorea或合格专业人士确认。',
         landingHints: ['住址变更', '护照更新', '外国人登记证补发', '当天/例外访问', '济州免签', 'K-ETA申请', '熟练技能(E-7-4)', '结婚移民(F-6)', 'F-3收入条件', '结核证明对象', '难民申请流程', '逾期停留', 'D-10求职', 'K-Trainee(D-4-2K)'],
         quickFilters: ['住址变更', '无需预约业务', 'F-3收入', 'K-ETA', '结核指南', '逾期停留', '健康保险', 'B-2-2济州', 'E-7', 'E-9', 'F-6', 'F-5', '积分制'],
-        documentCountLabel: '{count}份文件'
+        documentCountLabel: '{count}份文件',
+        step0aTitle: 'STEP 0-A · HiKorea 账号注册准备',
+        step0aSecATitle: '准备电子邮件账号', step0aSecABody: '注册 HiKorea 需要电子邮件地址。',
+        step0aNoEmail: '如果没有电子邮件', step0aGmail: '可以免费创建 Gmail（谷歌邮箱）。',
+        step0aGmailBtn: '创建 Gmail', step0aBorrow: '也可以借用家人或朋友的电子邮件地址。',
+        step0aHasEmail: '如果已有电子邮件，请继续下一项。',
+        step0aSecBTitle: '准备用户名（ID）', step0aSecBBody: '需要自己创建登录 ID。',
+        step0aIdRules: ['只能使用英文小写字母或数字', '4位或以上', '示例：jeju2024、minho77'],
+        step0aIdNote: '请选择容易记住的 ID，之后很难更改。',
+        step0aSecCTitle: '准备密码', step0aSecCBody: '密码必须满足以下所有条件。',
+        step0aPwRules: ['10至12位', '包含英文字母（如：abc）', '包含数字（如：123）', '包含特殊字符（如：! @ # $）'],
+        step0aPwGood: '好的示例', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: '请将密码记录在某处，忘记后很难找回。',
+        step0aSecDTitle: '邮箱验证说明', step0aEmailVerify1: "注册后，打开邮件收件箱，点击'验证'按钮。",
+        step0aEmailVerify2: '未完成验证将无法预约。', step0aEmailVerify3: '如未收到邮件，请检查垃圾邮件文件夹。',
+        step0aSecETitle: '需要帮助？', step0aHelpLine: '如需帮助，请拨打 ☎ 1345（工作日上午9时–下午6时）',
+        hikoreaCTATitle: 'HiKorea 预约指南', hikoreaCTASub: '前往出入境事务所前需在线预约。', hikoreaCTABtn: '打开预约助手',
+        jejuFilterAll: '全部', jejuFilterJeju: '济州市', jejuFilterSeogwipo: '西归浦市'
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
@@ -8572,7 +8777,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso基於公開法律與手冊提供參考資訊，不構成法律諮詢或代辦服務。最終判斷請向出入境機關、HiKorea或合格專業人士確認。',
         landingHints: ['住址變更', '護照更新', '外國人登錄證補發', '當天/例外訪問', '濟州免簽', 'K-ETA申請', '熟練技能(E-7-4)', '結婚移民(F-6)', 'F-3收入條件', '結核證明對象', '難民申請流程', '逾期停留', 'D-10求職', 'K-Trainee(D-4-2K)'],
         quickFilters: ['住址變更', '無需預約業務', 'F-3收入', 'K-ETA', '結核指南', '逾期停留', '健康保險', 'B-2-2濟州', 'E-7', 'E-9', 'F-6', 'F-5', '積分制'],
-        documentCountLabel: '{count}份文件'
+        documentCountLabel: '{count}份文件',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ja: {
         languageButton: '言語設定', languageMenu: '言語を選択', languageChanged: '言語を日本語に変更しました。',
@@ -8594,7 +8800,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradisoは公開法令・マニュアルに基づく参考情報を提供するツールであり、法律相談や申請代行ではありません。最終判断は出入国機関、HiKorea、または専門家にご確認ください。',
         landingHints: ['住所変更', 'パスポート更新', '登録証再発行', '当日/例外訪問', '済州ノービザ', 'K-ETA申請', '熟練技能(E-7-4)', '結婚移民(F-6)', 'F-3所得要件', '結核提出対象', '難民申請手続き', 'オーバーステイ', 'D-10求職', 'K-Trainee(D-4-2K)'],
         quickFilters: ['住所変更', '予約不要業務', 'F-3所得', 'K-ETA', '結核ガイド', 'オーバーステイ', '健康保険', 'B-2-2済州', 'E-7', 'E-9', 'F-6', 'F-5', 'ポイント制'],
-        documentCountLabel: '提出書類 {count}件'
+        documentCountLabel: '提出書類 {count}件',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     fr: {
         languageButton: 'Paramètres de langue', languageMenu: 'Choisir la langue', languageChanged: 'Langue changée en français.',
@@ -8616,7 +8823,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso fournit des informations de référence fondées sur des lois et manuels publics. Ce n’est ni un conseil juridique ni un service de dépôt de dossier. Confirmez la décision finale auprès de l’immigration, de HiKorea ou d’un professionnel qualifié.',
         landingHints: ['Changement d’adresse', 'Renouvellement du passeport', 'Réémission ARC', 'Visite sans rendez-vous', 'Exemption Jeju', 'K-ETA', 'Travailleur qualifié (E-7-4)', 'Mariage (F-6)', 'Revenu F-3', 'Certificat TB', 'Procédure réfugié', 'Dépassement de séjour', 'Recherche d’emploi D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Adresse', 'Sans rendez-vous', 'Revenu F-3', 'K-ETA', 'Guide TB', 'Dépassement', 'Assurance santé', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Système de points'],
-        documentCountLabel: '{count} documents'
+        documentCountLabel: '{count} documents',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     id: {
         languageButton: 'Pengaturan bahasa', languageMenu: 'Pilih bahasa', languageChanged: 'Bahasa diubah ke Bahasa Indonesia.',
@@ -8638,7 +8846,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso menyediakan informasi referensi berdasarkan hukum dan manual publik. Ini bukan nasihat hukum atau layanan pengurusan aplikasi. Konfirmasi keputusan akhir dengan kantor imigrasi, HiKorea, atau profesional yang memenuhi syarat.',
         landingHints: ['Perubahan alamat', 'Perpanjangan paspor', 'Penerbitan ulang ARC', 'Kunjungan tanpa reservasi', 'Bebas visa Jeju', 'K-ETA', 'Pekerja terampil (E-7-4)', 'Migran menikah (F-6)', 'Syarat pendapatan F-3', 'Sertifikat TB', 'Proses pengungsi', 'Overstay', 'Pencarian kerja D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Alamat', 'Tanpa reservasi', 'Pendapatan F-3', 'K-ETA', 'Panduan TB', 'Overstay', 'Asuransi kesehatan', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Sistem poin'],
-        documentCountLabel: '{count} dokumen'
+        documentCountLabel: '{count} dokumen',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     hi: {
         languageButton: 'भाषा सेटिंग', languageMenu: 'भाषा चुनें', languageChanged: 'भाषा हिन्दी में बदल दी गई है।',
@@ -8660,7 +8869,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso सार्वजनिक कानूनों और मैनुअल पर आधारित संदर्भ जानकारी देता है। यह कानूनी सलाह या आवेदन एजेंसी सेवा नहीं है। अंतिम निर्णय इमिग्रेशन कार्यालय, HiKorea या योग्य पेशेवर से पुष्टि करें।',
         landingHints: ['पता बदलना', 'पासपोर्ट नवीनीकरण', 'ARC पुनः जारी', 'बिना予約/अपवाद विजिट', 'Jeju visa waiver', 'K-ETA', 'Skilled worker (E-7-4)', 'Marriage migrant (F-6)', 'F-3 आय शर्त', 'TB प्रमाणपत्र', 'शरणार्थी प्रक्रिया', 'Overstay', 'D-10 नौकरी खोज', 'K-Trainee (D-4-2K)'],
         quickFilters: ['पता', 'बिना 예약 सेवा', 'F-3 आय', 'K-ETA', 'TB गाइड', 'Overstay', 'स्वास्थ्य बीमा', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'पॉइंट सिस्टम'],
-        documentCountLabel: '{count} documents'
+        documentCountLabel: '{count} documents',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ne: {
         languageButton: 'भाषा सेटिङ', languageMenu: 'भाषा छान्नुहोस्', languageChanged: 'भाषा नेपालीमा परिवर्तन भयो।',
@@ -8682,7 +8892,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso सार्वजनिक कानुन र म्यानुअलमा आधारित सन्दर्भ जानकारी हो। यो कानुनी सल्लाह वा आवेदन代理 सेवा होइन। अन्तिम निर्णय अध्यागमन कार्यालय, HiKorea वा योग्य पेशेवरसँग पुष्टि गर्नुहोस्।',
         landingHints: ['ठेगाना परिवर्तन', 'पासपोर्ट नवीकरण', 'ARC पुनः जारी', 'बिना预约/अपवाद भ्रमण', 'Jeju visa waiver', 'K-ETA', 'Skilled worker (E-7-4)', 'Marriage migrant (F-6)', 'F-3 आय शर्त', 'TB प्रमाणपत्र', 'शरणार्थी प्रक्रिया', 'Overstay', 'D-10 जागिर खोज', 'K-Trainee (D-4-2K)'],
         quickFilters: ['ठेगाना', 'बिना 예약 सेवा', 'F-3 आय', 'K-ETA', 'TB गाइड', 'Overstay', 'स्वास्थ्य बीमा', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'प्वाइन्ट प्रणाली'],
-        documentCountLabel: '{count} कागजात'
+        documentCountLabel: '{count} कागजात',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     es: {
         languageButton: 'Configuración de idioma', languageMenu: 'Elegir idioma', languageChanged: 'Idioma cambiado a español.',
@@ -8704,7 +8915,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso ofrece información de referencia basada en leyes y manuales públicos. No es asesoría legal ni servicio de gestión de solicitudes. Confirma la decisión final con inmigración, HiKorea o un profesional calificado.',
         landingHints: ['Cambio de dirección', 'Renovar pasaporte', 'Reemisión ARC', 'Visita sin cita/excepción', 'Exención Jeju', 'K-ETA', 'Trabajador cualificado (E-7-4)', 'Migrante por matrimonio (F-6)', 'Ingreso F-3', 'Certificado TB', 'Proceso de refugio', 'Overstay', 'Búsqueda de empleo D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Dirección', 'Sin cita', 'Ingreso F-3', 'K-ETA', 'Guía TB', 'Overstay', 'Seguro médico', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Sistema de puntos'],
-        documentCountLabel: '{count} documentos'
+        documentCountLabel: '{count} documentos',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     esLatam: {
         languageButton: 'Configuración de idioma', languageMenu: 'Elige idioma', languageChanged: 'Idioma cambiado a español latinoamericano.',
@@ -8726,7 +8938,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso ofrece información de referencia basada en leyes y manuales públicos. No es asesoría legal ni un servicio de gestión de trámites. Confirma la decisión final con inmigración, HiKorea o un profesional calificado.',
         landingHints: ['Cambio de dirección', 'Renovación de pasaporte', 'Reemisión de ARC', 'Visita sin cita/excepción', 'Exención Jeju', 'K-ETA', 'Trabajador calificado (E-7-4)', 'Migrante por matrimonio (F-6)', 'Ingreso F-3', 'Certificado TB', 'Proceso de refugio', 'Overstay', 'Búsqueda laboral D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Dirección', 'Sin cita', 'Ingreso F-3', 'K-ETA', 'Guía TB', 'Overstay', 'Seguro médico', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Sistema de puntos'],
-        documentCountLabel: '{count} documentos'
+        documentCountLabel: '{count} documentos',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     th: {
         languageButton: 'ตั้งค่าภาษา', languageMenu: 'เลือกภาษา', languageChanged: 'เปลี่ยนภาษาเป็นไทยแล้ว',
@@ -8748,7 +8961,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso ให้ข้อมูลอ้างอิงจากกฎหมายและคู่มือสาธารณะ ไม่ใช่คำปรึกษาทางกฎหมายหรือบริการยื่นคำร้องแทน โปรดยืนยันขั้นสุดท้ายกับสำนักงานตรวจคนเข้าเมือง HiKorea หรือผู้เชี่ยวชาญที่มีคุณสมบัติ',
         landingHints: ['เปลี่ยนที่อยู่', 'ต่ออายุหนังสือเดินทาง', 'ออกบัตร ARC ใหม่', 'เข้าพบแบบไม่มีนัด/กรณียกเว้น', 'ยกเว้นวีซ่าเชจู', 'K-ETA', 'แรงงานทักษะ (E-7-4)', 'คู่สมรสชาวเกาหลี (F-6)', 'เงื่อนไขรายได้ F-3', 'ใบรับรองวัณโรค', 'ขั้นตอนผู้ลี้ภัย', 'อยู่เกินกำหนด', 'หางาน D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['เปลี่ยนที่อยู่', 'บริการไม่ต้องจอง', 'รายได้ F-3', 'K-ETA', 'คู่มือ TB', 'อยู่เกินกำหนด', 'ประกันสุขภาพ', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'ระบบคะแนน'],
-        documentCountLabel: 'เอกสาร {count} รายการ'
+        documentCountLabel: 'เอกสาร {count} รายการ',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     vi: {
         languageButton: 'Cài đặt ngôn ngữ', languageMenu: 'Chọn ngôn ngữ', languageChanged: 'Đã đổi sang tiếng Việt.',
@@ -8770,7 +8984,24 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso cung cấp thông tin tham khảo dựa trên luật và sổ tay công khai. Đây không phải là tư vấn pháp lý hay dịch vụ đại diện nộp hồ sơ. Hãy xác nhận quyết định cuối cùng với cơ quan xuất nhập cảnh, HiKorea hoặc chuyên gia đủ điều kiện.',
         landingHints: ['Đổi địa chỉ', 'Gia hạn hộ chiếu', 'Cấp lại ARC', 'Đến không đặt lịch/ngoại lệ', 'Miễn visa Jeju', 'K-ETA', 'Lao động tay nghề (E-7-4)', 'Kết hôn di trú (F-6)', 'Điều kiện thu nhập F-3', 'Giấy chứng nhận lao', 'Quy trình tị nạn', 'Quá hạn lưu trú', 'Tìm việc D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Đổi địa chỉ', 'Không cần đặt lịch', 'Thu nhập F-3', 'K-ETA', 'Hướng dẫn TB', 'Quá hạn', 'Bảo hiểm y tế', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Hệ điểm'],
-        documentCountLabel: '{count} giấy tờ'
+        documentCountLabel: '{count} giấy tờ',
+        step0aTitle: 'STEP 0-A · Chuẩn bị đăng ký HiKorea',
+        step0aSecATitle: 'Chuẩn bị tài khoản email', step0aSecABody: 'Bạn cần địa chỉ email để đăng ký HiKorea.',
+        step0aNoEmail: 'Nếu bạn chưa có email', step0aGmail: 'Bạn có thể tạo Gmail (Google email) miễn phí.',
+        step0aGmailBtn: 'Tạo Gmail', step0aBorrow: 'Bạn cũng có thể mượn địa chỉ email của người thân hoặc bạn bè.',
+        step0aHasEmail: 'Nếu bạn đã có email, hãy chuyển sang mục tiếp theo.',
+        step0aSecBTitle: 'Chuẩn bị tên đăng nhập (ID)', step0aSecBBody: 'Bạn cần tự tạo ID để đăng nhập.',
+        step0aIdRules: ['Chỉ dùng chữ cái thường hoặc số', 'Từ 4 ký tự trở lên', 'Ví dụ: jeju2024, minho77'],
+        step0aIdNote: 'Hãy chọn ID dễ nhớ vì sau này rất khó thay đổi.',
+        step0aSecCTitle: 'Chuẩn bị mật khẩu', step0aSecCBody: 'Mật khẩu phải đáp ứng tất cả các yêu cầu sau.',
+        step0aPwRules: ['Từ 10 đến 12 ký tự', 'Có chữ cái (ví dụ: abc)', 'Có số (ví dụ: 123)', 'Có ký tự đặc biệt (ví dụ: ! @ # $)'],
+        step0aPwGood: 'Ví dụ tốt', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: 'Hãy ghi mật khẩu ra đâu đó. Nếu quên sẽ rất khó lấy lại.',
+        step0aSecDTitle: 'Hướng dẫn xác minh email', step0aEmailVerify1: "Sau khi đăng ký, mở hộp thư email và nhấn nút 'Xác minh'.",
+        step0aEmailVerify2: 'Nếu không xác minh, bạn không thể đặt lịch hẹn.', step0aEmailVerify3: 'Nếu không thấy email, hãy kiểm tra hộp thư rác.',
+        step0aSecETitle: 'Cần hỗ trợ?', step0aHelpLine: 'Nếu cần giúp đỡ, gọi ☎ 1345 (thứ Hai–Sáu, 9 giờ–18 giờ)',
+        hikoreaCTATitle: 'Hướng dẫn đặt lịch HiKorea', hikoreaCTASub: 'Cần đặt lịch hẹn trực tuyến trước khi đến cơ quan xuất nhập cảnh.', hikoreaCTABtn: 'Mở Trợ lý Đặt lịch',
+        jejuFilterAll: 'Tất cả', jejuFilterJeju: 'Jeju-si', jejuFilterSeogwipo: 'Seogwipo-si'
     },
     km: {
         languageButton: 'ការកំណត់ភាសា', languageMenu: 'ជ្រើសរើសភាសា', languageChanged: 'បានប្តូរទៅភាសាខ្មែរ។',
@@ -8792,7 +9023,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso ផ្តល់ព័ត៌មានយោងផ្អែកលើច្បាប់ និងសៀវភៅណែនាំសាធារណៈ។ វាមិនមែនជាការប្រឹក្សាច្បាប់ ឬសេវាតំណាងដាក់ពាក្យទេ។ សូមផ្ទៀងផ្ទាត់ការសម្រេចចុងក្រោយជាមួយការិយាល័យអន្តោប្រវេសន៍ HiKorea ឬអ្នកជំនាញមានសមត្ថភាព។',
         landingHints: ['ប្តូរអាសយដ្ឋាន', 'បន្តលិខិតឆ្លងដែន', 'ចេញ ARC ឡើងវិញ', 'មកដោយមិនកក់/ករណីលើកលែង', 'លើកលែងវីសា Jeju', 'K-ETA', 'កម្មករជំនាញ (E-7-4)', 'អន្តោប្រវេសន៍អាពាហ៍ពិពាហ៍ (F-6)', 'លក្ខខណ្ឌចំណូល F-3', 'វិញ្ញាបនបត្រ TB', 'ដំណើរការជនភៀសខ្លួន', 'ស្នាក់នៅលើសកំណត់', 'ស្វែងរកការងារ D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['ប្តូរអាសយដ្ឋាន', 'សេវាមិនចាំបាច់កក់', 'ចំណូល F-3', 'K-ETA', 'មគ្គុទ្ទេសក៍ TB', 'លើសកំណត់', 'ធានារ៉ាប់រងសុខភាព', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'ប្រព័ន្ធពិន្ទុ'],
-        documentCountLabel: 'ឯកសារ {count}'
+        documentCountLabel: 'ឯកសារ {count}',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ar: {
         languageButton: 'إعدادات اللغة', languageMenu: 'اختر اللغة', languageChanged: 'تم تغيير اللغة إلى العربية.',
@@ -8814,7 +9046,8 @@ const UI_TRANSLATIONS = {
         reference: 'يوفر Paradiso معلومات مرجعية مبنية على قوانين وأدلة عامة. هذا ليس استشارة قانونية ولا خدمة تمثيل في الطلبات. يرجى تأكيد القرار النهائي مع مكتب الهجرة أو HiKorea أو مختص مؤهل.',
         landingHints: ['تغيير العنوان', 'تجديد جواز السفر', 'إعادة إصدار ARC', 'زيارة دون موعد/استثناء', 'إعفاء Jeju من التأشيرة', 'K-ETA', 'عامل ماهر (E-7-4)', 'مهاجر بالزواج (F-6)', 'شرط دخل F-3', 'شهادة TB', 'إجراءات اللجوء', 'تجاوز مدة الإقامة', 'بحث عن عمل D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['تغيير العنوان', 'خدمات دون موعد', 'دخل F-3', 'K-ETA', 'دليل TB', 'تجاوز الإقامة', 'التأمين الصحي', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'نظام النقاط'],
-        documentCountLabel: '{count} documents'
+        documentCountLabel: '{count} documents',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     mn: {
         languageButton: 'Хэлний тохиргоо', languageMenu: 'Хэл сонгох', languageChanged: 'Хэлийг монгол болголоо.',
@@ -8836,7 +9069,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso нь олон нийтэд нээлттэй хууль, гарын авлагад тулгуурласан лавлах мэдээлэл өгдөг. Энэ нь хууль зүйн зөвлөгөө эсвэл өргөдөл гаргах төлөөллийн үйлчилгээ биш. Эцсийн шийдвэрийг цагаачлалын алба, HiKorea эсвэл мэргэшсэн хүнтэй баталгаажуулна уу.',
         landingHints: ['Хаяг өөрчлөх', 'Паспорт сунгах', 'ARC дахин авах', 'Цаггүй/онцгой айлчлал', 'Jeju визгүй', 'K-ETA', 'Чадварлаг ажилтан (E-7-4)', 'Гэрлэлтийн цагаач (F-6)', 'F-3 орлогын нөхцөл', 'TB гэрчилгээ', 'Дүрвэгчийн журам', 'Хугацаа хэтрэх', 'D-10 ажил хайх', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Хаяг', 'Цаггүй үйлчилгээ', 'F-3 орлого', 'K-ETA', 'TB гарын авлага', 'Хугацаа хэтрэх', 'Эрүүл мэндийн даатгал', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Онооны систем'],
-        documentCountLabel: '{count} баримт бичиг'
+        documentCountLabel: '{count} баримт бичиг',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     fa: {
         languageButton: 'تنظیمات زبان', languageMenu: 'انتخاب زبان', languageChanged: 'زبان به فارسی تغییر کرد.',
@@ -8858,7 +9092,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso اطلاعات مرجع را بر اساس قوانین و راهنماهای عمومی ارائه می‌کند. این خدمات مشاوره حقوقی یا نمایندگی در پرونده نیست. تصمیم نهایی را با اداره مهاجرت، HiKorea یا متخصص واجد شرایط تأیید کنید.',
         landingHints: ['تغییر نشانی', 'تمدید گذرنامه', 'صدور دوباره ARC', 'مراجعه بدون نوبت/استثنا', 'معافیت ویزای Jeju', 'K-ETA', 'نیروی کار ماهر (E-7-4)', 'مهاجرت ازدواج (F-6)', 'شرط درآمد F-3', 'گواهی TB', 'فرآیند پناهندگی', 'اقامت بیش از مهلت', 'جست‌وجوی کار D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['تغییر نشانی', 'خدمات بدون نوبت', 'درآمد F-3', 'K-ETA', 'راهنمای TB', 'اقامت بیش از مهلت', 'بیمه سلامت', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'سیستم امتیاز'],
-        documentCountLabel: '{count} documents'
+        documentCountLabel: '{count} documents',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ru: {
         languageButton: 'Настройки языка', languageMenu: 'Выберите язык', languageChanged: 'Язык изменен на русский.',
@@ -8880,7 +9115,8 @@ const UI_TRANSLATIONS = {
         reference: 'Paradiso предоставляет справочную информацию на основе открытых законов и руководств. Это не юридическая консультация и не услуга подачи заявлений. Окончательное решение уточняйте в иммиграционной службе, HiKorea или у квалифицированного специалиста.',
         landingHints: ['Смена адреса', 'Обновление паспорта', 'Повторная выдача ARC', 'Визит без записи/исключение', 'Безвизовый Jeju', 'K-ETA', 'Квалифицированный работник (E-7-4)', 'Брак (F-6)', 'Доход F-3', 'Справка TB', 'Процедура беженца', 'Overstay', 'Поиск работы D-10', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Адрес', 'Без записи', 'Доход F-3', 'K-ETA', 'Гид TB', 'Overstay', 'Медстрахование', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Балльная система'],
-        documentCountLabel: '{count} документов'
+        documentCountLabel: '{count} документов',
+        step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     }
 };
 
@@ -9305,10 +9541,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 'set-guide-lang': () => { hikoreaGuideState.lang = actionBtn.dataset.lang || 'ko'; renderHikoreaGuide(); },
                 'start-hikorea-guide': () => { if (hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk) { hikoreaGuideState.step = 0; renderHikoreaGuide(); } },
                 'hikorea-prev': () => { hikoreaGuideState.step = Math.max(0, hikoreaGuideState.step - 1); renderHikoreaGuide(); },
-                'hikorea-next': () => { hikoreaGuideState.step = Math.min(6, hikoreaGuideState.step + 1); renderHikoreaGuide(); },
+                'hikorea-next': () => { hikoreaGuideState.step = Math.min(7, hikoreaGuideState.step + 1); renderHikoreaGuide(); },
                 'hikorea-pick-task': () => { const t = actionBtn.dataset.task; if (t) { hikoreaGuideState.taskType = t; renderHikoreaGuide(); } },
                 'hikorea-clear-task': () => { hikoreaGuideState.taskType = 'DATA_MISSING'; renderHikoreaGuide(); },
-                'hikorea-complete': () => { if (hikoreaGuideState.step === 6 && hikoreaGuideState.savedOk) closeModal('hikoreaGuideOverlay'); },
+                'hikorea-complete': () => { if (hikoreaGuideState.step === 7 && hikoreaGuideState.savedOk) closeModal('hikoreaGuideOverlay'); },
                 'select-procedure': () => {
                     const card = actionBtn.closest('.manual-result');
                     if (!card || actionBtn.disabled) return;
@@ -9425,7 +9661,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const startBtn = document.getElementById('hkStartBtn');
         if (startBtn) startBtn.disabled = !(hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk);
-        if (hikoreaGuideState.step === 6) {
+        if (hikoreaGuideState.step === 7) {
             const completeBtn = document.querySelector('[data-action="hikorea-complete"]');
             if (completeBtn) completeBtn.disabled = !hikoreaGuideState.savedOk;
         }
@@ -9890,6 +10126,7 @@ function showVisaDocForAction(visaCode) {
   const PAGE_SIZE = 12;
   let filteredAgencies = [];
   let visibleCount = 0;
+  let selectedJejuCity = '';
 
   function escapeText(s) {
     return String(s == null ? '' : s)
@@ -9966,7 +10203,7 @@ function showVisaDocForAction(visaCode) {
   function applyFilter() {
     const region = regionSel.value;
     const kw = (keywordIn.value || '').trim().toLowerCase();
-    const hasSearch = !!(region || kw);
+    const hasSearch = !!(region || kw || selectedJejuCity);
     if (!hasSearch) {
       promptEl.hidden = false;
       listEl.innerHTML = '';
@@ -9978,6 +10215,7 @@ function showVisaDocForAction(visaCode) {
     promptEl.hidden = true;
     filteredAgencies = dataset.agencies.filter(function (a) {
       if (region && (a.region1 || a.province) !== region) return false;
+      if (selectedJejuCity && (a.region2 || a.city_or_district) !== selectedJejuCity) return false;
       if (!kw) return true;
       const hay = (a.normalized_search_text || ((a.name || '') + ' ' + (a.address || '') + ' ' + (a.phone || '') + ' ' + (a.display_phone || '') + ' ' + (a.region1 || '') + ' ' + (a.region2 || ''))).toLowerCase();
       return hay.indexOf(kw) !== -1;
@@ -10027,6 +10265,20 @@ function showVisaDocForAction(visaCode) {
   regionSel.addEventListener('change', applyFilter);
   keywordIn.addEventListener('input', applyFilter);
   window.addEventListener('paradiso-language-applied', applyFilter);
+  const jejuFilterEl = document.getElementById('jejuRegionFilter');
+  if (jejuFilterEl) {
+    jejuFilterEl.addEventListener('click', function (ev) {
+      const pill = ev.target.closest('.jeju-region-pill');
+      if (!pill) return;
+      selectedJejuCity = pill.dataset.jejuCity || '';
+      jejuFilterEl.querySelectorAll('.jeju-region-pill').forEach(function (p) {
+        p.classList.toggle('jeju-pill-active', p === pill);
+        p.setAttribute('aria-pressed', p === pill ? 'true' : 'false');
+      });
+      if (selectedJejuCity && !regionSel.value) regionSel.value = '제주특별자치도';
+      applyFilter();
+    });
+  }
 
   function loadDataset() {
     loadingEl.hidden = false;
