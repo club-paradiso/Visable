@@ -25,6 +25,9 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+from services.law_grounding import build_law_grounding_context
+from services.grounding_config import load_grounding_config
+from services.law_grounding import should_attempt_law_grounding
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -130,6 +133,10 @@ class AskResponse(BaseModel):
     visa_sub_code_detected: Optional[str] = None
     task_type_detected: Optional[str] = None
     risk_level_detected: Optional[str] = None
+    law_grounding_used: bool = False
+    law_grounding_attempted: bool = False
+    law_grounding_warnings: List[str] = Field(default_factory=list)
+    citation_verification: Optional[Dict[str, Any]] = None
 
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -139,6 +146,11 @@ class JobCodeKeywordsRequest(BaseModel):
 class JobCodeKeywordsResponse(BaseModel):
     query: str
     keywords: List[str]
+
+
+class DebugLawGroundingRequest(BaseModel):
+    question: Optional[str] = None
+    text: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -1098,6 +1110,10 @@ async def ask(req: AskRequest) -> AskResponse:
         visa_code_detected, task_type_detected, visa_sub_code_detected
     )
     grounding_sources: List[Dict[str, Any]] = []
+    law_grounding_used = False
+    law_grounding_attempted = False
+    law_grounding_warnings: List[str] = []
+    citation_verification: Optional[Dict[str, Any]] = None
     if grounding is not None:
         bundle = _load_stay_manual_grounding() or {}
         final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
@@ -1111,6 +1127,23 @@ async def ask(req: AskRequest) -> AskResponse:
             risk_level=risk_level_detected,
             lang=req.lang,
         )
+    config = load_grounding_config()
+    intent = should_attempt_law_grounding(prompt)
+    if config.mode in {"audit", "enabled"} and intent.get("should_attempt"):
+        law_ctx = build_law_grounding_context(prompt)
+        law_grounding_attempted = bool(law_ctx.get("attempted"))
+        law_grounding_used = bool(law_ctx.get("law_grounding_used"))
+        law_grounding_warnings = law_ctx.get("grounding_warnings", [])
+        citation_verification = law_ctx.get("citation_verification")
+        if law_grounding_used and (law_ctx.get("law_grounding") or []):
+            final_prompt = (
+                f"{final_prompt}\n\n"
+                "[법령 근거 후보]\n"
+                "- 아래 법령 정보는 보조 참고 정보이며, 운영상 제출서류/수수료/기한/절차는 반드시 매뉴얼·HiKorea·관할 출입국 안내를 우선한다.\n"
+                "- Do not invent article numbers, deadlines, fees, or required documents.\n"
+                f"- citation_verification_status: {citation_verification.get('status') if isinstance(citation_verification, dict) else 'unknown'}\n"
+                f"- law_grounding_candidates: {json.dumps(law_ctx.get('law_grounding', [])[:3], ensure_ascii=False)}\n"
+            )
 
     if OPENROUTER_API_KEY:
         answer = await _call_openrouter(final_prompt, model=req.model)
@@ -1124,6 +1157,10 @@ async def ask(req: AskRequest) -> AskResponse:
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
             risk_level_detected=risk_level_detected,
+            law_grounding_used=law_grounding_used,
+            law_grounding_attempted=law_grounding_attempted,
+            law_grounding_warnings=law_grounding_warnings,
+            citation_verification=citation_verification,
         )
     if GROQ_API_KEY:
         answer = await _call_groq(final_prompt, model=req.model)
@@ -1137,6 +1174,10 @@ async def ask(req: AskRequest) -> AskResponse:
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
             risk_level_detected=risk_level_detected,
+            law_grounding_used=law_grounding_used,
+            law_grounding_attempted=law_grounding_attempted,
+            law_grounding_warnings=law_grounding_warnings,
+            citation_verification=citation_verification,
         )
 
     raise HTTPException(
@@ -1153,6 +1194,10 @@ async def ask(req: AskRequest) -> AskResponse:
             "visa_sub_code_detected": visa_sub_code_detected,
             "task_type_detected": task_type_detected,
             "risk_level_detected": risk_level_detected,
+            "law_grounding_used": law_grounding_used,
+            "law_grounding_attempted": law_grounding_attempted,
+            "law_grounding_warnings": law_grounding_warnings,
+            "citation_verification": citation_verification,
         },
     )
 
@@ -1161,6 +1206,22 @@ async def ask(req: AskRequest) -> AskResponse:
 async def job_code_keywords(req: JobCodeKeywordsRequest) -> JobCodeKeywordsResponse:
     keywords = _extract_keywords(req.query)
     return JobCodeKeywordsResponse(query=req.query, keywords=keywords)
+
+
+@app.post("/api/debug/law-grounding")
+async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
+    """Development/debug endpoint only, not a legal-advice production route."""
+    prompt = (req.question or req.text or "").strip()
+    if not prompt:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "empty_prompt",
+                "message": "Provide a non-empty 'question' or 'text'.",
+            },
+        )
+    logger.info("debug-law-grounding request received (text_length=%d)", len(prompt))
+    return build_law_grounding_context(prompt)
 
 
 # ---------------------------------------------------------------------------

@@ -12,6 +12,7 @@ lookup flows.
 | GET    | `/api/visas`            | Returns the visa catalog used by the frontend visa explorer.  |
 | POST   | `/api/ask`              | Chatbot endpoint. Routes to OpenRouter or Groq if configured. |
 | POST   | `/api/jobcodekeywords`  | Extracts keywords from a job-code search query.               |
+| POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification. |
 
 > The Paradiso backend is **API-only**. The human-facing frontend
 > (`index.html`, `ai.html`) is deployed separately (currently GitHub
@@ -41,6 +42,9 @@ curl -s -X POST http://localhost:8000/api/jobcodekeywords \
 curl -s -X POST http://localhost:8000/api/ask \
   -H 'content-type: application/json' \
   -d '{"message":"hello"}' | jq
+curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+  -H 'content-type: application/json' \
+  -d '{"question":"출입국관리법 제10조"}' | jq
 ```
 
 `/api/ask` returns `503 no_llm_provider_configured` until you set
@@ -64,8 +68,28 @@ Or run the full repo validator:
 bash scripts/check_repo.sh
 ```
 
-`check_repo.sh` now auto-detects missing backend test dependencies (`fastapi`, `httpx`, `pydantic`).
+`check_repo.sh` auto-detects missing backend test dependencies (`fastapi`, `httpx`, `pydantic`).
 If missing, it bootstraps a local `.venv-check` and installs `backend/requirements.txt` there, then runs backend regression tests and golden eval with that interpreter.
+
+### Network-restricted validation mode
+
+In restricted environments (sandbox, proxy, or blocked package index), dependency bootstrap may fail even when repository code is healthy. In that case, run:
+
+```bash
+ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh
+```
+
+What this does:
+- Runs all static/data validation checks as usual.
+- If backend dependency bootstrap fails, it runs offline-safe Python syntax checks with `py_compile` on:
+  - `backend/services/*.py`
+  - `backend/paradiso_backend.py`
+  - `backend/tests/test_paradiso_backend.py`
+- Skips backend regression tests and golden eval with explicit warnings.
+
+Important:
+- Skip mode is for **restricted environments only**.
+- Strict CI / production validation should run without `ALLOW_BACKEND_TEST_SKIP` so backend regression tests execute fully.
 
 If you previously saw `ModuleNotFoundError: No module named 'fastapi'`, either:
 
@@ -80,6 +104,12 @@ bash scripts/check_repo.sh
 ```
 
 which will provision `.venv-check` automatically.
+
+To run backend tests directly after dependencies are available:
+
+```bash
+python3 backend/tests/test_paradiso_backend.py
+```
 
 ## Required and optional environment variables
 
@@ -306,3 +336,62 @@ Two ways to point the frontend at a different backend:
 - [ ] Restrict provider keys to least-privilege scopes where possible.
 - [ ] Rotate keys regularly; store them only in Railway, not in git.
 - [ ] Add request logging / observability before exposing to real users.
+### Debug-only law grounding endpoint
+
+`POST /api/debug/law-grounding` is for development inspection only. It is not a normal user-facing legal-advice endpoint and is not wired into `/api/ask`.
+
+Example request:
+
+```bash
+curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+  -H 'content-type: application/json' \
+  -d '{"question":"출입국관리법 제10조"}' | jq
+```
+
+Example disabled-mode response (`LAW_GROUNDING_MODE=disabled`):
+
+```json
+{
+  "law_grounding_used": false,
+  "law_grounding": [],
+  "citation_verification": {
+    "status": "disabled",
+    "citations": [
+      {
+        "raw": "출입국관리법 제10조",
+        "law_name": "출입국관리법",
+        "article": "제10조",
+        "verification_status": "not_verified"
+      }
+    ]
+  },
+  "grounding_warnings": ["LAW_GROUNDING_DISABLED"]
+}
+```
+
+### Controlled law grounding in `/api/ask` (Phase 4)
+
+Default remains disabled (`LAW_GROUNDING_MODE=disabled`), so normal production behavior is unchanged unless explicitly enabled.
+
+Local audit-mode setup example:
+
+```bash
+export LAW_GROUNDING_MODE=audit
+export LAW_API_KEY=your_key_here
+export LAW_API_BASE_URL=https://example-law-api.local
+export LAW_API_SEARCH_PATH=/search
+export LAW_API_ARTICLE_PATH=/article
+```
+
+Legal-basis query example (eligible for intent-gated law grounding attempt):
+
+```bash
+curl -s -X POST http://localhost:8000/api/ask \
+  -H 'content-type: application/json' \
+  -d '{"question":"출입국관리법 제10조 기준으로 D-2 연장의 법적 근거를 알려줘"}' | jq
+```
+
+Safety notes:
+- Manual/HiKorea/procedure sources remain higher priority for operational document lists.
+- Law grounding is not used to infer required documents, fees, or deadlines.
+- Production enabling should only occur after real endpoint validation and controlled smoke tests.
