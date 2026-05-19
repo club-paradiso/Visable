@@ -25,6 +25,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
+from services.law_grounding import build_law_grounding_context
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -139,6 +140,11 @@ class JobCodeKeywordsRequest(BaseModel):
 class JobCodeKeywordsResponse(BaseModel):
     query: str
     keywords: List[str]
+
+
+class DebugLawGroundingRequest(BaseModel):
+    question: Optional[str] = None
+    text: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -1161,6 +1167,22 @@ async def ask(req: AskRequest) -> AskResponse:
 async def job_code_keywords(req: JobCodeKeywordsRequest) -> JobCodeKeywordsResponse:
     keywords = _extract_keywords(req.query)
     return JobCodeKeywordsResponse(query=req.query, keywords=keywords)
+
+
+@app.post("/api/debug/law-grounding")
+async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
+    """Development/debug endpoint only, not a legal-advice production route."""
+    prompt = (req.question or req.text or "").strip()
+    if not prompt:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "empty_prompt",
+                "message": "Provide a non-empty 'question' or 'text'.",
+            },
+        )
+    logger.info("debug-law-grounding request received (text_length=%d)", len(prompt))
+    return build_law_grounding_context(prompt)
 
 
 # ---------------------------------------------------------------------------

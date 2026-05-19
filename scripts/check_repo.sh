@@ -8,6 +8,16 @@ fi
 
 
 TEST_PYTHON="python3"
+ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
+
+run_offline_backend_checks() {
+  echo "INFO: Running offline-safe backend syntax checks..."
+  if ! python3 -m py_compile backend/services/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py; then
+    echo "ERROR: Offline-safe backend syntax checks failed." >&2
+    exit 1
+  fi
+  echo "INFO: Offline-safe backend syntax checks passed."
+}
 
 ensure_backend_test_runtime() {
   if python3 - <<'PY' >/dev/null 2>&1
@@ -32,9 +42,10 @@ PY
   fi
 
   if ! .venv-check/bin/python -m pip install -r backend/requirements.txt; then
-    echo "ERROR: Failed to install backend requirements into .venv-check." >&2
-    echo "       Try running: .venv-check/bin/python -m pip install -r backend/requirements.txt" >&2
-    exit 1
+    echo "WARNING: Backend dependency bootstrap failed; likely network/package-index restriction." >&2
+    echo "WARNING: Could not install backend requirements into .venv-check." >&2
+    echo "         Recovery (full mode): .venv-check/bin/python -m pip install -r backend/requirements.txt" >&2
+    return 1
   fi
 
   TEST_PYTHON=".venv-check/bin/python"
@@ -193,14 +204,34 @@ echo "[12/14] Checking required-documents rendering coverage..."
 python3 scripts/check_required_documents_coverage.py
 
 echo "[13/14] Running backend regression tests..."
-ensure_backend_test_runtime
-$TEST_PYTHON backend/tests/test_paradiso_backend.py
+if ensure_backend_test_runtime; then
+  $TEST_PYTHON backend/tests/test_paradiso_backend.py
+else
+  run_offline_backend_checks
+  if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
+    echo "WARNING: Backend tests skipped due dependency bootstrap failure (ALLOW_BACKEND_TEST_SKIP=1)." >&2
+  else
+    echo "ERROR: Backend tests could not run because dependency bootstrap failed." >&2
+    echo "       Re-run with network/package-index access, or use:" >&2
+    echo "       ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh" >&2
+    echo "       (skip mode is for restricted environments only; not for strict CI)." >&2
+    exit 1
+  fi
+fi
 
 echo "[14/14] Running Paradiso AI golden eval (non-strict)..."
 # Non-strict: known gaps are reported but do not fail the repo check.
 # Regression failures (a previously-passing expectation now fails) still
 # exit nonzero because the runner returns 0 in non-strict mode only when
 # there are zero regression failures.
-${TEST_PYTHON} scripts/evaluate_paradiso_ai_golden_questions.py
+if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
+  echo "WARNING: Skipping golden eval because backend dependency bootstrap was allowed to skip." >&2
+elif ensure_backend_test_runtime; then
+  ${TEST_PYTHON} scripts/evaluate_paradiso_ai_golden_questions.py
+else
+  echo "ERROR: Golden eval requires backend dependencies and could not run." >&2
+  echo "       Re-run with network/package-index access, or set ALLOW_BACKEND_TEST_SKIP=1 for restricted environments." >&2
+  exit 1
+fi
 
 echo "Success: repository validation passed. JSON is valid, representative manual schema is valid, source manuals are registered, git diff check is clean, and no forbidden branding strings were found in existing key user-facing files."
