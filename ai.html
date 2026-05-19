@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- pages-refresh: 2026-05-19-visual-overhaul -->
 <html lang="ko" data-theme="dark">
 <head>
     <meta charset="UTF-8">
@@ -305,6 +306,332 @@
         .reference-disclaimer { width: calc(100% - (var(--sp-5) * 2)); max-width: 930px; margin: 0 auto; padding: 0.7rem 0.85rem; border: 1px solid var(--bd); border-radius: 10px; background: var(--bg2); color: var(--t3); font-size: 0.8rem; line-height: 1.55; word-break: keep-all; overflow-wrap: anywhere; }
         @media (max-width: 640px) { .reference-disclaimer { width: calc(100% - (var(--sp-3) * 2)); margin: 0 auto; } }
         .ai-header-logo { height: 18px; width: auto; display: block; opacity: 0.92; flex-shrink: 0; }
+
+        /* ============================================================
+           PARADISO VISUAL OVERHAUL — 2026-05-19
+           Shared design family with index.html.
+           Goal: calm dark chat surface, readable bubbles, emerald
+           accents from canonical --p-* tokens.
+           ============================================================ */
+
+        :root {
+            --p-emerald:      #0EA37B;
+            --p-emerald-deep: #085E48;
+            --p-emerald-soft: #34D4A8;
+            --p-emerald-glow: 0 4px 18px rgba(14,163,123,0.42), 0 2px 6px rgba(14,163,123,0.22);
+
+            /* canonical alias map — chat dark surface harmonized with index.html palette */
+            --ac: var(--p-emerald-soft);
+            --ac2: var(--p-emerald);
+        }
+
+        /* ── Calmer ambient background ───────────────────────────── */
+        html {
+            background: var(--p-ink);
+        }
+        body {
+            background:
+                radial-gradient(120% 80% at 12% 0%, color-mix(in srgb, var(--p-green) 35%, transparent), transparent 60%),
+                radial-gradient(100% 70% at 88% 100%, color-mix(in srgb, var(--p-emerald-deep) 28%, transparent), transparent 65%),
+                linear-gradient(180deg, var(--p-ink) 0%, var(--p-green-deep) 100%);
+            color: var(--p-paper);
+        }
+        body::before {
+            background: radial-gradient(circle, rgba(52,212,168,0.05) 0%, transparent 60%);
+            opacity: 0.7;
+        }
+        body::after {
+            background: radial-gradient(circle, rgba(255,140,122,0.04) 0%, transparent 60%);
+            opacity: 0.6;
+        }
+
+        /* ── Header: slightly translucent paper-ink ───────────────── */
+        .chat-header {
+            background: color-mix(in srgb, var(--p-green-deep) 78%, transparent);
+            border-bottom-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+        }
+        .ai-title-main {
+            color: var(--p-emerald-soft);
+            font-weight: 800;
+            letter-spacing: -0.005em;
+        }
+        .ai-title-sub {
+            color: color-mix(in srgb, var(--p-paper) 64%, transparent);
+            font-weight: 500;
+            line-height: 1.45;
+        }
+        .ai-status {
+            color: color-mix(in srgb, var(--p-paper) 52%, transparent);
+        }
+        .status-dot {
+            background: var(--p-emerald-soft);
+            box-shadow: 0 0 6px var(--p-emerald-soft);
+        }
+        .back-btn {
+            border-color: color-mix(in srgb, var(--p-paper) 18%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 78%, transparent);
+        }
+        .back-btn:hover {
+            background: color-mix(in srgb, var(--p-emerald) 14%, transparent);
+            border-color: var(--p-emerald-soft);
+            color: var(--p-paper);
+        }
+        .quota-badge {
+            background: color-mix(in srgb, var(--p-paper) 7%, transparent);
+            border-color: color-mix(in srgb, var(--p-paper) 16%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 72%, transparent);
+            font-weight: 700;
+        }
+
+        /* ── Chat bubbles: tighter radius, calmer shadow ──────────── */
+        .msg-bubble {
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+            line-height: 1.75;
+            font-size: 0.96rem;
+        }
+        .msg-row.ai .msg-bubble {
+            background: color-mix(in srgb, var(--p-paper) 8%, transparent);
+            border: 1px solid color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-bottom-left-radius: 4px;
+            color: var(--p-paper);
+        }
+        .msg-row.user .msg-bubble {
+            background: color-mix(in srgb, var(--p-emerald) 20%, transparent);
+            border: 1px solid color-mix(in srgb, var(--p-emerald-soft) 36%, transparent);
+            border-bottom-right-radius: 4px;
+            color: var(--p-paper);
+        }
+        .msg-bubble strong,
+        .answer-body strong {
+            color: var(--p-emerald-soft);
+            font-weight: 800;
+        }
+        .msg-time {
+            color: color-mix(in srgb, var(--p-paper) 48%, transparent);
+            font-weight: 500;
+        }
+        .msg-disc {
+            color: color-mix(in srgb, var(--p-paper) 52%, transparent);
+            border-top-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+        }
+
+        /* ── Answer card: single surface, internal dividers ────── */
+        .answer-card,
+        .msg-row.ai .answer-card {
+            background: linear-gradient(180deg,
+                color-mix(in srgb, var(--p-green) 58%, transparent) 0%,
+                color-mix(in srgb, var(--p-green-deep) 68%, transparent) 100%);
+            border: 1px solid color-mix(in srgb, var(--p-emerald-soft) 22%, transparent);
+            border-radius: 14px;
+        }
+        .answer-head {
+            border-bottom-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-bottom-style: dashed;
+        }
+        .answer-context {
+            border-bottom-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-bottom-style: dashed;
+        }
+        .answer-kicker {
+            color: var(--p-emerald-soft);
+            font-size: 0.78rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+        }
+        .answer-model {
+            color: color-mix(in srgb, var(--p-paper) 52%, transparent);
+            font-weight: 500;
+        }
+        .answer-body {
+            color: var(--p-paper);
+            font-size: 1rem;
+            line-height: 1.78;
+        }
+        .grounding-badge {
+            border-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+            background: color-mix(in srgb, var(--p-paper) 6%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 72%, transparent);
+            font-weight: 700;
+        }
+        .grounding-badge.grounded {
+            border-color: color-mix(in srgb, var(--p-emerald-soft) 60%, transparent);
+            background: color-mix(in srgb, var(--p-emerald) 12%, transparent);
+            color: var(--p-emerald-soft);
+        }
+        .context-pill {
+            border-color: color-mix(in srgb, var(--p-paper) 18%, transparent);
+            background: color-mix(in srgb, var(--p-paper) 5%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 76%, transparent);
+            font-weight: 600;
+        }
+        .source-panel {
+            border-color: color-mix(in srgb, var(--p-emerald-soft) 28%, transparent);
+            background: color-mix(in srgb, var(--p-emerald) 8%, transparent);
+        }
+        .source-title {
+            color: var(--p-emerald-soft);
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+        }
+        .source-list {
+            color: color-mix(in srgb, var(--p-paper) 72%, transparent);
+            font-weight: 500;
+            font-size: 0.85rem;
+            line-height: 1.55;
+        }
+        .source-file {
+            color: color-mix(in srgb, var(--p-paper) 50%, transparent);
+        }
+        .answer-note {
+            border-color: color-mix(in srgb, var(--p-paper) 16%, transparent);
+            background: color-mix(in srgb, var(--p-paper) 5%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 78%, transparent);
+            font-weight: 500;
+            border-radius: 10px;
+        }
+        .answer-action {
+            border-color: color-mix(in srgb, var(--p-paper) 16%, transparent);
+            background: color-mix(in srgb, var(--p-paper) 5%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 78%, transparent);
+            font-weight: 700;
+        }
+        .answer-action:hover {
+            border-color: var(--p-emerald-soft);
+            color: var(--p-paper);
+        }
+
+        /* ── Input area: paper-ink translucent ─────────────────── */
+        .chat-input-area {
+            background: color-mix(in srgb, var(--p-green-deep) 78%, transparent);
+            border-top-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+        }
+        .ai-textarea {
+            background: color-mix(in srgb, var(--p-ink) 78%, transparent);
+            border-color: color-mix(in srgb, var(--p-paper) 18%, transparent);
+            border-radius: 14px;
+            color: var(--p-paper);
+            font-weight: 500;
+        }
+        .ai-textarea:focus {
+            border-color: var(--p-emerald-soft);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--p-emerald-soft) 25%, transparent);
+        }
+        .ai-textarea::placeholder {
+            color: color-mix(in srgb, var(--p-paper) 45%, transparent);
+            font-weight: 500;
+        }
+        .send-btn {
+            background: var(--p-emerald-soft);
+            color: var(--p-ink);
+            border-radius: 14px;
+            box-shadow: var(--p-emerald-glow);
+            font-weight: 800;
+        }
+        .send-btn:hover:not(:disabled) {
+            background: var(--p-emerald);
+            color: #fff;
+        }
+        .send-btn:disabled {
+            background: color-mix(in srgb, var(--p-paper) 10%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 38%, transparent);
+            box-shadow: none;
+        }
+        .char-counter {
+            color: color-mix(in srgb, var(--p-paper) 48%, transparent);
+        }
+
+        /* ── Disclaimer reads as a quiet hairline note ──────────── */
+        .reference-disclaimer {
+            background: color-mix(in srgb, var(--p-paper) 5%, transparent);
+            border: 1px solid color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-radius: 10px;
+            color: color-mix(in srgb, var(--p-paper) 62%, transparent);
+            font-weight: 500;
+            line-height: 1.6;
+        }
+
+        /* ── Modal harmonized ───────────────────────────────────── */
+        .modal-box {
+            background: linear-gradient(180deg,
+                color-mix(in srgb, var(--p-green) 92%, var(--p-ink)) 0%,
+                color-mix(in srgb, var(--p-green-deep) 96%, var(--p-ink)) 100%);
+            border: 1px solid color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-radius: 16px;
+        }
+        .modal-header {
+            border-bottom-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-bottom-style: dashed;
+        }
+        .modal-title {
+            color: var(--p-emerald-soft);
+            font-weight: 800;
+        }
+        .modal-body {
+            color: color-mix(in srgb, var(--p-paper) 80%, transparent);
+            font-weight: 500;
+            line-height: 1.65;
+        }
+        .modal-body strong {
+            color: var(--p-emerald-soft);
+        }
+        .modal-footer {
+            border-top-color: color-mix(in srgb, var(--p-paper) 14%, transparent);
+            border-top-style: dashed;
+            background: transparent;
+        }
+        .btn-agree {
+            background: linear-gradient(135deg, var(--p-emerald) 0%, var(--p-emerald-deep) 100%);
+            border-color: var(--p-emerald);
+            color: #fff;
+            box-shadow: var(--p-emerald-glow);
+            font-weight: 800;
+        }
+        .btn-agree:hover {
+            filter: brightness(1.08);
+        }
+        .btn-cancel {
+            border-color: color-mix(in srgb, var(--p-paper) 18%, transparent);
+            color: color-mix(in srgb, var(--p-paper) 72%, transparent);
+            font-weight: 600;
+        }
+        .btn-cancel:hover {
+            background: color-mix(in srgb, var(--p-paper) 8%, transparent);
+            color: var(--p-paper);
+        }
+
+        /* ── Badges in messages ─────────────────────────────────── */
+        .bdg {
+            background: color-mix(in srgb, var(--p-paper) 6%, transparent);
+            font-weight: 700;
+        }
+        .bdg.bdg-visa {
+            color: var(--p-emerald-soft);
+            border-color: color-mix(in srgb, var(--p-emerald-soft) 56%, transparent);
+        }
+
+        /* ── Touch target floor 44px ───────────────────────────── */
+        .send-btn,
+        .back-btn,
+        .btn-cancel,
+        .btn-agree,
+        .answer-action {
+            min-height: 44px;
+        }
+
+        /* ── Reduced motion ─────────────────────────────────────── */
+        @media (prefers-reduced-motion: reduce) {
+            body::before,
+            body::after {
+                animation: none;
+            }
+            .send-btn:hover:not(:disabled),
+            .answer-action:hover {
+                transform: none;
+            }
+        }
     </style>
 </head>
 <body>

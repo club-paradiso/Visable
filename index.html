@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pages-refresh: 2026-05-19-opus-ux-overhaul -->
+<!-- pages-refresh: 2026-05-19-visual-overhaul -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -5331,6 +5331,517 @@ body.searched .hikorea-landing-cta { display: none; }
 
 /* TASK 4 — ai.html header logo */
 .ai-header-logo { height: 18px; width: auto; display: block; opacity: 0.92; flex-shrink: 0; }
+
+/* ============================================================
+   PARADISO VISUAL OVERHAUL — 2026-05-19
+   Single layer applied at the end of the cascade.
+   Goal: result card = single surface; HiKorea CTA = emerald
+   primary; canonical --p-* tokens; mobile 390px primary target.
+   ============================================================ */
+
+:root {
+  /* canonical emerald CTA family (HiKorea + visit reservation) */
+  --p-emerald:      #0EA37B;
+  --p-emerald-deep: #085E48;
+  --p-emerald-glow: 0 4px 18px rgba(14,163,123,0.42), 0 2px 6px rgba(14,163,123,0.22);
+  --p-emerald-glow-hover: 0 8px 24px rgba(14,163,123,0.52), 0 4px 10px rgba(14,163,123,0.28);
+
+  /* paper surface for searched-result page */
+  --p-paper-surface: #FBF5E6;
+  --p-paper-surface-2: #F6EFDB;
+  --p-divider-soft: color-mix(in srgb, var(--p-line) 55%, transparent);
+  --p-divider-dashed: color-mix(in srgb, var(--p-line) 78%, transparent);
+}
+
+/* ── Result page surface — calmer, lighter paper ────────────── */
+body.searched {
+  background: var(--p-paper-surface) !important;
+}
+body.searched .hero-container {
+  background: color-mix(in srgb, var(--p-paper-surface) 92%, white);
+  border-bottom-color: var(--p-divider-soft);
+}
+body.searched .sbar {
+  border-radius: 14px;
+  background: #fff;
+  border-color: color-mix(in srgb, var(--p-line) 70%, white);
+}
+
+/* ── Result card — single surface, internal dividers ────────── */
+.vc.manual-result {
+  border-radius: 16px;
+  border: 1px solid color-mix(in srgb, var(--p-line) 60%, white);
+  background: #ffffff;
+  box-shadow: 0 1px 0 rgba(14,31,26,0.03), 0 6px 24px -8px rgba(14,31,26,0.08);
+  overflow: hidden;
+}
+.vc.manual-result:hover {
+  border-color: color-mix(in srgb, var(--p-line) 80%, var(--p-green));
+  box-shadow: 0 1px 0 rgba(14,31,26,0.03), 0 12px 32px -8px rgba(14,31,26,0.12);
+}
+.vc.manual-result .vc-h {
+  padding: 1.1rem 1.35rem;
+  border-radius: 16px 16px 0 0;
+  background: linear-gradient(180deg, #fff 0%, color-mix(in srgb, var(--p-paper-surface-2) 60%, white) 100%);
+  border-bottom: 1px dashed var(--p-divider-dashed);
+}
+.vc.manual-result .bc {
+  background: color-mix(in srgb, var(--p-emerald) 12%, white);
+  color: var(--p-emerald-deep);
+  font-weight: 800;
+  border: 1px solid color-mix(in srgb, var(--p-emerald) 22%, transparent);
+}
+.manual-result .manual-name-ko {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--p-ink);
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.manual-result .manual-name-en {
+  margin-top: 0.2rem;
+  color: var(--p-ink-mute);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.manual-result .manual-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+}
+/* Flatten the boxy section wrappers — single surface, internal dividers */
+.manual-result .manual-layout > .manual-section,
+.manual-result .manual-layout > .next-action-panel {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 1.1rem 1.35rem;
+  margin: 0;
+}
+/* dashed-1px divider between consecutive children */
+.manual-result .manual-layout > * + * {
+  border-top: 1px dashed var(--p-divider-dashed);
+}
+/* keep summary text + caution + source panel with their own treatment but
+   sit within the same rhythm */
+.manual-result .manual-layout > .vc-summary,
+.manual-result .manual-layout > .vc-caution,
+.manual-result .manual-layout > .source-evidence-panel,
+.manual-result .manual-layout > .manual-actions,
+.manual-result .manual-layout > .data-date {
+  margin: 0;
+}
+.manual-result .manual-layout > .vc-summary {
+  padding: 1.1rem 1.35rem;
+}
+.manual-result .manual-layout > .vc-caution {
+  margin: 0 1.35rem;
+  padding: 0.6rem 0.8rem;
+}
+.manual-result .manual-layout > .vc-caution + * {
+  border-top: 1px dashed var(--p-divider-dashed);
+}
+.manual-result .manual-layout > .source-evidence-panel {
+  margin: 1rem 1.35rem;
+}
+.manual-result .manual-layout > .source-evidence-panel + * {
+  border-top: 0;
+}
+.manual-result .manual-layout > .manual-actions {
+  padding: 1rem 1.35rem;
+  flex-wrap: wrap;
+}
+.manual-result .manual-section-title {
+  margin: 0 0 0.65rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--p-coral-deep);
+}
+.manual-result .vc-summary {
+  font-size: 1rem;
+  line-height: 1.65;
+  color: var(--p-ink-2);
+  background: transparent;
+  border-radius: 0;
+}
+.manual-result .vc-caution {
+  font-size: 0.78rem;
+  color: var(--p-ink-3);
+  border: 0;
+  border-left: 2px solid color-mix(in srgb, var(--color-warning) 55%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, var(--color-warning) 6%, transparent);
+}
+.manual-result .data-date {
+  padding: 0.75rem 1.35rem;
+  border-top: 1px dashed var(--p-divider-dashed);
+  font-size: 0.7rem;
+  color: var(--p-ink-mute);
+}
+
+/* ── HiKorea CTA — full-width emerald primary, dominant ──────── */
+.manual-result .next-action-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.2rem 1.35rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+.manual-result .next-action-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--p-coral-deep);
+}
+.manual-result .next-action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+}
+.manual-result .next-action-grid::after {
+  content: "";
+  display: contents;
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn {
+  grid-column: 1 / -1;
+  min-height: 64px;
+  padding: 0.95rem 1.2rem;
+  background: linear-gradient(135deg, var(--p-emerald) 0%, var(--p-emerald-deep) 100%);
+  border: 0;
+  border-radius: 14px;
+  box-shadow: var(--p-emerald-glow);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn::after {
+  content: "→";
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  font-weight: 700;
+  opacity: 0.9;
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--p-emerald-glow-hover);
+  background: linear-gradient(135deg, #11b187 0%, #0a6f55 100%);
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn:active {
+  transform: translateY(0);
+  box-shadow: var(--p-emerald-glow);
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn .next-action-kicker {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn strong {
+  color: #fff;
+  font-size: 1.06rem;
+  font-weight: 800;
+  letter-spacing: -0.005em;
+}
+.manual-result .next-action-btn.primary.hikorea-guide-btn small {
+  color: rgba(255,255,255,0.86);
+  font-size: 0.8rem;
+  font-weight: 500;
+  margin-top: 0.15rem;
+  max-width: calc(100% - 2.2rem);
+}
+/* secondary actions sit below as a 2-up */
+.manual-result .next-action-btn:not(.primary) {
+  min-height: 64px;
+  padding: 0.8rem 0.95rem;
+  border: 1px solid color-mix(in srgb, var(--p-line) 70%, white);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--p-ink-2);
+}
+.manual-result .next-action-btn:not(.primary):hover {
+  border-color: color-mix(in srgb, var(--p-emerald) 50%, var(--p-line));
+  background: color-mix(in srgb, var(--p-emerald) 4%, #fff);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(14,163,123,0.16);
+}
+.manual-result .next-action-btn:not(.primary) .next-action-kicker {
+  color: var(--p-emerald);
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+}
+.manual-result .next-action-btn:not(.primary) strong {
+  color: var(--p-ink);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+.manual-result .next-action-btn:not(.primary) small {
+  color: var(--p-ink-mute);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+@media (min-width: 481px) {
+  .manual-result .next-action-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .manual-result .next-action-btn.primary.hikorea-guide-btn {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Doc tabs inside flattened layout (preserve functionality) ── */
+.manual-result .docs-tabs {
+  border-bottom-color: var(--p-divider-dashed);
+}
+.manual-result .docs-tab.active {
+  color: var(--p-emerald);
+}
+.manual-result .docs-tab.active::after {
+  background: var(--p-emerald);
+}
+.manual-result .docs-tab:hover:not(:disabled) {
+  color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 6%, transparent);
+}
+
+/* ── Procedure tabs harmonized ───────────────────────────────── */
+.manual-result .procedure-tab {
+  border-color: color-mix(in srgb, var(--p-line) 60%, white);
+  background: #fff;
+  color: var(--p-ink-2);
+  font-weight: 700;
+}
+.manual-result .procedure-tab:hover:not(:disabled) {
+  border-color: var(--p-emerald);
+  color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 6%, transparent);
+}
+.manual-result .procedure-tab.active {
+  background: var(--p-emerald);
+  border-color: var(--p-emerald);
+  color: #fff;
+}
+.manual-result .procedure-panel {
+  border-top-color: var(--p-divider-dashed);
+}
+
+/* ── Subcode + doc-group cards: tighter, less boxy ──────────── */
+.manual-result .manual-subcode-card {
+  border: 1px solid color-mix(in srgb, var(--p-line) 50%, white);
+  background: color-mix(in srgb, var(--p-paper-surface-2) 32%, #fff);
+  border-radius: 10px;
+  padding: 0.72rem 0.8rem;
+}
+.manual-result .manual-subcode-card.match {
+  border-color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 8%, #fff);
+  box-shadow: inset 3px 0 0 var(--p-emerald);
+}
+.manual-result .manual-subcode-code {
+  color: var(--p-emerald-deep);
+  font-weight: 800;
+}
+.manual-result .manual-subcode-name {
+  color: var(--p-ink);
+  font-weight: 700;
+}
+.manual-result .manual-subcode-desc {
+  color: var(--p-ink-3);
+  line-height: 1.55;
+}
+.manual-result .doc-group {
+  border: 1px solid color-mix(in srgb, var(--p-line) 50%, white);
+  border-left-width: 3px;
+  background: color-mix(in srgb, var(--p-paper-surface-2) 28%, #fff);
+  border-radius: 10px;
+}
+.manual-result .doc-group.group-required {
+  border-left-color: var(--p-emerald);
+}
+.manual-result .doc-group-title {
+  color: var(--p-ink);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.85rem;
+}
+
+/* ── Source evidence panel ───────────────────────────────────── */
+.manual-result .source-evidence-panel {
+  border: 1px solid color-mix(in srgb, var(--p-line) 50%, white);
+  background: color-mix(in srgb, var(--p-paper-surface-2) 40%, #fff);
+  border-radius: 10px;
+}
+.manual-result .source-evidence-panel > summary {
+  color: var(--p-ink);
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 0.85rem;
+}
+
+/* ── Manual actions row: secondary chip buttons ──────────────── */
+.manual-result .manual-actions {
+  gap: 0.45rem;
+}
+.manual-result .manual-actions .doc-trigger-btn {
+  border-color: color-mix(in srgb, var(--p-line) 60%, white);
+  background: #fff;
+  color: var(--p-ink-2);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.manual-result .manual-actions .doc-trigger-btn:hover {
+  border-color: var(--p-emerald);
+  color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 6%, #fff);
+}
+
+/* ── Result list breathing ───────────────────────────────────── */
+body.searched .rlist {
+  gap: 0.95rem;
+  padding-top: 0.85rem;
+}
+body.searched .qf {
+  border-top-color: var(--p-divider-soft);
+  margin: 0.85rem 0 0.45rem;
+}
+body.searched .qb {
+  background: #fff;
+  border-color: color-mix(in srgb, var(--p-line) 60%, white);
+  color: var(--p-ink-3);
+  font-weight: 600;
+}
+body.searched .qb:hover {
+  border-color: var(--p-emerald);
+  color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 5%, #fff);
+}
+
+/* ── Landing typography hierarchy enforcement ────────────────── */
+.p-kicker,
+.landing-hints-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.p-section-title {
+  font-weight: 800;
+}
+.p-pathway-title,
+.p-tool-card h3,
+.p-source-card h3,
+.p-how-step h3,
+.p-reminder-card h3 {
+  font-weight: 700;
+  letter-spacing: -0.005em;
+}
+.p-section-copy,
+.p-pathway-desc,
+.p-how-step p,
+.p-source-card p,
+.p-tool-card p,
+.p-reminder-card p {
+  font-weight: 500;
+  line-height: 1.65;
+}
+
+/* ── Landing — HiKorea CTA emerald gradient parity with result ── */
+.hikorea-landing-cta {
+  background: linear-gradient(135deg, var(--p-emerald) 0%, var(--p-emerald-deep) 100%);
+  box-shadow: var(--p-emerald-glow);
+  border: 1px solid rgba(255,255,255,0.18);
+}
+.hikorea-landing-cta:hover {
+  box-shadow: var(--p-emerald-glow-hover);
+}
+.hikorea-cta-title {
+  font-weight: 800;
+  font-size: 1.05rem;
+  letter-spacing: -0.005em;
+}
+.hikorea-cta-sub {
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+/* ── Mobile 390px tightening ─────────────────────────────────── */
+@media (max-width: 480px) {
+  .manual-result .vc-h {
+    padding: 0.95rem 1.05rem;
+  }
+  .manual-result .manual-layout > * {
+    padding: 0.95rem 1.05rem;
+  }
+  .manual-result .manual-layout > .manual-section {
+    padding: 0.95rem 1.05rem !important;
+  }
+  .manual-result .next-action-panel {
+    padding: 1rem 1.05rem !important;
+    gap: 0.6rem;
+  }
+  .manual-result .next-action-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  .manual-result .next-action-btn.primary.hikorea-guide-btn {
+    grid-column: 1 / -1;
+    min-height: 58px;
+  }
+  .manual-result .next-action-btn.primary.hikorea-guide-btn::after {
+    right: 1rem;
+  }
+  .manual-result .manual-name-ko {
+    font-size: 1.12rem;
+  }
+  .manual-result .data-date {
+    padding: 0.65rem 1.05rem !important;
+  }
+  body:not(.searched) .hero-container {
+    padding: 4rem 0.9rem 2rem !important;
+  }
+  body:not(.searched) .p-hero-title {
+    font-size: 2.6rem !important;
+    line-height: 1.1 !important;
+  }
+  .hikorea-cta-inner {
+    padding: 0.95rem 1rem;
+    gap: 0.6rem;
+  }
+  .hikorea-cta-title {
+    font-size: 0.98rem;
+  }
+  .hikorea-cta-sub {
+    font-size: 0.78rem;
+  }
+}
+
+/* ── Reduced motion: keep our new hover transforms inert ─────── */
+@media (prefers-reduced-motion: reduce) {
+  .vc.manual-result:hover,
+  .manual-result .next-action-btn:hover,
+  .manual-result .next-action-btn.primary.hikorea-guide-btn:hover {
+    transform: none;
+  }
+}
+
+/* ── Touch target floor 48px ─────────────────────────────────── */
+.manual-result .doc-trigger-btn,
+.manual-result .procedure-tab,
+.manual-result .docs-tab {
+  min-height: 44px;
+}
 
 </style>
 <script>
