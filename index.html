@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pages-refresh: 2026-05-19-ux-repair -->
+<!-- pages-refresh: 2026-05-19-opus-ux-overhaul -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -342,9 +342,21 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 .hikorea-progress { font-size: .86rem; color: var(--t2); font-weight: 800; margin-bottom: .6rem; }
 .guide-screenshot { border: 1px dashed var(--bd2); border-radius: 8px; min-height: 86px; display: grid; place-items: center; color: var(--t3); background: var(--bg0); margin-top: .65rem; }
 .hikorea-footer-actions { display: flex; justify-content: space-between; gap: .55rem; flex-wrap: wrap; margin-top: .8rem; }
+.hikorea-task-picker { margin-top: 0.75rem; }
+.hikorea-task-picker-hint { margin: 0 0 0.65rem; font-size: 0.83rem; line-height: 1.55; color: var(--t2); }
+.hikorea-task-buttons { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+.hikorea-task-btn { min-height: 72px; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 0.18rem; padding: 0.7rem 0.85rem; border: 1px solid var(--bd2); border-radius: 10px; background: var(--bg1); color: var(--t2); cursor: pointer; text-align: left; font-family: var(--ff) !important; transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease; }
+.hikorea-task-btn strong { color: var(--t1); font-size: 0.9rem; font-weight: 800; line-height: 1.3; word-break: keep-all; }
+.hikorea-task-btn small { color: var(--t3); font-size: 0.74rem; font-weight: 600; line-height: 1.4; word-break: keep-all; }
+.hikorea-task-btn:hover { border-color: var(--color-primary-green); background: color-mix(in srgb, var(--color-primary-green) 6%, var(--bg1)); transform: translateY(-1px); box-shadow: 0 2px 8px rgba(14,163,123,0.12); }
+.hikorea-task-btn:focus-visible { outline: 2px solid var(--color-primary-green); outline-offset: 2px; }
+.hikorea-task-change { margin-left: 0.45rem; padding: 0.18rem 0.55rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg1); color: var(--t2); font-size: 0.74rem; font-weight: 700; cursor: pointer; font-family: var(--ff) !important; }
+.hikorea-task-change:hover { border-color: var(--color-primary-green); color: var(--color-primary-green); }
 @media (max-width: 768px) {
   .hikorea-modal { width: 96vw; max-height: 92vh; }
   .hikorea-check-grid { grid-template-columns: 1fr; }
+  .hikorea-task-buttons { grid-template-columns: 1fr; }
+  .hikorea-task-btn { min-height: 60px; }
 }
 .text-desc { margin-bottom: 0.75rem; line-height: 1.7; font-size: 0.86rem; color: var(--t2); background: color-mix(in srgb, var(--bg1) 85%, transparent); padding: 0.85rem 0.9rem; border-radius: 2px; border-left: 1px solid var(--bd); }
 [data-theme="dark"] .text-desc { background: rgba(255,255,255,0.02); }
@@ -1121,8 +1133,15 @@ body.searched .section-divider { display: none; }
     --result-border: color-mix(in srgb, var(--bd2) 72%, white);
     --result-accent-soft: color-mix(in srgb, var(--ac) 9%, white);
     --result-shadow: 0 1px 2px rgba(14,31,26,0.05), 0 10px 28px rgba(14,31,26,0.06);
-    --hikorea-primary-bg: #0f6b55;
-    --hikorea-primary-bg-hover: #0b5a47;
+    /* Figma-aligned brand primary (Session A §4) */
+    --color-primary-green: #0EA37B;
+    --color-primary-green-hover: #0c8c69;
+    --color-primary-green-deep: #085E48;
+    --shadow-cta: 0 4px 18px rgba(14,163,123,0.32), 0 2px 4px rgba(14,163,123,0.18);
+    --shadow-cta-hover: 0 8px 24px rgba(14,163,123,0.42), 0 4px 8px rgba(14,163,123,0.22);
+    --shadow-lift: 0 12px 34px rgba(14,31,26,0.10);
+    --hikorea-primary-bg: var(--color-primary-green);
+    --hikorea-primary-bg-hover: var(--color-primary-green-hover);
 }
 body.searched { background: var(--result-page-bg) !important; }
 body.searched #starCanvas { background: var(--result-page-bg); opacity: 0.08; }
@@ -1185,12 +1204,12 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     padding: 0.9rem;
 }
 .next-action-title { margin: 0 0 0.6rem; font-size: 0.84rem; font-weight: 950; color: var(--t1); }
-.next-action-grid { display: grid; grid-template-columns: minmax(220px, 1.25fr) repeat(2, minmax(170px, 0.9fr)); gap: 0.55rem; }
+.next-action-grid { display: grid; grid-template-columns: 1.6fr 0.7fr 0.7fr; gap: 0.55rem; align-items: stretch; }
 .next-action-btn {
     min-width: 0;
     min-height: 76px;
     border: 1px solid var(--result-border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: color-mix(in srgb, white 76%, var(--bg1));
     color: var(--t2);
     cursor: pointer;
@@ -1202,23 +1221,31 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     padding: 0.76rem 0.86rem;
     text-align: left;
     font-family: var(--ff) !important;
-    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 .next-action-btn:hover { border-color: color-mix(in srgb, var(--ac) 45%, var(--bd2)); background: var(--result-accent-soft); transform: translateY(-1px); }
+.next-action-btn:focus-visible { outline: 2px solid var(--color-primary-green); outline-offset: 2px; }
 .next-action-btn strong { color: var(--t1); font-size: 0.88rem; line-height: 1.25; }
 .next-action-btn small { color: var(--t3); font-size: 0.74rem; line-height: 1.45; font-weight: 600; word-break: keep-all; overflow-wrap: anywhere; }
-.next-action-kicker { color: var(--ac); font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.next-action-kicker { color: var(--ac); font-size: 0.66rem; font-weight: 900; letter-spacing: 0.14em; text-transform: uppercase; }
 .next-action-btn.primary {
-    background: var(--hikorea-primary-bg);
-    border-color: var(--hikorea-primary-bg);
+    background: var(--color-primary-green);
+    border-color: var(--color-primary-green);
     color: #fff;
-    box-shadow: 0 8px 20px rgba(15,107,85,0.18);
+    min-height: 88px;
+    padding: 0.95rem 1.05rem;
+    box-shadow: var(--shadow-cta);
+    position: relative;
 }
-.next-action-btn.primary:hover { background: var(--hikorea-primary-bg-hover); border-color: var(--hikorea-primary-bg-hover); }
+.next-action-btn.primary:hover { background: var(--color-primary-green-hover); border-color: var(--color-primary-green-hover); transform: translateY(-2px); box-shadow: var(--shadow-cta-hover); }
+.next-action-btn.primary:active { transform: translateY(0); box-shadow: var(--shadow-cta); }
+.next-action-btn.primary strong { font-size: 1.02rem; font-weight: 900; }
+.next-action-btn.primary small { font-size: 0.78rem; }
 .next-action-btn.primary strong,
 .next-action-btn.primary small,
 .next-action-btn.primary .next-action-kicker { color: #fff; }
-.next-action-btn.primary small { opacity: 0.86; }
+.next-action-btn.primary small { opacity: 0.92; }
+.next-action-btn.primary .next-action-kicker { opacity: 0.85; }
 .manual-subcode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 0.55rem; }
 .manual-subcode-card { border: 1px solid var(--result-border); background: color-mix(in srgb, var(--bg1) 94%, white); border-radius: 8px; padding: 0.66rem; min-width: 0; }
 .manual-subcode-card.match { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 9%, var(--bg1)); box-shadow: inset 3px 0 0 var(--ac); }
@@ -1277,8 +1304,13 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     .manual-layout { padding: 0.1rem 0.7rem 0.9rem; }
     .manual-section { padding: 0.8rem; }
     .next-action-panel { padding: 0.78rem; }
-    .next-action-grid { grid-template-columns: 1fr; }
-    .next-action-btn { min-height: 68px; }
+    .next-action-grid { grid-template-columns: 1fr 1fr; grid-template-areas: "primary primary" "doc ai"; }
+    .next-action-btn.primary { grid-area: primary; }
+    .next-action-btn[data-action="open-doc-modal"] { grid-area: doc; }
+    .next-action-btn[data-action="open-ai-modal"] { grid-area: ai; }
+    .next-action-btn { min-height: 64px; }
+    .next-action-btn.primary { min-height: 84px; padding: 0.85rem 0.95rem; }
+    .next-action-btn.primary strong { font-size: 1rem; }
     .procedure-tabs { margin-left: -0.1rem; margin-right: -0.1rem; }
     .procedure-tab { font-size: 0.72rem; padding: 0 0.65rem; }
     .doc-group { padding: 0.68rem; }
@@ -7861,7 +7893,7 @@ function renderHikoreaGuide() {
     /*2*/`<ul><li>로그인 후 메인 화면에서 '방문예약' 버튼을 누르세요</li></ul><div class="guide-screenshot" data-step="2">[스크린샷 준비 중]</div>`,
     /* TODO: 실제 딥링크 URL로 교체 필요 — 담당자 직접 확인 */
     /*3*/`<ul><li>기관 선택 화면에서 '제주출입국외국인청'을 선택하세요</li><li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">제주청 예약 페이지 바로가기</a></li></ul><div class="guide-screenshot" data-step="3">[스크린샷 준비 중]</div>`,
-    /*4*/`<ul><li>현재 비자 코드: ${escapeHtml(hikoreaGuideState.visaCode || '미확인')}</li><li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `추천 업무 유형: ${escapeHtml(hikoreaGuideState.taskType)}` : '담당자에게 문의하거나 1345로 확인하세요.'}</li><li>체류기간 연장허가: 현재 비자를 같은 종류로 연장</li><li>체류자격 변경: 다른 종류의 비자로 변경</li><li>외국인등록: 처음 한국에 등록하는 경우</li></ul><div class="guide-screenshot" data-step="4">[스크린샷 준비 중]</div>`,
+    /*4*/`<ul><li>현재 비자 코드: ${escapeHtml(hikoreaGuideState.visaCode || '미확인')}</li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `<li>선택된 업무: <strong>${escapeHtml(hikoreaGuideState.taskType)}</strong> <button type="button" class="hikorea-task-change" data-action="hikorea-clear-task">다시 선택</button></li>` : ''}<li>체류기간 연장허가: 현재 비자를 같은 종류로 연장</li><li>체류자격 변경: 다른 종류의 비자로 변경</li><li>외국인등록: 처음 한국에 등록하는 경우</li></ul>${hikoreaGuideState.taskType === 'DATA_MISSING' ? `<div class="hikorea-task-picker" role="group" aria-label="업무 유형 선택"><p class="hikorea-task-picker-hint">이 비자 코드는 추천 업무 정보가 아직 등록되어 있지 않습니다. 본인 상황에 맞는 업무를 선택해 주세요. 확실하지 않다면 ☎ <a href="tel:1345">1345</a>로 확인하세요.</p><div class="hikorea-task-buttons"><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="체류기간 연장허가"><strong>체류기간 연장허가</strong><small>현재 비자를 그대로 연장</small></button><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="체류자격 변경"><strong>체류자격 변경</strong><small>다른 비자로 변경</small></button><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="외국인등록"><strong>외국인등록</strong><small>처음 등록하는 경우</small></button></div></div>` : ''}<div class="guide-screenshot" data-step="4">[스크린샷 준비 중]</div>`,
     /*5*/`<ul><li>원하는 날짜와 시간을 선택하세요</li><li>체류기간 만료일 이전 날짜로 예약하세요</li><li>입력한 만료일: ${escapeHtml(hikoreaGuideState.expDate || '미입력')}</li><li>예약은 내일부터 가능합니다.</li></ul><div class="guide-screenshot" data-step="5">[스크린샷 준비 중]</div>`,
     /*6*/`<ul><li>예약번호를 메모하거나 화면을 캡처하세요</li><li>예약 확인증을 출력하거나 PDF로 저장하세요</li><li>방문 당일 예약 시간 10분 전에 도착하세요</li></ul><label><input id="hkSavedOk" type="checkbox"> 예약 확인증을 저장했습니다</label><div class="guide-screenshot" data-step="6">[스크린샷 준비 중]</div>`
     ][hikoreaGuideState.step] || '';
@@ -7876,8 +7908,6 @@ function renderManualActions(v, isVisaCode) {
         <button type="button" class="doc-trigger-btn" data-action="open-doc-modal" data-vcode="${escapeHtml(v.code)}" data-type="change"><span>${escapeHtml(txAt('manualActionLabels', 2, '변경 서류'))}</span></button>
         ${v.faq ? `<button type="button" class="doc-trigger-btn" data-action="open-faq-modal" data-vcode="${escapeHtml(v.code)}"><span>FAQ</span></button>` : ''}
         <button type="button" class="doc-trigger-btn" data-action="copy-visa-result" data-vcode="${escapeHtml(v.code)}"><span>${escapeHtml(tx('actionCopyResult'))}</span></button>
-        <button type="button" class="doc-trigger-btn hikorea-guide-btn" data-action="open-hikorea-guide" data-vcode="${escapeHtml(v.code)}"><span>HiKorea 예약 도우미</span></button>
-        <button type="button" class="ai-btn" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${escapeHtml(tx('actionAi'))}</button>
     </div>`;
 }
 
@@ -8223,8 +8253,8 @@ function renderResults(query){
             <div class="vc-cw"><div class="vc-c">
                 ${v.cat === 'scn' ? `<div class="ai-cta" style="flex-direction:column; align-items:center; text-align:center; padding:2.5rem 1rem; background:var(--bg0);"><h4 style="color:var(--t1); font-weight:800; font-size:1.1rem; margin-bottom:0.5rem;">${tx('specialCaseTitle')}</h4><p style="font-size:0.85rem; color:var(--t3); margin-bottom:1.5rem; word-break:keep-all; max-width:400px;">${tx('specialCaseBody')}</p><button type="button" class="ai-btn" style="width:100%; max-width:320px; justify-content:center; box-shadow:var(--shD);" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${tx('specialCaseButton')}</button></div>` : `
                 <div class="manual-layout">
-                    ${renderCardSummary(v, kw)}
                     ${renderNextActionArea(v, isVisaCode)}
+                    ${renderCardSummary(v, kw)}
                     ${renderSubcodes(v, kw, ms)}
                     ${renderProcedures(v, kw)}
                     ${renderDocumentTabs(v)}
@@ -9276,6 +9306,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 'start-hikorea-guide': () => { if (hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk) { hikoreaGuideState.step = 0; renderHikoreaGuide(); } },
                 'hikorea-prev': () => { hikoreaGuideState.step = Math.max(0, hikoreaGuideState.step - 1); renderHikoreaGuide(); },
                 'hikorea-next': () => { hikoreaGuideState.step = Math.min(6, hikoreaGuideState.step + 1); renderHikoreaGuide(); },
+                'hikorea-pick-task': () => { const t = actionBtn.dataset.task; if (t) { hikoreaGuideState.taskType = t; renderHikoreaGuide(); } },
+                'hikorea-clear-task': () => { hikoreaGuideState.taskType = 'DATA_MISSING'; renderHikoreaGuide(); },
                 'hikorea-complete': () => { if (hikoreaGuideState.step === 6 && hikoreaGuideState.savedOk) closeModal('hikoreaGuideOverlay'); },
                 'select-procedure': () => {
                     const card = actionBtn.closest('.manual-result');
