@@ -293,3 +293,15 @@ Testing posture:
 Reuse boundary:
 - No `korean-law-mcp` dependency added.
 - No source code copied from `korean-law-mcp`.
+
+## Phase 3 citation verification + debug endpoint (2026-05-19)
+
+- Added citation verification on top of conservative citation extraction in `backend/services/citation_verifier.py`.
+- Added debug-only inspection endpoint: `POST /api/debug/law-grounding`.
+- Default behavior remains disabled (`LAW_GROUNDING_MODE=disabled`).
+- Still not wired to `/api/ask`; normal production chatbot flow is unchanged.
+- Debug endpoint is inspection-only for development/testing, not public legal advice.
+- Tests are mock-based (no live external API calls required for coverage).
+- Reuse boundary preserved:
+  - no `korean-law-mcp` dependency added
+  - no `korean-law-mcp` source copied

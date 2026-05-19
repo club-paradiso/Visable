@@ -12,6 +12,7 @@ lookup flows.
 | GET    | `/api/visas`            | Returns the visa catalog used by the frontend visa explorer.  |
 | POST   | `/api/ask`              | Chatbot endpoint. Routes to OpenRouter or Groq if configured. |
 | POST   | `/api/jobcodekeywords`  | Extracts keywords from a job-code search query.               |
+| POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification. |
 
 > The Paradiso backend is **API-only**. The human-facing frontend
 > (`index.html`, `ai.html`) is deployed separately (currently GitHub
@@ -41,6 +42,9 @@ curl -s -X POST http://localhost:8000/api/jobcodekeywords \
 curl -s -X POST http://localhost:8000/api/ask \
   -H 'content-type: application/json' \
   -d '{"message":"hello"}' | jq
+curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+  -H 'content-type: application/json' \
+  -d '{"question":"출입국관리법 제10조"}' | jq
 ```
 
 `/api/ask` returns `503 no_llm_provider_configured` until you set
@@ -332,3 +336,35 @@ Two ways to point the frontend at a different backend:
 - [ ] Restrict provider keys to least-privilege scopes where possible.
 - [ ] Rotate keys regularly; store them only in Railway, not in git.
 - [ ] Add request logging / observability before exposing to real users.
+### Debug-only law grounding endpoint
+
+`POST /api/debug/law-grounding` is for development inspection only. It is not a normal user-facing legal-advice endpoint and is not wired into `/api/ask`.
+
+Example request:
+
+```bash
+curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+  -H 'content-type: application/json' \
+  -d '{"question":"출입국관리법 제10조"}' | jq
+```
+
+Example disabled-mode response (`LAW_GROUNDING_MODE=disabled`):
+
+```json
+{
+  "law_grounding_used": false,
+  "law_grounding": [],
+  "citation_verification": {
+    "status": "disabled",
+    "citations": [
+      {
+        "raw": "출입국관리법 제10조",
+        "law_name": "출입국관리법",
+        "article": "제10조",
+        "verification_status": "not_verified"
+      }
+    ]
+  },
+  "grounding_warnings": ["LAW_GROUNDING_DISABLED"]
+}
+```

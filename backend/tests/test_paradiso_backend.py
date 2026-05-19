@@ -1796,5 +1796,67 @@ class AuditModeHttpClientTests(unittest.TestCase):
         self.assertNotIn("secret-public-token", str(result))
 
 
+class CitationVerificationPhase3Tests(unittest.TestCase):
+    def test_extraction_still_detects_citation(self):
+        from services.citation_verifier import extract_korean_legal_citations
+        result = extract_korean_legal_citations("출입국관리법 제10조")
+        self.assertEqual(result["citations"][0]["law_name"], "출입국관리법")
+
+    def test_verify_without_client_extracted_only(self):
+        from services.citation_verifier import verify_citations
+        result = verify_citations("출입국관리법 제10조")
+        self.assertEqual(result["status"], "extracted_only")
+        self.assertEqual(result["citations"][0]["verification_status"], "not_verified")
+
+    def test_verify_with_mocked_success(self):
+        from services.citation_verifier import verify_citations
+
+        class MockLawClient:
+            class Cfg:
+                mode = "audit"
+            config = Cfg()
+            def get_article(self, law_name, article):
+                return {"status": "ok", "results": [{"law_name": law_name, "article": article}], "warnings": []}
+
+        result = verify_citations("출입국관리법 제10조", law_client=MockLawClient())
+        self.assertEqual(result["citations"][0]["verification_status"], "verified")
+
+    def test_verify_with_mocked_not_found(self):
+        from services.citation_verifier import verify_citations
+
+        class MockLawClient:
+            class Cfg:
+                mode = "audit"
+            config = Cfg()
+            def get_article(self, law_name, article):
+                return {"status": "ok", "results": [], "warnings": []}
+
+        result = verify_citations("출입국관리법 제10조", law_client=MockLawClient())
+        self.assertEqual(result["citations"][0]["verification_status"], "not_found")
+
+    def test_build_grounding_context_disabled(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        from services.law_grounding import build_law_grounding_context
+        result = build_law_grounding_context("출입국관리법 제10조")
+        self.assertIn("LAW_GROUNDING_DISABLED", result["grounding_warnings"])
+
+    def test_debug_endpoint_disabled_mode_200(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        os.environ["LAW_API_KEY"] = "dont-leak-this"
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={"question": "출입국관리법 제10조"})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertFalse(body.get("law_grounding_used"))
+        self.assertEqual(body.get("law_grounding"), [])
+        self.assertIn("LAW_GROUNDING_DISABLED", body.get("grounding_warnings", []))
+        self.assertNotIn("dont-leak-this", str(body))
+
+    def test_debug_endpoint_empty_input_400(self):
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={})
+        self.assertEqual(resp.status_code, 400, resp.text)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
