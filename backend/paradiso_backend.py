@@ -25,7 +25,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-from services.law_grounding import build_law_grounding_context
+from services.law_grounding import build_law_grounding_context, should_attempt_law_grounding
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -131,6 +131,10 @@ class AskResponse(BaseModel):
     visa_sub_code_detected: Optional[str] = None
     task_type_detected: Optional[str] = None
     risk_level_detected: Optional[str] = None
+    law_grounding_used: bool = False
+    law_grounding_attempted: bool = False
+    law_grounding_warnings: List[str] = Field(default_factory=list)
+    citation_verification: Optional[Dict[str, Any]] = None
 
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -1118,6 +1122,35 @@ async def ask(req: AskRequest) -> AskResponse:
             lang=req.lang,
         )
 
+    law_grounding_used = False
+    law_grounding_attempted = False
+    law_grounding_warnings: List[str] = []
+    citation_verification: Optional[Dict[str, Any]] = None
+    law_context: Dict[str, Any] = {}
+    mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    if mode in {"audit", "enabled"}:
+        intent = should_attempt_law_grounding(prompt)
+        if intent.get("should_attempt"):
+            law_context = build_law_grounding_context(prompt)
+            law_grounding_attempted = bool(law_context.get("attempted"))
+            law_grounding_used = bool(law_context.get("law_grounding_used"))
+            law_grounding_warnings = law_context.get("grounding_warnings", []) or []
+            citation_verification = law_context.get("citation_verification")
+
+            candidates = law_context.get("law_grounding") or []
+            if law_grounding_used and candidates:
+                compact_items = []
+                for item in candidates[:3]:
+                    title = item.get("title") or item.get("law_name") or "(untitled law)"
+                    article = item.get("article") or item.get("article_no") or ""
+                    compact_items.append(f"- {title} {article}".rstrip())
+                final_prompt += (
+                    "\n\n[Supplemental Law Grounding]\n"
+                    "- This law information is supplemental context only.\n"
+                    "- Manual/HiKorea/procedure sources control required documents, fees, deadlines, and operational procedures.\n"
+                    "- Do not invent article numbers, deadlines, fees, or required documents.\n"
+                    + "\n".join(compact_items)
+                )
     if OPENROUTER_API_KEY:
         answer = await _call_openrouter(final_prompt, model=req.model)
         return AskResponse(
@@ -1130,6 +1163,10 @@ async def ask(req: AskRequest) -> AskResponse:
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
             risk_level_detected=risk_level_detected,
+            law_grounding_used=law_grounding_used,
+            law_grounding_attempted=law_grounding_attempted,
+            law_grounding_warnings=law_grounding_warnings,
+            citation_verification=citation_verification,
         )
     if GROQ_API_KEY:
         answer = await _call_groq(final_prompt, model=req.model)
@@ -1143,6 +1180,10 @@ async def ask(req: AskRequest) -> AskResponse:
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
             risk_level_detected=risk_level_detected,
+            law_grounding_used=law_grounding_used,
+            law_grounding_attempted=law_grounding_attempted,
+            law_grounding_warnings=law_grounding_warnings,
+            citation_verification=citation_verification,
         )
 
     raise HTTPException(
@@ -1159,6 +1200,10 @@ async def ask(req: AskRequest) -> AskResponse:
             "visa_sub_code_detected": visa_sub_code_detected,
             "task_type_detected": task_type_detected,
             "risk_level_detected": risk_level_detected,
+            "law_grounding_used": law_grounding_used,
+            "law_grounding_attempted": law_grounding_attempted,
+            "law_grounding_warnings": law_grounding_warnings,
+            "citation_verification": citation_verification,
         },
     )
 

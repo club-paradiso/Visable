@@ -305,3 +305,13 @@ Reuse boundary:
 - Reuse boundary preserved:
   - no `korean-law-mcp` dependency added
   - no `korean-law-mcp` source copied
+
+## Phase 4 clean rebase implementation (recreated after PR #93 conflict)
+
+- Implemented Phase 4 on a fresh branch from latest available main-equivalent head, instead of manually conflict-resolving stale PR #93.
+- Added controlled `/api/ask` integration for law grounding behind **legal-intent gating**.
+- `LAW_GROUNDING_MODE` default remains **disabled**.
+- In disabled mode, law grounding is not attempted and `/api/ask` remains behaviorally unchanged except additional response metadata fields.
+- Manual grounding remains higher-priority for procedure and required-document guidance.
+- Law grounding is supplemental only and explicitly not used to infer required document lists, deadlines, fees, or operational procedures.
+- Added mock-based tests only; no live external API calls are required by test coverage.
