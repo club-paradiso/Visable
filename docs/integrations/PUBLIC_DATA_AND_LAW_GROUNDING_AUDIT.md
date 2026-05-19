@@ -331,3 +331,11 @@ Reuse boundary:
 - Raw technical warning codes are mapped to user-friendly labels, with raw values only in collapsed technical details.
 - Default mode remains unchanged: `LAW_GROUNDING_MODE=disabled`.
 - No live external API dependency was added for this phase.
+
+## Phase 6 update (2026-05-19): live smoke-test readiness
+
+- Added controlled smoke-test runbook: `docs/integrations/LAW_GROUNDING_LIVE_SMOKE_TEST_PLAN.md`.
+- Added optional opt-in script: `scripts/smoke_law_grounding.sh` for `/health`, `/api/debug/law-grounding`, and `/api/ask` probes.
+- Production policy unchanged: `LAW_GROUNDING_MODE` default remains `disabled`.
+- No real external API dependency was added to automated tests.
+- No production law grounding was enabled in this phase.

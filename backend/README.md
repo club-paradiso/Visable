@@ -368,3 +368,10 @@ Example disabled-mode response (`LAW_GROUNDING_MODE=disabled`):
   "grounding_warnings": ["LAW_GROUNDING_DISABLED"]
 }
 ```
+
+
+## Phase 6 live smoke-test readiness
+
+- See `docs/integrations/LAW_GROUNDING_LIVE_SMOKE_TEST_PLAN.md` for the controlled smoke-test runbook.
+- Optional helper script: `scripts/smoke_law_grounding.sh` (`BACKEND_URL` defaults to `http://localhost:8000`).
+- Keep `LAW_GROUNDING_MODE=disabled` as the default; use `audit` only in controlled operator testing windows.

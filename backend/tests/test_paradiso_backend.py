@@ -1852,6 +1852,18 @@ class CitationVerificationPhase3Tests(unittest.TestCase):
         self.assertIn("LAW_GROUNDING_DISABLED", body.get("grounding_warnings", []))
         self.assertNotIn("dont-leak-this", str(body))
 
+    def test_debug_endpoint_audit_mode_missing_key_warning(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ.pop("LAW_API_KEY", None)
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={"question": "출입국관리법 제10조"})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        warnings = body.get("grounding_warnings", [])
+        self.assertTrue(
+            "LAW_API_KEY_MISSING" in warnings or "SOURCE_UNAVAILABLE" in warnings
+        )
+
     def test_debug_endpoint_empty_input_400(self):
         client, _ = _client()
         resp = client.post("/api/debug/law-grounding", json={})
