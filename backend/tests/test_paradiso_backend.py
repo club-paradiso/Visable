@@ -21,6 +21,7 @@ import os
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DIR = REPO_ROOT / "backend"
@@ -1632,6 +1633,167 @@ class GoldenEvalSuiteTests(unittest.TestCase):
         grounding = mod._select_grounding(top, task, sub)
         self.assertEqual(task, "academic_status_change")
         self.assertIsNone(grounding)
+
+
+class LawPublicDataScaffoldTests(unittest.TestCase):
+    def test_default_grounding_config_mode_is_disabled(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_GROUNDING_TIMEOUT_SECONDS", None)
+        os.environ.pop("LAW_GROUNDING_CACHE_TTL_SECONDS", None)
+        from services.grounding_config import load_grounding_config
+
+        cfg = load_grounding_config()
+        self.assertEqual(cfg.mode, "disabled")
+        self.assertGreater(cfg.timeout_seconds, 0)
+        self.assertGreater(cfg.cache_ttl_seconds, 0)
+
+    def test_disabled_law_grounding_returns_empty(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        from services.law_grounding import build_law_grounding_context
+
+        ctx = build_law_grounding_context("출입국관리법 제10조 알려줘")
+        self.assertFalse(ctx["law_grounding_used"])
+        self.assertEqual(ctx["law_grounding"], [])
+        self.assertIn("LAW_GROUNDING_DISABLED", ctx["grounding_warnings"])
+
+    def test_missing_law_api_key_in_audit_mode_is_unavailable(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ.pop("LAW_API_KEY", None)
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+
+        client = KoreanLawClient(load_grounding_config())
+        result = client.search_law("국적법 제5조")
+        self.assertEqual(result["status"], "unavailable")
+        self.assertIn("LAW_API_KEY_MISSING", result["warnings"])
+
+    def test_citation_extraction_detects_simple_korean_legal_citation(self):
+        from services.citation_verifier import extract_korean_legal_citations
+
+        result = extract_korean_legal_citations("출입국관리법 제10조 및 국적법 제5조를 확인")
+        self.assertEqual(result["status"], "extracted_only")
+        self.assertIn("CITATION_VERIFICATION_NOT_WIRED", result["warnings"])
+        self.assertGreaterEqual(len(result["citations"]), 2)
+        self.assertEqual(result["citations"][0]["law_name"], "출입국관리법")
+
+    def test_health_endpoint_still_passes(self):
+        client, _ = _client()
+        resp = client.get("/health")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(resp.json().get("status"), "ok")
+
+    def test_api_ask_behavior_unchanged_no_provider(self):
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": "D-2 비자 연장"})
+        self.assertEqual(resp.status_code, 503, resp.text)
+        self.assertEqual(resp.json()["detail"]["error"], "no_llm_provider_configured")
+
+
+class AuditModeHttpClientTests(unittest.TestCase):
+    def test_disabled_mode_law_search_performs_no_http_call(self):
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        with patch("services.korean_law_client.httpx.Client") as mocked_client:
+            result = KoreanLawClient(load_grounding_config()).search_law("출입국관리법 제10조")
+        self.assertEqual(result["status"], "disabled")
+        mocked_client.assert_not_called()
+
+    def test_audit_missing_law_key_warning(self):
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ.pop("LAW_API_KEY", None)
+        result = KoreanLawClient(load_grounding_config()).search_law("국적법 제5조")
+        self.assertIn("LAW_API_KEY_MISSING", result["warnings"])
+
+    def test_audit_missing_public_data_key_warning(self):
+        from services.grounding_config import load_grounding_config
+        from services.public_data_client import PublicDataClient
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ.pop("PUBLIC_DATA_API_KEY", None)
+        result = PublicDataClient(load_grounding_config()).fetch_visa_public_data("D-2")
+        self.assertIn("PUBLIC_DATA_API_KEY_MISSING", result["warnings"])
+
+    def test_audit_law_search_http_200(self):
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ["LAW_API_KEY"] = "secret-law-token"
+        os.environ["LAW_API_BASE_URL"] = "https://law.example.test"
+        os.environ["LAW_API_SEARCH_PATH"] = "/search"
+
+        class DummyResponse:
+            status_code = 200
+            def json(self):
+                return {"results": [{"title": "출입국관리법", "article": "제10조"}]}
+
+        class DummyClient:
+            def __init__(self, *args, **kwargs):
+                pass
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def get(self, *args, **kwargs):
+                return DummyResponse()
+
+        with patch("services.korean_law_client.httpx.Client", DummyClient):
+            result = KoreanLawClient(load_grounding_config()).search_law("출입국관리법 제10조")
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["results"][0]["title"], "출입국관리법")
+        self.assertNotIn("secret-law-token", str(result))
+
+    def test_audit_law_search_timeout(self):
+        from services.grounding_config import load_grounding_config
+        from services.korean_law_client import KoreanLawClient
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ["LAW_API_KEY"] = "secret-law-token"
+        os.environ["LAW_API_BASE_URL"] = "https://law.example.test"
+        os.environ["LAW_API_SEARCH_PATH"] = "/search"
+
+        class TimeoutClient:
+            def __init__(self, *args, **kwargs):
+                pass
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def get(self, *args, **kwargs):
+                raise TimeoutError("timed out")
+
+        with patch("services.korean_law_client.httpx.Client", TimeoutClient):
+            result = KoreanLawClient(load_grounding_config()).search_law("출입국관리법 제10조")
+        self.assertIn("LAW_API_TIMEOUT", result["warnings"])
+        self.assertNotIn("secret-law-token", str(result))
+
+    def test_audit_public_data_http_500(self):
+        from services.grounding_config import load_grounding_config
+        from services.public_data_client import PublicDataClient
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ["PUBLIC_DATA_API_KEY"] = "secret-public-token"
+        os.environ["PUBLIC_DATA_BASE_URL"] = "https://public.example.test"
+        os.environ["PUBLIC_DATA_VISA_PATH"] = "/visa"
+
+        class ServerErrorResponse:
+            status_code = 500
+            def json(self):
+                return {}
+
+        class ErrorClient:
+            def __init__(self, *args, **kwargs):
+                pass
+            def __enter__(self):
+                return self
+            def __exit__(self, *args):
+                return False
+            def get(self, *args, **kwargs):
+                return ServerErrorResponse()
+
+        with patch("services.public_data_client.httpx.Client", ErrorClient):
+            result = PublicDataClient(load_grounding_config()).fetch_visa_public_data("D-2")
+        self.assertIn("PUBLIC_DATA_HTTP_ERROR", result["warnings"])
+        self.assertNotIn("secret-public-token", str(result))
 
 
 if __name__ == "__main__":
