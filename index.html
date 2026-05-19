@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- pages-refresh: 2026-05-19-hikorea -->
+<!-- pages-refresh: 2026-05-19-ux-repair -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -1114,29 +1114,126 @@ body.searched .section-divider { display: none; }
 .visa-search-box { background: var(--bg2); border-radius: 12px; padding: 1.2rem; border: 1px solid var(--bd); }
 
 /* Manual-based result interface */
-.vc.manual-result { border-radius: 8px; overflow: clip; }
-.manual-result .vc-h { align-items: flex-start; gap: 0.8rem; border-radius: 0; }
+:root {
+    --result-page-bg: #f8f3e8;
+    --result-surface: color-mix(in srgb, var(--bg1) 98%, white);
+    --result-surface-soft: color-mix(in srgb, var(--bg0) 82%, white);
+    --result-border: color-mix(in srgb, var(--bd2) 72%, white);
+    --result-accent-soft: color-mix(in srgb, var(--ac) 9%, white);
+    --result-shadow: 0 1px 2px rgba(14,31,26,0.05), 0 10px 28px rgba(14,31,26,0.06);
+    --hikorea-primary-bg: #0f6b55;
+    --hikorea-primary-bg-hover: #0b5a47;
+}
+body.searched { background: var(--result-page-bg) !important; }
+body.searched #starCanvas { background: var(--result-page-bg); opacity: 0.08; }
+body.searched::before { opacity: 0.35; animation: none; }
+body.searched .hero-container {
+    min-height: 56px;
+    background: color-mix(in srgb, var(--result-page-bg) 94%, white);
+    border-bottom: 1px solid var(--result-border);
+    box-shadow: 0 1px 0 rgba(14,31,26,0.04);
+}
+body.searched .header-inner { padding: 0.46rem 1.05rem; gap: 0.8rem; }
+body.searched .search-wrap { max-width: 430px; }
+body.searched .sbar {
+    border-radius: 12px;
+    background: color-mix(in srgb, white 82%, var(--bg1));
+    box-shadow: none;
+}
+body.searched #q { padding-top: 0.58rem; padding-bottom: 0.58rem; }
+body.searched .smeta {
+    margin-top: 0.22rem;
+    padding: 0 0.15rem;
+    font-size: 0.68rem;
+    gap: 0.5rem;
+}
+body.searched .ctrls { gap: 0.25rem; max-width: 260px; }
+body.searched .ctrls .cb { height: 28px; padding: 0 0.58rem; font-size: 0.68rem; }
+body.searched .results-area { padding-top: 0.15rem; }
+body.searched .qf {
+    margin: 0.65rem 0 0.6rem;
+    padding-top: 0.45rem;
+    border-top-color: color-mix(in srgb, var(--bd2) 55%, transparent);
+}
+body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; background: color-mix(in srgb, white 70%, var(--bg1)); }
+.vc.manual-result {
+    border-radius: 12px;
+    overflow: clip;
+    background: var(--result-surface);
+    border-color: var(--result-border);
+    box-shadow: var(--result-shadow);
+}
+.manual-result .vc-h { align-items: flex-start; gap: 0.8rem; border-radius: 0; padding: 1rem 1.15rem 0.82rem; }
 .manual-head-main { display: grid; grid-template-columns: auto 1fr; gap: 0.75rem; min-width: 0; flex: 1; }
 .manual-title-stack { min-width: 0; }
 .manual-title-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; min-width: 0; }
-.manual-name-ko { font-size: 1.04rem; font-weight: 850; color: var(--t1); line-height: 1.35; word-break: keep-all; }
+.manual-name-ko { font-size: 1.08rem; font-weight: 850; color: var(--t1); line-height: 1.35; word-break: keep-all; }
 .manual-name-en { margin-top: 0.15rem; font-size: 0.78rem; color: var(--t3); line-height: 1.35; }
 .manual-badges { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
-.manual-badge { display: inline-flex; align-items: center; min-height: 24px; padding: 0 0.55rem; border-radius: 999px; border: 1px solid var(--bd2); background: var(--bg2); color: var(--t2); font-size: 0.7rem; font-weight: 800; line-height: 1; white-space: nowrap; }
+.manual-badge { display: inline-flex; align-items: center; min-height: 23px; padding: 0 0.52rem; border-radius: 999px; border: 1px solid var(--bd2); background: color-mix(in srgb, var(--bg2) 72%, white); color: var(--t2); font-size: 0.68rem; font-weight: 800; line-height: 1; white-space: nowrap; }
 .manual-badge.domain-visa { border-color: color-mix(in srgb, var(--ac) 28%, var(--bd)); color: var(--ac); background: color-mix(in srgb, var(--ac) 10%, transparent); }
 .manual-badge.domain-stay { border-color: color-mix(in srgb, var(--cy) 28%, var(--bd)); color: var(--hlT); background: color-mix(in srgb, var(--cy) 12%, transparent); }
 .manual-badge.review-needed { border-color: color-mix(in srgb, var(--color-warning) 35%, var(--bd)); color: #8a4b0f; background: color-mix(in srgb, var(--color-warning) 13%, transparent); }
 .manual-badge.review-ok { border-color: color-mix(in srgb, var(--color-success) 35%, var(--bd)); color: var(--color-primary-ink); background: color-mix(in srgb, var(--color-success) 12%, transparent); }
-.manual-layout { display: grid; gap: 1rem; padding: 0.2rem 1rem 1.1rem; }
-.manual-section { background: transparent; border: 1px solid var(--bd2); border-radius: 8px; padding: 0.95rem; }
-.manual-section-title { margin: 0 0 0.65rem; font-size: 0.82rem; font-weight: 900; color: var(--t1); letter-spacing: 0; }
+.manual-layout { display: grid; gap: 0.72rem; padding: 0 1rem 1rem; }
+.manual-section { background: color-mix(in srgb, white 64%, var(--bg1)); border: 1px solid var(--result-border); border-radius: 10px; padding: 0.85rem; }
+.manual-section-title { margin: 0 0 0.55rem; font-size: 0.78rem; font-weight: 900; color: var(--t1); letter-spacing: 0; }
+.next-action-panel {
+    border: 1px solid color-mix(in srgb, var(--ac) 28%, var(--bd2));
+    background: linear-gradient(135deg, color-mix(in srgb, var(--ac) 8%, white), color-mix(in srgb, var(--bg1) 96%, white));
+    border-radius: 12px;
+    padding: 0.9rem;
+}
+.next-action-title { margin: 0 0 0.6rem; font-size: 0.84rem; font-weight: 950; color: var(--t1); }
+.next-action-grid { display: grid; grid-template-columns: minmax(220px, 1.25fr) repeat(2, minmax(170px, 0.9fr)); gap: 0.55rem; }
+.next-action-btn {
+    min-width: 0;
+    min-height: 76px;
+    border: 1px solid var(--result-border);
+    border-radius: 10px;
+    background: color-mix(in srgb, white 76%, var(--bg1));
+    color: var(--t2);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.2rem;
+    padding: 0.76rem 0.86rem;
+    text-align: left;
+    font-family: var(--ff) !important;
+    transition: border-color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+.next-action-btn:hover { border-color: color-mix(in srgb, var(--ac) 45%, var(--bd2)); background: var(--result-accent-soft); transform: translateY(-1px); }
+.next-action-btn strong { color: var(--t1); font-size: 0.88rem; line-height: 1.25; }
+.next-action-btn small { color: var(--t3); font-size: 0.74rem; line-height: 1.45; font-weight: 600; word-break: keep-all; overflow-wrap: anywhere; }
+.next-action-kicker { color: var(--ac); font-size: 0.68rem; font-weight: 900; letter-spacing: 0.08em; text-transform: uppercase; }
+.next-action-btn.primary {
+    background: var(--hikorea-primary-bg);
+    border-color: var(--hikorea-primary-bg);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(15,107,85,0.18);
+}
+.next-action-btn.primary:hover { background: var(--hikorea-primary-bg-hover); border-color: var(--hikorea-primary-bg-hover); }
+.next-action-btn.primary strong,
+.next-action-btn.primary small,
+.next-action-btn.primary .next-action-kicker { color: #fff; }
+.next-action-btn.primary small { opacity: 0.86; }
 .manual-subcode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 0.55rem; }
-.manual-subcode-card { border: 1px solid var(--bd2); background: var(--bg1); border-radius: 8px; padding: 0.7rem; min-width: 0; }
+.manual-subcode-card { border: 1px solid var(--result-border); background: color-mix(in srgb, var(--bg1) 94%, white); border-radius: 8px; padding: 0.66rem; min-width: 0; }
 .manual-subcode-card.match { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 9%, var(--bg1)); box-shadow: inset 3px 0 0 var(--ac); }
 .manual-subcode-top { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.35rem; }
 .manual-subcode-code { font-weight: 900; color: var(--ac); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .manual-subcode-name { font-size: 0.82rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
 .manual-subcode-desc { font-size: 0.77rem; color: var(--t2); line-height: 1.5; word-break: keep-all; }
+.manual-subcode-more { margin-top: 0.58rem; }
+.manual-subcode-more > summary { min-height: 34px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--ac); font-size: 0.76rem; font-weight: 900; list-style: none; }
+.manual-subcode-more > summary::-webkit-details-marker { display: none; }
+.manual-subcode-more > summary::marker { display: none; content: none; }
+.manual-subcode-more .more-close { display: none; }
+.manual-subcode-more[open] .more-open { display: none; }
+.manual-subcode-more[open] .more-close { display: inline; }
+.manual-subcode-more .manual-subcode-grid { margin-top: 0.45rem; }
 .procedure-tabs { display: flex; flex-wrap: wrap; gap: 0.42rem; overflow-x: auto; padding: 0.12rem 0 0.25rem; scrollbar-width: thin; }
 .procedure-tab { flex: 0 0 auto; min-height: 36px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 999px; padding: 0 0.78rem; font: inherit; font-size: 0.76rem; font-weight: 850; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
 .procedure-tab:hover:not(:disabled) { border-color: var(--ac); color: var(--ac); background: var(--acL); }
@@ -1145,7 +1242,13 @@ body.searched .section-divider { display: none; }
 .procedure-tab:disabled { opacity: 0.45; cursor: not-allowed; }
 .procedure-panel { display: none; border-top: 1px dashed var(--bd2); margin-top: 0.78rem; padding-top: 0.92rem; }
 .procedure-panel.active { display: block; }
-.procedure-summary { margin-bottom: 0.7rem; color: var(--t2); font-size: 0.84rem; line-height: 1.65; }
+.procedure-summary { margin-bottom: 0.7rem; color: var(--t2); font-size: 0.84rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+.manual-preview { color: var(--t2); }
+.manual-detail-block { margin-top: 0.45rem; border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 70%, white); }
+.manual-detail-block > summary { min-height: 34px; display: flex; align-items: center; cursor: pointer; padding: 0 0.7rem; color: var(--t2); font-size: 0.74rem; font-weight: 900; list-style: none; }
+.manual-detail-block > summary::-webkit-details-marker { display: none; }
+.manual-detail-block > summary::marker { display: none; content: none; }
+.manual-detail-body { border-top: 1px dashed var(--result-border); padding: 0.62rem 0.72rem; color: var(--t2); font-size: 0.8rem; line-height: 1.65; }
 .doc-group-grid { display: grid; gap: 0.8rem; }
 .doc-group { border: 1px solid var(--bd2); border-left-width: 4px; border-radius: 10px; background: color-mix(in srgb, var(--bg1) 94%, white); padding: 0.72rem 0.76rem 0.76rem; min-width: 0; }
 .doc-group.group-common { border-left-color: color-mix(in srgb, var(--hl) 45%, var(--bd)); }
@@ -1166,24 +1269,29 @@ body.searched .section-divider { display: none; }
 .manual-warning-box ul, .manual-source-box ul { margin: 0.35rem 0 0; padding-left: 1.1rem; }
 .manual-source-title { font-weight: 900; color: var(--t1); margin-bottom: 0.35rem; }
 .manual-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.manual-actions .doc-trigger-btn { min-height: 38px; padding: 0.58rem 0.72rem; border-radius: 8px; flex-direction: row; font-size: 0.76rem; box-shadow: none; }
+.manual-actions .ai-btn { min-height: 38px; padding: 0 0.85rem; box-shadow: none; }
 @media (max-width: 640px) {
     .manual-head-main { grid-template-columns: 1fr; gap: 0.5rem; }
     .manual-result .vc-h { padding: 1rem; }
     .manual-layout { padding: 0.1rem 0.7rem 0.9rem; }
     .manual-section { padding: 0.8rem; }
+    .next-action-panel { padding: 0.78rem; }
+    .next-action-grid { grid-template-columns: 1fr; }
+    .next-action-btn { min-height: 68px; }
     .procedure-tabs { margin-left: -0.1rem; margin-right: -0.1rem; }
     .procedure-tab { font-size: 0.72rem; padding: 0 0.65rem; }
     .doc-group { padding: 0.68rem; }
 }
 
 /* Result card — short summary snippet */
-.vc-summary { padding: 0.6rem 0.85rem; font-size: 0.83rem; color: var(--t2); line-height: 1.6; word-break: keep-all; background: color-mix(in srgb, var(--bg2) 55%, transparent); border-radius: 6px; overflow-wrap: anywhere; }
+.vc-summary { padding: 0.68rem 0.85rem; font-size: 0.84rem; color: var(--t2); line-height: 1.55; word-break: keep-all; background: color-mix(in srgb, var(--bg2) 42%, white); border-radius: 9px; overflow-wrap: anywhere; }
 
 /* Compact caution strip */
 .vc-caution { font-size: 0.74rem; color: var(--t3); line-height: 1.55; padding: 0.45rem 0.8rem; border-left: 2px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 5%, transparent); border-radius: 0 6px 6px 0; word-break: keep-all; overflow-wrap: anywhere; }
 
 /* Source-evidence collapsible panel */
-.source-evidence-panel { border: 1px solid var(--bd2); border-radius: 8px; background: var(--bg0); overflow: hidden; }
+.source-evidence-panel { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 70%, white); overflow: hidden; }
 .source-evidence-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0.85rem; cursor: pointer; list-style: none; font-size: 0.77rem; font-weight: 900; color: var(--t1); user-select: none; }
 .source-evidence-panel > summary::-webkit-details-marker { display: none; }
 .source-evidence-panel > summary::marker { display: none; content: none; }
@@ -1219,8 +1327,8 @@ body.searched .section-divider { display: none; }
 .docs-panel.active { display: block; animation: docsPanelIn 0.18s ease; }
 @keyframes docsPanelIn { from { opacity: 0; transform: translateY(2px); } to { opacity: 1; transform: none; } }
 .docs-list { list-style: none; counter-reset: docrow; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
-.docs-list-row { counter-increment: docrow; display: grid; grid-template-columns: 1.8rem 1fr; column-gap: 0.7rem; row-gap: 0.18rem; align-items: baseline; padding: 0.55rem 0.7rem; background: var(--bg0); border: 1px solid var(--bd2); border-radius: 8px; line-height: 1.55; }
-.docs-list-row::before { content: counter(docrow) "."; grid-column: 1; color: var(--ac); font-weight: 900; font-size: 0.92rem; text-align: right; }
+.docs-list-row { counter-increment: docrow; display: grid; grid-template-columns: 1.55rem 1fr; column-gap: 0.62rem; row-gap: 0.18rem; align-items: start; padding: 0.58rem 0.68rem; background: color-mix(in srgb, white 68%, var(--bg1)); border: 1px solid var(--result-border); border-radius: 8px; line-height: 1.5; }
+.docs-list-row::before { content: "✓"; grid-column: 1; display: inline-flex; align-items: center; justify-content: center; width: 1.35rem; height: 1.35rem; border-radius: 50%; color: var(--ac); background: color-mix(in srgb, var(--ac) 10%, white); border: 1px solid color-mix(in srgb, var(--ac) 28%, var(--bd2)); font-weight: 900; font-size: 0.78rem; text-align: center; line-height: 1; margin-top: 0.08rem; }
 .docs-list-name { grid-column: 2; color: var(--t1); font-weight: 800; font-size: 0.88rem; word-break: keep-all; overflow-wrap: anywhere; }
 .docs-list-note { grid-column: 2; color: var(--t3); font-size: 0.78rem; word-break: keep-all; overflow-wrap: anywhere; }
 .docs-list-missing { color: var(--t3); font-style: italic; }
@@ -1249,8 +1357,17 @@ body.searched .section-divider { display: none; }
     .vc-summary { padding: 0.55rem 0.7rem; }
     .sep-body { padding: 0.55rem 0.7rem; }
     .manual-actions { gap: 0.4rem; }
+    .manual-actions .doc-trigger-btn,
+    .manual-actions .ai-btn { width: 100%; justify-content: center; }
     .sep-badges { gap: 0.3rem; }
     .procedure-tabs { flex-wrap: nowrap; }
+    body.searched .header-inner { flex-wrap: wrap; }
+    body.searched .logo-area { max-width: 110px; }
+    body.searched .search-wrap { order: 3; flex-basis: 100%; max-width: none; }
+    body.searched .ctrls { max-width: none; flex-wrap: wrap; justify-content: flex-start; }
+    body.searched .smeta { flex-direction: column; align-items: flex-start; line-height: 1.35; }
+    body.searched .qf { max-height: 72px; overflow: auto; padding-bottom: 0.15rem; }
+    .ai-fab { bottom: 0.75rem; right: 0.75rem; padding: 0.55rem 0.7rem; }
 }
 
 /* Ambient Glow */
@@ -7591,6 +7708,45 @@ function renderDocGroup(title, docs, keywords, groupType = '') {
     return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords)}</div>`;
 }
 
+const MANUAL_LONG_TEXT_THRESHOLD = 150;
+const MANUAL_PREVIEW_LENGTH = 112;
+
+function normalizeManualText(value) {
+    return String(value || '').replace(/\s+/g, ' ').trim();
+}
+
+function makeManualPreview(value, max = MANUAL_PREVIEW_LENGTH) {
+    const normalized = normalizeManualText(value);
+    if (normalized.length <= max) return normalized;
+    return normalized.slice(0, max).replace(/\s+\S*$/, '') + '…';
+}
+
+function isLongManualText(value, threshold = MANUAL_LONG_TEXT_THRESHOLD) {
+    const raw = String(value || '');
+    return normalizeManualText(raw).length > threshold || raw.split(/\n/).filter(Boolean).length > 2;
+}
+
+function renderManualDetailBlock(raw, keywords, threshold = MANUAL_LONG_TEXT_THRESHOLD) {
+    if (!raw) return '';
+    if (!isLongManualText(raw, threshold)) return hl(raw, keywords).replace(/\n/g, '<br>');
+    return `<span class="manual-preview">${hl(makeManualPreview(raw), keywords)}</span>
+        <details class="manual-detail-block">
+            <summary>상세 근거 보기</summary>
+            <div class="manual-detail-body">${hl(raw, keywords).replace(/\n/g, '<br>')}</div>
+        </details>`;
+}
+
+function renderLabeledManualBlock(label, value, keywords, threshold = MANUAL_LONG_TEXT_THRESHOLD) {
+    const raw = Array.isArray(value) ? value.filter(Boolean).join('\n') : String(value || '').trim();
+    if (!raw) return '';
+    return `<div class="procedure-summary"><strong>${escapeHtml(label)}</strong><br>${renderManualDetailBlock(raw, keywords, threshold)}</div>`;
+}
+
+function renderProcedureSummaryBlock(value, keywords) {
+    if (!value) return '';
+    return `<div class="procedure-summary">${renderManualDetailBlock(value, keywords)}</div>`;
+}
+
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const totalDocCount = proc.docs.commonDocs.length + proc.docs.requiredDocs.length + proc.docs.additionalDocs.length + proc.docs.conditionalDocs.length;
     const docsHtml = [
@@ -7600,9 +7756,9 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         renderDocGroup(txAt('docGroupLabels', 3, '조건부 서류'), proc.docs.conditionalDocs, keywords, 'group-conditional')
     ].filter(Boolean).join('');
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
-    const eligibilityHtml = proc.eligibility.length ? `<div class="procedure-summary"><strong>${escapeHtml(tx('eligibilityLabel'))}</strong><br>${proc.eligibility.map(x => escapeHtml(x)).join('<br>')}</div>` : '';
-    const notesHtml = proc.notes.length ? `<div class="procedure-summary"><strong>${escapeHtml(tx('notesLabel'))}</strong><br>${proc.notes.map(x => escapeHtml(x)).join('<br>')}</div>` : '';
-    const summaryHtml = proc.summary ? `<div class="procedure-summary">${hl(proc.summary, keywords)}</div>` : '';
+    const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
+    const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
+    const summaryHtml = renderProcedureSummaryBlock(proc.summary, keywords);
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
@@ -7631,15 +7787,24 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
-    const cards = subs.map(s => {
+    const renderCard = (s) => {
         const label = s.nameKo || s.name || '';
         const desc = s.summary || (Array.isArray(s.eligibility) && s.eligibility[0]) || s.note || s.addReq || tx('manualNeedsReview');
         return `<div class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}">
             <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span></div>
             <div class="manual-subcode-desc">${hl(desc, keywords)}</div>
         </div>`;
-    }).join('');
-    return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4><div class="manual-subcode-grid">${cards}</div></div>`;
+    };
+    const visibleSubs = subs.length > 4 ? subs.slice(0, 4) : subs;
+    const hiddenSubs = subs.length > 4 ? subs.slice(4) : [];
+    const cards = visibleSubs.map(renderCard).join('');
+    const moreHtml = hiddenSubs.length
+        ? `<details class="manual-subcode-more">
+            <summary><span class="more-open">세부코드 더 보기 (${hiddenSubs.length})</span><span class="more-close">접기</span></summary>
+            <div class="manual-subcode-grid">${hiddenSubs.map(renderCard).join('')}</div>
+        </details>`
+        : '';
+    return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4><div class="manual-subcode-grid">${cards}</div>${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
@@ -7716,12 +7881,37 @@ function renderManualActions(v, isVisaCode) {
     </div>`;
 }
 
+function renderNextActionArea(v, isVisaCode) {
+    if (!isVisaCode) return '';
+    return `<section class="next-action-panel" aria-label="지금 할 수 있는 일">
+        <h4 class="next-action-title">지금 할 수 있는 일</h4>
+        <div class="next-action-grid">
+            <button type="button" class="next-action-btn primary hikorea-guide-btn" data-action="open-hikorea-guide" data-vcode="${escapeHtml(v.code)}">
+                <span class="next-action-kicker">방문예약</span>
+                <strong>HiKorea 예약 도우미</strong>
+                <small>방문예약, 기관 선택, 업무 유형 선택을 단계별로 안내합니다.</small>
+            </button>
+            <button type="button" class="next-action-btn" data-action="open-doc-modal" data-vcode="${escapeHtml(v.code)}" data-type="new">
+                <span class="next-action-kicker">서류</span>
+                <strong>구비서류 확인</strong>
+                <small>최초 신청, 등록증 신청, 연장 서류 탭을 확인합니다.</small>
+            </button>
+            <button type="button" class="next-action-btn" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">
+                <span class="next-action-kicker">AI</span>
+                <strong>${escapeHtml(tx('actionAi'))}</strong>
+                <small>내 상황을 입력해 가능성과 주의사항을 점검합니다.</small>
+            </button>
+        </div>
+    </section>`;
+}
+
 function renderCardSummary(v, kw) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const raw = v.summary || v.newReq || v.extReq || '';
     if (!raw) return '';
-    const MAX = 220;
-    const trimmed = raw.length > MAX ? raw.slice(0, MAX).replace(/\s+\S*$/, '') + '…' : raw;
+    const MAX = 150;
+    const normalized = normalizeManualText(raw);
+    const trimmed = normalized.length > MAX ? normalized.slice(0, MAX).replace(/\s+\S*$/, '') + '…' : normalized;
     return `<div class="vc-summary">${hl(trimmed, kw)}</div>`;
 }
 
@@ -7753,11 +7943,11 @@ function renderDocumentTabPanel(field, panelKey, isActive) {
             const nameIsMissing = name === 'DATA_MISSING';
             const noteIsMissing = !note || note === 'DATA_MISSING';
             const nameHtml = nameIsMissing
-                ? `<span class="docs-list-name docs-list-missing">${escapeHtml('문서명 미상')}</span>`
-                : `<span class="docs-list-name">${escapeHtml(name)}</span>`;
+                ? `<div class="docs-list-name docs-list-missing">${escapeHtml('문서명 미상')}</div>`
+                : `<div class="docs-list-name">${escapeHtml(name)}</div>`;
             const noteHtml = noteIsMissing
-                ? `<span class="docs-list-note docs-list-missing">${escapeHtml('비고 정보 없음')}</span>`
-                : `<span class="docs-list-note">${escapeHtml(note)}</span>`;
+                ? `<div class="docs-list-note docs-list-missing">${escapeHtml('비고 정보 없음')}</div>`
+                : `<div class="docs-list-note">${renderManualDetailBlock(note, [], 120)}</div>`;
             return `<li class="docs-list-row">${nameHtml}${noteHtml}</li>`;
         }).join('')}</ol>`;
     return `<div class="docs-panel${isActive ? ' active' : ''}" data-docs-panel="${panelKey}" role="tabpanel">${bodyHtml}</div>`;
@@ -8034,6 +8224,7 @@ function renderResults(query){
                 ${v.cat === 'scn' ? `<div class="ai-cta" style="flex-direction:column; align-items:center; text-align:center; padding:2.5rem 1rem; background:var(--bg0);"><h4 style="color:var(--t1); font-weight:800; font-size:1.1rem; margin-bottom:0.5rem;">${tx('specialCaseTitle')}</h4><p style="font-size:0.85rem; color:var(--t3); margin-bottom:1.5rem; word-break:keep-all; max-width:400px;">${tx('specialCaseBody')}</p><button type="button" class="ai-btn" style="width:100%; max-width:320px; justify-content:center; box-shadow:var(--shD);" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${tx('specialCaseButton')}</button></div>` : `
                 <div class="manual-layout">
                     ${renderCardSummary(v, kw)}
+                    ${renderNextActionArea(v, isVisaCode)}
                     ${renderSubcodes(v, kw, ms)}
                     ${renderProcedures(v, kw)}
                     ${renderDocumentTabs(v)}
