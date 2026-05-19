@@ -247,3 +247,25 @@ Design goals:
 ### Attribution note (this audit)
 
 This document references `korean-law-mcp` only at architectural-concept level and intentionally avoids code/content reuse.
+
+---
+
+## Phase 1 implementation status (2026-05-19)
+
+Phase 1 scaffold adapters were added under `backend/services/`:
+- `grounding_config.py`
+- `public_data_client.py`
+- `korean_law_client.py`
+- `citation_verifier.py`
+- `law_grounding.py`
+
+Status and guarantees:
+- Disabled by default via `LAW_GROUNDING_MODE=disabled`.
+- No production public-data or law API calls are executed by default.
+- Adapters are not wired into `/api/ask` yet.
+- Existing `/api/ask` behavior remains unchanged in production.
+- No `korean-law-mcp` dependency added and no source copied.
+
+Recommended Phase 2:
+- Implement real law/public-data HTTP calls in `audit` mode only first,
+  with short timeouts and structured warning markers for graceful degradation.
