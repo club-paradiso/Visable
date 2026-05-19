@@ -6,6 +6,40 @@ if ! command -v python3 >/dev/null 2>&1; then
   exit 1
 fi
 
+
+TEST_PYTHON="python3"
+
+ensure_backend_test_runtime() {
+  if python3 - <<'PY' >/dev/null 2>&1
+import fastapi  # noqa: F401
+import httpx  # noqa: F401
+import pydantic  # noqa: F401
+PY
+  then
+    return 0
+  fi
+
+  echo "INFO: Backend test dependencies not found in current interpreter. Bootstrapping local .venv-check..."
+
+  if ! python3 -m venv .venv-check; then
+    echo "ERROR: Failed to create .venv-check virtual environment." >&2
+    exit 1
+  fi
+
+  if ! .venv-check/bin/python -m pip install --upgrade pip; then
+    echo "ERROR: Failed to upgrade pip in .venv-check." >&2
+    exit 1
+  fi
+
+  if ! .venv-check/bin/python -m pip install -r backend/requirements.txt; then
+    echo "ERROR: Failed to install backend requirements into .venv-check." >&2
+    echo "       Try running: .venv-check/bin/python -m pip install -r backend/requirements.txt" >&2
+    exit 1
+  fi
+
+  TEST_PYTHON=".venv-check/bin/python"
+}
+
 echo "[1/12] Validating visa_data.json format..."
 python3 -m json.tool visa_data.json > /tmp/visa_data_check.json
 
@@ -159,13 +193,14 @@ echo "[12/14] Checking required-documents rendering coverage..."
 python3 scripts/check_required_documents_coverage.py
 
 echo "[13/14] Running backend regression tests..."
-python3 backend/tests/test_paradiso_backend.py
+ensure_backend_test_runtime
+$TEST_PYTHON backend/tests/test_paradiso_backend.py
 
 echo "[14/14] Running Paradiso AI golden eval (non-strict)..."
 # Non-strict: known gaps are reported but do not fail the repo check.
 # Regression failures (a previously-passing expectation now fails) still
 # exit nonzero because the runner returns 0 in non-strict mode only when
 # there are zero regression failures.
-python3 scripts/evaluate_paradiso_ai_golden_questions.py
+${TEST_PYTHON} scripts/evaluate_paradiso_ai_golden_questions.py
 
 echo "Success: repository validation passed. JSON is valid, representative manual schema is valid, source manuals are registered, git diff check is clean, and no forbidden branding strings were found in existing key user-facing files."
