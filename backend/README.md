@@ -46,6 +46,41 @@ curl -s -X POST http://localhost:8000/api/ask \
 `/api/ask` returns `503 no_llm_provider_configured` until you set
 either `OPENROUTER_API_KEY` or `GROQ_API_KEY`.
 
+
+## Backend tests and repository validation
+
+From repo root:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r backend/requirements.txt
+python3 backend/tests/test_paradiso_backend.py
+```
+
+Or run the full repo validator:
+
+```bash
+bash scripts/check_repo.sh
+```
+
+`check_repo.sh` now auto-detects missing backend test dependencies (`fastapi`, `httpx`, `pydantic`).
+If missing, it bootstraps a local `.venv-check` and installs `backend/requirements.txt` there, then runs backend regression tests and golden eval with that interpreter.
+
+If you previously saw `ModuleNotFoundError: No module named 'fastapi'`, either:
+
+```bash
+pip install -r backend/requirements.txt
+```
+
+or re-run:
+
+```bash
+bash scripts/check_repo.sh
+```
+
+which will provision `.venv-check` automatically.
+
 ## Required and optional environment variables
 
 All variables are read from the process environment. None are baked
