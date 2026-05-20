@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <!-- pages-refresh: 2026-05-19-design-round2 -->
 <!-- pages-refresh: 2026-05-19-reminder-feature -->
+<!-- pages-refresh: 2026-05-19-figma-pixel-perfect -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -6930,6 +6931,389 @@ body.searched .smeta {
   border-color: var(--bd2);
   color: var(--t2);
 }
+
+/* ============================================================
+   FIGMA PIXEL-PERFECT LAYER — 2026-05-19
+   Final-cascade tuning to bring the production landing into
+   tighter visual alignment with the Figma Make Version 21
+   handoff (file key N695iXnoavEOSHITttdCCu).
+   Source briefs:
+     - paradiso-v21-handoff.md (Version 21 brand direction)
+     - STYLE_SOFTENING_BRIEF_(1).md (palette + typography discipline)
+     - LOWER_SECTIONS_REDESIGN_HANDOFF.md (civic glass system)
+     - VERSION_21_LOWER_SECTIONS_HANDOFF.md (section-by-section)
+     - HeroGateway.tsx (atmospheric hero tint values)
+     - StatBridge.tsx / FeatureTrust.tsx / RoadmapSection.tsx
+     - FooterCTA.tsx / AnagramBrandStory.tsx
+   All rules are additive — no markup or JS touched.
+   ============================================================ */
+
+/* ── Canonical Figma V21 design tokens ──────────────────────── */
+:root {
+  /* Brand greens (Figma Make Version 21) */
+  --pf-emerald:        #0EA37B;
+  --pf-emerald-deep:   #085E48;
+  --pf-emerald-mint:   #7DD8B8;
+  --pf-emerald-tint-2: rgba(14, 163, 123, 0.12);
+  --pf-emerald-tint-1: rgba(14, 163, 123, 0.06);
+
+  /* Atmosphere (deep emerald tint from HeroGateway hero) */
+  --pf-hero-tint:      rgba(5, 66, 52, 0.62);
+
+  /* Warm civic surfaces (LOWER_SECTIONS handoff) */
+  --pf-ivory:          #fcfaf5;
+  --pf-paper-glass:    rgba(255, 255, 255, 0.72);
+  --pf-paper-glass-hi: rgba(255, 255, 255, 0.85);
+
+  /* Coral — restricted to numeric stat accents only */
+  --pf-coral:          #FF6B5B;
+  --pf-coral-soft:     #FF8C7A;
+
+  /* Hairline dividers (civic glass) */
+  --pf-hairline:       rgba(8, 94, 72, 0.07);
+  --pf-hairline-2:     rgba(8, 94, 72, 0.12);
+
+  /* Type rhythm (StyleSofteningBrief weight discipline) */
+  --pf-w-display:      700;
+  --pf-w-strong:       800;
+  --pf-w-body:         500;
+  --pf-w-meta:         400;
+
+  /* Eased transitions (Figma motion tokens) */
+  --pf-ease:           cubic-bezier(0.16, 1, 0.30, 1);
+  --pf-dur-fast:       180ms;
+  --pf-dur-norm:       320ms;
+
+  /* 3-tier soft shadow ladder (StyleSofteningBrief 3-2) */
+  --pf-shadow-float:   0 2px 4px rgba(8,94,72,0.04), 0 8px 24px rgba(8,94,72,0.05);
+  --pf-shadow-lift:    0 1px 3px rgba(8,94,72,0.06), 0 4px 12px rgba(8,94,72,0.06);
+  --pf-shadow-press:   0 1px 2px rgba(8,94,72,0.06);
+  --pf-highlight-top:  inset 0 1px 0 rgba(255,255,255,0.65);
+}
+
+/* ── 1 · Hero atmosphere — emerald-tinted overlay (HeroGateway) ── */
+body:not(.searched) .hero-container::before {
+  background:
+    linear-gradient(160deg, var(--pf-hero-tint) 0%, rgba(11, 35, 28, 0.66) 100%),
+    url("assets/hero/ws-chae--jVX4mW1Uac-unsplash.jpg") center 42% / cover no-repeat,
+    #0d1f1b;
+}
+@media (max-width: 640px) {
+  body:not(.searched) .hero-container::before {
+    background:
+      linear-gradient(160deg, rgba(5,66,52,0.68) 0%, rgba(11, 35, 28, 0.70) 100%),
+      url("assets/hero/ws-chae--jVX4mW1Uac-unsplash.jpg") center 28% / cover no-repeat,
+      #0d1f1b;
+  }
+}
+@media (max-width: 768px) {
+  body:not(.searched) .hero-container::before {
+    background:
+      linear-gradient(160deg, rgba(5,66,52,0.70) 0%, rgba(11, 35, 28, 0.72) 100%),
+      url("assets/hero/ws-chae--jVX4mW1Uac-unsplash.jpg") center 30% / cover no-repeat,
+      #0d1f1b;
+  }
+}
+
+/* ── 2 · Brush wordmark — match HeroGateway drop-shadow ─────── */
+body:not(.searched) .brand-wordmark-img {
+  filter: drop-shadow(0 6px 40px rgba(0,0,0,0.40));
+}
+
+/* ── 3 · Brand bridge gradient — emerald (StyleSofteningBrief 3-4) ── */
+.brand-hero,
+.brand-hero.figma-brand-bridge,
+#brandHero.figma-brand-bridge {
+  background: linear-gradient(160deg,
+    var(--pf-emerald-deep) 0%,
+    var(--pf-emerald) 50%,
+    var(--pf-emerald-deep) 100%) !important;
+}
+.brand-hero::before,
+#brandHero.figma-brand-bridge::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(60% 50% at 15% 20%, rgba(125,216,184,0.18), transparent 60%),
+    radial-gradient(40% 35% at 85% 80%, rgba(255,255,255,0.08), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+.brand-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── 4 · Brand-hero subtitle — refined tracking ─────────────── */
+.brand-hero-subtitle {
+  letter-spacing: 0.2em;
+  font-weight: 600;
+  opacity: 0.82;
+}
+
+/* ── 5 · Stat card — softer civic shadow + tier-1 hover lift ── */
+.brand-hero-stats.figma-stat-grid .stat-card {
+  transition:
+    transform var(--pf-dur-fast) var(--pf-ease),
+    box-shadow var(--pf-dur-fast) var(--pf-ease);
+}
+.brand-hero-stats.figma-stat-grid .stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--pf-shadow-float);
+}
+/* Tighten stat-num letter-spacing toward Figma ref (-0.04em) */
+.brand-hero-stats .stat-num {
+  letter-spacing: -0.04em;
+  font-weight: 800;
+}
+
+/* ── 6 · Feature checklist gradient — Figma exact stops ─────── */
+.figma-feature-checklist {
+  background: linear-gradient(135deg, #b2ede4, #7dd3e8) !important;
+}
+
+/* ── 7 · Value-card icon — enlarged to Figma scale ──────────── */
+.hobby-card.figma-value-card .hobby-icon,
+.about-hobbies .hobby-card .hobby-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.6rem;
+  border-radius: 14px;
+}
+@media (max-width: 480px) {
+  .hobby-card.figma-value-card .hobby-icon,
+  .about-hobbies .hobby-card .hobby-icon {
+    width: 2.8rem;
+    height: 2.8rem;
+    font-size: 1.45rem;
+  }
+}
+
+/* ── 8 · Roadmap dot — restrict palette to emerald ──────────── */
+.figma-roadmap-section .exp-dot,
+.about-experience .exp-dot {
+  background: var(--pf-emerald) !important;
+  box-shadow:
+    0 0 0 5px rgba(14, 163, 123, 0.22),
+    0 2px 6px rgba(14, 163, 123, 0.08) !important;
+}
+.figma-roadmap-section .exp-row:hover .exp-dot,
+.about-experience .exp-row:hover .exp-dot {
+  box-shadow:
+    0 0 0 7px rgba(14, 163, 123, 0.32),
+    0 4px 10px rgba(14, 163, 123, 0.12) !important;
+}
+
+/* ── 9 · Anagram-section warm peach saturation (parity 7.2) ── */
+.figma-anagram-section {
+  background: linear-gradient(135deg,
+    rgba(255, 184, 168, 0.24) 0%,
+    transparent 75%) !important;
+}
+
+/* ── 10 · Hairline section divider (civic glass discipline) ──*/
+.figma-feature-section,
+.figma-anagram-section,
+.figma-start-section,
+.figma-values-section,
+.figma-roadmap-section {
+  position: relative;
+}
+
+/* ── 11 · Search bar — landing-mode glass refinement ────────── */
+body:not(.searched) .sbar {
+  border-radius: 1rem !important;
+  border-width: 1px !important;
+  box-shadow:
+    0 16px 48px -8px rgba(0, 0, 0, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10) !important;
+}
+body:not(.searched) .sbar-go {
+  color: var(--pf-emerald);
+}
+body:not(.searched) .sbar-go:hover {
+  color: var(--pf-emerald-deep);
+}
+
+/* ── 12 · Keyword chips — refined hover (civic glass) ───────── */
+body:not(.searched) .lh {
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  transition:
+    transform var(--pf-dur-fast) var(--pf-ease),
+    background var(--pf-dur-fast) var(--pf-ease),
+    border-color var(--pf-dur-fast) var(--pf-ease),
+    color var(--pf-dur-fast) var(--pf-ease);
+}
+body:not(.searched) .lh:hover {
+  transform: translateY(-2px);
+}
+
+/* ── 13 · HiKorea landing CTA — Figma emerald conformance ──── */
+.hikorea-landing-cta {
+  background: linear-gradient(135deg,
+    var(--pf-emerald-deep) 0%,
+    var(--pf-emerald) 60%,
+    #12b88c 100%) !important;
+  box-shadow:
+    0 6px 24px rgba(14, 163, 123, 0.30),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+}
+.hikorea-landing-cta:hover {
+  box-shadow:
+    0 10px 32px rgba(14, 163, 123, 0.40),
+    inset 0 1px 0 rgba(255, 255, 255, 0.16) !important;
+  transform: translateY(-2px);
+}
+
+/* ── 14 · Footer-hero eyebrow — Figma mint accent ───────────── */
+.figma-footer-hero-content .footer-hero-eyebrow {
+  color: var(--pf-emerald-mint);
+  letter-spacing: 0.25em;
+  font-weight: 700;
+}
+
+/* ── 15 · Footer chips — restored mint ring on hover ────────── */
+.figma-footer-chips .footer-chip {
+  transition:
+    background var(--pf-dur-fast) var(--pf-ease),
+    border-color var(--pf-dur-fast) var(--pf-ease);
+}
+.figma-footer-chips .footer-chip:hover {
+  background: rgba(125, 216, 184, 0.20);
+  border-color: rgba(125, 216, 184, 0.45);
+}
+
+/* ── 16 · Section dividers — civic hairlines ─────────────────  */
+.section-divider {
+  border-top: 1px solid var(--pf-hairline);
+  margin: 0 auto;
+  max-width: 90rem;
+}
+
+/* ── 17 · Card hover micro-physics (transition refinement) ──── */
+.figma-value-card,
+.about-experience .exp-row,
+.figma-feature-section .check-list li {
+  transition:
+    transform var(--pf-dur-norm) var(--pf-ease),
+    box-shadow var(--pf-dur-norm) var(--pf-ease),
+    border-color var(--pf-dur-norm) var(--pf-ease);
+}
+
+/* ── 18 · Result card searched-state — keep paper surface, polish meta ── */
+body.searched .vc.manual-result .vc-summary {
+  letter-spacing: -0.005em;
+}
+body.searched .vc.manual-result .manual-section-title {
+  color: var(--pf-emerald-deep);
+}
+
+/* ── 19 · Mobile 390px — tighten hero spacing without breaking ── */
+@media (max-width: 480px) {
+  body:not(.searched) .hero-container {
+    padding-top: 2.75rem;
+    padding-bottom: 2rem;
+  }
+  body:not(.searched) .brand-wordmark-img {
+    margin-bottom: 0.25rem;
+  }
+  .hikorea-landing-cta {
+    margin-top: 0.85rem;
+  }
+  .hikorea-cta-title {
+    font-size: 0.95rem;
+  }
+}
+
+/* ── 20 · Brand-hero buttons — refined Figma white-pill ─────── */
+.brand-hero .btn-primary {
+  background: #fff !important;
+  color: var(--pf-emerald-deep) !important;
+  border-color: rgba(255,255,255,0.95) !important;
+}
+.brand-hero .btn-primary:hover {
+  background: var(--pf-emerald-mint) !important;
+  color: var(--pf-emerald-deep) !important;
+  box-shadow: 0 8px 22px rgba(14, 163, 123, 0.35) !important;
+}
+.brand-hero .btn-secondary {
+  background: transparent !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.55) !important;
+}
+.brand-hero .btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12) !important;
+  border-color: #fff !important;
+}
+
+/* ── 21 · Feature section emerald check-icon — refined glow ─── */
+.figma-feature-section .check-icon {
+  background: var(--pf-emerald) !important;
+  box-shadow: 0 2px 8px rgba(14, 163, 123, 0.35) !important;
+}
+
+/* ── 22 · About title — refined display weight (StyleSoftening 3-1) ── */
+.about-title {
+  font-weight: var(--pf-w-display);
+  letter-spacing: -0.025em;
+}
+
+/* ── 23 · Reduce coral usage — restrict to stat accents only ── */
+.figma-anagram-section .philosophy-list li::before {
+  color: var(--pf-coral);
+}
+.manual-result .manual-section-title {
+  color: var(--pf-emerald-deep);
+}
+.manual-result .next-action-title {
+  color: var(--pf-emerald-deep);
+}
+
+/* ── 24 · Dark mode safety — keep emerald brand on dark scrolled ── */
+[data-theme="dark"] .brand-hero,
+[data-theme="dark"] .brand-hero.figma-brand-bridge,
+[data-theme="dark"] #brandHero.figma-brand-bridge {
+  background: linear-gradient(160deg,
+    #0a3d2f 0%,
+    #0b7256 50%,
+    #0a3d2f 100%) !important;
+}
+[data-theme="dark"] .figma-roadmap-section .exp-dot,
+[data-theme="dark"] .about-experience .exp-dot {
+  background: #34D4A8 !important;
+  box-shadow:
+    0 0 0 5px rgba(52, 212, 168, 0.22),
+    0 2px 6px rgba(52, 212, 168, 0.10) !important;
+}
+[data-theme="dark"] .hikorea-landing-cta {
+  background: linear-gradient(135deg, #0a6f55 0%, #0EA37B 60%, #14c697 100%) !important;
+}
+
+/* ── 25 · prefers-reduced-motion safety ─────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .brand-hero-stats.figma-stat-grid .stat-card,
+  .figma-value-card,
+  .about-experience .exp-row,
+  body:not(.searched) .lh,
+  .hikorea-landing-cta,
+  .figma-footer-chips .footer-chip,
+  .figma-feature-section .check-list li {
+    transition: none !important;
+  }
+  .brand-hero-stats.figma-stat-grid .stat-card:hover,
+  .figma-value-card:hover,
+  body:not(.searched) .lh:hover,
+  .hikorea-landing-cta:hover {
+    transform: none !important;
+  }
+}
+
+/* ============================================================
+   END FIGMA PIXEL-PERFECT LAYER
+   ============================================================ */
 
 </style>
 <script>
