@@ -7,5 +7,6 @@ node_modules
 
 # Python virtualenv and bytecode
 .venv/
+.venv-check/
 __pycache__/
 *.pyc
