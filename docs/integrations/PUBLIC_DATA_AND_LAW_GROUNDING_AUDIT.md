@@ -339,3 +339,15 @@ Reuse boundary:
 - Production policy unchanged: `LAW_GROUNDING_MODE` default remains `disabled`.
 - No real external API dependency was added to automated tests.
 - No production law grounding was enabled in this phase.
+
+---
+
+## Phase 7 live smoke status (2026-05-20)
+
+- Added results log: `docs/integrations/LAW_GROUNDING_LIVE_SMOKE_RESULTS.md`.
+- Disabled-mode smoke: **blocked** (live backend unreachable from this execution environment; transport 403 tunnel failure).
+- Audit missing-key smoke: **not executed** (no safe controlled env-var toggle available in this environment).
+- Audit configured smoke: **pending** (operator-provided secure env vars not available here).
+- Current rollout decision: **NOT_READY**.
+
+Phase 7 follow-up requires operator-confirmed backend URL and a reachable execution path to rerun controlled smoke commands and collect application-level law-grounding evidence.
