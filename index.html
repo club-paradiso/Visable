@@ -2,6 +2,7 @@
 <!-- pages-refresh: 2026-05-19-design-round2 -->
 <!-- pages-refresh: 2026-05-19-reminder-feature -->
 <!-- pages-refresh: 2026-05-19-figma-pixel-perfect -->
+<!-- pages-refresh: 2026-05-20-bugfix-wordmark-counts -->
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
@@ -7393,13 +7394,10 @@ body.searched .vc.manual-result .manual-section-title {
                 </g>
                 <circle cx="60" cy="60" r="54" fill="none" stroke="var(--color-primary-ink)" stroke-width="2"/>
             </svg>
-            <div class="logo-text">
-                <h1 class="logo-brand">
-                    <span class="al" data-i="0" data-tgt="4"><span class="src">P</span><span class="tgt">p</span></span><span class="al" data-i="1" data-tgt="2"><span class="src">a</span><span class="tgt">a</span></span><span class="al" data-i="2" data-tgt="6"><span class="src">r</span><span class="tgt">r</span></span><span class="al" data-i="3" data-tgt="7"><span class="src">a</span><span class="tgt">a</span></span><span class="al" data-i="4" data-tgt="0"><span class="src">d</span><span class="tgt">D</span></span><span class="al" data-i="5" data-tgt="1"><span class="src">i</span><span class="tgt">i</span></span><span class="al" data-i="6" data-tgt="3"><span class="src">s</span><span class="tgt">s</span></span><span class="al" data-i="7" data-tgt="5"><span class="src">o</span><span class="tgt">o</span></span>
+            <!-- pages-refresh: 2026-05-20-bugfix-wordmark-counts -->
+            <!-- Wordmark text removed: the brush image (.brand-wordmark-img) is the canonical wordmark in both landing and searched states. -->
+            <!-- The previous .logo-brand contained interleaved .src/.tgt spans for an anagram morph that was never visible (always hidden behind the brush image) and rendered as "PpaarraadDiissoo" when the hide rule lost the cascade. -->
 
-                </h1>
-                <span class="logo-sub">비자·체류 정보 안내 플랫폼</span>
-            </div>
         </div>
 
         <section class="p-hero-copy" aria-labelledby="pHeroTitle">
@@ -11596,11 +11594,36 @@ function setSearchEnabled(enabled) {
 }
 
 
+function updateCategoryCounts() {
+    if (!Array.isArray(VISA_DATA) || !VISA_DATA.length) return;
+    const CAT_MAP = {
+        'stat-work':      new Set(['work', 'invest']),
+        'stat-study':     new Set(['study']),
+        'stat-residence': new Set(['family']),
+        'stat-visit':     new Set(['short', 'other', 'diplo', 'etc']),
+    };
+    const buckets = { 'stat-work': new Set(), 'stat-study': new Set(), 'stat-residence': new Set(), 'stat-visit': new Set() };
+    VISA_DATA.forEach(v => {
+        const cat = v && v.cat;
+        const code = v && v.code;
+        if (!cat || !code) return;
+        Object.keys(CAT_MAP).forEach(id => { if (CAT_MAP[id].has(cat)) buckets[id].add(code); });
+    });
+    Object.keys(buckets).forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const n = String(buckets[id].size);
+        el.dataset.count = n;
+        const card = el.closest('.stat-card');
+        if (card && card.classList.contains('revealed')) el.textContent = n;
+    });
+}
+
 async function loadVisaData() {
     const parse = (raw) => injectLocalData(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : (Array.isArray(raw?.visas) ? raw.visas : [])));
     const applySuccess = (arr, label) => {
         VISA_DATA = arr; dataReady = true; if(rcEl) rcEl.textContent = tx('dataReady', { count: VISA_DATA.length, source: label });
-        setSearchEnabled(true); initUI();
+        setSearchEnabled(true); initUI(); updateCategoryCounts();
     };
     try {
         if (!API_BASE) throw new Error("Local");
