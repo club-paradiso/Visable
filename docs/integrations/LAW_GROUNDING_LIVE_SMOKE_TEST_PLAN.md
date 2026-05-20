@@ -108,3 +108,6 @@ Production `enabled` mode is blocked until all are satisfied:
 - **`LAW_GROUNDING_MODE=disabled` remains default.**
 - **`audit` mode is controlled testing only.**
 - **`enabled` mode must not be used until live endpoint behavior is verified.**
+
+## Phase 7 execution note
+Before running live smoke, confirm the exact active backend URL with an operator (the repository contains legacy Railway URL references). Do not guess unknown targets. If the execution environment cannot reach Railway (e.g., proxy/tunnel 403), record the blocker and mark live smoke as pending instead of reporting synthetic success.
