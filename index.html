@@ -7316,6 +7316,254 @@ body.searched .vc.manual-result .manual-section-title {
    END FIGMA PIXEL-PERFECT LAYER
    ============================================================ */
 
+/* ============================================================
+   PHASE: STRUCTURAL RESULT-CARD HIERARCHY — 2026-05-21
+   CSS-only structural pass over JS-emitted result card markup.
+   Goal: sharpen the 9-step scan path
+   (1) base code + name → (2) domain badge → (3) review/verify
+   → (4) explicit subcodes → (5) procedure segmented control
+   → (6) procedure-specific document groups
+   → (7) common warning → (8) source reference → (9) optional actions
+   No JS function bodies were touched. All selectors target
+   classes already emitted by renderResults / renderSubcodes /
+   renderProcedures / renderDocumentTabs / renderSourceEvidencePanel.
+   ============================================================ */
+
+/* (1)+(2)+(3) Card header — quieter secondary badges to reduce
+   clutter; keep domain + review badges legible, mute period/data */
+.manual-result .manual-head-main { gap: 0.85rem; }
+.manual-result .manual-title-stack { display: flex; flex-direction: column; gap: 0.18rem; min-width: 0; }
+.manual-result .manual-badges { gap: 0.32rem; margin-top: 0.55rem; align-items: center; }
+/* Domain + review keep their accent treatment, period/data fade
+   to a single neutral chip family so they don't compete for scan */
+.manual-result .manual-badges > .manual-badge:not(.domain-visa):not(.domain-stay):not(.review-needed):not(.review-ok) {
+  border-color: color-mix(in srgb, var(--p-line) 55%, transparent);
+  background: color-mix(in srgb, var(--p-paper-surface-2) 50%, #fff);
+  color: var(--p-ink-mute);
+  font-weight: 700;
+}
+
+/* Section kicker rhythm — same uppercase eyebrow on every
+   .manual-section-title and .next-action-title so the
+   scan path reads top-to-bottom as 6 obvious blocks */
+.manual-result .manual-section-title,
+.manual-result .next-action-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* (4) Subcode section: clearer "explicit subcode" intent — soften
+   non-matching cards, emphasise matched */
+.manual-result .manual-subcode-card:not(.match) {
+  background: color-mix(in srgb, var(--p-paper-surface-2) 24%, #fff);
+}
+
+/* (5) Procedure segmented control: subtle group container so
+   the tabs read as a single segmented control, not a chip row */
+.manual-result .procedure-tabs {
+  padding: 0.35rem;
+  background: color-mix(in srgb, var(--p-paper-surface-2) 55%, #fff);
+  border: 1px solid color-mix(in srgb, var(--p-line) 45%, white);
+  border-radius: 12px;
+  gap: 0.3rem;
+}
+.manual-result .procedure-tabs .procedure-tab {
+  border-color: transparent;
+  background: transparent;
+}
+.manual-result .procedure-tabs .procedure-tab.active {
+  background: var(--p-emerald);
+  border-color: var(--p-emerald);
+  color: #fff;
+  box-shadow: 0 2px 8px -2px rgba(14,163,123,0.45);
+}
+
+/* (6) Procedure-specific document groups — clearer
+   visual separation between bucket types.
+   Buckets: common / required / additional / conditional /
+   missing-or-unverified. JS already emits group-common,
+   group-required, group-additional, group-conditional. */
+.manual-result .doc-group-grid { gap: 0.7rem; }
+.manual-result .doc-group { border-left-width: 4px; padding: 0.78rem 0.85rem 0.85rem; }
+.manual-result .doc-group.group-common {
+  border-left-color: color-mix(in srgb, var(--p-ink-mute) 55%, transparent);
+  background: color-mix(in srgb, var(--p-paper-surface-2) 22%, #fff);
+}
+.manual-result .doc-group.group-required {
+  border-left-color: var(--p-emerald);
+  background: color-mix(in srgb, var(--p-emerald) 5%, #fff);
+}
+.manual-result .doc-group.group-additional {
+  border-left-color: color-mix(in srgb, var(--color-warning) 55%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 4%, #fff);
+}
+.manual-result .doc-group.group-conditional {
+  border-left-color: #b07ad0;
+  background: color-mix(in srgb, #b07ad0 4%, #fff);
+}
+/* Optional fifth bucket for future "missing / unverified" group —
+   styling shell only; JS does not currently emit `group-missing` */
+.manual-result .doc-group.group-missing {
+  border-left-color: color-mix(in srgb, var(--color-warning) 70%, transparent);
+  background: color-mix(in srgb, var(--color-warning) 8%, #fff);
+  border-style: dashed;
+}
+.manual-result .doc-group.group-missing .doc-group-title {
+  color: #8a4b0f;
+}
+/* The existing docs-missing-notice (JS-emitted) — keep visible
+   per DATA_MISSING contract, don't hide */
+.manual-result .docs-missing-notice {
+  display: block;
+  margin-top: 0.6rem;
+}
+/* docs-list-missing rows: italic, dimmed, but never hidden */
+.manual-result .docs-list-missing {
+  font-style: italic;
+  color: var(--p-ink-mute);
+}
+
+/* (7) Common warning — slightly more visible label inline */
+.manual-result .vc-caution::before {
+  content: "주의 · CAUTION";
+  display: block;
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: color-mix(in srgb, var(--color-warning) 80%, #6a3a04);
+  margin-bottom: 0.25rem;
+}
+
+/* (8) Source / grounding panel — readability improvements
+   Make the sep-badges row read as state-disclosure (manual /
+   public / legal / internal) without overclaiming verification. */
+.manual-result .source-evidence-panel > summary {
+  padding: 0.75rem 1rem;
+}
+.manual-result .source-evidence-panel .sep-body {
+  padding: 0.8rem 1rem;
+}
+.manual-result .sep-badges { gap: 0.45rem; margin-bottom: 0.65rem; }
+.manual-result .sep-badge {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+/* Honest disclosure states. JS does not yet emit these state
+   variants — present as CSS shell so a future PR that wires
+   law-grounding status can add a class without re-styling. */
+.manual-result .sep-badge.disabled,
+.manual-result .sep-badge.not-wired,
+.manual-result .sep-badge.partial,
+.manual-result .sep-badge.extracted-only,
+.manual-result .sep-badge.source-linked-unverified {
+  background: color-mix(in srgb, var(--p-paper-surface-2) 60%, #fff);
+  border-color: color-mix(in srgb, var(--p-line) 60%, transparent);
+  color: var(--p-ink-mute);
+}
+.manual-result .sep-badge.disabled::before     { content: "● "; opacity: 0.55; }
+.manual-result .sep-badge.not-wired::before    { content: "○ "; opacity: 0.7; }
+.manual-result .sep-badge.partial::before      { content: "◐ "; opacity: 0.8; }
+.manual-result .sep-badge.failed {
+  background: color-mix(in srgb, var(--color-warning) 12%, #fff);
+  border-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
+  color: #8a4b0f;
+}
+/* sep-note: keep DATA_MISSING / "출처 정보 없음" visible */
+.manual-result .source-evidence-panel .sep-note {
+  font-size: 0.78rem;
+  color: var(--p-ink-3);
+  line-height: 1.6;
+}
+
+/* (9) Optional actions row — calmer, never a primary CTA */
+.manual-result .manual-actions { padding-top: 0.85rem; padding-bottom: 1.05rem; }
+.manual-result .manual-actions .doc-trigger-btn,
+.manual-result .manual-actions .ai-btn {
+  min-height: 40px;
+  padding: 0 0.85rem;
+  font-weight: 700;
+}
+
+/* HiKorea CTA inside the result card next-action-panel:
+   strengthen as the visually distinct primary path, but never
+   alarmist. JS already places .next-action-btn.primary.hikorea-guide-btn
+   first in the grid; we just emphasise focus-ring + accessible label. */
+.manual-result .next-action-btn.primary.hikorea-guide-btn:focus-visible {
+  outline: 3px solid color-mix(in srgb, #fff 70%, var(--p-emerald));
+  outline-offset: 3px;
+}
+
+/* (Cross-cutting) header data-date footer line: clearer "last
+   verified" framing without overclaiming */
+.manual-result .data-date {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.manual-result .data-date::before {
+  content: "🕓";
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Mobile 390px tightening: prevent horizontal overflow,
+   keep document tabs scrolling within their own row only,
+   one-column doc groups, HiKorea CTA stays full width. */
+@media (max-width: 480px) {
+  .manual-result {
+    overflow: hidden;
+  }
+  .manual-result .manual-layout > * {
+    padding-left: 0.95rem !important;
+    padding-right: 0.95rem !important;
+  }
+  .manual-result .manual-layout > .vc-caution {
+    margin-left: 0.95rem;
+    margin-right: 0.95rem;
+  }
+  .manual-result .manual-layout > .source-evidence-panel {
+    margin-left: 0.95rem;
+    margin-right: 0.95rem;
+  }
+  /* Procedure tabs may scroll inside their own row only */
+  .manual-result .procedure-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    margin-left: -0.2rem;
+    margin-right: -0.2rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+  }
+  .manual-result .procedure-tabs .procedure-tab { flex: 0 0 auto; }
+  /* Document groups stack single-column for readability */
+  .manual-result .doc-group-grid { grid-template-columns: 1fr !important; gap: 0.55rem; }
+  /* Sep-badges wrap cleanly */
+  .manual-result .sep-badges { flex-wrap: wrap; }
+  /* HiKorea CTA stays visible and usable */
+  .manual-result .next-action-btn.primary.hikorea-guide-btn {
+    padding-right: 2.5rem;
+  }
+  /* Manual actions full-width buttons on narrow phones */
+  .manual-result .manual-actions { flex-direction: column; align-items: stretch; }
+  .manual-result .manual-actions .doc-trigger-btn,
+  .manual-result .manual-actions .ai-btn { width: 100%; justify-content: center; }
+}
+
+/* No-overflow guard for the entire result page */
+@media (max-width: 480px) {
+  body.searched #rlist { overflow-x: hidden; }
+  body.searched .vc.manual-result { max-width: 100%; }
+}
+
+/* ============================================================
+   END STRUCTURAL RESULT-CARD HIERARCHY
+   ============================================================ */
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
