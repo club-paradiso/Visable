@@ -632,6 +632,279 @@
                 transform: none;
             }
         }
+
+        /* ============================================================
+           PHASE: PARADISO.AI STRUCTURED ANSWER CARD SHELL — 2026-05-21
+           CSS-only + hidden HTML template preparation.
+           Maps to docs/ai/ANSWER_QUALITY_CONTRACT.md §3 slots.
+           NO JS function bodies in ai.html were modified by this
+           phase. Slots are not yet wired into appendAiAnswer().
+           A future PR is required to render real data into each slot;
+           until then, the existing .answer-card layout remains
+           authoritative.
+           ============================================================ */
+
+        .pa-answer-card {
+            display: grid;
+            gap: var(--sp-3);
+            padding: var(--sp-4);
+            border-radius: 16px;
+            border: 1px solid var(--bd2);
+            background: linear-gradient(180deg, rgba(17,59,50,0.96), rgba(11,42,36,0.94));
+            color: var(--t1);
+            font-family: var(--ff);
+        }
+        .pa-answer-card[hidden] { display: none; }
+
+        /* Slot: short answer (1–3 sentences, plain language) */
+        .pa-slot { display: grid; gap: 0.35rem; min-width: 0; }
+        .pa-slot-kicker {
+            font-size: 0.66rem;
+            font-weight: 800;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--ac);
+        }
+        .pa-slot-body {
+            color: var(--t1);
+            font-size: 0.95rem;
+            line-height: 1.65;
+            overflow-wrap: anywhere;
+            word-break: keep-all;
+        }
+        .pa-slot.pa-short-answer .pa-slot-body {
+            font-size: 1.02rem;
+            line-height: 1.7;
+            font-weight: 700;
+        }
+        .pa-slot.pa-short-answer { border-bottom: 1px dashed var(--bd2); padding-bottom: var(--sp-3); }
+
+        /* Slot: interpreted intent */
+        .pa-slot.pa-interpreted-intent .pa-slot-body {
+            color: var(--t2);
+            font-style: italic;
+            font-size: 0.88rem;
+        }
+
+        /* Slot: detected visa / status / topic */
+        .pa-topic-row { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+        .pa-topic-chip {
+            display: inline-flex; align-items: center; gap: 0.3rem;
+            min-height: 28px; padding: 0.2rem 0.65rem;
+            border-radius: 999px;
+            border: 1px solid rgba(52,212,168,0.45);
+            background: rgba(52,212,168,0.12);
+            color: var(--ac);
+            font-size: 0.76rem; font-weight: 800;
+        }
+        .pa-topic-chip.pa-topic-unknown {
+            border-color: var(--bd);
+            background: rgba(244,238,224,0.04);
+            color: var(--t3);
+        }
+
+        /* Slot: required documents — five buckets per §3.3 of the
+           Answer Quality Contract: common / required / conditional /
+           additional / missing_or_unverified. DATA_MISSING must
+           remain visible — `missing_or_unverified` never collapses. */
+        .pa-doc-buckets { display: grid; gap: 0.55rem; }
+        .pa-doc-bucket {
+            border: 1px solid var(--bd2);
+            border-left-width: 3px;
+            border-radius: 10px;
+            padding: 0.7rem 0.8rem;
+            background: rgba(24,75,64,0.42);
+        }
+        .pa-doc-bucket-title {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-size: 0.78rem; font-weight: 800; color: var(--t1);
+            margin-bottom: 0.4rem;
+        }
+        .pa-doc-bucket-list {
+            list-style: none; margin: 0; padding: 0;
+            display: flex; flex-direction: column; gap: 0.3rem;
+            font-size: 0.84rem; color: var(--t2); line-height: 1.55;
+        }
+        .pa-doc-bucket-list li {
+            padding-left: 1.1rem; position: relative;
+        }
+        .pa-doc-bucket-list li::before {
+            content: "·";
+            position: absolute; left: 0.35rem; top: 0;
+            color: var(--ac); font-weight: 800;
+        }
+        .pa-doc-bucket--common      { border-left-color: var(--t3); }
+        .pa-doc-bucket--required    { border-left-color: var(--ac); }
+        .pa-doc-bucket--conditional { border-left-color: #b07ad0; }
+        .pa-doc-bucket--additional  { border-left-color: var(--warning); }
+        .pa-doc-bucket--missing {
+            border-left-color: var(--warning);
+            border-style: dashed;
+            background: color-mix(in srgb, var(--warning) 8%, transparent);
+        }
+        .pa-doc-bucket--missing .pa-doc-bucket-title { color: #f3c98b; }
+        .pa-doc-bucket--missing .pa-doc-bucket-list { color: #f3c98b; }
+
+        /* Slot: procedure steps (ordered list) */
+        .pa-procedure-steps {
+            list-style: decimal;
+            padding-left: 1.5rem;
+            margin: 0;
+            display: flex; flex-direction: column; gap: 0.45rem;
+            color: var(--t1);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .pa-procedure-steps li { padding-left: 0.25rem; }
+        .pa-procedure-steps li::marker { color: var(--ac); font-weight: 800; }
+
+        /* Slot: fees / appointment */
+        .pa-fees-list { display: flex; flex-direction: column; gap: 0.35rem; }
+        .pa-fee-row {
+            display: flex; justify-content: space-between; gap: 0.6rem;
+            font-size: 0.86rem; color: var(--t2);
+        }
+        .pa-fee-amount { color: var(--ac); font-weight: 800; font-variant-numeric: tabular-nums; }
+        .pa-fee-note { color: var(--t3); font-size: 0.76rem; }
+        .pa-appointment-line {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.86rem; color: var(--t2);
+        }
+        .pa-appointment-line::before {
+            content: "📅"; font-size: 0.95rem;
+        }
+
+        /* Slot: HiKorea guidance — preserves the open-hikorea-guide
+           contract; the static index.html landing button stays
+           authoritative for HiKorea booking. Here it's an inline note. */
+        .pa-hikorea-line {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.86rem; color: var(--t2);
+        }
+        .pa-hikorea-line::before {
+            content: "📋"; font-size: 0.95rem;
+        }
+
+        /* Slot: source summary + per-source verification chips */
+        .pa-source-summary {
+            font-size: 0.84rem; color: var(--t2); line-height: 1.55;
+        }
+        .pa-source-state-row { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.4rem; }
+        .pa-state-chip {
+            display: inline-flex; align-items: center;
+            height: 22px; padding: 0 0.55rem;
+            border-radius: 999px;
+            border: 1px solid var(--bd);
+            background: rgba(24,75,64,0.55);
+            color: var(--t3);
+            font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em;
+        }
+        .pa-state-chip.verified         { color: var(--ac); border-color: rgba(52,212,168,0.55); background: rgba(52,212,168,0.12); }
+        .pa-state-chip.source-supported { color: var(--t2); }
+        .pa-state-chip.partial          { color: #f3c98b; border-color: rgba(230,138,58,0.55); background: rgba(230,138,58,0.10); }
+        .pa-state-chip.missing-source,
+        .pa-state-chip.outdated-or-unknown {
+            color: #f3c98b; border-color: rgba(230,138,58,0.55);
+            background: rgba(230,138,58,0.10);
+        }
+        .pa-state-chip.conflicting-sources {
+            color: var(--error); border-color: rgba(255,107,91,0.55);
+            background: rgba(255,107,91,0.10);
+        }
+        .pa-state-chip.disabled,
+        .pa-state-chip.not-wired { font-style: italic; opacity: 0.85; }
+
+        /* Slot: uncertainty flags (visible by default — honest disclosure) */
+        .pa-uncertainty {
+            border-top: 1px dashed var(--bd2);
+            padding-top: 0.65rem;
+        }
+        .pa-uncertainty-list {
+            list-style: none; margin: 0; padding: 0;
+            display: flex; flex-direction: column; gap: 0.3rem;
+            font-size: 0.82rem; color: var(--t2);
+        }
+        .pa-uncertainty-list li {
+            display: flex; align-items: flex-start; gap: 0.45rem;
+            padding-left: 0;
+        }
+        .pa-uncertainty-list li::before {
+            content: "⚠";
+            color: var(--warning);
+            flex-shrink: 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Slot: high-risk warning — most prominent, never alarmist red */
+        .pa-high-risk {
+            border: 1px solid rgba(255,107,91,0.55);
+            background: rgba(255,107,91,0.10);
+            border-radius: 12px;
+            padding: 0.8rem 0.95rem;
+            color: #fecaca;
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+        .pa-high-risk-title {
+            display: flex; align-items: center; gap: 0.4rem;
+            font-weight: 800;
+            margin-bottom: 0.3rem;
+            color: #fda4af;
+            font-size: 0.86rem;
+        }
+        .pa-high-risk-title::before { content: "⚑"; }
+
+        /* Slot: next actions */
+        .pa-next-actions {
+            display: flex; flex-wrap: wrap; gap: 0.4rem;
+        }
+        .pa-next-action-btn {
+            min-height: 38px;
+            padding: 0 0.85rem;
+            border-radius: 10px;
+            border: 1px solid var(--bd);
+            background: rgba(24,75,64,0.74);
+            color: var(--t2);
+            font: 800 0.8rem/1 var(--ff);
+            cursor: pointer;
+            transition: var(--btn-tr);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+        .pa-next-action-btn:hover { border-color: var(--ac); color: var(--t1); transform: translateY(-1px); }
+        .pa-next-action-btn.primary {
+            background: var(--ac);
+            border-color: var(--ac);
+            color: #0B2A24;
+        }
+        .pa-next-action-btn.primary:hover { background: var(--ac2); border-color: var(--ac2); color: #fff; }
+
+        /* Slot: disclaimer (always last, never hidden) */
+        .pa-disclaimer {
+            font-size: 0.74rem;
+            color: var(--t3);
+            line-height: 1.55;
+            border-top: 1px dashed var(--bd2);
+            padding-top: 0.6rem;
+        }
+
+        /* Mobile 390px: pa-answer-card stays in a single column,
+           no horizontal overflow */
+        @media (max-width: 480px) {
+            .pa-answer-card {
+                padding: var(--sp-3);
+                gap: var(--sp-3);
+            }
+            .pa-doc-buckets { gap: 0.5rem; }
+            .pa-next-actions .pa-next-action-btn { width: 100%; justify-content: center; }
+            .pa-fee-row { flex-direction: column; gap: 0.15rem; }
+        }
+        /* ============================================================
+           END PARADISO.AI STRUCTURED ANSWER CARD SHELL
+           ============================================================ */
     </style>
 </head>
 <body>
@@ -684,6 +957,108 @@
             <span class="char-counter" id="charCount">0 / 500자</span>
         </div>
     </footer>
+
+    <!--
+      Paradiso.ai structured answer card shell — HTML/CSS preparation only.
+      This <template> defines the slot structure described in
+      docs/ai/ANSWER_QUALITY_CONTRACT.md §3. It is NOT yet rendered
+      by appendAiAnswer(); a future PR is required to wire it up.
+      The element is inert (a <template> is parsed but not added to
+      the DOM), so it has no visual effect and does not change the
+      current chat UX. Do not delete — the JS pipeline will clone
+      this template when the structured-answer renderer ships.
+    -->
+    <template id="pa-answer-card-shell">
+        <article class="pa-answer-card" data-answer-id="" data-locale="">
+            <!-- Slot 1: short_answer -->
+            <section class="pa-slot pa-short-answer" data-slot="short_answer">
+                <div class="pa-slot-kicker">Short answer</div>
+                <div class="pa-slot-body" data-slot-body="short_answer"></div>
+            </section>
+
+            <!-- Slot 2: interpreted_intent -->
+            <section class="pa-slot pa-interpreted-intent" data-slot="interpreted_intent" hidden>
+                <div class="pa-slot-kicker">Interpreted intent</div>
+                <div class="pa-slot-body" data-slot-body="interpreted_intent"></div>
+            </section>
+
+            <!-- Slot 3: visa_code_or_topic -->
+            <section class="pa-slot pa-topic" data-slot="visa_code_or_topic" hidden>
+                <div class="pa-slot-kicker">Visa / status / topic</div>
+                <div class="pa-topic-row" data-slot-body="visa_code_or_topic"></div>
+            </section>
+
+            <!-- Slot 4: required_documents (5 buckets) -->
+            <section class="pa-slot pa-required-documents" data-slot="required_documents" hidden>
+                <div class="pa-slot-kicker">Required documents</div>
+                <div class="pa-doc-buckets">
+                    <div class="pa-doc-bucket pa-doc-bucket--common"      data-bucket="common"      hidden>
+                        <div class="pa-doc-bucket-title">공통 · Common</div>
+                        <ul class="pa-doc-bucket-list" data-bucket-list="common"></ul>
+                    </div>
+                    <div class="pa-doc-bucket pa-doc-bucket--required"    data-bucket="required"    hidden>
+                        <div class="pa-doc-bucket-title">필수 · Required</div>
+                        <ul class="pa-doc-bucket-list" data-bucket-list="required"></ul>
+                    </div>
+                    <div class="pa-doc-bucket pa-doc-bucket--conditional" data-bucket="conditional" hidden>
+                        <div class="pa-doc-bucket-title">조건부 · Conditional</div>
+                        <ul class="pa-doc-bucket-list" data-bucket-list="conditional"></ul>
+                    </div>
+                    <div class="pa-doc-bucket pa-doc-bucket--additional"  data-bucket="additional"  hidden>
+                        <div class="pa-doc-bucket-title">추가 · Additional</div>
+                        <ul class="pa-doc-bucket-list" data-bucket-list="additional"></ul>
+                    </div>
+                    <!-- DATA_MISSING / unverified — never hidden when populated -->
+                    <div class="pa-doc-bucket pa-doc-bucket--missing"     data-bucket="missing_or_unverified" hidden>
+                        <div class="pa-doc-bucket-title">미확인 · Missing / unverified</div>
+                        <ul class="pa-doc-bucket-list" data-bucket-list="missing_or_unverified"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Slot 5: procedure_steps -->
+            <section class="pa-slot pa-procedure" data-slot="procedure_steps" hidden>
+                <div class="pa-slot-kicker">Procedure steps</div>
+                <ol class="pa-procedure-steps" data-slot-body="procedure_steps"></ol>
+            </section>
+
+            <!-- Slot 6: fees + appointment_guidance + hikorea_guidance -->
+            <section class="pa-slot pa-fees-appointment" data-slot="fees_appointment" hidden>
+                <div class="pa-slot-kicker">Fees &amp; appointment</div>
+                <div class="pa-fees-list" data-slot-body="fees"></div>
+                <div class="pa-appointment-line" data-slot-body="appointment_guidance" hidden></div>
+                <div class="pa-hikorea-line"     data-slot-body="hikorea_guidance"     hidden></div>
+            </section>
+
+            <!-- Slot 7: source_summary + per-source verification chips -->
+            <section class="pa-slot pa-sources" data-slot="sources" hidden>
+                <div class="pa-slot-kicker">Source summary</div>
+                <p class="pa-source-summary" data-slot-body="source_summary"></p>
+                <div class="pa-source-state-row" data-slot-body="source_states"></div>
+            </section>
+
+            <!-- Slot 8: uncertainty_flags (always visible when present) -->
+            <section class="pa-slot pa-uncertainty" data-slot="uncertainty_flags" hidden>
+                <div class="pa-slot-kicker">Uncertainty</div>
+                <ul class="pa-uncertainty-list" data-slot-body="uncertainty_flags"></ul>
+            </section>
+
+            <!-- Slot 9: high_risk_flags — most prominent -->
+            <section class="pa-high-risk" data-slot="high_risk_flags" hidden>
+                <div class="pa-high-risk-title">High-risk topic — consult an official source</div>
+                <div data-slot-body="high_risk_flags"></div>
+            </section>
+
+            <!-- Slot 10: user_next_actions -->
+            <section class="pa-slot pa-next-actions-row" data-slot="user_next_actions" hidden>
+                <div class="pa-slot-kicker">Next actions</div>
+                <div class="pa-next-actions" data-slot-body="user_next_actions"></div>
+            </section>
+
+            <!-- Slot 11: disclaimer_snippet (always last, never hidden) -->
+            <p class="pa-disclaimer" data-slot-body="disclaimer_snippet"></p>
+        </article>
+    </template>
 
     <!-- Consent Modal -->
     <div class="modal-overlay" id="consentModal" role="dialog" aria-modal="true" aria-labelledby="consentTitle">
