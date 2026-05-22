@@ -1004,7 +1004,43 @@
         /* ============================================================
            END SOURCE PANEL HONEST DISCLOSURE
            ============================================================ */
-    </style>
+
+/* === UI REPAIR PASS 1 (safe token/readability normalization) === */
+:root {
+  --ui-primary: #0EA37B;
+  --ui-primary-deep: #085E48;
+  --ui-surface-dark: #113B32;
+  --ui-surface-dark-2: #0B2A24;
+  --ui-border: #2D5A50;
+  --ui-text: #F3EEDF;
+  --ui-text-muted: #C7BFA8;
+}
+:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ui-primary);
+  outline-offset: 2px;
+}
+.chat-shell, .chat-composer, .msg-bubble, .answer-card, .source-panel, .answer-note, .consent-modal { border-color: var(--ui-border); }
+.msg-bubble, .answer-card, .consent-modal { border-radius: 12px; }
+.source-panel, .answer-note, .error-details pre, .pa-doc-bucket, .pa-next-actions { border-radius: 10px; }
+.grounding-badge, .context-pill, .pa-state-chip { font-weight: 600; }
+.source-title, .pa-slot-kicker, .pa-high-risk-title { font-weight: 700; }
+.msg-bubble, .source-list, .answer-note, .pa-slot-body, .pa-doc-bucket-list li, .pa-procedure-steps, .reference-disclaimer {
+  line-height: 1.68;
+  word-break: keep-all;
+}
+.source-list .source-row { overflow-wrap: anywhere; }
+.bdg, .answer-action, .pa-next-action-btn { min-height: 36px; }
+@media (max-width: 390px) {
+  .msg-meta, .bdg-wrap, .pa-source-state-row, .pa-next-actions { gap: 0.3rem; }
+  .context-pill, .grounding-badge, .pa-state-chip { max-width: 100%; white-space: normal; }
+}
+
+</style>
 </head>
 <body>
 
