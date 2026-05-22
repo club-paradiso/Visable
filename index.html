@@ -8155,6 +8155,360 @@ body:not(.searched) .ft-logo { font-weight: 600; }
    end home-ia-visual-reset
    ════════════════════════════════════════════════════════════════════ */
 
+/* ════════════════════════════════════════════════════════════════════
+   search-command-palette-compact-results
+   Floating command-palette overlay during `body.searching:not(.searched)`
+   plus compact result cards layered above the existing detailed list.
+   All rules are additive and scoped so existing search behaviour is
+   preserved.
+   ════════════════════════════════════════════════════════════════════ */
+
+.p-cmd-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: color-mix(in srgb, #08221B 56%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  z-index: 90;
+  animation: pCmdBackdropIn 0.18s ease;
+}
+body.searching:not(.searched) .p-cmd-backdrop { display: block; }
+@keyframes pCmdBackdropIn { from { opacity: 0; } to { opacity: 1; } }
+
+body.searching:not(.searched) #searchForm {
+  position: fixed !important;
+  top: clamp(56px, 11vh, 132px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(640px, calc(100% - 1.6rem));
+  margin: 0 !important;
+  padding: 1.1rem 1.1rem 0.85rem;
+  background: rgba(247, 246, 241, 0.97);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  backdrop-filter: blur(22px) saturate(140%);
+  border: 1px solid color-mix(in srgb, #085E48 14%, transparent);
+  border-radius: 22px;
+  box-shadow: 0 28px 64px rgba(8, 34, 27, 0.32), 0 6px 14px rgba(8, 34, 27, 0.16);
+  z-index: 100;
+  animation: pCmdPaletteIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+}
+body[data-theme="dark"].searching:not(.searched) #searchForm {
+  background: rgba(18, 32, 28, 0.92);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+@keyframes pCmdPaletteIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+}
+body.searching:not(.searched) #searchForm .sbar {
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid color-mix(in srgb, #085E48 12%, transparent);
+  border-radius: 14px;
+}
+body[data-theme="dark"].searching:not(.searched) #searchForm .sbar {
+  background: rgba(8, 28, 22, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+body.searching:not(.searched) #searchForm #q { font-size: 1.08rem; padding: 0.85rem 2.5rem 0.85rem 2.6rem; }
+
+.p-cmd-extras {
+  display: none;
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px dashed color-mix(in srgb, #085E48 18%, transparent);
+  flex-direction: column;
+  gap: 0.7rem;
+}
+body.searching:not(.searched) .p-cmd-extras { display: flex; }
+.p-cmd-extras-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, #085E48 78%, transparent);
+  margin: 0;
+}
+body[data-theme="dark"] .p-cmd-extras-title { color: rgba(255, 255, 255, 0.62); }
+.p-cmd-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.p-cmd-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.42rem 0.78rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, #085E48 18%, transparent);
+  background: rgba(255, 255, 255, 0.72);
+  color: #08221B;
+  font-size: 0.83rem;
+  font-weight: 500;
+  line-height: 1.1;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  font-family: inherit;
+}
+.p-cmd-chip:hover, .p-cmd-chip:focus-visible {
+  background: #fff;
+  border-color: color-mix(in srgb, #0EA37B 60%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+.p-cmd-chip:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, #0EA37B 28%, transparent); }
+body[data-theme="dark"] .p-cmd-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  color: #F1ECDE;
+}
+body[data-theme="dark"] .p-cmd-chip:hover, body[data-theme="dark"] .p-cmd-chip:focus-visible {
+  background: rgba(14, 163, 123, 0.18);
+  border-color: rgba(14, 163, 123, 0.6);
+}
+.p-cmd-disclaimer {
+  font-size: 0.74rem;
+  line-height: 1.55;
+  color: color-mix(in srgb, #08221B 68%, transparent);
+  margin: 0;
+  word-break: keep-all;
+}
+body[data-theme="dark"] .p-cmd-disclaimer { color: rgba(255, 255, 255, 0.62); }
+.p-cmd-close {
+  display: none;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid color-mix(in srgb, #085E48 14%, transparent);
+  border-radius: 999px;
+  padding: 0.34rem 0.7rem 0.34rem 0.56rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #08221B;
+  cursor: pointer;
+  font-family: inherit;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 1;
+}
+.p-cmd-close:hover, .p-cmd-close:focus-visible {
+  background: #fff;
+  border-color: color-mix(in srgb, #0EA37B 50%, transparent);
+  outline: none;
+}
+body[data-theme="dark"] .p-cmd-close { background: rgba(255, 255, 255, 0.08); color: #F1ECDE; border-color: rgba(255, 255, 255, 0.16); }
+body.searching:not(.searched) .p-cmd-close { display: inline-flex; }
+
+/* Hide the inline landing hints + reference disclaimer while the palette is open
+   so they don't render twice. Their content is mirrored inside the palette. */
+body.searching:not(.searched) .landing-hints-section,
+body.searching:not(.searched) .reference-disclaimer,
+body.searching:not(.searched) .hero-ai-secondary { display: none !important; }
+
+/* Compact result list — appears above existing detailed list when searched */
+.rlist-compact {
+  display: none;
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto 1.4rem;
+  padding: 0 1rem;
+  box-sizing: border-box;
+}
+body.searched .rlist-compact { display: block; }
+.rc-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin-bottom: 0.7rem;
+}
+.rc-head-title {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #08221B;
+  letter-spacing: 0.01em;
+  margin: 0;
+}
+.rc-head-sub {
+  font-size: 0.74rem;
+  color: color-mix(in srgb, #08221B 60%, transparent);
+}
+body[data-theme="dark"] .rc-head-title { color: #F1ECDE; }
+body[data-theme="dark"] .rc-head-sub { color: rgba(255, 255, 255, 0.6); }
+
+.rc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.7rem;
+}
+.rc-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto auto auto;
+  gap: 0.3rem 0.7rem;
+  padding: 0.85rem 0.95rem;
+  background: rgba(247, 246, 241, 0.94);
+  border: 1px solid color-mix(in srgb, #085E48 12%, transparent);
+  border-radius: 14px;
+  box-shadow: 0 1px 2px rgba(8, 34, 27, 0.04), 0 4px 14px rgba(8, 34, 27, 0.05);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: inherit;
+  position: relative;
+  width: 100%;
+  border-left: 4px solid var(--rc-cat, #0EA37B);
+}
+.rc-card:hover, .rc-card:focus-visible {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, #0EA37B 38%, transparent);
+  box-shadow: 0 4px 18px rgba(8, 34, 27, 0.1), 0 1px 4px rgba(8, 34, 27, 0.06);
+  outline: none;
+}
+.rc-card:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, #0EA37B 32%, transparent); }
+body[data-theme="dark"] .rc-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #F1ECDE;
+}
+.rc-code {
+  grid-row: 1 / 3;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.32rem 0.55rem;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--rc-cat, #0EA37B) 14%, transparent);
+  color: color-mix(in srgb, var(--rc-cat, #0EA37B) 72%, #08221B);
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: 0.01em;
+  font-feature-settings: "tnum";
+  white-space: nowrap;
+}
+body[data-theme="dark"] .rc-code { color: color-mix(in srgb, var(--rc-cat, #0EA37B) 88%, #F1ECDE); }
+.rc-name {
+  grid-column: 2;
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  color: #08221B;
+  word-break: keep-all;
+}
+body[data-theme="dark"] .rc-name { color: #F1ECDE; }
+.rc-meta {
+  grid-column: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.32rem;
+  align-items: center;
+  font-size: 0.72rem;
+}
+.rc-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, #0EA37B 10%, transparent);
+  color: color-mix(in srgb, #085E48 78%, transparent);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.rc-badge.rc-badge-period {
+  background: color-mix(in srgb, #08221B 6%, transparent);
+  color: color-mix(in srgb, #08221B 70%, transparent);
+}
+.rc-badge.rc-badge-docs {
+  background: color-mix(in srgb, #FF8C7A 14%, transparent);
+  color: #B5503F;
+}
+.rc-badge.rc-badge-review {
+  background: color-mix(in srgb, #085E48 8%, transparent);
+  color: color-mix(in srgb, #085E48 78%, transparent);
+}
+body[data-theme="dark"] .rc-badge { background: rgba(14, 163, 123, 0.16); color: #BFE9D8; }
+body[data-theme="dark"] .rc-badge.rc-badge-period { background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.7); }
+body[data-theme="dark"] .rc-badge.rc-badge-docs { background: rgba(255, 140, 122, 0.16); color: #FFB8AC; }
+body[data-theme="dark"] .rc-badge.rc-badge-review { background: rgba(255, 255, 255, 0.06); color: rgba(255, 255, 255, 0.7); }
+.rc-sum {
+  grid-column: 1 / -1;
+  font-size: 0.83rem;
+  line-height: 1.45;
+  color: color-mix(in srgb, #08221B 72%, transparent);
+  word-break: keep-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+body[data-theme="dark"] .rc-sum { color: rgba(255, 255, 255, 0.72); }
+.rc-cta {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  padding: 0.46rem 0.7rem;
+  margin-top: 0.18rem;
+  background: color-mix(in srgb, #0EA37B 12%, transparent);
+  color: #085E48;
+  border: 1px solid color-mix(in srgb, #0EA37B 26%, transparent);
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.rc-cta:hover, .rc-cta:focus-visible {
+  background: color-mix(in srgb, #0EA37B 20%, transparent);
+  outline: none;
+}
+body[data-theme="dark"] .rc-cta {
+  background: rgba(14, 163, 123, 0.18);
+  color: #BFE9D8;
+  border-color: rgba(14, 163, 123, 0.4);
+}
+.rc-cta-arrow { font-size: 0.92rem; opacity: 0.75; }
+
+/* Highlight the detailed card when arriving from a compact card */
+.vc.rc-target-flash {
+  animation: rcTargetFlash 1.6s ease;
+}
+@keyframes rcTargetFlash {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, #0EA37B 40%, transparent); }
+  30% { box-shadow: 0 0 0 6px color-mix(in srgb, #0EA37B 30%, transparent); }
+  100% { box-shadow: 0 0 0 0 color-mix(in srgb, #0EA37B 0%, transparent); }
+}
+
+/* Mobile bottom-sheet at 390px */
+@media (max-width: 480px) {
+  body.searching:not(.searched) #searchForm {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: none;
+    border-radius: 22px 22px 0 0;
+    padding: 1rem 0.95rem 1.1rem;
+    max-height: 88vh;
+    overflow-y: auto;
+    animation: pCmdSheetIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @keyframes pCmdSheetIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  body.searching:not(.searched) #searchForm #q { font-size: 1rem; }
+  .p-cmd-close { top: 0.5rem; right: 0.5rem; }
+  .rc-grid { grid-template-columns: 1fr; }
+  .rlist-compact { padding: 0 0.6rem; margin-bottom: 1rem; }
+}
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -8162,6 +8516,7 @@ body:not(.searched) .ft-logo { font-weight: 600; }
 </head>
 <body class="landing" data-theme="light">
 <canvas id="starCanvas"></canvas>
+<div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 
 <!-- Deadline reminder banner: shown when a saved date is within 30 days -->
 <div id="reminderBanner" class="p-reminder-banner" role="status" aria-live="polite" hidden>
@@ -8313,6 +8668,7 @@ body:not(.searched) .ft-logo { font-weight: 600; }
         </section>
 
         <form class="search-wrap" id="searchForm" role="search" style="display:none;">
+            <button type="button" class="p-cmd-close" data-action="close-cmd-palette" aria-label="검색 닫기"><span aria-hidden="true">✕</span><span class="p-cmd-close-label">닫기</span></button>
             <div class="sbar">
                 <svg class="sbar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
                 <input type="search" id="q" aria-label="비자 자격 및 키워드 검색" placeholder="데이터 로딩 중…" autocomplete="off" spellcheck="false" disabled>
@@ -8323,6 +8679,11 @@ body:not(.searched) .ft-logo { font-weight: 600; }
             </div>
             <div class="auto-list" id="auto-list" role="listbox" aria-label="검색 제안"></div>
             <div class="smeta"><span id="rc">데이터 로딩 중…</span><span id="rh"></span></div>
+            <div class="p-cmd-extras" aria-label="검색 도움말">
+                <p class="p-cmd-extras-title" id="pCmdChipsTitle">추천 키워드</p>
+                <div class="p-cmd-chips" id="pCmdChips" role="list"></div>
+                <p class="p-cmd-disclaimer" id="pCmdDisclaimer">출처를 확인하며 안내합니다. 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.</p>
+            </div>
         </form>
         <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
 
@@ -8894,6 +9255,7 @@ body:not(.searched) .ft-logo { font-weight: 600; }
     </div><!-- /.landing-scroll -->
 
     <div class="qf" id="qf" aria-label="자주 찾는 검색어 모음"></div>
+    <section class="rlist-compact" id="rlistCompact" aria-label="요약 결과" hidden></section>
     <div class="rlist" id="rlist" aria-live="polite"></div>
 </main>
 
@@ -11297,13 +11659,61 @@ function resetToLanding(){
     debugSearchState('resetToLanding:start');
     document.body.classList.remove('searched', 'searching'); document.body.classList.add('landing'); qEl.value='';
     document.getElementById('xb').classList.remove('v'); document.getElementById('auto-list').classList.remove('active');
-    document.getElementById('rlist').innerHTML=''; rcEl.textContent = dataReady ? tx('dataReady', { count: VISA_DATA.length, source: tx('sourceStatic') }) : tx('dataLoading');
+    document.getElementById('rlist').innerHTML=''; const rcHost = document.getElementById('rlistCompact'); if (rcHost) { rcHost.innerHTML = ''; rcHost.hidden = true; } rcEl.textContent = dataReady ? tx('dataReady', { count: VISA_DATA.length, source: tx('sourceStatic') }) : tx('dataLoading');
     const stb = document.getElementById('searchToggleBtn');
     closeDirectSearchMode();
     if (stb) stb.style.display = '';
     window.scrollTo({ top: 0, behavior: 'smooth' });
     resetReveal();
     debugSearchState('resetToLanding:end');
+}
+
+function renderCompactResults(filtered, kw){
+    const host = document.getElementById('rlistCompact');
+    if (!host) return;
+    if (!filtered || !filtered.length) { host.hidden = true; host.innerHTML = ''; return; }
+    const catLabels = txArray('searchedCategoryLabels');
+    const catMap = {short:catLabels[0]||'단기',study:catLabels[1]||'유학/연수',work:catLabels[2]||'취업',invest:catLabels[3]||'투자',family:catLabels[4]||'가족/이민',other:catLabels[5]||'기타',diplo:catLabels[6]||'외교',nhis:catLabels[7]||'건강보험',faq:catLabels[8]||'안내',scn:catLabels[9]||'시나리오'};
+    const top = filtered.slice(0, 12);
+    const cards = top.map(v => {
+        const name = getLocalizedVisaName(v) || v.code || '';
+        const period = v.period ? escapeHtml(v.period) : '';
+        const catLabel = catMap[v.cat] || '';
+        const subs = getVisaSubcodes(v);
+        const docCount = subs.length;
+        const reviewLabel = reviewStateLabel(v);
+        const rawSum = normalizeManualText(v.summary || v.newReq || v.extReq || '');
+        const sum = rawSum ? (rawSum.length > 110 ? rawSum.slice(0, 110).replace(/\s+\S*$/, '') + '…' : rawSum) : '';
+        const color = (typeof CC !== 'undefined' && CC[v.cat]) ? CC[v.cat] : '#0EA37B';
+        const codeHtml = hl(v.code || '', kw);
+        const nameHtml = hl(name, kw);
+        const sumHtml = sum ? hl(sum, kw) : '';
+        const metaParts = [];
+        if (catLabel) metaParts.push(`<span class="rc-badge">${escapeHtml(catLabel)}</span>`);
+        if (period) metaParts.push(`<span class="rc-badge rc-badge-period">${period}</span>`);
+        if (docCount) metaParts.push(`<span class="rc-badge rc-badge-docs">${tx('resultSubtypes', { count: docCount })}</span>`);
+        if (reviewLabel) metaParts.push(`<span class="rc-badge rc-badge-review">${escapeHtml(reviewLabel)}</span>`);
+        return `<button type="button" class="rc-card" data-action="show-detail" data-code="${escapeHtml(v.code || '')}" style="--rc-cat:${color};" aria-label="${escapeHtml(v.code || '')} ${escapeHtml(name)}">
+            <span class="rc-code">${codeHtml}</span>
+            <span class="rc-name">${nameHtml}</span>
+            <span class="rc-meta">${metaParts.join('')}</span>
+            ${sumHtml ? `<span class="rc-sum">${sumHtml}</span>` : ''}
+            <span class="rc-cta"><span>${escapeHtml(tx('compactDetail'))}</span><span class="rc-cta-arrow" aria-hidden="true">→</span></span>
+        </button>`;
+    }).join('');
+    const headSubText = filtered.length > top.length
+        ? tx('compactHeadSubMore', { showing: top.length, total: filtered.length })
+        : tx('compactHeadSub', { count: filtered.length });
+    host.innerHTML = `<div class="rc-head"><h2 class="rc-head-title">${escapeHtml(tx('compactHeadTitle'))}</h2><span class="rc-head-sub">${escapeHtml(headSubText)}</span></div><div class="rc-grid">${cards}</div>`;
+    host.hidden = false;
+}
+
+function reviewStateLabel(v){
+    const status = v && v.sourceManualStatus;
+    if (!status) return '';
+    if (status.needsManualReview === false) return txArray('reviewLabels')[0] || '';
+    if (status.needsManualReview === true) return txArray('reviewLabels')[2] || '';
+    return '';
 }
 
 function renderResults(query){
@@ -11314,11 +11724,14 @@ function renderResults(query){
     let st=0; filtered.forEach(v=>{st += getVisaSubcodes(v).length;});
     if(!filtered.length){
         box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
-        rc.textContent=tx('resultCount', { count: 0 }); return;
+        rc.textContent=tx('resultCount', { count: 0 });
+        renderCompactResults([], kw);
+        return;
     }
+    renderCompactResults(filtered, kw);
     const fg=document.createDocumentFragment();
     filtered.forEach((v,idx)=>{
-        const c=document.createElement('article'); c.className='vc manual-result'; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
+        const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
         const isVisaCode = !['faq', 'scn', 'nhis'].includes(v.cat), subs=getVisaSubcodes(v), hs=subs.length>0;
         let ms=[]; if(hs&&kw.length) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
         if(kw.length&&(v._score>=50||ms.length)) c.classList.add('open');
@@ -11548,7 +11961,10 @@ const UI_TRANSLATIONS = {
         gwDocLabel: '구비서류 확인', gwDocSub: '자격별 공통서류와 추가 항목',
         gwHikoreaLabel: 'HiKorea 예약 안내', gwHikoreaSub: '방문 전 온라인 예약 도우미',
         gwAiLabel: 'Paradiso.ai에게 묻기', gwAiSub: '상황을 설명하면 경로를 정리해 드립니다',
-        gwJobcodeLabel: '직업·산업분류 조회', gwAgentLabel: '등록 민원대행기관 찾기'
+        gwJobcodeLabel: '직업·산업분류 조회', gwAgentLabel: '등록 민원대행기관 찾기',
+        cmdChipsTitle: '추천 키워드', cmdDisclaimer: '출처를 확인하며 안내합니다. 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.',
+        cmdCloseLabel: '닫기', cmdCloseAria: '검색 닫기',
+        compactHeadTitle: '한눈에 보기', compactHeadSub: '총 {count}건', compactHeadSubMore: '{showing} / {total}건 우선 표시', compactDetail: '자세히 보기'
     },
     en: {
         languageButton: 'Language settings', languageMenu: 'Choose language', languageChanged: 'Language changed to English.',
@@ -11668,7 +12084,10 @@ const UI_TRANSLATIONS = {
         gwDocLabel: 'Required documents', gwDocSub: 'Common and additional items by status',
         gwHikoreaLabel: 'HiKorea appointment guide', gwHikoreaSub: 'Online booking assistant before your visit',
         gwAiLabel: 'Ask Paradiso.ai', gwAiSub: 'Describe your situation and get a path overview',
-        gwJobcodeLabel: 'Occupation & industry codes', gwAgentLabel: 'Find a registered immigration agency'
+        gwJobcodeLabel: 'Occupation & industry codes', gwAgentLabel: 'Find a registered immigration agency',
+        cmdChipsTitle: 'Recommended keywords', cmdDisclaimer: 'Reference information with source-checking. Confirm any final decision with HiKorea, 1345, or the competent immigration office.',
+        cmdCloseLabel: 'Close', cmdCloseAria: 'Close search',
+        compactHeadTitle: 'Quick scan', compactHeadSub: '{count} results', compactHeadSubMore: 'Showing {showing} of {total}', compactDetail: 'View details'
     },
     zh: {
         languageButton: '语言设置', languageMenu: '选择语言', languageChanged: '语言已切换为简体中文。',
@@ -11733,7 +12152,10 @@ const UI_TRANSLATIONS = {
         gwDocLabel: '所需材料确认', gwDocSub: '按资格分类的通用及附加材料',
         gwHikoreaLabel: 'HiKorea 预约指南', gwHikoreaSub: '访问前的在线预约助手',
         gwAiLabel: '向Paradiso.ai提问', gwAiSub: '描述情况，整理路径',
-        gwJobcodeLabel: '职业·行业分类查询', gwAgentLabel: '查找已登记的移民代办机构'
+        gwJobcodeLabel: '职业·行业分类查询', gwAgentLabel: '查找已登记的移民代办机构',
+        cmdChipsTitle: '推荐关键词', cmdDisclaimer: '基于公开来源的参考信息。最终判断请向HiKorea、1345或主管出入境机关确认。',
+        cmdCloseLabel: '关闭', cmdCloseAria: '关闭搜索',
+        compactHeadTitle: '快速浏览', compactHeadSub: '共{count}条', compactHeadSubMore: '优先显示{showing}/{total}', compactDetail: '查看详情'
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
@@ -12005,7 +12427,10 @@ const UI_TRANSLATIONS = {
         gwDocLabel: 'Xác nhận tài liệu cần nộp', gwDocSub: 'Tài liệu chung và bổ sung theo tư cách',
         gwHikoreaLabel: 'Hướng dẫn đặt lịch HiKorea', gwHikoreaSub: 'Trợ lý đặt lịch trực tuyến trước khi đến',
         gwAiLabel: 'Hỏi Paradiso.ai', gwAiSub: 'Mô tả tình huống, nhận tổng hợp lộ trình',
-        gwJobcodeLabel: 'Tra cứu nghề nghiệp · ngành nghề', gwAgentLabel: 'Tìm đại lý xuất nhập cảnh đã đăng ký'
+        gwJobcodeLabel: 'Tra cứu nghề nghiệp · ngành nghề', gwAgentLabel: 'Tìm đại lý xuất nhập cảnh đã đăng ký',
+        cmdChipsTitle: 'Từ khóa gợi ý', cmdDisclaimer: 'Thông tin tham khảo có kiểm tra nguồn. Hãy xác nhận quyết định cuối cùng với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
+        cmdCloseLabel: 'Đóng', cmdCloseAria: 'Đóng tìm kiếm',
+        compactHeadTitle: 'Tổng quan nhanh', compactHeadSub: '{count} kết quả', compactHeadSubMore: 'Hiển thị {showing} / {total}', compactDetail: 'Xem chi tiết'
     },
     km: {
         languageButton: 'ការកំណត់ភាសា', languageMenu: 'ជ្រើសរើសភាសា', languageChanged: 'បានប្តូរទៅភាសាខ្មែរ។',
@@ -12281,6 +12706,11 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
     setIndexedText('.p-gw-util-label', [tx('gwJobcodeLabel'), tx('gwAgentLabel')]);
+    setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
+    setText('#pCmdDisclaimer', tx('cmdDisclaimer'));
+    setText('.p-cmd-close-label', tx('cmdCloseLabel'));
+    setAttr('.p-cmd-close', 'aria-label', tx('cmdCloseAria'));
+    renderCmdChips();
     setAttr('.p-entry-rail', 'aria-label', tx('entryRail'));
     setIndexedText('.p-entry-title', [tx('entryATitle'), tx('entryBTitle')]);
     setIndexedText('.p-entry-sub', [tx('entryASub'), tx('entryBSub')]);
@@ -12447,6 +12877,24 @@ function initUI(){
         qc.innerHTML='';
         rf.forEach(x=>{const b=document.createElement('button');b.className='qb';b.textContent=x.l;b.onclick=()=>{qEl.value=x.q;qEl.focus();document.getElementById('xb').classList.add('v');renderResults(x.q);};qc.appendChild(b);});
     }
+    renderCmdChips();
+}
+
+function renderCmdChips(){
+    const host = document.getElementById('pCmdChips');
+    if (!host) return;
+    const items = getLandingHintItems().slice(0, 10);
+    host.innerHTML = '';
+    items.forEach(x => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'p-cmd-chip';
+        b.setAttribute('role', 'listitem');
+        b.textContent = x.l;
+        b.dataset.query = x.q;
+        b.onclick = () => { if (qEl) { qEl.value = x.q; } executeSearch(); };
+        host.appendChild(b);
+    });
 }
 
 function injectLocalData(arr) {
@@ -12606,6 +13054,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     else if (!document.body.classList.contains('searched')) closeDirectSearchMode();
                     else if (qEl) qEl.focus();
                     debugSearchState('toggle-search:after');
+                },
+                'close-cmd-palette': () => {
+                    if (document.body.classList.contains('searching') && !document.body.classList.contains('searched')) closeDirectSearchMode();
+                },
+                'show-detail': () => {
+                    const code = actionBtn.dataset.code;
+                    if (!code) return;
+                    const target = document.querySelector(`.vc[data-code="${CSS.escape(code)}"]`);
+                    if (!target) return;
+                    target.classList.add('open', 'rc-target-flash');
+                    setTimeout(() => target.classList.remove('rc-target-flash'), 1600);
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 },
                 'open-jobcode-modal': () => openJobCodeModal(),
                 'open-jurisdiction-modal': () => openJurisdictionModal(),
