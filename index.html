@@ -7732,6 +7732,50 @@ body.searched .vc.manual-result .manual-section-title {
    END STRUCTURAL RESULT-CARD HIERARCHY
    ============================================================ */
 
+
+/* === UI REPAIR PASS 1 (safe token/readability normalization) === */
+:root {
+  --ui-primary: #0EA37B;
+  --ui-primary-deep: #085E48;
+  --ui-surface: #FCFAF5;
+  --ui-surface-2: #FBF5E6;
+  --ui-border: #C9BFA5;
+  --ui-text: #0E1F1A;
+  --ui-text-muted: #7A8580;
+  --ui-focus: #0EA37B;
+}
+[data-theme="dark"] {
+  --ui-surface: #113B32;
+  --ui-surface-2: #0B2A24;
+  --ui-border: #2D5A50;
+  --ui-text: #F3EEDF;
+  --ui-text-muted: #C7BFA8;
+  --ui-focus: #34D4A8;
+}
+:focus-visible,
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--ui-focus);
+  outline-offset: 2px;
+}
+.sbar, .vc, .modal-box, .hikorea-modal, .jur-result-card, .ai-result { border-color: var(--ui-border); }
+.sbar, .jur-search-box, .faq-item, .jc-pane, .vc, .hikorea-step-box, .modal-box { border-radius: 12px; }
+.brand-feature, .about-me { border-radius: 24px; }
+.brand-hero-stats { border-radius: 20px; }
+body, .faq-a, .feature-body, .brand-points li, .jur-list li, .jur-sub, .jur-office-addr, .reference-disclaimer {
+  line-height: 1.68;
+  word-break: keep-all;
+}
+.faq-q, .jur-msg, .jur-office-name, .jur-big, .jc-code, .ai-action-btn, .hikorea-task-btn strong { font-weight: 700; }
+.language-btn-code, .language-option-code, .language-option-check, .jur-list li::before, .jur-msg b { font-weight: 700; }
+.hikorea-task-btn, .doc-trigger-btn, .hero-action-btn { min-height: 44px; }
+.jur-big { letter-spacing: 0.03em; }
+.qf .chip, .grounding-badge, .pa-state-chip, .hikorea-task-change { opacity: .9; }
+.results-area, .rlist, .vc, .docs-tabs, .hikorea-modal, .source-panel { overflow-wrap: anywhere; }
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
