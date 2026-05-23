@@ -355,11 +355,43 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 .hikorea-task-btn:focus-visible { outline: 2px solid var(--color-primary-green); outline-offset: 2px; }
 .hikorea-task-change { margin-left: 0.45rem; padding: 0.18rem 0.55rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg1); color: var(--t2); font-size: 0.74rem; font-weight: 700; cursor: pointer; font-family: var(--ff) !important; }
 .hikorea-task-change:hover { border-color: var(--color-primary-green); color: var(--color-primary-green); }
+.hikorea-modal-header { align-items: flex-start; gap: 0.75rem; }
+.hikorea-header-stack { display: flex; flex-direction: column; gap: 0.35rem; min-width: 0; flex: 1; }
+.hikorea-header-stack h2 { margin: 0; line-height: 1.3; }
+.hikorea-header-sub { margin: 0; font-size: 0.86rem; color: var(--t2); line-height: 1.5; word-break: keep-all; }
+.hikorea-header-chip { display: inline-flex; align-items: center; align-self: flex-start; padding: 0.22rem 0.6rem; background: color-mix(in srgb, var(--ac) 10%, var(--bg0)); color: var(--ac); border: 1px solid color-mix(in srgb, var(--ac) 32%, transparent); border-radius: 999px; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em; }
+.hikorea-stepper { display: flex; gap: 0.4rem; margin: 0 0 0.6rem; padding: 0; list-style: none; flex-wrap: wrap; }
+.hikorea-stepper-pill { flex: 1 1 auto; min-width: 0; padding: 0.45rem 0.6rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg0); color: var(--t3); font-size: 0.74rem; font-weight: 700; text-align: center; line-height: 1.3; transition: background 0.18s ease, border-color 0.18s ease, color 0.18s ease; word-break: keep-all; }
+.hikorea-stepper-pill.is-current { background: color-mix(in srgb, var(--color-primary-green) 14%, var(--bg0)); border-color: var(--color-primary-green); color: var(--color-primary-green); }
+.hikorea-stepper-pill.is-done { background: color-mix(in srgb, var(--color-primary-green) 6%, var(--bg0)); border-color: color-mix(in srgb, var(--color-primary-green) 30%, var(--bd2)); color: var(--t2); }
+.hikorea-stepper-pill .pill-index { display: inline-block; width: 1.05rem; height: 1.05rem; margin-right: 0.3rem; border-radius: 999px; background: var(--bg1); color: var(--t3); font-size: 0.68rem; line-height: 1.05rem; font-weight: 800; text-align: center; vertical-align: -1px; }
+.hikorea-stepper-pill.is-current .pill-index { background: var(--color-primary-green); color: #fff; }
+.hikorea-stepper-pill.is-done .pill-index { background: color-mix(in srgb, var(--color-primary-green) 75%, transparent); color: #fff; }
+.hikorea-cta-row { display: flex; gap: 0.55rem; flex-wrap: wrap; margin-top: 0.85rem; }
+.hikorea-cta-primary, .hikorea-cta-secondary { flex: 1 1 auto; min-width: 180px; display: inline-flex; align-items: center; justify-content: center; gap: 0.35rem; padding: 0.7rem 0.9rem; border-radius: 10px; font-weight: 800; font-size: 0.86rem; line-height: 1.3; text-decoration: none; transition: filter 0.18s ease, background 0.18s ease, border-color 0.18s ease; font-family: var(--ff) !important; cursor: pointer; }
+.hikorea-cta-primary { background: var(--color-primary-green); color: #fff; border: 1px solid var(--color-primary-green); }
+.hikorea-cta-primary:hover { filter: brightness(1.06); }
+.hikorea-cta-primary:focus-visible { outline: 2px solid var(--color-primary-green); outline-offset: 2px; }
+.hikorea-cta-secondary { background: var(--bg0); color: var(--t1); border: 1px solid var(--bd2); }
+.hikorea-cta-secondary:hover { border-color: var(--color-primary-green); color: var(--color-primary-green); }
+.hikorea-disclaimer-panel { margin-top: 0.85rem; padding: 0.8rem 0.9rem; background: var(--bg0); border: 1px solid var(--bd2); border-left: 3px solid color-mix(in srgb, var(--ac) 55%, var(--bd2)); border-radius: 8px; }
+.hikorea-disclaimer-panel ul { margin: 0; padding-left: 1.05rem; }
+.hikorea-disclaimer-panel li { font-size: 0.78rem; color: var(--t2); line-height: 1.55; margin: 0.18rem 0; word-break: keep-all; }
+.hikorea-disclaimer-panel li::marker { color: var(--t3); }
 @media (max-width: 768px) {
   .hikorea-modal { width: 96vw; max-height: 92vh; }
   .hikorea-check-grid { grid-template-columns: 1fr; }
   .hikorea-task-buttons { grid-template-columns: 1fr; }
   .hikorea-task-btn { min-height: 60px; }
+}
+@media (max-width: 480px) {
+  .hikorea-stepper { gap: 0.3rem; }
+  .hikorea-stepper-pill { font-size: 0.66rem; padding: 0.35rem 0.45rem; flex: 1 1 calc(50% - 0.3rem); }
+  .hikorea-stepper-pill .pill-index { width: 0.95rem; height: 0.95rem; line-height: 0.95rem; font-size: 0.6rem; margin-right: 0.22rem; }
+  .hikorea-cta-row { flex-direction: column; }
+  .hikorea-cta-primary, .hikorea-cta-secondary { min-width: 0; width: 100%; }
+  .hikorea-header-sub { font-size: 0.82rem; }
+  .hikorea-modal-header { padding: 1rem 1.1rem; }
 }
 .text-desc { margin-bottom: 0.75rem; line-height: 1.7; font-size: 0.86rem; color: var(--t2); background: color-mix(in srgb, var(--bg1) 85%, transparent); padding: 0.85rem 0.9rem; border-radius: 2px; border-left: 1px solid var(--bd); }
 [data-theme="dark"] .text-desc { background: rgba(255,255,255,0.02); }
@@ -9674,8 +9706,12 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
 
 <div class="modal-overlay" id="hikoreaGuideOverlay" role="dialog" aria-modal="true" aria-labelledby="hikoreaGuideTitle">
     <div class="modal-box hikorea-modal">
-        <div class="modal-header">
-            <h2 id="hikoreaGuideTitle">HiKorea 예약 도우미</h2>
+        <div class="modal-header hikorea-modal-header">
+            <div class="hikorea-header-stack">
+                <h2 id="hikoreaGuideTitle">HiKorea 방문예약 안내</h2>
+                <p class="hikorea-header-sub" id="hikoreaGuideSub">방문 전 온라인 예약과 준비사항을 정리합니다.</p>
+                <span class="hikorea-header-chip" id="hikoreaGuideChip">공식 서비스 아님</span>
+            </div>
             <button type="button" class="modal-close close-btn" data-action="close-hikorea-guide" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body" id="hikoreaGuideBody"></div>
@@ -11642,16 +11678,37 @@ function hikoreaStepLabel(s) { return s === 1 ? '0-A' : s <= 1 ? String(s) : Str
 function renderHikoreaGuide() {
     const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
     const langBtns = [['ko','한국어'],['en','English'],['zh','中文'],['vi','Tiếng Việt']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
+    const gtx = (key) => { const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || UI_TRANSLATIONS.ko; const v = p[key] ?? UI_TRANSLATIONS.ko[key] ?? key; return v; };
+    const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
+    const titleEl = document.getElementById('hikoreaGuideTitle');
+    const subEl = document.getElementById('hikoreaGuideSub');
+    const chipEl = document.getElementById('hikoreaGuideChip');
+    if (titleEl) titleEl.textContent = gtx('hkHeaderTitle');
+    if (subEl) subEl.textContent = gtx('hkHeaderSub');
+    if (chipEl) chipEl.textContent = gtx('hkHeaderChip');
+    const phases = [
+        { key: 'hkPhase1', steps: [-1, 0, 1] },
+        { key: 'hkPhase2', steps: [2, 3, 4] },
+        { key: 'hkPhase3', steps: [5] },
+        { key: 'hkPhase4', steps: [6] },
+        { key: 'hkPhase5', steps: [7] }
+    ];
+    const cur = hikoreaGuideState.step;
+    const stepperHtml = '<ol class="hikorea-stepper" aria-label="단계 진행">' + phases.map((p, idx) => {
+        const isCurrent = p.steps.includes(cur);
+        const isDone = !isCurrent && cur > Math.max(...p.steps);
+        return '<li class="hikorea-stepper-pill' + (isCurrent ? ' is-current' : '') + (isDone ? ' is-done' : '') + '"' + (isCurrent ? ' aria-current="step"' : '') + '><span class="pill-index">' + (idx + 1) + '</span>' + escapeHtml(gtx(p.key)) + '</li>';
+    }).join('') + '</ol>';
+    const ctaRow = '<div class="hikorea-cta-row"><a class="hikorea-cta-primary" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + escapeHtml(gtx('hkPrimaryCta')) + '</a><a class="hikorea-cta-secondary" href="tel:1345">' + escapeHtml(gtx('hkSecondaryCta')) + '</a></div>';
+    const disclaimerPanel = '<div class="hikorea-disclaimer-panel" aria-label="안내사항"><ul>' + ['hkDisc1', 'hkDisc2', 'hkDisc3', 'hkDisc4'].map(k => '<li>' + escapeHtml(gtx(k)) + '</li>').join('') + '</ul></div>';
     if (hikoreaGuideState.step < 0) {
-        b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div><div class="hikorea-progress">사전 확인</div>
+        b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">사전 확인</div>
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> 이메일 계정이 있으신가요?</label><div class="hikorea-strip">구글 계정(Gmail)을 먼저 만드세요 · <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>가족·지인 이메일을 임시로 사용할 수도 있습니다.</div></div>
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> 비밀번호 준비 확인</label><div class="hikorea-check-grid"><div>✓ 10자리 이상</div><div>✓ 영문 포함 (예: abc)</div><div>✓ 숫자 포함 (예: 123)</div><div>✓ 특수문자 포함 (예: ! @ # $)</div></div></div>
         <div class="hikorea-step-box"><label for="hkExpDate">체류기간 만료일 확인</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">만료일을 입력하세요.</div></div>
-        ${hikoreaHotlineStrip()}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide" disabled>${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
+        ${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide" disabled>${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
         return;
     }
-    const gtx = (key) => { const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || UI_TRANSLATIONS.ko; const v = p[key] ?? UI_TRANSLATIONS.ko[key] ?? key; return v; };
-    const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
     const step0aHtml = '<div class="step0a-section">'
         + '<div class="step0a-block"><p class="step0a-block-title">A · ' + escapeHtml(gtx('step0aSecATitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecABody')) + '</p>'
         + '<div class="step0a-check-row"><span class="step0a-checkbox">✓</span><span>' + escapeHtml(gtx('step0aNoEmail')) + ': ' + escapeHtml(gtx('step0aGmail')) + '</span></div>'
@@ -11685,7 +11742,7 @@ function renderHikoreaGuide() {
     /*5*/`<ul><li>원하는 날짜와 시간을 선택하세요</li><li>체류기간 만료일 이전 날짜로 예약하세요</li><li>입력한 만료일: ${escapeHtml(hikoreaGuideState.expDate || '미입력')}</li><li>예약은 내일부터 가능합니다.</li></ul><div class="guide-screenshot" data-step="5">[스크린샷 준비 중]</div>`,
     /*6*/`<ul><li>예약번호를 메모하거나 화면을 캡처하세요</li><li>예약 확인증을 출력하거나 PDF로 저장하세요</li><li>방문 당일 예약 시간 10분 전에 도착하세요</li></ul><label><input id="hkSavedOk" type="checkbox"> 예약 확인증을 저장했습니다</label><div class="guide-screenshot" data-step="6">[스크린샷 준비 중]</div>`
     ][hikoreaGuideState.step] || '';
-    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div><div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/7</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip()}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
+    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/7</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
 }
 
 function renderManualActions(v, isVisaCode) {
@@ -12301,7 +12358,11 @@ const UI_TRANSLATIONS = {
         compactHeadTitle: '한눈에 보기', compactHeadSub: '총 {count}건', compactHeadSubMore: '{showing} / {total}건 우선 표시', compactDetail: '자세히 보기',
         drawerEyebrow: '검색 결과 상세', drawerCloseAria: '상세 패널 닫기',
         drawerDisclaimer: '검색 결과는 참고용입니다. 제출서류는 심사 과정과 관할기관 안내에 따라 달라질 수 있습니다. 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.',
-        drawerJurisdictionNote: '관할기관 확인 필요'
+        drawerJurisdictionNote: '관할기관 확인 필요',
+        hkHeaderTitle: 'HiKorea 방문예약 안내', hkHeaderSub: '방문 전 온라인 예약과 준비사항을 정리합니다.', hkHeaderChip: '공식 서비스 아님',
+        hkPhase1: '준비 확인', hkPhase2: '방문예약 절차', hkPhase3: '민원 유형 선택', hkPhase4: '방문 전 체크', hkPhase5: '저장/마무리',
+        hkPrimaryCta: 'HiKorea 방문예약으로 이동', hkSecondaryCta: '1345 문의 전 확인사항',
+        hkDisc1: 'Paradiso는 공식 정부 서비스가 아닙니다.', hkDisc2: '제공 정보는 참고용입니다.', hkDisc3: '최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.', hkDisc4: '제출서류와 예약 가능 여부는 심사·기관 안내에 따라 달라질 수 있습니다.'
     },
     en: {
         languageButton: 'Language settings', languageMenu: 'Choose language', languageChanged: 'Language changed to English.',
@@ -12427,7 +12488,11 @@ const UI_TRANSLATIONS = {
         compactHeadTitle: 'Quick scan', compactHeadSub: '{count} results', compactHeadSubMore: 'Showing {showing} of {total}', compactDetail: 'View details',
         drawerEyebrow: 'Search result detail', drawerCloseAria: 'Close detail panel',
         drawerDisclaimer: 'Results are reference information. Required documents may vary with the review process and the competent office. Always confirm with HiKorea, 1345, or the competent immigration office.',
-        drawerJurisdictionNote: 'Confirm with the competent immigration office'
+        drawerJurisdictionNote: 'Confirm with the competent immigration office',
+        hkHeaderTitle: 'HiKorea Visit Reservation Guide', hkHeaderSub: 'A checklist for online booking and prep before your visit.', hkHeaderChip: 'Not an official service',
+        hkPhase1: 'Preparation', hkPhase2: 'Booking procedure', hkPhase3: 'Task type', hkPhase4: 'Before visit', hkPhase5: 'Save & finish',
+        hkPrimaryCta: 'Open HiKorea booking', hkSecondaryCta: '1345 hotline checklist',
+        hkDisc1: 'Paradiso is not an official government service.', hkDisc2: 'Information shown is for reference only.', hkDisc3: 'Confirm final decisions with HiKorea, 1345, or the competent immigration office.', hkDisc4: 'Required documents and slot availability may change based on review and agency notices.'
     },
     zh: {
         languageButton: '语言设置', languageMenu: '选择语言', languageChanged: '语言已切换为简体中文。',
@@ -12498,7 +12563,11 @@ const UI_TRANSLATIONS = {
         compactHeadTitle: '快速浏览', compactHeadSub: '共{count}条', compactHeadSubMore: '优先显示{showing}/{total}', compactDetail: '查看详情',
         drawerEyebrow: '搜索结果详情', drawerCloseAria: '关闭详情面板',
         drawerDisclaimer: '搜索结果仅供参考。提交材料可能因审查流程及主管机关指引而有所不同。最终判断请向HiKorea、1345或主管出入境机关确认。',
-        drawerJurisdictionNote: '需主管机关确认'
+        drawerJurisdictionNote: '需主管机关确认',
+        hkHeaderTitle: 'HiKorea 访问预约指南', hkHeaderSub: '访问前的在线预约与准备事项清单。', hkHeaderChip: '非官方服务',
+        hkPhase1: '准备确认', hkPhase2: '预约流程', hkPhase3: '业务类型', hkPhase4: '访问前检查', hkPhase5: '保存/完成',
+        hkPrimaryCta: '前往 HiKorea 预约', hkSecondaryCta: '1345 咨询前确认事项',
+        hkDisc1: 'Paradiso 不是官方政府服务。', hkDisc2: '所提供信息仅供参考。', hkDisc3: '最终判断请向 HiKorea、1345 或主管出入境机关确认。', hkDisc4: '所需材料和预约空位可能根据审查与机关通知而变化。'
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
@@ -12776,7 +12845,11 @@ const UI_TRANSLATIONS = {
         compactHeadTitle: 'Tổng quan nhanh', compactHeadSub: '{count} kết quả', compactHeadSubMore: 'Hiển thị {showing} / {total}', compactDetail: 'Xem chi tiết',
         drawerEyebrow: 'Chi tiết kết quả tìm kiếm', drawerCloseAria: 'Đóng bảng chi tiết',
         drawerDisclaimer: 'Kết quả mang tính tham khảo. Tài liệu cần nộp có thể thay đổi theo quá trình thẩm định và hướng dẫn của cơ quan có thẩm quyền. Hãy xác nhận quyết định cuối cùng với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
-        drawerJurisdictionNote: 'Cần xác nhận với cơ quan có thẩm quyền'
+        drawerJurisdictionNote: 'Cần xác nhận với cơ quan có thẩm quyền',
+        hkHeaderTitle: 'Hướng dẫn đặt lịch hẹn HiKorea', hkHeaderSub: 'Danh sách đặt lịch trực tuyến và chuẩn bị trước khi đến.', hkHeaderChip: 'Không phải dịch vụ chính thức',
+        hkPhase1: 'Chuẩn bị', hkPhase2: 'Quy trình đặt lịch', hkPhase3: 'Loại nghiệp vụ', hkPhase4: 'Kiểm tra trước khi đến', hkPhase5: 'Lưu/Hoàn tất',
+        hkPrimaryCta: 'Mở đặt lịch HiKorea', hkSecondaryCta: 'Kiểm tra trước khi gọi 1345',
+        hkDisc1: 'Paradiso không phải là dịch vụ chính phủ chính thức.', hkDisc2: 'Thông tin được cung cấp chỉ để tham khảo.', hkDisc3: 'Quyết định cuối cùng cần xác nhận với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.', hkDisc4: 'Giấy tờ yêu cầu và khả năng đặt lịch có thể thay đổi theo thẩm tra và thông báo của cơ quan.'
     },
     km: {
         languageButton: 'ការកំណត់ភាសា', languageMenu: 'ជ្រើសរើសភាសា', languageChanged: 'បានប្តូរទៅភាសាខ្មែរ។',
