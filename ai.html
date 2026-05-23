@@ -1521,8 +1521,12 @@ select:focus-visible {
             };
         }
 
-        function buildVisaDataPayload(question, dataset) {
+        function resolveVisaDataForMessage(question, dataset) {
             return findVisaRecordForQuestion(question, dataset);
+        }
+
+        function buildVisaDataPayload(question, dataset) {
+            return resolveVisaDataForMessage(question, dataset);
         }
 
         function extractVisaCode(text) {
