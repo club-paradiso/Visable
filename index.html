@@ -8222,9 +8222,10 @@ body.searching:not(.searched) #searchForm {
   width: min(640px, calc(100% - 1.6rem));
   margin: 0 !important;
   padding: 1.1rem 1.1rem 0.85rem;
-  background: rgba(247, 246, 241, 0.97);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
-  backdrop-filter: blur(22px) saturate(140%);
+  /* FIX: backdrop-filter 제거. 배경이 거의 불투명(0.99)이라 blur는 효과 0,
+     Chrome/macOS에서 자식 텍스트가 백드롭 레이어와 함께 래스터화되며
+     뭉개지는 렌더 아티팩트만 유발했음. 뒤 배경 흐림은 .p-cmd-backdrop이 담당. */
+  background: rgba(248, 247, 242, 0.99);
   border: 1px solid color-mix(in srgb, #085E48 14%, transparent);
   border-radius: 22px;
   box-shadow: 0 28px 64px rgba(8, 34, 27, 0.32), 0 6px 14px rgba(8, 34, 27, 0.16);
@@ -8232,7 +8233,7 @@ body.searching:not(.searched) #searchForm {
   animation: pCmdPaletteIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 body[data-theme="dark"].searching:not(.searched) #searchForm {
-  background: rgba(18, 32, 28, 0.92);
+  background: rgba(18, 32, 28, 0.98);
   border-color: rgba(255, 255, 255, 0.08);
 }
 @keyframes pCmdPaletteIn {
@@ -8249,6 +8250,13 @@ body[data-theme="dark"].searching:not(.searched) #searchForm .sbar {
   border-color: rgba(255, 255, 255, 0.1);
 }
 body.searching:not(.searched) #searchForm #q { font-size: 1.08rem; padding: 0.85rem 2.5rem 0.85rem 2.6rem; }
+
+/* FIX 안전장치: 검색 모달(#searchForm) 본체와 모든 자식은 절대 filter 블러를
+   상속/적용받지 않도록 강제. 콘텐츠 가독성 보장. */
+body.searching:not(.searched) #searchForm,
+body.searching:not(.searched) #searchForm * {
+  filter: none !important;
+}
 
 .p-cmd-extras {
   display: none;
@@ -8998,8 +9006,8 @@ body:not(.searched) main {
 
 /* FIX: direct-search palette blur/layering regression
    Keep the dimming layer behind the landing hero and remove hero-level blur.
-   #searchForm lives inside .hero-container, so a root-level backdrop with
-   z-index:90 can visually blur the entire hero when .hero-container is z-index:10. */
+   The search form lives inside .hero-container, so it cannot outrank a root-level
+   backdrop with z-index:90 while .hero-container itself is z-index:10. */
 body.searching:not(.searched) .p-cmd-backdrop {
   z-index: 5 !important;
   -webkit-backdrop-filter: none !important;
@@ -9116,6 +9124,11 @@ body.night-light-mode:not(.searched) .hero-container {
                 <em class="p-hero-line">새로운 길을 찾다.</em>
             </h2>
             <p class="p-hero-sub">목적과 상황에 맞는 비자·체류 경로를 살펴봅니다.<br>출처를 확인하며 안내합니다.</p>
+            <div class="p-hero-proof" aria-label="Paradiso 기준">
+                <span class="p-proof-chip">공개 자료 기반</span>
+                <span class="p-proof-chip">목적별 경로 정리</span>
+                <span class="p-proof-chip">최종 확인은 공식 출처</span>
+            </div>
         </section>
 
         <!-- Home gateway — calm civic-tech entry grid. JS hooks reuse existing data-action handlers. -->
@@ -13499,6 +13512,7 @@ function applyLanguage(code, options = {}) {
     setHtml('#pHeroTitle', `<span class="p-hero-line">${tx('heroTitle')}</span><em class="p-hero-line">${tx('heroEm')}</em>`);
     setHtml('.p-hero-sub', tx('heroSub'));
     setAttr('.p-hero-proof', 'aria-label', 'Paradiso');
+    setIndexedText('.p-proof-chip', [tx('proof1'), tx('proof2'), tx('proof3')]);
     setAttr('.p-gateway', 'aria-label', tx('gwAriaLabel'));
     setAttr('.p-gw-primary', 'aria-label', tx('gwPrimaryAria'));
     setAttr('.p-gw-utility', 'aria-label', tx('gwUtilityAria'));
