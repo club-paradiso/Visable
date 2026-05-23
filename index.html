@@ -8995,6 +8995,35 @@ body:not(.searched) main {
   }
 }
 
+
+/* FIX: direct-search palette blur/layering regression
+   Keep the dimming layer behind the landing hero and remove hero-level blur.
+   #searchForm lives inside .hero-container, so a root-level backdrop with
+   z-index:90 can visually blur the entire hero when .hero-container is z-index:10. */
+body.searching:not(.searched) .p-cmd-backdrop {
+  z-index: 5 !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  background: rgba(8, 34, 27, 0.48) !important;
+  pointer-events: none !important;
+}
+
+body.searching:not(.searched) .hero-container {
+  z-index: 20 !important;
+}
+
+body.searching:not(.searched) #searchForm {
+  z-index: 40 !important;
+  filter: none !important;
+  -webkit-filter: none !important;
+  opacity: 1 !important;
+}
+
+body.night-light-mode:not(.searched) .hero-container {
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -9087,11 +9116,6 @@ body:not(.searched) main {
                 <em class="p-hero-line">새로운 길을 찾다.</em>
             </h2>
             <p class="p-hero-sub">목적과 상황에 맞는 비자·체류 경로를 살펴봅니다.<br>출처를 확인하며 안내합니다.</p>
-            <div class="p-hero-proof" aria-label="Paradiso 기준">
-                <span class="p-proof-chip">공개 자료 기반</span>
-                <span class="p-proof-chip">목적별 경로 정리</span>
-                <span class="p-proof-chip">최종 확인은 공식 출처</span>
-            </div>
         </section>
 
         <!-- Home gateway — calm civic-tech entry grid. JS hooks reuse existing data-action handlers. -->
@@ -13475,7 +13499,6 @@ function applyLanguage(code, options = {}) {
     setHtml('#pHeroTitle', `<span class="p-hero-line">${tx('heroTitle')}</span><em class="p-hero-line">${tx('heroEm')}</em>`);
     setHtml('.p-hero-sub', tx('heroSub'));
     setAttr('.p-hero-proof', 'aria-label', 'Paradiso');
-    setIndexedText('.p-proof-chip', [tx('proof1'), tx('proof2'), tx('proof3')]);
     setAttr('.p-gateway', 'aria-label', tx('gwAriaLabel'));
     setAttr('.p-gw-primary', 'aria-label', tx('gwPrimaryAria'));
     setAttr('.p-gw-utility', 'aria-label', tx('gwUtilityAria'));
