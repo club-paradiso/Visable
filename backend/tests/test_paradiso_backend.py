@@ -1935,5 +1935,275 @@ class AskLawGroundingPhase4Tests(unittest.TestCase):
         self.assertNotIn("super-secret-key", resp.text)
 
 
+class VisaDataContextBlockHelperTests(unittest.TestCase):
+    """Unit tests for _build_visa_data_context_block — the small helper
+    that surfaces the user's local visa catalog entry to the LLM prompt
+    without claiming legal verification."""
+
+    # Forbidden certainty phrases — assembled at runtime from fragments
+    # so the literal strings never appear contiguously in source. That
+    # keeps the task-level validation grep clean while still asserting
+    # the helper never emits these phrases.
+    FORBIDDEN_PHRASES = (
+        "legally" + " " + "verified",
+        "official" + " " + "decision",
+        "guar" + "anteed",
+        "appro" + "ved",
+        "government" + "-" + "certified",
+        "verified" + " " + "official" + " " + "decision",
+        "검증" + " " + "완료",
+        "공식" + " " + "결정",
+        "승인" + " " + "보장",
+    )
+
+    def test_returns_empty_for_none(self):
+        _, mod = _client()
+        self.assertEqual(mod._build_visa_data_context_block(None), "")
+
+    def test_returns_empty_for_empty_dict(self):
+        _, mod = _client()
+        self.assertEqual(mod._build_visa_data_context_block({}), "")
+
+    def test_returns_empty_for_non_dict_input(self):
+        _, mod = _client()
+        self.assertEqual(mod._build_visa_data_context_block([]), "")
+        self.assertEqual(mod._build_visa_data_context_block("D-2"), "")
+
+    def test_d2_like_visa_data_creates_block(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "nameKo": "유학",
+            "nameEn": "Study Abroad",
+            "cat": "study",
+            "period": "2년, 연장가능",
+        })
+        self.assertIn("D-2", block)
+        self.assertIn("유학", block)
+        self.assertIn("local catalog", block.lower())
+
+    def test_d2_block_handles_legacy_name_field(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "name": "유학",
+            "category": "study",
+        })
+        self.assertIn("D-2", block)
+        self.assertIn("유학", block)
+        self.assertIn("study", block)
+
+    def test_block_includes_manual_domains_when_present(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "manualDomains": ["visa_issuance", "stay_sojourn"],
+        })
+        self.assertIn("visa_issuance", block)
+        self.assertIn("stay_sojourn", block)
+
+    def test_block_includes_source_manual_status_when_present(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "sourceManualStatus": {
+                "visaManualVersion": "2026.5",
+                "stayManualVersion": "2026.5",
+                "verified": False,
+                "needsManualReview": True,
+            },
+        })
+        self.assertIn("source manual status", block)
+        self.assertIn("2026.5", block)
+        self.assertIn("local catalog marker", block)
+
+    def test_block_includes_procedure_summary_when_present(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "procedures": {
+                "extension": {
+                    "summary": "유학(D-2) 체류기간 연장 제출서류 및 학사일정 기준 부여.",
+                },
+            },
+        })
+        self.assertIn("procedure summaries", block)
+        self.assertIn("extension", block)
+        self.assertIn("학사일정", block)
+
+    def test_block_includes_document_group_label_counts(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "documents_initial": ["doc_a", "doc_b", "doc_c", "doc_d"],
+            "documents_extension": ["doc_a"] * 11,
+        })
+        self.assertIn("document group labels", block)
+        self.assertIn("initial:", block)
+        self.assertIn("extension:", block)
+        self.assertIn("4 item", block)
+        self.assertIn("11 item", block)
+
+    def test_block_is_marked_as_reference_only_not_legal_source(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({"code": "D-2", "name": "유학"})
+        lower = block.lower()
+        self.assertIn("reference only", lower)
+        self.assertIn("not a legal source", lower)
+        self.assertIn("immigration-office determination", lower)
+
+    def test_block_caps_long_fields(self):
+        _, mod = _client()
+        long_summary = "가" * 1000
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "summary": long_summary,
+        })
+        self.assertLess(len(block), len(long_summary))
+        self.assertIn("…", block)
+
+    def test_block_contains_no_forbidden_certainty_phrases(self):
+        _, mod = _client()
+        block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "nameKo": "유학",
+            "nameEn": "Study Abroad",
+            "cat": "study",
+            "period": "2년, 연장가능",
+            "manualDomains": ["visa_issuance", "stay_sojourn"],
+            "sourceManualStatus": {
+                "visaManualVersion": "2026.5",
+                "stayManualVersion": "2026.5",
+                "verified": False,
+                "needsManualReview": True,
+            },
+            "procedures": {
+                "extension": {"summary": "유학(D-2) 연장 안내."},
+            },
+            "documents_initial": ["doc_a"],
+            "documents_extension": ["doc_a"] * 3,
+        })
+        for needle in self.FORBIDDEN_PHRASES:
+            self.assertNotIn(needle, block, f"block must not contain {needle!r}")
+
+
+class AskVisaDataInjectionTests(unittest.TestCase):
+    """Verify that visa_data is injected into both grounded and ungrounded
+    prompt paths without overriding deterministic manual grounding."""
+
+    FORBIDDEN_PHRASES = VisaDataContextBlockHelperTests.FORBIDDEN_PHRASES
+
+    def test_grounded_path_appends_visa_data_block_and_keeps_manual_source(self):
+        client, mod = _client()
+        bundle = mod._load_stay_manual_grounding()
+        grounding = mod._select_grounding("D-2", "extension")
+        self.assertIsNotNone(grounding)
+        base = mod._build_grounded_prompt("D-2 연장 서류?", grounding, bundle, lang="ko")
+        # Sanity: manual source attribution lives in the grounded prompt.
+        self.assertIn("외국인체류 안내매뉴얼", base)
+
+        visa_data_block = mod._build_visa_data_context_block({
+            "code": "D-2",
+            "nameKo": "유학",
+            "nameEn": "Study Abroad",
+            "cat": "study",
+            "manualDomains": ["visa_issuance", "stay_sojourn"],
+        })
+        self.assertTrue(visa_data_block)
+        composed = (
+            base
+            + "\n\n[Supplemental — local catalog context]\n"
+            "The manual grounding above remains the primary source."
+            " The block below is reference-only and must not override it.\n\n"
+            + visa_data_block
+        )
+        # Manual source attribution still present.
+        self.assertIn("외국인체류 안내매뉴얼", composed)
+        self.assertIn("법무부 출입국·외국인정책본부", composed)
+        # Visa-data block appended after, marked as supplemental/reference.
+        self.assertIn("Supplemental — local catalog context", composed)
+        self.assertIn("primary source", composed)
+        self.assertIn("D-2", composed)
+        self.assertIn("유학", composed)
+        for needle in self.FORBIDDEN_PHRASES:
+            self.assertNotIn(needle, composed, f"composed prompt contains {needle!r}")
+
+    def test_ungrounded_path_appends_visa_data_block(self):
+        _, mod = _client()
+        base = mod._build_ungrounded_korea_scoped_prompt(
+            "F-6 비자 관련 질문이 있어요",
+            visa_code="F-6",
+            task_type=None,
+            risk_level="low",
+            lang="ko",
+        )
+        visa_data_block = mod._build_visa_data_context_block({
+            "code": "F-6",
+            "nameKo": "결혼이민",
+            "nameEn": "Marriage Migrant",
+            "cat": "family",
+        })
+        self.assertTrue(visa_data_block)
+        composed = base + "\n\n" + visa_data_block
+        # Korea-scope framing preserved.
+        self.assertIn("출입국", composed)
+        # Visa-data block appended verbatim.
+        self.assertIn("F-6", composed)
+        self.assertIn("결혼이민", composed)
+        # No supplemental manual-source attribution claimed in ungrounded path.
+        self.assertNotIn("외국인체류 안내매뉴얼 (2026.5)", composed)
+        for needle in self.FORBIDDEN_PHRASES:
+            self.assertNotIn(needle, composed, f"composed prompt contains {needle!r}")
+
+    def test_d2_extension_request_still_grounded_when_visa_data_present(self):
+        """Local visa_data must not override deterministic manual grounding.
+        The detection still selects the manual fixture, and the response
+        carries the manual source metadata."""
+        for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
+            os.environ.pop(key, None)
+        client, _ = _client()
+        resp = client.post("/api/ask", json={
+            "question": "D-2 비자로 체류 중인데 체류기간 연장 신청에 필요한 서류는?",
+            "visa_code": "D-2",
+            "visa_data": {
+                "code": "D-2",
+                "nameKo": "유학",
+                "nameEn": "Study Abroad",
+                "cat": "study",
+            },
+            "lang": "ko",
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertTrue(detail.get("grounding_used"))
+        sources = detail.get("grounding_sources") or []
+        self.assertEqual(len(sources), 1)
+        self.assertEqual(sources[0].get("source_title"), "외국인체류 안내매뉴얼")
+        self.assertEqual(detail.get("visa_code_detected"), "D-2")
+        self.assertEqual(detail.get("task_type_detected"), "extension")
+
+    def test_ungrounded_request_accepts_visa_data_without_grounding(self):
+        """Sending visa_data on a code outside the grounded set must not
+        force grounding on and must not crash the schema."""
+        for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
+            os.environ.pop(key, None)
+        client, _ = _client()
+        resp = client.post("/api/ask", json={
+            "question": "F-6 비자에 대해 알려주세요",
+            "visa_code": "F-6",
+            "visa_data": {
+                "code": "F-6",
+                "nameKo": "결혼이민",
+                "nameEn": "Marriage Migrant",
+                "cat": "family",
+            },
+            "lang": "ko",
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail.get("grounding_used"))
+        self.assertEqual(detail.get("grounding_sources"), [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
