@@ -7834,17 +7834,16 @@ body:not(.searched) #visaManualSection.in-hero {
   display: none !important;
 }
 
-/* Hide homepage bloat sections on landing (JS hooks preserved) */
-body:not(.searched) #brandHero,
-body:not(.searched) #brandFeature,
+/* Hide remaining homepage bloat on landing.
+   Brand narrative (#brandHero, #brandFeature), source-trust panel, and footer CTA
+   are restored as part of fix/restore-brand-narrative-mobile-landing.
+   .section-divider stays visible so the floating .brand-hero-stats grid
+   (which uses translateY(50%)) does not visually collide with #brandFeature. */
 body:not(.searched) .p-pathway-section,
 body:not(.searched) .p-how-section,
-body:not(.searched) .p-source-section,
 body:not(.searched) .p-tools-section,
 body:not(.searched) .p-med-finder,
-body:not(.searched) .p-reminder-section,
-body:not(.searched) .p-footer-cta,
-body:not(.searched) .section-divider {
+body:not(.searched) .p-reminder-section {
   display: none !important;
 }
 
@@ -7852,7 +7851,9 @@ body:not(.searched) .section-divider {
 body:not(.searched) .p-agent-finder { display: none !important; }
 body:not(.searched) .p-agent-finder:target { display: block !important; }
 
-/* About Me block: hide everything except the editorial fragment (about-intro) */
+/* About Me block: flatten wrapper but keep brand/anagram/intro/values visible.
+   .about-title (redundant heading), .about-experience (roadmap bloat), and
+   .about-footer (duplicates p-footer-cta) stay hidden on landing. */
 body:not(.searched) #aboutMe {
   background: transparent !important;
   border: 0 !important;
@@ -7861,11 +7862,9 @@ body:not(.searched) #aboutMe {
   -webkit-backdrop-filter: none !important;
   padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 3rem) !important;
   margin: clamp(2rem, 5vw, 3.5rem) auto !important;
-  gap: 0 !important;
+  gap: clamp(2rem, 5vw, 3rem) !important;
 }
 body:not(.searched) #aboutMe > .about-title,
-body:not(.searched) #aboutMe > .about-brand,
-body:not(.searched) #aboutMe > .about-hobbies,
 body:not(.searched) #aboutMe > .about-experience,
 body:not(.searched) #aboutMe > .about-footer {
   display: none !important;
