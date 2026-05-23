@@ -923,6 +923,148 @@ def _grounding_source_summary(grounding: Dict[str, Any], bundle: Dict[str, Any])
     }
 
 
+def _build_visa_data_context_block(visa_data: Optional[Dict[str, Any]]) -> str:
+    """Build a compact local-catalog context block from frontend visa_data.
+
+    The Paradiso frontend (ai.html) sends a record from visa_data.json when
+    the user question mentions a known visa code (D-2 / E-7 / F-6 / ...).
+    This helper surfaces a small, conservative selection of safe fields so
+    the LLM has some local context even when no deterministic manual
+    grounding fixture matches the request. The block is marked as a local
+    catalog reference, not as a legal source and not as an immigration-
+    office determination, and individual fields are size-capped.
+
+    Returns an empty string when ``visa_data`` is ``None``, is not a dict,
+    or yields no usable fields. Callers are expected to skip appending the
+    block in that case so behavior is unchanged for empty payloads.
+    """
+    if not isinstance(visa_data, dict) or not visa_data:
+        return ""
+
+    MAX_FIELD = 240
+
+    def _trim(value: Any) -> str:
+        if value is None:
+            return ""
+        s = str(value).strip()
+        if len(s) > MAX_FIELD:
+            s = s[:MAX_FIELD].rstrip() + "…"
+        return s
+
+    lines: List[str] = []
+
+    code = _trim(visa_data.get("code"))
+    if code:
+        lines.append(f"- code: {code}")
+
+    name_ko = _trim(visa_data.get("nameKo") or visa_data.get("name"))
+    name_en = _trim(visa_data.get("nameEn"))
+    if name_ko and name_en and name_ko != name_en:
+        lines.append(f"- name: {name_ko} / {name_en}")
+    elif name_ko:
+        lines.append(f"- name: {name_ko}")
+    elif name_en:
+        lines.append(f"- name: {name_en}")
+
+    category = _trim(visa_data.get("category") or visa_data.get("cat"))
+    if category:
+        lines.append(f"- category: {category}")
+
+    summary = _trim(visa_data.get("summary"))
+    if summary:
+        lines.append(f"- summary: {summary}")
+
+    period = _trim(
+        visa_data.get("period")
+        or visa_data.get("stayPeriod")
+        or visa_data.get("stayPeriodCap")
+    )
+    if period:
+        lines.append(f"- period: {period}")
+
+    manual_domains = visa_data.get("manualDomains")
+    if isinstance(manual_domains, list) and manual_domains:
+        compact = ", ".join(
+            str(item).strip()
+            for item in manual_domains[:6]
+            if isinstance(item, str) and item.strip()
+        )
+        if compact:
+            lines.append(f"- manual domains (local catalog tag): {compact}")
+
+    status = visa_data.get("sourceManualStatus")
+    if isinstance(status, dict) and status:
+        flags: List[str] = []
+        vmv = _trim(status.get("visaManualVersion"))
+        smv = _trim(status.get("stayManualVersion"))
+        if vmv:
+            flags.append(f"visa manual {vmv}")
+        if smv and smv != vmv:
+            flags.append(f"stay manual {smv}")
+        if status.get("verified") is True:
+            flags.append("local catalog marker: locally reviewed")
+        elif status.get("verified") is False:
+            flags.append("local catalog marker: not yet locally reviewed")
+        if status.get("needsManualReview") is True:
+            flags.append("local catalog marker: needs manual review")
+        if flags:
+            lines.append(
+                "- source manual status (local catalog): " + "; ".join(flags)
+            )
+
+    procedures = visa_data.get("procedures")
+    proc_lines: List[str] = []
+    if isinstance(procedures, dict):
+        for proc_key in (
+            "extension",
+            "statusChange",
+            "registration",
+            "workplaceChange",
+        ):
+            proc = procedures.get(proc_key)
+            if not isinstance(proc, dict):
+                continue
+            ps = _trim(proc.get("summary"))
+            if ps:
+                proc_lines.append(f"  - {proc_key}: {ps}")
+            if len(proc_lines) >= 3:
+                break
+    if proc_lines:
+        lines.append("- procedure summaries (local catalog):")
+        lines.extend(proc_lines)
+
+    doc_groups: List[str] = []
+    for label, key in (
+        ("initial", "documents_initial"),
+        ("extension", "documents_extension"),
+        ("registration", "documents_registration"),
+        ("change", "documents_change"),
+    ):
+        items = visa_data.get(key)
+        if isinstance(items, list) and items:
+            doc_groups.append(
+                f"  - {label}: {len(items)} item(s) in local catalog"
+            )
+    if doc_groups:
+        lines.append(
+            "- document group labels (local catalog, not authoritative):"
+        )
+        lines.extend(doc_groups)
+
+    if not lines:
+        return ""
+
+    header = (
+        "[Local catalog context — reference only]\n"
+        "The block below is the user's local visa catalog entry passed from"
+        " the frontend. Treat it as local reference data only. It is not a"
+        " legal source, not an immigration-office determination, and may be"
+        " incomplete or out of date. Do not invent missing fields and do not"
+        " present this block as definitive procedural guidance."
+    )
+    return f"{header}\n" + "\n".join(lines)
+
+
 def _build_ungrounded_korea_scoped_prompt(
     user_prompt: str,
     *,
@@ -1108,10 +1250,21 @@ async def ask(req: AskRequest) -> AskResponse:
         visa_code_detected, task_type_detected, visa_sub_code_detected
     )
     grounding_sources: List[Dict[str, Any]] = []
+    visa_data_block = _build_visa_data_context_block(req.visa_data)
     if grounding is not None:
         bundle = _load_stay_manual_grounding() or {}
         final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
         grounding_sources = [_grounding_source_summary(grounding, bundle)]
+        if visa_data_block:
+            # Manual grounding above remains primary; the local catalog block
+            # is appended as supplemental context only and must not be used
+            # to override the verified manual content.
+            final_prompt += (
+                "\n\n[Supplemental — local catalog context]\n"
+                "The manual grounding above remains the primary source."
+                " The block below is reference-only and must not override it.\n\n"
+                + visa_data_block
+            )
     else:
         final_prompt = _build_ungrounded_korea_scoped_prompt(
             prompt,
@@ -1121,6 +1274,8 @@ async def ask(req: AskRequest) -> AskResponse:
             risk_level=risk_level_detected,
             lang=req.lang,
         )
+        if visa_data_block:
+            final_prompt += "\n\n" + visa_data_block
 
     law_grounding_used = False
     law_grounding_attempted = False
