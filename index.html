@@ -12165,6 +12165,19 @@ function calculateScore(item,keywords){
     return currentSearchMode==='and' ? (isAnd?score:0) : score;
 }
 
+function getExactCodeMatchRank(item, keywords) {
+    if (!keywords || !keywords.length) return 0;
+    const normalizedKeywords = keywords.map(kw => normalizeVisaCode(kw)).filter(Boolean);
+    if (!normalizedKeywords.length) return 0;
+    const codeNorm = normalizeVisaCode(item.code);
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm === kw)) return 4;
+    const subcodeNorms = getVisaSubcodes(item).map(s => normalizeVisaCode(s.code)).filter(Boolean);
+    if (subcodeNorms.some(sCode => normalizedKeywords.some(kw => sCode === kw))) return 3;
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm.startsWith(kw))) return 2;
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm.includes(kw))) return 1;
+    return 0;
+}
+
 const ALIAS_MAP = {
     "제주무사증":"B-2-2","제주 무사증":"B-2-2","제주무비자":"B-2-2","제주 무비자":"B-2-2","제주직항":"B-2-2","제주입도":"B-2-2",
     "사증면제협정국":"B-1","사증면제협정":"B-1","비자면제협정":"B-1","무사증협정":"B-1","협정국":"B-1",
@@ -12366,7 +12379,7 @@ function renderResults(query){
     if(!dataReady) return;
     const box=document.getElementById('rlist'), rc=document.getElementById('rc');
     const kw=query.trim().split(/\s+/).filter(Boolean), kwL=expandKeywords(kw.map(k=>k.toLowerCase()));
-    let scored=VISA_DATA.map(v=>({...v,_score:calculateScore(v,kwL)})), filtered=scored.filter(v=>v._score>0).sort((a,b)=>b._score-a._score);
+    let scored=VISA_DATA.map(v=>({...v,_score:calculateScore(v,kwL),_codeRank:getExactCodeMatchRank(v,kw)})), filtered=scored.filter(v=>v._score>0).sort((a,b)=>b._codeRank-a._codeRank||b._score-a._score);
     let st=0; filtered.forEach(v=>{st += getVisaSubcodes(v).length;});
     if(!filtered.length){
         box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
