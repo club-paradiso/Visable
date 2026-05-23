@@ -8793,6 +8793,207 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
   color: #FFB8AC;
 }
 
+/* ════════════════════════════════════════════════════════════════════
+   Figma landing direction (fix/apply-figma-landing-direction)
+   - Mobile hero compactness: release 100vh, reduce first-screen weight
+   - Coverage kicker (brand-hero)
+   - Manual/source section ("법무부 매뉴얼 기반, 구조화된 안내")
+   - Footer-CTA note refinement
+   Scope: additive, mostly scoped to body:not(.searched) — does not touch
+   search/results/drawer/modal behaviour.
+   ════════════════════════════════════════════════════════════════════ */
+
+/* 1 · Mobile hero compactness — release 100vh, shorter first screen.
+   (visa-manual-section, landing-hints-section, hero-ai-secondary are
+   already hidden on landing by an earlier PR.) */
+@media (max-width: 720px) {
+  body:not(.searched) .hero-container {
+    min-height: auto !important;
+    padding-top: clamp(3.4rem, 9vw, 4.4rem) !important;
+    padding-bottom: clamp(1.4rem, 4vw, 2.2rem) !important;
+    justify-content: flex-start !important;
+  }
+  body:not(.searched) .header-inner {
+    gap: clamp(1rem, 3.2vw, 1.6rem) !important;
+  }
+  body:not(.searched) .reference-disclaimer {
+    margin-top: 0.4rem !important;
+    padding: 0.5rem 0 !important;
+    font-size: 0.72rem !important;
+    line-height: 1.55 !important;
+  }
+  body:not(.searched) .scroll-cue {
+    display: none !important;
+  }
+}
+
+/* 2a · Hide brand-hero CTA buttons on landing: the Figma Coverage section
+   does not include CTAs (final CTA section already covers that), and the
+   existing button styling cascade renders them white-on-white. */
+body:not(.searched) .brand-hero-buttons {
+  display: none !important;
+}
+
+/* 2 · Coverage kicker on brand-hero */
+.brand-hero-kicker {
+  font-family: var(--ff);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 250, 244, 0.78);
+  margin: 0 0 0.45rem;
+}
+body:not(.searched) .brand-hero-kicker {
+  color: rgba(255, 250, 244, 0.82) !important;
+}
+@media (max-width: 720px) {
+  .brand-hero-kicker {
+    font-size: 0.66rem;
+    margin-bottom: 0.3rem;
+  }
+}
+
+/* 3 · Manual/Source section — Figma "법무부 매뉴얼 기반, 구조화된 안내" */
+.p-manual-section { color: var(--p-ink); }
+.p-manual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(0.7rem, 1.6vw, 1rem);
+}
+.p-manual-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: clamp(0.7rem, 1.6vw, 0.95rem);
+  padding: clamp(1rem, 2.2vw, 1.35rem);
+  border: 1px solid color-mix(in srgb, var(--p-green) 14%, var(--p-line));
+  border-radius: var(--p-r-lg);
+  background:
+    linear-gradient(135deg, rgba(255, 250, 244, 0.94), rgba(220, 233, 221, 0.55));
+  box-shadow: var(--p-shadow-1);
+  transition:
+    transform var(--p-dur-1) var(--p-ease),
+    box-shadow var(--p-dur-1) var(--p-ease),
+    border-color var(--p-dur-1) var(--p-ease);
+}
+.p-manual-card:hover,
+.p-manual-card:focus-within {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--p-green) 36%, var(--p-line));
+  box-shadow: var(--p-shadow-2);
+}
+.p-manual-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--p-green) 16%, white);
+  color: var(--p-green-deep);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+.p-manual-body { display: grid; gap: 0.3rem; min-width: 0; }
+.p-manual-body h3 {
+  margin: 0;
+  color: var(--p-ink);
+  font-size: var(--p-fs-md);
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  word-break: keep-all;
+}
+.p-manual-body p {
+  margin: 0;
+  color: var(--p-ink-3);
+  font-size: var(--p-fs-sm);
+  line-height: 1.62;
+  word-break: keep-all;
+}
+.p-manual-note {
+  margin: clamp(1rem, 2.5vw, 1.4rem) 0 0;
+  padding: 0.78rem 0.95rem;
+  border-radius: var(--p-r-md);
+  border: 1px dashed color-mix(in srgb, var(--p-coral) 32%, var(--p-line));
+  background: color-mix(in srgb, var(--p-coral-soft) 24%, white);
+  color: var(--p-coral-deep);
+  font-size: var(--p-fs-sm);
+  line-height: 1.6;
+  word-break: keep-all;
+}
+@media (max-width: 720px) {
+  .p-manual-grid { grid-template-columns: 1fr; gap: 0.6rem; }
+  .p-manual-card { padding: 0.9rem 1rem; }
+  .p-manual-icon { width: 34px; height: 34px; font-size: 1.05rem; border-radius: 10px; }
+  .p-manual-body h3 { font-size: 0.98rem; }
+  .p-manual-body p { font-size: 0.84rem; }
+  .p-manual-note { padding: 0.7rem 0.85rem; font-size: 0.8rem; }
+}
+
+/* 4 · Footer-CTA: small honest disclaimer below buttons */
+.p-footer-cta-note {
+  margin: 1.05rem auto 0;
+  max-width: 560px;
+  color: rgba(244, 238, 224, 0.74);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+.p-footer-cta .p-cta-btn:focus-visible {
+  outline: 2px solid rgba(244, 238, 224, 0.78);
+  outline-offset: 3px;
+}
+
+/* 5 · 390px gateway tightening */
+@media (max-width: 420px) {
+  .p-gateway { gap: 0.45rem !important; }
+  .p-gw-search { min-height: 56px; padding: 0.78rem 0.85rem; }
+  .p-gw-card { min-height: 0; padding: 0.78rem 0.85rem; }
+  .p-gw-card-label { font-size: 0.92rem; }
+  .p-gw-card-sub { font-size: 0.74rem; }
+  .p-gw-util { min-height: 44px; padding: 0.55rem 0.8rem; font-size: 0.82rem; }
+}
+
+/* 6 · Brand-hero (Coverage) typography tightening for mobile */
+@media (max-width: 720px) {
+  .brand-hero-headline {
+    font-size: clamp(1.7rem, 6.5vw, 2.2rem) !important;
+    line-height: 1.18 !important;
+  }
+  .brand-hero-subtitle {
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+    letter-spacing: 0 !important;
+    text-transform: none !important;
+    color: rgba(255, 250, 244, 0.82) !important;
+  }
+}
+
+/* 7 · Section spacing rhythm on mobile (Jackie editorial pacing, restrained) */
+@media (max-width: 720px) {
+  .p-section { margin: 2.2rem auto !important; }
+  .p-section-head { gap: 0.65rem !important; margin-bottom: 1rem !important; }
+  .p-section-title { font-size: clamp(1.5rem, 5.6vw, 1.85rem) !important; line-height: 1.18 !important; }
+  .p-section-copy { font-size: 0.88rem !important; line-height: 1.65 !important; }
+  .p-footer-cta { padding: 1.8rem 1.25rem !important; }
+  .p-footer-cta h2 { font-size: clamp(1.4rem, 5.6vw, 1.85rem) !important; line-height: 1.22 !important; }
+  .p-footer-cta p { font-size: 0.88rem !important; line-height: 1.65 !important; }
+  .p-footer-cta-note { font-size: 0.72rem !important; }
+}
+
+/* 8 · Guard rail: prevent horizontal overflow on the landing page */
+body:not(.searched) main {
+  max-width: 100%;
+  overflow-x: clip;
+}
+@media (max-width: 720px) {
+  body:not(.searched) .p-section {
+    padding-left: clamp(0.85rem, 3vw, 1.1rem);
+    padding-right: clamp(0.85rem, 3vw, 1.1rem);
+  }
+}
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -9004,15 +9205,16 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
 
     <div class="landing-scroll">
 
-    <!-- Hero Section -->
+    <!-- Coverage Section (Figma direction) -->
     <section id="brandHero" class="brand-hero figma-brand-bridge" aria-labelledby="brandHeroTitle">
         <div class="brand-hero-text" data-reveal="fade-up">
+            <p class="brand-hero-kicker">Coverage · 체류자격 분류</p>
             <h2 id="brandHeroTitle" class="brand-hero-headline">
-                복잡한 체류,<br>
-                Paradiso에서 손쉽게.
+                복잡한 체류자격을<br>
+                한 눈에 확인해보세요.
             </h2>
-            <p class="brand-hero-subtitle" lang="en">
-                Korea's residence categories, organized by purpose.
+            <p class="brand-hero-subtitle">
+                목적별로 정리된 체류자격을 살펴보고, 출처를 확인하며 다음 단계를 준비할 수 있습니다.
             </p>
             <div class="brand-hero-buttons">
                 <a href="#aboutMe" class="btn-primary">
@@ -9049,7 +9251,7 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">🏠</div>
                 <div class="stat-num" id="stat-residence" data-count="7">0</div>
-                <div class="stat-label">거주·결혼<br><span lang="en">Residence</span></div>
+                <div class="stat-label">거주·동포<br><span lang="en">Residence</span></div>
                 <div class="stat-codes" aria-hidden="true">
                     <span class="stat-code-chip">F-2</span>
                     <span class="stat-code-chip">F-4</span>
@@ -9060,7 +9262,7 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">✈️</div>
                 <div class="stat-num" id="stat-visit" data-count="10">0</div>
-                <div class="stat-label">방문·기타<br><span lang="en">Visit & Other</span></div>
+                <div class="stat-label">방문·가족<br><span lang="en">Visit & Family</span></div>
                 <div class="stat-codes" aria-hidden="true">
                     <span class="stat-code-chip">B-2</span>
                     <span class="stat-code-chip">C-3</span>
@@ -9109,6 +9311,52 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
                     <span lang="en">Results with source-checking guidance</span></div></li>
             </ul>
         </aside>
+    </section>
+
+    <!-- Figma direction: Manual/source-based guidance section -->
+    <section class="p-section p-manual-section" aria-labelledby="pManualTitle">
+        <div class="p-section-head">
+            <div>
+                <p class="p-kicker">Information & coverage</p>
+                <h2 class="p-section-title" id="pManualTitle">법무부 매뉴얼 기반,<br>구조화된 안내</h2>
+            </div>
+            <p class="p-section-copy">
+                출입국·외국인정책본부가 공개한 매뉴얼과 시행 안내를 참고용으로 구조화했습니다. 결과 화면에 표기된 출처를 확인한 뒤, 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인해 주세요.
+            </p>
+        </div>
+        <div class="p-manual-grid" role="list" aria-label="참고 매뉴얼 및 출처">
+            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-icon" aria-hidden="true">📘</span>
+                <div class="p-manual-body">
+                    <h3>체류민원 안내 매뉴얼</h3>
+                    <p>외국인 등록, 체류기간 연장, 자격 변경 등 국내 체류 절차의 공개 매뉴얼.</p>
+                </div>
+            </article>
+            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-icon" aria-hidden="true">📗</span>
+                <div class="p-manual-body">
+                    <h3>사증 민원 안내 매뉴얼</h3>
+                    <p>재외공관 사증 발급, 비자 신청 절차 안내의 공개 매뉴얼.</p>
+                </div>
+            </article>
+            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-icon" aria-hidden="true">📑</span>
+                <div class="p-manual-body">
+                    <h3>관련 법령·서식 참고</h3>
+                    <p>출입국관리법, 시행령, 시행규칙과 공개 서식을 교차 확인합니다.</p>
+                </div>
+            </article>
+            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-icon" aria-hidden="true">📞</span>
+                <div class="p-manual-body">
+                    <h3>HiKorea · 1345 확인</h3>
+                    <p>최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.</p>
+                </div>
+            </article>
+        </div>
+        <p class="p-manual-note">
+            Paradiso는 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며, 제출서류와 절차는 관할기관 안내에 따라 달라질 수 있습니다.
+        </p>
     </section>
 
     <section class="p-section p-pathway-section" aria-labelledby="pPathwayTitle">
@@ -9528,12 +9776,13 @@ body[data-theme="dark"] #docModalChecklist .subcode-warning {
     </section>
 
     <section class="p-section p-footer-cta" aria-labelledby="pFooterCtaTitle">
-        <h2 id="pFooterCtaTitle">체류 절차 경로를 더 쉽게, 더 체계적으로.</h2>
-        <p>복잡하기만 했던 체류 행정. Paradiso와 함께라면 어렵지 않습니다.</p>
+        <h2 id="pFooterCtaTitle">어렵기만 하던 체류 관리,<br>이제는 손쉽게 확인하세요.</h2>
+        <p>복잡한 체류 행정과 흩어진 자료를 Paradiso가 목적별로 정리합니다. 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.</p>
         <div class="p-footer-actions">
-            <a class="p-cta-btn primary" href="ai.html">내 상황으로 시작하기</a>
-            <a class="p-cta-btn" href="ai.html">AI에게 묻기</a>
+            <button type="button" class="p-cta-btn primary" data-action="toggle-search">검색 시작하기</button>
+            <a class="p-cta-btn" href="tel:1345">국번없이 1345</a>
         </div>
+        <p class="p-footer-cta-note">Paradiso는 공식 정부 서비스가 아닙니다. 제공 정보는 참고용입니다.</p>
     </section>
 
     </div><!-- /.landing-scroll -->
@@ -12257,9 +12506,9 @@ const UI_TRANSLATIONS = {
         ctrlsAria: '검색결과 정렬 및 조작', fold: '접기', unfold: '펼치기', hintsTitle: '추천 키워드', hintsAria: '빠른 추천 검색어',
         aiSecondaryAria: '선택형 AI 도우미', aiLink: 'AI로 더 자세히 묻기', scrollAria: '아래로 스크롤',
         reference: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
-        brandHeroTitle: '복잡한 체류,<br>Paradiso에서 손쉽게.', brandHeroSubtitle: 'Korea\'s 39 visa categories. Unified.',
+        brandHeroTitle: '복잡한 체류자격을<br>한 눈에 확인해보세요.', brandHeroSubtitle: '목적별로 정리된 체류자격을 살펴보고, 출처를 확인하며 다음 단계를 준비할 수 있습니다.',
         brandHeroStatsAria: '비자 카테고리 통계', brandHeroButtons: ['서비스 소개', '1345 직접 문의'], brandHeroButtonSubs: ['About', '1345 Hotline'],
-        brandHeroStats: ['취업·전문직<br><span lang="en">Employment</span>', '유학·연수<br><span lang="en">Study</span>', '거주·결혼<br><span lang="en">Residence</span>', '방문·기타<br><span lang="en">Visit &amp; Other</span>'],
+        brandHeroStats: ['취업·전문직<br><span lang="en">Employment</span>', '유학·연수<br><span lang="en">Study</span>', '거주·동포<br><span lang="en">Residence</span>', '방문·가족<br><span lang="en">Visit &amp; Family</span>'],
         featureTitle: '출입국·외국인정책본부<br>매뉴얼 기반의 정보 탐색', featureSubtitle: 'Manual-based information navigation',
         featureBody: '구조화된 체류자격 데이터를 토대로 공식 자료 확인을 전제로 한 정보 탐색을 보조합니다. 최종 판단과 신청 절차는 관할 출입국·외국인관서 안내 확인이 필요합니다.',
         featureCta: '1345 외국인종합안내센터', featureCtaSub: 'Contact 1345', featureChecklistAria: '서비스 핵심 기능',
@@ -12294,7 +12543,7 @@ const UI_TRANSLATIONS = {
         roadmapCompanies: ['2025 Q4 - 공공데이터 활용 공모전 출품 및 MVP 검증', '2026 Q1 - AI 기반 질의응답과 안내 품질 고도화', '2026 Q3 - 다국어 UI와 사용자 접근성 확대'],
         roadmapDetails: ['39가지 체류자격 통합 탐색 MVP 공개·실사용자 피드백 수집', '매뉴얼 기반 답변 보조와 사용자 상황별 안내 흐름 정교화', '영어·다국어 UI 도입, 1345 안내 흐름 연계 강화'],
         footerHeroTitle: '대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.', footerChips: ['📑 공식 출처 확인 경로', '🧭 목적별 경로 정리', '🏛 관할기관 안내', '💼 직종·업종 코드'], footerButtons: ['지금 탐색 시작', '1345 직접 문의'], footerButtonSubs: ['Start exploring', '1345 Hotline'],
-        footerCtaTitle: '체류 절차 경로를 더 쉽게, 더 체계적으로.', footerCtaBody: '복잡하기만 했던 체류 행정. Paradiso와 함께라면 어렵지 않습니다.', footerCtaButtons: ['내 상황으로 시작하기', 'AI에게 묻기'],
+        footerCtaTitle: '어렵기만 하던 체류 관리,<br>이제는 손쉽게 확인하세요.', footerCtaBody: '복잡한 체류 행정과 흩어진 자료를 Paradiso가 목적별로 정리합니다. 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.', footerCtaButtons: ['검색 시작하기', '국번없이 1345'],
         resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyBody: '\'{query}\'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.', resultCountZero: '0건',
         resultSubtypes: '세부 {count}', resultDataDate: '데이터 기준:', resultCount: '{count}건', resultSubtypeCount: '세부 {count}건', resultTotal: '총 {count}개', resultRelated: '관련도 정렬',
         resultDomainsBoth: '공통/양쪽', resultDomainVisa: '사증발급', resultDomainStay: '체류민원', reviewOk: '2026.5 매뉴얼 확인됨', reviewPartial: '일부 정보 미검증', reviewNeeded: '2026.5 매뉴얼 확인 필요',
@@ -12309,8 +12558,8 @@ const UI_TRANSLATIONS = {
         agentCountAll: '{filtered}개의 {noun} 표시', agentCountFiltered: '전체 {total}개 중 {filtered}개 {noun} 표시', agentSampleNoun: '샘플 항목', agentNoun: '대행기관', agentNaver: '네이버지도', agentKakao: '카카오맵', agentCopy: '주소 복사', agentPhone: '전화 {phone}', agentCopyOk: '주소를 복사했습니다.', agentCopyFail: '주소 복사에 실패했습니다. 주소를 길게 눌러 직접 복사하세요.',
         landingHints: ['체류지 변경(주민센터)', '여권 갱신(비예약)', '등록증 재발급', '만료 당일/임산부 등', '제주 무사증', 'K-ETA 발급', '숙련기능(E-7-4)', '결혼이민(F-6)', '동반(F-3) 소득요건', '결핵 제출 대상', '난민신청 절차', '오버스테이', 'D-10 구직', 'K-Trainee(D-4-2K)'],
         quickFilters: ['체류지 변경', '비예약 업무', 'F-3 소득', 'K-ETA', '결핵 가이드', '오버스테이', '건강보험', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수제'],
-        brandHeroTitle: '복잡한 체류,<br>Paradiso에서 손쉽게.', brandHeroSubtitle: "Korea's residence categories, organized by purpose.", brandHeroAbout: '서비스 소개', brandHeroHotline: '1345 직접 문의',
-        brandHeroStatsAria: '비자 카테고리 통계', statLabels: ['취업·전문직<br><span lang="en">Employment</span>', '유학·연수<br><span lang="en">Study</span>', '거주·결혼<br><span lang="en">Residence</span>', '방문·기타<br><span lang="en">Visit & Other</span>'],
+        brandHeroTitle: '복잡한 체류자격을<br>한 눈에 확인해보세요.', brandHeroSubtitle: '목적별로 정리된 체류자격을 살펴보고, 출처를 확인하며 다음 단계를 준비할 수 있습니다.', brandHeroAbout: '서비스 소개', brandHeroHotline: '1345 직접 문의',
+        brandHeroStatsAria: '비자 카테고리 통계', statLabels: ['취업·전문직<br><span lang="en">Employment</span>', '유학·연수<br><span lang="en">Study</span>', '거주·동포<br><span lang="en">Residence</span>', '방문·가족<br><span lang="en">Visit & Family</span>'],
         brandFeatureTitle: '출입국·외국인정책본부<br>매뉴얼 기반의 정보 탐색', brandFeatureSubtitle: 'Manual-based information navigation', brandFeatureBody: '구조화된 체류자격 데이터를 토대로 공식 자료 확인을 전제로 한 정보 탐색을 보조합니다. 최종 판단과 신청 절차는 관할 출입국·외국인관서 안내 확인이 필요합니다.', brandFeatureCta: '1345 외국인종합안내센터', brandFeatureChecklistAria: '서비스 핵심 기능',
         featureChecklist: ['<strong>39가지 체류자격 통합 탐색</strong><span lang="en">Browse all 39 stay categories</span>', '<strong>목적별 체류 경로 정리</strong><span lang="en">Path overview by purpose</span>', '<strong>관할기관 확인 흐름</strong><span lang="en">Jurisdiction lookup flow</span>', '<strong>취업 관련 직종·업종 코드 접근</strong><span lang="en">Employment occupation &amp; industry codes</span>', '<strong>공식 출처 확인 흐름 안내</strong><span lang="en">Results with source-checking guidance</span>'],
         pathwayTitle: '비자 코드보다 먼저, 생활의 경로를 봅니다.', pathwayCopy: '같은 체류자격도 목적과 시점에 따라 필요한 확인 순서가 달라집니다. 아래 경로는 기존 검색 결과로 이어지는 안전한 출발점입니다.', pathwayAria: '목적별 체류 경로',
@@ -12330,7 +12579,7 @@ const UI_TRANSLATIONS = {
         aboutStartTitle: 'Paradiso의 시작', aboutStartBody: '대한민국에는 39가지의 체류자격이 존재하지만, 관련 법령과 매뉴얼은 분산되어 있어 정보 탐색에 시간이 걸립니다. Paradiso는 흩어진 비자·체류 정보를 구조화하여 사용자 입장에서 한 번에 살펴볼 수 있는 안내 흐름을 제공하고, 정보 비대칭을 줄이는 사용자 안내 레이어를 지향합니다.', valuesTitle: '핵심 가치 및 비전', valuesBody: '단순한 정보 나열을 넘어, 구조화된 체류자격 데이터와 사용자 입력에 기반한 안내를 통해 정보 탐색 부담을 줄이고, 공식 자료 확인까지 자연스럽게 이어지도록 설계합니다.',
         valueCardAria: ['정확성과 신뢰성', '사용자 중심 UX', 'AI 기반 안내 보조'], valueCardDescs: ['출입국·외국인정책본부 매뉴얼과 시행규칙을 1차 출처로 삼으며, 검증 범위는 단계적으로 확대 중입니다.', '39개 체류자격을 목적별로 묶어 한 화면에서 비교·탐색할 수 있도록 정리합니다.', '사용자가 입력한 상황을 기반으로 살펴볼 자격과 확인 흐름을 제안하는 안내 보조입니다.'],
         roadmapTitle: '로드맵 <span class="figma-roadmap-en" lang="en">— Project Roadmap</span>', roadmapNote: '아래 일정은 프로젝트 추진 계획이며, 공식 정책 일정이 아닙니다.', roadmapCompanies: ['2025 Q4 — 공공데이터 활용 공모전 출품 및 MVP 검증', '2026 Q1 — AI 기반 질의응답과 안내 품질 고도화', '2026 Q3 — 다국어 UI와 사용자 접근성 확대'], roadmapDetails: ['39가지 체류자격 통합 탐색 MVP 공개·실사용자 피드백 수집', '매뉴얼 기반 답변 보조와 사용자 상황별 안내 흐름 정교화', '영어·다국어 UI 도입, 1345 안내 흐름 연계 강화'],
-        footerHeroTitle: '대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.', footerChips: ['📑 공식 출처 확인 경로', '🧭 목적별 경로 정리', '🏛 관할기관 안내', '💼 직종·업종 코드'], footerStart: '지금 탐색 시작', footerHotline: '1345 직접 문의', footerCtaTitle: '체류 절차 경로를 더 쉽게, 더 체계적으로.', footerCtaCopy: '복잡하기만 했던 체류 행정. Paradiso와 함께라면 어렵지 않습니다.', footerCtaButtons: ['내 상황으로 시작하기', 'AI에게 묻기'], quickFiltersAria: '자주 찾는 검색어 모음', footerLegal: '베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.',
+        footerHeroTitle: '대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.', footerChips: ['📑 공식 출처 확인 경로', '🧭 목적별 경로 정리', '🏛 관할기관 안내', '💼 직종·업종 코드'], footerStart: '지금 탐색 시작', footerHotline: '1345 직접 문의', footerCtaTitle: '어렵기만 하던 체류 관리,<br>이제는 손쉽게 확인하세요.', footerCtaCopy: '복잡한 체류 행정과 흩어진 자료를 Paradiso가 목적별로 정리합니다. 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.', footerCtaButtons: ['검색 시작하기', '국번없이 1345'], quickFiltersAria: '자주 찾는 검색어 모음', footerLegal: '베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.',
         closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jurisdictionTitle: '🏛 관할 출입국관서 조회',
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
@@ -12388,9 +12637,9 @@ const UI_TRANSLATIONS = {
         ctrlsAria: 'Search result controls', fold: 'Collapse', unfold: 'Expand', hintsTitle: 'Recommended keywords', hintsAria: 'Quick recommended searches',
         aiSecondaryAria: 'Optional AI assistant', aiLink: 'Ask AI for more detail', scrollAria: 'Scroll down',
         reference: 'Paradiso provides reference information based on public laws and official manuals. It is not legal advice, and it is not a filing or representation service. Please confirm any final decision with an immigration office, HiKorea, or a qualified professional.',
-        brandHeroTitle: 'Complex stay procedures,<br>made easier with Paradiso.', brandHeroSubtitle: 'Korea\'s 39 visa categories. Unified.',
+        brandHeroTitle: 'Complex residence categories,<br>at a glance.', brandHeroSubtitle: "Browse Korea's residence categories by purpose, with source-aware guidance.",
         brandHeroStatsAria: 'Visa category statistics', brandHeroButtons: ['About the service', 'Contact 1345 directly'], brandHeroButtonSubs: ['About', '1345 Hotline'],
-        brandHeroStats: ['Work &amp; professionals<br><span lang="en">Employment</span>', 'Study &amp; training<br><span lang="en">Study</span>', 'Family &amp; settlement<br><span lang="en">Residence</span>', 'Tourism &amp; visits<br><span lang="en">Visit &amp; Other</span>'],
+        brandHeroStats: ['Work &amp; professionals<br><span lang="en">Employment</span>', 'Study &amp; training<br><span lang="en">Study</span>', 'Residence &amp; diaspora<br><span lang="en">Residence</span>', 'Visit &amp; family<br><span lang="en">Visit &amp; Family</span>'],
         featureTitle: 'Manual-based information<br>from Korea Immigration Service', featureSubtitle: 'Manual-based information navigation',
         featureBody: 'Paradiso helps you navigate structured residence-status data with official-source verification in mind. Final decisions and filing steps must be confirmed with the competent immigration office.',
         featureCta: '1345 Immigration Contact Center', featureCtaSub: 'Contact 1345', featureChecklistAria: 'Core service features',
@@ -12425,7 +12674,7 @@ const UI_TRANSLATIONS = {
         roadmapCompanies: ['2025 Q4 - Public-data competition submission and MVP validation', '2026 Q1 - Improve AI Q&A and guidance quality', '2026 Q3 - Expand multilingual UI and accessibility'],
         roadmapDetails: ['Release MVP search across 39 statuses and collect real-user feedback', 'Refine manual-based answer assistance and situation-based guidance flows', 'Introduce English and multilingual UI, with stronger 1345 guidance flows'],
         footerHeroTitle: 'Review Korea\'s 39<br>residence statuses in one place.', footerChips: ['📑 Manual-based search', '🧭 Purpose-first pathways', '🏛 Jurisdiction guidance', '💼 Occupation and industry codes'], footerButtons: ['Start exploring now', 'Contact 1345 directly'], footerButtonSubs: ['Start exploring', '1345 Hotline'],
-        footerCtaTitle: 'Make stay procedures easier and more accurate.', footerCtaBody: 'Korean stay administration can be complicated. Paradiso helps you approach it with a clearer path.', footerCtaButtons: ['Start with my situation', 'Ask AI'],
+        footerCtaTitle: 'Residence management used to feel hard.<br>Now you can check it with ease.', footerCtaBody: 'Paradiso organizes scattered residence information by purpose. Always confirm with HiKorea, 1345, or the competent immigration office.', footerCtaButtons: ['Start search', 'Call 1345'],
         resultEmptyTitle: 'No matching orbit found', resultEmptyBody: 'No information matched \'{query}\'.<br>Try fewer keywords or switch to OR mode.', resultCountZero: '0 results',
         resultSubtypes: '{count} subcodes', resultDataDate: 'Data as of:', resultCount: '{count} results', resultSubtypeCount: '{count} subcodes', resultTotal: '{count} total records', resultRelated: 'Sorted by relevance',
         resultDomainsBoth: 'Both manuals', resultDomainVisa: 'Visa issuance', resultDomainStay: 'Stay/residence', reviewOk: 'Verified against 2026.5 manuals', reviewPartial: 'Partly unverified', reviewNeeded: 'Needs 2026.5 manual review',
@@ -12440,7 +12689,7 @@ const UI_TRANSLATIONS = {
         agentCountAll: 'Showing {filtered} {noun}', agentCountFiltered: 'Showing {filtered} of {total} {noun}', agentSampleNoun: 'sample items', agentNoun: 'agents', agentNaver: 'Naver Map', agentKakao: 'Kakao Map', agentCopy: 'Copy address', agentPhone: 'Call {phone}', agentCopyOk: 'Address copied.', agentCopyFail: 'Could not copy the address. Long-press the address and copy it manually.',
         landingHints: ['Address change', 'Passport renewal', 'ARC reissue', 'Same-day expiry / special cases', 'Jeju visa waiver', 'K-ETA', 'Skilled worker (E-7-4)', 'Marriage migrant (F-6)', 'Dependent (F-3) income', 'TB certificate requirement', 'Refugee process', 'Overstay', 'D-10 job search', 'K-Trainee (D-4-2K)'],
         quickFilters: ['Address change', 'Walk-in services', 'F-3 income', 'K-ETA', 'TB guide', 'Overstay', 'Health insurance', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Points system'],
-        brandHeroTitle: 'Korea residence procedures,<br>made easier with Paradiso.', brandHeroSubtitle: "Korea's residence categories, organized by purpose.", brandHeroAbout: 'About the service', brandHeroHotline: 'Call 1345',
+        brandHeroTitle: 'Complex residence categories,<br>at a glance.', brandHeroSubtitle: "Browse Korea's residence categories by purpose, with source-aware guidance.", brandHeroAbout: 'About the service', brandHeroHotline: 'Call 1345',
         brandHeroStatsAria: 'Visa category statistics', statLabels: ['Work and specialists<br><span lang="en">Employment</span>', 'Study and training<br><span lang="en">Study</span>', 'Residence and marriage<br><span lang="en">Residence</span>', 'Visits and other statuses<br><span lang="en">Visit & Other</span>'],
         brandFeatureTitle: 'Information navigation<br>based on official immigration manuals', brandFeatureSubtitle: 'Manual-based information navigation', brandFeatureBody: 'Paradiso helps you explore structured residence-status data while keeping official-source verification at the center. Final decisions and filing steps must be confirmed with the competent immigration office.', brandFeatureCta: 'Contact the 1345 Immigration Contact Center', brandFeatureChecklistAria: 'Core service capabilities',
         featureChecklist: ['<strong>Browse all 39 residence statuses</strong>', '<strong>Purpose-first pathway overview</strong>', '<strong>Jurisdiction lookup flow</strong>', '<strong>Occupation and industry code access</strong>', '<strong>Results with source-checking guidance</strong>'],
@@ -12461,7 +12710,7 @@ const UI_TRANSLATIONS = {
         aboutStartTitle: 'How Paradiso began', aboutStartBody: 'Korea has 39 residence statuses, but the relevant laws and manuals are spread across many sources. Paradiso structures scattered visa and residence information into a user-centered guidance flow that reduces information asymmetry.', valuesTitle: 'Core values and vision', valuesBody: 'Beyond listing information, Paradiso reduces search burden with structured residence-status data and user-centered guidance that naturally leads back to official-source confirmation.',
         valueCardAria: ['Accuracy and reliability', 'User-centered UX', 'AI-assisted guidance'], valueCardDescs: ['Official immigration manuals and enforcement rules are treated as primary sources.', 'The 39 residence statuses are grouped by purpose so users can compare and explore them in one place.', 'The assistant suggests statuses and confirmation flows to review based on the situation the user enters.'],
         roadmapTitle: 'Roadmap <span class="figma-roadmap-en" lang="en">— Project Roadmap</span>', roadmapNote: 'This is a project plan, not an official policy schedule.', roadmapCompanies: ['2025 Q4 — Public-data competition submission and MVP validation', '2026 Q1 — Better AI Q&A and guidance quality', '2026 Q3 — Multilingual UI and broader accessibility'], roadmapDetails: ['Release an MVP for unified exploration of 39 residence statuses and collect user feedback', 'Improve manual-grounded answer support and situation-specific guidance flows', 'Add English and multilingual UI, with stronger linkage to 1345 guidance flows'],
-        footerHeroTitle: 'Explore Korea’s 39<br>residence statuses in one place.', footerChips: ['📑 Official source-check pathway', '🧭 Purpose-first pathways', '🏛 Jurisdiction guidance', '💼 Job and industry codes'], footerStart: 'Start exploring', footerHotline: '1345 hotline', footerCtaTitle: 'Residence procedure paths, easier and more systematic.', footerCtaCopy: 'Korean residence administration can feel complex. Paradiso helps make the next step clearer.', footerCtaButtons: ['Start with my situation', 'Ask AI'], quickFiltersAria: 'Frequently searched keywords', footerLegal: 'Beta service. The information provided has no legal effect. Always confirm with HiKorea, 1345, or the competent immigration office.',
+        footerHeroTitle: 'Explore Korea’s 39<br>residence statuses in one place.', footerChips: ['📑 Official source-check pathway', '🧭 Purpose-first pathways', '🏛 Jurisdiction guidance', '💼 Job and industry codes'], footerStart: 'Start exploring', footerHotline: '1345 hotline', footerCtaTitle: 'Residence management used to feel hard.<br>Now you can check it with ease.', footerCtaCopy: 'Paradiso organizes scattered residence information by purpose. Always confirm with HiKorea, 1345, or the competent immigration office.', footerCtaButtons: ['Start search', 'Call 1345'], quickFiltersAria: 'Frequently searched keywords', footerLegal: 'Beta service. The information provided has no legal effect. Always confirm with HiKorea, 1345, or the competent immigration office.',
         closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jurisdictionTitle: '🏛 Find your immigration office',
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
@@ -12545,7 +12794,7 @@ const UI_TRANSLATIONS = {
         resultSubtypes: '细类{count}', resultDataDate: '数据基准：', resultSubtypeCount: '细类{count}条', resultTotal: '共{count}条', resultRelated: '按相关性排序', dataDateLabel: '数据基准', sortMeta: '按相关性排序 · {mode} · {categories}',
         resultDomainsBoth: '通用/两者', resultDomainVisa: '签证签发', resultDomainStay: '居留事务', reviewOk: '已依2026.5手册确认', reviewPartial: '部分信息未经核实', reviewNeeded: '需进行2026.5手册确认',
         copySuccess: '已复制。', actionCopyResult: '复制结果', actionAskAi: '询问 Paradiso AI', manualDetailToggle: '查看详情',
-        footerStart: '立即开始浏览', footerHotline: '直接咨询1345', footerCtaButtons: ['从我的情况开始', '询问AI'], quickFiltersAria: '常用搜索词汇', footerLegal: '测试版服务。所提供信息不具法律效力，最终请向HiKorea、1345或主管出入境机关确认。',
+        footerStart: '立即开始浏览', footerHotline: '直接咨询1345', footerCtaButtons: ['开始搜索', '拨打 1345'], quickFiltersAria: '常用搜索词汇', footerLegal: '测试版服务。所提供信息不具法律效力，最终请向HiKorea、1345或主管出入境机关确认。',
         agentCountAll: '显示{filtered}个{noun}', agentCountFiltered: '显示全部{total}个中{filtered}个{noun}', agentSampleNoun: '样本项', agentNoun: '代办机构', agentNaver: 'Naver地图', agentKakao: 'Kakao地图', agentCopy: '复制地址', agentCopyOk: '地址已复制。', agentCopyFail: '无法复制地址，请长按手动复制。',
         agentRegionAll: '全部地区', agentKeywordPlaceholder: '按地区、事务所名或地址搜索', agentListAria: '已登记代办机构列表', agentLoading: '数据加载中…', agentPrompt: '输入地区名、事务所名或地址，查找已登记的移民民事代办机构。', agentEmpty: '未找到结果，请更换地区或重新输入关键词。', agentError: '数据加载失败，请稍后重试或使用HiKorea官方查询。', agentCountShowing: '共{total}项中显示{showing}项', agentShowMore: '显示更多', agentMapNaver: 'Naver地图', agentMapKakao: 'Kakao地图', agentCopyAddress: '复制地址', agentPhone: '拨打 {phone}', agentCopied: '地址已复制。', agentCopyFailed: '无法复制地址，请长按手动复制。', agentTotalCount: '共{count}家机构',
         medTitle: '查找法务部指定医疗机构', medKicker: '医疗指引', medChipsAria: '地区快速选择', medKeywordLabel: '搜索词', medKeywordPlaceholder: '按地区、机构名或地址搜索', medClearAria: '清除搜索', medListAria: '法务部指定医疗机构列表', medLoading: '数据加载中…', medPrompt: '点击地区按钮或输入2个以上字符搜索。例：济州、汉拿医院、江南', medEmpty: '未找到结果，请尝试其他关键词或地区。', medError: '数据加载失败，请稍后重试。', medCountShowing: '共{total}项中显示{showing}项', medCountAll: '显示{count}家医疗机构', medShowMore: '显示更多', medCopyAddress: '复制地址', medPhone: '拨打 {phone}', medCopied: '地址已复制。', medCopyFailed: '无法复制地址，请长按手动复制。', medTotalCount: '共{count}家机构', medCountFiltered: '全部{total}家机构中显示{count}家',
@@ -12827,7 +13076,7 @@ const UI_TRANSLATIONS = {
         resultSubtypes: '{count} mã phụ', resultDataDate: 'Dữ liệu tính đến:', resultSubtypeCount: '{count} mã phụ', resultTotal: 'Tổng {count}', resultRelated: 'Sắp xếp theo mức độ liên quan', dataDateLabel: 'Ngày dữ liệu', sortMeta: 'Sắp xếp theo mức độ liên quan · {mode} · {categories}',
         resultDomainsBoth: 'Cả hai', resultDomainVisa: 'Cấp visa', resultDomainStay: 'Cư trú', reviewOk: 'Đã xác minh theo sổ tay 2026.5', reviewPartial: 'Một số thông tin chưa được xác minh', reviewNeeded: 'Cần xem xét theo sổ tay 2026.5',
         copySuccess: 'Đã sao chép.', actionCopyResult: 'Sao chép kết quả', actionAskAi: 'Hỏi Paradiso AI', manualDetailToggle: 'Xem chi tiết',
-        footerStart: 'Bắt đầu khám phá', footerHotline: 'Liên hệ 1345', footerCtaButtons: ['Bắt đầu với tình huống của tôi', 'Hỏi AI'], quickFiltersAria: 'Từ khóa tìm kiếm thường dùng', footerLegal: 'Dịch vụ thử nghiệm. Thông tin cung cấp không có giá trị pháp lý. Hãy xác nhận với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
+        footerStart: 'Bắt đầu khám phá', footerHotline: 'Liên hệ 1345', footerCtaButtons: ['Bắt đầu tìm kiếm', 'Gọi 1345'], quickFiltersAria: 'Từ khóa tìm kiếm thường dùng', footerLegal: 'Dịch vụ thử nghiệm. Thông tin cung cấp không có giá trị pháp lý. Hãy xác nhận với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
         agentCountAll: 'Hiển thị {filtered} {noun}', agentCountFiltered: 'Hiển thị {filtered} trong số {total} {noun}', agentSampleNoun: 'mẫu', agentNoun: 'đại lý', agentNaver: 'Naver Map', agentKakao: 'Kakao Map', agentCopy: 'Sao chép địa chỉ', agentCopyOk: 'Đã sao chép địa chỉ.', agentCopyFail: 'Không thể sao chép. Hãy nhấn giữ địa chỉ để sao chép thủ công.',
         agentRegionAll: 'Tất cả khu vực', agentKeywordPlaceholder: 'Tìm theo khu vực, tên văn phòng hoặc địa chỉ', agentListAria: 'Danh sách đại lý đã đăng ký', agentLoading: 'Đang tải dữ liệu…', agentPrompt: 'Nhập tên khu vực, tên văn phòng hoặc địa chỉ để tìm đại lý xuất nhập cảnh đã đăng ký.', agentEmpty: 'Không tìm thấy kết quả. Hãy kiểm tra lại tên khu vực hoặc văn phòng.', agentError: 'Không thể tải dữ liệu. Hãy thử lại sau hoặc dùng tra cứu chính thức HiKorea.', agentCountShowing: 'Hiển thị {showing} trong số {total} kết quả', agentShowMore: 'Xem thêm', agentMapNaver: 'Naver Map', agentMapKakao: 'Kakao Map', agentCopyAddress: 'Sao chép địa chỉ', agentPhone: 'Gọi {phone}', agentCopied: 'Đã sao chép địa chỉ.', agentCopyFailed: 'Không thể sao chép địa chỉ. Hãy nhấn giữ để sao chép thủ công.', agentTotalCount: 'Tổng cộng {count} đại lý',
         medTitle: 'Tìm cơ sở y tế được Bộ Tư pháp chỉ định', medKicker: 'Hướng dẫn y tế', medChipsAria: 'Lọc nhanh theo khu vực', medKeywordLabel: 'Từ khóa', medKeywordPlaceholder: 'Tìm theo khu vực, tên cơ sở hoặc địa chỉ', medClearAria: 'Xóa tìm kiếm', medListAria: 'Danh sách cơ sở y tế được Bộ Tư pháp chỉ định', medLoading: 'Đang tải dữ liệu…', medPrompt: 'Chọn khu vực hoặc nhập ít nhất 2 ký tự để tìm. Ví dụ: Jeju, Bệnh viện Halla, Gangnam', medEmpty: 'Không tìm thấy kết quả. Hãy thử từ khóa hoặc khu vực khác.', medError: 'Không thể tải dữ liệu. Hãy thử lại sau.', medCountShowing: 'Hiển thị {showing} trong số {total} kết quả', medCountAll: 'Hiển thị {count} cơ sở', medShowMore: 'Xem thêm', medCopyAddress: 'Sao chép địa chỉ', medPhone: 'Gọi {phone}', medCopied: 'Đã sao chép địa chỉ.', medCopyFailed: 'Không thể sao chép địa chỉ. Hãy nhấn giữ để sao chép thủ công.', medTotalCount: 'Tổng cộng {count} cơ sở', medCountFiltered: 'Hiển thị {count} trong số {total} cơ sở',
@@ -13248,7 +13497,7 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.exp-detail', txArray('roadmapDetails'));
     setHtml('.figma-footer-hero-title', tx('footerHeroTitle'));
     setIndexedText('.figma-footer-chips .footer-chip', txArray('footerChips'));
-    setText('#pFooterCtaTitle', tx('footerCtaTitle'));
+    setHtml('#pFooterCtaTitle', tx('footerCtaTitle'));
     setText('.p-footer-cta > p', tx('footerCtaCopy'));
     setIndexedText('.p-footer-actions .p-cta-btn', txArray('footerCtaButtons'));
     setAttr('#qf', 'aria-label', tx('quickFiltersAria'));
