@@ -8525,6 +8525,8 @@ body[data-theme="dark"] .rc-cta {
   pointer-events: none;
 }
 .visa-drawer-overlay.active { display: block; pointer-events: auto; }
+/* Standard modals must appear above the drawer when both are simultaneously active */
+body.drawer-open .modal-overlay.active { z-index: 2200; }
 .visa-drawer-backdrop {
   position: absolute;
   inset: 0;
@@ -10321,8 +10323,10 @@ function closeVisaDrawer() {
         const body = document.getElementById('visaDrawerBody');
         if (body && !overlay.classList.contains('active')) body.innerHTML = '';
     }, 320);
-    if (lastFocusedElement) {
+    if (!activeModal && lastFocusedElement) {
         try { lastFocusedElement.focus(); } catch (e) {}
+        lastFocusedElement = null;
+    } else if (!activeModal) {
         lastFocusedElement = null;
     }
 }
@@ -13463,17 +13467,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const drawer = document.getElementById('visaDrawerOverlay');
-            if (drawer?.classList.contains('active')) {
-                closeVisaDrawer();
-                return;
-            }
             const anyModalOpen = ['jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
             });
-            if (!anyModalOpen && document.body.classList.contains('searching') && !document.body.classList.contains('searched')) {
+            if (anyModalOpen) return;
+            const drawer = document.getElementById('visaDrawerOverlay');
+            if (drawer?.classList.contains('active')) {
+                closeVisaDrawer();
+                return;
+            }
+            if (document.body.classList.contains('searching') && !document.body.classList.contains('searched')) {
                 closeDirectSearchMode();
             }
         }
