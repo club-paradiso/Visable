@@ -6805,6 +6805,12 @@ body.searched .qb:hover,
   }
 }
 
+/* Landing already hosts a dedicated Paradiso.ai gateway card and a
+   .hero-ai-secondary link, so the floating .ai-fab competes with both.
+   Hide it on landing; keep it on .searching/.searched where the gateway
+   is no longer visible. */
+body:not(.searched):not(.searching) .ai-fab { display: none !important; }
+
 /* ── AI action buttons inside modal ─────────────────────────── */
 .ai-action-btn {
   min-height: var(--r2-h-btn);
