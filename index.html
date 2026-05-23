@@ -7849,7 +7849,8 @@ body:not(.searched) .p-reminder-section {
 
 /* Agency finder: hidden on landing, revealed when reached via utility card (#agentFinder) */
 body:not(.searched) .p-agent-finder { display: none !important; }
-body:not(.searched) .p-agent-finder:target { display: block !important; }
+body:not(.searched) .p-agent-finder:target,
+body:not(.searched) .p-med-finder:target { display: block !important; }
 
 /* About Me block: flatten wrapper but keep brand/anagram/intro/values visible.
    .about-title (redundant heading), .about-experience (roadmap bloat), and
@@ -8078,10 +8079,10 @@ body.searching:not(.searched) .p-gateway { display: none !important; }
   border: 1px solid rgba(125, 216, 184, 0.32);
 }
 
-/* Compact utility row (2 columns) */
+/* Compact utility row */
 .p-gw-utility {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(0.5rem, 1.2vw, 0.7rem);
   margin-top: 0.15rem;
 }
@@ -9133,6 +9134,10 @@ body:not(.searched) main {
                     <span class="p-gw-util-icon" aria-hidden="true">🧭</span>
                     <span class="p-gw-util-label">등록 민원대행기관 찾기</span>
                 </a>
+                <a class="p-gw-util" href="#medFinder">
+                    <span class="p-gw-util-icon" aria-hidden="true">🏥</span>
+                    <span class="p-gw-util-label">법무부지정 병원 찾기</span>
+                </a>
             </div>
         </section>
 
@@ -9493,6 +9498,11 @@ body:not(.searched) main {
                 <h3>직업·산업 코드</h3>
                 <p>취업 신고에 필요한 직종·업종 코드를 찾아봅니다.</p>
             </button>
+            <a class="p-tool-card" href="#medFinder">
+                <span class="p-status">LIVE</span>
+                <h3>법무부지정 병원</h3>
+                <p>채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>
+            </a>
             <button type="button" class="p-tool-card" data-action="search-hint" data-query="구비서류">
                 <span class="p-status">SEARCH</span>
                 <h3>서류 체크리스트</h3>
@@ -9566,15 +9576,15 @@ body:not(.searched) main {
         <div class="p-section-head">
             <div>
                 <p class="p-kicker">Medical guidance</p>
-                <h2 class="p-section-title" id="medFinderTitle">법무부지정 의료기관 찾기</h2>
+                <h2 class="p-section-title" id="medFinderTitle">법무부지정 건강검진 의료기관 찾기</h2>
             </div>
-            <p class="p-section-copy">채용신체검사·건강진단이 가능한 법무부지정 의료기관 목록을 지역, 기관명, 주소로 검색할 수 있습니다.</p>
+            <p class="p-section-copy">채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>
         </div>
         <p class="p-med-finder__source" id="medFinderSourceNote">
-            출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황 (2026.04.30.)
+            출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황, 2026.04.30.
         </p>
         <p class="p-med-finder__disclaimer" id="medFinderDisclaimer">
-            <span id="medFinderDisclaimerText">방문 전 해당 의료기관에 전화해 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요.</span>
+            <span id="medFinderDisclaimerText">방문 전 반드시 전화로 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요. Paradiso는 의료기관을 추천하거나 검사 가능 여부를 보장하지 않습니다.</span>
         </p>
         <div class="p-med-finder__chips" id="medFinderChips" role="group" aria-label="지역 빠른 선택">
             <button type="button" class="p-med-finder__chip" data-med-region="제주" aria-pressed="false">제주</button>
@@ -9839,7 +9849,7 @@ body:not(.searched) main {
             </div>
             <div class="jc-ai-search-row">
                 <button type="button" class="ai-btn" data-action="search-jobcode-ai" style="width:100%; justify-content:center; padding:0.8rem;">
-                    <span>🤖 AI 자연어 분석으로 공식 직종 및 업종 찾기</span>
+                    <span id="jcNaturalSearchLabel">자연어 키워드로 공식 직종·업종 찾기</span>
                     <div class="spinner" id="jcAiSpinner" style="margin-left:8px;"></div>
                 </button>
             </div>
@@ -10746,6 +10756,17 @@ function openFaqModal(visaCode) {
 const JOBCODE_TARGET_VISAS = ['E-1','E-2','E-3','E-4','E-5','E-6','E-7','E-8','E-9','E-10','H-1','H-2','D-8','D-9','D-10','F-2','F-4','F-5','F-6'];
 let _jobcodeData = null; let _jobcodeLoadPromise = null; let _jcSearchDebounce = null;
 const JOBCODE_JSON_PATHS = ['./data/jobcode_master.json', './data/output.json', './jobcode_master.json', './output.json'];
+const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람','직원','알바','파트타임','업무','관련','분야','직무','job','work','worker','staff','person','employee','part','time']);
+const JOBCODE_QUERY_EXPANSIONS = [
+    { needles: ['영어','어학원','학원','선생','선생님','교사','강사','가르치','아이들 가르','아이 가르','english','teacher','instructor','academy','language','education','children'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학','문리','보육'] },
+    { needles: ['식당','음식점','주방','서빙','요리','조리','홀서빙','restaurant','kitchen','cook','server','food'], terms: ['음식','조리','주방','서빙','음식점','웨이터','요리','식음료','외식'] },
+    { needles: ['공장','제조','생산','조립','factory','manufacturing','production','assembly'], terms: ['제조','생산','조립','기계','공장','제조업'] },
+    { needles: ['청소','미화','cleaner','cleaning','housekeeping'], terms: ['청소','미화','환경','건물 관리','가사','housekeeping'] },
+    { needles: ['호텔','숙박','객실','hotel','hospitality','lodging'], terms: ['호텔','숙박','객실','접객','청소','서비스'] },
+    { needles: ['돌봄','간병','요양','care','caregiver','caregiving'], terms: ['간병','요양','돌봄','보육','사회복지','간호'] },
+    { needles: ['농장','농업','작물','farm','agriculture'], terms: ['농업','농장','작물','재배','축산'] },
+    { needles: ['배달','배송','택배','delivery','courier','logistics'], terms: ['배달','배송','택배','운송','물류'] }
+];
 async function loadJobcodeData() {
     if (_jobcodeData) return _jobcodeData;
     if (_jobcodeLoadPromise) return _jobcodeLoadPromise;
@@ -10765,8 +10786,85 @@ async function loadJobcodeData() {
     })();
     return _jobcodeLoadPromise;
 }
+function updateJobcodeNaturalSearchLabel() {
+    const label = document.getElementById('jcNaturalSearchLabel');
+    if (!label) return;
+    label.textContent = API_BASE ? tx('jobCodeNaturalSearchApi') : tx('jobCodeNaturalSearchLocal');
+}
+function normalizeJobcodeText(value) {
+    return String(value || '')
+        .toLowerCase()
+        .replace(/[(){}\[\],./|·•:;!?'"`~_+\-=]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+function addJobcodeTerm(set, term) {
+    const normalized = normalizeJobcodeText(term);
+    if (!normalized || normalized.length < 2 || JOBCODE_STOP_TERMS.has(normalized)) return;
+    set.add(normalized);
+}
+function getJobcodeSearchTerms(query, extraTerms = []) {
+    const q = normalizeJobcodeText(query);
+    const terms = new Set();
+    addJobcodeTerm(terms, q);
+    q.split(/\s+/).forEach(t => addJobcodeTerm(terms, t.replace(/(입니다|이에요|예요|하는|하던|하고|에서|으로|로|은|는|이|가|을|를|의|님)$/g, '')));
+    JOBCODE_QUERY_EXPANSIONS.forEach(group => {
+        if (group.needles.some(n => q.includes(normalizeJobcodeText(n)))) group.terms.forEach(t => addJobcodeTerm(terms, t));
+    });
+    extraTerms.forEach(t => addJobcodeTerm(terms, t));
+    return [...terms];
+}
+function scoreJobcodeRow(row, query, terms) {
+    const desc = normalizeJobcodeText(row.상세설명 || '');
+    const code = normalizeJobcodeText(row.코드값 || '');
+    const q = normalizeJobcodeText(query);
+    let score = 0;
+    if (q && code === q) score += 1200;
+    else if (q && code.startsWith(q)) score += 220;
+    if (q && desc === q) score += 500;
+    else if (q.length >= 2 && desc.includes(q)) score += 180 + Math.min(q.length, 20);
+    terms.forEach(term => {
+        if (code === term) score += 900;
+        else if (/^[0-9]+$/.test(term) && code.startsWith(term)) score += 180;
+        if (desc === term) score += 240;
+        else if (desc.includes(term)) score += 40 + Math.min(term.length * 4, 36);
+    });
+    return score;
+}
+function getScoredJobcodeRows(type, query, terms, limit = 80) {
+    if (!_jobcodeData) return [];
+    const q = normalizeJobcodeText(query);
+    if (!q && (!terms || !terms.length)) {
+        return _jobcodeData.data
+            .filter(r => r.분류 === type && (r.코드값 || '').length === 1)
+            .sort((a, b) => (a.코드값 || '').localeCompare(b.코드값 || ''));
+    }
+    return _jobcodeData.data
+        .filter(r => r.분류 === type)
+        .map(r => ({ ...r, score: scoreJobcodeRow(r, query, terms || []) }))
+        .filter(r => r.score > 0)
+        .sort((a, b) => b.score - a.score || (b.코드값 || '').length - (a.코드값 || '').length || (a.코드값 || '').localeCompare(b.코드값 || ''))
+        .slice(0, limit);
+}
+function getJobcodeEmptyHtml(terms) {
+    const termText = (terms || []).slice(0, 10).map(t => `[${escapeHtml(t)}]`).join(' ');
+    return `<div class="jc-empty"><strong>${escapeHtml(tx('jobCodeNoConfirmed'))}</strong><br>${escapeHtml(tx('jobCodeNoConfirmedHint'))}<br>${escapeHtml(tx('jobCodeFinalCheck'))}${termText ? `<br><span style="font-size:0.75rem; color:var(--t3);">검색어: ${termText}</span>` : ''}</div>`;
+}
+function renderJobcodeRows(rows, box, terms, showWarning) {
+    const MAX_RENDER = 120, displayRows = rows.slice(0, MAX_RENDER);
+    if (!rows.length) { box.innerHTML = getJobcodeEmptyHtml(terms); return; }
+    const warningHtml = showWarning ? `<div class="jc-empty" style="color:var(--color-warning);">${escapeHtml(tx('jobCodePartial'))}</div>` : '';
+    const termHtml = terms && terms.length ? `<div style="padding: 0.4rem 0.8rem; background: var(--bg2); color: var(--ac); font-size: 0.75rem; font-weight:700; border-bottom:1px solid var(--bd2);">검색어: ${terms.slice(0, 12).map(k => `[${escapeHtml(k)}]`).join(' ')}</div>` : '';
+    const html = displayRows.map(r => {
+        const code = escapeHtml(r.코드값 || ''), desc = hl(r.상세설명 || '', terms || []), lv = Math.min(code.length, 5), levelLabel = ['', '대분류', '중분류', '소분류', '세분류', '세세분류'][lv] || '';
+        const scoreLabel = r.score ? `<span class="jc-level-tag">후보</span>` : '';
+        return `<div class="jc-item"><span class="jc-code lv${lv}">${code}</span><div>${scoreLabel}<span class="jc-level-tag">${levelLabel}</span><span class="jc-desc">${desc}</span></div><button type="button" class="jc-copy-btn" data-action="copy-jobcode" data-code="${code}">📋 복사</button></div>`;
+    }).join('');
+    box.innerHTML = warningHtml + termHtml + html + (rows.length > MAX_RENDER ? `<div class="jc-empty" style="padding:0.8rem; font-size:0.78rem;">※ 상위 ${MAX_RENDER}건만 표시.</div>` : '');
+}
 async function openJobCodeModal() {
     openModal('jobCodeModalOverlay');
+    updateJobcodeNaturalSearchLabel();
     const input = document.getElementById('jcSearchInput');
     if (input) { input.value = ''; setTimeout(() => input.focus(), 100); }
     document.getElementById('jcJobResults').innerHTML = '<div class="jc-loading">데이터 로드 중... (최초 1회만)</div>';
@@ -10780,33 +10878,21 @@ async function openJobCodeModal() {
 function renderJobcodeResults(query) {
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), badge = document.getElementById('jcCountBadge');
     if (!jobBox || !indBox || !_jobcodeData) return;
-    const q = (query || '').trim().toLowerCase();
-    const filterAndSort = (type) => {
-        let rows = _jobcodeData.data.filter(r => r.분류 === type);
-        if (q) rows = rows.filter(r => (r.상세설명 || '').toLowerCase().includes(q) || (r.코드값 || '').toLowerCase().includes(q));
-        else rows = rows.filter(r => (r.코드값 || '').length === 1);
-        rows.sort((a, b) => { const la = (a.코드값 || '').length, lb = (b.코드값 || '').length; return la !== lb ? la - lb : (a.코드값 || '').localeCompare(b.코드값 || ''); });
-        return rows;
-    };
-    const jobRows = filterAndSort('직업'), indRows = filterAndSort('산업');
-    const renderRows = (rows, box, emptyMsg) => {
-        const MAX_RENDER = 200, displayRows = rows.slice(0, MAX_RENDER);
-        if (!rows.length) { box.innerHTML = `<div class="jc-empty">${emptyMsg}</div>`; return; }
-        const html = displayRows.map(r => {
-            const code = escapeHtml(r.코드값 || ''), desc = escapeHtml(r.상세설명 || ''), lv = Math.min(code.length, 5), levelLabel = ['', '대분류', '중분류', '소분류', '세분류', '세세분류'][lv] || '';
-            return `<div class="jc-item"><span class="jc-code lv${lv}">${code}</span><div><span class="jc-level-tag">${levelLabel}</span><span class="jc-desc">${desc}</span></div><button type="button" class="jc-copy-btn" data-action="copy-jobcode" data-code="${code}">📋 복사</button></div>`;
-        }).join('');
-        box.innerHTML = html + (rows.length > MAX_RENDER ? `<div class="jc-empty" style="padding:0.8rem; font-size:0.78rem;">※ 상위 ${MAX_RENDER}건만 표시.</div>` : '');
-    };
-    renderRows(jobRows, jobBox, q ? '검색 결과가 없습니다.' : '데이터 없음'); renderRows(indRows, indBox, q ? '검색 결과가 없습니다.' : '데이터 없음');
-    if(badge) badge.textContent = `총 ${jobRows.length + indRows.length}건`;
+    const q = (query || '').trim();
+    const terms = getJobcodeSearchTerms(q);
+    const jobRows = getScoredJobcodeRows('직업', q, terms);
+    const indRows = getScoredJobcodeRows('산업', q, terms);
+    const total = jobRows.length + indRows.length;
+    renderJobcodeRows(jobRows, jobBox, terms, !!q && total > 0);
+    renderJobcodeRows(indRows, indBox, terms, !!q && total > 0);
+    if(badge) badge.textContent = q ? (total ? `${tx('jobCodeFoundOfficial')} (${total}건)` : tx('jobCodeNoConfirmed')) : `총 ${total}건`;
 }
 async function searchJobcodeWithAI() {
     const input = document.getElementById('jcSearchInput').value.trim();
     if(!input) { showToast("상황 검색창에 본인의 취업 상황(예: 중식당 주방장)을 상세히 적어주십시오."); return; }
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
     const btn = spinner.parentElement; btn.disabled = true; spinner.style.display = 'inline-block';
-    jobBox.innerHTML = '<div class="jc-loading">직종 스캔 중...</div>'; indBox.innerHTML = '<div class="jc-loading">업종 스캔 중...</div>';
+    jobBox.innerHTML = `<div class="jc-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`; indBox.innerHTML = `<div class="jc-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
     try {
         if (!_jobcodeData) {
             try { await loadJobcodeData(); } catch (_) {
@@ -10817,30 +10903,25 @@ async function searchJobcodeWithAI() {
                 jobBox.innerHTML = html; indBox.innerHTML = html; return;
             }
         }
-        let jobKw = [input], indKw = [input], fallbackNote = null;
-        if (!API_BASE) {
-             const li = input.toLowerCase();
-             if (li.includes('식당')) { jobKw = ["웨이터", "조리", "서빙"]; indKw = ["음식", "외식", "주점"]; }
-             else if (li.includes('배달')) { jobKw = ["배달", "택배", "배송"]; indKw = ["운송", "이륜차", "물류"]; }
-        } else {
+        let jobKw = getJobcodeSearchTerms(input), indKw = jobKw.slice(), fallbackNote = null;
+        const localJobRows = getScoredJobcodeRows('직업', input, jobKw, 12);
+        const localIndRows = getScoredJobcodeRows('산업', input, indKw, 12);
+        if (API_BASE && (localJobRows.length + localIndRows.length) < 3) {
             try {
                 const response = await fetch(`${API_BASE}/api/jobcodekeywords`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input }) });
-                if(!response.ok) throw new Error("AI 서버 응답 지연");
+                if(!response.ok) throw new Error("키워드 확장 서버 응답 지연");
                 const data = await response.json();
-                jobKw = (data.job_keywords || data.keywords || []).filter(k => k !== '...' && !k.startsWith('kw'));
-                indKw = (data.industry_keywords || []).filter(k => k !== '...' && !k.startsWith('kw'));
+                jobKw = getJobcodeSearchTerms(input, [...(data.job_keywords || data.keywords || []), ...(data.korean_keywords || []), ...(data.english_keywords || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
+                indKw = getJobcodeSearchTerms(input, [...(data.industry_keywords || []), ...(data.related_domains || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
             } catch(_) {
-                const words = input.split(/[\s,]+/).filter(w => w.length > 1);
-                jobKw = words.length ? words : [input];
-                indKw = jobKw.slice();
                 fallbackNote = currentLanguage === 'en'
-                    ? '⚠ AI server unavailable. Showing local keyword matches only.'
-                    : '⚠ AI 서버를 사용할 수 없어 키워드 직접 매칭으로 결과를 표시합니다.';
+                    ? 'Keyword expansion is unavailable. Showing local natural-language matches only.'
+                    : '키워드 확장을 사용할 수 없어 자연어 키워드 직접 매칭으로 표시합니다.';
             }
         }
         renderUnifiedAiResults(jobKw, indKw, fallbackNote);
     } catch(e) {
-        const errorHtml = `<div class="jc-empty" style="color:var(--color-error);">AI 분석 오류: ${escapeHtml(e.message)}</div>`;
+        const errorHtml = `<div class="jc-empty" style="color:var(--color-error);">자연어 검색 오류: ${escapeHtml(e.message)}</div>`;
         jobBox.innerHTML = errorHtml; indBox.innerHTML = errorHtml;
     } finally { btn.disabled = false; spinner.style.display = 'none'; }
 }
@@ -10853,27 +10934,13 @@ function renderUnifiedAiResults(jobKw, indKw, note) {
         const html = `<div class="jc-empty">${escapeHtml(msg)}</div>`;
         if(jobBox) jobBox.innerHTML = html; if(indBox) indBox.innerHTML = html; return;
     }
-    const getScoredRows = (type, keywords) => {
-        if(!keywords || keywords.length === 0) return [];
-        let rows = _jobcodeData.data.filter(r => r.분류 === type).map(r => {
-            let score = 0; const desc = (r.상세설명 || '').toLowerCase();
-            keywords.forEach(kw => { if(desc.includes(kw.toLowerCase())) score += 1; });
-            return { ...r, score };
-        }).filter(r => r.score > 0).sort((a, b) => b.score - a.score || (a.코드값 || '').localeCompare(b.코드값 || ''));
-        return rows.slice(0, 50);
-    };
-    const jobRows = getScoredRows('직업', jobKw), indRows = getScoredRows('산업', indKw);
-    if (badge) badge.textContent = `AI 추천 완료`;
+    const jobRows = getScoredJobcodeRows('직업', '', jobKw, 50), indRows = getScoredJobcodeRows('산업', '', indKw, 50);
+    const total = jobRows.length + indRows.length;
+    if (badge) badge.textContent = total ? `${tx('jobCodeFoundOfficial')} (${total}건)` : tx('jobCodeNoConfirmed');
     const noteHtml = note ? `<div class="jc-empty" style="color:var(--color-warning);">${escapeHtml(note)}</div>` : '';
-    const buildHtml = (rows, keywords) => {
-        if(!rows.length) return `<div class="jc-empty">추천 결과 없음.<br><span style="font-size:0.75rem; color:var(--t3);">키워드: ${keywords.map(k=>`[${escapeHtml(k)}]`).join(' ')}</span></div>`;
-        let html = `<div style="padding: 0.4rem 0.8rem; background: var(--bg2); color: var(--ac); font-size: 0.75rem; font-weight:700; border-bottom:1px solid var(--bd2);">🤖 AI 키워드: ${keywords.map(k => `[${escapeHtml(k)}]`).join(' ')}</div>`;
-        return html + rows.map(r => {
-            const code = escapeHtml(r.코드값 || ''), desc = hl(r.상세설명 || '', keywords), lv = Math.min(code.length, 5), levelLabel = ['', '대분류', '중분류', '소분류', '세분류', '세세분류'][lv] || '';
-            return `<div class="jc-item"><span class="jc-code lv${lv}">${code}</span><div><span class="jc-level-tag">매칭도 ${r.score}</span><span class="jc-level-tag">${levelLabel}</span><span class="jc-desc">${desc}</span></div><button type="button" class="jc-copy-btn" data-action="copy-jobcode" data-code="${code}">📋 복사</button></div>`;
-        }).join('');
-    };
-    jobBox.innerHTML = noteHtml + buildHtml(jobRows, jobKw); indBox.innerHTML = noteHtml + buildHtml(indRows, indKw);
+    renderJobcodeRows(jobRows, jobBox, jobKw, total > 0);
+    renderJobcodeRows(indRows, indBox, indKw, total > 0);
+    if (noteHtml) { jobBox.insertAdjacentHTML('afterbegin', noteHtml); indBox.insertAdjacentHTML('afterbegin', noteHtml); }
 }
 function copyJobcode(btnEl, code) {
     if (!code) return;
@@ -12302,16 +12369,40 @@ function closeDirectSearchMode(){
     debugSearchState('closeDirectSearchMode:end');
 }
 
+function closeSearchBlockingSurfaces() {
+    ['jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && el.classList.contains('active')) closeModal(id);
+    });
+    const drawer = document.getElementById('visaDrawerOverlay');
+    if (drawer && drawer.classList.contains('active')) closeVisaDrawer();
+    const langMenu = document.getElementById('languageMenu');
+    if (langMenu && langMenu.classList.contains('open')) toggleLanguageMenu(false);
+    const cityMenu = document.getElementById('cityMenu');
+    if (cityMenu) cityMenu.style.display = 'none';
+}
+
 function openDirectSearchMode(){
     debugSearchState('openDirectSearchMode:start');
+    closeSearchBlockingSurfaces();
     const sf = document.getElementById('searchForm');
     const vms = document.getElementById('visaManualSection');
     if (sf) sf.style.display = 'block';
     if (vms) vms.style.display = 'none';
     document.body.classList.add('searching');
     setDirectSearchToggleState(true);
-    if (qEl) qEl.focus();
+    if (qEl) setTimeout(() => qEl.focus(), 30);
     debugSearchState('openDirectSearchMode:end');
+}
+
+function handleDirectSearchToggle() {
+    debugSearchState('toggle-search:before');
+    const stb = document.getElementById('searchToggleBtn');
+    const isOpen = stb && stb.getAttribute('aria-expanded') === 'true';
+    if (!isOpen) openDirectSearchMode();
+    else if (!document.body.classList.contains('searched')) closeDirectSearchMode();
+    else if (qEl) qEl.focus();
+    debugSearchState('toggle-search:after');
 }
 
 function resetToLanding(){
@@ -12535,9 +12626,9 @@ const UI_TRANSLATIONS = {
         sourceCards: ['<h3>출입국관리법</h3><p>체류자격과 기본 절차의 법령 기준.</p>', '<h3>출입국관리매뉴얼</h3><p>체류자격 확인 경로와 공식 매뉴얼 참조 안내.</p>', '<h3>HiKorea 공지</h3><p>예약, 전자민원, 방문 안내의 최신 공지.</p>', '<h3>직업·산업분류</h3><p>한국표준직업분류와 산업분류 확인.</p>', '<h3>1345 안내</h3><p>외국인종합안내센터 상담 확인.</p>'],
         sourceNote: 'Paradiso는 법률 자문이나 민원 대행을 제공하지 않으며, 이에 따른 어떠한 법적 책임도 지지 않습니다.',
         toolsTitle: '필요한 도구는 흐름 가까이에 둡니다.', toolsCopy: '이미 구현된 도구는 기존 모달과 검색에 연결하고, 아직 준비 중인 기능은 계획 상태로 표시합니다.',
-        toolCards: ['<h3>관할 출입국 찾기</h3><p>체류지 기준으로 관할 출입국·외국인관서를 확인합니다.</p>', '<h3>직업·산업 코드</h3><p>취업 신고에 필요한 직종·업종 코드를 찾아봅니다.</p>', '<h3>서류 체크리스트</h3><p>체류자격별 공통서류와 추가 확인 항목으로 이동합니다.</p>', '<h3>1345 통화 스크립트</h3><p>상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.</p>'],
-        toolTitles: ['관할 출입국 찾기', '직업·산업 코드', '서류 체크리스트', '1345 통화 스크립트'],
-        toolBodies: ['체류지 기준으로 관할 출입국·외국인관서를 확인합니다.', '취업 신고에 필요한 직종·업종 코드를 찾아봅니다.', '체류자격별 공통서류와 추가 확인 항목으로 이동합니다.', '상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.'],
+        toolCards: ['<h3>관할 출입국 찾기</h3><p>체류지 기준으로 관할 출입국·외국인관서를 확인합니다.</p>', '<h3>직업·산업 코드</h3><p>취업 신고에 필요한 직종·업종 코드를 찾아봅니다.</p>', '<h3>법무부지정 병원</h3><p>채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>', '<h3>서류 체크리스트</h3><p>체류자격별 공통서류와 추가 확인 항목으로 이동합니다.</p>', '<h3>1345 통화 스크립트</h3><p>상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.</p>'],
+        toolTitles: ['관할 출입국 찾기', '직업·산업 코드', '법무부지정 병원', '서류 체크리스트', '1345 통화 스크립트'],
+        toolBodies: ['체류지 기준으로 관할 출입국·외국인관서를 확인합니다.', '취업 신고에 필요한 직종·업종 코드를 찾아봅니다.', '채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.', '체류자격별 공통서류와 추가 확인 항목으로 이동합니다.', '상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.'],
         agentTitle: '가까운 행정 도움 찾기', agentSectionCopy: '공식 등록된 출입국민원 대행기관을 지역별로 확인하고, 네이버지도 또는 카카오맵에서 위치를 열어볼 수 있습니다.',
         agentBanner: '현재 표시되는 항목은 자리표시(scaffold)용 <strong>샘플 데이터</strong>이며, 실제 등록 대행기관 정보가 아닙니다. 실제 정보는 공식 출처에서 직접 확인하세요.',
         agentDisclaimerPrefix: '이 목록은 하이코리아/법무부 공개 자료를 바탕으로 정리한 공식 등록 대행기관 정보입니다. Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전',
@@ -12582,10 +12673,10 @@ const UI_TRANSLATIONS = {
         howTitle: '검색에서 공식 출처 확인까지, 네 단계로 줄입니다.', howStepTitles: ['검색', '비교', '서류 점검', '공식 출처 확인'], howStepDescs: ['코드, 키워드, 상황 설명 중 가능한 방식으로 시작합니다.', '유사한 자격과 절차를 나란히 보며 차이를 좁힙니다.', '자격별 구비서류 흐름을 살펴보고, 공식 출처 확인으로 이어집니다.', '하이코리아, 1345, 관할 출입국 안내로 최종 확인합니다.'],
         sourceTitle: 'Paradiso의 문장은 출처를 향합니다.', sourceCopy: 'Paradiso는 참고용 정보 탐색 플랫폼입니다. 최종 판단은 관할 출입국·외국인관서, HiKorea, 1345 또는 자격 있는 전문가에게 확인해야 합니다.', sourceGridAria: '참고 출처',
         sourceCardTitles: ['출입국관리법', '출입국관리매뉴얼', 'HiKorea 공지', '직업·산업분류', '1345 안내'], sourceCardDescs: ['체류자격과 기본 절차의 법령 기준.', '체류자격 확인 경로와 공식 매뉴얼 참조 안내.', '예약, 전자민원, 방문 안내의 최신 공지.', '한국표준직업분류와 산업분류 확인.', '외국인종합안내센터 상담 확인.'], sourceNote: 'Paradiso는 법률 자문이나 민원 대행을 제공하지 않으며, 이에 따른 어떠한 법적 책임도 지지 않습니다.',
-        toolsTitle: '필요한 도구는 흐름 가까이에 둡니다.', toolsCopy: '이미 구현된 도구는 기존 모달과 검색에 연결하고, 아직 준비 중인 기능은 계획 상태로 표시합니다.', toolTitles: ['관할 출입국 찾기', '직업·산업 코드', '서류 체크리스트', '1345 통화 스크립트'], toolDescs: ['체류지 기준으로 관할 출입국·외국인관서를 확인합니다.', '취업 신고에 필요한 직종·업종 코드를 찾아봅니다.', '체류자격별 공통서류와 추가 확인 항목으로 이동합니다.', '상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.'],
+        toolsTitle: '필요한 도구는 흐름 가까이에 둡니다.', toolsCopy: '이미 구현된 도구는 기존 모달과 검색에 연결하고, 아직 준비 중인 기능은 계획 상태로 표시합니다.', toolTitles: ['관할 출입국 찾기', '직업·산업 코드', '법무부지정 병원', '서류 체크리스트', '1345 통화 스크립트'], toolDescs: ['체류지 기준으로 관할 출입국·외국인관서를 확인합니다.', '취업 신고에 필요한 직종·업종 코드를 찾아봅니다.', '채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.', '체류자격별 공통서류와 추가 확인 항목으로 이동합니다.', '상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.'],
         agentTitle: '가까운 행정 도움 찾기', agentCopy: '공식 등록된 출입국민원 대행기관을 지역별로 확인하고, 네이버지도 또는 카카오맵에서 위치를 열어볼 수 있습니다.', agentSourceNote: '출처: 출입국업무 민원신청대행 등록기관 현황(2026.04.30.부)', agentDisclaimer: 'Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.',
         agentRegionLabel: '지역', agentRegionAll: '전체 지역', agentKeywordLabel: '키워드', agentKeywordPlaceholder: '지역명·사무소명·주소로 검색', agentListAria: '등록 대행기관 목록', agentLoading: '데이터를 불러오는 중입니다.', agentPrompt: '지역명, 사무소명, 주소 일부를 입력해 등록된 민원대행기관을 찾아보세요.', agentEmpty: '검색 결과가 없습니다. 지역명이나 사무소명을 다시 확인해 주세요.', agentError: '데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.', agentCountShowing: '총 {total}개 중 {showing}개 표시', agentCountAll: '{count}개 대행기관 표시', agentShowMore: '더 보기', agentCountFiltered: '전체 {total}개 중 {count}개 대행기관 표시', agentMapNaver: '네이버지도', agentMapKakao: '카카오맵', agentCopyAddress: '주소 복사', agentPhone: '전화 {phone}', agentCopied: '주소를 복사했습니다.', agentCopyFailed: '주소 복사에 실패했습니다. 주소를 길게 눌러 직접 복사하세요.', agentTotalCount: '총 {count}개 기관',
-        medTitle: '법무부지정 의료기관 찾기', medKicker: 'Medical guidance', medCopy: '채용신체검사·건강진단이 가능한 법무부지정 의료기관 목록을 지역, 기관명, 주소로 검색할 수 있습니다.', medSourceNote: '출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황 (2026.04.30.)', medDisclaimer: '방문 전 해당 의료기관에 전화해 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요.', medCallNotice: '이 목록은 안내 목적이며, 의료 자문이나 검사 가능 여부를 보증하지 않습니다.',
+        medTitle: '법무부지정 건강검진 의료기관 찾기', medKicker: 'Medical guidance', medCopy: '채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.', medSourceNote: '출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황, 2026.04.30.', medDisclaimer: '방문 전 반드시 전화로 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요. Paradiso는 의료기관을 추천하거나 검사 가능 여부를 보장하지 않습니다.', medCallNotice: '이 목록은 안내 목적이며, 의료 자문이나 검사 가능 여부를 보증하지 않습니다.',
         medChipsAria: '지역 빠른 선택', medKeywordLabel: '검색어', medKeywordPlaceholder: '지역·기관명·주소로 검색', medClearAria: '검색 초기화', medListAria: '법무부지정 의료기관 목록', medLoading: '데이터를 불러오는 중입니다.', medPrompt: '지역 버튼을 누르거나 2자 이상 입력하면 검색됩니다. 예: 제주, 한라병원, 강남', medEmpty: '검색 결과가 없습니다. 다른 키워드나 지역을 시도해 보세요.', medError: '데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.', medCountShowing: '총 {total}개 중 {showing}개 표시', medCountAll: '{count}개 의료기관 표시', medShowMore: '더 보기', medCopyAddress: '주소 복사', medPhone: '전화 {phone}', medCopied: '주소를 복사했습니다.', medCopyFailed: '주소 복사에 실패했습니다. 주소를 길게 눌러 직접 복사하세요.', medTotalCount: '총 {count}개 기관', medCountFiltered: '전체 {total}개 중 {count}개 의료기관 표시',
         reminderTitle: '놓치기 쉬운 기한은 앞으로 알림으로 관리합니다.', reminderCopy: '아래 항목은 계획 중인 기능이며, 현재 제공되는 공식 알림 서비스가 아닙니다.', reminderAria: '계획 중인 알림 항목', reminderCardTitles: ['체류기간 연장', '주소 이전 신고', '근무처 변경'], reminderCardDescs: ['만료 전 확인 시점과 서류 준비 흐름.', '전입 후 신고 기한과 관할 확인.', '변동 신고와 취업 정보 확인.'], reminderPills: ['여권정보 변경', '캘린더 내보내기', '이메일·SMS 알림', '방문 준비 카드'],
         aboutTitle: '플랫폼 소개', anagramAria: 'Diaspora에서 Paradiso로 이어지는 애너그램', philosophyTitle: '브랜드 철학 및 어원 <span class="en-label" lang="en">— Brand Philosophy &amp; Etymology</span>', philosophyItems: ['<strong>Diaspora</strong> — \'Diaspora\'는 이주민을 뜻하는 영단어입니다.', '<strong>Paradiso</strong> — \'Paradiso\'는 이탈리아어로 "낙원(Paradise)"을 의미하며, \'Diaspora\'의 철자를 애너그램(Anagram)으로 재배치한 단어기도 합니다. 각자의 뜻과 꿈을 가지고 한국에 도착한 모든 이들에게 평안과 위로의 인사를 전합니다.'],
@@ -12593,7 +12684,7 @@ const UI_TRANSLATIONS = {
         valueCardAria: ['정확성과 신뢰성', '사용자 중심 UX', 'AI 기반 안내 보조'], valueCardDescs: ['출입국·외국인정책본부 매뉴얼과 시행규칙을 1차 출처로 삼으며, 검증 범위는 단계적으로 확대 중입니다.', '39개 체류자격을 목적별로 묶어 한 화면에서 비교·탐색할 수 있도록 정리합니다.', '사용자가 입력한 상황을 기반으로 살펴볼 자격과 확인 흐름을 제안하는 안내 보조입니다.'],
         roadmapTitle: '로드맵 <span class="figma-roadmap-en" lang="en">— Project Roadmap</span>', roadmapNote: '아래 일정은 프로젝트 추진 계획이며, 공식 정책 일정이 아닙니다.', roadmapCompanies: ['2025 Q4 — 공공데이터 활용 공모전 출품 및 MVP 검증', '2026 Q1 — AI 기반 질의응답과 안내 품질 고도화', '2026 Q3 — 다국어 UI와 사용자 접근성 확대'], roadmapDetails: ['39가지 체류자격 통합 탐색 MVP 공개·실사용자 피드백 수집', '매뉴얼 기반 답변 보조와 사용자 상황별 안내 흐름 정교화', '영어·다국어 UI 도입, 1345 안내 흐름 연계 강화'],
         footerHeroTitle: '대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.', footerChips: ['📑 공식 출처 확인 경로', '🧭 목적별 경로 정리', '🏛 관할기관 안내', '💼 직종·업종 코드'], footerStart: '지금 탐색 시작', footerHotline: '1345 직접 문의', footerCtaTitle: '어렵기만 하던 체류 관리,<br>이제는 손쉽게 확인하세요.', footerCtaCopy: '복잡한 체류 행정과 흩어진 자료를 Paradiso가 목적별로 정리합니다. 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.', footerCtaButtons: ['검색 시작하기', '국번없이 1345'], quickFiltersAria: '자주 찾는 검색어 모음', footerLegal: '베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.',
-        closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jurisdictionTitle: '🏛 관할 출입국관서 조회',
+        closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jobCodeNaturalSearchApi: 'AI 자연어 분석으로 공식 직종·업종 후보 찾기', jobCodeNaturalSearchLocal: '자연어 키워드로 공식 직종·업종 찾기', jobCodeLoadingNatural: '입력한 표현을 공식 코드 검색어로 정리하는 중입니다.', jobCodeFoundOfficial: '공식 코드 데이터에서 후보를 찾았습니다.', jobCodePartial: '가능성 있는 후보입니다. 최종 코드는 HiKorea 또는 1345에서 확인하세요.', jobCodeNoConfirmed: '정확한 코드가 자동 확인되지 않았습니다.', jobCodeNoConfirmedHint: '직무를 더 짧게 나누어 입력해 보세요. 예: 영어, 강사, 학원, 교육', jobCodeFinalCheck: '최종 직종·업종 코드는 HiKorea 또는 1345에서 확인하세요.', jurisdictionTitle: '🏛 관할 출입국관서 조회',
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
         sourceStructuredData: '구조화 데이터', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 메타데이터 미확인', sourceEvidenceTitle: '출처 및 근거', sourceUnverifiedNote: '출처 메타데이터 미확인. 현재 표시 정보는 구조화 데이터 기준이며, 세부 제출서류는 공식 매뉴얼/HiKorea 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
@@ -12620,7 +12711,7 @@ const UI_TRANSLATIONS = {
         gwDocLabel: '구비서류 확인', gwDocSub: '자격별 공통서류와 추가 항목',
         gwHikoreaLabel: 'HiKorea 예약 안내', gwHikoreaSub: '방문 전 온라인 예약 도우미',
         gwAiLabel: 'Paradiso.ai에게 묻기', gwAiSub: '상황을 설명하면 경로를 정리해 드립니다',
-        gwJobcodeLabel: '직업·산업분류 조회', gwAgentLabel: '등록 민원대행기관 찾기',
+        gwJobcodeLabel: '직업·산업분류 조회', gwAgentLabel: '등록 민원대행기관 찾기', gwMedLabel: '법무부지정 병원 찾기',
         cmdChipsTitle: '추천 키워드', cmdDisclaimer: '출처를 확인하며 안내합니다. 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.',
         cmdCloseLabel: '닫기', cmdCloseAria: '검색 닫기',
         compactHeadTitle: '한눈에 보기', compactHeadSub: '총 {count}건', compactHeadSubMore: '{showing} / {total}건 우선 표시', compactDetail: '자세히 보기',
@@ -12666,9 +12757,9 @@ const UI_TRANSLATIONS = {
         sourceCards: ['<h3>Immigration Act</h3><p>Legal basis for statuses and basic procedures.</p>', '<h3>Immigration manuals</h3><p>Status-specific permission standards and working checks.</p>', '<h3>HiKorea notices</h3><p>Current notices for reservations, e-applications, and visits.</p>', '<h3>Occupation and industry classifications</h3><p>Korean occupation and industry classification checks.</p>', '<h3>1345 guidance</h3><p>Confirmation through the Immigration Contact Center.</p>'],
         sourceNote: 'Paradiso does not provide legal advice, filing services, or representation services, and does not assume legal responsibility for user decisions.',
         toolsTitle: 'Keep practical tools close to the workflow.', toolsCopy: 'Available tools stay connected to existing modals and search. Planned features are marked as planned.',
-        toolCards: ['<h3>Find your immigration office</h3><p>Check the competent immigration office based on your residence address.</p>', '<h3>Occupation and industry codes</h3><p>Look up codes needed for employment reporting.</p>', '<h3>Document checklist</h3><p>Jump to common documents and extra checks by status.</p>', '<h3>1345 call script</h3><p>A planned feature for preparing questions before contacting 1345.</p>'],
-        toolTitles: ['Find your immigration office', 'Occupation and industry codes', 'Document checklist', '1345 call script'],
-        toolBodies: ['Check the competent immigration office based on your residence address.', 'Look up codes needed for employment reporting.', 'Jump to common documents and extra checks by status.', 'A planned feature for preparing questions before contacting 1345.'],
+        toolCards: ['<h3>Find your immigration office</h3><p>Check the competent immigration office based on your residence address.</p>', '<h3>Occupation and industry codes</h3><p>Look up codes needed for employment reporting.</p>', '<h3>MOJ-designated hospitals</h3><p>Search employment physical exam and health check institutions by region, name, or address.</p>', '<h3>Document checklist</h3><p>Jump to common documents and extra checks by status.</p>', '<h3>1345 call script</h3><p>A planned feature for preparing questions before contacting 1345.</p>'],
+        toolTitles: ['Find your immigration office', 'Occupation and industry codes', 'MOJ-designated hospitals', 'Document checklist', '1345 call script'],
+        toolBodies: ['Check the competent immigration office based on your residence address.', 'Look up codes needed for employment reporting.', 'Search employment physical exam and health check institutions by region, name, or address.', 'Jump to common documents and extra checks by status.', 'A planned feature for preparing questions before contacting 1345.'],
         agentTitle: 'Find local administrative help', agentSectionCopy: 'Check officially registered immigration agents by region and open their location in Naver Map or Kakao Map.',
         agentBanner: 'The currently displayed items are <strong>sample scaffold data</strong>, not real registered-agent information. Verify real information directly from official sources.',
         agentDisclaimerPrefix: 'This list is organized from public HiKorea/Ministry of Justice information. Paradiso does not recommend any specific agency or guarantee outcomes. Before visiting or hiring, we recommend checking',
@@ -12713,10 +12804,10 @@ const UI_TRANSLATIONS = {
         howTitle: 'From search to official-source checks in four steps.', howStepTitles: ['Search', 'Compare', 'Check documents', 'Verify official sources'], howStepDescs: ['Start with whichever input you have: a code, keyword, or situation.', 'Compare similar statuses and procedures side by side to narrow the gap.', 'Review common documents and situation-specific additional checks.', 'Confirm final details through HiKorea, 1345, or the competent immigration office.'],
         sourceTitle: 'Every Paradiso sentence points back to a source.', sourceCopy: 'Paradiso is a reference information platform. Final decisions should be confirmed with the competent immigration office, HiKorea, 1345, or a qualified professional.', sourceGridAria: 'Reference sources',
         sourceCardTitles: ['Immigration Act', 'Immigration manuals', 'HiKorea notices', 'Occupation and industry classifications', '1345 guidance'], sourceCardDescs: ['Legal baseline for statuses of stay and basic procedures.', 'Working-level criteria and checks by residence status.', 'Current notices for reservations, e-applications, and visits.', 'Korean standard occupation and industry classification checks.', 'Consultation confirmation through the Immigration Contact Center.'], sourceNote: 'Paradiso does not provide legal advice or filing representation and assumes no legal responsibility from use of this reference information.',
-        toolsTitle: 'Useful tools stay close to the workflow.', toolsCopy: 'Implemented tools connect to the existing modals and search. Features still in preparation are marked as planned.', toolTitles: ['Find your immigration office', 'Occupation and industry codes', 'Document checklist', '1345 call script'], toolDescs: ['Check the competent immigration office based on residence address.', 'Find occupation and industry codes needed for employment reporting.', 'Jump to common documents and additional checks by residence status.', 'A planned helper for organizing questions before a consultation call.'],
+        toolsTitle: 'Useful tools stay close to the workflow.', toolsCopy: 'Implemented tools connect to the existing modals and search. Features still in preparation are marked as planned.', toolTitles: ['Find your immigration office', 'Occupation and industry codes', 'MOJ-designated hospitals', 'Document checklist', '1345 call script'], toolDescs: ['Check the competent immigration office based on residence address.', 'Find occupation and industry codes needed for employment reporting.', 'Search employment physical exam and health check institutions by region, name, or address.', 'Jump to common documents and additional checks by residence status.', 'A planned helper for organizing questions before a consultation call.'],
         agentTitle: 'Find nearby administrative help', agentCopy: 'Browse officially registered immigration civil petition proxy agencies by region and open locations in Naver Map or Kakao Map.', agentSourceNote: 'Source: Registered civil petition proxy agencies for immigration services, as of 2026-04-30.', agentDisclaimer: 'Paradiso does not recommend any specific agency or guarantee service outcomes. Before visiting or hiring an agency, confirm by phone, scope of consultation, and fees.',
         agentRegionLabel: 'Region', agentRegionAll: 'All regions', agentKeywordLabel: 'Keyword', agentKeywordPlaceholder: 'Search by region, office name, or address', agentListAria: 'Registered proxy agency list', agentLoading: 'Loading agency data…', agentPrompt: 'Search by region, office name, or part of an address to find registered immigration service agencies.', agentEmpty: 'No results found. Check the region or office name and try again.', agentError: 'Could not load the data. Try again later or use the official HiKorea lookup.', agentCountShowing: 'Showing {showing} of {total} results', agentCountAll: 'Showing {count} agencies', agentShowMore: 'Show more', agentCountFiltered: 'Showing {count} of {total} registered agencies', agentMapNaver: 'Naver Map', agentMapKakao: 'Kakao Map', agentCopyAddress: 'Copy address', agentPhone: 'Call {phone}', agentCopied: 'Address copied.', agentCopyFailed: 'Could not copy the address. Long-press the address and copy it manually.', agentTotalCount: '{count} agencies total',
-        medTitle: 'Find MOJ-designated medical institutions', medKicker: 'Medical guidance', medCopy: 'Search Ministry of Justice-designated medical institutions for employment physical exams and health checkups by region, institution name, or address.', medSourceNote: 'Source: MOJ-designated medical institutions for employment physicals and health checkups, as of 2026-04-30.', medDisclaimer: 'Call the institution before visiting to confirm exam availability, appointment requirements, test items, and required materials.', medCallNotice: 'This list is for reference only and does not guarantee exam availability or medical advice.',
+        medTitle: 'Find MOJ-designated health check institutions', medKicker: 'Medical guidance', medCopy: 'Search institutions available for employment physical exams and health checkups by region, institution name, or address.', medSourceNote: 'Source: MOJ-designated medical institutions for employment physicals and health checkups, 2026-04-30.', medDisclaimer: 'Call before visiting to confirm exam availability, appointment requirements, test items, and required materials. Paradiso does not recommend medical institutions or guarantee exam availability.', medCallNotice: 'This list is for reference only and does not guarantee exam availability or medical advice.',
         medChipsAria: 'Quick region filter', medKeywordLabel: 'Search', medKeywordPlaceholder: 'Search by region, institution name, or address', medClearAria: 'Clear search', medListAria: 'MOJ-designated medical institution list', medLoading: 'Loading institution data…', medPrompt: 'Select a region or type at least 2 characters to search. Example: Jeju, Halla Hospital, Gangnam', medEmpty: 'No results found. Try a different keyword or region.', medError: 'Could not load the data. Please try again later.', medCountShowing: 'Showing {showing} of {total} results', medCountAll: 'Showing {count} institutions', medShowMore: 'Show more', medCopyAddress: 'Copy address', medPhone: 'Call {phone}', medCopied: 'Address copied.', medCopyFailed: 'Could not copy the address. Long-press the address and copy it manually.', medTotalCount: '{count} institutions total', medCountFiltered: 'Showing {count} of {total} institutions',
         reminderTitle: 'Future reminders will help manage easy-to-miss deadlines.', reminderCopy: 'The items below are planned features and are not an official reminder service today.', reminderAria: 'Planned reminder items', reminderCardTitles: ['Extension of stay', 'Address change report', 'Workplace change'], reminderCardDescs: ['When to check before expiry and how to prepare documents.', 'Reporting deadline after moving and jurisdiction checks.', 'Change reporting and employment information checks.'], reminderPills: ['Passport information change', 'Calendar export', 'Email and SMS reminders', 'Visit preparation card'],
         aboutTitle: 'About the platform', anagramAria: 'Diaspora to Paradiso anagram', philosophyTitle: 'Brand Philosophy &amp; Etymology', philosophyItems: ['<strong>Diaspora</strong> — A word for people living away from an original homeland or community.', '<strong>Paradiso</strong> — Italian for "paradise" and an anagram of "Diaspora"; a quiet greeting of comfort to people arriving in Korea with their own purpose and hopes.'],
@@ -12724,7 +12815,7 @@ const UI_TRANSLATIONS = {
         valueCardAria: ['Accuracy and reliability', 'User-centered UX', 'AI-assisted guidance'], valueCardDescs: ['Official immigration manuals and enforcement rules are treated as primary sources.', 'The 39 residence statuses are grouped by purpose so users can compare and explore them in one place.', 'The assistant suggests statuses and confirmation flows to review based on the situation the user enters.'],
         roadmapTitle: 'Roadmap <span class="figma-roadmap-en" lang="en">— Project Roadmap</span>', roadmapNote: 'This is a project plan, not an official policy schedule.', roadmapCompanies: ['2025 Q4 — Public-data competition submission and MVP validation', '2026 Q1 — Better AI Q&A and guidance quality', '2026 Q3 — Multilingual UI and broader accessibility'], roadmapDetails: ['Release an MVP for unified exploration of 39 residence statuses and collect user feedback', 'Improve manual-grounded answer support and situation-specific guidance flows', 'Add English and multilingual UI, with stronger linkage to 1345 guidance flows'],
         footerHeroTitle: 'Explore Korea’s 39<br>residence statuses in one place.', footerChips: ['📑 Official source-check pathway', '🧭 Purpose-first pathways', '🏛 Jurisdiction guidance', '💼 Job and industry codes'], footerStart: 'Start exploring', footerHotline: '1345 hotline', footerCtaTitle: 'Residence management used to feel hard.<br>Now you can check it with ease.', footerCtaCopy: 'Paradiso organizes scattered residence information by purpose. Always confirm with HiKorea, 1345, or the competent immigration office.', footerCtaButtons: ['Start search', 'Call 1345'], quickFiltersAria: 'Frequently searched keywords', footerLegal: 'Beta service. The information provided has no legal effect. Always confirm with HiKorea, 1345, or the competent immigration office.',
-        closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jurisdictionTitle: '🏛 Find your immigration office',
+        closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jobCodeNaturalSearchApi: 'Use AI natural-language analysis to find official occupation and industry candidates', jobCodeNaturalSearchLocal: 'Find official occupation and industry codes from natural-language keywords', jobCodeLoadingNatural: 'Converting your wording into official-code search terms.', jobCodeFoundOfficial: 'Candidates were found in the official code data.', jobCodePartial: 'These are possible candidates. Confirm the final code with HiKorea or 1345.', jobCodeNoConfirmed: 'An exact code could not be confirmed automatically.', jobCodeNoConfirmedHint: 'Try shorter role words, such as English, instructor, academy, education.', jobCodeFinalCheck: 'Confirm the final occupation and industry code with HiKorea or 1345.', jurisdictionTitle: '🏛 Find your immigration office',
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
         sourceStructuredData: 'Structured data', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source metadata unavailable', sourceEvidenceTitle: 'Source & Evidence', sourceUnverifiedNote: 'Source metadata unavailable. This result is based on structured data; detailed document requirements should be checked against official manuals/HiKorea.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
@@ -12750,7 +12841,7 @@ const UI_TRANSLATIONS = {
         gwDocLabel: 'Required documents', gwDocSub: 'Common and additional items by status',
         gwHikoreaLabel: 'HiKorea appointment guide', gwHikoreaSub: 'Online booking assistant before your visit',
         gwAiLabel: 'Ask Paradiso.ai', gwAiSub: 'Describe your situation and get a path overview',
-        gwJobcodeLabel: 'Occupation & industry codes', gwAgentLabel: 'Find a registered immigration agency',
+        gwJobcodeLabel: 'Occupation & industry codes', gwAgentLabel: 'Find a registered immigration agency', gwMedLabel: 'Find MOJ-designated hospitals',
         cmdChipsTitle: 'Recommended keywords', cmdDisclaimer: 'Reference information with source-checking. Confirm any final decision with HiKorea, 1345, or the competent immigration office.',
         cmdCloseLabel: 'Close', cmdCloseAria: 'Close search',
         compactHeadTitle: 'Quick scan', compactHeadSub: '{count} results', compactHeadSubMore: 'Showing {showing} of {total}', compactDetail: 'View details',
@@ -12825,7 +12916,7 @@ const UI_TRANSLATIONS = {
         gwDocLabel: '所需材料确认', gwDocSub: '按资格分类的通用及附加材料',
         gwHikoreaLabel: 'HiKorea 预约指南', gwHikoreaSub: '访问前的在线预约助手',
         gwAiLabel: '向Paradiso.ai提问', gwAiSub: '描述情况，整理路径',
-        gwJobcodeLabel: '职业·行业分类查询', gwAgentLabel: '查找已登记的移民代办机构',
+        gwJobcodeLabel: '职业·行业分类查询', gwAgentLabel: '查找已登记的移民代办机构', gwMedLabel: '查找法务部指定医院',
         cmdChipsTitle: '推荐关键词', cmdDisclaimer: '基于公开来源的参考信息。最终判断请向HiKorea、1345或主管出入境机关确认。',
         cmdCloseLabel: '关闭', cmdCloseAria: '关闭搜索',
         compactHeadTitle: '快速浏览', compactHeadSub: '共{count}条', compactHeadSubMore: '优先显示{showing}/{total}', compactDetail: '查看详情',
@@ -13107,7 +13198,7 @@ const UI_TRANSLATIONS = {
         gwDocLabel: 'Xác nhận tài liệu cần nộp', gwDocSub: 'Tài liệu chung và bổ sung theo tư cách',
         gwHikoreaLabel: 'Hướng dẫn đặt lịch HiKorea', gwHikoreaSub: 'Trợ lý đặt lịch trực tuyến trước khi đến',
         gwAiLabel: 'Hỏi Paradiso.ai', gwAiSub: 'Mô tả tình huống, nhận tổng hợp lộ trình',
-        gwJobcodeLabel: 'Tra cứu nghề nghiệp · ngành nghề', gwAgentLabel: 'Tìm đại lý xuất nhập cảnh đã đăng ký',
+        gwJobcodeLabel: 'Tra cứu nghề nghiệp · ngành nghề', gwAgentLabel: 'Tìm đại lý xuất nhập cảnh đã đăng ký', gwMedLabel: 'Tìm bệnh viện do MOJ chỉ định',
         cmdChipsTitle: 'Từ khóa gợi ý', cmdDisclaimer: 'Thông tin tham khảo có kiểm tra nguồn. Hãy xác nhận quyết định cuối cùng với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
         cmdCloseLabel: 'Đóng', cmdCloseAria: 'Đóng tìm kiếm',
         compactHeadTitle: 'Tổng quan nhanh', compactHeadSub: '{count} kết quả', compactHeadSubMore: 'Hiển thị {showing} / {total}', compactDetail: 'Xem chi tiết',
@@ -13392,7 +13483,7 @@ function applyLanguage(code, options = {}) {
     setText('.p-gw-search-sub', tx('gwSearchSub'));
     setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
-    setIndexedText('.p-gw-util-label', [tx('gwJobcodeLabel'), tx('gwAgentLabel')]);
+    setIndexedText('.p-gw-util-label', [tx('gwJobcodeLabel'), tx('gwAgentLabel'), tx('gwMedLabel')]);
     setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
     setText('#pCmdDisclaimer', tx('cmdDisclaimer'));
     setText('.p-cmd-close-label', tx('cmdCloseLabel'));
@@ -13526,6 +13617,7 @@ function applyLanguage(code, options = {}) {
     setHtml('#jobCodeModalTitle', tx('jobCodeTitle'));
     setText('label[for="jcSearchInput"]', tx('jobCodeSearchLabel'));
     setAttr('#jcSearchInput', 'placeholder', tx('jobCodePlaceholder'));
+    updateJobcodeNaturalSearchLabel();
     setHtml('#jurisdictionModalTitle', tx('jurisdictionTitle'));
     if (typeof updateAgentFinderLanguage === 'function') updateAgentFinderLanguage();
     setDirectSearchToggleState(document.getElementById('searchToggleBtn')?.getAttribute('aria-expanded') === 'true');
@@ -13667,6 +13759,13 @@ document.addEventListener('DOMContentLoaded', () => {
         qEl.addEventListener('input', handleInput);
         qEl.addEventListener('keydown', handleAutocompleteKeydown);
     }
+    document.querySelectorAll('[data-action="toggle-search"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            handleDirectSearchToggle();
+        }, true);
+    });
 
     const searchForm = document.getElementById('searchForm');
     searchForm?.addEventListener('submit', (e) => {
@@ -13736,15 +13835,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'quick-filter': () => { document.getElementById('q').value = actionBtn.dataset.query; document.getElementById('xb').classList.add('v'); renderResults(actionBtn.dataset.query); },
                 'set-search-mode': () => setSearchMode(actionBtn.dataset.mode),
                 'toggle-accordions': () => toggleAccordions(actionBtn.dataset.fold === 'true'),
-                'toggle-search': () => {
-                    debugSearchState('toggle-search:before');
-                    const stb = document.getElementById('searchToggleBtn');
-                    const isOpen = stb && stb.getAttribute('aria-expanded') === 'true';
-                    if (!isOpen) openDirectSearchMode();
-                    else if (!document.body.classList.contains('searched')) closeDirectSearchMode();
-                    else if (qEl) qEl.focus();
-                    debugSearchState('toggle-search:after');
-                },
+                'toggle-search': handleDirectSearchToggle,
                 'close-cmd-palette': () => {
                     if (document.body.classList.contains('searching') && !document.body.classList.contains('searched')) closeDirectSearchMode();
                 },
@@ -14551,6 +14642,9 @@ function showVisaDocForAction(visaCode) {
     const address = inst.address ? escapeText(inst.address) : '';
     const phone = (inst.phone || '').trim();
     const phoneSafe = phone.replace(/[^0-9+\-]/g, '');
+    const mapQuery = encodeURIComponent((inst.institution_name || '') + ' ' + (inst.address || ''));
+    const naverHref = 'https://map.naver.com/p/search/' + mapQuery;
+    const kakaoHref = 'https://map.kakao.com/link/search/' + mapQuery;
     const phoneBtn = phoneSafe
       ? '<a href="tel:' + escapeText(phoneSafe) + '" rel="nofollow">' + escapeText(tx('medPhone', { phone: phone })) + '</a>'
       : '';
@@ -14565,6 +14659,8 @@ function showVisaDocForAction(visaCode) {
       +   '<div class="p-med-finder__actions">'
       +     copyBtn
       +     phoneBtn
+      +     '<a href="' + naverHref + '" target="_blank" rel="noopener noreferrer">' + escapeText(tx('agentNaver')) + '</a>'
+      +     '<a href="' + kakaoHref + '" target="_blank" rel="noopener noreferrer">' + escapeText(tx('agentKakao')) + '</a>'
       +   '</div>'
       +   '<p class="p-med-finder__card-source">' + escapeText(tx('medSourceNote')) + '</p>'
       + '</li>';
