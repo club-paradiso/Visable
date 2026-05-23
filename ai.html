@@ -162,6 +162,12 @@
         .msg-row.user .msg-time { text-align: right; }
         .msg-disc { display: block; font-size: 0.72rem; color: var(--t3); margin-top: 0.8rem; padding-top: 0.6rem; border-top: 1px dashed var(--bd); line-height: 1.4; }
         .model-badge { display:inline-flex; align-items:center; gap:.3rem; margin-top:.6rem; padding:.2rem .55rem; border-radius:999px; font-size:.72rem; font-weight:700; border:1px solid var(--bd); color:var(--t2); background:var(--bg2); }
+        .ai-title-row { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+        .ai-ref-chip { display: inline-flex; align-items: center; padding: 0.18rem 0.55rem; border-radius: 999px; border: 1px solid rgba(199,191,168,0.3); background: rgba(244,238,224,0.05); color: var(--t3); font-size: 0.64rem; font-weight: 800; letter-spacing: 0.04em; }
+        .ai-welcome-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: var(--sp-3); padding-top: 0.8rem; border-top: 1px dashed var(--bd); }
+        .ai-welcome-chip { min-height: 36px; padding: 0.45rem 0.85rem; border-radius: 999px; border: 1px solid var(--bd); background: var(--bg2); color: var(--t2); font: 700 0.8rem/1.3 var(--ff); cursor: pointer; transition: var(--btn-tr); text-align: left; word-break: keep-all; }
+        .ai-welcome-chip:hover { border-color: var(--ac); color: var(--t1); background: rgba(52,212,168,0.08); transform: translateY(-1px); }
+        .ai-welcome-chip:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
         .answer-card { padding: 0; overflow: hidden; background: linear-gradient(180deg, rgba(17,59,50,0.98), rgba(11,42,36,0.96)); }
         .msg-row.ai .answer-card { background: linear-gradient(180deg, rgba(17,59,50,0.98), rgba(11,42,36,0.96)); border-color: rgba(52,212,168,0.24); }
         .answer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-3); padding: var(--sp-4); border-bottom: 1px solid var(--bd2); }
@@ -302,6 +308,8 @@
             .answer-actions { padding: 0 var(--sp-3) var(--sp-3); }
             .ai-title-main { font-size: 0.95rem; }
             .ai-status { font-size: 0.7rem; }
+            .ai-welcome-chip { font-size: 0.76rem; padding: 0.4rem 0.7rem; min-height: 32px; }
+            .ai-title-sub { font-size: 0.7rem; }
         }
         .reference-disclaimer { width: calc(100% - (var(--sp-5) * 2)); max-width: 930px; margin: 0 auto; padding: 0.7rem 0.85rem; border: 1px solid var(--bd); border-radius: 10px; background: var(--bg2); color: var(--t3); font-size: 0.8rem; line-height: 1.55; word-break: keep-all; overflow-wrap: anywhere; }
         @media (max-width: 640px) { .reference-disclaimer { width: calc(100% - (var(--sp-3) * 2)); margin: 0 auto; } }
@@ -948,7 +956,7 @@
             background: rgba(52,212,168,0.10);
             color: var(--ac);
         }
-        .source-list .source-row.state-verified::before { content: "VERIFIED"; }
+        .source-list .source-row.state-verified::before { content: "SOURCED"; }
         .source-list .source-row.state-source-supported {
             border-color: rgba(52,212,168,0.35);
             color: var(--ac);
@@ -1054,8 +1062,11 @@ select:focus-visible {
             </a>
             <img class="ai-header-logo" src="assets/brand/paradiso-wordmark-brush-white.png" alt="Paradiso" height="18" loading="eager" decoding="async">
             <div class="ai-title">
-                <h1 class="ai-title-main">Paradiso AI — 비자·체류 정보 AI 도우미</h1>
-                <p class="ai-title-sub">비자·체류 정보 안내 플랫폼 Paradiso</p>
+                <div class="ai-title-row">
+                    <h1 class="ai-title-main">Paradiso AI — 비자·체류 정보 AI 도우미</h1>
+                    <span class="ai-ref-chip" aria-label="참고용 안내">참고용</span>
+                </div>
+                <p class="ai-title-sub">공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345</p>
                 <div class="ai-status">
                     <span class="status-dot" aria-hidden="true"></span>
                     <span id="systemStatus">시스템 대기 중</span>
@@ -1070,13 +1081,19 @@ select:focus-visible {
     <!-- Chat Area -->
     <main class="chat-history" id="chatHistory" aria-live="polite" aria-atomic="false">
         <!-- Initial Message -->
-        <div class="msg-row ai">
+        <div class="msg-row ai" id="welcomeMessage">
             <div class="msg-bubble">
-                안녕하세요. <strong>Paradiso AI</strong>는 비자·체류 정보 안내 플랫폼 Paradiso의 AI 도우미입니다.<br><br>
-                2026년 출입국관리법 및 실무 매뉴얼에 근거하여 본인의 국적, 현재 체류 자격, 취업 희망 직무 등을 고려한 맞춤형 행정 절차와 구비 서류를 검증해 드립니다.<br><br>
-                분석을 위해 현재 직면하신 상황을 하단 입력창에 최대한 상세히 기술해 주십시오.
+                안녕하세요. <strong>Paradiso AI</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>
+                국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.<br><br>
+                답변은 참고용이며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.
+                <div class="ai-welcome-chips" role="group" aria-label="예시 질문">
+                    <button type="button" class="ai-welcome-chip" data-chip-text="D-2 연장에 필요한 서류는?">D-2 연장 서류</button>
+                    <button type="button" class="ai-welcome-chip" data-chip-text="E-7 근무처 변경은 어떻게 확인하나요?">E-7 근무처 변경</button>
+                    <button type="button" class="ai-welcome-chip" data-chip-text="F-6 체류기간 연장 전에 무엇을 준비해야 하나요?">F-6 연장 준비</button>
+                    <button type="button" class="ai-welcome-chip" data-chip-text="HiKorea 예약 전에 무엇을 확인해야 하나요?">HiKorea 예약 전 체크</button>
+                </div>
             </div>
-            <div class="msg-time">시스템 메시지</div>
+            <div class="msg-time">시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.</div>
         </div>
     </main>
     <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
@@ -1746,10 +1763,10 @@ select:focus-visible {
             const attempted = Boolean(metadata && metadata.law_grounding_attempted);
             const used = Boolean(metadata && metadata.law_grounding_used);
             const verification = metadata && metadata.citation_verification ? metadata.citation_verification : null;
-            if (used || (verification && verification.status === 'verified')) return t(lang, '검증됨', 'Verified');
-            if (attempted) return t(lang, '확인 필요', 'Needs verification');
-            if (verification && verification.status === 'extracted_only') return t(lang, '검증 안 됨', 'Not verified');
-            return t(lang, '사용 안 함', 'Not used');
+            if (used || (verification && verification.status === 'verified')) return t(lang, '출처 있음', 'Source present');
+            if (attempted) return t(lang, '확인 필요', 'Needs review');
+            if (verification && verification.status === 'extracted_only') return t(lang, '미검증', 'Unverified');
+            return t(lang, '기능 꺼짐', 'Disabled');
         }
 
         function renderGroundingSourcePanel(metadata, lang) {
@@ -1798,8 +1815,8 @@ select:focus-visible {
 
             const disclosure = t(
                 lang,
-                '법적 검증이 완료된 공식 결정이 아니며, 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
-                'This is not a verified official decision. Confirm final outcomes with 1345, HiKorea, or the competent immigration office.'
+                '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
+                'This answer is reference information based on public sources. Confirm final outcomes with 1345, HiKorea, or the competent immigration office.'
             );
 
             return `
@@ -2081,6 +2098,15 @@ select:focus-visible {
             document.addEventListener('click', (e) => {
                 const copyButton = e.target.closest('.answer-action[data-copy-id]');
                 if (copyButton) copyPayload(copyButton);
+                const chip = e.target.closest('.ai-welcome-chip');
+                if (chip && chip.dataset.chipText) {
+                    const ta = document.getElementById('aiQ');
+                    if (ta) {
+                        ta.value = chip.dataset.chipText;
+                        ta.focus();
+                        ta.dispatchEvent(new Event('input'));
+                    }
+                }
             });
             updateCharCounter();
             updateQuotaBadge();
