@@ -1,0 +1,296 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-05-24",
+  "branch": "data/audit-2026-05-21-manual-update-json",
+  "disclaimer": "Inventory metadata only. Not legal advice and not an official immigration decision.",
+  "source_identity_caveat": {
+    "user_attached_files_referenced": [
+      "/Users/seonjaekim/Downloads/사증발급 안내매뉴얼_260521.pdf",
+      "/Users/seonjaekim/Downloads/체류민원 안내매뉴얼_260521.pdf",
+      "/Users/seonjaekim/Downloads/260521_사증민원_자격별_안내_매뉴얼.hwp",
+      "/Users/seonjaekim/Downloads/260521_체류민원_자격별_안내_매뉴얼(지역특화형, 투자이민 비자 개정사항 반영).hwp"
+    ],
+    "accessible_in_environment": false,
+    "blocker_reason": "User-attached files are at local macOS paths; this audit runs inside a remote Linux execution environment with no access to the user's local filesystem.",
+    "repo_pdf_signals": {
+      "cover_label": "2026. 5.",
+      "pdf_internal_creation_date": "2026-05-07",
+      "latest_body_date_marker": "2026.2.12.",
+      "pilot_project_end_date_in_body": "2026년 5월 19일",
+      "sha256_visa": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "sha256_stay": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba"
+    },
+    "conclusion": "Cannot independently confirm the repo PDFs are the user-claimed 2026-05-21 updated manuals. Cannot independently confirm they are the 2026-05-04 legacy manuals either. Per task hard rules, no JSON file is promoted from 'generic-2026.5-unverified' to '2026-05-21-confirmed' in this PR."
+  },
+  "classification_scheme": {
+    "source_sensitivity": ["yes", "no", "manual-adjacent", "infrastructure"],
+    "date_alignment": [
+      "2026-05-21-confirmed",
+      "generic-2026.5-unverified",
+      "pre-2026-05-stale",
+      "mixed",
+      "not-manual-dependent",
+      "infrastructure"
+    ],
+    "inspection_depth": ["deep", "shallow"],
+    "changes_in_this_pr": ["yes", "no", "documented-for-follow-up"]
+  },
+  "summary": {
+    "files_deeply_inspected": 12,
+    "files_shallowly_inspected": 16,
+    "files_changed_substantively": 1,
+    "files_added_as_audit_artifacts": 8,
+    "files_classified_2026_05_21_confirmed": 0,
+    "files_classified_generic_2026_5_unverified": 9
+  },
+  "files": [
+    {
+      "path": "visa_data.json",
+      "purpose": "Canonical 58-record status/helper display data",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "documented-for-follow-up",
+      "notes": "All visa records have sourceManualStatus.visaManualVersion = '2026.5' / stayManualVersion = '2026.5' / verified=false / needsManualReview=true. F-4 and H-2 dataDate is 2026-02-12. K-Trainee D-4-2K dataDate is 2025-10-29. F-6-1 income note still labeled 2026.3. No record claims 2026-05-21.",
+      "record_count": 58,
+      "duplicate_codes": ["D-4-2K"]
+    },
+    {
+      "path": "backend/data/visas.json",
+      "purpose": "Backend mirror of visa_data.json produced by scripts/sync_visa_data.py",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "mirrors source",
+      "changes_in_this_pr": "no",
+      "notes": "Same shape (58 records). Line count identical to root (9443 lines).",
+      "record_count": 58
+    },
+    {
+      "path": "doc_master.json",
+      "purpose": "Document-ID display-label master used by visa_data + UI",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "documented-for-follow-up",
+      "notes": "79 entries; 66 referenced by visa_data.json; 13 unused. 12 unused entries are corrupted with literal Korean phrases as id (e.g. '수수료', '여권', '표준규격사진 1매'). 1 entry (doc_arc_fee) is a normal doc_*-prefixed ID that is currently unused.",
+      "entry_count": 79,
+      "referenced_count": 66,
+      "unused_count": 13,
+      "corrupt_id_count": 12
+    },
+    {
+      "path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "purpose": "사증발급 안내매뉴얼 source PDF",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "unresolved",
+      "changes_in_this_pr": "no",
+      "notes": "484 pages, 13189369 bytes, SHA-256 5a191a…84063. PDF internal CreationDate 2026-05-07. Cover label '2026. 5.'.",
+      "pages": 484,
+      "sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063"
+    },
+    {
+      "path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "purpose": "외국인체류 안내매뉴얼 source PDF",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "unresolved",
+      "changes_in_this_pr": "no",
+      "notes": "774 pages, 14818347 bytes, SHA-256 049268…b3ba. PDF internal CreationDate 2026-05-07. Cover label '2026. 5.'.",
+      "pages": 774,
+      "sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba"
+    },
+    {
+      "path": "docs/source-manuals/source_manifest.json",
+      "purpose": "Manual manifest",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "yes",
+      "notes": "Added date-level metadata fields (source_date='unresolved', source_label, supersedes, file_sha256, file_size_bytes, pdf_internal_creation_date, verification_status='user_attached_pdf_not_accessible_in_environment', verification_note) and an audit_history array. Existing version field preserved."
+    },
+    {
+      "path": "docs/source-manuals/SOURCE_MANUALS.md",
+      "purpose": "Manual directory README",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "Already documents 2026.5 generically; no day-level claim. Not contradicted by this PR."
+    },
+    {
+      "path": "data/source_registry.json",
+      "purpose": "Source allow-list for monitoring",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "Both PDF entries already carry version '2026.5' and correct SHA-256 hashes that match this run. Other entries are status=not_configured law/notice placeholders."
+    },
+    {
+      "path": "backend/data/manual_grounding/stay_manual_grounding_2026_05.json",
+      "purpose": "Active page-grounded extractions read by /api/ask",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "Schema 1.2. source_date='2026.5'. Three groundings: d2_extension_2026_05 (D-2 ext pp.43-44), d4_extension_2026_05 (D-4 ext for D-4-1/D-4-7 only pp.90-91), e7_extension_2026_05 (E-7 ext general p.226). All verified_locally with high confidence. Page references are absolute PDF pages inside committed file; remain valid as long as that file is canonical.",
+      "grounding_count": 3
+    },
+    {
+      "path": "backend/data/manual_grounding/candidates/f6_divorce_status_change/",
+      "purpose": "Draft F-6 divorce status change candidate",
+      "source_sensitive": "yes",
+      "inspection_depth": "shallow",
+      "date_alignment": "draft",
+      "changes_in_this_pr": "no",
+      "notes": "Draft-only, not promoted to active. Does not address F-6 income figures."
+    },
+    {
+      "path": "docs/data/JSON_MANUAL_LAW_AUDIT_2026_05.md",
+      "purpose": "Prior PR #140 audit report",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "Documents the JSON cleanup and matrix construction work from merged audit PR #140."
+    },
+    {
+      "path": "docs/data/json_manual_law_audit_2026_05_matrix.json",
+      "purpose": "Prior PR #140 audit matrix",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "44 rows mapping codes to manual sections + approximate page ranges. Approximate page ranges were generated without page-level extraction in PR #140; this PR's 2026_05_21_manual_json_crosswalk.json carries fresh page anchors extracted with pdftotext."
+    },
+    {
+      "path": "docs/data/2026_05_HIGH_RISK_GAP_PATCH_AUDIT.md",
+      "purpose": "Prior PR #145 audit-only blocker report",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "n/a",
+      "changes_in_this_pr": "no",
+      "notes": "Reports that PR #145 was blocked by lack of PDF extraction tooling. Same five high-risk targets remain outstanding."
+    },
+    {
+      "path": "docs/data/2026_05_high_risk_gap_patch_matrix.json",
+      "purpose": "Prior PR #145 audit matrix",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "n/a",
+      "changes_in_this_pr": "no",
+      "notes": "Mirrors audit-only blocker state."
+    },
+    {
+      "path": "backend/data/eval/paradiso_coverage_matrix.json",
+      "purpose": "Coverage/eval control plane",
+      "source_sensitive": "yes",
+      "inspection_depth": "deep",
+      "date_alignment": "generic-2026.5-unverified",
+      "changes_in_this_pr": "no",
+      "notes": "Read-only metadata; does not call /api/ask. Pointer to stay_manual_grounding_2026_05.json remains correct."
+    },
+    {
+      "path": "backend/data/eval/paradiso_ai_golden_questions.json",
+      "purpose": "AI golden eval questions",
+      "source_sensitive": "yes",
+      "inspection_depth": "shallow",
+      "date_alignment": "mixed",
+      "changes_in_this_pr": "no",
+      "notes": "Eval test cases; not user-facing."
+    },
+    {
+      "path": "data/jobcode_master.json",
+      "purpose": "KSIC/SOC-style job code master",
+      "source_sensitive": "manual-adjacent",
+      "inspection_depth": "shallow",
+      "date_alignment": "not-manual-dependent",
+      "changes_in_this_pr": "no",
+      "notes": "Sourced from separate notice. False positives for '0504' marker are phone numbers."
+    },
+    {
+      "path": "data/agent_registry_2026-04-30.json",
+      "purpose": "민원대행 등록기관 registry dated 2026-04-30",
+      "source_sensitive": "no",
+      "inspection_depth": "shallow",
+      "date_alignment": "not-manual-dependent",
+      "changes_in_this_pr": "no",
+      "notes": "Standalone registry dated by file name. False positives for '0504' are phone numbers and internal agent IDs."
+    },
+    {
+      "path": "data/designated_medical_institutions_2026_04_30.json",
+      "purpose": "Designated medical institutions dated 2026-04-30",
+      "source_sensitive": "no",
+      "inspection_depth": "shallow",
+      "date_alignment": "not-manual-dependent",
+      "changes_in_this_pr": "no",
+      "notes": "Standalone registry. False positives for '0504' are internal medical-institution IDs."
+    },
+    {
+      "path": "data/sources/hikorea_source_catalog.json",
+      "purpose": "HiKorea source catalog from PR #144",
+      "source_sensitive": "manual-adjacent",
+      "inspection_depth": "shallow",
+      "date_alignment": "not-manual-dependent",
+      "changes_in_this_pr": "no",
+      "notes": "Source registry, not visa data."
+    },
+    {
+      "path": "data/sources/immigration_notice_sources.json",
+      "purpose": "Immigration notice source registry",
+      "source_sensitive": "manual-adjacent",
+      "inspection_depth": "shallow",
+      "date_alignment": "not-manual-dependent",
+      "changes_in_this_pr": "no",
+      "notes": "Source registry."
+    },
+    {
+      "path": "index.html",
+      "purpose": "Main UI",
+      "source_sensitive": "yes (renders visa_data.json)",
+      "inspection_depth": "shallow",
+      "date_alignment": "inherits visa_data.json",
+      "changes_in_this_pr": "no",
+      "notes": "Localized landingHints for 18 languages mention K-Trainee(D-4-2K), K-ETA, E-7-4, F-6, F-3, TB-1, RF-1, SCN-6, D-10. None of these strings need to change in this PR."
+    },
+    {
+      "path": "ai.html",
+      "purpose": "AI page",
+      "source_sensitive": "yes (includes K-STAR explicit routing)",
+      "inspection_depth": "shallow",
+      "date_alignment": "inherits visa_data.json",
+      "changes_in_this_pr": "no",
+      "notes": "Routes K-STAR explicitly because it is a local structured record. No structural change required by this PR."
+    },
+    {
+      "path": "prototype/index.html",
+      "purpose": "Prototype copy of main UI",
+      "source_sensitive": "yes",
+      "inspection_depth": "shallow",
+      "date_alignment": "inherits prototype",
+      "changes_in_this_pr": "no",
+      "notes": "Not production UI."
+    },
+    {
+      "path": "prototype/ai.html",
+      "purpose": "Prototype copy of AI page",
+      "source_sensitive": "yes",
+      "inspection_depth": "shallow",
+      "date_alignment": "inherits prototype",
+      "changes_in_this_pr": "no",
+      "notes": "Not production UI."
+    }
+  ],
+  "audit_artifacts_added_by_this_pr": [
+    "docs/data/2026_05_21_REPO_JSON_INVENTORY.md",
+    "docs/data/2026_05_21_repo_json_inventory.json",
+    "docs/data/2026_05_21_MANUAL_TOC_MAP.md",
+    "docs/data/2026_05_21_manual_toc_map.json",
+    "docs/data/2026_05_21_MANUAL_JSON_CROSSWALK.md",
+    "docs/data/2026_05_21_manual_json_crosswalk.json",
+    "docs/data/2026_05_21_VISA_DATA_FULL_AUDIT.md",
+    "docs/data/2026_05_21_visa_data_full_audit.json",
+    "docs/data/2026_05_21_FULL_MANUAL_JSON_AUDIT_REPORT.md"
+  ]
+}

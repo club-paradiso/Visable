@@ -4,21 +4,55 @@
       "title_ko": "사증발급 안내매뉴얼",
       "title_en": "Visa Issuance Guide Manual",
       "version": "2026.5",
+      "source_date": "unresolved",
+      "source_label": "2026.5 사증발급 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
       "pages": 484,
       "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "file_sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "file_size_bytes": 13189369,
+      "pdf_internal_creation_date": "2026-05-07T00:54:33Z",
+      "pdf_internal_title": "무제",
+      "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
       "role": "visa_issuance_manual",
-      "status": "current"
+      "status": "current",
+      "verification_status": "user_attached_pdf_not_accessible_in_environment",
+      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task, the user-attached '사증발급 안내매뉴얼_260521.pdf' at a local macOS path (/Users/.../Downloads/) was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 file could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. No internal date marker later than 2026.2.12. was found in the manual body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. Do not promote 'source_date' to '2026-05-21' without page-level evidence."
     },
     "stay_residence_manual": {
       "title_ko": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
       "version": "2026.5",
+      "source_date": "unresolved",
+      "source_label": "2026.5 외국인체류 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
       "pages": 774,
       "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "file_sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+      "file_size_bytes": 14818347,
+      "pdf_internal_creation_date": "2026-05-07T00:53:43Z",
+      "pdf_internal_title": "무제",
+      "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
       "role": "stay_residence_manual",
-      "status": "current"
+      "status": "current",
+      "verification_status": "user_attached_pdf_not_accessible_in_environment",
+      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task, the user-attached '체류민원 안내매뉴얼_260521.pdf' at a local macOS path (/Users/.../Downloads/) was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 file could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. The body references a pilot project ending '2026년 5월 19일'; no internal date marker later than 2026.2.12. and no reference to a 2026-05-21 effective date or revision date was found in the body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. Do not promote 'source_date' to '2026-05-21' without page-level evidence."
     }
-  }
+  },
+  "audit_history": [
+    {
+      "audit_date": "2026-05-24",
+      "branch": "data/audit-2026-05-21-manual-update-json",
+      "extraction_tooling": "poppler-utils 24.02.0 (pdftotext, pdfinfo), python3 pypdf 6.12.1, pdfminer.six 20260107",
+      "page_count_check": "passed (484 / 774 match manifest declarations)",
+      "user_attached_compare": "blocked: user-attached PDFs at /Users/seonjaekim/Downloads/ not reachable in remote Linux execution environment"
+    }
+  ],
+  "schema_notes": [
+    "The 'source_date' field uses ISO 8601 calendar dates for verified-day manuals, or the literal string 'unresolved' when a within-month revision date has not been independently verified.",
+    "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'pending', or 'unknown'.",
+    "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual."
+  ]
 }
