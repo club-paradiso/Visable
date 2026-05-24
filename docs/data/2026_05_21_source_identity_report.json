@@ -1,0 +1,92 @@
+{
+  "schema_version": "1.0",
+  "report_date": "2026-05-24",
+  "branch": "data/audit-2026-05-21-manual-update-json",
+  "disclaimer": "Internal audit artifact only. Not legal advice.",
+  "status": "BLOCKED",
+  "blocker": "Incoming PDFs not found at expected paths (tmp/incoming/사증발급 안내매뉴얼_260521.pdf, tmp/incoming/체류민원 안내매뉴얼_260521.pdf). Full filesystem search (depth 6) found no matching files.",
+  "incoming_pdfs": {
+    "visa_expected_path": "tmp/incoming/사증발급 안내매뉴얼_260521.pdf",
+    "visa_found": false,
+    "stay_expected_path": "tmp/incoming/체류민원 안내매뉴얼_260521.pdf",
+    "stay_found": false
+  },
+  "repo_pdfs_baseline": {
+    "visa_manual": {
+      "repo_path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "file_size_bytes": 13189369,
+      "sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "pdf_internal_creation_date": "2026-05-07T00:54:33Z",
+      "pdf_title": "무제",
+      "pages": 484,
+      "cover_label": "2026. 5.",
+      "latest_body_date_marker": "2026.2.12.",
+      "source_date_classification": "unresolved"
+    },
+    "stay_manual": {
+      "repo_path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "file_size_bytes": 14818347,
+      "sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+      "pdf_internal_creation_date": "2026-05-07T00:53:43Z",
+      "pdf_title": "무제",
+      "pages": 774,
+      "cover_label": "2026. 5.",
+      "latest_body_date_marker": "2026.2.12.",
+      "pilot_project_end_date_in_body": "2026년 5월 19일",
+      "source_date_classification": "unresolved"
+    }
+  },
+  "repo_pdfs_replaced": false,
+  "source_manifest_updated": false,
+  "prior_extraction": {
+    "visa_fulltext": "tmp/manual-2026-05-21/visa_manual_2026_05_21.txt",
+    "visa_fulltext_lines": 20908,
+    "stay_fulltext": "tmp/manual-2026-05-21/stay_manual_2026_05_21.txt",
+    "stay_fulltext_lines": 33245,
+    "visa_pages_count": 484,
+    "stay_pages_count": 774,
+    "extraction_tool": "pdftotext -layout (poppler-utils 24.02.0)",
+    "status": "intact_from_prior_run",
+    "note": "Extraction is from the currently-committed repo PDFs. Must regenerate if repo PDFs are replaced."
+  },
+  "validation_results": {
+    "source_manifest_json": "OK",
+    "visa_data_json": "OK",
+    "backend_visas_json": "OK",
+    "doc_master_json": "OK",
+    "sync_visa_data_check": "OK",
+    "check_source_manuals": "OK",
+    "check_visa_data_text_integrity": "PASS",
+    "check_required_documents_coverage": "PASS"
+  },
+  "changes_in_this_run": {
+    "repo_pdfs": "no change",
+    "visa_data_json": "no change",
+    "backend_data_visas_json": "no change",
+    "doc_master_json": "no change",
+    "source_manifest_json": "no change",
+    "new_files": [
+      "docs/data/2026_05_21_SOURCE_IDENTITY_REPORT.md",
+      "docs/data/2026_05_21_source_identity_report.json"
+    ]
+  },
+  "next_steps": [
+    "Place incoming PDFs at tmp/incoming/ (or accessible path) and re-run this step.",
+    "Compare SHA-256 of incoming vs repo baseline above.",
+    "If SHA-256 differs: replace repo PDFs, update source_manifest.json, regenerate extraction.",
+    "If SHA-256 matches: update source_manifest.json source_date to '2026-05-21', verification_status to 'source_file_compared'.",
+    "After source identity is resolved: proceed to full manual-to-JSON crosswalk (Opus recommended)."
+  ],
+  "safe_to_proceed_without_incoming": [
+    "doc_master.json cleanup (12 corrupted Korean-text IDs)",
+    "D-4-2K duplicate code disambiguation",
+    "Active grounding extensions for D-2/D-4/E-7 (page anchors already confirmed)"
+  ],
+  "do_not_proceed_without_incoming": [
+    "F-6 income eligibility update (page numbers may shift if PDFs replaced)",
+    "F-4/H-2 Feb 2026 sub-manual extraction",
+    "K-STAR sub-manual extraction",
+    "REGION-S extraction",
+    "Any update to visa_data.json fields touching eligibility/income/fees/period"
+  ]
+}
