@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<!-- STITCH PROTOTYPE — FIXED — do not apply directly to production index.html -->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paradiso — 체류 정보 안내</title>
+  <link rel="icon" type="image/png" href="../assets/brand/paradiso-favicon-o.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <style>
+    /* ── PARADISO DESIGN TOKENS ── */
+    :root {
+      --color-primary:      #0EA37B;
+      --color-primary-deep: #085E48;
+      --color-primary-hover:#0c8c69;
+      --color-primary-mint: #7DD8B8;
+      --color-accent:       #FF6B5B;
+      --color-accent-deep:  #E0513E;
+      --color-amber:        #E68A3A;
+      --color-neutral:      #F4EEE0;
+      --color-surface:      #FCFAF5;
+      --color-surface-2:    #FBF5E6;
+      --color-text:         #0E1F1A;
+      --color-text-muted:   #7A8580;
+      --color-border:       #C9BFA5;
+
+      --ff: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+      --r-xs: 4px; --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 20px; --r-2xl: 24px; --r-pill: 9999px;
+      --shadow-1: 0 1px 0 rgba(14,31,26,.04), 0 1px 2px rgba(14,31,26,.05);
+      --shadow-2: 0 4px 12px rgba(14,31,26,.06), 0 1px 2px rgba(14,31,26,.04);
+      --shadow-3: 0 12px 32px rgba(14,31,26,.10), 0 2px 6px rgba(14,31,26,.05);
+      --shadow-cta: 0 4px 18px rgba(14,163,123,.32), 0 2px 4px rgba(14,163,123,.18);
+      --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+      --bg: var(--color-neutral);
+      --surface: var(--color-surface);
+      --surface-2: var(--color-surface-2);
+      --t1: var(--color-text);
+      --t2: #4A5852;
+      --t3: var(--color-text-muted);
+      --bd: var(--color-border);
+      --ac: var(--color-primary-deep);
+      --ac-bright: var(--color-primary);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0B2A24;
+      --surface: #113B32;
+      --surface-2: #184B40;
+      --t1: #F3EEDF;
+      --t2: #C7BFA8;
+      --t3: #8C8572;
+      --bd: #2D5A50;
+      --ac: #34D4A8;
+      --ac-bright: #34D4A8;
+      --color-neutral: #F3EEDF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; overflow-x: hidden; }
+    body {
+      font-family: var(--ff); background: var(--bg); color: var(--t1);
+      line-height: 1.65; min-height: 100vh; overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+      word-break: keep-all;
+    }
+    :focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; border-radius: 4px; }
+    img { max-width: 100%; height: auto; }
+
+    /* ── TOP CONTROLS ── */
+    .top-ctrls {
+      position: fixed; top: 1.2rem; right: 1.2rem; z-index: 200;
+      display: flex; gap: 0.5rem; align-items: center;
+    }
+    .ctrl-btn {
+      background: var(--surface); border: 1px solid var(--bd); color: var(--t1);
+      height: 40px; padding: 0 0.85rem; border-radius: var(--r-md);
+      cursor: pointer; font-weight: 600; font-size: 0.78rem;
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-family: var(--ff); transition: all 0.18s ease;
+      box-shadow: var(--shadow-1);
+    }
+    .ctrl-btn:hover { background: var(--surface-2); border-color: var(--ac-bright); color: var(--ac); }
+    .lang-code { color: var(--color-accent); font-weight: 800; font-size: 0.72rem; letter-spacing: 0.04em; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: clamp(5rem,12vh,9rem) 1.5rem clamp(4rem,8vh,7rem);
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('../assets/hero/ws-chae--jVX4mW1Uac-unsplash.jpg') center/cover no-repeat;
+    }
+    .hero-bg::after {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(8,94,72,0.78) 0%,
+        rgba(8,94,72,0.60) 45%,
+        rgba(11,42,36,0.82) 100%
+      );
+    }
+    .hero-inner {
+      position: relative; z-index: 10;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 2rem; width: 100%; max-width: 720px;
+    }
+
+    /* Logo — white wordmark only */
+    .logo-area { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; }
+    .logo-wordmark { width: clamp(160px, 28vw, 220px); height: auto; display: block; }
+    .logo-sub {
+      font-size: 0.72rem; font-weight: 600; color: rgba(244,238,224,0.65);
+      letter-spacing: 0.12em; text-transform: uppercase;
+    }
+
+    /* Hero Headline */
+    .hero-headline {
+      text-align: center; color: var(--color-neutral);
+    }
+    .hero-headline h1 {
+      font-size: clamp(1.9rem, 5vw, 3rem); font-weight: 800;
+      line-height: 1.2; letter-spacing: -0.02em;
+      margin-bottom: 0.65rem;
+    }
+    .hero-headline p {
+      font-size: clamp(0.9rem, 2vw, 1.0625rem); color: rgba(244,238,224,0.75);
+      font-weight: 400; line-height: 1.7; max-width: 540px; margin: 0 auto;
+    }
+
+    /* ── SEARCH BAR ── */
+    .search-zone { width: 100%; max-width: 680px; }
+    .sbar {
+      display: flex; align-items: center;
+      background: rgba(255,255,255,0.13);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: var(--r-lg);
+      box-shadow: 0 16px 48px -8px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.10);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .sbar:focus-within {
+      border-color: rgba(125,216,184,0.6);
+      box-shadow: 0 0 0 3px rgba(14,163,123,0.25), 0 16px 48px -8px rgba(0,0,0,.28);
+    }
+    .sbar-icon { padding: 0 0.6rem 0 1.1rem; color: rgba(244,238,224,0.55); flex-shrink: 0; }
+    .sbar-icon svg { display: block; }
+    #q {
+      flex: 1; border: 0; outline: 0; background: transparent;
+      padding: 1.05rem 0.5rem; font-size: 1.05rem; color: var(--color-neutral);
+      font-family: var(--ff); font-weight: 400;
+    }
+    #q::placeholder { color: rgba(244,238,224,0.50); font-weight: 400; }
+    .sbar-go {
+      background: var(--color-primary-deep); border: 0;
+      border-radius: 0 var(--r-lg) var(--r-lg) 0;
+      color: var(--color-neutral); padding: 0 1.25rem;
+      height: 56px; cursor: pointer; font-weight: 700; font-size: 0.88rem;
+      font-family: var(--ff); display: flex; align-items: center; gap: 0.4rem;
+      transition: background 0.18s ease;
+      white-space: nowrap;
+    }
+    .sbar-go:hover { background: var(--color-primary-hover); }
+
+    /* Keyword chips */
+    .keyword-chips {
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+      margin-top: 1rem; justify-content: center;
+    }
+    .kchip {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(244,238,224,0.28);
+      border-radius: var(--r-pill);
+      height: 32px; padding: 0 14px;
+      font-size: 0.78rem; color: rgba(244,238,224,0.80);
+      cursor: pointer; font-weight: 500; font-family: var(--ff);
+      transition: all 0.18s ease; display: inline-flex; align-items: center;
+    }
+    .kchip:hover {
+      background: rgba(14,163,123,0.22);
+      border-color: rgba(125,216,184,0.55);
+      color: var(--color-neutral);
+    }
+
+    /* Direct code search hint */
+    .code-search-hint {
+      margin-top: 0.65rem; font-size: 0.78rem; color: rgba(244,238,224,0.52);
+      text-align: center;
+    }
+    .code-search-hint code {
+      background: rgba(255,255,255,0.10); border-radius: var(--r-sm);
+      padding: 0.1rem 0.45rem; font-family: monospace; font-size: 0.82em;
+      color: rgba(125,216,184,0.85);
+    }
+
+    /* ── PATHWAY SELECTOR ── */
+    .pathway-zone {
+      background: var(--surface); border: 1px solid var(--bd);
+      border-radius: var(--r-xl); padding: 2rem;
+      max-width: 960px; margin: 0 auto;
+      box-shadow: var(--shadow-2);
+    }
+    .section-kicker {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--color-primary);
+      margin-bottom: 0.4rem;
+    }
+    .section-title {
+      font-size: clamp(1.25rem, 2.5vw, 1.6rem); font-weight: 700;
+      color: var(--t1); margin-bottom: 1.25rem; letter-spacing: -0.01em;
+    }
+    .pathway-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(min(160px,100%), 1fr));
+      gap: 0.75rem;
+    }
+    .pathway-card {
+      background: var(--surface-2); border: 1px solid var(--bd);
+      border-radius: var(--r-lg); padding: 1.1rem 0.9rem;
+      cursor: pointer; text-align: left; font-family: var(--ff);
+      transition: all 0.2s var(--ease);
+      display: flex; flex-direction: column; gap: 0.4rem;
+      box-shadow: var(--shadow-1);
+    }
+    .pathway-card:hover {
+      border-color: var(--ac-bright); background: var(--surface);
+      box-shadow: var(--shadow-cta); transform: translateY(-2px);
+    }
+    .pathway-card.active {
+      background: color-mix(in srgb, var(--color-primary-deep) 10%, var(--surface));
+      border-color: var(--color-primary-deep);
+    }
+    .pathway-icon { font-size: 1.5rem; line-height: 1; }
+    .pathway-label {
+      font-size: 0.88rem; font-weight: 700; color: var(--t1);
+      line-height: 1.3; word-break: keep-all;
+    }
+    .pathway-sub { font-size: 0.74rem; color: var(--t3); line-height: 1.4; word-break: keep-all; }
+
+    /* ── MAIN CONTENT AREA ── */
+    .main-wrap { max-width: 1180px; margin: 0 auto; padding: 0 1rem; }
+    .section { padding: 4rem 0; }
+    .section-sm { padding: 2.5rem 0; }
+
+    /* ── HIKOREA BANNER ── */
+    .hikorea-banner {
+      background: var(--color-primary-deep); color: var(--color-neutral);
+      border-radius: var(--r-lg); padding: 1.25rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1rem; flex-wrap: wrap;
+      box-shadow: var(--shadow-2);
+      margin-bottom: 1.5rem;
+    }
+    .hikorea-banner-left { display: flex; flex-direction: column; gap: 0.2rem; }
+    .hikorea-banner-title { font-size: 0.95rem; font-weight: 700; }
+    .hikorea-banner-sub { font-size: 0.78rem; opacity: 0.75; word-break: keep-all; }
+    .hikorea-banner-cta {
+      background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+      color: var(--color-neutral); border-radius: var(--r-md);
+      padding: 0 1rem; height: 40px; cursor: pointer;
+      font-weight: 700; font-size: 0.82rem; font-family: var(--ff);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      white-space: nowrap; transition: background 0.18s ease;
+    }
+    .hikorea-banner-cta:hover { background: rgba(255,255,255,0.25); }
+
+    /* ── RESULTS LIST ── */
+    .results-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 0.85rem;
+    }
+    .results-count { font-size: 0.82rem; color: var(--t3); }
+    .filter-row { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1rem; }
+    .filter-chip {
+      background: var(--surface-2); border: 1px solid var(--bd);
+      border-radius: var(--r-pill); height: 32px; padding: 0 14px;
+      font-size: 0.78rem; color: var(--t2);
+      cursor: pointer; font-weight: 500; font-family: var(--ff);
+      transition: all 0.18s ease; display: inline-flex; align-items: center;
+    }
+    .filter-chip:hover { border-color: var(--ac-bright); color: var(--ac); }
+    .filter-chip.on {
+      background: var(--color-primary-deep); color: var(--color-neutral);
+      border-color: var(--color-primary-deep);
+    }
+
+    /* ── VISA RESULT CARD ── */
+    .visa-card {
+      background: var(--surface); border: 1px solid var(--bd);
+      border-radius: var(--r-lg); margin-bottom: 1rem;
+      box-shadow: var(--shadow-2); overflow: hidden;
+    }
+    .visa-card-header {
+      padding: 1.25rem 1.25rem 0;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .visa-code-badge {
+      background: var(--surface-2); color: var(--color-primary-deep);
+      border-radius: var(--r-sm); padding: 3px 10px;
+      font-size: 0.78rem; font-weight: 700; border: 1px solid var(--bd);
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .visa-code-badge { color: var(--ac); }
+    .visa-name-ko { font-size: 1.05rem; font-weight: 700; color: var(--t1); margin-bottom: 0.15rem; }
+    .visa-name-en { font-size: 0.82rem; color: var(--t3); font-weight: 400; }
+    .domain-badge {
+      font-size: 0.68rem; font-weight: 700; padding: 2px 8px;
+      border-radius: var(--r-xs); border: 1px solid var(--bd);
+      color: var(--t3); background: var(--surface-2); flex-shrink: 0; white-space: nowrap;
+    }
+
+    /* Procedure tabs */
+    .proc-tabs {
+      display: flex; gap: 0; border-bottom: 1px solid var(--bd);
+      margin: 1rem 0 0; overflow-x: auto;
+    }
+    .proc-tab {
+      padding: 0.55rem 1rem; font-size: 0.82rem; font-weight: 600;
+      color: var(--t3); border-bottom: 2px solid transparent;
+      cursor: pointer; white-space: nowrap; font-family: var(--ff);
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .proc-tab.active { color: var(--color-primary-deep); border-bottom-color: var(--color-primary-deep); }
+    [data-theme="dark"] .proc-tab.active { color: var(--ac); border-bottom-color: var(--ac); }
+
+    /* Document checklist */
+    .doc-list { padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.5rem; }
+    .doc-item {
+      display: flex; align-items: flex-start; gap: 0.55rem;
+      padding: 0.65rem 0.75rem; background: var(--surface-2);
+      border: 1px solid var(--bd); border-radius: var(--r-md);
+      font-size: 0.875rem; line-height: 1.5;
+    }
+    .doc-check {
+      width: 18px; height: 18px; border-radius: var(--r-xs);
+      border: 1.5px solid var(--bd); flex-shrink: 0; margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .doc-check.done { background: var(--color-primary); border-color: var(--color-primary); color: #fff; font-size: 0.7rem; }
+    .doc-name { font-weight: 600; color: var(--t1); word-break: keep-all; }
+    .doc-note { font-size: 0.75rem; color: var(--t3); word-break: keep-all; margin-top: 0.1rem; }
+
+    /* Source block */
+    .source-block {
+      margin: 0 1.25rem 1.25rem;
+      padding: 0.7rem 0.85rem;
+      background: var(--surface-2); border: 1px solid var(--bd);
+      border-radius: var(--r-sm); font-size: 0.75rem; color: var(--t3);
+    }
+    .source-label { font-weight: 700; color: var(--t2); margin-bottom: 0.2rem; }
+
+    /* Warning box */
+    .warning-box {
+      background: var(--surface-2); color: var(--color-amber);
+      border: 1px solid rgba(230,138,58,0.35);
+      border-radius: var(--r-sm); padding: 0.65rem 0.85rem;
+      font-size: 0.78rem; line-height: 1.55; word-break: keep-all;
+      margin: 0 1.25rem 1.25rem;
+    }
+
+    /* Card actions */
+    .card-actions {
+      padding: 0.75rem 1.25rem 1.25rem;
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+    }
+    .card-action-btn {
+      height: 36px; padding: 0 0.9rem; border-radius: var(--r-sm);
+      border: 1px solid var(--bd); background: var(--surface-2);
+      color: var(--t2); font-size: 0.78rem; font-weight: 700;
+      font-family: var(--ff); cursor: pointer;
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      transition: all 0.18s ease;
+    }
+    .card-action-btn:hover { border-color: var(--ac-bright); color: var(--ac); }
+    .card-action-btn.primary {
+      background: var(--color-primary-deep); color: var(--color-neutral);
+      border-color: var(--color-primary-deep);
+    }
+    .card-action-btn.primary:hover { background: var(--color-primary-hover); }
+
+    /* ── JURISDICTION LOOKUP ── */
+    .jurisdiction-card {
+      background: var(--surface); border: 1px solid var(--bd);
+      border-radius: var(--r-xl); padding: 2rem;
+      box-shadow: var(--shadow-2);
+    }
+    .jurisdiction-select-row { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1rem; }
+    .jur-select {
+      flex: 1; min-width: 180px; height: 44px; padding: 0 1rem;
+      border: 1px solid var(--bd); border-radius: var(--r-md);
+      background: var(--surface-2); color: var(--t1);
+      font-family: var(--ff); font-size: 0.9rem; cursor: pointer;
+    }
+    .jur-result {
+      margin-top: 1rem; padding: 1rem 1.1rem;
+      background: var(--surface-2); border: 1px solid var(--bd);
+      border-radius: var(--r-md); font-size: 0.9rem; line-height: 1.65;
+      word-break: keep-all;
+    }
+    .jur-office-name { font-weight: 700; color: var(--t1); margin-bottom: 0.25rem; }
+    .jur-meta { font-size: 0.78rem; color: var(--t3); }
+
+    /* ── AI CTA STRIP ── */
+    .ai-cta-strip {
+      background: linear-gradient(135deg, #0B2A24 0%, #1a4a3a 100%);
+      border: 1px solid rgba(52,212,168,0.25);
+      border-radius: var(--r-xl); padding: 2rem 2.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem; flex-wrap: wrap;
+      box-shadow: var(--shadow-3);
+    }
+    .ai-cta-left { display: flex; flex-direction: column; gap: 0.35rem; }
+    .ai-cta-kicker {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #34D4A8;
+    }
+    .ai-cta-title { font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 700; color: #F3EEDF; line-height: 1.3; }
+    .ai-cta-sub { font-size: 0.85rem; color: rgba(199,191,168,0.80); line-height: 1.5; word-break: keep-all; }
+    .ai-cta-btn {
+      background: #34D4A8; color: #0B2A24;
+      border: none; border-radius: var(--r-md);
+      padding: 0 1.75rem; height: 52px;
+      font-weight: 800; font-size: 0.95rem; font-family: var(--ff);
+      cursor: pointer; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      box-shadow: var(--shadow-cta);
+      transition: all 0.2s ease;
+    }
+    .ai-cta-btn:hover { background: #17B388; transform: translateY(-1px); }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--surface); border-top: 1px solid var(--bd);
+      padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+    }
+    .footer-links { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+    .footer-link {
+      font-size: 0.78rem; color: var(--t3); text-decoration: none;
+      transition: color 0.18s;
+    }
+    .footer-link:hover { color: var(--ac); }
+    .footer-legal {
+      font-size: 0.72rem; color: var(--t3); text-align: center;
+      line-height: 1.65; max-width: 640px; word-break: keep-all;
+    }
+
+    /* ── LAYOUT SECTIONS ── */
+    .container { max-width: 960px; margin: 0 auto; padding: 0 1.5rem; }
+    .container-wide { max-width: 1180px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* ── SEARCH RESULTS STATE (prototype shows both states) ── */
+    .state-label {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: transparent; color: var(--color-text-muted);
+      border: 1px dashed var(--color-border);
+      border-radius: var(--r-sm); padding: 0.15rem 0.6rem;
+      font-size: 0.68rem; font-weight: 600; margin-bottom: 0.5rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── PROTOTYPE NAV (prototype-only, shows state sections) ── */
+    .prototype-nav {
+      position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 0.5rem; background: var(--surface);
+      border: 1px solid var(--bd); border-radius: var(--r-pill);
+      padding: 0.4rem 0.6rem; box-shadow: var(--shadow-3);
+      z-index: 999;
+    }
+    .pnav-btn {
+      height: 34px; padding: 0 0.85rem; border-radius: var(--r-pill);
+      border: none; background: transparent; color: var(--t2);
+      font-size: 0.78rem; font-weight: 700; cursor: pointer;
+      font-family: var(--ff); transition: all 0.18s ease;
+    }
+    .pnav-btn.active { background: var(--color-primary-deep); color: var(--color-neutral); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hikorea-banner { flex-direction: column; align-items: flex-start; }
+      .ai-cta-strip { flex-direction: column; align-items: flex-start; }
+      .visa-card-header { flex-wrap: wrap; }
+      .proc-tabs { gap: 0; }
+    }
+    @media (max-width: 480px) {
+      .top-ctrls { top: 0.75rem; right: 0.75rem; gap: 0.35rem; }
+      .ctrl-btn { height: 36px; padding: 0 0.6rem; font-size: 0.72rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOP CONTROLS ── -->
+<div class="top-ctrls">
+  <button class="ctrl-btn" aria-label="도시/시간 선택">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    제주 · <span id="clock">00:00</span>
+  </button>
+  <button class="ctrl-btn" aria-label="언어 선택">
+    <span class="lang-code">KO</span>
+    <span>한국어</span>
+    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+  </button>
+  <button class="ctrl-btn" id="themeBtn" aria-label="다크모드 전환">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+  </button>
+</div>
+
+<!-- ────────────────────────────────────────────
+     SECTION A: HERO (Landing state)
+     ──────────────────────────────────────────── -->
+<section class="hero" id="section-hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+
+    <!-- Logo: white wordmark only (NOT the favicon) -->
+    <div class="logo-area">
+      <img
+        class="logo-wordmark"
+        src="../assets/brand/paradiso-wordmark-brush-white.png"
+        alt="Paradiso"
+      >
+      <span class="logo-sub">비자 · 체류 정보 안내</span>
+    </div>
+
+    <!-- Headline -->
+    <div class="hero-headline">
+      <h1>비자·체류 정보를<br>명확하게 탐색하세요</h1>
+      <p>대한민국 비자·체류 정보 안내. 공개 법령·매뉴얼 기반으로<br>실질적인 안내를 제공합니다. 제주 관할 정보부터 단계적으로 확장 중.</p>
+    </div>
+
+    <!-- Search zone -->
+    <div class="search-zone">
+      <div class="sbar" role="search">
+        <span class="sbar-icon" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <input
+          id="q" type="search"
+          placeholder="비자 코드 또는 상황을 입력하세요  예: D-10, 취업, 결혼이민"
+          autocomplete="off" aria-label="비자·체류 정보 검색"
+        >
+        <button class="sbar-go" type="button">
+          탐색하기
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+
+      <!-- Keyword chips -->
+      <div class="keyword-chips" role="list" aria-label="자주 찾는 체류자격">
+        <button class="kchip" role="listitem">D-2 유학</button>
+        <button class="kchip" role="listitem">E-7 특정활동</button>
+        <button class="kchip" role="listitem">F-2 거주</button>
+        <button class="kchip" role="listitem">F-6 결혼이민</button>
+        <button class="kchip" role="listitem">C-3 단기방문</button>
+        <button class="kchip" role="listitem">취업 비자 비교</button>
+        <button class="kchip" role="listitem">체류기간 연장</button>
+      </div>
+
+      <!-- Direct code search hint -->
+      <p class="code-search-hint">
+        코드 직접 검색: <code>D-10</code> <code>E-7-1</code> <code>F-4</code> 등 입력 시 바로 이동
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────
+     SECTION B: PATHWAY SELECTOR
+     ──────────────────────────────────────────── -->
+<section class="section" id="section-pathway">
+  <div class="container">
+    <div class="state-label">✦ 기능 패널: 체류자격 경로 선택</div>
+    <div class="pathway-zone">
+      <p class="section-kicker">체류자격 경로</p>
+      <h2 class="section-title">어떤 체류자격을 알아보시나요?</h2>
+      <div class="pathway-grid">
+        <button class="pathway-card active">
+          <span class="pathway-icon">🎓</span>
+          <span class="pathway-label">유학·연구</span>
+          <span class="pathway-sub">D-2, D-4, D-8</span>
+        </button>
+        <button class="pathway-card">
+          <span class="pathway-icon">💼</span>
+          <span class="pathway-label">취업·특정활동</span>
+          <span class="pathway-sub">E-1 – E-10, H-2</span>
+        </button>
+        <button class="pathway-card">
+          <span class="pathway-icon">👨‍👩‍👧</span>
+          <span class="pathway-label">가족·결혼</span>
+          <span class="pathway-sub">F-1, F-2, F-3, F-6</span>
+        </button>
+        <button class="pathway-card">
+          <span class="pathway-icon">🏡</span>
+          <span class="pathway-label">영주·귀화</span>
+          <span class="pathway-sub">F-5, 귀화</span>
+        </button>
+        <button class="pathway-card">
+          <span class="pathway-icon">🌐</span>
+          <span class="pathway-label">단기 체류</span>
+          <span class="pathway-sub">C-3, B-1, B-2</span>
+        </button>
+        <button class="pathway-card">
+          <span class="pathway-icon">🔄</span>
+          <span class="pathway-label">자격 변경</span>
+          <span class="pathway-sub">체류자격 변경·연장</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────
+     SECTION C: SEARCH RESULTS + VISA CARD
+     ──────────────────────────────────────────── -->
+<section class="section" id="section-results" style="background: var(--surface-2); border-top: 1px solid var(--bd); border-bottom: 1px solid var(--bd);">
+  <div class="container-wide">
+
+    <div class="state-label">✦ 검색 결과 상태 프로토타입</div>
+
+    <!-- HiKorea Banner -->
+    <div class="hikorea-banner">
+      <div class="hikorea-banner-left">
+        <div class="hikorea-banner-title">🏛 HiKorea 하이코리아 예약 안내</div>
+        <div class="hikorea-banner-sub">체류자격 신청·변경은 HiKorea 공식 포털에서 직접 접수합니다. Paradiso는 안내 서비스이며, 정부 기관이 아닙니다.</div>
+      </div>
+      <button class="hikorea-banner-cta">
+        HiKorea 바로가기
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+      </button>
+    </div>
+
+    <!-- Filter chips / quick filters -->
+    <div class="results-header">
+      <div style="font-size: 0.9rem; font-weight: 700; color: var(--t1);">"D-10" 검색 결과</div>
+      <div class="results-count">3개 체류자격</div>
+    </div>
+    <div class="filter-row">
+      <button class="filter-chip on">전체</button>
+      <button class="filter-chip">취업 관련</button>
+      <button class="filter-chip">단기체류</button>
+      <button class="filter-chip">연장 가능</button>
+    </div>
+
+    <!-- Visa Result Card — expanded -->
+    <div class="visa-card">
+      <div class="visa-card-header">
+        <div style="display:flex; flex-direction:column; gap:0.2rem; min-width:0;">
+          <div style="display:flex; align-items:center; gap:0.5rem; flex-wrap:wrap;">
+            <span class="visa-code-badge">D-10</span>
+            <span class="visa-name-ko">구직 체류자격</span>
+          </div>
+          <div class="visa-name-en">Job Seeking Visa</div>
+        </div>
+        <span class="domain-badge">취업 준비</span>
+      </div>
+
+      <!-- Procedure tabs -->
+      <div class="proc-tabs" role="tablist">
+        <button class="proc-tab active" role="tab" aria-selected="true">신청 서류</button>
+        <button class="proc-tab" role="tab">연장 서류</button>
+        <button class="proc-tab" role="tab">변경 절차</button>
+      </div>
+
+      <!-- Document checklist -->
+      <div class="doc-list" role="tabpanel">
+        <div class="doc-item">
+          <div class="doc-check done">✓</div>
+          <div>
+            <div class="doc-name">여권 (유효기간 6개월 이상)</div>
+            <div class="doc-note">원본 제출, 사본 불가</div>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-check done">✓</div>
+          <div>
+            <div class="doc-name">외국인등록증 (해당자)</div>
+            <div class="doc-note">기존 등록증 소지자만</div>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-check"></div>
+          <div>
+            <div class="doc-name">신청서 (별지 34호 서식)</div>
+            <div class="doc-note">출입국·외국인청 비치 또는 HiKorea 다운로드</div>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-check"></div>
+          <div>
+            <div class="doc-name">구직 활동 증명서류</div>
+            <div class="doc-note">채용 공고 지원 내역, 면접 확인서 등</div>
+          </div>
+        </div>
+        <div class="doc-item">
+          <div class="doc-check"></div>
+          <div>
+            <div class="doc-name">수수료 (10만원)</div>
+            <div class="doc-note">창구 납부 또는 HiKorea 결제</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning -->
+      <div class="warning-box">
+        ⚠️ 서류 요건은 개인 상황에 따라 달라질 수 있습니다. 반드시 담당 출입국청에 사전 확인하세요.
+      </div>
+
+      <!-- Source block -->
+      <div class="source-block">
+        <div class="source-label">출처 참고 / 공식 확인 필요</div>
+        출처: 법무부 외국인 체류 안내 매뉴얼 2026-05판 · 하이코리아 포털. Paradiso는 정보 안내 서비스이며, 최종 확인은 담당 기관에서 직접 하시기 바랍니다.
+      </div>
+
+      <!-- Card actions -->
+      <div class="card-actions">
+        <button class="card-action-btn primary">
+          🏛 HiKorea 예약
+        </button>
+        <button class="card-action-btn">
+          🤖 AI에게 질문
+        </button>
+        <button class="card-action-btn">
+          📋 서류 복사
+        </button>
+        <button class="card-action-btn">
+          📍 담당 출입국청 찾기
+        </button>
+      </div>
+    </div>
+
+    <!-- Second card (collapsed) -->
+    <div class="visa-card" style="opacity:0.75;">
+      <div class="visa-card-header" style="padding-bottom: 1.25rem;">
+        <div style="display:flex; align-items:center; gap:0.5rem;">
+          <span class="visa-code-badge">E-7</span>
+          <span class="visa-name-ko">특정활동 (관련 비자)</span>
+        </div>
+        <button style="background:transparent; border:none; color:var(--t3); cursor:pointer; font-size:0.78rem; font-weight:700; font-family:var(--ff);">펼치기 ↓</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────
+     SECTION D: JURISDICTION + JOB-CODE LOOKUP
+     ──────────────────────────────────────────── -->
+<section class="section" id="section-jurisdiction">
+  <div class="container">
+    <div class="state-label">✦ 기능 패널: 관할 출입국청·직종코드 조회</div>
+
+    <div class="jurisdiction-card" style="margin-bottom: 1.5rem;">
+      <p class="section-kicker">관할 출입국청 조회</p>
+      <h2 class="section-title">내 주소지 담당 기관 찾기</h2>
+      <div class="jurisdiction-select-row">
+        <select class="jur-select" aria-label="시/도 선택">
+          <option>시/도 선택</option>
+          <option selected>제주특별자치도</option>
+          <option>서울</option>
+          <option>부산</option>
+        </select>
+        <select class="jur-select" aria-label="구/군 선택">
+          <option>구/군 선택</option>
+          <option selected>제주시</option>
+          <option>서귀포시</option>
+        </select>
+      </div>
+      <div class="jur-result">
+        <div class="jur-office-name">제주출입국·외국인청</div>
+        <div class="jur-meta">제주특별자치도 제주시 서광로 2길 37 · 064-728-9300</div>
+        <div class="jur-meta" style="margin-top: 0.25rem;">업무시간: 평일 09:00–18:00 (점심 12:00–13:00)</div>
+      </div>
+    </div>
+
+    <!-- Job code lookup -->
+    <div class="jurisdiction-card">
+      <p class="section-kicker">직종코드 조회</p>
+      <h2 class="section-title">E-7 직종코드 검색</h2>
+      <div class="jurisdiction-select-row">
+        <input
+          type="text" placeholder="직종명 또는 코드 입력 (예: 소프트웨어 개발)"
+          class="jur-select" style="border-radius: var(--r-md);"
+          aria-label="직종코드 검색"
+        >
+        <button class="card-action-btn primary" style="height:44px; padding: 0 1.2rem;">검색</button>
+      </div>
+      <div class="jur-result" style="margin-top: 1rem;">
+        <div class="jur-office-name">소프트웨어 개발자 (E-7-1)</div>
+        <div class="jur-meta">한국표준직업분류 코드: 2212 · ISCO: 251</div>
+        <div class="jur-meta" style="margin-top:0.25rem; color: var(--color-primary);">✓ E-7 특정활동 해당 직종</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────
+     SECTION E: PARADISO AI CTA
+     ──────────────────────────────────────────── -->
+<section class="section" id="section-ai-cta">
+  <div class="container">
+    <div class="state-label">✦ Paradiso AI 진입점</div>
+    <div class="ai-cta-strip">
+      <div class="ai-cta-left">
+        <span class="ai-cta-kicker">Paradiso AI</span>
+        <div class="ai-cta-title">비자·체류 정보 AI 도우미</div>
+        <div class="ai-cta-sub">
+          법령·매뉴얼 기반으로 체류자격·절차를 안내합니다.<br>
+          공개 데이터 기반 참고 정보이며, 법적 효력이 없습니다.
+        </div>
+      </div>
+      <a class="ai-cta-btn" href="ai.html">
+        AI 도우미 시작
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ────────────────────────────────────────────
+     FOOTER
+     ──────────────────────────────────────────── -->
+<footer class="footer">
+  <div class="footer-links">
+    <a href="#" class="footer-link">이용약관</a>
+    <a href="#" class="footer-link">개인정보처리방침</a>
+    <a href="#" class="footer-link">출처 고지</a>
+    <a href="#" class="footer-link">문의</a>
+  </div>
+  <p class="footer-legal">
+    Paradiso는 법무부·출입국·외국인청 공개 자료를 기반으로 한 정보 안내 서비스입니다.
+    공식 법적 판정·자격 보증이 아니며, 정부 기관이 아닙니다.
+    최종 확인은 담당 출입국청 또는 HiKorea(hikorea.go.kr) 포털을 이용하세요.
+    체류 관련 긴급 문의: 법무부 외국인 종합안내센터 1345 (24시간)
+  </p>
+  <p class="footer-legal" style="margin-top: 0.4rem; opacity: 0.65;">
+    © 2026 Paradiso · 베타 서비스 · Jeju Civic-Tech
+  </p>
+</footer>
+
+<!-- Prototype nav -->
+<nav class="prototype-nav" aria-label="프로토타입 섹션 이동">
+  <button class="pnav-btn active" onclick="scrollTo('section-hero')">히어로</button>
+  <button class="pnav-btn" onclick="scrollTo('section-pathway')">경로</button>
+  <button class="pnav-btn" onclick="scrollTo('section-results')">검색결과</button>
+  <button class="pnav-btn" onclick="scrollTo('section-jurisdiction')">기관조회</button>
+  <button class="pnav-btn" onclick="scrollTo('section-ai-cta')">AI</button>
+</nav>
+
+<script>
+  /* Clock */
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.getHours().toString().padStart(2,'0') + ':' +
+      now.getMinutes().toString().padStart(2,'0');
+  }
+  updateClock(); setInterval(updateClock, 30000);
+
+  /* Dark mode toggle */
+  const themeBtn = document.getElementById('themeBtn');
+  themeBtn.addEventListener('click', () => {
+    const isDark = document.documentElement.dataset.theme === 'dark';
+    document.documentElement.dataset.theme = isDark ? '' : 'dark';
+  });
+
+  /* Prototype nav */
+  function scrollTo(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.querySelectorAll('.pnav-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  /* Keyword chip clicks fill search */
+  document.querySelectorAll('.kchip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      document.getElementById('q').value = chip.textContent.trim();
+    });
+  });
+</script>
+</body>
+</html>
