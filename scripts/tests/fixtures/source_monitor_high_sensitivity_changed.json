@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-05-24T12:00:00+00:00",
+  "results": [
+    {
+      "source_id": "moj_seasonal_worker_notice_stream",
+      "source_type": "notice_index",
+      "state": "changed",
+      "legal_sensitivity": "high",
+      "title": "Seasonal Worker Notices",
+      "content_hash": "sha256:high-sensitivity",
+      "url": "https://www.immigration.go.kr/seasonal-worker/notices"
+    }
+  ]
+}
