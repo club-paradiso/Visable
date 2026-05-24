@@ -1,0 +1,133 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-05-24",
+  "branch": "data/verify-and-patch-2026-05-high-risk-gaps",
+  "mode": "audit_only_blocked_by_pdf_extraction",
+  "disclaimer": "This file is audit metadata only. It is not legal advice and is not an official immigration decision.",
+  "source_files": [
+    {
+      "id": "visa_manual_2026_05",
+      "path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "version": "2026.5",
+      "manifest_pages": 484,
+      "git_blob_sha": "26559cadc83044e85d1cd2d5f4eca7d0cf65d68c",
+      "sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063"
+    },
+    {
+      "id": "stay_manual_2026_05",
+      "path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "version": "2026.5",
+      "manifest_pages": 774,
+      "git_blob_sha": "fcc0b8916d66b2d1d8b78eb305abf07e76f11f83",
+      "sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba"
+    }
+  ],
+  "tooling": {
+    "page_level_pdf_extraction_available": false,
+    "available_tools": [
+      "strings"
+    ],
+    "unavailable_tools": [
+      "pdftotext",
+      "pdfinfo",
+      "pypdf",
+      "PyPDF2",
+      "fitz",
+      "pdfminer",
+      "mutool",
+      "qpdf",
+      "pdfgrep",
+      "exiftool",
+      "gs"
+    ],
+    "blocker": "No reliable local tool was available to extract exact PDF pages from the committed 2026.5 manuals."
+  },
+  "targets": [
+    {
+      "id": "d4_2k_duplicate_records",
+      "label": "Duplicate D-4-2K records",
+      "current_repo_state": {
+        "top_level_records": [
+          "D-4-2K / 한국어연수(K-연수생)",
+          "D-4-2K / 기업맞춤형인턴십(K-Trainee)"
+        ],
+        "parent_subcode_present": "D-4.subCodes includes D-4-2K / 한국어연수(K-연수생)",
+        "active_grounding_scope": "D-4 grounding covers D-4-1 and D-4-7 only; D-4-2K is explicitly out of scope."
+      },
+      "manual_page_review_status": "blocked_no_extraction_tool",
+      "decision": "unresolved",
+      "data_patch": false,
+      "remaining_risk": "Could be a duplicate bug, distinct tracks, renamed/obsolete entry, or incomplete subcode model."
+    },
+    {
+      "id": "top_tier_tracks",
+      "label": "Top-Tier tracks",
+      "current_repo_state": {
+        "subcodes_present": [
+          "D-10-T",
+          "E-7-T",
+          "F-2-T",
+          "F-5-T"
+        ],
+        "standalone_top_level_record_present": false,
+        "prior_audit_matrix_note": "Existing matrix still marks TOP-TIER modeled_in_visa_data=false despite current subcode-level entries."
+      },
+      "manual_page_review_status": "blocked_no_extraction_tool",
+      "decision": "deferred",
+      "data_patch": false,
+      "remaining_risk": "Need exact source pages before choosing umbrella record, separate records, aliases, or no further modeling."
+    },
+    {
+      "id": "gwangyeok_visa_pilot",
+      "label": "광역형 비자 시범사업",
+      "current_repo_state": {
+        "top_level_record_present": "REGION-S / 지역특화·광역형 비자 시범사업",
+        "prior_audit_matrix_rows": [
+          "REGION-S modeled_in_visa_data=true",
+          "광역형 modeled_in_visa_data=false"
+        ]
+      },
+      "manual_page_review_status": "blocked_no_extraction_tool",
+      "decision": "unresolved",
+      "data_patch": false,
+      "remaining_risk": "Need exact source pages before deciding whether REGION-S is sufficient or a separate 광역형 placeholder/alias is needed."
+    },
+    {
+      "id": "youth_growth_based_employment_residence",
+      "label": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "current_repo_state": {
+        "dedicated_record_present": false,
+        "text_mentions_present": "Phrase appears inside D-10 procedure-derived text.",
+        "prior_audit_matrix_state": "청소년취업정주 modeled_in_visa_data=false"
+      },
+      "manual_page_review_status": "blocked_no_extraction_tool",
+      "decision": "deferred",
+      "data_patch": false,
+      "remaining_risk": "Need exact source pages before deciding whether this is a D-10 sub-scenario, alias/helper entry, or deferred item."
+    },
+    {
+      "id": "f6_income_figures",
+      "label": "F-6 income figures",
+      "current_repo_state": {
+        "legacy_provenance_present": "F-6-1 income note still cites 체류민원 안내매뉴얼 2026.3 with 2026.5 manual-review warning.",
+        "figures_changed": false,
+        "candidate_scope": "Existing F-6 divorce candidate is draft-only and does not verify income figures."
+      },
+      "manual_page_review_status": "blocked_no_extraction_tool",
+      "decision": "unresolved",
+      "data_patch": false,
+      "remaining_risk": "Need exact 2026.5 F-6 income pages before changing figures or provenance wording."
+    }
+  ],
+  "files_changed": [
+    "docs/data/2026_05_HIGH_RISK_GAP_PATCH_AUDIT.md",
+    "docs/data/2026_05_high_risk_gap_patch_matrix.json"
+  ],
+  "files_intentionally_unchanged": [
+    "visa_data.json",
+    "backend/data/visas.json",
+    "doc_master.json",
+    "index.html",
+    "ai.html"
+  ]
+}
