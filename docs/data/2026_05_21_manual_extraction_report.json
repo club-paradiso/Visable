@@ -1,0 +1,133 @@
+{
+  "report_id": "2026_05_21_MANUAL_EXTRACTION_REPORT",
+  "branch": "data/source-update-2026-05-21-manuals-and-notice-monitoring",
+  "extraction_date": "2026-05-24",
+  "scope": "PR A — record extraction tooling, per-file extraction status, primary extraction source, and known blockers.",
+  "tooling": {
+    "pdftotext": {
+      "version": "24.02.0",
+      "provider": "poppler-utils",
+      "used_for": ["repo PDF body extraction", "PDF cover-page cross-check"]
+    },
+    "pdfinfo": {
+      "version": "24.02.0",
+      "provider": "poppler-utils",
+      "used_for": "PDF metadata + page count verification"
+    },
+    "olefile_python": {
+      "version": "0.47",
+      "used_for": "HWP FileHeader flags, PrvText, stream inventory"
+    },
+    "libreoffice": {
+      "version": "24.2.7.2",
+      "used_for": "HWP→PDF conversion attempt (blocked by distribution mode)"
+    },
+    "libreoffice_h2orestart": {
+      "version": "0.6.1",
+      "registered_shared": true,
+      "used_for": "HWP filter for LibreOffice (blocked by distribution mode)"
+    },
+    "default_jre_openjdk": {
+      "version": "21.0.10",
+      "used_for": "Required by H2Orestart.jar"
+    }
+  },
+  "per_file": [
+    {
+      "path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "format": "pdf",
+      "sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "pages": 484,
+      "extraction_tool": "pdftotext -layout -enc UTF-8",
+      "extraction_status": "ok",
+      "scratch_output_path": "tmp/manual-2026-05-21/visa_manual_2026_05.txt",
+      "scratch_output_size_bytes": 1190538,
+      "notes": "Used as primary extraction source for downstream visa-manual content in this audit cycle."
+    },
+    {
+      "path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "format": "pdf",
+      "sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+      "pages": 774,
+      "extraction_tool": "pdftotext -layout -enc UTF-8",
+      "extraction_status": "ok",
+      "scratch_output_path": "tmp/manual-2026-05-21/stay_manual_2026_05.txt",
+      "scratch_output_size_bytes": 1793714,
+      "notes": "Used as primary extraction source for downstream stay-manual content in this audit cycle."
+    },
+    {
+      "path": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+      "format": "hwp",
+      "sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+      "hwp_version": "5.1.0.1",
+      "hwp_flags_distribution_mode": true,
+      "extraction_status": "blocked",
+      "extraction_status_detail": {
+        "BodyText_section_status": "empty_placeholder_consistent_with_distribution_mode",
+        "ViewText_section_status": "encrypted_after_HWPTAG_DISTRIBUTE_DOC_DATA_record",
+        "PrvText_status": "extracted_2046_bytes",
+        "h2orestart_status": "source_file_could_not_be_loaded",
+        "pyhwp_install_status": "python2_only_no_python311_release"
+      },
+      "primary_use": "source_truth_binary_with_filename_level_2026_05_21_evidence"
+    },
+    {
+      "path": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
+      "format": "hwp",
+      "sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+      "hwp_version": "5.1.0.1",
+      "hwp_flags_distribution_mode": true,
+      "extraction_status": "blocked",
+      "extraction_status_detail": {
+        "BodyText_section_status": "empty_placeholder_consistent_with_distribution_mode",
+        "ViewText_section_status": "encrypted_after_HWPTAG_DISTRIBUTE_DOC_DATA_record",
+        "PrvText_status": "extracted_2046_bytes",
+        "h2orestart_status": "source_file_could_not_be_loaded",
+        "pyhwp_install_status": "python2_only_no_python311_release"
+      },
+      "primary_use": "source_truth_binary_with_filename_level_2026_05_21_evidence"
+    }
+  ],
+  "primary_extraction_source_choice": {
+    "visa_issuance_manual": "pdf",
+    "stay_residence_manual": "pdf",
+    "rationale": "HWP distribution-mode extraction is blocked by current tooling; PDF extraction is OK and matches HWP PrvText structurally at the cover/TOC level."
+  },
+  "page_section_mapping_confidence": {
+    "pdf_page_boundaries": "ok_via_form_feed",
+    "pdf_page_count_cross_check": "passed (484 / 774 match pdfinfo)",
+    "pdf_korean_glyph_fidelity": "high",
+    "pdf_table_extraction": "partial_multiline_cells_may_wrap_use_visual_for_verification",
+    "ocr_required": false,
+    "hwp_section_mapping": "not_applicable_until_distribution_mode_unblocked"
+  },
+  "known_failures": [
+    {
+      "id": "hwp_distribution_mode_body_blocked",
+      "affects": ["visa_manual_2026_05_21.hwp", "stay_manual_2026_05_21.hwp"],
+      "handling": "documented in this report and in source_manifest.alternate_source_files[*].verification_status; no downstream data patched on HWP evidence in this PR"
+    },
+    {
+      "id": "2026_05_21_pdf_not_received",
+      "affects": "byte_level_pdf_identity_check",
+      "handling": "source_date remains 'unresolved' for PDF entries in source_manifest.json"
+    },
+    {
+      "id": "hwp_summaryinformation_empty",
+      "affects": "in_file_timestamp_corroboration",
+      "handling": "rely on filename + PrvText evidence; documented"
+    }
+  ],
+  "scratch_outputs": [
+    "tmp/manual-2026-05-21/visa_manual_2026_05.txt",
+    "tmp/manual-2026-05-21/stay_manual_2026_05.txt",
+    "tmp/manual-2026-05-21/visa_pdf_p1_6.txt",
+    "tmp/manual-2026-05-21/stay_pdf_p1_6.txt",
+    "tmp/manual-2026-05-21/hwp_extract/extract_summary.json",
+    "tmp/manual-2026-05-21/hwp_extract/visa/full.txt",
+    "tmp/manual-2026-05-21/hwp_extract/stay/full.txt",
+    "tmp/file_hashes.json"
+  ],
+  "scratch_outputs_committed_to_repo": false,
+  "legal_disclaimer": "Internal audit artifact. Not legal advice. Not an official immigration decision. Users must verify with 출입국·외국인청 / HiKorea / 1345."
+}

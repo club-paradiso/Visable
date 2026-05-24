@@ -1,0 +1,146 @@
+{
+  "report_id": "2026_05_21_SOURCE_FILE_INTAKE_REPORT",
+  "branch": "data/source-update-2026-05-21-manuals-and-notice-monitoring",
+  "intake_date": "2026-05-24",
+  "scope": "PR A — install 2026-05-21 user-attached HWP source files, document file-level identity, do not patch downstream data.",
+  "incoming_files": [
+    {
+      "upload_filename": "9334fbf0-260521___________________________________.hwp",
+      "mapped_role": "visa_issuance_manual",
+      "mapped_title_ko": "사증발급 안내매뉴얼",
+      "size_bytes": 2170880,
+      "sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+      "format": "hwp",
+      "hwp_version": "5.1.0.1",
+      "hwp_flags_raw": "0x5",
+      "hwp_flags": {
+        "compressed": true,
+        "encrypted": false,
+        "distribution_mode": true,
+        "script_protected": false,
+        "drm": false
+      },
+      "stream_inventory": {
+        "BodyText_sections": 1,
+        "BodyText_total_bytes": 326,
+        "ViewText_sections": 13,
+        "BinData_streams": 10
+      },
+      "prv_text_extracted": true,
+      "summary_information_populated": false,
+      "filename_level_date_evidence": "260521",
+      "filename_level_date_interpretation": "YYMMDD -> 2026-05-21"
+    },
+    {
+      "upload_filename": "8c28c425-260521________________________________________________________________________________.hwp",
+      "mapped_role": "stay_residence_manual",
+      "mapped_title_ko": "외국인체류 안내매뉴얼",
+      "size_bytes": 3175424,
+      "sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+      "format": "hwp",
+      "hwp_version": "5.1.0.1",
+      "hwp_flags_raw": "0x5",
+      "hwp_flags": {
+        "compressed": true,
+        "encrypted": false,
+        "distribution_mode": true,
+        "script_protected": false,
+        "drm": false
+      },
+      "stream_inventory": {
+        "BodyText_sections": 1,
+        "BodyText_total_bytes": 314,
+        "ViewText_sections": 23,
+        "BinData_streams": 16
+      },
+      "prv_text_extracted": true,
+      "summary_information_populated": false,
+      "filename_level_date_evidence": "260521",
+      "filename_level_date_interpretation": "YYMMDD -> 2026-05-21"
+    }
+  ],
+  "expected_but_missing": [
+    "사증발급 안내매뉴얼_260521_compressed.pdf",
+    "체류민원 안내매뉴얼_260521_compressed.pdf",
+    "사증발급 안내매뉴얼_260521.hwpx",
+    "체류민원 안내매뉴얼_260521.hwpx"
+  ],
+  "installed_in_repo": [
+    {
+      "repo_path": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+      "source_filename": "9334fbf0-260521___________________________________.hwp",
+      "size_bytes": 2170880,
+      "sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+      "role": "visa_issuance_manual_alternate_source"
+    },
+    {
+      "repo_path": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
+      "source_filename": "8c28c425-260521________________________________________________________________________________.hwp",
+      "size_bytes": 3175424,
+      "sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+      "role": "stay_residence_manual_alternate_source"
+    }
+  ],
+  "structural_cross_check_with_repo_pdfs": {
+    "method": "compare HWP PrvText (UTF-16-LE, ~2 KB preview) against PDF page 1-6 plaintext via pdftotext -layout",
+    "result": "consistent",
+    "details": {
+      "visa": {
+        "title_match": true,
+        "cover_date_label_match": true,
+        "authority_match": true,
+        "toc_item_count_match": "40 / 40",
+        "toc_final_item_match": "K-STAR 비자트랙 제도"
+      },
+      "stay": {
+        "title_match": true,
+        "cover_date_label_match": true,
+        "authority_match": true,
+        "toc_item_count_match": "41 / 41",
+        "toc_final_item_match": "K-STAR 비자트랙 제도"
+      }
+    },
+    "evidence_strength": "structural_consistency",
+    "evidence_is_proof_of_byte_or_content_identity": false
+  },
+  "repo_pdfs_unchanged": [
+    {
+      "path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "size_bytes": 13189369,
+      "sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "pdf_internal_creation_date": "2026-05-07T00:54:33Z",
+      "pages": 484
+    },
+    {
+      "path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "size_bytes": 14818347,
+      "sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+      "pdf_internal_creation_date": "2026-05-07T00:53:43Z",
+      "pages": 774
+    }
+  ],
+  "actions_taken": [
+    "Installed both HWP files into docs/source-manuals/2026-05/ under dated names.",
+    "Computed SHA-256 + HWP header metadata for both HWPs.",
+    "Extracted and inspected PrvText from each HWP.",
+    "Extracted PDF cover pages (1-6) with pdftotext for structural cross-check.",
+    "Did NOT replace repo PDFs (no incoming PDF received).",
+    "Did NOT advance PDF source_date from 'unresolved'.",
+    "Did NOT modify visa_data.json, backend/data/visas.json, or doc_master.json.",
+    "Did NOT modify any 'verified' or 'needsManualReview' flag."
+  ],
+  "actions_intentionally_not_taken": [
+    "PDF replacement (no incoming PDF to compare).",
+    "Visa data record patching (gated on full HWP body extraction or 2026-05-21 PDF arrival).",
+    "Doc master patching.",
+    "verified=true promotions.",
+    "needsManualReview removals.",
+    "manualRefs page anchor changes (page numbers may shift if the 2026-05-21 PDF replaces the repo PDF in a later PR)."
+  ],
+  "next_steps": [
+    "Unblock HWP distribution-mode body extraction (operator-side Hancom Office re-export, or original implementation against HWP 5.0 binary spec).",
+    "OR user attaches 사증발급 안내매뉴얼_260521.pdf + 체류민원 안내매뉴얼_260521.pdf for byte-level comparison.",
+    "Then run PR B (crosswalk rebuild) per PR splitting plan."
+  ],
+  "legal_disclaimer": "This intake report is an internal audit artifact. It is not legal advice and not an official immigration decision. Users must verify with 출입국·외국인청 / HiKorea / 1345 before acting."
+}

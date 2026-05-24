@@ -18,7 +18,35 @@
       "role": "visa_issuance_manual",
       "status": "current",
       "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task, the user-attached '사증발급 안내매뉴얼_260521.pdf' at a local macOS path (/Users/.../Downloads/) was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 file could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. No internal date marker later than 2026.2.12. was found in the manual body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. Do not promote 'source_date' to '2026-05-21' without page-level evidence."
+      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '사증발급 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "alternate_source_files": [
+        {
+          "file": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+          "format": "hwp",
+          "hwp_version": "5.1.0.1",
+          "hwp_flags_raw": "0x5",
+          "hwp_flags": {
+            "compressed": true,
+            "distribution_mode": true,
+            "encrypted": false,
+            "script_protected": false,
+            "drm": false
+          },
+          "source_date": "2026-05-21",
+          "source_date_evidence": "filename_only",
+          "source_date_evidence_note": "Upload filename contains '260521' (YYMMDD). HWP PrvText preview confirms cover label '2026. 5.' and TOC head matching the visa issuance manual, but does not encode a day-level date.",
+          "file_sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+          "file_size_bytes": 2170880,
+          "view_text_sections": 13,
+          "body_text_sections": 1,
+          "bindata_streams": 10,
+          "extraction_primary_format": "pdf",
+          "extraction_blocker": "hwp_distribution_mode_view_text_encrypted",
+          "extraction_blocker_detail": "ViewText sections start with HWPTAG_DISTRIBUTE_DOC_DATA (tag 0x1c, 256-byte payload) followed by an encrypted payload. Raw zlib deflate fails. LibreOffice 24.2.7 + libreoffice-h2orestart 0.6.1 returns 'source file could not be loaded'. pyhwp current releases require Python 2.7 only.",
+          "verification_status": "source_file_received_distribution_mode_blocks_text_extraction",
+          "verification_note": "HWP 배포용 (distribution-mode) file received via user upload on 2026-05-24 and installed at the repo path above. Filename-level evidence supports 2026-05-21 issuance, but page-level body extraction is blocked, so we do not promote this evidence to the PDF entry's 'source_date'. See docs/data/2026_05_21_SOURCE_FILE_INTAKE_REPORT.md and docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md."
+        }
+      ]
     },
     "stay_residence_manual": {
       "title_ko": "외국인체류 안내매뉴얼",
@@ -38,7 +66,35 @@
       "role": "stay_residence_manual",
       "status": "current",
       "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task, the user-attached '체류민원 안내매뉴얼_260521.pdf' at a local macOS path (/Users/.../Downloads/) was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 file could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. The body references a pilot project ending '2026년 5월 19일'; no internal date marker later than 2026.2.12. and no reference to a 2026-05-21 effective date or revision date was found in the body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. Do not promote 'source_date' to '2026-05-21' without page-level evidence."
+      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '체류민원 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. The body references a pilot project ending '2026년 5월 19일'; no internal date marker later than 2026.2.12. and no reference to a 2026-05-21 effective date or revision date was found in the body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "alternate_source_files": [
+        {
+          "file": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
+          "format": "hwp",
+          "hwp_version": "5.1.0.1",
+          "hwp_flags_raw": "0x5",
+          "hwp_flags": {
+            "compressed": true,
+            "distribution_mode": true,
+            "encrypted": false,
+            "script_protected": false,
+            "drm": false
+          },
+          "source_date": "2026-05-21",
+          "source_date_evidence": "filename_only",
+          "source_date_evidence_note": "Upload filename contains '260521' (YYMMDD). HWP PrvText preview confirms cover label '2026. 5.' and TOC head matching the foreigner stay/residence manual, but does not encode a day-level date.",
+          "file_sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+          "file_size_bytes": 3175424,
+          "view_text_sections": 23,
+          "body_text_sections": 1,
+          "bindata_streams": 16,
+          "extraction_primary_format": "pdf",
+          "extraction_blocker": "hwp_distribution_mode_view_text_encrypted",
+          "extraction_blocker_detail": "ViewText sections start with HWPTAG_DISTRIBUTE_DOC_DATA (tag 0x1c, 256-byte payload) followed by an encrypted payload. Raw zlib deflate fails. LibreOffice 24.2.7 + libreoffice-h2orestart 0.6.1 returns 'source file could not be loaded'. pyhwp current releases require Python 2.7 only.",
+          "verification_status": "source_file_received_distribution_mode_blocks_text_extraction",
+          "verification_note": "HWP 배포용 (distribution-mode) file received via user upload on 2026-05-24 and installed at the repo path above. Filename-level evidence supports 2026-05-21 issuance, but page-level body extraction is blocked, so we do not promote this evidence to the PDF entry's 'source_date'. See docs/data/2026_05_21_SOURCE_FILE_INTAKE_REPORT.md and docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md."
+        }
+      ]
     }
   },
   "audit_history": [
@@ -48,11 +104,35 @@
       "extraction_tooling": "poppler-utils 24.02.0 (pdftotext, pdfinfo), python3 pypdf 6.12.1, pdfminer.six 20260107",
       "page_count_check": "passed (484 / 774 match manifest declarations)",
       "user_attached_compare": "blocked: user-attached PDFs at /Users/seonjaekim/Downloads/ not reachable in remote Linux execution environment"
+    },
+    {
+      "audit_date": "2026-05-24",
+      "branch": "data/source-update-2026-05-21-manuals-and-notice-monitoring",
+      "scope": "PR A — install 2026-05-21 user-attached HWP source files; document file-level identity and extraction status; no downstream data patched.",
+      "files_received": [
+        "9334fbf0-260521___________________________________.hwp (visa, 2,170,880 bytes, sha256 635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4)",
+        "8c28c425-260521________________________________________________________________________________.hwp (stay, 3,175,424 bytes, sha256 b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3)"
+      ],
+      "files_installed": [
+        "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+        "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp"
+      ],
+      "extraction_tooling": "poppler-utils 24.02.0 (PDF extraction OK), python3 olefile 0.47 (HWP PrvText OK), libreoffice 24.2.7.2 + libreoffice-h2orestart 0.6.1 (HWP body extraction FAIL on distribution-mode), pyhwp install FAIL on Python 3.11",
+      "page_count_check": "PDF page counts unchanged (484 / 774); HWP page count not available without body extraction",
+      "user_attached_compare": "HWP file-level identity recorded; HWP body extraction blocked by distribution_mode; no 2026-05-21 PDF received this run",
+      "decision": "do not advance source_date from 'unresolved' for PDF entries; add alternate_source_files entries for HWP with their own filename-level source_date '2026-05-21'",
+      "reports": [
+        "docs/data/2026_05_21_SOURCE_FILE_INTAKE_REPORT.md",
+        "docs/data/2026_05_21_source_file_intake_report.json",
+        "docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md",
+        "docs/data/2026_05_21_manual_extraction_report.json"
+      ]
     }
   ],
   "schema_notes": [
     "The 'source_date' field uses ISO 8601 calendar dates for verified-day manuals, or the literal string 'unresolved' when a within-month revision date has not been independently verified.",
-    "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'pending', or 'unknown'.",
-    "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual."
+    "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'source_file_received_distribution_mode_blocks_text_extraction', 'pending', or 'unknown'.",
+    "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual.",
+    "The optional 'alternate_source_files' array on each 'current' entry holds non-primary source artifacts (e.g., HWP, HWPX, archived PDF exports) with their own per-file 'source_date', 'source_date_evidence', 'file_sha256', 'extraction_primary_format', and 'verification_status'. Filename-level evidence on an alternate source file does not by itself promote the primary entry's 'source_date'."
   ]
 }
