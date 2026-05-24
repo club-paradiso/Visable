@@ -32,11 +32,16 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import html.parser
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple
+from urllib.error import HTTPError, URLError
+from urllib.parse import urlparse
+from urllib.request import HTTPRedirectHandler, Request, build_opener
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DEFAULT_REGISTRY_PATH = os.path.join(REPO_ROOT, "data", "source_registry.json")
@@ -65,6 +70,23 @@ _REQUIRED_CATALOG_FIELDS = {
     "requires_login",
 }
 _CATALOG_BOOLEAN_FIELDS = ("monitor_enabled", "scrape_allowed", "requires_login")
+_CATALOG_CANDIDATE_ACTIVATION_STATUSES = {"candidate_only", "allowlist_test"}
+_CATALOG_ALLOWED_DOMAINS = {"notices", "civil_forms"}
+_CATALOG_ALLOWED_SOURCE_TYPES = {
+    "notice_index",
+    "form_catalog",
+    "guide_index",
+    "static_guide_index",
+}
+_CATALOG_OFFICIAL_HOST_SUFFIXES = ("hikorea.go.kr", "immigration.go.kr")
+_CATALOG_USER_AGENT = (
+    "Paradiso source-monitor research/0.1 "
+    "(default-off allowlisted catalog check)"
+)
+_DEFAULT_FETCH_TIMEOUT_SECONDS = 5.0
+_DEFAULT_FETCH_MAX_BYTES = 512 * 1024
+_FetchResult = Tuple[bytes, str]
+_FetchFn = Callable[[str, float, int, Iterable[str]], _FetchResult]
 
 
 def _now_iso() -> str:
@@ -203,6 +225,276 @@ def _summarize_catalog(eligible: List[Dict[str, Any]]) -> Dict[str, Dict[str, in
     return {"by_domain": by_domain, "by_source_type": by_source_type}
 
 
+def _url_host(url: Optional[str]) -> Optional[str]:
+    if not url:
+        return None
+    parsed = urlparse(url)
+    if parsed.scheme not in ("http", "https") or not parsed.hostname:
+        return None
+    return parsed.hostname.lower()
+
+
+def _is_official_catalog_host(host: Optional[str]) -> bool:
+    if not host:
+        return False
+    return any(
+        host == suffix or host.endswith(f".{suffix}")
+        for suffix in _CATALOG_OFFICIAL_HOST_SUFFIXES
+    )
+
+
+def _candidate_allowed_hosts(catalogs: List[Tuple[str, Dict[str, Any]]]) -> List[str]:
+    allowed_hosts = set()
+    for _, catalog in catalogs:
+        for rec in catalog.get("sources", []):
+            if not isinstance(rec, dict):
+                continue
+            if rec.get("monitor_candidate") is not True:
+                continue
+            activation_status = rec.get("activation_status")
+            if activation_status not in _CATALOG_CANDIDATE_ACTIVATION_STATUSES:
+                continue
+            if rec.get("scrape_allowed") is not True:
+                continue
+            if rec.get("requires_login") is not False:
+                continue
+            if rec.get("source_type") not in _CATALOG_ALLOWED_SOURCE_TYPES:
+                continue
+            if rec.get("domain") not in _CATALOG_ALLOWED_DOMAINS:
+                continue
+
+            host = _url_host(rec.get("url"))
+            if _is_official_catalog_host(host):
+                allowed_hosts.add(str(host))
+
+    return sorted(allowed_hosts)
+
+
+class _IndexHTMLTextExtractor(html.parser.HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self._skip_depth = 0
+        self._in_title = False
+        self.title_parts: List[str] = []
+        self.body_parts: List[str] = []
+
+    def handle_starttag(
+        self,
+        tag: str,
+        attrs: List[Tuple[str, Optional[str]]],
+    ) -> None:
+        if tag in ("script", "style", "noscript"):
+            self._skip_depth += 1
+        elif tag == "title":
+            self._in_title = True
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag in ("script", "style", "noscript") and self._skip_depth:
+            self._skip_depth -= 1
+        elif tag == "title":
+            self._in_title = False
+
+    def handle_data(self, data: str) -> None:
+        if self._skip_depth:
+            return
+        text = data.strip()
+        if not text:
+            return
+        if self._in_title:
+            self.title_parts.append(text)
+        else:
+            self.body_parts.append(text)
+
+
+def _normalize_text(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def _extract_index_snapshot(
+    body: bytes,
+    content_type: str = "text/html",
+) -> Dict[str, Any]:
+    charset = "utf-8"
+    content_type_parts = content_type.split(";")
+    for part in content_type_parts[1:]:
+        key, _, value = part.strip().partition("=")
+        if key.lower() == "charset" and value:
+            charset = value.strip()
+            break
+
+    text = body.decode(charset, errors="replace")
+    parser = _IndexHTMLTextExtractor()
+    parser.feed(text)
+    title = _normalize_text(" ".join(parser.title_parts))
+    index_text = _normalize_text(" ".join(parser.body_parts))
+    fingerprint_text = "\n".join(part for part in (title, index_text) if part)
+    digest = hashlib.sha256(fingerprint_text.encode("utf-8")).hexdigest()
+
+    return {
+        "content_hash": f"sha256:{digest}",
+        "title": title or None,
+        "text_length": len(index_text),
+    }
+
+
+class _BlockedRedirectError(RuntimeError):
+    pass
+
+
+class _AllowlistedRedirectHandler(HTTPRedirectHandler):
+    def __init__(self, allowed_hosts: Iterable[str]) -> None:
+        self.allowed_hosts = set(allowed_hosts)
+        super().__init__()
+
+    def redirect_request(
+        self,
+        req: Request,
+        fp: Any,
+        code: int,
+        msg: str,
+        headers: Any,
+        newurl: str,
+    ) -> Optional[Request]:
+        new_host = _url_host(newurl)
+        if new_host not in self.allowed_hosts:
+            raise _BlockedRedirectError(f"redirect blocked to host {new_host!r}")
+        return super().redirect_request(req, fp, code, msg, headers, newurl)
+
+
+def _fetch_url(
+    url: str,
+    timeout_seconds: float,
+    max_bytes: int,
+    allowed_hosts: Iterable[str],
+) -> _FetchResult:
+    request = Request(
+        url,
+        headers={
+            "User-Agent": _CATALOG_USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1",
+        },
+        method="GET",
+    )
+    opener = build_opener(_AllowlistedRedirectHandler(allowed_hosts))
+    with opener.open(request, timeout=timeout_seconds) as response:
+        body = response.read(max_bytes + 1)
+        if len(body) > max_bytes:
+            raise ValueError("response_too_large")
+        content_type = response.headers.get("Content-Type", "text/html")
+        return body, content_type
+
+
+def _catalog_fetch_result_base(
+    label: str,
+    rec: Dict[str, Any],
+) -> Dict[str, Any]:
+    url = rec.get("url")
+    return {
+        "catalog": label,
+        "source_id": rec.get("source_id"),
+        "url": url,
+        "host": _url_host(url),
+    }
+
+
+def _evaluate_catalog_fetches(
+    catalogs: List[Tuple[str, Dict[str, Any]]],
+    allow_network: bool,
+    timeout_seconds: float,
+    max_bytes: int,
+    fetcher: Optional[_FetchFn] = None,
+) -> List[Dict[str, Any]]:
+    allowed_hosts = _candidate_allowed_hosts(catalogs)
+    fetch = fetcher or _fetch_url
+    results: List[Dict[str, Any]] = []
+
+    for label, catalog in catalogs:
+        for rec in catalog.get("sources", []):
+            if not isinstance(rec, dict):
+                continue
+
+            result = _catalog_fetch_result_base(label, rec)
+            if rec.get("monitor_candidate") is not True:
+                results.append(
+                    {**result, "state": "skipped", "reason": "candidate_disabled"}
+                )
+                continue
+            activation_status = rec.get("activation_status")
+            if activation_status not in _CATALOG_CANDIDATE_ACTIVATION_STATUSES:
+                results.append(
+                    {**result, "state": "skipped", "reason": "candidate_disabled"}
+                )
+                continue
+            if rec.get("source_type") not in _CATALOG_ALLOWED_SOURCE_TYPES:
+                results.append(
+                    {**result, "state": "blocked", "reason": "unsupported_source_type"}
+                )
+                continue
+            if rec.get("domain") not in _CATALOG_ALLOWED_DOMAINS:
+                results.append(
+                    {**result, "state": "blocked", "reason": "unsupported_domain"}
+                )
+                continue
+            if rec.get("scrape_allowed") is not True:
+                results.append(
+                    {**result, "state": "blocked", "reason": "scrape_not_allowed"}
+                )
+                continue
+            if rec.get("requires_login") is not False:
+                results.append(
+                    {**result, "state": "blocked", "reason": "requires_login"}
+                )
+                continue
+            if not allow_network:
+                results.append(
+                    {**result, "state": "skipped", "reason": "network_disabled"}
+                )
+                continue
+            if not rec.get("url"):
+                results.append({**result, "state": "skipped", "reason": "no_url"})
+                continue
+            if result["host"] not in allowed_hosts:
+                results.append({**result, "state": "blocked", "reason": "blocked_host"})
+                continue
+
+            try:
+                body, content_type = fetch(
+                    rec["url"],
+                    timeout_seconds,
+                    max_bytes,
+                    allowed_hosts,
+                )
+                snapshot = _extract_index_snapshot(body, content_type)
+            except _BlockedRedirectError:
+                results.append(
+                    {**result, "state": "blocked", "reason": "blocked_host"}
+                )
+            except ValueError as exc:
+                results.append(
+                    {**result, "state": "blocked", "reason": str(exc)}
+                )
+            except (HTTPError, URLError, OSError) as exc:
+                results.append(
+                    {
+                        **result,
+                        "state": "fetch_error",
+                        "reason": exc.__class__.__name__,
+                    }
+                )
+            else:
+                results.append(
+                    {
+                        **result,
+                        "state": "fetched",
+                        "reason": "ok",
+                        "fetched_at": _now_iso(),
+                        **snapshot,
+                    }
+                )
+
+    return results
+
+
 def _check_local(rec: Dict[str, Any]) -> Dict[str, Any]:
     local_path = rec.get("local_path")
     if not local_path:
@@ -338,7 +630,10 @@ def _parse_args(argv: Optional[List[str]]) -> argparse.Namespace:
     p.add_argument(
         "--allow-network",
         action="store_true",
-        help="Permit network-backed entries (this skeleton still does not fetch).",
+        help=(
+            "Permit network-backed entries. Legacy registry entries still do not "
+            "fetch; catalog dry-runs may fetch tightly allowlisted candidates."
+        ),
     )
     p.add_argument(
         "--strict",
@@ -370,10 +665,31 @@ def _parse_args(argv: Optional[List[str]]) -> argparse.Namespace:
         action="store_true",
         help="List disabled catalog records with reasons.",
     )
+    p.add_argument(
+        "--fetch-timeout-seconds",
+        type=float,
+        default=_DEFAULT_FETCH_TIMEOUT_SECONDS,
+        help=(
+            "HTTP timeout for allowlisted catalog fetches when --allow-network "
+            "is passed (default: %(default)s)."
+        ),
+    )
+    p.add_argument(
+        "--fetch-max-bytes",
+        type=int,
+        default=_DEFAULT_FETCH_MAX_BYTES,
+        help=(
+            "Maximum response bytes for allowlisted catalog fetches when "
+            "--allow-network is passed (default: %(default)s)."
+        ),
+    )
     return p.parse_args(argv)
 
 
-def _run_catalog_dry_run(args: argparse.Namespace) -> int:
+def _run_catalog_dry_run(
+    args: argparse.Namespace,
+    fetcher: Optional[_FetchFn] = None,
+) -> int:
     catalogs = [
         ("hikorea_source_catalog", _load_catalog(args.hikorea_catalog)),
         ("immigration_notice_sources", _load_catalog(args.immigration_catalog)),
@@ -385,17 +701,26 @@ def _run_catalog_dry_run(args: argparse.Namespace) -> int:
         return 2
 
     summary = _summarize_catalog(eligible)
+    fetch_results = _evaluate_catalog_fetches(
+        catalogs,
+        allow_network=bool(args.allow_network),
+        timeout_seconds=args.fetch_timeout_seconds,
+        max_bytes=args.fetch_max_bytes,
+        fetcher=fetcher,
+    )
     if args.json:
         out = {
-            "allow_network": False,
+            "allow_network": bool(args.allow_network),
             "mode": "catalog_dry_run",
             "eligible": eligible,
             "disabled": disabled if args.list_disabled else [],
+            "results": fetch_results,
             "summary": summary,
         }
         print(json.dumps(out, indent=2, ensure_ascii=False))
     else:
-        print("Paradiso source monitor — catalog dry-run (no network)")
+        mode_note = "allowlisted network enabled" if args.allow_network else "no network"
+        print(f"Paradiso source monitor — catalog dry-run ({mode_note})")
         print("=" * 60)
         print(f"Eligible records: {len(eligible)}")
         print("By domain:")
@@ -414,6 +739,21 @@ def _run_catalog_dry_run(args: argparse.Namespace) -> int:
                 )
         if not eligible:
             print("No monitor-enabled records are currently eligible. Exiting cleanly.")
+        print("Allowlisted fetch adapter:")
+        for result in fetch_results:
+            if result["reason"] == "candidate_disabled" and not args.list_disabled:
+                continue
+            bits = [
+                result.get("state", "?"),
+                result.get("source_id", "?"),
+                f"reason={result.get('reason')}",
+            ]
+            if result.get("host"):
+                bits.append(f"host={result['host']}")
+            if result.get("title"):
+                bits.append(f"title={result['title']}")
+            linestr = "  - " + " ".join(str(bit) for bit in bits)
+            print(linestr)
 
     return 0
 
