@@ -29,8 +29,18 @@ from typing import Any, Dict, List, Optional, Tuple
 
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DEFAULT_REGISTRY_PATH = os.path.join(REPO_ROOT, "data", "source_registry.json")
-DEFAULT_HIKOREA_CATALOG_PATH = os.path.join(REPO_ROOT, "data", "sources", "hikorea_source_catalog.json")
-DEFAULT_IMM_NOTICE_PATH = os.path.join(REPO_ROOT, "data", "sources", "immigration_notice_sources.json")
+DEFAULT_HIKOREA_CATALOG_PATH = os.path.join(
+    REPO_ROOT,
+    "data",
+    "sources",
+    "hikorea_source_catalog.json",
+)
+DEFAULT_IMM_NOTICE_PATH = os.path.join(
+    REPO_ROOT,
+    "data",
+    "sources",
+    "immigration_notice_sources.json",
+)
 
 _VALID_TYPES = {"pdf_manual", "law_api", "notice_index"}
 _VALID_STATUSES = {"active", "not_configured", "deprecated"}
@@ -127,15 +137,19 @@ def _disabled_reason(rec: Dict[str, Any]) -> Optional[str]:
     return None
 
 
-def _prepare_catalog_candidates(catalogs: List[Tuple[str, Dict[str, Any]]]) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
+def _prepare_catalog_candidates(
+    catalogs: List[Tuple[str, Dict[str, Any]]],
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
     eligible: List[Dict[str, Any]] = []
     disabled: List[Dict[str, Any]] = []
     validation_errors: List[str] = []
+
     for label, catalog in catalogs:
         for idx, rec in enumerate(catalog.get("sources", [])):
             if not isinstance(rec, dict):
                 validation_errors.append(f"{label}.sources[{idx}]: not an object")
                 continue
+
             validation_errors.extend(_validate_catalog_record(rec, idx, label))
             reason = _disabled_reason(rec)
             shaped = {
@@ -146,21 +160,25 @@ def _prepare_catalog_candidates(catalogs: List[Tuple[str, Dict[str, Any]]]) -> T
                 "url": rec.get("url"),
                 "reason": reason,
             }
+
             if reason is None:
                 eligible.append(shaped)
             else:
                 disabled.append(shaped)
+
     return eligible, disabled, validation_errors
 
 
 def _summarize_catalog(eligible: List[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
     by_domain: Dict[str, int] = {}
     by_source_type: Dict[str, int] = {}
+
     for rec in eligible:
         domain = str(rec.get("domain") or "unknown")
         source_type = str(rec.get("source_type") or "unknown")
         by_domain[domain] = by_domain.get(domain, 0) + 1
         by_source_type[source_type] = by_source_type.get(source_type, 0) + 1
+
     return {"by_domain": by_domain, "by_source_type": by_source_type}
 
 
@@ -213,7 +231,14 @@ def _check_network_entry(rec: Dict[str, Any], allow_network: bool) -> Dict[str, 
 def _check_source(rec: Dict[str, Any], allow_network: bool) -> Dict[str, Any]:
     rec_type = rec.get("type")
     rec_status = rec.get("status")
-    base = {"id": rec.get("id"),"type": rec_type,"status": rec_status,"title": rec.get("title"),"checked_at": _now_iso()}
+    base = {
+        "id": rec.get("id"),
+        "type": rec_type,
+        "status": rec_status,
+        "title": rec.get("title"),
+        "checked_at": _now_iso(),
+    }
+
     if rec_status == "deprecated":
         return {**base, "state": "skipped", "reason": "deprecated"}
     if rec_type == "pdf_manual":
@@ -234,15 +259,51 @@ def _summarize(results: List[Dict[str, Any]]) -> Dict[str, int]:
 
 def _parse_args(argv: Optional[List[str]]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Report-only source monitor for Paradiso AI.")
-    p.add_argument("--registry",default=DEFAULT_REGISTRY_PATH)
-    p.add_argument("--local-only",action="store_true")
-    p.add_argument("--allow-network",action="store_true")
-    p.add_argument("--strict",action="store_true")
-    p.add_argument("--json",action="store_true")
-    p.add_argument("--catalog-dry-run", action="store_true", help="Dry-run monitor eligibility on HiKorea/KIS catalogs.")
-    p.add_argument("--hikorea-catalog", default=DEFAULT_HIKOREA_CATALOG_PATH)
-    p.add_argument("--immigration-catalog", default=DEFAULT_IMM_NOTICE_PATH)
-    p.add_argument("--list-disabled", action="store_true", help="List disabled catalog records with reasons.")
+    p.add_argument(
+        "--registry",
+        default=DEFAULT_REGISTRY_PATH,
+        help="Path to source_registry.json (default: %(default)s).",
+    )
+    p.add_argument(
+        "--local-only",
+        action="store_true",
+        help="Force network-backed entries to be skipped (default behavior).",
+    )
+    p.add_argument(
+        "--allow-network",
+        action="store_true",
+        help="Permit network-backed entries (this skeleton still does not fetch).",
+    )
+    p.add_argument(
+        "--strict",
+        action="store_true",
+        help="Exit nonzero when any 'active' local source is changed/missing.",
+    )
+    p.add_argument(
+        "--json",
+        action="store_true",
+        help="Emit JSON output instead of human-readable report.",
+    )
+    p.add_argument(
+        "--catalog-dry-run",
+        action="store_true",
+        help="Dry-run monitor eligibility on HiKorea/KIS catalogs.",
+    )
+    p.add_argument(
+        "--hikorea-catalog",
+        default=DEFAULT_HIKOREA_CATALOG_PATH,
+        help="Path to hikorea_source_catalog.json (default: %(default)s).",
+    )
+    p.add_argument(
+        "--immigration-catalog",
+        default=DEFAULT_IMM_NOTICE_PATH,
+        help="Path to immigration_notice_sources.json (default: %(default)s).",
+    )
+    p.add_argument(
+        "--list-disabled",
+        action="store_true",
+        help="List disabled catalog records with reasons.",
+    )
     return p.parse_args(argv)
 
 def _run_catalog_dry_run(args: argparse.Namespace) -> int:
@@ -276,13 +337,60 @@ def _run_catalog_dry_run(args: argparse.Namespace) -> int:
             print("No monitor-enabled records are currently eligible. Exiting cleanly.")
     return 0
 
+def _run_catalog_dry_run(args: argparse.Namespace) -> int:
+    catalogs = [
+        ("hikorea_source_catalog", _load_catalog(args.hikorea_catalog)),
+        ("immigration_notice_sources", _load_catalog(args.immigration_catalog)),
+    ]
+    eligible, disabled, errors = _prepare_catalog_candidates(catalogs)
+    if errors:
+        for err in errors:
+            print(f"ERROR: {err}", file=sys.stderr)
+        return 2
+
+    summary = _summarize_catalog(eligible)
+    if args.json:
+        out = {
+            "allow_network": False,
+            "mode": "catalog_dry_run",
+            "eligible": eligible,
+            "disabled": disabled if args.list_disabled else [],
+            "summary": summary,
+        }
+        print(json.dumps(out, indent=2, ensure_ascii=False))
+    else:
+        print("Paradiso source monitor — catalog dry-run (no network)")
+        print("=" * 60)
+        print(f"Eligible records: {len(eligible)}")
+        print("By domain:")
+        for domain, count in sorted(summary["by_domain"].items()):
+            print(f"  {domain}: {count}")
+        print("By source_type:")
+        for source_type, count in sorted(summary["by_source_type"].items()):
+            print(f"  {source_type}: {count}")
+        if args.list_disabled:
+            print("Disabled records:")
+            for rec in disabled:
+                print(
+                    "  - "
+                    f"{rec['catalog']}:{rec.get('source_id')} "
+                    f"reason={rec.get('reason')}"
+                )
+        if not eligible:
+            print("No monitor-enabled records are currently eligible. Exiting cleanly.")
+
+    return 0
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     args = _parse_args(argv)
     if args.allow_network and args.local_only:
         print("ERROR: --allow-network and --local-only are mutually exclusive", file=sys.stderr)
         return 2
+
     if args.catalog_dry_run:
         return _run_catalog_dry_run(args)
+
     allow_network = bool(args.allow_network) and not args.local_only
     registry = _load_registry(args.registry)
     sources = registry.get("sources", [])
