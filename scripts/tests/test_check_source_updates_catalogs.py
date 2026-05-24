@@ -6,7 +6,7 @@ import os
 import sys
 import tempfile
 import unittest
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 
 THIS_DIR = os.path.abspath(os.path.dirname(__file__))
 REPO_ROOT = os.path.abspath(os.path.join(THIS_DIR, "..", ".."))
@@ -45,6 +45,26 @@ class SourceMonitorTests(unittest.TestCase):
     def test_required_field_validation(self):
         errors = csu._validate_catalog_record({"source_id": "x"}, 0, "test")
         self.assertTrue(any("missing required field" in e for e in errors))
+
+    def test_catalog_boolean_fields_must_be_booleans(self):
+        valid = {
+            "source_id": "x",
+            "source_type": "notice",
+            "url": "https://a",
+            "domain": "a",
+            "monitor_enabled": True,
+            "scrape_allowed": True,
+            "requires_login": False,
+        }
+
+        for field in ("monitor_enabled", "scrape_allowed", "requires_login"):
+            with self.subTest(field=field):
+                rec = dict(valid)
+                rec[field] = "false"
+                errors = csu._validate_catalog_record(rec, 0, "test")
+                self.assertTrue(
+                    any(f"field '{field}' must be boolean" in e for e in errors)
+                )
 
     def test_legacy_human_output_contains_summary_and_note(self):
         with tempfile.TemporaryDirectory() as td:
@@ -102,6 +122,39 @@ class SourceMonitorTests(unittest.TestCase):
             )
             self.assertEqual(rc, 0)
 
+    def test_catalog_dry_run_rejects_malformed_boolean(self):
+        with tempfile.TemporaryDirectory() as td:
+            h = os.path.join(td, "h.json")
+            i = os.path.join(td, "i.json")
+            record = {
+                "source_id": "x",
+                "source_type": "notice",
+                "url": "https://a",
+                "domain": "a",
+                "monitor_enabled": True,
+                "scrape_allowed": True,
+                "requires_login": False,
+            }
+            malformed = dict(record)
+            malformed["requires_login"] = "false"
+            self._write_catalog(h, [malformed])
+            self._write_catalog(i, [record])
+
+            err = io.StringIO()
+            with redirect_stderr(err):
+                rc = csu.main(
+                    [
+                        "--catalog-dry-run",
+                        "--hikorea-catalog",
+                        h,
+                        "--immigration-catalog",
+                        i,
+                    ]
+                )
+
+            self.assertEqual(rc, 2)
+            self.assertIn("field 'requires_login' must be boolean", err.getvalue())
+
     def test_no_network_default_behavior(self):
         with tempfile.TemporaryDirectory() as td:
             reg = os.path.join(td, "registry.json")
@@ -129,7 +182,6 @@ class SourceMonitorTests(unittest.TestCase):
             self.assertEqual(rc, 0)
             self.assertEqual(out["results"][0]["reason"], "network_disabled")
             self.assertEqual(out["results"][0]["state"], "skipped")
-
 
     def test_catalog_dry_run_json_mode(self):
         with tempfile.TemporaryDirectory() as td:
