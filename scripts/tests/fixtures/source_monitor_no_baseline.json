@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "checked_at": "2026-05-24T12:00:00+00:00",
+  "results": [
+    {
+      "source_id": "hikorea_materials_index",
+      "source_type": "notice_index",
+      "state": "no_baseline",
+      "legal_sensitivity": "low",
+      "content_hash": "sha256:first-seen",
+      "url": "https://www.hikorea.go.kr/board/materials"
+    }
+  ]
+}
