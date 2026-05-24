@@ -91,7 +91,7 @@ All tokens from `DESIGN.md` are correctly applied:
 |---|---|
 | Prototype nav (floating bottom bar) | Prototype-only wayfinding; not part of real UX |
 | `state-label` orange chips | Prototype annotation markers only |
-| Static dummy data (office address, doc list) | Must be wired to real `visas.json` / backend data |
+| Static dummy data (office address, doc list) | Must be wired to real `visa_data.json` / backend API |
 | Hard-coded clock | Real app uses JS bound to user's selected city timezone |
 | `scrollTo()` prototype nav functions | Different from real app's searched-state transition |
 | Anchor links (`href="#"`) | Real app uses router / JS navigation |
