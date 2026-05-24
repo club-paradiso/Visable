@@ -16,17 +16,6 @@ declared source. By default this script does **no** network I/O:
 The script never modifies ``source_registry.json``, never writes
 state files, never opens issues, never opens PRs, and never touches
 the active grounding fixture.
-
-Exit codes:
-
-- 0 by default in report mode, including when changes are detected.
-- 0 when ``--strict`` is passed and all ``active`` local sources
-  report ``unchanged``.
-- 1 when ``--strict`` is passed and any ``active`` local source
-  reports ``changed`` or ``missing``.
-- 2 on registry parse / validation errors.
-
-See ``docs/source_monitoring_pipeline.md``.
 """
 from __future__ import annotations
 
@@ -239,7 +228,6 @@ def _check_network_entry(rec: Dict[str, Any], allow_network: bool) -> Dict[str, 
         "url": rec.get("url"),
     }
 
-
 def _check_source(rec: Dict[str, Any], allow_network: bool) -> Dict[str, Any]:
     rec_type = rec.get("type")
     rec_status = rec.get("status")
@@ -257,12 +245,7 @@ def _check_source(rec: Dict[str, Any], allow_network: bool) -> Dict[str, Any]:
         return {**base, **_check_local(rec)}
     if rec_type in ("law_api", "notice_index"):
         if rec_status == "not_configured":
-            return {
-                **base,
-                "state": "skipped",
-                "reason": "not_configured",
-                "url": rec.get("url"),
-            }
+            return {**base,"state": "skipped","reason": "not_configured","url": rec.get("url")}
         return {**base, **_check_network_entry(rec, allow_network)}
     return {**base, "state": "skipped", "reason": f"unknown_type:{rec_type}"}
 
@@ -273,39 +256,6 @@ def _summarize(results: List[Dict[str, Any]]) -> Dict[str, int]:
         counts[r["state"]] = counts.get(r["state"], 0) + 1
     counts["total"] = len(results)
     return counts
-
-
-def _format_human(results: List[Dict[str, Any]], summary: Dict[str, int]) -> str:
-    lines: List[str] = []
-    lines.append("Paradiso source monitor — report-only")
-    lines.append("=" * 60)
-    for r in results:
-        bits = [
-            r.get("state", "?"),
-            r.get("id", "?"),
-            f"({r.get('type', '?')})",
-        ]
-        if "local_path" in r:
-            bits.append(f"local_path={r['local_path']}")
-        if "url" in r and r["url"]:
-            bits.append(f"url={r['url']}")
-        if "reason" in r:
-            bits.append(f"reason={r['reason']}")
-        if r.get("state") == "changed":
-            bits.append(f"previous_hash={r.get('previous_hash')}")
-            bits.append(f"current_hash={r.get('current_hash')}")
-        lines.append("  - " + " ".join(str(b) for b in bits))
-    lines.append("")
-    lines.append("Summary:")
-    for k in sorted(summary):
-        lines.append(f"  {k}: {summary[k]}")
-    lines.append("")
-    lines.append(
-        "Note: This script never modifies the registry, never writes "
-        "state files, and never edits production data."
-    )
-    return "\n".join(lines)
-
 
 def _parse_args(argv: Optional[List[str]]) -> argparse.Namespace:
     p = argparse.ArgumentParser(description="Report-only source monitor for Paradiso AI.")
@@ -356,6 +306,36 @@ def _parse_args(argv: Optional[List[str]]) -> argparse.Namespace:
     )
     return p.parse_args(argv)
 
+def _run_catalog_dry_run(args: argparse.Namespace) -> int:
+    catalogs = [
+        ("hikorea_source_catalog", _load_catalog(args.hikorea_catalog)),
+        ("immigration_notice_sources", _load_catalog(args.immigration_catalog)),
+    ]
+    eligible, disabled, errors = _prepare_catalog_candidates(catalogs)
+    if errors:
+        for err in errors:
+            print(f"ERROR: {err}", file=sys.stderr)
+        return 2
+    summary = _summarize_catalog(eligible)
+    if args.json:
+        print(json.dumps({"allow_network": False, "mode": "catalog_dry_run", "eligible": eligible, "disabled": disabled if args.list_disabled else [], "summary": summary}, indent=2, ensure_ascii=False))
+    else:
+        print("Paradiso source monitor — catalog dry-run (no network)")
+        print("=" * 60)
+        print(f"Eligible records: {len(eligible)}")
+        print("By domain:")
+        for k, v in sorted(summary["by_domain"].items()):
+            print(f"  {k}: {v}")
+        print("By source_type:")
+        for k, v in sorted(summary["by_source_type"].items()):
+            print(f"  {k}: {v}")
+        if args.list_disabled:
+            print("Disabled records:")
+            for rec in disabled:
+                print(f"  - {rec['catalog']}:{rec.get('source_id')} reason={rec.get('reason')}")
+        if not eligible:
+            print("No monitor-enabled records are currently eligible. Exiting cleanly.")
+    return 0
 
 def _run_catalog_dry_run(args: argparse.Namespace) -> int:
     catalogs = [
@@ -414,7 +394,6 @@ def main(argv: Optional[List[str]] = None) -> int:
     allow_network = bool(args.allow_network) and not args.local_only
     registry = _load_registry(args.registry)
     sources = registry.get("sources", [])
-
     validation_errors: List[str] = []
     for idx, rec in enumerate(sources):
         if not isinstance(rec, dict):
@@ -425,30 +404,24 @@ def main(argv: Optional[List[str]] = None) -> int:
         for err in validation_errors:
             print(f"ERROR: {err}", file=sys.stderr)
         return 2
-
     results = [_check_source(rec, allow_network) for rec in sources]
     summary = _summarize(results)
-
     if args.json:
-        out = {
-            "schema_version": "1.0",
-            "checked_at": _now_iso(),
-            "allow_network": allow_network,
-            "results": results,
-            "summary": summary,
-        }
-        print(json.dumps(out, indent=2, ensure_ascii=False))
+        print(json.dumps({"schema_version": "1.0","checked_at": _now_iso(),"allow_network": allow_network,"results": results,"summary": summary}, indent=2, ensure_ascii=False))
     else:
-        print(_format_human(results, summary))
-
+        print("Paradiso source monitor — report-only")
+        print("=" * 60)
+        for r in results:
+            bits = [r.get("state", "?"), r.get("id", "?"), f"({r.get('type', '?')})"]
+            if "local_path" in r: bits.append(f"local_path={r['local_path']}")
+            if "url" in r and r["url"]: bits.append(f"url={r['url']}")
+            if "reason" in r: bits.append(f"reason={r['reason']}")
+            print("  - " + " ".join(str(b) for b in bits))
     if args.strict:
         for r, rec in zip(results, sources):
-            if rec.get("status") != "active":
-                continue
-            if r.get("state") in ("changed", "missing"):
+            if rec.get("status") == "active" and r.get("state") in ("changed", "missing"):
                 return 1
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
