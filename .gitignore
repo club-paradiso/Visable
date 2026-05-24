@@ -1,5 +1,8 @@
 node_modules
 
+# Temporary audit/extraction scratch files
+tmp/
+
 # Environment files - never commit secrets
 .env
 .env.*
