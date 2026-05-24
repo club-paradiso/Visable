@@ -1,0 +1,945 @@
+{
+  "schema_version": "1.0",
+  "audit_date": "2026-05-24",
+  "branch": "data/manual-law-json-audit-2026-05",
+  "primary_sources": [
+    {
+      "id": "visa_manual_2026_05",
+      "title": "사증발급 안내매뉴얼",
+      "version": "2026.5",
+      "pages": 484,
+      "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf"
+    },
+    {
+      "id": "stay_manual_2026_05",
+      "title": "외국인체류 안내매뉴얼",
+      "version": "2026.5",
+      "pages": 774,
+      "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
+    }
+  ],
+  "law_sources_checked": false,
+  "law_sources_note": "Network access was not used. law.go.kr and HiKorea fetch entries in data/source_registry.json remain status=not_configured.",
+  "total_matrix_rows": 44,
+  "modeled_status_codes": 41,
+  "unmodeled_manual_sections": 3,
+  "disclaimer": "This matrix is audit metadata only. It is not legal advice and is not an official immigration decision. See docs/data/JSON_MANUAL_LAW_AUDIT_2026_05.md.",
+  "rows": [
+    {
+      "code": "B-1",
+      "name_ko": "사증면제협정",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 4,
+      "visa_manual_page_range_approx": "13-20",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 4,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "B-2",
+      "name_ko": "관광통과·무사증",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 5,
+      "visa_manual_page_range_approx": "20-22",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 5,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "C-3",
+      "name_ko": "단기방문",
+      "manual_domains": [
+        "visa_issuance",
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 7,
+      "visa_manual_page_range_approx": "23-40",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 7,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "visaIssuance",
+        "extension",
+        "registration"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "C-4",
+      "name_ko": "단기취업",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 8,
+      "visa_manual_page_range_approx": "40-45",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 8,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-1",
+      "name_ko": "문화예술",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 9,
+      "visa_manual_page_range_approx": "46-47",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 9,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-2",
+      "name_ko": "유학",
+      "manual_domains": [
+        "visa_issuance",
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 10,
+      "visa_manual_page_range_approx": "48-62",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 10,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "visaIssuance",
+        "extension",
+        "statusChange",
+        "registration",
+        "activitiesOutsideStatus",
+        "reentry"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-3",
+      "name_ko": "기술연수",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 11,
+      "visa_manual_page_range_approx": "63-65",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 11,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-4",
+      "name_ko": "일반연수",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 12,
+      "visa_manual_page_range_approx": "66-76",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 12,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-4-2K",
+      "name_ko": "한국어연수(K-연수생)",
+      "manual_domains": [],
+      "visa_manual_section_present": false,
+      "visa_manual_section_num": null,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": false,
+      "stay_manual_section_num": null,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-7",
+      "name_ko": "주재",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 15,
+      "visa_manual_page_range_approx": "82-86",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 15,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-8",
+      "name_ko": "기업투자",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 16,
+      "visa_manual_page_range_approx": "87-103",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 16,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-9",
+      "name_ko": "무역경영",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 17,
+      "visa_manual_page_range_approx": "104-108",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 17,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension",
+        "registration"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-10",
+      "name_ko": "구직",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 18,
+      "visa_manual_page_range_approx": "109-116",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 18,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-1",
+      "name_ko": "교수",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 19,
+      "visa_manual_page_range_approx": "117-119",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 19,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-2",
+      "name_ko": "회화지도",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 20,
+      "visa_manual_page_range_approx": "120-131",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 20,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-3",
+      "name_ko": "연구",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 21,
+      "visa_manual_page_range_approx": "132-135",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 21,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-4",
+      "name_ko": "기술지도",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 22,
+      "visa_manual_page_range_approx": "136-137",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 22,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-5",
+      "name_ko": "전문직업",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 23,
+      "visa_manual_page_range_approx": "138-139",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 23,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-6",
+      "name_ko": "예술흥행",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 24,
+      "visa_manual_page_range_approx": "140-150",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 24,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-7",
+      "name_ko": "특정활동",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 25,
+      "visa_manual_page_range_approx": "151-183",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 25,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-8",
+      "name_ko": "계절근로",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 26,
+      "visa_manual_page_range_approx": "184-198",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 26,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-9",
+      "name_ko": "비전문취업",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 27,
+      "visa_manual_page_range_approx": "199-207",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 27,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "E-10",
+      "name_ko": "선원취업",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 28,
+      "visa_manual_page_range_approx": "208-212",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 28,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-1",
+      "name_ko": "방문동거",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 29,
+      "visa_manual_page_range_approx": "213-221",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 29,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-2",
+      "name_ko": "거주",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 30,
+      "visa_manual_page_range_approx": "222-241",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 30,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-3",
+      "name_ko": "동반",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 31,
+      "visa_manual_page_range_approx": "242-243",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 31,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-4",
+      "name_ko": "재외동포",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 32,
+      "visa_manual_page_range_approx": "244-276 (§38 동포)",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": "36 (동포관련)",
+      "stay_manual_note": "§36 외국국적동포 관련(C-3-8, F-1, H-2, F-4, F-5)",
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-5",
+      "name_ko": "영주",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 33,
+      "visa_manual_page_range_approx": "277-305",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 32,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "F-6",
+      "name_ko": "결혼이민",
+      "manual_domains": [
+        "visa_issuance",
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 34,
+      "visa_manual_page_range_approx": "306-326",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 33,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "visaIssuance",
+        "extension",
+        "statusChange",
+        "statusGrant",
+        "registration",
+        "reentry"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": [
+        "INCOME_FIGURES_2026_3_SOURCED"
+      ]
+    },
+    {
+      "code": "G-1",
+      "name_ko": "기타(난민등)",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 35,
+      "visa_manual_page_range_approx": "327-330",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 34,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "H-1",
+      "name_ko": "관광취업",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 36,
+      "visa_manual_page_range_approx": "331-340",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 35,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "H-2",
+      "name_ko": "방문취업 (신규발급 중단)",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 37,
+      "visa_manual_page_range_approx": "341-365 (§38 동포)",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": "36 (동포관련)",
+      "stay_manual_note": "§36 외국국적동포 관련",
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "A-1",
+      "name_ko": "외교",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 1,
+      "visa_manual_page_range_approx": "7-9",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 1,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension",
+        "registration"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "A-2",
+      "name_ko": "공무",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 2,
+      "visa_manual_page_range_approx": "9-11",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 2,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension",
+        "registration"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "A-3",
+      "name_ko": "협정",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 3,
+      "visa_manual_page_range_approx": "11-12",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 3,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension",
+        "registration"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "C-1",
+      "name_ko": "일시취재",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 6,
+      "visa_manual_page_range_approx": "23",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 6,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-5",
+      "name_ko": "취재",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 13,
+      "visa_manual_page_range_approx": "77-78",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 13,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-6",
+      "name_ko": "종교",
+      "manual_domains": [],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 14,
+      "visa_manual_page_range_approx": "79-81",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 14,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "D-4-2K",
+      "name_ko": "기업맞춤형인턴십(K-Trainee)",
+      "manual_domains": [],
+      "visa_manual_section_present": false,
+      "visa_manual_section_num": null,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": false,
+      "stay_manual_section_num": null,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "extension"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "K-STAR",
+      "name_ko": "K-STAR 비자트랙",
+      "manual_domains": [
+        "visa_issuance",
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 40,
+      "visa_manual_page_range_approx": "§40 K-STAR section",
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 41,
+      "stay_manual_note": "§41 K-STAR 비자트랙 제도",
+      "modeled_in_visa_data": true,
+      "procedures_available": [
+        "visaIssuance",
+        "extension",
+        "statusChange",
+        "reentry"
+      ],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "REGION-S",
+      "name_ko": "지역특화·광역형 비자 시범사업",
+      "manual_domains": [],
+      "visa_manual_section_present": false,
+      "visa_manual_section_num": null,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 37,
+      "stay_manual_note": "§37 지역특화형비자 — 시범사업",
+      "modeled_in_visa_data": true,
+      "procedures_available": [],
+      "sourceManualVersion": "2026.5",
+      "needsManualReview": true,
+      "auditConfidence": null,
+      "auditVerified": false,
+      "high_risk_flags": []
+    },
+    {
+      "code": "TOP-TIER",
+      "name_ko": "탑티어 비자 (D-10-T, E-7-T, F-2-T, F-5-T)",
+      "manual_domains": [
+        "visa_issuance",
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": true,
+      "visa_manual_section_num": 39,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 39,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": false,
+      "procedures_available": [],
+      "sourceManualVersion": null,
+      "needsManualReview": true,
+      "auditConfidence": "unmodeled",
+      "auditVerified": false,
+      "high_risk_flags": [
+        "NOT_MODELED_IN_VISA_DATA"
+      ]
+    },
+    {
+      "code": "광역형",
+      "name_ko": "광역형 비자 시범사업",
+      "manual_domains": [
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": false,
+      "visa_manual_section_num": null,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 40,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": false,
+      "procedures_available": [],
+      "sourceManualVersion": null,
+      "needsManualReview": true,
+      "auditConfidence": "unmodeled",
+      "auditVerified": false,
+      "high_risk_flags": [
+        "NOT_MODELED_IN_VISA_DATA"
+      ]
+    },
+    {
+      "code": "청소년취업정주",
+      "name_ko": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "manual_domains": [
+        "stay_sojourn"
+      ],
+      "visa_manual_section_present": false,
+      "visa_manual_section_num": null,
+      "visa_manual_page_range_approx": null,
+      "stay_manual_section_present": true,
+      "stay_manual_section_num": 38,
+      "stay_manual_note": null,
+      "modeled_in_visa_data": false,
+      "procedures_available": [],
+      "sourceManualVersion": null,
+      "needsManualReview": true,
+      "auditConfidence": "unmodeled",
+      "auditVerified": false,
+      "high_risk_flags": [
+        "NOT_MODELED_IN_VISA_DATA"
+      ]
+    }
+  ]
+}
