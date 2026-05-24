@@ -538,8 +538,22 @@
       "notes": "Petition forms metadata catalog (form_code, name, last_updated, file URL). Form files themselves stay linked, not mirrored. Deep URL pending operator verification.",
       "status": "not_configured",
       "needs_review": true,
-      "scrape_allowed": false,
+      "scrape_allowed": true,
       "monitor_enabled": false,
+      "monitor_candidate": true,
+      "monitor_candidate_reason": "Public HiKorea civil-petition forms index; monitoring the index metadata can alert reviewers to form changes without submitting forms or handling personal data.",
+      "operator_review_required": true,
+      "proposed_monitor_mode": "index_snapshot",
+      "proposed_fetch_method": "GET",
+      "robots_review_status": "not_checked",
+      "rate_limit_policy": "not_configured",
+      "activation_status": "candidate_only",
+      "activation_blockers": [
+        "Pin the exact public forms-index URL and allowed host before any fetch adapter can use this record.",
+        "Review robots.txt and site terms.",
+        "Configure rate limits and response-size limits.",
+        "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
+      ],
       "retrieved_at": null
     },
     {
