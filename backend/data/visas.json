@@ -6245,7 +6245,7 @@
       },
       "registration": {
         "available": false,
-        "summary": "2026.5 체류민원 매뉴얼 pp. 358-424에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+        "summary": "2026.5 체류민원 매뉴얼 pp. 360-420에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -6261,7 +6261,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 358-424",
+            "pageRange": "pp. 360-420",
             "confidence": "needs_manual_review",
             "needsManualReview": true
           }
@@ -6282,7 +6282,7 @@
       "manualName": "체류민원",
       "manualVersion": "2026.5",
       "scope": "extension_and_foreigner_registration",
-      "sectionPageRange": "pp. 358-424",
+      "sectionPageRange": "pp. 360-420",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
       "updatedAt": "2026-05-07"
@@ -6357,7 +6357,7 @@
       "doc_fam_rel",
       "doc_inc_proof"
     ],
-    "extReq": "2026.5 체류민원 매뉴얼 pp. 425-428에서 체류기간 연장 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+    "extReq": "2026.5 체류민원 매뉴얼 pp. 421-425에서 체류기간 연장 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -6412,7 +6412,7 @@
     "procedures": {
       "extension": {
         "available": false,
-        "summary": "2026.5 체류민원 매뉴얼 pp. 425-428에서 체류기간 연장 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+        "summary": "2026.5 체류민원 매뉴얼 pp. 421-425에서 체류기간 연장 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -6428,7 +6428,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 425-428",
+            "pageRange": "pp. 421-425",
             "confidence": "needs_manual_review",
             "needsManualReview": true
           }
@@ -6436,7 +6436,7 @@
       },
       "registration": {
         "available": false,
-        "summary": "2026.5 체류민원 매뉴얼 pp. 425-428에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+        "summary": "2026.5 체류민원 매뉴얼 pp. 421-425에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -6452,7 +6452,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 425-428",
+            "pageRange": "pp. 421-425",
             "confidence": "needs_manual_review",
             "needsManualReview": true
           }
@@ -6473,7 +6473,7 @@
       "manualName": "체류민원",
       "manualVersion": "2026.5",
       "scope": "extension_and_foreigner_registration",
-      "sectionPageRange": "pp. 425-428",
+      "sectionPageRange": "pp. 421-425",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
       "updatedAt": "2026-05-07"
@@ -6922,7 +6922,7 @@
       },
       "registration": {
         "available": false,
-        "summary": "2026.5 체류민원 매뉴얼 pp. 429-477에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+        "summary": "2026.5 체류민원 매뉴얼 pp. 426-473에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -6938,7 +6938,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 429-477",
+            "pageRange": "pp. 426-473",
             "confidence": "needs_manual_review",
             "needsManualReview": true
           }
@@ -6959,7 +6959,7 @@
       "manualName": "체류민원",
       "manualVersion": "2026.5",
       "scope": "extension_and_foreigner_registration",
-      "sectionPageRange": "pp. 429-477",
+      "sectionPageRange": "pp. 426-473",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
       "updatedAt": "2026-05-07"
@@ -7910,7 +7910,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "p. 521",
+            "pageRange": "p. 517",
             "confidence": "auto_extracted_needs_review",
             "needsManualReview": true
           }
@@ -7918,7 +7918,7 @@
       },
       "registration": {
         "available": false,
-        "summary": "2026.5 체류민원 매뉴얼 pp. 518-525에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+        "summary": "2026.5 체류민원 매뉴얼 pp. 514-517에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -7934,7 +7934,7 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 518-525",
+            "pageRange": "pp. 514-517",
             "confidence": "needs_manual_review",
             "needsManualReview": true
           }
@@ -7955,7 +7955,7 @@
       "manualName": "체류민원",
       "manualVersion": "2026.5",
       "scope": "extension_and_foreigner_registration",
-      "sectionPageRange": "pp. 518-525",
+      "sectionPageRange": "pp. 514-517",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
       "updatedAt": "2026-05-07"

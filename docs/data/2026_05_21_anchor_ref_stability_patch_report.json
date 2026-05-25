@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "report": "2026-05-21 anchor & reference stability patch (PR D batch 3)",
+  "pr": "D batch 3 (after PR #162)",
+  "branch": "data/patch-2026-05-21-anchor-and-ref-stability",
+  "audit_date": "2026-05-25",
+  "based_on": "PR #162 completed the doc_master ID migration with UI compatibility. This PR runs a post-D2 regression audit and corrects exact, PDF-proven page/reference anchor drift only.",
+  "disclaimer": "Internal audit artifact. Not legal advice and not an official immigration decision.",
+  "scope_statement": "Post-D2 regression audit plus exact, evidence-cited page/reference anchor stabilization only. No required-document meanings changed; no requiredDocuments added or removed; no eligibility/fees/income/stay-periods/procedures/legal-admin text rewritten; no verified=true promotions; no needsManualReview removals; no records deleted; no UI changes.",
+  "post_d2_regression_audit": {
+    "doc_master_ref_resolution": "PASS - scripts/check_doc_master_id_migration.py OK (79 ids; all ID-array refs resolve; no Korean-string ids remain).",
+    "old_corrupted_id_active_refs": {"visa_data.json": 0, "backend/data/visas.json": 0},
+    "backend_sync": "PASS - scripts/sync_visa_data.py --check OK before edits.",
+    "doc_dict_label_coverage": {
+      "distinct_doc_refs_in_id_arrays": 78,
+      "missing_doc_dict_label": ["doc_local_recommendation", "doc_top_tier_degree"],
+      "assessment": "PRE-EXISTING gaps (not introduced by PR #162). Both ids predate PR #162 and were never in DOC_DICT; they render via the 문서요건(...) fallback. Per the UI rule (index.html may change only for a real PR #162 regression), they are NOT patched here and are routed to PR D-4."
+    },
+    "regression_found": false,
+    "regression_note": "PR #162 left no broken doc_master references, no DOC_DICT gaps for migrated ids, no backend sync drift, and no stale active old-ID references. No regression fix was required."
+  },
+  "page_anchor_corrections": [
+    {
+      "code": "F-2", "name": "거주", "manual": "체류민원 (stay, 777p)",
+      "old_range": "pp. 358-424", "new_range": "pp. 360-420",
+      "fields_changed": ["manualRequiredDocAudit.sectionPageRange", "procedures.registration.manualRefs[0].pageRange", "procedures.registration.summary (embedded page citation only)"],
+      "evidence": {"toc_artifact": "docs/data/2026_05_21_manual_toc_map.json stay §30 거 주(F-2) = 360-420", "pdf_extraction": "p360 header '거 주(F-2)'; p421 header '동반(F-3)'"}
+    },
+    {
+      "code": "F-3", "name": "동반", "manual": "체류민원 (stay, 777p)",
+      "old_range": "pp. 425-428", "new_range": "pp. 421-425",
+      "fields_changed": ["manualRequiredDocAudit.sectionPageRange", "procedures.extension.manualRefs[0].pageRange", "procedures.registration.manualRefs[0].pageRange", "extReq (embedded page citation only)", "procedures.extension.summary (embedded page citation only)", "procedures.registration.summary (embedded page citation only)"],
+      "evidence": {"toc_artifact": "stay §31 동 반(F-3) = 421-425", "pdf_extraction": "p421 header '동반(F-3)'; p426 header '영 주(F-5)'"}
+    },
+    {
+      "code": "F-5", "name": "영주", "manual": "체류민원 (stay, 777p)",
+      "old_range": "pp. 429-477", "new_range": "pp. 426-473",
+      "fields_changed": ["manualRequiredDocAudit.sectionPageRange", "procedures.registration.manualRefs[0].pageRange", "procedures.registration.summary (embedded page citation only)"],
+      "evidence": {"toc_artifact": "stay §32 영주(F-5):동포,난민제외 = 426-473", "pdf_extraction": "p426 header '영 주(F-5)'; p474 header '결혼이민(F-6)'"}
+    },
+    {
+      "code": "H-1", "name": "관광취업", "manual": "체류민원 (stay, 777p)",
+      "old_range": "pp. 518-525", "new_range": "pp. 514-517",
+      "fields_changed": ["manualRequiredDocAudit.sectionPageRange", "procedures.registration.manualRefs[0].pageRange", "procedures.registration.summary (embedded page citation only)"],
+      "evidence": {"toc_artifact": "stay §35 관광취업(H-1) = 514-517", "pdf_extraction": "p514 header '관광취업(H-1)'; p518 §36 '알기쉬운 외국국적동포 업무 매뉴얼'"}
+    },
+    {
+      "code": "H-1", "name": "관광취업 (extension single-page citation)", "manual": "체류민원 (stay, 777p)",
+      "old_range": "p. 521", "new_range": "p. 517",
+      "fields_changed": ["procedures.extension.manualRefs[0].pageRange"],
+      "evidence": {"toc_artifact": "stay §35 H-1 = 514-517; old p.521 fell in §36 (518-584), outside the re-derived section", "pdf_extraction": "the '체류기간 연장허가' (extension) heading for H-1 is on p517 (last page of the re-derived H-1 section)"}
+    }
+  ],
+  "anchors_left_unchanged": [
+    {"code": "F-2", "field": "procedures.extension.manualRefs[0].pageRange", "value": "p. 394", "reason": "Within the re-derived section 360-420 (section start unchanged at 360); single-page citation not proven wrong."},
+    {"code": "F-5", "field": "procedures.extension.manualRefs[0].pageRange", "value": "p. 429", "reason": "Within the re-derived section 426-473; single-page citation not proven wrong."}
+  ],
+  "page_bounds_audit": {
+    "method": "Parsed every 체류민원 sectionPageRange + procedures.*.manualRefs[].pageRange for standard-code records and compared against the PR #157 TOC map stay section bounds.",
+    "in_bounds_after_patch": 100,
+    "out_of_bounds_after_patch": 2,
+    "out_of_bounds_records": [
+      {"code": "F-6", "field": "manualRequiredDocAudit.sectionPageRange", "value": "pp. 478-501", "section": "474-497", "deferred": "PR D-4 (F-6 explicitly excluded from this PR)"},
+      {"code": "F-6", "field": "procedures.extension.manualRefs[0].pageRange", "value": "pp. 494-499", "section": "474-497", "deferred": "PR D-4 (F-6 income/extension area is excluded from this PR)"}
+    ]
+  },
+  "required_searches": {
+    "old_corrupted_korean_ids_in_active_refs": "0 in visa_data.json and backend/data/visas.json",
+    "manualRef_pageRange_outside_section_bounds": "2 (both F-6, deferred to PR D-4); all F-2/F-3/F-5/H-1 anchors now in-bounds",
+    "requiredDocuments_ids_missing_from_doc_master": "0 (check_doc_master_id_migration.py)",
+    "requiredDocuments_ids_missing_doc_dict_label": "2 pre-existing (doc_local_recommendation, doc_top_tier_degree); not a PR #162 regression; deferred to PR D-4"
+  },
+  "changed_files": [
+    "visa_data.json (16 page-citation strings corrected across F-2/F-3/F-5/H-1; page numbers only)",
+    "backend/data/visas.json (regenerated via scripts/sync_visa_data.py only)",
+    "docs/data/2026_05_21_ANCHOR_REF_STABILITY_PATCH_REPORT.md (new)",
+    "docs/data/2026_05_21_anchor_ref_stability_patch_report.json (new)"
+  ],
+  "confirmations": {
+    "korean_user_facing_labels_preserved": true,
+    "required_document_meaning_changed": false,
+    "required_documents_added_or_removed": false,
+    "legal_admin_guidance_rewritten": false,
+    "verified_promotions": 0,
+    "needsManualReview_removals": 0,
+    "records_deleted": 0,
+    "ui_changed": false,
+    "index_html_changed": false,
+    "backend_updated_via_sync_only": true,
+    "only_page_numbers_changed": "Every changed string differs only in its page-range token; surrounding audit-note text is byte-identical; all affected records' requiredDocs are the '매뉴얼 확인 필요' placeholder."
+  },
+  "pr_d4_queue": [
+    "F-6 income note/content + F-6 page anchors (sectionPageRange pp.478-501 -> 474-497; extension pp.494-499) — stay §33 pp.474-497, visa §34 pp.324-335, page-cited.",
+    "D-4-2K duplicate/sub-code resolution (array indices 24 + 55).",
+    "F-4 / H-2 외국국적동포 Feb-2026 sub-manual content (stay §36 pp.518-584).",
+    "K-STAR records substantive content (visa §40 pp.456-484 / stay §41 pp.749-777).",
+    "REGION-S / 지역특화형 (stay §37 pp.585-654) / 광역형 (stay §40 pp.686-748) records.",
+    "DOC_DICT labels for pre-existing label-less ids (doc_local_recommendation, doc_top_tier_degree).",
+    "Optional near-duplicate doc_master dedupe (migrated *_generic ids vs doc_passport/doc_address/doc_app_form).",
+    "Optional: add a read-only page-bounds validator once F-6 anchors are corrected (so it can hard-fail without a deferred-record carve-out)."
+  ],
+  "validation": {
+    "json_tool": "visa_data, backend visas, doc_master, this report, and the 3 PR #157 JSON artifacts all valid",
+    "scripts": "check_doc_master_id_migration, check_source_manuals, check_source_updates --local-only, sync_visa_data --check, check_visa_data_text_integrity, check_required_documents_coverage, validate_coverage_matrix, validate_manual_grounding_candidate all pass",
+    "check_repo": "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh passes (194 backend tests; git diff clean)"
+  }
+}
