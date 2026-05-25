@@ -2,11 +2,11 @@
 
 This directory is a staging location for the four user-provided Korean immigration manual source files.
 
-Recommended next step:
-- Compare these incoming files against the current repo PDFs.
-- Install the verified PDFs into `docs/source-manuals/2026-05/visa_manual_2026_05.pdf` and `docs/source-manuals/2026-05/stay_manual_2026_05.pdf` only after hash/page comparison.
-- Update `docs/source-manuals/source_manifest.json`.
-- Do not patch `visa_data.json`, `backend/data/visas.json`, or `doc_master.json` in PR A.
+Install status:
+- The staged PDFs were compared against the prior canonical repo PDFs in the `data/install-2026-05-21-source-pdfs` follow-up.
+- The verified PDFs were installed into `docs/source-manuals/2026-05/visa_manual_2026_05.pdf` and `docs/source-manuals/2026-05/stay_manual_2026_05.pdf`.
+- `docs/source-manuals/source_manifest.json` was updated.
+- `visa_data.json`, `backend/data/visas.json`, and `doc_master.json` were not patched in this source-install PR.
 
 Expected files:
 - `visa_manual_2026_05_21_source.pdf`

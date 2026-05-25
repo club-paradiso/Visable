@@ -1,9 +1,9 @@
 # Source Manuals
 
-The 2026.5 Ministry of Justice immigration manuals in this directory are Paradiso's current source-of-truth manuals for new extraction and grounding work.
+The 2026.5 Ministry of Justice immigration manuals in this directory are Paradiso's current source-of-truth manuals for new extraction and grounding work. The canonical PDFs were replaced with user-provided 2026-05-21 source PDFs after local PDF-level comparison in the `data/install-2026-05-21-source-pdfs` follow-up.
 
-- `2026-05/visa_manual_2026_05.pdf` - 사증발급 안내매뉴얼, 2026.5. (PDF, primary extraction source)
-- `2026-05/stay_manual_2026_05.pdf` - 외국인체류 안내매뉴얼, 2026.5. (PDF, primary extraction source)
+- `2026-05/visa_manual_2026_05.pdf` - 사증발급 안내매뉴얼, 2026.5. (PDF, primary extraction source; installed from the 2026-05-21 source PDF)
+- `2026-05/stay_manual_2026_05.pdf` - 외국인체류 안내매뉴얼, 2026.5. (PDF, primary extraction source; installed from the 2026-05-21 source PDF)
 - `2026-05/visa_manual_2026_05_21.hwp` - 사증발급 안내매뉴얼, 2026.5. (HWP, filename-level 2026-05-21 source-truth artifact; body extraction blocked by distribution mode, see `source_manifest.json` and `docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md`)
 - `2026-05/stay_manual_2026_05_21.hwp` - 외국인체류 안내매뉴얼, 2026.5. (HWP, filename-level 2026-05-21 source-truth artifact; body extraction blocked by distribution mode)
 
