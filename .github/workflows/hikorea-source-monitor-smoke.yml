@@ -101,6 +101,55 @@ jobs:
           test -s "${output_dir}/${run_label}_source_update_brief.md"
           test -s "${output_dir}/${run_label}_command.log"
 
+      - name: Write workflow summary
+        if: always()
+        shell: bash
+        env:
+          ALLOW_NETWORK: ${{ inputs.allow_network }}
+        run: |
+          set -euo pipefail
+
+          output_dir="tmp/source-monitor-smoke"
+          run_label="workflow_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          artifact_name="hikorea-source-monitor-smoke-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          mode="no-network"
+          if [[ "${ALLOW_NETWORK}" == "true" ]]; then
+            mode="allow-network"
+          fi
+
+          source_json="${output_dir}/${run_label}_source_monitor.json"
+          markdown_brief="${output_dir}/${run_label}_source_update_brief.md"
+          command_log="${output_dir}/${run_label}_command.log"
+          metadata_json="${output_dir}/${run_label}_workflow_metadata.json"
+
+          generated_status() {
+            if [[ -s "$1" ]]; then
+              printf "yes"
+            else
+              printf "no"
+            fi
+          }
+
+          {
+            echo "## HiKorea/KIS source monitor smoke"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| Mode | \`${mode}\` |"
+            echo "| Run label | \`${run_label}\` |"
+            echo "| Artifact | \`${artifact_name}\` |"
+            echo "| Source monitor JSON | $(generated_status "${source_json}") |"
+            echo "| Markdown brief | $(generated_status "${markdown_brief}") |"
+            echo "| Command log | $(generated_status "${command_log}") |"
+            echo "| Workflow metadata | $(generated_status "${metadata_json}") |"
+            echo ""
+            echo "### Safety"
+            echo ""
+            echo "- No automatic GitHub Issue creation."
+            echo "- No automatic user-facing legal update."
+            echo "- Generated files are workflow artifacts only and must be reviewed manually before any downstream source or data action."
+          } >> "${GITHUB_STEP_SUMMARY}"
+
       - name: Upload smoke artifacts
         if: always()
         uses: actions/upload-artifact@v4

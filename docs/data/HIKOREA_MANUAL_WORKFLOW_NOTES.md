@@ -93,6 +93,32 @@ The artifact bundle includes:
 
 These outputs are for human review. They are not committed to the repository by the workflow.
 
-## Next C8 Recommendation
+## Step Summary
 
-Use C8 to run the manual workflow in GitHub Actions with `allow_network=false`, download the uploaded artifacts, and document the remote runner result. Keep C8 report-only. Do not add a cron schedule or automatic issue creation. Consider a separate, later PR for an explicitly reviewed `allow_network=true` remote smoke only after candidate URLs are pinned and operator safety review is complete.
+C9 adds a GitHub Actions step summary for each manual run. The summary appears on the workflow run page and records:
+
+- mode: `no-network` or `allow-network`
+- run label
+- artifact bundle name
+- whether source monitor JSON was generated
+- whether the Markdown brief was generated
+- whether the command log was generated
+- whether workflow metadata was generated
+- safety notes confirming no automatic GitHub Issue creation and no automatic user-facing legal update
+
+The step summary is an operator convenience only. The artifact files remain the audit source for detailed review.
+
+## Operator Artifact Review
+
+After a manual run completes, an operator should open the workflow run, read the step summary, then download the artifact bundle. Review these files in order:
+
+1. `*_workflow_metadata.json` to confirm `allow_network`, run label, and safety booleans.
+2. `*_command.log` to confirm the helper command and whether network was disabled or explicitly allowed.
+3. `*_source_monitor.json` to inspect machine-readable monitor results.
+4. `*_source_update_brief.md` to inspect the human-readable source update brief.
+
+No artifact should be treated as a user-facing legal update. Any source or data follow-up requires a separate reviewed PR.
+
+## Next Recommendation
+
+Use the polished workflow for another manual `allow_network=false` run and confirm the step summary is readable in GitHub Actions. Keep any later `allow_network=true` smoke manual, artifact-only, and explicitly reviewed before use.
