@@ -1,0 +1,198 @@
+{
+  "schema_version": "1.0",
+  "report": "Alias-deprecate scenario/help records in visa_data.json — E-3",
+  "pr": "E-3 (after PR #172)",
+  "branch": "data/alias-deprecate-scenario-help-records-e3",
+  "audit_date": "2026-05-25",
+  "disclaimer": "Internal migration artifact. Not legal advice. No records deleted; no legal/admin content changed; metadata-only on 17 records.",
+  "changed_files": [
+    "visa_data.json (added migrationMeta to 17 records; no other change)",
+    "backend/data/visas.json (synced via scripts/sync_visa_data.py)",
+    "data/scenario_help_records.json (envelope metadata only: e3_status + per-record visaDataAliasDeprecated; nested record copies untouched)",
+    "scripts/check_scenario_help_records.py (ignore approved migrationMeta in byte-for-byte compare; assert alias metadata)",
+    "scripts/check_record_store_union_parity.py (assert 17 codes alias-deprecated, removal gated)",
+    "scripts/resolve_record_store.py (report alias-deprecated count in output/--check)",
+    "docs/data/2026_05_21_ALIAS_DEPRECATE_SCENARIO_HELP_E3_REPORT.md (new)",
+    "docs/data/2026_05_21_alias_deprecate_scenario_help_e3_report.json (new)"
+  ],
+  "alias_deprecated_records": [
+    {
+      "code": "K-ETA",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "TB-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-2",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-3",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-4",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-5",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "SCN-6",
+      "overstay_related": true,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "OVS-1",
+      "overstay_related": true,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "NHIS-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "FAQ-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "FAQ-2",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "FAQ-3",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "FAQ-4",
+      "overstay_related": true,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "VW-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "COM-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    },
+    {
+      "code": "RF-1",
+      "overstay_related": false,
+      "has_scenario_help_shadow": true,
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "removalFromVisaDataAllowed": false
+    }
+  ],
+  "metadata_fields_added": {
+    "field": "migrationMeta (namespaced object on each of the 17 records)",
+    "keys": [
+      "migrationTrack",
+      "migrationStatus=alias_deprecated_in_visa_data",
+      "plannedCanonicalStore=scenario_help",
+      "canonicalShadowStore=data/scenario_help_records.json",
+      "scenarioHelpStoreCode",
+      "removalFromVisaDataAllowed=false",
+      "requiresParityBeforeRemoval=true",
+      "aliasDeprecatedAt=2026-05-21-source-audit",
+      "aliasDeprecationReason"
+    ],
+    "shape_rationale": "A single namespaced object guarantees zero collision with consumer allowlists (index.html search/render/AI-payload and backend _build_visa_data_context_block all read specific fields, not all keys), so metadata cannot leak into UI/search/AI; it is trivially strippable for parity comparison."
+  },
+  "union_resolver_behavior": {
+    "visa_data_count": 58,
+    "scenario_help_count": 17,
+    "union_count": 58,
+    "duplicate_handling": "keyed by (array_index, code); visa_data canonical; shadow de-duplicated. Only pre-existing D-4-2K duplicate (indices 24 & 55); no new duplicates. D-4-2K untouched (separate D-content PR).",
+    "union_output_behavior_compatible": true,
+    "alias_deprecated_count": 17
+  },
+  "backend_runtime": {
+    "status": "deferred (unwired)",
+    "reason": "Adding migrationMeta is backward-compatible (/api/visas consumers read specific fields; K-ETA name + cat unchanged), but resolver-authoritative wiring is gated to E-4 to avoid behavior uncertainty. /api/visas now returns the 17 records with an extra metadata field, which is additive and consumed by no reader."
+  },
+  "frontend_runtime": {
+    "status": "deferred (unwired)",
+    "reason": "index.html untouched; search/render/AI read specific fields only, so migrationMeta is inert. No UI/copy/layout/search change."
+  },
+  "overstay_golden_question_status": "Stable. SCN-6/OVS-1/FAQ-4 remain in visa_data.json (content unchanged) and queryable; each appears once in the union; golden questions unaffected; check_repo.sh passes.",
+  "search_compatibility": "Unchanged. Direct/keyword search reads specific fields (code/name/aliases/newReq/extReq/changeReq/faq/period/subcodes/procedures); migrationMeta is not among them.",
+  "ai_grounding_compatibility": "Unchanged. AI payload (code/name/cat/period/newReq/extReq/faq) and backend context block read specific fields; migrationMeta not included.",
+  "statements": {
+    "records_remain_in_visa_data": "All 58 records remain in visa_data.json; the 17 are alias-deprecated via metadata only, not removed.",
+    "deletion_unsafe_until_e4": "Deletion remains unsafe and gated; removalFromVisaDataAllowed=false on all 17. Removal occurs only in E-4 after parity."
+  },
+  "e4_prerequisites": [
+    "Backend union parity: backend reads the union (or /api/visas proven byte/semantically equivalent) with tests.",
+    "Frontend/search parity: index.html reads union; direct/keyword search returns identical results.",
+    "AI golden eval parity: full golden run (incl. overstay) shows no regression.",
+    "Overstay golden questions stable.",
+    "/api/visas compatibility decision documented (keep union output-equivalent, or version the endpoint)."
+  ],
+  "d_content_queue": [
+    "D-4-2K duplicate/sub-code",
+    "F-4/H-2 sub-manual",
+    "K-STAR",
+    "REGION-S / 지역특화형 / 광역형",
+    "DOC_DICT labels for doc_local_recommendation and doc_top_tier_degree"
+  ],
+  "validation": {
+    "resolve_record_store_check": "OK (union==58==visa_data; alias-deprecated=17; pre-existing dup=[D-4-2K])",
+    "check_record_store_union_parity": "OK (17 shadow de-duplicated 1:1 + alias-deprecated; overstay each once; zero behavior change)",
+    "check_scenario_help_records": "OK (byte-for-byte match ignoring migrationMeta; alias metadata asserted; removal gated)",
+    "check_repo": "PASS (194 backend tests; git diff clean)",
+    "all_other_validators": "PASS"
+  }
+}

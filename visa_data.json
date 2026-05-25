@@ -90,7 +90,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "K-ETA",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "TB-1",
@@ -127,7 +138,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "TB-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-1",
@@ -152,7 +174,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-2",
@@ -177,7 +210,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-2",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-3",
@@ -202,7 +246,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-3",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-4",
@@ -225,7 +280,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-4",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-5",
@@ -256,7 +322,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-5",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "SCN-6",
@@ -281,7 +358,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "SCN-6",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "OVS-1",
@@ -311,7 +399,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "OVS-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "NHIS-1",
@@ -368,7 +467,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "NHIS-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "FAQ-1",
@@ -410,7 +520,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "FAQ-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "FAQ-2",
@@ -451,7 +572,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "FAQ-2",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "FAQ-3",
@@ -480,7 +612,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "FAQ-3",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "FAQ-4",
@@ -505,7 +648,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "FAQ-4",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "VW-1",
@@ -567,7 +721,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "VW-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "COM-1",
@@ -600,7 +765,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "COM-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "B-1",
@@ -7853,7 +8029,18 @@
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING"
+    "hikorea_task_type": "DATA_MISSING",
+    "migrationMeta": {
+      "migrationTrack": "E",
+      "migrationStatus": "alias_deprecated_in_visa_data",
+      "plannedCanonicalStore": "scenario_help",
+      "canonicalShadowStore": "data/scenario_help_records.json",
+      "scenarioHelpStoreCode": "RF-1",
+      "removalFromVisaDataAllowed": false,
+      "requiresParityBeforeRemoval": true,
+      "aliasDeprecatedAt": "2026-05-21-source-audit",
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    }
   },
   {
     "code": "H-1",

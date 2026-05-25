@@ -89,9 +89,25 @@ def main() -> None:
     if Counter(alt_codes) != Counter(union_codes):
         fail("union_view(prefer=scenario_help) changed the code set")
 
+    # 7. E-3: every shadowed code is alias-deprecated in visa_data with removal gated.
+    by_code_meta = {}
+    for r in visas:
+        m = r.get("migrationMeta")
+        if isinstance(m, dict):
+            by_code_meta[r.get("code")] = m
+    for e in shadow:
+        code = e.get("sourceVisaDataCode")
+        m = by_code_meta.get(code)
+        if not m:
+            fail(f"{code}: missing E-3 migrationMeta in visa_data.json")
+        if m.get("migrationStatus") != "alias_deprecated_in_visa_data":
+            fail(f"{code}: migrationStatus must be 'alias_deprecated_in_visa_data'")
+        if m.get("removalFromVisaDataAllowed") is not False:
+            fail(f"{code}: removalFromVisaDataAllowed must be False (deletion gated until E-4)")
+
     print(f"[check_record_store_union_parity] OK - union={len(union)} == visa_data={len(visas)}; "
-          f"17 shadow records de-duplicated 1:1; overstay {sorted(OVERSTAY)} each present once; "
-          "direct-lookup parity holds; zero behavior change.")
+          f"17 shadow records de-duplicated 1:1 and alias-deprecated (removal gated); "
+          f"overstay {sorted(OVERSTAY)} each present once; direct-lookup parity holds; zero behavior change.")
 
 
 if __name__ == "__main__":
