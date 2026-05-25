@@ -520,12 +520,15 @@
       "monitor_enabled": false,
       "retrieved_at": null
     },
-    {
-      "source_id": "hikorea_civil_petition_forms_index",
-      "title_ko": "민원서식",
-      "title_en": "Civil Petition Forms",
-      "url": null,
-      "domain": "civil_forms",
+  {
+    "source_id": "hikorea_civil_petition_forms_index",
+    "title_ko": "민원서식",
+    "title_en": "Civil Petition Forms",
+    "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1",
+    "url_review_status": "operator_reviewed",
+    "url_reviewed_at": "2026-05-26",
+    "url_review_note": "Official HiKorea public civil-petition application-form index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+    "domain": "civil_forms",
       "category_path": "hikorea/info/petition_forms",
       "language": ["ko"],
       "source_type": "form_catalog",
@@ -545,15 +548,15 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-      "robots_review_status": "not_checked",
-      "rate_limit_policy": "not_configured",
-      "activation_status": "candidate_only",
-      "activation_blockers": [
-        "Pin the exact public forms-index URL and allowed host before any fetch adapter can use this record.",
-        "Review robots.txt and site terms.",
-        "Configure rate limits and response-size limits.",
-        "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
-      ],
+    "robots_review_status": "manual_review_required",
+    "rate_limit_policy": "manual_smoke_only",
+    "activation_status": "url_reviewed_candidate",
+    "activation_blockers": [
+      "Review robots.txt and site terms.",
+      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+      "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
+    ],
       "retrieved_at": null
     },
     {

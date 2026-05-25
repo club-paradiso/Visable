@@ -1,0 +1,153 @@
+{
+  "report_id": "hikorea_monitor_candidate_urls_c11",
+  "report_date": "2026-05-26",
+  "branch": "data/hikorea-monitor-candidate-urls-c11",
+  "why_needed": "C10 confirmed that allow_network=true completed safely, but fetched zero monitored sources because all five conservative monitor candidates had url=null.",
+    "safety_posture": {
+        "url_review_only": true,
+        "monitor_enabled_changed": false,
+        "all_monitor_enabled_values_remain_false": true,
+    "schedule_or_cron_added": false,
+    "automatic_github_issue_creation_enabled": false,
+    "automatic_user_facing_updates_enabled": false,
+    "production_data_changed": false,
+    "ui_changed": false,
+    "dependencies_added": false,
+    "legal_correctness_claimed": false,
+    "live_fetch_performed_by_this_pr": false
+  },
+  "candidates": [
+    {
+      "source_id": "hikorea_civil_petition_forms_index",
+      "catalog_path": "data/sources/hikorea_source_catalog.json",
+      "prior_url": null,
+      "new_url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1",
+      "domain": "civil_forms",
+      "url_domain": "www.hikorea.go.kr",
+      "source_type": "form_catalog",
+      "review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "public_non_login_rationale": "Official HiKorea public civil-petition application-form index selected for index_snapshot monitoring only; not a login, personal-data, CAPTCHA, transaction, e-Application, visit-reservation, validity-check, or form-submission flow.",
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "remaining_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
+      ],
+      "monitor_enabled_after_change": false
+    },
+    {
+      "source_id": "hikorea_notice_index",
+      "catalog_path": "data/sources/immigration_notice_sources.json",
+      "prior_url": null,
+      "new_url": "https://www.hikorea.go.kr/board/BoardNtcListR.pt?page=1",
+      "domain": "notices",
+      "url_domain": "www.hikorea.go.kr",
+      "source_type": "notice_index",
+      "review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "public_non_login_rationale": "Official HiKorea public notices index selected for index_snapshot monitoring only; not a login, personal-data, CAPTCHA, transaction, e-Application, visit-reservation, validity-check, or form-submission flow.",
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "remaining_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Confirm extracted changes only create human review briefs and never update user-facing legal data automatically."
+      ],
+      "monitor_enabled_after_change": false
+    },
+    {
+      "source_id": "hikorea_materials_index",
+      "catalog_path": "data/sources/immigration_notice_sources.json",
+      "prior_url": null,
+      "new_url": "https://www.hikorea.go.kr/board/BoardDataListR.pt?page=1",
+      "domain": "notices",
+      "url_domain": "www.hikorea.go.kr",
+      "source_type": "notice_index",
+      "review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "public_non_login_rationale": "Official HiKorea public materials/data-room index selected for index_snapshot monitoring only; not a login, personal-data, CAPTCHA, transaction, e-Application, visit-reservation, validity-check, or form-submission flow.",
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "remaining_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Keep file downloads link-only unless a later reviewed PR explicitly adds hash monitoring for mirrored manuals."
+      ],
+      "monitor_enabled_after_change": false
+    },
+    {
+      "source_id": "immigration_service_notice_index",
+      "catalog_path": "data/sources/immigration_notice_sources.json",
+      "prior_url": null,
+      "new_url": "https://www.immigration.go.kr/immigration/1500/subview.do",
+      "domain": "notices",
+      "url_domain": "www.immigration.go.kr",
+      "source_type": "notice_index",
+      "review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "public_non_login_rationale": "Official Korea Immigration Service public notice index selected for index_snapshot monitoring only; not a login, personal-data, CAPTCHA, transaction, e-Application, visit-reservation, validity-check, or form-submission flow.",
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "remaining_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Confirm detected changes remain review-only and are not promoted to legal guidance automatically."
+      ],
+      "monitor_enabled_after_change": false
+    },
+    {
+      "source_id": "immigration_service_press_index",
+      "catalog_path": "data/sources/immigration_notice_sources.json",
+      "prior_url": null,
+      "new_url": "https://www.immigration.go.kr/immigration/1502/subview.do",
+      "domain": "notices",
+      "url_domain": "www.immigration.go.kr",
+      "source_type": "notice_index",
+      "review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "public_non_login_rationale": "Official Korea Immigration Service public press-release index selected for index_snapshot monitoring only; not a login, personal-data, CAPTCHA, transaction, e-Application, visit-reservation, validity-check, or form-submission flow.",
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "remaining_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Require human review before any downstream summary or data change."
+      ],
+      "monitor_enabled_after_change": false
+    }
+  ],
+  "records_still_blocked_or_uncertain": [
+    "No C11 candidate remains without a URL.",
+    "All five candidates remain blocked from activation because robots.txt and site terms still require review.",
+    "All five candidates remain limited to manual workflow_dispatch allow-network smoke runs.",
+    "Scheduled monitoring remains blocked.",
+    "Automatic GitHub Issue creation remains blocked.",
+    "Automatic user-facing legal updates remain blocked.",
+    "C12 must confirm actual fetch behavior, redirects, response-size limits, timeouts, and extraction quality from workflow artifacts."
+  ],
+  "catalog_monitor_enabled_summary": {
+    "data/sources/hikorea_source_catalog.json": {
+      "records": 33,
+      "monitor_enabled_false": 33,
+      "monitor_enabled_true": 0
+    },
+    "data/sources/immigration_notice_sources.json": {
+      "records": 10,
+      "monitor_enabled_false": 10,
+      "monitor_enabled_true": 0
+    }
+  },
+  "next_recommended_pr": "C12 should run the manual HiKorea source monitor workflow with allow_network=true against these URL-reviewed candidates and document fetch, redirect, timeout, response-size, extraction, and artifact results while keeping monitor_enabled=false."
+}
