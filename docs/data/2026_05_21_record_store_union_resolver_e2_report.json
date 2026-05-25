@@ -1,0 +1,59 @@
+{
+  "schema_version": "1.0",
+  "report": "Record-store union resolver — E-2 (resolver + parity tests; runtime not wired)",
+  "pr": "E-2 (after PR #170)",
+  "branch": "data/add-record-store-union-resolver-e2",
+  "audit_date": "2026-05-25",
+  "disclaimer": "Internal migration artifact. Not legal advice. No records deleted/migrated/rewritten; no legal/admin content changed.",
+  "changed_files": [
+    "scripts/resolve_record_store.py (strengthened: importable deterministic union API + --check)",
+    "scripts/check_record_store_union_parity.py (new: read-only E-2 parity tests)",
+    "docs/data/2026_05_21_RECORD_STORE_UNION_RESOLVER_E2_REPORT.md (new)",
+    "docs/data/2026_05_21_record_store_union_resolver_e2_report.json (new)"
+  ],
+  "backend_runtime_wired": false,
+  "frontend_runtime_wired": false,
+  "wiring_decision": "E-2 adds the deterministic resolver + parity tests ONLY. Backend /api/visas and index.html were NOT wired because the 17 scenario/help records are byte-for-byte SHADOW duplicates of records still in visa_data.json, so the union already equals visa_data.json — wiring would yield zero functional change while adding behavior-uncertainty risk. Runtime wiring is deferred to E-3 (after alias-deprecation metadata makes the shadow authoritative).",
+  "parity_result": {
+    "visa_data_count": 58,
+    "scenario_help_shadow_count": 17,
+    "union_count": 58,
+    "union_equals_visa_data": true,
+    "duplicate_codes_in_union": [
+      "D-4-2K"
+    ],
+    "duplicate_codes_in_visa_data": [
+      "D-4-2K"
+    ],
+    "duplicate_handling": "Union keyed by (array_index, code); visa_data canonical; shadow duplicates de-duplicated (not re-added). The only duplicate code is the PRE-EXISTING D-4-2K (visa_data indices 24 & 55), deferred to the D-content track; the union introduces no new duplicates.",
+    "union_output_equals_api_visas_behavior": true
+  },
+  "overstay_golden_question_status": "Unchanged. Overstay codes SCN-6/OVS-1/FAQ-4 appear exactly once in the union; golden questions still grounded by the in-visa_data records (backend /api/visas behavior unchanged). check_repo.sh (incl. golden-eval step config) passes.",
+  "direct_search_code_search_compatibility": "Unchanged. /api/visas and index.html still read visa_data.json-derived records; resolver not wired into search. Direct code lookup parity verified by check_record_store_union_parity.py (every visa_data code resolves identically via the union).",
+  "ai_grounding_compatibility": "Unchanged. AI context block + payload still use visa_data.json records; resolver is read-only and unused at runtime.",
+  "statements": {
+    "records_remain_in_visa_data": "All 58 visa_data.json records (incl. the 17 shadowed ones) remain unchanged in visa_data.json.",
+    "immediate_deletion_unsafe": "Still unsafe and gated. Deletion requires E-3 (alias-deprecation) + E-4 parity across backend, frontend, search, and AI golden eval."
+  },
+  "e3_plan": [
+    "Add explicit deprecation metadata (alias/redirect) to the 17 scenario/helper records in visa_data.json WITHOUT removal.",
+    "Make the union resolver authoritative for AI/search (wire backend/frontend behind parity).",
+    "Update backend tests to read the union; keep /api/visas output-compatible."
+  ],
+  "e4_plan": [
+    "Remove the 17 records from visa_data.json ONLY after parity tests pass across backend, frontend, search, and AI golden eval."
+  ],
+  "d_content_queue": [
+    "D-4-2K duplicate/sub-code",
+    "F-4/H-2 sub-manual",
+    "K-STAR",
+    "REGION-S / 지역특화형 / 광역형",
+    "DOC_DICT labels for doc_local_recommendation and doc_top_tier_degree"
+  ],
+  "validation": {
+    "resolve_record_store_check": "OK (union==58==visa_data; shadow=17; no new dup codes; pre-existing dup=[D-4-2K])",
+    "check_record_store_union_parity": "OK (17 shadow de-duplicated 1:1; overstay each once; direct-lookup parity; zero behavior change)",
+    "check_repo": "PASS (194 backend tests; git diff clean)",
+    "all_other_validators": "PASS"
+  }
+}

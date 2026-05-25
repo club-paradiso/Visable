@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
-"""Read-only union resolver (E-1 preview of the E-2 runtime resolver).
+"""Read-only record-store union resolver (E-2).
 
-Produces a union view of visa_data.json and data/scenario_help_records.json
-for parity inspection. It is NOT wired into the app or backend runtime in
-E-1; it exists so future PRs (E-2) and parity tests can compare a merged
-view against the current visa_data.json-only behavior.
+Provides a deterministic, importable union view of:
+  * visa_data.json                     — the live canonical record master
+  * data/scenario_help_records.json    — E-1 shadow copies of 17 records
 
-Resolution rule (preview): records are keyed by (array_index, code). The
-scenario/help store currently holds duplicates of visa_data.json records, so
-the union equals visa_data.json today (zero behavior change). This script
-just demonstrates and verifies that invariant.
+E-2 contract (runtime-safe, zero behavior change):
+  * visa_data.json is CANONICAL. The scenario/help store currently holds
+    byte-for-byte SHADOW copies of records that still live in visa_data.json,
+    so the union MUST NOT return duplicates and MUST equal visa_data.json
+    today. The resolver de-duplicates by keying on (array_index, code) and
+    never overrides a canonical record with its shadow during E-2.
+  * The shadow store is exposed only as METADATA (which codes have a shadow,
+    and whether removal is gated) — runtime record content stays canonical.
+  * This module is NOT wired into the backend `/api/visas` endpoint or the
+    frontend in E-2 (see the E-2 report). It exists so E-2 parity tests and a
+    future E-3 runtime resolver can rely on one deterministic implementation.
 
 Usage:
-    python3 scripts/resolve_record_store.py            # prints a summary
-    python3 scripts/resolve_record_store.py --json     # prints union as JSON
+    python3 scripts/resolve_record_store.py            # summary + invariant
+    python3 scripts/resolve_record_store.py --json     # union as JSON
+    python3 scripts/resolve_record_store.py --check    # assert E-2 invariants
 """
 from __future__ import annotations
 
@@ -22,48 +29,109 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+VISA_DATA = ROOT / "visa_data.json"
+SCENARIO_HELP = ROOT / "data/scenario_help_records.json"
 
 
 def load_visa_data():
-    return json.loads((ROOT / "visa_data.json").read_text(encoding="utf-8"))
+    """Canonical live records (list, in file order)."""
+    return json.loads(VISA_DATA.read_text(encoding="utf-8"))
 
 
-def load_scenario_help():
-    p = ROOT / "data/scenario_help_records.json"
-    if not p.exists():
+def load_scenario_help_shadow():
+    """E-1 shadow entries (list of envelope objects with a nested `record`)."""
+    if not SCENARIO_HELP.exists():
         return []
-    return json.loads(p.read_text(encoding="utf-8")).get("records", [])
+    return json.loads(SCENARIO_HELP.read_text(encoding="utf-8")).get("records", [])
 
 
-def union_view():
-    """Return the merged record list (read-only).
+def shadow_index():
+    """Map (array_index, code) -> shadow metadata (no record content)."""
+    out = {}
+    for e in load_scenario_help_shadow():
+        key = (e.get("sourceVisaDataIndex"), e.get("sourceVisaDataCode"))
+        out[key] = {
+            "migrationStatus": e.get("migrationStatus"),
+            "plannedCanonicalStore": e.get("plannedCanonicalStore"),
+            "removalFromVisaDataAllowed": e.get("removalFromVisaDataAllowed"),
+            "requiresParityBeforeRemoval": e.get("requiresParityBeforeRemoval"),
+            "overstay_related": e.get("overstay_related"),
+        }
+    return out
 
-    Today the scenario/help store only duplicates visa_data.json records, so
-    the union is exactly visa_data.json. This function is the single place a
-    future E-2 runtime resolver would grow to prefer the scenario/help store
-    for migrated records.
+
+def union_view(prefer: str = "visa_data"):
+    """Deterministic de-duplicated union of canonical + shadow records.
+
+    During E-2 `prefer` is always "visa_data": the canonical record wins and
+    shadow copies (which duplicate canonical records) are NOT appended, so the
+    union is exactly visa_data.json. The `prefer` arg is a seam for the future
+    E-3/E-4 resolver, where shadow records may become authoritative.
     """
     visas = load_visa_data()
     by_key = {(i, r.get("code")): r for i, r in enumerate(visas)}
-    for entry in load_scenario_help():
-        key = (entry.get("sourceVisaDataIndex"), entry.get("sourceVisaDataCode"))
-        # E-1: duplicates only — do not override; just confirm presence.
-        by_key.setdefault(key, entry.get("record"))
-    return [by_key[k] for k in sorted(by_key, key=lambda k: k[0])]
+    order = [(i, r.get("code")) for i, r in enumerate(visas)]
+
+    for e in load_scenario_help_shadow():
+        key = (e.get("sourceVisaDataIndex"), e.get("sourceVisaDataCode"))
+        if key in by_key:
+            # Shadow duplicates a canonical record -> de-dup; keep canonical.
+            if prefer == "scenario_help":
+                by_key[key] = e.get("record")
+            continue
+        # Not present canonically (would only happen post E-4): include it.
+        by_key[key] = e.get("record")
+        order.append(key)
+
+    return [by_key[k] for k in order]
+
+
+def _dupe_codes(records):
+    counts = {}
+    for r in records:
+        c = r.get("code")
+        counts[c] = counts.get(c, 0) + 1
+    return sorted(c for c, n in counts.items() if n > 1)
+
+
+def parity_report():
+    visas = load_visa_data()
+    shadow = load_scenario_help_shadow()
+    union = union_view()
+    canon = lambda o: json.dumps(o, ensure_ascii=False, sort_keys=True)
+    # Note: D-4-2K is a pre-existing duplicate code in visa_data.json
+    # (indices 24 & 55), deferred to the D-content track. The E-2 invariant
+    # is that the union introduces NO new duplicate codes beyond visa_data.
+    return {
+        "visa_data_count": len(visas),
+        "scenario_help_shadow_count": len(shadow),
+        "union_count": len(union),
+        "union_equals_visa_data": canon(union) == canon(visas),
+        "duplicate_codes_in_union": _dupe_codes(union),
+        "duplicate_codes_in_visa_data": _dupe_codes(visas),
+        "shadow_codes": sorted(e.get("sourceVisaDataCode") for e in shadow),
+    }
 
 
 def main() -> None:
-    visas = load_visa_data()
-    union = union_view()
-    same = json.dumps(union, ensure_ascii=False, sort_keys=True) == \
-        json.dumps(visas, ensure_ascii=False, sort_keys=True)
     if "--json" in sys.argv:
-        print(json.dumps(union, ensure_ascii=False, indent=2))
+        print(json.dumps(union_view(), ensure_ascii=False, indent=2))
         return
-    print(f"visa_data records: {len(visas)}")
-    print(f"scenario_help duplicated records: {len(load_scenario_help())}")
-    print(f"union records: {len(union)}")
-    print(f"union == visa_data.json (E-1 zero-behavior-change invariant): {same}")
+    rep = parity_report()
+    if "--check" in sys.argv:
+        assert rep["union_equals_visa_data"], "union != visa_data.json (E-2 invariant broken)"
+        assert rep["duplicate_codes_in_union"] == rep["duplicate_codes_in_visa_data"], \
+            f"union introduced new duplicate codes: {set(rep['duplicate_codes_in_union']) - set(rep['duplicate_codes_in_visa_data'])}"
+        assert rep["union_count"] == rep["visa_data_count"], "union count drifted from visa_data"
+        print("[resolve_record_store] OK - E-2 invariants hold "
+              f"(union=={rep['union_count']}==visa_data; shadow={rep['scenario_help_shadow_count']}; "
+              f"no new dup codes; pre-existing dup={rep['duplicate_codes_in_visa_data']}).")
+        return
+    print(f"visa_data records: {rep['visa_data_count']}")
+    print(f"scenario_help shadow records: {rep['scenario_help_shadow_count']}")
+    print(f"union records: {rep['union_count']}")
+    print(f"duplicate codes in union: {rep['duplicate_codes_in_union'] or 'none'}")
+    print(f"union == visa_data.json (E-2 zero-behavior-change invariant): {rep['union_equals_visa_data']}")
 
 
 if __name__ == "__main__":
