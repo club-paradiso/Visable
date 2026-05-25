@@ -400,10 +400,34 @@ def _load_visas() -> Dict[str, Any]:
     used. The file is read once per process and cached in module-level
     state. `source` always exposes only a short tag, not an absolute
     path, to avoid leaking the runtime layout.
+
+    E-4A: the union resolver (record_store_union) is attempted first so the
+    backend reads from the deterministic union of visa_data.json +
+    data/scenario_help_records.json. During E-4A the union is identical to
+    visa_data.json (zero behavior change); the resolver merely proves the
+    plumbing works for E-4B. Falls back to path-based loading transparently.
     """
     global _VISAS_CACHE
     if _VISAS_CACHE is not None:
         return _VISAS_CACHE
+
+    # E-4A: try the union resolver first. It is deterministic and de-duped.
+    # The union equals visa_data.json today so behavior is unchanged.
+    try:
+        from record_store_union import load_union_view  # noqa: WPS433
+        records = load_union_view()
+        logger.info(
+            "Loaded %d visa records (source_type=union-resolver) via record_store_union",
+            len(records),
+        )
+        _VISAS_CACHE = {
+            "visas": records,
+            "source": "union-resolver",
+            "source_type": "union-resolver",
+        }
+        return _VISAS_CACHE
+    except Exception as exc:  # noqa: BLE001
+        logger.warning("record_store_union unavailable (%s); falling back to path-based loading", exc)
 
     last_error: Optional[str] = None
     for path in _candidate_visa_paths():

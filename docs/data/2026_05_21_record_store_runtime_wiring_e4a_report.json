@@ -1,0 +1,175 @@
+{
+  "report": "record_store_runtime_wiring_e4a",
+  "date": "2026-05-25",
+  "pr_title": "data: wire record store union runtime e4a",
+  "preceded_by": "PR #174 (data: alias-deprecate scenario help records e3)",
+  "branch": "data/wire-record-store-union-runtime-e4a",
+
+  "changed_files": [
+    "backend/record_store_union.py",
+    "backend/paradiso_backend.py",
+    "backend/tests/test_paradiso_backend.py",
+    "scripts/resolve_record_store.py",
+    "scripts/check_record_store_union_parity.py",
+    "docs/data/2026_05_21_RECORD_STORE_RUNTIME_WIRING_E4A_REPORT.md",
+    "docs/data/2026_05_21_record_store_runtime_wiring_e4a_report.json"
+  ],
+
+  "backend_runtime": {
+    "status": "wired",
+    "description": "backend/paradiso_backend.py _load_visas() now uses record_store_union.load_union_view() as primary data source, falling back to path-based loading if unavailable",
+    "data_path": "visa_data.json (via scripts/resolve_record_store.py union_view()) + data/scenario_help_records.json (shadow; de-duplicated)",
+    "source_type_reported": "union-resolver",
+    "api_visas_compatibility": "preserved",
+    "api_visas_count": 58,
+    "api_visas_shape": "data[], visas[], count, source, source_type — unchanged",
+    "fallback_available": true,
+    "fallback_path": "backend/data/visas.json or visa_data.json (existing path-based loading)"
+  },
+
+  "frontend_runtime": {
+    "status": "behavior-compatible via API (explicit wiring deferred — E-4A.2)",
+    "description": "index.html not modified. Frontend reads from /api/visas (now union-backed) or ./visa_data.json (static fallback, unchanged). No behavior change.",
+    "reason_for_deferral": "union output equals visa_data.json today; no frontend code change needed to preserve behavior"
+  },
+
+  "ai_context": {
+    "status": "behavior-compatible",
+    "description": "_build_visa_data_context_block() extracts specific fields only; migrationMeta is never included. Tests added proving this.",
+    "migration_meta_visible_in_ai_context": false,
+    "migration_meta_visible_in_ai_prompt": false,
+    "tests_added": [
+      "test_migration_meta_not_in_ai_context_block",
+      "test_migration_meta_not_in_ai_prompt_text"
+    ]
+  },
+
+  "record_counts": {
+    "visa_data_count": 58,
+    "scenario_help_shadow_count": 17,
+    "union_count": 58,
+    "simulated_e4_removal_union_count": 58,
+    "alias_deprecated_count": 17
+  },
+
+  "duplicate_handling": {
+    "D-4-2K": {
+      "type": "pre-existing duplicate in visa_data.json",
+      "indices": [24, 55],
+      "alias_deprecated": false,
+      "preserved_in_union": true,
+      "deferred_to": "D-content track"
+    },
+    "shadow_records": {
+      "count": 17,
+      "behavior": "de-duplicated by union resolver; visa_data copy is canonical during E-4A"
+    }
+  },
+
+  "overstay_parity": {
+    "SCN-6": {"count_in_union": 1, "status": "OK"},
+    "OVS-1": {"count_in_union": 1, "status": "OK"},
+    "FAQ-4": {"count_in_union": 1, "status": "OK"},
+    "golden_question_stability": "not degraded"
+  },
+
+  "direct_search_keyword_search": {
+    "status": "unchanged",
+    "description": "Union equals visa_data.json; search behavior identical. No chip/copy/ranking changes."
+  },
+
+  "migration_meta_visibility": {
+    "api_response": {
+      "visible": true,
+      "note": "migrationMeta is in visa_data.json records and returned as-is in /api/visas; not user-facing in UI"
+    },
+    "ai_context_block": {
+      "visible": false,
+      "note": "Field extraction list does not include migrationMeta; tests prove this"
+    },
+    "ai_prompt": {
+      "visible": false,
+      "note": "Prompt builder does not read migrationMeta; tests prove this"
+    },
+    "frontend_visible_fields": {
+      "visible": false,
+      "note": "Frontend renders nameKo, nameEn, summary, etc. Not migrationMeta."
+    }
+  },
+
+  "records_deleted": false,
+  "records_deleted_statement": "No records were deleted from visa_data.json. All 58 records remain.",
+
+  "removal_from_visa_data_allowed": false,
+  "removal_from_visa_data_allowed_statement": "removalFromVisaDataAllowed remains false for all 17 alias-deprecated records. Deletion is gated to E-4B.",
+
+  "simulate_e4_removal": {
+    "ran": true,
+    "command_1": "python3 scripts/resolve_record_store.py --check --simulate-e4-removal",
+    "result_1": "OK - simulated-E4-removal parity GREEN (sim==58==visa_data; deprecated_removed=17; user-facing content parity: PASS; no new dup codes; migrationMeta intentionally absent)",
+    "command_2": "python3 scripts/check_record_store_union_parity.py --simulate-e4-removal",
+    "result_2": "simulate-e4-removal GREEN - sim=58==visa_data=58; deprecated=17 removed+replaced; content parity: PASS; D-4-2K dup preserved; E-4B deletion safe.",
+    "migration_meta_note": "migrationMeta is intentionally absent from shadow records (E-3 alias-deprecation marker; not user-facing content); parity checked on user-facing fields only"
+  },
+
+  "validation_results": {
+    "resolve_record_store_check": "OK",
+    "resolve_record_store_simulate": "OK (GREEN)",
+    "check_record_store_union_parity": "OK",
+    "check_record_store_union_parity_simulate": "OK (GREEN)",
+    "check_scenario_help_records": "OK",
+    "check_visa_data_domain_classification": "OK",
+    "check_doc_master_id_migration": "OK",
+    "check_visa_data_text_integrity": "PASS",
+    "check_required_documents_coverage": "PASS",
+    "validate_coverage_matrix": "OK",
+    "validate_manual_grounding_candidate": "PASS (1/1)",
+    "check_source_manuals": "OK",
+    "sync_visa_data_check": "OK",
+    "backend_tests": "Ran 205 tests — OK (194 original + 11 new E-4A)",
+    "check_repo_sh": "Success (ALLOW_BACKEND_TEST_SKIP=1)"
+  },
+
+  "new_backend_tests": [
+    "UnionResolverE4AParityTests.test_api_visas_count_unchanged",
+    "UnionResolverE4AParityTests.test_key_records_present",
+    "UnionResolverE4AParityTests.test_d4_2k_duplicate_behavior_unchanged",
+    "UnionResolverE4AParityTests.test_union_introduces_no_new_duplicate_codes",
+    "UnionResolverE4AParityTests.test_migration_meta_not_in_ai_context_block",
+    "UnionResolverE4AParityTests.test_migration_meta_not_in_ai_prompt_text",
+    "UnionResolverE4AParityTests.test_overstay_codes_each_appear_once",
+    "UnionResolverE4AParityTests.test_source_type_reports_union_resolver",
+    "UnionResolverE4AParityTests.test_api_visas_no_warning_field_with_union_resolver",
+    "UnionResolverE4AParityTests.test_resolver_parity_report_matches_visa_data",
+    "UnionResolverE4AParityTests.test_simulated_e4_removal_content_parity"
+  ],
+
+  "e4b_prerequisites": {
+    "backend_union_runtime_proven": true,
+    "frontend_search_union_runtime_proven_or_deletion_independent": true,
+    "ai_golden_eval_stable": "backend tests pass; live golden eval skipped (no LLM in test env); must verify with live eval before E-4B",
+    "simulated_deletion_parity_green": true,
+    "api_visas_compatibility_documented": true,
+    "d4_2k_duplicate_risk_handled": "D-4-2K not alias-deprecated; both copies preserved; deferred to D-content track",
+    "removal_from_visa_data_allowed_set_to_true": false,
+    "removal_from_visa_data_allowed_note": "Must be explicitly set before E-4B deletion"
+  },
+
+  "e4b_plan": {
+    "step_1": "Set removalFromVisaDataAllowed: true in visa_data.json for 17 alias-deprecated records (or remove directly)",
+    "step_2": "Remove the 17 alias-deprecated records from visa_data.json",
+    "step_3": "Confirm scenario_help_records.json is the canonical home for those records",
+    "step_4": "Re-run all validators (simulate-e4-removal checks must pass with real data)",
+    "step_5": "Update sync_visa_data.py to handle the new canonical store structure",
+    "step_6": "Verify /api/visas count and behavior post-deletion",
+    "step_7": "Update validators to reflect new canonical stores"
+  },
+
+  "d_content_queue": {
+    "D-4-2K_duplicate": "pre-existing duplicate; not alias-deprecated; deferred to D-content track",
+    "F-4_H-2_sub_manual": "deferred — out of scope",
+    "K_STAR": "deferred — out of scope",
+    "REGION_S": "deferred — out of scope (지역특화형 / 광역형)",
+    "DOC_DICT_labels": "doc_local_recommendation and doc_top_tier_degree deferred — out of scope"
+  }
+}
