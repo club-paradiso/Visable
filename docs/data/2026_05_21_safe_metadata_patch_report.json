@@ -1,0 +1,101 @@
+{
+  "schema_version": "1.0",
+  "report": "2026-05-21 safe metadata / doc-ref hygiene patch (PR C)",
+  "pr": "C (after PR #157)",
+  "branch": "data/patch-2026-05-21-safe-metadata",
+  "audit_date": "2026-05-25",
+  "based_on": "PR #157 regenerated audit/crosswalk artifacts against the canonical 484-page visa and 777-page stay PDFs (installed by PR #155).",
+  "disclaimer": "Internal audit artifact. Not legal advice and not an official immigration decision.",
+  "scope_statement": "This PR applies safe, mechanical, source-grounded metadata/doc-reference hygiene only. No requiredDocuments, eligibility, fees, income, stay periods, procedures, aliases, or legal/admin guidance content was rewritten. No verified=true promotions. No needsManualReview removals.",
+  "changed_files": [
+    {
+      "file": "docs/manual_grounding_expansion_plan.md",
+      "change": "Source description page count corrected: 'Total pages (PDF): 774' -> '777'.",
+      "field": "Source block, 'Total pages (PDF)' line (line 29)",
+      "evidence_source": "PR #155 / PR #157; docs/source-manuals/source_manifest.json current.stay_residence_manual.pages = 777; docs/data/2026_05_21_manual_toc_map.json stay_manual.total_pages = 777",
+      "why_safe": "Living tracking document that describes the current committed source PDF by its current path (docs/source-manuals/2026-05/stay_manual_2026_05.pdf, now 777 pages). Factual page-count metadata only; no legal/manual content; the line carries no superseded hash, so the correction does not falsify a point-in-time snapshot."
+    }
+  ],
+  "changed_records": [],
+  "changed_doc_ids": [],
+  "production_data_changed": {
+    "visa_data.json": false,
+    "backend/data/visas.json": false,
+    "doc_master.json": false,
+    "docs/source-manuals/source_manifest.json": false
+  },
+  "sync_script_run": false,
+  "sync_script_note": "scripts/sync_visa_data.py was NOT needed because visa_data.json was not edited.",
+  "pr157_doc_master_findings_reassessment": {
+    "summary": "PR #157 flagged 12 corrupted doc_master IDs (Korean-string id field) plus 1 unused ID (doc_arc_fee). On careful audit for PR C, none of these is a safe mechanical hygiene target; all are load-bearing references. They are routed to PR D.",
+    "corrupted_ids_referenced": {
+      "count": 12,
+      "ids": [
+        "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)",
+        "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)",
+        "사증발급신청서(별지 제17호 서식)",
+        "사진 1매(해당 시)",
+        "수수료",
+        "여권",
+        "여권 및 외국인등록증",
+        "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)",
+        "체류지 입증서류",
+        "통합신청서",
+        "통합신청서(체류자격변경허가 신청 포함)",
+        "표준규격사진 1매"
+      ],
+      "finding": "All 12 IDs are referenced verbatim as document references inside visa_data.json. Renaming the id to a stable machine ID requires coordinated updates to every referencing record's document lists, which alters user-facing document requirements. NOT safe for PR C.",
+      "route": "PR D (page-cited / coordinated content change)"
+    },
+    "unused_id_reassessed": {
+      "id": "doc_arc_fee",
+      "pr157_claim": "unused (not referenced by visa_data.json)",
+      "pr_c_finding": "Referenced by the live frontend index.html in the COMMON_NEW document array (index.html lines ~10102 and ~10108). PR #157's 'unused' assessment was based on visa_data.json references only and is incomplete. Removing doc_arc_fee would break the frontend's common-document rendering.",
+      "decision": "DO NOT remove. Not a safe PR C target.",
+      "route": "no action (entry is in active use)"
+    }
+  },
+  "deliberately_not_changed": [
+    {
+      "item": "visa_data.json manualRef.pageRange / manualRequiredDocAudit.sectionPageRange",
+      "reason": "These are document-list sub-ranges (not full section ranges). Several are stale versus the PR #157 re-derived stay anchors (e.g. F-3 'pp. 425-428' and H-1 'pp. 518-525' now point outside their re-derived sections F-3 421-425 / H-1 514-517), but correcting a sub-range precisely requires exact page-cited evidence.",
+      "route": "PR D"
+    },
+    {
+      "item": "visa_data.json manualRequiredDocAudit.updatedAt = '2026-05-07'",
+      "reason": "Historical audit timestamp recording when that audit field was last set, not a source-date. Rewriting it would falsify the audit history.",
+      "route": "no action"
+    },
+    {
+      "item": "doc_master.json (12 corrupted ids + doc_arc_fee)",
+      "reason": "All load-bearing references (see pr157_doc_master_findings_reassessment).",
+      "route": "PR D (corrupted-id remap with coordinated visa_data.json reference updates)"
+    },
+    {
+      "item": "docs/data/2026_05_HIGH_RISK_GAP_PATCH_AUDIT.md, docs/data/JSON_MANUAL_LAW_AUDIT_2026_05.md, docs/data/MANUAL_REQUIRED_DOC_AUDIT_2026_05.md, docs/data/MANUAL_SOURCE_AUDIT_QUEUE.md",
+      "reason": "Dated, point-in-time historical audit snapshots that reference superseded source hashes (fcc0b89..., 0492683...) and old filenames (체류민원_0504.pdf). They were accurate as of their audit date and are superseded by the PR #157 artifacts. Rewriting only their '774' page count would falsify the historical record and create hash/page-count inconsistencies.",
+      "route": "no action (superseded by PR #157 artifacts)"
+    },
+    {
+      "item": "backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md ('774 PDF pages')",
+      "reason": "Past-tense record of an extraction performed against the then-current 774-page PDF. F-6 is explicitly excluded from PR C, and changing the historical page-count would misrepresent what was inspected.",
+      "route": "PR D (F-6 substantive review)"
+    }
+  ],
+  "pr_d_queue": [
+    "F-6: stale 2026.3 income note + F-6-1 income eligibility (stay §33 pp.474-497, visa §34 pp.324-335) with page-cited evidence.",
+    "D-4-2K duplicate (array indices 24 + 55): assign distinct code or sub-code (visa §12 pp.73-87 / stay §12 pp.83-101).",
+    "F-4 + H-2: Feb-2026 외국국적동포 sub-manual extraction; H-2 신규발급 중단 (stay §36 pp.518-584).",
+    "K-STAR: full sub-manual extraction incl. 우수인재 붙임 7-12 (visa §40 pp.456-484 / stay §41 pp.749-777).",
+    "REGION-S: 지역특화형 (stay §37 pp.585-654) + 광역형 (stay §40 pp.686-748).",
+    "doc_master corrupted-id remap: assign stable machine IDs to the 12 Korean-string ids and update every referencing visa_data.json document list in lockstep.",
+    "visa_data.json page-anchor sub-range corrections: re-derive doc-list sub-ranges for shifted stay sections (F-3, F-5, G-1, H-1, etc.) with exact page citations.",
+    "Optional: refresh the dated historical audit snapshots or mark them explicitly superseded by the PR #157 artifacts."
+  ],
+  "validation": {
+    "json_tool": "all target JSON valid",
+    "scripts": "check_source_manuals, check_source_updates --local-only, sync_visa_data --check, check_visa_data_text_integrity, check_required_documents_coverage, validate_coverage_matrix, validate_manual_grounding_candidate all pass",
+    "check_repo": "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh passes"
+  },
+  "no_legal_content_patched": true
+}
