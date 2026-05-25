@@ -18,12 +18,15 @@
   ],
   "domains": ["notices", "seasonal_worker", "social_integration"],
   "sources": [
-    {
-      "source_id": "hikorea_notice_index",
-      "title_ko": "HiKorea 공지사항",
-      "title_en": "HiKorea Notices",
-      "url": null,
-      "domain": "notices",
+  {
+    "source_id": "hikorea_notice_index",
+    "title_ko": "HiKorea 공지사항",
+    "title_en": "HiKorea Notices",
+    "url": "https://www.hikorea.go.kr/board/BoardNtcListR.pt?page=1",
+    "url_review_status": "operator_reviewed",
+    "url_reviewed_at": "2026-05-26",
+    "url_review_note": "Official HiKorea public notice index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+    "domain": "notices",
       "category_path": "hikorea/notices/announcements",
       "language": ["ko"],
       "source_type": "notice_index",
@@ -43,24 +46,27 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-      "robots_review_status": "not_checked",
-      "rate_limit_policy": "not_configured",
-      "activation_status": "candidate_only",
-      "activation_blockers": [
-        "Pin the exact public notice-index URL and allowed host before any fetch adapter can use this record.",
-        "Review robots.txt and site terms.",
-        "Configure rate limits and response-size limits.",
-        "Confirm extracted changes only create human review briefs and never update user-facing legal data automatically."
-      ],
+    "robots_review_status": "manual_review_required",
+    "rate_limit_policy": "manual_smoke_only",
+    "activation_status": "url_reviewed_candidate",
+    "activation_blockers": [
+      "Review robots.txt and site terms.",
+      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+      "Confirm extracted changes only create human review briefs and never update user-facing legal data automatically."
+    ],
       "retrieved_at": null,
       "registry_id": "hikorea_notice_placeholder"
     },
-    {
-      "source_id": "hikorea_materials_index",
-      "title_ko": "HiKorea 자료실",
-      "title_en": "HiKorea Materials / Downloads",
-      "url": null,
-      "domain": "notices",
+  {
+    "source_id": "hikorea_materials_index",
+    "title_ko": "HiKorea 자료실",
+    "title_en": "HiKorea Materials / Downloads",
+    "url": "https://www.hikorea.go.kr/board/BoardDataListR.pt?page=1",
+    "url_review_status": "operator_reviewed",
+    "url_reviewed_at": "2026-05-26",
+    "url_review_note": "Official HiKorea public data-library/materials index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+    "domain": "notices",
       "category_path": "hikorea/notices/materials",
       "language": ["ko", "en", "zh", "vi"],
       "source_type": "notice_index",
@@ -80,23 +86,26 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-      "robots_review_status": "not_checked",
-      "rate_limit_policy": "not_configured",
-      "activation_status": "candidate_only",
-      "activation_blockers": [
-        "Pin the exact public materials-index URL and allowed host before any fetch adapter can use this record.",
-        "Review robots.txt and site terms.",
-        "Configure rate limits and response-size limits.",
-        "Keep file downloads link-only unless a later reviewed PR explicitly adds hash monitoring for mirrored manuals."
-      ],
+    "robots_review_status": "manual_review_required",
+    "rate_limit_policy": "manual_smoke_only",
+    "activation_status": "url_reviewed_candidate",
+    "activation_blockers": [
+      "Review robots.txt and site terms.",
+      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+      "Keep file downloads link-only unless a later reviewed PR explicitly adds hash monitoring for mirrored manuals."
+    ],
       "retrieved_at": null
     },
-    {
-      "source_id": "immigration_service_notice_index",
-      "title_ko": "출입국·외국인정책본부 공지사항",
-      "title_en": "Korea Immigration Service — Notices",
-      "url": null,
-      "domain": "notices",
+  {
+    "source_id": "immigration_service_notice_index",
+    "title_ko": "출입국·외국인정책본부 공지사항",
+    "title_en": "Korea Immigration Service — Notices",
+    "url": "https://www.immigration.go.kr/immigration/1500/subview.do",
+    "url_review_status": "operator_reviewed",
+    "url_reviewed_at": "2026-05-26",
+    "url_review_note": "Official Korea Immigration Service public headquarters notice index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+    "domain": "notices",
       "category_path": "immigration/notices/announcements",
       "language": ["ko"],
       "source_type": "notice_index",
@@ -116,24 +125,27 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-      "robots_review_status": "not_checked",
-      "rate_limit_policy": "not_configured",
-      "activation_status": "candidate_only",
-      "activation_blockers": [
-        "Pin the exact public notice-index URL and allowed host before any fetch adapter can use this record.",
-        "Review robots.txt and site terms.",
-        "Configure rate limits and response-size limits.",
-        "Confirm detected changes remain review-only and are not promoted to legal guidance automatically."
-      ],
+    "robots_review_status": "manual_review_required",
+    "rate_limit_policy": "manual_smoke_only",
+    "activation_status": "url_reviewed_candidate",
+    "activation_blockers": [
+      "Review robots.txt and site terms.",
+      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+      "Confirm detected changes remain review-only and are not promoted to legal guidance automatically."
+    ],
       "retrieved_at": null,
       "registry_id": "moj_immigration_notice_placeholder"
     },
-    {
-      "source_id": "immigration_service_press_index",
-      "title_ko": "출입국·외국인정책본부 보도자료",
-      "title_en": "Korea Immigration Service — Press Releases",
-      "url": null,
-      "domain": "notices",
+  {
+    "source_id": "immigration_service_press_index",
+    "title_ko": "출입국·외국인정책본부 보도자료",
+    "title_en": "Korea Immigration Service — Press Releases",
+    "url": "https://www.immigration.go.kr/immigration/1502/subview.do",
+    "url_review_status": "operator_reviewed",
+    "url_reviewed_at": "2026-05-26",
+    "url_review_note": "Official Korea Immigration Service public press-release index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+    "domain": "notices",
       "category_path": "immigration/notices/press",
       "language": ["ko"],
       "source_type": "notice_index",
@@ -153,15 +165,15 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-      "robots_review_status": "not_checked",
-      "rate_limit_policy": "not_configured",
-      "activation_status": "candidate_only",
-      "activation_blockers": [
-        "Pin the exact public press-index URL and allowed host before any fetch adapter can use this record.",
-        "Review robots.txt and site terms.",
-        "Configure rate limits and response-size limits.",
-        "Require human review before any downstream summary or data change."
-      ],
+    "robots_review_status": "manual_review_required",
+    "rate_limit_policy": "manual_smoke_only",
+    "activation_status": "url_reviewed_candidate",
+    "activation_blockers": [
+      "Review robots.txt and site terms.",
+      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+      "Require human review before any downstream summary or data change."
+    ],
       "retrieved_at": null
     },
     {
