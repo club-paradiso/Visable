@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-05-25T23:02:23.870896+00:00",
+  "generated_at_utc": "2026-05-25T23:09:10.019758+00:00",
   "source_basis": [
     "출입국관리법 시행령 별표 1 / 별표 1의2 체류자격 체계",
     "2026.5 체류민원 안내매뉴얼 목차 및 체류자격별 섹션",
@@ -43,7 +43,9 @@
         "방문취업"
       ],
       "missing_terms": [],
-      "covered": true
+      "covered": true,
+      "partial_covered": false,
+      "coverage_state": "full"
     },
     "regional_special_visa": {
       "label": "지역특화형비자",
@@ -53,7 +55,9 @@
         "F-2-R",
         "F-4-R"
       ],
-      "covered": false
+      "covered": false,
+      "partial_covered": false,
+      "coverage_state": "missing"
     },
     "domestic_growth_youth": {
       "label": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
@@ -63,7 +67,9 @@
         "청소년"
       ],
       "missing_terms": [],
-      "covered": true
+      "covered": true,
+      "partial_covered": false,
+      "coverage_state": "full"
     },
     "top_tier_visa": {
       "label": "탑티어(Top-Tier) 비자",
@@ -77,7 +83,9 @@
       "missing_terms": [
         "탑티어"
       ],
-      "covered": true
+      "covered": false,
+      "partial_covered": true,
+      "coverage_state": "partial"
     },
     "wide_area_pilot": {
       "label": "광역형 비자 시범사업",
@@ -86,7 +94,9 @@
         "시범사업"
       ],
       "missing_terms": [],
-      "covered": true
+      "covered": true,
+      "partial_covered": false,
+      "coverage_state": "full"
     },
     "k_star_track": {
       "label": "K-STAR 비자트랙 제도",
@@ -97,7 +107,9 @@
       "missing_terms": [
         "KSTAR"
       ],
-      "covered": true
+      "covered": false,
+      "partial_covered": true,
+      "coverage_state": "partial"
     }
   },
   "f_1_6_diagnosis": {

@@ -176,11 +176,15 @@ def main() -> None:
                 hits.append(term)
             else:
                 missing_terms.append(term)
+        full_covered = not missing_terms
+        partial_covered = bool(hits) and bool(missing_terms)
         policy_track_coverage[key] = {
             "label": spec["label"],
             "hits": hits,
             "missing_terms": missing_terms,
-            "covered": bool(hits),
+            "covered": full_covered,
+            "partial_covered": partial_covered,
+            "coverage_state": "full" if full_covered else ("partial" if hits else "missing"),
         }
 
     f_1_6 = {
@@ -285,8 +289,17 @@ def main() -> None:
     lines.append("## 2026.5 manual policy/track section coverage")
     lines.append("")
     for key, info in policy_track_coverage.items():
-        status = "covered" if info["covered"] else "needs review"
+        state = info["coverage_state"]
+        if state == "full":
+            status = "covered"
+        elif state == "partial":
+            status = "partial coverage - needs review"
+        else:
+            status = "not covered - needs review"
         lines.append(f"- **{info['label']}**: {status}")
+        lines.append(f"  - coverage_state: `{state}`")
+        lines.append(f"  - covered: `{info['covered']}`")
+        lines.append(f"  - partial_covered: `{info['partial_covered']}`")
         if info["hits"]:
             lines.append(f"  - Hits: {', '.join(info['hits'])}")
         if info["missing_terms"]:

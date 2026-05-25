@@ -46,17 +46,35 @@ No missing legal top-level stay-status code was detected against the expected le
 ## 2026.5 manual policy/track section coverage
 
 - **외국국적동포 관련**: covered
+  - coverage_state: `full`
+  - covered: `True`
+  - partial_covered: `False`
   - Hits: C-3-8, F-1, H-2, F-4, F-5, 외국국적동포, 재외동포, 방문취업
-- **지역특화형비자**: needs review
+- **지역특화형비자**: not covered - needs review
+  - coverage_state: `missing`
+  - covered: `False`
+  - partial_covered: `False`
   - Terms not found: 지역특화형, F-2-R, F-4-R
 - **국내 성장 기반 외국인 청소년 취업·정주 체류제도**: covered
+  - coverage_state: `full`
+  - covered: `True`
+  - partial_covered: `False`
   - Hits: 국내 성장, 외국인 청소년, 청소년
-- **탑티어(Top-Tier) 비자**: covered
+- **탑티어(Top-Tier) 비자**: partial coverage - needs review
+  - coverage_state: `partial`
+  - covered: `False`
+  - partial_covered: `True`
   - Hits: Top-Tier, D-10-T, E-7-T, F-2-T, F-5-T
   - Terms not found: 탑티어
 - **광역형 비자 시범사업**: covered
+  - coverage_state: `full`
+  - covered: `True`
+  - partial_covered: `False`
   - Hits: 광역형, 시범사업
-- **K-STAR 비자트랙 제도**: covered
+- **K-STAR 비자트랙 제도**: partial coverage - needs review
+  - coverage_state: `partial`
+  - covered: `False`
+  - partial_covered: `True`
   - Hits: K-STAR, 비자트랙
   - Terms not found: KSTAR
 
