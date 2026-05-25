@@ -257,6 +257,26 @@
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
       "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    },
+    "searchAliases": [
+      "F-1-5"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-1-5",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -291,6 +311,26 @@
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
       "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    },
+    "searchAliases": [
+      "F-1-6"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-1-6",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -410,6 +450,26 @@
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
       "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    },
+    "searchAliases": [
+      "E-6-2"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-6-2",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -732,6 +792,37 @@
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
       "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+    },
+    "searchAliases": [
+      "B-2-1",
+      "B-2-2"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "B-2-1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "B-2-2",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -904,6 +995,37 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "B-1-1",
+      "B-1-2"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "B-1-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "B-1-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -1053,6 +1175,37 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "B-2-1",
+      "B-2-2"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "B-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "B-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -1609,6 +1762,114 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "C-3-1",
+      "C-3-2",
+      "C-3-3",
+      "C-3-4",
+      "C-3-5",
+      "C-3-6",
+      "C-3-8",
+      "C-3-9",
+      "C-3-10"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "C-3-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-8",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -1897,6 +2158,26 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-1-00"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-1-00",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -2489,6 +2770,136 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-2-1",
+      "D-2-2",
+      "D-2-3",
+      "D-2-4",
+      "D-2-5",
+      "D-2-6",
+      "D-2-7",
+      "D-2-8",
+      "D-2-R",
+      "D-4-1",
+      "D-4-7"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-8",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-R",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-7",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -2673,6 +3084,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-3-11",
+      "D-3-12",
+      "D-3-13"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-3-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-3-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-3-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -2930,6 +3383,103 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-4-1",
+      "D-4-2",
+      "D-4-2K",
+      "D-4-3",
+      "D-4-5",
+      "D-4-6",
+      "D-4-7",
+      "F-1-13"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-4-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-2K",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-13",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -3361,6 +3911,59 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-7-1",
+      "D-7-2",
+      "D-7-91",
+      "D-7-92"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-7-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-92",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -3590,6 +4193,70 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-8-1",
+      "D-8-2",
+      "D-8-3",
+      "D-8-4",
+      "D-8-91"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-8-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -3802,6 +4469,59 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-9-1",
+      "D-9-2",
+      "D-9-3",
+      "D-9-4"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-9-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -4041,6 +4761,59 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-10-1",
+      "D-10-2",
+      "D-10-3",
+      "D-10-T"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-10-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -4422,6 +5195,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "E-2-1",
+      "E-2-2",
+      "E-2-91"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-2-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -5110,6 +5925,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "E-6-1",
+      "E-6-2",
+      "E-6-3"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-6-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-6-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-6-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -5420,6 +6277,103 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "E-7-1",
+      "E-7-2",
+      "E-7-3",
+      "E-7-4",
+      "E-7-S",
+      "E-7-Y",
+      "E-7-T",
+      "E-7-91"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-7-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-S",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-Y",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -5857,6 +6811,114 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "E-9-1",
+      "E-9-2",
+      "E-9-3",
+      "E-9-4",
+      "E-9-5",
+      "E-9-9",
+      "E-9-10",
+      "E-9-R",
+      "E-9-JS"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-9-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-R",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-JS",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -6049,6 +7111,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "E-10-1",
+      "E-10-2",
+      "E-10-3"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "E-10-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-10-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-10-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -6296,6 +7400,114 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-1-3",
+      "F-1-5",
+      "F-1-9",
+      "F-1-13",
+      "F-1-21",
+      "F-1-22",
+      "F-1-23",
+      "F-1-24",
+      "F-1-6"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-1-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-21",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-22",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-23",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-24",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-6",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -6519,6 +7731,92 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-2-2",
+      "F-2-3",
+      "F-2-7",
+      "F-2-99",
+      "F-2-T",
+      "F-2-71",
+      "F-2-7S"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-99",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-71",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7S",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -6702,6 +8000,48 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-3-1",
+      "F-3-2",
+      "F-3-3"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-3-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-3-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-3-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -6968,6 +8308,158 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-4-11",
+      "F-4-12",
+      "F-4-13",
+      "F-4-14",
+      "F-4-15",
+      "F-4-16",
+      "F-4-17",
+      "F-4-18",
+      "F-4-19",
+      "F-4-20",
+      "F-4-21",
+      "F-4-25",
+      "F-4-30"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-4-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-14",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-15",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-16",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-17",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-18",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-19",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-20",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-21",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-25",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-30",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -7196,6 +8688,92 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-5-3",
+      "F-5-5",
+      "F-5-11",
+      "F-5-16",
+      "F-5-T",
+      "F-2-7",
+      "F-5-S1"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-5-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-16",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-S1",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -7734,6 +9312,59 @@
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-6-1",
+      "F-6-2",
+      "F-6-3",
+      "F-5-3"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-6-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-6-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-6-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-3",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -7955,6 +9586,81 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "G-1-1",
+      "G-1-5",
+      "G-1-6",
+      "G-1-10",
+      "G-1-11",
+      "G-1-12"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "G-1-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -9226,6 +10932,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "C-3-4",
+      "E-7-1",
+      "E-7-2"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "C-3-4",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-2",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {
@@ -9518,6 +11266,48 @@
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "F-2-71",
+      "F-2-7S",
+      "F-5-S1"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "F-2-71",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7S",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-S1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
     }
   },
   {

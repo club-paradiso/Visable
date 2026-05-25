@@ -1,0 +1,91 @@
+{
+  "generated_at_utc": "2026-05-25T23:34:18.055391+00:00",
+  "scope": "detail-code search metadata and index.html UI/search resolver patch",
+  "manual_files_present": {
+    "docs/source-manuals/2026-05/stay_manual_2026_05.pdf": true,
+    "docs/source-manuals/2026-05/visa_manual_2026_05.pdf": true,
+    "docs/source-manuals/2026-05/체류민원 안내매뉴얼_260521.pdf": false,
+    "docs/source-manuals/2026-05/사증발급 안내매뉴얼_260521.pdf": false
+  },
+  "law_public_data_runtime_active_detected": false,
+  "law_public_data_note": "Repository audit indicates law/public-data API integration is declared-only or runtime-inactive, so this patch does not fetch or generate external legal content.",
+  "added_aliases": [],
+  "guardrails": {
+    "created_new_records": false,
+    "deleted_records": false,
+    "modified_legal_requirement_text": false,
+    "promoted_verified_true": false,
+    "external_law_api_called": false,
+    "backend_changed": false,
+    "search_metadata_changed": true,
+    "index_html_changed": true
+  },
+  "watched_code_diagnostics": {
+    "F-1-6": {
+      "found_as_detail_token": true,
+      "source_records": [
+        "F-1",
+        "SCN-4"
+      ],
+      "records_with_alias_or_code": [
+        "F-1",
+        "SCN-4"
+      ]
+    },
+    "E-7-4": {
+      "found_as_detail_token": true,
+      "source_records": [
+        "E-7"
+      ],
+      "records_with_alias_or_code": [
+        "E-7"
+      ]
+    },
+    "F-2-7": {
+      "found_as_detail_token": true,
+      "source_records": [
+        "F-2",
+        "F-5"
+      ],
+      "records_with_alias_or_code": [
+        "F-2",
+        "F-5"
+      ]
+    },
+    "D-10-T": {
+      "found_as_detail_token": true,
+      "source_records": [
+        "D-10"
+      ],
+      "records_with_alias_or_code": [
+        "D-10"
+      ]
+    },
+    "F-2-R": {
+      "found_as_detail_token": false,
+      "source_records": [],
+      "records_with_alias_or_code": []
+    },
+    "F-4-R": {
+      "found_as_detail_token": false,
+      "source_records": [],
+      "records_with_alias_or_code": []
+    },
+    "F-5-T": {
+      "found_as_detail_token": true,
+      "source_records": [
+        "F-5"
+      ],
+      "records_with_alias_or_code": [
+        "F-5"
+      ]
+    }
+  },
+  "added_alias_count": 0,
+  "records_touched": [],
+  "index_html_patch": {
+    "index_html_changed": false,
+    "detail_resolver_installed": true,
+    "doc_unification_installed": true
+  }
+}

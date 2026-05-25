@@ -9511,6 +9511,15 @@ button[data-keyword]:focus-visible {
 }
 /* === End PR: autocomplete row contrast fix === */
 
+
+/* DOC_SECTION_UNIFICATION_CSS_2026_05
+   Duplicate required-document summary is hidden when the detailed 구비서류/procedure section exists.
+   This is UI unification only; underlying data remains intact.
+*/
+.doc-summary-duplicate-collapsed {
+  display: none !important;
+}
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -15594,5 +15603,208 @@ function showVisaDocForAction(visaCode) {
   render();
 })();
 </script>
+
+<script id="DETAIL_CODE_RESOLVER_SHIM_2026_05">
+(function () {
+  "use strict";
+
+  const DETAIL_CODE_EXACT = /^[A-Z]-\d{1,2}(?:-[A-Z0-9]+)+$/;
+
+  function norm(value) {
+    return String(value || "").trim().toUpperCase();
+  }
+
+  function deriveParents(code) {
+    const parts = norm(code).split("-");
+    const out = [];
+    while (parts.length > 2) {
+      parts.pop();
+      out.push(parts.join("-"));
+    }
+    return out;
+  }
+
+  async function loadVisaDataForDetailResolver() {
+    if (window.__paradisoDetailAliasData) return window.__paradisoDetailAliasData;
+    try {
+      const res = await fetch("visa_data.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("visa_data.json fetch failed: " + res.status);
+      const data = await res.json();
+      window.__paradisoDetailAliasData = Array.isArray(data) ? data : [];
+      return window.__paradisoDetailAliasData;
+    } catch (err) {
+      console.warn("[Paradiso] detail-code resolver unavailable:", err);
+      window.__paradisoDetailAliasData = [];
+      return window.__paradisoDetailAliasData;
+    }
+  }
+
+  function buildAliasMap(records) {
+    const top = new Map();
+    const alias = new Map();
+
+    for (const record of records) {
+      if (!record || !record.code) continue;
+      const code = norm(record.code);
+      top.set(code, code);
+
+      const aliases = Array.isArray(record.searchAliases) ? record.searchAliases : [];
+      for (const item of aliases) {
+        const a = norm(item);
+        if (a && !top.has(a) && !alias.has(a)) alias.set(a, code);
+      }
+
+      const subcodes = Array.isArray(record.subCodes) ? record.subCodes : [];
+      for (const sub of subcodes) {
+        const sc = norm(sub && sub.code);
+        if (sc && !top.has(sc) && !alias.has(sc)) alias.set(sc, code);
+      }
+    }
+
+    return { top, alias };
+  }
+
+  async function resolveDetailCodeQuery(query) {
+    const q = norm(query);
+    if (!DETAIL_CODE_EXACT.test(q)) return null;
+
+    const records = await loadVisaDataForDetailResolver();
+    const maps = buildAliasMap(records);
+
+    if (maps.top.has(q)) return null;
+    if (maps.alias.has(q)) return maps.alias.get(q);
+
+    for (const parent of deriveParents(q)) {
+      if (maps.top.has(parent)) return parent;
+    }
+
+    return null;
+  }
+
+  function installDetailResolver() {
+    const form = document.getElementById("searchForm");
+    const input = document.getElementById("q");
+    if (!form || !input || form.dataset.detailCodeResolverInstalled === "1") return;
+
+    form.dataset.detailCodeResolverInstalled = "1";
+
+    form.addEventListener("submit", async function (event) {
+      if (form.dataset.detailCodeResolving === "1") return;
+
+      const original = input.value;
+      const resolved = await resolveDetailCodeQuery(original);
+
+      if (!resolved || norm(resolved) === norm(original)) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      form.dataset.detailCodeResolving = "1";
+      form.dataset.originalDetailCodeQuery = original;
+      input.value = resolved;
+
+      try {
+        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+      } finally {
+        window.setTimeout(function () {
+          form.dataset.detailCodeResolving = "0";
+          input.value = original;
+        }, 280);
+      }
+    }, true);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installDetailResolver);
+  } else {
+    installDetailResolver();
+  }
+})();
+</script>
+
+
+<script id="DOC_SECTION_UNIFICATION_SHIM_2026_05">
+(function () {
+  "use strict";
+
+  function cleanText(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function isRequiredSummaryTitle(text) {
+    const t = cleanText(text);
+    return t === "필수서류" || /^required documents$/i.test(t) || /^required docs$/i.test(t);
+  }
+
+  function isDetailedDocsTitle(text) {
+    const t = cleanText(text);
+    return t === "구비서류" || /document checklist/i.test(t) || /documents by procedure/i.test(t);
+  }
+
+  function findSectionForTitle(titleEl, card) {
+    return titleEl.closest(".manual-section")
+      || titleEl.closest(".vs")
+      || titleEl.closest("section")
+      || titleEl.parentElement;
+  }
+
+  function cardHasDetailedDocumentSection(card) {
+    if (!card) return false;
+    if (card.querySelector(".procedure-tabs, .doc-group-grid, .procedure-docs, .doc-tabs")) return true;
+
+    const titles = Array.from(card.querySelectorAll(".manual-section-title, h2, h3, h4, h5"));
+    return titles.some(el => isDetailedDocsTitle(el.textContent));
+  }
+
+  function collapseDuplicateRequiredDocSummary(root) {
+    const scope = root && root.querySelectorAll ? root : document;
+    const cards = Array.from(scope.querySelectorAll(".manual-result, .vc"));
+
+    for (const card of cards) {
+      if (!cardHasDetailedDocumentSection(card)) continue;
+
+      const titles = Array.from(card.querySelectorAll(".manual-section-title, h2, h3, h4, h5"));
+      for (const title of titles) {
+        if (!isRequiredSummaryTitle(title.textContent)) continue;
+
+        const section = findSectionForTitle(title, card);
+        if (!section || section === card) continue;
+
+        section.classList.add("doc-summary-duplicate-collapsed");
+        section.setAttribute("aria-hidden", "true");
+        section.setAttribute("data-paradiso-doc-summary-unified", "true");
+      }
+    }
+  }
+
+  function installDocSectionUnifier() {
+    collapseDuplicateRequiredDocSummary(document);
+
+    const target = document.getElementById("rlist") || document.body;
+    if (!target || target.dataset.docSectionUnifierInstalled === "1") return;
+    target.dataset.docSectionUnifierInstalled = "1";
+
+    const observer = new MutationObserver(function () {
+      collapseDuplicateRequiredDocSummary(target);
+    });
+
+    observer.observe(target, { childList: true, subtree: true });
+
+    let ticks = 0;
+    const timer = window.setInterval(function () {
+      collapseDuplicateRequiredDocSummary(target);
+      ticks += 1;
+      if (ticks > 12) window.clearInterval(timer);
+    }, 400);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", installDocSectionUnifier);
+  } else {
+    installDocSectionUnifier();
+  }
+})();
+</script>
+
 </body>
 </html>
