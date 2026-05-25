@@ -1,0 +1,49 @@
+{
+  "generated_at_utc": "2026-05-25T23:38:23.436555+00:00",
+  "branch_basis": "main after PR #180 merge",
+  "visa_backend_sync": true,
+  "visa_record_count": 58,
+  "backend_record_count": 58,
+  "scenario_help_records_count": 17,
+  "index_markers": {
+    "DETAIL_CODE_RESOLVER_SHIM_2026_05": true,
+    "DOC_SECTION_UNIFICATION_SHIM_2026_05": true,
+    "DOC_SECTION_UNIFICATION_CSS_2026_05": true
+  },
+  "watched_detail_code_aliases": {
+    "F-1-6": [
+      "F-1",
+      "SCN-4"
+    ],
+    "E-7-4": [
+      "E-7"
+    ],
+    "F-2-7": [
+      "F-2",
+      "F-5"
+    ],
+    "D-10-T": [
+      "D-10"
+    ],
+    "F-2-R": [],
+    "F-4-R": [],
+    "F-5-T": [
+      "F-5"
+    ]
+  },
+  "union_parity": {
+    "union_equals_visa_data": true,
+    "union_count": 58,
+    "visa_data_count": 58
+  },
+  "simulated_e4_parity": {
+    "counts_match": true,
+    "simulated_user_facing_content_parity": true,
+    "simulated_duplicate_codes": [
+      "D-4-2K"
+    ],
+    "visa_data_duplicate_codes": [
+      "D-4-2K"
+    ]
+  }
+}
