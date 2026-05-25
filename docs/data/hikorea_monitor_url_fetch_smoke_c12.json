@@ -1,0 +1,224 @@
+{
+  "report_id": "hikorea_monitor_url_fetch_smoke_c12",
+  "report_date": "2026-05-26",
+  "branch": "docs/hikorea-monitor-url-fetch-smoke-c12",
+  "workflow": {
+    "name": "HiKorea Source Monitor Smoke",
+    "file_path": ".github/workflows/hikorea-source-monitor-smoke.yml",
+    "manual_only": true,
+    "workflow_dispatch_only": true,
+    "schedule_or_cron_added": false,
+    "automatic_issue_creation_enabled": false
+  },
+  "run": {
+    "id": 26411389727,
+    "url": "https://github.com/lucanomics/Paradiso/actions/runs/26411389727",
+    "trigger": "workflow_dispatch",
+    "event": "workflow_dispatch",
+    "status": "completed",
+    "conclusion": "success",
+    "branch": "main",
+    "head_branch": "main",
+    "head_sha": "31d7dd091f3d5f2c6da110155cdce975de8f85c3",
+    "created_at_utc": "2026-05-25T17:00:27Z",
+    "updated_at_utc": "2026-05-25T17:00:40Z"
+  },
+  "workflow_inputs": {
+    "allow_network": true,
+    "evidence": [
+      "Workflow metadata recorded allow_network=true.",
+      "Command log recorded allow_network=true.",
+      "The helper command included --allow-network.",
+      "The source monitor command included --allow-network."
+    ]
+  },
+  "job": {
+    "id": 77746392176,
+    "name": "smoke",
+    "url": "https://github.com/lucanomics/Paradiso/actions/runs/26411389727/job/77746392176",
+    "status": "completed",
+    "conclusion": "success",
+    "successful_steps": [
+      "Set up job",
+      "Checkout",
+      "Set up Python",
+      "Run HiKorea/KIS monitor smoke helper",
+      "Validate generated smoke artifacts",
+      "Write workflow summary",
+      "Upload smoke artifacts",
+      "Post Set up Python",
+      "Post Checkout",
+      "Complete job"
+    ]
+  },
+  "artifact_summary": {
+    "artifact_name": "hikorea-source-monitor-smoke-26411389727-1",
+    "artifact_id": 7202135787,
+    "size_in_bytes": 4009,
+    "digest": "sha256:c9d5b8a62ae9ecabe963f3a71195c63e879e53ce93042e68864142ca0f5318bc",
+    "created_at_utc": "2026-05-25T17:00:37Z",
+    "expires_at_utc": "2026-08-23T17:00:28Z",
+    "expired": false,
+    "files": [
+      {
+        "path": "workflow_26411389727_1_source_monitor.json",
+        "kind": "source_monitor_json",
+        "produced": true
+      },
+      {
+        "path": "workflow_26411389727_1_source_update_brief.md",
+        "kind": "markdown_brief",
+        "produced": true
+      },
+      {
+        "path": "workflow_26411389727_1_command.log",
+        "kind": "command_log",
+        "produced": true
+      },
+      {
+        "path": "workflow_26411389727_1_workflow_metadata.json",
+        "kind": "workflow_metadata",
+        "produced": true
+      }
+    ],
+    "source_monitor_json_produced": true,
+    "markdown_brief_produced": true,
+    "command_log_produced": true,
+    "workflow_metadata_produced": true
+  },
+  "commands_observed": [
+    {
+      "command": "python3 scripts/run_hikorea_monitor_smoke.py --run-label workflow_26411389727_1 --output-dir tmp/source-monitor-smoke --allow-network",
+      "allow_network": true
+    },
+    {
+      "command": "python3 scripts/check_source_updates.py --catalog-dry-run --json --list-disabled --fetch-timeout-seconds 5.0 --fetch-max-bytes 524288 --allow-network",
+      "allow_network": true
+    },
+    {
+      "command": "python3 scripts/generate_source_update_brief.py --input tmp/source-monitor-smoke/workflow_26411389727_1_source_monitor.json --output tmp/source-monitor-smoke/workflow_26411389727_1_source_update_brief.md --format markdown",
+      "created_github_issue": false
+    }
+  ],
+  "source_monitor_result_summary": {
+    "allow_network": true,
+    "mode": "catalog_dry_run",
+    "eligible_records": 0,
+    "disabled_records": 43,
+    "result_records": 43,
+    "state_counts": {
+      "skipped": 43
+    },
+    "reason_counts": {
+      "candidate_disabled": 43
+    },
+    "fetched_records": [],
+    "blocked_records": [],
+    "skipped_record_count": 43,
+    "skipped_reason": "candidate_disabled",
+    "redirects_blocked": [],
+    "timeouts": [],
+    "oversized_responses": [],
+    "content_hash_values": [],
+    "monitored_source_http_requests_made": 0
+  },
+  "candidate_records_tested": [
+    {
+      "catalog": "hikorea_source_catalog",
+      "source_id": "hikorea_civil_petition_forms_index",
+      "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1",
+      "host": "www.hikorea.go.kr",
+      "state": "skipped",
+      "reason": "candidate_disabled"
+    },
+    {
+      "catalog": "immigration_notice_sources",
+      "source_id": "hikorea_notice_index",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcListR.pt?page=1",
+      "host": "www.hikorea.go.kr",
+      "state": "skipped",
+      "reason": "candidate_disabled"
+    },
+    {
+      "catalog": "immigration_notice_sources",
+      "source_id": "hikorea_materials_index",
+      "url": "https://www.hikorea.go.kr/board/BoardDataListR.pt?page=1",
+      "host": "www.hikorea.go.kr",
+      "state": "skipped",
+      "reason": "candidate_disabled"
+    },
+    {
+      "catalog": "immigration_notice_sources",
+      "source_id": "immigration_service_notice_index",
+      "url": "https://www.immigration.go.kr/immigration/1500/subview.do",
+      "host": "www.immigration.go.kr",
+      "state": "skipped",
+      "reason": "candidate_disabled"
+    },
+    {
+      "catalog": "immigration_notice_sources",
+      "source_id": "immigration_service_press_index",
+      "url": "https://www.immigration.go.kr/immigration/1502/subview.do",
+      "host": "www.immigration.go.kr",
+      "state": "skipped",
+      "reason": "candidate_disabled"
+    }
+  ],
+  "records_fetched": [],
+  "records_blocked": [],
+  "records_skipped_summary": {
+    "total_skipped": 43,
+    "candidate_records_skipped": 5,
+    "reason": "candidate_disabled"
+  },
+  "brief_generator_output_summary": {
+    "total_records": 43,
+    "high_priority_changes": 0,
+    "medium_priority_changes": 0,
+    "review_needed_records": 0,
+    "blocked_or_safety_skipped_records": 0,
+    "informational_skipped_records": 43,
+    "low_priority_no_op_records": 0,
+    "changed_records_requiring_review": 0,
+    "recommended_next_action": "No source-change action is needed from this report."
+  },
+  "safety_confirmation": {
+    "allow_network": true,
+    "only_reviewed_candidates_fetched": false,
+    "only_reviewed_candidates_fetched_note": "No source URLs were fetched. The five reviewed candidates were present but skipped as candidate_disabled.",
+    "no_unreviewed_sources_fetched": true,
+    "service_portals_fetched": false,
+    "login_pages_fetched": false,
+    "transaction_pages_fetched": false,
+    "e_application_fetched": false,
+    "visit_reservation_fetched": false,
+    "validity_check_fetched": false,
+    "github_issue_created": false,
+    "schedule_or_cron_added": false,
+    "scheduled_monitoring_enabled": false,
+    "user_facing_data_updated": false,
+    "production_data_changed": false,
+    "ui_changed": false,
+    "dependencies_added": false,
+    "generated_outputs_committed_by_workflow": false,
+    "monitor_enabled_changed": false
+  },
+  "catalog_monitor_enabled_summary": {
+    "data/sources/hikorea_source_catalog.json": {
+      "records": 33,
+      "monitor_enabled_false": 33,
+      "monitor_enabled_true": 0
+    },
+    "data/sources/immigration_notice_sources.json": {
+      "records": 10,
+      "monitor_enabled_false": 10,
+      "monitor_enabled_true": 0
+    }
+  },
+  "unresolved_risks": [
+    "The run did not fetch the reviewed candidate URLs because all five were skipped as candidate_disabled.",
+    "The manual smoke eligibility path appears not to include activation_status=url_reviewed_candidate while monitor_enabled=false.",
+    "Redirect, timeout, oversized-response, and content-hash behavior for the reviewed public URLs remains untested."
+  ],
+  "next_recommended_pr": "C13 should make a narrow manual-smoke eligibility fix so workflow_dispatch allow_network=true can fetch only URL-reviewed candidates while monitor_enabled remains false, then rerun and document the reviewed-URL fetch smoke."
+}
