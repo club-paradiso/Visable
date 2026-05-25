@@ -4,21 +4,29 @@
       "title_ko": "사증발급 안내매뉴얼",
       "title_en": "Visa Issuance Guide Manual",
       "version": "2026.5",
-      "source_date": "unresolved",
-      "source_label": "2026.5 사증발급 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "source_date": "2026-05-21",
+      "source_date_evidence": "incoming_source_file_filename_and_manifest",
+      "source_date_evidence_note": "Source-file date '2026-05-21' is based on the incoming PDF/HWP filenames (uploaded as '사증발급 안내매뉴얼_260521.pdf' / '260521_사증민원_자격별_안내_매뉴얼.hwp') and the staged source manifest at docs/source-manuals/2026-05/incoming/source_files_manifest_2026_05_21.json. The PDF internal CreationDate is 2026-05-24T11:54:54Z (the user's local PDF export time on macOS Quartz PDFContext), which differs from the source-file date; do not conflate the two.",
+      "source_label": "2026.5 사증발급 안내매뉴얼 (2026-05-21 source-file revision; PDF internal export date 2026-05-24)",
       "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
       "pages": 484,
       "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-      "file_sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
-      "file_size_bytes": 13189369,
-      "pdf_internal_creation_date": "2026-05-07T00:54:33Z",
+      "file_sha256": "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "file_size_bytes": 13194599,
+      "pdf_internal_creation_date": "2026-05-24T11:54:54Z",
+      "pdf_internal_mod_date": "2026-05-24T11:54:54Z",
       "pdf_internal_title": "무제",
+      "pdf_internal_author": "lulu",
+      "pdf_internal_creator": "한컴오피스 한글 Viewer",
       "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
+      "pdf_version": "1.3",
       "role": "visa_issuance_manual",
       "status": "current",
-      "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '사증발급 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "extraction_primary_format": "pdf",
+      "source_file_format_available": ["pdf", "hwp"],
+      "verification_status": "source_file_compared",
+      "verification_note": "On 2026-05-24, the 2026-05-21 PDF and HWP source files were committed under docs/source-manuals/2026-05/incoming/ via PR #153. This PR (follow-up to PR #150 and PR #153) installs the committed 2026-05-21 PDF as the canonical visa_manual_2026_05.pdf. Cover page label is the generic 'YYYY. 5.' month-level label with no day (unchanged from the prior canonical PDF). TOC text and cover text are byte-identical to the prior canonical PDF on pages 1 and 2-10. SHA-256, byte size, and PDF internal CreationDate all differ from the prior canonical PDF, indicating a re-exported revision. PDF internal CreationDate is 2026-05-24T11:54:54Z (this is the macOS Quartz PDFContext export time, not the source-file revision date). HWP companion file is committed at docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp; HWP body text remains in distribution-mode and cannot be extracted by available tooling. PR B must rebuild TOC/crosswalk/audit downstream artifacts; this PR is metadata-only and does not patch visa_data.json, backend/data/visas.json, doc_master.json, or any legal/manual content.",
       "alternate_source_files": [
         {
           "file": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
@@ -52,21 +60,30 @@
       "title_ko": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
       "version": "2026.5",
-      "source_date": "unresolved",
-      "source_label": "2026.5 외국인체류 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "source_date": "2026-05-21",
+      "source_date_evidence": "incoming_source_file_filename_and_manifest",
+      "source_date_evidence_note": "Source-file date '2026-05-21' is based on the incoming PDF/HWP filenames (uploaded as '체류민원 안내매뉴얼_260521.pdf' / '260521_체류민원_자격별_안내_매뉴얼(지역특화형, 투자이민 비자 개정사항 반영).hwp') and the staged source manifest at docs/source-manuals/2026-05/incoming/source_files_manifest_2026_05_21.json. The PDF internal CreationDate is 2026-05-24T11:56:30Z (the user's local PDF export time on macOS Quartz PDFContext), which differs from the source-file date; do not conflate the two.",
+      "source_label": "2026.5 외국인체류 안내매뉴얼 (2026-05-21 source-file revision; PDF internal export date 2026-05-24; '지역특화형, 투자이민 비자 개정사항 반영')",
       "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
-      "pages": 774,
+      "pages": 777,
+      "previous_pages": 774,
       "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-      "file_sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
-      "file_size_bytes": 14818347,
-      "pdf_internal_creation_date": "2026-05-07T00:53:43Z",
+      "file_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+      "file_size_bytes": 14884075,
+      "pdf_internal_creation_date": "2026-05-24T11:56:30Z",
+      "pdf_internal_mod_date": "2026-05-24T11:56:30Z",
       "pdf_internal_title": "무제",
+      "pdf_internal_author": "lulu",
+      "pdf_internal_creator": "한컴오피스 한글 Viewer",
       "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
+      "pdf_version": "1.4",
       "role": "stay_residence_manual",
       "status": "current",
-      "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '체류민원 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. The body references a pilot project ending '2026년 5월 19일'; no internal date marker later than 2026.2.12. and no reference to a 2026-05-21 effective date or revision date was found in the body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "extraction_primary_format": "pdf",
+      "source_file_format_available": ["pdf", "hwp"],
+      "verification_status": "source_file_compared",
+      "verification_note": "On 2026-05-24, the 2026-05-21 PDF and HWP source files were committed under docs/source-manuals/2026-05/incoming/ via PR #153. This PR (follow-up to PR #150 and PR #153) installs the committed 2026-05-21 PDF as the canonical stay_manual_2026_05.pdf. Page count changed from 774 (prior canonical) to 777 (this revision). Cover page label and TOC pages 2-12 text content are byte-identical to the prior canonical PDF. The 3 added pages appear in the back-matter '붙임' (appendix) section and include '인구감소지역 지정 변경 고시(행정안전부 고시 제2024-15호, 2024. 2. 27., 개정)' and additional 우수인재 evaluation/추천서 attachments. SHA-256, byte size, page count, and PDF internal CreationDate all differ from the prior canonical PDF. PDF internal CreationDate is 2026-05-24T11:56:30Z (this is the macOS Quartz PDFContext export time, not the source-file revision date). HWP companion file is committed at docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp; HWP body text remains in distribution-mode and cannot be extracted by available tooling. PR B must rebuild TOC/crosswalk/audit downstream artifacts because the page count and back-matter changed; this PR is metadata-only and does not patch visa_data.json, backend/data/visas.json, doc_master.json, or any legal/manual content.",
       "alternate_source_files": [
         {
           "file": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
@@ -127,12 +144,50 @@
         "docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md",
         "docs/data/2026_05_21_manual_extraction_report.json"
       ]
+    },
+    {
+      "audit_date": "2026-05-24",
+      "branch": "data/stage-2026-05-21-pdf-sources",
+      "pr": 153,
+      "scope": "Stage committed 2026-05-21 PDF and HWP source files under docs/source-manuals/2026-05/incoming/; no canonical install, no metadata change.",
+      "files_staged": [
+        "docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.pdf (484p, 13,194,599 bytes, sha256 7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c)",
+        "docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.pdf (777p, 14,884,075 bytes, sha256 dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1)",
+        "docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.hwp (2,170,880 bytes, sha256 635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4)",
+        "docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.hwp (3,175,424 bytes, sha256 b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3)",
+        "docs/source-manuals/2026-05/incoming/source_files_manifest_2026_05_21.json",
+        "docs/source-manuals/2026-05/incoming/README.md"
+      ]
+    },
+    {
+      "audit_date": "2026-05-24",
+      "branch": "data/install-2026-05-21-pdf-sources",
+      "scope": "Install 2026-05-21 PDF source files from incoming/ into canonical manual paths; update source_manifest.json file-level identity and source_date to 2026-05-21 based on filename/manifest evidence; record PDF internal export date honestly as 2026-05-24; no downstream data patched; no legal/manual content patched.",
+      "files_replaced": [
+        "docs/source-manuals/2026-05/visa_manual_2026_05.pdf (484p; sha256 5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063 → 7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c; size 13,189,369 → 13,194,599; PDF CreationDate 2026-05-07 → 2026-05-24)",
+        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf (774p → 777p; sha256 0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba → dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1; size 14,818,347 → 14,884,075; PDF CreationDate 2026-05-07 → 2026-05-24)"
+      ],
+      "extraction_tooling": "poppler-utils 24.02.0 (pdfinfo, pdftotext)",
+      "page_count_check": "visa: 484 unchanged; stay: 774 → 777 (3 added back-matter '붙임' pages)",
+      "cover_extraction_diff": "visa cover (p1): byte-identical; stay cover (p1): byte-identical",
+      "toc_extraction_diff": "visa TOC (p2-10): byte-identical; stay TOC (p2-12): byte-identical",
+      "decision": "Replace canonical PDFs with committed 2026-05-21 PDF source files. Promote source_date to '2026-05-21' based on filename + staged source manifest evidence. Keep PDF internal CreationDate '2026-05-24' separate from source_date; the two are different facts and must not be conflated. PR B must rebuild TOC/crosswalk/audit downstream artifacts because stay page count changed.",
+      "reports": [
+        "docs/data/2026_05_21_PDF_SOURCE_INSTALL_REPORT.md",
+        "docs/data/2026_05_21_pdf_source_install_report.json"
+      ],
+      "downstream_blockers": [
+        "PR B (data/regenerate-2026-05-21-toc-crosswalk-audit) must regenerate TOC/crosswalk/audit because the canonical stay PDF page count changed from 774 to 777.",
+        "PR C/D follow PR B and may include any legal/manual content updates required by the new revision."
+      ]
     }
   ],
   "schema_notes": [
     "The 'source_date' field uses ISO 8601 calendar dates for verified-day manuals, or the literal string 'unresolved' when a within-month revision date has not been independently verified.",
     "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'source_file_received_distribution_mode_blocks_text_extraction', 'pending', or 'unknown'.",
     "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual.",
-    "The optional 'alternate_source_files' array on each 'current' entry holds non-primary source artifacts (e.g., HWP, HWPX, archived PDF exports) with their own per-file 'source_date', 'source_date_evidence', 'file_sha256', 'extraction_primary_format', and 'verification_status'. Filename-level evidence on an alternate source file does not by itself promote the primary entry's 'source_date'."
+    "The optional 'alternate_source_files' array on each 'current' entry holds non-primary source artifacts (e.g., HWP, HWPX, archived PDF exports) with their own per-file 'source_date', 'source_date_evidence', 'file_sha256', 'extraction_primary_format', and 'verification_status'. Filename-level evidence on an alternate source file does not by itself promote the primary entry's 'source_date'.",
+    "The 'source_date' and the 'pdf_internal_creation_date' fields encode different facts. 'source_date' is the source-file revision date as identified by filename, source-file manifest, or page-level evidence (e.g., '2026-05-21'). 'pdf_internal_creation_date' is the export timestamp recorded inside the PDF /Info dictionary by the PDF generator (e.g., macOS Quartz PDFContext writes the time at which the PDF was rendered from the HWP). They commonly differ when the source manual is authored in HWP and exported to PDF some days after the source revision; the manifest must record both honestly without conflating them.",
+    "The 'extraction_primary_format' field declares the format actually used for downstream text extraction (TOC, crosswalk, audit). The 'source_file_format_available' array lists every format committed under the canonical source-manual directory. For the 2026.5 manuals, 'pdf' is the primary extraction format; the matching HWP companion files are distribution-mode and their body text cannot be extracted by available tooling."
   ]
 }

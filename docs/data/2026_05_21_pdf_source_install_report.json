@@ -1,0 +1,171 @@
+{
+  "report_type": "pdf_source_install",
+  "report_date": "2026-05-25",
+  "branch": "data/install-2026-05-21-pdf-sources",
+  "follow_up_to_prs": [150, 153],
+  "description": "Install committed 2026-05-21 PDF source files from docs/source-manuals/2026-05/incoming/ into canonical manual paths. Follow-up to PR #150 (HWP companion files only) and PR #153 (staged PDF/HWP source files in incoming/). This PR completes the PDF canonical install.",
+
+  "incoming_manifest_verified": {
+    "path": "docs/source-manuals/2026-05/incoming/source_files_manifest_2026_05_21.json",
+    "visa_pdf": {
+      "manifest_sha256": "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "actual_sha256":   "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "match": true,
+      "manifest_size_bytes": 13194599,
+      "actual_size_bytes":   13194599,
+      "size_match": true,
+      "manifest_pages": 484,
+      "actual_pages":   484,
+      "pages_match": true
+    },
+    "stay_pdf": {
+      "manifest_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+      "actual_sha256":   "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+      "match": true,
+      "manifest_size_bytes": 14884075,
+      "actual_size_bytes":   14884075,
+      "size_match": true,
+      "manifest_pages": 777,
+      "actual_pages":   777,
+      "pages_match": true
+    },
+    "visa_hwp": {
+      "manifest_sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+      "actual_sha256":   "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
+      "match": true,
+      "manifest_size_bytes": 2170880,
+      "actual_size_bytes":   2170880,
+      "size_match": true
+    },
+    "stay_hwp": {
+      "manifest_sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+      "actual_sha256":   "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
+      "match": true,
+      "manifest_size_bytes": 3175424,
+      "actual_size_bytes":   3175424,
+      "size_match": true
+    }
+  },
+
+  "comparison": {
+    "visa_manual": {
+      "incoming_path": "docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.pdf",
+      "canonical_path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "prior_sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+      "prior_size_bytes": 13189369,
+      "prior_pages": 484,
+      "prior_pdf_creation_date": "2026-05-07T00:54:33Z",
+      "incoming_sha256": "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "incoming_size_bytes": 13194599,
+      "incoming_pages": 484,
+      "incoming_pdf_creation_date": "2026-05-24T11:54:54Z",
+      "sha256_differs": true,
+      "size_differs": true,
+      "pages_differ": false,
+      "cover_text_differs": false,
+      "toc_text_differs": false,
+      "decision": "REPLACE — SHA-256, byte size, and PDF internal CreationDate differ, indicating a newer export of the revised source. Page count and cover/TOC text unchanged.",
+      "installed": true
+    },
+    "stay_manual": {
+      "incoming_path": "docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.pdf",
+      "canonical_path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "prior_sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+      "prior_size_bytes": 14818347,
+      "prior_pages": 774,
+      "prior_pdf_creation_date": "2026-05-07T00:53:43Z",
+      "incoming_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+      "incoming_size_bytes": 14884075,
+      "incoming_pages": 777,
+      "incoming_pdf_creation_date": "2026-05-24T11:56:30Z",
+      "sha256_differs": true,
+      "size_differs": true,
+      "pages_differ": true,
+      "page_delta": "+3",
+      "cover_text_differs": false,
+      "toc_text_differs": false,
+      "added_pages_description": "3 back-matter '붙임' appendix pages added: '인구감소지역 지정 변경 고시 (행정안전부 고시 제2024-15호, 2024. 2. 27., 개정)' (붙임 8) and additional 우수인재 특별귀화 평가기준 / 국적신청 상세기술서 attachments (붙임 9-10). The prior canonical PDF ended at 붙임 12 (우수인재 추천서); the incoming PDF numbering indicates those attachments were re-indexed with the three additional pages inserted before the recommendation letter.",
+      "decision": "REPLACE — SHA-256, byte size, page count, and PDF internal CreationDate all differ. Page count increased 774 → 777. Cover and TOC text (pages 1-12) are byte-identical. Incoming PDF is the 2026-05-21 revised source and is usable.",
+      "installed": true,
+      "downstream_impact": "PR B must regenerate TOC map, JSON crosswalk, and audit reports because page count and back-matter changed."
+    }
+  },
+
+  "pdfinfo": {
+    "visa_incoming": {
+      "Title": "무제",
+      "Author": "lulu",
+      "Creator": "한컴오피스 한글 Viewer",
+      "Producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
+      "CreationDate": "Sun May 24 11:54:54 2026 UTC",
+      "ModDate": "Sun May 24 11:54:54 2026 UTC",
+      "Pages": "484",
+      "File size": "13194599 bytes",
+      "PDF version": "1.3"
+    },
+    "stay_incoming": {
+      "Title": "무제",
+      "Author": "lulu",
+      "Creator": "한컴오피스 한글 Viewer",
+      "Producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
+      "CreationDate": "Sun May 24 11:56:30 2026 UTC",
+      "ModDate": "Sun May 24 11:56:30 2026 UTC",
+      "Pages": "777",
+      "File size": "14884075 bytes",
+      "PDF version": "1.4"
+    },
+    "visa_prior_canonical": {
+      "CreationDate": "Thu May  7 00:54:33 2026 UTC",
+      "Pages": "484",
+      "File size": "13189369 bytes",
+      "PDF version": "1.3"
+    },
+    "stay_prior_canonical": {
+      "CreationDate": "Thu May  7 00:53:43 2026 UTC",
+      "Pages": "774",
+      "File size": "14818347 bytes",
+      "PDF version": "1.4"
+    }
+  },
+
+  "source_date_analysis": {
+    "source_date_assigned": "2026-05-21",
+    "source_date_basis": "incoming_source_file_filename_and_manifest",
+    "evidence": [
+      "Incoming PDF original upload filename: '사증발급 안내매뉴얼_260521.pdf' and '체류민원 안내매뉴얼_260521.pdf' (YYMMDD = 2026-05-21)",
+      "HWP original upload filenames: '260521_사증민원_자격별_안내_매뉴얼.hwp' and '260521_체류민원_자격별_안내_매뉴얼(지역특화형, 투자이민 비자 개정사항 반영).hwp'",
+      "docs/source-manuals/2026-05/incoming/source_files_manifest_2026_05_21.json committed in PR #153"
+    ],
+    "pdf_internal_creation_date_note": "PDF /Info CreationDate for visa is 2026-05-24T11:54:54Z and for stay is 2026-05-24T11:56:30Z. These are the macOS Quartz PDFContext export timestamps recorded when the user exported the HWP files to PDF. They reflect the export time, not the source-file revision date. source_date='2026-05-21' and pdf_internal_creation_date='2026-05-24T...' are both recorded honestly in source_manifest.json; they encode different facts and must not be conflated.",
+    "cover_page_label": "2026. 5. (month-level only; no day-level date on cover page of either manual)"
+  },
+
+  "hwp_status": {
+    "visa_hwp": {
+      "path": "docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.hwp",
+      "companion_installed": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+      "hwp_mode": "distribution_mode",
+      "body_extraction": "blocked — HWP 배포용 distribution-mode; ViewText sections encrypted; LibreOffice fails to load; pyhwp requires Python 2.7"
+    },
+    "stay_hwp": {
+      "path": "docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.hwp",
+      "companion_installed": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
+      "hwp_mode": "distribution_mode",
+      "body_extraction": "blocked — HWP 배포용 distribution-mode; ViewText sections encrypted; LibreOffice fails to load; pyhwp requires Python 2.7"
+    }
+  },
+
+  "files_not_modified": [
+    "visa_data.json",
+    "backend/data/visas.json",
+    "doc_master.json"
+  ],
+
+  "validation_results": {
+    "json_valid_source_manifest": true,
+    "json_valid_install_report": true,
+    "check_source_manuals_py": "see 2026_05_21_PDF_SOURCE_INSTALL_REPORT.md",
+    "check_source_updates_py_local_only": "see 2026_05_21_PDF_SOURCE_INSTALL_REPORT.md",
+    "check_repo_sh": "see 2026_05_21_PDF_SOURCE_INSTALL_REPORT.md"
+  }
+}
