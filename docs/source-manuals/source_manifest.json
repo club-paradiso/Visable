@@ -4,21 +4,21 @@
       "title_ko": "사증발급 안내매뉴얼",
       "title_en": "Visa Issuance Guide Manual",
       "version": "2026.5",
-      "source_date": "unresolved",
-      "source_label": "2026.5 사증발급 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "source_date": "2026-05-21",
+      "source_label": "2026-05-21 사증발급 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
       "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
       "pages": 484,
       "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-      "file_sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
-      "file_size_bytes": 13189369,
-      "pdf_internal_creation_date": "2026-05-07T00:54:33Z",
+      "file_sha256": "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "file_size_bytes": 13194599,
+      "pdf_internal_creation_date": "2026-05-24T11:54:54Z",
       "pdf_internal_title": "무제",
-      "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
+      "pdf_internal_producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
       "role": "visa_issuance_manual",
       "status": "current",
-      "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '사증발급 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "verification_status": "source_file_compared",
+      "verification_note": "Incoming user-provided PDF docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.pdf was compared against prior canonical docs/source-manuals/2026-05/visa_manual_2026_05.pdf by SHA-256, page count, PDF metadata, cover/TOC text, and sampled page-level text extraction. Canonical replacement was performed on branch data/install-2026-05-21-source-pdfs. The source PDF filename contains 260521/2026-05-21 evidence, and PDF page-level extraction confirms the expected 사증발급 안내매뉴얼 manual structure. The cover label remains month-level '2026. 5.' and does not independently encode the day; HWP distribution-mode body extraction was not used as proof.",
       "alternate_source_files": [
         {
           "file": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
@@ -52,21 +52,21 @@
       "title_ko": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
       "version": "2026.5",
-      "source_date": "unresolved",
-      "source_label": "2026.5 외국인체류 안내매뉴얼 (specific within-month revision date not independently verified)",
+      "source_date": "2026-05-21",
+      "source_label": "2026-05-21 외국인체류 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
       "supersedes": null,
       "authority": "법무부 출입국·외국인정책본부",
-      "pages": 774,
+      "pages": 777,
       "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-      "file_sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
-      "file_size_bytes": 14818347,
-      "pdf_internal_creation_date": "2026-05-07T00:53:43Z",
+      "file_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+      "file_size_bytes": 14884075,
+      "pdf_internal_creation_date": "2026-05-24T11:56:30Z",
       "pdf_internal_title": "무제",
-      "pdf_internal_producer": "macOS 15.6.1 Quartz PDFContext (한컴오피스 한글 Viewer)",
+      "pdf_internal_producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
       "role": "stay_residence_manual",
       "status": "current",
-      "verification_status": "user_attached_pdf_not_accessible_in_environment",
-      "verification_note": "Per the data/audit-2026-05-21-manual-update-json task (PR #148), the user-attached '체류민원 안내매뉴얼_260521.pdf' at a local macOS path was not accessible from this remote Linux execution environment, so a byte-level comparison against the user's 2026-05-21 PDF could not be performed. The repo PDF's cover page label is the generic 'YYYY. 5.' month-level label with no day. The PDF internal CreationDate is 2026-05-07. The body references a pilot project ending '2026년 5월 19일'; no internal date marker later than 2026.2.12. and no reference to a 2026-05-21 effective date or revision date was found in the body. These facts are consistent with the repo PDF being a pre-2026-05-21 (likely 2026-05-04 export-on-2026-05-07) version, but this is not proven. The 'source_date' field is therefore set to 'unresolved'. The PR-A run on 2026-05-24 (branch data/source-update-2026-05-21-manuals-and-notice-monitoring) received the 2026-05-21 HWP source files instead of PDFs (see alternate_source_files below); those HWP files are in distribution mode and their body text could not be decrypted with current tooling, so the PDF identity question remains unresolved. Do not promote 'source_date' to '2026-05-21' for the PDF without page-level evidence.",
+      "verification_status": "source_file_compared",
+      "verification_note": "Incoming user-provided PDF docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.pdf was compared against prior canonical docs/source-manuals/2026-05/stay_manual_2026_05.pdf by SHA-256, page count, PDF metadata, cover/TOC text, and sampled page-level text extraction. Canonical replacement was performed on branch data/install-2026-05-21-source-pdfs. The source PDF filename contains 260521/2026-05-21 evidence, and PDF page-level extraction confirms the expected 외국인체류 안내매뉴얼 manual structure. The cover label remains month-level '2026. 5.' and does not independently encode the day; HWP distribution-mode body extraction was not used as proof.",
       "alternate_source_files": [
         {
           "file": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
@@ -126,6 +126,51 @@
         "docs/data/2026_05_21_source_file_intake_report.json",
         "docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md",
         "docs/data/2026_05_21_manual_extraction_report.json"
+      ]
+    },
+    {
+      "audit_date": "2026-05-25",
+      "branch": "data/install-2026-05-21-source-pdfs",
+      "scope": "Compare staged 2026-05-21 source PDFs against canonical repo PDFs; install as canonical source manuals when PDF-level evidence supports replacement; no downstream data patch.",
+      "incoming_pdf_files": [
+        "docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.pdf",
+        "docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.pdf"
+      ],
+      "canonical_pdf_files": [
+        "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
+      ],
+      "comparison": {
+        "visa_issuance_manual": {
+          "prior_sha256": "5a191aedd7d896b2f60a4065b7646a3ccda3e46abeacf9d34dc3802a19184063",
+          "incoming_sha256": "7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+          "pages": "484 -> 484",
+          "decision": "replace canonical PDF; sampled page text matched prior canonical while incoming source identity/hash differed"
+        },
+        "stay_residence_manual": {
+          "prior_sha256": "0492683698fdb2ba614b3c3aa791c462d03a68437e730093943e96ea15f7b3ba",
+          "incoming_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+          "pages": "774 -> 777",
+          "decision": "replace canonical PDF; incoming source adds pages and sampled page-level text confirms expected stay manual structure"
+        }
+      },
+      "files_installed": [
+        "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
+      ],
+      "reports": [
+        "docs/data/2026_05_21_PDF_SOURCE_INSTALL_REPORT.md",
+        "docs/data/2026_05_21_pdf_source_install_report.json"
+      ],
+      "constraints_observed": [
+        "visa_data.json not modified",
+        "backend/data/visas.json not modified",
+        "doc_master.json not modified",
+        "no legal/manual content patched",
+        "no verified=true promotions or needsManualReview removals",
+        "no UI changes",
+        "no external source sites fetched",
+        "HWP body extraction not used as proof"
       ]
     }
   ],

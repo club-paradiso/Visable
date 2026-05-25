@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "docs/source-manuals/source_manifest.json"
 REQUIRED_ROLES = {
     "visa_issuance_manual": 484,
-    "stay_residence_manual": 774,
+    "stay_residence_manual": 777,
 }
 REQUIRED_FIELDS = {
     "title_ko",
