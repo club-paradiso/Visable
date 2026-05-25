@@ -116,7 +116,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "K-ETA",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -166,7 +247,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "TB-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -204,7 +366,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -242,7 +485,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-2",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -281,6 +605,17 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-3",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
         "searchAliases": [
           "F-1-5"
         ],
@@ -300,6 +635,76 @@
           "method": "detail_code_alias_extraction_without_new_legal_content",
           "verified": false,
           "needsManualReview": true
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
         }
       },
       "visaDataAliasDeprecated": true
@@ -337,6 +742,17 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-4",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
         "searchAliases": [
           "F-1-6"
         ],
@@ -356,6 +772,76 @@
           "method": "detail_code_alias_extraction_without_new_legal_content",
           "verified": false,
           "needsManualReview": true
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
         }
       },
       "visaDataAliasDeprecated": true
@@ -400,7 +886,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-5",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -438,7 +1005,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "SCN-6",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -482,6 +1130,17 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "OVS-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
         "searchAliases": [
           "E-6-2"
         ],
@@ -501,6 +1160,76 @@
           "method": "detail_code_alias_extraction_without_new_legal_content",
           "verified": false,
           "needsManualReview": true
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
         }
       },
       "visaDataAliasDeprecated": true
@@ -571,7 +1300,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "NHIS-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -626,7 +1436,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "FAQ-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -680,7 +1571,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "FAQ-2",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -722,7 +1694,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "FAQ-3",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -760,7 +1813,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "FAQ-4",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -836,6 +1970,17 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "VW-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
         "searchAliases": [
           "B-2-1",
           "B-2-2"
@@ -866,6 +2011,76 @@
           "method": "detail_code_alias_extraction_without_new_legal_content",
           "verified": false,
           "needsManualReview": true
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
         }
       },
       "visaDataAliasDeprecated": true
@@ -912,7 +2127,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "COM-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -999,7 +2295,88 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "migrationMeta": {
+          "migrationTrack": "E",
+          "migrationStatus": "alias_deprecated_in_visa_data",
+          "plannedCanonicalStore": "scenario_help",
+          "canonicalShadowStore": "data/scenario_help_records.json",
+          "scenarioHelpStoreCode": "RF-1",
+          "removalFromVisaDataAllowed": false,
+          "requiresParityBeforeRemoval": true,
+          "aliasDeprecatedAt": "2026-05-21-source-audit",
+          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+        },
+        "feeInfo": {
+          "paradisoDefault202605": {
+            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "verified": false,
+            "needsManualReview": true,
+            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+            "procedures": {
+              "foreignRegistration": {
+                "labelKo": "외국인등록",
+                "items": [
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록증 발급 수수료 35,000원"
+                  }
+                ]
+              },
+              "extension": {
+                "labelKo": "체류기간 연장",
+                "items": [
+                  {
+                    "name": "체류기간 연장허가 수수료",
+                    "amountKRW": 60000,
+                    "display": "체류기간 연장허가 정부수입인지 60,000원"
+                  }
+                ]
+              },
+              "statusChange": {
+                "labelKo": "체류자격 변경",
+                "items": [
+                  {
+                    "name": "체류자격 변경허가 수수료",
+                    "amountKRW": 100000,
+                    "display": "체류자격 변경허가 정부수입인지 100,000원"
+                  },
+                  {
+                    "name": "외국인등록증 재발급/교체 수수료",
+                    "amountKRW": 35000,
+                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                  }
+                ]
+              },
+              "grantStatus": {
+                "labelKo": "체류자격 부여",
+                "items": [
+                  {
+                    "name": "체류자격 부여 수수료",
+                    "amountKRW": 80000,
+                    "display": "체류자격 부여 정부수입인지 80,000원"
+                  },
+                  {
+                    "name": "외국인등록증 발급 수수료",
+                    "amountKRW": 35000,
+                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                  }
+                ]
+              },
+              "visaIssuance": {
+                "labelKo": "사증 발급",
+                "items": [
+                  {
+                    "name": "재외공관 사증발급 수수료",
+                    "amountKRW": null,
+                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
       "visaDataAliasDeprecated": true
     }
@@ -1023,5 +2400,30 @@
     "legalContentCreated": false,
     "verifiedPromotion": false,
     "note": "Keeps scenario/help shadow copies content-equivalent for simulated E-4B removal after detail-code alias metadata was added to visa_data.json."
+  },
+  "_docTermFeeShadowSync": {
+    "updatedAt": "2026-05-26",
+    "method": "copy_live_record_after_doc_term_fee_metadata_patch_for_e4_parity",
+    "syncedCodes": [
+      "COM-1",
+      "FAQ-1",
+      "FAQ-2",
+      "FAQ-3",
+      "FAQ-4",
+      "K-ETA",
+      "NHIS-1",
+      "OVS-1",
+      "RF-1",
+      "SCN-1",
+      "SCN-2",
+      "SCN-3",
+      "SCN-4",
+      "SCN-5",
+      "SCN-6",
+      "TB-1",
+      "VW-1"
+    ],
+    "legalContentCreated": false,
+    "verifiedPromotion": false
   }
 }

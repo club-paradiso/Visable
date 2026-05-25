@@ -9520,6 +9520,29 @@ button[data-keyword]:focus-visible {
   display: none !important;
 }
 
+
+/* DOC_TERM_FEE_UI_CSS_2026_05 */
+.paradiso-fee-notice {
+  margin: 0.75rem 0;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid rgba(14, 163, 123, 0.28);
+  border-left: 4px solid var(--p-emerald, #0EA37B);
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--p-emerald, #0EA37B) 7%, #fff);
+  color: var(--p-ink, #152823);
+}
+.paradiso-fee-notice strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--p-emerald-deep, #085E48);
+}
+.paradiso-fee-notice small {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--p-ink-mute, #5f6763);
+  line-height: 1.5;
+}
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -15802,6 +15825,144 @@ function showVisaDocForAction(visaCode) {
     document.addEventListener("DOMContentLoaded", installDocSectionUnifier);
   } else {
     installDocSectionUnifier();
+  }
+})();
+</script>
+
+
+<script id="DOC_TERM_FEE_UI_SHIM_2026_05">
+(function () {
+  "use strict";
+
+  const FEE_BY_LABEL = [
+    { test: /외국인등록/, title: "수수료 안내", body: "외국인등록증 발급 수수료 35,000원" },
+    { test: /체류기간\s*연장|연장/, title: "수수료 안내", body: "체류기간 연장허가 정부수입인지 60,000원" },
+    { test: /체류자격\s*변경|변경/, title: "수수료 안내", body: "체류자격 변경허가 정부수입인지 100,000원. 등록증 발급이 필요한 경우 35,000원 별도 가능" },
+    { test: /최초\s*신청|입국\s*전|신규|사증/, title: "수수료 안내", body: "사증발급 수수료는 국적, 사증 종류, 재외공관 기준에 따라 달라짐. 국내 체류자격 부여는 정부수입인지 80,000원, 외국인등록 대상자는 등록증 발급 수수료 35,000원 별도 가능" }
+  ];
+
+  const TERM_REPLACEMENTS = [
+    [/^신청서$/, "통합신청서(별지 제34호 서식)"],
+    [/^통합신청서$/, "통합신청서(별지 제34호 서식)"],
+    [/^신청서\s*\(?별지\s*제?34호\s*서식\)?$/, "통합신청서(별지 제34호 서식)"],
+    [/^여권$/, "여권 원본 및 인적사항면 사본"],
+    [/^표준규격사진\s*1매$/, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)"],
+    [/^수수료$/, "수수료(절차별 금액 아래 수수료 안내 확인)"],
+    [/^혼인관계증명서$/, "혼인관계증명서(상세)"],
+    [/^기본증명서$/, "기본증명서(상세)"],
+    [/^가족관계증명서$/, "가족관계증명서(상세)"]
+  ];
+
+  function clean(value) {
+    return String(value || "").replace(/\s+/g, " ").trim();
+  }
+
+  function normalizeTerm(value) {
+    let text = clean(value);
+    for (const pair of TERM_REPLACEMENTS) {
+      if (pair[0].test(text)) return pair[1];
+    }
+    text = text.replace(/신청서\s*\(?별지\s*제?34호\s*서식\)?/g, "통합신청서(별지 제34호 서식)");
+    text = text.replace(/표준규격사진\s*1매/g, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)");
+    return text;
+  }
+
+  function activeProcedureLabel(card) {
+    const active = card.querySelector(".procedure-tab.active, .doc-tab.active, [aria-selected='true']");
+    if (active) return clean(active.textContent);
+
+    const tabs = Array.from(card.querySelectorAll(".procedure-tab, .doc-tab, button"));
+    const visible = tabs.find(el => /외국인등록|체류기간|연장|변경|최초|신규|사증/.test(clean(el.textContent)));
+    return visible ? clean(visible.textContent) : "";
+  }
+
+  function feeForLabel(label) {
+    return FEE_BY_LABEL.find(item => item.test.test(label)) || null;
+  }
+
+  function normalizeVisibleDocTerms(card) {
+    const candidates = Array.from(card.querySelectorAll(".doc-item, .doc-card, .docs-list li, .manual-doc-item, .doc-group li, .doc-group-card"));
+    for (const el of candidates) {
+      if (el.dataset.paradisoDocTermNormalized === "1") continue;
+      const text = clean(el.textContent);
+      if (!text || text.length > 90) continue;
+
+      const normalized = normalizeTerm(text);
+      if (normalized && normalized !== text) {
+        el.textContent = normalized;
+        el.dataset.paradisoDocTermNormalized = "1";
+      }
+    }
+  }
+
+  function updateBareFeeCards(card, fee) {
+    if (!fee) return;
+    const candidates = Array.from(card.querySelectorAll(".doc-item, .doc-card, .docs-list li, .manual-doc-item, .doc-group li, .doc-group-card"));
+    for (const el of candidates) {
+      const text = clean(el.textContent);
+      if (/^수수료($|\()/.test(text) || /절차별 금액은 수수료 안내 확인/.test(text)) {
+        el.textContent = "수수료: " + fee.body;
+        el.dataset.paradisoFeeExpanded = "1";
+      }
+    }
+  }
+
+  function insertFeeNotice(card, fee) {
+    if (!fee || card.querySelector(".paradiso-fee-notice")) return;
+
+    const anchor =
+      card.querySelector(".procedure-tabs, .doc-tabs") ||
+      card.querySelector(".doc-group-grid") ||
+      card.querySelector(".manual-section-title");
+
+    if (!anchor || !anchor.parentElement) return;
+
+    const box = document.createElement("div");
+    box.className = "paradiso-fee-notice";
+    box.innerHTML = "<strong>" + fee.title + "</strong><span>" + fee.body + "</span><small>수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.</small>";
+
+    if (anchor.nextSibling) {
+      anchor.parentElement.insertBefore(box, anchor.nextSibling);
+    } else {
+      anchor.parentElement.appendChild(box);
+    }
+  }
+
+  function patchCard(card) {
+    if (!card) return;
+    normalizeVisibleDocTerms(card);
+    const label = activeProcedureLabel(card);
+    const fee = feeForLabel(label);
+    updateBareFeeCards(card, fee);
+    insertFeeNotice(card, fee);
+  }
+
+  function patchAll() {
+    const cards = Array.from(document.querySelectorAll(".manual-result, .vc"));
+    cards.forEach(patchCard);
+  }
+
+  function install() {
+    patchAll();
+    const target = document.getElementById("rlist") || document.body;
+    if (target.dataset.docTermFeeShimInstalled === "1") return;
+    target.dataset.docTermFeeShimInstalled = "1";
+
+    const observer = new MutationObserver(patchAll);
+    observer.observe(target, { childList: true, subtree: true, attributes: true, attributeFilter: ["class", "aria-selected"] });
+
+    let ticks = 0;
+    const timer = window.setInterval(function () {
+      patchAll();
+      ticks += 1;
+      if (ticks > 15) window.clearInterval(timer);
+    }, 350);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", install);
+  } else {
+    install();
   }
 })();
 </script>
