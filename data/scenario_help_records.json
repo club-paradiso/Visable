@@ -280,7 +280,27 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "searchAliases": [
+          "F-1-5"
+        ],
+        "_searchAliasAudit": {
+          "generatedAliases": [
+            {
+              "alias": "F-1-5",
+              "reason": "existing_record_text_code_token",
+              "source": "existing_repo_json_and_2026_05_manual_audit",
+              "sourceManualVersion": "2026.5",
+              "legalContentCreated": false,
+              "verified": false,
+              "needsManualReview": true,
+              "updatedAt": "2026-05-26"
+            }
+          ],
+          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "verified": false,
+          "needsManualReview": true
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -316,7 +336,27 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "searchAliases": [
+          "F-1-6"
+        ],
+        "_searchAliasAudit": {
+          "generatedAliases": [
+            {
+              "alias": "F-1-6",
+              "reason": "existing_record_text_code_token",
+              "source": "existing_repo_json_and_2026_05_manual_audit",
+              "sourceManualVersion": "2026.5",
+              "legalContentCreated": false,
+              "verified": false,
+              "needsManualReview": true,
+              "updatedAt": "2026-05-26"
+            }
+          ],
+          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "verified": false,
+          "needsManualReview": true
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -441,7 +481,27 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "searchAliases": [
+          "E-6-2"
+        ],
+        "_searchAliasAudit": {
+          "generatedAliases": [
+            {
+              "alias": "E-6-2",
+              "reason": "existing_record_text_code_token",
+              "source": "existing_repo_json_and_2026_05_manual_audit",
+              "sourceManualVersion": "2026.5",
+              "legalContentCreated": false,
+              "verified": false,
+              "needsManualReview": true,
+              "updatedAt": "2026-05-26"
+            }
+          ],
+          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "verified": false,
+          "needsManualReview": true
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -775,7 +835,38 @@
         "documents_initial": "DATA_MISSING",
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING"
+        "hikorea_task_type": "DATA_MISSING",
+        "searchAliases": [
+          "B-2-1",
+          "B-2-2"
+        ],
+        "_searchAliasAudit": {
+          "generatedAliases": [
+            {
+              "alias": "B-2-1",
+              "reason": "existing_record_text_code_token",
+              "source": "existing_repo_json_and_2026_05_manual_audit",
+              "sourceManualVersion": "2026.5",
+              "legalContentCreated": false,
+              "verified": false,
+              "needsManualReview": true,
+              "updatedAt": "2026-05-26"
+            },
+            {
+              "alias": "B-2-2",
+              "reason": "existing_record_text_code_token",
+              "source": "existing_repo_json_and_2026_05_manual_audit",
+              "sourceManualVersion": "2026.5",
+              "legalContentCreated": false,
+              "verified": false,
+              "needsManualReview": true,
+              "updatedAt": "2026-05-26"
+            }
+          ],
+          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "verified": false,
+          "needsManualReview": true
+        }
       },
       "visaDataAliasDeprecated": true
     },
@@ -914,5 +1005,23 @@
     }
   ],
   "e3_status": "visa_data_records_alias_deprecated",
-  "e3_note": "As of E-3, the 17 source records in visa_data.json carry migrationMeta.migrationStatus=\"alias_deprecated_in_visa_data\" with removalFromVisaDataAllowed=false. Nested record copies here remain pristine pre-deprecation duplicates; removal from visa_data.json is gated until E-4 parity."
+  "e3_note": "As of E-3, the 17 source records in visa_data.json carry migrationMeta.migrationStatus=\"alias_deprecated_in_visa_data\" with removalFromVisaDataAllowed=false. Nested record copies here remain pristine pre-deprecation duplicates; removal from visa_data.json is gated until E-4 parity.",
+  "_searchAliasShadowSync": {
+    "updatedAt": "2026-05-26",
+    "method": "copy_search_alias_metadata_from_live_visa_data_for_e4_parity",
+    "fields": [
+      "searchAliases",
+      "_searchAliasAudit"
+    ],
+    "syncedCodes": [
+      "OVS-1",
+      "SCN-3",
+      "SCN-4",
+      "VW-1"
+    ],
+    "missingLiveCodes": [],
+    "legalContentCreated": false,
+    "verifiedPromotion": false,
+    "note": "Keeps scenario/help shadow copies content-equivalent for simulated E-4B removal after detail-code alias metadata was added to visa_data.json."
+  }
 }
