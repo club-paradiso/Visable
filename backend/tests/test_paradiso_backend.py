@@ -128,7 +128,7 @@ class VisasEndpointTests(unittest.TestCase):
             "warning", body,
             f"/api/visas returned fallback warning: {body.get('warning')!r}",
         )
-        self.assertIn(body.get("source_type"), {"backend-data", "repo-root", "explicit"})
+        self.assertIn(body.get("source_type"), {"backend-data", "repo-root", "explicit", "union-resolver"})
 
     def test_returns_known_visa_code(self):
         """Real Paradiso data must include D-2 (used by ask payload tests)."""
@@ -2203,6 +2203,181 @@ class AskVisaDataInjectionTests(unittest.TestCase):
         detail = resp.json()["detail"]
         self.assertFalse(detail.get("grounding_used"))
         self.assertEqual(detail.get("grounding_sources"), [])
+
+
+class UnionResolverE4AParityTests(unittest.TestCase):
+    """E-4A runtime union resolver parity tests.
+
+    Proves that wiring the backend to the record-store union resolver
+    preserves current /api/visas behavior exactly:
+      - record count stays at 58
+      - key records remain present
+      - D-4-2K pre-existing duplicate behavior is unchanged
+      - migrationMeta does not leak into AI context fields
+      - union resolver introduces no new duplicate codes
+    """
+
+    EXPECTED_COUNT = 58
+    KEY_CODES = {"K-ETA", "SCN-6", "OVS-1", "FAQ-4", "NHIS-1", "COM-1", "RF-1"}
+
+    def _visas(self):
+        client, _ = _client()
+        resp = client.get("/api/visas")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        return resp.json().get("data", [])
+
+    def test_api_visas_count_unchanged(self):
+        """Union-resolved /api/visas must return exactly 58 records."""
+        visas = self._visas()
+        self.assertEqual(
+            len(visas),
+            self.EXPECTED_COUNT,
+            f"/api/visas count {len(visas)} != expected {self.EXPECTED_COUNT}",
+        )
+
+    def test_key_records_present(self):
+        """K-ETA, SCN-6, OVS-1, FAQ-4, NHIS-1, COM-1, RF-1 must all be present."""
+        codes = {v.get("code") for v in self._visas()}
+        for code in self.KEY_CODES:
+            self.assertIn(code, codes, f"code {code} missing from /api/visas response")
+
+    def test_d4_2k_duplicate_behavior_unchanged(self):
+        """D-4-2K pre-existing duplicate (indices 24 and 55) must still appear twice."""
+        visas = self._visas()
+        d4_2k = [v for v in visas if v.get("code") == "D-4-2K"]
+        self.assertEqual(
+            len(d4_2k),
+            2,
+            f"D-4-2K appeared {len(d4_2k)} time(s); expected 2 (pre-existing dup unchanged)",
+        )
+
+    def test_union_introduces_no_new_duplicate_codes(self):
+        """The union must not introduce any duplicate codes beyond D-4-2K."""
+        visas = self._visas()
+        counts: dict = {}
+        for v in visas:
+            c = v.get("code")
+            counts[c] = counts.get(c, 0) + 1
+        new_dupes = {c for c, n in counts.items() if n > 1 and c != "D-4-2K"}
+        self.assertEqual(
+            new_dupes,
+            set(),
+            f"union introduced unexpected new duplicate codes: {new_dupes}",
+        )
+
+    def test_migration_meta_not_in_ai_context_block(self):
+        """migrationMeta must not appear in the AI context block built from visa_data."""
+        _, mod = _client()
+        # Build a context block for a record that has migrationMeta in visa_data
+        # (all 17 alias-deprecated records carry it; K-ETA is one of them).
+        visa_with_migration_meta = {
+            "code": "K-ETA",
+            "nameKo": "전자여행허가",
+            "nameEn": "Korea Electronic Travel Authorization",
+            "cat": "electronic-travel",
+            "summary": "무사증 입국 전 전자여행허가 취득 의무",
+            "migrationMeta": {
+                "migrationStatus": "alias_deprecated_in_visa_data",
+                "plannedCanonicalStore": "scenario_help_records",
+                "removalFromVisaDataAllowed": False,
+                "requiresParityBeforeRemoval": True,
+            },
+        }
+        block = mod._build_visa_data_context_block(visa_with_migration_meta)
+        self.assertTrue(block, "context block must not be empty for a valid record")
+        self.assertNotIn(
+            "migrationMeta",
+            block,
+            "migrationMeta must not appear in the AI context block",
+        )
+        self.assertNotIn(
+            "alias_deprecated_in_visa_data",
+            block,
+            "migrationStatus value must not appear in the AI context block",
+        )
+        self.assertNotIn(
+            "removalFromVisaDataAllowed",
+            block,
+            "removalFromVisaDataAllowed must not appear in the AI context block",
+        )
+
+    def test_migration_meta_not_in_ai_prompt_text(self):
+        """migrationMeta fields must not appear in the ungrounded prompt."""
+        _, mod = _client()
+        prompt = mod._build_ungrounded_korea_scoped_prompt(
+            "K-ETA 전자여행허가 관련 문의",
+            visa_code="K-ETA",
+            task_type=None,
+            risk_level="low",
+            lang="ko",
+        )
+        for forbidden in ("migrationMeta", "alias_deprecated_in_visa_data",
+                          "removalFromVisaDataAllowed", "requiresParityBeforeRemoval"):
+            self.assertNotIn(forbidden, prompt, f"{forbidden!r} leaked into AI prompt")
+
+    def test_overstay_codes_each_appear_once(self):
+        """SCN-6, OVS-1, and FAQ-4 must each appear exactly once in /api/visas."""
+        visas = self._visas()
+        for code in ("SCN-6", "OVS-1", "FAQ-4"):
+            matches = [v for v in visas if v.get("code") == code]
+            self.assertEqual(
+                len(matches),
+                1,
+                f"overstay code {code} appears {len(matches)} time(s) (expected 1)",
+            )
+
+    def test_source_type_reports_union_resolver(self):
+        """When the union resolver is available, source_type must be 'union-resolver'."""
+        client, _ = _client()
+        resp = client.get("/api/visas")
+        body = resp.json()
+        self.assertEqual(
+            body.get("source_type"),
+            "union-resolver",
+            f"expected source_type='union-resolver', got {body.get('source_type')!r}",
+        )
+
+    def test_api_visas_no_warning_field_with_union_resolver(self):
+        """When using the union resolver, /api/visas must not include a warning."""
+        client, _ = _client()
+        resp = client.get("/api/visas")
+        body = resp.json()
+        self.assertNotIn(
+            "warning",
+            body,
+            f"unexpected warning in union-resolver response: {body.get('warning')!r}",
+        )
+
+    def test_resolver_parity_report_matches_visa_data(self):
+        """union_view() must equal visa_data.json code-multiset and count."""
+        import sys
+        from pathlib import Path
+        scripts_dir = str(Path(REPO_ROOT) / "scripts")
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        import resolve_record_store as R  # noqa: E402
+        report = R.parity_report()
+        self.assertTrue(report["union_equals_visa_data"], "union != visa_data.json")
+        self.assertEqual(report["union_count"], report["visa_data_count"])
+        self.assertEqual(
+            report["duplicate_codes_in_union"],
+            report["duplicate_codes_in_visa_data"],
+        )
+
+    def test_simulated_e4_removal_content_parity(self):
+        """Simulated E-4B deletion must produce user-facing-content-equivalent records."""
+        import sys
+        from pathlib import Path
+        scripts_dir = str(Path(REPO_ROOT) / "scripts")
+        if scripts_dir not in sys.path:
+            sys.path.insert(0, scripts_dir)
+        import resolve_record_store as R  # noqa: E402
+        srep = R.simulated_e4_parity_report()
+        self.assertTrue(srep["counts_match"],
+                        f"simulated count {srep['simulated_union_count']} != visa_data {srep['visa_data_count']}")
+        self.assertTrue(srep["simulated_user_facing_content_parity"],
+                        "simulated E-4B user-facing content parity failed")
+        self.assertEqual(srep["simulated_duplicate_codes"], srep["visa_data_duplicate_codes"])
 
 
 if __name__ == "__main__":
