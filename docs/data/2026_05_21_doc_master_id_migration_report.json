@@ -1,0 +1,109 @@
+{
+  "schema_version": "1.0",
+  "report": "doc_master ID migration with UI compatibility (PR D batch 2)",
+  "pr": "D batch 2 (after PR #160)",
+  "branch": "data/migrate-doc-master-ids-with-ui-compat",
+  "audit_date": "2026-05-25",
+  "based_on": "PR #160 fixed only the G-1 stale page anchor and deferred the doc_master ID migration due to frontend rendering risk. This PR performs the coordinated migration with index.html DOC_DICT compatibility.",
+  "disclaimer": "Internal audit artifact. Not legal advice and not an official immigration decision.",
+  "compressed_archive_verification": {
+    "result": "compressed archive not provided",
+    "search": "Scanned the execution environment for *.zip/*.tar/*.tar.gz/*.tgz/*.7z manual-source archives and for *260521* / *manual*source* files. The only archive found was an unrelated chromedriver zip (/tmp/.../chromedriver-linux64.zip). No 2026-05-21 manual-source archive was present.",
+    "temporary_extraction_path": null,
+    "file_list": [],
+    "sha256_comparison": [],
+    "decision": "Proceeded using committed repo files only. Canonical PDFs and source_manifest.json were not touched (PR #155 scope, closed)."
+  },
+  "scope_statement": "Coordinated migration of the 12 corrupted Korean-string doc_master IDs to stable machine-readable IDs, with index.html DOC_DICT compatibility so rendering is byte-identical. No required-document meanings changed; no requiredDocuments added or removed; no eligibility/fees/income/stay-periods/procedures/legal-admin text rewritten; no verified=true promotions; no needsManualReview removals; no records deleted; no visual/layout/UX/search/AI changes.",
+  "changed_files": [
+    "doc_master.json (12 id renames; ko_name/en_name/description preserved)",
+    "visa_data.json (39 ID-reference array entries repointed old->new)",
+    "backend/data/visas.json (regenerated via scripts/sync_visa_data.py only)",
+    "index.html (added 12 DOC_DICT keys mapping new IDs to the verbatim prior Korean labels; one trailing comma added to the previous last entry)",
+    "scripts/check_doc_master_id_migration.py (new read-only validator)",
+    "docs/data/2026_05_21_DOC_MASTER_ID_MIGRATION_REPORT.md (new report)",
+    "docs/data/2026_05_21_doc_master_id_migration_report.json (new report)"
+  ],
+  "id_migration_table": [
+    {"old_id": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "new_id": "doc_case_specific_evidence", "ko_label_preserved": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"},
+    {"old_id": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "new_id": "doc_change_reason_evidence", "ko_label_preserved": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)"},
+    {"old_id": "사증발급신청서(별지 제17호 서식)", "new_id": "doc_visa_application_form", "ko_label_preserved": "사증발급신청서(별지 제17호 서식)"},
+    {"old_id": "사진 1매(해당 시)", "new_id": "doc_photo_one_optional", "ko_label_preserved": "사진 1매(해당 시)"},
+    {"old_id": "수수료", "new_id": "doc_fee_generic", "ko_label_preserved": "수수료"},
+    {"old_id": "여권", "new_id": "doc_passport_generic", "ko_label_preserved": "여권"},
+    {"old_id": "여권 및 외국인등록증", "new_id": "doc_passport_and_arc", "ko_label_preserved": "여권 및 외국인등록증"},
+    {"old_id": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "new_id": "doc_status_specific_attachments", "ko_label_preserved": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)"},
+    {"old_id": "체류지 입증서류", "new_id": "doc_residence_proof_generic", "ko_label_preserved": "체류지 입증서류"},
+    {"old_id": "통합신청서", "new_id": "doc_unified_application_form", "ko_label_preserved": "통합신청서"},
+    {"old_id": "통합신청서(체류자격변경허가 신청 포함)", "new_id": "doc_unified_application_form_change", "ko_label_preserved": "통합신청서(체류자격변경허가 신청 포함)"},
+    {"old_id": "표준규격사진 1매", "new_id": "doc_standard_photo_one", "ko_label_preserved": "표준규격사진 1매"}
+  ],
+  "new_id_collisions_with_existing": 0,
+  "new_id_duplicates": 0,
+  "no_merge_into_existing_ids": "Each corrupted entry was renamed to its OWN new ID rather than merged into a similar existing doc_* entry (e.g. 여권 was NOT merged into doc_passport), because the existing entries' display labels differ; merging would have changed the rendered text. Near-duplicate dedupe (if ever desired) is deferred.",
+  "visa_data_records_updated": [
+    {"code": "COM-1", "refs": 4, "fields": {"initialReqDocs": 4}},
+    {"code": "D-10", "refs": 1, "fields": {"requiredDocs": 1}},
+    {"code": "D-2", "refs": 1, "fields": {"requiredDocs": 1}},
+    {"code": "D-4", "refs": 1, "fields": {"requiredDocs": 1}},
+    {"code": "D-4-2K", "refs": 2, "fields": {"requiredDocs": 2}, "note": "ID-reference rename only; NOT a duplicate/sub-code resolution (deferred to PR D-3)."},
+    {"code": "E-8", "refs": 1, "fields": {"requiredDocs": 1}},
+    {"code": "FAQ-1", "refs": 5, "fields": {"initialReqDocs": 5}},
+    {"code": "FAQ-2", "refs": 5, "fields": {"changeReqDocs": 5}},
+    {"code": "FAQ-4", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}},
+    {"code": "K-STAR", "refs": 1, "fields": {"requiredDocs": 1}, "note": "ID-reference rename only; NOT a K-STAR substantive content patch (deferred to PR D-3)."},
+    {"code": "NHIS-1", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}},
+    {"code": "SCN-1", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}},
+    {"code": "SCN-3", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}},
+    {"code": "SCN-6", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}},
+    {"code": "VW-1", "refs": 3, "fields": {"initialReqDocs": 1, "extensionReqDocs": 1, "changeReqDocs": 1}}
+  ],
+  "total_visa_data_refs_migrated": 39,
+  "index_html_changes": {
+    "type": "DOC_DICT key additions only",
+    "added_keys": 12,
+    "label_values": "Each new key maps to the verbatim prior Korean label (identical to the string the raw-fallback rendered before migration), so on-screen text is byte-identical.",
+    "trailing_comma_added_to_prev_last_entry": "doc_cvi",
+    "no_changes_to": ["layout", "styling", "UX", "copy", "search behavior", "Paradiso AI behavior", "unrelated constants"]
+  },
+  "display_labels_untouched": {
+    "documents_star_name_fields": 89,
+    "note": "documents_initial/registration/extension[].name display labels (89 per file) and free-text summary/name prose containing the same Korean substrings were left untouched. They are user-facing labels rendered directly, not doc_master ID references."
+  },
+  "residual_old_string_occurrences": {
+    "as_bare_id_array_reference": 0,
+    "doc_master_ko_name_label_fields": 12,
+    "index_html_DOC_DICT_label_values": 12,
+    "visa_data_and_backend_documents_name_or_prose": "preserved as display labels (intended)",
+    "interpretation": "Zero corrupted IDs remain as active doc-reference array elements. All remaining occurrences are LABEL/display text (doc_master ko_name, index.html DOC_DICT values, documents_*[].name, summary prose), which must be preserved per the 'preserve Korean labels' constraint."
+  },
+  "confirmations": {
+    "korean_user_facing_labels_preserved": true,
+    "required_document_meaning_changed": false,
+    "required_documents_added_or_removed": false,
+    "legal_admin_guidance_rewritten": false,
+    "verified_promotions": 0,
+    "needsManualReview_removals": 0,
+    "records_deleted": 0,
+    "ui_visual_layout_changed": false,
+    "backend_updated_via_sync_only": true,
+    "source_manifest_or_canonical_pdfs_changed": false
+  },
+  "pr_d3_queue": [
+    "F-6 income note / content (stay §33 pp.474-497, visa §34 pp.324-335) — page-cited.",
+    "D-4-2K duplicate/sub-code resolution (array indices 24 + 55).",
+    "F-4 / H-2 외국국적동포 Feb-2026 sub-manual content (stay §36 pp.518-584).",
+    "K-STAR records substantive content (visa §40 pp.456-484 / stay §41 pp.749-777).",
+    "REGION-S / 지역특화형 (stay §37 pp.585-654) / 광역형 (stay §40 pp.686-748) records.",
+    "F-2/F-3/F-5/H-1 page sub-range anchors (idiosyncratic; need page-cited re-derivation).",
+    "Optional near-duplicate dedupe of migrated IDs vs existing doc_* entries (e.g. doc_passport_generic vs doc_passport) after confirming display/usage identity.",
+    "Optional: add DOC_DICT labels for pre-existing label-less doc_* IDs (e.g. doc_top_tier_degree, doc_local_recommendation) that currently render via the 문서요건(...) fallback."
+  ],
+  "validation": {
+    "json_tool": "visa_data.json, backend/data/visas.json, doc_master.json, this report, and the 3 PR #157 JSON artifacts all valid",
+    "sync_visa_data_check": "OK (backend matches visa_data.json)",
+    "scripts": "check_source_manuals, check_source_updates --local-only, check_visa_data_text_integrity, check_required_documents_coverage, validate_coverage_matrix, validate_manual_grounding_candidate, check_doc_master_id_migration all pass",
+    "check_repo": "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh passes (194 backend tests OK; git diff clean)",
+    "repo_search_old_ids_as_active_refs": 0
+  }
+}
