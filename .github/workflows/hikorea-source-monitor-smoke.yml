@@ -1,0 +1,114 @@
+name: HiKorea Source Monitor Smoke
+
+# Manual-trigger only. No push, pull_request, or schedule.
+# This workflow is report-only:
+# - it runs the existing HiKorea/KIS source-monitor smoke helper,
+# - it defaults to no network,
+# - it writes JSON/Markdown/log artifacts for operator review,
+# - it never creates GitHub Issues,
+# - it never commits generated output back to the repository.
+on:
+  workflow_dispatch:
+    inputs:
+      allow_network:
+        description: "Explicitly allow the guarded allowlisted fetch path"
+        required: true
+        type: boolean
+        default: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run HiKorea/KIS monitor smoke helper
+        shell: bash
+        env:
+          ALLOW_NETWORK: ${{ inputs.allow_network }}
+        run: |
+          set -euo pipefail
+
+          output_dir="tmp/source-monitor-smoke"
+          run_label="workflow_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          log_path="${output_dir}/${run_label}_command.log"
+          metadata_path="${output_dir}/${run_label}_workflow_metadata.json"
+          mkdir -p "${output_dir}"
+
+          {
+            echo "HiKorea/KIS source monitor smoke workflow"
+            echo "run_label=${run_label}"
+            echo "allow_network=${ALLOW_NETWORK}"
+            echo "github_run_id=${GITHUB_RUN_ID}"
+            echo "github_run_attempt=${GITHUB_RUN_ATTEMPT}"
+            echo "github_ref=${GITHUB_REF}"
+            echo ""
+            echo "Safety guardrails:"
+            echo "- workflow_dispatch only; no schedule"
+            echo "- no automatic GitHub Issue creation"
+            echo "- no generated-output commits"
+            echo "- existing adapter guardrails remain in force when allow_network=true"
+            echo "- login, transaction, e-Application, visit reservation, validity check, and personal-data flows are out of scope"
+            echo ""
+
+            cmd=(python3 scripts/run_hikorea_monitor_smoke.py --run-label "${run_label}" --output-dir "${output_dir}")
+            if [[ "${ALLOW_NETWORK}" == "true" ]]; then
+              cmd+=(--allow-network)
+            fi
+
+            printf "Running:"
+            printf " %q" "${cmd[@]}"
+            printf "\n\n"
+            "${cmd[@]}"
+          } 2>&1 | tee "${log_path}"
+
+          python3 - <<PY
+          import json
+          from pathlib import Path
+
+          path = Path("${metadata_path}")
+          path.write_text(json.dumps({
+              "run_label": "${run_label}",
+              "allow_network": "${ALLOW_NETWORK}",
+              "github_run_id": "${GITHUB_RUN_ID}",
+              "github_run_attempt": "${GITHUB_RUN_ATTEMPT}",
+              "source_monitor_json": f"${output_dir}/${run_label}_source_monitor.json",
+              "markdown_brief": f"${output_dir}/${run_label}_source_update_brief.md",
+              "command_log": "${log_path}",
+              "github_issues_created": False,
+              "scheduled_monitoring_enabled": False,
+              "generated_outputs_committed": False
+          }, indent=2) + "\n", encoding="utf-8")
+          PY
+
+      - name: Validate generated smoke artifacts
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          run_label="workflow_${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          output_dir="tmp/source-monitor-smoke"
+          python3 -m json.tool "${output_dir}/${run_label}_source_monitor.json" >/dev/null
+          python3 -m json.tool "${output_dir}/${run_label}_workflow_metadata.json" >/dev/null
+          test -s "${output_dir}/${run_label}_source_update_brief.md"
+          test -s "${output_dir}/${run_label}_command.log"
+
+      - name: Upload smoke artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hikorea-source-monitor-smoke-${{ github.run_id }}-${{ github.run_attempt }}
+          if-no-files-found: error
+          path: |
+            tmp/source-monitor-smoke/*_source_monitor.json
+            tmp/source-monitor-smoke/*_source_update_brief.md
+            tmp/source-monitor-smoke/*_command.log
+            tmp/source-monitor-smoke/*_workflow_metadata.json
