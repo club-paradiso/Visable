@@ -102,6 +102,11 @@ def parity_report():
     # Note: D-4-2K is a pre-existing duplicate code in visa_data.json
     # (indices 24 & 55), deferred to the D-content track. The E-2 invariant
     # is that the union introduces NO new duplicate codes beyond visa_data.
+    alias_deprecated = sorted(
+        r.get("code") for r in visas
+        if isinstance(r.get("migrationMeta"), dict)
+        and r["migrationMeta"].get("migrationStatus") == "alias_deprecated_in_visa_data"
+    )
     return {
         "visa_data_count": len(visas),
         "scenario_help_shadow_count": len(shadow),
@@ -110,6 +115,8 @@ def parity_report():
         "duplicate_codes_in_union": _dupe_codes(union),
         "duplicate_codes_in_visa_data": _dupe_codes(visas),
         "shadow_codes": sorted(e.get("sourceVisaDataCode") for e in shadow),
+        "alias_deprecated_codes": alias_deprecated,
+        "alias_deprecated_count": len(alias_deprecated),
     }
 
 
@@ -131,7 +138,8 @@ def main() -> None:
     print(f"scenario_help shadow records: {rep['scenario_help_shadow_count']}")
     print(f"union records: {rep['union_count']}")
     print(f"duplicate codes in union: {rep['duplicate_codes_in_union'] or 'none'}")
-    print(f"union == visa_data.json (E-2 zero-behavior-change invariant): {rep['union_equals_visa_data']}")
+    print(f"alias-deprecated (E-3) records in visa_data: {rep['alias_deprecated_count']}")
+    print(f"union == visa_data.json (zero-behavior-change invariant): {rep['union_equals_visa_data']}")
 
 
 if __name__ == "__main__":

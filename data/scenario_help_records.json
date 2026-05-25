@@ -117,7 +117,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "TB-1",
@@ -166,7 +167,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-1",
@@ -203,7 +205,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-2",
@@ -240,7 +243,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-3",
@@ -277,7 +281,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-4",
@@ -312,7 +317,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-5",
@@ -355,7 +361,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "SCN-6",
@@ -392,7 +399,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "OVS-1",
@@ -434,7 +442,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "NHIS-1",
@@ -503,7 +512,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "FAQ-1",
@@ -557,7 +567,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "FAQ-2",
@@ -610,7 +621,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "FAQ-3",
@@ -651,7 +663,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "FAQ-4",
@@ -688,7 +701,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "VW-1",
@@ -762,7 +776,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "COM-1",
@@ -807,7 +822,8 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     },
     {
       "sourceVisaDataCode": "RF-1",
@@ -893,7 +909,10 @@
         "documents_registration": "DATA_MISSING",
         "documents_extension": "DATA_MISSING",
         "hikorea_task_type": "DATA_MISSING"
-      }
+      },
+      "visaDataAliasDeprecated": true
     }
-  ]
+  ],
+  "e3_status": "visa_data_records_alias_deprecated",
+  "e3_note": "As of E-3, the 17 source records in visa_data.json carry migrationMeta.migrationStatus=\"alias_deprecated_in_visa_data\" with removalFromVisaDataAllowed=false. Nested record copies here remain pristine pre-deprecation duplicates; removal from visa_data.json is gated until E-4 parity."
 }

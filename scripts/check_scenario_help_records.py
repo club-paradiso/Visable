@@ -42,8 +42,18 @@ def fail(msg: str) -> None:
     raise SystemExit(f"[check_scenario_help_records] ERROR: {msg}")
 
 
+# Approved E-3 migration metadata that may be added to the visa_data.json
+# record but is intentionally NOT present in the pristine shadow `record`.
+# It is stripped before the byte-for-byte content comparison.
+APPROVED_MIGRATION_KEYS = {"migrationMeta"}
+
+
 def canon(obj) -> str:
     return json.dumps(obj, ensure_ascii=False, sort_keys=True)
+
+
+def strip_migration_meta(record: dict) -> dict:
+    return {k: v for k, v in record.items() if k not in APPROVED_MIGRATION_KEYS}
 
 
 def iter_doc_refs(node, parent=None):
@@ -89,11 +99,24 @@ def main() -> None:
         # 2. code exists in visa_data at that index
         if src.get("code") != code:
             fail(f"index {idx} code mismatch: store={code!r} visa_data={src.get('code')!r}")
-        # 3. nested record deep-equals original
+        # 3. nested record deep-equals original, ignoring approved E-3
+        # migration metadata (e.g. migrationMeta) added to the visa_data side.
         if "record" not in r:
             fail(f"{code}: missing nested 'record'")
-        if canon(r["record"]) != canon(src):
-            fail(f"{code}: nested record does not match visa_data.json byte-for-byte")
+        if canon(strip_migration_meta(r["record"])) != canon(strip_migration_meta(src)):
+            fail(f"{code}: nested record does not match visa_data.json "
+                 "(ignoring approved migration metadata)")
+        # E-3: the visa_data record must carry alias-deprecation metadata that
+        # keeps removal gated. (The shadow `record` stays pristine, without it.)
+        meta = src.get("migrationMeta")
+        if not isinstance(meta, dict):
+            fail(f"{code}: visa_data record missing migrationMeta (E-3 alias-deprecation)")
+        if meta.get("migrationStatus") != "alias_deprecated_in_visa_data":
+            fail(f"{code}: migrationMeta.migrationStatus must be 'alias_deprecated_in_visa_data'")
+        if meta.get("removalFromVisaDataAllowed") is not False:
+            fail(f"{code}: migrationMeta.removalFromVisaDataAllowed must be False")
+        if meta.get("requiresParityBeforeRemoval") is not True:
+            fail(f"{code}: migrationMeta.requiresParityBeforeRemoval must be True")
         # 4. migration metadata
         if r.get("removalFromVisaDataAllowed") is not False:
             fail(f"{code}: removalFromVisaDataAllowed must be False in E-1")
