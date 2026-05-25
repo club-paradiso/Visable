@@ -26,7 +26,7 @@ caveats, and excerpt into the prompt sent to the LLM.
 - Title (Korean): 외국인체류 안내매뉴얼
 - Date: 2026.5
 - Issuing body: 법무부 출입국·외국인정책본부
-- Total pages (PDF): 774
+- Total pages (PDF): 777
 - Note: a related, separate file
   `docs/source-manuals/2026-05/visa_manual_2026_05.pdf` (visa-issuance
   manual) exists but is not used for stay/extension grounding.
