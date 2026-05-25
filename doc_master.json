@@ -396,73 +396,73 @@
     "description": "사업체의 부가가치세 과세표준증명 (정상 영업 여부 확인 자료)."
   },
   {
-    "id": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)",
+    "id": "doc_case_specific_evidence",
     "ko_name": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)",
+    "id": "doc_change_reason_evidence",
     "ko_name": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "사증발급신청서(별지 제17호 서식)",
+    "id": "doc_visa_application_form",
     "ko_name": "사증발급신청서(별지 제17호 서식)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "사진 1매(해당 시)",
+    "id": "doc_photo_one_optional",
     "ko_name": "사진 1매(해당 시)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "수수료",
+    "id": "doc_fee_generic",
     "ko_name": "수수료",
     "en_name": "Required Supporting Document",
     "description": "체류민원 수수료 항목. 절차별 정부수입인지 및 외국인등록증 발급 수수료는 화면의 수수료 안내를 함께 확인합니다."
   },
   {
-    "id": "여권",
+    "id": "doc_passport_generic",
     "ko_name": "여권",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "여권 및 외국인등록증",
+    "id": "doc_passport_and_arc",
     "ko_name": "여권 및 외국인등록증",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)",
+    "id": "doc_status_specific_attachments",
     "ko_name": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "체류지 입증서류",
+    "id": "doc_residence_proof_generic",
     "ko_name": "체류지 입증서류",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "통합신청서",
+    "id": "doc_unified_application_form",
     "ko_name": "통합신청서",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "통합신청서(체류자격변경허가 신청 포함)",
+    "id": "doc_unified_application_form_change",
     "ko_name": "통합신청서(체류자격변경허가 신청 포함)",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."
   },
   {
-    "id": "표준규격사진 1매",
+    "id": "doc_standard_photo_one",
     "ko_name": "표준규격사진 1매",
     "en_name": "Required Supporting Document",
     "description": "해당 체류자격 심사 기준에 따라 제출하는 필수 또는 보완 증빙서류."

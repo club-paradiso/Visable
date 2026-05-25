@@ -141,13 +141,13 @@
     "faq": "Q: F계열 자격 변경은?\nA: 동일 계열 내 변경은 원칙 허용, 타 계열 장기 변경은 일부만 예외적 허용.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -191,13 +191,13 @@
     "faq": "Q: 예외?\nA: 인도적 사유(G-1)나 극히 중대한 사유 외에는 원칙 불허.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -270,13 +270,13 @@
     "faq": "Q: 자진신고 실익?\nA: 감경 가능성 있으나 내부 지침 재량 사항.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -357,13 +357,13 @@
       }
     ],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -397,11 +397,11 @@
       }
     ],
     "initialReqDocs": [
-      "통합신청서",
-      "여권",
-      "사진 1매(해당 시)",
-      "체류지 입증서류",
-      "수수료"
+      "doc_unified_application_form",
+      "doc_passport_generic",
+      "doc_photo_one_optional",
+      "doc_residence_proof_generic",
+      "doc_fee_generic"
     ],
     "extensionReqDocs": [
       "doc_address"
@@ -442,11 +442,11 @@
       "doc_id"
     ],
     "changeReqDocs": [
-      "통합신청서(체류자격변경허가 신청 포함)",
-      "여권 및 외국인등록증",
-      "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)",
-      "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)",
-      "수수료"
+      "doc_unified_application_form_change",
+      "doc_passport_and_arc",
+      "doc_change_reason_evidence",
+      "doc_status_specific_attachments",
+      "doc_fee_generic"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -494,13 +494,13 @@
     "faq": "Q: 다국어 상담?\nA: 1345 외국인종합안내센터.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -556,13 +556,13 @@
       }
     ],
     "initialReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "extensionReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "changeReqDocs": [
-      "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)"
+      "doc_case_specific_evidence"
     ],
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -588,10 +588,10 @@
     "faq": "Q: 응대 팁?\nA: 상황파악→제도확인→서류목록→발급처매칭→제출처안내.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
     "initialReqDocs": [
-      "사증발급신청서(별지 제17호 서식)",
-      "여권",
-      "표준규격사진 1매",
-      "수수료"
+      "doc_visa_application_form",
+      "doc_passport_generic",
+      "doc_standard_photo_one",
+      "doc_fee_generic"
     ],
     "extensionReqDocs": [
       "doc_invitation"
@@ -2118,7 +2118,7 @@
             "재학(연구생)증명서 또는 대체서류",
             "(인증대학 이상) 등록금납입증명서",
             "(일반대학 이하) 협조요청서 및 등록금납입증명서 또는 단체접수 등록금납입증명서",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "재정능력 입증서류 제출 불요로 표시된 경우 해당 기준 확인"
           ],
           "additionalDocs": [],
@@ -2630,7 +2630,7 @@
             "모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)",
             "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 기업 맞춤형 인턴십(K-Trainee, D 2K)의 체류기간연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능",
             "신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "기간연장 사유서 및 인턴·연수 활동 계획서3. 고등학교 이하 교육기관 외국인유학생(D 3)의 체류기간연장 제출서류",
             "학비 납부 내역서 (수업료, 기숙사비, 입학금 등 유학 관련 비용 일체)"
           ],
@@ -2822,7 +2822,7 @@
             "모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)",
             "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 기업 맞춤형 인턴십(K-Trainee, D 2K)의 체류기간연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능",
             "신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "기간연장 사유서 및 인턴·연수 활동 계획서3. 고등학교 이하 교육기관 외국인유학생(D 3)의 체류기간연장 제출서류",
             "학비 납부 내역서 (수업료, 기숙사비, 입학금 등 유학 관련 비용 일체)"
           ],
@@ -3731,7 +3731,7 @@
             "체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D 1): 점수제 적용 대상자",
             "공통서류(신청서, 사진, 여권사본, 수수료, 신분증사본)",
             "구직활동계획서",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등",
             "기타 점수제 평가를 위해 필요하다고 인정되는 서류 1-2) 일반 구직(D 1): 점수제 면제 특례자 ⅰ) 국내 대학 졸업 한국어능력 우수자",
             "공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본)",
@@ -5292,7 +5292,7 @@
           "requiredDocs": [
             "(수수료 면제)",
             "외국인 계절근로자(E-8) 체류기간 연장 추천 신청서",
-            "여권 및 외국인등록증",
+            "doc_passport_and_arc",
             "거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요",
             "고용주 신분증",
             "인신매매 피해 식별지표",
@@ -8943,7 +8943,7 @@
             "모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)",
             "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 기업 맞춤형 인턴십(K-Trainee, D 2K)의 체류기간연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능",
             "신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "기간연장 사유서 및 인턴·연수 활동 계획서3. 고등학교 이하 교육기관 외국인유학생(D 3)의 체류기간연장 제출서류",
             "학비 납부 내역서 (수업료, 기숙사비, 입학금 등 유학 관련 비용 일체)"
           ],
@@ -9112,7 +9112,7 @@
           "commonDocs": [],
           "requiredDocs": [
             "신청서, 여권, 외국인등록증, 사진, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "해외범죄경력증명서(연장은 6개월 이상 해외 체류 시 제출)",
             "결핵진단서(해당자)",
             "대학 총장 추천서(발급일로부터 1년간 유효)",
