@@ -1,0 +1,1224 @@
+{
+  "generated_at_utc": "2026-05-25T23:02:23.870896+00:00",
+  "source_basis": [
+    "출입국관리법 시행령 별표 1 / 별표 1의2 체류자격 체계",
+    "2026.5 체류민원 안내매뉴얼 목차 및 체류자격별 섹션",
+    "2026.5 사증발급 안내매뉴얼",
+    "HiKorea 체류자격별 안내메뉴얼 및 출입국관련 법령지침정보"
+  ],
+  "manual_files_present": {
+    "docs/source-manuals/2026-05/stay_manual_2026_05.pdf": true,
+    "docs/source-manuals/2026-05/visa_manual_2026_05.pdf": true,
+    "docs/source-manuals/2026-05/체류민원 안내매뉴얼_260521.pdf": false,
+    "docs/source-manuals/2026-05/사증발급 안내매뉴얼_260521.pdf": false
+  },
+  "expected_legal_top_level_count": 37,
+  "covered_legal_top_level_count": 37,
+  "missing_legal_top_level": {},
+  "extra_top_level_non_legal_or_review": [
+    "COM-1",
+    "D-4-2K",
+    "FAQ-1",
+    "FAQ-2",
+    "FAQ-3",
+    "FAQ-4",
+    "K-STAR",
+    "NHIS-1",
+    "OVS-1",
+    "REGION-S",
+    "RF-1",
+    "VW-1"
+  ],
+  "policy_track_coverage": {
+    "overseas_korean_related": {
+      "label": "외국국적동포 관련",
+      "hits": [
+        "C-3-8",
+        "F-1",
+        "H-2",
+        "F-4",
+        "F-5",
+        "외국국적동포",
+        "재외동포",
+        "방문취업"
+      ],
+      "missing_terms": [],
+      "covered": true
+    },
+    "regional_special_visa": {
+      "label": "지역특화형비자",
+      "hits": [],
+      "missing_terms": [
+        "지역특화형",
+        "F-2-R",
+        "F-4-R"
+      ],
+      "covered": false
+    },
+    "domestic_growth_youth": {
+      "label": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "hits": [
+        "국내 성장",
+        "외국인 청소년",
+        "청소년"
+      ],
+      "missing_terms": [],
+      "covered": true
+    },
+    "top_tier_visa": {
+      "label": "탑티어(Top-Tier) 비자",
+      "hits": [
+        "Top-Tier",
+        "D-10-T",
+        "E-7-T",
+        "F-2-T",
+        "F-5-T"
+      ],
+      "missing_terms": [
+        "탑티어"
+      ],
+      "covered": true
+    },
+    "wide_area_pilot": {
+      "label": "광역형 비자 시범사업",
+      "hits": [
+        "광역형",
+        "시범사업"
+      ],
+      "missing_terms": [],
+      "covered": true
+    },
+    "k_star_track": {
+      "label": "K-STAR 비자트랙 제도",
+      "hits": [
+        "K-STAR",
+        "비자트랙"
+      ],
+      "missing_terms": [
+        "KSTAR"
+      ],
+      "covered": true
+    }
+  },
+  "f_1_6_diagnosis": {
+    "query": "F-1-6",
+    "top_level_record_exists": false,
+    "subcode_parents": [],
+    "text_hit_records": [
+      "F-1",
+      "SCN-4"
+    ],
+    "interpretation": "F-1-6 is not expected as an independent top-level legal stay status. It should be searchable as a subcode/reference/alias resolving to its parent or scenario record."
+  },
+  "detail_alias_candidate_count": 122,
+  "detail_alias_candidates": [
+    {
+      "detail_code": "B-1-1",
+      "subcode_parents": [
+        "B-1"
+      ],
+      "text_hit_records": [
+        "B-1"
+      ]
+    },
+    {
+      "detail_code": "B-1-2",
+      "subcode_parents": [
+        "B-1"
+      ],
+      "text_hit_records": [
+        "B-1"
+      ]
+    },
+    {
+      "detail_code": "B-2-1",
+      "subcode_parents": [
+        "B-2"
+      ],
+      "text_hit_records": [
+        "B-2",
+        "VW-1"
+      ]
+    },
+    {
+      "detail_code": "B-2-2",
+      "subcode_parents": [
+        "B-2"
+      ],
+      "text_hit_records": [
+        "B-2",
+        "VW-1"
+      ]
+    },
+    {
+      "detail_code": "C-3-1",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-10",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-2",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-3",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-4",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3",
+        "D-4-2K"
+      ]
+    },
+    {
+      "detail_code": "C-3-5",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-6",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-8",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "C-3-9",
+      "subcode_parents": [
+        "C-3"
+      ],
+      "text_hit_records": [
+        "C-3"
+      ]
+    },
+    {
+      "detail_code": "D-1-00",
+      "subcode_parents": [
+        "D-1"
+      ],
+      "text_hit_records": [
+        "D-1"
+      ]
+    },
+    {
+      "detail_code": "D-10-1",
+      "subcode_parents": [
+        "D-10"
+      ],
+      "text_hit_records": [
+        "D-10"
+      ]
+    },
+    {
+      "detail_code": "D-10-2",
+      "subcode_parents": [
+        "D-10"
+      ],
+      "text_hit_records": [
+        "D-10"
+      ]
+    },
+    {
+      "detail_code": "D-10-3",
+      "subcode_parents": [
+        "D-10"
+      ],
+      "text_hit_records": [
+        "D-10"
+      ]
+    },
+    {
+      "detail_code": "D-10-T",
+      "subcode_parents": [
+        "D-10"
+      ],
+      "text_hit_records": [
+        "D-10"
+      ]
+    },
+    {
+      "detail_code": "D-2-1",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-2",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-3",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-4",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-5",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-6",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-7",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-8",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-2-R",
+      "subcode_parents": [
+        "D-2"
+      ],
+      "text_hit_records": [
+        "D-2"
+      ]
+    },
+    {
+      "detail_code": "D-3-11",
+      "subcode_parents": [
+        "D-3"
+      ],
+      "text_hit_records": [
+        "D-3"
+      ]
+    },
+    {
+      "detail_code": "D-3-12",
+      "subcode_parents": [
+        "D-3"
+      ],
+      "text_hit_records": [
+        "D-3"
+      ]
+    },
+    {
+      "detail_code": "D-3-13",
+      "subcode_parents": [
+        "D-3"
+      ],
+      "text_hit_records": [
+        "D-3"
+      ]
+    },
+    {
+      "detail_code": "D-4-1",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-2",
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-4-2",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-4-3",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-4-5",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-4-6",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-4-7",
+      "subcode_parents": [
+        "D-4"
+      ],
+      "text_hit_records": [
+        "D-2",
+        "D-4"
+      ]
+    },
+    {
+      "detail_code": "D-7-1",
+      "subcode_parents": [
+        "D-7"
+      ],
+      "text_hit_records": [
+        "D-7"
+      ]
+    },
+    {
+      "detail_code": "D-7-2",
+      "subcode_parents": [
+        "D-7"
+      ],
+      "text_hit_records": [
+        "D-7"
+      ]
+    },
+    {
+      "detail_code": "D-7-91",
+      "subcode_parents": [
+        "D-7"
+      ],
+      "text_hit_records": [
+        "D-7"
+      ]
+    },
+    {
+      "detail_code": "D-7-92",
+      "subcode_parents": [
+        "D-7"
+      ],
+      "text_hit_records": [
+        "D-7"
+      ]
+    },
+    {
+      "detail_code": "D-8-1",
+      "subcode_parents": [
+        "D-8"
+      ],
+      "text_hit_records": [
+        "D-8"
+      ]
+    },
+    {
+      "detail_code": "D-8-2",
+      "subcode_parents": [
+        "D-8"
+      ],
+      "text_hit_records": [
+        "D-8"
+      ]
+    },
+    {
+      "detail_code": "D-8-3",
+      "subcode_parents": [
+        "D-8"
+      ],
+      "text_hit_records": [
+        "D-8"
+      ]
+    },
+    {
+      "detail_code": "D-8-4",
+      "subcode_parents": [
+        "D-8"
+      ],
+      "text_hit_records": [
+        "D-8"
+      ]
+    },
+    {
+      "detail_code": "D-8-91",
+      "subcode_parents": [
+        "D-8"
+      ],
+      "text_hit_records": [
+        "D-8"
+      ]
+    },
+    {
+      "detail_code": "D-9-1",
+      "subcode_parents": [
+        "D-9"
+      ],
+      "text_hit_records": [
+        "D-9"
+      ]
+    },
+    {
+      "detail_code": "D-9-2",
+      "subcode_parents": [
+        "D-9"
+      ],
+      "text_hit_records": [
+        "D-9"
+      ]
+    },
+    {
+      "detail_code": "D-9-3",
+      "subcode_parents": [
+        "D-9"
+      ],
+      "text_hit_records": [
+        "D-9"
+      ]
+    },
+    {
+      "detail_code": "D-9-4",
+      "subcode_parents": [
+        "D-9"
+      ],
+      "text_hit_records": [
+        "D-9"
+      ]
+    },
+    {
+      "detail_code": "E-10-1",
+      "subcode_parents": [
+        "E-10"
+      ],
+      "text_hit_records": [
+        "E-10"
+      ]
+    },
+    {
+      "detail_code": "E-10-2",
+      "subcode_parents": [
+        "E-10"
+      ],
+      "text_hit_records": [
+        "E-10"
+      ]
+    },
+    {
+      "detail_code": "E-10-3",
+      "subcode_parents": [
+        "E-10"
+      ],
+      "text_hit_records": [
+        "E-10"
+      ]
+    },
+    {
+      "detail_code": "E-2-1",
+      "subcode_parents": [
+        "E-2"
+      ],
+      "text_hit_records": [
+        "E-2"
+      ]
+    },
+    {
+      "detail_code": "E-2-2",
+      "subcode_parents": [
+        "E-2"
+      ],
+      "text_hit_records": [
+        "E-2"
+      ]
+    },
+    {
+      "detail_code": "E-2-91",
+      "subcode_parents": [
+        "E-2"
+      ],
+      "text_hit_records": [
+        "E-2"
+      ]
+    },
+    {
+      "detail_code": "E-6-1",
+      "subcode_parents": [
+        "E-6"
+      ],
+      "text_hit_records": [
+        "E-6"
+      ]
+    },
+    {
+      "detail_code": "E-6-2",
+      "subcode_parents": [
+        "E-6"
+      ],
+      "text_hit_records": [
+        "E-6",
+        "OVS-1"
+      ]
+    },
+    {
+      "detail_code": "E-6-3",
+      "subcode_parents": [
+        "E-6"
+      ],
+      "text_hit_records": [
+        "E-6"
+      ]
+    },
+    {
+      "detail_code": "E-7-1",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "D-4-2K",
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-2",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "D-4-2K",
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-3",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-4",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-91",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-S",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-T",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-7-Y",
+      "subcode_parents": [
+        "E-7"
+      ],
+      "text_hit_records": [
+        "E-7"
+      ]
+    },
+    {
+      "detail_code": "E-9-1",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-10",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-2",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-3",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-4",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-5",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-9",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-JS",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "E-9-R",
+      "subcode_parents": [
+        "E-9"
+      ],
+      "text_hit_records": [
+        "E-9"
+      ]
+    },
+    {
+      "detail_code": "F-1-13",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "D-4",
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-21",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-22",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-23",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-24",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-3",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-1-5",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1",
+        "SCN-3"
+      ]
+    },
+    {
+      "detail_code": "F-1-6",
+      "subcode_parents": [],
+      "text_hit_records": [
+        "F-1",
+        "SCN-4"
+      ]
+    },
+    {
+      "detail_code": "F-1-9",
+      "subcode_parents": [
+        "F-1"
+      ],
+      "text_hit_records": [
+        "F-1"
+      ]
+    },
+    {
+      "detail_code": "F-2-2",
+      "subcode_parents": [
+        "F-2"
+      ],
+      "text_hit_records": [
+        "F-2"
+      ]
+    },
+    {
+      "detail_code": "F-2-3",
+      "subcode_parents": [
+        "F-2"
+      ],
+      "text_hit_records": [
+        "F-2"
+      ]
+    },
+    {
+      "detail_code": "F-2-7",
+      "subcode_parents": [
+        "F-2"
+      ],
+      "text_hit_records": [
+        "F-2",
+        "F-5"
+      ]
+    },
+    {
+      "detail_code": "F-2-71",
+      "subcode_parents": [],
+      "text_hit_records": [
+        "K-STAR"
+      ]
+    },
+    {
+      "detail_code": "F-2-7S",
+      "subcode_parents": [],
+      "text_hit_records": [
+        "K-STAR"
+      ]
+    },
+    {
+      "detail_code": "F-2-99",
+      "subcode_parents": [
+        "F-2"
+      ],
+      "text_hit_records": [
+        "F-2"
+      ]
+    },
+    {
+      "detail_code": "F-2-T",
+      "subcode_parents": [
+        "F-2"
+      ],
+      "text_hit_records": [
+        "F-2"
+      ]
+    },
+    {
+      "detail_code": "F-3-1",
+      "subcode_parents": [
+        "F-3"
+      ],
+      "text_hit_records": [
+        "F-3"
+      ]
+    },
+    {
+      "detail_code": "F-3-2",
+      "subcode_parents": [
+        "F-3"
+      ],
+      "text_hit_records": [
+        "F-3"
+      ]
+    },
+    {
+      "detail_code": "F-3-3",
+      "subcode_parents": [
+        "F-3"
+      ],
+      "text_hit_records": [
+        "F-3"
+      ]
+    },
+    {
+      "detail_code": "F-4-11",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-12",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-13",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-14",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-15",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-16",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-17",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-18",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-19",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-20",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-21",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-25",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-4-30",
+      "subcode_parents": [
+        "F-4"
+      ],
+      "text_hit_records": [
+        "F-4"
+      ]
+    },
+    {
+      "detail_code": "F-5-11",
+      "subcode_parents": [
+        "F-5"
+      ],
+      "text_hit_records": [
+        "F-5"
+      ]
+    },
+    {
+      "detail_code": "F-5-16",
+      "subcode_parents": [
+        "F-5"
+      ],
+      "text_hit_records": [
+        "F-5"
+      ]
+    },
+    {
+      "detail_code": "F-5-3",
+      "subcode_parents": [
+        "F-5"
+      ],
+      "text_hit_records": [
+        "F-5",
+        "F-6"
+      ]
+    },
+    {
+      "detail_code": "F-5-5",
+      "subcode_parents": [
+        "F-5"
+      ],
+      "text_hit_records": [
+        "F-5"
+      ]
+    },
+    {
+      "detail_code": "F-5-S1",
+      "subcode_parents": [],
+      "text_hit_records": [
+        "K-STAR"
+      ]
+    },
+    {
+      "detail_code": "F-5-T",
+      "subcode_parents": [
+        "F-5"
+      ],
+      "text_hit_records": [
+        "F-5"
+      ]
+    },
+    {
+      "detail_code": "F-6-1",
+      "subcode_parents": [
+        "F-6"
+      ],
+      "text_hit_records": [
+        "F-6"
+      ]
+    },
+    {
+      "detail_code": "F-6-2",
+      "subcode_parents": [
+        "F-6"
+      ],
+      "text_hit_records": [
+        "F-6"
+      ]
+    },
+    {
+      "detail_code": "F-6-3",
+      "subcode_parents": [
+        "F-6"
+      ],
+      "text_hit_records": [
+        "F-6"
+      ]
+    },
+    {
+      "detail_code": "G-1-1",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    },
+    {
+      "detail_code": "G-1-10",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    },
+    {
+      "detail_code": "G-1-11",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    },
+    {
+      "detail_code": "G-1-12",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    },
+    {
+      "detail_code": "G-1-5",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    },
+    {
+      "detail_code": "G-1-6",
+      "subcode_parents": [
+        "G-1"
+      ],
+      "text_hit_records": [
+        "G-1"
+      ]
+    }
+  ],
+  "guardrails": {
+    "modified_visa_data": false,
+    "automatic_legal_content_edits": false,
+    "purpose": "coverage audit only; no source-content promotion"
+  }
+}
