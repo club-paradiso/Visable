@@ -21,14 +21,18 @@
 - Treat canonical forms such as `A-1`, `D-4-2K`, `E-7-4`, `F-1-6`, `F-6-1` as code-like.
 - For code-like single-token searches:
   - exact top-level code match ranks highest,
-  - then exact alias/searchAlias,
-  - then exact subcode/sub-alias,
+  - then exact subcode ownership,
+  - then exact status-record alias/searchAlias,
+  - then exact subcode alias/searchAlias,
+  - then exact helper/scenario alias/searchAlias,
   - broad keyword matches are only fallback when no exact match exists.
+- Helper/scenario aliases are preserved, but they no longer outrank a status card that carries the same exact code-like alias such as `F-1-6`.
 
 ## Recommended chip behavior
 - No chip list was deleted or redesigned.
 - Broad discovery behavior remains intentionally available.
 - Ranking improvements in the shared search path are used so chip-triggered searches still discover broadly while exact-code searches stay precise.
+- Existing exact-code chips such as `E-7`, `F-6`, and `F-5` continue to use the shared exact-code ranking path.
 - No new legal categories/tags were invented in this PR.
 
 ## Explicit non-changes
