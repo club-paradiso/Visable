@@ -1329,21 +1329,18 @@ class UngroundedFallbackPromptTests(unittest.TestCase):
 
     # ---- Forbidden global boilerplate ----
 
-    def test_f61_divorce_prompt_forbids_uscis(self):
+    def test_f61_divorce_prompt_forbids_non_korean_system_leakage(self):
         built = self._build_f61_divorce_prompt()
-        self.assertIn("USCIS", built)  # appears in the forbidden-token instruction
+        self.assertIn("비한국(non-Korean) 이민제도", built)
 
-    def test_f61_divorce_prompt_forbids_home_office(self):
+    def test_f61_divorce_prompt_forbids_foreign_agency_boilerplate(self):
         built = self._build_f61_divorce_prompt()
-        self.assertIn("Home Office", built)  # appears in the forbidden-token instruction
+        self.assertIn("외국 행정기관", built)
+        self.assertIn("외국 법률절차 보일러플레이트", built)
 
-    def test_f61_divorce_prompt_forbids_embassy(self):
+    def test_f61_divorce_prompt_forbids_foreign_embassy_consulate_redirection(self):
         built = self._build_f61_divorce_prompt()
-        self.assertIn("embassy", built)  # appears in the forbidden-token instruction
-
-    def test_f61_divorce_prompt_forbids_consulate(self):
-        built = self._build_f61_divorce_prompt()
-        self.assertIn("consulate", built)  # appears in the forbidden-token instruction
+        self.assertIn("외국 대사관/영사관 문의", built)
 
     # ---- Immediate-revocation certainty forbidden ----
 
@@ -1390,6 +1387,19 @@ class UngroundedFallbackPromptTests(unittest.TestCase):
     def test_f61_divorce_prompt_marks_pathways_as_must_verify(self):
         built = self._build_f61_divorce_prompt()
         self.assertIn("확인 필요", built)
+
+    def test_f61_divorce_prompt_forbids_invented_details(self):
+        built = self._build_f61_divorce_prompt()
+        for marker in (
+            "제출서류",
+            "기한/유예기간",
+            "수수료/비용",
+            "양식/서식 번호",
+            "법령 조문 번호",
+            "자격요건",
+            "절차상 보장·결과 보장",
+        ):
+            self.assertIn(marker, built)
 
     # ---- Answer-language preservation ----
 
