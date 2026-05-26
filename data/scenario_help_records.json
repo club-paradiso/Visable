@@ -2404,25 +2404,7 @@
   "_docTermFeeShadowSync": {
     "updatedAt": "2026-05-26",
     "method": "copy_live_record_after_doc_term_fee_metadata_patch_for_e4_parity",
-    "syncedCodes": [
-      "COM-1",
-      "FAQ-1",
-      "FAQ-2",
-      "FAQ-3",
-      "FAQ-4",
-      "K-ETA",
-      "NHIS-1",
-      "OVS-1",
-      "RF-1",
-      "SCN-1",
-      "SCN-2",
-      "SCN-3",
-      "SCN-4",
-      "SCN-5",
-      "SCN-6",
-      "TB-1",
-      "VW-1"
-    ],
+    "syncedCodes": [],
     "legalContentCreated": false,
     "verifiedPromotion": false
   }
