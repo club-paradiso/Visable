@@ -110,13 +110,22 @@ def normalize_doc_label(value: str) -> str:
         return original
 
     text = original
+    # Idempotency guard: repair previously double-normalized labels first.
+    text = text.replace("통합통합신청서", "통합신청서")
+    text = re.sub(
+        r"(표준규격사진 1매\(3\.5×4\.5cm, 최근 6개월\))(?:\(3\.5×4\.5cm, 최근 6개월\))+",
+        r"\1",
+        text,
+    )
     for pattern, replacement in CANONICAL_REPLACEMENTS:
         if pattern.search(text):
             return replacement
 
-    text = re.sub(r"신청서\s*\(?별지\s*제?34호\s*서식\)?", "통합신청서(별지 제34호 서식)", text)
+    if not text.startswith("통합신청서"):
+        text = re.sub(r"신청서\s*\(?별지\s*제?34호\s*서식\)?", "통합신청서(별지 제34호 서식)", text)
     text = text.replace("정부수입인지, 절차별 금액은 수수료 안내 확인", "절차별 정부수입인지 금액은 수수료 안내 확인")
-    text = text.replace("표준규격사진 1매", "표준규격사진 1매(3.5×4.5cm, 최근 6개월)")
+    if "표준규격사진 1매" in text and "3.5×4.5cm" not in text:
+        text = text.replace("표준규격사진 1매", "표준규격사진 1매(3.5×4.5cm, 최근 6개월)")
     return clean_spaces(text)
 
 def split_combined_core_docs(value: str) -> list[str] | None:

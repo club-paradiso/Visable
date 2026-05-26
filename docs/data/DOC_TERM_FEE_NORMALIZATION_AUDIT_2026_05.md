@@ -18,11 +18,11 @@ External law/public-data runtime integration is not used by this patch; reposito
 ## Summary
 
 - Records checked: `58`
-- Records touched: `57`
-- Normalized document terms: `160`
-- Split combined document items: `5`
-- Fee metadata records updated: `57`
-- Scenario/help shadow records synced: `17`
+- Records touched: `0`
+- Normalized document terms: `0`
+- Split combined document items: `0`
+- Fee metadata records updated: `0`
+- Scenario/help shadow records synced: `0`
 
 ## Canonical examples
 
