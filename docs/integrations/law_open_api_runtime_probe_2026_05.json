@@ -1,0 +1,27 @@
+{
+  "generated_at_utc": "2026-05-26T00:04:41.730861+00:00",
+  "purpose": "runtime probe for Korean Law Open API before any DB official-verification mutation",
+  "configured": false,
+  "env_candidates_checked": [
+    "LAW_API_OC",
+    "LAW_API_KEY",
+    "KOREAN_LAW_API_OC",
+    "OPEN_LAW_API_OC"
+  ],
+  "credential_value_saved": false,
+  "official_source": {
+    "name": "국가법령정보 공동활용 LAW OPEN DATA",
+    "guide_url": "https://open.law.go.kr/LSO/openApi/guideList.do",
+    "search_endpoint_template": "https://www.law.go.kr/DRF/lawSearch.do",
+    "service_endpoint_template": "https://www.law.go.kr/DRF/lawService.do"
+  },
+  "guardrails": {
+    "mutated_visa_data": false,
+    "set_verified_true": false,
+    "created_legal_content": false,
+    "stored_secret": false
+  },
+  "laws": [],
+  "status": "UNCONFIGURED",
+  "message": "Set LAW_API_OC or LAW_API_KEY in Codespaces secrets/env before live probing."
+}
