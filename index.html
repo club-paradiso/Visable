@@ -12168,6 +12168,7 @@ function normalizeCodeLikeQuery(value) {
     const raw = String(value || '').trim().toUpperCase();
     if (!raw) return '';
     const compact = raw.replace(/\s+/g, '').replace(/_/g, '-');
+    if (compact === 'KETA') return 'K-ETA';
     if (/^[A-Z]+\d+$/.test(compact)) {
         return compact.replace(/^([A-Z]+)(\d+)$/, '$1-$2');
     }
@@ -12186,7 +12187,10 @@ function getExactQueryMatchRank(item, query) {
     const codeNorm = normalizeVisaCode(item.code);
     if (codeNorm === qNorm) return 5;
 
-    const aliases = Array.isArray(item.aliases) ? item.aliases : [];
+    const aliases = [
+        ...(Array.isArray(item.aliases) ? item.aliases : []),
+        ...(Array.isArray(item.searchAliases) ? item.searchAliases : [])
+    ];
     if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return 4;
 
     for (const s of getVisaSubcodes(item)) {
