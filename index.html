@@ -15862,8 +15862,16 @@ function showVisaDocForAction(visaCode) {
     for (const pair of TERM_REPLACEMENTS) {
       if (pair[0].test(text)) return pair[1];
     }
-    text = text.replace(/신청서\s*\(?별지\s*제?34호\s*서식\)?/g, "통합신청서(별지 제34호 서식)");
-    text = text.replace(/표준규격사진\s*1매/g, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)");
+    text = text.replace(/통합통합신청서/g, "통합신청서");
+    text = text.replace(/(표준규격사진 1매\(3\.5×4\.5cm, 최근 6개월\))(?:\(3\.5×4\.5cm, 최근 6개월\))+/g, "$1");
+
+    if (!/^통합신청서/.test(text)) {
+      text = text.replace(/신청서\s*\(?별지\s*제?34호\s*서식\)?/g, "통합신청서(별지 제34호 서식)");
+    }
+
+    if (!/표준규격사진\s*1매\(3\.5×4\.5cm, 최근 6개월\)/.test(text)) {
+      text = text.replace(/표준규격사진\s*1매/g, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)");
+    }
     return text;
   }
 

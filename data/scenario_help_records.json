@@ -2403,7 +2403,7 @@
   },
   "_docTermFeeShadowSync": {
     "updatedAt": "2026-05-26",
-    "method": "copy_live_record_after_doc_term_fee_metadata_patch_for_e4_parity",
+    "method": "copy_live_record_after_idempotent_doc_normalization_fix",
     "syncedCodes": [],
     "legalContentCreated": false,
     "verifiedPromotion": false
