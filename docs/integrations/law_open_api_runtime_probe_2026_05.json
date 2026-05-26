@@ -1,7 +1,7 @@
 {
-  "generated_at_utc": "2026-05-26T00:04:41.730861+00:00",
+  "generated_at_utc": "2026-05-26T00:35:53.689635+00:00",
   "purpose": "runtime probe for Korean Law Open API before any DB official-verification mutation",
-  "configured": false,
+  "configured": true,
   "env_candidates_checked": [
     "LAW_API_OC",
     "LAW_API_KEY",
@@ -12,8 +12,16 @@
   "official_source": {
     "name": "국가법령정보 공동활용 LAW OPEN DATA",
     "guide_url": "https://open.law.go.kr/LSO/openApi/guideList.do",
-    "search_endpoint_template": "https://www.law.go.kr/DRF/lawSearch.do",
-    "service_endpoint_template": "https://www.law.go.kr/DRF/lawService.do"
+    "search_endpoint_template": "http://www.law.go.kr/DRF/lawSearch.do",
+    "service_endpoint_template": "http://www.law.go.kr/DRF/lawService.do",
+    "search_endpoint_candidates": [
+      "http://www.law.go.kr/DRF/lawSearch.do",
+      "https://www.law.go.kr/DRF/lawSearch.do"
+    ],
+    "service_endpoint_candidates": [
+      "http://www.law.go.kr/DRF/lawService.do",
+      "https://www.law.go.kr/DRF/lawService.do"
+    ]
   },
   "guardrails": {
     "mutated_visa_data": false,
@@ -21,7 +29,413 @@
     "created_legal_content": false,
     "stored_secret": false
   },
-  "laws": [],
-  "status": "UNCONFIGURED",
-  "message": "Set LAW_API_OC or LAW_API_KEY in Codespaces secrets/env before live probing."
+  "laws": [
+    {
+      "law_name_requested": "출입국관리법",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 544,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 544,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "출입국관리법 시행령",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 461,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 461,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "출입국관리법 시행규칙",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 411,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 411,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "국적법",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 426,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 426,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "국적법 시행령",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 388,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 388,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "국적법 시행규칙",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 405,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 405,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "난민법",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 3362,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 3362,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "난민법 시행령",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 1418,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 1418,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "난민법 시행규칙",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 841,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 841,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "재외동포의 출입국과 법적 지위에 관한 법률",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 1430,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 1430,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "재외동포의 출입국과 법적 지위에 관한 법률 시행령",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 1395,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 1395,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 1419,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 1419,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "재한외국인 처우 기본법",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 1266,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 1266,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    },
+    {
+      "law_name_requested": "재한외국인 처우 기본법 시행령",
+      "search": {
+        "ok": true,
+        "status": 200,
+        "elapsed_ms": 398,
+        "content_type": "application/json;charset=UTF-8",
+        "bytes": 215,
+        "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+        "attempts": [
+          {
+            "ok": true,
+            "status": 200,
+            "elapsed_ms": 398,
+            "content_type": "application/json;charset=UTF-8",
+            "bytes": 215,
+            "sha256": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+            "url_scheme": "http",
+            "url_host": "www.law.go.kr"
+          }
+        ],
+        "selected_url_scheme": "http",
+        "selected_url_host": "www.law.go.kr"
+      },
+      "search_sample_hash": "a74789350f4449b513b8d90fe38bd7887b2772a16ba116e94272b70f09c63ea7",
+      "candidates": [],
+      "service": null,
+      "verification_state": "SEARCH_RETURNED_NO_CANDIDATE"
+    }
+  ],
+  "status": "PROBED"
 }
