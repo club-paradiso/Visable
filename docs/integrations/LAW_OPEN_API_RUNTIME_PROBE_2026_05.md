@@ -6,20 +6,26 @@ This probe checks whether Paradiso can access official Korean law text through t
 
 ## Result
 
-- Configured: `False`
-- Status: `UNCONFIGURED`
+- Configured: `True`
+- Status: `PROBED`
 - Matched live law sources: `0`
-
-No live call was made because no API credential was found.
-
-Set one of these environment variables before live probing:
-- `LAW_API_OC`
-- `LAW_API_KEY`
-- `KOREAN_LAW_API_OC`
-- `OPEN_LAW_API_OC`
 
 ## Laws checked
 
+- `출입국관리법`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `출입국관리법 시행령`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `출입국관리법 시행규칙`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `국적법`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `국적법 시행령`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `국적법 시행규칙`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `난민법`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `난민법 시행령`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `난민법 시행규칙`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `재외동포의 출입국과 법적 지위에 관한 법률`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `재외동포의 출입국과 법적 지위에 관한 법률 시행령`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `재외동포의 출입국과 법적 지위에 관한 법률 시행규칙`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `재한외국인 처우 기본법`: `SEARCH_RETURNED_NO_CANDIDATE`
+- `재한외국인 처우 기본법 시행령`: `SEARCH_RETURNED_NO_CANDIDATE`
 
 ## Guardrails
 

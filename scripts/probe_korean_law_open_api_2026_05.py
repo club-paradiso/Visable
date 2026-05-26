@@ -40,8 +40,19 @@ ENV_CANDIDATES = [
     "OPEN_LAW_API_OC",
 ]
 
-SEARCH_ENDPOINT = "https://www.law.go.kr/DRF/lawSearch.do"
-SERVICE_ENDPOINT = "https://www.law.go.kr/DRF/lawService.do"
+# The public guide is served over HTTPS, but Codespaces may see
+# connection resets against https://www.law.go.kr/DRF/*.
+# Try HTTP first for DRF API calls, then HTTPS as fallback.
+SEARCH_ENDPOINTS = [
+    "http://www.law.go.kr/DRF/lawSearch.do",
+    "https://www.law.go.kr/DRF/lawSearch.do",
+]
+SERVICE_ENDPOINTS = [
+    "http://www.law.go.kr/DRF/lawService.do",
+    "https://www.law.go.kr/DRF/lawService.do",
+]
+SEARCH_ENDPOINT = SEARCH_ENDPOINTS[0]
+SERVICE_ENDPOINT = SERVICE_ENDPOINTS[0]
 
 def get_oc() -> str | None:
     for key in ENV_CANDIDATES:
@@ -85,6 +96,31 @@ def fetch_url(url: str, timeout: int = 12) -> dict[str, Any]:
             "error": str(exc),
         }
 
+
+def fetch_first_ok(urls: list[str], timeout: int = 12) -> dict[str, Any]:
+    """Try multiple URL variants and return the first successful response.
+
+    If all fail, return the last response plus an attempts array.
+    """
+    attempts = []
+    last = None
+    for url in urls:
+        resp = fetch_url(url, timeout=timeout)
+        attempt = {k: v for k, v in resp.items() if k != "sample"}
+        attempt["url_scheme"] = urllib.parse.urlparse(url).scheme
+        attempt["url_host"] = urllib.parse.urlparse(url).netloc
+        attempts.append(attempt)
+        last = resp
+        if resp.get("ok"):
+            resp["attempts"] = attempts
+            resp["selected_url_scheme"] = urllib.parse.urlparse(url).scheme
+            resp["selected_url_host"] = urllib.parse.urlparse(url).netloc
+            return resp
+    if last is None:
+        last = {"ok": False, "error": "no URLs attempted"}
+    last["attempts"] = attempts
+    return last
+
 def parse_json_maybe(sample: str) -> Any | None:
     try:
         return json.loads(sample)
@@ -124,7 +160,7 @@ def extract_law_candidates(response_sample: str) -> list[dict[str, Any]]:
     walk(data)
     return candidates[:10]
 
-def build_search_url(oc: str, law_name: str) -> str:
+def build_search_urls(oc: str, law_name: str) -> list[str]:
     params = {
         "OC": oc,
         "target": "law",
@@ -132,9 +168,10 @@ def build_search_url(oc: str, law_name: str) -> str:
         "query": law_name,
         "display": "20",
     }
-    return SEARCH_ENDPOINT + "?" + urllib.parse.urlencode(params)
+    query = urllib.parse.urlencode(params)
+    return [endpoint + "?" + query for endpoint in SEARCH_ENDPOINTS]
 
-def build_service_url(oc: str, mst: str | None = None, law_id: str | None = None) -> str | None:
+def build_service_urls(oc: str, mst: str | None = None, law_id: str | None = None) -> list[str]:
     params = {
         "OC": oc,
         "target": "law",
@@ -145,8 +182,9 @@ def build_service_url(oc: str, mst: str | None = None, law_id: str | None = None
     elif law_id:
         params["ID"] = str(law_id)
     else:
-        return None
-    return SERVICE_ENDPOINT + "?" + urllib.parse.urlencode(params)
+        return []
+    query = urllib.parse.urlencode(params)
+    return [endpoint + "?" + query for endpoint in SERVICE_ENDPOINTS]
 
 def main() -> None:
     oc = get_oc()
@@ -162,6 +200,8 @@ def main() -> None:
             "guide_url": "https://open.law.go.kr/LSO/openApi/guideList.do",
             "search_endpoint_template": SEARCH_ENDPOINT,
             "service_endpoint_template": SERVICE_ENDPOINT,
+            "search_endpoint_candidates": SEARCH_ENDPOINTS,
+            "service_endpoint_candidates": SERVICE_ENDPOINTS,
         },
         "guardrails": {
             "mutated_visa_data": False,
@@ -178,8 +218,8 @@ def main() -> None:
     else:
         result["status"] = "PROBED"
         for law_name in LAW_NAMES:
-            search_url = build_search_url(oc, law_name)
-            search_resp = fetch_url(search_url)
+            search_urls = build_search_urls(oc, law_name)
+            search_resp = fetch_first_ok(search_urls)
             law_entry: dict[str, Any] = {
                 "law_name_requested": law_name,
                 "search": {
@@ -206,9 +246,9 @@ def main() -> None:
                     exact = candidates[0]
 
                 if exact:
-                    service_url = build_service_url(oc, exact.get("mst"), exact.get("law_id"))
-                    if service_url:
-                        service_resp = fetch_url(service_url)
+                    service_urls = build_service_urls(oc, exact.get("mst"), exact.get("law_id"))
+                    if service_urls:
+                        service_resp = fetch_first_ok(service_urls)
                         law_entry["service"] = {
                             k: v for k, v in service_resp.items()
                             if k not in {"sample"}
