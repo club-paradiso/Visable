@@ -12164,6 +12164,39 @@ function normalizeVisaCode(value) {
     return String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
 }
 
+function normalizeCodeLikeQuery(value) {
+    const raw = String(value || '').trim().toUpperCase();
+    if (!raw) return '';
+    const compact = raw.replace(/\s+/g, '').replace(/_/g, '-');
+    if (/^[A-Z]+\d+$/.test(compact)) {
+        return compact.replace(/^([A-Z]+)(\d+)$/, '$1-$2');
+    }
+    return compact;
+}
+
+function isCodeLikeQuery(value) {
+    const q = normalizeCodeLikeQuery(value);
+    if (!q) return false;
+    return /^[A-Z]+-\d+(?:-[A-Z0-9]+)*$/.test(q) || q === 'K-ETA';
+}
+
+function getExactQueryMatchRank(item, query) {
+    const qNorm = normalizeVisaCode(query);
+    if (!qNorm) return 0;
+    const codeNorm = normalizeVisaCode(item.code);
+    if (codeNorm === qNorm) return 5;
+
+    const aliases = Array.isArray(item.aliases) ? item.aliases : [];
+    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return 4;
+
+    for (const s of getVisaSubcodes(item)) {
+        if (normalizeVisaCode(s.code) === qNorm) return 3;
+        const subAliases = Array.isArray(s.aliases) ? s.aliases : [];
+        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 2;
+    }
+    return 0;
+}
+
 function isEnglishMode() { return currentLanguage === 'en'; }
 function getVisaNameKo(v) { return v.nameKo || v.name || ''; }
 function getVisaNameEn(v) { return v.nameEn || v.name_en || v.titleEn || v.title_en || ''; }
@@ -13060,8 +13093,25 @@ function reviewStateLabel(v){
 function renderResults(query){
     if(!dataReady) return;
     const box=document.getElementById('rlist'), rc=document.getElementById('rc');
-    const kw=query.trim().split(/\s+/).filter(Boolean), kwL=expandKeywords(kw.map(k=>k.toLowerCase()));
-    let scored=VISA_DATA.map(v=>({...v,_score:calculateScore(v,kwL),_codeRank:getExactCodeMatchRank(v,kw)})), filtered=scored.filter(v=>v._score>0).sort((a,b)=>b._codeRank-a._codeRank||b._score-a._score);
+    const rawQuery = String(query || '').trim();
+    const normalizedQuery = normalizeCodeLikeQuery(rawQuery);
+    const primaryQuery = normalizedQuery || rawQuery;
+    const kw=primaryQuery.split(/\s+/).filter(Boolean), kwL=expandKeywords(kw.map(k=>k.toLowerCase()));
+    const queryIsCodeLike = kw.length === 1 && isCodeLikeQuery(kw[0]);
+    let scored=VISA_DATA.map(v=>{
+        const exactRank = queryIsCodeLike ? getExactQueryMatchRank(v, kw[0]) : 0;
+        const codeRank = getExactCodeMatchRank(v,kw);
+        return ({...v,_score:calculateScore(v,kwL),_codeRank:Math.max(codeRank, exactRank),_exactRank:exactRank});
+    });
+
+    let filtered;
+    if (queryIsCodeLike) {
+        const exactOnly = scored.filter(v => v._exactRank > 0);
+        filtered = (exactOnly.length ? exactOnly : scored.filter(v=>v._score>0))
+            .sort((a,b)=>b._exactRank-a._exactRank||b._codeRank-a._codeRank||b._score-a._score);
+    } else {
+        filtered = scored.filter(v=>v._score>0).sort((a,b)=>b._codeRank-a._codeRank||b._score-a._score);
+    }
     let st=0; filtered.forEach(v=>{st += getVisaSubcodes(v).length;});
     if(!filtered.length){
         box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
