@@ -479,7 +479,7 @@ body.searched .ft { opacity: 1; }
 .modal-overlay.active .modal-box { transform: scale(1); }
 .modal-header { padding: 1.2rem 1.4rem; border-bottom: 1px solid var(--bd2); display: flex; justify-content: space-between; align-items: center; color: var(--t1); }
 .modal-title { margin: 0; font-size: 1.1rem; font-weight: 800; line-height: 1.4; color: inherit; }
-.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 1.4rem; transition: color 0.2s; padding: 0.2rem; }
+.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 1.4rem; transition: color 0.2s; padding: 0.2rem; min-width: 40px; min-height: 40px; touch-action: manipulation; position: relative; z-index: 2; }
 .modal-close:hover { color: var(--t1); }
 .modal-body { padding: 1.4rem; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
 
@@ -12717,8 +12717,8 @@ const DOCUMENT_TAB_CONFIG = [
     { key: 'extension', icon: '🔄', label: '체류기간 연장', field: 'documents_extension' }
 ];
 
-const DOCUMENT_DATA_MISSING_NOTICE = '해당 비자 코드의 구비서류 정보가 아직 등록되지 않았습니다. 출입국·외국인청에 직접 문의하세요.';
-const DOCUMENT_REGISTRATION_MISSING_NOTICE = '이 체류자격의 외국인등록 구비서류는 현재 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
+const DOCUMENT_DATA_MISSING_NOTICE = '이 항목의 구조화 데이터는 아직 정리 중입니다. 하단 서류 모달 또는 공식 매뉴얼 확인이 필요합니다.';
+const DOCUMENT_REGISTRATION_MISSING_NOTICE = '이 항목의 구조화 데이터는 아직 정리 중입니다. 하단 서류 모달 또는 공식 매뉴얼 확인이 필요합니다.';
 
 function isDocFieldMissing(field) {
     if (field === 'DATA_MISSING' || field == null) return true;
@@ -12801,6 +12801,22 @@ function renderDocumentTabs(v) {
         <div class="docs-tabs" role="tablist">${tabsHtml}</div>
         <div class="docs-panels">${panelsHtml}</div>
     </section>`;
+}
+
+function activateDocsTab(section, targetKey) {
+    if (!section || !targetKey) return;
+    const tabs = Array.from(section.querySelectorAll('.docs-tab'));
+    const hasTarget = tabs.some(btn => btn.dataset.docsTab === targetKey);
+    if (!hasTarget) return;
+    tabs.forEach(btn => {
+        const active = btn.dataset.docsTab === targetKey;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    section.querySelectorAll('.docs-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.docsPanel === targetKey);
+    });
+    section.dataset.activeDocsTab = targetKey;
 }
 
 function renderSourceEvidencePanel(v) {
@@ -14475,13 +14491,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'select-docs-tab': () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
-                    const target = actionBtn.dataset.docsTab;
-                    section.querySelectorAll('.docs-tab').forEach(btn => {
-                        const active = btn === actionBtn;
-                        btn.classList.toggle('active', active);
-                        btn.setAttribute('aria-selected', active ? 'true' : 'false');
-                    });
-                    section.querySelectorAll('.docs-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.docsPanel === target));
+                    activateDocsTab(section, actionBtn.dataset.docsTab);
                 },
                 'search-hint': () => { document.getElementById('q').value = actionBtn.dataset.query; executeSearch(); },
                 'quick-filter': () => { document.getElementById('q').value = actionBtn.dataset.query; document.getElementById('xb').classList.add('v'); renderResults(actionBtn.dataset.query); },
@@ -14567,6 +14577,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    document.addEventListener('toggle', (e) => {
+        const details = e.target;
+        if (!(details instanceof HTMLDetailsElement)) return;
+        if (!details.classList.contains('manual-subcode-more') || !details.open) return;
+        const summary = details.querySelector('summary');
+        if (!(summary instanceof HTMLElement)) return;
+        requestAnimationFrame(() => {
+            summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    }, true);
 
     document.addEventListener('change', (e) => {
         const t = e.target;
