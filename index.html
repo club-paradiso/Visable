@@ -12185,18 +12185,25 @@ function getExactQueryMatchRank(item, query) {
     const qNorm = normalizeVisaCode(query);
     if (!qNorm) return 0;
     const codeNorm = normalizeVisaCode(item.code);
-    if (codeNorm === qNorm) return 5;
+    const isHelperRecord = ['faq', 'scn', 'nhis'].includes(item.cat);
+    if (codeNorm === qNorm) return 6;
+
+    for (const s of getVisaSubcodes(item)) {
+        if (normalizeVisaCode(s.code) === qNorm) return 5;
+    }
 
     const aliases = [
         ...(Array.isArray(item.aliases) ? item.aliases : []),
         ...(Array.isArray(item.searchAliases) ? item.searchAliases : [])
     ];
-    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return 4;
+    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return isHelperRecord ? 2 : 4;
 
     for (const s of getVisaSubcodes(item)) {
-        if (normalizeVisaCode(s.code) === qNorm) return 3;
-        const subAliases = Array.isArray(s.aliases) ? s.aliases : [];
-        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 2;
+        const subAliases = [
+            ...(Array.isArray(s.aliases) ? s.aliases : []),
+            ...(Array.isArray(s.searchAliases) ? s.searchAliases : [])
+        ];
+        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 3;
     }
     return 0;
 }
