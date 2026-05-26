@@ -479,7 +479,7 @@ body.searched .ft { opacity: 1; }
 .modal-overlay.active .modal-box { transform: scale(1); }
 .modal-header { padding: 1.2rem 1.4rem; border-bottom: 1px solid var(--bd2); display: flex; justify-content: space-between; align-items: center; color: var(--t1); }
 .modal-title { margin: 0; font-size: 1.1rem; font-weight: 800; line-height: 1.4; color: inherit; }
-.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 1.4rem; transition: color 0.2s; padding: 0.2rem; }
+.modal-close { background: none; border: none; color: var(--t3); cursor: pointer; font-size: 1.4rem; transition: color 0.2s; padding: 0.2rem; min-width: 40px; min-height: 40px; touch-action: manipulation; position: relative; z-index: 2; }
 .modal-close:hover { color: var(--t1); }
 .modal-body { padding: 1.4rem; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
 
@@ -12717,8 +12717,8 @@ const DOCUMENT_TAB_CONFIG = [
     { key: 'extension', icon: '🔄', label: '체류기간 연장', field: 'documents_extension' }
 ];
 
-const DOCUMENT_DATA_MISSING_NOTICE = '해당 비자 코드의 구비서류 정보가 아직 등록되지 않았습니다. 출입국·외국인청에 직접 문의하세요.';
-const DOCUMENT_REGISTRATION_MISSING_NOTICE = '이 체류자격의 외국인등록 구비서류는 현재 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
+const DOCUMENT_DATA_MISSING_NOTICE = '구조화 서류 데이터 없음: 이 절차의 구비서류는 아직 Paradiso 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류·사증 민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
+const DOCUMENT_REGISTRATION_MISSING_NOTICE = '구조화 서류 데이터 없음: 이 절차의 구비서류는 아직 Paradiso 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류·사증 민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
 
 function isDocFieldMissing(field) {
     if (field === 'DATA_MISSING' || field == null) return true;
@@ -12803,6 +12803,22 @@ function renderDocumentTabs(v) {
     </section>`;
 }
 
+function activateDocsTab(section, targetKey) {
+    if (!section || !targetKey) return;
+    const tabs = Array.from(section.querySelectorAll('.docs-tab'));
+    const hasTarget = tabs.some(btn => btn.dataset.docsTab === targetKey);
+    if (!hasTarget) return;
+    tabs.forEach(btn => {
+        const active = btn.dataset.docsTab === targetKey;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    section.querySelectorAll('.docs-panel').forEach(panel => {
+        panel.classList.toggle('active', panel.dataset.docsPanel === targetKey);
+    });
+    section.dataset.activeDocsTab = targetKey;
+}
+
 function renderSourceEvidencePanel(v) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const status = v.sourceManualStatus || {};
@@ -12810,11 +12826,23 @@ function renderSourceEvidencePanel(v) {
     const hasVisa = domains.includes('visa_issuance');
     const hasStay = domains.includes('stay_sojourn');
     const isVerified = status.verified === true && !status.needsManualReview;
+    const pendingReview = status.needsManualReview === true;
+    const hasManualLinked = hasVisa || hasStay;
+    const hasPageHint = Array.isArray(v.manualRefs) && v.manualRefs.some(ref => !!(ref && (ref.pageRange || ref.page || ref.section)));
+    const isProvisional = (String(v.procedureNote || '').includes('준용') || String(v.note || '').includes('준용'));
     let badges = `<span class="sep-badge structured">${escapeHtml(tx('sourceStructuredData'))}</span>`;
+    if (isVerified) badges += `<span class="sep-badge visa-manual">${escapeHtml(tx('sourceManualConfirmed'))}</span>`;
+    if (pendingReview) badges += `<span class="sep-badge unverified">${escapeHtml(tx('sourceManualPending'))}</span>`;
+    if (!hasManualLinked && hasPageHint) badges += `<span class="sep-badge source-linked-unverified">${escapeHtml(tx('sourceNeedLinking'))}</span>`;
+    if (isProvisional) badges += `<span class="sep-badge source-linked-unverified">${escapeHtml(tx('sourceProvisional'))}</span>`;
     if (hasVisa) badges += `<span class="sep-badge visa-manual">${escapeHtml(tx('sourceVisaManual'))}</span>`;
     if (hasStay) badges += `<span class="sep-badge stay-manual">${escapeHtml(tx('sourceStayManual'))}</span>`;
     if (!isVerified) badges += `<span class="sep-badge unverified">${escapeHtml(tx('sourceUnverified'))}</span>`;
-    const noteHtml = !isVerified ? `<p class="sep-note">${escapeHtml(tx('sourceUnverifiedNote'))}</p>` : '';
+    const noteKey = isVerified
+        ? 'sourceVerifiedNote'
+        : (pendingReview ? 'sourcePendingReviewNote' : (hasPageHint ? 'sourceNeedLinkingNote' : 'sourceUnverifiedNote'));
+    const provisionalNote = isProvisional ? `<p class="sep-note">${escapeHtml(tx('sourceProvisionalNote'))}</p>` : '';
+    const noteHtml = `<p class="sep-note">${escapeHtml(tx(noteKey))}</p>${provisionalNote}`;
     return `<details class="source-evidence-panel">
         <summary><span class="sep-title">${escapeHtml(tx('sourceEvidenceTitle'))}</span><span class="sep-chevron">▾</span></summary>
         <div class="sep-body"><div class="sep-badges">${badges}</div>${noteHtml}</div>
@@ -13339,7 +13367,7 @@ const UI_TRANSLATIONS = {
         closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jobCodeNaturalSearchApi: 'AI 자연어 분석으로 공식 직종·업종 후보 찾기', jobCodeNaturalSearchLocal: '자연어 키워드로 공식 직종·업종 찾기', jobCodeLoadingNatural: '입력한 표현을 공식 코드 검색어로 정리하는 중입니다.', jobCodeFoundOfficial: '공식 코드 데이터에서 후보를 찾았습니다.', jobCodePartial: '가능성 있는 후보입니다. 최종 코드는 HiKorea 또는 1345에서 확인하세요.', jobCodeNoConfirmed: '정확한 코드가 자동 확인되지 않았습니다.', jobCodeNoConfirmedHint: '직무를 더 짧게 나누어 입력해 보세요. 예: 영어, 강사, 학원, 교육', jobCodeFinalCheck: '최종 직종·업종 코드는 HiKorea 또는 1345에서 확인하세요.', jurisdictionTitle: '🏛 관할 출입국관서 조회',
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
-        sourceStructuredData: '구조화 데이터', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 메타데이터 미확인', sourceEvidenceTitle: '출처 및 근거', sourceUnverifiedNote: '출처 메타데이터 미확인. 현재 표시 정보는 구조화 데이터 기준이며, 세부 제출서류는 공식 매뉴얼/HiKorea 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
+        sourceStructuredData: '구조화 데이터 기준', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 확인 필요', sourceManualConfirmed: '공식 매뉴얼 확인됨', sourceManualPending: '매뉴얼 검토 필요', sourceNeedLinking: '출처 확인 필요', sourceProvisional: '준용/임시 안내', sourceEvidenceTitle: '출처 및 근거', sourceVerifiedNote: '표시된 항목은 현재 구조화 데이터 기준으로 공식 매뉴얼 출처가 확인된 항목입니다. 관할 출입국관서에서 추가 서류를 요구할 수 있습니다.', sourcePendingReviewNote: '이 항목은 아직 공식 매뉴얼 대조가 완료되지 않았습니다. 신청 전 HiKorea 또는 관할 출입국·외국인관서에서 확인하세요.', sourceNeedLinkingNote: '페이지 또는 출처 단서가 있으나, 항목별 공식 근거 연결은 아직 정리 중입니다.', sourceUnverifiedNote: 'Paradiso 내부 구조화 데이터에 정리된 안내입니다. 공식 결정이나 법률 자문이 아닙니다.', sourceProvisionalNote: '다른 절차 또는 유사 체류자격의 기준을 참고한 임시 안내일 수 있습니다. 실제 신청 전 공식 매뉴얼과 관할 기관 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
         /* STEP 0-A: HiKorea 회원가입 준비 */
         step0aTitle: 'STEP 0-A · HiKorea 회원가입 준비',
         step0aSecATitle: '이메일 계정 준비', step0aSecABody: 'HiKorea 가입에는 이메일 주소가 필요합니다.',
@@ -13470,7 +13498,7 @@ const UI_TRANSLATIONS = {
         closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jobCodeNaturalSearchApi: 'Use AI natural-language analysis to find official occupation and industry candidates', jobCodeNaturalSearchLocal: 'Find official occupation and industry codes from natural-language keywords', jobCodeLoadingNatural: 'Converting your wording into official-code search terms.', jobCodeFoundOfficial: 'Candidates were found in the official code data.', jobCodePartial: 'These are possible candidates. Confirm the final code with HiKorea or 1345.', jobCodeNoConfirmed: 'An exact code could not be confirmed automatically.', jobCodeNoConfirmedHint: 'Try shorter role words, such as English, instructor, academy, education.', jobCodeFinalCheck: 'Confirm the final occupation and industry code with HiKorea or 1345.', jurisdictionTitle: '🏛 Find your immigration office',
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
-        sourceStructuredData: 'Structured data', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source metadata unavailable', sourceEvidenceTitle: 'Source & Evidence', sourceUnverifiedNote: 'Source metadata unavailable. This result is based on structured data; detailed document requirements should be checked against official manuals/HiKorea.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
+        sourceStructuredData: 'Structured-data guidance', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source check needed', sourceManualConfirmed: 'Manual-backed', sourceManualPending: 'Manual review needed', sourceNeedLinking: 'Source linkage needed', sourceProvisional: 'Provisional guidance', sourceEvidenceTitle: 'Source & Evidence', sourceVerifiedNote: 'This item is shown from structured data with an identified official manual source. Additional documents may still be requested by the competent office.', sourcePendingReviewNote: 'Official manual cross-check for this item is still pending. Confirm with HiKorea or the competent immigration office before filing.', sourceNeedLinkingNote: 'A page/source clue exists, but per-item official source linkage is still being organized.', sourceUnverifiedNote: 'This is guidance organized from Paradiso’s internal structured catalog. It is not an official decision or legal advice.', sourceProvisionalNote: 'This may be provisional guidance referencing a similar status or procedure. Confirm against official manuals and the competent office before filing.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
         step0aTitle: 'STEP 0-A · HiKorea Account Setup Preparation',
         step0aSecATitle: 'Prepare an email account', step0aSecABody: 'You need an email address to register on HiKorea.',
         step0aNoEmail: 'If you do not have an email', step0aGmail: 'You can create a Gmail (Google email) for free.',
@@ -14475,13 +14503,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'select-docs-tab': () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
-                    const target = actionBtn.dataset.docsTab;
-                    section.querySelectorAll('.docs-tab').forEach(btn => {
-                        const active = btn === actionBtn;
-                        btn.classList.toggle('active', active);
-                        btn.setAttribute('aria-selected', active ? 'true' : 'false');
-                    });
-                    section.querySelectorAll('.docs-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.docsPanel === target));
+                    activateDocsTab(section, actionBtn.dataset.docsTab);
                 },
                 'search-hint': () => { document.getElementById('q').value = actionBtn.dataset.query; executeSearch(); },
                 'quick-filter': () => { document.getElementById('q').value = actionBtn.dataset.query; document.getElementById('xb').classList.add('v'); renderResults(actionBtn.dataset.query); },
@@ -14567,6 +14589,17 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    document.addEventListener('toggle', (e) => {
+        const details = e.target;
+        if (!(details instanceof HTMLDetailsElement)) return;
+        if (!details.classList.contains('manual-subcode-more') || !details.open) return;
+        const summary = details.querySelector('summary');
+        if (!(summary instanceof HTMLElement)) return;
+        requestAnimationFrame(() => {
+            summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+    }, true);
 
     document.addEventListener('change', (e) => {
         const t = e.target;
