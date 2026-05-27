@@ -1,0 +1,100 @@
+{
+  "schema_version": "2026-05-sample-validation",
+  "source_artifact": "employment_reporting_full_tables_candidate_2026_05.zip",
+  "validation_status": "SAMPLE_VALIDATION_PASSED_WITH_RUNTIME_GATES_REMAINING",
+  "runtime_use": "NOT_ENABLED_FOR_PRODUCTION_RUNTIME",
+  "summary": {
+    "ksco8": {
+      "row_count": 1999,
+      "expected_counts_by_level": {
+        "major": 10,
+        "middle": 57,
+        "minor": 167,
+        "unit": 495,
+        "detailed_unit": 1270
+      },
+      "actual_counts_by_level": {
+        "detailed_unit": 1270,
+        "unit": 495,
+        "minor": 167,
+        "middle": 57,
+        "major": 10
+      },
+      "count_match": true,
+      "duplicate_code_count": 0,
+      "blank_code_count": 0,
+      "blank_title_count": 0,
+      "no_hangul_title_count": 0,
+      "missing_parent_count": 0
+    },
+    "ksic11": {
+      "row_count": 2038,
+      "expected_counts_by_level": {
+        "major": 21,
+        "middle": 77,
+        "minor": 234,
+        "unit": 501,
+        "detailed_unit": 1205
+      },
+      "actual_counts_by_level": {
+        "detailed_unit": 1205,
+        "unit": 501,
+        "minor": 234,
+        "middle": 77,
+        "major": 21
+      },
+      "count_match": true,
+      "duplicate_code_count": 0,
+      "blank_code_count": 0,
+      "blank_title_count": 0,
+      "no_hangul_title_count": 0,
+      "missing_parent_count": 0
+    }
+  },
+  "sample_rows": {
+    "ksco8": [
+      {"code": "1", "title_ko": "관리자", "level": "major", "parent_code": ""},
+      {"code": "11", "title_ko": "의회‧정부 및 기업 고위직", "level": "middle", "parent_code": "1"},
+      {"code": "111", "title_ko": "의회 의원‧고위 공무원 및 공공단체 임원", "level": "minor", "parent_code": "11"},
+      {"code": "1111", "title_ko": "의회 의원", "level": "unit", "parent_code": "111"},
+      {"code": "11111", "title_ko": "국회의원", "level": "detailed_unit", "parent_code": "1111"},
+      {"code": "22", "title_ko": "정보 통신 전문가 및 기술직", "level": "middle", "parent_code": "2"},
+      {"code": "221", "title_ko": "컴퓨터 하드웨어 및 통신공학 전문가", "level": "minor", "parent_code": "22"},
+      {"code": "222", "title_ko": "컴퓨터 시스템 및 소프트웨어 전문가", "level": "minor", "parent_code": "22"},
+      {"code": "261", "title_ko": "대학교수 및 강사", "level": "minor", "parent_code": "26"},
+      {"code": "531", "title_ko": "통신 관련 판매 종사자", "level": "minor", "parent_code": "53"},
+      {"code": "A", "title_ko": "군인", "level": "major", "parent_code": ""},
+      {"code": "A0", "title_ko": "군인", "level": "middle", "parent_code": "A"},
+      {"code": "A01", "title_ko": "장교", "level": "minor", "parent_code": "A0"},
+      {"code": "A011", "title_ko": "영관급 이상 장교", "level": "unit", "parent_code": "A01"},
+      {"code": "A0110", "title_ko": "영관급 이상 장교", "level": "detailed_unit", "parent_code": "A011"}
+    ],
+    "ksic11": [
+      {"code": "A", "title_ko": "농업, 임업 및 어업(01 ~ 03)", "level": "major", "parent_code": ""},
+      {"code": "01", "title_ko": "농업", "level": "middle", "parent_code": "A"},
+      {"code": "011", "title_ko": "작물 재배업", "level": "minor", "parent_code": "01"},
+      {"code": "0111", "title_ko": "곡물 및 기타 식량작물 재배업", "level": "unit", "parent_code": "011"},
+      {"code": "01110", "title_ko": "곡물 및 기타 식량작물 재배업", "level": "detailed_unit", "parent_code": "0111"},
+      {"code": "C", "title_ko": "제조업(10 ~ 34)", "level": "major", "parent_code": ""},
+      {"code": "10", "title_ko": "식료품 제조업", "level": "middle", "parent_code": "C"},
+      {"code": "107", "title_ko": "도시락 및 식사용 조리식품 제조업", "level": "minor", "parent_code": "10"},
+      {"code": "J", "title_ko": "정보통신업(58 ~ 63)", "level": "major", "parent_code": ""},
+      {"code": "62", "title_ko": "컴퓨터 프로그래밍, 시스템 통합 및 관리업", "level": "middle", "parent_code": "J"},
+      {"code": "620", "title_ko": "컴퓨터 프로그래밍, 시스템 통합 및 관리업", "level": "minor", "parent_code": "62"},
+      {"code": "6201", "title_ko": "컴퓨터 프로그래밍 서비스업", "level": "unit", "parent_code": "620"},
+      {"code": "62010", "title_ko": "컴퓨터 프로그래밍 서비스업", "level": "detailed_unit", "parent_code": "6201"},
+      {"code": "U", "title_ko": "국제 및 외국기관(99)", "level": "major", "parent_code": ""},
+      {"code": "99", "title_ko": "국제 및 외국기관", "level": "middle", "parent_code": "U"},
+      {"code": "990", "title_ko": "국제 및 외국기관", "level": "minor", "parent_code": "99"},
+      {"code": "9900", "title_ko": "국제 및 외국기관", "level": "unit", "parent_code": "990"},
+      {"code": "99009", "title_ko": "기타 국제 및 외국기관", "level": "detailed_unit", "parent_code": "9900"}
+    ]
+  },
+  "remaining_gates": [
+    "full generated tables are not committed to runtime data",
+    "frontend performance with 4037 combined rows is not tested",
+    "UI must clearly distinguish 직종(KSCO8) from 업종(KSIC11)",
+    "users must still be told to confirm final codes on HiKorea or Statistics Classification Portal",
+    "E-7 eligibility screening is not validated by classification data alone"
+  ]
+}
