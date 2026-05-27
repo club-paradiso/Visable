@@ -1,0 +1,50 @@
+{
+  "version": "2026-05-seed",
+  "purpose": "Guide Paradiso employment-information helper toward the actual HiKorea reporting flow.",
+  "required_user_inputs": [
+    "stay_status",
+    "profit_activity 여부",
+    "직종(KSCO8)",
+    "업종(KSIC11)",
+    "연간소득 구간",
+    "신고 경로"
+  ],
+  "target_statuses": ["E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "E-10", "F-2", "F-4", "F-6", "H-2", "D-7", "D-8", "D-9"],
+  "excluded_statuses": ["F-5"],
+  "excluded_cases": ["영리활동에 종사하지 않는 사람"],
+  "deadline_note": "영리활동 개시 또는 신고사항 변경 후 15일 이내 신고 필요",
+  "income_bands": [
+    "소득없음",
+    "연간 1천만 원 미만",
+    "1천만~2천만 원 미만",
+    "2천만~3천만 원 미만",
+    "3천만~4천만 원 미만",
+    "4천만~5천만 원 미만",
+    "5천만 원 이상"
+  ],
+  "hikorea_paths": [
+    {
+      "id": "visit_reservation_flow",
+      "label": "방문예약 중 함께 신고",
+      "steps": ["방문예약", "취업정보 확인", "직종조회", "업종조회", "연간소득 입력", "예약 및 신고 완료"]
+    },
+    {
+      "id": "electronic_petition_flow",
+      "label": "전자민원에서 최초/변경 신고",
+      "steps": ["전자민원", "취업정보 신고 선택", "직종조회", "업종조회", "연간소득 입력", "신고 완료"]
+    }
+  ],
+  "classification_sources": {
+    "occupation": {
+      "name": "제8차 한국표준직업분류",
+      "runtime_seed": "data/jobcode_master_ksco8_major_middle.csv",
+      "full_extraction_status": "pending"
+    },
+    "industry": {
+      "name": "제11차 한국표준산업분류",
+      "runtime_seed": "data/industrycode_master_ksic11_major.csv",
+      "full_extraction_status": "pending"
+    }
+  },
+  "ui_warning": "현재 seed는 전체 상세분류가 아니므로, 상세 코드 확정 전에는 공식 HiKorea/통계분류포털 확인 안내를 함께 표시해야 함"
+}
