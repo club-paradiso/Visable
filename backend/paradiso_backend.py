@@ -641,6 +641,28 @@ def _split_visa_code(normalized: Optional[str]) -> tuple:
         return top, normalized
     return normalized, None
 
+def _build_detection_text_from_history(
+    history: Optional[List[Dict[str, Any]]],
+    current_prompt: str,
+) -> str:
+    """Build a compact detection-only text from recent chat history.
+
+    This is used only for deterministic visa/task detection in follow-up
+    questions. It must not be treated as verified source grounding.
+    """
+    parts: List[str] = []
+    if isinstance(history, list):
+        for item in history[-8:]:
+            if not isinstance(item, dict):
+                continue
+            role = str(item.get("role") or "").strip().lower()
+            content = str(item.get("content") or "").strip()
+            if role in {"user", "assistant"} and content:
+                parts.append(content[:1200])
+    if current_prompt:
+        parts.append(current_prompt)
+    return "\n".join(parts).strip()
+
 
 # Visa codes for which a deterministic grounding entry exists. Used to
 # bound the text-detection regex so we never claim detection for a code
@@ -733,15 +755,49 @@ def _detect_task_type(text: str) -> Optional[str]:
     if any(sig in text for sig in overstay_ko) or re.search(overstay_en, text, flags=re.IGNORECASE):
         return "overstay_deadline_risk"
 
+        # --- foreigner_registration ---
+    registration_ko = (
+        "외국인등록",
+        "외국인 등록",
+        "외국인등록증",
+        "등록증",
+        "등록 전",
+        "입국한지 90일",
+        "입국한 지 90일",
+        "90일 이내",
+    )
+    registration_en = r"\b(foreigner registration|alien registration|ARC|before registration|within 90 days)\b"
+    if any(sig in text for sig in registration_ko) or re.search(registration_en, text, flags=re.IGNORECASE):
+        return "foreigner_registration"
+
     # --- status_change (체류자격 변경) ---
     status_change_ko = ("체류자격 변경", "자격 변경", "변경허가", "체류 자격을 바꾸")
     status_change_en = r"\b(change of status|status change|switch (?:to|from) [A-Z]-\d|change (?:my )?visa (?:type|category|status))\b"
     if any(sig in text for sig in status_change_ko) or re.search(status_change_en, text, flags=re.IGNORECASE):
         return "status_change"
 
-    # --- workplace_change ---
-    workplace_ko = ("근무처 변경", "근무처 추가", "근무처 변경신고", "이직", "직장을 바꾸", "직장 변경")
-    workplace_en = r"\b(change (?:of )?workplace|change employer|switch (?:jobs?|employer)|add (?:a )?second job)\b"
+    # --- workplace_change / employment disruption ---
+    workplace_ko = (
+        "근무처 변경",
+        "근무처 추가",
+        "근무처 변경신고",
+        "이직",
+        "직장을 바꾸",
+        "직장 변경",
+        "해고",
+        "계약 해지",
+        "고용계약 해지",
+        "초청회사",
+        "고용주가 내보냄",
+        "사장님이 내보냄",
+        "사장님이 나가라",
+        "근무 시작 전",
+    )
+    workplace_en = (
+        r"\b(change (?:of )?workplace|change employer|switch (?:jobs?|employer)|"
+        r"add (?:a )?second job|fired|terminated|contract cancelled|"
+        r"employer backed out|sponsor withdrew|before starting work)\b"
+    )
     if any(sig in text for sig in workplace_ko) or re.search(workplace_en, text, flags=re.IGNORECASE):
         return "workplace_change"
 
@@ -1265,13 +1321,21 @@ async def ask(req: AskRequest) -> AskResponse:
             },
         )
 
+    detection_text = _build_detection_text_from_history(req.history, prompt)
     visa_code_detected, visa_sub_code_detected = _detect_visa_codes(
-        req.visa_code, req.visa_data, prompt
+        req.visa_code, req.visa_data, detection_text
     )
-    task_type_detected = _detect_task_type(prompt)
+    task_type_detected = _detect_task_type(detection_text)
     risk_level_detected = _risk_level_for_task(task_type_detected)
-    grounding = _select_grounding(
-        visa_code_detected, task_type_detected, visa_sub_code_detected
+    context_carryover_note = ""
+    if detection_text != prompt and (visa_code_detected or task_type_detected):
+        context_carryover_note = (
+            "\n\n[Conversation context note]\n"
+            "Recent chat history was used only to preserve follow-up context. "
+            "If the answer relies on a carried-over visa/status or procedure, "
+            "state that it is based on the previous messages and avoid treating it as newly confirmed. "
+            "Do not assert a definitive 90-day rule, deadline, or departure requirement unless verified grounding supports it."
+        )
     )
     grounding_sources: List[Dict[str, Any]] = []
     visa_data_block = _build_visa_data_context_block(req.visa_data)
@@ -1300,6 +1364,9 @@ async def ask(req: AskRequest) -> AskResponse:
         )
         if visa_data_block:
             final_prompt += "\n\n" + visa_data_block
+
+        if context_carryover_note:
+        final_prompt += context_carryover_note
 
     law_grounding_used = False
     law_grounding_attempted = False
