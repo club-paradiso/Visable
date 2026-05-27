@@ -1,0 +1,52 @@
+[
+  {
+    "record_id": "status-d2-extension-2026-05",
+    "visa_code": "D-2",
+    "visa_sub_code": null,
+    "procedure_type": "체류기간 연장허가",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "43-44",
+      "section": "유학(D-2)",
+      "support_level": "direct"
+    },
+    "scope_note": "Supports the D-2 extension document list only.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  },
+  {
+    "record_id": "status-d4-language-training-extension-2026-05",
+    "visa_code": "D-4",
+    "visa_sub_code": null,
+    "sub_codes_covered": ["D-4-1", "D-4-7"],
+    "procedure_type": "체류기간 연장허가",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "90-91",
+      "section": "일반연수(D-4) - 어학연수생(D-4-1, D-4-7)",
+      "support_level": "direct_subcode_limited"
+    },
+    "scope_note": "Only D-4-1 and D-4-7 are covered. Other D-4 subcodes require separate citations.",
+    "patch_readiness": "SUBCODE_SCOPE_LIMITED"
+  },
+  {
+    "record_id": "status-e7-general-extension-2026-05",
+    "visa_code": "E-7",
+    "visa_sub_code": null,
+    "scenario": "general",
+    "procedure_type": "체류기간 연장허가",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "226",
+      "section": "특정활동(E-7) - 제출 서류 및 확인사항",
+      "support_level": "direct_general_only"
+    },
+    "scope_note": "General E-7 extension only. Special-track sections after p. 226 require separate citations.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  }
+]
