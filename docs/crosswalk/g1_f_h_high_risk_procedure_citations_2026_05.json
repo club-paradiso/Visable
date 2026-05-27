@@ -1,0 +1,211 @@
+[
+  {
+    "record_id": "status-g1-scope-2026-05",
+    "visa_code": "G-1",
+    "visa_sub_code": null,
+    "procedure_type": "activity_scope_and_eligible_persons",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "498",
+      "section": "기타(G-1)",
+      "support_level": "direct_general_scope"
+    },
+    "scope_note": "Supports top-level G-1 activity scope and example recognized-person categories. Subcodes need separate citation.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  },
+  {
+    "record_id": "status-g1-refugee-humanitarian-employment-2026-05",
+    "visa_code": "G-1",
+    "visa_sub_code": null,
+    "sub_codes_covered": ["G-1-5", "G-1-6", "G-1-12", "G-1-99"],
+    "procedure_type": "employment_permission_or_status_outside_activity",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "499-503",
+      "section": "난민신청자 및 인도적체류자 관련 체류자격외 취업활동 허가",
+      "support_level": "direct_subcase_limited"
+    },
+    "scope_note": "Supports G-1 refugee/humanitarian employment-permission contexts only. Do not generalize to all G-1 categories.",
+    "patch_readiness": "SUBCODE_SCOPE_LIMITED"
+  },
+  {
+    "record_id": "status-f1-general-scope-2026-05",
+    "visa_code": "F-1",
+    "visa_sub_code": null,
+    "procedure_type": "scope_and_common_management",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "341-342",
+      "section": "방문동거(F-1)",
+      "support_level": "direct_general_scope"
+    },
+    "scope_note": "Supports F-1 general scope and selected activity exceptions; individual subcases require separate review.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  },
+  {
+    "record_id": "status-f1-extension-change-examples-2026-05",
+    "visa_code": "F-1",
+    "visa_sub_code": null,
+    "procedure_type": "extension_or_change_examples",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "344,351",
+      "section": "F-1 체류자격 변경 및 연장 examples",
+      "support_level": "context_subcase_limited"
+    },
+    "scope_note": "Examples only. Do not treat as universal F-1 document list.",
+    "patch_readiness": "NEEDS_SUBCASE_REVIEW"
+  },
+  {
+    "record_id": "status-f2-fragmented-subroutes-2026-05",
+    "visa_code": "F-2",
+    "visa_sub_code": null,
+    "procedure_type": "change_extension_and_subroute_context",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "367,371,375,389",
+      "section": "거주(F-2) investment/compliance/long-term residence subroutes",
+      "support_level": "direct_subroute_limited"
+    },
+    "scope_note": "F-2 is highly sub-route-specific. Do not generalize investor, long-term resident, or point-system criteria across F-2 subcodes.",
+    "patch_readiness": "SUBCODE_SCOPE_LIMITED"
+  },
+  {
+    "record_id": "status-f3-dependent-family-2026-05",
+    "visa_code": "F-3",
+    "visa_sub_code": null,
+    "procedure_type": "dependent_family_extension_change_context",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "421,425,545",
+      "section": "동반(F-3) and overseas-Korean family contexts",
+      "support_level": "direct_subcase_limited"
+    },
+    "scope_note": "Supports dependent-family and overseas-Korean-family contexts. Subcase-specific review still required.",
+    "patch_readiness": "NEEDS_SUBCASE_REVIEW"
+  },
+  {
+    "record_id": "status-f4-overseas-korean-block-2026-05",
+    "visa_code": "F-4",
+    "visa_sub_code": null,
+    "procedure_type": "overseas_korean_residence_management",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "518-545",
+      "section": "알기쉬운 외국국적동포 업무 매뉴얼 - 재외동포(F-4)",
+      "support_level": "direct_section_context"
+    },
+    "scope_note": "F-4 should be reviewed inside the dedicated overseas-Korean block, not as generic F-series data.",
+    "patch_readiness": "NEEDS_SUBCASE_REVIEW"
+  },
+  {
+    "record_id": "status-f5-permanent-residence-context-2026-05",
+    "visa_code": "F-5",
+    "visa_sub_code": null,
+    "procedure_type": "permanent_residence_context",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "453,518",
+      "section": "영주(F-5) and overseas-Korean permanent residence contexts",
+      "support_level": "context_subcase_limited"
+    },
+    "scope_note": "F-5 is not a simple extension checklist. Use subcase-specific review before any patch.",
+    "patch_readiness": "SUBCODE_SCOPE_LIMITED"
+  },
+  {
+    "record_id": "status-f6-spouse-status-change-2026-05",
+    "visa_code": "F-6",
+    "visa_sub_code": "F-6-1",
+    "procedure_type": "change_of_status",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "475",
+      "section": "국민의 배우자(F-6-1)에 대한 체류자격 변경허가",
+      "support_level": "direct_subcase_limited"
+    },
+    "scope_note": "Supports F-6-1 change-of-status context only. Notes H-1 limitation, but does not cover all F-6 subcases.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  },
+  {
+    "record_id": "status-h1-working-holiday-2026-05",
+    "visa_code": "H-1",
+    "visa_sub_code": null,
+    "procedure_type": "activity_extension_registration",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "514,517",
+      "section": "관광취업(H-1)",
+      "support_level": "direct"
+    },
+    "scope_note": "Supports H-1 working-holiday activity limits, extension context, and registration document example.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  },
+  {
+    "record_id": "status-h2-stay-permit-language-proof-2026-05",
+    "visa_code": "H-2",
+    "visa_sub_code": null,
+    "procedure_type": "stay_permit_and_language_proof_context",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "553",
+      "section": "방문취업(H-2) 체류허가",
+      "support_level": "direct_subcase_limited"
+    },
+    "scope_note": "Supports H-2 stay-permit/language-proof context, including H-2-7. Further subcase review required.",
+    "patch_readiness": "NEEDS_SUBCASE_REVIEW"
+  },
+  {
+    "record_id": "status-h2-employment-industry-scope-2026-05",
+    "visa_code": "H-2",
+    "visa_sub_code": null,
+    "procedure_type": "employment_activity_scope",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "555,565",
+      "section": "방문취업제(H-2) 취업 활동범위",
+      "support_level": "direct_industry_scope_limited"
+    },
+    "scope_note": "Supports H-2 employment/industry scope. Must be reviewed with KSIC industry-classification work before any employment helper patch.",
+    "patch_readiness": "SUBCODE_AND_INDUSTRY_SCOPE_LIMITED"
+  },
+  {
+    "record_id": "status-h2-health-registration-context-2026-05",
+    "visa_code": "H-2",
+    "visa_sub_code": null,
+    "procedure_type": "health_check_and_registration_context",
+    "manual_source": {
+      "source_id": "stay_manual_pdf",
+      "source_title": "외국인체류 안내매뉴얼",
+      "source_date": "2026.5",
+      "page_range": "566",
+      "section": "E-9/E-10/H-2 자격 사증신청자 확인서",
+      "support_level": "context"
+    },
+    "scope_note": "Supports H-2 health-status confirmation and 90-day registration context. Not a full H-2 document list.",
+    "patch_readiness": "READY_FOR_FIELD_REVIEW"
+  }
+]
