@@ -1,0 +1,197 @@
+[
+  {
+    "record_id": "procedure-foreigner-registration-2026-05",
+    "record_type": "procedure",
+    "subject_code": "FOREIGNER_REGISTRATION",
+    "subject_label": "외국인등록",
+    "procedure_key": "registration",
+    "source_refs": [
+      {"source_id":"alien_registration","source_role":"core_procedure_source","source_title":"외국인등록","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=176&PARENT_ID=139","local_path":null,"page":null,"article":null,"section_label":"HiKorea foreigner registration guide","support_level":"context","notes":"Supports user-facing procedure routing; exact extracted text snapshot pending."},
+      {"source_id":"stay_manual_pdf","source_role":"official_manual","source_title":"외국인체류 안내매뉴얼","official_url":null,"local_path":"docs/source-manuals/2026-05/stay_manual_2026_05.pdf","page":null,"article":null,"section_label":"registration/common stay procedure sections","support_level":"pending","notes":"Exact page required before data patch."},
+      {"source_id":"immigration_act","source_role":"canonical_legal_source","source_title":"출입국관리법","official_url":"https://www.law.go.kr/법령/출입국관리법","local_path":null,"page":null,"article":null,"section_label":null,"support_level":"context","notes":"Exact article required before legal-basis field patch."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.registration","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.registration","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "review_notes":"Procedure route is official, but exact manual page and law article are pending."
+  },
+  {
+    "record_id": "procedure-extension-of-stay-2026-05",
+    "record_type": "procedure",
+    "subject_code": "EXTENSION_OF_STAY",
+    "subject_label": "체류기간 연장",
+    "procedure_key": "extension",
+    "source_refs": [
+      {"source_id":"extension_of_stay","source_role":"core_procedure_source","source_title":"체류기간 연장","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=181&PARENT_ID=140","local_path":null,"page":null,"article":null,"section_label":"HiKorea extension of stay guide","support_level":"context","notes":"Supports user-facing procedure routing and timing guidance."},
+      {"source_id":"stay_manual_pdf","source_role":"official_manual","source_title":"외국인체류 안내매뉴얼","official_url":null,"local_path":"docs/source-manuals/2026-05/stay_manual_2026_05.pdf","page":null,"article":null,"section_label":"extension sections by status","support_level":"pending","notes":"Exact status-specific page required before checklist patch."},
+      {"source_id":"immigration_rule","source_role":"canonical_legal_source","source_title":"출입국관리법 시행규칙","official_url":"https://www.law.go.kr/법령/출입국관리법시행규칙","local_path":null,"page":null,"article":null,"section_label":null,"support_level":"context","notes":"Exact article required before fee/legal-basis field patch."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.extension","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.extension","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "review_notes":"Manual page and status-specific distinctions are needed."
+  },
+  {
+    "record_id": "procedure-change-of-status-2026-05",
+    "record_type": "procedure",
+    "subject_code": "CHANGE_OF_STATUS",
+    "subject_label": "체류자격변경",
+    "procedure_key": "statusChange",
+    "source_refs": [
+      {"source_id":"change_of_status","source_role":"core_procedure_source","source_title":"체류자격변경","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=184&PARENT_ID=141","local_path":null,"page":null,"article":null,"section_label":"HiKorea change of status guide","support_level":"context","notes":"Supports user-facing routing and before-change permission principle."},
+      {"source_id":"stay_manual_pdf","source_role":"official_manual","source_title":"외국인체류 안내매뉴얼","official_url":null,"local_path":"docs/source-manuals/2026-05/stay_manual_2026_05.pdf","page":null,"article":null,"section_label":"change of status sections by status","support_level":"pending","notes":"Exact page and status-specific list required before patch."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.statusChange","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.statusChange","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "review_notes":"Change-of-status fields are high-risk because dedicated lists may differ from extension or issuance lists."
+  },
+  {
+    "record_id": "procedure-workplace-change-2026-05",
+    "record_type": "procedure",
+    "subject_code": "WORKPLACE_CHANGE_ADDITION",
+    "subject_label": "근무처변경/추가",
+    "procedure_key": "workplaceChange",
+    "source_refs": [
+      {"source_id":"workplace_change","source_role":"core_procedure_source","source_title":"근무처변경/추가","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=189&PARENT_ID=143","local_path":null,"page":null,"article":null,"section_label":"HiKorea workplace change/addition guide","support_level":"context","notes":"Supports distinction between prior permission and post-reporting categories."},
+      {"source_id":"stay_manual_pdf","source_role":"official_manual","source_title":"외국인체류 안내매뉴얼","official_url":null,"local_path":"docs/source-manuals/2026-05/stay_manual_2026_05.pdf","page":null,"article":null,"section_label":"workplace change/addition sections","support_level":"pending","notes":"Exact page and visa category applicability required."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.workplaceChange","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.workplaceChange","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"conditional",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "review_notes":"Do not universalize this procedure across non-work statuses."
+  },
+  {
+    "record_id": "procedure-passport-registration-info-change-2026-05",
+    "record_type": "procedure",
+    "subject_code": "PASSPORT_REGISTRATION_INFO_CHANGE",
+    "subject_label": "외국인등록사항 변경 신고의무 / 여권정보 변경",
+    "procedure_key": "passportChange",
+    "source_refs": [
+      {"source_id":"passport_change","source_role":"core_procedure_source","source_title":"외국인등록사항 변경 신고의무 / 여권정보 변경","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=196&PARENT_ID=146","local_path":null,"page":null,"article":null,"section_label":"HiKorea registration information change guide","support_level":"context","notes":"Supports passport/registration-info reporting guidance."},
+      {"source_id":"stay_manual_pdf","source_role":"official_manual","source_title":"외국인체류 안내매뉴얼","official_url":null,"local_path":"docs/source-manuals/2026-05/stay_manual_2026_05.pdf","page":null,"article":null,"section_label":"passport or registration information reporting section","support_level":"pending","notes":"Exact page required before patch."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.passportChange","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.passportChange","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "review_notes":"Separate passport-info reporting from address reporting."
+  },
+  {
+    "record_id": "procedure-residence-address-change-2026-05",
+    "record_type": "procedure",
+    "subject_code": "RESIDENCE_ADDRESS_CHANGE",
+    "subject_label": "체류지변경 신고의무",
+    "procedure_key": "addressChange",
+    "source_refs": [
+      {"source_id":"address_change","source_role":"core_procedure_source","source_title":"체류지변경 신고의무","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=197&PARENT_ID=146","local_path":null,"page":null,"article":null,"section_label":"HiKorea residence change reporting guide","support_level":"context","notes":"Supports reporting route and general user-facing guide."},
+      {"source_id":"address_change_certificate_manual","source_role":"official_manual","source_title":"체류지 변경(국내거소 이전) 신고 및 사실증명 안내 매뉴얼","official_url":"https://www.hikorea.go.kr/guide/LawLink.pt","local_path":null,"page":null,"article":null,"section_label":"address change/certificate manual","support_level":"pending","notes":"Attachment archive and exact page required."}
+    ],
+    "target_fields": [
+      {"file":"visa_data.json","json_path":"$[*].procedures.addressChange","field_role":"procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"},
+      {"file":"backend/data/visas.json","json_path":"$[*].procedures.addressChange","field_role":"backend parity procedure/checklist","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_ATTACHMENT_ARCHIVE",
+    "review_notes":"Address-change manual should be archived before field patching."
+  },
+  {
+    "record_id": "procedure-electronic-civil-petition-2026-05",
+    "record_type": "service",
+    "subject_code": "ELECTRONIC_CIVIL_PETITION",
+    "subject_label": "전자민원 안내",
+    "procedure_key": "electronicPetition",
+    "source_refs": [
+      {"source_id":"electronic_petitions","source_role":"supporting_service_source","source_title":"전자민원 안내","official_url":"https://www.hikorea.go.kr/cvlappl/CvlapplInfoPageR.pt","local_path":null,"page":null,"article":null,"section_label":"HiKorea electronic civil petition guide","support_level":"context","notes":"Supports UI/navigation only, not eligibility or required-document patching."}
+    ],
+    "target_fields": [
+      {"file":"frontend","json_path":"N/A","field_role":"service guidance","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"none",
+    "patch_readiness":"DO_NOT_PATCH",
+    "review_notes":"Use for service guidance only."
+  },
+  {
+    "record_id": "procedure-visit-reservation-2026-05",
+    "record_type": "service",
+    "subject_code": "VISIT_RESERVATION",
+    "subject_label": "방문예약 안내",
+    "procedure_key": "reservation",
+    "source_refs": [
+      {"source_id":"reservation_guide","source_role":"supporting_service_source","source_title":"방문예약 안내","official_url":"https://www.hikorea.go.kr/resv/ResvIntroR.pt","local_path":null,"page":null,"article":null,"section_label":"HiKorea visit reservation guide","support_level":"context","notes":"Supports reservation UI/help guidance only."}
+    ],
+    "target_fields": [
+      {"file":"frontend","json_path":"N/A","field_role":"service guidance","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"none",
+    "patch_readiness":"DO_NOT_PATCH",
+    "review_notes":"Do not use this page as substantive document requirement source."
+  },
+  {
+    "record_id": "procedure-certificate-issuance-2026-05",
+    "record_type": "procedure",
+    "subject_code": "CERTIFICATE_ISSUANCE",
+    "subject_label": "증명발급 안내",
+    "procedure_key": "certificateIssuance",
+    "source_refs": [
+      {"source_id":"certificate_issuance","source_role":"supporting_service_source","source_title":"증명발급 안내","official_url":"https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=169&PARENT_ID=148","local_path":null,"page":null,"article":null,"section_label":"HiKorea certificate issuance guide","support_level":"context","notes":"Supports user-facing certificate guide."},
+      {"source_id":"address_change_certificate_manual","source_role":"official_manual","source_title":"체류지 변경(국내거소 이전) 신고 및 사실증명 안내 매뉴얼","official_url":"https://www.hikorea.go.kr/guide/LawLink.pt","local_path":null,"page":null,"article":null,"section_label":"fact certificate section","support_level":"pending","notes":"Attachment archive and exact page required."}
+    ],
+    "target_fields": [
+      {"file":"frontend","json_path":"N/A","field_role":"certificate guidance","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"unreviewed",
+    "patch_readiness":"NEEDS_ATTACHMENT_ARCHIVE",
+    "review_notes":"Need exact manual attachment and page before structured data patch."
+  },
+  {
+    "record_id": "procedure-official-forms-2026-05",
+    "record_type": "form",
+    "subject_code": "OFFICIAL_FORMS",
+    "subject_label": "민원서식",
+    "procedure_key": "forms",
+    "source_refs": [
+      {"source_id":"forms_directory","source_role":"official_forms_source","source_title":"민원서식","official_url":"https://www.hikorea.go.kr/board/BoardApplicationListR.pt","local_path":null,"page":null,"article":null,"section_label":"HiKorea civil petition forms directory","support_level":"context","notes":"Supports official form names and form lookup references."}
+    ],
+    "target_fields": [
+      {"file":"frontend","json_path":"N/A","field_role":"forms guidance","current_state":"unknown","patch_intent":"no patch in this PR"}
+    ],
+    "condition_scope":"procedure_specific",
+    "subcode_scope":[],
+    "conflict_status":"none",
+    "patch_readiness":"DO_NOT_PATCH",
+    "review_notes":"Forms directory is a reference source, not a standalone requirements source."
+  }
+]
