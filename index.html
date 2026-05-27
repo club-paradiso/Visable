@@ -3497,7 +3497,9 @@ body:not(.searched) #visaManualSection {
 
 html:lang(fr) body:not(.searched) .p-hero-title,
 html:lang(es) body:not(.searched) .p-hero-title,
+html:lang(af) body:not(.searched) .p-hero-title,
 html:lang(id) body:not(.searched) .p-hero-title,
+html:lang(it) body:not(.searched) .p-hero-title,
 html:lang(ar) body:not(.searched) .p-hero-title,
 html:lang(mn) body:not(.searched) .p-hero-title,
 html:lang(fa) body:not(.searched) .p-hero-title,
@@ -4567,7 +4569,9 @@ body:not(.searched) #visaManualSection::before {
 
   html:lang(fr) body:not(.searched) .p-hero-title,
   html:lang(es) body:not(.searched) .p-hero-title,
+  html:lang(af) body:not(.searched) .p-hero-title,
   html:lang(id) body:not(.searched) .p-hero-title,
+  html:lang(it) body:not(.searched) .p-hero-title,
   html:lang(ar) body:not(.searched) .p-hero-title,
   html:lang(mn) body:not(.searched) .p-hero-title,
   html:lang(fa) body:not(.searched) .p-hero-title,
@@ -4641,7 +4645,9 @@ body:not(.searched) #visaManualSection::before {
 
   html:lang(fr) body:not(.searched) .p-hero-title,
   html:lang(es) body:not(.searched) .p-hero-title,
+  html:lang(af) body:not(.searched) .p-hero-title,
   html:lang(id) body:not(.searched) .p-hero-title,
+  html:lang(it) body:not(.searched) .p-hero-title,
   html:lang(ar) body:not(.searched) .p-hero-title,
   html:lang(mn) body:not(.searched) .p-hero-title,
   html:lang(fa) body:not(.searched) .p-hero-title,
@@ -11221,7 +11227,6 @@ function openDocModal(visaCode, type, subIdx) {
     if (!visa) return;
     let title = '', docs = [];
     let stageNote = '';
-    let unavailableNotice = '';
     let targetCode = visa.code;
     const isFaq = ['faq', 'scn', 'nhis'].includes(visa.cat);
 
@@ -11234,20 +11239,13 @@ function openDocModal(visaCode, type, subIdx) {
     } else if (type === 'change') {
         title = currentLanguage === 'en' ? 'Change of status documents' : '체류자격 변경 구비서류';
         docs = flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'statusChange')).docs);
-        if (!docs.length && visa.code === 'G-1') {
-            unavailableNotice = currentLanguage === 'en'
-                ? 'The change-of-status document list for this item has not yet been sufficiently organized in structured data. Check the latest stay civil-petition manual or the competent immigration office.'
-                : '이 항목의 자격 변경 서류는 아직 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
-        }
         if (!docs.length) {
-            if (!unavailableNotice) {
-                docs = [
-                    ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'extension')).docs),
-                    ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'visaIssuance')).docs)
-                ];
-                docs = dedupeDocs(docs);
-                if (docs.length) stageNote = currentLanguage === 'en' ? 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.' : '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.';
-            }
+            docs = [
+                ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'extension')).docs),
+                ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'visaIssuance')).docs)
+            ];
+            docs = dedupeDocs(docs);
+            if (docs.length) stageNote = currentLanguage === 'en' ? 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.' : '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.';
         }
     } else if (type === 'sub' && subIdx != null) {
         const sIdx = parseInt(subIdx, 10);
@@ -11262,9 +11260,9 @@ function openDocModal(visaCode, type, subIdx) {
     const docDisclaimer = currentLanguage === 'en'
         ? `<strong>Practice note</strong>: This checklist covers basic common documents stated in laws and manuals. Immigration reviewers may request additional supporting materials in practice.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);"><strong>Proxy visit note</strong><br>Proxy filing is limited to permitted cases such as unavoidable illness, minors under 17, spouse/direct relatives, inviter/employer, or employees of the employer. Bring the required base documents plus a power of attorney, proxy ID, and relationship proof where applicable.</div>`
         : `🚨 <strong>실무 주의사항</strong>: 본 체크리스트는 법령에 명시된 기본 공통 서류입니다. 심사관의 재량적 판단에 따라 출입국 실무 현장에서 추가 소명 자료가 징구될 수 있습니다.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);">🤝 <strong>대리인(가족, 고용주 등) 방문 대리 신청 안내</strong><br>• <strong>대리 자격:</strong> 질병, 만 17세 미만 등 부득이한 사유가 있거나, 배우자/직계친족, 초청자/고용주(소속 직원 포함)에 한함. (※ 영주(F-5) 등 본인 출석 필수 민원은 예외)<br>• <strong>필수 지참:</strong> 위 기본 서류 외에 <strong>① 위임장(소정 양식) ② 대리인 신분증(원본 대조 및 사본) ③ 관계 입증 서류(가족관계증명서, 재직증명서 등)</strong>를 반드시 지참해야 하며, 통합신청서 하단에 대리인 서명이 필수입니다.</div>`;
-    descEl.innerHTML = `${stageNote ? `<div class="text-desc" style="margin-bottom:0.6rem;">${stageNote}</div>` : ''}${unavailableNotice ? '' : renderModalFeeBox(visa, type)}${docDisclaimer}`;
+    descEl.innerHTML = `${stageNote ? `<div class="text-desc" style="margin-bottom:0.6rem;">${stageNote}</div>` : ''}${renderModalFeeBox(visa, type)}${docDisclaimer}`;
     descEl.style.display = 'block';
-    document.getElementById('docModalChecklist').innerHTML = docs.length ? renderDocTags(docs, [], type === 'sub', targetCode) : `<div class="text-desc">${escapeHtml(unavailableNotice || tx('docReviewFallback'))}</div>`;
+    document.getElementById('docModalChecklist').innerHTML = docs.length ? renderDocTags(docs, [], type === 'sub', targetCode) : `<div class="text-desc">${escapeHtml(tx('docReviewFallback'))}</div>`;
     openModal('docModalOverlay');
 }
 
@@ -11301,19 +11299,8 @@ window.verifyFaqWithAi = function(visaCode, question) {
 };
 function openFaqModal(visaCode) {
     const visa = VISA_DATA.find(v => v.code === visaCode);
-    const fallbackTitle = currentLanguage === 'en' ? 'FAQ unavailable' : 'FAQ 정보 확인 필요';
-    if (!visa) {
-        document.getElementById('faqModalTitle').innerHTML = `💡 ${escapeHtml(fallbackTitle)}`;
-        document.getElementById('faqModalBody').innerHTML = `<div class="text-desc">${escapeHtml(currentLanguage === 'en' ? 'The selected result could not be found. Try the search again.' : '선택한 결과를 찾을 수 없습니다. 검색을 다시 시도해 주세요.')}</div>`;
-        openModal('faqModalOverlay');
-        return;
-    }
+    if (!visa || !visa.faq) return;
     document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'en' ? `💡 ${escapeHtml(visa.code)} FAQ` : `💡 ${escapeHtml(visa.code)} 자주 묻는 질문`;
-    if (!visa.faq) {
-        document.getElementById('faqModalBody').innerHTML = `<div class="text-desc">${escapeHtml(currentLanguage === 'en' ? 'No structured FAQ is available for this item yet. Check HiKorea, 1345, or the competent immigration office.' : '이 항목의 FAQ는 아직 구조화 데이터에 충분히 정리되어 있지 않습니다. HiKorea, 1345 또는 관할 출입국·외국인관서를 확인하세요.')}</div>`;
-        openModal('faqModalOverlay');
-        return;
-    }
     const pairs = visa.faq.split(/Q:\s*/).filter(Boolean);
     const html = pairs.map(p => {
         const parts = p.split(/A:\s*/); const q = parts[0].trim(); const a = (parts[1] || '').trim();
@@ -12873,35 +12860,19 @@ function renderSourceEvidencePanel(v) {
 
 function copyVisaResult(btnEl, code) {
     const v = VISA_DATA.find(x => x.code === code);
-    if (!v) {
-        showToast(currentLanguage === 'en' ? 'Could not find this result to copy.' : '복사할 결과를 찾을 수 없습니다.', 'warning');
-        return;
-    }
+    if (!v) return;
     const name = getLocalizedVisaName(v);
     const period = v.period || '';
     const summary = stripManualArtifacts(v.summary || v.newReq || v.extReq || '');
     const parts = [v.code, name, period ? `(${period})` : '', summary].filter(Boolean);
     const text = parts.join('\n');
-    if (!text.trim()) {
-        showToast(currentLanguage === 'en' ? 'There is no result text available to copy.' : '복사할 결과 내용이 없습니다.', 'warning');
-        return;
-    }
     const done = () => {
         const span = btnEl.querySelector('span');
         if (span) { const orig = span.textContent; span.textContent = '✓'; setTimeout(() => { span.textContent = orig; }, 1500); }
         showToast(tx('copySuccess') || '복사되었습니다.', 'success');
     };
-    const fail = () => showToast(currentLanguage === 'en' ? 'Copy failed. Select the result text and copy it manually.' : '복사에 실패했습니다. 결과 내용을 직접 선택해 복사해 주세요.', 'warning');
-    const fallbackCopyResult = () => {
-        const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-        document.body.appendChild(ta); ta.select();
-        let ok = false;
-        try { ok = !!(document.execCommand && document.execCommand('copy')); } catch {}
-        document.body.removeChild(ta);
-        return ok;
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopyResult() ? done() : fail(); });
-    else { fallbackCopyResult() ? done() : fail(); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
+    else { fallbackCopy(text); done(); }
 }
 
 // --- Search Processing Core ---
@@ -13293,8 +13264,10 @@ const LANGUAGE_OPTIONS = [
     { code: 'zh', html: 'zh-CN', short: '简', name: '简体中文', local: 'Chinese (Simplified)' },
     { code: 'zhHant', html: 'zh-Hant', short: '繁', name: '繁體中文', local: 'Chinese (Traditional)' },
     { code: 'ja', html: 'ja', short: 'JA', name: '日本語', local: 'Japanese' },
+    { code: 'af', html: 'af', short: 'AF', name: 'Afrikaans', local: 'Afrikaans' },
     { code: 'fr', html: 'fr', short: 'FR', name: 'Français', local: 'French' },
     { code: 'id', html: 'id', short: 'ID', name: 'Bahasa Indonesia', local: 'Indonesian' },
+    { code: 'it', html: 'it', short: 'IT', name: 'Italiano', local: 'Italian' },
     { code: 'hi', html: 'hi', short: 'HI', name: 'हिन्दी', local: 'Hindi' },
     { code: 'ne', html: 'ne', short: 'NE', name: 'नेपाली', local: 'Nepali' },
     { code: 'es', html: 'es-ES', short: 'ES', name: 'Español (España)', local: 'Spanish (Spain)' },
@@ -13857,6 +13830,84 @@ const UI_TRANSLATIONS = {
         quickFilters: ['เปลี่ยนที่อยู่', 'บริการไม่ต้องจอง', 'รายได้ F-3', 'K-ETA', 'คู่มือ TB', 'อยู่เกินกำหนด', 'ประกันสุขภาพ', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'ระบบคะแนน'],
         documentCountLabel: 'เอกสาร {count} รายการ',
         step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aEmailChoice: 'TRANSLATION_PENDING', step0aNaverBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
+    },
+    af: {
+        languageButton: 'Taalinstellings', languageMenu: 'Kies taal', languageChanged: 'Taal is na Afrikaans verander.',
+        cityButton: 'Stel ligging en tyd in', cityPlaceholder: 'Soek stad...', citySearchAria: 'Soek stadsnaam',
+        themeButton: 'Verander tema', themeLight: 'Ligmodus', themeDark: 'Donkermodus', reset: 'Terug na hoofskerm',
+        heroEyebrow: 'Paradiso · Gids vir verblyf in Korea', heroTitle: 'Waar jou doel jou beweeg,', heroEm: 'vind die volgende pad.',
+        heroSub: 'Verken Korea se 39 verblyfstatusse volgens jou doel en situasie.<br>Elke roete bly gekoppel aan amptelike bronne wat nagegaan kan word.',
+        proof1: 'Gebaseer op openbare bronne', proof2: 'Roetes volgens doel', proof3: 'Finale bevestiging by amptelike bronne',
+        entryRail: 'Kies hoe om te begin', entryATitle: 'Ek ken my visumkode', entryASub: 'D-2 · F-2-7 · E-7-1 …',
+        entryBTitle: 'Ek kan net my situasie beskryf', entryBSub: 'Beantwoord begeleidende vrae om die gepaste pad te vind',
+        searchOpen: 'Soek met visumkode of sleutelwoord', searchOpenAria: 'Maak visumkode- en sleutelwoordsoektog oop', searchClose: 'Sluit direkte soektog',
+        toolsLabel: 'Verwante administratiewe hulpmiddels', qaAria: 'Gereeld gebruikte administratiewe hulpmiddels', jobCode: 'Beroeps- en bedryfskodes', jurisdiction: 'Vind die verantwoordelike immigrasiekantoor',
+        visaLabel: 'Kies verblyfroete', preTrackAria: 'Visumroete voor binnekoms', preTrackTitle: 'Voor binnekoms — visumuitreiking by konsulaat', preTrackDesc: 'Proses vir nuwe visum deur ’n Koreaanse sending in die buiteland',
+        inTrackAria: 'Roete na binnekoms in Korea', inTrackTitle: 'Na binnekoms — registrasie en verlenging', inTrackDesc: 'Vreemdelingregistrasie, verlenging, statusverandering en verblyfdienste in Korea',
+        qAria: 'Soek visumstatus of sleutelwoord', qPlaceholder: 'Soek visumstatus of sleutelwoord', dataLoading: 'Laai data…', dataReady: 'Data gelaai ({count}) - {source}',
+        sourceApi: 'API', sourceStatic: 'statiese rugsteun', sourceOffline: 'ingeboude aflyndata', xbAria: 'Maak soektog skoon', submitSearch: 'Soek',
+        ctrlsAria: 'Soekresultaatkontroles', fold: 'Vou toe', unfold: 'Vou oop', hintsTitle: 'Aanbevole sleutelwoorde', hintsAria: 'Vinnige aanbevole soektogte',
+        aiSecondaryAria: 'Opsionele KI-assistent', aiLink: 'Vra die KI meer besonderhede', scrollAria: 'Rol af',
+        reference: 'Paradiso verskaf verwysingsinligting gebaseer op openbare wette en handleidings. Dit is nie regsadvies of ’n aansoekdiens nie. Bevestig finale besluite by die immigrasiekantoor, HiKorea, of ’n gekwalifiseerde professionele persoon.',
+        landingHints: ['Adresverandering', 'Paspoorthernuwing', 'ARC heruitreiking', 'Besoek sonder afspraak/uitsondering', 'Visumvrye Jeju', 'K-ETA', 'Geskoolde werker (E-7-4)', 'Huweliksmigrant (F-6)', 'F-3 inkomstevereiste', 'TB-sertifikaat', 'Vlugtelingproses', 'Oorbly', 'D-10 werksoek', 'K-Trainee (D-4-2K)'],
+        quickFilters: ['Adres', 'Geen afspraak', 'F-3 inkomste', 'K-ETA', 'TB-gids', 'Oorbly', 'Gesondheidsversekering', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Puntestelsel'],
+        documentCountLabel: '{count} dokumente',
+        step0aTitle: 'STAP 0-A · Voorbereiding vir ’n HiKorea-rekening',
+        step0aSecATitle: 'Berei ’n e-posrekening voor', step0aSecABody: 'Jy het ’n e-posadres nodig om by HiKorea te registreer.',
+        step0aNoEmail: 'As jy nie e-pos het nie', step0aGmail: 'Jy kan gratis ’n Gmail-rekening skep.',
+        step0aGmailBtn: 'Skep Gmail', step0aEmailChoice: 'Kies die makliker opsie: Gmail (Google) of Naver e-pos.', step0aNaverBtn: 'Skep Naver e-pos', step0aBorrow: 'Jy kan ook ’n familielid of vriend se e-posadres gebruik.',
+        step0aHasEmail: 'As jy reeds e-pos het, gaan na die volgende stap.',
+        step0aSecBTitle: 'Berei ’n gebruikersnaam (ID) voor', step0aSecBBody: 'Jy moet jou eie aanmeld-ID skep.',
+        step0aIdRules: ['Slegs klein Engelse letters of nommers', '4 karakters of meer', 'Voorbeeld: jeju2024, minho77'],
+        step0aIdNote: 'Kies ’n ID wat maklik is om te onthou. Dit is later moeilik om te verander.',
+        step0aSecCTitle: 'Berei ’n wagwoord voor', step0aSecCBody: 'Die wagwoord moet aan al die voorwaardes voldoen.',
+        step0aPwRules: ['10 tot 12 karakters', 'Bevat Engelse letters (bv. abc)', 'Bevat nommers (bv. 123)', 'Bevat ’n spesiale karakter (bv. ! @ # $)'],
+        step0aPwGood: 'Goeie voorbeeld', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: 'Skryf jou wagwoord neer of bêre dit veilig. Dit is moeilik om te herstel as jy dit vergeet.',
+        step0aSecDTitle: 'E-posverifikasie', step0aEmailVerify1: 'Nadat jy geregistreer het, maak jou inkassie oop en klik die verifikasieknoppie.',
+        step0aEmailVerify2: 'Jy kan nie ’n afspraak maak voordat verifikasie klaar is nie.', step0aEmailVerify3: 'As die e-pos nie aankom nie, kyk in jou spam-lêer.',
+        step0aSecETitle: 'Het jy hulp nodig?', step0aHelpLine: 'Vir hulp, bel ☎ 1345 (weeksdae 09:00-18:00)',
+        hikoreaCTATitle: 'HiKorea-afspraakgids', hikoreaCTASub: 'Jy moet aanlyn bespreek voordat jy die immigrasiekantoor besoek.', hikoreaCTABtn: 'Maak afspraakgids oop',
+        jejuFilterAll: 'Alles', jejuFilterJeju: 'Jeju-stad', jejuFilterSeogwipo: 'Seogwipo-stad'
+    },
+    it: {
+        languageButton: 'Impostazioni lingua', languageMenu: 'Scegli lingua', languageChanged: 'Lingua cambiata in italiano.',
+        cityButton: 'Imposta posizione e ora', cityPlaceholder: 'Cerca città...', citySearchAria: 'Cerca nome della città',
+        themeButton: 'Cambia tema', themeLight: 'Modalità chiara', themeDark: 'Modalità scura', reset: 'Torna alla schermata principale',
+        heroEyebrow: 'Paradiso · Guida al soggiorno in Corea', heroTitle: 'Dove ti porta ciò che conta,', heroEm: 'trova la strada successiva.',
+        heroSub: 'Esplora i 39 status di soggiorno in Corea in base al tuo obiettivo e alla tua situazione.<br>Ogni percorso resta collegato a fonti ufficiali verificabili.',
+        proof1: 'Basato su fonti pubbliche', proof2: 'Percorsi ordinati per obiettivo', proof3: 'Verifica finale con fonti ufficiali',
+        entryRail: 'Scegli come iniziare', entryATitle: 'Conosco il mio codice visto', entryASub: 'D-2 · F-2-7 · E-7-1 …',
+        entryBTitle: 'Posso solo descrivere la mia situazione', entryBSub: 'Rispondi alle domande guida per trovare il percorso adatto',
+        searchOpen: 'Cerca per codice visto o parola chiave', searchOpenAria: 'Apri ricerca per codice visto e parola chiave', searchClose: 'Chiudi ricerca diretta',
+        toolsLabel: 'Strumenti amministrativi collegati', qaAria: 'Strumenti amministrativi usati di frequente', jobCode: 'Codici occupazione e settore', jurisdiction: 'Trova l’ufficio immigrazione competente',
+        visaLabel: 'Scegli percorso di soggiorno', preTrackAria: 'Percorso visto prima dell’ingresso', preTrackTitle: 'Prima dell’ingresso — rilascio visto consolare', preTrackDesc: 'Procedura per un nuovo visto tramite una missione coreana all’estero',
+        inTrackAria: 'Percorso dopo l’ingresso in Corea', inTrackTitle: 'Dopo l’ingresso — registrazione ed estensione', inTrackDesc: 'Registrazione stranieri, estensione, cambio status e servizi di soggiorno in Corea',
+        qAria: 'Cerca status visto o parola chiave', qPlaceholder: 'Cerca status visto o parola chiave', dataLoading: 'Caricamento dati…', dataReady: 'Dati caricati ({count}) - {source}',
+        sourceApi: 'API', sourceStatic: 'backup statico', sourceOffline: 'dati offline integrati', xbAria: 'Cancella ricerca', submitSearch: 'Cerca',
+        ctrlsAria: 'Controlli dei risultati di ricerca', fold: 'Comprimi', unfold: 'Espandi', hintsTitle: 'Parole chiave consigliate', hintsAria: 'Ricerche rapide consigliate',
+        aiSecondaryAria: 'Assistente AI opzionale', aiLink: 'Chiedi altri dettagli all’AI', scrollAria: 'Scorri verso il basso',
+        reference: 'Paradiso fornisce informazioni di riferimento basate su leggi e manuali pubblici. Non è consulenza legale né un servizio di presentazione domande. Conferma le decisioni finali con l’ufficio immigrazione, HiKorea o un professionista qualificato.',
+        landingHints: ['Cambio indirizzo', 'Rinnovo passaporto', 'Riemissione ARC', 'Visita senza appuntamento/eccezione', 'Jeju senza visto', 'K-ETA', 'Lavoratore qualificato (E-7-4)', 'Migrante per matrimonio (F-6)', 'Requisito reddito F-3', 'Certificato TB', 'Procedura rifugiati', 'Overstay', 'Ricerca lavoro D-10', 'K-Trainee (D-4-2K)'],
+        quickFilters: ['Indirizzo', 'Senza appuntamento', 'Reddito F-3', 'K-ETA', 'Guida TB', 'Overstay', 'Assicurazione sanitaria', 'B-2-2 Jeju', 'E-7', 'E-9', 'F-6', 'F-5', 'Sistema a punti'],
+        documentCountLabel: '{count} documenti',
+        step0aTitle: 'STEP 0-A · Preparazione account HiKorea',
+        step0aSecATitle: 'Prepara un account email', step0aSecABody: 'Serve un indirizzo email per registrarsi a HiKorea.',
+        step0aNoEmail: 'Se non hai un’email', step0aGmail: 'Puoi creare gratuitamente un account Gmail.',
+        step0aGmailBtn: 'Crea Gmail', step0aEmailChoice: 'Scegli l’opzione più comoda: Gmail (Google) o email Naver.', step0aNaverBtn: 'Crea email Naver', step0aBorrow: 'Puoi anche usare l’email di un familiare o di un amico.',
+        step0aHasEmail: 'Se hai già un’email, passa al punto successivo.',
+        step0aSecBTitle: 'Prepara un nome utente (ID)', step0aSecBBody: 'Devi creare il tuo ID di accesso.',
+        step0aIdRules: ['Solo lettere inglesi minuscole o numeri', '4 caratteri o più', 'Esempio: jeju2024, minho77'],
+        step0aIdNote: 'Scegli un ID facile da ricordare. In seguito è difficile cambiarlo.',
+        step0aSecCTitle: 'Prepara una password', step0aSecCBody: 'La password deve rispettare tutte le condizioni.',
+        step0aPwRules: ['Da 10 a 12 caratteri', 'Contiene lettere inglesi (es. abc)', 'Contiene numeri (es. 123)', 'Contiene un carattere speciale (es. ! @ # $)'],
+        step0aPwGood: 'Buon esempio', step0aPwExample: 'Jeju2024!@',
+        step0aPwNote: 'Annota o conserva la password in modo sicuro. È difficile recuperarla se la dimentichi.',
+        step0aSecDTitle: 'Verifica email', step0aEmailVerify1: 'Dopo la registrazione, apri la posta in arrivo e premi il pulsante di verifica.',
+        step0aEmailVerify2: 'Non puoi prenotare finché la verifica non è completata.', step0aEmailVerify3: 'Se l’email non arriva, controlla la cartella spam.',
+        step0aSecETitle: 'Hai bisogno di aiuto?', step0aHelpLine: 'Per assistenza, chiama ☎ 1345 (giorni feriali 09:00-18:00)',
+        hikoreaCTATitle: 'Guida prenotazione HiKorea', hikoreaCTASub: 'Serve una prenotazione online prima di visitare l’ufficio immigrazione.', hikoreaCTABtn: 'Apri guida prenotazione',
+        jejuFilterAll: 'Tutto', jejuFilterJeju: 'Jeju City', jejuFilterSeogwipo: 'Seogwipo City'
     },
     tl: {
         languageButton: 'Mga setting ng wika', languageMenu: 'Pumili ng wika', languageChanged: 'Pinalitan ang wika sa Tagalog.',
