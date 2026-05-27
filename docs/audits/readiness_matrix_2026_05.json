@@ -1,0 +1,13 @@
+[
+  {"goal":"Source inventory PR","current_status":"Official routes and validations are ready","next_pr":"Commit documentation only","readiness_label":"READY_NOW"},
+  {"goal":"Official attachment archive PR","current_status":"Official attachment routes need binary archive and checksums","next_pr":"Archive official attachments and update manifest","readiness_label":"READY_AFTER_SOURCESET_PR"},
+  {"goal":"Full manual/law/HiKorea crosswalk","current_status":"Not yet built","next_pr":"Map status, procedure, field, URL, page, and article","readiness_label":"READY_AFTER_SOURCESET_PR"},
+  {"goal":"All-status data correction","current_status":"Not ready","next_pr":"Patch data only after full crosswalk","readiness_label":"READY_AFTER_FULL_CROSSWALK"},
+  {"goal":"F/G/H data correction","current_status":"Not ready","next_pr":"Category-specific crosswalk and patch PR","readiness_label":"READY_AFTER_FULL_CROSSWALK"},
+  {"goal":"H-2/C-3/D/E/Jeju/scenario-helper correction","current_status":"Not ready","next_pr":"Scenario-specific crosswalk and patch PR","readiness_label":"READY_AFTER_FULL_CROSSWALK"},
+  {"goal":"verification metadata promotion","current_status":"Not ready","next_pr":"Metadata-gate PR after full source coverage","readiness_label":"READY_AFTER_METADATA_GATE"},
+  {"goal":"manual review flag removal","current_status":"Not ready","next_pr":"Metadata-gate PR after ambiguity is resolved","readiness_label":"READY_AFTER_METADATA_GATE"},
+  {"goal":"law-grounding debug/audit mode","current_status":"Not ready","next_pr":"Implement only after crosswalk exists","readiness_label":"READY_AFTER_FULL_CROSSWALK"},
+  {"goal":"law-grounding production activation","current_status":"Not ready","next_pr":"Activate only after data patch and metadata gate","readiness_label":"READY_AFTER_METADATA_GATE"},
+  {"goal":"Paradiso AI manual/law grounded answer generation","current_status":"Not ready","next_pr":"Roll out after grounding/debug/regression pass","readiness_label":"READY_AFTER_METADATA_GATE"}
+]
