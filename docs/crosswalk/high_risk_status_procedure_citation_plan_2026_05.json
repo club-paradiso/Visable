@@ -1,0 +1,51 @@
+[
+  {
+    "priority": 1,
+    "status_group": "G-1 and G-1 subcodes",
+    "reason": "humanitarian/refugee-related stay risk and travel/re-entry uncertainty",
+    "next_citation_work": ["extension", "change_of_status", "registration", "reentry_or_travel_risk"],
+    "patch_readiness": "NEEDS_STATUS_SPECIFIC_PAGE"
+  },
+  {
+    "priority": 2,
+    "status_group": "F-series",
+    "reason": "long-term residence, family, overseas Korean, and permanent-residence complexity",
+    "next_citation_work": ["extension", "change_of_status", "registration", "subcode_scope"],
+    "patch_readiness": "NEEDS_STATUS_SPECIFIC_PAGE"
+  },
+  {
+    "priority": 3,
+    "status_group": "H-1/H-2",
+    "reason": "working-holiday and visiting-employment procedures affect many users",
+    "next_citation_work": ["registration", "extension", "workplace_or_reporting", "electronic_report_examples"],
+    "patch_readiness": "NEEDS_STATUS_SPECIFIC_PAGE"
+  },
+  {
+    "priority": 4,
+    "status_group": "C-3",
+    "reason": "short-stay boundary and change/extension limits create frequent user confusion",
+    "next_citation_work": ["extension_limits", "change_availability", "do_not_generalize_notes"],
+    "patch_readiness": "NEEDS_STATUS_SPECIFIC_PAGE"
+  },
+  {
+    "priority": 5,
+    "status_group": "D-10",
+    "reason": "job-seeking and transition cases are high-risk for status change",
+    "next_citation_work": ["extension", "change_of_status", "sub_route_notes"],
+    "patch_readiness": "NEEDS_STATUS_SPECIFIC_PAGE"
+  },
+  {
+    "priority": 6,
+    "status_group": "E-series special tracks",
+    "reason": "employment conditions vary heavily by status and sub-track",
+    "next_citation_work": ["E-7", "E-7-4", "E-7-S", "E-7-T", "E-8", "E-9", "E-10"],
+    "patch_readiness": "SUBCODE_AMBIGUITY_REVIEW"
+  },
+  {
+    "priority": 7,
+    "status_group": "Regional/Jeju/special programs",
+    "reason": "local and program-specific requirements should not leak into general status records",
+    "next_citation_work": ["regional_visa", "broad_area_pilot_visa", "Jeju_scenarios", "Top-Tier", "K-STAR"],
+    "patch_readiness": "SUBCODE_AMBIGUITY_REVIEW"
+  }
+]
