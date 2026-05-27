@@ -11218,6 +11218,7 @@ function openDocModal(visaCode, type, subIdx) {
     if (!visa) return;
     let title = '', docs = [];
     let stageNote = '';
+    let unavailableNotice = '';
     let targetCode = visa.code;
     const isFaq = ['faq', 'scn', 'nhis'].includes(visa.cat);
 
@@ -11230,13 +11231,20 @@ function openDocModal(visaCode, type, subIdx) {
     } else if (type === 'change') {
         title = currentLanguage === 'en' ? 'Change of status documents' : '체류자격 변경 구비서류';
         docs = flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'statusChange')).docs);
+        if (!docs.length && visa.code === 'G-1') {
+            unavailableNotice = currentLanguage === 'en'
+                ? 'The change-of-status document list for this item has not yet been sufficiently organized in structured data. Check the latest stay civil-petition manual or the competent immigration office.'
+                : '이 항목의 자격 변경 서류는 아직 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
+        }
         if (!docs.length) {
-            docs = [
-                ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'extension')).docs),
-                ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'visaIssuance')).docs)
-            ];
-            docs = dedupeDocs(docs);
-            if (docs.length) stageNote = currentLanguage === 'en' ? 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.' : '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.';
+            if (!unavailableNotice) {
+                docs = [
+                    ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'extension')).docs),
+                    ...flattenDocGroups(getProcedure(visa, PROCEDURE_CONFIG.find(p => p.key === 'visaIssuance')).docs)
+                ];
+                docs = dedupeDocs(docs);
+                if (docs.length) stageNote = currentLanguage === 'en' ? 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.' : '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.';
+            }
         }
     } else if (type === 'sub' && subIdx != null) {
         const sIdx = parseInt(subIdx, 10);
@@ -11251,9 +11259,9 @@ function openDocModal(visaCode, type, subIdx) {
     const docDisclaimer = currentLanguage === 'en'
         ? `<strong>Practice note</strong>: This checklist covers basic common documents stated in laws and manuals. Immigration reviewers may request additional supporting materials in practice.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);"><strong>Proxy visit note</strong><br>Proxy filing is limited to permitted cases such as unavoidable illness, minors under 17, spouse/direct relatives, inviter/employer, or employees of the employer. Bring the required base documents plus a power of attorney, proxy ID, and relationship proof where applicable.</div>`
         : `🚨 <strong>실무 주의사항</strong>: 본 체크리스트는 법령에 명시된 기본 공통 서류입니다. 심사관의 재량적 판단에 따라 출입국 실무 현장에서 추가 소명 자료가 징구될 수 있습니다.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);">🤝 <strong>대리인(가족, 고용주 등) 방문 대리 신청 안내</strong><br>• <strong>대리 자격:</strong> 질병, 만 17세 미만 등 부득이한 사유가 있거나, 배우자/직계친족, 초청자/고용주(소속 직원 포함)에 한함. (※ 영주(F-5) 등 본인 출석 필수 민원은 예외)<br>• <strong>필수 지참:</strong> 위 기본 서류 외에 <strong>① 위임장(소정 양식) ② 대리인 신분증(원본 대조 및 사본) ③ 관계 입증 서류(가족관계증명서, 재직증명서 등)</strong>를 반드시 지참해야 하며, 통합신청서 하단에 대리인 서명이 필수입니다.</div>`;
-    descEl.innerHTML = `${stageNote ? `<div class="text-desc" style="margin-bottom:0.6rem;">${stageNote}</div>` : ''}${renderModalFeeBox(visa, type)}${docDisclaimer}`;
+    descEl.innerHTML = `${stageNote ? `<div class="text-desc" style="margin-bottom:0.6rem;">${stageNote}</div>` : ''}${unavailableNotice ? '' : renderModalFeeBox(visa, type)}${docDisclaimer}`;
     descEl.style.display = 'block';
-    document.getElementById('docModalChecklist').innerHTML = docs.length ? renderDocTags(docs, [], type === 'sub', targetCode) : `<div class="text-desc">${escapeHtml(tx('docReviewFallback'))}</div>`;
+    document.getElementById('docModalChecklist').innerHTML = docs.length ? renderDocTags(docs, [], type === 'sub', targetCode) : `<div class="text-desc">${escapeHtml(unavailableNotice || tx('docReviewFallback'))}</div>`;
     openModal('docModalOverlay');
 }
 
@@ -11290,8 +11298,19 @@ window.verifyFaqWithAi = function(visaCode, question) {
 };
 function openFaqModal(visaCode) {
     const visa = VISA_DATA.find(v => v.code === visaCode);
-    if (!visa || !visa.faq) return;
+    const fallbackTitle = currentLanguage === 'en' ? 'FAQ unavailable' : 'FAQ 정보 확인 필요';
+    if (!visa) {
+        document.getElementById('faqModalTitle').innerHTML = `💡 ${escapeHtml(fallbackTitle)}`;
+        document.getElementById('faqModalBody').innerHTML = `<div class="text-desc">${escapeHtml(currentLanguage === 'en' ? 'The selected result could not be found. Try the search again.' : '선택한 결과를 찾을 수 없습니다. 검색을 다시 시도해 주세요.')}</div>`;
+        openModal('faqModalOverlay');
+        return;
+    }
     document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'en' ? `💡 ${escapeHtml(visa.code)} FAQ` : `💡 ${escapeHtml(visa.code)} 자주 묻는 질문`;
+    if (!visa.faq) {
+        document.getElementById('faqModalBody').innerHTML = `<div class="text-desc">${escapeHtml(currentLanguage === 'en' ? 'No structured FAQ is available for this item yet. Check HiKorea, 1345, or the competent immigration office.' : '이 항목의 FAQ는 아직 구조화 데이터에 충분히 정리되어 있지 않습니다. HiKorea, 1345 또는 관할 출입국·외국인관서를 확인하세요.')}</div>`;
+        openModal('faqModalOverlay');
+        return;
+    }
     const pairs = visa.faq.split(/Q:\s*/).filter(Boolean);
     const html = pairs.map(p => {
         const parts = p.split(/A:\s*/); const q = parts[0].trim(); const a = (parts[1] || '').trim();
@@ -12851,19 +12870,35 @@ function renderSourceEvidencePanel(v) {
 
 function copyVisaResult(btnEl, code) {
     const v = VISA_DATA.find(x => x.code === code);
-    if (!v) return;
+    if (!v) {
+        showToast(currentLanguage === 'en' ? 'Could not find this result to copy.' : '복사할 결과를 찾을 수 없습니다.', 'warning');
+        return;
+    }
     const name = getLocalizedVisaName(v);
     const period = v.period || '';
     const summary = stripManualArtifacts(v.summary || v.newReq || v.extReq || '');
     const parts = [v.code, name, period ? `(${period})` : '', summary].filter(Boolean);
     const text = parts.join('\n');
+    if (!text.trim()) {
+        showToast(currentLanguage === 'en' ? 'There is no result text available to copy.' : '복사할 결과 내용이 없습니다.', 'warning');
+        return;
+    }
     const done = () => {
         const span = btnEl.querySelector('span');
         if (span) { const orig = span.textContent; span.textContent = '✓'; setTimeout(() => { span.textContent = orig; }, 1500); }
         showToast(tx('copySuccess') || '복사되었습니다.', 'success');
     };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
-    else { fallbackCopy(text); done(); }
+    const fail = () => showToast(currentLanguage === 'en' ? 'Copy failed. Select the result text and copy it manually.' : '복사에 실패했습니다. 결과 내용을 직접 선택해 복사해 주세요.', 'warning');
+    const fallbackCopyResult = () => {
+        const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        let ok = false;
+        try { ok = !!(document.execCommand && document.execCommand('copy')); } catch {}
+        document.body.removeChild(ta);
+        return ok;
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopyResult() ? done() : fail(); });
+    else { fallbackCopyResult() ? done() : fail(); }
 }
 
 // --- Search Processing Core ---
