@@ -1249,12 +1249,43 @@ select:focus-visible {
             CONSENT: 'paradiso_ai_consent',
             QUOTA: 'paradiso_ai_quota'
         };
-        const DISCLAIMER = "※ 2026년 출입국 매뉴얼 기반 AI 분석 결과입니다. 정확한 행정 처리는 관할 관서 및 1345에 확인하십시오.";
+                function answerDisclaimer(result, lang) {
+            const grounded = Boolean(result && result.grounding_used);
+            if (grounded) {
+                return t(
+                    lang,
+                    '※ 표시된 공식 매뉴얼 근거 범위 안에서 생성된 참고용 안내입니다. 최종 판단은 관할 관서 및 1345에 확인하십시오.',
+                    '※ This is reference guidance generated within the listed official manual source scope. Confirm final handling with 1345 or the competent immigration office.'
+                );
+            }
+            return t(
+                lang,
+                '※ 이 답변은 공식 매뉴얼 근거가 확인되지 않은 일반 참고 안내입니다. 구체적인 기한·요건·허가 가능성은 1345, HiKorea 또는 관할 출입국·외국인청에 확인하십시오.',
+                '※ This is general reference guidance without confirmed official manual grounding. Confirm specific deadlines, requirements, and eligibility with 1345, HiKorea, or the competent immigration office.'
+            );
+        }
 
         let VISA_DATA = [];
+        let CHAT_TURNS = [];
         let _abortController = null;
         let _isConsentGranted = false;
         const COPY_PAYLOADS = {};
+
+        function rememberTurn(role, content) {
+            const clean = String(content || '').trim();
+            if (!clean) return;
+            CHAT_TURNS.push({
+                role,
+                content: clean.slice(0, 1200)
+            });
+            if (CHAT_TURNS.length > 12) {
+                CHAT_TURNS = CHAT_TURNS.slice(-12);
+            }
+        }
+
+        function recentChatHistory() {
+            return CHAT_TURNS.slice(-12);
+        }
 
         // ==========================================
         // UI Helpers
@@ -1897,7 +1928,7 @@ select:focus-visible {
             }).filter(Boolean).join('\n\n');
         }
 
-        function appendAiAnswer(result, lang) {
+                function appendAiAnswer(result, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
             const answer = result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
@@ -1923,11 +1954,12 @@ select:focus-visible {
                     ${renderGroundingSourcePanel(result, lang)}
                     ${buildGroundingNote(result, lang)}
                     ${buildAnswerActions(copyId, Boolean(sourceCopy), lang)}
-                    <span class="msg-disc">${DISCLAIMER}</span>
+                    <span class="msg-disc">${escapeHtml(answerDisclaimer(result, lang))}</span>
                 </article>
                 <div class="msg-time">Paradiso AI · ${formatTime()}</div>
             `;
             hist.appendChild(row);
+            rememberTurn('assistant', answer);
             scrollConversationToEnd(row);
         }
 
@@ -1970,7 +2002,7 @@ select:focus-visible {
                     <div class="answer-body"><p>${escapeHtml(userMessage)}</p></div>
                     ${renderGroundingSourcePanel(grounding, lang)}
                     ${details ? `<details class="error-details"><summary>${t(lang, '기술 세부정보 보기', 'Show technical details')}</summary><pre>${escapeHtml(details)}</pre></details>` : ''}
-                    <span class="msg-disc">${DISCLAIMER}</span>
+                    <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
                 </article>
                 <div class="msg-time">${t(lang, '시스템 오류', 'System error')} · ${formatTime()}</div>
             `;
@@ -2018,6 +2050,7 @@ select:focus-visible {
 
             // Append User Msg
             appendMsg(escapeHtml(text).replace(/\n/g, '<br>'), 'user');
+            rememberTurn('user', text);
             inp.value = '';
             updateCharCounter();
 
@@ -2042,7 +2075,8 @@ select:focus-visible {
                         consent: true,
                         context: contextText,
                         lang: userLang,
-                        visa_data: visaPayload
+                        visa_data: visaPayload,
+                        history: recentChatHistory()
                     }),
                     signal: _abortController.signal
                 });
