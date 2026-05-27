@@ -1,0 +1,56 @@
+[
+  {
+    "record_id": "status-D-2-template",
+    "record_type": "status",
+    "subject_code": "D-2",
+    "subject_label": "유학",
+    "procedure_key": "status_specific_documents",
+    "source_refs": [
+      {
+        "source_id": "stay_manual_pdf",
+        "source_role": "official_manual",
+        "source_title": "외국인체류 안내매뉴얼",
+        "official_url": null,
+        "local_path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "page": null,
+        "article": null,
+        "section_label": "D-2 section",
+        "support_level": "pending",
+        "notes": "Fill exact page/section during crosswalk extraction."
+      },
+      {
+        "source_id": "immigration_act",
+        "source_role": "canonical_legal_source",
+        "source_title": "출입국관리법",
+        "official_url": "https://www.law.go.kr/법령/출입국관리법",
+        "local_path": null,
+        "page": null,
+        "article": null,
+        "section_label": null,
+        "support_level": "context",
+        "notes": "Fill exact article only if used for legal-basis field."
+      }
+    ],
+    "target_fields": [
+      {
+        "file": "visa_data.json",
+        "json_path": "$[?(@.code=='D-2')]",
+        "field_role": "status record",
+        "current_state": "unknown",
+        "patch_intent": "no patch in scaffold"
+      },
+      {
+        "file": "backend/data/visas.json",
+        "json_path": "$[?(@.code=='D-2')]",
+        "field_role": "backend parity record",
+        "current_state": "unknown",
+        "patch_intent": "no patch in scaffold"
+      }
+    ],
+    "condition_scope": "unknown",
+    "subcode_scope": [],
+    "conflict_status": "unreviewed",
+    "patch_readiness": "NEEDS_PAGE_CITATION",
+    "review_notes": "Template only. Do not patch data until exact manual page and target fields are recorded."
+  }
+]

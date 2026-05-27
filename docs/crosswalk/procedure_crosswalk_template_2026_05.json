@@ -1,0 +1,56 @@
+[
+  {
+    "record_id": "procedure-foreigner-registration-template",
+    "record_type": "procedure",
+    "subject_code": "FOREIGNER_REGISTRATION",
+    "subject_label": "외국인등록",
+    "procedure_key": "registration",
+    "source_refs": [
+      {
+        "source_id": "alien_registration",
+        "source_role": "core_procedure_source",
+        "source_title": "외국인등록",
+        "official_url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=176&PARENT_ID=139",
+        "local_path": null,
+        "page": null,
+        "article": null,
+        "section_label": "HiKorea foreigner registration guide",
+        "support_level": "pending",
+        "notes": "Fill exact captured section or source snapshot during procedure crosswalk."
+      },
+      {
+        "source_id": "stay_manual_pdf",
+        "source_role": "official_manual",
+        "source_title": "외국인체류 안내매뉴얼",
+        "official_url": null,
+        "local_path": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "page": null,
+        "article": null,
+        "section_label": "foreign registration/common procedure section",
+        "support_level": "pending",
+        "notes": "Fill exact page during extraction."
+      }
+    ],
+    "target_fields": [
+      {
+        "file": "visa_data.json",
+        "json_path": "$[*].procedures.registration",
+        "field_role": "procedure tab/checklist",
+        "current_state": "unknown",
+        "patch_intent": "no patch in scaffold"
+      },
+      {
+        "file": "backend/data/visas.json",
+        "json_path": "$[*].procedures.registration",
+        "field_role": "backend parity procedure tab/checklist",
+        "current_state": "unknown",
+        "patch_intent": "no patch in scaffold"
+      }
+    ],
+    "condition_scope": "procedure_specific",
+    "subcode_scope": [],
+    "conflict_status": "unreviewed",
+    "patch_readiness": "NEEDS_PAGE_CITATION",
+    "review_notes": "Template only. Do not patch until exact HiKorea section and manual pages are recorded."
+  }
+]

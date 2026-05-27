@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Paradiso 2026.5 manual/law/HiKorea crosswalk record",
+  "type": "object",
+  "required": [
+    "record_id",
+    "record_type",
+    "subject_code",
+    "subject_label",
+    "source_refs",
+    "target_fields",
+    "patch_readiness"
+  ],
+  "properties": {
+    "record_id": {"type": "string"},
+    "record_type": {"type": "string", "enum": ["status", "procedure", "service", "form", "special_track"]},
+    "subject_code": {"type": "string"},
+    "subject_label": {"type": "string"},
+    "procedure_key": {"type": "string"},
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["source_id", "source_role", "source_title", "support_level"],
+        "properties": {
+          "source_id": {"type": "string"},
+          "source_role": {"type": "string"},
+          "source_title": {"type": "string"},
+          "official_url": {"type": ["string", "null"]},
+          "local_path": {"type": ["string", "null"]},
+          "page": {"type": ["integer", "null"]},
+          "article": {"type": ["string", "null"]},
+          "section_label": {"type": ["string", "null"]},
+          "support_level": {"type": "string", "enum": ["direct", "context", "conflict", "pending"]},
+          "notes": {"type": "string"}
+        }
+      }
+    },
+    "target_fields": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["file", "json_path", "field_role"],
+        "properties": {
+          "file": {"type": "string"},
+          "json_path": {"type": "string"},
+          "field_role": {"type": "string"},
+          "current_state": {"type": "string"},
+          "patch_intent": {"type": "string"}
+        }
+      }
+    },
+    "condition_scope": {"type": "string", "enum": ["universal", "conditional", "sub_code_specific", "procedure_specific", "unknown"]},
+    "subcode_scope": {"type": "array", "items": {"type": "string"}},
+    "conflict_status": {"type": "string", "enum": ["none", "possible", "confirmed", "unreviewed"]},
+    "patch_readiness": {
+      "type": "string",
+      "enum": [
+        "READY_FOR_FIELD_PATCH",
+        "NEEDS_PAGE_CITATION",
+        "NEEDS_ARTICLE_CITATION",
+        "NEEDS_ATTACHMENT_ARCHIVE",
+        "LAW_MANUAL_CONFLICT_REVIEW",
+        "SUBCODE_AMBIGUITY_REVIEW",
+        "SCHEMA_GAP",
+        "DO_NOT_PATCH"
+      ]
+    },
+    "review_notes": {"type": "string"}
+  }
+}
