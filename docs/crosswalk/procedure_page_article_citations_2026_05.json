@@ -1,0 +1,128 @@
+[
+  {
+    "procedure_key": "registration",
+    "subject_label": "외국인등록",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":321,"section_label":"통합신청서(별지 제34호 서식)","support_level":"context","use":"form option mapping"},
+      {"source_id":"stay_manual_pdf","page":517,"section_label":"H-1 외국인등록 제출서류 example","support_level":"direct_category_specific","use":"status-specific registration example"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"31","topic":"foreigner registration"}
+    ],
+    "patch_readiness":"NEEDS_STATUS_SPECIFIC_PAGE",
+    "notes":"Registration document lists must be mapped by status. Do not universalize H-1 examples."
+  },
+  {
+    "procedure_key": "extension",
+    "subject_label": "체류기간 연장",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":5,"section_label":"각종 체류허가 등에 관한 심사수수료","support_level":"context","use":"fee context"},
+      {"source_id":"stay_manual_pdf","page":6,"section_label":"여권 유효기간 범위 내 체류기간 부여 안내","support_level":"context","use":"passport-validity procedural context"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"25","topic":"extension of stay"},
+      {"source_id":"immigration_rule","article":"72","topic":"fees"}
+    ],
+    "patch_readiness":"NEEDS_STATUS_SPECIFIC_PAGE",
+    "notes":"Status-specific extension pages must be filled before checklist patching."
+  },
+  {
+    "procedure_key": "statusChange",
+    "subject_label": "체류자격변경",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":5,"section_label":"각종 체류허가 등에 관한 심사수수료","support_level":"context","use":"fee context"},
+      {"source_id":"stay_manual_pdf","page":6,"section_label":"여권 유효기간 범위 내 체류기간 부여 안내","support_level":"context","use":"passport-validity procedural context"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"24","topic":"change of status"},
+      {"source_id":"immigration_rule","article":"72","topic":"fees"}
+    ],
+    "patch_readiness":"NEEDS_STATUS_SPECIFIC_PAGE",
+    "notes":"Dedicated change-of-status document lists may differ from extension/new-issuance lists."
+  },
+  {
+    "procedure_key": "workplaceChange",
+    "subject_label": "근무처변경/추가",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":5,"section_label":"각종 체류허가 등에 관한 심사수수료","support_level":"context","use":"fee context"},
+      {"source_id":"stay_manual_pdf","page":6,"section_label":"여권 유효기간 범위 내 체류기간 부여 안내","support_level":"context","use":"passport-validity procedural context"},
+      {"source_id":"stay_manual_pdf","page":676,"section_label":"Top-Tier 근무처 변경 및 추가 신고 example","support_level":"direct_category_specific","use":"Top-Tier-specific workplace-change example"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"21","topic":"workplace change/addition"},
+      {"source_id":"immigration_rule","article":"72","topic":"fees"}
+    ],
+    "patch_readiness":"NEEDS_STATUS_SPECIFIC_PAGE",
+    "notes":"Workplace-change requirements are conditional and status-specific."
+  },
+  {
+    "procedure_key": "passportChange",
+    "subject_label": "외국인등록사항 변경 신고의무 / 여권정보 변경",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":321,"section_label":"통합신청서 - 등록사항 변경신고","support_level":"context","use":"form option mapping"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"35","topic":"change of registration information"}
+    ],
+    "patch_readiness":"NEEDS_PAGE_CITATION",
+    "notes":"Exact reporting-duty manual/HiKorea section snapshot is still needed before structured data patching."
+  },
+  {
+    "procedure_key": "addressChange",
+    "subject_label": "체류지변경 신고의무",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":321,"section_label":"통합신청서 - 체류지 변경신고","support_level":"context","use":"form option mapping"},
+      {"source_id":"stay_manual_pdf","page":591,"section_label":"regional visa residence/address context","support_level":"direct_category_specific","use":"regional-visa-specific address-change context"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"36","topic":"change of place of stay"},
+      {"source_id":"overseas_koreans_act","article":"6","topic":"domestic residence change for overseas Koreans"}
+    ],
+    "patch_readiness":"NEEDS_ATTACHMENT_ARCHIVE",
+    "notes":"The separate address-change/fact-certificate manual should be archived before field-level patching."
+  },
+  {
+    "procedure_key": "electronicPetition",
+    "subject_label": "전자민원 안내",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":299,"section_label":"online application example","support_level":"context","use":"category-specific electronic petition example"},
+      {"source_id":"stay_manual_pdf","page":526,"section_label":"H-2 online report example","support_level":"direct_category_specific","use":"H-2 electronic report example"}
+    ],
+    "article_anchors": [],
+    "patch_readiness":"DO_NOT_PATCH",
+    "notes":"Service/navigation source only unless tied to a specific procedure field with direct support."
+  },
+  {
+    "procedure_key": "reservation",
+    "subject_label": "방문예약 안내",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":546,"section_label":"사전방문예약제 실시 안내","support_level":"context","use":"overseas-Korean section reservation context"}
+    ],
+    "article_anchors": [],
+    "patch_readiness":"DO_NOT_PATCH",
+    "notes":"Reservation guidance supports UI/help text, not eligibility or document requirements."
+  },
+  {
+    "procedure_key": "certificateIssuance",
+    "subject_label": "증명발급 안내",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":5,"section_label":"각종 체류허가 등에 관한 심사수수료 - 사실증명","support_level":"context","use":"fee context"}
+    ],
+    "article_anchors": [
+      {"source_id":"immigration_act","article":"88","topic":"certificate of fact"},
+      {"source_id":"immigration_rule","article":"72","topic":"fees"}
+    ],
+    "patch_readiness":"NEEDS_ATTACHMENT_ARCHIVE",
+    "notes":"The address-change/fact-certificate manual needs exact archive/page extraction."
+  },
+  {
+    "procedure_key": "forms",
+    "subject_label": "민원서식",
+    "manual_citations": [
+      {"source_id":"stay_manual_pdf","page":321,"section_label":"통합신청서(별지 제34호 서식)","support_level":"direct","use":"integrated application/report form mapping"}
+    ],
+    "article_anchors": [],
+    "patch_readiness":"DO_NOT_PATCH",
+    "notes":"Forms directory and manual form pages support form references only."
+  }
+]
