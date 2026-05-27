@@ -1,0 +1,42 @@
+{
+  "schema_version": "2026-05-full-table-extraction-candidate",
+  "status": "CANDIDATE_EXTRACTED_FROM_USER_PROVIDED_PDFS",
+  "runtime_use": "NOT_ENABLED_FOR_PRODUCTION_RUNTIME",
+  "occupation": {
+    "classification": "KSCO8",
+    "source": "(해설서) 제8차 한국표준직업분류(공개용)_24.6.24_(최종안).pdf",
+    "rows": 1999,
+    "counts_by_level": {
+      "major": 10,
+      "middle": 57,
+      "minor": 167,
+      "unit": 495,
+      "detailed_unit": 1270
+    },
+    "candidate_csv": "data/generated/employment_reporting_ksco8_full_candidate.csv"
+  },
+  "industry": {
+    "classification": "KSIC11",
+    "source": "[별표2-2] 한국표준산업분류 제11차 개정 해설서(신구연계표 포함).pdf",
+    "rows": 2038,
+    "counts_by_level": {
+      "major": 21,
+      "middle": 77,
+      "minor": 234,
+      "unit": 501,
+      "detailed_unit": 1205
+    },
+    "candidate_csv": "data/generated/employment_reporting_ksic11_full_candidate.csv"
+  },
+  "employment_reporting_sources": [
+    "붙임 1. 외국인 취업정보 온라인 신고제 개요_수정.hwpx",
+    "붙임 2. 온라인 신고 절차(관서 방문예약 시 함께 신고하는 경우).hwpx",
+    "붙임 3. 온라인 신고 절차(방문예약 없이 최초 신고 또는 변경 신고하는 경우).hwpx",
+    "붙임 4. 취업정보 신고 자주 묻는 질문(FAQ).docx"
+  ],
+  "notes": [
+    "Candidate extraction counts match source summary counts for both classifications.",
+    "Do not switch frontend/runtime to full tables until spot-check validation and UI performance checks pass.",
+    "Current production helper may continue to use seed data while this extraction candidate is reviewed."
+  ]
+}
