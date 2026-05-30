@@ -11439,9 +11439,14 @@ async function openJobCodeModal() {
         await loadJobcodeData();
         const coverageEl = document.getElementById('jcCoverageNote');
         if (coverageEl && _jobcodeData) {
-            const src = _jobcodeData.data_source === 'full' ? '전체표' : 'seed(대·중분류)';
             const occ = (_jobcodeData.categories || {})['직업'] || 0;
             const ind = (_jobcodeData.categories || {})['산업'] || 0;
+            const ds = _jobcodeData.data_source;
+            let src;
+            if (ds === 'full') src = '전체표';
+            else if (ds === 'seed') src = 'seed(대·중분류)';
+            else if ((_jobcodeData.total_count || (occ + ind)) >= 3000) src = '기존 런타임 데이터';
+            else src = '부분 데이터';
             coverageEl.textContent = `데이터: ${src} · 직업 ${occ}건 · 산업 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
         }
         renderJobcodeResults('');
