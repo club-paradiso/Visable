@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import json
 import re
 from collections import Counter
 from pathlib import Path
@@ -187,19 +188,56 @@ def write_csv(path: Path, rows: list[dict[str, str]]) -> None:
         writer.writerows(rows)
 
 
+def write_json(path: Path, rows: list[dict[str, str]], label: str) -> None:
+    """Write rows as a JSON list consumable by scripts/fetch_jobcodes.py."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    counts = dict(Counter(r["level"] for r in rows))
+    payload = {
+        "classification": label,
+        "row_count": len(rows),
+        "counts_by_level": counts,
+        "data": rows,
+    }
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ksco-text", type=Path, required=True)
-    parser.add_argument("--ksic-text", type=Path, required=True)
+    parser = argparse.ArgumentParser(
+        description=(
+            "Extract KSCO8/KSIC11 full classification tables from pdftotext output.\n"
+            "\n"
+            "Generate input text files first:\n"
+            "  pdftotext -layout KSCO8.pdf /tmp/ksco8.txt\n"
+            "  pdftotext -layout KSIC11.pdf /tmp/ksic11.txt\n"
+            "\n"
+            "Output (in --out-dir):\n"
+            "  employment_reporting_ksco8_full_candidate.csv\n"
+            "  employment_reporting_ksco8_full_candidate.json\n"
+            "  employment_reporting_ksic11_full_candidate.csv\n"
+            "  employment_reporting_ksic11_full_candidate.json\n"
+            "\n"
+            "The JSON files are the preferred input for fetch_jobcodes.py --full.\n"
+            "NOT for E-7 eligibility screening; for HiKorea 취업정보 신고 only."
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument("--ksco-text", type=Path, required=True, help="pdftotext output of KSCO8 PDF")
+    parser.add_argument("--ksic-text", type=Path, required=True, help="pdftotext output of KSIC11 PDF")
     parser.add_argument("--out-dir", type=Path, default=Path("data/generated"))
     args = parser.parse_args()
 
     ksco = parse_table(args.ksco_text, "ksco")
     ksic = parse_table(args.ksic_text, "ksic")
+
     write_csv(args.out_dir / "employment_reporting_ksco8_full_candidate.csv", ksco)
+    write_json(args.out_dir / "employment_reporting_ksco8_full_candidate.json", ksco, "KSCO8")
     write_csv(args.out_dir / "employment_reporting_ksic11_full_candidate.csv", ksic)
-    print("KSCO8", len(ksco), dict(Counter(row["level"] for row in ksco)))
+    write_json(args.out_dir / "employment_reporting_ksic11_full_candidate.json", ksic, "KSIC11")
+
+    print("KSCO8 ", len(ksco), dict(Counter(row["level"] for row in ksco)))
     print("KSIC11", len(ksic), dict(Counter(row["level"] for row in ksic)))
+    print(f"Wrote CSV and JSON to {args.out_dir}/")
+    print("Next: python3 scripts/fetch_jobcodes.py  (auto-detects full candidates)")
     return 0
 
 
