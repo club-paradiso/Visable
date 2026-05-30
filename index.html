@@ -528,6 +528,9 @@ body.searched .ft { opacity: 1; }
 .jc-copy-btn.copied { background: var(--color-success); color: #fff; border-color: var(--color-success); }
 .jc-disclaimer { margin-top: 1rem; padding: 0.75rem 0.9rem; background: transparent; color: var(--t3); border-radius: 0; font-size: 0.77rem; line-height: 1.7; border-left: 1px solid var(--bd); border-top: 1px solid var(--bd2); }
 .jc-disclaimer a { color: var(--hlT); text-decoration: underline; font-weight: 700; }
+.jc-cls-tag { font-size: 0.72rem; font-weight: 600; color: var(--t3); margin-left: 0.4rem; }
+.jc-coverage-note { font-size: 0.73rem; color: var(--t3); padding: 0.3rem 0.5rem; margin-bottom: 0.4rem; }
+.jc-coverage-note:empty { display: none; }
 
 .jur-section { padding: 1rem; background: var(--bg2); border-radius: 8px; margin-bottom: 0.8rem; }
 .jur-section:last-child { margin-bottom: 0; }
@@ -10395,7 +10398,7 @@ button[data-keyword]:focus-visible {
 <div class="modal-overlay" id="jobCodeModalOverlay" role="dialog" aria-modal="true" aria-labelledby="jobCodeModalTitle">
     <div class="modal-box" style="max-width: 860px;">
         <div class="modal-header">
-            <h2 id="jobCodeModalTitle" class="modal-title">💼 취업신고용 업종/직종 코드 찾기</h2>
+            <h2 id="jobCodeModalTitle" class="modal-title">💼 취업신고용 직종(KSCO8)·업종(KSIC11) 코드 찾기</h2>
             <button type="button" class="modal-close" data-action="close-jobcode-modal" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
@@ -10411,15 +10414,17 @@ button[data-keyword]:focus-visible {
                 </button>
             </div>
 
+            <div id="jcCoverageNote" class="jc-coverage-note" aria-live="polite"></div>
+
             <div class="jc-split-layout">
                 <div class="jc-pane">
-                    <div class="jc-pane-title">👔 직종(직업) 코드 결과</div>
+                    <div class="jc-pane-title">👔 직종 결과 <span class="jc-cls-tag">KSCO8 · 제8차 한국표준직업분류</span></div>
                     <div id="jcJobResults" class="jc-results-split" aria-live="polite">
                         <div class="jc-empty">처음 열면 데이터를 불러옵니다.</div>
                     </div>
                 </div>
                 <div class="jc-pane">
-                    <div class="jc-pane-title">🏭 업종(산업) 코드 결과</div>
+                    <div class="jc-pane-title">🏭 업종 결과 <span class="jc-cls-tag">KSIC11 · 제11차 한국표준산업분류</span></div>
                     <div id="jcIndResults" class="jc-results-split" aria-live="polite">
                         <div class="jc-empty">처음 열면 데이터를 불러옵니다.</div>
                     </div>
@@ -10427,7 +10432,9 @@ button[data-keyword]:focus-visible {
             </div>
 
             <div class="jc-disclaimer">
-                ⚠️ <b>[실무 주의 사항]</b> HiKorea 외국인 취업정보 온라인 신고 시 <b>직종(직업)</b> 코드와 <b>업종(산업)</b> 코드를 모두 입력해야 하며, <b>연간소득</b> 정보도 필수입니다. 변동사항 발생 시 15일 이내에 신고하지 않으면 출입국관리법에 따라 범칙금이 부과될 수 있습니다.
+                ⚠️ <b>[실무 주의 사항]</b> HiKorea 외국인 취업정보 온라인 신고 시 <b>직종(직업)</b> 코드와 <b>업종(산업)</b> 코드를 모두 입력해야 하며, <b>연간소득</b> 정보도 필수입니다. 변동사항 발생 시 15일 이내에 신고하지 않으면 출입국관리법에 따라 범칙금이 부과될 수 있습니다.<br>
+                <b>[코드 확정]</b> 이 도구에서 찾은 코드는 반드시 <b>HiKorea 또는 1345(외국인종합안내센터)</b>에서 최종 확인하세요.<br>
+                <b>[적격성 심사 아님]</b> 이 분류 코드 탐색 도구는 취업정보 신고 편의를 위한 참고용이며, E-7 또는 다른 체류자격 적격성 심사와는 직접적인 관련이 없습니다.
             </div>
         </div>
     </div>
@@ -11428,7 +11435,22 @@ async function openJobCodeModal() {
     if (input) { input.value = ''; setTimeout(() => input.focus(), 100); }
     document.getElementById('jcJobResults').innerHTML = '<div class="jc-loading">데이터 로드 중... (최초 1회만)</div>';
     document.getElementById('jcIndResults').innerHTML = '<div class="jc-loading">데이터 로드 중... (최초 1회만)</div>';
-    try { await loadJobcodeData(); renderJobcodeResults(''); }
+    try {
+        await loadJobcodeData();
+        const coverageEl = document.getElementById('jcCoverageNote');
+        if (coverageEl && _jobcodeData) {
+            const occ = (_jobcodeData.categories || {})['직업'] || 0;
+            const ind = (_jobcodeData.categories || {})['산업'] || 0;
+            const ds = _jobcodeData.data_source;
+            let src;
+            if (ds === 'full') src = '전체표';
+            else if (ds === 'seed') src = 'seed(대·중분류)';
+            else if ((_jobcodeData.total_count || (occ + ind)) >= 3000) src = '기존 런타임 데이터';
+            else src = '부분 데이터';
+            coverageEl.textContent = `데이터: ${src} · 직업 ${occ}건 · 산업 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
+        }
+        renderJobcodeResults('');
+    }
     catch (err) {
         const errorHtml = `<div class="jc-empty" style="color:var(--color-error); text-align:left; padding:1.2rem;">⚠ <strong>데이터 로드 실패</strong><br><br><small style="color:#64748b;">상세 오류: ${escapeHtml(err.message)}</small></div>`;
         document.getElementById('jcJobResults').innerHTML = errorHtml; document.getElementById('jcIndResults').innerHTML = errorHtml;
