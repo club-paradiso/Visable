@@ -1,0 +1,123 @@
+{
+  "schema": "official_source_map/2026-05",
+  "access_date": "2026-05-31",
+  "sources": [
+    {
+      "source_id": "MOJ-KIS-VisaNavigator-Announcement-2023",
+      "site": "KIS",
+      "url": "https://www.corrections.go.kr/immigration_eng/1833/subview.do?fnctId=bbs&fnctNo=230",
+      "title": "VISA NAVIGATOR ('Customized Stay Guide for Foreign Residents') announcement",
+      "language": "en",
+      "source_type": "notice",
+      "authority_scope": ["visa_issuance", "stay_residence", "change_of_status", "extension", "registration", "workplace_change", "reporting_duty", "reentry"],
+      "supports_level": "status_level",
+      "status_codes_mentioned": [],
+      "procedure_types_mentioned": [],
+      "summary": "Announcement by the Korea Immigration Service/Ministry of Justice introducing the 'Visa Navigator' customized stay guide. The notice states that the guide provides an overview of visa types, employment scope, and procedures (including reporting obligations) and will be updated as laws change. It advises readers to refer to HiKorea for specific required documents.",
+      "key_evidence": "The announcement explains that the Visa Navigator is a stay guide for foreigners that includes visa overview, customized stay guidance, convenient means of submitting immigration applications and reporting obligations, and notes that for specific information such as required documents one should refer to the HiKorea website.",
+      "limitations": "The notice itself does not contain detailed visa rules; it mainly introduces the Visa Navigator manual. It does not list specific status codes or required documents.",
+      "readiness_label": "READY_FOR_SOURCE_REGISTRY",
+      "recommended_future_use": "Reference this notice to confirm the official release of the Visa Navigator manual and to justify using the manual as an official source."
+    },
+    {
+      "source_id": "MOJ-KIS-VisaNavigator-PDF-ENG-2023",
+      "site": "KIS",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/454085/download.do",
+      "title": "VISA NAVIGATOR (Customized Stay Guide for Foreign Residents) – English version",
+      "language": "en",
+      "source_type": "PDF",
+      "authority_scope": ["visa_issuance", "stay_residence", "extension", "change_of_status", "workplace_change", "reporting_duty", "reentry"],
+      "supports_level": "status_level",
+      "status_codes_mentioned": ["A-1", "A-2", "A-3", "B-1", "B-2", "C-1", "C-3", "C-4", "D-1", "D-2", "D-3", "D-4", "D-5", "D-6", "D-7", "D-8", "D-9", "D-10", "E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "E-10", "F-1", "F-2", "F-3", "F-5", "F-6"],
+      "procedure_types_mentioned": ["application_submission", "e-application", "immigration_agency", "fax_submission", "visit_reservation", "reporting_duties"],
+      "summary": "The Visa Navigator (ver. 2023.05) is an English-language manual published by the Korea Immigration Service. It provides a visa overview, listing various categories of status of stay (A, B, C, D, E, F series) along with eligibility and period of stay, and gives guidance for each major category (student, investor, job seeker, professional/non-professional employment, cultural/religious activities, family visas, residents, marriage migrants and permanent residents). It also outlines convenient methods for submitting immigration-related applications (e-applications, immigration agency services, fax submissions, visit reservations), and includes sections on frequently asked questions, common issues addressed by the immigration contact center, and reporting obligations/violation examples.",
+      "key_evidence": "The manual lists eligibility and period of stay for statuses such as A-1 (members of foreign diplomatic missions), A-2 (foreign government officials), and various other categories. It explains that the Visa Navigator is a stay guide for foreigners, providing an overview of status types, scope of employment, and change of status options. The contents include sections for student/training visas (D-2, D-4), job seekers (D-10), professional employment (C-4, E-1~E-7), non-professional employment (E-8~E-10), family and dependent visas (F-1, F-3), residence (F-2), marriage migration (F-6) and permanent residence (F-5).",
+      "limitations": "Although comprehensive at the status level, the manual does not provide detailed lists of required documents for each visa. It instructs readers to consult the HiKorea Immigration/Stay Guide for specific required documents. Some sections may be outdated (version 2023.05). Accessing the full PDF requires download which may be blocked; only text excerpts were accessible via viewer.",
+      "readiness_label": "READY_FOR_SOURCE_REGISTRY",
+      "recommended_future_use": "Use this manual as an official status-level guide for visa categories, eligibility, allowed activities, and extension/change rules. Do not extract required document lists from this manual; instead, treat it as complementary to HiKorea procedure pages when patching visa data."
+    },
+    {
+      "source_id": "MOJ-KIS-VisaNavigator-PDF-KOR-2022",
+      "site": "KIS",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/454086/download.do",
+      "title": "비자 내비게이터 (Visa Navigator) 전자책 – Korean version",
+      "language": "ko",
+      "source_type": "PDF",
+      "authority_scope": ["visa_issuance", "stay_residence", "extension", "change_of_status", "workplace_change", "reporting_duty", "reentry"],
+      "supports_level": "status_level",
+      "status_codes_mentioned": ["A-1", "A-2", "A-3", "B-1", "B-2", "C-1", "C-3", "C-4", "D-1", "D-2", "D-3", "D-4", "D-5", "D-6", "D-7", "D-8", "D-9", "D-10", "E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-8", "E-9", "E-10", "F-1", "F-2", "F-3", "F-5", "F-6"],
+      "procedure_types_mentioned": ["전자민원", "민원 신청 방법", "방문예약", "전자비자제도", "증명 온라인 발급", "정보조회", "신고 의무"],
+      "summary": "The Korean-language Visa Navigator (version 2022.12) is a manual for foreign residents in Korea. Like the English version, it provides an overview of visa categories (A, B, C, D, E, F series) with eligibility and period of stay, plus a customized stay guide for categories such as study/training (D-2, D-4), intra-company transfers and investors (D-7, D-8, D-9), job seekers (D-10), professional and non-professional employment (C-4, E-1~E-10), and family/residence categories (F-1 to F-6). It includes sections on immigration application methods (e-applications, immigration agency services, fax submissions, visit reservations, e-visa system) and other online services (certificate issuance, information query), and summarises frequently asked questions and reporting obligations.",
+      "key_evidence": "The Korean manual states that it provides a stay guide for foreigners residing or intending to reside in Korea and offers a broad overview of visa categories, employment scope, and possible status changes. It notes that specific required documents should be obtained from the HiKorea site or by contacting the immigration center. The manual lists categories such as study/training, company transfer/investment, job seeking, professional/non-professional employment, and family/resident statuses along with page numbers.",
+      "limitations": "This manual is in Korean; translation may be required for non-Korean readers. It does not provide detailed required documents and directs users to HiKorea for that information.",
+      "readiness_label": "READY_FOR_SOURCE_REGISTRY",
+      "recommended_future_use": "Use as a comprehensive status-level guide in Korean when verifying visa categories and general rules. Combine with other sources for procedure-level and field-level details."
+    },
+    {
+      "source_id": "MOJ-KIS-SkilledWorkerPoints-E7-4-Info",
+      "site": "KIS",
+      "url": "https://www.corrections.go.kr/immigration_eng/1852/subview.do",
+      "title": "Skilled Worker Points System Visa (E-7-4) – policy information",
+      "language": "en",
+      "source_type": "HTML",
+      "authority_scope": ["visa_issuance", "stay_residence", "change_of_status", "extension"],
+      "supports_level": "procedure_level",
+      "status_codes_mentioned": ["E-7-4", "E-9", "E-10", "H-2"],
+      "procedure_types_mentioned": ["change_of_status", "employment_quota", "annual_quota"],
+      "summary": "This policy information page from the Korea Immigration Service describes the Skilled Worker Points System visa (E-7-4). It states that foreign employees who have legally worked in Korea for five years or more on non-professional (E-9), maritime crew (E-10) or Work and Visit (H-2) visas may change to an E-7-4 visa when meeting skillfulness requirements. It outlines eligibility criteria, ineligibility conditions (criminals, tax delinquents, immigration violators), employment quota limits by industry and company size, annual quota limits, and the expected impact of the policy.",
+      "key_evidence": "The page explains that foreign employees working legally in Korea on E-9, E-10 or H-2 visas for at least five years are allowed to change their status to an E-7-4 visa if they meet skill requirements. It lists ineligibility conditions such as criminal records, tax delinquency, and immigration violations. The page presents employment quota limits by industry and company size and states the annual quota limit of 100 persons per quarter (400 per year) with priority given to high scorers.",
+      "limitations": "The page provides policy and quota information specific to the E-7-4 visa but does not include application forms or required documents. It is a general policy outline rather than a step-by-step procedure.",
+      "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+      "recommended_future_use": "Use this page as an official reference for the E-7-4 visa eligibility and quota rules when updating visa data. Combine with application procedures and document lists from other sources."
+    },
+    {
+      "source_id": "MOJ-KIS-ForeignRegistrationCardVerification-2025",
+      "site": "KIS",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/599268/artclView.do",
+      "title": "Foreign Registration Card Verification Service Expanded to the Non-Banking Sector",
+      "language": "en",
+      "source_type": "notice",
+      "authority_scope": ["registration", "stay_residence"],
+      "supports_level": "procedure_level",
+      "status_codes_mentioned": [],
+      "procedure_types_mentioned": ["card_verification"],
+      "summary": "A notice dated 2025-10-01 from the Korea Immigration Service announcing that the Foreign Registration Card verification service (used by banks) has been expanded to the non-banking sector. The notice includes a PDF attachment and indicates this is part of the government's public services.",
+      "key_evidence": "The notice page lists the title and date and provides an attachment labelled 'Foreign Registration Card Verification Service Expanded to the Non-Banking Sector.pdf'.",
+      "limitations": "The notice does not provide visa- or status-specific procedures; it is a general announcement. The attached PDF appears to be a one-page poster and does not contain detailed guidance.",
+      "readiness_label": "DO_NOT_USE_FOR_PATCH",
+      "recommended_future_use": "Record this notice for completeness but do not use it for visa data patching because it does not contain status-specific or procedure-level information relevant to visas or stay."
+    }
+  ],
+  "attachments": [
+    {
+      "attachment_id": "ATT-454085-ENG-VisaNavigator",
+      "parent_source_id": "MOJ-KIS-VisaNavigator-Announcement-2023",
+      "filename": "VISA NAVIGATOR(Customized Stay Guide)(Eng).pdf",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/454085/download.do",
+      "file_type": "PDF",
+      "downloaded": false,
+      "checksum_sha256": null,
+      "recommended_future_use": "Download and extract the text for status-level rules; use as source for visa categories, eligibility, and general guidance."
+    },
+    {
+      "attachment_id": "ATT-454086-KOR-VisaNavigator",
+      "parent_source_id": "MOJ-KIS-VisaNavigator-Announcement-2023",
+      "filename": "비자 내비게이터(Visa Navigator) 전자책 (국문).pdf",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/454086/download.do",
+      "file_type": "PDF",
+      "downloaded": false,
+      "checksum_sha256": null,
+      "recommended_future_use": "Download and translate key sections if necessary; use as source for verifying Korean terms and categories."
+    },
+    {
+      "attachment_id": "ATT-599268-ForeignRegistrationCardVerification",
+      "parent_source_id": "MOJ-KIS-ForeignRegistrationCardVerification-2025",
+      "filename": "Foreign Registration Card Verification Service Expanded to the Non-Banking Sector.pdf",
+      "url": "https://www.corrections.go.kr/bbs/immigration_eng/230/485685/download.do",
+      "file_type": "PDF",
+      "downloaded": false,
+      "checksum_sha256": null,
+      "recommended_future_use": "Not needed for visa data patch; keep for reference."
+    }
+  ]
+}

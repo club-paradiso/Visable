@@ -8,16 +8,62 @@ were patched.
 
 A follow-up pass attempted to source-ground additional corrections from the live
 official public sites (Korea Visa Portal for visa issuance; HiKorea for
-stay/extension/change/registration). **Both origins returned HTTP 403 Forbidden**
-to this environment's egress IP (TLS succeeds, origin refuses), and `WebSearch`
-is restricted to non-`.go.kr` domains here. Per task policy this is recorded as
-`SOURCE_ACCESS_BLOCKED_OR_DYNAMIC`; no access-control bypass was attempted and no
-data was patched from memory.
+stay/extension/change/registration). **Both hosts are blocked by this Claude Code
+cloud environment's egress allowlist**: the inspecting egress proxy returns
+`HTTP 403` with `x-deny-reason: host_not_allowed` (TLS cert issuer
+`CN=sandbox-egress-production TLS Inspection CA`). `WebSearch` returns `.go.kr`
+result links but only titles/snippets, which are not authoritative evidence. Per
+task policy this is recorded as `SOURCE_ACCESS_BLOCKED_OR_DYNAMIC`; no
+access-control bypass was attempted and no data was patched from memory or
+snippets.
 
 - **Live-web corrections applied: 0** (sources unreachable — see
   `docs/data/OFFICIAL_WEB_SOURCE_EVIDENCE_2026_05.md` and
   `docs/data/official_web_source_evidence_2026_05.json` for the full access log).
 - The local-grounding correction below (D-4) stands unchanged from Pass 1.
+
+## Pass 3 — official source maps added (KIS/MOJ + ChatGPT-retrieved HiKorea/Visa Portal)
+
+Two official-source maps were incorporated as **registry / procedure-reference
+evidence** to strengthen future grounding. This is a source-map pass: **no broad
+required-document rewrite was made, and no production data was patched from these
+sources.**
+
+- **User-provided KIS/MOJ map** → `docs/data/official_source_map_2026_05.json`
+  (5 sources + 3 attachments; 3 `READY_FOR_SOURCE_REGISTRY`, 1
+  `READY_FOR_PROCEDURE_SOURCE_REFERENCE`, 1 `DO_NOT_USE_FOR_PATCH`, 0
+  `READY_FOR_FIELD_PATCH`).
+- **ChatGPT-retrieved HiKorea / Visa Portal procedure source map** → recorded in
+  `docs/data/official_web_source_evidence_2026_05.json` (channel 2) and
+  `docs/data/OFFICIAL_SOURCE_RETRIEVAL_REPORT_2026_05.md` (12 official pages; 3
+  `READY_FOR_SOURCE_REGISTRY`, 9 `READY_FOR_PROCEDURE_SOURCE_REFERENCE`, 0
+  `READY_FOR_FIELD_PATCH`). Retrieved out-of-band by ChatGPT; **blocked in Claude
+  Code cloud**.
+
+**Why no broad required-document patch was applied from these sources:**
+- The Visa Navigator manuals are **status-level only** and explicitly defer
+  required documents to HiKorea — they are not a required-document authority.
+- The HiKorea pages collected are **common procedure overviews** that themselves
+  defer status-specific document lists to the status-specific manual/table.
+- The Korea Visa Portal catalog is an **entry-purpose visa-category index**, not
+  an in-country procedure document authority.
+- The E-7-4 KIS page supports **E-7-4 eligibility/quota reference only**, not
+  required documents and not broad parent-E-7 changes.
+- Claude Code cloud **cannot fetch** the live sites to verify anything further.
+
+No suitable existing low-risk source-reference field could be patched in
+`visa_data.json` without inventing schema or implying full verification, so
+production JSON was left unchanged in this pass:
+classification `SOURCE_REGISTRY_ONLY`.
+
+**Future work required for field-level required-document corrections:**
+1. retrieve/extract the HiKorea **2026-05-21 status-specific manuals**
+   (체류자격별 안내메뉴얼) — same family as the committed
+   `stay_manual_grounding_2026_05.json`, extended per status;
+2. map exact manual sections → exact JSON paths (status → procedure →
+   `requiredDocs`/`manualRefs`), preserving conditional and sub-code boundaries;
+3. patch only source-confirmed fields, keeping `needsManualReview: true` and not
+   promoting `verified=true`; record `SCHEMA_GAP` where no safe field exists.
 
 ## Source authority used
 
