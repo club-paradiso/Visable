@@ -19,7 +19,15 @@ Data source priority (highest → lowest):
 
   3. Seed CSV (committed)  data/jobcode_master_ksco8_major_middle.csv  (major+middle only)
                            data/industrycode_master_ksic11_major.csv   (major only)
-     Used when full candidates are not present.
+     Build-path scaffolding only. See coverage-protection guard below.
+
+Coverage-protection guard:
+  The committed data/jobcode_master.json is a full runtime dataset (3937 rows).
+  A seed-only build (88 rows) must NEVER overwrite it. When full candidate files
+  are absent, the default no-arg run is a no-op: it prints what it would do and
+  leaves the committed file untouched. Writing seed output requires the explicit
+  --allow-seed-downgrade flag (testing / fresh-checkout bootstrap only).
+  A full-candidate build always writes, because it does not reduce coverage.
 
 This script does NOT treat KSCO8/KSIC11 classification data as E-7 eligibility
 screening. Classification lookup is a reporting-aid for HiKorea 취업정보 신고 only.
@@ -249,14 +257,25 @@ def main(argv: list[str] | None = None) -> int:
 
     payload = build_payload(job_records, industry_records, data_source)
 
+    # Existing committed runtime coverage (so we never silently shrink it).
+    existing_total = None
+    if OUT_FILE.is_file():
+        try:
+            existing_total = json.loads(OUT_FILE.read_text(encoding="utf-8")).get("total_count")
+        except Exception:
+            existing_total = None
+
     if "--check" in argv:
         print(json.dumps({
             "data_source": data_source,
             "source_desc": source_desc,
             "categories": payload["categories"],
+            "candidate_total": payload["total_count"],
+            "committed_total": existing_total,
             "coverage": payload["coverage"],
             "full_candidate_json_present": FULL_KSCO8_JSON.is_file() and FULL_KSIC11_JSON.is_file(),
             "full_candidate_csv_present": FULL_KSCO8_CSV.is_file() and FULL_KSIC11_CSV.is_file(),
+            "would_write": data_source == "full" or "--allow-seed-downgrade" in argv,
             "regenerate_full": (
                 "pdftotext -layout KSCO8.pdf /tmp/ksco8.txt && "
                 "pdftotext -layout KSIC11.pdf /tmp/ksic11.txt && "
@@ -265,6 +284,26 @@ def main(argv: list[str] | None = None) -> int:
             ),
         }, ensure_ascii=False, indent=2))
         return 0
+
+    # Coverage-protection guard: a seed-only build must never overwrite a
+    # larger committed runtime dataset. Full candidate files are absent in
+    # this branch, so the default no-arg run is a no-op that preserves the
+    # existing 3937-row data/jobcode_master.json. Pass --allow-seed-downgrade
+    # to deliberately write the seed output (testing / bootstrap only).
+    if data_source == "seed" and "--allow-seed-downgrade" not in argv:
+        if existing_total is not None and existing_total > payload["total_count"]:
+            print(
+                f"SKIP: full candidate files absent. Refusing to overwrite committed "
+                f"runtime data (total_count={existing_total}) with seed build "
+                f"(total_count={payload['total_count']}).\n"
+                f"      Existing data/jobcode_master.json is left unchanged.\n"
+                f"      To generate full data, run the extraction pipeline:\n"
+                f"        {payload['coverage']['note']}\n"
+                f"      To force a seed write anyway, pass --allow-seed-downgrade.",
+                file=sys.stderr,
+            )
+            return 0
+        # No larger committed file to protect (e.g. fresh checkout): write seed.
 
     OUT_FILE.parent.mkdir(exist_ok=True)
     OUT_FILE.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
