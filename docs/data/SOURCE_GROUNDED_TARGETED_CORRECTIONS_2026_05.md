@@ -4,6 +4,21 @@ Direct, conservative source-grounded correction pass over all stay/visa status
 records. Only fields with **exact official-manual evidence committed in the repo**
 were patched.
 
+## Pass 2 — live official web sources (visa.go.kr / hikorea.go.kr)
+
+A follow-up pass attempted to source-ground additional corrections from the live
+official public sites (Korea Visa Portal for visa issuance; HiKorea for
+stay/extension/change/registration). **Both origins returned HTTP 403 Forbidden**
+to this environment's egress IP (TLS succeeds, origin refuses), and `WebSearch`
+is restricted to non-`.go.kr` domains here. Per task policy this is recorded as
+`SOURCE_ACCESS_BLOCKED_OR_DYNAMIC`; no access-control bypass was attempted and no
+data was patched from memory.
+
+- **Live-web corrections applied: 0** (sources unreachable — see
+  `docs/data/OFFICIAL_WEB_SOURCE_EVIDENCE_2026_05.md` and
+  `docs/data/official_web_source_evidence_2026_05.json` for the full access log).
+- The local-grounding correction below (D-4) stands unchanged from Pass 1.
+
 ## Source authority used
 
 The committed, source-verified extraction

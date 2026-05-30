@@ -1,0 +1,48 @@
+{
+  "schema": "official_web_source_evidence/1.0",
+  "collected_by_session": "PR #222 live-official-source pass",
+  "access_date": "2026-05-30",
+  "environment_network_note": "Outbound access is governed by the remote execution environment's egress network policy. Diagnosis via verbose curl: the TLS certificate is issued by 'O=Anthropic; CN=sandbox-egress-production TLS Inspection CA' (i.e. the connection terminates at the environment's inspecting egress proxy, not the real origin), and the proxy returns 'HTTP/2 403' with header 'x-deny-reason: host_not_allowed'. This means visa.go.kr and hikorea.go.kr are NOT on the environment's egress allowlist, so their page content cannot be retrieved here. WebSearch returns .go.kr result links (titles/snippets only) but not authoritative page bodies; per task constraints, search snippets are NOT used as substitute source evidence. No login/CAPTCHA/access-control bypass was attempted.",
+  "sources_attempted": [
+    {
+      "site": "Korea Visa Portal",
+      "base_domain": "visa.go.kr",
+      "intended_authority_scope": "visa issuance / entry visa / overseas application guidance",
+      "urls_attempted": [
+        "https://www.visa.go.kr/",
+        "https://visa.go.kr/",
+        "https://www.visa.go.kr/openPage.do?MENU_ID=10101",
+        "https://www.visa.go.kr/openPage.do?MENU_ID=10201"
+      ],
+      "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
+      "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
+      "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
+      "patched_from_this_source": false
+    },
+    {
+      "site": "HiKorea",
+      "base_domain": "hikorea.go.kr",
+      "intended_authority_scope": "stay/residence / extension / change / registration / report / civil petition guidance",
+      "urls_attempted": [
+        "https://www.hikorea.go.kr/",
+        "https://www.hikorea.go.kr/Main.pt",
+        "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=181&PARENT_ID=140",
+        "https://www.hikorea.go.kr/cvlappl/CvlapplInfoPageR.pt"
+      ],
+      "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
+      "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
+      "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
+      "patched_from_this_source": false
+    }
+  ],
+  "websearch_note": "WebSearch (allowed_domains hikorea.go.kr/visa.go.kr) returned official .go.kr result links (e.g. CAT_SEQ=183 체류기간연장, CAT_SEQ=180 외국인등록) but only titles/snippets, not full authoritative page bodies. Per task policy, search snippets are not authoritative source evidence and were not used to patch data.",
+  "corrections_applied_from_live_web": 0,
+  "reason_no_corrections": "visa.go.kr and hikorea.go.kr are not on this environment's egress allowlist (proxy returns 403 host_not_allowed), so authoritative page content could not be retrieved. Task constraints forbid patching from memory, using search snippets as evidence, inventing source evidence, and bypassing access controls.",
+  "carried_forward_local_correction": {
+    "code": "D-4",
+    "json_path": "procedures.extension.manualRefs[0].pageRange",
+    "change": "p. 90 -> pp. 90-91",
+    "source": "committed verified-local extraction backend/data/manual_grounding/stay_manual_grounding_2026_05.json (grounding d4_extension_2026_05, verified_locally / high)",
+    "note": "Applied in the prior pass on this branch; not re-applied here."
+  }
+}
