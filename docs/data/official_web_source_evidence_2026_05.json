@@ -1,48 +1,221 @@
 {
-  "schema": "official_web_source_evidence/1.0",
-  "collected_by_session": "PR #222 live-official-source pass",
-  "access_date": "2026-05-30",
-  "environment_network_note": "Outbound access is governed by the remote execution environment's egress network policy. Diagnosis via verbose curl: the TLS certificate is issued by 'O=Anthropic; CN=sandbox-egress-production TLS Inspection CA' (i.e. the connection terminates at the environment's inspecting egress proxy, not the real origin), and the proxy returns 'HTTP/2 403' with header 'x-deny-reason: host_not_allowed'. This means visa.go.kr and hikorea.go.kr are NOT on the environment's egress allowlist, so their page content cannot be retrieved here. WebSearch returns .go.kr result links (titles/snippets only) but not authoritative page bodies; per task constraints, search snippets are NOT used as substitute source evidence. No login/CAPTCHA/access-control bypass was attempted.",
-  "sources_attempted": [
-    {
-      "site": "Korea Visa Portal",
-      "base_domain": "visa.go.kr",
-      "intended_authority_scope": "visa issuance / entry visa / overseas application guidance",
-      "urls_attempted": [
-        "https://www.visa.go.kr/",
-        "https://visa.go.kr/",
-        "https://www.visa.go.kr/openPage.do?MENU_ID=10101",
-        "https://www.visa.go.kr/openPage.do?MENU_ID=10201"
-      ],
-      "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
-      "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
-      "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
-      "patched_from_this_source": false
+  "schema": "official_web_source_evidence/1.1",
+  "collected_by_session": "PR #222 official-source evidence passes",
+  "access_date": "2026-05-31",
+  "environment_network_note": "Outbound access is governed by the remote execution environment's egress network policy. Diagnosis via verbose curl: the TLS certificate is issued by 'O=Anthropic; CN=sandbox-egress-production TLS Inspection CA' (i.e. the connection terminates at the environment's inspecting egress proxy, not the real origin), and the proxy returns 'HTTP/2 403' with header 'x-deny-reason: host_not_allowed'. This means visa.go.kr and hikorea.go.kr are NOT on the environment's egress allowlist, so their page content cannot be retrieved from Claude Code cloud. WebSearch returns .go.kr result links (titles/snippets only) but not authoritative page bodies; per task constraints, search snippets are NOT used as substitute source evidence. No login/CAPTCHA/access-control bypass was attempted.",
+
+  "channel_1_claude_code_cloud_blocked": {
+    "description": "Direct fetch attempts from this Claude Code cloud environment. All blocked by the egress allowlist (403 host_not_allowed). No data patched from these.",
+    "sources_attempted": [
+      {
+        "site": "Korea Visa Portal",
+        "base_domain": "visa.go.kr",
+        "intended_authority_scope": "visa issuance / entry visa / overseas application guidance",
+        "urls_attempted": [
+          "https://www.visa.go.kr/",
+          "https://visa.go.kr/",
+          "https://www.visa.go.kr/openPage.do?MENU_ID=10101",
+          "https://www.visa.go.kr/openPage.do?MENU_ID=10201"
+        ],
+        "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
+        "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
+        "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
+        "patched_from_this_source": false
+      },
+      {
+        "site": "HiKorea",
+        "base_domain": "hikorea.go.kr",
+        "intended_authority_scope": "stay/residence / extension / change / registration / report / civil petition guidance",
+        "urls_attempted": [
+          "https://www.hikorea.go.kr/",
+          "https://www.hikorea.go.kr/Main.pt",
+          "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=181&PARENT_ID=140",
+          "https://www.hikorea.go.kr/cvlappl/CvlapplInfoPageR.pt"
+        ],
+        "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
+        "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
+        "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
+        "patched_from_this_source": false
+      }
+    ],
+    "websearch_note": "WebSearch (allowed_domains hikorea.go.kr/visa.go.kr) returned official .go.kr result links (e.g. CAT_SEQ=183 체류기간연장, CAT_SEQ=180 외국인등록) but only titles/snippets, not full authoritative page bodies. Per task policy, search snippets are not authoritative source evidence and were not used to patch data."
+  },
+
+  "channel_2_chatgpt_retrieved_hikorea_visaportal": {
+    "description": "Official HiKorea procedure pages and Korea Visa Portal entry-purpose structure, retrieved out-of-band by ChatGPT web access (NOT fetched in Claude Code cloud, which is egress-blocked). Usable for source registry and procedure-level source references. NOT sufficient alone for per-status required-document rewrites. No data patched from these in this pass.",
+    "retrieval_method": "chatgpt_web_access",
+    "blocked_in_claude_code_cloud": true,
+    "sources": [
+      {
+        "ref": "B1",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/Main.pt",
+        "title": "HiKorea main",
+        "supports_level": "source_registry",
+        "readiness_label": "READY_FOR_SOURCE_REGISTRY",
+        "evidence": "Official Korean e-government banner present. Menus include 정보광장 > 비자내비게이터(맞춤형 체류가이드), 체류자격별 안내메뉴얼, 출입국/체류안내, 출입국관련 법령지침정보.",
+        "use": ["official HiKorea source registry", "official source hierarchy documentation"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B2",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoMain.pt",
+        "title": "출입국/체류안내 main (immigration/stay guide)",
+        "supports_level": "procedure_index",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Under 외국인의 체류 lists: 체류일반, 외국인등록, 체류기간 연장, 체류자격변경, 체류자격외활동, 근무처변경/추가, 체류자격부여, 재입국허가(복수), 각종신고의무.",
+        "use": ["procedure source map", "procedure tabs/source-reference documentation"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B3",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=170&PARENT_ID=19",
+        "title": "체류일반 (stay general)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Stay classified into short-term/long-term/permanent residence. Long-term and permanent residence require foreigner registration or domestic residence report within 90 days of entry. Stay within scope of status and permitted period. Employment requires an employment-permitting status. Employment-capable statuses listed: C-4, E-1, E-2, E-3, E-4, E-5, E-6, E-7, E-9, E-10, F-2, F-4, F-5, F-6, H-1.",
+        "use": ["common stay-scope guidance", "common employment-status caveat"],
+        "do_not_use_alone_for": ["per-status required-document patching"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B4",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=176&PARENT_ID=139",
+        "title": "외국인등록 (foreigner registration)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Applies to foreigners intending to stay >90 days from entry; also those who lost Korean nationality or were born in Korea and receive >90-day status. Exemptions: A-1/A-2/A-3 and families, certain specially exempted foreigners, certain Canadian nationals <6 months in D-1/D-6/F-1/F-3/G-1, registered foreigners under 17. Timing: within 90 days from entry; immediately when status granted/changed. Procedure diagram: application, passport, one color photo, status-specific documents, fee.",
+        "use": ["common foreigner registration timing/source reference", "registration procedure source map"],
+        "do_not_use_alone_for": ["per-status required-document list patching"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B5",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=181&PARENT_ID=140",
+        "title": "체류기간연장 (extension of stay)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Extension required to stay beyond permitted period. Application window: from 4 months before expiry until expiry date. Applying after expiry can incur penalty under Immigration Act Article 25. Applied by person or representative at competent office; some statuses such as F-6 may not allow representation. Applicant must be in Korea on application date. Status-specific documents to be checked via status-specific document table/manual.",
+        "use": ["common extension timing/source reference", "extension procedure source map"],
+        "do_not_use_alone_for": ["status-specific extension document lists"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B6",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=184&PARENT_ID=141",
+        "title": "체류자격변경 (change of status)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Change of stay status: stop current-status activity, engage in another status's activity. Basic principle: depart, obtain relevant visa, re-enter. Domestic change allowed only restrictively after strict review. Apply before engaging in new-status activity. A-1/A-2/A-3 holders changing due to status change must apply within 30 days.",
+        "use": ["common change-of-status source reference", "procedure source map"],
+        "do_not_use_alone_for": ["status-specific change document lists"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B7",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=187&PARENT_ID=142",
+        "title": "체류자격외활동 (activity outside status)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Engaging in another activity while keeping current status requires advance permission. If the other activity is effectively the main/full-time activity, outside-status permission is not allowed (departure + new visa or change of status). Short-term holders (<=90 days) cannot. Permission may be restricted if other workplace has longer hours/higher pay or unstable stay conditions. D-2 and D-4-1 may have fee exemptions in procedure diagram.",
+        "use": ["common outside-status activity source reference", "procedure source map"],
+        "do_not_use_alone_for": ["status-specific document lists"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B8",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=189&PARENT_ID=143",
+        "title": "근무처변경/추가 (workplace change/addition)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Applies to employment-permitting statuses adding/changing workplace. Prior-permission targets: C-4, E-9, E-10, H-1, E-6-2, and certain E-7 occupations. Report-after targets: E-1, E-2, E-3, E-4, E-5, most E-6 except E-6-2, and E-7 except prior-permission categories. Handle permission/report before change where applicable. Some institution-name changes are foreigner-registration-information change reports instead.",
+        "use": ["workplace change/addition source reference", "employment procedure source map"],
+        "caution": "E-7 occupation-specific prior-permission handling is high-risk; do not generalize without exact occupation/sub-code handling.",
+        "do_not_use_alone_for": ["status-specific or occupation-specific document lists"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B9",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=191&PARENT_ID=144",
+        "title": "체류자격부여 (grant of status)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "For foreigners who lost Korean nationality, were born in Korea, or otherwise stay without status. Domestic birth: apply within 90 days. Loss of nationality/other: within 60 days. If leaving within 60 days (or 90 for birth), grant may not be required. Examples: registered foreigner's Korean-born child → F-3; F-5 holder's minor child → F-5; certain F-2 holder's Korean-born child → F-1; Korean-born child of D-3/E-9/E-10/H-2 holder → F-1.",
+        "use": ["status-grant source reference", "procedure source map"],
+        "do_not_use_alone_for": ["status-specific document lists"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B10",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=7203&PARENT_ID=145",
+        "title": "재입국허가 (re-entry permit)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Registered foreigners in A-1 to A-3, D-1 to F-3, and F-6 to H-2 may be exempt from re-entry permit if re-entering within one year from departure. F-5 holders exempt within two years. F-4 may re-enter within stay period. Multiple re-entry permit documents: passport, foreigner registration card, integrated application form. Fee 50,000 KRW, some exemptions.",
+        "use": ["common re-entry permit/exemption source reference", "travel/re-entry AI answer grounding source map"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B11",
+        "site": "HiKorea",
+        "url": "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=196&PARENT_ID=146",
+        "title": "각종신고의무 (various reporting duties)",
+        "supports_level": "procedure_level",
+        "readiness_label": "READY_FOR_PROCEDURE_SOURCE_REFERENCE",
+        "evidence": "Registered foreigners must report foreigner-registration-information changes within 15 days. Reasons: name/gender/DOB/nationality; passport number/issue date/validity; organization changes for D-1/D-2/D-4/D-5/D-6/D-7/D-8/D-9; H-2 employment-related changes; occupation/annual-income changes for D-7~D-9, E-1~E-10, F-2, F-4, F-6, H-2. Documents: passport, foreigner registration card, report form, evidence of change, student-status report form, occupation/annual-income report form.",
+        "use": ["reporting-duty source reference", "passport/registration info/employment/income reporting guidance", "source map for reminder/notification features"],
+        "patched_from_this_source": false
+      },
+      {
+        "ref": "B12",
+        "site": "Korea Visa Portal",
+        "url": "https://www.visa.go.kr/",
+        "title": "Korea Visa Portal main + entry-purpose visa guide",
+        "supports_level": "source_registry",
+        "readiness_label": "READY_FOR_SOURCE_REGISTRY",
+        "evidence": "Official Korea Visa Portal. Quick services: e-visa application, e-form visa application, visa issuance certificate application, visit employment pre-application, application status, visit employment lottery confirmation. Entry-purpose visa guide enumerates a detailed sub-code catalog (B-1/B-2-1/B-2-2; C-3-1..C-3-9; C-1/D-5/D-6; F-1/F-2/F-3 sub-codes; G-1-10; D-8 series; F-5-5; F-6-1/F-6-2; D-2-1..D-2-6; D-4-1/D-4-3/D-4-7; D-9 series; D-1; D-3 series; C-4; D-10-1/D-10-2; E-1/E-2/E-3/E-4/E-5; E-6-1..E-6-3; E-7-1/E-7-91; F-5-11; F-4 series; E-9 series; E-10 series; F-1 series; D-7 series; H-2-1/H-2-2/H-2-5/H-2-7; A-1/A-2).",
+        "use": ["visa issuance / entry-purpose source map", "visa category discovery", "source registry"],
+        "do_not_use_for": ["authority for in-country extension/registration/change documents unless a specific Visa Portal page explicitly covers those procedure details"],
+        "patched_from_this_source": false
+      }
+    ]
+  },
+
+  "channel_3_user_provided_kis_moj_map": {
+    "description": "User-supplied KIS/MOJ source map (corrections.go.kr/immigration_eng). Full inventory stored separately.",
+    "file": "docs/data/official_source_map_2026_05.json",
+    "source_count": 5,
+    "attachment_count": 3,
+    "readiness_counts": {
+      "READY_FOR_SOURCE_REGISTRY": 3,
+      "READY_FOR_PROCEDURE_SOURCE_REFERENCE": 1,
+      "DO_NOT_USE_FOR_PATCH": 1,
+      "READY_FOR_FIELD_PATCH": 0
     },
-    {
-      "site": "HiKorea",
-      "base_domain": "hikorea.go.kr",
-      "intended_authority_scope": "stay/residence / extension / change / registration / report / civil petition guidance",
-      "urls_attempted": [
-        "https://www.hikorea.go.kr/",
-        "https://www.hikorea.go.kr/Main.pt",
-        "https://www.hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=181&PARENT_ID=140",
-        "https://www.hikorea.go.kr/cvlappl/CvlapplInfoPageR.pt"
-      ],
-      "methods": ["curl (browser UA, ko-KR Accept-Language)", "WebFetch"],
-      "result": "HTTP 403 host_not_allowed (environment egress allowlist)",
-      "status": "SOURCE_ACCESS_BLOCKED_OR_DYNAMIC",
-      "patched_from_this_source": false
-    }
-  ],
-  "websearch_note": "WebSearch (allowed_domains hikorea.go.kr/visa.go.kr) returned official .go.kr result links (e.g. CAT_SEQ=183 체류기간연장, CAT_SEQ=180 외국인등록) but only titles/snippets, not full authoritative page bodies. Per task policy, search snippets are not authoritative source evidence and were not used to patch data.",
-  "corrections_applied_from_live_web": 0,
-  "reason_no_corrections": "visa.go.kr and hikorea.go.kr are not on this environment's egress allowlist (proxy returns 403 host_not_allowed), so authoritative page content could not be retrieved. Task constraints forbid patching from memory, using search snippets as evidence, inventing source evidence, and bypassing access controls.",
+    "notes": [
+      "Visa Navigator (ENG/KOR) is status-level only and is NOT a required-document authority; it defers to HiKorea for required documents.",
+      "E-7-4 Skilled Worker Points System page supports E-7-4 eligibility/quota reference only, not required-document patching and not broad parent-E-7 changes.",
+      "MOJ-KIS-ForeignRegistrationCardVerification-2025 is DO_NOT_USE_FOR_PATCH."
+    ],
+    "patched_from_these_sources": false
+  },
+
+  "corrections_applied_from_web_or_sourcemap_this_pass": 0,
+  "reason_no_corrections": "These inputs are source-registry / status-level / procedure-level evidence. None is READY_FOR_FIELD_PATCH. Visa Navigator is not a required-document authority, the HiKorea pages collected are common procedure overviews that defer status-specific document lists to the status-specific manual, and the Claude Code cloud cannot fetch the live sites to verify anything further. Patching status-specific required documents from these alone is forbidden by task constraints.",
   "carried_forward_local_correction": {
     "code": "D-4",
     "json_path": "procedures.extension.manualRefs[0].pageRange",
     "change": "p. 90 -> pp. 90-91",
     "source": "committed verified-local extraction backend/data/manual_grounding/stay_manual_grounding_2026_05.json (grounding d4_extension_2026_05, verified_locally / high)",
-    "note": "Applied in the prior pass on this branch; not re-applied here."
+    "note": "Applied in a prior pass on this branch; remains the only production data correction. Not re-applied or modified here."
   }
 }

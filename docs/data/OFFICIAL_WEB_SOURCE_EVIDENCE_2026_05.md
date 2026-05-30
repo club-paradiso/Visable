@@ -59,3 +59,45 @@ record `SOURCE_ACCESS_BLOCKED_OR_DYNAMIC`, do not patch from memory.
   attachments), this file should be re-run and populated with real per-source
   entries (URL, title, accessed date, source type, procedure/status, exact
   section heading, excerpt, supported field).
+
+---
+
+## Update 2026-05-31 — out-of-band official source maps added
+
+Two official-source maps were added to PR #222 as **registry/procedure-reference
+evidence**. Neither was fetched in Claude Code cloud, and **no data was patched
+from them** in this pass (machine-readable detail:
+`docs/data/official_web_source_evidence_2026_05.json`; full inventory and
+readiness analysis: `docs/data/OFFICIAL_SOURCE_RETRIEVAL_REPORT_2026_05.md`).
+
+Three clearly distinguished retrieval channels:
+
+1. **HiKorea / Visa Portal — blocked in Claude Code cloud** (above): direct
+   fetches return `403 host_not_allowed`. Status `SOURCE_ACCESS_BLOCKED_OR_DYNAMIC`.
+2. **HiKorea / Visa Portal — retrieved by ChatGPT web access** (out-of-band):
+   12 official pages — HiKorea main, the 출입국/체류안내 index, and the common
+   procedure pages (체류일반, 외국인등록, 체류기간연장, 체류자격변경, 체류자격외활동,
+   근무처변경/추가, 체류자격부여, 재입국허가, 각종신고의무) plus the Korea Visa Portal
+   entry-purpose guide. Readiness: 3 `READY_FOR_SOURCE_REGISTRY`, 9
+   `READY_FOR_PROCEDURE_SOURCE_REFERENCE`, 0 `READY_FOR_FIELD_PATCH`. These are
+   **common procedure overviews**; each defers status-specific document lists to
+   the status-specific manual/table, so they are **not sufficient alone** for
+   per-status required-document rewrites.
+3. **KIS / MOJ source map — supplied by the user**
+   (`docs/data/official_source_map_2026_05.json`): 5 sources + 3 attachments.
+   Readiness: 3 `READY_FOR_SOURCE_REGISTRY`, 1
+   `READY_FOR_PROCEDURE_SOURCE_REFERENCE`, 1 `DO_NOT_USE_FOR_PATCH`, 0
+   `READY_FOR_FIELD_PATCH`. The Visa Navigator manuals are status-level only and
+   are **not** a required-document authority (they defer to HiKorea); the E-7-4
+   page supports E-7-4 eligibility/quota reference only.
+
+### Readiness summary across channels 2 + 3
+
+| Channel | SOURCE_REGISTRY | PROCEDURE_REFERENCE | DO_NOT_USE | FIELD_PATCH |
+| --- | --- | --- | --- | --- |
+| ChatGPT-retrieved HiKorea/Visa Portal | 3 | 9 | 0 | 0 |
+| User KIS/MOJ map | 3 | 1 | 1 | 0 |
+
+**No source in either channel is `READY_FOR_FIELD_PATCH`.** Consequently no
+status-specific required-document data was rewritten. The only production data
+correction on this branch remains the D-4 extension `pageRange` fix.
