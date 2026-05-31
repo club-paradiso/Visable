@@ -186,23 +186,26 @@
     },
     "D-1": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 3,
-      "documentItemCount": 25,
-      "readyCount": 0,
+      "entryCount": 4,
+      "documentItemCount": 28,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "sub_code_specific": 1,
-        "scenario_specific": 2
+        "scenario_specific": 2,
+        "parent_code_level": 1
       },
       "procedureTypes": {
         "visa_issuance": 2,
-        "other": 1
+        "other": 1,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 2,
-        "LOW": 1
+        "LOW": 1,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "D-1"
@@ -312,23 +315,27 @@
     },
     "D-5": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 3,
-      "documentItemCount": 17,
-      "readyCount": 0,
+      "entryCount": 5,
+      "documentItemCount": 23,
+      "readyCount": 2,
       "hasSubCodeEvidence": false,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "scenario_specific": 2,
-        "unclear": 1
+        "unclear": 1,
+        "parent_code_level": 2
       },
       "procedureTypes": {
         "visa_issuance": 1,
-        "other": 2
+        "other": 2,
+        "registration": 1,
+        "extension": 1
       },
       "confidence": {
         "MEDIUM": 2,
-        "LOW": 1
+        "LOW": 1,
+        "HIGH": 2
       },
       "mappedProductionCodes": [
         "D-5"
@@ -336,21 +343,25 @@
     },
     "D-6": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 4,
-      "documentItemCount": 32,
-      "readyCount": 0,
+      "entryCount": 6,
+      "documentItemCount": 38,
+      "readyCount": 2,
       "hasSubCodeEvidence": false,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
-        "scenario_specific": 4
+        "scenario_specific": 4,
+        "parent_code_level": 2
       },
       "procedureTypes": {
         "visa_issuance": 2,
-        "other": 2
+        "other": 2,
+        "registration": 1,
+        "extension": 1
       },
       "confidence": {
-        "MEDIUM": 4
+        "MEDIUM": 4,
+        "HIGH": 2
       },
       "mappedProductionCodes": [
         "D-6"
@@ -358,22 +369,25 @@
     },
     "D-7": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 12,
-      "documentItemCount": 110,
-      "readyCount": 0,
+      "entryCount": 13,
+      "documentItemCount": 113,
+      "readyCount": 1,
       "hasSubCodeEvidence": false,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "scenario_specific": 7,
-        "unclear": 5
+        "unclear": 5,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 12
+        "other": 12,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 7,
-        "LOW": 5
+        "LOW": 5,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "D-7"
@@ -381,23 +395,26 @@
     },
     "D-8": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 17,
-      "documentItemCount": 154,
-      "readyCount": 0,
+      "entryCount": 18,
+      "documentItemCount": 157,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "scenario_specific": 8,
         "unclear": 3,
-        "sub_code_specific": 6
+        "sub_code_specific": 6,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 17
+        "other": 17,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 12,
-        "LOW": 5
+        "LOW": 5,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "D-8"
@@ -454,22 +471,25 @@
     },
     "E-10": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 3,
-      "documentItemCount": 40,
-      "readyCount": 0,
+      "entryCount": 4,
+      "documentItemCount": 46,
+      "readyCount": 1,
       "hasSubCodeEvidence": false,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "unclear": 1,
-        "scenario_specific": 2
+        "scenario_specific": 2,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 3
+        "other": 3,
+        "registration": 1
       },
       "confidence": {
         "LOW": 2,
-        "MEDIUM": 1
+        "MEDIUM": 1,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-10"
@@ -477,23 +497,26 @@
     },
     "E-2": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 9,
-      "documentItemCount": 66,
-      "readyCount": 0,
+      "entryCount": 10,
+      "documentItemCount": 69,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "sub_code_specific": 2,
         "scenario_specific": 5,
-        "unclear": 2
+        "unclear": 2,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 9
+        "other": 9,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 7,
-        "LOW": 2
+        "LOW": 2,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-2"
@@ -501,23 +524,26 @@
     },
     "E-3": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 14,
-      "documentItemCount": 129,
-      "readyCount": 0,
+      "entryCount": 15,
+      "documentItemCount": 132,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "unclear": 6,
         "scenario_specific": 7,
-        "sub_code_specific": 1
+        "sub_code_specific": 1,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 14
+        "other": 14,
+        "registration": 1
       },
       "confidence": {
         "LOW": 7,
-        "MEDIUM": 7
+        "MEDIUM": 7,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-3"
@@ -525,23 +551,26 @@
     },
     "E-4": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 7,
-      "documentItemCount": 54,
-      "readyCount": 0,
+      "entryCount": 8,
+      "documentItemCount": 57,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "unclear": 3,
         "scenario_specific": 3,
-        "sub_code_specific": 1
+        "sub_code_specific": 1,
+        "parent_code_level": 1
       },
       "procedureTypes": {
-        "other": 7
+        "other": 7,
+        "registration": 1
       },
       "confidence": {
         "LOW": 4,
-        "MEDIUM": 3
+        "MEDIUM": 3,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-4"
@@ -549,24 +578,27 @@
     },
     "E-5": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 5,
-      "documentItemCount": 38,
-      "readyCount": 0,
+      "entryCount": 6,
+      "documentItemCount": 41,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "scenario_specific": 3,
         "unclear": 1,
-        "sub_code_specific": 1
+        "sub_code_specific": 1,
+        "parent_code_level": 1
       },
       "procedureTypes": {
         "visa_issuance": 1,
-        "other": 4
+        "other": 4,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 4,
-        "LOW": 1
+        "LOW": 1,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-5"
@@ -574,23 +606,26 @@
     },
     "E-6": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 7,
-      "documentItemCount": 63,
-      "readyCount": 0,
+      "entryCount": 8,
+      "documentItemCount": 67,
+      "readyCount": 1,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
       "boundaryTypes": {
         "scenario_specific": 5,
-        "sub_code_specific": 2
+        "sub_code_specific": 2,
+        "parent_code_level": 1
       },
       "procedureTypes": {
         "visa_issuance": 1,
-        "other": 6
+        "other": 6,
+        "registration": 1
       },
       "confidence": {
         "MEDIUM": 6,
-        "LOW": 1
+        "LOW": 1,
+        "HIGH": 1
       },
       "mappedProductionCodes": [
         "E-6"
@@ -598,9 +633,9 @@
     },
     "E-7": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 38,
-      "documentItemCount": 213,
-      "readyCount": 1,
+      "entryCount": 39,
+      "documentItemCount": 217,
+      "readyCount": 2,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
@@ -609,16 +644,17 @@
         "universal": 1,
         "unclear": 19,
         "sub_code_specific": 1,
-        "parent_code_level": 1
+        "parent_code_level": 2
       },
       "procedureTypes": {
         "other": 37,
-        "extension": 1
+        "extension": 1,
+        "registration": 1
       },
       "confidence": {
         "LOW": 21,
         "MEDIUM": 16,
-        "HIGH": 1
+        "HIGH": 2
       },
       "mappedProductionCodes": [
         "E-7"
