@@ -7,7 +7,7 @@
     "stay": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
   },
   "provenance": "Derived from docs/data/claude_opus_manual_extraction_2026_05/ (part3/part4) + backend/data/manual_grounding/stay_manual_grounding_2026_05.json",
-  "entryCount": 337,
+  "entryCount": 338,
   "entries": [
     {
       "statusCode": "A-1",
@@ -32632,6 +32632,70 @@
       "doNotFlatten": false,
       "subCodesCovered": null,
       "evidenceSource": "verified_grounding"
+    },
+    {
+      "statusCode": "D-2",
+      "statusNameKo": "유학",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 44,
+        "pageEnd": 44,
+        "sectionTitle": "유학(D-2) — 외국인등록 / 1. 제출서류",
+        "sourceExcerpt": "외국인등록\n1. 제출서류\n ❍ 신청서, 여권 및 사본 1부, 표준규격사진 1매\n ❍ 수수료\n  ① 외국인등록 시, 체류기간 연장허가를 동시에 신청하는 경우에 한하여 연장 수수료 면제\n  ② 정부초청장학생 등 수수료 면제 대상자도 「출입국관리법 시행규칙」 제74조에 따라 외국인등록증 발급 및 재발급 수수료는 납부하여야 함\n ❍ 재학(연구생)증명서\n✔ 대체서류\n▪(인증대학 이상) 등록금납입증명서\n▪(일반대학 이하)\n  ① (개별접수) 협조요청서 및 등록금납입증명서\n  ② (단체접수) 등록금납입증명서\n ❍ 체류지 입증서류\n  ※ 재정능력 입증서류 제출 불요"
+      },
+      "documents": [
+        {
+          "textKo": "신청서, 여권 및 사본 1부, 표준규격사진 1매",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "외국인등록과 체류기간 연장허가를 동시에 신청하는 경우에 한하여 연장 수수료 면제. 수수료 면제 대상자도 외국인등록증 발급·재발급 수수료는 납부.",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "재학(연구생)증명서",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "대체서류 인정 — (인증대학 이상) 등록금납입증명서 / (일반대학 이하) ① 개별접수: 협조요청서 및 등록금납입증명서, ② 단체접수: 등록금납입증명서",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "재정능력 입증서류 제출 불요",
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The '외국인등록 / 1. 제출서류' list for 유학(D-2) appears on the PDF page bearing the printed footer '- 44 -' (absolute PDF page 44, 1:1). Parent-level list for 유학(D-2) registration (외국인등록); the 대체서류 alternatives for the 재학(연구생)증명서 line and the 수수료 exemption are captured as document-level conditionKo, not flattened into universal requirements. Single procedure type (registration). No sub-code/scenario split on this page."
     }
   ]
 }
