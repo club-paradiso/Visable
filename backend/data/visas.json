@@ -2216,6 +2216,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "B-1",
+      "available": true,
+      "entryCount": 1,
+      "requiresHumanReview": true
     }
   },
   {
@@ -2466,6 +2473,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "B-2",
+      "available": true,
+      "entryCount": 1,
+      "requiresHumanReview": true
     }
   },
   {
@@ -3203,6 +3217,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "C-3",
+      "available": true,
+      "entryCount": 12,
+      "requiresHumanReview": true
     }
   },
   {
@@ -3396,6 +3417,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "C-4",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true
     }
   },
   {
@@ -3651,6 +3679,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-1",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -4443,6 +4478,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-2",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true
     }
   },
   {
@@ -4739,6 +4781,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-3",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -5163,6 +5212,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true
     }
   },
   {
@@ -5429,6 +5485,14 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "D-4-2K evidence is represented under structured statusCode D-4"
     }
   },
   {
@@ -5787,6 +5851,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-7",
+      "available": true,
+      "entryCount": 12,
+      "requiresHumanReview": true
     }
   },
   {
@@ -6150,6 +6221,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-8",
+      "available": true,
+      "entryCount": 17,
+      "requiresHumanReview": true
     }
   },
   {
@@ -6485,6 +6563,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-9",
+      "available": true,
+      "entryCount": 10,
+      "requiresHumanReview": true
     }
   },
   {
@@ -6847,6 +6932,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-10",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true
     }
   },
   {
@@ -7090,6 +7182,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-1",
+      "available": true,
+      "entryCount": 11,
+      "requiresHumanReview": true
     }
   },
   {
@@ -7413,6 +7512,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-2",
+      "available": true,
+      "entryCount": 9,
+      "requiresHumanReview": true
     }
   },
   {
@@ -7656,6 +7762,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-3",
+      "available": true,
+      "entryCount": 14,
+      "requiresHumanReview": true
     }
   },
   {
@@ -7886,6 +7999,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-4",
+      "available": true,
+      "entryCount": 7,
+      "requiresHumanReview": true
     }
   },
   {
@@ -8112,6 +8232,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-5",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true
     }
   },
   {
@@ -8426,6 +8553,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-6",
+      "available": true,
+      "entryCount": 7,
+      "requiresHumanReview": true
     }
   },
   {
@@ -8903,6 +9037,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-7",
+      "available": true,
+      "entryCount": 38,
+      "requiresHumanReview": true
     }
   },
   {
@@ -9137,6 +9278,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-8",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -9588,6 +9736,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-9",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true
     }
   },
   {
@@ -9892,6 +10047,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "E-10",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -10317,6 +10479,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "F-1",
+      "available": true,
+      "entryCount": 20,
+      "requiresHumanReview": true
     }
   },
   {
@@ -10696,6 +10865,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "F-2",
+      "available": true,
+      "entryCount": 18,
+      "requiresHumanReview": true
     }
   },
   {
@@ -10991,6 +11167,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "F-3",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true
     }
   },
   {
@@ -11479,6 +11662,14 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "FORDIASP",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "mappingNote": "F-4 evidence is represented under structured statusCode FORDIASP"
     }
   },
   {
@@ -11863,6 +12054,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "F-5",
+      "available": true,
+      "entryCount": 8,
+      "requiresHumanReview": true
     }
   },
   {
@@ -12527,6 +12725,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "F-6",
+      "available": true,
+      "entryCount": 9,
+      "requiresHumanReview": true
     }
   },
   {
@@ -12893,6 +13098,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "G-1",
+      "available": true,
+      "entryCount": 10,
+      "requiresHumanReview": true
     }
   },
   {
@@ -13269,6 +13481,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "H-1",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -13492,6 +13711,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "H-2",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true
     }
   },
   {
@@ -13668,6 +13894,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "A-1",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true
     }
   },
   {
@@ -13843,6 +14076,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "A-2",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true
     }
   },
   {
@@ -14020,6 +14260,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "A-3",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true
     }
   },
   {
@@ -14202,6 +14449,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "C-1",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -14424,6 +14678,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-5",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true
     }
   },
   {
@@ -14646,6 +14907,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-6",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true
     }
   },
   {
@@ -14906,6 +15174,14 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "D-4-2K evidence is represented under structured statusCode D-4"
     }
   },
   {
@@ -15313,6 +15589,13 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "K-STAR",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true
     }
   },
   {
@@ -15490,6 +15773,14 @@
           }
         }
       }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "statusCode": "REGIONAL",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "REGION-S evidence is represented under structured statusCode REGIONAL"
     }
   }
 ]
