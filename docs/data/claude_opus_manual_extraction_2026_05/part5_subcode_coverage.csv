@@ -1,0 +1,443 @@
+﻿parent_status_code,parent_status_name,sub_code_or_scenario,sub_code_type,manual_source_file,page_reference,requirements_differ_from_parent,separate_document_list_exists,confidence,recommended_label
+A-1,외교,F-1-3,explicit_code,visa_manual_2026_05.pdf,7-9,unclear,unclear,MEDIUM,F-1-3
+A-2,공무,F-1-3,explicit_code,visa_manual_2026_05.pdf,10-12,unclear,unclear,MEDIUM,F-1-3
+A-3,협정,A-3-99,explicit_code,visa_manual_2026_05.pdf,13-13,unclear,unclear,MEDIUM,A-3-99
+B-1,사증면제,C-3-4,explicit_code,visa_manual_2026_05.pdf,14-21,unclear,unclear,MEDIUM,C-3-4
+C-3,단기방문,C-3-1,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-1
+C-3,단기방문,C-3-10,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-10
+C-3,단기방문,C-3-11,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-11
+C-3,단기방문,C-3-2,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-2
+C-3,단기방문,C-3-3,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-3
+C-3,단기방문,C-3-4,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-4
+C-3,단기방문,C-3-5,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-5
+C-3,단기방문,C-3-6,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-6
+C-3,단기방문,C-3-7,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-7
+C-3,단기방문,C-3-8,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-8
+C-3,단기방문,C-3-9,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-9
+C-3,단기방문,C-3-91,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,C-3-91
+C-3,단기방문,D-3-1,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,D-3-1
+C-3,단기방문,G-1-10,explicit_code,visa_manual_2026_05.pdf,27-50,unclear,unclear,MEDIUM,G-1-10
+C-4,단기취업,C-4-1,explicit_code,visa_manual_2026_05.pdf,51-59,unclear,unclear,MEDIUM,C-4-1
+C-4,단기취업,C-4-2,explicit_code,visa_manual_2026_05.pdf,51-59,unclear,unclear,MEDIUM,C-4-2
+C-4,단기취업,C-4-3,explicit_code,visa_manual_2026_05.pdf,51-59,unclear,unclear,MEDIUM,C-4-3
+C-4,단기취업,C-4-4,explicit_code,visa_manual_2026_05.pdf,51-59,unclear,unclear,MEDIUM,C-4-4
+C-4,단기취업,C-4-5,explicit_code,visa_manual_2026_05.pdf,51-59,unclear,unclear,MEDIUM,C-4-5
+D-1,문화예술,C-3-1,explicit_code,visa_manual_2026_05.pdf,60-61,unclear,unclear,MEDIUM,C-3-1
+D-2,유학,D-2-1,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-1
+D-2,유학,D-2-2,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-2
+D-2,유학,D-2-3,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-3
+D-2,유학,D-2-4,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-4
+D-2,유학,D-2-5,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-5
+D-2,유학,D-2-6,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-6
+D-2,유학,D-2-7,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-7
+D-2,유학,D-2-8,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-2-8
+D-2,유학,D-4-1,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-4-1
+D-2,유학,D-4-7,explicit_code,visa_manual_2026_05.pdf,62-69,unclear,unclear,MEDIUM,D-4-7
+D-3,기술연수,D-3-1,explicit_code,visa_manual_2026_05.pdf,70-72,unclear,unclear,MEDIUM,D-3-1
+D-4,일반연수,C-3-1,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,C-3-1
+D-4,일반연수,D-4-1,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-1
+D-4,일반연수,D-4-2K,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-2K
+D-4,일반연수,D-4-3,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-3
+D-4,일반연수,D-4-5,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-5
+D-4,일반연수,D-4-6,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-6
+D-4,일반연수,D-4-7,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,D-4-7
+D-4,일반연수,E-7-1,explicit_code,visa_manual_2026_05.pdf,73-87,unclear,unclear,MEDIUM,E-7-1
+D-8,기업투자,C-3-4,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,C-3-4
+D-8,기업투자,D-8-1,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,D-8-1
+D-8,기업투자,D-8-2,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,D-8-2
+D-8,기업투자,D-8-3,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,D-8-3
+D-8,기업투자,D-8-4,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,D-8-4
+D-8,기업투자,D-8-4S,explicit_code,visa_manual_2026_05.pdf,102-115,unclear,unclear,MEDIUM,D-8-4S
+D-9,무역경영,C-3-4,explicit_code,visa_manual_2026_05.pdf,116-121,unclear,unclear,MEDIUM,C-3-4
+D-10,구직,D-10-1,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-10-1
+D-10,구직,D-10-2,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-10-2
+D-10,구직,D-10-3,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-10-3
+D-10,구직,D-10-T,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-10-T
+D-10,구직,D-2-5,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-2-5
+D-10,구직,D-2-6,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-2-6
+D-10,구직,D-4-1,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-4-1
+D-10,구직,D-4-2,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-4-2
+D-10,구직,D-4-6,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,D-4-6
+D-10,구직,E-6-2,explicit_code,visa_manual_2026_05.pdf,122-135,unclear,unclear,MEDIUM,E-6-2
+E-1,교수,C-3-1,explicit_code,visa_manual_2026_05.pdf,136-141,unclear,unclear,MEDIUM,C-3-1
+E-1,교수,C-3-2,explicit_code,visa_manual_2026_05.pdf,136-141,unclear,unclear,MEDIUM,C-3-2
+E-1,교수,C-3-3,explicit_code,visa_manual_2026_05.pdf,136-141,unclear,unclear,MEDIUM,C-3-3
+E-1,교수,C-3-4,explicit_code,visa_manual_2026_05.pdf,136-141,unclear,unclear,MEDIUM,C-3-4
+E-1,교수,G-1-10,explicit_code,visa_manual_2026_05.pdf,136-141,unclear,unclear,MEDIUM,G-1-10
+E-2,회화지도,E-2-1,explicit_code,visa_manual_2026_05.pdf,142-149,unclear,unclear,MEDIUM,E-2-1
+E-2,회화지도,E-2-2,explicit_code,visa_manual_2026_05.pdf,142-149,unclear,unclear,MEDIUM,E-2-2
+E-2,회화지도,E-6-2,explicit_code,visa_manual_2026_05.pdf,142-149,unclear,unclear,MEDIUM,E-6-2
+E-3,연구,C-3-2,explicit_code,visa_manual_2026_05.pdf,150-156,unclear,unclear,MEDIUM,C-3-2
+E-3,연구,C-3-3,explicit_code,visa_manual_2026_05.pdf,150-156,unclear,unclear,MEDIUM,C-3-3
+E-3,연구,C-3-4,explicit_code,visa_manual_2026_05.pdf,150-156,unclear,unclear,MEDIUM,C-3-4
+E-3,연구,G-1-10,explicit_code,visa_manual_2026_05.pdf,150-156,unclear,unclear,MEDIUM,G-1-10
+E-4,기술지도,C-3-1,explicit_code,visa_manual_2026_05.pdf,157-161,unclear,unclear,MEDIUM,C-3-1
+E-4,기술지도,C-3-2,explicit_code,visa_manual_2026_05.pdf,157-161,unclear,unclear,MEDIUM,C-3-2
+E-4,기술지도,C-3-3,explicit_code,visa_manual_2026_05.pdf,157-161,unclear,unclear,MEDIUM,C-3-3
+E-4,기술지도,C-3-4,explicit_code,visa_manual_2026_05.pdf,157-161,unclear,unclear,MEDIUM,C-3-4
+E-4,기술지도,G-1-10,explicit_code,visa_manual_2026_05.pdf,157-161,unclear,unclear,MEDIUM,G-1-10
+E-6,예술흥행,C-4-5,explicit_code,visa_manual_2026_05.pdf,163-167,unclear,unclear,MEDIUM,C-4-5
+E-6,예술흥행,E-6-1,explicit_code,visa_manual_2026_05.pdf,163-167,unclear,unclear,MEDIUM,E-6-1
+E-6,예술흥행,E-6-2,explicit_code,visa_manual_2026_05.pdf,163-167,unclear,unclear,MEDIUM,E-6-2
+E-6,예술흥행,E-6-3,explicit_code,visa_manual_2026_05.pdf,163-167,unclear,unclear,MEDIUM,E-6-3
+E-7,특정활동,C-4-5,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,C-4-5
+E-7,특정활동,D-10-3,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,D-10-3
+E-7,특정활동,D-2-7,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,D-2-7
+E-7,특정활동,D-4-1,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,D-4-1
+E-7,특정활동,D-4-6,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,D-4-6
+E-7,특정활동,E-7-1,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-1
+E-7,특정활동,E-7-2,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-2
+E-7,특정활동,E-7-3,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-3
+E-7,특정활동,E-7-4,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-4
+E-7,특정활동,E-7-91,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-91
+E-7,특정활동,E-7-S,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-S
+E-7,특정활동,E-7-S1,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-S1
+E-7,특정활동,E-7-S2,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-S2
+E-7,특정활동,E-7-T,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-T
+E-7,특정활동,E-7-Y,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,E-7-Y
+E-7,특정활동,F-2-7,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,F-2-7
+E-7,특정활동,F-5-16,explicit_code,visa_manual_2026_05.pdf,168-277,unclear,unclear,MEDIUM,F-5-16
+E-8,계절근로,C-4-1,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,C-4-1
+E-8,계절근로,E-8-1,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-1
+E-8,계절근로,E-8-2,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-2
+E-8,계절근로,E-8-3,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-3
+E-8,계절근로,E-8-4,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-4
+E-8,계절근로,E-8-5,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-5
+E-8,계절근로,E-8-6,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-6
+E-8,계절근로,E-8-7,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-7
+E-8,계절근로,E-8-8,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-8
+E-8,계절근로,E-8-99,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,E-8-99
+E-8,계절근로,G-1-19,explicit_code,visa_manual_2026_05.pdf,278-283,unclear,unclear,MEDIUM,G-1-19
+E-9,비전문취업,E-9-1,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-1
+E-9,비전문취업,E-9-10,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-10
+E-9,비전문취업,E-9-2,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-2
+E-9,비전문취업,E-9-3,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-3
+E-9,비전문취업,E-9-4,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-4
+E-9,비전문취업,E-9-5,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-5
+E-9,비전문취업,E-9-9,explicit_code,visa_manual_2026_05.pdf,284-293,unclear,unclear,MEDIUM,E-9-9
+E-10,선원취업,E-10-1,explicit_code,visa_manual_2026_05.pdf,294-296,unclear,unclear,MEDIUM,E-10-1
+E-10,선원취업,E-10-2,explicit_code,visa_manual_2026_05.pdf,294-296,unclear,unclear,MEDIUM,E-10-2
+E-10,선원취업,E-10-3,explicit_code,visa_manual_2026_05.pdf,294-296,unclear,unclear,MEDIUM,E-10-3
+E-10,선원취업,E-9-4,explicit_code,visa_manual_2026_05.pdf,294-296,unclear,unclear,MEDIUM,E-9-4
+F-1,방문동거,F-1-13,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-13
+F-1,방문동거,F-1-15,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-15
+F-1,방문동거,F-1-21,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-21
+F-1,방문동거,F-1-22,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-22
+F-1,방문동거,F-1-23,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-23
+F-1,방문동거,F-1-24,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-24
+F-1,방문동거,F-1-3,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-3
+F-1,방문동거,F-1-5,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-5
+F-1,방문동거,F-1-51,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-51
+F-1,방문동거,F-1-D,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-1-D
+F-1,방문동거,F-2-3,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-2-3
+F-1,방문동거,F-5-3,explicit_code,visa_manual_2026_05.pdf,297-307,unclear,unclear,MEDIUM,F-5-3
+F-2,거주,F-1-12,explicit_code,visa_manual_2026_05.pdf,308-312,unclear,unclear,MEDIUM,F-1-12
+F-2,거주,F-2-2,explicit_code,visa_manual_2026_05.pdf,308-312,unclear,unclear,MEDIUM,F-2-2
+F-2,거주,F-2-3,explicit_code,visa_manual_2026_05.pdf,308-312,unclear,unclear,MEDIUM,F-2-3
+F-2,거주,F-2-7,explicit_code,visa_manual_2026_05.pdf,308-312,unclear,unclear,MEDIUM,F-2-7
+F-2,거주,F-2-71,explicit_code,visa_manual_2026_05.pdf,308-312,unclear,unclear,MEDIUM,F-2-71
+F-3,동반,E-7-S1,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,E-7-S1
+F-3,동반,E-7-T,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,E-7-T
+F-3,동반,F-2-7,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,F-2-7
+F-3,동반,F-3-18,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,F-3-18
+F-3,동반,F-3-19,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,F-3-19
+F-3,동반,F-3-20,explicit_code,visa_manual_2026_05.pdf,313-317,unclear,unclear,MEDIUM,F-3-20
+F-6,결혼이민,F-6-1,explicit_code,visa_manual_2026_05.pdf,324-335,unclear,unclear,MEDIUM,F-6-1
+F-6,결혼이민,F-6-2,explicit_code,visa_manual_2026_05.pdf,324-335,unclear,unclear,MEDIUM,F-6-2
+F-6,결혼이민,F-6-3,explicit_code,visa_manual_2026_05.pdf,324-335,unclear,unclear,MEDIUM,F-6-3
+G-1,기타,C-3-3,explicit_code,visa_manual_2026_05.pdf,336-342,unclear,unclear,MEDIUM,C-3-3
+G-1,기타,G-1-10,explicit_code,visa_manual_2026_05.pdf,336-342,unclear,unclear,MEDIUM,G-1-10
+H-1,관광취업,D-3-1,explicit_code,visa_manual_2026_05.pdf,343-378,unclear,unclear,MEDIUM,D-3-1
+H-1,관광취업,D-3-11,explicit_code,visa_manual_2026_05.pdf,343-378,unclear,unclear,MEDIUM,D-3-11
+H-1,관광취업,D-3-12,explicit_code,visa_manual_2026_05.pdf,343-378,unclear,unclear,MEDIUM,D-3-12
+H-1,관광취업,D-3-13,explicit_code,visa_manual_2026_05.pdf,343-378,unclear,unclear,MEDIUM,D-3-13
+H-2,방문취업,C-3-8,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,C-3-8
+H-2,방문취업,F-1-72,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-1-72
+H-2,방문취업,F-4-41,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-4-41
+H-2,방문취업,F-4-42,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-4-42
+H-2,방문취업,F-4-R,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-4-R
+H-2,방문취업,F-5-11,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-11
+H-2,방문취업,F-5-12,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-12
+H-2,방문취업,F-5-14,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-14
+H-2,방문취업,F-5-15,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-15
+H-2,방문취업,F-5-5,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-5
+H-2,방문취업,F-5-6,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-6
+H-2,방문취업,F-5-7,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-7
+H-2,방문취업,F-5-9,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,F-5-9
+H-2,방문취업,H-2-7,explicit_code,visa_manual_2026_05.pdf,379-414,unclear,unclear,MEDIUM,H-2-7
+F-4,재외동포,F-5-14,explicit_code,visa_manual_2026_05.pdf,415-444,unclear,unclear,MEDIUM,F-5-14
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",D-10-T,explicit_code,visa_manual_2026_05.pdf,445-455,unclear,unclear,MEDIUM,D-10-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",E-7-1,explicit_code,visa_manual_2026_05.pdf,445-455,unclear,unclear,MEDIUM,E-7-1
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",E-7-T,explicit_code,visa_manual_2026_05.pdf,445-455,unclear,unclear,MEDIUM,E-7-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",F-2-T,explicit_code,visa_manual_2026_05.pdf,445-455,unclear,unclear,MEDIUM,F-2-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",F-5-T,explicit_code,visa_manual_2026_05.pdf,445-455,unclear,unclear,MEDIUM,F-5-T
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-2-7,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-2-7
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-2-71,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-2-71
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-2-7S,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-2-7S
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-5-18,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-5-18
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-5-S1,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-5-S1
+K-STAR,"K-STAR 비자트랙 제도 [F-2-7S,F-5-S1,F-5-S2,F-2-71]",F-5-S2,explicit_code,visa_manual_2026_05.pdf,456-484,unclear,unclear,MEDIUM,F-5-S2
+A-1,외교,E-6-2,explicit_code,stay_manual_2026_05.pdf,14-17,unclear,unclear,MEDIUM,E-6-2
+A-1,외교,E-7-4,explicit_code,stay_manual_2026_05.pdf,14-17,unclear,unclear,MEDIUM,E-7-4
+A-2,공무,E-6-2,explicit_code,stay_manual_2026_05.pdf,18-20,unclear,unclear,MEDIUM,E-6-2
+A-2,공무,E-7-4,explicit_code,stay_manual_2026_05.pdf,18-20,unclear,unclear,MEDIUM,E-7-4
+A-3,협정,A-3-99,explicit_code,stay_manual_2026_05.pdf,21-23,unclear,unclear,MEDIUM,A-3-99
+C-3,단기방문,C-3-1,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-1
+C-3,단기방문,C-3-10,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-10
+C-3,단기방문,C-3-2,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-2
+C-3,단기방문,C-3-3,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-3
+C-3,단기방문,C-3-4,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-4
+C-3,단기방문,C-3-5,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-5
+C-3,단기방문,C-3-6,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-6
+C-3,단기방문,C-3-7,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-7
+C-3,단기방문,C-3-8,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-8
+C-3,단기방문,C-3-9,explicit_code,stay_manual_2026_05.pdf,27-28,unclear,unclear,MEDIUM,C-3-9
+C-4,단기취업,C-4-1,explicit_code,stay_manual_2026_05.pdf,29-31,unclear,unclear,MEDIUM,C-4-1
+C-4,단기취업,C-4-5,explicit_code,stay_manual_2026_05.pdf,29-31,unclear,unclear,MEDIUM,C-4-5
+C-4,단기취업,E-6-2,explicit_code,stay_manual_2026_05.pdf,29-31,unclear,unclear,MEDIUM,E-6-2
+D-1,문화예술,C-3-4,explicit_code,stay_manual_2026_05.pdf,32-34,unclear,unclear,MEDIUM,C-3-4
+D-2,유학,D-2-1,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-1
+D-2,유학,D-2-2,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-2
+D-2,유학,D-2-3,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-3
+D-2,유학,D-2-4,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-4
+D-2,유학,D-2-5,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-5
+D-2,유학,D-2-6,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-6
+D-2,유학,D-2-7,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-7
+D-2,유학,D-2-8,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-2-8
+D-2,유학,D-4-1,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-4-1
+D-2,유학,D-4-2,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-4-2
+D-2,유학,D-4-7,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,D-4-7
+D-2,유학,E-6-2,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,E-6-2
+D-2,유학,G-1-5,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,G-1-5
+D-2,유학,G-1-6,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,G-1-6
+D-2,유학,G-1-8,explicit_code,stay_manual_2026_05.pdf,35-55,unclear,unclear,MEDIUM,G-1-8
+D-3,기술연수,D-3-1,explicit_code,stay_manual_2026_05.pdf,56-82,unclear,unclear,MEDIUM,D-3-1
+D-3,기술연수,D-3-11,explicit_code,stay_manual_2026_05.pdf,56-82,unclear,unclear,MEDIUM,D-3-11
+D-3,기술연수,D-3-12,explicit_code,stay_manual_2026_05.pdf,56-82,unclear,unclear,MEDIUM,D-3-12
+D-3,기술연수,D-3-13,explicit_code,stay_manual_2026_05.pdf,56-82,unclear,unclear,MEDIUM,D-3-13
+D-4,일반연수,D-4-1,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-1
+D-4,일반연수,D-4-2,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-2
+D-4,일반연수,D-4-2K,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-2K
+D-4,일반연수,D-4-3,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-3
+D-4,일반연수,D-4-5,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-5
+D-4,일반연수,D-4-6,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-6
+D-4,일반연수,D-4-7,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,D-4-7
+D-4,일반연수,E-7-4,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,E-7-4
+D-4,일반연수,G-1-6,explicit_code,stay_manual_2026_05.pdf,83-101,unclear,unclear,MEDIUM,G-1-6
+D-7,주재,C-3-4,explicit_code,stay_manual_2026_05.pdf,108-114,unclear,unclear,MEDIUM,C-3-4
+D-7,주재,C-4-5,explicit_code,stay_manual_2026_05.pdf,108-114,unclear,unclear,MEDIUM,C-4-5
+D-8,기업투자,C-3-4,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,C-3-4
+D-8,기업투자,C-4-5,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,C-4-5
+D-8,기업투자,D-8-1,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,D-8-1
+D-8,기업투자,D-8-2,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,D-8-2
+D-8,기업투자,D-8-3,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,D-8-3
+D-8,기업투자,D-8-4,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,D-8-4
+D-8,기업투자,D-8-4S,explicit_code,stay_manual_2026_05.pdf,115-129,unclear,unclear,MEDIUM,D-8-4S
+D-9,무역경영,C-3-2,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,C-3-2
+D-9,무역경영,C-3-3,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,C-3-3
+D-9,무역경영,C-3-4,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,C-3-4
+D-9,무역경영,C-4-5,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,C-4-5
+D-9,무역경영,D-9-1,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,D-9-1
+D-9,무역경영,D-9-5,explicit_code,stay_manual_2026_05.pdf,130-141,unclear,unclear,MEDIUM,D-9-5
+D-10,구직,D-10-1,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-10-1
+D-10,구직,D-10-2,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-10-2
+D-10,구직,D-10-3,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-10-3
+D-10,구직,D-10-T,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-10-T
+D-10,구직,D-2-5,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-2-5
+D-10,구직,D-2-6,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-2-6
+D-10,구직,D-4-1,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-4-1
+D-10,구직,D-4-2,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-4-2
+D-10,구직,D-4-6,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-4-6
+D-10,구직,D-8-4,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,D-8-4
+D-10,구직,E-6-2,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,E-6-2
+D-10,구직,F-2-R,explicit_code,stay_manual_2026_05.pdf,142-165,unclear,unclear,MEDIUM,F-2-R
+E-1,교수,C-4-5,explicit_code,stay_manual_2026_05.pdf,166-175,unclear,unclear,MEDIUM,C-4-5
+E-1,교수,E-6-2,explicit_code,stay_manual_2026_05.pdf,166-175,unclear,unclear,MEDIUM,E-6-2
+E-2,회화지도,C-4-5,explicit_code,stay_manual_2026_05.pdf,176-184,unclear,unclear,MEDIUM,C-4-5
+E-3,연구,C-4-5,explicit_code,stay_manual_2026_05.pdf,185-194,unclear,unclear,MEDIUM,C-4-5
+E-4,기술지도,C-4-5,explicit_code,stay_manual_2026_05.pdf,195-199,unclear,unclear,MEDIUM,C-4-5
+E-5,전문직업,C-4-5,explicit_code,stay_manual_2026_05.pdf,200-204,unclear,unclear,MEDIUM,C-4-5
+E-6,예술흥행,E-6-1,explicit_code,stay_manual_2026_05.pdf,205-211,unclear,unclear,MEDIUM,E-6-1
+E-6,예술흥행,E-6-2,explicit_code,stay_manual_2026_05.pdf,205-211,unclear,unclear,MEDIUM,E-6-2
+E-6,예술흥행,E-6-3,explicit_code,stay_manual_2026_05.pdf,205-211,unclear,unclear,MEDIUM,E-6-3
+E-7,특정활동,C-4-5,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,C-4-5
+E-7,특정활동,D-10-3,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,D-10-3
+E-7,특정활동,D-2-7,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,D-2-7
+E-7,특정활동,D-4-1,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,D-4-1
+E-7,특정활동,D-4-6,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,D-4-6
+E-7,특정활동,E-6-2,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-6-2
+E-7,특정활동,E-7-1,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-1
+E-7,특정활동,E-7-2,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-2
+E-7,특정활동,E-7-3,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-3
+E-7,특정활동,E-7-4,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-4
+E-7,특정활동,E-7-4R,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-4R
+E-7,특정활동,E-7-91,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-91
+E-7,특정활동,E-7-S,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-S
+E-7,특정활동,E-7-S1,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-S1
+E-7,특정활동,E-7-S2,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-S2
+E-7,특정활동,E-7-T,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-T
+E-7,특정활동,E-7-Y,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,E-7-Y
+E-7,특정활동,F-2-7,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,F-2-7
+E-7,특정활동,F-5-16,explicit_code,stay_manual_2026_05.pdf,212-323,unclear,unclear,MEDIUM,F-5-16
+E-9,비전문취업,E-9-3,explicit_code,stay_manual_2026_05.pdf,326-335,unclear,unclear,MEDIUM,E-9-3
+E-10,선원취업,E-10-1,explicit_code,stay_manual_2026_05.pdf,336-340,unclear,unclear,MEDIUM,E-10-1
+E-10,선원취업,E-10-2,explicit_code,stay_manual_2026_05.pdf,336-340,unclear,unclear,MEDIUM,E-10-2
+E-10,선원취업,E-10-3,explicit_code,stay_manual_2026_05.pdf,336-340,unclear,unclear,MEDIUM,E-10-3
+F-1,방문동거,D-4-3,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,D-4-3
+F-1,방문동거,E-6-2,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,E-6-2
+F-1,방문동거,E-7-4,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,E-7-4
+F-1,방문동거,F-1-12,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-12
+F-1,방문동거,F-1-13,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-13
+F-1,방문동거,F-1-16,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-16
+F-1,방문동거,F-1-28,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-28
+F-1,방문동거,F-1-5,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-5
+F-1,방문동거,F-1-51,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-51
+F-1,방문동거,F-1-52,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-52
+F-1,방문동거,F-1-6,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-6
+F-1,방문동거,F-1-D,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-1-D
+F-1,방문동거,F-2-2,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-2-2
+F-1,방문동거,F-2-3,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-2-3
+F-1,방문동거,F-2-7,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-2-7
+F-1,방문동거,F-2-71,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-2-71
+F-1,방문동거,F-2-7S,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-2-7S
+F-1,방문동거,F-5-2,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-5-2
+F-1,방문동거,F-5-3,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-5-3
+F-1,방문동거,F-6-3,explicit_code,stay_manual_2026_05.pdf,341-359,unclear,unclear,MEDIUM,F-6-3
+F-2,거주,E-6-1,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-6-1
+F-2,거주,E-6-2,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-6-2
+F-2,거주,E-7-1,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-7-1
+F-2,거주,E-7-2,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-7-2
+F-2,거주,E-7-4,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-7-4
+F-2,거주,E-9-1,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,E-9-1
+F-2,거주,F-1-1,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-1-1
+F-2,거주,F-1-12,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-1-12
+F-2,거주,F-2-12,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-12
+F-2,거주,F-2-13,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-13
+F-2,거주,F-2-16,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-16
+F-2,거주,F-2-2,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-2
+F-2,거주,F-2-3,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-3
+F-2,거주,F-2-4,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-4
+F-2,거주,F-2-5,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-5
+F-2,거주,F-2-6,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-6
+F-2,거주,F-2-7,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-7
+F-2,거주,F-2-71,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-71
+F-2,거주,F-2-7S,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-7S
+F-2,거주,F-2-8,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-8
+F-2,거주,F-2-81,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-81
+F-2,거주,F-2-99,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-2-99
+F-2,거주,F-3-18,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-3-18
+F-2,거주,F-5-13,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-5-13
+F-2,거주,F-5-21,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-5-21
+F-2,거주,F-6-1,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-6-1
+F-2,거주,F-6-2,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-6-2
+F-2,거주,F-6-3,explicit_code,stay_manual_2026_05.pdf,360-420,unclear,unclear,MEDIUM,F-6-3
+F-3,동반,D-2-3,explicit_code,stay_manual_2026_05.pdf,421-425,unclear,unclear,MEDIUM,D-2-3
+F-3,동반,D-2-4,explicit_code,stay_manual_2026_05.pdf,421-425,unclear,unclear,MEDIUM,D-2-4
+F-3,동반,E-7-4,explicit_code,stay_manual_2026_05.pdf,421-425,unclear,unclear,MEDIUM,E-7-4
+F-3,동반,F-3-19,explicit_code,stay_manual_2026_05.pdf,421-425,unclear,unclear,MEDIUM,F-3-19
+F-3,동반,F-3-20,explicit_code,stay_manual_2026_05.pdf,421-425,unclear,unclear,MEDIUM,F-3-20
+F-5,영주,C-3-1,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,C-3-1
+F-5,영주,D-2-4,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,D-2-4
+F-5,영주,D-2-7,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,D-2-7
+F-5,영주,D-8-4,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,D-8-4
+F-5,영주,F-2-7,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-2-7
+F-5,영주,F-2-71,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-2-71
+F-5,영주,F-2-8,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-2-8
+F-5,영주,F-2-81,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-2-81
+F-5,영주,F-5-1,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-1
+F-5,영주,F-5-10,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-10
+F-5,영주,F-5-11,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-11
+F-5,영주,F-5-12,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-12
+F-5,영주,F-5-13,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-13
+F-5,영주,F-5-14,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-14
+F-5,영주,F-5-15,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-15
+F-5,영주,F-5-16,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-16
+F-5,영주,F-5-17,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-17
+F-5,영주,F-5-18,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-18
+F-5,영주,F-5-19,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-19
+F-5,영주,F-5-2,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-2
+F-5,영주,F-5-20,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-20
+F-5,영주,F-5-21,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-21
+F-5,영주,F-5-22,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-22
+F-5,영주,F-5-23,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-23
+F-5,영주,F-5-24,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-24
+F-5,영주,F-5-25,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-25
+F-5,영주,F-5-26,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-26
+F-5,영주,F-5-3,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-3
+F-5,영주,F-5-4,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-4
+F-5,영주,F-5-5,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-5
+F-5,영주,F-5-6,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-6
+F-5,영주,F-5-7,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-7
+F-5,영주,F-5-8,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-8
+F-5,영주,F-5-9,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-5-9
+F-5,영주,F-6-1,explicit_code,stay_manual_2026_05.pdf,426-473,unclear,unclear,MEDIUM,F-6-1
+F-6,결혼이민,F-1-6,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-1-6
+F-6,결혼이민,F-2-1,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-2-1
+F-6,결혼이민,F-2-10,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-2-10
+F-6,결혼이민,F-6-1,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-6-1
+F-6,결혼이민,F-6-2,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-6-2
+F-6,결혼이민,F-6-3,explicit_code,stay_manual_2026_05.pdf,474-497,unclear,unclear,MEDIUM,F-6-3
+G-1,기타,C-3-3,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,C-3-3
+G-1,기타,E-7-H,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,E-7-H
+G-1,기타,F-1-16,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,F-1-16
+G-1,기타,G-1-1,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-1
+G-1,기타,G-1-10,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-10
+G-1,기타,G-1-11,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-11
+G-1,기타,G-1-12,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-12
+G-1,기타,G-1-2,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-2
+G-1,기타,G-1-3,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-3
+G-1,기타,G-1-4,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-4
+G-1,기타,G-1-5,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-5
+G-1,기타,G-1-6,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-6
+G-1,기타,G-1-7,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-7
+G-1,기타,G-1-9,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-9
+G-1,기타,G-1-99,explicit_code,stay_manual_2026_05.pdf,498-513,unclear,unclear,MEDIUM,G-1-99
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",C-3-8,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,C-3-8
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-1-72,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-1-72
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-4-41,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-4-41
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-4-42,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-4-42
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-4-R,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-4-R
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-11,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-11
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-12,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-12
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-14,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-14
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-15,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-15
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-5,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-5
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-6,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-6
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-7,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-7
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",F-5-9,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,F-5-9
+FORDIASP,"외국국적동포 관련 [C-3-8,F-1,H-2,F-4,F-5]",H-2-7,explicit_code,stay_manual_2026_05.pdf,518-584,unclear,unclear,MEDIUM,H-2-7
+REGIONAL,지역특화형비자,D-8-1,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,D-8-1
+REGIONAL,지역특화형비자,D-9-4,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,D-9-4
+REGIONAL,지역특화형비자,E-6-2,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,E-6-2
+REGIONAL,지역특화형비자,E-7-4,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,E-7-4
+REGIONAL,지역특화형비자,E-7-4R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,E-7-4R
+REGIONAL,지역특화형비자,F-1-11,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-1-11
+REGIONAL,지역특화형비자,F-2-R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-2-R
+REGIONAL,지역특화형비자,F-3-1R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-3-1R
+REGIONAL,지역특화형비자,F-3-2R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-3-2R
+REGIONAL,지역특화형비자,F-3-3R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-3-3R
+REGIONAL,지역특화형비자,F-4-R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-4-R
+REGIONAL,지역특화형비자,F-5-2,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-5-2
+REGIONAL,지역특화형비자,F-5-3,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-5-3
+REGIONAL,지역특화형비자,F-5-6,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-5-6
+REGIONAL,지역특화형비자,F-5-6R,explicit_code,stay_manual_2026_05.pdf,585-654,unclear,unclear,MEDIUM,F-5-6R
+YOUTH,국내 성장기반 외국인 청소년 취업·정주 체류제도,D-10-1,explicit_code,stay_manual_2026_05.pdf,655-669,unclear,unclear,MEDIUM,D-10-1
+YOUTH,국내 성장기반 외국인 청소년 취업·정주 체류제도,E-7-Y,explicit_code,stay_manual_2026_05.pdf,655-669,unclear,unclear,MEDIUM,E-7-Y
+YOUTH,국내 성장기반 외국인 청소년 취업·정주 체류제도,F-2-R,explicit_code,stay_manual_2026_05.pdf,655-669,unclear,unclear,MEDIUM,F-2-R
+YOUTH,국내 성장기반 외국인 청소년 취업·정주 체류제도,F-5-3,explicit_code,stay_manual_2026_05.pdf,655-669,unclear,unclear,MEDIUM,F-5-3
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",D-10-T,explicit_code,stay_manual_2026_05.pdf,670-685,unclear,unclear,MEDIUM,D-10-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",E-7-1,explicit_code,stay_manual_2026_05.pdf,670-685,unclear,unclear,MEDIUM,E-7-1
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",E-7-T,explicit_code,stay_manual_2026_05.pdf,670-685,unclear,unclear,MEDIUM,E-7-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",F-2-T,explicit_code,stay_manual_2026_05.pdf,670-685,unclear,unclear,MEDIUM,F-2-T
+TOPTIER,"탑티어(Top-Tier) 비자 [D-10-T,E-7-T,F-2-T,F-5-T]",F-5-T,explicit_code,stay_manual_2026_05.pdf,670-685,unclear,unclear,MEDIUM,F-5-T
+METRO,광역형 비자 시범사업,D-2-5,explicit_code,stay_manual_2026_05.pdf,686-748,unclear,unclear,MEDIUM,D-2-5
+METRO,광역형 비자 시범사업,E-7-1,explicit_code,stay_manual_2026_05.pdf,686-748,unclear,unclear,MEDIUM,E-7-1
+METRO,광역형 비자 시범사업,E-7-2,explicit_code,stay_manual_2026_05.pdf,686-748,unclear,unclear,MEDIUM,E-7-2
+METRO,광역형 비자 시범사업,E-7-3,explicit_code,stay_manual_2026_05.pdf,686-748,unclear,unclear,MEDIUM,E-7-3
+METRO,광역형 비자 시범사업,F-2-R,explicit_code,stay_manual_2026_05.pdf,686-748,unclear,unclear,MEDIUM,F-2-R
+K-STAR,K-STAR 비자트랙 제도,F-2-7,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-2-7
+K-STAR,K-STAR 비자트랙 제도,F-2-71,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-2-71
+K-STAR,K-STAR 비자트랙 제도,F-2-7S,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-2-7S
+K-STAR,K-STAR 비자트랙 제도,F-5-18,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-5-18
+K-STAR,K-STAR 비자트랙 제도,F-5-S1,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-5-S1
+K-STAR,K-STAR 비자트랙 제도,F-5-S2,explicit_code,stay_manual_2026_05.pdf,749-777,unclear,unclear,MEDIUM,F-5-S2
