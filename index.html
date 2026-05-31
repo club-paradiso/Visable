@@ -12558,6 +12558,45 @@ function renderProcedures(v, keywords) {
     return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('procedureSectionTitle'))}</h4><div class="procedure-tabs" role="tablist">${tabs}</div>${panels}</div>`;
 }
 
+function renderSourceConfirmedRequirements(v) {
+    // Renders ONLY source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY) entries
+    // supplied by the backend on the visa record. Candidate / needs-review
+    // evidence is never present in this field, so there is nothing unverified
+    // to hide here. Returns '' when the field is absent (most statuses).
+    const entries = Array.isArray(v.sourceConfirmedStructuredRequirements)
+        ? v.sourceConfirmedStructuredRequirements : [];
+    if (!entries.length) return '';
+    const PROC_KO = {
+        extension: '체류기간 연장', registration: '외국인등록', visa_issuance: '사증발급',
+        change_of_status: '체류자격 변경', status_grant: '체류자격 부여',
+        reentry: '재입국', workplace_change_or_addition: '근무처 변경·추가',
+        activity_outside_status: '체류자격외 활동', reporting_duty: '신고 의무', other: ''
+    };
+    const cards = entries.map(e => {
+        const proc = PROC_KO[e.procedureType] || e.procedureType || '';
+        const cov = Array.isArray(e.subCodesCovered) && e.subCodesCovered.length
+            ? e.subCodesCovered.join(', ') : (e.subCode || '');
+        const scope = cov ? ` <span class="manual-subcode-code">${escapeHtml(cov)}</span>` : '';
+        const page = (e.pageStart && e.pageEnd && e.pageStart !== e.pageEnd)
+            ? `pp. ${e.pageStart}-${e.pageEnd}` : (e.pageStart ? `p. ${e.pageStart}` : '');
+        const src = e.source || {};
+        const cite = [src.manualName, src.manualVersion, page].filter(Boolean).map(escapeHtml).join(' · ');
+        const docs = Array.isArray(e.documents) ? e.documents : [];
+        const docItems = docs.map(d => `<li>${escapeHtml(d.textKo || '')}</li>`).join('');
+        return `<div class="manual-subcode-card">
+            <div class="manual-subcode-top"><span class="manual-subcode-name">${escapeHtml(proc)}</span>${scope}</div>
+            <div class="manual-subcode-desc">${escapeHtml(e.sectionTitle || '')}</div>
+            ${docItems ? `<ul style="margin:0.5rem 0 0; padding-left:1.1rem; font-size:0.85rem; line-height:1.6;">${docItems}</ul>` : ''}
+            <div class="manual-subcode-desc" style="margin-top:0.5rem; opacity:0.85;">${cite}</div>
+        </div>`;
+    }).join('');
+    return `<div class="manual-section">
+        <h4 class="manual-section-title">출처 확인된 매뉴얼 요건 (Source-confirmed manual requirements)</h4>
+        <p class="manual-subcode-desc">2026.5 공식 매뉴얼에서 해당 페이지를 직접 확인한 항목입니다. 표시된 세부약호·절차 범위에 한합니다.</p>
+        <div class="manual-subcode-grid">${cards}</div>
+    </div>`;
+}
+
 function renderSubcodes(v, keywords, matchingSubcodes) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
@@ -13226,6 +13265,7 @@ function renderResults(query){
                     ${renderProcedures(v, kw)}
                     ${renderDocumentTabs(v)}
                     ${renderCautionBlock()}
+                    ${renderSourceConfirmedRequirements(v)}
                     ${renderSourceEvidencePanel(v)}
                     ${renderManualActions(v, isVisaCode)}
                     ${ddHtml}

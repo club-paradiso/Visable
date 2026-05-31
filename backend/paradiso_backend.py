@@ -41,6 +41,11 @@ try:  # httpx is listed in requirements.txt; guard so the file still imports
 except Exception:  # pragma: no cover - import-time guard only
     httpx = None  # type: ignore
 
+try:  # optional structured manual-evidence layer (PR #228); guard import
+    import structured_requirements as _structured_requirements  # type: ignore
+except Exception:  # pragma: no cover - import-time guard only
+    _structured_requirements = None  # type: ignore
+
 
 logger = logging.getLogger("paradiso.backend")
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
@@ -1089,6 +1094,81 @@ def _build_visa_data_context_block(visa_data: Optional[Dict[str, Any]]) -> str:
     return f"{header}\n" + "\n".join(lines)
 
 
+def _build_source_confirmed_structured_requirements_block(
+    visa_code: Optional[str],
+    visa_sub_code: Optional[str] = None,
+) -> str:
+    """Build a prompt block from SOURCE-CONFIRMED structured requirements.
+
+    Only entries that are HIGH confidence AND STRUCTURED_EVIDENCE_READY are
+    surfaced (the `structured_requirements` accessor enforces this). Candidate
+    / needs-review entries are never included. Returns "" when the optional
+    module is unavailable or the status has no source-confirmed entries, so
+    callers can skip the block with zero behavior change.
+
+    This block SUPPLEMENTS existing manual grounding; it must not override
+    canonical warnings, disclaimers, or manualRefs.
+    """
+    if _structured_requirements is None or not visa_code:
+        return ""
+    try:
+        entries = _structured_requirements.get_source_confirmed_structured_requirements(
+            visa_code
+        )
+    except Exception:  # pragma: no cover - defensive only
+        return ""
+    if not entries:
+        return ""
+
+    MAX_DOCS = 12
+
+    def _trim(value: Any, limit: int = 200) -> str:
+        s = str(value or "").strip()
+        return (s[:limit].rstrip() + "…") if len(s) > limit else s
+
+    lines: List[str] = []
+    for e in entries:
+        ms = e.get("manualSource") or {}
+        ps, pe = ms.get("pageStart"), ms.get("pageEnd")
+        if ps and pe and ps != pe:
+            page = f"pp. {ps}-{pe}"
+        elif ps:
+            page = f"p. {ps}"
+        else:
+            page = ""
+        scope = e.get("subCode")
+        covered = e.get("subCodesCovered") or []
+        if covered:
+            scope = ", ".join(covered)
+        scope_note = f" (적용 세부약호: {scope})" if scope else ""
+        header_bits = [b for b in (
+            _trim(ms.get("sectionTitle"), 120),
+            e.get("procedureType"),
+            page,
+        ) if b]
+        lines.append(
+            f"- {visa_code}{scope_note} — " + " · ".join(header_bits)
+        )
+        for d in (e.get("documents") or [])[:MAX_DOCS]:
+            txt = _trim(d.get("textKo"), 200) if isinstance(d, dict) else ""
+            if txt:
+                lines.append(f"    • {txt}")
+
+    if not lines:
+        return ""
+
+    header = (
+        "[Source-confirmed structured requirements from 2026-05 official manuals]\n"
+        "The items below were locally verified against the official 2026-05"
+        " manual at the cited page(s) and are limited to the exact section/"
+        "sub-code scope shown. They SUPPLEMENT — and do not override — the"
+        " manual grounding, warnings, disclaimers, and page references above."
+        " Do not generalize a sub-code-scoped list to other sub-codes, and do"
+        " not present this as a final immigration-office determination."
+    )
+    return f"{header}\n" + "\n".join(lines)
+
+
 def _build_ungrounded_korea_scoped_prompt(
     user_prompt: str,
     *,
@@ -1227,6 +1307,37 @@ async def health() -> Dict[str, Any]:
     }
 
 
+def _enrich_with_source_confirmed_requirements(
+    records: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+    """Return records with an additive ``sourceConfirmedStructuredRequirements``
+    field on any status that has HIGH / STRUCTURED_EVIDENCE_READY entries.
+
+    Additive and backward-compatible: records without source-confirmed entries
+    are returned unchanged (same object), and the record count is preserved.
+    Candidate / needs-review entries are never included.
+    """
+    if _structured_requirements is None:
+        return records
+    out: List[Dict[str, Any]] = []
+    for rec in records:
+        code = rec.get("code") if isinstance(rec, dict) else None
+        summaries: List[Dict[str, Any]] = []
+        if code:
+            try:
+                entries = _structured_requirements.get_source_confirmed_structured_requirements(code)
+                summaries = [_structured_requirements.public_summary(e) for e in entries]
+            except Exception:  # pragma: no cover - defensive only
+                summaries = []
+        if summaries:
+            enriched = dict(rec)
+            enriched["sourceConfirmedStructuredRequirements"] = summaries
+            out.append(enriched)
+        else:
+            out.append(rec)
+    return out
+
+
 @app.get("/api/visas")
 async def list_visas() -> Dict[str, Any]:
     """Return the visa catalog.
@@ -1238,9 +1349,14 @@ async def list_visas() -> Dict[str, Any]:
     - `visas`: same list under the explicit name used by newer code
     - `count`: convenience integer
     - `warning`: present only when DEFAULT_VISAS fallback is in use
+
+    Records for statuses with source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY)
+    structured requirements carry an additive
+    ``sourceConfirmedStructuredRequirements`` field; all other records are
+    unchanged. Needs-review candidate evidence is never exposed here.
     """
     cached = _load_visas()
-    visas = cached["visas"]
+    visas = _enrich_with_source_confirmed_requirements(cached["visas"])
     payload: Dict[str, Any] = {
         "count": len(visas),
         "data": visas,
@@ -1250,6 +1366,40 @@ async def list_visas() -> Dict[str, Any]:
     }
     if "warning" in cached:
         payload["warning"] = cached["warning"]
+    return payload
+
+
+@app.get("/api/visas/{status_code}/structured-requirements")
+async def get_structured_requirements_endpoint(
+    status_code: str, include_needs_review: bool = False
+) -> Dict[str, Any]:
+    """Return structured requirements for a status.
+
+    Default: ONLY source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY) entries,
+    projected to the safe user-facing shape. ``include_needs_review=1`` is an
+    INTERNAL/debug flag that returns raw candidate entries too — these must not
+    be shown to end users.
+    """
+    if _structured_requirements is None:
+        return {"statusCode": status_code, "sourceConfirmed": [], "available": False}
+    confirmed = _structured_requirements.get_source_confirmed_structured_requirements(status_code)
+    payload: Dict[str, Any] = {
+        "statusCode": status_code,
+        "available": True,
+        "sourceConfirmedCount": len(confirmed),
+        "sourceConfirmed": [_structured_requirements.public_summary(e) for e in confirmed],
+    }
+    if include_needs_review:
+        all_entries = _structured_requirements.get_structured_requirements(
+            status_code, {"includeNeedsReview": True}
+        )
+        needs_review = [e for e in all_entries if not _structured_requirements.is_source_confirmed(e)]
+        payload["internalNeedsReviewCount"] = len(needs_review)
+        payload["internalNeedsReview"] = needs_review
+        payload["internalWarning"] = (
+            "Entries under internalNeedsReview are unverified candidate evidence "
+            "and must not be shown to end users."
+        )
     return payload
 
 
@@ -1275,6 +1425,9 @@ async def ask(req: AskRequest) -> AskResponse:
     )
     grounding_sources: List[Dict[str, Any]] = []
     visa_data_block = _build_visa_data_context_block(req.visa_data)
+    structured_block = _build_source_confirmed_structured_requirements_block(
+        visa_code_detected, visa_sub_code_detected
+    )
     if grounding is not None:
         bundle = _load_stay_manual_grounding() or {}
         final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
@@ -1300,6 +1453,11 @@ async def ask(req: AskRequest) -> AskResponse:
         )
         if visa_data_block:
             final_prompt += "\n\n" + visa_data_block
+
+    if structured_block:
+        # Source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY) only. Supplements
+        # the grounding/disclaimers above; never overrides them.
+        final_prompt += "\n\n" + structured_block
 
     law_grounding_used = False
     law_grounding_attempted = False
