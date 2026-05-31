@@ -32,6 +32,15 @@ RENDERER_DOC_FIELDS: Set[str] = {
     "documents_initial", "documents_registration", "documents_extension",
 }
 
+# Non-document metadata fields whose names happen to contain a doc/req token
+# but which are NOT user-facing document arrays (e.g. pointers into the
+# structured manual-evidence layer). These are reference metadata only and are
+# intentionally not rendered by the document tabs, so they must be exempt from
+# the document-like-field coverage guard.
+NON_DOCUMENT_METADATA_FIELDS: Set[str] = {
+    "structuredRequirementsRef",
+}
+
 PROCEDURE_KEYS = {
     "visaIssuance", "certificateOfVisaIssuance", "statusChange", "extension", "statusGrant",
     "registration", "activitiesOutsideStatus", "workplaceChange", "reentry",
@@ -157,7 +166,12 @@ def main() -> int:
         errors.extend(_check_types(code, doc_fields))
 
         for field in r.keys():
-            if _looks_doc_field(field) and field not in RENDERER_DOC_FIELDS and field not in {"procedures"}:
+            if (
+                _looks_doc_field(field)
+                and field not in RENDERER_DOC_FIELDS
+                and field not in NON_DOCUMENT_METADATA_FIELDS
+                and field not in {"procedures"}
+            ):
                 suspicious_fields.setdefault(code, set()).add(field)
                 value = r.get(field)
                 if isinstance(value, (str, list, dict)) and _has_useful_value(value):
