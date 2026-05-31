@@ -233,9 +233,9 @@
     },
     "D-2": {
       "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
-      "entryCount": 5,
-      "documentItemCount": 30,
-      "readyCount": 1,
+      "entryCount": 6,
+      "documentItemCount": 34,
+      "readyCount": 2,
       "hasSubCodeEvidence": true,
       "hasScenarioEvidence": true,
       "requiresHumanReview": true,
@@ -243,17 +243,18 @@
         "sub_code_specific": 1,
         "scenario_specific": 2,
         "unclear": 1,
-        "parent_code_level": 1
+        "parent_code_level": 2
       },
       "procedureTypes": {
         "visa_issuance": 2,
         "other": 2,
-        "extension": 1
+        "extension": 1,
+        "registration": 1
       },
       "confidence": {
         "LOW": 2,
         "MEDIUM": 2,
-        "HIGH": 1
+        "HIGH": 2
       },
       "mappedProductionCodes": [
         "D-2"

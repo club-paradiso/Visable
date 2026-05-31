@@ -239,5 +239,80 @@ class StructuredRequirementsGroundingTests(unittest.TestCase):
             )
 
 
+class StructuredRequirementsPromotionTests(unittest.TestCase):
+    """PR: data/promote-and-apply-source-confirmed-requirements-2026-05.
+
+    Proves the D-2 registration (외국인등록, p.44) promotion is exposed and that
+    the source-confirmed count increased while needs-review evidence stays
+    hidden.
+    """
+
+    def setUp(self):
+        import structured_requirements as sr  # noqa: WPS433
+        sr.reset_cache_for_tests()
+        self.sr = sr
+
+    def test_total_source_confirmed_count_is_four(self):
+        # 3 prior (D-2/D-4/E-7 extension) + 1 promoted (D-2 registration).
+        total = 0
+        for code in self.sr.source_confirmed_status_codes():
+            total += len(self.sr.get_source_confirmed_structured_requirements(code))
+        self.assertEqual(total, 4)
+
+    def test_d2_now_exposes_registration_and_extension(self):
+        procs = sorted(
+            e["procedureType"]
+            for e in self.sr.get_source_confirmed_structured_requirements("D-2")
+        )
+        self.assertEqual(procs, ["extension", "registration"])
+
+    def test_d2_registration_is_parent_level_page_44(self):
+        reg = self.sr.get_source_confirmed_structured_requirements(
+            "D-2", {"procedureType": "registration"}
+        )
+        self.assertEqual(len(reg), 1)
+        e = reg[0]
+        self.assertEqual(e["boundaryType"], "parent_code_level")
+        self.assertEqual(e["manualSource"]["pageStart"], 44)
+        self.assertEqual(e["manualSource"]["pageEnd"], 44)
+        self.assertEqual(e["confidence"], "HIGH")
+        self.assertEqual(e["readinessLabel"], "STRUCTURED_EVIDENCE_READY")
+        # 4 parent-level documents; conditional alternatives captured in conditionKo,
+        # never flattened into separate universal requirements.
+        self.assertEqual(len(e["documents"]), 4)
+        for d in e["documents"]:
+            self.assertEqual(d["boundary"], "parent_code_level")
+
+    def test_api_visas_d2_exposes_registration(self):
+        client, _ = _client()
+        body = client.get("/api/visas").json()
+        d2 = next(r for r in body["data"] if r.get("code") == "D-2")
+        procs = sorted(
+            e["procedureType"] for e in d2["sourceConfirmedStructuredRequirements"]
+        )
+        self.assertIn("registration", procs)
+        self.assertIn("extension", procs)
+
+    def test_endpoint_d2_registration_present(self):
+        client, _ = _client()
+        body = client.get("/api/visas/D-2/structured-requirements").json()
+        self.assertEqual(body["sourceConfirmedCount"], 2)
+        procs = sorted(e["procedureType"] for e in body["sourceConfirmed"])
+        self.assertEqual(procs, ["extension", "registration"])
+
+    def test_ai_block_d2_includes_registration(self):
+        _, mod = _client()
+        blk = mod._build_source_confirmed_structured_requirements_block("D-2", None)
+        self.assertTrue(blk)
+        self.assertIn("외국인등록", blk)
+
+    def test_high_risk_statuses_still_hidden_after_promotion(self):
+        # Promotion must not leak any candidate evidence for high-risk statuses.
+        for code in HIGH_RISK_NEEDS_REVIEW:
+            self.assertEqual(
+                self.sr.get_source_confirmed_structured_requirements(code), []
+            )
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
