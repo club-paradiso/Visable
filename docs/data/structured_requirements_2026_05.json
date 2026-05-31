@@ -7,7 +7,7 @@
     "stay": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
   },
   "provenance": "Derived from docs/data/claude_opus_manual_extraction_2026_05/ (part3/part4) + backend/data/manual_grounding/stay_manual_grounding_2026_05.json",
-  "entryCount": 338,
+  "entryCount": 352,
   "entries": [
     {
       "statusCode": "A-1",
@@ -32696,6 +32696,830 @@
       "subCodesCovered": null,
       "evidenceSource": "pdf_verified",
       "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The '외국인등록 / 1. 제출서류' list for 유학(D-2) appears on the PDF page bearing the printed footer '- 44 -' (absolute PDF page 44, 1:1). Parent-level list for 유학(D-2) registration (외국인등록); the 대체서류 alternatives for the 재학(연구생)증명서 line and the 수수료 exemption are captured as document-level conditionKo, not flattened into universal requirements. Single procedure type (registration). No sub-code/scenario split on this page."
+    },
+    {
+      "statusCode": "D-1",
+      "statusNameKo": "문화예술",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 34,
+        "pageEnd": 34,
+        "sectionTitle": "문화예술(D-1) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "외국인등록\n󰁾 목차\n1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n ② 사업자등록증 등 문화예술 단체입증 서류,  ③ 체류지 입증서류\n2. 외국인등록사항 변경신고\n \n 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n \n 신고대상 : 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가(‘10.11.16.)\n \n 신고기한 : 변경일로부터 15일 이내 신고\n \n 신청서류\n   ① 신청서(별지34호 서식), 여권, 외국인등록증, 수수료 없음 ② 변경사항 입증 \n서류 : 입학허가서 또는 연수기관 장의 추천서 등"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "사업자등록증 등 문화예술 단체입증 서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 34 -' (absolute PDF page 34, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 유학(D-2) 외국인등록(p.44)과 동일한 매뉴얼 템플릿. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "D-5",
+      "statusNameKo": "취재",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 104,
+        "pageEnd": 104,
+        "sectionTitle": "취재(D-5) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "외국인등록\n󰁾 목차\n1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 \n ② 지국․지사의 설치허가증 또는 ‘부가가치세법’에 따른 사업자등록증\n ※ 국내에 지국･지사가 없거나 증명을 발급받을 수 없는 외신은 주무부처(문\n화체육관광부 해외문화홍보원)의 협조공문으로 갈음할 수 있음\n ③ 체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고대상 : 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가\n(‘10.11.16.)\n 다. 신고기한 : 변경일로부터 15일 이내 신고\n 라. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료\n  ② 변경관련 입증서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "지국·지사의 설치허가증 또는 「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "국내에 지국·지사가 없거나 증명을 발급받을 수 없는 외신은 주무부처(문화체육관광부 해외문화홍보원)의 협조공문으로 갈음 가능",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 104 -' (absolute PDF page 104, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 대체서류(협조공문 갈음)는 document-level conditionKo로 보존."
+    },
+    {
+      "statusCode": "D-5",
+      "statusNameKo": "취재",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "extension",
+      "procedureTypesDetected": [
+        "extension"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 103,
+        "pageEnd": 103,
+        "sectionTitle": "취재(D-5) — 체류기간 연장허가 / 1. 제출서류",
+        "sourceExcerpt": "연장허가\n1. 제출서류\n  ① 신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 재직증명서 \n또는 파견명령서(본사발행) ③체류지 입증서류(임대차계약서, 숙소제공 \n확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 \n영수증 등)\n재입국허가\n1. 재입국허가 면제 제도 시행(‘10.12.1.자 개정 시행규칙)\n   - 등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입\n국허가 면제\n   - 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제\n ※ 단, 입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 방"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권 및 외국인등록증, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "재직증명서 또는 파견명령서(본사발행)",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 103 -' (absolute PDF page 103, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(체류기간 연장허가), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "D-6",
+      "statusNameKo": "종교",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 107,
+        "pageEnd": 107,
+        "sectionTitle": "종교(D-6) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "외국인등록\n󰁾 목차\n1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 \n ② ‘종교단체 또는 사회복지단체 설립’ 관련 서류 ③ 체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효\n기간\n 나. 신고대상 : 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가\n(‘10.11.16.)\n 다. 신고기한 : 변경일로부터 15일 이내 신고\n 라. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료\n    ② 변경관련 입증서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "‘종교단체 또는 사회복지단체 설립’ 관련 서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 107 -' (absolute PDF page 107, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "D-6",
+      "statusNameKo": "종교",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "extension",
+      "procedureTypesDetected": [
+        "extension"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 107,
+        "pageEnd": 107,
+        "sectionTitle": "종교(D-6) — 체류기간 연장허가 / 1. 제출서류",
+        "sourceExcerpt": "연장허가\n1. 제출서류\n  ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ②재직증명서 \n또는 파송명령서(파송단체 발행) ③체류지 입증서류(임대차계약서, 숙소\n제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙\n사비 영수증 등)\n재입국허가\n1. 재입국허가 면제 제도 시행(‘10.12.1.자 개정 시행규칙)\n   - 등록을 필한 외국인이 출국한 날로부터 1년 이내에 재입국하려는 경우 재입\n국허가 면제\n   - 체류기간이 1년보다 적게 남아있는 경우 체류기간 범위 내에서 재입국허가 면제\n ※ 단, 입국규제 및 사증발급규제자는 체류지 관할 청(사무소·출장소)에 방\n문하여 재입국허가를 받아야 하며 수수료 제출 대상임\n2. 복수재입국허가 (사우디아라비아, 이란, 리비아는 복수재입국제한. 단, \n동 국가의 국민 중 결혼이민(F­6), 유학(D­2), 일반연수(D­4)는 가능)\n - 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 내에 재입국을 하려는 경우\n - 신청서류 : 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료\n외국인등록\n󰁾 목차\n1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장,"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권 및 외국인등록증, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "재직증명서 또는 파송명령서(파송단체 발행)",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 107 -' (absolute PDF page 107, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(체류기간 연장허가), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "D-7",
+      "statusNameKo": "주재",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 113,
+        "pageEnd": 113,
+        "sectionTitle": "주재(D-7) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 \n ② 사업자등록증 (외국법자문법률사무소 등록증 : 해당자에 한함)\n ③ 체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고대상 : 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가(‘10.11.16.)\n 다. 신고기한 : 변경일로부터 15일 이내 신고\n 라. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 변경관련 입증서류\n ※ 주재(D-7) 내지 무역경영(D-9)자격 소지자의 같은 계열회사내의 이동일 경우 \n아래 서류를 징구하여 ‘외국인등록사항 변동신고’로 업무처리\n   ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 파견명령서 원본(외\n국 본사발행) ③동일계열사 입증서류(법인등기사항전부증명서 등) ③추가 변경\n근무처의 영업자금도입증빙서류(외국환매입증명서, 임대차계약서 등) ④ 추가 \n변경근무처의 법인등기사항전부증명서 원본 ⑤ 추가 변경근무처의 사업자등\n록증 사본"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "외국법자문법률사무소 등록증은 해당자에 한함",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 113 -' (absolute PDF page 113, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 신청자 유형 조건(외국법자문법률사무소 등록증 해당자)을 document-level conditionKo로 보존."
+    },
+    {
+      "statusCode": "D-8",
+      "statusNameKo": "기업투자",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 126,
+        "pageEnd": 126,
+        "sectionTitle": "기업투자(D-8) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 \n ② 사업자등록증, 법인등기사항전부증명서(법인기업인 경우)\n ③ 체류지입증서류(부동산 임대차계약서 등)\n   ☞ 재외공관*에서 기업투자(D-8) 자격을 직접 받아 입국한 외국인은 체\n류자격 변경신청 시 제출서류를 준용해서 제출 \n       * 사증발급인정서에 의해 비자를 받은 사람은 제외\n2. 확인사항\n  \n 신청서 상의 체류지에 실제 거주하고 있는지 여부\n  \n 외국인등록사항* 및 체류관리 필수사항** 출입국관리시스템 입력 철저\n     * 입국일자 및 입국항, 사증사항, 동반자사항, 세대주 및 세대주와의 관계, 사업자등록번호\n    ** 투자금액, 업종, 공동사업자 여부(특히, 국민이 경영하는 기업에 투자한 자는"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "사업자등록증, 법인등기사항전부증명서",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "법인등기사항전부증명서는 법인기업인 경우에 한함",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지입증서류(부동산 임대차계약서 등)",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 126 -' (absolute PDF page 126, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 법인 여부 조건을 document-level conditionKo로 보존. (재외공관에서 D-8을 직접 받아 입국한 외국인의 변경신청 준용 안내는 sourceExcerpt에 보존.)"
+    },
+    {
+      "statusCode": "E-2",
+      "statusNameKo": "회화지도",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 173,
+        "pageEnd": 173,
+        "sectionTitle": "회화지도(E-2) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n ①신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n ②‘부가가치세법’에 따른 사업자등록증 ③ 체류지 입증서류 \n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음 ② 변경관련 입증서류\n회화지도(E-2)"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 173 -' (absolute PDF page 173, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "E-3",
+      "statusNameKo": "연구",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 194,
+        "pageEnd": 194,
+        "sectionTitle": "연구(E-3) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n  ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n  ② ‘부가가치세법’에 따른 사업자등록증 ③ 체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음 ② 변경\n관련 입증서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 194 -' (absolute PDF page 194, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "E-4",
+      "statusNameKo": "기술지도",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 199,
+        "pageEnd": 199,
+        "sectionTitle": "기술지도(E-4) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n  ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n  ② ‘부가가치세법’에 따른 사업자등록증  ③ 체류지 입증서류   \n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음 ② 변경관련 입증서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 199 -' (absolute PDF page 199, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "E-5",
+      "statusNameKo": "전문직업",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 204,
+        "pageEnd": 204,
+        "sectionTitle": "전문직업(E-5) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류\n ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n ② ‘부가가치세법’에 따른 사업자등록증  ③ 체류지 입증서류   \n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권 변경 사항\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음\n   ② 변경관련 입증서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 204 -' (absolute PDF page 204, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 단일 절차(외국인등록), 상위코드 수준 목록."
+    },
+    {
+      "statusCode": "E-6",
+      "statusNameKo": "예술흥행",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 211,
+        "pageEnd": 211,
+        "sectionTitle": "예술흥행(E-6) — 외국인등록 / 1. 외국인등록 신청서류 및 확인사항 / 가. 신청서류",
+        "sourceExcerpt": "1. 외국인등록 신청서류 및 확인사항\n 가. 신청서류\n  ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n  ② ‘부가가치세법’에 따른 사업자등록증 사본* \n   * 해당 외국인을 고용한 단체 및 기업 등의 사업자등록증 또는 고유번호증 등 (직\n접 고용관계가 없는 경우에는 초청단체 또는 소속 단체 등의 사업자등록증 등)\n  ③ 채용신체검사서* 1부 (E-6-2만 제출)\n    * 공무원채용신체검사서 발급 절차에 따르고, HIV반응 및 마약검사 항목은 필수 검\n사항목이 아니며, 회화지도(E-2) 강사 등에 대한 지정병원제 규정 비적용\n   ④ 체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음\n    ② 변경관련 입증서류\n신분변동\n1. 해고 ․ 중도퇴직자 \n - 사유가 발생한 날로부터 15일 이내에 관할 청장 등에게 신고"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증 사본",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "해당 외국인을 고용한 단체·기업 등의 사업자등록증 또는 고유번호증 등(직접 고용관계가 없는 경우 초청단체 또는 소속 단체 등의 사업자등록증 등)",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "채용신체검사서 1부",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "E-6-2만 제출. 공무원채용신체검사서 발급 절차에 따르며, HIV반응 및 마약검사 항목은 필수 검사항목이 아님(회화지도(E-2) 강사 등 지정병원제 규정 비적용)",
+          "requiredness": "conditional",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 211 -' (absolute PDF page 211, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 채용신체검사서의 E-6-2 한정 조건은 document-level conditionKo(requiredness=conditional)로 보존 — 별도 보편 요건으로 flatten하지 않음."
+    },
+    {
+      "statusCode": "E-7",
+      "statusNameKo": "특정활동",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 228,
+        "pageEnd": 228,
+        "sectionTitle": "특정활동(E-7) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "외국인등록\n1. 외국인등록 신청서류\n  ①신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n  ②‘부가가치세법’에 따른 사업자등록증\n  ③채용신체검사서(외국인학교 등의 교사만 해당)\n  ④체류지 입증서류\n2. 외국인등록사항 변경신고\n 가. 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧발급일자‧유효기간\n 나. 신고기한 : 변경일로부터 15일 이내 신고\n 다. 제출서류\n   ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 없음\n    ② 변경관련 입증서류\n기타 참고사항\n1. 국민고용 보호를 위한 심사기준\n  ❍ (적용원칙) 전문인력에 대해서는 국민대체가 어렵고, 국부창출 및 고용창\n출에 기여도가 높은 점 감안하여 임금요건 기준을 제외하고는 원칙적으로 적\n용하지 않음\n     ① 아래 각호의 경우 예외적으로 국민고용보호심사 기준 적용\n     ⅰ) 전문인력 중 초청장 남발 우려가 있는 기계공학 기술자, 제도사, 여\n행상품개발자, 해외영업원, 통․번역가 등에 대해서는 국민고용 보호 \n심사 기준을 예외적으로 적용\n     ⅱ) 전문인력중 국민고용보호 직종과 준전문인력, 일반기능인력, 숙련기능\n인력은 국민고용 침해 소지가 없도록"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "「부가가치세법」에 따른 사업자등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "채용신체검사서",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "외국인학교 등의 교사만 해당",
+          "requiredness": "conditional",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 228 -' (absolute PDF page 228, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. 이미 promote된 E-7 연장(p.226)과 동일하게 상위코드 수준. 채용신체검사서의 교사 한정 조건은 document-level conditionKo로 보존."
+    },
+    {
+      "statusCode": "E-10",
+      "statusNameKo": "선원취업",
+      "subCode": null,
+      "subCodeNameKo": null,
+      "scenarioId": null,
+      "scenarioNameKo": null,
+      "procedureType": "registration",
+      "procedureTypesDetected": [
+        "registration"
+      ],
+      "evidenceType": "required_documents",
+      "manualSource": {
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "manualName": "외국인체류 안내매뉴얼",
+        "manualVersion": "2026.5",
+        "pageStart": 339,
+        "pageEnd": 339,
+        "sectionTitle": "선원취업(E-10) — 외국인등록 / 1. 외국인등록 신청서류",
+        "sourceExcerpt": "① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료\n  ② 내항여객운송사업면허증 또는 내항화물운송등록증 \n ③ 건강검진서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)\n ④ 마약검사 확인서 (반드시 봉투에 밀봉된 상태로 제출, 개봉 불가)\n ⑤ 산업재해보상보험 또는 상해보험 가입증명원\n ⑥ 체류지 입증서류\n기    타\n󰁾 목차\n기  타\n1. 고용변동신고\n 가. 신고의무자\n   \n 선원취업(E-10) 외국인선원을 고용한 자\n 나. 신고기한\n   \n 출입국관리법 제19조제1항, 출입국관리법시행령 제24조제1항에 따라 \n주소지 관할 청(사무소‧출장소)장 등에게 신고\n    - 해고·퇴직·고용계약 변경은 ‘사유가 발생한 날‘로부터 15일 이내\n    - 사망·소재불명은 ’사유를 안 날‘로부터 15일 이내\n 다. 신고방법\n   \n 방문신고\n     - 체류지 관할 청(사무소·출장소) 직접방문 신고\n   \n 팩스신고(1577-1346), 하이코리아 전자민원(www.hikorea.go.kr)\n     - 체류지 관할 청(사무소·출장소) 구분 없이 신고 가능(시스템 상 자동 구분) \n     - 상기 신고기한을 도과하지 않은 경우에만 처리\n 라. 제출서류"
+      },
+      "documents": [
+        {
+          "textKo": "신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "내항여객운송사업면허증 또는 내항화물운송등록증",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "건강검진서",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "반드시 봉투에 밀봉된 상태로 제출, 개봉 불가",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "마약검사 확인서",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": "반드시 봉투에 밀봉된 상태로 제출, 개봉 불가",
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "산업재해보상보험 또는 상해보험 가입증명원",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        },
+        {
+          "textKo": "체류지 입증서류",
+          "docMasterId": null,
+          "boundary": "parent_code_level",
+          "conditionKo": null,
+          "requiredness": "required",
+          "notesKo": null
+        }
+      ],
+      "boundaryType": "parent_code_level",
+      "confidence": "HIGH",
+      "reviewStatus": "source_confirmed",
+      "readinessLabel": "STRUCTURED_EVIDENCE_READY",
+      "doNotFlatten": true,
+      "subCodesCovered": null,
+      "evidenceSource": "pdf_verified",
+      "verificationNote": "Verified via PyMuPDF text extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The list appears on the PDF page bearing the printed footer '- 339 -' (absolute PDF page 339, 1:1). Parent-code-level single-procedure list; applicant-type / substitute / sub-code conditions captured as document-level conditionKo, not flattened into universal requirements. ‘1. 외국인등록 신청서류’ 헤딩은 p.338 하단에 있고 ①~⑥ 목록은 p.339에 이어짐 — 목록 전체가 위치한 p.339를 인용."
     }
   ]
 }

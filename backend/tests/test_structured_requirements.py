@@ -36,6 +36,14 @@ if str(BACKEND_DIR) not in sys.path:
 HIGH_RISK_NEEDS_REVIEW = ["E-9", "F-5", "F-6", "G-1", "H-2", "C-3", "F-1", "F-2"]
 READY_STATUSES = ["D-2", "D-4", "E-7"]
 
+# Full set of statuses with at least one source-confirmed entry after the
+# 2026-05 procedure-coverage expansion (sorted as the helper returns them).
+SOURCE_CONFIRMED_CODES = [
+    "D-1", "D-2", "D-4", "D-5", "D-6", "D-7", "D-8",
+    "E-10", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7",
+]
+SOURCE_CONFIRMED_TOTAL = 18
+
 
 def _client():
     for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
@@ -56,9 +64,9 @@ class StructuredRequirementsHelperTests(unittest.TestCase):
         self.sr = sr
 
     def test_helper_loads_successfully(self):
-        # Test 1: helper loads at least the 3 verified groundings.
+        # Test 1: helper loads every source-confirmed status (post-expansion).
         codes = self.sr.source_confirmed_status_codes()
-        self.assertEqual(codes, ["D-2", "D-4", "E-7"])
+        self.assertEqual(codes, SOURCE_CONFIRMED_CODES)
 
     def test_known_ready_status_returns_entries(self):
         # Test 2: a known READY status returns entries.
@@ -77,11 +85,11 @@ class StructuredRequirementsHelperTests(unittest.TestCase):
                 f"{code} must yield no entries by default (all needs-review)",
             )
             self.assertFalse(self.sr.has_source_confirmed_structured_requirements(code))
-        # E-7 default returns ONLY the single source-confirmed entry, not the
-        # 30+ candidate rows.
+        # E-7 default returns ONLY its source-confirmed entries (extension +
+        # registration), not the 30+ candidate rows.
         e7_default = self.sr.get_structured_requirements("E-7")
-        self.assertEqual(len(e7_default), 1)
-        self.assertTrue(self.sr.is_source_confirmed(e7_default[0]))
+        self.assertEqual(len(e7_default), 2)
+        self.assertTrue(all(self.sr.is_source_confirmed(e) for e in e7_default))
 
     def test_needs_review_only_with_internal_option(self):
         # Test 4: needs-review entries only returned with explicit internal flag.
@@ -252,12 +260,13 @@ class StructuredRequirementsPromotionTests(unittest.TestCase):
         sr.reset_cache_for_tests()
         self.sr = sr
 
-    def test_total_source_confirmed_count_is_four(self):
-        # 3 prior (D-2/D-4/E-7 extension) + 1 promoted (D-2 registration).
+    def test_total_source_confirmed_count(self):
+        # 4 prior (D-2 ext+reg, D-4 ext, E-7 ext) + 14 promoted in the
+        # 2026-05 procedure-coverage expansion = 18.
         total = 0
         for code in self.sr.source_confirmed_status_codes():
             total += len(self.sr.get_source_confirmed_structured_requirements(code))
-        self.assertEqual(total, 4)
+        self.assertEqual(total, SOURCE_CONFIRMED_TOTAL)
 
     def test_d2_now_exposes_registration_and_extension(self):
         procs = sorted(
@@ -311,6 +320,108 @@ class StructuredRequirementsPromotionTests(unittest.TestCase):
         for code in HIGH_RISK_NEEDS_REVIEW:
             self.assertEqual(
                 self.sr.get_source_confirmed_structured_requirements(code), []
+            )
+
+
+class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
+    """PR: data/expand-source-confirmed-procedure-coverage-2026-05.
+
+    Proves the 14 newly promoted parent-level procedure lists are exposed,
+    keep their conditions at document level (never flattened), cite the
+    verified stay-manual pages, and that blocked statuses stay hidden.
+    """
+
+    # (statusCode, procedureType, page, expected document count)
+    PROMOTED = [
+        ("D-1", "registration", 34, 3),
+        ("D-5", "registration", 104, 3),
+        ("D-5", "extension", 103, 3),
+        ("D-6", "registration", 107, 3),
+        ("D-6", "extension", 107, 3),
+        ("D-7", "registration", 113, 3),
+        ("D-8", "registration", 126, 3),
+        ("E-2", "registration", 173, 3),
+        ("E-3", "registration", 194, 3),
+        ("E-4", "registration", 199, 3),
+        ("E-5", "registration", 204, 3),
+        ("E-6", "registration", 211, 4),
+        ("E-7", "registration", 228, 4),
+        ("E-10", "registration", 339, 6),
+    ]
+    # Statuses inspected but deliberately NOT promoted this pass.
+    STILL_BLOCKED = ["E-9", "F-1", "F-6", "G-1", "H-2", "C-3", "D-10"]
+
+    def setUp(self):
+        import structured_requirements as sr  # noqa: WPS433
+        sr.reset_cache_for_tests()
+        self.sr = sr
+
+    def test_each_promoted_record_is_parent_level_and_cited(self):
+        for code, proc, page, ndocs in self.PROMOTED:
+            ents = self.sr.get_source_confirmed_structured_requirements(
+                code, {"procedureType": proc}
+            )
+            self.assertEqual(len(ents), 1, f"{code}/{proc} should expose 1 entry")
+            e = ents[0]
+            self.assertEqual(e["boundaryType"], "parent_code_level")
+            self.assertEqual(e["confidence"], "HIGH")
+            self.assertEqual(e["readinessLabel"], "STRUCTURED_EVIDENCE_READY")
+            self.assertEqual(e["manualSource"]["pageStart"], page)
+            self.assertEqual(e["manualSource"]["pageEnd"], page)
+            self.assertEqual(e["evidenceSource"], "pdf_verified")
+            self.assertTrue(
+                e["manualSource"]["file"].endswith("stay_manual_2026_05.pdf")
+            )
+            self.assertEqual(len(e["documents"]), ndocs)
+            # Conditions stay at document level; no doc carries a non-parent
+            # boundary (which the validator would also reject).
+            for d in e["documents"]:
+                self.assertEqual(d["boundary"], "parent_code_level")
+
+    def test_conditions_are_preserved_not_flattened(self):
+        # E-6 채용신체검사서 is E-6-2-only: kept as a conditional doc, never a
+        # separate universal requirement.
+        e6 = self.sr.get_source_confirmed_structured_requirements(
+            "E-6", {"procedureType": "registration"}
+        )[0]
+        med = [d for d in e6["documents"] if "채용신체검사서" in d["textKo"]]
+        self.assertEqual(len(med), 1)
+        self.assertEqual(med[0]["requiredness"], "conditional")
+        self.assertIn("E-6-2", med[0]["conditionKo"])
+        # D-5 substitute-document (협조공문 갈음) preserved as a condition.
+        d5 = self.sr.get_source_confirmed_structured_requirements(
+            "D-5", {"procedureType": "registration"}
+        )[0]
+        self.assertTrue(
+            any(d.get("conditionKo") and "갈음" in d["conditionKo"]
+                for d in d5["documents"])
+        )
+
+    def test_promoted_statuses_exposed_on_api(self):
+        client, _ = _client()
+        body = client.get("/api/visas").json()
+        by_code = {r.get("code"): r for r in body["data"]}
+        for code, proc, _page, _n in self.PROMOTED:
+            rec = by_code.get(code)
+            self.assertIsNotNone(rec, f"{code} missing from /api/visas")
+            procs = {
+                e["procedureType"]
+                for e in rec.get("sourceConfirmedStructuredRequirements", [])
+            }
+            self.assertIn(proc, procs, f"{code} should expose {proc} via /api/visas")
+
+    def test_ai_block_present_for_new_statuses(self):
+        _, mod = _client()
+        for code in ("D-6", "E-3", "E-10"):
+            blk = mod._build_source_confirmed_structured_requirements_block(code, None)
+            self.assertTrue(blk, f"{code} should produce a source-confirmed block")
+            self.assertIn("외국인등록", blk)
+
+    def test_blocked_statuses_remain_hidden(self):
+        for code in self.STILL_BLOCKED:
+            self.assertEqual(
+                self.sr.get_source_confirmed_structured_requirements(code), [],
+                f"{code} must remain hidden (blocked, not promoted)",
             )
 
 
