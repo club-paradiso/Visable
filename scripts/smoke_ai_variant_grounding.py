@@ -96,6 +96,31 @@ def discover_targets(visas: list) -> list[dict]:
     return targets
 
 
+def print_discovery_summary(targets: list, visas: list) -> None:
+    """Report procedure-key counts, status counts, and statuses left to the
+    broader all-status safeguard sweep (scripts/smoke_ai_all_status_safeguards.py)."""
+    key_counts: dict = {}
+    covered_codes = set()
+    for t in targets:
+        key_counts[t["procedure_key"]] = key_counts.get(t["procedure_key"], 0) + 1
+        covered_codes.add(t["visa_code"])
+
+    all_codes = [v.get("code", "") for v in visas if isinstance(v, dict)]
+    uncovered = sorted(c for c in all_codes if c and c not in covered_codes)
+
+    print(f"  routable variant-bearing targets : {len(targets)}")
+    print(f"  distinct statuses covered        : {len(covered_codes)} / {len(all_codes)} total")
+    if key_counts:
+        keys_fmt = ", ".join(f"{k}={key_counts[k]}" for k in sorted(key_counts))
+        print(f"  by procedure key                 : {keys_fmt}")
+    print(
+        f"  not covered here (see all-status safeguard sweep): "
+        f"{len(uncovered)} status(es)"
+    )
+    if uncovered:
+        print(f"    {', '.join(uncovered)}")
+
+
 def build_visa_data_payload(visa_record: dict) -> dict:
     """Build a safe visa_data payload (mirrors what the frontend sends)."""
     return {
@@ -255,6 +280,7 @@ def main() -> None:
             print(f"Limit: {args.limit}")
 
     print(f"Targets: {len(targets)}")
+    print_discovery_summary(targets, visas)
     if not targets:
         print("No variant-bearing routable targets found — nothing to smoke.")
         sys.exit(0)
