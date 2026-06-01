@@ -1299,9 +1299,10 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .scenario-choice:hover, .scenario-choice:focus-visible { border-color: var(--ac); background: var(--acL); color: var(--t1); }
 .scenario-choice:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 1px; }
 .scenario-choice[aria-pressed="true"] { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 11%, var(--bg1)); color: var(--t1); box-shadow: inset 3px 0 0 var(--ac); }
-.scenario-choice[aria-pressed="true"]::before { content: "✓ 선택됨"; color: var(--ac); font-size: 0.67rem; font-weight: 900; }
+.scenario-choice[aria-pressed="true"]::before { content: var(--lang-scenario-selected-choice, "✓ 선택됨"); color: var(--ac); font-size: 0.67rem; font-weight: 900; }
 .scenario-choice-main { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem; font-size: 0.78rem; font-weight: 850; }
 .scenario-choice-preview { max-width: 32rem; color: var(--t3); font-size: 0.7rem; line-height: 1.45; }
+.official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
 .manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
 .manual-subcode-card.is-muted { opacity: 0.58; }
@@ -7698,31 +7699,31 @@ body.searched .vc.manual-result .manual-section-title {
   background: color-mix(in srgb, var(--p-emerald) 6%, #fff);
   color: var(--p-emerald-deep);
 }
-.manual-result .ai-grounding-panel .gp-row.state-verified::before { content: "검증됨"; }
+.manual-result .ai-grounding-panel .gp-row.state-verified::before { content: var(--lang-gp-verified, "검증됨"); }
 .manual-result .ai-grounding-panel .gp-row.state-source-supported {
   border-color: color-mix(in srgb, var(--p-emerald) 28%, transparent);
   background: color-mix(in srgb, var(--p-emerald) 3%, #fff);
   color: var(--p-emerald-deep);
 }
-.manual-result .ai-grounding-panel .gp-row.state-source-supported::before { content: "출처 있음"; }
+.manual-result .ai-grounding-panel .gp-row.state-source-supported::before { content: var(--lang-gp-source-supported, "출처 있음"); }
 .manual-result .ai-grounding-panel .gp-row.state-partial {
   border-color: color-mix(in srgb, var(--color-warning) 45%, transparent);
   background: color-mix(in srgb, var(--color-warning) 6%, #fff);
   color: #8a4b0f;
 }
-.manual-result .ai-grounding-panel .gp-row.state-partial::before { content: "부분"; }
+.manual-result .ai-grounding-panel .gp-row.state-partial::before { content: var(--lang-gp-partial, "부분"); }
 .manual-result .ai-grounding-panel .gp-row.state-needs-review {
   border-color: color-mix(in srgb, var(--color-warning) 50%, transparent);
   background: color-mix(in srgb, var(--color-warning) 7%, #fff);
   color: #8a4b0f;
 }
-.manual-result .ai-grounding-panel .gp-row.state-needs-review::before { content: "검토 필요"; }
+.manual-result .ai-grounding-panel .gp-row.state-needs-review::before { content: var(--lang-gp-needs-review, "검토 필요"); }
 .manual-result .ai-grounding-panel .gp-row.state-advisory {
   border-color: color-mix(in srgb, var(--p-line) 60%, transparent);
   background: color-mix(in srgb, var(--p-paper-surface-2) 55%, #fff);
   color: var(--p-ink-mute);
 }
-.manual-result .ai-grounding-panel .gp-row.state-advisory::before { content: "참고"; }
+.manual-result .ai-grounding-panel .gp-row.state-advisory::before { content: var(--lang-gp-advisory, "참고"); }
 .manual-result .ai-grounding-panel .gp-variant-note { color: var(--p-ink-mute); font-style: italic; }
 .manual-result .ai-grounding-panel .gp-row.state-extracted-only,
 .manual-result .ai-grounding-panel .gp-row.state-source-linked-unverified {
@@ -7730,27 +7731,27 @@ body.searched .vc.manual-result .manual-section-title {
   background: color-mix(in srgb, var(--color-warning) 4%, #fff);
   color: #6a3a04;
 }
-.manual-result .ai-grounding-panel .gp-row.state-extracted-only::before { content: "미검증"; }
-.manual-result .ai-grounding-panel .gp-row.state-source-linked-unverified::before { content: "링크만"; }
+.manual-result .ai-grounding-panel .gp-row.state-extracted-only::before { content: var(--lang-gp-extracted-only, "미검증"); }
+.manual-result .ai-grounding-panel .gp-row.state-source-linked-unverified::before { content: var(--lang-gp-source-linked-unverified, "링크만"); }
 .manual-result .ai-grounding-panel .gp-row.state-disabled {
   border-color: color-mix(in srgb, var(--p-line) 60%, transparent);
   background: color-mix(in srgb, var(--p-paper-surface-2) 60%, #fff);
   color: var(--p-ink-mute);
 }
-.manual-result .ai-grounding-panel .gp-row.state-disabled::before { content: "사용 안 함"; }
+.manual-result .ai-grounding-panel .gp-row.state-disabled::before { content: var(--lang-gp-disabled, "사용 안 함"); }
 .manual-result .ai-grounding-panel .gp-row.state-not-wired {
   border-color: color-mix(in srgb, var(--p-line) 60%, transparent);
   background: color-mix(in srgb, var(--p-paper-surface-2) 60%, #fff);
   color: var(--p-ink-mute);
   font-style: italic;
 }
-.manual-result .ai-grounding-panel .gp-row.state-not-wired::before { content: "미연결"; font-style: normal; }
+.manual-result .ai-grounding-panel .gp-row.state-not-wired::before { content: var(--lang-gp-not-wired, "미연결"); font-style: normal; }
 .manual-result .ai-grounding-panel .gp-row.state-failed {
   border-color: color-mix(in srgb, var(--color-warning) 65%, transparent);
   background: color-mix(in srgb, var(--color-warning) 10%, #fff);
   color: #8a4b0f;
 }
-.manual-result .ai-grounding-panel .gp-row.state-failed::before { content: "검증 실패"; }
+.manual-result .ai-grounding-panel .gp-row.state-failed::before { content: var(--lang-gp-failed, "검증 실패"); }
 .manual-result .ai-grounding-panel .gp-disclosure {
   margin: 0.7rem 0 0;
   font-size: 0.74rem;
@@ -11271,9 +11272,7 @@ function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVaria
     const aiInput = document.getElementById('aiInput');
     if (selectedVariant) {
         const label = selectedVariantLabel || selectedVariant.labelKo || selectedVariant.label || selectedVariant.id;
-        aiInput.value = currentLanguage === 'en'
-            ? `${visa.code} Based on the ${label} scenario, tell me the required documents and important cautions.`
-            : `${visa.code} ${label} 기준으로 필요한 서류와 주의사항 알려줘`;
+        aiInput.value = tx('selectedScenarioAiPrompt', { visaCode: visa.code, label });
     } else {
         aiInput.value = '';
     }
@@ -12030,13 +12029,13 @@ function buildModelBadgeHtml(result) {
 
 function mapLawWarningToFriendly(code) {
     const map = {
-        LAW_GROUNDING_DISABLED: '법령 검증 기능이 꺼져 있음',
-        LAW_API_KEY_MISSING: '법령 API 키 미설정',
-        SOURCE_UNAVAILABLE: '법령 출처 확인 불가',
-        LAW_API_TIMEOUT: '법령 조회 시간 초과',
-        CITATION_VERIFICATION_NOT_WIRED: '인용 검증 미연결'
+        LAW_GROUNDING_DISABLED: tx('aiLawWarningDisabled'),
+        LAW_API_KEY_MISSING: tx('aiLawWarningMissingKey'),
+        SOURCE_UNAVAILABLE: tx('aiLawWarningSourceUnavailable'),
+        LAW_API_TIMEOUT: tx('aiLawWarningTimeout'),
+        CITATION_VERIFICATION_NOT_WIRED: tx('aiLawWarningNotWired')
     };
-    return map[code] || '확인 필요';
+    return map[code] || tx('aiLawStatusNeedsReview');
 }
 
 function renderGroundingSourcePanel(metadata) {
@@ -12055,22 +12054,22 @@ function renderGroundingSourcePanel(metadata) {
     // CSS in the STRUCTURAL RESULT-CARD HIERARCHY v2 layer styles gp-row.state-*.
     const rows = [];
     if (manual) {
-        rows.push('<div class="gp-row state-source-supported"><strong>행정 매뉴얼 근거</strong>: 매뉴얼 출처 확인됨 · 참고용 (법적 결정이 아니며 개별 검증은 진행 중)</div>');
+        rows.push(`<div class="gp-row state-source-supported"><strong>${escapeHtml(tx('aiManualGroundingLabel'))}</strong>: ${escapeHtml(tx('aiManualGroundingStatus'))}</div>`);
     }
     if (lawUsed || lawAttempted || hasCitation) {
-        let status = '기능 꺼짐';
+        let status = tx('aiLawStatusDisabled');
         let stateClass = 'state-disabled';
-        if (lawUsed) { status = '출처 있음'; stateClass = 'state-verified'; }
-        else if (citationStatus === 'extracted_only') { status = '미검증'; stateClass = 'state-extracted-only'; }
-        else if (citationStatus === 'source_linked_unverified') { status = '출처 연결됨 · 미검증'; stateClass = 'state-source-linked-unverified'; }
-        else if (citationStatus === 'failed_verification') { status = '검증 실패'; stateClass = 'state-failed'; }
-        else if (lawAttempted) { status = '확인 필요'; stateClass = 'state-partial'; }
-        else if (citationStatus === 'not_wired' || (lawWarnings.indexOf && lawWarnings.indexOf('CITATION_VERIFICATION_NOT_WIRED') !== -1)) { status = '인용 검증 미연결'; stateClass = 'state-not-wired'; }
+        if (lawUsed) { status = tx('aiLawStatusSourcePresent'); stateClass = 'state-verified'; }
+        else if (citationStatus === 'extracted_only') { status = tx('aiLawStatusUnverified'); stateClass = 'state-extracted-only'; }
+        else if (citationStatus === 'source_linked_unverified') { status = tx('aiLawStatusSourceLinked'); stateClass = 'state-source-linked-unverified'; }
+        else if (citationStatus === 'failed_verification') { status = tx('aiLawStatusFailed'); stateClass = 'state-failed'; }
+        else if (lawAttempted) { status = tx('aiLawStatusNeedsReview'); stateClass = 'state-partial'; }
+        else if (citationStatus === 'not_wired' || (lawWarnings.indexOf && lawWarnings.indexOf('CITATION_VERIFICATION_NOT_WIRED') !== -1)) { status = tx('aiLawStatusNotWired'); stateClass = 'state-not-wired'; }
         const friendly = lawWarnings.slice(0,2).map(mapLawWarningToFriendly);
-        rows.push(`<div class="gp-row ${stateClass}"><strong>법령 인용 검증</strong>: ${status}${friendly.length ? ` (${friendly.join(', ')})` : ''}</div>`);
+        rows.push(`<div class="gp-row ${stateClass}"><strong>${escapeHtml(tx('aiLawVerificationLabel'))}</strong>: ${escapeHtml(status)}${friendly.length ? ` (${friendly.map(escapeHtml).join(', ')})` : ''}</div>`);
     }
     if (hasPublicData) {
-        rows.push('<div class="gp-row state-partial"><strong>공공데이터 근거</strong>: 출처 표시 · 개별 항목 검증은 진행 중</div>');
+        rows.push(`<div class="gp-row state-partial"><strong>${escapeHtml(tx('aiPublicDataLabel'))}</strong>: ${escapeHtml(tx('aiPublicDataStatus'))}</div>`);
     }
     if (hasVariantContext) {
         // Up to 4 safe metadata items only (visa_code · procedure_key · label/variant_id · page_range).
@@ -12081,29 +12080,29 @@ function renderGroundingSourcePanel(metadata) {
         const itemsHtml = shown.map(function(src) {
             const parts = [];
             if (src.visa_code) parts.push(escapeHtml(String(src.visa_code)));
-            if (src.procedure_key) parts.push(escapeHtml(String(src.procedure_key)));
+            if (src.procedure_key) parts.push(escapeHtml(getProcedureLabelByKey(String(src.procedure_key), String(src.procedure_key))));
             const lbl = src.label || src.variant_id;
             if (lbl) parts.push(escapeHtml(String(lbl)));
             if (src.page_range) parts.push(escapeHtml(String(src.page_range)));
             return parts.length ? '<div class="gp-variant-item">' + parts.join(' · ') + '</div>' : '';
         }).join('');
-        const moreHtml = extra > 0 ? '<div class="gp-variant-more">외 ' + extra + '건</div>' : '';
+        const moreHtml = extra > 0 ? `<div class="gp-variant-more">${escapeHtml(tx('aiScenarioMoreCount', { count: extra }))}</div>` : '';
         const listHtml = itemsHtml ? '<div class="gp-variant-list">' + itemsHtml + moreHtml + '</div>' : '';
         // Needs-review scenario variants are local manual context only — visibly
         // distinct from source-confirmed grounding and never a final determination.
-        const noteHtml = '<div class="gp-variant-note">세부 자격·사유가 맞는 경우에만 참고하세요.</div>';
+        const noteHtml = `<div class="gp-variant-note">${escapeHtml(tx('aiScenarioMatchNote'))}</div>`;
         const selectedScenario = Boolean(currentAiSelectedProcedureVariantId && safeSources.some(function(src) { return src.variant_id === currentAiSelectedProcedureVariantId; }));
-        const variantTitle = selectedScenario ? '선택한 시나리오 기준' : '시나리오별 서류 근거';
-        rows.push('<div class="gp-row state-needs-review"><strong>' + variantTitle + '</strong>: 매뉴얼 기반 후보 · 최종 확인 필요' + listHtml + noteHtml + '</div>');
+        const variantTitle = selectedScenario ? tx('aiSelectedScenarioLabel') : tx('aiScenarioGroundingLabel');
+        rows.push('<div class="gp-row state-needs-review"><strong>' + escapeHtml(variantTitle) + '</strong>: ' + escapeHtml(tx('aiScenarioCandidateStatus')) + listHtml + noteHtml + '</div>');
     }
     if (!rows.length) {
         // No strong grounding signal — still surface an advisory row so the
         // 1345 / HiKorea / immigration-office disclosure stays visible.
-        rows.push('<div class="gp-row state-advisory"><strong>일반 안내</strong>: 확인된 개별 출처가 연결되지 않은 일반 참고 안내입니다.</div>');
+        rows.push(`<div class="gp-row state-advisory"><strong>${escapeHtml(tx('aiAdvisoryLabel'))}</strong>: ${escapeHtml(tx('aiAdvisoryText'))}</div>`);
     }
 
-    const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>기술 세부정보 보기</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
-    return `<div class="ai-grounding-panel"><div class="gp-title">출처 · 검증 상태</div>${rows.join('')}${debug}<p class="gp-disclosure">본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.</p></div>`;
+    const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiTechnicalDetails'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
+    return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
 }
 
 
@@ -12343,22 +12342,25 @@ function getLocalizedSubcodeName(s) {
     return isEnglishMode() ? (s.nameEn || s.name_en || s.titleEn || s.title_en || s.nameKo || s.name || '') : (s.nameKo || s.name || '');
 }
 
-const PROCEDURE_LABEL_KEYS = {
-    visaIssuance: ['사증발급', 'Visa issuance'],
-    certificateOfVisaIssuance: ['사증발급인정서', 'Certificate for Visa Issuance'],
-    statusChange: ['체류자격 변경', 'Change of status'],
-    extension: ['체류기간 연장', 'Extension of stay'],
-    statusGrant: ['체류자격 부여', 'Status grant'],
-    registration: ['외국인등록', 'Foreigner registration'],
-    activitiesOutsideStatus: ['자격외활동', 'Activities outside status'],
-    workplaceChange: ['근무처 변경·추가', 'Workplace change/addition'],
-    reentry: ['재입국', 'Re-entry']
+const PROCEDURE_LABEL_INDEX = {
+    visaIssuance: 0,
+    certificateOfVisaIssuance: 1,
+    statusChange: 2,
+    extension: 3,
+    statusGrant: 4,
+    registration: 5,
+    activitiesOutsideStatus: 6,
+    workplaceChange: 7,
+    reentry: 8
 };
 
+function getProcedureLabelByKey(key, fallback = '') {
+    const index = PROCEDURE_LABEL_INDEX[key];
+    return Number.isInteger(index) ? txAt('procedureLabels', index, fallback || key) : (fallback || key);
+}
+
 function getProcedureLabel(proc) {
-    const labels = PROCEDURE_LABEL_KEYS[proc.key];
-    if (!labels) return proc.label;
-    return isEnglishMode() ? labels[1] : labels[0];
+    return getProcedureLabelByKey(proc.key, proc.label);
 }
 
 function localizeResultCount(n, subtypeCount = 0) {
@@ -12647,15 +12649,15 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
     const refs = variant.manualRefs.map(ref => [ref.manualName, ref.manualVersion, ref.pageRange].filter(Boolean).map(escapeHtml).join(' · ')).filter(Boolean);
     const citations = refs.length ? `<div class="manual-subcode-desc" style="margin-top:0.5rem; opacity:0.85;">${refs.join('<br>')}</div>` : '';
     return `<div class="manual-subcode-card${selectedByDefault ? ' is-selected' : ''}" data-procedure-variant="${escapeHtml(variant.id)}" data-procedure-variant-card="${escapeHtml(variant.id)}">
-        <div class="scenario-selected-badge">선택됨</div>
+        <div class="scenario-selected-badge">${escapeHtml(tx('scenarioSelectedBadge'))}</div>
         <div class="manual-subcode-top">${statusCode}<span class="manual-subcode-name">${escapeHtml(variant.label)}</span></div>
         ${scenario}
         <div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: docCount }))}</div>
         <div class="doc-group-grid">${docsHtml}</div>
         ${notes}${citations}
         <div class="scenario-selected-actions">
-            <div class="scenario-selected-note">선택한 시나리오는 참고용입니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.</div>
-            <button type="button" class="scenario-ai-handoff-btn" data-action="ask-selected-procedure-variant" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" data-variant-label="${escapeHtml(variant.label)}">이 시나리오로 AI에게 질문하기</button>
+            <div class="scenario-selected-note">${escapeHtml(tx('scenarioSelectedReferenceNote'))}</div>
+            <button type="button" class="scenario-ai-handoff-btn" data-action="ask-selected-procedure-variant" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" data-variant-label="${escapeHtml(variant.label)}">${escapeHtml(tx('scenarioAskAi'))}</button>
         </div>
     </div>`;
 }
@@ -12670,17 +12672,16 @@ function renderProcedureVariantChoice(procedureKey, variant) {
 
 function renderProcedureVariants(v, proc, keywords) {
     if (!proc.variants.length) return '';
-    const title = currentLanguage === 'en' ? 'Choose the scenario closest to your situation' : '내 상황에 맞는 시나리오 선택';
-    const notice = currentLanguage === 'en'
-        ? 'Required documents may vary by detailed eligibility or reason. Choose the closest situation below to review the relevant checklist.'
-        : '세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.';
+    const title = tx('scenarioSelectorTitle');
+    const notice = tx('scenarioSelectorCopy');
+    const officialLabelsNote = currentLanguage === 'ko' ? '' : `<p class="scenario-official-labels-note">${escapeHtml(tx('scenarioOfficialLabelsKoNote'))}</p>`;
     const singleVariant = proc.variants.length === 1;
     const choicesHtml = singleVariant ? '' : `<div class="scenario-choice-list" role="group" aria-label="${escapeHtml(title)}">
-        <button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${currentLanguage === 'en' ? 'View all' : '전체 보기'}</span></button>
+        <button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${escapeHtml(tx('scenarioShowAll'))}</span></button>
         ${proc.variants.map(variant => renderProcedureVariantChoice(proc.key, variant)).join('')}
     </div>`;
     return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
-        <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p></div>
+        <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>
         ${choicesHtml}
         <div class="manual-subcode-grid">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant)).join('')}</div>
     </div>`;
@@ -12710,10 +12711,12 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const summaryHtml = renderProcedureSummaryBlock(proc.summary, keywords);
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
+    const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
         ${eligibilityHtml}${summaryHtml}${notesHtml}
         ${feeHtml}
         ${countHtml}
+        ${officialDocumentNamesNote}
         ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>` : ''}
         ${variantsHtml || (!docsHtml ? reviewFallback : '')}
     </div>`;
@@ -13615,6 +13618,12 @@ const UI_TRANSLATIONS = {
         footerHeroTitle: '대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.', footerChips: ['📑 공식 출처 확인 경로', '🧭 목적별 경로 정리', '🏛 관할기관 안내', '💼 직종·업종 코드'], footerStart: '지금 탐색 시작', footerHotline: '1345 직접 문의', footerCtaTitle: '어렵기만 하던 체류 관리,<br>이제는 손쉽게 확인하세요.', footerCtaCopy: '복잡한 체류 행정과 흩어진 자료를 Paradiso가 목적별로 정리합니다. 최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.', footerCtaButtons: ['검색 시작하기', '국번없이 1345'], quickFiltersAria: '자주 찾는 검색어 모음', footerLegal: '베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.',
         closeModal: '닫기', docModalTitle: '구비서류 확인', faqModalTitle: '💡 자주 묻는 질문 (FAQ)', aiModalTitle: 'AI 맞춤 상황 분석', aiIntro: '현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.', aiInputLabel: '상황 입력', aiInputPlaceholder: '예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다.', aiActionLabels: ['✨ 종합 상황 분석 요청', '✨ 서류 다국어 풀이 및 발급처 안내', '🏛 관할 관서 조회 & 1345 안내', '💼 취업신고용 업종/직종 코드 찾기'], jobCodeTitle: '💼 취업신고용 업종/직종 코드 찾기', jobCodeSearchLabel: '업종 또는 직종 검색', jobCodePlaceholder: '명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)', jobCodeNaturalSearchApi: 'AI 자연어 분석으로 공식 직종·업종 후보 찾기', jobCodeNaturalSearchLocal: '자연어 키워드로 공식 직종·업종 찾기', jobCodeLoadingNatural: '입력한 표현을 공식 코드 검색어로 정리하는 중입니다.', jobCodeFoundOfficial: '공식 코드 데이터에서 후보를 찾았습니다.', jobCodePartial: '가능성 있는 후보입니다. 최종 코드는 HiKorea 또는 1345에서 확인하세요.', jobCodeNoConfirmed: '정확한 코드가 자동 확인되지 않았습니다.', jobCodeNoConfirmedHint: '직무를 더 짧게 나누어 입력해 보세요. 예: 영어, 강사, 학원, 교육', jobCodeFinalCheck: '최종 직종·업종 코드는 HiKorea 또는 1345에서 확인하세요.', jurisdictionTitle: '🏛 관할 출입국관서 조회',
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
+        scenarioSelectorTitle: '내 상황에 맞는 시나리오 선택', scenarioSelectorCopy: '세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.', scenarioShowAll: '전체 보기', scenarioSelectedChoice: '✓ 선택됨', scenarioSelectedBadge: '선택됨',
+        scenarioSelectedReferenceNote: '선택한 시나리오는 참고용입니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.', scenarioAskAi: '이 시나리오로 AI에게 질문하기', scenarioOfficialLabelsKoNote: '공식 매뉴얼의 시나리오 명칭은 한국어로 표시됩니다.', officialDocumentNamesKoNote: '공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.', selectedScenarioAiPrompt: '{visaCode} {label} 기준으로 필요한 서류와 주의사항 알려줘',
+        aiSourcePanelTitle: '출처 · 검증 상태', aiManualGroundingLabel: '행정 매뉴얼 근거', aiManualGroundingStatus: '매뉴얼 출처 확인됨 · 참고용 (법적 결정이 아니며 개별 검증은 진행 중)', aiLawVerificationLabel: '법령 인용 검증', aiPublicDataLabel: '공공데이터 근거', aiPublicDataStatus: '출처 표시 · 개별 항목 검증은 진행 중',
+        aiSelectedScenarioLabel: '선택한 시나리오 기준', aiScenarioGroundingLabel: '시나리오별 서류 근거', aiScenarioCandidateStatus: '매뉴얼 기반 후보 · 최종 확인 필요', aiScenarioMatchNote: '세부 자격·사유가 맞는 경우에만 참고하세요.', aiScenarioMoreCount: '외 {count}건', aiAdvisoryLabel: '일반 안내', aiAdvisoryText: '확인된 개별 출처가 연결되지 않은 일반 참고 안내입니다.', aiTechnicalDetails: '기술 세부정보 보기', aiSourceDisclosure: '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
+        aiLawStatusDisabled: '기능 꺼짐', aiLawStatusSourcePresent: '출처 있음', aiLawStatusUnverified: '미검증', aiLawStatusSourceLinked: '출처 연결됨 · 미검증', aiLawStatusFailed: '검증 실패', aiLawStatusNeedsReview: '확인 필요', aiLawStatusNotWired: '인용 검증 미연결', aiLawWarningDisabled: '법령 검증 기능이 꺼져 있음', aiLawWarningMissingKey: '법령 API 키 미설정', aiLawWarningSourceUnavailable: '법령 출처 확인 불가', aiLawWarningTimeout: '법령 조회 시간 초과', aiLawWarningNotWired: '인용 검증 미연결',
+        aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
         sourceStructuredData: '구조화 데이터 기준', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 확인 필요', sourceManualConfirmed: '공식 매뉴얼 확인됨', sourceManualPending: '매뉴얼 검토 필요', sourceNeedLinking: '출처 확인 필요', sourceProvisional: '준용/임시 안내', sourceEvidenceTitle: '출처 및 근거', sourceVerifiedNote: '표시된 항목은 현재 구조화 데이터 기준으로 공식 매뉴얼 출처가 확인된 항목입니다. 관할 출입국관서에서 추가 서류를 요구할 수 있습니다.', sourcePendingReviewNote: '이 항목은 아직 공식 매뉴얼 대조가 완료되지 않았습니다. 신청 전 HiKorea 또는 관할 출입국·외국인관서에서 확인하세요.', sourceNeedLinkingNote: '페이지 또는 출처 단서가 있으나, 항목별 공식 근거 연결은 아직 정리 중입니다.', sourceUnverifiedNote: 'Paradiso 내부 구조화 데이터에 정리된 안내입니다. 공식 결정이나 법률 자문이 아닙니다.', sourceProvisionalNote: '다른 절차 또는 유사 체류자격의 기준을 참고한 임시 안내일 수 있습니다. 실제 신청 전 공식 매뉴얼과 관할 기관 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
         /* STEP 0-A: HiKorea 회원가입 준비 */
@@ -13746,6 +13755,12 @@ const UI_TRANSLATIONS = {
         footerHeroTitle: 'Explore Korea’s 39<br>residence statuses in one place.', footerChips: ['📑 Official source-check pathway', '🧭 Purpose-first pathways', '🏛 Jurisdiction guidance', '💼 Job and industry codes'], footerStart: 'Start exploring', footerHotline: '1345 hotline', footerCtaTitle: 'Residence management used to feel hard.<br>Now you can check it with ease.', footerCtaCopy: 'Paradiso organizes scattered residence information by purpose. Always confirm with HiKorea, 1345, or the competent immigration office.', footerCtaButtons: ['Start search', 'Call 1345'], quickFiltersAria: 'Frequently searched keywords', footerLegal: 'Beta service. The information provided has no legal effect. Always confirm with HiKorea, 1345, or the competent immigration office.',
         closeModal: 'Close', docModalTitle: 'Document checklist', faqModalTitle: '💡 Frequently Asked Questions (FAQ)', aiModalTitle: 'AI situation analysis', aiIntro: 'Describe your nationality, current residence status, role, residence area, and situation. Paradiso AI will summarize relevant residence statuses and procedures based on public sources and your input. Confirm final decisions and filing steps with the competent authority.', aiInputLabel: 'Situation input', aiInputPlaceholder: 'Example: I am a U.S. citizen living in Itaewon. I graduated from a four-year Korean university and currently hold a D-10 job-seeking visa, but I want to change to E-7.', aiActionLabels: ['✨ Request full situation analysis', '✨ Explain documents and issuing offices in multiple languages', '🏛 Find jurisdiction office and 1345 guidance', '💼 Find employment occupation and industry codes'], jobCodeTitle: '💼 Find occupation and industry codes', jobCodeSearchLabel: 'Search industry or occupation', jobCodePlaceholder: 'Search by name or situation, e.g. English conversation instructor', jobCodeNaturalSearchApi: 'Use AI natural-language analysis to find official occupation and industry candidates', jobCodeNaturalSearchLocal: 'Find official occupation and industry codes from natural-language keywords', jobCodeLoadingNatural: 'Converting your wording into official-code search terms.', jobCodeFoundOfficial: 'Candidates were found in the official code data.', jobCodePartial: 'These are possible candidates. Confirm the final code with HiKorea or 1345.', jobCodeNoConfirmed: 'An exact code could not be confirmed automatically.', jobCodeNoConfirmedHint: 'Try shorter role words, such as English, instructor, academy, education.', jobCodeFinalCheck: 'Confirm the final occupation and industry code with HiKorea or 1345.', jurisdictionTitle: '🏛 Find your immigration office',
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
+        scenarioSelectorTitle: 'Choose the scenario closest to your situation', scenarioSelectorCopy: 'Required documents may differ by sub-status or reason. Select the closest scenario below.', scenarioShowAll: 'Show all', scenarioSelectedChoice: '✓ Selected', scenarioSelectedBadge: 'Selected',
+        scenarioSelectedReferenceNote: 'The selected scenario is for reference only. Confirm applicability with HiKorea, 1345, or the competent immigration office.', scenarioAskAi: 'Ask AI about this scenario', scenarioOfficialLabelsKoNote: 'Official scenario labels are shown in Korean to match the immigration manual.', officialDocumentNamesKoNote: 'Official document names are shown in Korean to match the immigration manual.', selectedScenarioAiPrompt: 'For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.',
+        aiSourcePanelTitle: 'Sources · verification status', aiManualGroundingLabel: 'Administrative manual source', aiManualGroundingStatus: 'Manual source identified · for reference only (not a legal decision; item-level verification is ongoing)', aiLawVerificationLabel: 'Legal citation verification', aiPublicDataLabel: 'Public-data source', aiPublicDataStatus: 'Source shown · item-level verification is ongoing',
+        aiSelectedScenarioLabel: 'Based on selected scenario', aiScenarioGroundingLabel: 'Scenario-specific document source', aiScenarioCandidateStatus: 'Manual-based candidate · final confirmation needed', aiScenarioMatchNote: 'Use this only if the sub-status/reason matches your situation.', aiScenarioMoreCount: '{count} more', aiAdvisoryLabel: 'General guidance', aiAdvisoryText: 'General reference guidance without a linked item-level source.', aiTechnicalDetails: 'View technical details', aiSourceDisclosure: 'This answer is reference guidance based on public sources. Confirm final decisions with 1345, HiKorea, or the competent immigration office.',
+        aiLawStatusDisabled: 'Disabled', aiLawStatusSourcePresent: 'Source present', aiLawStatusUnverified: 'Unverified', aiLawStatusSourceLinked: 'Source linked · unverified', aiLawStatusFailed: 'Verification failed', aiLawStatusNeedsReview: 'Needs review', aiLawStatusNotWired: 'Citation verification not connected', aiLawWarningDisabled: 'Legal verification is disabled', aiLawWarningMissingKey: 'Legal API key is not configured', aiLawWarningSourceUnavailable: 'Legal source unavailable', aiLawWarningTimeout: 'Legal source lookup timed out', aiLawWarningNotWired: 'Citation verification not connected',
+        aiSourceBadgeLabels: ['Verified', 'Source present', 'Partial', 'Needs review', 'Reference', 'Unverified', 'Link only', 'Disabled', 'Not connected', 'Verification failed'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
         sourceStructuredData: 'Structured-data guidance', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source check needed', sourceManualConfirmed: 'Manual-backed', sourceManualPending: 'Manual review needed', sourceNeedLinking: 'Source linkage needed', sourceProvisional: 'Provisional guidance', sourceEvidenceTitle: 'Source & Evidence', sourceVerifiedNote: 'This item is shown from structured data with an identified official manual source. Additional documents may still be requested by the competent office.', sourcePendingReviewNote: 'Official manual cross-check for this item is still pending. Confirm with HiKorea or the competent immigration office before filing.', sourceNeedLinkingNote: 'A page/source clue exists, but per-item official source linkage is still being organized.', sourceUnverifiedNote: 'This is guidance organized from Paradiso’s internal structured catalog. It is not an official decision or legal advice.', sourceProvisionalNote: 'This may be provisional guidance referencing a similar status or procedure. Confirm against official manuals and the competent office before filing.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
         step0aTitle: 'STEP 0-A · HiKorea Account Setup Preparation',
@@ -13833,6 +13848,12 @@ const UI_TRANSLATIONS = {
         agentRegionAll: '全部地区', agentKeywordPlaceholder: '按地区、事务所名或地址搜索', agentListAria: '已登记代办机构列表', agentLoading: '数据加载中…', agentPrompt: '输入地区名、事务所名或地址，查找已登记的移民民事代办机构。', agentEmpty: '未找到结果，请更换地区或重新输入关键词。', agentError: '数据加载失败，请稍后重试或使用HiKorea官方查询。', agentCountShowing: '共{total}项中显示{showing}项', agentShowMore: '显示更多', agentMapNaver: 'Naver地图', agentMapKakao: 'Kakao地图', agentCopyAddress: '复制地址', agentPhone: '拨打 {phone}', agentCopied: '地址已复制。', agentCopyFailed: '无法复制地址，请长按手动复制。', agentTotalCount: '共{count}家机构',
         medTitle: '查找法务部指定医疗机构', medKicker: '医疗指引', medChipsAria: '地区快速选择', medKeywordLabel: '搜索词', medKeywordPlaceholder: '按地区、机构名或地址搜索', medClearAria: '清除搜索', medListAria: '法务部指定医疗机构列表', medLoading: '数据加载中…', medPrompt: '点击地区按钮或输入2个以上字符搜索。例：济州、汉拿医院、江南', medEmpty: '未找到结果，请尝试其他关键词或地区。', medError: '数据加载失败，请稍后重试。', medCountShowing: '共{total}项中显示{showing}项', medCountAll: '显示{count}家医疗机构', medShowMore: '显示更多', medCopyAddress: '复制地址', medPhone: '拨打 {phone}', medCopied: '地址已复制。', medCopyFailed: '无法复制地址，请长按手动复制。', medTotalCount: '共{count}家机构', medCountFiltered: '全部{total}家机构中显示{count}家',
         docGroupLabels: ['通用材料', '必备材料', '附加/审查所需材料', '条件性材料'], procedureLabels: ['签证签发', '签证签发确认书', '资格变更', '居留延期', '资格赋予', '外国人登记', '资格外活动', '工作场所变更/增加', '再入境'], domainLabels: ['通用/两者', '签证签发', '居留事务'], reviewLabels: ['已依2026.5手册确认', '部分信息未经核实', '需进行2026.5手册确认'], searchedCategoryLabels: ['短期', '留学/研修', '就业', '投资', '家庭/移民', '其他', '外交', '健康保险', '指引', '情景'],
+        scenarioSelectorTitle: '选择最符合您情况的情形', scenarioSelectorCopy: '所需材料可能因细分资格或申请事由而不同。请在下方选择最接近的情形。', scenarioShowAll: '查看全部', scenarioSelectedChoice: '✓ 已选择', scenarioSelectedBadge: '已选择',
+        scenarioSelectedReferenceNote: '所选情形仅供参考。实际适用与否请向 HiKorea、1345 或管辖出入境外国人机构确认。', scenarioAskAi: '就此情形询问 AI', scenarioOfficialLabelsKoNote: '为与出入境手册一致，正式情形名称以韩文显示。', officialDocumentNamesKoNote: '为与出入境手册一致，正式材料名称以韩文显示。', selectedScenarioAiPrompt: '请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。',
+        aiSourcePanelTitle: '来源 · 核实状态', aiManualGroundingLabel: '行政手册依据', aiManualGroundingStatus: '已确认手册来源 · 仅供参考（不构成法律决定，逐项核实仍在进行中）', aiLawVerificationLabel: '法规引用核实', aiPublicDataLabel: '公共数据依据', aiPublicDataStatus: '已显示来源 · 逐项核实仍在进行中',
+        aiSelectedScenarioLabel: '基于所选情形', aiScenarioGroundingLabel: '分情形材料依据', aiScenarioCandidateStatus: '基于手册的候选信息 · 需最终确认', aiScenarioMatchNote: '仅在细分资格或申请事由相符时参考。', aiScenarioMoreCount: '另有 {count} 项', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未关联逐项已确认来源的一般参考指引。', aiTechnicalDetails: '查看技术详情', aiSourceDisclosure: '本答复是基于公开资料的参考指引。最终判断请向 1345、HiKorea 或管辖出入境外国人机构确认。',
+        aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有来源', aiLawStatusUnverified: '未经核实', aiLawStatusSourceLinked: '已关联来源 · 未经核实', aiLawStatusFailed: '核实失败', aiLawStatusNeedsReview: '需核实', aiLawStatusNotWired: '引用核实尚未连接', aiLawWarningDisabled: '法规核实功能已停用', aiLawWarningMissingKey: '未设置法规 API 密钥', aiLawWarningSourceUnavailable: '无法确认法规来源', aiLawWarningTimeout: '法规查询超时', aiLawWarningNotWired: '引用核实尚未连接',
+        aiSourceBadgeLabels: ['已核实', '有来源', '部分', '需核实', '参考', '未经核实', '仅链接', '已停用', '未连接', '核实失败'],
         procedureTitle: '各流程指引', subcodeTitle: '细类代码', commonDocs: '通用材料', requiredDocs: '必备材料', additionalDocs: '附加/审查材料', conditionalDocs: '条件性材料', eligibilityLabel: '对象/要求', notesLabel: '注意事项', manualReviewNeededShort: '需手册确认', docGroupEmpty: '需手册确认：此流程的结构化材料尚未在代表数据中。',
         manualNeedsReview: '需手册确认', docReviewFallback: '此流程的结构化材料清单尚未核实。请查阅官方手册、HiKorea或管辖出入境机构。', procedureSectionTitle: '各流程指引', subcodesTitle: '细类代码', commonWarningsTitle: '手册通用注意事项', sourceManualFallback: '来源手册', pageNeedsReview: '需核实页码', confidenceLabel: '可信度', confidenceNeedsReview: '需手册确认', sourceStatusTitle: '来源及核实状态', sourceReviewDone: '代表数据审核完成', sourceReviewPending: '代表数据，全量手动核实进行中。', sourceLegalNote: '本服务仅供参考，实际许可与否取决于官方审查。',
         manualActionLabels: ['签证/新申请材料', '延期材料', '变更材料', 'Paradiso AI 情况分析'], actionNewDocs: '签证/新申请材料', actionExtDocs: '延期材料', actionChangeDocs: '变更材料', actionAi: 'Paradiso AI 情况分析',
@@ -13879,6 +13900,13 @@ const UI_TRANSLATIONS = {
         landingHints: ['住址變更', '護照更新', '外國人登錄證補發', '當天/例外訪問', '濟州免簽', 'K-ETA申請', '熟練技能(E-7-4)', '結婚移民(F-6)', 'F-3收入條件', '結核證明對象', '難民申請流程', '逾期停留', 'D-10求職', 'K-Trainee(D-4-2K)'],
         quickFilters: ['住址變更', '無需預約業務', 'F-3收入', 'K-ETA', '結核指南', '逾期停留', '健康保險', 'B-2-2濟州', 'E-7', 'E-9', 'F-6', 'F-5', '積分制'],
         documentCountLabel: '{count}份文件',
+        docGroupLabels: ['通用文件', '必要文件', '附加/需審查文件', '條件式文件'], procedureLabels: ['簽證核發', '簽證核發確認書', '資格變更', '居留延期', '資格賦予', '外國人登錄', '資格外活動', '工作場所變更/增加', '再入境'],
+        scenarioSelectorTitle: '選擇最符合您情況的情形', scenarioSelectorCopy: '所需文件可能因細分資格或申請事由而不同。請在下方選擇最接近的情形。', scenarioShowAll: '查看全部', scenarioSelectedChoice: '✓ 已選擇', scenarioSelectedBadge: '已選擇',
+        scenarioSelectedReferenceNote: '所選情形僅供參考。實際適用與否請向 HiKorea、1345 或管轄出入境外國人機構確認。', scenarioAskAi: '就此情形詢問 AI', scenarioOfficialLabelsKoNote: '為與出入境手冊一致，正式情形名稱以韓文顯示。', officialDocumentNamesKoNote: '為與出入境手冊一致，正式文件名稱以韓文顯示。', selectedScenarioAiPrompt: '請根據所選情形（{label}）說明 {visaCode} 所需文件和注意事項。必要時請保留韓文正式文件名稱。',
+        aiSourcePanelTitle: '來源 · 核實狀態', aiManualGroundingLabel: '行政手冊依據', aiManualGroundingStatus: '已確認手冊來源 · 僅供參考（不構成法律決定，逐項核實仍在進行中）', aiLawVerificationLabel: '法規引用核實', aiPublicDataLabel: '公共資料依據', aiPublicDataStatus: '已顯示來源 · 逐項核實仍在進行中',
+        aiSelectedScenarioLabel: '基於所選情形', aiScenarioGroundingLabel: '分情形文件依據', aiScenarioCandidateStatus: '基於手冊的候選資訊 · 需最終確認', aiScenarioMatchNote: '僅在細分資格或申請事由相符時參考。', aiScenarioMoreCount: '另有 {count} 項', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未關聯逐項已確認來源的一般參考指引。', aiTechnicalDetails: '查看技術詳情', aiSourceDisclosure: '本答覆是基於公開資料的參考指引。最終判斷請向 1345、HiKorea 或管轄出入境外國人機構確認。',
+        aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有來源', aiLawStatusUnverified: '未經核實', aiLawStatusSourceLinked: '已關聯來源 · 未經核實', aiLawStatusFailed: '核實失敗', aiLawStatusNeedsReview: '需核實', aiLawStatusNotWired: '引用核實尚未連接', aiLawWarningDisabled: '法規核實功能已停用', aiLawWarningMissingKey: '未設定法規 API 金鑰', aiLawWarningSourceUnavailable: '無法確認法規來源', aiLawWarningTimeout: '法規查詢逾時', aiLawWarningNotWired: '引用核實尚未連接',
+        aiSourceBadgeLabels: ['已核實', '有來源', '部分', '需核實', '參考', '未經核實', '僅連結', '已停用', '未連接', '核實失敗'],
         step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aEmailChoice: 'TRANSLATION_PENDING', step0aNaverBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ja: {
@@ -14554,6 +14582,22 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.visa-track-desc', [tx('preTrackDesc'), tx('inTrackDesc')]);
     document.documentElement.style.setProperty('--lang-tools-label', JSON.stringify(tx('toolsLabel')));
     document.documentElement.style.setProperty('--lang-visa-label', JSON.stringify(tx('visaLabel')));
+    document.documentElement.style.setProperty('--lang-scenario-selected-choice', JSON.stringify(tx('scenarioSelectedChoice')));
+    const sourceBadgeLabels = txArray('aiSourceBadgeLabels');
+    [
+        ['--lang-gp-verified', 0, '검증됨'],
+        ['--lang-gp-source-supported', 1, '출처 있음'],
+        ['--lang-gp-partial', 2, '부분'],
+        ['--lang-gp-needs-review', 3, '검토 필요'],
+        ['--lang-gp-advisory', 4, '참고'],
+        ['--lang-gp-extracted-only', 5, '미검증'],
+        ['--lang-gp-source-linked-unverified', 6, '링크만'],
+        ['--lang-gp-disabled', 7, '사용 안 함'],
+        ['--lang-gp-not-wired', 8, '미연결'],
+        ['--lang-gp-failed', 9, '검증 실패']
+    ].forEach(([property, index, fallback]) => {
+        document.documentElement.style.setProperty(property, JSON.stringify(sourceBadgeLabels[index] || fallback));
+    });
 
     setAttr('#q', 'aria-label', tx('qAria'));
     if (qEl) qEl.placeholder = qEl.disabled ? tx('dataLoading') : tx('qPlaceholder');

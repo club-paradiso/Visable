@@ -185,6 +185,28 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn('data-procedure-variant="${escapeHtml(variant.id)}"', html)
         self.assertIn("procedures: visa.procedures || null", html)
 
+    def test_multilingual_selector_source_panel_and_handoff_copy_is_present(self):
+        html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn("Choose the scenario closest to your situation", html)
+        self.assertIn("选择最符合您情况的情形", html)
+        self.assertIn("Ask AI about this scenario", html)
+        self.assertIn("就此情形询问 AI", html)
+        self.assertIn("Official document names are shown in Korean to match the immigration manual.", html)
+        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", html)
+        self.assertIn("행정 매뉴얼 근거", html)
+        self.assertIn("Administrative manual source", html)
+        self.assertIn("行政手册依据", html)
+        self.assertIn("Scenario-specific document source", html)
+        self.assertIn("分情形材料依据", html)
+        self.assertIn("For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.", html)
+        self.assertIn("请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。", html)
+        self.assertIn("lang: currentLanguage", html)
+        self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", html)
+        self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", html)
+        self.assertIn("getProcedureLabelByKey(String(src.procedure_key)", html)
+        self.assertIn("--lang-gp-source-supported", html)
+        self.assertIn("--lang-gp-needs-review", html)
+
 
 class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
     def test_d9_status_change_helper_includes_only_d9_status_change_variants(self):
