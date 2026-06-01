@@ -24,6 +24,45 @@ SEEDS = {
     ("F-1", "statusChange"): "f-1-13-status-change",
 }
 
+EXPANSION_VARIANTS = {
+    ("D-4", "statusChange"): {
+        "d-4-1-7-language-training-status-change",
+        "d-4-2-graduate-training-status-change",
+        "d-4-3-school-student-status-change",
+    },
+    ("D-8", "statusChange"): {
+        "d-8-1-corporate-investment-status-change",
+        "d-8-2-venture-investment-status-change",
+        "d-8-3-individual-enterprise-status-change",
+        "d-8-4-tech-startup-status-change",
+    },
+    ("D-9", "statusChange"): {
+        "d-9-equipment-specialist-status-change",
+        "d-9-foreign-sole-proprietor-status-change",
+    },
+    ("E-4", "statusChange"): {"e-4-d2-d10-status-change"},
+    ("E-4", "workplaceChange"): {"e-4-registered-workplace-change"},
+    ("E-5", "statusChange"): {"e-5-d2-d10-status-change"},
+    ("E-5", "workplaceChange"): {"e-5-registered-workplace-change"},
+    ("E-6", "activitiesOutsideStatus"): {"e-6-broadcast-film-model-activities-outside-status"},
+    ("E-6", "statusChange"): {"e-6-d2-d10-status-change"},
+    ("E-6", "workplaceChange"): {
+        "e-6-1-3-workplace-change",
+        "e-6-2-employer-workplace-change",
+    },
+    ("E-9", "workplaceChange"): {"e-9-standard-workplace-change"},
+    ("F-1", "statusGrant"): {
+        "f-1-employment-parent-born-child-status-grant",
+        "f-1-refugee-born-child-status-grant",
+    },
+    ("F-1", "statusChange"): {
+        "f-1-6-marriage-cleanup-status-change",
+        "f-1-nationality-procedure-status-change",
+        "f-1-16-refugee-family-status-change",
+        "f-1-52-prior-marriage-child-status-change",
+    },
+}
+
 
 def _client():
     for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
@@ -81,6 +120,26 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
             self.assertIn(variant_id, variants)
             self.assertTrue(variants[variant_id]["requiredDocs"]["requiredDocs"])
             self.assertTrue(variants[variant_id]["manualRefs"][0]["needsManualReview"])
+
+    def test_api_preserves_expansion_variants(self):
+        records = _records()
+        exposed_count = 0
+        for (code, procedure_key), expected_ids in EXPANSION_VARIANTS.items():
+            procedure = records[code]["procedures"][procedure_key]
+            self.assertTrue(procedure["available"])
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            self.assertTrue(expected_ids.issubset(variants))
+            for variant_id in expected_ids:
+                variant = variants[variant_id]
+                groups = variant["requiredDocs"]
+                self.assertTrue(any(groups[group] for group in groups), variant_id)
+                self.assertTrue(variant["manualRefs"], variant_id)
+                for manual_ref in variant["manualRefs"]:
+                    self.assertEqual(manual_ref["sourceFile"], "docs/source-manuals/2026-05/stay_manual_2026_05.pdf")
+                    self.assertTrue(manual_ref["needsManualReview"])
+                    self.assertIsNot(manual_ref.get("verified"), True)
+                exposed_count += 1
+        self.assertEqual(exposed_count, 24)
 
     def test_parent_level_procedure_checklist_still_exposed(self):
         records = _records()
@@ -150,6 +209,16 @@ class ScenarioProcedureVariantSyncTests(unittest.TestCase):
     def test_sync_check_remains_clean(self):
         result = subprocess.run(
             [sys.executable, "scripts/sync_visa_data.py", "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_population_check_remains_clean(self):
+        result = subprocess.run(
+            [sys.executable, "scripts/populate_scenario_procedure_variants_2026_05.py", "--check"],
             cwd=REPO_ROOT,
             capture_output=True,
             text=True,
