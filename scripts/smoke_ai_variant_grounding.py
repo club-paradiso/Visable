@@ -14,6 +14,9 @@ Usage (deployed-safe, representative targets only):
 Usage (capped):
     python3 scripts/smoke_ai_variant_grounding.py --limit 5
 
+Usage (selected-scenario narrowing):
+    python3 scripts/smoke_ai_variant_grounding.py --selected-variant-smoke
+
 Usage (override backend URL):
     BACKEND_URL=http://127.0.0.1:8000 python3 scripts/smoke_ai_variant_grounding.py
     python3 scripts/smoke_ai_variant_grounding.py --backend-url http://127.0.0.1:8000
@@ -145,7 +148,7 @@ def check_forbidden_fields(sources: list) -> list[str]:
     return found
 
 
-def run_smoke(target: dict, backend_url: str) -> tuple[bool, str]:
+def run_smoke(target: dict, backend_url: str, selected_variant_smoke: bool = False) -> tuple[bool, str]:
     """
     Smoke one target. Returns (passed: bool, detail: str).
 
@@ -166,6 +169,14 @@ def run_smoke(target: dict, backend_url: str) -> tuple[bool, str]:
         "lang": "ko",
         "consent": True,
     }
+    selected_variant_id = None
+    if selected_variant_smoke:
+        variants = ((visa_record.get("procedures") or {}).get(procedure_key) or {}).get("variants") or []
+        selected_variant_id = variants[0].get("id") if variants and isinstance(variants[0], dict) else None
+        if not selected_variant_id:
+            return False, f"{visa_code}/{procedure_key}: first variant has no id"
+        payload["selected_procedure_key"] = procedure_key
+        payload["selected_procedure_variant_id"] = selected_variant_id
 
     status_code, body = _http_post(f"{backend_url}/api/ask", payload)
 
@@ -202,6 +213,23 @@ def run_smoke(target: dict, backend_url: str) -> tuple[bool, str]:
         keys_found = [s.get("procedure_key") for s in pv_sources if isinstance(s, dict)]
         return False, f"{label}: no source with procedure_key={procedure_key!r}; found {keys_found}"
 
+    if selected_variant_smoke:
+        unrelated_keys = [
+            s.get("procedure_key") for s in pv_sources
+            if isinstance(s, dict) and s.get("procedure_key") != procedure_key
+        ]
+        variant_ids = [
+            s.get("variant_id") for s in pv_sources
+            if isinstance(s, dict)
+        ]
+        if unrelated_keys:
+            return False, f"{label}: selected variant leaked unrelated procedure keys: {unrelated_keys}"
+        if variant_ids != [selected_variant_id]:
+            return False, (
+                f"{label}: selected variant narrowing expected {[selected_variant_id]!r}; "
+                f"found {variant_ids!r}"
+            )
+
     # --- Validate all matching sources have needs_manual_review: true ---
     bad_review = [s for s in matching if s.get("needs_manual_review") is not True]
     if bad_review:
@@ -230,6 +258,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Smoke-test AI procedure variant grounding metadata.")
     parser.add_argument("--backend-url", default=None, help="Backend base URL (overrides BACKEND_URL env var)")
     parser.add_argument("--deployed-safe", action="store_true", help="Run only representative targets (avoids excessive LLM calls)")
+    parser.add_argument("--selected-variant-smoke", action="store_true", help="Select the first variant id per target and assert narrowed metadata")
     parser.add_argument("--limit", type=int, default=None, help="Cap number of discovered targets")
     args = parser.parse_args()
 
@@ -279,6 +308,9 @@ def main() -> None:
             targets = targets[: args.limit]
             print(f"Limit: {args.limit}")
 
+    if args.selected_variant_smoke:
+        print("Selected variant narrowing: enabled")
+
     print(f"Targets: {len(targets)}")
     print_discovery_summary(targets, visas)
     if not targets:
@@ -290,7 +322,7 @@ def main() -> None:
     skipped = 0
 
     for target in targets:
-        ok, detail = run_smoke(target, backend_url)
+        ok, detail = run_smoke(target, backend_url, selected_variant_smoke=args.selected_variant_smoke)
         if ok:
             if "SKIP" in detail:
                 skipped += 1
