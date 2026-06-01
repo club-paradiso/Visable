@@ -562,5 +562,34 @@ class AiVariantGroundingPostMergeSmokeTests(unittest.TestCase):
             ["신청서(별지 34호서식)", "여권 원본", "외국인등록증", "수수료"],
         )
 
+
+class StatusGrantAliasRoutingHotfixTests(unittest.TestCase):
+    def test_status_grant_aliases_route_to_status_grant(self):
+        import paradiso_backend as backend
+
+        examples = [
+            "What documents are needed for grant of status for a child born in Korea?",
+            "Which checklist applies for child status grant?",
+            "출생 자녀 체류 관련 체류자격 부여 서류 알려줘",
+            "국내출생 자녀 체류자격 부여 서류 알려줘",
+        ]
+
+        for text in examples:
+            with self.subTest(text=text):
+                self.assertEqual(backend._detect_task_type(text), "family_status_change")
+                self.assertEqual(
+                    backend._procedure_variant_key_for_task("family_status_change", text),
+                    "statusGrant",
+                )
+
+    def test_generic_family_change_still_does_not_route_to_status_grant(self):
+        import paradiso_backend as backend
+
+        text = "가족관계 변동이 있는데 뭘 해야 해?"
+        self.assertEqual(backend._detect_task_type(text), "family_status_change")
+        self.assertIsNone(
+            backend._procedure_variant_key_for_task("family_status_change", text)
+        )
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

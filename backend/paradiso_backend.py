@@ -1146,13 +1146,14 @@ def _procedure_variant_key_for_task(
     text = user_text or ""
     explicit_grant_ko = (
         "자녀 출생", "출생 신고", "국내출생", "국내 출생",
+        "국내출생 자녀", "출생 자녀 체류",
         "체류자격 부여", "자격 부여",
     )
     if any(signal in text for signal in explicit_grant_ko):
         return "statusGrant"
 
     import re
-    if re.search(r"\b(child born|born child|had a child|status grant)\b", text, flags=re.IGNORECASE):
+    if re.search(r"\b(child born|born child|had a child|status grant|grant of status|child status grant)\b", text, flags=re.IGNORECASE):
         return "statusGrant"
     return None
 
