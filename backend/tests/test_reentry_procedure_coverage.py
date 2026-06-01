@@ -55,11 +55,19 @@ class ReentryProcedureCoverageTests(unittest.TestCase):
             self.assertTrue(pr.get("available"), f"{code} reentry must be available")
             docs = pr["requiredDocs"]["requiredDocs"]
             self.assertTrue(docs, f"{code} reentry required docs empty (fallback)")
-            # First item is the application form; the list carries 여권/등록증/수수료.
+            # The 복수재입국허가 list is exactly: 신청서 · 여권(원본) · 외국인등록증 · 수수료.
+            self.assertEqual(len(docs), 4, f"{code} reentry should have 4 docs, got {docs}")
             joined = " ".join(docs)
             self.assertIn("신청서", joined)
             self.assertIn("외국인등록증", joined)
-            self.assertIn("수수료", joined)
+            # The fee item terminates the list and must be clean (no section
+            # text leaked past 수수료 from the next page block).
+            self.assertIn(docs[-1], ("수수료", "수수료 없음"),
+                          f"{code} fee item not clean: {docs[-1]!r}")
+            for d in docs:
+                self.assertLessEqual(len(d), 18, f"{code} doc item too long (leak?): {d!r}")
+                for leak in ("목차", "신청서류", "제출서류", "외국인등록 "):
+                    self.assertNotIn(leak, d, f"{code} doc item has section leak: {d!r}")
             # Page citation present.
             refs = pr.get("manualRefs") or []
             self.assertTrue(refs and refs[0].get("pageRange", "").startswith("p. "))

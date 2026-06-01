@@ -119,9 +119,14 @@ def _split_docs(raw: str):
             item = item[:-1].strip()
         if not item:
             continue
-        docs.append(item)
-        if "수수료" in item:  # the fee item ends the list
+        if "수수료" in item:
+            # The fee item ends the list. The capture runs past 수수료 into the
+            # following section (no comma separator), so truncate to the fee
+            # token itself (keeping an attached "없음" / "면제" qualifier only).
+            m = re.match(r".*?수수료(?:\s*없음|\s*면제)?", item)
+            docs.append((m.group(0) if m else item).strip())
             break
+        docs.append(item)
     return docs
 
 
