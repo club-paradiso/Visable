@@ -11994,6 +11994,8 @@ function renderGroundingSourcePanel(metadata) {
     const hasCitation = Boolean(m.citation_verification);
     const citationStatus = m.citation_verification && m.citation_verification.status ? String(m.citation_verification.status) : '';
     const hasPublicData = Array.isArray(m.public_data_grounding) ? m.public_data_grounding.length > 0 : Boolean(m.public_data_grounding);
+    const hasVariantContext = Boolean(m.procedure_variant_context_used) || (Array.isArray(m.procedure_variant_context_sources) && m.procedure_variant_context_sources.length > 0);
+    const variantSources = Array.isArray(m.procedure_variant_context_sources) ? m.procedure_variant_context_sources : [];
 
     // Honest disclosure state classes — mirror docs/ai/CITATION_AND_UNCERTAINTY_SCHEMA.md states.
     // CSS in the STRUCTURAL RESULT-CARD HIERARCHY v2 layer styles gp-row.state-*.
@@ -12015,6 +12017,22 @@ function renderGroundingSourcePanel(metadata) {
     }
     if (hasPublicData) {
         rows.push('<div class="gp-row state-partial"><strong>공공데이터 근거</strong>: 출처 표시 · 개별 항목 검증은 진행 중</div>');
+    }
+    if (hasVariantContext) {
+        const shown = variantSources.slice(0, 4);
+        const extra = variantSources.length > 4 ? variantSources.length - 4 : 0;
+        const itemsHtml = shown.map(function(src) {
+            const parts = [];
+            if (src.visa_code) parts.push(escapeHtml(String(src.visa_code)));
+            if (src.procedure_key) parts.push(escapeHtml(String(src.procedure_key)));
+            const lbl = src.label || src.variant_id;
+            if (lbl) parts.push(escapeHtml(String(lbl)));
+            if (src.page_range) parts.push(escapeHtml(String(src.page_range)));
+            return '<div class="gp-variant-item">' + parts.join(' · ') + '</div>';
+        }).join('');
+        const moreHtml = extra > 0 ? '<div class="gp-variant-more">외 ' + extra + '건</div>' : '';
+        const listHtml = itemsHtml ? '<div class="gp-variant-list">' + itemsHtml + moreHtml + '</div>' : '';
+        rows.push('<div class="gp-row state-partial"><strong>시나리오별 서류 근거</strong>: 매뉴얼 기반 후보 · 최종 확인 필요' + listHtml + '</div>');
     }
     if (!rows.length) return '';
 
