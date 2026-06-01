@@ -971,6 +971,140 @@ SAFE_VARIANT_FIELDS = {
     "page_range", "manual_name", "manual_version", "needs_manual_review",
 }
 
+REMAINING_COMPLEX_SUBTYPE_VARIANTS = {
+    ("F-6", "extension"): {
+        "f-6-1-marriage-maintenance-extension",
+        "f-6-1-separated-extension",
+        "f-6-1-divorce-lawsuit-extension",
+        "f-6-1-spouse-missing-extension",
+    },
+    ("F-2", "statusChange"): {
+        "f-2-7-point-based-talent-status-change",
+        "f-2-7s-potential-talent-status-change",
+        "f-2-8-tourism-investment-status-change",
+        "f-2-12-13-14-public-interest-investment-status-change",
+    },
+    ("H-2", "registration"): {"h-2-existing-holder-registration"},
+    ("H-2", "workplaceChange"): {"h-2-employment-start-workplace-change-report"},
+    ("D-10", "statusChange"): {
+        "d-10-1-points-status-change",
+        "d-10-1-first-graduate-status-change",
+        "d-10-2-tech-startup-status-change",
+        "d-10-3-high-tech-intern-status-change",
+    },
+    ("D-10", "extension"): {
+        "d-10-1-points-extension",
+        "d-10-2-tech-startup-extension",
+        "d-10-3-high-tech-intern-extension",
+    },
+    ("F-4", "statusChange"): {"f-4-overseas-korean-status-change"},
+    ("F-4", "registration"): {"f-4-domestic-residence-report"},
+    ("F-4", "extension"): {"f-4-overseas-korean-extension"},
+}
+
+NEW_ROUTABLE_COMPLEX_TARGETS = {
+    ("D-10", "statusChange"),
+    ("H-2", "workplaceChange"),
+    ("F-4", "statusChange"),
+}
+
+
+class RemainingComplexSubtypeScenarioVariantTests(unittest.TestCase):
+    """Coverage for the remaining complex-subtype scenario cards."""
+
+    def test_variants_are_exposed_with_grouped_docs_and_needs_review_refs(self):
+        records = _records()
+        exposed = 0
+        for (code, procedure_key), expected_ids in REMAINING_COMPLEX_SUBTYPE_VARIANTS.items():
+            procedure = records[code]["procedures"][procedure_key]
+            self.assertTrue(procedure["available"], f"{code}.{procedure_key}")
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            self.assertTrue(expected_ids.issubset(variants), f"{code}.{procedure_key}")
+            for variant_id in expected_ids:
+                variant = variants[variant_id]
+                groups = variant["requiredDocs"]
+                self.assertTrue(any(groups[group] for group in groups), variant_id)
+                self.assertTrue(groups["requiredDocs"], variant_id)
+                self.assertTrue(variant["manualRefs"], variant_id)
+                for manual_ref in variant["manualRefs"]:
+                    self.assertEqual(
+                        manual_ref["sourceFile"],
+                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        variant_id,
+                    )
+                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertTrue(manual_ref.get("pageRange"), variant_id)
+                    self.assertTrue(manual_ref["needsManualReview"], variant_id)
+                    self.assertIsNot(manual_ref.get("verified"), True, variant_id)
+                exposed += 1
+        self.assertEqual(exposed, 20)
+
+    def test_population_check_remains_clean(self):
+        result = subprocess.run(
+            [sys.executable, "scripts/populate_remaining_complex_subtype_scenario_variants_2026_05.py", "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_prior_batches_remain_present(self):
+        records = _records()
+        for (code, procedure_key), variant_id in SEEDS.items():
+            variants = {v["id"] for v in records[code]["procedures"][procedure_key]["variants"]}
+            self.assertIn(variant_id, variants)
+        for table in (EXPANSION_VARIANTS, BATCH2_VARIANTS, HARD_CASE_VARIANTS):
+            for (code, procedure_key), expected_ids in table.items():
+                variants = {v["id"] for v in records[code]["procedures"][procedure_key]["variants"]}
+                self.assertTrue(expected_ids.issubset(variants), f"{code}.{procedure_key}")
+
+    def test_smoke_discovery_increases_by_three_routable_targets(self):
+        from smoke_ai_variant_grounding import discover_targets
+
+        records = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
+        targets = discover_targets(records)
+        discovered = {(target["visa_code"], target["procedure_key"]) for target in targets}
+        self.assertEqual(len(targets), 28)
+        self.assertTrue(NEW_ROUTABLE_COMPLEX_TARGETS.issubset(discovered))
+
+    def test_every_new_variant_is_eligible_for_explicit_selected_handoff(self):
+        mod = _module()
+        for (code, procedure_key), variant_ids in REMAINING_COMPLEX_SUBTYPE_VARIANTS.items():
+            for variant_id in variant_ids:
+                with self.subTest(code=code, procedure_key=procedure_key, variant_id=variant_id):
+                    kwargs = {
+                        "user_text": f"{code} 선택한 시나리오 기준 서류 알려줘",
+                        "selected_procedure_key": procedure_key,
+                        "selected_procedure_variant_id": variant_id,
+                    }
+                    sources = mod._procedure_variant_context_sources(_record(code), None, None, **kwargs)
+                    block = mod._build_procedure_variant_context_block(_record(code), None, None, **kwargs)
+                    self.assertEqual([source["variant_id"] for source in sources], [variant_id])
+                    self.assertEqual(sources[0]["procedure_key"], procedure_key)
+                    self.assertIs(sources[0]["needs_manual_review"], True)
+                    self.assertEqual(set(sources[0]), SAFE_VARIANT_FIELDS)
+                    self.assertIn(variant_id, block)
+
+    def test_generic_complex_questions_do_not_force_variants_or_grounding(self):
+        mod = _module()
+        cases = [
+            ("F-6", "F-6 국민의 배우자인데 자동 승인되나요?"),
+            ("F-2", "F-2 점수제 또는 투자 거주 자격이 자동으로 되나요?"),
+            ("H-2", "H-2이면 아무 사업장에서 바로 취업할 수 있나요?"),
+            ("D-10", "D-10이면 인턴 활동이 자동으로 허용되나요?"),
+            ("F-4", "F-4 재외동포 비자 절차 알려줘"),
+        ]
+        for code, question in cases:
+            with self.subTest(code=code):
+                task = mod._detect_task_type(question)
+                top, sub = mod._detect_visa_codes(code, _record(code), question)
+                self.assertIsNone(mod._select_grounding(top, task, sub))
+                self.assertEqual(
+                    mod._procedure_variant_context_sources(_record(code), task, sub, user_text=question),
+                    [],
+                )
+
 # Table-driven scenario-family regression matrix.
 #
 # Each row asserts deterministic routing/safety expectations only — no live
@@ -1010,6 +1144,8 @@ SCENARIO_FAMILY_MATRIX = [
      "task": "status_change", "route_key": "statusChange", "sources": True},
     {"id": "d10_jobseek", "code": "D-10", "prompt": "D-10 구직비자로 E-7 취업 전환이 자동으로 되나요?",
      "task": None, "route_key": None, "sources": False},
+    {"id": "d10_status_change", "code": "D-10", "prompt": "D-10 체류자격 변경 서류 알려줘",
+     "task": "status_change", "route_key": "statusChange", "sources": True},
     # --- C. E-series employment ---
     {"id": "e2_workplace", "code": "E-2", "prompt": "E-2 근무처 변경 서류 알려줘",
      "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
@@ -1039,6 +1175,8 @@ SCENARIO_FAMILY_MATRIX = [
      "task": "family_status_change", "route_key": "statusGrant", "sources": True},
     {"id": "f4_overseas", "code": "F-4", "prompt": "F-4 재외동포 비자 절차 알려줘",
      "task": None, "route_key": None, "sources": False},
+    {"id": "f4_status_change", "code": "F-4", "prompt": "F-4 체류자격 변경 서류 알려줘",
+     "task": "status_change", "route_key": "statusChange", "sources": True},
     {"id": "f5_pr", "code": "F-5", "prompt": "F-5 영주증 재발급 신고 절차 알려줘",
      "task": None, "route_key": None, "sources": False},
     {"id": "f6_divorce", "code": "F-6", "prompt": "F-6 비자인데 이혼했어요. 체류 자격은 어떻게 되나요?",
@@ -1052,7 +1190,7 @@ SCENARIO_FAMILY_MATRIX = [
     {"id": "h1_wh", "code": "H-1", "prompt": "H-1 워킹홀리데이로 한국에서 일할 수 있나요?",
      "task": None, "route_key": None, "sources": False},
     {"id": "h2_workplace", "code": "H-2", "prompt": "H-2 근무처 변경 신고 절차 알려줘",
-     "task": "workplace_change", "route_key": "workplaceChange", "sources": False},
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
     # --- G. cross-cutting negative routing (even variant-bearing records must not route) ---
     {"id": "cross_work", "code": "E-7", "record_code": "E-7",
      "prompt": "Can I work in Korea with my current status?",
@@ -1149,7 +1287,7 @@ class HighRiskScenarioRegressionTests(unittest.TestCase):
         mod = self.mod
         q = "D-10 구직비자인데 E-7/E-9 취업으로 자동 전환되나요?"
         task = mod._detect_task_type(q)
-        # Even if a change-of-status task were detected, D-10 carries no variants.
+        # Generic destination-status wording must not force D-10-side variants.
         self.assertEqual(
             mod._procedure_variant_context_sources(_record("D-10"), task, None, user_text=q),
             [],
@@ -1207,17 +1345,16 @@ class HighRiskScenarioRegressionTests(unittest.TestCase):
             [],
         )
 
-    def test_h2_workplace_not_flattened_and_not_fabricated(self):
+    def test_h2_workplace_report_stays_needs_review_and_not_f4(self):
         mod = self.mod
         q = "H-2 근무처 변경/신고 절차 알려줘"
         task = mod._detect_task_type(q)
         self.assertEqual(task, "workplace_change")
-        # H-2 carries no scenario variants — routing key detection must not
-        # fabricate parent-level variant sources.
-        self.assertEqual(
-            mod._procedure_variant_context_sources(_record("H-2"), task, None, user_text=q),
-            [],
-        )
+        sources = mod._procedure_variant_context_sources(_record("H-2"), task, None, user_text=q)
+        self.assertEqual([source["variant_id"] for source in sources], ["h-2-employment-start-workplace-change-report"])
+        self.assertTrue(all(source["procedure_key"] == "workplaceChange" for source in sources))
+        self.assertTrue(all(source["needs_manual_review"] is True for source in sources))
+        self.assertNotIn("F-4", json.dumps(sources, ensure_ascii=False))
         self.assertIsNone(mod._select_grounding("H-2", task, None))
 
     def test_multiple_variants_under_one_key_are_capped(self):
