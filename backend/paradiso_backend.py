@@ -756,6 +756,21 @@ def _detect_task_type(text: str) -> Optional[str]:
     if any(sig in text for sig in workplace_ko) or re.search(workplace_en, text, flags=re.IGNORECASE):
         return "workplace_change"
 
+    # --- activities_outside_status / 체류자격외활동 ---
+    activities_outside_ko = (
+        "체류자격외활동", "체류자격 외 활동", "자격외활동", "자격 외 활동",
+        "외 활동허가", "활동허가", "아르바이트 허가", "시간제취업",
+        "시간제 취업", "파트타임", "부업",
+    )
+    activities_outside_en = (
+        r"\b(activities outside status|activity outside status|outside status activity|"
+        r"part[- ]?time work permission|side job permission|extra activity permission)\b"
+    )
+    if any(sig in text for sig in activities_outside_ko) or re.search(
+        activities_outside_en, text, flags=re.IGNORECASE
+    ):
+        return "activities_outside_status"
+
     # --- address_report ---
     address_ko = ("체류지 변경신고", "주소 변경신고", "이사 신고", "주소를 바꾸", "체류지 변경", "이사를 했")
     address_en = r"\b(address change|change of address|report (?:my )?(?:new )?address|moved (?:house|apartment|address))\b"
@@ -771,9 +786,9 @@ def _detect_task_type(text: str) -> Optional[str]:
     # --- family_status_change ---
     family_ko = (
         "가족관계 변동", "자녀 출생 신고", "부양 가족 변경", "출생 신고", "가족 구성 변경",
-        "체류자격 부여", "자격 부여", "국내출생", "국내 출생",
+        "체류자격 부여", "자격 부여", "국내출생", "국내 출생", "국내출생 자녀", "출생 자녀 체류",
     )
-    family_en = r"\b(family status change|(?:had|born) a child|dependent added|child born|new dependent|status grant)\b"
+    family_en = r"\b(family status change|(?:had|born) a child|dependent added|child born|new dependent|status grant|grant of status|child status grant)\b"
     if any(sig in text for sig in family_ko) or re.search(family_en, text, flags=re.IGNORECASE):
         return "family_status_change"
 
@@ -792,6 +807,7 @@ _TASK_RISK_LEVELS: Dict[str, str] = {
     "status_change": "high",
     "foreigner_registration": "medium",
     "workplace_change": "medium",
+    "activities_outside_status": "low",
     "address_report": "low",
     "passport_info_report": "low",
     "academic_status_change": "medium",
