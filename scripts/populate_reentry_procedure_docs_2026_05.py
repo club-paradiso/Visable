@@ -13,18 +13,29 @@ long-stay status section in the stay manual carries a uniform, parent-level
   2. 복수재입국허가 (사우디·이란·리비아 제한 …)
      - 신청서류 : 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료
 
-This script reads the literal ``신청서류 :`` line from each status's block
-(verbatim — nothing invented), records the exemption rule and the
-nationality restriction as conditions, cites that status's printed page
-(footer re-verified), and writes a structured ``procedures.reentry`` record.
+This script reads the literal ``신청서류 :`` / ``제출서류 :`` line from each
+status's re-entry sub-block (verbatim — nothing invented), records the
+exemption rule and the nationality restriction as conditions, cites that
+status's printed page (footer re-verified), and writes a structured
+``procedures.reentry`` record.
+
+Robust parsing notes:
+  - The re-entry sub-block is bounded by the *registration section heading*
+    ``외국인등록\\n`` (a heading on its own line) — NOT the substring
+    "외국인등록", because the document item "외국인등록증" contains that
+    substring and would otherwise truncate the list.
+  - The document line may wrap across printed lines and its items contain
+    balanced parentheses (e.g. "신청서(별지 34호서식)"). Parsing normalizes
+    whitespace, splits on commas, stops at the fee item (every re-entry list
+    ends with a 수수료 item), and strips a single unbalanced trailing ")"
+    (H-1's parenthetical "(제출서류 : … 수수료)").
 
 Safety:
-  - Only populates statuses whose own manual block contains the explicit
-    신청서류 line (verbatim doc list). No cross-status extrapolation.
+  - Only populates statuses whose own re-entry sub-block contains the explicit
+    doc line (verbatim list). No cross-status extrapolation.
   - Never overwrites a reentry procedure that already carries documents.
   - Keeps needsManualReview=true (auto-extracted, not hand-certified).
-  - Conditions (면제 제도, 국적 제한, 체류이력 특례) preserved as
-    notes/conditionalDocs, not flattened into the required list.
+  - Conditions preserved as notes/conditionalDocs, not flattened.
   - Idempotent: re-running makes no further change.
 
 Usage:
@@ -57,13 +68,10 @@ _SECTIONS = [
     ("F-5", 382), ("F-3", 421), ("G-1", 498), ("H-1", 514), ("F-4", 548),
 ]
 
-# Re-entry document list line. The 2026-05 manual writes it either as
-#   "신청서류 : 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료"   (복수재입국허가)
-# or inline/parenthetical as
-#   "(제출서류 : 신청서(별지 34호 서식), 여권, 외국인등록증, 수수료)"      (H-1 등)
-# Capture stops at end-of-line or a closing paren so the 외국인등록 list that
-# follows is never merged in.
-_APPLY_RE = re.compile(r"(?:신청서류|제출서류)\s*[:：]\s*([^\n)]+)")
+# Document line, capturing a generous run (may wrap across printed lines).
+_APPLY_RE = re.compile(r"(?:신청서류|제출서류)\s*[:：]\s*(.{1,160})", re.S)
+# Registration section heading on its own line (NOT the inline "외국인등록증").
+_REG_HEAD_RE = re.compile(r"외국인등록\s*\n")
 _FOOTER_RE = re.compile(r"-\s*(\d+)\s*-")
 
 _EXEMPTION_NOTE = (
@@ -96,14 +104,24 @@ def _reentry_state(rec):
     return "full" if ne else ("avail_empty" if pr.get("available") else "unavail")
 
 
-def _split_docs(line: str):
-    # The 신청서류 line is a comma-separated list; keep items verbatim.
-    parts = re.split(r"[,，]", line.strip())
+def _split_docs(raw: str):
+    """Parse the re-entry document line into verbatim items.
+
+    Handles line wraps, balanced parens inside items, and a trailing
+    unbalanced ")" from a parenthetical line. Stops at the fee (수수료) item,
+    which always terminates the re-entry document list.
+    """
+    s = re.sub(r"\s+", " ", raw.replace("\n", " ")).strip()
     docs = []
-    for p in parts:
-        s = p.strip(" .·-")
-        if s:
-            docs.append(s)
+    for part in re.split(r"[,，]", s):
+        item = part.strip(" .·-")
+        if item.count("(") < item.count(")") and item.endswith(")"):
+            item = item[:-1].strip()
+        if not item:
+            continue
+        docs.append(item)
+        if "수수료" in item:  # the fee item ends the list
+            break
     return docs
 
 
@@ -119,32 +137,30 @@ def build():
             idx = t.find("재입국허가")
             if idx < 0:
                 continue
-            # Restrict to the re-entry sub-block: from 재입국허가 up to the next
-            # 외국인등록 heading (or +900 chars). This guarantees a captured
-            # document line belongs to re-entry, not to the registration list
-            # that follows on the same page.
-            nxt = t.find("외국인등록", idx + 1)
-            end = nxt if 0 <= nxt - idx <= 900 else idx + 900
-            block = t[idx:end]
-            if "재입국허가 면제" not in block:
+            window = t[idx: idx + 1200]
+            if "재입국허가 면제" not in window:
                 continue
-            m = _APPLY_RE.search(block)
-            if not m:
+            # Position of the registration section heading within the window;
+            # the re-entry doc line must appear before it.
+            rh = _REG_HEAD_RE.search(window)
+            reg_pos = rh.start() if rh else len(window)
+            m = _APPLY_RE.search(window)
+            if not m or m.start() >= reg_pos:
+                continue
+            docs = _split_docs(m.group(1))
+            # A valid re-entry list has the application form + fee item.
+            if len(docs) < 2 or not any("수수료" in d for d in docs):
                 continue
             page = pi + 1
             foot = _FOOTER_RE.findall(t[:30])
             if not (foot and int(foot[0]) == page):
                 continue
-            docs = _split_docs(m.group(1))
-            if not docs:
-                continue
-            has_nat = bool(re.search(r"사우디|이란|리비아", block))
+            has_nat = bool(re.search(r"사우디|이란|리비아", window[:reg_pos]))
             found[code] = {
                 "page": page,
                 "docs": docs,
-                "applyLine": m.group(1).strip(),
+                "applyLine": re.sub(r"\s+", " ", m.group(1)).strip(),
                 "hasNat": has_nat,
-                "block": block,
             }
             break
     return found
@@ -207,11 +223,10 @@ def main(argv=None):
         if rec is None:
             missing_rec.append(code)
             continue
-        state = _reentry_state(rec)
-        if state == "full":
+        if _reentry_state(rec) == "full":
             skipped_full.append(code)
             continue
-        planned.append((code, info["page"], len(info["docs"]), state))
+        planned.append((code, info["page"], len(info["docs"])))
         if not args.dry_run:
             rec.setdefault("procedures", {})["reentry"] = make_proc(info)
 
@@ -221,6 +236,7 @@ def main(argv=None):
         "skippedAlreadyFull": skipped_full,
         "recordMissing": missing_rec,
         "plannedCount": len(planned),
+        "docsByCode": {c: found[c]["docs"] for c in found},
     }
     with open("/tmp/reentry_report.json", "w", encoding="utf-8") as fh:
         json.dump(report, fh, ensure_ascii=False, indent=1)
@@ -230,7 +246,7 @@ def main(argv=None):
         with open(_VISA_DATA, "w", encoding="utf-8") as fh:
             fh.write(out)
 
-    print(f"manual blocks with 신청서류 line: {len(found)}")
+    print(f"re-entry blocks with a document line: {len(found)}")
     print(f"planned populations: {len(planned)}")
     print(f"skipped (already full): {len(skipped_full)}")
     print(f"record missing: {missing_rec}")

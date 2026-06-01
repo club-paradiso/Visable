@@ -3524,6 +3524,37 @@
             "needsManualReview": true
           }
         ]
+      },
+      "reentry": {
+        "available": true,
+        "summary": "재입국허가 면제 제도 및 복수재입국허가(1년 초과 2년 이내 재입국) 안내.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 3. 재입국허가 면제국가 독일"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": [
+            "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능)."
+          ]
+        },
+        "notes": [
+          "재입국허가 면제 제도: 외국인등록을 마친 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가가 면제됩니다(체류기간이 1년보다 적게 남은 경우 남은 체류기간 범위 내 면제). 다만 입국규제 등 대상자는 체류지 관할 출입국·외국인관서에서 재입국허가를 받아야 합니다.",
+          "복수재입국허가는 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 이내에 재입국하려는 경우에 신청합니다.",
+          "2026.5 체류민원 안내매뉴얼의 해당 체류자격 재입국허가 항목에서 추출한 신청서류입니다. 체류이력·국적별 예외가 있어 신청 전 확인이 필요합니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "p. 34",
+            "confidence": "manual_extracted_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     },
     "sourceManualStatus": {
@@ -4971,7 +5002,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 1. 외국인등록 제출서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -5674,7 +5708,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -6073,7 +6110,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료면제 외국인등록 1. 외국인등록 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -6458,7 +6498,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 외국인등록 󰁾 목차 1. 제출서류 (외국인 개인사업자는 “2”번 참조) ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -7434,7 +7477,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 1. 외국인등록 신청서류 ①신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -7762,7 +7808,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -8035,7 +8084,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -8300,7 +8352,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -8599,7 +8654,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 󰁾 목차 외국인등록 1. 외국인등록 신청서류 및 확인사항 가. 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -11245,7 +11303,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 ① 신청서(별지 34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -13633,7 +13694,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서 (별지 34호 서식"
+            "신청서 (별지 34호 서식)",
+            "여권",
+            "외국인등록증",
+            "수수료) 외국인등록 󰁾 목차 대 상 - 90일을 초과하여 체류하려는 자 (협정상 예외 없음) 제출서류 ① 신청서(별지 34호 서식"
           ],
           "additionalDocs": [],
           "conditionalDocs": []
@@ -15085,7 +15149,10 @@
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "신청서(별지 34호서식"
+            "신청서(별지 34호서식)",
+            "여권 원본",
+            "외국인등록증",
+            "수수료 외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식)"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
