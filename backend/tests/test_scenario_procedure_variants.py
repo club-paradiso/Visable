@@ -701,5 +701,280 @@ class ScenarioProcedureVariantBatch2Tests(unittest.TestCase):
             self.assertIn(key, discovered, key)
 
 
+SAFE_VARIANT_FIELDS = {
+    "visa_code", "procedure_key", "variant_id", "label", "status_code",
+    "page_range", "manual_name", "manual_version", "needs_manual_review",
+}
+
+# Table-driven scenario-family regression matrix.
+#
+# Each row asserts deterministic routing/safety expectations only — no live
+# LLM prose. Columns:
+#   id          : stable case id
+#   code        : explicit visa/sub code handed to _detect_visa_codes
+#   record_code : which visa_data.json record supplies visa_data (defaults to code)
+#   prompt      : the user question
+#   task        : expected _detect_task_type result (or None)
+#   route_key   : expected _procedure_variant_key_for_task result (or None)
+#   sources     : whether scenario variants should actually surface
+#
+# Invariants enforced for every row (in the test body):
+#   - deterministic grounding is never selected (these are not grounded paths)
+#   - generic wording never forces scenario variants
+#   - surfaced variants are needs-review only, shape-safe, key-matched
+SCENARIO_FAMILY_MATRIX = [
+    # --- A. short-stay / diplomatic / temporary ---
+    {"id": "a1_generic", "code": "A-1", "prompt": "A-1 비자 절차에서 주의할 점이 있나요?",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "b1_short", "code": "B-1", "prompt": "B-1 단기 체류 관련 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "c3_visit", "code": "C-3", "prompt": "C-3 단기방문으로 관광하려는데 주의사항이 있나요?",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "c4_short_emp", "code": "C-4", "prompt": "C-4 단기취업 비자 절차가 궁금합니다",
+     "task": None, "route_key": None, "sources": False},
+    # --- B. D-series study / training / job-seeking ---
+    {"id": "d2_leave", "code": "D-2", "prompt": "D-2 비자인데 휴학하면 체류는 어떻게 되나요?",
+     "task": "academic_status_change", "route_key": None, "sources": False},
+    {"id": "d2_parttime", "code": "D-2", "prompt": "D-2 시간제취업 허가 받을 수 있나요?",
+     "task": "activities_outside_status", "route_key": "activitiesOutsideStatus", "sources": False},
+    {"id": "d4_status_change", "code": "D-4", "prompt": "D-4 체류자격 변경 서류 알려줘",
+     "task": "status_change", "route_key": "statusChange", "sources": True},
+    {"id": "d8_status_change", "code": "D-8", "prompt": "D-8 체류자격 변경 서류 알려줘",
+     "task": "status_change", "route_key": "statusChange", "sources": True},
+    {"id": "d9_status_change", "code": "D-9", "prompt": "D-9 체류자격 변경 서류는?",
+     "task": "status_change", "route_key": "statusChange", "sources": True},
+    {"id": "d10_jobseek", "code": "D-10", "prompt": "D-10 구직비자로 E-7 취업 전환이 자동으로 되나요?",
+     "task": None, "route_key": None, "sources": False},
+    # --- C. E-series employment ---
+    {"id": "e2_workplace", "code": "E-2", "prompt": "E-2 근무처 변경 서류 알려줘",
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
+    {"id": "e6_activities", "code": "E-6", "prompt": "E-6 체류자격외활동 허가 서류 알려줘",
+     "task": "activities_outside_status", "route_key": "activitiesOutsideStatus", "sources": True},
+    {"id": "e7_workplace", "code": "E-7", "prompt": "E-7 근무처 변경 서류 알려줘",
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
+    {"id": "e74_workplace", "code": "E-7-4", "record_code": "E-7",
+     "prompt": "E-7-4 근무처 변경 서류 알려줘",
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
+    {"id": "e8_seasonal", "code": "E-8", "prompt": "E-8 계절근로 비자 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "e9_workplace", "code": "E-9", "prompt": "E-9 근무처 변경 서류는?",
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": True},
+    {"id": "e10_seafarer", "code": "E-10", "prompt": "E-10 선원 취업 비자 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    # --- D. F-series family / residence / permanent residence ---
+    {"id": "f1_statusgrant", "code": "F-1", "prompt": "F-1 국내출생 자녀 체류자격 부여 서류 알려줘",
+     "task": "family_status_change", "route_key": "statusGrant", "sources": True},
+    {"id": "f1_generic", "code": "F-1", "prompt": "F-1 가족 관련 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "f2_residence", "code": "F-2", "prompt": "F-2 거주비자 연장 점수제 자격이 되나요?",
+     "task": "extension", "route_key": None, "sources": False},
+    {"id": "f3_activities", "code": "F-3", "prompt": "F-3 동반가족이 시간제취업 허가를 받을 수 있나요?",
+     "task": "activities_outside_status", "route_key": "activitiesOutsideStatus", "sources": True},
+    {"id": "f3_statusgrant", "code": "F-3", "prompt": "F-3 자녀 출생 체류자격 부여 서류 알려줘",
+     "task": "family_status_change", "route_key": "statusGrant", "sources": True},
+    {"id": "f4_overseas", "code": "F-4", "prompt": "F-4 재외동포 비자 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "f5_pr", "code": "F-5", "prompt": "F-5 영주증 재발급 신고 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "f6_divorce", "code": "F-6", "prompt": "F-6 비자인데 이혼했어요. 체류 자격은 어떻게 되나요?",
+     "task": "marriage_divorce_status_change", "route_key": None, "sources": False},
+    # --- E. G-series humanitarian / refugee ---
+    {"id": "g1_humanitarian", "code": "G-1", "prompt": "G-1 인도적 체류 절차 알려줘",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "g1_work", "code": "G-1", "prompt": "G-1 비자로 일할 수 있나요?",
+     "task": None, "route_key": None, "sources": False},
+    # --- F. H-series working holiday / visit employment ---
+    {"id": "h1_wh", "code": "H-1", "prompt": "H-1 워킹홀리데이로 한국에서 일할 수 있나요?",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "h2_workplace", "code": "H-2", "prompt": "H-2 근무처 변경 신고 절차 알려줘",
+     "task": "workplace_change", "route_key": "workplaceChange", "sources": False},
+    # --- G. cross-cutting negative routing (even variant-bearing records must not route) ---
+    {"id": "cross_work", "code": "E-7", "record_code": "E-7",
+     "prompt": "Can I work in Korea with my current status?",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "cross_family", "code": "F-1", "record_code": "F-1",
+     "prompt": "My family situation changed. What should I do?",
+     "task": None, "route_key": None, "sources": False},
+    {"id": "cross_generic", "code": "E-9", "record_code": "E-9",
+     "prompt": "What should I watch out for with this visa?",
+     "task": None, "route_key": None, "sources": False},
+]
+
+
+class ScenarioFamilyRegressionMatrixTests(unittest.TestCase):
+    """Deterministic A–H scenario-family routing + safety matrix."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = _module()
+
+    def _row(self, row):
+        mod = self.mod
+        record = _record(row.get("record_code", row["code"]))
+        prompt = row["prompt"]
+        top, sub = mod._detect_visa_codes(row["code"], record, prompt)
+        task = mod._detect_task_type(prompt)
+        route_key = mod._procedure_variant_key_for_task(task, prompt)
+        grounding = mod._select_grounding(top, task, sub)
+        sources = mod._procedure_variant_context_sources(record, task, sub, user_text=prompt)
+        block = mod._build_procedure_variant_context_block(record, task, sub, user_text=prompt)
+        return task, route_key, grounding, sources, block
+
+    def test_scenario_family_matrix(self):
+        for row in SCENARIO_FAMILY_MATRIX:
+            with self.subTest(case=row["id"]):
+                task, route_key, grounding, sources, block = self._row(row)
+                self.assertEqual(task, row["task"], f"{row['id']}: task")
+                self.assertEqual(route_key, row["route_key"], f"{row['id']}: route_key")
+                # Needs-review scenario variants never imply deterministic grounding.
+                self.assertIsNone(grounding, f"{row['id']}: must not select grounding")
+                if row["sources"]:
+                    self.assertTrue(sources, f"{row['id']}: expected scenario variants")
+                    self.assertTrue(block, f"{row['id']}: expected variant block")
+                    for src in sources:
+                        self.assertLessEqual(set(src), SAFE_VARIANT_FIELDS, f"{row['id']}: safe fields")
+                        self.assertEqual(src.get("procedure_key"), row["route_key"], row["id"])
+                        self.assertIs(src.get("needs_manual_review"), True, f"{row['id']}: needs review")
+                else:
+                    self.assertEqual(sources, [], f"{row['id']}: must not fabricate variants")
+                    self.assertEqual(block, "", f"{row['id']}: must not build variant block")
+
+    def test_matrix_covers_all_families(self):
+        families = {row["code"][0] for row in SCENARIO_FAMILY_MATRIX if row["code"][0].isalpha()}
+        for fam in "ABCDEFGH":
+            self.assertIn(fam, families, f"matrix must cover status family {fam}")
+
+
+class HighRiskScenarioRegressionTests(unittest.TestCase):
+    """Deeper assertions for F-6, G-1, D-10, E-7/E-7-4, F-2, F-3, H-2."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.mod = _module()
+
+    def test_f6_divorce_high_risk_no_grounding_no_variant(self):
+        mod = self.mod
+        for sub in ("F-6-1", "F-6-3", None):
+            code = sub or "F-6"
+            q = f"{code} 비자인데 이혼/별거 후 자녀 양육 중입니다. 체류 자격은?"
+            top, detected_sub = mod._detect_visa_codes(code, _record("F-6"), q)
+            task = mod._detect_task_type(q)
+            self.assertEqual(task, "marriage_divorce_status_change")
+            self.assertEqual(mod._risk_level_for_task(task), "high")
+            self.assertIsNone(mod._select_grounding(top, task, detected_sub))
+            self.assertEqual(
+                mod._procedure_variant_context_sources(_record("F-6"), task, detected_sub, user_text=q),
+                [],
+            )
+
+    def test_g1_humanitarian_and_work_no_fabricated_pathway(self):
+        mod = self.mod
+        for q in (
+            "G-1 인도적 체류 / 난민 신청 중인데 절차 알려줘",
+            "G-1 비자로 일할 수 있나요? 활동 허가가 자동으로 되나요?",
+        ):
+            task = mod._detect_task_type(q)
+            self.assertIsNone(mod._select_grounding("G-1", task, None))
+            self.assertEqual(
+                mod._procedure_variant_context_sources(_record("G-1"), task, None, user_text=q),
+                [],
+            )
+
+    def test_d10_jobseeking_not_auto_transition(self):
+        mod = self.mod
+        q = "D-10 구직비자인데 E-7/E-9 취업으로 자동 전환되나요?"
+        task = mod._detect_task_type(q)
+        # Even if a change-of-status task were detected, D-10 carries no variants.
+        self.assertEqual(
+            mod._procedure_variant_context_sources(_record("D-10"), task, None, user_text=q),
+            [],
+        )
+        self.assertIsNone(mod._select_grounding("D-10", task, None))
+
+    def test_e7_and_e74_workplace_change_needs_review_only(self):
+        mod = self.mod
+        record = _record("E-7")
+        for code in ("E-7", "E-7-4"):
+            q = f"{code} 근무처 변경 서류 알려줘 (직종/고용주/계약 정보 없음)"
+            top, sub = mod._detect_visa_codes(code, record, q)
+            task = mod._detect_task_type(q)
+            self.assertEqual(task, "workplace_change")
+            self.assertIsNone(mod._select_grounding(top, task, sub))
+            sources = mod._procedure_variant_context_sources(record, task, sub, user_text=q)
+            self.assertTrue(sources, code)
+            for src in sources:
+                self.assertEqual(src.get("procedure_key"), "workplaceChange")
+                self.assertIs(src.get("needs_manual_review"), True)
+
+    def test_f2_residence_extension_no_grounding_no_eligibility_variant(self):
+        mod = self.mod
+        q = "F-2 거주비자 연장하려는데 점수제/투자 자격이 되나요?"
+        top, sub = mod._detect_visa_codes("F-2", _record("F-2"), q)
+        task = mod._detect_task_type(q)
+        self.assertEqual(task, "extension")
+        # F-2 is not a deterministically grounded code, so no grounding is asserted.
+        self.assertIsNone(mod._select_grounding(top, task, sub))
+        self.assertEqual(
+            mod._procedure_variant_context_sources(_record("F-2"), task, sub, user_text=q),
+            [],
+        )
+
+    def test_f3_dependent_activities_vs_statusgrant_routing(self):
+        mod = self.mod
+        record = _record("F-3")
+        activities_q = "F-3 동반가족 시간제취업 허가 받을 수 있나요?"
+        a_task = mod._detect_task_type(activities_q)
+        a_sources = mod._procedure_variant_context_sources(record, a_task, None, user_text=activities_q)
+        self.assertTrue(a_sources)
+        self.assertTrue(all(s.get("procedure_key") == "activitiesOutsideStatus" for s in a_sources))
+
+        grant_q = "F-3 자녀 출생 체류자격 부여 서류 알려줘"
+        g_task = mod._detect_task_type(grant_q)
+        g_sources = mod._procedure_variant_context_sources(record, g_task, None, user_text=grant_q)
+        self.assertTrue(g_sources)
+        self.assertTrue(all(s.get("procedure_key") == "statusGrant" for s in g_sources))
+
+        # Generic F-3 family wording must not pull child/status-grant checklists.
+        generic_q = "F-3 가족 관련 절차 알려줘"
+        gen_task = mod._detect_task_type(generic_q)
+        self.assertEqual(
+            mod._procedure_variant_context_sources(record, gen_task, None, user_text=generic_q),
+            [],
+        )
+
+    def test_h2_workplace_not_flattened_and_not_fabricated(self):
+        mod = self.mod
+        q = "H-2 근무처 변경/신고 절차 알려줘"
+        task = mod._detect_task_type(q)
+        self.assertEqual(task, "workplace_change")
+        # H-2 carries no scenario variants — routing key detection must not
+        # fabricate parent-level variant sources.
+        self.assertEqual(
+            mod._procedure_variant_context_sources(_record("H-2"), task, None, user_text=q),
+            [],
+        )
+        self.assertIsNone(mod._select_grounding("H-2", task, None))
+
+    def test_multiple_variants_under_one_key_are_capped(self):
+        mod = self.mod
+        # F-1 statusChange holds 5 variants; selection must cap to <= 3 and stay safe.
+        record = _record("F-1")
+        sources = mod._procedure_variant_context_sources(
+            record, "status_change", user_text="F-1 체류자격 변경 서류 알려줘"
+        )
+        self.assertTrue(sources)
+        self.assertLessEqual(len(sources), 3)
+        for src in sources:
+            self.assertLessEqual(set(src), SAFE_VARIANT_FIELDS)
+            self.assertIs(src.get("needs_manual_review"), True)
+
+    def test_missing_payload_does_not_crash_or_fabricate(self):
+        mod = self.mod
+        for bad in (None, {}, {"code": "E-7", "procedures": "oops"}):
+            task = mod._detect_task_type("Can I work? change workplace")
+            sources = mod._procedure_variant_context_sources(bad, task, None, user_text="x")
+            self.assertEqual(sources, [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

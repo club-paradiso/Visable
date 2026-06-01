@@ -639,6 +639,76 @@
       "expected_must_not_include_terms": [],
       "matrix_row_id": "d4_language_trainee_extension",
       "notes": "D-4 text-detectable. No sub-code. '연장' triggers extension. General entry (no sub-code required) should be returned."
+    },
+    {
+      "id": "gq_a1_diplomatic_generic_ko_01",
+      "language": "ko",
+      "question": "A-1 외교 비자 절차에서 주의할 점이 있나요?",
+      "visa_code": "A-1",
+      "visa_sub_code": null,
+      "expected_task_type": null,
+      "expected_grounding_status": "scoped_fallback",
+      "expected_risk_level": "low",
+      "expected_must_include_metadata": ["visa_code_detected:A-1"],
+      "expected_must_not_include_terms": [],
+      "matrix_row_id": "a1_diplomatic_generic",
+      "notes": "All-status sweep: short-stay/diplomatic generic question. No task signal; advisory scoped_fallback only. Must not fabricate employment/change/extension routing."
+    },
+    {
+      "id": "gq_g1_humanitarian_generic_ko_01",
+      "language": "ko",
+      "question": "G-1 인도적 체류 / 난민 신청 절차에서 주의할 점은 무엇인가요?",
+      "visa_code": "G-1",
+      "visa_sub_code": null,
+      "expected_task_type": null,
+      "expected_grounding_status": "scoped_fallback",
+      "expected_risk_level": "low",
+      "expected_must_include_metadata": ["visa_code_detected:G-1"],
+      "expected_must_not_include_terms": [],
+      "matrix_row_id": "g1_humanitarian_generic",
+      "notes": "All-status sweep: G-series humanitarian. No invented refugee approval pathway; advisory only."
+    },
+    {
+      "id": "gq_h2_workplace_change_ko_01",
+      "language": "ko",
+      "question": "H-2 근무처 변경 신고는 어떻게 하나요?",
+      "visa_code": "H-2",
+      "visa_sub_code": null,
+      "expected_task_type": "workplace_change",
+      "expected_grounding_status": "scoped_fallback",
+      "expected_risk_level": "medium",
+      "expected_must_include_metadata": ["visa_code_detected:H-2", "task_type_detected:workplace_change"],
+      "expected_must_not_include_terms": [],
+      "matrix_row_id": "h2_workplace_change",
+      "notes": "All-status sweep: H-series. workplace_change detected but H-2 carries no variants — must not flatten or fabricate variant context; not confused with F-4."
+    },
+    {
+      "id": "gq_d10_jobseeking_transition_ko_01",
+      "language": "ko",
+      "question": "D-10 구직비자로 E-7 취업이 자동으로 전환되나요?",
+      "visa_code": "D-10",
+      "visa_sub_code": null,
+      "expected_task_type": null,
+      "expected_grounding_status": "scoped_fallback",
+      "expected_risk_level": "low",
+      "expected_must_include_metadata": ["visa_code_detected:D-10"],
+      "expected_must_not_include_terms": [],
+      "matrix_row_id": "d10_jobseeking_transition",
+      "notes": "High-risk all-status: job-seeking is not work authorization. No automatic E-series transition implied; asks for employer/occupation/contract facts."
+    },
+    {
+      "id": "gq_f2_residence_extension_ko_01",
+      "language": "ko",
+      "question": "F-2 거주비자 연장 자격이 되나요?",
+      "visa_code": "F-2",
+      "visa_sub_code": null,
+      "expected_task_type": "extension",
+      "expected_grounding_status": "scoped_fallback",
+      "expected_risk_level": "medium",
+      "expected_must_include_metadata": ["visa_code_detected:F-2", "task_type_detected:extension"],
+      "expected_must_not_include_terms": [],
+      "matrix_row_id": "f2_residence_extension",
+      "notes": "High-risk all-status: F-2 is not a deterministically grounded code. Extension detected but no grounding/eligibility claim without subtype and score/investment facts."
     }
   ]
 }
