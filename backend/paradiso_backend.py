@@ -132,6 +132,8 @@ class AskResponse(BaseModel):
     model: str
     grounding_used: bool = False
     grounding_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    procedure_variant_context_used: bool = False
+    procedure_variant_context_sources: List[Dict[str, Any]] = Field(default_factory=list)
     visa_code_detected: Optional[str] = None
     visa_sub_code_detected: Optional[str] = None
     task_type_detected: Optional[str] = None
@@ -688,7 +690,11 @@ def _detect_visa_codes(
     """
     import re
 
-    for candidate in (payload_code, (visa_data or {}).get("code") if visa_data else None):
+    for candidate in (
+        payload_code,
+        (visa_data or {}).get("detected_code") if visa_data else None,
+        (visa_data or {}).get("code") if visa_data else None,
+    ):
         if isinstance(candidate, str) and candidate.strip():
             normalized = _normalize_visa_code(candidate)
             return _split_visa_code(normalized)
@@ -763,8 +769,11 @@ def _detect_task_type(text: str) -> Optional[str]:
         return "passport_info_report"
 
     # --- family_status_change ---
-    family_ko = ("가족관계 변동", "자녀 출생 신고", "부양 가족 변경", "출생 신고", "가족 구성 변경")
-    family_en = r"\b(family status change|(?:had|born) a child|dependent added|child born|new dependent)\b"
+    family_ko = (
+        "가족관계 변동", "자녀 출생 신고", "부양 가족 변경", "출생 신고", "가족 구성 변경",
+        "체류자격 부여", "자격 부여", "국내출생", "국내 출생",
+    )
+    family_en = r"\b(family status change|(?:had|born) a child|dependent added|child born|new dependent|status grant)\b"
     if any(sig in text for sig in family_ko) or re.search(family_en, text, flags=re.IGNORECASE):
         return "family_status_change"
 
@@ -1092,6 +1101,217 @@ def _build_visa_data_context_block(visa_data: Optional[Dict[str, Any]]) -> str:
         " present this block as definitive procedural guidance."
     )
     return f"{header}\n" + "\n".join(lines)
+
+
+_PROCEDURE_VARIANT_TASK_KEYS: Dict[str, str] = {
+    "status_change": "statusChange",
+    "workplace_change": "workplaceChange",
+    "activities_outside_status": "activitiesOutsideStatus",
+}
+
+
+def _procedure_variant_key_for_task(
+    task_type: Optional[str],
+    user_text: Optional[str] = None,
+) -> Optional[str]:
+    """Return the one procedure key eligible for needs-review variant context.
+
+    Family questions are deliberately narrower than the other mappings:
+    ``statusGrant`` is eligible only when the prompt itself explicitly signals
+    birth or status grant. A generic family change must not pull child-specific
+    checklists into the prompt.
+    """
+    mapped = _PROCEDURE_VARIANT_TASK_KEYS.get(task_type or "")
+    if mapped:
+        return mapped
+    if task_type != "family_status_change":
+        return None
+
+    text = user_text or ""
+    explicit_grant_ko = (
+        "자녀 출생", "출생 신고", "국내출생", "국내 출생",
+        "체류자격 부여", "자격 부여",
+    )
+    if any(signal in text for signal in explicit_grant_ko):
+        return "statusGrant"
+
+    import re
+    if re.search(r"\b(child born|born child|had a child|status grant)\b", text, flags=re.IGNORECASE):
+        return "statusGrant"
+    return None
+
+
+def _select_procedure_variants(
+    visa_data: Optional[Dict[str, Any]],
+    task_type: Optional[str],
+    visa_sub_code: Optional[str] = None,
+    *,
+    user_text: Optional[str] = None,
+    max_variants: int = 3,
+) -> tuple:
+    """Select a small scenario-variant set from a frontend local-catalog record.
+
+    Exact sub-code matches win. If none exists, at most ``max_variants`` are
+    returned as visibly labeled scenario options under the matching procedure
+    key only. Empty and explicitly unavailable variants are ignored.
+    """
+    procedure_key = _procedure_variant_key_for_task(task_type, user_text)
+    if not procedure_key or not isinstance(visa_data, dict):
+        return None, []
+    procedures = visa_data.get("procedures")
+    if not isinstance(procedures, dict):
+        return procedure_key, []
+    procedure = procedures.get(procedure_key)
+    if not isinstance(procedure, dict):
+        return procedure_key, []
+    variants = procedure.get("variants")
+    if not isinstance(variants, list):
+        return procedure_key, []
+
+    usable: List[Dict[str, Any]] = []
+    for variant in variants:
+        if not isinstance(variant, dict) or variant.get("available") is False:
+            continue
+        required_docs = variant.get("requiredDocs")
+        if not isinstance(required_docs, dict):
+            continue
+        if not any(
+            isinstance(required_docs.get(group), list) and required_docs.get(group)
+            for group in ("commonDocs", "requiredDocs", "additionalDocs", "conditionalDocs")
+        ):
+            continue
+        usable.append(variant)
+
+    normalized_sub_code = _normalize_visa_code(visa_sub_code) if visa_sub_code else None
+    if normalized_sub_code:
+        exact = [
+            variant for variant in usable
+            if _normalize_visa_code(str(variant.get("statusCode") or "")) == normalized_sub_code
+        ]
+        if exact:
+            return procedure_key, exact[:max_variants]
+    return procedure_key, usable[:max_variants]
+
+
+def _procedure_variant_context_sources(
+    visa_data: Optional[Dict[str, Any]],
+    task_type: Optional[str],
+    visa_sub_code: Optional[str] = None,
+    *,
+    user_text: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Return safe response metadata for selected needs-review variants."""
+    procedure_key, variants = _select_procedure_variants(
+        visa_data, task_type, visa_sub_code, user_text=user_text
+    )
+    if not procedure_key or not isinstance(visa_data, dict):
+        return []
+
+    visa_code = visa_data.get("code")
+    sources: List[Dict[str, Any]] = []
+    for variant in variants:
+        refs = variant.get("manualRefs")
+        ref = refs[0] if isinstance(refs, list) and refs and isinstance(refs[0], dict) else {}
+        sources.append({
+            "visa_code": visa_code,
+            "procedure_key": procedure_key,
+            "variant_id": variant.get("id"),
+            "label": variant.get("labelKo") or variant.get("label"),
+            "status_code": variant.get("statusCode"),
+            "page_range": ref.get("pageRange"),
+            "manual_name": ref.get("manualName"),
+            "manual_version": ref.get("manualVersion"),
+            "needs_manual_review": ref.get("needsManualReview") is True,
+        })
+    return sources
+
+
+def _build_procedure_variant_context_block(
+    visa_data: Optional[Dict[str, Any]],
+    task_type: Optional[str],
+    visa_sub_code: Optional[str] = None,
+    *,
+    user_text: Optional[str] = None,
+) -> str:
+    """Build compact needs-review prompt context for scenario variants.
+
+    This local catalog block is intentionally weaker than deterministic manual
+    grounding and HIGH / STRUCTURED_EVIDENCE_READY structured requirements.
+    """
+    procedure_key, variants = _select_procedure_variants(
+        visa_data, task_type, visa_sub_code, user_text=user_text
+    )
+    if not procedure_key or not variants or not isinstance(visa_data, dict):
+        return ""
+
+    MAX_FIELD = 180
+    MAX_DOCS_PER_GROUP = 5
+    MAX_NOTES = 3
+
+    def _trim(value: Any, limit: int = MAX_FIELD) -> str:
+        text = str(value or "").strip()
+        return (text[:limit].rstrip() + "…") if len(text) > limit else text
+
+    lines = [
+        f"- parent visa code: {_trim(visa_data.get('code'))}",
+        f"- procedure key: {procedure_key}",
+    ]
+    for variant in variants:
+        lines.append(f"- variant id: {_trim(variant.get('id'))}")
+        label = _trim(variant.get("labelKo") or variant.get("label"))
+        if label:
+            lines.append(f"  - label: {label}")
+        status_code = _trim(variant.get("statusCode"))
+        if status_code:
+            lines.append(f"  - status code: {status_code}")
+        scenario = _trim(variant.get("scenarioKo"))
+        if scenario:
+            lines.append(f"  - applies only when: {scenario}")
+
+        required_docs = variant.get("requiredDocs")
+        if isinstance(required_docs, dict):
+            for group in ("commonDocs", "requiredDocs", "additionalDocs", "conditionalDocs"):
+                items = required_docs.get(group)
+                if not isinstance(items, list) or not items:
+                    continue
+                lines.append(f"  - {group}:")
+                for item in items[:MAX_DOCS_PER_GROUP]:
+                    text = _trim(item)
+                    if text:
+                        lines.append(f"    - {text}")
+
+        notes = variant.get("notes")
+        if isinstance(notes, list) and notes:
+            lines.append("  - notes:")
+            for note in notes[:MAX_NOTES]:
+                text = _trim(note)
+                if text:
+                    lines.append(f"    - {text}")
+
+        refs = variant.get("manualRefs")
+        if isinstance(refs, list) and refs:
+            ref = refs[0] if isinstance(refs[0], dict) else {}
+            source_bits = [
+                _trim(ref.get("manualName")),
+                _trim(ref.get("manualVersion")),
+                _trim(ref.get("pageRange")),
+                _trim(ref.get("sourceFile")),
+            ]
+            lines.append("  - manual ref: " + " · ".join(bit for bit in source_bits if bit))
+            lines.append(f"  - needsManualReview: {ref.get('needsManualReview') is True}")
+
+    header = (
+        "[Manual-backed local procedure variant context — needs review]\n"
+        "The checklist items below are scenario-specific local catalog records"
+        " extracted from the cited official manual pages. They are not final"
+        " source-confirmed determinations. Do not generalize them to all users"
+        " under the parent visa. Use a checklist only if the labeled scenario"
+        " matches the user's facts; otherwise say it may not apply. Do not invent"
+        " missing documents, deadlines, fees, or legal citations."
+        " needsManualReview: true means the user must verify the applicable"
+        " checklist with HiKorea, 1345, or the competent immigration office."
+    )
+    return header + "\n" + "\n".join(lines)
 
 
 def _build_source_confirmed_structured_requirements_block(
@@ -1425,6 +1645,18 @@ async def ask(req: AskRequest) -> AskResponse:
     )
     grounding_sources: List[Dict[str, Any]] = []
     visa_data_block = _build_visa_data_context_block(req.visa_data)
+    procedure_variant_block = _build_procedure_variant_context_block(
+        req.visa_data,
+        task_type_detected,
+        visa_sub_code_detected,
+        user_text=prompt,
+    )
+    procedure_variant_context_sources = _procedure_variant_context_sources(
+        req.visa_data,
+        task_type_detected,
+        visa_sub_code_detected,
+        user_text=prompt,
+    )
     structured_block = _build_source_confirmed_structured_requirements_block(
         visa_code_detected, visa_sub_code_detected
     )
@@ -1453,6 +1685,12 @@ async def ask(req: AskRequest) -> AskResponse:
         )
         if visa_data_block:
             final_prompt += "\n\n" + visa_data_block
+
+    if procedure_variant_block:
+        # Needs-review local manual context only. This is weaker than both
+        # deterministic grounding and HIGH / STRUCTURED_EVIDENCE_READY
+        # structured requirements, and never flips grounding_used.
+        final_prompt += "\n\n" + procedure_variant_block
 
     if structured_block:
         # Source-confirmed (HIGH / STRUCTURED_EVIDENCE_READY) only. Supplements
@@ -1496,6 +1734,8 @@ async def ask(req: AskRequest) -> AskResponse:
             model=req.model or OPENROUTER_MODEL,
             grounding_used=bool(grounding),
             grounding_sources=grounding_sources,
+            procedure_variant_context_used=bool(procedure_variant_block),
+            procedure_variant_context_sources=procedure_variant_context_sources,
             visa_code_detected=visa_code_detected,
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
@@ -1513,6 +1753,8 @@ async def ask(req: AskRequest) -> AskResponse:
             model=req.model or GROQ_MODEL,
             grounding_used=bool(grounding),
             grounding_sources=grounding_sources,
+            procedure_variant_context_used=bool(procedure_variant_block),
+            procedure_variant_context_sources=procedure_variant_context_sources,
             visa_code_detected=visa_code_detected,
             visa_sub_code_detected=visa_sub_code_detected,
             task_type_detected=task_type_detected,
@@ -1533,6 +1775,8 @@ async def ask(req: AskRequest) -> AskResponse:
             ),
             "grounding_used": bool(grounding),
             "grounding_sources": grounding_sources,
+            "procedure_variant_context_used": bool(procedure_variant_block),
+            "procedure_variant_context_sources": procedure_variant_context_sources,
             "visa_code_detected": visa_code_detected,
             "visa_sub_code_detected": visa_sub_code_detected,
             "task_type_detected": task_type_detected,
