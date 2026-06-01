@@ -1291,6 +1291,28 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-code { font-weight: 900; color: var(--ac); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .manual-subcode-name { font-size: 0.82rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
 .manual-subcode-desc { font-size: 0.77rem; color: var(--t2); line-height: 1.5; word-break: keep-all; }
+.procedure-variant-list { display: grid; gap: 0.72rem; }
+.scenario-selector-heading { margin: 0; color: var(--t1); font-size: 0.9rem; font-weight: 900; }
+.scenario-selector-copy { margin: 0.3rem 0 0; color: var(--t2); font-size: 0.78rem; line-height: 1.6; word-break: keep-all; }
+.scenario-choice-list { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.scenario-choice { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; min-height: 38px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 8px; padding: 0.48rem 0.62rem; font: inherit; cursor: pointer; text-align: left; transition: var(--btn-tr); }
+.scenario-choice:hover, .scenario-choice:focus-visible { border-color: var(--ac); background: var(--acL); color: var(--t1); }
+.scenario-choice:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 1px; }
+.scenario-choice[aria-pressed="true"] { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 11%, var(--bg1)); color: var(--t1); box-shadow: inset 3px 0 0 var(--ac); }
+.scenario-choice[aria-pressed="true"]::before { content: "✓ 선택됨"; color: var(--ac); font-size: 0.67rem; font-weight: 900; }
+.scenario-choice-main { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem; font-size: 0.78rem; font-weight: 850; }
+.scenario-choice-preview { max-width: 32rem; color: var(--t3); font-size: 0.7rem; line-height: 1.45; }
+.manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
+.manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
+.manual-subcode-card.is-muted { opacity: 0.58; }
+.scenario-selected-badge { display: none; width: fit-content; margin-bottom: 0.45rem; border: 1px solid color-mix(in srgb, var(--ac) 42%, var(--bd)); background: color-mix(in srgb, var(--ac) 10%, var(--bg1)); color: var(--ac); border-radius: 999px; padding: 0.14rem 0.45rem; font-size: 0.68rem; font-weight: 900; }
+.manual-subcode-card.is-selected .scenario-selected-badge { display: inline-flex; }
+.scenario-selected-actions { display: none; margin-top: 0.72rem; border-top: 1px dashed var(--bd2); padding-top: 0.62rem; }
+.manual-subcode-card.is-selected .scenario-selected-actions { display: block; }
+.scenario-selected-note { color: var(--t3); font-size: 0.72rem; line-height: 1.55; word-break: keep-all; }
+.scenario-ai-handoff-btn { min-height: 36px; margin-top: 0.55rem; border: 1px solid var(--ac); background: var(--ac); color: #fff; border-radius: 8px; padding: 0.48rem 0.68rem; font: inherit; font-size: 0.76rem; font-weight: 900; cursor: pointer; }
+.scenario-ai-handoff-btn:hover, .scenario-ai-handoff-btn:focus-visible { filter: brightness(0.94); }
+.scenario-ai-handoff-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
 .manual-subcode-more { margin-top: 0.58rem; }
 .manual-subcode-more > summary { min-height: 34px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--ac); font-size: 0.76rem; font-weight: 900; list-style: none; }
 .manual-subcode-more > summary::-webkit-details-marker { display: none; }
@@ -11214,10 +11236,20 @@ function closeVisaDrawer() {
 // --- AI Modal ---
 let currentAiVisaCode = null;
 let currentAiController = null;
-function openAiModal(visaCode) {
+let currentAiSelectedProcedureKey = null;
+let currentAiSelectedProcedureVariantId = null;
+function findProcedureVariant(visa, procedureKey, variantId) {
+    const variants = visa?.procedures?.[procedureKey]?.variants;
+    if (!Array.isArray(variants)) return null;
+    return variants.find(variant => variant && variant.id === variantId) || null;
+}
+function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVariantId = '', selectedVariantLabel = '') {
     const visa = VISA_DATA.find(v => v.code === visaCode);
     if (!visa) return;
+    const selectedVariant = findProcedureVariant(visa, selectedProcedureKey, selectedProcedureVariantId);
     currentAiVisaCode = visaCode;
+    currentAiSelectedProcedureKey = selectedVariant ? selectedProcedureKey : null;
+    currentAiSelectedProcedureVariantId = selectedVariant ? selectedProcedureVariantId : null;
     document.getElementById('aiModalTitleText').innerHTML = `${escapeHtml(visa.code)} (${escapeHtml(visa.name)})`;
 
     const descEl = document.querySelector('#aiModalOverlay .modal-body p');
@@ -11236,7 +11268,15 @@ function openAiModal(visaCode) {
         const isJobCodeTarget = JOBCODE_TARGET_VISAS.some(prefix => visa.code === prefix || visa.code.startsWith(prefix + '-') || visa.code.startsWith(prefix));
         jobCodeBtn.style.display = isJobCodeTarget ? '' : 'none';
     }
-    document.getElementById('aiInput').value = '';
+    const aiInput = document.getElementById('aiInput');
+    if (selectedVariant) {
+        const label = selectedVariantLabel || selectedVariant.labelKo || selectedVariant.label || selectedVariant.id;
+        aiInput.value = currentLanguage === 'en'
+            ? `${visa.code} Based on the ${label} scenario, tell me the required documents and important cautions.`
+            : `${visa.code} ${label} 기준으로 필요한 서류와 주의사항 알려줘`;
+    } else {
+        aiInput.value = '';
+    }
     document.getElementById('aiResult').style.display = 'none';
     document.getElementById('aiResult').innerHTML = '';
     openModal('aiModalOverlay');
@@ -12052,7 +12092,9 @@ function renderGroundingSourcePanel(metadata) {
         // Needs-review scenario variants are local manual context only — visibly
         // distinct from source-confirmed grounding and never a final determination.
         const noteHtml = '<div class="gp-variant-note">세부 자격·사유가 맞는 경우에만 참고하세요.</div>';
-        rows.push('<div class="gp-row state-needs-review"><strong>시나리오별 서류 근거</strong>: 매뉴얼 기반 후보 · 최종 확인 필요' + listHtml + noteHtml + '</div>');
+        const selectedScenario = Boolean(currentAiSelectedProcedureVariantId && safeSources.some(function(src) { return src.variant_id === currentAiSelectedProcedureVariantId; }));
+        const variantTitle = selectedScenario ? '선택한 시나리오 기준' : '시나리오별 서류 근거';
+        rows.push('<div class="gp-row state-needs-review"><strong>' + variantTitle + '</strong>: 매뉴얼 기반 후보 · 최종 확인 필요' + listHtml + noteHtml + '</div>');
     }
     if (!rows.length) {
         // No strong grounding signal — still surface an advisory row so the
@@ -12099,7 +12141,11 @@ async function submitAiAnalysis(actionType, btnEl) {
                     extReq: visa.extReq || '',
                     faq: visa.faq || '',
                     procedures: visa.procedures || null
-                }
+                },
+                ...(currentAiSelectedProcedureKey && currentAiSelectedProcedureVariantId ? {
+                    selected_procedure_key: currentAiSelectedProcedureKey,
+                    selected_procedure_variant_id: currentAiSelectedProcedureVariantId
+                } : {})
             }),
             signal: currentAiController.signal
         });
@@ -12592,7 +12638,7 @@ function renderProcedureDocGroups(groups, keywords) {
     ].filter(Boolean).join('');
 }
 
-function renderProcedureVariant(variant, keywords) {
+function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selectedByDefault = false) {
     const docsHtml = renderProcedureDocGroups(variant.docs, keywords);
     const docCount = flattenDocGroups(variant.docs).length;
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
@@ -12600,30 +12646,64 @@ function renderProcedureVariant(variant, keywords) {
     const notes = variant.notes.length ? `<div class="manual-subcode-desc">${variant.notes.map(escapeHtml).join('<br>')}</div>` : '';
     const refs = variant.manualRefs.map(ref => [ref.manualName, ref.manualVersion, ref.pageRange].filter(Boolean).map(escapeHtml).join(' · ')).filter(Boolean);
     const citations = refs.length ? `<div class="manual-subcode-desc" style="margin-top:0.5rem; opacity:0.85;">${refs.join('<br>')}</div>` : '';
-    return `<div class="manual-subcode-card" data-procedure-variant="${escapeHtml(variant.id)}">
+    return `<div class="manual-subcode-card${selectedByDefault ? ' is-selected' : ''}" data-procedure-variant="${escapeHtml(variant.id)}" data-procedure-variant-card="${escapeHtml(variant.id)}">
+        <div class="scenario-selected-badge">선택됨</div>
         <div class="manual-subcode-top">${statusCode}<span class="manual-subcode-name">${escapeHtml(variant.label)}</span></div>
         ${scenario}
         <div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: docCount }))}</div>
         <div class="doc-group-grid">${docsHtml}</div>
         ${notes}${citations}
+        <div class="scenario-selected-actions">
+            <div class="scenario-selected-note">선택한 시나리오는 참고용입니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.</div>
+            <button type="button" class="scenario-ai-handoff-btn" data-action="ask-selected-procedure-variant" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" data-variant-label="${escapeHtml(variant.label)}">이 시나리오로 AI에게 질문하기</button>
+        </div>
     </div>`;
 }
 
-function renderProcedureVariants(proc, keywords) {
+function renderProcedureVariantChoice(procedureKey, variant) {
+    const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
+    const preview = variant.scenario ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(variant.scenario, 90))}</span>` : '';
+    return `<button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" aria-pressed="false">
+        <span class="scenario-choice-main"><span>${escapeHtml(variant.label)}</span>${statusCode}</span>${preview}
+    </button>`;
+}
+
+function renderProcedureVariants(v, proc, keywords) {
     if (!proc.variants.length) return '';
+    const title = currentLanguage === 'en' ? 'Choose the scenario closest to your situation' : '내 상황에 맞는 시나리오 선택';
     const notice = currentLanguage === 'en'
-        ? 'Required documents vary by detailed status or application reason. The items below apply only when the labeled scenario matches your case.'
-        : '세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다. 아래 항목은 해당되는 경우에만 적용됩니다.';
-    return `<div class="procedure-variant-list">
-        <div class="procedure-summary"><strong>${escapeHtml(notice)}</strong></div>
-        <div class="manual-subcode-grid">${proc.variants.map(variant => renderProcedureVariant(variant, keywords)).join('')}</div>
+        ? 'Required documents may vary by detailed eligibility or reason. Choose the closest situation below to review the relevant checklist.'
+        : '세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.';
+    const singleVariant = proc.variants.length === 1;
+    const choicesHtml = singleVariant ? '' : `<div class="scenario-choice-list" role="group" aria-label="${escapeHtml(title)}">
+        <button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${currentLanguage === 'en' ? 'View all' : '전체 보기'}</span></button>
+        ${proc.variants.map(variant => renderProcedureVariantChoice(proc.key, variant)).join('')}
     </div>`;
+    return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
+        <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p></div>
+        ${choicesHtml}
+        <div class="manual-subcode-grid">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant)).join('')}</div>
+    </div>`;
+}
+
+function selectProcedureVariant(button) {
+    const selector = button.closest('[data-procedure-variant-selector]');
+    if (!selector) return;
+    const selectedId = button.dataset.variantId || '';
+    selector.querySelectorAll('[data-action="select-procedure-variant"]').forEach(choice => {
+        choice.setAttribute('aria-pressed', choice === button ? 'true' : 'false');
+    });
+    selector.querySelectorAll('[data-procedure-variant-card]').forEach(card => {
+        const isSelected = Boolean(selectedId) && card.dataset.procedureVariantCard === selectedId;
+        card.classList.toggle('is-selected', isSelected);
+        card.classList.toggle('is-muted', Boolean(selectedId) && !isSelected);
+    });
 }
 
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const totalDocCount = proc.docs.commonDocs.length + proc.docs.requiredDocs.length + proc.docs.additionalDocs.length + proc.docs.conditionalDocs.length;
     const docsHtml = renderProcedureDocGroups(proc.docs, keywords);
-    const variantsHtml = totalDocCount ? '' : renderProcedureVariants(proc, keywords);
+    const variantsHtml = renderProcedureVariants(v, proc, keywords);
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
     const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
@@ -12634,7 +12714,8 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         ${eligibilityHtml}${summaryHtml}${notesHtml}
         ${feeHtml}
         ${countHtml}
-        <div class="doc-group-grid">${docsHtml || variantsHtml || reviewFallback}</div>
+        ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>` : ''}
+        ${variantsHtml || (!docsHtml ? reviewFallback : '')}
     </div>`;
 }
 
@@ -14790,6 +14871,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.querySelectorAll('.procedure-tab').forEach(btn => btn.classList.toggle('active', btn === actionBtn));
                     card.querySelectorAll('.procedure-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.procedurePanel === actionBtn.dataset.procedure));
                 },
+                'select-procedure-variant': () => selectProcedureVariant(actionBtn),
+                'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
                 'select-docs-tab': () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
@@ -16173,6 +16256,7 @@ function showVisaDocForAction(visaCode) {
       const titles = Array.from(card.querySelectorAll(".manual-section-title, h2, h3, h4, h5"));
       for (const title of titles) {
         if (!isRequiredSummaryTitle(title.textContent)) continue;
+        if (title.closest(".procedure-panel, .procedure-variant-list, .doc-group-grid, .docs-section")) continue;
 
         const section = findSectionForTitle(title, card);
         if (!section || section === card) continue;

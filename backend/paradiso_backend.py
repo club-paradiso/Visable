@@ -119,6 +119,8 @@ class AskRequest(BaseModel):
     # accidental schema rejection and documents the wire format.
     visa_code: Optional[str] = None
     visa_data: Optional[Dict[str, Any]] = None
+    selected_procedure_key: Optional[str] = None
+    selected_procedure_variant_id: Optional[str] = None
     context: Optional[str] = None
     lang: Optional[str] = None
     consent: Optional[bool] = None
@@ -1164,15 +1166,31 @@ def _select_procedure_variants(
     visa_sub_code: Optional[str] = None,
     *,
     user_text: Optional[str] = None,
+    selected_procedure_key: Optional[str] = None,
+    selected_procedure_variant_id: Optional[str] = None,
     max_variants: int = 3,
 ) -> tuple:
     """Select a small scenario-variant set from a frontend local-catalog record.
 
-    Exact sub-code matches win. If none exists, at most ``max_variants`` are
-    returned as visibly labeled scenario options under the matching procedure
-    key only. Empty and explicitly unavailable variants are ignored.
+    An explicit frontend-selected procedure key takes priority over task
+    detection, and a matching selected variant id narrows the result to that
+    one scenario. Invalid selected ids safely return no variant context rather
+    than broadening back out. Without a selection, exact sub-code matches win.
+    If none exists, at most ``max_variants`` are returned as visibly labeled
+    scenario options under the matching procedure key only. Empty and
+    explicitly unavailable variants are ignored.
     """
-    procedure_key = _procedure_variant_key_for_task(task_type, user_text)
+    requested_key = (
+        selected_procedure_key.strip()
+        if isinstance(selected_procedure_key, str) and selected_procedure_key.strip()
+        else None
+    )
+    requested_variant_id = (
+        selected_procedure_variant_id.strip()
+        if isinstance(selected_procedure_variant_id, str) and selected_procedure_variant_id.strip()
+        else None
+    )
+    procedure_key = requested_key or _procedure_variant_key_for_task(task_type, user_text)
     if not procedure_key or not isinstance(visa_data, dict):
         return None, []
     procedures = visa_data.get("procedures")
@@ -1199,6 +1217,13 @@ def _select_procedure_variants(
             continue
         usable.append(variant)
 
+    if requested_variant_id:
+        selected = [
+            variant for variant in usable
+            if str(variant.get("id") or "").strip() == requested_variant_id
+        ]
+        return procedure_key, selected[:1]
+
     normalized_sub_code = _normalize_visa_code(visa_sub_code) if visa_sub_code else None
     if normalized_sub_code:
         exact = [
@@ -1216,10 +1241,17 @@ def _procedure_variant_context_sources(
     visa_sub_code: Optional[str] = None,
     *,
     user_text: Optional[str] = None,
+    selected_procedure_key: Optional[str] = None,
+    selected_procedure_variant_id: Optional[str] = None,
 ) -> List[Dict[str, Any]]:
     """Return safe response metadata for selected needs-review variants."""
     procedure_key, variants = _select_procedure_variants(
-        visa_data, task_type, visa_sub_code, user_text=user_text
+        visa_data,
+        task_type,
+        visa_sub_code,
+        user_text=user_text,
+        selected_procedure_key=selected_procedure_key,
+        selected_procedure_variant_id=selected_procedure_variant_id,
     )
     if not procedure_key or not isinstance(visa_data, dict):
         return []
@@ -1249,6 +1281,8 @@ def _build_procedure_variant_context_block(
     visa_sub_code: Optional[str] = None,
     *,
     user_text: Optional[str] = None,
+    selected_procedure_key: Optional[str] = None,
+    selected_procedure_variant_id: Optional[str] = None,
 ) -> str:
     """Build compact needs-review prompt context for scenario variants.
 
@@ -1256,7 +1290,12 @@ def _build_procedure_variant_context_block(
     grounding and HIGH / STRUCTURED_EVIDENCE_READY structured requirements.
     """
     procedure_key, variants = _select_procedure_variants(
-        visa_data, task_type, visa_sub_code, user_text=user_text
+        visa_data,
+        task_type,
+        visa_sub_code,
+        user_text=user_text,
+        selected_procedure_key=selected_procedure_key,
+        selected_procedure_variant_id=selected_procedure_variant_id,
     )
     if not procedure_key or not variants or not isinstance(visa_data, dict):
         return ""
@@ -1667,12 +1706,16 @@ async def ask(req: AskRequest) -> AskResponse:
         task_type_detected,
         visa_sub_code_detected,
         user_text=prompt,
+        selected_procedure_key=req.selected_procedure_key,
+        selected_procedure_variant_id=req.selected_procedure_variant_id,
     )
     procedure_variant_context_sources = _procedure_variant_context_sources(
         req.visa_data,
         task_type_detected,
         visa_sub_code_detected,
         user_text=prompt,
+        selected_procedure_key=req.selected_procedure_key,
+        selected_procedure_variant_id=req.selected_procedure_variant_id,
     )
     structured_block = _build_source_confirmed_structured_requirements_block(
         visa_code_detected, visa_sub_code_detected

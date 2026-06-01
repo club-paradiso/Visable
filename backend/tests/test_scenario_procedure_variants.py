@@ -175,8 +175,13 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
     def test_variants_render_before_generic_fallback_when_parent_docs_empty(self):
         html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
         self.assertIn("variants: normalizeProcedureVariants(raw?.variants)", html)
-        self.assertIn("docsHtml || variantsHtml || reviewFallback", html)
-        self.assertIn("세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다.", html)
+        self.assertIn("내 상황에 맞는 시나리오 선택", html)
+        self.assertIn("세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.", html)
+        self.assertIn("이 시나리오로 AI에게 질문하기", html)
+        self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", html)
+        self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", html)
+        self.assertIn("시나리오별 서류 근거", html)
+        self.assertIn('title.closest(".procedure-panel, .procedure-variant-list, .doc-group-grid, .docs-section")', html)
         self.assertIn('data-procedure-variant="${escapeHtml(variant.id)}"', html)
         self.assertIn("procedures: visa.procedures || null", html)
 
@@ -336,6 +341,118 @@ class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
         body = resp.json()
         self.assertFalse(body["grounding_used"])
         self.assertTrue(body["procedure_variant_context_used"])
+
+
+class SelectedProcedureVariantHandoffTests(unittest.TestCase):
+    """Explicit frontend scenario selections narrow needs-review AI context."""
+
+    def _assert_selected_helper_narrows(self, code, procedure_key, variant_id):
+        mod = _module()
+        record = _record(code)
+        kwargs = {
+            "user_text": f"{code} 선택한 시나리오 기준 서류 알려줘",
+            "selected_procedure_key": procedure_key,
+            "selected_procedure_variant_id": variant_id,
+        }
+        sources = mod._procedure_variant_context_sources(record, None, None, **kwargs)
+        block = mod._build_procedure_variant_context_block(record, None, None, **kwargs)
+        self.assertEqual([source["variant_id"] for source in sources], [variant_id])
+        self.assertTrue(all(source["procedure_key"] == procedure_key for source in sources))
+        self.assertTrue(all(source["needs_manual_review"] is True for source in sources))
+        self.assertIn(variant_id, block)
+        for source in sources:
+            self.assertEqual(set(source), SAFE_VARIANT_FIELDS)
+
+    def test_selected_f6_variant_narrows_context_to_only_selected_variant(self):
+        self._assert_selected_helper_narrows(
+            "F-6", "statusChange", "f-6-3-marriage-terminated-status-change"
+        )
+
+    def test_selected_g1_variant_narrows_context_to_only_selected_variant(self):
+        self._assert_selected_helper_narrows(
+            "G-1", "statusChange", "g-1-10-medical-patient-status-change"
+        )
+
+    def test_selected_f2_variant_narrows_context_to_only_selected_variant(self):
+        self._assert_selected_helper_narrows(
+            "F-2", "statusChange", "f-2-2-national-minor-child-status-change"
+        )
+
+    def test_invalid_selected_variant_id_does_not_crash_or_leak_raw_metadata(self):
+        client = _client()
+        resp = client.post("/api/ask", json={
+            "question": "G-1 선택한 시나리오 기준 서류 알려줘",
+            "visa_data": _record("G-1"),
+            "selected_procedure_key": "statusChange",
+            "selected_procedure_variant_id": "missing-variant-id",
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail["procedure_variant_context_used"])
+        self.assertEqual(detail["procedure_variant_context_sources"], [])
+        self.assertFalse(detail["grounding_used"])
+        raw = json.dumps(detail, ensure_ascii=False)
+        for forbidden in ("requiredDocs", "manualRefs", '"documents"', '"raw"', '"visa_data"'):
+            self.assertNotIn(forbidden, raw)
+
+    def test_selected_variant_context_never_sets_grounding_used(self):
+        client = _client()
+        resp = client.post("/api/ask", json={
+            "question": "F-6 혼인단절자(F-6-3) 체류자격 변경허가 기준으로 필요한 서류와 주의사항 알려줘",
+            "visa_data": _record("F-6"),
+            "selected_procedure_key": "statusChange",
+            "selected_procedure_variant_id": "f-6-3-marriage-terminated-status-change",
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail["grounding_used"])
+        self.assertEqual(detail["grounding_sources"], [])
+        self.assertTrue(detail["procedure_variant_context_used"])
+        self.assertEqual(
+            [source["variant_id"] for source in detail["procedure_variant_context_sources"]],
+            ["f-6-3-marriage-terminated-status-change"],
+        )
+
+    def test_generic_questions_still_do_not_force_variants_without_selection(self):
+        mod = _module()
+        cases = [
+            ("E-7", "Can I work in Korea with my current status?"),
+            ("F-1", "가족 관련 절차 알려줘"),
+            ("F-2", "F-2 체류 관련 주의사항 알려줘"),
+        ]
+        for code, question in cases:
+            with self.subTest(code=code):
+                task = mod._detect_task_type(question)
+                self.assertEqual(
+                    mod._procedure_variant_context_sources(
+                        _record(code), task, None, user_text=question
+                    ),
+                    [],
+                )
+
+    def test_existing_no_selection_variant_routing_still_works(self):
+        mod = _module()
+        question = "G-1 체류자격 변경 서류 알려줘"
+        task = mod._detect_task_type(question)
+        sources = mod._procedure_variant_context_sources(
+            _record("G-1"), task, None, user_text=question
+        )
+        self.assertEqual(len(sources), 3)
+        self.assertTrue(all(source["procedure_key"] == "statusChange" for source in sources))
+
+    def test_selected_procedure_key_alone_prefers_variants_under_that_key(self):
+        mod = _module()
+        sources = mod._procedure_variant_context_sources(
+            _record("F-3"),
+            None,
+            None,
+            user_text="F-3 관련 서류 알려줘",
+            selected_procedure_key="statusGrant",
+        )
+        self.assertEqual(
+            [source["variant_id"] for source in sources],
+            ["f-3-born-child-status-grant"],
+        )
 
 
 class ScenarioProcedureVariantValidationTests(unittest.TestCase):
