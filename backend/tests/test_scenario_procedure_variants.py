@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import json
 import os
 import subprocess
 import sys
@@ -699,6 +700,153 @@ class ScenarioProcedureVariantBatch2Tests(unittest.TestCase):
                     discovered.add((record.get("code"), procedure_key))
         for key in BATCH2_VARIANTS:
             self.assertIn(key, discovered, key)
+
+
+HARD_CASE_VARIANTS = {
+    ("F-6", "statusChange"): {
+        "f-6-2-child-rearing-status-change",
+        "f-6-3-marriage-terminated-status-change",
+    },
+    ("G-1", "statusChange"): {
+        "g-1-1-industrial-accident-status-change",
+        "g-1-2-illness-treatment-status-change",
+        "g-1-3-litigation-status-change",
+        "g-1-4-wage-claim-status-change",
+        "g-1-5-6-refugee-humanitarian-status-change",
+        "g-1-9-pregnancy-status-change",
+        "g-1-10-medical-patient-status-change",
+        "g-1-11-rights-protection-status-change",
+    },
+    ("F-2", "statusChange"): {
+        "f-2-2-national-minor-child-status-change",
+        "f-2-permanent-resident-family-status-change",
+    },
+}
+
+
+class HardCaseScenarioVariantTests(unittest.TestCase):
+    """Coverage for the hard-case (F-6 / G-1 / F-2) scenario procedure variants."""
+
+    def test_hard_case_variants_exposed_through_api(self):
+        records = _records()
+        exposed = 0
+        for (code, procedure_key), expected_ids in HARD_CASE_VARIANTS.items():
+            self.assertIn(code, records, code)
+            procedure = records[code]["procedures"][procedure_key]
+            self.assertTrue(procedure["available"], f"{code}.{procedure_key}")
+            # Parent-level checklist must stay empty — variants are scenario-scoped.
+            self.assertEqual(procedure["requiredDocs"]["requiredDocs"], [], f"{code}.{procedure_key}")
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            self.assertTrue(expected_ids.issubset(variants), f"{code}.{procedure_key}: {expected_ids - set(variants)}")
+            exposed += len(expected_ids)
+        self.assertEqual(exposed, 12)
+
+    def test_hard_case_variants_have_docs_refs_and_needs_review(self):
+        records = _records()
+        for (code, procedure_key), expected_ids in HARD_CASE_VARIANTS.items():
+            procedure = records[code]["procedures"][procedure_key]
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            for variant_id in expected_ids:
+                variant = variants[variant_id]
+                groups = variant["requiredDocs"]
+                # Non-empty grouped requiredDocs (at least one populated group).
+                self.assertTrue(any(groups[group] for group in groups), variant_id)
+                # requiredDocs.requiredDocs specifically carries the scenario list.
+                self.assertTrue(groups["requiredDocs"], variant_id)
+                self.assertTrue(variant["manualRefs"], variant_id)
+                for manual_ref in variant["manualRefs"]:
+                    self.assertEqual(
+                        manual_ref["sourceFile"],
+                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        variant_id,
+                    )
+                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertTrue(manual_ref.get("pageRange"), variant_id)
+                    self.assertTrue(manual_ref["needsManualReview"], variant_id)
+                    # Never source-confirmed: verified must not be true.
+                    self.assertIsNot(manual_ref.get("verified"), True, variant_id)
+
+    def test_hard_case_f6_preserves_existing_statuschange_shell(self):
+        # The pre-existing F-6 statusChange parent record must be preserved,
+        # not overwritten, when variants are layered on.
+        records = _records()
+        f6 = records["F-6"]["procedures"]["statusChange"]
+        self.assertIn("매뉴얼 확인 필요", json.dumps(f6, ensure_ascii=False))
+        self.assertEqual(f6["requiredDocs"]["requiredDocs"], [])
+
+    def test_prior_batch_variants_unchanged(self):
+        records = _records()
+        for table in (SEEDS,):
+            for (code, procedure_key), variant_id in table.items():
+                variants = {v["id"] for v in records[code]["procedures"][procedure_key]["variants"]}
+                self.assertIn(variant_id, variants)
+        for table in (EXPANSION_VARIANTS, BATCH2_VARIANTS):
+            for (code, procedure_key), expected_ids in table.items():
+                variants = {v["id"] for v in records[code]["procedures"][procedure_key]["variants"]}
+                self.assertTrue(expected_ids.issubset(variants), f"{code}.{procedure_key}")
+
+    def test_hard_case_population_check_remains_clean(self):
+        result = subprocess.run(
+            [sys.executable, "scripts/populate_hard_case_scenario_procedure_variants_2026_05.py", "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_smoke_discovers_hard_case_routable_targets(self):
+        records = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
+        routable = {"statusChange", "workplaceChange", "activitiesOutsideStatus", "statusGrant"}
+        discovered = set()
+        for record in records:
+            procedures = record.get("procedures") or {}
+            for procedure_key, procedure in procedures.items():
+                if procedure_key in routable and (procedure.get("variants") or []):
+                    discovered.add((record.get("code"), procedure_key))
+        for key in HARD_CASE_VARIANTS:
+            self.assertIn(key, discovered, key)
+
+    def test_hard_case_status_change_routes_only_on_matching_wording(self):
+        mod = _module()
+        for code in ("F-6", "G-1", "F-2"):
+            record = _record(code)
+            # Matching change-of-status wording surfaces needs-review variants.
+            match_q = f"{code} 체류자격 변경 서류 알려줘"
+            task = mod._detect_task_type(match_q)
+            sources = mod._procedure_variant_context_sources(record, task, None, user_text=match_q)
+            self.assertTrue(sources, code)
+            self.assertTrue(all(s["procedure_key"] == "statusChange" for s in sources), code)
+            self.assertTrue(all(s["needs_manual_review"] is True for s in sources), code)
+            self.assertLessEqual(set().union(*[set(s) for s in sources]), SAFE_VARIANT_FIELDS, code)
+            # Deterministic grounding is never asserted for these.
+            top, sub = mod._detect_visa_codes(code, record, match_q)
+            self.assertIsNone(mod._select_grounding(top, task, sub), code)
+            # Generic wording must not force scenario variants.
+            generic_q = f"{code} 비자 절차에서 주의할 점 알려줘"
+            g_task = mod._detect_task_type(generic_q)
+            self.assertEqual(
+                mod._procedure_variant_context_sources(record, g_task, None, user_text=generic_q),
+                [],
+                code,
+            )
+
+    def test_hard_case_f6_divorce_wording_stays_conservative(self):
+        # A divorce-worded F-6 question still routes to the high-risk
+        # marriage/divorce path with no grounding and no auto-determination,
+        # exactly as before this batch (variants surface on change wording, not
+        # on the sensitive divorce path).
+        mod = _module()
+        q = "F-6 비자인데 이혼 후 체류 자격이 어떻게 되나요?"
+        task = mod._detect_task_type(q)
+        self.assertEqual(task, "marriage_divorce_status_change")
+        self.assertEqual(mod._risk_level_for_task(task), "high")
+        top, sub = mod._detect_visa_codes("F-6", _record("F-6"), q)
+        self.assertIsNone(mod._select_grounding(top, task, sub))
+        self.assertEqual(
+            mod._procedure_variant_context_sources(_record("F-6"), task, sub, user_text=q),
+            [],
+        )
 
 
 SAFE_VARIANT_FIELDS = {
