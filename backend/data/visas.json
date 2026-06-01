@@ -6492,6 +6492,53 @@
           }
         ]
       },
+      "statusChange": {
+        "available": true,
+        "summary": "체류자격변경 제출서류는 세부 자격과 신청 사유별로 다릅니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "variants": [
+          {
+            "id": "d-9-1-status-change",
+            "labelKo": "무역업(D-9-1) 체류자격 변경허가",
+            "statusCode": "D-9-1",
+            "scenarioKo": "무역비자 점수제 요건을 충족하여 무역업(D-9-1)으로 변경하는 경우",
+            "requiredDocs": {
+              "commonDocs": [],
+              "requiredDocs": [
+                "신청서(별지 34호 서식), 여권, 표준규격사진 1장, 수수료",
+                "사업자등록증 사본",
+                "무역업 고유번호부여증(한국무역협회 발행) 사본",
+                "공동사업 약정서 원본 및 사본(공동사업자인 경우)",
+                "사업장 존재 입증서류(임대차계약서 등)",
+                "점수제 해당 입증서류 등"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": []
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualVersion": "2026.5",
+                "pageRange": "p. 131",
+                "confidence": "manual_extracted_needs_review",
+                "needsManualReview": true
+              }
+            ],
+            "notes": [
+              "무역업(D-9-1) 점수제 변경 시나리오에만 적용됩니다."
+            ]
+          }
+        ],
+        "manualRefs": [],
+        "notes": [
+          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+        ]
+      },
       "reentry": {
         "available": true,
         "summary": "재입국허가 면제 제도 및 복수재입국허가(1년 초과 2년 이내 재입국) 안내.",
@@ -9787,6 +9834,53 @@
             "needsManualReview": true
           }
         ]
+      },
+      "workplaceChange": {
+        "available": true,
+        "summary": "근무처 변경·추가 제출서류는 업종과 신청 사유별로 다릅니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "variants": [
+          {
+            "id": "e-9-3-agriculture-workplace-addition",
+            "labelKo": "비전문취업(E-9-3) 농업분야 근무처 추가",
+            "statusCode": "E-9-3",
+            "scenarioKo": "작물재배업(계절적 농업)에 근무 중인 E-9-3 자격자가 원 사업장과의 근로계약을 유지하면서 일정 기간 다른 사업장에서 근무하는 경우",
+            "requiredDocs": {
+              "commonDocs": [],
+              "requiredDocs": [
+                "신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료",
+                "추가근무처의 고용허가서 사본",
+                "추가근무처의 표준근로계약서 사본",
+                "영농규모증명서 및 사업자등록증 또는 고유번호증 사본(없는 경우 주민등록등본)"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "외국인근로자(신청자)의 위임장(대행 시)"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualVersion": "2026.5",
+                "pageRange": "pp. 328-329",
+                "confidence": "manual_extracted_needs_review",
+                "needsManualReview": true
+              }
+            ],
+            "notes": [
+              "농업분야 근무처 추가 제도에만 적용됩니다."
+            ]
+          }
+        ],
+        "manualRefs": [],
+        "notes": [
+          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+        ]
       }
     },
     "sourceManualStatus": {
@@ -10486,6 +10580,54 @@
     ],
     "changeReqDocs": [],
     "procedures": {
+      "statusChange": {
+        "available": true,
+        "summary": "체류자격변경 제출서류는 세부 자격과 신청 사유별로 다릅니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "variants": [
+          {
+            "id": "f-1-13-status-change",
+            "labelKo": "방문동거(F-1-13) 체류자격 변경허가",
+            "statusCode": "F-1-13",
+            "scenarioKo": "고등학교 이하 외국인 유학생의 동반부모 또는 2촌 이내 친인척이 방문동거(F-1-13)로 변경하는 경우",
+            "requiredDocs": {
+              "commonDocs": [],
+              "requiredDocs": [
+                "신청서(별지 34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매, 수수료",
+                "외국인유학생 입학허가서 또는 재학증명서",
+                "가족관계 입증서류",
+                "국내 체류비용 부담능력 입증서류(3개월 이상 계속 예치된 기준 이상 금액의 잔고증명서 등)"
+              ],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "재정능력 입증서류(불법체류 다발국가 국민에 한함)"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualVersion": "2026.5",
+                "pageRange": "pp. 347-348",
+                "confidence": "manual_extracted_needs_review",
+                "needsManualReview": true
+              }
+            ],
+            "notes": [
+              "고등학교 이하 외국인 유학생 동반부모 또는 2촌 이내 친인척의 F-1-13 변경 시나리오에만 적용됩니다.",
+              "가족관계 입증서류는 원본 제출 및 번역본 첨부가 원칙입니다."
+            ]
+          }
+        ],
+        "manualRefs": [],
+        "notes": [
+          "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+        ]
+      },
       "extension": {
         "available": true,
         "summary": "체류기간 연장허가1. 국내 친․인척 방문목적으로 입국한 자의 체류기간연장 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친․인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간연장 가. 허가기준 : 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준 : 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",

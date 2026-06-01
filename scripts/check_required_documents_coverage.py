@@ -51,6 +51,7 @@ PROCEDURE_DOC_GROUP_ALIASES = {
     "common", "required", "additional", "conditional",
     "documents", "reqDocs", "required_documents",
 }
+VARIANT_DOC_GROUPS = ("commonDocs", "requiredDocs", "additionalDocs", "conditionalDocs")
 
 PRIORITY_CODES = {"F-1", "F-2", "F-3", "F-5", "F-6", "D-2", "D-4", "D-10", "E-2", "E-7", "G-1", "H-2"}
 ALLOWED_DOC_VALUE_TYPES = (str, list, dict)
@@ -130,6 +131,11 @@ def _extract_doc_fields(record: Dict[str, Any]) -> Dict[str, Any]:
             for alias in PROCEDURE_DOC_GROUP_ALIASES:
                 if alias in pval:
                     found[f"procedures.{pkey}.{alias}"] = pval.get(alias)
+            variants = pval.get("variants")
+            if isinstance(variants, list):
+                for index, variant in enumerate(variants):
+                    if isinstance(variant, dict) and "requiredDocs" in variant:
+                        found[f"procedures.{pkey}.variants[{index}].requiredDocs"] = variant.get("requiredDocs")
     return found
 
 
@@ -143,6 +149,78 @@ def _check_types(code: str, doc_fields: Dict[str, Any]) -> List[str]:
     return errors
 
 
+def _validate_manual_refs(path: str, refs: Any) -> List[str]:
+    errors: List[str] = []
+    if not isinstance(refs, list) or not refs:
+        return [f"{path}: source-backed populated variant must include manualRefs"]
+    for index, ref in enumerate(refs):
+        ref_path = f"{path}.manualRefs[{index}]"
+        if not isinstance(ref, dict):
+            errors.append(f"{ref_path}: manual reference must be an object")
+            continue
+        for field in ("manualName", "manualVersion", "pageRange", "confidence"):
+            if not isinstance(ref.get(field), str) or not ref[field].strip():
+                errors.append(f"{ref_path}: missing/invalid {field}")
+        if ref.get("needsManualReview") is not True:
+            errors.append(f"{ref_path}: needsManualReview must remain true")
+        if ref.get("verified") is True:
+            errors.append(f"{ref_path}: verified=true is not allowed for scenario variants")
+    return errors
+
+
+def validate_procedure_variants(records: List[Dict[str, Any]]) -> List[str]:
+    """Validate the user-facing scenario/sub-code procedure variant layer."""
+    errors: List[str] = []
+    for record in records:
+        code = str(record.get("code") or "<unknown>")
+        procedures = record.get("procedures")
+        if not isinstance(procedures, dict):
+            continue
+        for procedure_key, procedure in procedures.items():
+            if procedure_key not in PROCEDURE_KEYS or not isinstance(procedure, dict):
+                continue
+            variants = procedure.get("variants")
+            if variants is None:
+                continue
+            base_path = f"{code}.procedures.{procedure_key}.variants"
+            if not isinstance(variants, list):
+                errors.append(f"{base_path}: variants must be a list")
+                continue
+            seen_ids: Set[str] = set()
+            for index, variant in enumerate(variants):
+                path = f"{base_path}[{index}]"
+                if not isinstance(variant, dict):
+                    errors.append(f"{path}: variant must be an object")
+                    continue
+                variant_id = variant.get("id")
+                if not isinstance(variant_id, str) or not variant_id.strip():
+                    errors.append(f"{path}: missing/invalid id")
+                elif variant_id in seen_ids:
+                    errors.append(f"{path}: duplicate id '{variant_id}'")
+                else:
+                    seen_ids.add(variant_id)
+                label = variant.get("labelKo") or variant.get("label")
+                if not isinstance(label, str) or not label.strip():
+                    errors.append(f"{path}: missing labelKo or label")
+                docs = variant.get("requiredDocs")
+                if not isinstance(docs, dict):
+                    errors.append(f"{path}.requiredDocs: must be an object with grouped document lists")
+                    continue
+                missing_groups = [group for group in VARIANT_DOC_GROUPS if group not in docs]
+                if missing_groups:
+                    errors.append(f"{path}.requiredDocs: missing groups {missing_groups}")
+                for group in VARIANT_DOC_GROUPS:
+                    value = docs.get(group)
+                    if value is not None and not isinstance(value, list):
+                        errors.append(f"{path}.requiredDocs.{group}: must be a list")
+                has_docs = any(_has_useful_value(docs.get(group)) for group in VARIANT_DOC_GROUPS)
+                if variant.get("available") is not False and not has_docs:
+                    errors.append(f"{path}: populated variant requiredDocs must not be empty unless available=false")
+                if has_docs:
+                    errors.extend(_validate_manual_refs(path, variant.get("manualRefs")))
+    return errors
+
+
 def main() -> int:
     data_path, records = _load_data()
 
@@ -151,6 +229,7 @@ def main() -> int:
     likely_fallback: List[str] = []
     suspicious_fields: Dict[str, Set[str]] = {}
     errors: List[str] = []
+    errors.extend(validate_procedure_variants(records))
 
     for r in records:
         code = str(r.get("code") or "<unknown>")

@@ -12280,7 +12280,7 @@ function localizeResultCount(n, subtypeCount = 0) {
 
 function getRecordSearchText(v) {
     const subText = getVisaSubcodes(v).map(s => `${s.code || ''} ${s.nameKo || s.name || ''} ${s.nameEn || ''} ${s.summary || ''} ${(s.eligibility || []).join(' ')} ${s.addReq || ''} ${s.note || ''}`).join(' ');
-    const procedures = v.procedures ? Object.values(v.procedures).map(p => `${(p.eligibility || []).join(' ')} ${JSON.stringify(p.requiredDocs || '')} ${(p.notes || []).join(' ')}`).join(' ') : '';
+    const procedures = v.procedures ? Object.values(v.procedures).map(p => `${(p.eligibility || []).join(' ')} ${JSON.stringify(p.requiredDocs || '')} ${JSON.stringify(p.variants || '')} ${(p.notes || []).join(' ')}`).join(' ') : '';
     return `${v.code || ''} ${getVisaNameKo(v)} ${getVisaNameEn(v)} ${(v.aliases || []).join(' ')} ${v.newReq || ''} ${v.extReq || ''} ${v.changeReq || ''} ${v.faq || ''} ${v.period || ''} ${subText} ${procedures}`;
 }
 
@@ -12351,6 +12351,7 @@ function getProcedure(v, cfg) {
         notes: raw?.notes || [],
         summary: raw?.summary || (cfg.oldText && v[cfg.oldText] ? v[cfg.oldText] : ''),
         docs,
+        variants: normalizeProcedureVariants(raw?.variants),
         feeInfo: getProcedureFeeInfo(v, cfg.key),
         manualRefs: raw?.manualRefs || []
     };
@@ -12453,6 +12454,23 @@ function hasAnyDocs(groups) {
     return !!(groups && (groups.commonDocs?.length || groups.requiredDocs?.length || groups.additionalDocs?.length || groups.conditionalDocs?.length));
 }
 
+function normalizeProcedureVariants(rawVariants) {
+    if (!Array.isArray(rawVariants)) return [];
+    return rawVariants.map(raw => {
+        const item = raw && typeof raw === 'object' ? raw : {};
+        return {
+            id: item.id || '',
+            label: item.labelKo || item.label || item.statusCode || item.id || '',
+            statusCode: item.statusCode || '',
+            scenario: item.scenarioKo || item.scenario || '',
+            available: item.available !== false,
+            docs: normalizeDocGroups(item.requiredDocs, item),
+            notes: Array.isArray(item.notes) ? item.notes : [],
+            manualRefs: Array.isArray(item.manualRefs) ? item.manualRefs : []
+        };
+    }).filter(item => item.available && item.label && hasAnyDocs(item.docs));
+}
+
 function renderDocGroup(title, docs, keywords, groupType = '') {
     if (!docs || !docs.length) return '';
     return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords)}</div>`;
@@ -12522,14 +12540,47 @@ function renderProcedureSummaryBlock(value, keywords) {
     return `<div class="procedure-summary">${inner}</div>`;
 }
 
+function renderProcedureDocGroups(groups, keywords) {
+    return [
+        renderDocGroup(txAt('docGroupLabels', 0, '공통서류'), groups.commonDocs, keywords, 'group-common'),
+        renderDocGroup(txAt('docGroupLabels', 1, '필수서류'), groups.requiredDocs, keywords, 'group-required'),
+        renderDocGroup(txAt('docGroupLabels', 2, '추가/심사 필요 서류'), groups.additionalDocs, keywords, 'group-additional'),
+        renderDocGroup(txAt('docGroupLabels', 3, '조건부 서류'), groups.conditionalDocs, keywords, 'group-conditional')
+    ].filter(Boolean).join('');
+}
+
+function renderProcedureVariant(variant, keywords) {
+    const docsHtml = renderProcedureDocGroups(variant.docs, keywords);
+    const docCount = flattenDocGroups(variant.docs).length;
+    const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
+    const scenario = variant.scenario ? `<div class="manual-subcode-desc">${escapeHtml(variant.scenario)}</div>` : '';
+    const notes = variant.notes.length ? `<div class="manual-subcode-desc">${variant.notes.map(escapeHtml).join('<br>')}</div>` : '';
+    const refs = variant.manualRefs.map(ref => [ref.manualName, ref.manualVersion, ref.pageRange].filter(Boolean).map(escapeHtml).join(' · ')).filter(Boolean);
+    const citations = refs.length ? `<div class="manual-subcode-desc" style="margin-top:0.5rem; opacity:0.85;">${refs.join('<br>')}</div>` : '';
+    return `<div class="manual-subcode-card" data-procedure-variant="${escapeHtml(variant.id)}">
+        <div class="manual-subcode-top">${statusCode}<span class="manual-subcode-name">${escapeHtml(variant.label)}</span></div>
+        ${scenario}
+        <div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: docCount }))}</div>
+        <div class="doc-group-grid">${docsHtml}</div>
+        ${notes}${citations}
+    </div>`;
+}
+
+function renderProcedureVariants(proc, keywords) {
+    if (!proc.variants.length) return '';
+    const notice = currentLanguage === 'en'
+        ? 'Required documents vary by detailed status or application reason. The items below apply only when the labeled scenario matches your case.'
+        : '세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다. 아래 항목은 해당되는 경우에만 적용됩니다.';
+    return `<div class="procedure-variant-list">
+        <div class="procedure-summary"><strong>${escapeHtml(notice)}</strong></div>
+        <div class="manual-subcode-grid">${proc.variants.map(variant => renderProcedureVariant(variant, keywords)).join('')}</div>
+    </div>`;
+}
+
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const totalDocCount = proc.docs.commonDocs.length + proc.docs.requiredDocs.length + proc.docs.additionalDocs.length + proc.docs.conditionalDocs.length;
-    const docsHtml = [
-        renderDocGroup(txAt('docGroupLabels', 0, '공통서류'), proc.docs.commonDocs, keywords, 'group-common'),
-        renderDocGroup(txAt('docGroupLabels', 1, '필수서류'), proc.docs.requiredDocs, keywords, 'group-required'),
-        renderDocGroup(txAt('docGroupLabels', 2, '추가/심사 필요 서류'), proc.docs.additionalDocs, keywords, 'group-additional'),
-        renderDocGroup(txAt('docGroupLabels', 3, '조건부 서류'), proc.docs.conditionalDocs, keywords, 'group-conditional')
-    ].filter(Boolean).join('');
+    const docsHtml = renderProcedureDocGroups(proc.docs, keywords);
+    const variantsHtml = totalDocCount ? '' : renderProcedureVariants(proc, keywords);
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
     const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
@@ -12540,7 +12591,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         ${eligibilityHtml}${summaryHtml}${notesHtml}
         ${feeHtml}
         ${countHtml}
-        <div class="doc-group-grid">${docsHtml || reviewFallback}</div>
+        <div class="doc-group-grid">${docsHtml || variantsHtml || reviewFallback}</div>
     </div>`;
 }
 
