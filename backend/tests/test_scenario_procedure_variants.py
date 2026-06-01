@@ -591,5 +591,115 @@ class StatusGrantAliasRoutingHotfixTests(unittest.TestCase):
             backend._procedure_variant_key_for_task("family_status_change", text)
         )
 
+
+# Batch-2 scenario variants added from the 2026-05 stay manual
+# (scripts/populate_scenario_procedure_variants_batch2_2026_05.py). Every id
+# here must be exposed through /api/visas, carry non-empty grouped
+# requiredDocs and source manualRefs, and remain needs-review.
+BATCH2_VARIANTS = {
+    ("E-1", "statusChange"): {
+        "e-1-d2-d10-status-change",
+        "e-1-professional-spouse-status-change",
+        "e-1-science-graduate-status-change",
+    },
+    ("E-2", "workplaceChange"): {"e-2-registered-workplace-change"},
+    ("E-2", "statusChange"): {
+        "e-2-registered-status-change",
+        "e-2-education-office-instructor-status-change",
+        "e-2-d2-d10-status-change",
+    },
+    ("E-3", "workplaceChange"): {"e-3-registered-workplace-change"},
+    ("E-3", "statusChange"): {
+        "e-3-d2-d10-status-change",
+        "e-3-a3-sofa-status-change",
+    },
+    ("E-7", "workplaceChange"): {"e-7-registered-workplace-change"},
+    ("F-3", "activitiesOutsideStatus"): {
+        "f-3-language-proofreader-activities-outside-status",
+        "f-3-instructor-teacher-activities-outside-status",
+    },
+    ("F-3", "statusChange"): {"f-3-humanitarian-status-change"},
+    ("F-3", "statusGrant"): {"f-3-born-child-status-grant"},
+}
+
+
+class ScenarioProcedureVariantBatch2Tests(unittest.TestCase):
+    """Coverage for the batch-2 scenario/sub-code procedure variants."""
+
+    def test_batch2_variants_exposed_through_api(self):
+        records = _records()
+        exposed_count = 0
+        for (code, procedure_key), expected_ids in BATCH2_VARIANTS.items():
+            self.assertIn(code, records, code)
+            procedure = records[code]["procedures"][procedure_key]
+            self.assertTrue(procedure["available"], f"{code}.{procedure_key}")
+            # Parent-level checklist must stay empty — variants are scenario-scoped.
+            self.assertEqual(procedure["requiredDocs"]["requiredDocs"], [], f"{code}.{procedure_key}")
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            self.assertTrue(expected_ids.issubset(variants), f"{code}.{procedure_key}: {expected_ids - set(variants)}")
+            exposed_count += len(expected_ids)
+        self.assertEqual(exposed_count, 15)
+
+    def test_batch2_variants_have_docs_refs_and_needs_review(self):
+        records = _records()
+        for (code, procedure_key), expected_ids in BATCH2_VARIANTS.items():
+            procedure = records[code]["procedures"][procedure_key]
+            variants = {variant["id"]: variant for variant in procedure["variants"]}
+            for variant_id in expected_ids:
+                variant = variants[variant_id]
+                groups = variant["requiredDocs"]
+                # Non-empty grouped requiredDocs (at least one populated group).
+                self.assertTrue(any(groups[group] for group in groups), variant_id)
+                # Source manualRefs present and provably needs-review.
+                self.assertTrue(variant["manualRefs"], variant_id)
+                for manual_ref in variant["manualRefs"]:
+                    self.assertEqual(
+                        manual_ref["sourceFile"],
+                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        variant_id,
+                    )
+                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertTrue(manual_ref.get("pageRange"), variant_id)
+                    self.assertTrue(manual_ref["needsManualReview"], variant_id)
+                    # Never source-confirmed: verified must not be true.
+                    self.assertIsNot(manual_ref.get("verified"), True, variant_id)
+
+    def test_batch1_expansion_count_unchanged(self):
+        # Adding batch-2 variants must not disturb the batch-1 set.
+        records = _records()
+        batch1_count = 0
+        for (code, procedure_key), expected_ids in EXPANSION_VARIANTS.items():
+            variants = {variant["id"]: variant for variant in records[code]["procedures"][procedure_key]["variants"]}
+            self.assertTrue(expected_ids.issubset(variants))
+            batch1_count += len(expected_ids)
+        self.assertEqual(batch1_count, 24)
+
+    def test_batch2_population_check_remains_clean(self):
+        result = subprocess.run(
+            [sys.executable, "scripts/populate_scenario_procedure_variants_batch2_2026_05.py", "--check"],
+            cwd=REPO_ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_smoke_discovers_expanded_routable_targets(self):
+        # The exhaustive smoke script discovers routable (visa_code, procedure_key)
+        # targets from the visa catalog. Batch-2 must enlarge that discovery set.
+        import json
+
+        records = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
+        routable = {"statusChange", "workplaceChange", "activitiesOutsideStatus", "statusGrant"}
+        discovered = set()
+        for record in records:
+            procedures = record.get("procedures") or {}
+            for procedure_key, procedure in procedures.items():
+                if procedure_key in routable and (procedure.get("variants") or []):
+                    discovered.add((record.get("code"), procedure_key))
+        for key in BATCH2_VARIANTS:
+            self.assertIn(key, discovered, key)
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
