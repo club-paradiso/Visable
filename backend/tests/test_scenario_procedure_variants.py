@@ -7,6 +7,7 @@ import subprocess
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DIR = REPO_ROOT / "backend"
@@ -76,6 +77,19 @@ def _client():
 
 def _records():
     return {record.get("code"): record for record in _client().get("/api/visas").json()["data"]}
+
+
+def _module():
+    import paradiso_backend
+
+    return paradiso_backend
+
+
+def _record(code):
+    import json
+
+    records = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
+    return next(record for record in records if record.get("code") == code)
 
 
 def _good_record():
@@ -163,6 +177,164 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn("docsHtml || variantsHtml || reviewFallback", html)
         self.assertIn("세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다.", html)
         self.assertIn('data-procedure-variant="${escapeHtml(variant.id)}"', html)
+        self.assertIn("procedures: visa.procedures || null", html)
+
+
+class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
+    def test_d9_status_change_helper_includes_only_d9_status_change_variants(self):
+        mod = _module()
+        block = mod._build_procedure_variant_context_block(
+            _record("D-9"),
+            "status_change",
+            user_text="D-9 체류자격 변경 서류는?",
+        )
+        self.assertIn("[Manual-backed local procedure variant context — needs review]", block)
+        self.assertIn("d-9-1-status-change", block)
+        self.assertIn("d-9-equipment-specialist-status-change", block)
+        self.assertIn("d-9-foreign-sole-proprietor-status-change", block)
+        self.assertNotIn("e-9-3-agriculture-workplace-addition", block)
+        self.assertIn("Do not generalize", block)
+        self.assertIn("HiKorea, 1345", block)
+
+    def test_e9_workplace_change_helper_includes_only_workplace_variants(self):
+        mod = _module()
+        block = mod._build_procedure_variant_context_block(
+            _record("E-9"),
+            "workplace_change",
+            user_text="E-9 근무처 변경 서류는?",
+        )
+        self.assertIn("e-9-3-agriculture-workplace-addition", block)
+        self.assertIn("e-9-standard-workplace-change", block)
+        self.assertNotIn("d-9-1-status-change", block)
+
+    def test_exact_sub_code_prefers_matching_variant(self):
+        mod = _module()
+        sources = mod._procedure_variant_context_sources(
+            _record("D-8"),
+            "status_change",
+            "D-8-4",
+            user_text="D-8-4 체류자격 변경 서류는?",
+        )
+        self.assertEqual(
+            [source["variant_id"] for source in sources],
+            ["d-8-4-tech-startup-status-change"],
+        )
+
+    def test_family_status_grant_requires_explicit_birth_or_grant_signal(self):
+        mod = _module()
+        vague = mod._build_procedure_variant_context_block(
+            _record("F-1"),
+            "family_status_change",
+            user_text="가족관계 변동이 있습니다.",
+        )
+        birth = mod._build_procedure_variant_context_block(
+            _record("F-1"),
+            "family_status_change",
+            user_text="국내 출생 자녀의 체류자격 부여 서류는?",
+        )
+        self.assertEqual(vague, "")
+        self.assertIn("f-1-employment-parent-born-child-status-grant", birth)
+        self.assertIn("f-1-refugee-born-child-status-grant", birth)
+
+    def test_outside_status_mapping_is_ready_without_changing_existing_detector(self):
+        mod = _module()
+        block = mod._build_procedure_variant_context_block(
+            _record("E-6"),
+            "activities_outside_status",
+            user_text="E-6 체류자격외활동 서류는?",
+        )
+        self.assertIn("e-6-broadcast-film-model-activities-outside-status", block)
+        self.assertIsNone(mod._detect_task_type("D-2 외국인등록 신청 서류는?"))
+
+    def test_api_reports_d9_variant_context_without_claiming_grounding(self):
+        client = _client()
+        resp = client.post("/api/ask", json={
+            "question": "D-9 체류자격 변경 서류는?",
+            "visa_data": _record("D-9"),
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail["grounding_used"])
+        self.assertEqual(detail["grounding_sources"], [])
+        self.assertTrue(detail["procedure_variant_context_used"])
+        sources = detail["procedure_variant_context_sources"]
+        self.assertEqual(len(sources), 3)
+        safe_keys = {
+            "visa_code", "procedure_key", "variant_id", "label", "status_code",
+            "page_range", "manual_name", "manual_version", "needs_manual_review",
+        }
+        for source in sources:
+            self.assertEqual(set(source), safe_keys)
+            self.assertEqual(source["visa_code"], "D-9")
+            self.assertEqual(source["procedure_key"], "statusChange")
+            self.assertTrue(source["needs_manual_review"])
+            self.assertNotIn("requiredDocs", source)
+            self.assertNotIn("notes", source)
+
+    def test_api_reports_e9_workplace_context(self):
+        client = _client()
+        resp = client.post("/api/ask", json={
+            "question": "E-9 근무처 변경 서류는?",
+            "visa_data": _record("E-9"),
+        })
+        self.assertEqual(resp.status_code, 503, resp.text)
+        detail = resp.json()["detail"]
+        self.assertFalse(detail["grounding_used"])
+        self.assertTrue(detail["procedure_variant_context_used"])
+        self.assertEqual(
+            {source["variant_id"] for source in detail["procedure_variant_context_sources"]},
+            {"e-9-3-agriculture-workplace-addition", "e-9-standard-workplace-change"},
+        )
+
+    def test_unrelated_question_and_parent_registration_do_not_use_variant_context(self):
+        client = _client()
+        unrelated = client.post("/api/ask", json={
+            "question": "D-9 체류기간은 얼마나 되나요?",
+            "visa_data": _record("D-9"),
+        }).json()["detail"]
+        registration = client.post("/api/ask", json={
+            "question": "D-2 외국인등록 신청 서류는?",
+            "visa_data": _record("D-2"),
+        }).json()["detail"]
+        self.assertFalse(unrelated["procedure_variant_context_used"])
+        self.assertEqual(unrelated["procedure_variant_context_sources"], [])
+        self.assertIsNone(registration["task_type_detected"])
+        self.assertFalse(registration["procedure_variant_context_used"])
+        self.assertEqual(registration["procedure_variant_context_sources"], [])
+
+    def test_existing_d2_extension_grounding_remains_independent(self):
+        client = _client()
+        detail = client.post("/api/ask", json={
+            "question": "D-2 체류기간 연장 서류는?",
+            "visa_data": _record("D-2"),
+        }).json()["detail"]
+        self.assertTrue(detail["grounding_used"])
+        self.assertFalse(detail["procedure_variant_context_used"])
+
+    def test_variant_context_is_appended_to_provider_prompt(self):
+        client = _client()
+        mod = _module()
+        captured = []
+
+        async def fake_call(prompt, model=None):
+            captured.append(prompt)
+            return "ok"
+
+        with (
+            patch.object(mod, "OPENROUTER_API_KEY", "test-key"),
+            patch.object(mod, "_call_openrouter", side_effect=fake_call),
+        ):
+            resp = client.post("/api/ask", json={
+                "question": "D-9 체류자격 변경 서류는?",
+                "visa_data": _record("D-9"),
+            })
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(len(captured), 1)
+        self.assertIn("[Manual-backed local procedure variant context — needs review]", captured[0])
+        self.assertIn("d-9-1-status-change", captured[0])
+        body = resp.json()
+        self.assertFalse(body["grounding_used"])
+        self.assertTrue(body["procedure_variant_context_used"])
 
 
 class ScenarioProcedureVariantValidationTests(unittest.TestCase):
