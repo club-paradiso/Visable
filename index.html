@@ -1314,6 +1314,38 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .scenario-ai-handoff-btn { min-height: 36px; margin-top: 0.55rem; border: 1px solid var(--ac); background: var(--ac); color: #fff; border-radius: 8px; padding: 0.48rem 0.68rem; font: inherit; font-size: 0.76rem; font-weight: 900; cursor: pointer; }
 .scenario-ai-handoff-btn:hover, .scenario-ai-handoff-btn:focus-visible { filter: brightness(0.94); }
 .scenario-ai-handoff-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
+.scenario-checklist { margin: 0 0 0.8rem; border: 1px solid var(--bd2); border-radius: 10px; padding: 0.8rem 0.85rem; background: color-mix(in srgb, var(--ac) 4%, var(--bg1)); }
+.scenario-checklist-title { margin: 0 0 0.55rem; color: var(--t1); font-size: 0.86rem; font-weight: 900; word-break: keep-all; }
+.scenario-checklist-groups { display: grid; gap: 0.7rem; }
+.scenario-checklist-group { margin: 0; border: 0; padding: 0; min-width: 0; }
+.scenario-checklist-group-title { padding: 0; color: var(--ac); font-size: 0.76rem; font-weight: 900; }
+.scenario-checklist-list { list-style: none; margin: 0.35rem 0 0; padding: 0; display: grid; gap: 0.32rem; }
+.scenario-checklist-row { margin: 0; }
+.scenario-checklist-label { display: flex; align-items: flex-start; gap: 0.5rem; cursor: pointer; color: var(--t1); font-size: 0.8rem; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.scenario-checklist-checkbox { flex: 0 0 auto; width: 1.05rem; height: 1.05rem; margin-top: 0.12rem; accent-color: var(--ac); cursor: pointer; }
+.scenario-checklist-checkbox:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
+.scenario-checklist-label:has(.scenario-checklist-checkbox:checked) .scenario-checklist-itemtext { color: var(--t3); text-decoration: line-through; }
+.scenario-checklist-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+.scenario-checklist-btn { min-height: 34px; display: inline-flex; align-items: center; gap: 0.3rem; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t1); border-radius: 8px; padding: 0.4rem 0.62rem; font: inherit; font-size: 0.74rem; font-weight: 800; cursor: pointer; transition: var(--btn-tr); }
+.scenario-checklist-btn:hover, .scenario-checklist-btn:focus-visible { border-color: var(--ac); color: var(--ac); background: var(--acL); }
+.scenario-checklist-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 1px; }
+.scenario-checklist-safety { margin: 0.6rem 0 0; color: var(--t2); font-size: 0.72rem; line-height: 1.55; font-weight: 700; word-break: keep-all; }
+.scenario-checklist-guidance { margin: 0.4rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; word-break: keep-all; }
+.scenario-checklist-ai-btn { margin-top: 0.62rem; }
+.scenario-checklist-status { margin-top: 0.45rem; min-height: 1em; color: var(--ac); font-size: 0.72rem; font-weight: 800; }
+.scenario-checklist-status.is-error { color: #8a4b0f; }
+#scenarioChecklistPrintHost { display: none; }
+@media print {
+    body.printing-scenario-checklist > *:not(#scenarioChecklistPrintHost) { display: none !important; }
+    body.printing-scenario-checklist #scenarioChecklistPrintHost { display: block !important; }
+    #scenarioChecklistPrintHost .scl-print-doc { color: #000; font-size: 12pt; line-height: 1.5; padding: 1rem; }
+    #scenarioChecklistPrintHost h1 { font-size: 16pt; margin: 0 0 0.4rem; }
+    #scenarioChecklistPrintHost h2 { font-size: 13pt; margin: 0.8rem 0 0.2rem; }
+    #scenarioChecklistPrintHost .scl-print-meta { font-weight: 700; margin: 0 0 0.6rem; }
+    #scenarioChecklistPrintHost ul { margin: 0.2rem 0 0; padding-left: 0.4rem; list-style: none; }
+    #scenarioChecklistPrintHost li { margin: 0.16rem 0; }
+    #scenarioChecklistPrintHost .scl-print-note, #scenarioChecklistPrintHost .scl-print-source { margin: 0.5rem 0 0; font-size: 10.5pt; }
+}
 .manual-subcode-more { margin-top: 0.58rem; }
 .manual-subcode-more > summary { min-height: 34px; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; color: var(--ac); font-size: 0.76rem; font-weight: 900; list-style: none; }
 .manual-subcode-more > summary::-webkit-details-marker { display: none; }
@@ -11244,7 +11276,7 @@ function findProcedureVariant(visa, procedureKey, variantId) {
     if (!Array.isArray(variants)) return null;
     return variants.find(variant => variant && variant.id === variantId) || null;
 }
-function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVariantId = '', selectedVariantLabel = '') {
+function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVariantId = '', selectedVariantLabel = '', promptKey = 'selectedScenarioAiPrompt') {
     const visa = VISA_DATA.find(v => v.code === visaCode);
     if (!visa) return;
     const selectedVariant = findProcedureVariant(visa, selectedProcedureKey, selectedProcedureVariantId);
@@ -11272,7 +11304,7 @@ function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVaria
     const aiInput = document.getElementById('aiInput');
     if (selectedVariant) {
         const label = selectedVariantLabel || selectedVariant.labelKo || selectedVariant.label || selectedVariant.id;
-        aiInput.value = tx('selectedScenarioAiPrompt', { visaCode: visa.code, label });
+        aiInput.value = tx(promptKey || 'selectedScenarioAiPrompt', { visaCode: visa.code, label });
     } else {
         aiInput.value = '';
     }
@@ -12656,6 +12688,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
         <div class="doc-group-grid">${docsHtml}</div>
         ${notes}${citations}
         <div class="scenario-selected-actions">
+            ${renderScenarioChecklist(visaCode, procedureKey, variant)}
             <div class="scenario-selected-note">${escapeHtml(tx('scenarioSelectedReferenceNote'))}</div>
             <button type="button" class="scenario-ai-handoff-btn" data-action="ask-selected-procedure-variant" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" data-variant-label="${escapeHtml(variant.label)}">${escapeHtml(tx('scenarioAskAi'))}</button>
         </div>
@@ -12698,6 +12731,230 @@ function selectProcedureVariant(button) {
         const isSelected = Boolean(selectedId) && card.dataset.procedureVariantCard === selectedId;
         card.classList.toggle('is-selected', isSelected);
         card.classList.toggle('is-muted', Boolean(selectedId) && !isSelected);
+    });
+}
+
+// --- Selected scenario action checklist ---------------------------------
+// Personal preparation aid only. Checkbox state lives in localStorage scoped
+// to the selected visa/procedure/variant; it is NEVER sent to the backend or
+// AI, and never stores personal information. See
+// docs/data/SELECTED_SCENARIO_ACTION_CHECKLIST_2026_05.md.
+const SCENARIO_CHECKLIST_STORAGE_PREFIX = 'paradiso:scenario-checklist:';
+const SCENARIO_CHECKLIST_GROUPS = [
+    { key: 'commonDocs', labelIndex: 0, fallback: '공통서류' },
+    { key: 'requiredDocs', labelIndex: 1, fallback: '필수서류' },
+    { key: 'additionalDocs', labelIndex: 2, fallback: '추가/심사 필요 서류' },
+    { key: 'conditionalDocs', labelIndex: 3, fallback: '조건부 서류' }
+];
+
+function hashScenarioChecklistItem(text) {
+    // Stable djb2-style hash so a document item maps to the same storage key
+    // across renders without persisting the (Korean) item text in the key.
+    let h = 5381;
+    const s = String(text || '');
+    for (let i = 0; i < s.length; i++) h = (((h << 5) + h) + s.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(36);
+}
+
+function scenarioChecklistScopePrefix(visaCode, procedureKey, variantId) {
+    // Storage key is scoped by visa/status code, procedure key and variant id.
+    return SCENARIO_CHECKLIST_STORAGE_PREFIX
+        + [visaCode, procedureKey, variantId].map(part => encodeURIComponent(String(part || ''))).join(':')
+        + ':';
+}
+
+function scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group, itemText) {
+    // ...further scoped by document group and a stable hash of the item text.
+    return scenarioChecklistScopePrefix(visaCode, procedureKey, variantId) + group + ':' + hashScenarioChecklistItem(itemText);
+}
+
+function scenarioChecklistStoreGet(key) {
+    try { return window.localStorage.getItem(key); } catch (e) { return null; }
+}
+function scenarioChecklistStoreSet(key, value) {
+    try { window.localStorage.setItem(key, value); return true; } catch (e) { return false; }
+}
+function scenarioChecklistStoreRemove(key) {
+    try { window.localStorage.removeItem(key); } catch (e) { /* localStorage unavailable */ }
+}
+
+function renderScenarioChecklist(visaCode, procedureKey, variant) {
+    if (!variant) return '';
+    const docs = variant.docs || {};
+    const variantId = variant.id || '';
+    const groupsHtml = SCENARIO_CHECKLIST_GROUPS.map(group => {
+        const items = Array.isArray(docs[group.key]) ? docs[group.key] : [];
+        if (!items.length) return '';
+        const groupTitle = txAt('docGroupLabels', group.labelIndex, group.fallback);
+        const rows = items.map(item => {
+            const text = String(item || '').trim();
+            if (!text) return '';
+            const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, text);
+            const checked = scenarioChecklistStoreGet(storageKey) === '1' ? ' checked' : '';
+            return `<li class="scenario-checklist-row">
+                <label class="scenario-checklist-label">
+                    <input type="checkbox" class="scenario-checklist-checkbox" data-scenario-checklist-item data-storage-key="${escapeHtml(storageKey)}"${checked}>
+                    <span class="scenario-checklist-itemtext">${escapeHtml(text)}</span>
+                </label>
+            </li>`;
+        }).filter(Boolean).join('');
+        if (!rows) return '';
+        return `<fieldset class="scenario-checklist-group" data-group="${group.key}">
+            <legend class="scenario-checklist-group-title">${escapeHtml(groupTitle)}</legend>
+            <ul class="scenario-checklist-list">${rows}</ul>
+        </fieldset>`;
+    }).filter(Boolean).join('');
+    if (!groupsHtml) return '';
+    const sourcePages = (variant.manualRefs || []).map(ref => ref && ref.pageRange).filter(Boolean).join(' · ');
+    const procedureLabel = getProcedureLabelByKey(procedureKey, procedureKey);
+    const title = tx('scenarioChecklistTitle');
+    const dataAttrs = `data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variantId)}" data-variant-label="${escapeHtml(variant.label || '')}" data-status-code="${escapeHtml(variant.statusCode || '')}" data-procedure-label="${escapeHtml(procedureLabel)}" data-source-pages="${escapeHtml(sourcePages)}"`;
+    return `<section class="scenario-checklist" data-scenario-checklist ${dataAttrs} aria-label="${escapeHtml(title)}">
+        <h6 class="scenario-checklist-title">${escapeHtml(title)}</h6>
+        <div class="scenario-checklist-groups">${groupsHtml}</div>
+        <div class="scenario-checklist-actions">
+            <button type="button" class="scenario-checklist-btn" data-action="copy-scenario-checklist">${escapeHtml(tx('scenarioChecklistCopy'))}</button>
+            <button type="button" class="scenario-checklist-btn" data-action="print-scenario-checklist">${escapeHtml(tx('scenarioChecklistPrint'))}</button>
+            <button type="button" class="scenario-checklist-btn" data-action="reset-scenario-checklist">${escapeHtml(tx('scenarioChecklistReset'))}</button>
+        </div>
+        <p class="scenario-checklist-safety">${escapeHtml(tx('scenarioChecklistSafetyNote'))}</p>
+        <p class="scenario-checklist-guidance">${escapeHtml(tx('scenarioChecklistConfirmGuidance'))}</p>
+        <button type="button" class="scenario-ai-handoff-btn scenario-checklist-ai-btn" data-action="ask-checklist-missing" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variantId)}" data-variant-label="${escapeHtml(variant.label || '')}">${escapeHtml(tx('scenarioChecklistMissingAsk'))}</button>
+        <div class="scenario-checklist-status" role="status" aria-live="polite"></div>
+    </section>`;
+}
+
+function persistScenarioChecklistItem(checkbox) {
+    const key = checkbox.getAttribute('data-storage-key');
+    if (!key) return;
+    if (checkbox.checked) scenarioChecklistStoreSet(key, '1');
+    else scenarioChecklistStoreRemove(key);
+}
+
+function collectScenarioChecklistData(root) {
+    const groups = [];
+    root.querySelectorAll('.scenario-checklist-group').forEach(fs => {
+        const title = (fs.querySelector('.scenario-checklist-group-title')?.textContent || '').trim();
+        const items = [];
+        fs.querySelectorAll('.scenario-checklist-row').forEach(row => {
+            const cb = row.querySelector('input[type="checkbox"]');
+            const text = (row.querySelector('.scenario-checklist-itemtext')?.textContent || '').trim();
+            if (text) items.push({ text, checked: !!(cb && cb.checked) });
+        });
+        if (items.length) groups.push({ title, items });
+    });
+    return {
+        visaCode: root.getAttribute('data-visa-code') || '',
+        statusCode: root.getAttribute('data-status-code') || '',
+        variantLabel: root.getAttribute('data-variant-label') || '',
+        procedureLabel: root.getAttribute('data-procedure-label') || '',
+        sourcePages: root.getAttribute('data-source-pages') || '',
+        groups
+    };
+}
+
+function buildScenarioChecklistText(data) {
+    const lines = [];
+    lines.push(tx('scenarioChecklistTitle'));
+    const headerBits = [data.visaCode, data.statusCode, data.procedureLabel, data.variantLabel].filter(Boolean);
+    if (headerBits.length) lines.push(headerBits.join(' · '));
+    lines.push('');
+    data.groups.forEach(group => {
+        if (group.title) lines.push('# ' + group.title);
+        group.items.forEach(item => { lines.push((item.checked ? '[x] ' : '[ ] ') + item.text); });
+        lines.push('');
+    });
+    if (data.sourcePages) lines.push(tx('scenarioChecklistSourceLabel') + ': ' + data.sourcePages);
+    lines.push(tx('scenarioChecklistSafetyNote'));
+    lines.push(tx('scenarioChecklistConfirmGuidance'));
+    return lines.join('\n').replace(/\n{3,}/g, '\n\n').trim() + '\n';
+}
+
+function buildScenarioChecklistPrintHtml(data) {
+    const headerBits = [data.visaCode, data.statusCode, data.procedureLabel, data.variantLabel].filter(Boolean).map(escapeHtml);
+    const groups = data.groups.map(group => {
+        const items = group.items.map(item => `<li>${item.checked ? '☑' : '☐'} ${escapeHtml(item.text)}</li>`).join('');
+        return `<section class="scl-print-group"><h2>${escapeHtml(group.title)}</h2><ul>${items}</ul></section>`;
+    }).join('');
+    const source = data.sourcePages ? `<p class="scl-print-source">${escapeHtml(tx('scenarioChecklistSourceLabel'))}: ${escapeHtml(data.sourcePages)}</p>` : '';
+    return `<div class="scl-print-doc">
+        <h1>${escapeHtml(tx('scenarioChecklistTitle'))}</h1>
+        ${headerBits.length ? `<p class="scl-print-meta">${headerBits.join(' · ')}</p>` : ''}
+        ${groups}
+        ${source}
+        <p class="scl-print-note">${escapeHtml(tx('scenarioChecklistSafetyNote'))}</p>
+        <p class="scl-print-note">${escapeHtml(tx('scenarioChecklistConfirmGuidance'))}</p>
+    </div>`;
+}
+
+function setScenarioChecklistStatus(root, message, isError) {
+    const el = root.querySelector('.scenario-checklist-status');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle('is-error', !!isError);
+    clearTimeout(el._scTimer);
+    el._scTimer = setTimeout(() => { el.textContent = ''; el.classList.remove('is-error'); }, 4000);
+}
+
+async function scenarioChecklistCopyText(text) {
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        }
+    } catch (e) { /* fall through to legacy copy path */ }
+    try {
+        const ta = document.createElement('textarea');
+        ta.value = text; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand && document.execCommand('copy');
+        document.body.removeChild(ta);
+        return !!ok;
+    } catch (e) { return false; }
+}
+
+async function copyScenarioChecklist(button) {
+    const root = button.closest('[data-scenario-checklist]');
+    if (!root) return;
+    const text = buildScenarioChecklistText(collectScenarioChecklistData(root));
+    const ok = await scenarioChecklistCopyText(text);
+    setScenarioChecklistStatus(root, ok ? tx('scenarioChecklistCopied') : tx('scenarioChecklistCopyFailed'), !ok);
+}
+
+function printScenarioChecklist(button) {
+    const root = button.closest('[data-scenario-checklist]');
+    if (!root) return;
+    const data = collectScenarioChecklistData(root);
+    let host = document.getElementById('scenarioChecklistPrintHost');
+    if (!host) { host = document.createElement('div'); host.id = 'scenarioChecklistPrintHost'; document.body.appendChild(host); }
+    host.innerHTML = buildScenarioChecklistPrintHtml(data);
+    document.body.classList.add('printing-scenario-checklist');
+    const cleanup = () => {
+        document.body.classList.remove('printing-scenario-checklist');
+        host.innerHTML = '';
+        window.removeEventListener('afterprint', cleanup);
+    };
+    window.addEventListener('afterprint', cleanup);
+    try { window.print(); } catch (e) { cleanup(); return; }
+    // Safari does not always fire afterprint; clean up defensively.
+    setTimeout(cleanup, 2000);
+}
+
+function resetScenarioChecklist(button) {
+    const root = button.closest('[data-scenario-checklist]');
+    if (!root) return;
+    const scope = scenarioChecklistScopePrefix(root.getAttribute('data-visa-code') || '', root.getAttribute('data-procedure-key') || '', root.getAttribute('data-variant-id') || '');
+    try {
+        const toRemove = [];
+        for (let i = 0; i < window.localStorage.length; i++) {
+            const k = window.localStorage.key(i);
+            if (k && k.indexOf(scope) === 0) toRemove.push(k);
+        }
+        toRemove.forEach(scenarioChecklistStoreRemove);
+    } catch (e) { /* localStorage unavailable — visible boxes are still cleared below */ }
+    root.querySelectorAll('input[type="checkbox"][data-scenario-checklist-item]').forEach(cb => {
+        cb.checked = false;
+        scenarioChecklistStoreRemove(cb.getAttribute('data-storage-key'));
     });
 }
 
@@ -13620,6 +13877,7 @@ const UI_TRANSLATIONS = {
         docGroupLabels: ['공통서류', '필수서류', '추가/심사 필요 서류', '조건부 서류'], procedureLabels: ['사증발급', '사증발급인정서', '체류자격 변경', '체류기간 연장', '체류자격 부여', '외국인등록', '자격외활동', '근무처 변경·추가', '재입국'], domainLabels: ['공통/양쪽', '사증발급', '체류민원'], reviewLabels: ['2026.5 매뉴얼 확인됨', '일부 정보 미검증', '2026.5 매뉴얼 확인 필요'],
         scenarioSelectorTitle: '내 상황에 맞는 시나리오 선택', scenarioSelectorCopy: '세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.', scenarioShowAll: '전체 보기', scenarioSelectedChoice: '✓ 선택됨', scenarioSelectedBadge: '선택됨',
         scenarioSelectedReferenceNote: '선택한 시나리오는 참고용입니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.', scenarioAskAi: '이 시나리오로 AI에게 질문하기', scenarioOfficialLabelsKoNote: '공식 매뉴얼의 시나리오 명칭은 한국어로 표시됩니다.', officialDocumentNamesKoNote: '공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.', selectedScenarioAiPrompt: '{visaCode} {label} 기준으로 필요한 서류와 주의사항 알려줘',
+        scenarioChecklistTitle: '선택한 시나리오 준비 체크리스트', scenarioChecklistCopy: '체크리스트 복사', scenarioChecklistPrint: '인쇄용 보기', scenarioChecklistReset: '체크 초기화', scenarioChecklistConfirmGuidance: '제출 전 HiKorea, 1345 또는 관할 출입국·외국인관서에서 실제 적용 여부와 추가서류를 확인하세요.', scenarioChecklistMissingAsk: '체크리스트 기준으로 누락 가능성 물어보기', scenarioChecklistMissingPrompt: '{visaCode} {label} 시나리오 기준으로 위 준비 체크리스트에서 빠질 수 있는 서류나 흔히 하는 실수를 알려줘. 최종 적용 여부나 충분성은 단정하지 말고, 추가 확인이 필요한 부분을 짚어줘.', scenarioChecklistSafetyNote: '이 체크리스트는 개인 준비용 도구이며, 항목을 체크해도 접수나 허가가 보장되지 않습니다.', scenarioChecklistCopied: '체크리스트가 복사되었습니다.', scenarioChecklistCopyFailed: '클립보드 복사를 사용할 수 없습니다. 텍스트를 길게 눌러 직접 복사하세요.', scenarioChecklistSourceLabel: '출처 페이지',
         aiSourcePanelTitle: '출처 · 검증 상태', aiManualGroundingLabel: '행정 매뉴얼 근거', aiManualGroundingStatus: '매뉴얼 출처 확인됨 · 참고용 (법적 결정이 아니며 개별 검증은 진행 중)', aiLawVerificationLabel: '법령 인용 검증', aiPublicDataLabel: '공공데이터 근거', aiPublicDataStatus: '출처 표시 · 개별 항목 검증은 진행 중',
         aiSelectedScenarioLabel: '선택한 시나리오 기준', aiScenarioGroundingLabel: '시나리오별 서류 근거', aiScenarioCandidateStatus: '매뉴얼 기반 후보 · 최종 확인 필요', aiScenarioMatchNote: '세부 자격·사유가 맞는 경우에만 참고하세요.', aiScenarioMoreCount: '외 {count}건', aiAdvisoryLabel: '일반 안내', aiAdvisoryText: '확인된 개별 출처가 연결되지 않은 일반 참고 안내입니다.', aiTechnicalDetails: '기술 세부정보 보기', aiSourceDisclosure: '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
         aiLawStatusDisabled: '기능 꺼짐', aiLawStatusSourcePresent: '출처 있음', aiLawStatusUnverified: '미검증', aiLawStatusSourceLinked: '출처 연결됨 · 미검증', aiLawStatusFailed: '검증 실패', aiLawStatusNeedsReview: '확인 필요', aiLawStatusNotWired: '인용 검증 미연결', aiLawWarningDisabled: '법령 검증 기능이 꺼져 있음', aiLawWarningMissingKey: '법령 API 키 미설정', aiLawWarningSourceUnavailable: '법령 출처 확인 불가', aiLawWarningTimeout: '법령 조회 시간 초과', aiLawWarningNotWired: '인용 검증 미연결',
@@ -13757,6 +14015,7 @@ const UI_TRANSLATIONS = {
         docGroupLabels: ['Common documents', 'Required documents', 'Additional / review-needed documents', 'Conditional documents'], procedureLabels: ['Visa issuance', 'Certificate for confirmation of visa issuance', 'Change of status', 'Extension of stay', 'Grant of status', 'Foreigner registration', 'Activities outside status', 'Workplace change or addition', 'Re-entry'], domainLabels: ['Both tracks', 'Visa issuance', 'Stay services'], reviewLabels: ['Confirmed against the 2026.5 manual', 'Some information unverified', 'Needs 2026.5 manual review'],
         scenarioSelectorTitle: 'Choose the scenario closest to your situation', scenarioSelectorCopy: 'Required documents may differ by sub-status or reason. Select the closest scenario below.', scenarioShowAll: 'Show all', scenarioSelectedChoice: '✓ Selected', scenarioSelectedBadge: 'Selected',
         scenarioSelectedReferenceNote: 'The selected scenario is for reference only. Confirm applicability with HiKorea, 1345, or the competent immigration office.', scenarioAskAi: 'Ask AI about this scenario', scenarioOfficialLabelsKoNote: 'Official scenario labels are shown in Korean to match the immigration manual.', officialDocumentNamesKoNote: 'Official document names are shown in Korean to match the immigration manual.', selectedScenarioAiPrompt: 'For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.',
+        scenarioChecklistTitle: 'Preparation checklist for the selected scenario', scenarioChecklistCopy: 'Copy checklist', scenarioChecklistPrint: 'Print view', scenarioChecklistReset: 'Reset checks', scenarioChecklistConfirmGuidance: 'Before submitting, confirm applicability and any additional documents with HiKorea, 1345, or the competent immigration office.', scenarioChecklistMissingAsk: 'Ask AI what might be missing from this checklist', scenarioChecklistMissingPrompt: 'For {visaCode}, based on the selected scenario ({label}), what documents might be missing from this preparation checklist and what common mistakes should I watch for? Do not assert final sufficiency or approval; point out what still needs official confirmation, and keep Korean official document names where relevant.', scenarioChecklistSafetyNote: 'This checklist is a personal preparation aid only. Checking items does not guarantee acceptance or approval.', scenarioChecklistCopied: 'Checklist copied to clipboard.', scenarioChecklistCopyFailed: 'Clipboard copy is unavailable. Press and hold the text to copy it manually.', scenarioChecklistSourceLabel: 'Source pages',
         aiSourcePanelTitle: 'Sources · verification status', aiManualGroundingLabel: 'Administrative manual source', aiManualGroundingStatus: 'Manual source identified · for reference only (not a legal decision; item-level verification is ongoing)', aiLawVerificationLabel: 'Legal citation verification', aiPublicDataLabel: 'Public-data source', aiPublicDataStatus: 'Source shown · item-level verification is ongoing',
         aiSelectedScenarioLabel: 'Based on selected scenario', aiScenarioGroundingLabel: 'Scenario-specific document source', aiScenarioCandidateStatus: 'Manual-based candidate · final confirmation needed', aiScenarioMatchNote: 'Use this only if the sub-status/reason matches your situation.', aiScenarioMoreCount: '{count} more', aiAdvisoryLabel: 'General guidance', aiAdvisoryText: 'General reference guidance without a linked item-level source.', aiTechnicalDetails: 'View technical details', aiSourceDisclosure: 'This answer is reference guidance based on public sources. Confirm final decisions with 1345, HiKorea, or the competent immigration office.',
         aiLawStatusDisabled: 'Disabled', aiLawStatusSourcePresent: 'Source present', aiLawStatusUnverified: 'Unverified', aiLawStatusSourceLinked: 'Source linked · unverified', aiLawStatusFailed: 'Verification failed', aiLawStatusNeedsReview: 'Needs review', aiLawStatusNotWired: 'Citation verification not connected', aiLawWarningDisabled: 'Legal verification is disabled', aiLawWarningMissingKey: 'Legal API key is not configured', aiLawWarningSourceUnavailable: 'Legal source unavailable', aiLawWarningTimeout: 'Legal source lookup timed out', aiLawWarningNotWired: 'Citation verification not connected',
@@ -13850,6 +14109,7 @@ const UI_TRANSLATIONS = {
         docGroupLabels: ['通用材料', '必备材料', '附加/审查所需材料', '条件性材料'], procedureLabels: ['签证签发', '签证签发确认书', '资格变更', '居留延期', '资格赋予', '外国人登记', '资格外活动', '工作场所变更/增加', '再入境'], domainLabels: ['通用/两者', '签证签发', '居留事务'], reviewLabels: ['已依2026.5手册确认', '部分信息未经核实', '需进行2026.5手册确认'], searchedCategoryLabels: ['短期', '留学/研修', '就业', '投资', '家庭/移民', '其他', '外交', '健康保险', '指引', '情景'],
         scenarioSelectorTitle: '选择最符合您情况的情形', scenarioSelectorCopy: '所需材料可能因细分资格或申请事由而不同。请在下方选择最接近的情形。', scenarioShowAll: '查看全部', scenarioSelectedChoice: '✓ 已选择', scenarioSelectedBadge: '已选择',
         scenarioSelectedReferenceNote: '所选情形仅供参考。实际适用与否请向 HiKorea、1345 或管辖出入境外国人机构确认。', scenarioAskAi: '就此情形询问 AI', scenarioOfficialLabelsKoNote: '为与出入境手册一致，正式情形名称以韩文显示。', officialDocumentNamesKoNote: '为与出入境手册一致，正式材料名称以韩文显示。', selectedScenarioAiPrompt: '请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。',
+        scenarioChecklistTitle: '所选情形准备清单', scenarioChecklistCopy: '复制清单', scenarioChecklistPrint: '打印视图', scenarioChecklistReset: '重置勾选', scenarioChecklistConfirmGuidance: '提交前，请向 HiKorea、1345 或管辖出入境外国人机构确认实际适用与追加材料。', scenarioChecklistMissingAsk: '询问 AI 这份清单可能缺少什么', scenarioChecklistMissingPrompt: '请基于所选情形（{label}）说明 {visaCode} 这份准备清单中可能遗漏的材料或常见错误。请勿断定最终是否符合要求或获批，并指出仍需官方确认的部分，必要时保留韩文正式材料名称。', scenarioChecklistSafetyNote: '本清单仅为个人准备辅助工具，勾选项目并不保证受理或批准。', scenarioChecklistCopied: '清单已复制到剪贴板。', scenarioChecklistCopyFailed: '无法使用剪贴板复制。请长按文本手动复制。', scenarioChecklistSourceLabel: '来源页码',
         aiSourcePanelTitle: '来源 · 核实状态', aiManualGroundingLabel: '行政手册依据', aiManualGroundingStatus: '已确认手册来源 · 仅供参考（不构成法律决定，逐项核实仍在进行中）', aiLawVerificationLabel: '法规引用核实', aiPublicDataLabel: '公共数据依据', aiPublicDataStatus: '已显示来源 · 逐项核实仍在进行中',
         aiSelectedScenarioLabel: '基于所选情形', aiScenarioGroundingLabel: '分情形材料依据', aiScenarioCandidateStatus: '基于手册的候选信息 · 需最终确认', aiScenarioMatchNote: '仅在细分资格或申请事由相符时参考。', aiScenarioMoreCount: '另有 {count} 项', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未关联逐项已确认来源的一般参考指引。', aiTechnicalDetails: '查看技术详情', aiSourceDisclosure: '本答复是基于公开资料的参考指引。最终判断请向 1345、HiKorea 或管辖出入境外国人机构确认。',
         aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有来源', aiLawStatusUnverified: '未经核实', aiLawStatusSourceLinked: '已关联来源 · 未经核实', aiLawStatusFailed: '核实失败', aiLawStatusNeedsReview: '需核实', aiLawStatusNotWired: '引用核实尚未连接', aiLawWarningDisabled: '法规核实功能已停用', aiLawWarningMissingKey: '未设置法规 API 密钥', aiLawWarningSourceUnavailable: '无法确认法规来源', aiLawWarningTimeout: '法规查询超时', aiLawWarningNotWired: '引用核实尚未连接',
@@ -13903,6 +14163,7 @@ const UI_TRANSLATIONS = {
         docGroupLabels: ['通用文件', '必要文件', '附加/需審查文件', '條件式文件'], procedureLabels: ['簽證核發', '簽證核發確認書', '資格變更', '居留延期', '資格賦予', '外國人登錄', '資格外活動', '工作場所變更/增加', '再入境'],
         scenarioSelectorTitle: '選擇最符合您情況的情形', scenarioSelectorCopy: '所需文件可能因細分資格或申請事由而不同。請在下方選擇最接近的情形。', scenarioShowAll: '查看全部', scenarioSelectedChoice: '✓ 已選擇', scenarioSelectedBadge: '已選擇',
         scenarioSelectedReferenceNote: '所選情形僅供參考。實際適用與否請向 HiKorea、1345 或管轄出入境外國人機構確認。', scenarioAskAi: '就此情形詢問 AI', scenarioOfficialLabelsKoNote: '為與出入境手冊一致，正式情形名稱以韓文顯示。', officialDocumentNamesKoNote: '為與出入境手冊一致，正式文件名稱以韓文顯示。', selectedScenarioAiPrompt: '請根據所選情形（{label}）說明 {visaCode} 所需文件和注意事項。必要時請保留韓文正式文件名稱。',
+        scenarioChecklistTitle: '所選情形準備清單', scenarioChecklistCopy: '複製清單', scenarioChecklistPrint: '列印檢視', scenarioChecklistReset: '重置勾選', scenarioChecklistConfirmGuidance: '提交前，請向 HiKorea、1345 或管轄出入境外國人機構確認實際適用與追加材料。', scenarioChecklistMissingAsk: '詢問 AI 這份清單可能缺少什麼', scenarioChecklistMissingPrompt: '請基於所選情形（{label}）說明 {visaCode} 這份準備清單中可能遺漏的文件或常見錯誤。請勿斷定最終是否符合要求或獲准，並指出仍需官方確認的部分，必要時保留韓文正式文件名稱。', scenarioChecklistSafetyNote: '本清單僅為個人準備輔助工具，勾選項目並不保證受理或核准。', scenarioChecklistCopied: '清單已複製到剪貼簿。', scenarioChecklistCopyFailed: '無法使用剪貼簿複製。請長按文字手動複製。', scenarioChecklistSourceLabel: '來源頁碼',
         aiSourcePanelTitle: '來源 · 核實狀態', aiManualGroundingLabel: '行政手冊依據', aiManualGroundingStatus: '已確認手冊來源 · 僅供參考（不構成法律決定，逐項核實仍在進行中）', aiLawVerificationLabel: '法規引用核實', aiPublicDataLabel: '公共資料依據', aiPublicDataStatus: '已顯示來源 · 逐項核實仍在進行中',
         aiSelectedScenarioLabel: '基於所選情形', aiScenarioGroundingLabel: '分情形文件依據', aiScenarioCandidateStatus: '基於手冊的候選資訊 · 需最終確認', aiScenarioMatchNote: '僅在細分資格或申請事由相符時參考。', aiScenarioMoreCount: '另有 {count} 項', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未關聯逐項已確認來源的一般參考指引。', aiTechnicalDetails: '查看技術詳情', aiSourceDisclosure: '本答覆是基於公開資料的參考指引。最終判斷請向 1345、HiKorea 或管轄出入境外國人機構確認。',
         aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有來源', aiLawStatusUnverified: '未經核實', aiLawStatusSourceLinked: '已關聯來源 · 未經核實', aiLawStatusFailed: '核實失敗', aiLawStatusNeedsReview: '需核實', aiLawStatusNotWired: '引用核實尚未連接', aiLawWarningDisabled: '法規核實功能已停用', aiLawWarningMissingKey: '未設定法規 API 金鑰', aiLawWarningSourceUnavailable: '無法確認法規來源', aiLawWarningTimeout: '法規查詢逾時', aiLawWarningNotWired: '引用核實尚未連接',
@@ -14882,6 +15143,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     debugSearchState('DOMContentLoaded:init');
 
+    // Persist scenario-checklist checkbox state locally on change. Document-level
+    // delegation survives result-card re-renders and avoids duplicate listeners.
+    document.addEventListener('change', (e) => {
+        const checklistItem = e.target.closest('[data-scenario-checklist-item]');
+        if (checklistItem) persistScenarioChecklistItem(checklistItem);
+    });
+
     document.addEventListener('click', (e) => {
         // Toggle su wrapper inside results
         const toggleSu = e.target.closest('[data-action="toggle-su"]');
@@ -14917,6 +15185,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 'select-procedure-variant': () => selectProcedureVariant(actionBtn),
                 'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
+                'copy-scenario-checklist': () => copyScenarioChecklist(actionBtn),
+                'print-scenario-checklist': () => printScenarioChecklist(actionBtn),
+                'reset-scenario-checklist': () => resetScenarioChecklist(actionBtn),
+                'ask-checklist-missing': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel, 'scenarioChecklistMissingPrompt'),
                 'select-docs-tab': () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
