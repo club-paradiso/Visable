@@ -62,7 +62,7 @@ class ReentryProcedureCoverageTests(unittest.TestCase):
             self.assertIn("외국인등록증", joined)
             # The fee item terminates the list and must be clean (no section
             # text leaked past 수수료 from the next page block).
-            self.assertIn(docs[-1], ("수수료", "수수료 없음"),
+            self.assertIn(docs[-1], ("수수료", "수수료 없음", "수수료면제"),
                           f"{code} fee item not clean: {docs[-1]!r}")
             for d in docs:
                 self.assertLessEqual(len(d), 18, f"{code} doc item too long (leak?): {d!r}")
