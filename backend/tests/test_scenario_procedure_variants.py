@@ -399,5 +399,168 @@ class ScenarioProcedureVariantSyncTests(unittest.TestCase):
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
 
+
+class AiVariantGroundingPostMergeSmokeTests(unittest.TestCase):
+    """Post-merge smoke coverage for AI scenario-variant grounding."""
+
+    @staticmethod
+    def _visa_record(code):
+        import json
+
+        records = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
+        for record in records:
+            if record.get("code") == code:
+                return record
+        raise AssertionError(f"Missing visa record: {code}")
+
+    def test_detects_activities_outside_status_signals(self):
+        import paradiso_backend as backend
+
+        self.assertEqual(
+            backend._detect_task_type("E-6 체류자격외활동허가에 필요한 서류가 뭐야?"),
+            "activities_outside_status",
+        )
+        self.assertEqual(
+            backend._detect_task_type("Can I get part-time work permission as E-6?"),
+            "activities_outside_status",
+        )
+        self.assertEqual(
+            backend._procedure_variant_key_for_task(
+                "activities_outside_status",
+                "E-6 체류자격외활동허가",
+            ),
+            "activitiesOutsideStatus",
+        )
+
+    def test_e6_activities_outside_status_variant_context_is_built(self):
+        import paradiso_backend as backend
+
+        record = self._visa_record("E-6")
+        block = backend._build_procedure_variant_context_block(
+            record,
+            "activities_outside_status",
+            user_text="E-6 체류자격외활동허가 서류 알려줘",
+        )
+        sources = backend._procedure_variant_context_sources(
+            record,
+            "activities_outside_status",
+            user_text="E-6 체류자격외활동허가 서류 알려줘",
+        )
+
+        self.assertIn("Manual-backed local procedure variant context", block)
+        self.assertIn("activitiesOutsideStatus", block)
+        self.assertIn("e-6-broadcast-film-model-activities-outside-status", block)
+        self.assertTrue(sources)
+        self.assertEqual(sources[0]["procedure_key"], "activitiesOutsideStatus")
+        self.assertEqual(
+            sources[0]["variant_id"],
+            "e-6-broadcast-film-model-activities-outside-status",
+        )
+        self.assertTrue(sources[0]["needs_manual_review"])
+
+    def test_f1_status_grant_routes_only_for_explicit_status_grant_question(self):
+        import paradiso_backend as backend
+
+        record = self._visa_record("F-1")
+
+        explicit_task = backend._detect_task_type("국내출생 자녀 체류자격 부여 서류 알려줘")
+        self.assertEqual(explicit_task, "family_status_change")
+        self.assertEqual(
+            backend._procedure_variant_key_for_task(
+                explicit_task,
+                "국내출생 자녀 체류자격 부여 서류 알려줘",
+            ),
+            "statusGrant",
+        )
+
+        block = backend._build_procedure_variant_context_block(
+            record,
+            explicit_task,
+            user_text="국내출생 자녀 체류자격 부여 서류 알려줘",
+        )
+        self.assertIn("statusGrant", block)
+        self.assertIn("f-1-employment-parent-born-child-status-grant", block)
+
+        generic_task = backend._detect_task_type("가족관계 변동이 있는데 뭘 해야 해?")
+        self.assertEqual(generic_task, "family_status_change")
+        self.assertIsNone(
+            backend._procedure_variant_key_for_task(
+                generic_task,
+                "가족관계 변동이 있는데 뭘 해야 해?",
+            )
+        )
+
+    def test_unrelated_question_does_not_use_variant_context(self):
+        import paradiso_backend as backend
+
+        record = self._visa_record("D-9")
+        block = backend._build_procedure_variant_context_block(
+            record,
+            None,
+            user_text="한국 생활 정보 알려줘",
+        )
+        sources = backend._procedure_variant_context_sources(
+            record,
+            None,
+            user_text="한국 생활 정보 알려줘",
+        )
+
+        self.assertEqual(block, "")
+        self.assertEqual(sources, [])
+
+    def test_variant_context_safe_metadata_shape(self):
+        import paradiso_backend as backend
+
+        record = self._visa_record("E-9")
+        sources = backend._procedure_variant_context_sources(
+            record,
+            "workplace_change",
+            user_text="E-9 근무처 변경 서류 알려줘",
+        )
+
+        self.assertTrue(sources)
+        allowed = {
+            "visa_code",
+            "procedure_key",
+            "variant_id",
+            "label",
+            "status_code",
+            "page_range",
+            "manual_name",
+            "manual_version",
+            "needs_manual_review",
+        }
+        for source in sources:
+            self.assertLessEqual(set(source), allowed)
+            self.assertEqual(source["procedure_key"], "workplaceChange")
+            self.assertTrue(source["needs_manual_review"])
+            self.assertNotIn("requiredDocs", source)
+            self.assertNotIn("manualRefs", source)
+
+    def test_grounding_used_semantics_are_not_changed_by_variant_context(self):
+        import paradiso_backend as backend
+
+        record = self._visa_record("D-9")
+        self.assertTrue(
+            backend._build_procedure_variant_context_block(
+                record,
+                "status_change",
+                user_text="D-9 체류자격 변경 서류 알려줘",
+            )
+        )
+        self.assertIsNone(backend._select_grounding("D-9", "status_change", None))
+
+    def test_existing_parent_level_and_reentry_paths_still_available(self):
+        records = _records()
+
+        d2_registration = records["D-2"]["procedures"]["registration"]
+        self.assertTrue(d2_registration["requiredDocs"]["requiredDocs"])
+
+        d9_reentry = records["D-9"]["procedures"]["reentry"]
+        self.assertEqual(
+            d9_reentry["requiredDocs"]["requiredDocs"],
+            ["신청서(별지 34호서식)", "여권 원본", "외국인등록증", "수수료"],
+        )
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
