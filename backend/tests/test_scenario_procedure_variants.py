@@ -371,6 +371,18 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
         self.assertIn("body.printing-scenario-checklist", self.html)
         self.assertIn("window.print()", self.html)
 
+    def test_cloned_drawer_checkboxes_rehydrate_from_storage(self):
+        # openVisaDrawer() clones the rendered result card, so cloned checklist
+        # checkboxes carry render-time markup that can be stale vs localStorage.
+        # They must be re-hydrated from storage (the source of truth) on open,
+        # and co-mounted checkboxes (source card + drawer clone) kept in sync.
+        self.assertIn("function hydrateScenarioChecklistState(container)", self.html)
+        self.assertIn("hydrateScenarioChecklistState(clone);", self.html)
+        self.assertIn("function syncScenarioChecklistCheckboxes(key, checked, origin)", self.html)
+        self.assertIn("syncScenarioChecklistCheckboxes(key, checkbox.checked, checkbox);", self.html)
+        # Reset also propagates to any co-mounted copy of the same item.
+        self.assertIn("syncScenarioChecklistCheckboxes(key, false, cb);", self.html)
+
 
 class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
     def test_d9_status_change_helper_includes_only_d9_status_change_variants(self):

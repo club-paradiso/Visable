@@ -11230,6 +11230,7 @@ function openVisaDrawer(code) {
 
     body.innerHTML = '';
     body.appendChild(clone);
+    hydrateScenarioChecklistState(clone);
     body.scrollTop = 0;
 
     lastFocusedElement = document.activeElement;
@@ -12829,6 +12830,29 @@ function persistScenarioChecklistItem(checkbox) {
     if (!key) return;
     if (checkbox.checked) scenarioChecklistStoreSet(key, '1');
     else scenarioChecklistStoreRemove(key);
+    // Keep any other mounted checkbox sharing the same scoped key in sync — e.g.
+    // the search-result card and its cloned detail-drawer copy.
+    syncScenarioChecklistCheckboxes(key, checkbox.checked, checkbox);
+}
+
+function syncScenarioChecklistCheckboxes(key, checked, origin) {
+    if (!key) return;
+    document.querySelectorAll('input[type="checkbox"][data-scenario-checklist-item]').forEach(cb => {
+        if (cb !== origin && cb.getAttribute('data-storage-key') === key && cb.checked !== checked) {
+            cb.checked = checked;
+        }
+    });
+}
+
+// Cloned cards (e.g. the detail drawer) carry render-time checkbox markup that
+// can be stale relative to localStorage. Re-hydrate every checklist checkbox in
+// a container from its scoped storage key so localStorage stays authoritative.
+function hydrateScenarioChecklistState(container) {
+    if (!container) return;
+    container.querySelectorAll('input[type="checkbox"][data-scenario-checklist-item]').forEach(cb => {
+        const key = cb.getAttribute('data-storage-key');
+        if (key) cb.checked = scenarioChecklistStoreGet(key) === '1';
+    });
 }
 
 function collectScenarioChecklistData(root) {
@@ -12954,7 +12978,9 @@ function resetScenarioChecklist(button) {
     } catch (e) { /* localStorage unavailable — visible boxes are still cleared below */ }
     root.querySelectorAll('input[type="checkbox"][data-scenario-checklist-item]').forEach(cb => {
         cb.checked = false;
-        scenarioChecklistStoreRemove(cb.getAttribute('data-storage-key'));
+        const key = cb.getAttribute('data-storage-key');
+        scenarioChecklistStoreRemove(key);
+        syncScenarioChecklistCheckboxes(key, false, cb);
     });
 }
 
