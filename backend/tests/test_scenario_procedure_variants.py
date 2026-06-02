@@ -208,6 +208,182 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn("--lang-gp-needs-review", html)
 
 
+class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
+    """Frontend coverage for the selected-scenario action checklist (PR #245)."""
+
+    @classmethod
+    def setUpClass(cls):
+        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+
+    def test_checklist_section_label_present_in_all_target_languages(self):
+        self.assertIn("선택한 시나리오 준비 체크리스트", self.html)
+        self.assertIn("Preparation checklist for the selected scenario", self.html)
+        self.assertIn("所选情形准备清单", self.html)
+        self.assertIn("所選情形準備清單", self.html)
+
+    def test_copy_checklist_labels_present_in_all_target_languages(self):
+        self.assertIn("체크리스트 복사", self.html)
+        self.assertIn("Copy checklist", self.html)
+        self.assertIn("复制清单", self.html)
+        self.assertIn("複製清單", self.html)
+
+    def test_print_view_labels_present_in_all_target_languages(self):
+        self.assertIn("인쇄용 보기", self.html)
+        self.assertIn("Print view", self.html)
+        self.assertIn("打印视图", self.html)
+        self.assertIn("列印檢視", self.html)
+
+    def test_reset_check_labels_present_in_all_target_languages(self):
+        self.assertIn("체크 초기화", self.html)
+        self.assertIn("Reset checks", self.html)
+        self.assertIn("重置勾选", self.html)
+        self.assertIn("重置勾選", self.html)
+
+    def test_confirmation_guidance_copy_present_in_all_target_languages(self):
+        self.assertIn(
+            "제출 전 HiKorea, 1345 또는 관할 출입국·외국인관서에서 실제 적용 여부와 추가서류를 확인하세요.",
+            self.html,
+        )
+        self.assertIn(
+            "Before submitting, confirm applicability and any additional documents with HiKorea, 1345, or the competent immigration office.",
+            self.html,
+        )
+        self.assertIn(
+            "提交前，请向 HiKorea、1345 或管辖出入境外国人机构确认实际适用与追加材料。",
+            self.html,
+        )
+        self.assertIn(
+            "提交前，請向 HiKorea、1345 或管轄出入境外國人機構確認實際適用與追加材料。",
+            self.html,
+        )
+
+    def test_safety_note_present_and_does_not_imply_approval(self):
+        self.assertIn(
+            "이 체크리스트는 개인 준비용 도구이며, 항목을 체크해도 접수나 허가가 보장되지 않습니다.",
+            self.html,
+        )
+        self.assertIn(
+            "This checklist is a personal preparation aid only. Checking items does not guarantee acceptance or approval.",
+            self.html,
+        )
+
+    def test_secondary_ai_checklist_prompt_present_in_all_target_languages(self):
+        # Button labels.
+        self.assertIn("체크리스트 기준으로 누락 가능성 물어보기", self.html)
+        self.assertIn("Ask AI what might be missing from this checklist", self.html)
+        self.assertIn("询问 AI 这份清单可能缺少什么", self.html)
+        self.assertIn("詢問 AI 這份清單可能缺少什麼", self.html)
+        # Prompt templates (cautious; must not imply final sufficiency).
+        self.assertIn("scenarioChecklistMissingPrompt", self.html)
+        self.assertIn(
+            "For {visaCode}, based on the selected scenario ({label}), what documents might be missing from this preparation checklist",
+            self.html,
+        )
+        self.assertNotIn(
+            "guarantee",
+            "For {visaCode}, based on the selected scenario ({label}), what documents might be missing from this preparation checklist and what common mistakes should I watch for? Do not assert final sufficiency or approval; point out what still needs official confirmation, and keep Korean official document names where relevant.",
+        )
+        # Wired through the existing handoff with the checklist prompt key.
+        self.assertIn(
+            "'ask-checklist-missing': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel, 'scenarioChecklistMissingPrompt')",
+            self.html,
+        )
+
+    def test_localstorage_is_scoped_to_visa_procedure_variant_group_item(self):
+        self.assertIn("const SCENARIO_CHECKLIST_STORAGE_PREFIX = 'paradiso:scenario-checklist:'", self.html)
+        # Scope prefix is built from visa/status code, procedure key and variant id.
+        self.assertIn(
+            "[visaCode, procedureKey, variantId].map(part => encodeURIComponent(String(part || ''))).join(':')",
+            self.html,
+        )
+        # Item key is further scoped by document group and a stable item hash.
+        self.assertIn(
+            "scenarioChecklistScopePrefix(visaCode, procedureKey, variantId) + group + ':' + hashScenarioChecklistItem(itemText)",
+            self.html,
+        )
+        # Each rendered checkbox carries its own scoped storage key.
+        self.assertIn('data-scenario-checklist-item data-storage-key="${escapeHtml(storageKey)}"', self.html)
+        # State is persisted locally on change, not posted anywhere.
+        self.assertIn("function persistScenarioChecklistItem(checkbox)", self.html)
+        self.assertIn("if (checklistItem) persistScenarioChecklistItem(checklistItem);", self.html)
+
+    def test_checklist_does_not_send_checkbox_state_to_api_ask(self):
+        # Isolate the /api/ask request body and assert it carries no checklist
+        # / checkbox state of any kind.
+        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        end = self.html.index("signal: currentAiController.signal", start)
+        body = self.html[start:end]
+        for forbidden in (
+            "checklist",
+            "checkbox",
+            "data-storage-key",
+            "scenarioChecklist",
+            "checkedItems",
+            "checkedState",
+        ):
+            self.assertNotIn(forbidden, body, f"/api/ask body unexpectedly references {forbidden!r}")
+
+    def test_selected_ai_payload_still_includes_required_fields(self):
+        start = self.html.index("await fetch(`${API_BASE}/api/ask`")
+        end = self.html.index("signal: currentAiController.signal", start)
+        body = self.html[start:end]
+        self.assertIn("lang: currentLanguage", body)
+        self.assertIn("visa_data:", body)
+        self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", body)
+        self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", body)
+
+    def test_source_panel_scenario_wording_unchanged(self):
+        self.assertIn("시나리오별 서류 근거", self.html)
+        self.assertIn("선택한 시나리오 기준", self.html)
+        self.assertIn("Scenario-specific document source", self.html)
+        self.assertIn("Based on selected scenario", self.html)
+
+    def test_official_korean_document_name_note_remains_in_non_korean_modes(self):
+        self.assertIn("officialDocumentNamesKoNote", self.html)
+        self.assertIn("Official document names are shown in Korean to match the immigration manual.", self.html)
+        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", self.html)
+        self.assertIn("為與出入境手冊一致，正式文件名稱以韓文顯示。", self.html)
+        self.assertIn(
+            "currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class=\"official-korean-terms-note\">",
+            self.html,
+        )
+
+    def test_checklist_renders_grouped_items_with_accessible_labels(self):
+        self.assertIn("function renderScenarioChecklist(visaCode, procedureKey, variant)", self.html)
+        self.assertIn("renderScenarioChecklist(visaCode, procedureKey, variant)", self.html)
+        # Grouped by the four localized document groups via existing labels.
+        self.assertIn("{ key: 'commonDocs', labelIndex: 0", self.html)
+        self.assertIn("{ key: 'conditionalDocs', labelIndex: 3", self.html)
+        self.assertIn("txAt('docGroupLabels', group.labelIndex, group.fallback)", self.html)
+        # Each checkbox sits inside a <label> (usable label) and is keyboard focusable.
+        self.assertIn('<label class="scenario-checklist-label">', self.html)
+        self.assertIn('class="scenario-checklist-checkbox"', self.html)
+        # Checked state is reflected without relying on colour alone.
+        self.assertIn(".scenario-checklist-itemtext { color: var(--t3); text-decoration: line-through; }", self.html)
+
+    def test_clipboard_and_print_resilience_paths_present(self):
+        # Clipboard fallback + localized failure message.
+        self.assertIn("async function scenarioChecklistCopyText(text)", self.html)
+        self.assertIn("scenarioChecklistCopyFailed", self.html)
+        self.assertIn("document.execCommand && document.execCommand('copy')", self.html)
+        # Print uses a print-friendly host + window.print(), no heavy dependency.
+        self.assertIn("function printScenarioChecklist(button)", self.html)
+        self.assertIn("body.printing-scenario-checklist", self.html)
+        self.assertIn("window.print()", self.html)
+
+    def test_cloned_drawer_checkboxes_rehydrate_from_storage(self):
+        # openVisaDrawer() clones the rendered result card, so cloned checklist
+        # checkboxes carry render-time markup that can be stale vs localStorage.
+        # They must be re-hydrated from storage (the source of truth) on open,
+        # and co-mounted checkboxes (source card + drawer clone) kept in sync.
+        self.assertIn("function hydrateScenarioChecklistState(container)", self.html)
+        self.assertIn("hydrateScenarioChecklistState(clone);", self.html)
+        self.assertIn("function syncScenarioChecklistCheckboxes(key, checked, origin)", self.html)
+        self.assertIn("syncScenarioChecklistCheckboxes(key, checkbox.checked, checkbox);", self.html)
+        # Reset also propagates to any co-mounted copy of the same item.
+        self.assertIn("syncScenarioChecklistCheckboxes(key, false, cb);", self.html)
+
+
 class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
     def test_d9_status_change_helper_includes_only_d9_status_change_variants(self):
         mod = _module()
