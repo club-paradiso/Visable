@@ -195,6 +195,19 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("procedureKey: 'workplaceChange'", h2)
         self.assertIn("variantId: 'h-2-employment-start-workplace-change-report'", h2)
 
+    def test_broad_routes_do_not_preselect_a_single_subtype(self):
+        cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
+        for route_id in ("'f6-4'", "'g1-4'", "'g1-5'"):
+            start = cfg.index(route_id)
+            entry = cfg[start:cfg.index("}", start)]
+            self.assertNotIn("variantId", entry, "%s should not preselect a subtype" % route_id)
+
+    def test_broad_route_resets_scenario_selector_to_show_all(self):
+        handler = self._slice("function selectF4Route", "function resetF4Route")
+        self.assertIn("choices.find(c => c.dataset.variantId === variantId)", handler)
+        self.assertIn("choices.find(c => !(c.dataset.variantId || ''))", handler)
+        self.assertIn("selectProcedureVariant(target)", handler)
+
     # --- Part G: integration with checklist / AI --------------------------
     def test_selected_scenario_checklist_behavior_intact(self):
         self.assertIn("SCENARIO_CHECKLIST_STORAGE_PREFIX = 'paradiso:scenario-checklist:'", self.html)

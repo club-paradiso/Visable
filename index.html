@@ -13160,7 +13160,7 @@ const ROUTE_WIZARD_CONFIG = {
             { id: 'f6-1', labelKey: 'f6Route1Label', descKey: 'f6Route1Desc', procedureKey: 'extension', variantId: 'f-6-1-marriage-maintenance-extension' },
             { id: 'f6-2', labelKey: 'f6Route2Label', descKey: 'f6Route2Desc', procedureKey: 'statusChange', variantId: 'f-6-2-child-rearing-status-change' },
             { id: 'f6-3', labelKey: 'f6Route3Label', descKey: 'f6Route3Desc', procedureKey: 'statusChange', variantId: 'f-6-3-marriage-terminated-status-change' },
-            { id: 'f6-4', labelKey: 'f6Route4Label', descKey: 'f6Route4Desc', procedureKey: 'extension', variantId: 'f-6-1-spouse-missing-extension' },
+            { id: 'f6-4', labelKey: 'f6Route4Label', descKey: 'f6Route4Desc', procedureKey: 'extension' },
             { id: 'f6-5', labelKey: 'f6Route5Label', descKey: 'f6Route5Desc', procedureKey: 'extension' }
         ]
     },
@@ -13170,8 +13170,8 @@ const ROUTE_WIZARD_CONFIG = {
             { id: 'g1-1', labelKey: 'g1Route1Label', descKey: 'g1Route1Desc', procedureKey: 'statusChange', variantId: 'g-1-5-6-refugee-humanitarian-status-change' },
             { id: 'g1-2', labelKey: 'g1Route2Label', descKey: 'g1Route2Desc', procedureKey: 'statusChange', variantId: 'g-1-5-6-refugee-humanitarian-status-change' },
             { id: 'g1-3', labelKey: 'g1Route3Label', descKey: 'g1Route3Desc', procedureKey: 'statusChange', variantId: 'g-1-3-litigation-status-change' },
-            { id: 'g1-4', labelKey: 'g1Route4Label', descKey: 'g1Route4Desc', procedureKey: 'statusChange', variantId: 'g-1-10-medical-patient-status-change' },
-            { id: 'g1-5', labelKey: 'g1Route5Label', descKey: 'g1Route5Desc', procedureKey: 'statusChange', variantId: 'g-1-1-industrial-accident-status-change' },
+            { id: 'g1-4', labelKey: 'g1Route4Label', descKey: 'g1Route4Desc', procedureKey: 'statusChange' },
+            { id: 'g1-5', labelKey: 'g1Route5Label', descKey: 'g1Route5Desc', procedureKey: 'statusChange' },
             { id: 'g1-6', labelKey: 'g1Route6Label', descKey: 'g1Route6Desc', procedureKey: 'extension' }
         ]
     },
@@ -13254,13 +13254,17 @@ function selectF4Route(btn) {
         });
         card.querySelectorAll('.procedure-panel').forEach(p => p.classList.toggle('active', p.dataset.procedurePanel === procKey));
         // If the route maps to a specific source-backed scenario variant, bring
-        // it forward in the activated panel's scenario selector. This reuses the
-        // existing variant-selection model and never invents documents.
-        if (variantId) {
-            const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
-            const choice = panel ? Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]')).find(c => c.dataset.variantId === variantId) : null;
-            if (choice) selectProcedureVariant(choice);
-        }
+        // it forward in the activated panel's scenario selector. Broad routes
+        // deliberately reset to the empty / "Show all" choice so a previously
+        // selected subtype cannot leak stale checklist or AI context into the
+        // newly selected route. This reuses the existing variant-selection
+        // model and never invents documents.
+        const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
+        const choices = panel ? Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]')) : [];
+        const target = variantId
+            ? choices.find(c => c.dataset.variantId === variantId)
+            : choices.find(c => !(c.dataset.variantId || ''));
+        if (target) selectProcedureVariant(target);
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
         // No source-backed procedure data for this route: explain it and send
