@@ -12,7 +12,8 @@ lookup flows.
 | GET    | `/api/visas`            | Returns the visa catalog used by the frontend visa explorer.  |
 | POST   | `/api/ask`              | Chatbot endpoint. Routes to OpenRouter or Groq if configured. |
 | POST   | `/api/jobcodekeywords`  | Extracts keywords from a job-code search query.               |
-| POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification. |
+| POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification (now also embeds a `preflight` block). |
+| GET    | `/api/debug/law-grounding/preflight` | Operator-safe readiness preflight: resolved mode, key/endpoint configured (booleans), sample trigger + query, warning markers. No secrets, no external call. |
 
 > The Paradiso backend is **API-only**. The human-facing frontend
 > (`index.html`, `ai.html`) is deployed separately (currently GitHub
@@ -358,9 +359,32 @@ Two ways to point the frontend at a different backend:
 - [ ] Restrict provider keys to least-privilege scopes where possible.
 - [ ] Rotate keys regularly; store them only in Railway, not in git.
 - [ ] Add request logging / observability before exposing to real users.
+### Law-grounding readiness preflight
+
+`GET /api/debug/law-grounding/preflight` is an operator-safe readiness probe.
+It performs **no external call** and returns **no secrets** — only the resolved
+`mode`, `external_calls` (`disabled`/`audit_only`/`enabled`), whether the API key
+and endpoint are configured (booleans), `ready_for_external_calls`, whether a
+sample question would trigger grounding, the statutory query that would be
+issued, and warning markers (`LAW_GROUNDING_DISABLED`, `LAW_GROUNDING_AUDIT_ONLY`,
+`LAW_API_KEY_MISSING`, `LAW_API_ENDPOINT_MISSING`). Useful even with grounding
+disabled (the default). Pass `?question=...` to probe a specific question.
+
+```bash
+curl -s "http://localhost:8000/api/debug/law-grounding/preflight" | jq
+```
+
+To enable live grounding in a controlled environment, set
+`LAW_GROUNDING_MODE=audit` (or `enabled`), `LAW_API_KEY`, `LAW_API_BASE_URL`, and
+`LAW_API_SEARCH_PATH` (optionally `LAW_API_ARTICLE_PATH`). Keep
+`LAW_GROUNDING_MODE=disabled` by default; the preflight will report exactly which
+of these are still missing without exposing any value.
+
 ### Debug-only law grounding endpoint
 
-`POST /api/debug/law-grounding` is for development inspection only. It is not a normal user-facing legal-advice endpoint and is not wired into `/api/ask`.
+`POST /api/debug/law-grounding` is for development inspection only. It is not a
+normal user-facing legal-advice endpoint and is not wired into `/api/ask`. Its
+response now also includes a non-secret `preflight` block.
 
 Example request:
 

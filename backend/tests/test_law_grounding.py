@@ -123,5 +123,98 @@ class LawGroundingActivityScopeIntentTests(unittest.TestCase):
         self.assertFalse(should_attempt_law_grounding("오늘 점심 뭐 먹지?")["should_attempt"])
 
 
+class H1ActivityScopeRegressionTests(unittest.TestCase):
+    """The four required H-1 / activity-scope regression questions."""
+
+    CASES = [
+        "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?",
+        "H-1으로 한국에서 수업을 들을 수 있나요?",
+        "Can I take a university class in Korea on H-1?",
+        "Can I work or study with this status?",
+    ]
+
+    def setUp(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_API_KEY", None)
+
+    def test_all_cases_trigger_grounding_intent(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        for q in self.CASES:
+            self.assertTrue(should_attempt_law_grounding(q)["should_attempt"], q)
+
+    def test_study_class_term_detected(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        # "수업" (class/lesson) is now a study-intent term.
+        reasons = should_attempt_law_grounding("H-1으로 한국에서 수업을 들을 수 있나요?")["reasons"]
+        self.assertIn("유학/수강/계절학기", reasons)
+
+    def test_disabled_mode_reports_intent_and_query_without_external_call(self):
+        from services.law_grounding import build_law_grounding_context
+
+        ctx = build_law_grounding_context(self.CASES[0])
+        self.assertFalse(ctx["attempted"], "disabled mode must not call external API")
+        self.assertIn("LAW_GROUNDING_DISABLED", ctx["grounding_warnings"])
+        self.assertTrue(ctx["intent_reasons"])
+        self.assertIn("출입국관리법", ctx["law_search_query"])
+
+
+class LawGroundingPreflightTests(unittest.TestCase):
+    def setUp(self):
+        for k in ("LAW_GROUNDING_MODE", "LAW_API_KEY", "LAW_API_BASE_URL", "LAW_API_SEARCH_PATH"):
+            os.environ.pop(k, None)
+
+    def tearDown(self):
+        for k in ("LAW_GROUNDING_MODE", "LAW_API_KEY", "LAW_API_BASE_URL", "LAW_API_SEARCH_PATH"):
+            os.environ.pop(k, None)
+
+    def test_disabled_preflight_reports_safe_defaults(self):
+        from services.law_grounding import law_grounding_preflight
+
+        pf = law_grounding_preflight()
+        self.assertEqual(pf["mode"], "disabled")
+        self.assertEqual(pf["external_calls"], "disabled")
+        self.assertFalse(pf["law_api_key_configured"])
+        self.assertFalse(pf["law_api_endpoint_configured"])
+        self.assertFalse(pf["ready_for_external_calls"])
+        self.assertTrue(pf["sample_would_trigger"])  # default sample is the H-1 case
+        self.assertIn("출입국관리법", pf["sample_law_search_query"])
+        self.assertIn("LAW_GROUNDING_DISABLED", pf["warnings"])
+
+    def test_audit_missing_key_and_endpoint_warnings(self):
+        from services.law_grounding import law_grounding_preflight
+
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        pf = law_grounding_preflight("출입국관리법 제10조 법적 근거")
+        self.assertEqual(pf["external_calls"], "audit_only")
+        self.assertIn("LAW_GROUNDING_AUDIT_ONLY", pf["warnings"])
+        self.assertIn("LAW_API_KEY_MISSING", pf["warnings"])
+        self.assertIn("LAW_API_ENDPOINT_MISSING", pf["warnings"])
+        self.assertFalse(pf["ready_for_external_calls"])
+
+    def test_preflight_never_returns_secret_value(self):
+        from services.law_grounding import law_grounding_preflight
+
+        os.environ["LAW_GROUNDING_MODE"] = "enabled"
+        os.environ["LAW_API_KEY"] = "super-secret-law-key"
+        os.environ["LAW_API_BASE_URL"] = "https://example.test"
+        os.environ["LAW_API_SEARCH_PATH"] = "/search"
+        pf = law_grounding_preflight()
+        # The key is reported as a boolean only; its value never appears.
+        self.assertTrue(pf["law_api_key_configured"])
+        self.assertTrue(pf["law_api_endpoint_configured"])
+        self.assertTrue(pf["ready_for_external_calls"])
+        self.assertNotIn("super-secret-law-key", repr(pf))
+        self.assertNotIn("example.test", repr(pf))
+
+    def test_custom_sample_question_used(self):
+        from services.law_grounding import law_grounding_preflight
+
+        pf = law_grounding_preflight("오늘 점심 뭐 먹지?")
+        self.assertEqual(pf["sample_question"], "오늘 점심 뭐 먹지?")
+        self.assertFalse(pf["sample_would_trigger"])
+
+
 if __name__ == "__main__":
     unittest.main()
