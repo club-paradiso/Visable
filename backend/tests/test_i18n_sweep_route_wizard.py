@@ -108,7 +108,7 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("'Foreigner registration'", self.html)
 
     # --- Part C/D/E: route wizard config ----------------------------------
-    def test_route_wizard_config_includes_f4_f6_g1_f2_d10_h2(self):
+    def test_route_wizard_config_includes_existing_and_remaining_p1_statuses(self):
         cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
         self.assertIn("'F-4'", cfg)
         self.assertIn("'F-6'", cfg)
@@ -116,13 +116,16 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("'F-2'", cfg)
         self.assertIn("'D-10'", cfg)
         self.assertIn("'H-2'", cfg)
-        for code in ("F-4", "F-6", "G-1", "F-2", "D-10", "H-2"):
+        self.assertIn("'E-7'", cfg)
+        self.assertIn("'D-4'", cfg)
+        self.assertIn("'F-1'", cfg)
+        for code in ("F-4", "F-6", "G-1", "F-2", "D-10", "H-2", "E-7", "D-4", "F-1"):
             self.assertRegex(cfg, r"(?m)^    '%s':" % code)
 
     def test_route_wizard_not_shown_for_unconfigured_status(self):
         cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
         # Statuses without an explicit route configuration remain excluded.
-        for unconfigured in ("'E-7'", "'D-2'", "'H-1'", "'F-3'"):
+        for unconfigured in ("'D-2'", "'H-1'", "'F-3'"):
             self.assertNotIn(unconfigured + ":", cfg.replace(" ", ""))
         # Render returns nothing when there is no config for the record.
         render = self._slice("function renderF4RouteChooser", "function selectF4Route")
