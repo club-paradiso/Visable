@@ -70,8 +70,9 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         chooser = self._slice("function selectF4Route", "function resetF4Route")
         self.assertIn("f4-route-selected", chooser)
         self.assertIn("tx('f4RouteSelectedPrefix')", chooser)
-        # The route label is echoed back so the choice is obvious in text.
-        self.assertIn("tx('f4Route' + routeIdx + 'Label')", chooser)
+        # The route label is echoed back (now via the generalized data-* keys) so
+        # the choice is obvious in text.
+        self.assertIn("labelKey ? tx(labelKey)", chooser)
 
     def test_f4_show_all_reset_action_exists(self):
         self.assertIn("data-action=\"show-all-f4-routes\"", self.html)
@@ -97,9 +98,10 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertNotIn("automatic approval", self.html.lower() if False else self.html)
 
     def test_f4_route_to_procedure_mapping_present(self):
-        config = self._slice("const F4_ROUTE_CONFIG", "function isF4RouteWizardTarget")
+        config = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
+        f4 = config.split("'F-4'", 1)[1].split("'F-6'", 1)[0]
         for proc_key in ("visaIssuance", "statusChange", "registration", "extension"):
-            self.assertIn("procedureKey: '%s'" % proc_key, config)
+            self.assertIn("procedureKey: '%s'" % proc_key, f4)
 
     # --- Source / law-grounding panel readability (Part D) -----------------
     def test_source_panel_has_plain_language_lead(self):
