@@ -28,6 +28,18 @@ _INTENT_PATTERNS = [
     ("외국인등록", re.compile(r"외국인\s*등록|외국인등록증|등록증|alien registration|foreigner registration|\bARC\b", re.IGNORECASE)),
     ("체류위험", re.compile(r"체류기간|체류자격|불법체류|초과체류|체류\s*만료|취소|overstay|stay period|status", re.IGNORECASE)),
     ("G-1", re.compile(r"\bG\s*-?\s*1(?:\s*-?\s*5)?\b|G-1-5|난민|인도적\s*체류|humanitarian stay|refugee", re.IGNORECASE)),
+
+    # Activity-scope / status-permission wording. A status holder asking
+    # whether a specific activity (a course, part-time work, a class) is
+    # allowed is really asking about 활동범위 / 체류자격외활동 — squarely a
+    # law/manual question — so attempt official grounding before answering.
+    ("활동범위/자격외활동", re.compile(r"활동\s*범위|체류자격\s*외\s*활동|자격\s*외\s*활동|체류자격외활동|자격외활동|activit(?:y|ies)\s+outside|out-?of-?status\s+activit|activity\s+scope|scope\s+of\s+(?:activity|stay|status)", re.IGNORECASE)),
+
+    # Study / course-taking wording (유학, 수강, 계절학기, study, course, ...).
+    ("유학/수강/계절학기", re.compile(r"계절\s*학기|학기\s*수강|수강|청강|유학|휴학|복학|university\s+(?:class|course)|\bcourse(?:s)?\b|seasonal\s+(?:semester|term|session)|summer\s+session|winter\s+session|enroll(?:ment|ed)?|\bstud(?:y|ies|ying)\b", re.IGNORECASE)),
+
+    # Tourism-working-holiday (관광취업 / 워킹홀리데이 / H-1) context.
+    ("관광취업/워킹홀리데이/H-1", re.compile(r"관광\s*취업|워킹\s*홀리데이|워홀|working\s+holiday|\bH\s*-?\s*1\b", re.IGNORECASE)),
 ]
 
 _LEGAL_BASIS_REASON_LABELS = {
@@ -49,6 +61,15 @@ _STAY_RISK_REASON_LABELS = {
     "외국인등록",
     "체류위험",
     "G-1",
+}
+
+# Activity-scope / study / tourism-working-holiday intent. These ask whether
+# a status permits a specific activity (a course, a class, part-time work),
+# i.e. 활동범위 / 체류자격외활동 questions.
+_ACTIVITY_SCOPE_REASON_LABELS = {
+    "활동범위/자격외활동",
+    "유학/수강/계절학기",
+    "관광취업/워킹홀리데이/H-1",
 }
 
 
@@ -93,6 +114,15 @@ def build_law_search_query(question: str, reasons: Sequence[str] | None = None) 
     if "G-1" in reason_set:
         queries.append("출입국관리법 시행령 G-1 기타 난민 인도적 체류")
         queries.append("출입국관리법 재입국허가 체류자격 G-1")
+
+    if "활동범위/자격외활동" in reason_set:
+        queries.append("출입국관리법 체류자격외활동 활동범위 체류자격")
+
+    if "유학/수강/계절학기" in reason_set:
+        queries.append("출입국관리법 시행령 유학 수강 계절학기 체류자격 활동범위")
+
+    if "관광취업/워킹홀리데이/H-1" in reason_set:
+        queries.append("출입국관리법 시행령 관광취업 H-1 체류자격 활동범위 체류자격외활동")
 
     if reason_set & _LEGAL_BASIS_REASON_LABELS:
         queries.append(text)

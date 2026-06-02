@@ -1945,6 +1945,144 @@ class AskLawGroundingPhase4Tests(unittest.TestCase):
         self.assertNotIn("super-secret-key", resp.text)
 
 
+class ModelConfigResolutionTests(unittest.TestCase):
+    """Provider/model resolution + Gemma free pin (Part H / H-0)."""
+
+    def _pb(self):
+        import paradiso_backend  # noqa: WPS433
+        return paradiso_backend
+
+    def test_code_default_openrouter_model_is_gemma_free(self):
+        pb = self._pb()
+        self.assertEqual(pb._DEFAULT_OPENROUTER_MODEL, "google/gemma-4-31b-it:free")
+
+    def test_resolve_prefers_openrouter_with_its_model(self):
+        pb = self._pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
+                patch.object(pb, "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"):
+            cfg = pb._resolve_llm_config()
+            self.assertEqual(cfg["provider"], "openrouter")
+            self.assertEqual(cfg["model"], "google/gemma-4-31b-it:free")
+            self.assertTrue(cfg["configured"])
+
+    def test_env_override_model_is_honored(self):
+        pb = self._pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
+                patch.object(pb, "OPENROUTER_MODEL", "some/other-model:free"):
+            cfg = pb._resolve_llm_config()
+            self.assertEqual(cfg["model"], "some/other-model:free")
+
+    def test_no_api_key_returns_unconfigured_provider_none(self):
+        pb = self._pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", None), \
+                patch.object(pb, "GROQ_API_KEY", None):
+            cfg = pb._resolve_llm_config()
+            self.assertFalse(cfg["configured"])
+            self.assertEqual(cfg["provider"], "none")
+            self.assertIsNone(cfg["model"])
+
+    def test_groq_fallback_gate_blocks_when_disabled(self):
+        pb = self._pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", None), \
+                patch.object(pb, "GROQ_API_KEY", "groq-key"), \
+                patch.object(pb, "ALLOW_GROQ_FALLBACK", False):
+            cfg = pb._resolve_llm_config()
+            self.assertEqual(cfg["provider"], "none", "Groq must not be used when fallback is disabled")
+
+    def test_groq_fallback_used_when_allowed_and_openrouter_absent(self):
+        pb = self._pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", None), \
+                patch.object(pb, "GROQ_API_KEY", "groq-key"), \
+                patch.object(pb, "ALLOW_GROQ_FALLBACK", True):
+            cfg = pb._resolve_llm_config()
+            self.assertEqual(cfg["provider"], "groq")
+            self.assertEqual(cfg["model"], pb.GROQ_MODEL)
+
+    def test_health_reports_llm_provider_model_without_secret(self):
+        os.environ.pop("OPENROUTER_API_KEY", None)
+        os.environ.pop("GROQ_API_KEY", None)
+        client, _ = _client()
+        resp = client.get("/health")
+        self.assertEqual(resp.status_code, 200)
+        data = resp.json()
+        self.assertIn("llm", data)
+        self.assertIn("provider", data["llm"])
+        self.assertIn("model", data["llm"])
+        self.assertIn("law_grounding_mode", data)
+        # No provider key is configured here, so provider must be "none".
+        self.assertEqual(data["llm"]["provider"], "none")
+
+    def test_health_does_not_leak_api_key(self):
+        os.environ["OPENROUTER_API_KEY"] = "or-secret-XYZ"
+        try:
+            client, _ = _client()  # _client() pops provider keys; re-set after
+            os.environ["OPENROUTER_API_KEY"] = "or-secret-XYZ"
+            import paradiso_backend
+            with patch.object(paradiso_backend, "OPENROUTER_API_KEY", "or-secret-XYZ"):
+                resp = client.get("/health")
+                self.assertNotIn("or-secret-XYZ", resp.text)
+        finally:
+            os.environ.pop("OPENROUTER_API_KEY", None)
+
+
+class LawGroundingMetadataStatusTests(unittest.TestCase):
+    """law_grounding_status taxonomy + H-1 seasonal-course regression (Part F/G)."""
+
+    H1_COURSE_Q = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
+
+    def setUp(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_API_KEY", None)
+
+    def tearDown(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_API_KEY", None)
+
+    def _detail(self, question):
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": question})
+        self.assertEqual(resp.status_code, 503, resp.text)
+        return resp.json()["detail"]
+
+    def test_unrelated_question_status_not_attempted(self):
+        detail = self._detail("커피 한 잔 추천해줘")
+        self.assertEqual(detail.get("law_grounding_status"), "not_attempted")
+        self.assertEqual(detail.get("law_grounding_intent_reasons"), [])
+        self.assertFalse(detail.get("law_grounding_attempted"))
+
+    def test_h1_seasonal_course_disabled_mode_status_disabled_with_intent(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        detail = self._detail(self.H1_COURSE_Q)
+        # Feature off, but intent is detected and exposed honestly.
+        self.assertEqual(detail.get("law_grounding_status"), "disabled")
+        self.assertFalse(detail.get("law_grounding_attempted"))
+        reasons = detail.get("law_grounding_intent_reasons") or []
+        self.assertIn("유학/수강/계절학기", reasons)
+        self.assertIn("관광취업/워킹홀리데이/H-1", reasons)
+        self.assertIn("출입국관리법", detail.get("law_search_query", ""))
+
+    def test_h1_seasonal_course_audit_mode_missing_key_status_unavailable(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"  # no LAW_API_KEY set
+        detail = self._detail(self.H1_COURSE_Q)
+        self.assertTrue(detail.get("law_grounding_attempted"))
+        self.assertEqual(detail.get("law_grounding_status"), "unavailable")
+        self.assertFalse(detail.get("law_grounding_used"))
+
+    def test_generic_activity_scope_question_attempts(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        detail = self._detail("현재 체류자격으로 체류자격외활동(아르바이트)을 해도 되나요?")
+        self.assertEqual(detail.get("law_grounding_status"), "disabled")
+        self.assertIn("활동범위/자격외활동", detail.get("law_grounding_intent_reasons") or [])
+
+    def test_h1_question_metadata_never_leaks_law_api_key(self):
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        os.environ["LAW_API_KEY"] = "law-secret-123"
+        client, _ = _client()
+        resp = client.post("/api/ask", json={"question": self.H1_COURSE_Q})
+        self.assertEqual(resp.status_code, 503)
+        self.assertNotIn("law-secret-123", resp.text)
+
+
 class VisaDataContextBlockHelperTests(unittest.TestCase):
     """Unit tests for _build_visa_data_context_block — the small helper
     that surfaces the user's local visa catalog entry to the LLM prompt

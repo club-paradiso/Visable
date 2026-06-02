@@ -66,5 +66,62 @@ class LawGroundingIntentTests(unittest.TestCase):
         self.assertEqual(intent["reasons"], [])
 
 
+class LawGroundingActivityScopeIntentTests(unittest.TestCase):
+    """Activity-scope / study / H-1 intent and query-anchor coverage."""
+
+    def setUp(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+        os.environ.pop("LAW_API_KEY", None)
+
+    def test_h1_seasonal_course_question_attempts_with_study_and_h1_context(self):
+        from services.law_grounding import build_law_grounding_context, should_attempt_law_grounding
+
+        question = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
+        intent = should_attempt_law_grounding(question)
+
+        self.assertTrue(intent["should_attempt"])
+        self.assertIn("유학/수강/계절학기", intent["reasons"])
+        self.assertIn("관광취업/워킹홀리데이/H-1", intent["reasons"])
+
+        context = build_law_grounding_context(question)
+        # Disabled by default: no external call, but the anchored query is built.
+        self.assertFalse(context["attempted"], "disabled mode must not call external law API")
+        self.assertIn("LAW_GROUNDING_DISABLED", context["grounding_warnings"])
+        for anchor in ("출입국관리법", "활동범위", "체류자격외활동", "관광취업", "H-1", "유학", "계절학기"):
+            self.assertIn(anchor, context["law_search_query"], anchor)
+
+    def test_generic_activity_scope_question_attempts_law_grounding(self):
+        from services.law_grounding import build_law_search_query, should_attempt_law_grounding
+
+        question = "지금 체류자격으로 체류자격외활동(아르바이트)이 가능한가요?"
+        intent = should_attempt_law_grounding(question)
+        self.assertTrue(intent["should_attempt"])
+        self.assertIn("활동범위/자격외활동", intent["reasons"])
+        query = build_law_search_query(question, intent["reasons"])
+        self.assertIn("체류자격외활동", query)
+        self.assertIn("활동범위", query)
+
+    def test_english_study_question_attempts_law_grounding(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        intent = should_attempt_law_grounding("Can I take a university course / study with this status?")
+        self.assertTrue(intent["should_attempt"])
+        self.assertIn("유학/수강/계절학기", intent["reasons"])
+
+    def test_gwanggwang_chwieop_working_holiday_terms_trigger(self):
+        from services.law_grounding import should_attempt_law_grounding
+
+        for q in ("관광취업 비자 활동 범위", "working holiday visa scope of activity", "워킹홀리데이 아르바이트"):
+            self.assertTrue(should_attempt_law_grounding(q)["should_attempt"], q)
+
+    def test_existing_generic_documents_question_still_does_not_trigger(self):
+        # Regression guard: adding study/activity patterns must not make a
+        # plain "what documents" question trigger law grounding.
+        from services.law_grounding import should_attempt_law_grounding
+
+        self.assertFalse(should_attempt_law_grounding("D-2 연장 서류가 뭐야?")["should_attempt"])
+        self.assertFalse(should_attempt_law_grounding("오늘 점심 뭐 먹지?")["should_attempt"])
+
+
 if __name__ == "__main__":
     unittest.main()
