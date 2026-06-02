@@ -80,7 +80,6 @@ class ExpandedRouteWizardTests(unittest.TestCase):
         for variant_id in (
             "f-2-7-point-based-talent-status-change",
             "f-2-8-tourism-investment-status-change",
-            "f-2-permanent-resident-family-status-change",
             "d-10-1-points-status-change",
             "d-10-2-tech-startup-status-change",
             "d-10-3-high-tech-intern-status-change",
@@ -96,6 +95,17 @@ class ExpandedRouteWizardTests(unittest.TestCase):
             "f-1-16-refugee-family-status-change",
         ):
             self.assertIn("variantId: '%s'" % variant_id, cfg)
+
+    def test_broad_combined_routes_do_not_preselect_a_subtype(self):
+        # Routes whose label spans multiple sub-cases must NOT preselect a single
+        # variant, or the user could be shown the wrong checklist/AI context.
+        # They highlight the procedure tab and let the user pick the right
+        # scenario variant. (Codex review #250.)
+        cfg = self._config()
+        for route_id in ("'f6-4'", "'g1-4'", "'g1-5'", "'f2-3'"):
+            start = cfg.index(route_id)
+            entry = cfg[start:cfg.index("}", start)]
+            self.assertNotIn("variantId", entry, "%s should not preselect a variant" % route_id)
 
     # --- cautious copy: no approval/eligibility implication ----------------
     def test_h2_to_f4_does_not_imply_automatic_approval(self):
