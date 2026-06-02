@@ -11363,15 +11363,9 @@ function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVaria
     document.getElementById('aiModalTitleText').innerHTML = `${escapeHtml(visa.code)} (${escapeHtml(visa.name)})`;
 
     const descEl = document.querySelector('#aiModalOverlay .modal-body p');
-    if (['faq', 'scn', 'nhis'].includes(visa.cat)) {
-        descEl.innerHTML = currentLanguage === 'en'
-            ? `Describe the situation you are facing, including facts, stay status, and nationality. Paradiso AI will check the issue against the 2026 Immigration Act and manuals without adding unsupported interpretation.`
-            : `현재 직면한 상황(사건 경위, 체류 상태, 국적 등)을 상세히 적어주시면, Paradiso AI가 2026년 출입국관리법 및 매뉴얼 원문에 근거하여 <strong>자의적 해석 없이 철저한 법적 판단 및 구제 절차</strong>를 검증해 드립니다.`;
-    } else {
-        descEl.innerHTML = currentLanguage === 'en'
-            ? `Enter nationality, current residence status, role, residence area, and other details. Paradiso AI analyzes against the April 2026 Ministry of Justice immigration manuals.<br><span style="color:var(--color-warning); font-weight:700;">AI answers are for reference only. Always confirm final decisions with 1345 or the competent immigration office.</span>`
-            : `현재 국적, 보유 체류자격, 직무, 거주지 등 상황을 상세히 입력하시면, Paradiso AI가 <strong>2026년 4월 법무부 출입국 실무 매뉴얼(사증·체류민원 최신본)</strong>에 근거하여 분석합니다.<br><span style="color:var(--color-warning); font-weight:700;">⚠ AI 답변은 참고용입니다. 최종 판단은 반드시 ☎ 1345 또는 관할 출입국·외국인관서에서 확인하십시오.</span>`;
-    }
+    // Localized through tx() for all four main languages (was ko/en-only, which
+    // left Chinese modes showing Korean copy).
+    descEl.innerHTML = ['faq', 'scn', 'nhis'].includes(visa.cat) ? tx('aiDescSpecial') : tx('aiDescGeneral');
 
     const jobCodeBtn = document.getElementById('btnJobCode');
     if (jobCodeBtn) {
@@ -12240,7 +12234,7 @@ async function submitAiAnalysis(actionType, btnEl) {
     if (actionType === 'jurisdiction') return openJurisdictionModal();
     if (actionType === 'job_code') return openJobCodeModal();
     const userInput = document.getElementById('aiInput').value.trim();
-    if (!userInput) { showToast("본인의 상황을 상세히 입력해 주십시오."); return; }
+    if (!userInput) { showToast(tx('aiEmptyInput')); return; }
     const visa = VISA_DATA.find(v => v.code === currentAiVisaCode); if (!visa) return;
     const allBtns = document.querySelectorAll('.ai-action-btn'), resultBox = document.getElementById('aiResult'), spinner = btnEl.querySelector('.spinner');
     allBtns.forEach(b => b.disabled = true); if (spinner) spinner.style.display = 'block'; resultBox.style.display = 'none';
@@ -12278,15 +12272,23 @@ async function submitAiAnalysis(actionType, btnEl) {
             }),
             signal: currentAiController.signal
         });
+        // A 503 here is the safe "no LLM provider configured" state (e.g. keys not
+        // set in this environment). Show a localized, cautious notice that points
+        // to the on-page documents/procedures and official confirmation channels,
+        // rather than a generic error.
+        if (response.status === 503) {
+            resultBox.innerHTML = `<b>${escapeHtml(tx('aiNoProvider'))}</b>`; resultBox.style.display = 'block';
+            return;
+        }
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const result = await response.json();
-        let formattedText = escapeHtml(result.answer || "결과 생성 불가").replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        let formattedText = escapeHtml(result.answer || tx('aiNoResult')).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         const modelBadge = buildModelBadgeHtml(result);
         const sourcePanel = renderGroundingSourcePanel(result);
         resultBox.innerHTML = formattedText + modelBadge + sourcePanel; resultBox.style.display = 'block';
     } catch (error) {
         if (error.name === 'AbortError') return;
-        resultBox.innerHTML = "<b>⚠ 분석 중 오류가 발생했습니다.</b>"; resultBox.style.display = 'block';
+        resultBox.innerHTML = `<b>${escapeHtml(tx('aiError'))}</b>`; resultBox.style.display = 'block';
     } finally {
         allBtns.forEach(b => b.disabled = false); if (spinner) spinner.style.display = 'none'; currentAiController = null;
     }
@@ -13133,31 +13135,118 @@ function renderProcedureFallbackSummary(procedureKey) {
 }
 
 // ---- F-4 route-aware intake wizard ----------------------------------------
-// F-4 has several practical user routes. Rather than dumping one generic card,
-// offer a compact, keyboard-accessible route chooser that highlights the most
-// relevant procedure tab and shows a cautious route explanation. The wizard is
-// F-4-specific for now but is data-driven (F4_ROUTE_CONFIG) so it can extend to
-// other route-complex statuses later. It NEVER hides procedures or variants,
-// never exposes raw manualRefs/requiredDocs, and never implies eligibility.
-const F4_ROUTE_CONFIG = [
-    { idx: 1, labelKey: 'f4Route1Label', descKey: 'f4Route1Desc', procedureKey: 'visaIssuance' },
-    { idx: 2, labelKey: 'f4Route2Label', descKey: 'f4Route2Desc', procedureKey: 'statusChange' },
-    { idx: 3, labelKey: 'f4Route3Label', descKey: 'f4Route3Desc', procedureKey: 'statusChange' },
-    { idx: 4, labelKey: 'f4Route4Label', descKey: 'f4Route4Desc', procedureKey: 'registration' },
-    { idx: 5, labelKey: 'f4Route5Label', descKey: 'f4Route5Desc', procedureKey: 'extension' }
-];
+// Route-complex statuses (F-4, F-6, G-1) have several practical user journeys.
+// Rather than dumping one generic card, offer a compact, keyboard-accessible
+// route chooser that highlights the most relevant procedure tab — and, where a
+// route maps to a source-backed scenario variant, brings that variant forward —
+// while showing a cautious route explanation. The wizard is fully data-driven
+// via ROUTE_WIZARD_CONFIG keyed by status code, so a new status is added by
+// config only (no one-off code). It NEVER hides procedures/variants, never
+// exposes raw manualRefs/requiredDocs, and never implies eligibility/approval.
+const ROUTE_WIZARD_CONFIG = {
+    'F-4': {
+        titleKey: 'f4RouteTitle', introKey: 'f4RouteIntro', ariaKey: 'f4RouteChooserAria',
+        routes: [
+            { id: 'f4-1', labelKey: 'f4Route1Label', descKey: 'f4Route1Desc', procedureKey: 'visaIssuance' },
+            { id: 'f4-2', labelKey: 'f4Route2Label', descKey: 'f4Route2Desc', procedureKey: 'statusChange' },
+            { id: 'f4-3', labelKey: 'f4Route3Label', descKey: 'f4Route3Desc', procedureKey: 'statusChange' },
+            { id: 'f4-4', labelKey: 'f4Route4Label', descKey: 'f4Route4Desc', procedureKey: 'registration' },
+            { id: 'f4-5', labelKey: 'f4Route5Label', descKey: 'f4Route5Desc', procedureKey: 'extension' }
+        ]
+    },
+    'F-6': {
+        titleKey: 'f6RouteTitle', introKey: 'f6RouteIntro', ariaKey: 'f6RouteChooserAria',
+        routes: [
+            { id: 'f6-1', labelKey: 'f6Route1Label', descKey: 'f6Route1Desc', procedureKey: 'extension', variantId: 'f-6-1-marriage-maintenance-extension' },
+            { id: 'f6-2', labelKey: 'f6Route2Label', descKey: 'f6Route2Desc', procedureKey: 'statusChange', variantId: 'f-6-2-child-rearing-status-change' },
+            { id: 'f6-3', labelKey: 'f6Route3Label', descKey: 'f6Route3Desc', procedureKey: 'statusChange', variantId: 'f-6-3-marriage-terminated-status-change' },
+            { id: 'f6-4', labelKey: 'f6Route4Label', descKey: 'f6Route4Desc', procedureKey: 'extension', variantId: 'f-6-1-spouse-missing-extension' },
+            { id: 'f6-5', labelKey: 'f6Route5Label', descKey: 'f6Route5Desc', procedureKey: 'extension' }
+        ]
+    },
+    'G-1': {
+        titleKey: 'g1RouteTitle', introKey: 'g1RouteIntro', ariaKey: 'g1RouteChooserAria',
+        routes: [
+            { id: 'g1-1', labelKey: 'g1Route1Label', descKey: 'g1Route1Desc', procedureKey: 'statusChange', variantId: 'g-1-5-6-refugee-humanitarian-status-change' },
+            { id: 'g1-2', labelKey: 'g1Route2Label', descKey: 'g1Route2Desc', procedureKey: 'statusChange', variantId: 'g-1-5-6-refugee-humanitarian-status-change' },
+            { id: 'g1-3', labelKey: 'g1Route3Label', descKey: 'g1Route3Desc', procedureKey: 'statusChange', variantId: 'g-1-3-litigation-status-change' },
+            { id: 'g1-4', labelKey: 'g1Route4Label', descKey: 'g1Route4Desc', procedureKey: 'statusChange', variantId: 'g-1-10-medical-patient-status-change' },
+            { id: 'g1-5', labelKey: 'g1Route5Label', descKey: 'g1Route5Desc', procedureKey: 'statusChange', variantId: 'g-1-1-industrial-accident-status-change' },
+            { id: 'g1-6', labelKey: 'g1Route6Label', descKey: 'g1Route6Desc', procedureKey: 'extension' }
+        ]
+    },
+    'F-2': {
+        titleKey: 'f2RouteTitle', introKey: 'f2RouteIntro', ariaKey: 'f2RouteChooserAria',
+        routes: [
+            { id: 'f2-1', labelKey: 'f2Route1Label', descKey: 'f2Route1Desc', procedureKey: 'statusChange', variantId: 'f-2-7-point-based-talent-status-change' },
+            { id: 'f2-2', labelKey: 'f2Route2Label', descKey: 'f2Route2Desc', procedureKey: 'statusChange', variantId: 'f-2-8-tourism-investment-status-change' },
+            { id: 'f2-3', labelKey: 'f2Route3Label', descKey: 'f2Route3Desc', procedureKey: 'statusChange', variantId: 'f-2-permanent-resident-family-status-change' },
+            { id: 'f2-4', labelKey: 'f2Route4Label', descKey: 'f2Route4Desc', procedureKey: 'extension' }
+        ]
+    },
+    'D-10': {
+        titleKey: 'd10RouteTitle', introKey: 'd10RouteIntro', ariaKey: 'd10RouteChooserAria',
+        routes: [
+            { id: 'd10-1', labelKey: 'd10Route1Label', descKey: 'd10Route1Desc', procedureKey: 'statusChange', variantId: 'd-10-1-points-status-change' },
+            { id: 'd10-2', labelKey: 'd10Route2Label', descKey: 'd10Route2Desc', procedureKey: 'statusChange', variantId: 'd-10-2-tech-startup-status-change' },
+            { id: 'd10-3', labelKey: 'd10Route3Label', descKey: 'd10Route3Desc', procedureKey: 'statusChange', variantId: 'd-10-3-high-tech-intern-status-change' },
+            { id: 'd10-4', labelKey: 'd10Route4Label', descKey: 'd10Route4Desc', procedureKey: 'extension', variantId: 'd-10-1-points-extension' }
+        ]
+    },
+    'H-2': {
+        titleKey: 'h2RouteTitle', introKey: 'h2RouteIntro', ariaKey: 'h2RouteChooserAria',
+        routes: [
+            { id: 'h2-1', labelKey: 'h2Route1Label', descKey: 'h2Route1Desc', procedureKey: 'registration', variantId: 'h-2-existing-holder-registration' },
+            { id: 'h2-2', labelKey: 'h2Route2Label', descKey: 'h2Route2Desc', procedureKey: 'workplaceChange', variantId: 'h-2-employment-start-workplace-change-report' },
+            { id: 'h2-3', labelKey: 'h2Route3Label', descKey: 'h2Route3Desc', procedureKey: 'statusChange' },
+            { id: 'h2-4', labelKey: 'h2Route4Label', descKey: 'h2Route4Desc', procedureKey: 'extension' }
+        ]
+    },
+    'E-7': {
+        titleKey: 'e7RouteTitle', introKey: 'e7RouteIntro', ariaKey: 'e7RouteChooserAria',
+        routes: [
+            { id: 'e7-1', labelKey: 'e7Route1Label', descKey: 'e7Route1Desc', procedureKey: 'statusChange' },
+            { id: 'e7-2', labelKey: 'e7Route2Label', descKey: 'e7Route2Desc', procedureKey: 'workplaceChange', variantId: 'e-7-registered-workplace-change' },
+            { id: 'e7-3', labelKey: 'e7Route3Label', descKey: 'e7Route3Desc', procedureKey: 'extension' }
+        ]
+    },
+    'D-4': {
+        titleKey: 'd4RouteTitle', introKey: 'd4RouteIntro', ariaKey: 'd4RouteChooserAria',
+        routes: [
+            { id: 'd4-1', labelKey: 'd4Route1Label', descKey: 'd4Route1Desc', procedureKey: 'statusChange', variantId: 'd-4-1-7-language-training-status-change' },
+            { id: 'd4-2', labelKey: 'd4Route2Label', descKey: 'd4Route2Desc', procedureKey: 'statusChange', variantId: 'd-4-2-graduate-training-status-change' },
+            { id: 'd4-3', labelKey: 'd4Route3Label', descKey: 'd4Route3Desc', procedureKey: 'statusChange', variantId: 'd-4-3-school-student-status-change' },
+            { id: 'd4-4', labelKey: 'd4Route4Label', descKey: 'd4Route4Desc', procedureKey: 'extension' }
+        ]
+    },
+    'F-1': {
+        titleKey: 'f1RouteTitle', introKey: 'f1RouteIntro', ariaKey: 'f1RouteChooserAria',
+        routes: [
+            { id: 'f1-1', labelKey: 'f1Route1Label', descKey: 'f1Route1Desc', procedureKey: 'statusChange', variantId: 'f-1-13-status-change' },
+            { id: 'f1-2', labelKey: 'f1Route2Label', descKey: 'f1Route2Desc', procedureKey: 'statusChange', variantId: 'f-1-6-marriage-cleanup-status-change' },
+            { id: 'f1-3', labelKey: 'f1Route3Label', descKey: 'f1Route3Desc', procedureKey: 'statusChange', variantId: 'f-1-16-refugee-family-status-change' },
+            { id: 'f1-4', labelKey: 'f1Route4Label', descKey: 'f1Route4Desc', procedureKey: 'extension' }
+        ]
+    }
+};
+function getRouteWizardConfig(v) {
+    if (!v || typeof v.code !== 'string') return null;
+    return ROUTE_WIZARD_CONFIG[v.code.toUpperCase()] || null;
+}
+// Kept for back-compat with the call site/tests; now true for any configured status.
 function isF4RouteWizardTarget(v) {
-    return !!(v && typeof v.code === 'string' && v.code.toUpperCase() === 'F-4');
+    return !!getRouteWizardConfig(v);
 }
 function renderF4RouteChooser(v) {
-    if (!isF4RouteWizardTarget(v)) return '';
-    const chips = F4_ROUTE_CONFIG.map(r =>
-        `<button type="button" class="f4-route-chip" data-action="select-f4-route" data-route-index="${r.idx}" data-procedure-key="${escapeHtml(r.procedureKey)}" aria-pressed="false">${escapeHtml(tx(r.labelKey))}</button>`
+    const cfg = getRouteWizardConfig(v);
+    if (!cfg) return '';
+    const chips = cfg.routes.map(r =>
+        `<button type="button" class="f4-route-chip" data-action="select-f4-route" data-route-id="${escapeHtml(r.id)}" data-procedure-key="${escapeHtml(r.procedureKey)}" data-variant-id="${escapeHtml(r.variantId || '')}" data-label-key="${escapeHtml(r.labelKey)}" data-desc-key="${escapeHtml(r.descKey)}" aria-pressed="false">${escapeHtml(tx(r.labelKey))}</button>`
     ).join('');
-    return `<section class="f4-route-wizard manual-section" data-f4-route-wizard aria-label="${escapeHtml(tx('f4RouteChooserAria'))}">
-        <h4 class="manual-section-title">${escapeHtml(tx('f4RouteTitle'))}</h4>
-        <p class="f4-route-intro">${escapeHtml(tx('f4RouteIntro'))}</p>
-        <div class="f4-route-chips" role="group" aria-label="${escapeHtml(tx('f4RouteChooserAria'))}">${chips}<button type="button" class="f4-route-showall" data-action="show-all-f4-routes" hidden>${escapeHtml(tx('f4RouteShowAll'))}</button></div>
+    return `<section class="f4-route-wizard manual-section" data-f4-route-wizard aria-label="${escapeHtml(tx(cfg.ariaKey))}">
+        <h4 class="manual-section-title">${escapeHtml(tx(cfg.titleKey))}</h4>
+        <p class="f4-route-intro">${escapeHtml(tx(cfg.introKey))}</p>
+        <div class="f4-route-chips" role="group" aria-label="${escapeHtml(tx(cfg.ariaKey))}">${chips}<button type="button" class="f4-route-showall" data-action="show-all-f4-routes" hidden>${escapeHtml(tx('routeShowAll'))}</button></div>
         <div class="f4-route-explain" data-f4-route-explain role="status" aria-live="polite" hidden></div>
     </section>`;
 }
@@ -13166,15 +13255,17 @@ function selectF4Route(btn) {
     const card = btn.closest('.manual-result');
     if (!wizard) return;
     const procKey = btn.dataset.procedureKey;
-    const routeIdx = btn.dataset.routeIndex;
+    const variantId = btn.dataset.variantId || '';
+    const labelKey = btn.dataset.labelKey;
+    const descKey = btn.dataset.descKey;
     wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
     const explain = wizard.querySelector('[data-f4-route-explain]');
     const tab = card ? card.querySelector(`.procedure-tab[data-procedure="${procKey}"]:not([disabled])`) : null;
     // Make the selected route obvious in text (not color alone): a labelled
     // banner echoing which route the user picked, above the cautious detail.
-    const routeLabel = tx('f4Route' + routeIdx + 'Label');
+    const routeLabel = labelKey ? tx(labelKey) : '';
     let html = `<p class="f4-route-selected"><span class="f4-route-selected-prefix">${escapeHtml(tx('f4RouteSelectedPrefix'))}</span> <strong>${escapeHtml(routeLabel)}</strong></p>`;
-    html += `<p class="f4-route-desc">${escapeHtml(tx('f4Route' + routeIdx + 'Desc'))}</p>`;
+    html += `<p class="f4-route-desc">${escapeHtml(descKey ? tx(descKey) : '')}</p>`;
     if (tab && card) {
         // De-emphasize (not hide) the other procedure tabs and activate the
         // route's procedure tab + panel, reusing the select-procedure model.
@@ -13183,6 +13274,14 @@ function selectF4Route(btn) {
             t.classList.toggle('is-route-muted', t !== tab);
         });
         card.querySelectorAll('.procedure-panel').forEach(p => p.classList.toggle('active', p.dataset.procedurePanel === procKey));
+        // If the route maps to a specific source-backed scenario variant, bring
+        // it forward in the activated panel's scenario selector. This reuses the
+        // existing variant-selection model and never invents documents.
+        if (variantId) {
+            const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
+            const choice = panel ? Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]')).find(c => c.dataset.variantId === variantId) : null;
+            if (choice) selectProcedureVariant(choice);
+        }
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
         // No source-backed procedure data for this route: explain it and send
@@ -13575,10 +13674,15 @@ function renderCautionBlock() {
 }
 
 const DOCUMENT_TAB_CONFIG = [
-    { key: 'initial', icon: '📋', label: '최초 신청 (입국 전)', field: 'documents_initial' },
-    { key: 'registration', icon: '🪪', label: '외국인등록', field: 'documents_registration' },
-    { key: 'extension', icon: '🔄', label: '체류기간 연장', field: 'documents_extension' }
+    { key: 'initial', icon: '📋', labelIndex: 0, label: '최초 신청 (입국 전)', field: 'documents_initial' },
+    { key: 'registration', icon: '🪪', labelIndex: 1, label: '외국인등록', field: 'documents_registration' },
+    { key: 'extension', icon: '🔄', labelIndex: 2, label: '체류기간 연장', field: 'documents_extension' }
 ];
+// Localized document-tab stage label (falls back to the Korean default in the
+// config). Official Korean *document item* text is never translated here.
+function getDocumentTabLabel(cfg) {
+    return txAt('documentTabLabels', cfg.labelIndex, cfg.label);
+}
 
 const DOCUMENT_DATA_MISSING_NOTICE = '구조화 서류 데이터 없음: 이 절차의 구비서류는 아직 Paradiso 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류·사증 민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
 const DOCUMENT_REGISTRATION_MISSING_NOTICE = '구조화 서류 데이터 없음: 이 절차의 구비서류는 아직 Paradiso 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류·사증 민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.';
@@ -13625,8 +13729,8 @@ function getDocumentTabItems(v, cfg) {
 }
 
 function getDocumentMissingNotice(panelKey) {
-    if (panelKey === 'registration') return DOCUMENT_REGISTRATION_MISSING_NOTICE;
-    return DOCUMENT_DATA_MISSING_NOTICE;
+    // Localized for the four main languages; falls back to the Korean constant.
+    return tx('docTabMissingNotice') || (panelKey === 'registration' ? DOCUMENT_REGISTRATION_MISSING_NOTICE : DOCUMENT_DATA_MISSING_NOTICE);
 }
 
 function renderDocumentTabPanel(v, cfg, isActive) {
@@ -13656,11 +13760,11 @@ function renderDocumentTabs(v) {
     const firstKey = DOCUMENT_TAB_CONFIG[0].key;
     const tabsHtml = DOCUMENT_TAB_CONFIG.map(cfg => {
         const isActive = cfg.key === firstKey;
-        return `<button type="button" class="docs-tab${isActive ? ' active' : ''}" data-action="select-docs-tab" data-docs-tab="${cfg.key}" role="tab" aria-selected="${isActive ? 'true' : 'false'}"><span class="docs-tab-icon" aria-hidden="true">${cfg.icon}</span><span class="docs-tab-label">${escapeHtml(cfg.label)}</span></button>`;
+        return `<button type="button" class="docs-tab${isActive ? ' active' : ''}" data-action="select-docs-tab" data-docs-tab="${cfg.key}" role="tab" aria-selected="${isActive ? 'true' : 'false'}"><span class="docs-tab-icon" aria-hidden="true">${cfg.icon}</span><span class="docs-tab-label">${escapeHtml(getDocumentTabLabel(cfg))}</span></button>`;
     }).join('');
     const panelsHtml = DOCUMENT_TAB_CONFIG.map(cfg => renderDocumentTabPanel(v, cfg, cfg.key === firstKey)).join('');
-    return `<section class="manual-section docs-section" aria-label="구비서류">
-        <h4 class="manual-section-title">구비서류</h4>
+    return `<section class="manual-section docs-section" aria-label="${escapeHtml(tx('documentSectionTitle'))}">
+        <h4 class="manual-section-title">${escapeHtml(tx('documentSectionTitle'))}</h4>
         <div class="docs-tabs" role="tablist">${tabsHtml}</div>
         <div class="docs-panels">${panelsHtml}</div>
     </section>`;
@@ -14291,6 +14395,22 @@ const UI_TRANSLATIONS = {
         f4RouteTitle: 'F-4는 어떤 경로로 진행하시나요?', f4RouteIntro: 'F-4는 입국 전 사증 발급, 국내 체류자격 변경, 국내거소신고, 체류기간 연장 등 경로가 나뉠 수 있습니다. 본인에게 맞는 경로를 먼저 확인하세요.', f4RouteShowAll: '전체 경로 보기', f4RouteChooserAria: 'F-4 경로 선택', f4RouteSelectedPrefix: '선택한 경로', f4RouteSourceNote: '경로를 선택해도 자격이나 허가가 보장되지 않습니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.', f4RouteNoDocsNote: '이 경로는 아직 출처가 확인된 서류 체크리스트가 연결되어 있지 않습니다. HiKorea, 1345 또는 관할 출입국·외국인관서에서 직접 확인하세요.',
         f4Route1Label: '재외공관에서 F-4 사증을 받아 입국하는 경우', f4Route2Label: 'B-2·C-3 등으로 입국 후 국내에서 F-4로 변경하는 경우', f4Route3Label: 'H-2에서 F-4로 변경하는 경우', f4Route4Label: 'F-4 국내거소신고', f4Route5Label: 'F-4 체류기간 연장',
         f4Route1Desc: '해외에서 재외공관을 통해 F-4 사증을 발급받아 입국하는 경로입니다. 사증 발급 요건·서류는 재외공관과 HiKorea 안내를 확인하세요.', f4Route2Desc: 'B-2·C-3 등 다른 자격으로 입국한 뒤 국내에서 F-4로 체류자격을 변경하는 경로입니다. 변경 대상 여부와 서류는 관할 출입국·외국인관서에서 확인하세요.', f4Route3Desc: 'H-2(방문취업) 자격에서 F-4로 변경하는 경로입니다. 자격요건과 제출서류는 관할 출입국·외국인관서 안내를 확인하세요.', f4Route4Desc: '재외동포(F-4)는 일반 외국인등록이 아니라 국내거소신고 대상일 수 있습니다. 거소신고 대상·기한·서류는 관할기관 안내를 확인하세요.', f4Route5Desc: '현재 F-4 체류기간을 넘겨 계속 체류하려면 체류기간 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 확인하세요.',
+        routeShowAll: '전체 경로 보기',
+        f6RouteTitle: 'F-6는 어떤 상황에 해당하시나요?', f6RouteIntro: 'F-6는 국민의 배우자, 자녀양육, 혼인단절 등 세부 사유에 따라 절차와 제출서류가 달라질 수 있습니다. 본인에게 가장 가까운 상황을 먼저 선택하세요.', f6RouteChooserAria: 'F-6 상황 선택',
+        f6Route1Label: '국민의 배우자 또는 혼인관계 유지', f6Route2Label: '자녀를 양육하는 경우', f6Route3Label: '이혼·별거 등 혼인관계 단절', f6Route4Label: '사망·실종 등 본인에게 책임 없는 사유', f6Route5Label: 'F-6 체류기간 연장',
+        f6Route1Desc: '국민의 배우자로서 혼인관계를 유지 중인 경우의 절차입니다. 대상 여부와 제출서류는 관할 출입국·외국인관서에서 확인하세요.', f6Route2Desc: '국민인 자녀를 양육하는 경우 적용될 수 있는 절차입니다. 양육 사실 인정 여부와 서류는 관할기관에서 확인하세요. 양육 사실만으로 자동 인정되지는 않습니다.', f6Route3Desc: '이혼·별거 등으로 혼인관계가 단절된 경우의 절차입니다. 본인에게 책임 없는 사유 등 인정 요건이 있으며, 모든 혼인단절 사례가 인정되는 것은 아닙니다. 관할기관에서 확인하세요.', f6Route4Desc: '배우자의 사망·실종 등 본인에게 책임 없는 사유로 혼인관계를 유지할 수 없는 경우의 절차입니다. 인정 요건과 서류는 관할기관에서 확인하세요.', f6Route5Desc: '현재 F-6 체류기간을 넘겨 계속 체류하려면 체류기간 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        g1RouteTitle: 'G-1은 어떤 사유에 해당하시나요?', g1RouteIntro: 'G-1은 난민신청, 인도적 체류, 소송, 치료, 산업재해 등 사유별로 절차와 제출서류가 크게 달라질 수 있습니다. 본인에게 가장 가까운 사유를 먼저 선택하세요.', g1RouteChooserAria: 'G-1 사유 선택',
+        g1Route1Label: '난민신청 또는 난민 관련 체류', g1Route2Label: '인도적 체류', g1Route3Label: '소송 또는 권리구제 절차', g1Route4Label: '질병 치료 또는 의료 목적', g1Route5Label: '산업재해·임금체불 등 보호 필요 사유', g1Route6Label: 'G-1 체류기간 연장',
+        g1Route1Desc: '난민신청 또는 난민 관련 사유로 체류하는 경우의 절차입니다. 난민 인정 여부는 별도 심사로 결정되며, 경로 선택이 인정을 보장하지 않습니다. 관할기관·난민 담당 부서에서 확인하세요.', g1Route2Desc: '인도적 체류 사유로 체류하는 경우의 절차입니다. 인도적 체류 허가 여부는 심사로 결정되며 보장되지 않습니다. 관할기관에서 확인하세요.', g1Route3Desc: '소송 등 권리구제 절차 진행을 위해 체류하는 경우의 절차입니다. 인정 요건과 서류는 관할기관에서 확인하세요.', g1Route4Desc: '질병 치료 등 의료 목적으로 체류하는 경우의 절차입니다. 대상 여부와 서류는 관할기관에서 확인하세요.', g1Route5Desc: '산업재해 청구·치료, 임금체불 구제 등 보호가 필요한 사유로 체류하는 경우의 절차입니다. 인정 요건과 서류는 관할기관에서 확인하세요.', g1Route6Desc: '현재 G-1 체류기간을 넘겨 계속 체류하려면 체류기간 연장허가가 필요할 수 있습니다. 사유별로 절차가 다르므로 관할기관에서 확인하세요.',
+        f2RouteTitle: 'F-2는 어떤 거주 사유에 해당하시나요?', f2RouteIntro: 'F-2(거주)는 점수제, 투자, 가족 등 사유에 따라 절차와 제출서류가 달라질 수 있습니다. 본인에게 가장 가까운 상황을 먼저 선택하세요.', f2RouteChooserAria: 'F-2 거주 사유 선택', f2Route1Label: '점수제 우수인재 (F-2-7)', f2Route2Label: '관광·휴양 등 투자 (F-2-8)', f2Route3Label: '국민·영주자의 가족', f2Route4Label: 'F-2 체류기간 연장', f2Route1Desc: '점수제 평가를 통해 F-2-7로 변경하는 경로입니다. 점수 항목과 서류는 관할기관에서 확인하세요.', f2Route2Desc: '관광·휴양시설 등 투자를 근거로 거주자격으로 변경하는 경로입니다. 투자 요건과 서류는 관할기관에서 확인하세요.', f2Route3Desc: '국민의 미성년 자녀나 영주자의 배우자·자녀 등 가족 관계를 근거로 한 경로입니다. 대상 여부와 서류는 관할기관에서 확인하세요.', f2Route4Desc: '현재 F-2 체류기간을 넘겨 계속 체류하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        d10RouteTitle: 'D-10은 어떤 구직·준비 상황인가요?', d10RouteIntro: 'D-10(구직)은 점수제 구직, 기술창업 준비, 첨단기술 인턴 등 유형에 따라 절차가 달라질 수 있습니다. 본인에게 가장 가까운 상황을 먼저 선택하세요.', d10RouteChooserAria: 'D-10 상황 선택', d10Route1Label: '점수제 구직 (D-10-1)', d10Route2Label: '기술창업 준비 (D-10-2)', d10Route3Label: '첨단기술 인턴 (D-10-3)', d10Route4Label: 'D-10 체류기간 연장', d10Route1Desc: '점수제 구직(D-10-1) 유형의 절차입니다. 점수 항목과 서류는 관할기관에서 확인하세요.', d10Route2Desc: '기술창업 준비(D-10-2) 유형의 절차입니다. 요건과 서류는 관할기관에서 확인하세요.', d10Route3Desc: '첨단기술 인턴(D-10-3) 유형의 절차입니다. 요건과 서류는 관할기관에서 확인하세요.', d10Route4Desc: '현재 D-10 체류기간을 넘겨 계속 구직·준비하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        h2RouteTitle: 'H-2는 어떤 절차를 보려 하시나요?', h2RouteIntro: 'H-2(방문취업)는 외국인등록, 취업개시·근무처 신고, F-4 변경, 체류기간 연장 등 절차가 나뉠 수 있습니다. 본인에게 맞는 절차를 먼저 선택하세요.', h2RouteChooserAria: 'H-2 절차 선택', h2Route1Label: '외국인등록', h2Route2Label: '취업개시·근무처 변경 신고', h2Route3Label: 'H-2에서 F-4로 변경', h2Route4Label: 'H-2 체류기간 연장', h2Route1Desc: 'H-2 기존 체류자의 외국인등록 절차입니다. 대상·기한·서류는 관할기관에서 확인하세요.', h2Route2Desc: '취업개시 또는 근무처 변경 시 신고하는 절차입니다. 신고 기한과 방법은 HiKorea·관할기관에서 확인하세요.', h2Route3Desc: 'H-2에서 F-4로 체류자격을 변경하는 경로입니다. 변경이 자동으로 인정되지는 않으며, 자격요건과 서류는 관할기관에서 확인하세요.', h2Route4Desc: '현재 H-2 체류기간을 넘겨 계속 체류하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        e7RouteTitle: 'E-7은 어떤 절차를 보려 하시나요?', e7RouteIntro: 'E-7(특정활동)은 직종·업종 확인, 근무처 변경·추가 신고, 체류기간 연장 등 절차가 나뉠 수 있습니다. 본인에게 맞는 절차를 먼저 선택하세요.', e7RouteChooserAria: 'E-7 절차 선택', e7Route1Label: '직종·업종 코드 확인', e7Route2Label: '근무처 변경·추가 신고', e7Route3Label: 'E-7 체류기간 연장', e7Route1Desc: 'E-7 특정활동의 직종·업종 코드를 확인하는 단계입니다. 코드 도구는 참고용이며 최종 코드와 적격성은 HiKorea·1345에서 확인하세요.', e7Route2Desc: '등록된 E-7 외국인의 근무처 변경·추가 사후신고 절차입니다. 신고 기한과 서류는 HiKorea·관할기관에서 확인하세요.', e7Route3Desc: '현재 E-7 체류기간을 넘겨 계속 체류하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        d4RouteTitle: 'D-4는 어떤 연수 상황인가요?', d4RouteIntro: 'D-4(일반연수)는 어학연수, 졸업생 연수, 고교 이하 유학생 등 유형에 따라 절차가 달라질 수 있습니다. 본인에게 가장 가까운 상황을 먼저 선택하세요.', d4RouteChooserAria: 'D-4 상황 선택', d4Route1Label: '어학연수 (D-4-1·D-4-7)', d4Route2Label: '졸업생 일반연수 (D-4-2)', d4Route3Label: '고교 이하 유학생 (D-4-3)', d4Route4Label: 'D-4 체류기간 연장', d4Route1Desc: '어학연수(D-4-1·D-4-7) 유형의 체류자격 변경 절차입니다. 대상과 서류는 관할기관에서 확인하세요.', d4Route2Desc: '졸업생 일반연수(D-4-2) 유형의 체류자격 변경 절차입니다. 대상과 서류는 관할기관에서 확인하세요.', d4Route3Desc: '고등학교 이하 외국인유학생(D-4-3) 유형의 체류자격 변경 절차입니다. 대상과 서류는 관할기관에서 확인하세요.', d4Route4Desc: '현재 D-4 체류기간을 넘겨 계속 연수하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        f1RouteTitle: 'F-1은 어떤 방문·동거 사유인가요?', f1RouteIntro: 'F-1(방문동거)은 가족 방문·동거, 혼인단절 가사정리, 난민인정자 가족 등 사유에 따라 절차가 달라질 수 있습니다. 본인에게 가장 가까운 사유를 먼저 선택하세요.', f1RouteChooserAria: 'F-1 사유 선택', f1Route1Label: '방문·동거 (F-1-13)', f1Route2Label: '혼인단절 가사정리 (F-1-6)', f1Route3Label: '난민인정자 가족 (F-1-16)', f1Route4Label: 'F-1 체류기간 연장', f1Route1Desc: '가족 방문·동거(F-1-13) 유형의 체류자격 변경 절차입니다. 대상과 서류는 관할기관에서 확인하세요.', f1Route2Desc: '혼인단절 결혼이민자의 가사정리(F-1-6) 유형 절차입니다. 인정 요건과 서류는 관할기관에서 확인하세요.', f1Route3Desc: '난민인정자 가족(F-1-16) 유형의 체류자격 변경 절차입니다. 대상과 서류는 관할기관에서 확인하세요.', f1Route4Desc: '현재 F-1 체류기간을 넘겨 계속 체류하려면 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 관할기관에서 확인하세요.',
+        aiDescSpecial: '현재 직면한 상황(사건 경위, 체류 상태, 국적 등)을 상세히 적어주시면, Paradiso AI가 2026년 출입국관리법 및 매뉴얼 원문에 근거하여 <strong>자의적 해석 없이 철저한 법적 판단 및 구제 절차</strong>를 검증해 드립니다.', aiDescGeneral: '현재 국적, 보유 체류자격, 직무, 거주지 등 상황을 상세히 입력하시면, Paradiso AI가 <strong>2026년 4월 법무부 출입국 실무 매뉴얼(사증·체류민원 최신본)</strong>에 근거하여 분석합니다.<br><span style="color:var(--color-warning); font-weight:700;">⚠ AI 답변은 참고용입니다. 최종 판단은 반드시 ☎ 1345 또는 관할 출입국·외국인관서에서 확인하십시오.</span>',
+        aiEmptyInput: '본인의 상황을 상세히 입력해 주십시오.', aiNoResult: '결과를 생성할 수 없습니다.', aiError: '⚠ 분석 중 오류가 발생했습니다.', aiNoProvider: 'AI 분석 서비스가 현재 설정되어 있지 않습니다. 검색 결과의 구비서류·절차 정보를 참고하시고, 최종 확인은 ☎ 1345 또는 관할 출입국·외국인관서에서 하십시오.',
+        documentSectionTitle: '구비서류', documentTabLabels: ['최초 신청 (입국 전)', '외국인등록', '체류기간 연장'], docTabMissingNotice: '구조화 서류 데이터 없음: 이 절차의 구비서류는 아직 Paradiso 구조화 데이터에 충분히 정리되어 있지 않습니다. 최신 체류·사증 민원 안내매뉴얼 또는 관할 출입국·외국인관서를 확인하세요.',
         deadlineCalcTitle: '기한 계산기', deadlineCalcIntro: '입국일과 체류만료일을 입력하면 준비에 도움이 되는 예상 일정을 계산합니다. 공식 기한이 아니며 입력값은 저장·전송되지 않습니다.', deadlineEntryDate: '입국일', deadlineExpiryDate: '체류만료일', deadlineRegEstimate: '예상 등록 기한', deadlineExtReminders: '연장 준비 알림', deadlineAddToCalendar: '캘린더에 추가', deadlineDownloadIcs: 'ICS 파일 다운로드', deadlineAddGoogle: 'Google Calendar에 추가', deadlineDisclaimer: '공식 기한은 개인 상황과 관할 판단에 따라 달라질 수 있습니다.', deadlineCustomTitle: '알림 제목 (선택)', deadlineCustomDate: '알림 날짜 (선택)', deadlineCompute: '기한 계산', deadlineRegCaution: '장기체류 외국인은 입국일부터 90일 이내 외국인등록이 필요할 수 있습니다(대상자에 한함). 일반 준비용 안내이며 공식 확정 기한이 아닙니다.', deadlineExtCaution: '아래 날짜는 만료일 기준 준비 알림이며 공식 신청기간을 보장하지 않습니다.', deadlineEmpty: '날짜를 입력하면 예상 일정이 표시됩니다.', deadlinePrivacyNote: '입력한 날짜는 브라우저에만 표시되며 저장하거나 AI·서버로 전송하지 않습니다.', deadlineDdayToday: '오늘', deadlineDaysBefore: '{days}일 전', deadlineOnDate: '당일', deadlineProcedureTypeLabel: '관련 절차 (선택)',
         hkPreCheckCaution: '아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다. 이메일·비밀번호·체류만료일을 미리 준비하면 예약이 더 수월합니다.',
         procFallbackInitial: '입국 전 사증 발급 또는 해당 체류자격 신청 단계에서 확인하는 절차입니다. 세부 요건과 제출서류는 재외공관·HiKorea·관할기관 안내를 확인하세요.', procFallbackRegistration: '한국에 장기 체류하는 외국인은 대상 여부에 따라 외국인등록 또는 국내거소신고가 필요할 수 있습니다. 등록·신고 대상, 기한, 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다.', procFallbackExtension: '현재 체류기간을 넘겨 계속 체류하려는 경우 체류기간 연장허가 대상 여부와 제출서류를 확인해야 합니다. 만료일 전 충분히 여유를 두고 확인하세요.',
@@ -14442,6 +14562,22 @@ const UI_TRANSLATIONS = {
         f4RouteTitle: 'Which F-4 route applies to you?', f4RouteIntro: 'F-4 can involve different routes, including pre-entry visa issuance, domestic status change, domestic residence reporting, and extension of stay. Confirm which route matches your situation first.', f4RouteShowAll: 'Show all F-4 routes', f4RouteChooserAria: 'F-4 route selection', f4RouteSelectedPrefix: 'Selected route', f4RouteSourceNote: 'Selecting a route does not imply eligibility or approval. Confirm actual applicability with HiKorea, 1345, or the competent immigration office.', f4RouteNoDocsNote: 'This route does not yet have a source-backed document checklist. Confirm directly with HiKorea, 1345, or the competent immigration office.',
         f4Route1Label: 'Entering with an F-4 visa issued by a Korean mission abroad', f4Route2Label: 'Changing to F-4 in Korea after entering with B-2, C-3, or another eligible status', f4Route3Label: 'Changing from H-2 to F-4', f4Route4Label: 'F-4 domestic residence report', f4Route5Label: 'F-4 extension of stay',
         f4Route1Desc: 'You obtain an F-4 visa through a Korean diplomatic mission abroad before entering Korea. Confirm visa-issuance requirements and documents with the mission and HiKorea.', f4Route2Desc: 'After entering on B-2, C-3, or another eligible status, you change your status of stay to F-4 inside Korea. Confirm eligibility and documents with the competent immigration office.', f4Route3Desc: 'You change from H-2 (Working Visit) to F-4. Confirm eligibility and required documents with the competent immigration office.', f4Route4Desc: 'Overseas Koreans (F-4) may file a domestic residence report, which is distinct from a general foreigner registration. Confirm who must report, the deadline, and documents with the competent office.', f4Route5Desc: 'To stay beyond your current F-4 permitted period, extension of stay permission may be required. Check well before your expiry date.',
+        routeShowAll: 'Show all routes',
+        f6RouteTitle: 'Which F-6 situation applies to you?', f6RouteIntro: 'F-6 procedures and documents may differ depending on whether you are applying as a spouse of a Korean national, a child-raising parent, or under a marriage-breakdown situation. Select the situation closest to yours first.', f6RouteChooserAria: 'F-6 situation selection',
+        f6Route1Label: 'Spouse of a Korean national / marriage maintained', f6Route2Label: 'Raising a child in Korea', f6Route3Label: 'Marriage breakdown, divorce, or separation', f6Route4Label: 'Death, disappearance, or other reasons not attributable to you', f6Route5Label: 'F-6 extension of stay',
+        f6Route1Desc: 'For those maintaining a genuine marriage as the spouse of a Korean national. Confirm who qualifies and which documents apply with the competent immigration office.', f6Route2Desc: 'May apply when you are raising a child who is a Korean national. Whether child-rearing is recognized, and the documents required, must be confirmed with the competent office. Child-rearing alone is not automatically approved.', f6Route3Desc: 'For cases where the marriage has broken down through divorce or separation. Recognition has conditions, such as the breakdown not being attributable to you, and not every breakdown case qualifies. Confirm with the competent office.', f6Route4Desc: 'For cases where the marriage cannot continue due to the death or disappearance of the spouse, or other reasons not attributable to you. Confirm recognition conditions and documents with the competent office.', f6Route5Desc: 'To stay beyond your current F-6 permitted period, extension of stay permission may be required. Check with the competent office well before your expiry date.',
+        g1RouteTitle: 'Which G-1 reason applies to you?', g1RouteIntro: 'G-1 procedures and documents may differ significantly depending on the reason, such as refugee application, humanitarian stay, litigation, medical treatment, or industrial accident. Select the reason closest to your situation first.', g1RouteChooserAria: 'G-1 reason selection',
+        g1Route1Label: 'Refugee application or refugee-related stay', g1Route2Label: 'Humanitarian stay', g1Route3Label: 'Litigation or rights-remedy procedure', g1Route4Label: 'Medical treatment or health-related stay', g1Route5Label: 'Industrial accident, unpaid wages, or other protected-stay reason', g1Route6Label: 'G-1 extension of stay',
+        g1Route1Desc: 'For stay related to a refugee application or refugee status. Refugee recognition is decided through a separate review, and choosing this route does not guarantee recognition. Confirm with the competent office or refugee division.', g1Route2Desc: 'For humanitarian stay. Whether humanitarian stay is granted is decided through review and is not guaranteed. Confirm with the competent office.', g1Route3Desc: 'For stay to pursue litigation or other rights-remedy procedures. Confirm recognition conditions and documents with the competent office.', g1Route4Desc: 'For stay for medical treatment or other health-related purposes. Confirm who qualifies and which documents apply with the competent office.', g1Route5Desc: 'For stay under protected reasons such as industrial-accident claims or treatment, or unpaid-wage remedies. Confirm recognition conditions and documents with the competent office.', g1Route6Desc: 'To stay beyond your current G-1 permitted period, extension of stay permission may be required. Procedures differ by reason, so confirm with the competent office.',
+        f2RouteTitle: 'Which F-2 residence situation applies to you?', f2RouteIntro: 'F-2 (residence) procedures and documents may differ by reason, such as the points system, investment, or family ties. Select the situation closest to yours first.', f2RouteChooserAria: 'F-2 residence situation selection', f2Route1Label: 'Points-based talent (F-2-7)', f2Route2Label: 'Tourism / leisure investment (F-2-8)', f2Route3Label: 'Family of a national or permanent resident', f2Route4Label: 'F-2 extension of stay', f2Route1Desc: 'Changing to F-2-7 through points-based evaluation. Confirm scoring items and documents with the competent office.', f2Route2Desc: 'Changing to residence status based on tourism or leisure-facility investment. Confirm investment requirements and documents with the competent office.', f2Route3Desc: 'A route based on family ties, such as a minor child of a national or the spouse or child of a permanent resident. Confirm eligibility and documents with the competent office.', f2Route4Desc: 'To stay beyond your current F-2 period, extension permission may be required. Check with the competent office before your expiry date.',
+        d10RouteTitle: 'Which D-10 job-seeking situation applies to you?', d10RouteIntro: 'D-10 (job-seeking) procedures may differ by type, such as points-based job-seeking, tech start-up preparation, or a high-tech internship. Select the situation closest to yours first.', d10RouteChooserAria: 'D-10 situation selection', d10Route1Label: 'Points-based job-seeking (D-10-1)', d10Route2Label: 'Tech start-up preparation (D-10-2)', d10Route3Label: 'High-tech internship (D-10-3)', d10Route4Label: 'D-10 extension of stay', d10Route1Desc: 'The points-based job-seeking (D-10-1) route. Confirm scoring items and documents with the competent office.', d10Route2Desc: 'The tech start-up preparation (D-10-2) route. Confirm requirements and documents with the competent office.', d10Route3Desc: 'The high-tech internship (D-10-3) route. Confirm requirements and documents with the competent office.', d10Route4Desc: 'To keep job-seeking or preparing beyond your current D-10 period, extension permission may be required. Check with the competent office before your expiry date.',
+        h2RouteTitle: 'Which H-2 procedure are you looking for?', h2RouteIntro: 'H-2 (Working Visit) involves several procedures, such as foreigner registration, employment-start/workplace reporting, changing to F-4, and extension of stay. Select the procedure that fits you first.', h2RouteChooserAria: 'H-2 procedure selection', h2Route1Label: 'Foreigner registration', h2Route2Label: 'Employment-start / workplace-change report', h2Route3Label: 'Change from H-2 to F-4', h2Route4Label: 'H-2 extension of stay', h2Route1Desc: 'Foreigner registration for existing H-2 holders. Confirm who must register, the deadline, and documents with the competent office.', h2Route2Desc: 'Reporting when you start employment or change workplace. Confirm the reporting deadline and method with HiKorea or the competent office.', h2Route3Desc: 'Changing status from H-2 to F-4. This is not automatically approved; confirm eligibility and documents with the competent office.', h2Route4Desc: 'To stay beyond your current H-2 period, extension permission may be required. Check with the competent office before your expiry date.',
+        e7RouteTitle: 'Which E-7 procedure are you looking for?', e7RouteIntro: 'E-7 (Specific Activity) involves several procedures, such as checking occupation/industry codes, reporting workplace change or addition, and extension of stay. Select the procedure that fits you first.', e7RouteChooserAria: 'E-7 procedure selection', e7Route1Label: 'Occupation / industry code check', e7Route2Label: 'Workplace change or addition report', e7Route3Label: 'E-7 extension of stay', e7Route1Desc: 'Checking the occupation/industry codes for an E-7 specific activity. The code tool is for reference only; confirm the final code and eligibility with HiKorea or 1345.', e7Route2Desc: 'Post-reporting of a workplace change or addition for a registered E-7 holder. Confirm the reporting deadline and documents with HiKorea or the competent office.', e7Route3Desc: 'To stay beyond your current E-7 period, extension permission may be required. Check with the competent office before your expiry date.',
+        d4RouteTitle: 'Which D-4 training situation applies to you?', d4RouteIntro: 'D-4 (general training) procedures may differ by type, such as language training, graduate training, or a school student below college level. Select the situation closest to yours first.', d4RouteChooserAria: 'D-4 situation selection', d4Route1Label: 'Language training (D-4-1 / D-4-7)', d4Route2Label: 'Graduate training (D-4-2)', d4Route3Label: 'School student below college (D-4-3)', d4Route4Label: 'D-4 extension of stay', d4Route1Desc: 'The status-change route for language training (D-4-1 / D-4-7). Confirm eligibility and documents with the competent office.', d4Route2Desc: 'The status-change route for graduate general training (D-4-2). Confirm eligibility and documents with the competent office.', d4Route3Desc: 'The status-change route for a foreign school student below college level (D-4-3). Confirm eligibility and documents with the competent office.', d4Route4Desc: 'To keep training beyond your current D-4 period, extension permission may be required. Check with the competent office before your expiry date.',
+        f1RouteTitle: 'Which F-1 visiting/cohabitation reason applies to you?', f1RouteIntro: 'F-1 (visiting/cohabitation) procedures may differ by reason, such as visiting/joining family, post-divorce affairs, or being the family member of a recognized refugee. Select the reason closest to yours first.', f1RouteChooserAria: 'F-1 reason selection', f1Route1Label: 'Visiting / cohabitation (F-1-13)', f1Route2Label: 'Post-divorce affairs (F-1-6)', f1Route3Label: 'Family of a recognized refugee (F-1-16)', f1Route4Label: 'F-1 extension of stay', f1Route1Desc: 'The status-change route for family visiting/cohabitation (F-1-13). Confirm eligibility and documents with the competent office.', f1Route2Desc: 'The route for post-divorce affairs of a marriage migrant (F-1-6). Confirm recognition conditions and documents with the competent office.', f1Route3Desc: 'The status-change route for the family of a recognized refugee (F-1-16). Confirm eligibility and documents with the competent office.', f1Route4Desc: 'To stay beyond your current F-1 period, extension permission may be required. Check with the competent office before your expiry date.',
+        aiDescSpecial: 'Describe the situation you are facing, including facts, stay status, and nationality. Paradiso AI will check the issue against the 2026 Immigration Act and manuals without adding unsupported interpretation.', aiDescGeneral: 'Enter nationality, current residence status, role, residence area, and other details. Paradiso AI analyzes against the April 2026 Ministry of Justice immigration manuals.<br><span style="color:var(--color-warning); font-weight:700;">AI answers are for reference only. Always confirm final decisions with 1345 or the competent immigration office.</span>',
+        aiEmptyInput: 'Please describe your situation in detail.', aiNoResult: 'No result could be generated.', aiError: '⚠ An error occurred during analysis.', aiNoProvider: 'The AI analysis service is not currently configured. Please use the documents and procedure information in the search results, and confirm finally with 1345 or the competent immigration office.',
+        documentSectionTitle: 'Required documents', documentTabLabels: ['Initial application (before entry)', 'Foreigner registration', 'Extension of stay'], docTabMissingNotice: 'No structured document data: the documents for this procedure are not yet fully organized in the Paradiso structured data. Check the latest stay/visa civil-affairs guidance manual or the competent immigration office.',
         deadlineCalcTitle: 'Deadline calculator', deadlineCalcIntro: 'Enter your entry date and stay expiry date to estimate helpful preparation dates. These are not official deadlines, and your inputs are not saved or transmitted.', deadlineEntryDate: 'Entry date', deadlineExpiryDate: 'Stay expiry date', deadlineRegEstimate: 'Estimated registration deadline', deadlineExtReminders: 'Extension preparation reminders', deadlineAddToCalendar: 'Add to calendar', deadlineDownloadIcs: 'Download ICS file', deadlineAddGoogle: 'Add to Google Calendar', deadlineDisclaimer: 'Official deadlines may differ depending on your facts and the competent office.', deadlineCustomTitle: 'Reminder title (optional)', deadlineCustomDate: 'Reminder date (optional)', deadlineCompute: 'Calculate dates', deadlineRegCaution: 'Long-term foreign residents may need to complete foreigner registration within 90 days of entry (where applicable). This is a general preparation aid, not a confirmed official deadline.', deadlineExtCaution: 'These dates are preparation reminders based on your expiry date and do not guarantee any official filing window.', deadlineEmpty: 'Enter a date to see the estimated schedule.', deadlinePrivacyNote: 'Dates you enter are shown only in your browser and are not saved or sent to AI or the server.', deadlineDdayToday: 'Today', deadlineDaysBefore: '{days} days before', deadlineOnDate: 'On the date', deadlineProcedureTypeLabel: 'Related procedure (optional)',
         hkPreCheckCaution: 'The items below help you prepare for booking. You can continue to the next step without checking them. Having your email, password, and stay-expiry date ready makes booking easier.',
         procFallbackInitial: 'This covers the pre-entry visa issuance or initial status application stage. Check detailed requirements and documents with the Korean mission, HiKorea, or the competent authority.', procFallbackRegistration: 'Long-term foreign residents in Korea may need foreigner registration or domestic residence reporting depending on status and circumstances. Eligibility, deadline, and documents may vary.', procFallbackExtension: 'If you plan to stay beyond your current permitted period, check whether extension permission is required and what documents apply. Start well before your expiry date.',
@@ -14539,6 +14675,22 @@ const UI_TRANSLATIONS = {
         f4RouteTitle: '您属于哪一种 F-4 办理路径？', f4RouteIntro: 'F-4 可能涉及不同路径，包括入境前签证签发、境内资格变更、国内居所申报和停留期间延期。请先确认哪一种路径符合您的情况。', f4RouteShowAll: '查看全部 F-4 路径', f4RouteChooserAria: 'F-4 路径选择', f4RouteSelectedPrefix: '已选路径', f4RouteSourceNote: '选择路径并不代表符合资格或获得许可。实际适用与否请向 HiKorea、1345 或管辖出入境外国人机构确认。', f4RouteNoDocsNote: '此路径暂未关联经来源确认的材料清单。请直接向 HiKorea、1345 或管辖出入境外国人机构确认。',
         f4Route1Label: '通过驻外韩国使领馆取得 F-4 签证后入境', f4Route2Label: '以 B-2、C-3 等身份入境后在韩国境内变更为 F-4', f4Route3Label: '从 H-2 变更为 F-4', f4Route4Label: 'F-4 国内居所申报', f4Route5Label: 'F-4 停留期间延期',
         f4Route1Desc: '在海外通过韩国驻外使领馆取得 F-4 签证后入境。签证签发要件与材料请向使领馆和 HiKorea 确认。', f4Route2Desc: '以 B-2、C-3 等其他资格入境后，在韩国境内将停留资格变更为 F-4。变更对象与材料请向管辖出入境外国人机构确认。', f4Route3Desc: '从 H-2（访问就业）变更为 F-4。资格要件与所需材料请向管辖出入境外国人机构确认。', f4Route4Desc: '在外同胞（F-4）可能适用国内居所申报，而非一般外国人登记。申报对象、期限与材料请向管辖机关确认。', f4Route5Desc: '如需超过当前 F-4 停留期间继续停留，可能需要停留期间延期许可。请在到期日前留出充足时间确认。',
+        routeShowAll: '查看全部路径',
+        f6RouteTitle: '您属于哪一种 F-6 情况？', f6RouteIntro: 'F-6 的程序和材料可能会因韩国国民配偶、子女抚养、婚姻关系中断等具体事由而不同。请先选择最接近您情况的选项。', f6RouteChooserAria: 'F-6 情况选择',
+        f6Route1Label: '韩国国民配偶 / 婚姻关系维持', f6Route2Label: '抚养子女的情况', f6Route3Label: '离婚、分居等婚姻关系中断', f6Route4Label: '死亡、失踪等非本人责任事由', f6Route5Label: 'F-6 停留期间延期',
+        f6Route1Desc: '适用于作为韩国国民配偶且婚姻关系维持中的情况。具体对象与所需材料请向管辖出入境外国人机构确认。', f6Route2Desc: '抚养韩国国民子女时可能适用的程序。抚养事实是否被认定及所需材料请向管辖机关确认。仅有抚养事实并不会自动获得认可。', f6Route3Desc: '适用于因离婚、分居等导致婚姻关系中断的情况。认定有一定条件（例如非本人责任事由），并非所有婚姻中断案例都会被认定。请向管辖机关确认。', f6Route4Desc: '适用于因配偶死亡、失踪等非本人责任事由而无法维持婚姻关系的情况。认定条件与材料请向管辖机关确认。', f6Route5Desc: '如需超过当前 F-6 停留期间继续停留，可能需要停留期间延期许可。请在到期日前留出充足时间向管辖机关确认。',
+        g1RouteTitle: '您属于哪一种 G-1 事由？', g1RouteIntro: 'G-1 的程序和材料可能会因难民申请、人道停留、诉讼、治疗、产业灾害等事由而有很大差异。请先选择最接近您情况的事由。', g1RouteChooserAria: 'G-1 事由选择',
+        g1Route1Label: '难民申请或难民相关停留', g1Route2Label: '人道停留', g1Route3Label: '诉讼或权利救济程序', g1Route4Label: '疾病治疗或医疗目的', g1Route5Label: '产业灾害、拖欠工资等需保护事由', g1Route6Label: 'G-1 停留期间延期',
+        g1Route1Desc: '适用于因难民申请或难民相关事由停留的情况。难民认定通过单独审查决定，选择此路径并不保证获得认定。请向管辖机关或难民主管部门确认。', g1Route2Desc: '适用于人道停留事由的情况。人道停留许可与否通过审查决定，并不保证。请向管辖机关确认。', g1Route3Desc: '适用于为进行诉讼等权利救济程序而停留的情况。认定条件与材料请向管辖机关确认。', g1Route4Desc: '适用于因疾病治疗等医疗目的停留的情况。具体对象与材料请向管辖机关确认。', g1Route5Desc: '适用于因产业灾害索赔·治疗、拖欠工资救济等需保护事由停留的情况。认定条件与材料请向管辖机关确认。', g1Route6Desc: '如需超过当前 G-1 停留期间继续停留，可能需要停留期间延期许可。各事由程序不同，请向管辖机关确认。',
+        f2RouteTitle: '您属于哪一种 F-2 居住事由？', f2RouteIntro: 'F-2（居住）的程序和材料可能因积分制、投资、家庭等事由而不同。请先选择最接近您情况的选项。', f2RouteChooserAria: 'F-2 居住事由选择', f2Route1Label: '积分制优秀人才 (F-2-7)', f2Route2Label: '观光·休养等投资 (F-2-8)', f2Route3Label: '国民或永驻者的家属', f2Route4Label: 'F-2 停留期间延期', f2Route1Desc: '通过积分制评估变更为 F-2-7 的路径。评分项目与材料请向管辖机关确认。', f2Route2Desc: '以观光·休养设施等投资为依据变更为居住资格的路径。投资要件与材料请向管辖机关确认。', f2Route3Desc: '以国民未成年子女或永驻者配偶·子女等家庭关系为依据的路径。具体对象与材料请向管辖机关确认。', f2Route4Desc: '如需超过当前 F-2 停留期间继续停留，可能需要延期许可。请在到期日前向管辖机关确认。',
+        d10RouteTitle: '您属于哪一种 D-10 求职·准备情况？', d10RouteIntro: 'D-10（求职）的程序可能因积分制求职、技术创业准备、尖端技术实习等类型而不同。请先选择最接近您情况的选项。', d10RouteChooserAria: 'D-10 情况选择', d10Route1Label: '积分制求职 (D-10-1)', d10Route2Label: '技术创业准备 (D-10-2)', d10Route3Label: '尖端技术实习 (D-10-3)', d10Route4Label: 'D-10 停留期间延期', d10Route1Desc: '积分制求职（D-10-1）类型的程序。评分项目与材料请向管辖机关确认。', d10Route2Desc: '技术创业准备（D-10-2）类型的程序。要件与材料请向管辖机关确认。', d10Route3Desc: '尖端技术实习（D-10-3）类型的程序。要件与材料请向管辖机关确认。', d10Route4Desc: '如需超过当前 D-10 停留期间继续求职·准备，可能需要延期许可。请在到期日前向管辖机关确认。',
+        h2RouteTitle: '您想查看哪一种 H-2 程序？', h2RouteIntro: 'H-2（访问就业）涉及外国人登记、就业开始·工作场所申报、变更为 F-4、停留期间延期等多种程序。请先选择适合您的程序。', h2RouteChooserAria: 'H-2 程序选择', h2Route1Label: '外国人登记', h2Route2Label: '就业开始·工作场所变更申报', h2Route3Label: '从 H-2 变更为 F-4', h2Route4Label: 'H-2 停留期间延期', h2Route1Desc: 'H-2 现有停留者的外国人登记程序。对象、期限与材料请向管辖机关确认。', h2Route2Desc: '开始就业或变更工作场所时的申报程序。申报期限与方式请向 HiKorea 或管辖机关确认。', h2Route3Desc: '从 H-2 变更为 F-4 的路径。变更并不会自动获得认可，资格要件与材料请向管辖机关确认。', h2Route4Desc: '如需超过当前 H-2 停留期间继续停留，可能需要延期许可。请在到期日前向管辖机关确认。',
+        e7RouteTitle: '您想查看哪一种 E-7 程序？', e7RouteIntro: 'E-7（特定活动）涉及职业/行业代码确认、工作场所变更·增加申报、停留期间延期等多种程序。请先选择适合您的程序。', e7RouteChooserAria: 'E-7 程序选择', e7Route1Label: '职业/行业代码确认', e7Route2Label: '工作场所变更·增加申报', e7Route3Label: 'E-7 停留期间延期', e7Route1Desc: '确认 E-7 特定活动的职业/行业代码的步骤。代码工具仅供参考，最终代码与资格请向 HiKorea 或 1345 确认。', e7Route2Desc: '已登记 E-7 外国人的工作场所变更·增加事后申报程序。申报期限与材料请向 HiKorea 或管辖机关确认。', e7Route3Desc: '如需超过当前 E-7 停留期间继续停留，可能需要延期许可。请在到期日前向管辖机关确认。',
+        d4RouteTitle: '您属于哪一种 D-4 研修情况？', d4RouteIntro: 'D-4（一般研修）的程序可能因语言研修、毕业生研修、高中以下留学生等类型而不同。请先选择最接近您情况的选项。', d4RouteChooserAria: 'D-4 情况选择', d4Route1Label: '语言研修 (D-4-1·D-4-7)', d4Route2Label: '毕业生一般研修 (D-4-2)', d4Route3Label: '高中以下留学生 (D-4-3)', d4Route4Label: 'D-4 停留期间延期', d4Route1Desc: '语言研修（D-4-1·D-4-7）类型的居留资格变更程序。对象与材料请向管辖机关确认。', d4Route2Desc: '毕业生一般研修（D-4-2）类型的居留资格变更程序。对象与材料请向管辖机关确认。', d4Route3Desc: '高中以下外国人留学生（D-4-3）类型的居留资格变更程序。对象与材料请向管辖机关确认。', d4Route4Desc: '如需超过当前 D-4 停留期间继续研修，可能需要延期许可。请在到期日前向管辖机关确认。',
+        f1RouteTitle: '您属于哪一种 F-1 访问·同居事由？', f1RouteIntro: 'F-1（访问同居）的程序可能因家庭访问·同居、婚姻中断后事务、难民认定者家属等事由而不同。请先选择最接近您情况的事由。', f1RouteChooserAria: 'F-1 事由选择', f1Route1Label: '访问·同居 (F-1-13)', f1Route2Label: '婚姻中断后事务处理 (F-1-6)', f1Route3Label: '难民认定者家属 (F-1-16)', f1Route4Label: 'F-1 停留期间延期', f1Route1Desc: '家庭访问·同居（F-1-13）类型的居留资格变更程序。对象与材料请向管辖机关确认。', f1Route2Desc: '婚姻中断结婚移民者的事务处理（F-1-6）类型程序。认定条件与材料请向管辖机关确认。', f1Route3Desc: '难民认定者家属（F-1-16）类型的居留资格变更程序。对象与材料请向管辖机关确认。', f1Route4Desc: '如需超过当前 F-1 停留期间继续停留，可能需要延期许可。请在到期日前向管辖机关确认。',
+        aiDescSpecial: '请详细描述您当前面临的情况（事件经过、停留状态、国籍等），Paradiso AI 将依据2026年出入境管理法及手册原文，<strong>在不作主观解释的前提下</strong>核查相关法律判断与救济程序。', aiDescGeneral: '请详细输入国籍、现持停留资格、职务、居住地等情况，Paradiso AI 将依据<strong>2026年4月法务部出入境实务手册（签证·停留民愿最新版）</strong>进行分析。<br><span style="color:var(--color-warning); font-weight:700;">⚠ AI 答复仅供参考。最终判断请务必向 ☎ 1345 或管辖出入境外国人机构确认。</span>',
+        aiEmptyInput: '请详细输入您的情况。', aiNoResult: '无法生成结果。', aiError: '⚠ 分析过程中发生错误。', aiNoProvider: 'AI 分析服务当前尚未配置。请参考搜索结果中的材料与程序信息，并向 ☎ 1345 或管辖出入境外国人机构进行最终确认。',
+        documentSectionTitle: '所需材料', documentTabLabels: ['初次申请（入境前）', '外国人登记', '停留期间延期'], docTabMissingNotice: '无结构化材料数据：此程序的所需材料尚未在 Paradiso 结构化数据中充分整理。请查阅最新的停留·签证民愿指南手册或管辖出入境外国人机构。',
         deadlineCalcTitle: '期限计算器', deadlineCalcIntro: '输入入境日期和停留期限到期日，可估算有助于准备的日程。这些并非正式期限，您输入的内容不会被保存或发送。', deadlineEntryDate: '入境日期', deadlineExpiryDate: '停留期限到期日', deadlineRegEstimate: '预计外国人登记期限', deadlineExtReminders: '延期准备提醒', deadlineAddToCalendar: '添加到日历', deadlineDownloadIcs: '下载 ICS 文件', deadlineAddGoogle: '添加到 Google Calendar', deadlineDisclaimer: '正式期限可能因个人情况和管辖机构判断而不同。', deadlineCustomTitle: '提醒标题（可选）', deadlineCustomDate: '提醒日期（可选）', deadlineCompute: '计算日期', deadlineRegCaution: '长期停留的外国人可能需要在入境后 90 日内完成外国人登记（仅限对象者）。这是一般准备参考，并非确定的正式期限。', deadlineExtCaution: '以下日期为基于到期日的准备提醒，不保证任何正式申请期间。', deadlineEmpty: '输入日期后将显示预计日程。', deadlinePrivacyNote: '您输入的日期仅在浏览器中显示，不会保存或发送给 AI 或服务器。', deadlineDdayToday: '今天', deadlineDaysBefore: '提前 {days} 天', deadlineOnDate: '当天', deadlineProcedureTypeLabel: '相关程序（可选）',
         hkPreCheckCaution: '以下项目用于帮助您准备预约。即使不勾选也可继续下一步。提前准备好电子邮箱、密码和停留期限到期日会让预约更顺利。',
         procFallbackInitial: '此为入境前签证签发或相应停留资格申请阶段需确认的程序。详细要件与提交材料请向驻外韩国使领馆、HiKorea 或主管机关确认。', procFallbackRegistration: '在韩国长期停留的外国人，可能因对象与情况需要办理外国人登记或国内居所申报。登记/申报对象、期限与提交材料可能因停留资格和个人情况而不同。', procFallbackExtension: '如计划超过当前许可期间继续停留，需确认是否需要延期许可以及适用的材料。请在到期日前留出充足时间确认。',
@@ -14552,6 +14704,7 @@ const UI_TRANSLATIONS = {
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
+        closeModal: '關閉', docModalTitle: '所需文件確認', faqModalTitle: '💡 常見問題 (FAQ)', aiModalTitle: 'AI 客製情況分析', aiIntro: '請詳細填寫您目前的國籍、持有的居留資格（簽證）、職務、居住地等情況，Paradiso AI 將根據公開資料與您輸入的情況，整理相關居留資格與須確認的程序。最終判斷與申請程序請向管轄機關確認。', aiInputLabel: '情況說明', aiInputPlaceholder: '例：我是美國國籍，目前住在梨泰院。已從韓國四年制大學取得學士學位，目前持 D-10 求職簽證，想變更為 E-7 就業。', aiActionLabels: ['✨ 綜合情況分析請求', '✨ 文件多語言說明及核發處指引', '🏛 查詢管轄機構及1345指引', '💼 查找就業申報職業/行業代碼'], jobCodeTitle: '💼 查找就業申報職業/行業代碼', jurisdictionTitle: '🏛 查詢管轄出入境機構',
         cityButton: '設定位置與時間', cityPlaceholder: '搜尋城市...', citySearchAria: '搜尋城市名稱',
         themeButton: '切換主題', themeLight: '淺色模式', themeDark: '深色模式', reset: '返回首頁',
         heroEyebrow: 'Paradiso · 韓國居留指南', heroTitle: '為重要之事而動，', heroEm: '找到前行的方向。',
@@ -14583,6 +14736,22 @@ const UI_TRANSLATIONS = {
         f4RouteTitle: '您屬於哪一種 F-4 辦理路徑？', f4RouteIntro: 'F-4 可能涉及不同路徑，包括入境前簽證核發、境內資格變更、國內居所申報和停留期間延期。請先確認哪一種路徑符合您的情況。', f4RouteShowAll: '查看全部 F-4 路徑', f4RouteChooserAria: 'F-4 路徑選擇', f4RouteSelectedPrefix: '已選路徑', f4RouteSourceNote: '選擇路徑並不代表符合資格或獲得許可。實際適用與否請向 HiKorea、1345 或管轄出入境外國人機構確認。', f4RouteNoDocsNote: '此路徑尚未連結經來源確認的文件清單。請直接向 HiKorea、1345 或管轄出入境外國人機構確認。',
         f4Route1Label: '透過駐外韓國使領館取得 F-4 簽證後入境', f4Route2Label: '以 B-2、C-3 等身分入境後在韓國境內變更為 F-4', f4Route3Label: '從 H-2 變更為 F-4', f4Route4Label: 'F-4 國內居所申報', f4Route5Label: 'F-4 停留期間延期',
         f4Route1Desc: '在海外透過韓國駐外使領館取得 F-4 簽證後入境。簽證核發要件與文件請向使領館和 HiKorea 確認。', f4Route2Desc: '以 B-2、C-3 等其他資格入境後，在韓國境內將停留資格變更為 F-4。變更對象與文件請向管轄出入境外國人機構確認。', f4Route3Desc: '從 H-2（訪問就業）變更為 F-4。資格要件與所需文件請向管轄出入境外國人機構確認。', f4Route4Desc: '在外同胞（F-4）可能適用國內居所申報，而非一般外國人登錄。申報對象、期限與文件請向管轄機關確認。', f4Route5Desc: '如需超過目前 F-4 停留期間繼續停留，可能需要停留期間延期許可。請在到期日前預留充足時間確認。',
+        routeShowAll: '查看全部路徑',
+        f6RouteTitle: '您屬於哪一種 F-6 情況？', f6RouteIntro: 'F-6 的程序和文件可能會因韓國國民配偶、子女撫養、婚姻關係中斷等具體事由而不同。請先選擇最接近您情況的選項。', f6RouteChooserAria: 'F-6 情況選擇',
+        f6Route1Label: '韓國國民配偶 / 婚姻關係維持', f6Route2Label: '撫養子女的情況', f6Route3Label: '離婚、分居等婚姻關係中斷', f6Route4Label: '死亡、失蹤等非本人責任事由', f6Route5Label: 'F-6 停留期間延期',
+        f6Route1Desc: '適用於作為韓國國民配偶且婚姻關係維持中的情況。具體對象與所需文件請向管轄出入境外國人機構確認。', f6Route2Desc: '撫養韓國國民子女時可能適用的程序。撫養事實是否被認定及所需文件請向管轄機關確認。僅有撫養事實並不會自動獲得認可。', f6Route3Desc: '適用於因離婚、分居等導致婚姻關係中斷的情況。認定有一定條件（例如非本人責任事由），並非所有婚姻中斷案例都會被認定。請向管轄機關確認。', f6Route4Desc: '適用於因配偶死亡、失蹤等非本人責任事由而無法維持婚姻關係的情況。認定條件與文件請向管轄機關確認。', f6Route5Desc: '如需超過目前 F-6 停留期間繼續停留，可能需要停留期間延期許可。請在到期日前預留充足時間向管轄機關確認。',
+        g1RouteTitle: '您屬於哪一種 G-1 事由？', g1RouteIntro: 'G-1 的程序和文件可能會因難民申請、人道停留、訴訟、治療、產業災害等事由而有很大差異。請先選擇最接近您情況的事由。', g1RouteChooserAria: 'G-1 事由選擇',
+        g1Route1Label: '難民申請或難民相關停留', g1Route2Label: '人道停留', g1Route3Label: '訴訟或權利救濟程序', g1Route4Label: '疾病治療或醫療目的', g1Route5Label: '產業災害、拖欠工資等需保護事由', g1Route6Label: 'G-1 停留期間延期',
+        g1Route1Desc: '適用於因難民申請或難民相關事由停留的情況。難民認定透過單獨審查決定，選擇此路徑並不保證獲得認定。請向管轄機關或難民主管部門確認。', g1Route2Desc: '適用於人道停留事由的情況。人道停留許可與否透過審查決定，並不保證。請向管轄機關確認。', g1Route3Desc: '適用於為進行訴訟等權利救濟程序而停留的情況。認定條件與文件請向管轄機關確認。', g1Route4Desc: '適用於因疾病治療等醫療目的停留的情況。具體對象與文件請向管轄機關確認。', g1Route5Desc: '適用於因產業災害索賠·治療、拖欠工資救濟等需保護事由停留的情況。認定條件與文件請向管轄機關確認。', g1Route6Desc: '如需超過目前 G-1 停留期間繼續停留，可能需要停留期間延期許可。各事由程序不同，請向管轄機關確認。',
+        f2RouteTitle: '您屬於哪一種 F-2 居住事由？', f2RouteIntro: 'F-2（居住）的程序和文件可能因積分制、投資、家庭等事由而不同。請先選擇最接近您情況的選項。', f2RouteChooserAria: 'F-2 居住事由選擇', f2Route1Label: '積分制優秀人才 (F-2-7)', f2Route2Label: '觀光·休養等投資 (F-2-8)', f2Route3Label: '國民或永駐者的家屬', f2Route4Label: 'F-2 停留期間延期', f2Route1Desc: '透過積分制評估變更為 F-2-7 的路徑。評分項目與文件請向管轄機關確認。', f2Route2Desc: '以觀光·休養設施等投資為依據變更為居住資格的路徑。投資要件與文件請向管轄機關確認。', f2Route3Desc: '以國民未成年子女或永駐者配偶·子女等家庭關係為依據的路徑。具體對象與文件請向管轄機關確認。', f2Route4Desc: '如需超過目前 F-2 停留期間繼續停留，可能需要延期許可。請在到期日前向管轄機關確認。',
+        d10RouteTitle: '您屬於哪一種 D-10 求職·準備情況？', d10RouteIntro: 'D-10（求職）的程序可能因積分制求職、技術創業準備、尖端技術實習等類型而不同。請先選擇最接近您情況的選項。', d10RouteChooserAria: 'D-10 情況選擇', d10Route1Label: '積分制求職 (D-10-1)', d10Route2Label: '技術創業準備 (D-10-2)', d10Route3Label: '尖端技術實習 (D-10-3)', d10Route4Label: 'D-10 停留期間延期', d10Route1Desc: '積分制求職（D-10-1）類型的程序。評分項目與文件請向管轄機關確認。', d10Route2Desc: '技術創業準備（D-10-2）類型的程序。要件與文件請向管轄機關確認。', d10Route3Desc: '尖端技術實習（D-10-3）類型的程序。要件與文件請向管轄機關確認。', d10Route4Desc: '如需超過目前 D-10 停留期間繼續求職·準備，可能需要延期許可。請在到期日前向管轄機關確認。',
+        h2RouteTitle: '您想查看哪一種 H-2 程序？', h2RouteIntro: 'H-2（訪問就業）涉及外國人登錄、就業開始·工作場所申報、變更為 F-4、停留期間延期等多種程序。請先選擇適合您的程序。', h2RouteChooserAria: 'H-2 程序選擇', h2Route1Label: '外國人登錄', h2Route2Label: '就業開始·工作場所變更申報', h2Route3Label: '從 H-2 變更為 F-4', h2Route4Label: 'H-2 停留期間延期', h2Route1Desc: 'H-2 現有停留者的外國人登錄程序。對象、期限與文件請向管轄機關確認。', h2Route2Desc: '開始就業或變更工作場所時的申報程序。申報期限與方式請向 HiKorea 或管轄機關確認。', h2Route3Desc: '從 H-2 變更為 F-4 的路徑。變更並不會自動獲得認可，資格要件與文件請向管轄機關確認。', h2Route4Desc: '如需超過目前 H-2 停留期間繼續停留，可能需要延期許可。請在到期日前向管轄機關確認。',
+        e7RouteTitle: '您想查看哪一種 E-7 程序？', e7RouteIntro: 'E-7（特定活動）涉及職業/行業代碼確認、工作場所變更·增加申報、停留期間延期等多種程序。請先選擇適合您的程序。', e7RouteChooserAria: 'E-7 程序選擇', e7Route1Label: '職業/行業代碼確認', e7Route2Label: '工作場所變更·增加申報', e7Route3Label: 'E-7 停留期間延期', e7Route1Desc: '確認 E-7 特定活動的職業/行業代碼的步驟。代碼工具僅供參考，最終代碼與資格請向 HiKorea 或 1345 確認。', e7Route2Desc: '已登記 E-7 外國人的工作場所變更·增加事後申報程序。申報期限與文件請向 HiKorea 或管轄機關確認。', e7Route3Desc: '如需超過目前 E-7 停留期間繼續停留，可能需要延期許可。請在到期日前向管轄機關確認。',
+        d4RouteTitle: '您屬於哪一種 D-4 研修情況？', d4RouteIntro: 'D-4（一般研修）的程序可能因語言研修、畢業生研修、高中以下留學生等類型而不同。請先選擇最接近您情況的選項。', d4RouteChooserAria: 'D-4 情況選擇', d4Route1Label: '語言研修 (D-4-1·D-4-7)', d4Route2Label: '畢業生一般研修 (D-4-2)', d4Route3Label: '高中以下留學生 (D-4-3)', d4Route4Label: 'D-4 停留期間延期', d4Route1Desc: '語言研修（D-4-1·D-4-7）類型的居留資格變更程序。對象與文件請向管轄機關確認。', d4Route2Desc: '畢業生一般研修（D-4-2）類型的居留資格變更程序。對象與文件請向管轄機關確認。', d4Route3Desc: '高中以下外國人留學生（D-4-3）類型的居留資格變更程序。對象與文件請向管轄機關確認。', d4Route4Desc: '如需超過目前 D-4 停留期間繼續研修，可能需要延期許可。請在到期日前向管轄機關確認。',
+        f1RouteTitle: '您屬於哪一種 F-1 訪問·同居事由？', f1RouteIntro: 'F-1（訪問同居）的程序可能因家庭訪問·同居、婚姻中斷後事務、難民認定者家屬等事由而不同。請先選擇最接近您情況的事由。', f1RouteChooserAria: 'F-1 事由選擇', f1Route1Label: '訪問·同居 (F-1-13)', f1Route2Label: '婚姻中斷後事務處理 (F-1-6)', f1Route3Label: '難民認定者家屬 (F-1-16)', f1Route4Label: 'F-1 停留期間延期', f1Route1Desc: '家庭訪問·同居（F-1-13）類型的居留資格變更程序。對象與文件請向管轄機關確認。', f1Route2Desc: '婚姻中斷結婚移民者的事務處理（F-1-6）類型程序。認定條件與文件請向管轄機關確認。', f1Route3Desc: '難民認定者家屬（F-1-16）類型的居留資格變更程序。對象與文件請向管轄機關確認。', f1Route4Desc: '如需超過目前 F-1 停留期間繼續停留，可能需要延期許可。請在到期日前向管轄機關確認。',
+        aiDescSpecial: '請詳細描述您目前面臨的情況（事件經過、停留狀態、國籍等），Paradiso AI 將依據2026年出入境管理法及手冊原文，<strong>在不作主觀解釋的前提下</strong>核查相關法律判斷與救濟程序。', aiDescGeneral: '請詳細輸入國籍、現持停留資格、職務、居住地等情況，Paradiso AI 將依據<strong>2026年4月法務部出入境實務手冊（簽證·停留民願最新版）</strong>進行分析。<br><span style="color:var(--color-warning); font-weight:700;">⚠ AI 答覆僅供參考。最終判斷請務必向 ☎ 1345 或管轄出入境外國人機構確認。</span>',
+        aiEmptyInput: '請詳細輸入您的情況。', aiNoResult: '無法生成結果。', aiError: '⚠ 分析過程中發生錯誤。', aiNoProvider: 'AI 分析服務目前尚未配置。請參考搜尋結果中的文件與程序資訊，並向 ☎ 1345 或管轄出入境外國人機構進行最終確認。',
+        documentSectionTitle: '所需文件', documentTabLabels: ['初次申請（入境前）', '外國人登錄', '停留期間延期'], docTabMissingNotice: '無結構化文件資料：此程序的所需文件尚未在 Paradiso 結構化資料中充分整理。請查閱最新的停留·簽證民願指南手冊或管轄出入境外國人機構。',
         deadlineCalcTitle: '期限計算器', deadlineCalcIntro: '輸入入境日期與停留期限到期日，可估算有助於準備的日程。這些並非正式期限，您輸入的內容不會被儲存或傳送。', deadlineEntryDate: '入境日期', deadlineExpiryDate: '停留期限到期日', deadlineRegEstimate: '預計外國人登錄期限', deadlineExtReminders: '延期準備提醒', deadlineAddToCalendar: '加入行事曆', deadlineDownloadIcs: '下載 ICS 檔案', deadlineAddGoogle: '加入 Google Calendar', deadlineDisclaimer: '正式期限可能因個人情況和管轄機構判斷而不同。', deadlineCustomTitle: '提醒標題（選填）', deadlineCustomDate: '提醒日期（選填）', deadlineCompute: '計算日期', deadlineRegCaution: '長期停留的外國人可能需要在入境後 90 日內完成外國人登錄（僅限對象者）。這是一般準備參考，並非確定的正式期限。', deadlineExtCaution: '以下日期為基於到期日的準備提醒，不保證任何正式申請期間。', deadlineEmpty: '輸入日期後將顯示預計日程。', deadlinePrivacyNote: '您輸入的日期僅在瀏覽器中顯示，不會儲存或傳送給 AI 或伺服器。', deadlineDdayToday: '今天', deadlineDaysBefore: '提前 {days} 天', deadlineOnDate: '當天', deadlineProcedureTypeLabel: '相關程序（選填）',
         hkPreCheckCaution: '以下項目用於協助您準備預約。即使不勾選也可繼續下一步。提前準備好電子郵件、密碼和停留期限到期日會讓預約更順利。',
         procFallbackInitial: '此為入境前簽證核發或相應停留資格申請階段需確認的程序。詳細要件與提交文件請向駐外韓國使領館、HiKorea 或主管機關確認。', procFallbackRegistration: '在韓國長期停留的外國人，可能因對象與情況需要辦理外國人登錄或國內居所申報。登錄/申報對象、期限與提交文件可能因停留資格和個人情況而不同。', procFallbackExtension: '如計劃超過目前許可期間繼續停留，需確認是否需要延期許可以及適用的文件。請在到期日前預留充足時間確認。',
