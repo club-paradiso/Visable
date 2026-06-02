@@ -1381,6 +1381,16 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .f4-route-explain { margin-top: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--bd2); border-left: 3px solid var(--ac); border-radius: 8px; background: var(--bg1); }
 .f4-route-explain .f4-route-desc { color: var(--t2); font-size: 0.84rem; line-height: 1.6; margin: 0; word-break: keep-all; }
 .f4-route-explain .f4-route-source-note { color: var(--t3); font-size: 0.78rem; line-height: 1.55; margin: 0.5rem 0 0; word-break: keep-all; }
+.f4-route-selected { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem; margin: 0 0 0.45rem; color: var(--t1); font-size: 0.86rem; line-height: 1.5; word-break: keep-all; }
+.f4-route-selected-prefix { flex: 0 0 auto; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--ac); }
+/* Source / law-grounding panel readability helpers */
+.ai-grounding-panel .gp-lead { margin: 0.15rem 0 0.55rem; color: var(--t2); font-size: 0.78rem; line-height: 1.55; word-break: keep-all; }
+.ai-grounding-panel .gp-subnote { margin-top: 0.35rem; color: var(--t3); font-size: 0.74rem; line-height: 1.5; word-break: keep-all; }
+/* AI modal selected-context banner */
+.ai-modal-context { margin: 0.2rem 0 0.6rem; padding: 0.6rem 0.7rem; border: 1px solid var(--bd2); border-left: 3px solid var(--ac); border-radius: 9px; background: var(--bg0); font-size: 0.8rem; line-height: 1.55; color: var(--t2); word-break: keep-all; }
+.ai-modal-context-label { display: inline-block; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.02em; text-transform: uppercase; color: var(--ac); margin-right: 0.35rem; }
+.ai-modal-context-value { font-weight: 700; color: var(--t1); }
+.ai-modal-context-note { display: block; margin-top: 0.35rem; font-size: 0.72rem; color: var(--t3); }
 /* Deadline / grace-period calculator */
 .deadline-calc { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.5rem 0.9rem; background: var(--bg0); }
 .deadline-calc[open] { padding-bottom: 0.9rem; }
@@ -1412,6 +1422,22 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .deadline-empty { color: var(--t3); font-size: 0.8rem; }
 .deadline-disclaimer { color: var(--t2); font-size: 0.76rem; line-height: 1.55; margin: 0.7rem 0 0; word-break: keep-all; }
 .deadline-privacy { color: var(--t3); font-size: 0.73rem; line-height: 1.5; margin: 0.4rem 0 0; word-break: keep-all; }
+/* Narrow-screen hardening for the core action surfaces added during the recent
+   feature expansion (route chips, scenario choices, checklist + deadline action
+   buttons, next-action grid). Goal: clean wrapping, comfortable tap targets, and
+   no horizontal overflow on phones — without redesigning the desktop layout. */
+@media (max-width: 480px) {
+    .next-action-grid { grid-template-columns: 1fr; }
+    .f4-route-chip, .f4-route-showall { flex: 1 1 100%; min-height: 44px; }
+    .scenario-choice-list { flex-direction: column; }
+    .scenario-choice { width: 100%; min-height: 44px; }
+    .scenario-checklist-actions { flex-wrap: wrap; }
+    .scenario-checklist-actions .scenario-checklist-btn { flex: 1 1 calc(50% - 0.3rem); min-height: 44px; }
+    .deadline-inputs { grid-template-columns: 1fr; }
+    .deadline-row-actions { flex-direction: column; align-items: stretch; }
+    .deadline-row-actions .deadline-cal-btn { justify-content: center; min-height: 44px; }
+    .ai-modal-context { font-size: 0.82rem; }
+}
 .manual-preview { color: var(--t2); }
 .manual-detail-block { margin-top: 0.45rem; border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 70%, white); }
 .manual-detail-block > summary { min-height: 34px; display: flex; align-items: center; cursor: pointer; padding: 0 0.7rem; color: var(--t2); font-size: 0.74rem; font-weight: 900; list-style: none; }
@@ -10489,6 +10515,7 @@ button[data-keyword]:focus-visible {
         </div>
         <div class="modal-body">
             <p style="font-size:0.85rem; color:var(--t3); line-height:1.5;">현재 국적, 보유 중인 체류자격(비자), 직무, 거주지 등 본인의 상황을 상세히 적어주시면, Paradiso AI가 공개 자료와 입력하신 상황을 바탕으로 관련 체류자격과 확인해야 할 절차를 정리해 드립니다. 최종 판단과 신청 절차는 관할기관 안내를 확인해 주세요.</p>
+            <div id="aiModalContext" class="ai-modal-context" role="note" hidden></div>
             <label for="aiInput" class="sr-only">상황 입력</label>
             <textarea id="aiInput" class="ai-textarea" placeholder="예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다."></textarea>
 
@@ -11352,11 +11379,21 @@ function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVaria
         jobCodeBtn.style.display = isJobCodeTarget ? '' : 'none';
     }
     const aiInput = document.getElementById('aiInput');
+    const contextEl = document.getElementById('aiModalContext');
     if (selectedVariant) {
         const label = selectedVariantLabel || selectedVariant.labelKo || selectedVariant.label || selectedVariant.id;
         aiInput.value = tx(promptKey || 'selectedScenarioAiPrompt', { visaCode: visa.code, label });
+        // Show the user (and only as safe labels) which scenario context the AI
+        // will receive. Only identifiers are sent — never checklist/reminder state.
+        if (contextEl) {
+            const procedureLabel = getProcedureLabelByKey(selectedProcedureKey, selectedProcedureKey);
+            const bits = [visa.code, procedureLabel, label].filter(Boolean).map(escapeHtml).join(' · ');
+            contextEl.innerHTML = `<span class="ai-modal-context-label">${escapeHtml(tx('aiModalContextLabel'))}</span> <span class="ai-modal-context-value">${bits}</span><span class="ai-modal-context-note">${escapeHtml(tx('aiModalContextNote'))}</span>`;
+            contextEl.hidden = false;
+        }
     } else {
         aiInput.value = '';
+        if (contextEl) { contextEl.innerHTML = ''; contextEl.hidden = true; }
     }
     document.getElementById('aiResult').style.display = 'none';
     document.getElementById('aiResult').innerHTML = '';
@@ -12155,7 +12192,11 @@ function renderGroundingSourcePanel(metadata) {
         else if (lawStatusKey === 'disabled') { statusText = tx('lawGroundingStatusDisabled'); stateClass = 'state-disabled'; }
         // Surface citation-verification nuance only as a non-overclaiming hint.
         const friendly = lawWarnings.slice(0, 2).map(mapLawWarningToFriendly);
-        rows.push(`<div class="gp-row ${stateClass}"><strong>${escapeHtml(tx('lawGroundingStatusLabel'))}</strong>: ${escapeHtml(statusText)}${friendly.length ? ` (${friendly.map(escapeHtml).join(', ')})` : ''}</div>`);
+        // Disabled / unavailable law grounding must not read as a failure of the
+        // whole answer — add a short reassurance note for those states only.
+        const reassureHtml = (lawStatusKey === 'unavailable' || lawStatusKey === 'disabled')
+            ? `<div class="gp-subnote">${escapeHtml(tx('lawGroundingReassure'))}</div>` : '';
+        rows.push(`<div class="gp-row ${stateClass}"><strong>${escapeHtml(tx('lawGroundingStatusLabel'))}</strong>: ${escapeHtml(statusText)}${friendly.length ? ` (${friendly.map(escapeHtml).join(', ')})` : ''}${reassureHtml}</div>`);
     }
     if (hasPublicData) {
         rows.push(`<div class="gp-row state-partial"><strong>${escapeHtml(tx('aiPublicDataLabel'))}</strong>: ${escapeHtml(tx('aiPublicDataStatus'))}</div>`);
@@ -12191,7 +12232,7 @@ function renderGroundingSourcePanel(metadata) {
     }
 
     const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiTechnicalDetails'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
-    return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
+    return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div><p class="gp-lead">${escapeHtml(tx('aiSourcePanelLead'))}</p>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
 }
 
 
@@ -13129,7 +13170,11 @@ function selectF4Route(btn) {
     wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
     const explain = wizard.querySelector('[data-f4-route-explain]');
     const tab = card ? card.querySelector(`.procedure-tab[data-procedure="${procKey}"]:not([disabled])`) : null;
-    let html = `<p class="f4-route-desc">${escapeHtml(tx('f4Route' + routeIdx + 'Desc'))}</p>`;
+    // Make the selected route obvious in text (not color alone): a labelled
+    // banner echoing which route the user picked, above the cautious detail.
+    const routeLabel = tx('f4Route' + routeIdx + 'Label');
+    let html = `<p class="f4-route-selected"><span class="f4-route-selected-prefix">${escapeHtml(tx('f4RouteSelectedPrefix'))}</span> <strong>${escapeHtml(routeLabel)}</strong></p>`;
+    html += `<p class="f4-route-desc">${escapeHtml(tx('f4Route' + routeIdx + 'Desc'))}</p>`;
     if (tab && card) {
         // De-emphasize (not hide) the other procedure tabs and activate the
         // route's procedure tab + panel, reusing the select-procedure model.
@@ -13492,23 +13537,23 @@ function renderManualActions(v, isVisaCode) {
 
 function renderNextActionArea(v, isVisaCode) {
     if (!isVisaCode) return '';
-    return `<section class="next-action-panel" aria-label="지금 할 수 있는 일">
-        <h4 class="next-action-title">지금 할 수 있는 일</h4>
+    return `<section class="next-action-panel" aria-label="${escapeHtml(tx('nextActionTitle'))}">
+        <h4 class="next-action-title">${escapeHtml(tx('nextActionTitle'))}</h4>
         <div class="next-action-grid">
             <button type="button" class="next-action-btn primary hikorea-guide-btn" data-action="open-hikorea-guide" data-vcode="${escapeHtml(v.code)}">
-                <span class="next-action-kicker">방문예약</span>
-                <strong>HiKorea 예약 도우미</strong>
-                <small>방문예약, 기관 선택, 업무 유형 선택을 단계별로 안내합니다.</small>
+                <span class="next-action-kicker">${escapeHtml(tx('nextActionHikoreaKicker'))}</span>
+                <strong>${escapeHtml(tx('nextActionHikoreaTitle'))}</strong>
+                <small>${escapeHtml(tx('nextActionHikoreaDesc'))}</small>
             </button>
             <button type="button" class="next-action-btn" data-action="open-doc-modal" data-vcode="${escapeHtml(v.code)}" data-type="new">
-                <span class="next-action-kicker">서류</span>
-                <strong>구비서류 확인</strong>
-                <small>최초 신청, 외국인등록, 연장 서류 탭을 확인합니다.</small>
+                <span class="next-action-kicker">${escapeHtml(tx('nextActionDocsKicker'))}</span>
+                <strong>${escapeHtml(tx('nextActionDocsTitle'))}</strong>
+                <small>${escapeHtml(tx('nextActionDocsDesc'))}</small>
             </button>
             <button type="button" class="next-action-btn" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">
-                <span class="next-action-kicker">AI</span>
+                <span class="next-action-kicker">${escapeHtml(tx('nextActionAiKicker'))}</span>
                 <strong>${escapeHtml(tx('actionAi'))}</strong>
-                <small>내 상황을 입력해 가능성과 주의사항을 점검합니다.</small>
+                <small>${escapeHtml(tx('nextActionAiDesc'))}</small>
             </button>
         </div>
     </section>`;
@@ -14252,7 +14297,10 @@ const UI_TRANSLATIONS = {
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
         lawGroundingStatusLabel: '법령 근거 확인 상태', lawGroundingStatusNotAttempted: '시도하지 않음', lawGroundingStatusDisabled: '설정상 비활성화', lawGroundingStatusUnavailable: '외부 법령 API 확인 불가', lawGroundingStatusUsed: '법령 검색 결과 사용',
         partialLanguageNotice: '이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.', languagePartialBadge: '일부 번역',
-        deadlineSourceCommonRule: '공통 규칙 기반 준비 참고일', deadlineSourceCustom: '사용자 지정 알림', deadlineCalendarCaution: 'Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.'
+        deadlineSourceCommonRule: '공통 규칙 기반 준비 참고일', deadlineSourceCustom: '사용자 지정 알림', deadlineCalendarCaution: 'Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
+        nextActionTitle: '지금 할 수 있는 일', nextActionHikoreaKicker: '방문예약', nextActionHikoreaTitle: 'HiKorea 예약 도우미', nextActionHikoreaDesc: '방문예약, 기관 선택, 업무 유형 선택을 단계별로 안내합니다.', nextActionDocsKicker: '서류', nextActionDocsTitle: '구비서류 확인', nextActionDocsDesc: '최초 신청, 외국인등록, 연장 서류 탭을 확인합니다.', nextActionAiKicker: 'AI', nextActionAiDesc: '내 상황을 입력해 가능성과 주의사항을 점검합니다.',
+        aiSourcePanelLead: '아래는 이 답변이 어떤 자료에 근거했는지 보여주는 요약입니다. 최종 확인이 아닙니다.', lawGroundingReassure: '법령 검색이 사용되지 않아도 답변이 틀린 것은 아니며, 참고할 수 있는 근거가 제한적이라는 의미입니다.',
+        aiModalContextLabel: '선택한 맥락', aiModalContextNote: '선택한 시나리오 식별 정보만 함께 전달되며, 체크리스트·알림 등 개인 입력은 전송되지 않습니다.'
     },
     en: {
         languageButton: 'Language settings', languageMenu: 'Choose language', languageChanged: 'Language changed to English.',
@@ -14400,7 +14448,10 @@ const UI_TRANSLATIONS = {
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
         lawGroundingStatusLabel: 'Law-grounding status', lawGroundingStatusNotAttempted: 'Not attempted', lawGroundingStatusDisabled: 'Disabled by configuration', lawGroundingStatusUnavailable: 'External law API unavailable', lawGroundingStatusUsed: 'Law search results used',
         partialLanguageNotice: 'Some interface text may still appear in Korean for this language. Official document names remain in Korean to match the immigration manual.', languagePartialBadge: 'Partial',
-        deadlineSourceCommonRule: 'Common-rule preparation date', deadlineSourceCustom: 'Custom reminder', deadlineCalendarCaution: 'Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.'
+        deadlineSourceCommonRule: 'Common-rule preparation date', deadlineSourceCustom: 'Custom reminder', deadlineCalendarCaution: 'Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.',
+        nextActionTitle: 'What you can do now', nextActionHikoreaKicker: 'Book a visit', nextActionHikoreaTitle: 'HiKorea reservation helper', nextActionHikoreaDesc: 'Step-by-step help with visit booking, office selection, and task type.', nextActionDocsKicker: 'Documents', nextActionDocsTitle: 'Check required documents', nextActionDocsDesc: 'Review the initial application, foreigner registration, and extension document tabs.', nextActionAiKicker: 'AI', nextActionAiDesc: 'Enter your situation to check possibilities and cautions.',
+        aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.', lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.',
+        aiModalContextLabel: 'Selected context', aiModalContextNote: 'Only selected scenario identifiers are passed along; your checklist, reminders, and other local inputs are never sent.'
     },
     zh: {
         languageButton: '语言设置', languageMenu: '选择语言', languageChanged: '语言已切换为简体中文。',
@@ -14494,7 +14545,10 @@ const UI_TRANSLATIONS = {
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
         lawGroundingStatusLabel: '法令依据确认状态', lawGroundingStatusNotAttempted: '未尝试', lawGroundingStatusDisabled: '因设置而停用', lawGroundingStatusUnavailable: '无法确认外部法令 API', lawGroundingStatusUsed: '已使用法令搜索结果',
         partialLanguageNotice: '此语言的部分界面文字仍可能显示为韩文。正式材料名称会保留韩文，以便与出入境手册一致。', languagePartialBadge: '部分翻译',
-        deadlineSourceCommonRule: '基于通用规则的准备参考日期', deadlineSourceCustom: '自定义提醒', deadlineCalendarCaution: 'Paradiso 准备提醒。并非正式期限；请向 HiKorea、1345 或管辖出入境外国人机构确认。'
+        deadlineSourceCommonRule: '基于通用规则的准备参考日期', deadlineSourceCustom: '自定义提醒', deadlineCalendarCaution: 'Paradiso 准备提醒。并非正式期限；请向 HiKorea、1345 或管辖出入境外国人机构确认。',
+        nextActionTitle: '现在可以做的事', nextActionHikoreaKicker: '预约访问', nextActionHikoreaTitle: 'HiKorea 预约助手', nextActionHikoreaDesc: '分步引导访问预约、机构选择和业务类型选择。', nextActionDocsKicker: '材料', nextActionDocsTitle: '确认所需材料', nextActionDocsDesc: '查看初次申请、外国人登记和延期材料标签页。', nextActionAiKicker: 'AI', nextActionAiDesc: '输入您的情况以检查可能性和注意事项。',
+        aiSourcePanelLead: '以下是本答复所依据资料的摘要，并非最终确认。', lawGroundingReassure: '即使未使用法令检索，也不代表答复有误，只是说明可参考的依据有限。',
+        aiModalContextLabel: '已选背景', aiModalContextNote: '仅传递所选情形的标识信息；您的清单、提醒等本地输入不会被发送。'
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
@@ -14536,6 +14590,9 @@ const UI_TRANSLATIONS = {
         lawGroundingStatusLabel: '法令依據確認狀態', lawGroundingStatusNotAttempted: '未嘗試', lawGroundingStatusDisabled: '因設定而停用', lawGroundingStatusUnavailable: '無法確認外部法令 API', lawGroundingStatusUsed: '已使用法令搜尋結果',
         partialLanguageNotice: '此語言的部分介面文字仍可能顯示為韓文。正式文件名稱會保留韓文，以便與出入境手冊一致。', languagePartialBadge: '部分翻譯',
         deadlineSourceCommonRule: '基於通用規則的準備參考日期', deadlineSourceCustom: '自訂提醒', deadlineCalendarCaution: 'Paradiso 準備提醒。並非正式期限；請向 HiKorea、1345 或管轄出入境外國人機構確認。',
+        nextActionTitle: '現在可以做的事', nextActionHikoreaKicker: '預約訪問', nextActionHikoreaTitle: 'HiKorea 預約助手', nextActionHikoreaDesc: '分步引導訪問預約、機構選擇和業務類型選擇。', nextActionDocsKicker: '文件', nextActionDocsTitle: '確認所需文件', nextActionDocsDesc: '查看初次申請、外國人登錄和延期文件標籤頁。', nextActionAiKicker: 'AI', nextActionAiDesc: '輸入您的情況以檢查可能性和注意事項。',
+        aiSourcePanelLead: '以下是本回覆所依據資料的摘要，並非最終確認。', lawGroundingReassure: '即使未使用法令檢索，也不代表回覆有誤，只是說明可參考的依據有限。',
+        aiModalContextLabel: '已選背景', aiModalContextNote: '僅傳遞所選情形的識別資訊；您的清單、提醒等本機輸入不會被傳送。',
         step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aEmailChoice: 'TRANSLATION_PENDING', step0aNaverBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ja: {
