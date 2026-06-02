@@ -107,6 +107,18 @@ class ExpandedRouteWizardTests(unittest.TestCase):
             entry = cfg[start:cfg.index("}", start)]
             self.assertNotIn("variantId", entry, "%s should not preselect a variant" % route_id)
 
+    def test_broad_route_resets_scenario_selector_to_show_all(self):
+        # Selecting a broad route (no variantId) must reset the panel's scenario
+        # selector to the "Show all" choice so a previously selected subtype's
+        # checklist/AI context does not linger. (Codex follow-up review #250.)
+        start = self.html.index("function selectF4Route")
+        end = self.html.index("function resetF4Route", start)
+        handler = self.html[start:end]
+        # Narrow route -> its variant; broad route -> the empty/"Show all" choice.
+        self.assertIn("choices.find(c => c.dataset.variantId === variantId)", handler)
+        self.assertIn("choices.find(c => !(c.dataset.variantId || ''))", handler)
+        self.assertIn("selectProcedureVariant(target)", handler)
+
     # --- cautious copy: no approval/eligibility implication ----------------
     def test_h2_to_f4_does_not_imply_automatic_approval(self):
         # The H-2 -> F-4 route must explicitly state it is not automatic.

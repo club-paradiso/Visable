@@ -13279,13 +13279,18 @@ function selectF4Route(btn) {
             t.classList.toggle('is-route-muted', t !== tab);
         });
         card.querySelectorAll('.procedure-panel').forEach(p => p.classList.toggle('active', p.dataset.procedurePanel === procKey));
-        // If the route maps to a specific source-backed scenario variant, bring
-        // it forward in the activated panel's scenario selector. This reuses the
-        // existing variant-selection model and never invents documents.
-        if (variantId) {
-            const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
-            const choice = panel ? Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]')).find(c => c.dataset.variantId === variantId) : null;
-            if (choice) selectProcedureVariant(choice);
+        // Sync the activated panel's scenario selector to the route:
+        //  * a narrow route brings its specific source-backed variant forward;
+        //  * a broad route (no variantId) resets to the "Show all" choice so a
+        //    previously selected subtype's checklist/AI context does not linger.
+        // Reuses the existing variant-selection model; never invents documents.
+        const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
+        if (panel) {
+            const choices = Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]'));
+            const target = variantId
+                ? choices.find(c => c.dataset.variantId === variantId)
+                : choices.find(c => !(c.dataset.variantId || ''));
+            if (target) selectProcedureVariant(target);
         }
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
