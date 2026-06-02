@@ -35,8 +35,8 @@ _INTENT_PATTERNS = [
     # law/manual question — so attempt official grounding before answering.
     ("활동범위/자격외활동", re.compile(r"활동\s*범위|체류자격\s*외\s*활동|자격\s*외\s*활동|체류자격외활동|자격외활동|activit(?:y|ies)\s+outside|out-?of-?status\s+activit|activity\s+scope|scope\s+of\s+(?:activity|stay|status)", re.IGNORECASE)),
 
-    # Study / course-taking wording (유학, 수강, 계절학기, study, course, ...).
-    ("유학/수강/계절학기", re.compile(r"계절\s*학기|학기\s*수강|수강|청강|유학|휴학|복학|university\s+(?:class|course)|\bcourse(?:s)?\b|seasonal\s+(?:semester|term|session)|summer\s+session|winter\s+session|enroll(?:ment|ed)?|\bstud(?:y|ies|ying)\b", re.IGNORECASE)),
+    # Study / course-taking wording (유학, 수강, 수업, 계절학기, study, course, class, ...).
+    ("유학/수강/계절학기", re.compile(r"계절\s*학기|학기\s*수강|수강|청강|수업|강의|강좌|유학|휴학|복학|university\s+(?:class|course)|\bcours(?:e|es)\b|\bclass(?:es)?\b|\blectures?\b|seasonal\s+(?:semester|term|session)|summer\s+session|winter\s+session|enroll(?:ment|ed)?|\bstud(?:y|ies|ying)\b", re.IGNORECASE)),
 
     # Tourism-working-holiday (관광취업 / 워킹홀리데이 / H-1) context.
     ("관광취업/워킹홀리데이/H-1", re.compile(r"관광\s*취업|워킹\s*홀리데이|워홀|working\s+holiday|\bH\s*-?\s*1\b", re.IGNORECASE)),
@@ -190,3 +190,63 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query}],
         "grounding_warnings": list(dict.fromkeys(warnings)),
     }
+
+
+_DEFAULT_PREFLIGHT_SAMPLE = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
+
+
+def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
+    """Non-secret readiness report for law grounding.
+
+    Safe to call in any mode: it performs NO external call and NEVER returns
+    API keys or raw API bodies — only booleans, the resolved mode, the intent
+    decision for a sample question, and the statutory query that would be
+    issued. Designed for operators/CI to confirm deployed configuration and
+    for the debug endpoint, without exposing secrets or crashing.
+    """
+    config = load_grounding_config()
+    sample = (sample_question or "").strip() or _DEFAULT_PREFLIGHT_SAMPLE
+    intent = should_attempt_law_grounding(sample)
+    reasons = intent.get("reasons", [])
+    query = build_law_search_query(sample, reasons) if intent.get("should_attempt") else ""
+
+    key_configured = bool(config.law_api_key)
+    endpoint_configured = bool(config.law_api_base_url and config.law_api_search_path)
+
+    if config.mode == "disabled":
+        external_calls = "disabled"
+    elif config.mode == "audit":
+        external_calls = "audit_only"
+    else:
+        external_calls = "enabled"
+
+    warnings: List[str] = []
+    if config.mode == "disabled":
+        warnings.append("LAW_GROUNDING_DISABLED")
+    elif config.mode == "audit":
+        warnings.append("LAW_GROUNDING_AUDIT_ONLY")
+    if config.mode in {"audit", "enabled"}:
+        if not key_configured:
+            warnings.append("LAW_API_KEY_MISSING")
+        if not endpoint_configured:
+            warnings.append("LAW_API_ENDPOINT_MISSING")
+    warnings.extend(config.warnings)
+
+    # Whether a real external law-API call could actually happen.
+    ready_for_external_calls = (
+        config.mode in {"audit", "enabled"} and key_configured and endpoint_configured
+    )
+
+    return {
+        "mode": config.mode,
+        "external_calls": external_calls,
+        "law_api_key_configured": key_configured,
+        "law_api_endpoint_configured": endpoint_configured,
+        "ready_for_external_calls": ready_for_external_calls,
+        "sample_question": sample,
+        "sample_would_trigger": bool(intent.get("should_attempt")),
+        "sample_intent_reasons": reasons,
+        "sample_law_search_query": query,
+        "warnings": list(dict.fromkeys(warnings)),
+    }
+

@@ -29,6 +29,7 @@ from pydantic import BaseModel, Field
 from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
+    law_grounding_preflight,
     should_attempt_law_grounding,
 )
 
@@ -1975,20 +1976,41 @@ async def job_code_keywords(req: JobCodeKeywordsRequest) -> JobCodeKeywordsRespo
     return JobCodeKeywordsResponse(query=req.query, keywords=keywords)
 
 
+@app.get("/api/debug/law-grounding/preflight")
+async def debug_law_grounding_preflight(question: Optional[str] = None) -> Dict[str, Any]:
+    """Operator-safe law-grounding readiness preflight (no external call, no secrets).
+
+    Reports the resolved mode, whether the API key / endpoint are configured
+    (booleans only), whether a sample question would trigger grounding, the
+    statutory query that would be issued, and explicit warning markers
+    (LAW_GROUNDING_DISABLED / LAW_GROUNDING_AUDIT_ONLY / LAW_API_KEY_MISSING /
+    LAW_API_ENDPOINT_MISSING). Useful even when external calls are disabled.
+    """
+    return law_grounding_preflight(question or "")
+
+
 @app.post("/api/debug/law-grounding")
 async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
-    """Development/debug endpoint only, not a legal-advice production route."""
+    """Development/debug endpoint only, not a legal-advice production route.
+
+    Always includes a non-secret `preflight` readiness block. When a question
+    is supplied, also returns the (mode-gated, non-crashing) grounding context.
+    """
     prompt = (req.question or req.text or "").strip()
     if not prompt:
+        # Empty body keeps the documented 400 contract. Operators who want a
+        # no-question readiness probe should use GET /api/debug/law-grounding/preflight.
         raise HTTPException(
             status_code=400,
             detail={
                 "error": "empty_prompt",
-                "message": "Provide a non-empty 'question' or 'text'.",
+                "message": "Provide a non-empty 'question' or 'text', or use GET /api/debug/law-grounding/preflight.",
             },
         )
     logger.info("debug-law-grounding request received (text_length=%d)", len(prompt))
-    return build_law_grounding_context(prompt)
+    context = build_law_grounding_context(prompt)
+    context["preflight"] = law_grounding_preflight(prompt)
+    return context
 
 
 # ---------------------------------------------------------------------------

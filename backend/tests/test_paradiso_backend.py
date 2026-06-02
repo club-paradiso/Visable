@@ -2082,6 +2082,76 @@ class LawGroundingMetadataStatusTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 503)
         self.assertNotIn("law-secret-123", resp.text)
 
+    def test_seasonal_course_variants_all_carry_status_metadata(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        client, _ = _client()
+        for q in (
+            "H-1으로 한국에서 수업을 들을 수 있나요?",
+            "Can I take a university class in Korea on H-1?",
+            "Can I work or study with this status?",
+        ):
+            resp = client.post("/api/ask", json={"question": q})
+            self.assertEqual(resp.status_code, 503, resp.text)
+            detail = resp.json()["detail"]
+            self.assertEqual(detail.get("law_grounding_status"), "disabled", q)
+            self.assertTrue(detail.get("law_grounding_intent_reasons"), q)
+
+
+class LawGroundingPreflightEndpointTests(unittest.TestCase):
+    """GET/POST debug preflight behavior (Part A)."""
+
+    def setUp(self):
+        for k in ("LAW_GROUNDING_MODE", "LAW_API_KEY", "LAW_API_BASE_URL", "LAW_API_SEARCH_PATH"):
+            os.environ.pop(k, None)
+
+    def tearDown(self):
+        for k in ("LAW_GROUNDING_MODE", "LAW_API_KEY", "LAW_API_BASE_URL", "LAW_API_SEARCH_PATH"):
+            os.environ.pop(k, None)
+
+    def test_get_preflight_returns_safe_readiness(self):
+        client, _ = _client()
+        resp = client.get("/api/debug/law-grounding/preflight")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        data = resp.json()
+        for key in ("mode", "external_calls", "law_api_key_configured",
+                    "law_api_endpoint_configured", "ready_for_external_calls",
+                    "sample_would_trigger", "sample_law_search_query", "warnings"):
+            self.assertIn(key, data)
+        self.assertEqual(data["mode"], "disabled")
+        self.assertIn("LAW_GROUNDING_DISABLED", data["warnings"])
+
+    def test_get_preflight_accepts_custom_question(self):
+        client, _ = _client()
+        resp = client.get("/api/debug/law-grounding/preflight", params={"question": "오늘 점심 뭐 먹지?"})
+        self.assertEqual(resp.status_code, 200)
+        self.assertFalse(resp.json()["sample_would_trigger"])
+
+    def test_get_preflight_does_not_leak_key(self):
+        os.environ["LAW_GROUNDING_MODE"] = "enabled"
+        os.environ["LAW_API_KEY"] = "secret-key-xyz"
+        os.environ["LAW_API_BASE_URL"] = "https://hidden.example"
+        os.environ["LAW_API_SEARCH_PATH"] = "/s"
+        client, _ = _client()
+        resp = client.get("/api/debug/law-grounding/preflight")
+        self.assertEqual(resp.status_code, 200)
+        self.assertTrue(resp.json()["law_api_key_configured"])
+        self.assertNotIn("secret-key-xyz", resp.text)
+        self.assertNotIn("hidden.example", resp.text)
+
+    def test_post_debug_includes_preflight_block(self):
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={"question": "출입국관리법 제10조"})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertIn("preflight", body)
+        self.assertEqual(body["preflight"]["mode"], "disabled")
+
+    def test_post_debug_empty_still_400(self):
+        # Existing contract preserved: empty POST body returns 400.
+        client, _ = _client()
+        resp = client.post("/api/debug/law-grounding", json={})
+        self.assertEqual(resp.status_code, 400)
+
 
 class VisaDataContextBlockHelperTests(unittest.TestCase):
     """Unit tests for _build_visa_data_context_block — the small helper
