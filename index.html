@@ -338,6 +338,7 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 .hikorea-lang-btn { border: 1px solid var(--bd2); background: var(--bg0); color: var(--t2); border-radius: 999px; padding: .3rem .65rem; font-size: .82rem; font-weight: 700; }
 .hikorea-lang-btn.active { border-color: var(--ac); color: var(--ac); }
 .hikorea-strip { background: var(--hikorea-strip-bg); border: 1px solid var(--hikorea-strip-bd); border-radius: 8px; padding: .7rem .8rem; font-size: .83rem; margin: .7rem 0; }
+.hikorea-precheck-caution { background: var(--bg0); border: 1px solid var(--bd2); border-left: 3px solid var(--color-warning, #c47f17); border-radius: 8px; padding: .65rem .8rem; font-size: .83rem; margin: .7rem 0; line-height: 1.55; }
 .hikorea-warning { background: var(--hikorea-warn-bg); border-color: var(--hikorea-warn-bd); color: #b91c1c; }
 .hikorea-check-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: .45rem; margin-top: .6rem; }
 .hikorea-step-box { border: 1px solid var(--bd2); border-radius: 8px; padding: .75rem; margin: .65rem 0; background: var(--bg1); }
@@ -1363,6 +1364,51 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .procedure-panel { display: none; border-top: 1px dashed var(--bd2); margin-top: 0.78rem; padding-top: 0.92rem; }
 .procedure-panel.active { display: block; }
 .procedure-summary { margin-bottom: 0.7rem; color: var(--t2); font-size: 0.84rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+.procedure-summary-fallback { color: var(--t3); font-style: normal; }
+.procedure-tab.is-route-muted { opacity: 0.45; }
+/* F-4 route-aware intake wizard */
+.f4-route-wizard { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.85rem 0.9rem; background: var(--bg0); }
+.f4-route-intro { color: var(--t2); font-size: 0.83rem; line-height: 1.6; margin: 0.3rem 0 0.65rem; word-break: keep-all; }
+.f4-route-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.f4-route-chip { flex: 0 1 auto; min-height: 38px; text-align: left; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 10px; padding: 0.45rem 0.7rem; font: inherit; font-size: 0.78rem; font-weight: 750; cursor: pointer; transition: var(--btn-tr); word-break: keep-all; }
+.f4-route-chip:hover { border-color: var(--ac); }
+.f4-route-chip[aria-pressed="true"] { background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); border-color: var(--ac); color: var(--t1); }
+.f4-route-chip:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.f4-route-showall { min-height: 38px; border: 1px dashed var(--bd2); background: transparent; color: var(--t3); border-radius: 10px; padding: 0.45rem 0.7rem; font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+.f4-route-showall:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.f4-route-explain { margin-top: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--bd2); border-left: 3px solid var(--ac); border-radius: 8px; background: var(--bg1); }
+.f4-route-explain .f4-route-desc { color: var(--t2); font-size: 0.84rem; line-height: 1.6; margin: 0; word-break: keep-all; }
+.f4-route-explain .f4-route-source-note { color: var(--t3); font-size: 0.78rem; line-height: 1.55; margin: 0.5rem 0 0; word-break: keep-all; }
+/* Deadline / grace-period calculator */
+.deadline-calc { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.5rem 0.9rem; background: var(--bg0); }
+.deadline-calc[open] { padding-bottom: 0.9rem; }
+.deadline-calc-summary { cursor: pointer; font-weight: 800; font-size: 0.86rem; color: var(--t1); padding: 0.35rem 0; list-style: none; }
+.deadline-calc-summary::-webkit-details-marker { display: none; }
+.deadline-calc-summary::before { content: '🗓 '; }
+.deadline-intro { color: var(--t3); font-size: 0.79rem; line-height: 1.55; margin: 0.2rem 0 0.6rem; word-break: keep-all; }
+.deadline-inputs { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.55rem; }
+.deadline-field { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.76rem; color: var(--t2); font-weight: 700; }
+.deadline-field input { min-height: 38px; border: 1px solid var(--bd2); border-radius: 8px; padding: 0 0.6rem; font: inherit; font-size: 0.82rem; background: var(--bg1); color: var(--t1); }
+.deadline-field input:focus-visible { outline: 2px solid var(--ac); outline-offset: 1px; }
+.deadline-compute-btn { margin-top: 0.65rem; min-height: 40px; border: 1px solid var(--ac); background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); color: var(--t1); border-radius: 9px; padding: 0 1rem; font: inherit; font-size: 0.82rem; font-weight: 800; cursor: pointer; }
+.deadline-compute-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.deadline-results { margin-top: 0.7rem; display: grid; gap: 0.55rem; }
+.deadline-group { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.6rem 0.7rem; display: grid; gap: 0.5rem; }
+.deadline-group-title { font-weight: 800; font-size: 0.8rem; color: var(--t1); }
+.deadline-row { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.55rem 0.65rem; background: var(--bg1); }
+.deadline-group .deadline-row { background: var(--bg0); }
+.deadline-row-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.deadline-row-label { font-weight: 750; font-size: 0.8rem; color: var(--t1); word-break: keep-all; }
+.deadline-row-dday { flex: 0 0 auto; font-weight: 850; font-size: 0.74rem; color: var(--ac); }
+.deadline-row-date { font-size: 0.82rem; color: var(--t2); margin-top: 0.15rem; font-variant-numeric: tabular-nums; }
+.deadline-caution { color: var(--t3); font-size: 0.74rem; line-height: 1.5; margin: 0.35rem 0 0; word-break: keep-all; }
+.deadline-row-actions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+.deadline-cal-btn { display: inline-flex; align-items: center; min-height: 34px; border: 1px solid var(--bd2); background: var(--bg0); color: var(--t2); border-radius: 8px; padding: 0 0.65rem; font: inherit; font-size: 0.75rem; font-weight: 700; cursor: pointer; text-decoration: none; }
+.deadline-cal-btn:hover { border-color: var(--ac); }
+.deadline-cal-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.deadline-empty { color: var(--t3); font-size: 0.8rem; }
+.deadline-disclaimer { color: var(--t2); font-size: 0.76rem; line-height: 1.55; margin: 0.7rem 0 0; word-break: keep-all; }
+.deadline-privacy { color: var(--t3); font-size: 0.73rem; line-height: 1.5; margin: 0.4rem 0 0; word-break: keep-all; }
 .manual-preview { color: var(--t2); }
 .manual-detail-block { margin-top: 0.45rem; border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 70%, white); }
 .manual-detail-block > summary { min-height: 34px; display: flex; align-items: center; cursor: pointer; padding: 0 0.7rem; color: var(--t2); font-size: 0.74rem; font-weight: 900; list-style: none; }
@@ -12076,6 +12122,8 @@ function renderGroundingSourcePanel(metadata) {
     const manual = Array.isArray(m.grounding_sources) ? m.grounding_sources.some((src) => src && (src.source_title || src.source_file || src.source_date)) : false;
     const lawAttempted = Boolean(m.law_grounding_attempted);
     const lawUsed = Boolean(m.law_grounding_used);
+    // Coarse, non-secret status: not_attempted / disabled / unavailable / used.
+    const lawStatus = m.law_grounding_status ? String(m.law_grounding_status) : '';
     const lawWarnings = Array.isArray(m.law_grounding_warnings) ? m.law_grounding_warnings : [];
     const hasCitation = Boolean(m.citation_verification);
     const citationStatus = m.citation_verification && m.citation_verification.status ? String(m.citation_verification.status) : '';
@@ -12089,14 +12137,17 @@ function renderGroundingSourcePanel(metadata) {
     if (manual) {
         rows.push(`<div class="gp-row state-source-supported"><strong>${escapeHtml(tx('aiManualGroundingLabel'))}</strong>: ${escapeHtml(tx('aiManualGroundingStatus'))}</div>`);
     }
-    if (lawUsed || lawAttempted || hasCitation) {
+    // Show the law row whenever the question carried legal/activity-scope intent
+    // (status disabled/unavailable/used) or any citation context exists. A plain
+    // "not_attempted" question shows no law row, avoiding noise.
+    if (lawUsed || lawAttempted || hasCitation || lawStatus === 'disabled' || lawStatus === 'unavailable') {
         let status = tx('aiLawStatusDisabled');
         let stateClass = 'state-disabled';
         if (lawUsed) { status = tx('aiLawStatusSourcePresent'); stateClass = 'state-verified'; }
         else if (citationStatus === 'extracted_only') { status = tx('aiLawStatusUnverified'); stateClass = 'state-extracted-only'; }
         else if (citationStatus === 'source_linked_unverified') { status = tx('aiLawStatusSourceLinked'); stateClass = 'state-source-linked-unverified'; }
         else if (citationStatus === 'failed_verification') { status = tx('aiLawStatusFailed'); stateClass = 'state-failed'; }
-        else if (lawAttempted) { status = tx('aiLawStatusNeedsReview'); stateClass = 'state-partial'; }
+        else if (lawStatus === 'unavailable' || lawAttempted) { status = tx('aiLawStatusNeedsReview'); stateClass = 'state-partial'; }
         else if (citationStatus === 'not_wired' || (lawWarnings.indexOf && lawWarnings.indexOf('CITATION_VERIFICATION_NOT_WIRED') !== -1)) { status = tx('aiLawStatusNotWired'); stateClass = 'state-not-wired'; }
         const friendly = lawWarnings.slice(0,2).map(mapLawWarningToFriendly);
         rows.push(`<div class="gp-row ${stateClass}"><strong>${escapeHtml(tx('aiLawVerificationLabel'))}</strong>: ${escapeHtml(status)}${friendly.length ? ` (${friendly.map(escapeHtml).join(', ')})` : ''}</div>`);
@@ -12991,7 +13042,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
     const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
-    const summaryHtml = renderProcedureSummaryBlock(proc.summary, keywords);
+    const summaryHtml = renderProcedureSummaryBlock(proc.summary, keywords) || renderProcedureFallbackSummary(proc.key);
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
@@ -13017,6 +13068,220 @@ function renderProcedures(v, keywords) {
     const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" ${p.available ? '' : 'disabled'}>${getProcedureLabel(p)}</button>`).join('');
     const panels = procedures.map(p => renderProcedurePanel(v, p, keywords, p.key === firstActive.key)).join('');
     return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('procedureSectionTitle'))}</h4><div class="procedure-tabs" role="tablist">${tabs}</div>${panels}</div>`;
+}
+
+// Deterministic, key-based fallback descriptions for the most common
+// procedure sections (사증발급/최초 신청, 외국인등록, 체류기간 연장) when a
+// record has the section available but no source-backed summary text. These
+// are generic preparation guidance only — they never invent required
+// documents and never overwrite an existing richer/source-backed summary.
+const PROCEDURE_FALLBACK_SUMMARY_KEYS = {
+    visaIssuance: 'procFallbackInitial',
+    registration: 'procFallbackRegistration',
+    extension: 'procFallbackExtension'
+};
+function renderProcedureFallbackSummary(procedureKey) {
+    const key = PROCEDURE_FALLBACK_SUMMARY_KEYS[procedureKey];
+    if (!key) return '';
+    return `<div class="procedure-summary procedure-summary-fallback">${escapeHtml(tx(key))}</div>`;
+}
+
+// ---- F-4 route-aware intake wizard ----------------------------------------
+// F-4 has several practical user routes. Rather than dumping one generic card,
+// offer a compact, keyboard-accessible route chooser that highlights the most
+// relevant procedure tab and shows a cautious route explanation. The wizard is
+// F-4-specific for now but is data-driven (F4_ROUTE_CONFIG) so it can extend to
+// other route-complex statuses later. It NEVER hides procedures or variants,
+// never exposes raw manualRefs/requiredDocs, and never implies eligibility.
+const F4_ROUTE_CONFIG = [
+    { idx: 1, labelKey: 'f4Route1Label', descKey: 'f4Route1Desc', procedureKey: 'visaIssuance' },
+    { idx: 2, labelKey: 'f4Route2Label', descKey: 'f4Route2Desc', procedureKey: 'statusChange' },
+    { idx: 3, labelKey: 'f4Route3Label', descKey: 'f4Route3Desc', procedureKey: 'statusChange' },
+    { idx: 4, labelKey: 'f4Route4Label', descKey: 'f4Route4Desc', procedureKey: 'registration' },
+    { idx: 5, labelKey: 'f4Route5Label', descKey: 'f4Route5Desc', procedureKey: 'extension' }
+];
+function isF4RouteWizardTarget(v) {
+    return !!(v && typeof v.code === 'string' && v.code.toUpperCase() === 'F-4');
+}
+function renderF4RouteChooser(v) {
+    if (!isF4RouteWizardTarget(v)) return '';
+    const chips = F4_ROUTE_CONFIG.map(r =>
+        `<button type="button" class="f4-route-chip" data-action="select-f4-route" data-route-index="${r.idx}" data-procedure-key="${escapeHtml(r.procedureKey)}" aria-pressed="false">${escapeHtml(tx(r.labelKey))}</button>`
+    ).join('');
+    return `<section class="f4-route-wizard manual-section" data-f4-route-wizard aria-label="${escapeHtml(tx('f4RouteChooserAria'))}">
+        <h4 class="manual-section-title">${escapeHtml(tx('f4RouteTitle'))}</h4>
+        <p class="f4-route-intro">${escapeHtml(tx('f4RouteIntro'))}</p>
+        <div class="f4-route-chips" role="group" aria-label="${escapeHtml(tx('f4RouteChooserAria'))}">${chips}<button type="button" class="f4-route-showall" data-action="show-all-f4-routes" hidden>${escapeHtml(tx('f4RouteShowAll'))}</button></div>
+        <div class="f4-route-explain" data-f4-route-explain role="status" aria-live="polite" hidden></div>
+    </section>`;
+}
+function selectF4Route(btn) {
+    const wizard = btn.closest('[data-f4-route-wizard]');
+    const card = btn.closest('.manual-result');
+    if (!wizard) return;
+    const procKey = btn.dataset.procedureKey;
+    const routeIdx = btn.dataset.routeIndex;
+    wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
+    const explain = wizard.querySelector('[data-f4-route-explain]');
+    const tab = card ? card.querySelector(`.procedure-tab[data-procedure="${procKey}"]:not([disabled])`) : null;
+    let html = `<p class="f4-route-desc">${escapeHtml(tx('f4Route' + routeIdx + 'Desc'))}</p>`;
+    if (tab && card) {
+        // De-emphasize (not hide) the other procedure tabs and activate the
+        // route's procedure tab + panel, reusing the select-procedure model.
+        card.querySelectorAll('.procedure-tab').forEach(t => {
+            t.classList.toggle('active', t === tab);
+            t.classList.toggle('is-route-muted', t !== tab);
+        });
+        card.querySelectorAll('.procedure-panel').forEach(p => p.classList.toggle('active', p.dataset.procedurePanel === procKey));
+        html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
+    } else {
+        // No source-backed procedure data for this route: explain it and send
+        // the user to HiKorea / 1345 / competent office instead of guessing.
+        html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteNoDocsNote'))}</p>`;
+    }
+    if (explain) { explain.innerHTML = html; explain.hidden = false; }
+    const showAll = wizard.querySelector('.f4-route-showall');
+    if (showAll) showAll.hidden = false;
+}
+function resetF4Route(btn) {
+    const wizard = btn.closest('[data-f4-route-wizard]');
+    const card = btn.closest('.manual-result');
+    if (!wizard) return;
+    wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+    const explain = wizard.querySelector('[data-f4-route-explain]');
+    if (explain) { explain.innerHTML = ''; explain.hidden = true; }
+    if (card) card.querySelectorAll('.procedure-tab').forEach(t => t.classList.remove('is-route-muted'));
+    const showAll = wizard.querySelector('.f4-route-showall');
+    if (showAll) showAll.hidden = true;
+}
+
+// ---- Deadline / grace-period calculator + calendar handoff ----------------
+// Pure, timezone-neutral date helpers (UTC-based math on plain YYYY-MM-DD
+// strings so results never drift with the viewer's timezone / DST). These are
+// intentionally global + side-effect-free so they are easy to verify. The
+// calculator is ephemeral: dates are never stored, and never sent to the
+// backend or AI (no localStorage, no /api/ask payload).
+function paradisoDeadlineAddDays(isoDate, days) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(isoDate || '').trim());
+    if (!m) return '';
+    const base = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    const d = new Date(base + Number(days) * 86400000);
+    if (Number.isNaN(d.getTime())) return '';
+    return d.getUTCFullYear() + '-' + String(d.getUTCMonth() + 1).padStart(2, '0') + '-' + String(d.getUTCDate()).padStart(2, '0');
+}
+function paradisoDeadlineDaysFromToday(isoDate) {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(isoDate || '').trim());
+    if (!m) return null;
+    const target = Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+    const now = new Date();
+    const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+    return Math.round((target - today) / 86400000);
+}
+function paradisoDeadlineDdayLabel(isoDate) {
+    const n = paradisoDeadlineDaysFromToday(isoDate);
+    if (n === null) return '';
+    if (n === 0) return tx('deadlineDdayToday');
+    return n > 0 ? ('D-' + n) : ('D+' + Math.abs(n));
+}
+function buildDeadlineIcs(item) {
+    const date = String((item && item.date) || '').replace(/-/g, '');
+    if (!/^\d{8}$/.test(date)) return '';
+    const endIso = paradisoDeadlineAddDays(item.date, 1).replace(/-/g, '');
+    const stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    // SUMMARY carries only the user-facing reminder title; no personal data.
+    const summary = String((item && item.title) || 'Paradiso reminder').replace(/([,;\\])/g, '\\$1').replace(/\r?\n/g, ' ');
+    const uid = 'paradiso-deadline-' + date + '-' + Math.random().toString(36).slice(2, 8) + '@paradiso';
+    return [
+        'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Paradiso//Deadline Calculator//EN', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+        'BEGIN:VEVENT', 'UID:' + uid, 'DTSTAMP:' + stamp, 'DTSTART;VALUE=DATE:' + date, 'DTEND;VALUE=DATE:' + endIso,
+        'SUMMARY:' + summary,
+        'BEGIN:VALARM', 'TRIGGER:-P7D', 'ACTION:DISPLAY', 'DESCRIPTION:' + summary, 'END:VALARM',
+        'END:VEVENT', 'END:VCALENDAR'
+    ].join('\r\n');
+}
+function deadlineGoogleCalUrl(item) {
+    const date = String((item && item.date) || '').replace(/-/g, '');
+    if (!/^\d{8}$/.test(date)) return '';
+    const endIso = paradisoDeadlineAddDays(item.date, 1).replace(/-/g, '');
+    const title = String((item && item.title) || 'Paradiso reminder');
+    return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
+        + '&text=' + encodeURIComponent(title)
+        + '&dates=' + date + '/' + endIso;
+}
+function downloadDeadlineIcs(item) {
+    const ics = buildDeadlineIcs(item);
+    if (!ics) return;
+    const blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'paradiso-deadline-' + (String((item && item.date) || 'reminder')) + '.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+}
+function deadlineRowHtml(label, isoDate, caution) {
+    if (!isoDate) return '';
+    const dday = paradisoDeadlineDdayLabel(isoDate);
+    const gcal = deadlineGoogleCalUrl({ title: label, date: isoDate });
+    const cautionHtml = caution ? `<p class="deadline-caution">${escapeHtml(caution)}</p>` : '';
+    return `<div class="deadline-row">
+        <div class="deadline-row-head"><span class="deadline-row-label">${escapeHtml(label)}</span>${dday ? `<span class="deadline-row-dday">${escapeHtml(dday)}</span>` : ''}</div>
+        <div class="deadline-row-date">${escapeHtml(isoDate)}</div>
+        ${cautionHtml}
+        <div class="deadline-row-actions" role="group" aria-label="${escapeHtml(tx('deadlineAddToCalendar'))}">
+            <button type="button" class="deadline-cal-btn" data-action="deadline-download-ics" data-deadline-title="${escapeHtml(label)}" data-deadline-date="${escapeHtml(isoDate)}">${escapeHtml(tx('deadlineDownloadIcs'))}</button>
+            <a class="deadline-cal-btn" href="${escapeHtml(gcal)}" target="_blank" rel="noopener noreferrer">${escapeHtml(tx('deadlineAddGoogle'))}</a>
+        </div>
+    </div>`;
+}
+function computeDeadlines(btn) {
+    const root = btn.closest('[data-deadline-calc]');
+    if (!root) return;
+    const entry = (root.querySelector('[data-deadline-entry]') || {}).value || '';
+    const expiry = (root.querySelector('[data-deadline-expiry]') || {}).value || '';
+    const customTitle = String((root.querySelector('[data-deadline-custom-title]') || {}).value || '').trim();
+    const customDate = (root.querySelector('[data-deadline-custom-date]') || {}).value || '';
+    const results = root.querySelector('[data-deadline-results]');
+    if (!results) return;
+    const blocks = [];
+    const regDate = entry ? paradisoDeadlineAddDays(entry, 90) : '';
+    if (regDate) {
+        blocks.push(deadlineRowHtml(tx('deadlineRegEstimate'), regDate, tx('deadlineRegCaution')));
+    }
+    if (expiry) {
+        const reminders = [60, 30, 7, 0].map(function (o) {
+            const d = paradisoDeadlineAddDays(expiry, -o);
+            const sub = o === 0 ? tx('deadlineOnDate') : tx('deadlineDaysBefore', { days: o });
+            return deadlineRowHtml(tx('deadlineExtReminders') + ' · ' + sub, d, '');
+        }).filter(Boolean).join('');
+        if (reminders) {
+            blocks.push(`<div class="deadline-group"><div class="deadline-group-title">${escapeHtml(tx('deadlineExtReminders'))}</div><p class="deadline-caution">${escapeHtml(tx('deadlineExtCaution'))}</p>${reminders}</div>`);
+        }
+    }
+    if (customDate) {
+        blocks.push(deadlineRowHtml(customTitle || tx('deadlineCustomTitle'), customDate, ''));
+    }
+    results.innerHTML = blocks.length ? blocks.join('') : `<p class="deadline-empty">${escapeHtml(tx('deadlineEmpty'))}</p>`;
+    results.hidden = false;
+}
+function renderDeadlineCalculator(v, isVisaCode) {
+    if (!isVisaCode) return '';
+    return `<details class="deadline-calc manual-section" data-deadline-calc>
+        <summary class="deadline-calc-summary">${escapeHtml(tx('deadlineCalcTitle'))}</summary>
+        <p class="deadline-intro">${escapeHtml(tx('deadlineCalcIntro'))}</p>
+        <div class="deadline-inputs">
+            <label class="deadline-field"><span>${escapeHtml(tx('deadlineEntryDate'))}</span><input type="date" data-deadline-entry></label>
+            <label class="deadline-field"><span>${escapeHtml(tx('deadlineExpiryDate'))}</span><input type="date" data-deadline-expiry></label>
+            <label class="deadline-field"><span>${escapeHtml(tx('deadlineCustomTitle'))}</span><input type="text" data-deadline-custom-title maxlength="80"></label>
+            <label class="deadline-field"><span>${escapeHtml(tx('deadlineCustomDate'))}</span><input type="date" data-deadline-custom-date></label>
+        </div>
+        <button type="button" class="deadline-compute-btn" data-action="compute-deadlines">${escapeHtml(tx('deadlineCompute'))}</button>
+        <div class="deadline-results" data-deadline-results role="status" aria-live="polite" hidden></div>
+        <p class="deadline-disclaimer">${escapeHtml(tx('deadlineDisclaimer'))}</p>
+        <p class="deadline-privacy">${escapeHtml(tx('deadlinePrivacyNote'))}</p>
+    </details>`;
 }
 
 function renderSourceConfirmedRequirements(v) {
@@ -13150,10 +13415,11 @@ function renderHikoreaGuide() {
     const disclaimerPanel = '<div class="hikorea-disclaimer-panel" aria-label="안내사항"><ul>' + ['hkDisc1', 'hkDisc2', 'hkDisc3', 'hkDisc4'].map(k => '<li>' + escapeHtml(gtx(k)) + '</li>').join('') + '</ul></div>';
     if (hikoreaGuideState.step < 0) {
         b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">사전 확인</div>
+        <div class="hikorea-precheck-caution" role="note">${escapeHtml(gtx('hkPreCheckCaution'))}</div>
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> 이메일 계정이 있으신가요?</label><div class="hikorea-strip">구글 계정(Gmail)을 먼저 만드세요 · <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>가족·지인 이메일을 임시로 사용할 수도 있습니다.</div></div>
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> 비밀번호 준비 확인</label><div class="hikorea-check-grid"><div>✓ 10자리 이상</div><div>✓ 영문 포함 (예: abc)</div><div>✓ 숫자 포함 (예: 123)</div><div>✓ 특수문자 포함 (예: ! @ # $)</div></div></div>
         <div class="hikorea-step-box"><label for="hkExpDate">체류기간 만료일 확인</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">만료일을 입력하세요.</div></div>
-        ${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide" disabled>${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
+        ${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
         return;
     }
     const step0aHtml = '<div class="step0a-section">'
@@ -13723,7 +13989,9 @@ function renderResults(query){
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
                     ${renderSubcodes(v, kw, ms)}
+                    ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
+                    ${renderDeadlineCalculator(v, isVisaCode)}
                     ${renderDocumentTabs(v)}
                     ${renderCautionBlock()}
                     ${renderSourceConfirmedRequirements(v)}
@@ -13943,7 +14211,14 @@ const UI_TRANSLATIONS = {
         hkHeaderTitle: 'HiKorea 방문예약 안내', hkHeaderSub: '방문 전 온라인 예약과 준비사항을 정리합니다.', hkHeaderChip: '공식 서비스 아님',
         hkPhase1: '준비 확인', hkPhase2: '방문예약 절차', hkPhase3: '민원 유형 선택', hkPhase4: '방문 전 체크', hkPhase5: '저장/마무리',
         hkPrimaryCta: 'HiKorea 방문예약으로 이동', hkSecondaryCta: '1345 문의 전 확인사항',
-        hkDisc1: 'Paradiso는 공식 정부 서비스가 아닙니다.', hkDisc2: '제공 정보는 참고용입니다.', hkDisc3: '최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.', hkDisc4: '제출서류와 예약 가능 여부는 심사·기관 안내에 따라 달라질 수 있습니다.'
+        hkDisc1: 'Paradiso는 공식 정부 서비스가 아닙니다.', hkDisc2: '제공 정보는 참고용입니다.', hkDisc3: '최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.', hkDisc4: '제출서류와 예약 가능 여부는 심사·기관 안내에 따라 달라질 수 있습니다.',
+        /* Route-aware F-4 wizard + deadline calculator + HiKorea caution + procedure fallbacks */
+        f4RouteTitle: 'F-4는 어떤 경로로 진행하시나요?', f4RouteIntro: 'F-4는 입국 전 사증 발급, 국내 체류자격 변경, 국내거소신고, 체류기간 연장 등 경로가 나뉠 수 있습니다. 본인에게 맞는 경로를 먼저 확인하세요.', f4RouteShowAll: '전체 경로 보기', f4RouteChooserAria: 'F-4 경로 선택', f4RouteSelectedPrefix: '선택한 경로', f4RouteSourceNote: '경로를 선택해도 자격이나 허가가 보장되지 않습니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.', f4RouteNoDocsNote: '이 경로는 아직 출처가 확인된 서류 체크리스트가 연결되어 있지 않습니다. HiKorea, 1345 또는 관할 출입국·외국인관서에서 직접 확인하세요.',
+        f4Route1Label: '재외공관에서 F-4 사증을 받아 입국하는 경우', f4Route2Label: 'B-2·C-3 등으로 입국 후 국내에서 F-4로 변경하는 경우', f4Route3Label: 'H-2에서 F-4로 변경하는 경우', f4Route4Label: 'F-4 국내거소신고', f4Route5Label: 'F-4 체류기간 연장',
+        f4Route1Desc: '해외에서 재외공관을 통해 F-4 사증을 발급받아 입국하는 경로입니다. 사증 발급 요건·서류는 재외공관과 HiKorea 안내를 확인하세요.', f4Route2Desc: 'B-2·C-3 등 다른 자격으로 입국한 뒤 국내에서 F-4로 체류자격을 변경하는 경로입니다. 변경 대상 여부와 서류는 관할 출입국·외국인관서에서 확인하세요.', f4Route3Desc: 'H-2(방문취업) 자격에서 F-4로 변경하는 경로입니다. 자격요건과 제출서류는 관할 출입국·외국인관서 안내를 확인하세요.', f4Route4Desc: '재외동포(F-4)는 일반 외국인등록이 아니라 국내거소신고 대상일 수 있습니다. 거소신고 대상·기한·서류는 관할기관 안내를 확인하세요.', f4Route5Desc: '현재 F-4 체류기간을 넘겨 계속 체류하려면 체류기간 연장허가가 필요할 수 있습니다. 만료일 전 여유를 두고 확인하세요.',
+        deadlineCalcTitle: '기한 계산기', deadlineCalcIntro: '입국일과 체류만료일을 입력하면 준비에 도움이 되는 예상 일정을 계산합니다. 공식 기한이 아니며 입력값은 저장·전송되지 않습니다.', deadlineEntryDate: '입국일', deadlineExpiryDate: '체류만료일', deadlineRegEstimate: '예상 등록 기한', deadlineExtReminders: '연장 준비 알림', deadlineAddToCalendar: '캘린더에 추가', deadlineDownloadIcs: 'ICS 파일 다운로드', deadlineAddGoogle: 'Google Calendar에 추가', deadlineDisclaimer: '공식 기한은 개인 상황과 관할 판단에 따라 달라질 수 있습니다.', deadlineCustomTitle: '알림 제목 (선택)', deadlineCustomDate: '알림 날짜 (선택)', deadlineCompute: '기한 계산', deadlineRegCaution: '장기체류 외국인은 입국일부터 90일 이내 외국인등록이 필요할 수 있습니다(대상자에 한함). 일반 준비용 안내이며 공식 확정 기한이 아닙니다.', deadlineExtCaution: '아래 날짜는 만료일 기준 준비 알림이며 공식 신청기간을 보장하지 않습니다.', deadlineEmpty: '날짜를 입력하면 예상 일정이 표시됩니다.', deadlinePrivacyNote: '입력한 날짜는 브라우저에만 표시되며 저장하거나 AI·서버로 전송하지 않습니다.', deadlineDdayToday: '오늘', deadlineDaysBefore: '{days}일 전', deadlineOnDate: '당일', deadlineProcedureTypeLabel: '관련 절차 (선택)',
+        hkPreCheckCaution: '아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다. 이메일·비밀번호·체류만료일을 미리 준비하면 예약이 더 수월합니다.',
+        procFallbackInitial: '입국 전 사증 발급 또는 해당 체류자격 신청 단계에서 확인하는 절차입니다. 세부 요건과 제출서류는 재외공관·HiKorea·관할기관 안내를 확인하세요.', procFallbackRegistration: '한국에 장기 체류하는 외국인은 대상 여부에 따라 외국인등록 또는 국내거소신고가 필요할 수 있습니다. 등록·신고 대상, 기한, 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다.', procFallbackExtension: '현재 체류기간을 넘겨 계속 체류하려는 경우 체류기간 연장허가 대상 여부와 제출서류를 확인해야 합니다. 만료일 전 충분히 여유를 두고 확인하세요.'
     },
     en: {
         languageButton: 'Language settings', languageMenu: 'Choose language', languageChanged: 'Language changed to English.',
@@ -14080,7 +14355,14 @@ const UI_TRANSLATIONS = {
         hkHeaderTitle: 'HiKorea Visit Reservation Guide', hkHeaderSub: 'A checklist for online booking and prep before your visit.', hkHeaderChip: 'Not an official service',
         hkPhase1: 'Preparation', hkPhase2: 'Booking procedure', hkPhase3: 'Task type', hkPhase4: 'Before visit', hkPhase5: 'Save & finish',
         hkPrimaryCta: 'Open HiKorea booking', hkSecondaryCta: '1345 hotline checklist',
-        hkDisc1: 'Paradiso is not an official government service.', hkDisc2: 'Information shown is for reference only.', hkDisc3: 'Confirm final decisions with HiKorea, 1345, or the competent immigration office.', hkDisc4: 'Required documents and slot availability may change based on review and agency notices.'
+        hkDisc1: 'Paradiso is not an official government service.', hkDisc2: 'Information shown is for reference only.', hkDisc3: 'Confirm final decisions with HiKorea, 1345, or the competent immigration office.', hkDisc4: 'Required documents and slot availability may change based on review and agency notices.',
+        /* Route-aware F-4 wizard + deadline calculator + HiKorea caution + procedure fallbacks */
+        f4RouteTitle: 'Which F-4 route applies to you?', f4RouteIntro: 'F-4 can involve different routes, including pre-entry visa issuance, domestic status change, domestic residence reporting, and extension of stay. Confirm which route matches your situation first.', f4RouteShowAll: 'Show all F-4 routes', f4RouteChooserAria: 'F-4 route selection', f4RouteSelectedPrefix: 'Selected route', f4RouteSourceNote: 'Selecting a route does not imply eligibility or approval. Confirm actual applicability with HiKorea, 1345, or the competent immigration office.', f4RouteNoDocsNote: 'This route does not yet have a source-backed document checklist. Confirm directly with HiKorea, 1345, or the competent immigration office.',
+        f4Route1Label: 'Entering with an F-4 visa issued by a Korean mission abroad', f4Route2Label: 'Changing to F-4 in Korea after entering with B-2, C-3, or another eligible status', f4Route3Label: 'Changing from H-2 to F-4', f4Route4Label: 'F-4 domestic residence report', f4Route5Label: 'F-4 extension of stay',
+        f4Route1Desc: 'You obtain an F-4 visa through a Korean diplomatic mission abroad before entering Korea. Confirm visa-issuance requirements and documents with the mission and HiKorea.', f4Route2Desc: 'After entering on B-2, C-3, or another eligible status, you change your status of stay to F-4 inside Korea. Confirm eligibility and documents with the competent immigration office.', f4Route3Desc: 'You change from H-2 (Working Visit) to F-4. Confirm eligibility and required documents with the competent immigration office.', f4Route4Desc: 'Overseas Koreans (F-4) may file a domestic residence report, which is distinct from a general foreigner registration. Confirm who must report, the deadline, and documents with the competent office.', f4Route5Desc: 'To stay beyond your current F-4 permitted period, extension of stay permission may be required. Check well before your expiry date.',
+        deadlineCalcTitle: 'Deadline calculator', deadlineCalcIntro: 'Enter your entry date and stay expiry date to estimate helpful preparation dates. These are not official deadlines, and your inputs are not saved or transmitted.', deadlineEntryDate: 'Entry date', deadlineExpiryDate: 'Stay expiry date', deadlineRegEstimate: 'Estimated registration deadline', deadlineExtReminders: 'Extension preparation reminders', deadlineAddToCalendar: 'Add to calendar', deadlineDownloadIcs: 'Download ICS file', deadlineAddGoogle: 'Add to Google Calendar', deadlineDisclaimer: 'Official deadlines may differ depending on your facts and the competent office.', deadlineCustomTitle: 'Reminder title (optional)', deadlineCustomDate: 'Reminder date (optional)', deadlineCompute: 'Calculate dates', deadlineRegCaution: 'Long-term foreign residents may need to complete foreigner registration within 90 days of entry (where applicable). This is a general preparation aid, not a confirmed official deadline.', deadlineExtCaution: 'These dates are preparation reminders based on your expiry date and do not guarantee any official filing window.', deadlineEmpty: 'Enter a date to see the estimated schedule.', deadlinePrivacyNote: 'Dates you enter are shown only in your browser and are not saved or sent to AI or the server.', deadlineDdayToday: 'Today', deadlineDaysBefore: '{days} days before', deadlineOnDate: 'On the date', deadlineProcedureTypeLabel: 'Related procedure (optional)',
+        hkPreCheckCaution: 'The items below help you prepare for booking. You can continue to the next step without checking them. Having your email, password, and stay-expiry date ready makes booking easier.',
+        procFallbackInitial: 'This covers the pre-entry visa issuance or initial status application stage. Check detailed requirements and documents with the Korean mission, HiKorea, or the competent authority.', procFallbackRegistration: 'Long-term foreign residents in Korea may need foreigner registration or domestic residence reporting depending on status and circumstances. Eligibility, deadline, and documents may vary.', procFallbackExtension: 'If you plan to stay beyond your current permitted period, check whether extension permission is required and what documents apply. Start well before your expiry date.'
     },
     zh: {
         languageButton: '语言设置', languageMenu: '选择语言', languageChanged: '语言已切换为简体中文。',
@@ -14163,7 +14445,14 @@ const UI_TRANSLATIONS = {
         hkHeaderTitle: 'HiKorea 访问预约指南', hkHeaderSub: '访问前的在线预约与准备事项清单。', hkHeaderChip: '非官方服务',
         hkPhase1: '准备确认', hkPhase2: '预约流程', hkPhase3: '业务类型', hkPhase4: '访问前检查', hkPhase5: '保存/完成',
         hkPrimaryCta: '前往 HiKorea 预约', hkSecondaryCta: '1345 咨询前确认事项',
-        hkDisc1: 'Paradiso 不是官方政府服务。', hkDisc2: '所提供信息仅供参考。', hkDisc3: '最终判断请向 HiKorea、1345 或主管出入境机关确认。', hkDisc4: '所需材料和预约空位可能根据审查与机关通知而变化。'
+        hkDisc1: 'Paradiso 不是官方政府服务。', hkDisc2: '所提供信息仅供参考。', hkDisc3: '最终判断请向 HiKorea、1345 或主管出入境机关确认。', hkDisc4: '所需材料和预约空位可能根据审查与机关通知而变化。',
+        /* Route-aware F-4 wizard + deadline calculator + HiKorea caution + procedure fallbacks */
+        f4RouteTitle: '您属于哪一种 F-4 办理路径？', f4RouteIntro: 'F-4 可能涉及不同路径，包括入境前签证签发、境内资格变更、国内居所申报和停留期间延期。请先确认哪一种路径符合您的情况。', f4RouteShowAll: '查看全部 F-4 路径', f4RouteChooserAria: 'F-4 路径选择', f4RouteSelectedPrefix: '已选路径', f4RouteSourceNote: '选择路径并不代表符合资格或获得许可。实际适用与否请向 HiKorea、1345 或管辖出入境外国人机构确认。', f4RouteNoDocsNote: '此路径暂未关联经来源确认的材料清单。请直接向 HiKorea、1345 或管辖出入境外国人机构确认。',
+        f4Route1Label: '通过驻外韩国使领馆取得 F-4 签证后入境', f4Route2Label: '以 B-2、C-3 等身份入境后在韩国境内变更为 F-4', f4Route3Label: '从 H-2 变更为 F-4', f4Route4Label: 'F-4 国内居所申报', f4Route5Label: 'F-4 停留期间延期',
+        f4Route1Desc: '在海外通过韩国驻外使领馆取得 F-4 签证后入境。签证签发要件与材料请向使领馆和 HiKorea 确认。', f4Route2Desc: '以 B-2、C-3 等其他资格入境后，在韩国境内将停留资格变更为 F-4。变更对象与材料请向管辖出入境外国人机构确认。', f4Route3Desc: '从 H-2（访问就业）变更为 F-4。资格要件与所需材料请向管辖出入境外国人机构确认。', f4Route4Desc: '在外同胞（F-4）可能适用国内居所申报，而非一般外国人登记。申报对象、期限与材料请向管辖机关确认。', f4Route5Desc: '如需超过当前 F-4 停留期间继续停留，可能需要停留期间延期许可。请在到期日前留出充足时间确认。',
+        deadlineCalcTitle: '期限计算器', deadlineCalcIntro: '输入入境日期和停留期限到期日，可估算有助于准备的日程。这些并非正式期限，您输入的内容不会被保存或发送。', deadlineEntryDate: '入境日期', deadlineExpiryDate: '停留期限到期日', deadlineRegEstimate: '预计外国人登记期限', deadlineExtReminders: '延期准备提醒', deadlineAddToCalendar: '添加到日历', deadlineDownloadIcs: '下载 ICS 文件', deadlineAddGoogle: '添加到 Google Calendar', deadlineDisclaimer: '正式期限可能因个人情况和管辖机构判断而不同。', deadlineCustomTitle: '提醒标题（可选）', deadlineCustomDate: '提醒日期（可选）', deadlineCompute: '计算日期', deadlineRegCaution: '长期停留的外国人可能需要在入境后 90 日内完成外国人登记（仅限对象者）。这是一般准备参考，并非确定的正式期限。', deadlineExtCaution: '以下日期为基于到期日的准备提醒，不保证任何正式申请期间。', deadlineEmpty: '输入日期后将显示预计日程。', deadlinePrivacyNote: '您输入的日期仅在浏览器中显示，不会保存或发送给 AI 或服务器。', deadlineDdayToday: '今天', deadlineDaysBefore: '提前 {days} 天', deadlineOnDate: '当天', deadlineProcedureTypeLabel: '相关程序（可选）',
+        hkPreCheckCaution: '以下项目用于帮助您准备预约。即使不勾选也可继续下一步。提前准备好电子邮箱、密码和停留期限到期日会让预约更顺利。',
+        procFallbackInitial: '此为入境前签证签发或相应停留资格申请阶段需确认的程序。详细要件与提交材料请向驻外韩国使领馆、HiKorea 或主管机关确认。', procFallbackRegistration: '在韩国长期停留的外国人，可能因对象与情况需要办理外国人登记或国内居所申报。登记/申报对象、期限与提交材料可能因停留资格和个人情况而不同。', procFallbackExtension: '如计划超过当前许可期间继续停留，需确认是否需要延期许可以及适用的材料。请在到期日前留出充足时间确认。'
     },
     zhHant: {
         languageButton: '語言設定', languageMenu: '選擇語言', languageChanged: '語言已切換為繁體中文。',
@@ -14194,6 +14483,13 @@ const UI_TRANSLATIONS = {
         aiSelectedScenarioLabel: '基於所選情形', aiScenarioGroundingLabel: '分情形文件依據', aiScenarioCandidateStatus: '基於手冊的候選資訊 · 需最終確認', aiScenarioMatchNote: '僅在細分資格或申請事由相符時參考。', aiScenarioMoreCount: '另有 {count} 項', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未關聯逐項已確認來源的一般參考指引。', aiTechnicalDetails: '查看技術詳情', aiSourceDisclosure: '本答覆是基於公開資料的參考指引。最終判斷請向 1345、HiKorea 或管轄出入境外國人機構確認。',
         aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有來源', aiLawStatusUnverified: '未經核實', aiLawStatusSourceLinked: '已關聯來源 · 未經核實', aiLawStatusFailed: '核實失敗', aiLawStatusNeedsReview: '需核實', aiLawStatusNotWired: '引用核實尚未連接', aiLawWarningDisabled: '法規核實功能已停用', aiLawWarningMissingKey: '未設定法規 API 金鑰', aiLawWarningSourceUnavailable: '無法確認法規來源', aiLawWarningTimeout: '法規查詢逾時', aiLawWarningNotWired: '引用核實尚未連接',
         aiSourceBadgeLabels: ['已核實', '有來源', '部分', '需核實', '參考', '未經核實', '僅連結', '已停用', '未連接', '核實失敗'],
+        /* Route-aware F-4 wizard + deadline calculator + HiKorea caution + procedure fallbacks */
+        f4RouteTitle: '您屬於哪一種 F-4 辦理路徑？', f4RouteIntro: 'F-4 可能涉及不同路徑，包括入境前簽證核發、境內資格變更、國內居所申報和停留期間延期。請先確認哪一種路徑符合您的情況。', f4RouteShowAll: '查看全部 F-4 路徑', f4RouteChooserAria: 'F-4 路徑選擇', f4RouteSelectedPrefix: '已選路徑', f4RouteSourceNote: '選擇路徑並不代表符合資格或獲得許可。實際適用與否請向 HiKorea、1345 或管轄出入境外國人機構確認。', f4RouteNoDocsNote: '此路徑尚未連結經來源確認的文件清單。請直接向 HiKorea、1345 或管轄出入境外國人機構確認。',
+        f4Route1Label: '透過駐外韓國使領館取得 F-4 簽證後入境', f4Route2Label: '以 B-2、C-3 等身分入境後在韓國境內變更為 F-4', f4Route3Label: '從 H-2 變更為 F-4', f4Route4Label: 'F-4 國內居所申報', f4Route5Label: 'F-4 停留期間延期',
+        f4Route1Desc: '在海外透過韓國駐外使領館取得 F-4 簽證後入境。簽證核發要件與文件請向使領館和 HiKorea 確認。', f4Route2Desc: '以 B-2、C-3 等其他資格入境後，在韓國境內將停留資格變更為 F-4。變更對象與文件請向管轄出入境外國人機構確認。', f4Route3Desc: '從 H-2（訪問就業）變更為 F-4。資格要件與所需文件請向管轄出入境外國人機構確認。', f4Route4Desc: '在外同胞（F-4）可能適用國內居所申報，而非一般外國人登錄。申報對象、期限與文件請向管轄機關確認。', f4Route5Desc: '如需超過目前 F-4 停留期間繼續停留，可能需要停留期間延期許可。請在到期日前預留充足時間確認。',
+        deadlineCalcTitle: '期限計算器', deadlineCalcIntro: '輸入入境日期與停留期限到期日，可估算有助於準備的日程。這些並非正式期限，您輸入的內容不會被儲存或傳送。', deadlineEntryDate: '入境日期', deadlineExpiryDate: '停留期限到期日', deadlineRegEstimate: '預計外國人登錄期限', deadlineExtReminders: '延期準備提醒', deadlineAddToCalendar: '加入行事曆', deadlineDownloadIcs: '下載 ICS 檔案', deadlineAddGoogle: '加入 Google Calendar', deadlineDisclaimer: '正式期限可能因個人情況和管轄機構判斷而不同。', deadlineCustomTitle: '提醒標題（選填）', deadlineCustomDate: '提醒日期（選填）', deadlineCompute: '計算日期', deadlineRegCaution: '長期停留的外國人可能需要在入境後 90 日內完成外國人登錄（僅限對象者）。這是一般準備參考，並非確定的正式期限。', deadlineExtCaution: '以下日期為基於到期日的準備提醒，不保證任何正式申請期間。', deadlineEmpty: '輸入日期後將顯示預計日程。', deadlinePrivacyNote: '您輸入的日期僅在瀏覽器中顯示，不會儲存或傳送給 AI 或伺服器。', deadlineDdayToday: '今天', deadlineDaysBefore: '提前 {days} 天', deadlineOnDate: '當天', deadlineProcedureTypeLabel: '相關程序（選填）',
+        hkPreCheckCaution: '以下項目用於協助您準備預約。即使不勾選也可繼續下一步。提前準備好電子郵件、密碼和停留期限到期日會讓預約更順利。',
+        procFallbackInitial: '此為入境前簽證核發或相應停留資格申請階段需確認的程序。詳細要件與提交文件請向駐外韓國使領館、HiKorea 或主管機關確認。', procFallbackRegistration: '在韓國長期停留的外國人，可能因對象與情況需要辦理外國人登錄或國內居所申報。登錄/申報對象、期限與提交文件可能因停留資格和個人情況而不同。', procFallbackExtension: '如計劃超過目前許可期間繼續停留，需確認是否需要延期許可以及適用的文件。請在到期日前預留充足時間確認。',
         step0aTitle: 'TRANSLATION_PENDING', step0aSecATitle: 'TRANSLATION_PENDING', step0aSecABody: 'TRANSLATION_PENDING', step0aNoEmail: 'TRANSLATION_PENDING', step0aGmail: 'TRANSLATION_PENDING', step0aGmailBtn: 'TRANSLATION_PENDING', step0aEmailChoice: 'TRANSLATION_PENDING', step0aNaverBtn: 'TRANSLATION_PENDING', step0aBorrow: 'TRANSLATION_PENDING', step0aHasEmail: 'TRANSLATION_PENDING', step0aSecBTitle: 'TRANSLATION_PENDING', step0aSecBBody: 'TRANSLATION_PENDING', step0aIdRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aIdNote: 'TRANSLATION_PENDING', step0aSecCTitle: 'TRANSLATION_PENDING', step0aSecCBody: 'TRANSLATION_PENDING', step0aPwRules: ['TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING', 'TRANSLATION_PENDING'], step0aPwGood: 'TRANSLATION_PENDING', step0aPwExample: 'Jeju2024!@', step0aPwNote: 'TRANSLATION_PENDING', step0aSecDTitle: 'TRANSLATION_PENDING', step0aEmailVerify1: 'TRANSLATION_PENDING', step0aEmailVerify2: 'TRANSLATION_PENDING', step0aEmailVerify3: 'TRANSLATION_PENDING', step0aSecETitle: 'TRANSLATION_PENDING', step0aHelpLine: 'TRANSLATION_PENDING', hikoreaCTATitle: 'TRANSLATION_PENDING', hikoreaCTASub: 'TRANSLATION_PENDING', hikoreaCTABtn: 'TRANSLATION_PENDING', jejuFilterAll: 'TRANSLATION_PENDING', jejuFilterJeju: 'TRANSLATION_PENDING', jejuFilterSeogwipo: 'TRANSLATION_PENDING'
     },
     ja: {
@@ -15197,7 +15493,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'open-doc-modal': () => openDocModal(actionBtn.dataset.vcode, actionBtn.dataset.type, actionBtn.dataset.subidx),
                 'open-faq-modal': () => openFaqModal(actionBtn.dataset.vcode),
                 'set-guide-lang': () => { hikoreaGuideState.lang = actionBtn.dataset.lang || 'ko'; renderHikoreaGuide(); },
-                'start-hikorea-guide': () => { if (hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk) { hikoreaGuideState.step = 0; renderHikoreaGuide(); } },
+                'start-hikorea-guide': () => { hikoreaGuideState.step = 0; renderHikoreaGuide(); },
                 'hikorea-prev': () => { hikoreaGuideState.step = Math.max(0, hikoreaGuideState.step - 1); renderHikoreaGuide(); },
                 'hikorea-next': () => { hikoreaGuideState.step = Math.min(7, hikoreaGuideState.step + 1); renderHikoreaGuide(); },
                 'hikorea-pick-task': () => { const t = actionBtn.dataset.task; if (t) { hikoreaGuideState.taskType = t; renderHikoreaGuide(); } },
@@ -15209,6 +15505,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.querySelectorAll('.procedure-tab').forEach(btn => btn.classList.toggle('active', btn === actionBtn));
                     card.querySelectorAll('.procedure-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.procedurePanel === actionBtn.dataset.procedure));
                 },
+                'select-f4-route': () => selectF4Route(actionBtn),
+                'show-all-f4-routes': () => resetF4Route(actionBtn),
+                'compute-deadlines': () => computeDeadlines(actionBtn),
+                'deadline-download-ics': () => downloadDeadlineIcs({ title: actionBtn.dataset.deadlineTitle, date: actionBtn.dataset.deadlineDate }),
                 'select-procedure-variant': () => selectProcedureVariant(actionBtn),
                 'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
                 'copy-scenario-checklist': () => copyScenarioChecklist(actionBtn),
@@ -15341,8 +15641,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         }
+        // HiKorea guidance is no longer gated behind the preliminary checkboxes.
+        // The Start button is always available; the email/password/expiry inputs
+        // are optional preparation aids only (see hkPreCheckCaution). The expiry
+        // date still drives the days-to-expiry hint above when entered.
         const startBtn = document.getElementById('hkStartBtn');
-        if (startBtn) startBtn.disabled = !(hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk);
+        if (startBtn) startBtn.disabled = false;
         if (hikoreaGuideState.step === 7) {
             const completeBtn = document.querySelector('[data-action="hikorea-complete"]');
             if (completeBtn) completeBtn.disabled = !hikoreaGuideState.savedOk;

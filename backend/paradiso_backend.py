@@ -19,13 +19,18 @@ from __future__ import annotations
 import json
 import logging
 import os
+from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-from services.law_grounding import build_law_grounding_context, should_attempt_law_grounding
+from services.law_grounding import (
+    build_law_grounding_context,
+    build_law_search_query,
+    should_attempt_law_grounding,
+)
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -62,10 +67,24 @@ DATABASE_URL: Optional[str] = os.environ.get("DATABASE_URL")
 SUPABASE_URL: Optional[str] = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 
-OPENROUTER_MODEL: str = os.environ.get(
-    "OPENROUTER_MODEL", "openrouter/auto"
+# Pin Paradiso AI to a deterministic OpenRouter model rather than the
+# variable `openrouter/auto` router. The verified free model id is mirrored
+# in backend/.env.example and docs/ai/OPENROUTER_GEMMA_PIN_AND_LAW_GROUNDING_NEXT_STEPS.md.
+# Override per-deploy with the OPENROUTER_MODEL env var if the catalog changes.
+_DEFAULT_OPENROUTER_MODEL: str = "google/gemma-4-31b-it:free"
+OPENROUTER_MODEL: str = (
+    os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
 )
 GROQ_MODEL: str = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
+
+# Whether Groq may be used as a fallback when OpenRouter is not configured.
+# Default true preserves prior behaviour (Groq is only ever reached when
+# OPENROUTER_API_KEY is unset). Set ALLOW_GROQ_FALLBACK=false to hard-require
+# OpenRouter/Gemma and return 503 instead of silently answering via Groq.
+ALLOW_GROQ_FALLBACK: bool = (
+    (os.environ.get("ALLOW_GROQ_FALLBACK", "true") or "true").strip().lower()
+    not in {"0", "false", "no", "off"}
+)
 
 SITE_URL: str = os.environ.get("SITE_URL", "")
 SITE_TITLE: str = os.environ.get("SITE_TITLE", "Paradiso")
@@ -87,10 +106,30 @@ CORS_ALLOW_ORIGINS = [
 # App
 # ---------------------------------------------------------------------------
 
+@asynccontextmanager
+async def _lifespan(_app: "FastAPI"):
+    """Log the active provider/model and law-grounding mode at startup.
+
+    Reports only non-secret descriptors (provider name, public model id,
+    feature flags). API keys are never logged.
+    """
+    llm = _resolve_llm_config()
+    law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    logger.info(
+        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s law_grounding_mode=%s",
+        llm["provider"],
+        llm["model"],
+        llm["groq_fallback_allowed"],
+        law_mode,
+    )
+    yield
+
+
 app = FastAPI(
     title="Paradiso Backend",
     version="0.1.0",
     default_response_class=UTF8JSONResponse,
+    lifespan=_lifespan,
 )
 
 app.add_middleware(
@@ -142,6 +181,14 @@ class AskResponse(BaseModel):
     risk_level_detected: Optional[str] = None
     law_grounding_used: bool = False
     law_grounding_attempted: bool = False
+    # Coarse, non-secret state for the source panel. One of:
+    #   "not_attempted" — the question did not trigger law-grounding intent.
+    #   "disabled"      — intent matched but LAW_GROUNDING_MODE is disabled.
+    #   "unavailable"   — intent matched, grounding attempted, but no usable result.
+    #   "used"          — intent matched and law grounding contributed context.
+    law_grounding_status: str = "not_attempted"
+    law_grounding_intent_reasons: List[str] = Field(default_factory=list)
+    law_search_query: str = ""
     law_grounding_warnings: List[str] = Field(default_factory=list)
     citation_verification: Optional[Dict[str, Any]] = None
 
@@ -171,6 +218,41 @@ def _providers_configured() -> Dict[str, bool]:
         "law_api": bool(LAW_API_KEY),
         "database": bool(DATABASE_URL),
         "supabase": bool(SUPABASE_URL and SUPABASE_SERVICE_KEY),
+    }
+
+
+def _resolve_llm_config() -> Dict[str, Any]:
+    """Resolve the active LLM provider + model without exposing any secret.
+
+    Precedence (unchanged from prior behaviour):
+      1. OpenRouter, whenever OPENROUTER_API_KEY is set (model = OPENROUTER_MODEL).
+      2. Groq, only if OpenRouter is unset, Groq key is present, AND
+         ALLOW_GROQ_FALLBACK is true (model = GROQ_MODEL).
+      3. Otherwise no provider is configured.
+
+    Returns only non-sensitive descriptors (provider name, model id, flags).
+    Model ids (e.g. ``google/gemma-4-31b-it:free``) are public catalog
+    identifiers, not secrets, so they are safe to surface on /health.
+    """
+    if OPENROUTER_API_KEY:
+        return {
+            "provider": "openrouter",
+            "model": OPENROUTER_MODEL,
+            "configured": True,
+            "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
+        }
+    if GROQ_API_KEY and ALLOW_GROQ_FALLBACK:
+        return {
+            "provider": "groq",
+            "model": GROQ_MODEL,
+            "configured": True,
+            "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
+        }
+    return {
+        "provider": "none",
+        "model": None,
+        "configured": False,
+        "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
     }
 
 
@@ -1575,11 +1657,21 @@ async def root() -> Dict[str, Any]:
 
 @app.get("/health")
 async def health() -> Dict[str, Any]:
+    llm = _resolve_llm_config()
     return {
         "status": "ok",
         "service": "paradiso-backend",
         "version": app.version,
         "providers": _providers_configured(),
+        # Non-secret active LLM descriptor. Model ids are public catalog
+        # identifiers; API keys are never included here.
+        "llm": {
+            "provider": llm["provider"],
+            "model": llm["model"],
+            "configured": llm["configured"],
+            "groq_fallback_allowed": llm["groq_fallback_allowed"],
+        },
+        "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
     }
 
 
@@ -1757,20 +1849,31 @@ async def ask(req: AskRequest) -> AskResponse:
         # the grounding/disclaimers above; never overrides them.
         final_prompt += "\n\n" + structured_block
 
+    # Law grounding metadata. Intent is computed for EVERY question so the
+    # source panel can honestly distinguish "not_attempted" (no legal intent)
+    # from "disabled" (intent detected but the feature is off) from
+    # "unavailable" / "used". External law-API calls still only happen when
+    # LAW_GROUNDING_MODE is audit/enabled (default disabled, safe-by-default).
     law_grounding_used = False
     law_grounding_attempted = False
+    law_grounding_status = "not_attempted"
+    law_grounding_intent_reasons: List[str] = []
+    law_search_query = ""
     law_grounding_warnings: List[str] = []
     citation_verification: Optional[Dict[str, Any]] = None
     law_context: Dict[str, Any] = {}
     mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
-    if mode in {"audit", "enabled"}:
-        intent = should_attempt_law_grounding(prompt)
-        if intent.get("should_attempt"):
+    intent = should_attempt_law_grounding(prompt)
+    if intent.get("should_attempt"):
+        law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
+        if mode in {"audit", "enabled"}:
             law_context = build_law_grounding_context(prompt)
             law_grounding_attempted = bool(law_context.get("attempted"))
             law_grounding_used = bool(law_context.get("law_grounding_used"))
             law_grounding_warnings = law_context.get("grounding_warnings", []) or []
             citation_verification = law_context.get("citation_verification")
+            law_search_query = law_context.get("law_search_query", "") or ""
+            law_grounding_status = "used" if law_grounding_used else "unavailable"
 
             candidates = law_context.get("law_grounding") or []
             if law_grounding_used and candidates:
@@ -1786,7 +1889,15 @@ async def ask(req: AskRequest) -> AskResponse:
                     "- Do not invent article numbers, deadlines, fees, or required documents.\n"
                     + "\n".join(compact_items)
                 )
-    if OPENROUTER_API_KEY:
+        else:
+            # Intent detected but grounding is disabled: surface the state and
+            # the query that WOULD be issued, without making any external call.
+            law_grounding_status = "disabled"
+            law_search_query = build_law_search_query(prompt, law_grounding_intent_reasons)
+            law_grounding_warnings = ["LAW_GROUNDING_DISABLED"]
+
+    llm = _resolve_llm_config()
+    if llm["provider"] == "openrouter":
         answer = await _call_openrouter(final_prompt, model=req.model)
         return AskResponse(
             answer=answer,
@@ -1802,10 +1913,13 @@ async def ask(req: AskRequest) -> AskResponse:
             risk_level_detected=risk_level_detected,
             law_grounding_used=law_grounding_used,
             law_grounding_attempted=law_grounding_attempted,
+            law_grounding_status=law_grounding_status,
+            law_grounding_intent_reasons=law_grounding_intent_reasons,
+            law_search_query=law_search_query,
             law_grounding_warnings=law_grounding_warnings,
             citation_verification=citation_verification,
         )
-    if GROQ_API_KEY:
+    if llm["provider"] == "groq":
         answer = await _call_groq(final_prompt, model=req.model)
         return AskResponse(
             answer=answer,
@@ -1821,6 +1935,9 @@ async def ask(req: AskRequest) -> AskResponse:
             risk_level_detected=risk_level_detected,
             law_grounding_used=law_grounding_used,
             law_grounding_attempted=law_grounding_attempted,
+            law_grounding_status=law_grounding_status,
+            law_grounding_intent_reasons=law_grounding_intent_reasons,
+            law_search_query=law_search_query,
             law_grounding_warnings=law_grounding_warnings,
             citation_verification=citation_verification,
         )
@@ -1843,6 +1960,9 @@ async def ask(req: AskRequest) -> AskResponse:
             "risk_level_detected": risk_level_detected,
             "law_grounding_used": law_grounding_used,
             "law_grounding_attempted": law_grounding_attempted,
+            "law_grounding_status": law_grounding_status,
+            "law_grounding_intent_reasons": law_grounding_intent_reasons,
+            "law_search_query": law_search_query,
             "law_grounding_warnings": law_grounding_warnings,
             "citation_verification": citation_verification,
         },

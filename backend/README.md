@@ -8,7 +8,7 @@ lookup flows.
 | Method | Path                    | Purpose                                                       |
 | ------ | ----------------------- | ------------------------------------------------------------- |
 | GET    | `/`                     | Service descriptor for humans hitting the bare backend URL.   |
-| GET    | `/health`               | Liveness probe; reports which providers are configured.       |
+| GET    | `/health`               | Liveness probe; reports configured providers, the resolved LLM provider/model (no secrets), and `law_grounding_mode`. |
 | GET    | `/api/visas`            | Returns the visa catalog used by the frontend visa explorer.  |
 | POST   | `/api/ask`              | Chatbot endpoint. Routes to OpenRouter or Groq if configured. |
 | POST   | `/api/jobcodekeywords`  | Extracts keywords from a job-code search query.               |
@@ -119,9 +119,10 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `openrouter/auto`.                           |
-| `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq if OpenRouter is not set.    |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. |
+| `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true. |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |
+| `ALLOW_GROQ_FALLBACK`   | optional  | Defaults to `true`. Set `false` to hard-require OpenRouter/Gemma (503 instead of a silent Groq answer). |
 | `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
 | `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
 | `FRONTEND_URL`          | optional  | Surfaced by `GET /` so a user who opens the bare backend URL sees where the real app lives. |
@@ -305,10 +306,31 @@ agreement tracks), and the planned next batches.
   path with `grounding_used: false`. No law API, no manual chunking,
   no full RAG.
 
-`/health` should return `status: "ok"` and a `providers` map showing
-which integrations are configured. `/api/visas` should return a non-
-empty `data` array and `source_type: "backend-data"` (no `warning`
-field) once the deploy includes `backend/data/visas.json`.
+`/health` should return `status: "ok"`, a `providers` map showing
+which integrations are configured, and an `llm` object reporting the
+resolved provider/model — e.g. `{"provider":"openrouter","model":"google/gemma-4-31b-it:free","configured":true,"groq_fallback_allowed":true}`.
+Model ids are public catalog identifiers (not secrets); API keys are
+never surfaced. The resolved provider/model is also logged once at
+startup. `/api/visas` should return a non-empty `data` array and
+`source_type: "backend-data"` (no `warning` field) once the deploy
+includes `backend/data/visas.json`.
+
+### Law-grounding answer metadata
+
+`/api/ask` returns law-grounding state on every answer so the frontend
+source panel can be honest without overclaiming:
+
+- `law_grounding_status` — one of `not_attempted` (no legal intent in the
+  question), `disabled` (intent detected but `LAW_GROUNDING_MODE=disabled`),
+  `unavailable` (attempted but no usable result / missing key), or `used`.
+- `law_grounding_intent_reasons` — which intent signals fired (e.g.
+  `유학/수강/계절학기`, `관광취업/워킹홀리데이/H-1`, `활동범위/자격외활동`).
+- `law_search_query` — the compact statutory query that would be/was issued.
+
+Intent now covers activity-scope/study/working-holiday questions (H-1
+계절학기 수강, 체류자격외활동, etc.), not just explicit legal-basis wording.
+External law-API calls still only happen when `LAW_GROUNDING_MODE` is
+`audit`/`enabled` (default `disabled`).
 
 ## Wiring the frontend
 
