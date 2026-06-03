@@ -201,6 +201,29 @@ def _warning_repetition_count(answer):
     markers = ["1345", "hikorea", "하이코리아", "immigration office", "출입국"]
     return max((lowered.count(m) for m in markers), default=0)
 
+
+def _ai_shell_static_signals():
+    """Static signals about the ai.html answer shell (Part G).
+
+    These describe the rendered shell (chips/footer), which the API response
+    cannot show, so we read the local ai.html. Returns None if ai.html is not
+    found (e.g. running against a remote backend from elsewhere). Warn-only."""
+    here = os.path.dirname(os.path.abspath(__file__))
+    ai_html = os.path.join(os.path.dirname(here), "ai.html")
+    try:
+        with open(ai_html, encoding="utf-8") as fh:
+            html = fh.read()
+    except OSError:
+        return None
+    return {
+        "related_chips_distinct": ("bdg-related" in html) and ("Related status to verify" in html),
+        "related_shown_as_related_not_source": "related_statuses_not_sources" in html,
+        "answer_basis_row_present": "answer-basis-row" in html,
+        "footer_english_present": "Paradiso provides public law/manual-based reference information" in html,
+        "english_footer_leak": "Paradiso provides public law/manual-based reference information" not in html,
+        "raw_source_code_in_prose": "SOURCE_UNAVAILABLE could not" in html,
+    }
+
 # Conservative, obviously-unsupported approval/guarantee phrasing. We do NOT
 # overfit to exact LLM wording — only a tiny denylist of clearly unsafe claims.
 UNSAFE_APPROVAL_PHRASES = [
@@ -431,6 +454,7 @@ def main(argv=None):
         "model_fallback_executed": False,
         "questions": [],
         "no_provider_safe": None,
+        "ai_shell": _ai_shell_static_signals(),
         "blocker": None,
     }
 
@@ -523,6 +547,14 @@ def _emit(report, args):
     print("  model fallback hit       : %s" % report["model_fallback_executed"])
     print("  manual->law fallback hit : %s" % report["manual_to_law_fallback_executed"])
     print("  no-provider 503 safe     : %s" % report["no_provider_safe"])
+    if report.get("ai_shell") is not None:
+        sh = report["ai_shell"]
+        print("  ai shell (static, ai.html):")
+        print("    related chips distinct : %s" % sh["related_chips_distinct"])
+        print("    answer-basis row       : %s" % sh["answer_basis_row_present"])
+        print("    english footer present : %s" % sh["footer_english_present"])
+        print("    english footer leak    : %s" % sh["english_footer_leak"])
+        print("    raw source code in UI  : %s" % sh["raw_source_code_in_prose"])
     print("  questions:")
     for r in report["questions"]:
         tag = "OK  " if r["ok"] else ("SKIP" if r["status"] == 503 else "FAIL")
