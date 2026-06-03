@@ -25,7 +25,7 @@ _INTENT_PATTERNS = [
     # they only justify attempting official law grounding before responding.
     ("출국/해외여행", re.compile(r"출국|해외\s*여행|해외여행|일본|재입국|출입국", re.IGNORECASE)),
     ("travel/re-entry", re.compile(r"\b(re-entry|reentry|leave Korea|travel abroad|Japan|depart(?:ure)?|return to Korea)\b", re.IGNORECASE)),
-    ("외국인등록", re.compile(r"외국인\s*등록|외국인등록증|등록증|alien registration|foreigner registration|\bARC\b", re.IGNORECASE)),
+    ("외국인등록", re.compile(r"외국인\s*등록|외국인등록증|등록증|거소\s*신고|국내거소신고|거소신고|alien registration|foreigner registration|domestic residence report|residence report|\bARC\b", re.IGNORECASE)),
     ("체류위험", re.compile(r"체류기간|체류자격|불법체류|초과체류|체류\s*만료|취소|overstay|stay period|status", re.IGNORECASE)),
     ("G-1", re.compile(r"\bG\s*-?\s*1(?:\s*-?\s*5)?\b|G-1-5|난민|인도적\s*체류|humanitarian stay|refugee", re.IGNORECASE)),
 
@@ -109,7 +109,7 @@ def build_law_search_query(question: str, reasons: Sequence[str] | None = None) 
         queries.append("출입국관리법 출국 재입국 재입국허가 체류자격")
 
     if "외국인등록" in reason_set:
-        queries.append("출입국관리법 외국인등록 외국인등록증 체류자격")
+        queries.append("출입국관리법 외국인등록 외국인등록증 국내거소신고 체류자격")
 
     if "G-1" in reason_set:
         queries.append("출입국관리법 시행령 G-1 기타 난민 인도적 체류")

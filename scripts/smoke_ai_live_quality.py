@@ -15,10 +15,12 @@ What it reports:
   * backend URL tested
   * whether an LLM provider is configured (boolean only)
   * the selected model (public catalog id)
+  * whether Groq fallback is allowed (non-secret boolean) + any llm warnings
   * the law-grounding mode (disabled / audit / enabled)
   * for each sample question: whether the live answer check was skipped (503
-    no-provider) or executed, whether law grounding was attempted, and whether
-    selected route/variant context was echoed in the response metadata
+    no-provider) or executed, whether law grounding was attempted, whether the
+    manual-to-law fallback was triggered, and whether selected route/variant
+    context was echoed in the response metadata
   * whether the no-provider 503 behavior is safe
 
 Usage (local, no provider — records skipped, exits 0):
@@ -174,6 +176,8 @@ def _check_question(base, q):
         "live_answer_checked": False,
         "law_grounding_attempted": None,
         "law_grounding_status": None,
+        "manual_grounding_status": None,
+        "manual_to_law_fallback_used": None,
         "variant_context_used": None,
         "unsafe_approval_language": None,
         "metadata_present": None,
@@ -195,6 +199,8 @@ def _check_question(base, q):
 
     result["law_grounding_attempted"] = meta.get("law_grounding_attempted")
     result["law_grounding_status"] = meta.get("law_grounding_status")
+    result["manual_grounding_status"] = meta.get("manual_grounding_status")
+    result["manual_to_law_fallback_used"] = meta.get("manual_to_law_fallback_used")
     result["variant_context_used"] = meta.get("procedure_variant_context_used")
 
     if status == 503:
@@ -244,8 +250,11 @@ def main(argv=None):
         "provider_configured": None,
         "provider_flags": None,
         "model": None,
+        "groq_fallback_allowed": None,
+        "llm_warnings": None,
         "law_grounding_mode": None,
         "live_answer_executed": False,
+        "manual_to_law_fallback_executed": False,
         "questions": [],
         "no_provider_safe": None,
         "blocker": None,
@@ -271,11 +280,17 @@ def main(argv=None):
     report["provider_configured"] = bool(llm.get("configured"))
     report["provider_flags"] = health.get("providers")
     report["model"] = llm.get("model")
+    # Non-secret Groq-fallback posture surfaced by /health (no key material).
+    report["groq_fallback_allowed"] = llm.get("groq_fallback_allowed")
+    report["llm_warnings"] = llm.get("warnings")
     report["law_grounding_mode"] = health.get("law_grounding_mode")
 
     results = [_check_question(base, q) for q in SAMPLE_QUESTIONS]
     report["questions"] = results
     report["live_answer_executed"] = any(r["live_answer_checked"] for r in results)
+    report["manual_to_law_fallback_executed"] = any(
+        bool(r.get("manual_to_law_fallback_used")) for r in results
+    )
     report["no_provider_safe"] = all(
         (r["status"] != 503) or r["ok"] for r in results
     )
@@ -315,8 +330,11 @@ def _emit(report, args):
     print("  provider configured      : %s" % report["provider_configured"])
     print("  provider flags           : %s" % report["provider_flags"])
     print("  model                    : %s" % report["model"])
+    print("  groq fallback allowed    : %s" % report["groq_fallback_allowed"])
+    print("  llm warnings             : %s" % report["llm_warnings"])
     print("  law grounding mode       : %s" % report["law_grounding_mode"])
     print("  live answer executed     : %s" % report["live_answer_executed"])
+    print("  manual->law fallback hit : %s" % report["manual_to_law_fallback_executed"])
     print("  no-provider 503 safe     : %s" % report["no_provider_safe"])
     print("  questions:")
     for r in report["questions"]:
@@ -324,8 +342,10 @@ def _emit(report, args):
         suffix = ""
         if r["sent_selected_context"]:
             suffix += " [route/variant ctx sent; used=%s]" % r["variant_context_used"]
-        if r["live_answer_checked"]:
-            suffix += " [law=%s]" % r["law_grounding_status"]
+        suffix += " [manual=%s law=%s m2l=%s]" % (
+            r["manual_grounding_status"], r["law_grounding_status"],
+            r["manual_to_law_fallback_used"],
+        )
         print("    %s  %-22s %s%s" % (tag, r["id"], r["note"], suffix))
     if not report["live_answer_executed"]:
         print(

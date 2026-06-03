@@ -20,7 +20,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const INDEX_PATH = path.resolve(__dirname, '..', 'index.html');
+// Default to repo-root index.html; allow an override (CHECK_I18N_INDEX) so the
+// guard can be exercised against a fixture copy in tests without mutating the
+// real index.html.
+const INDEX_PATH = process.env.CHECK_I18N_INDEX
+  ? path.resolve(process.env.CHECK_I18N_INDEX)
+  : path.resolve(__dirname, '..', 'index.html');
 
 function fail(msg) {
   console.error(`[check_i18n] ${msg}`);
@@ -130,6 +135,80 @@ function isEmptyString(value) {
   return typeof value === 'string' && value.trim() === '';
 }
 
+// The full UI languages that must carry translated chrome for required keys.
+const REQUIRED_LANGS = ['ko', 'en', 'zh', 'zhHant'];
+
+// UI-chrome keys that MUST be present, non-empty, and (outside ko, unless
+// allowlisted) free of Korean Hangul in every full language. These cover the
+// surfaces this guard protects: AI modal actions, document/procedure-stage
+// titles, jurisdiction chrome, source / law-grounding panel, manual-to-law
+// fallback, scenario checklist, deadline tool, and route-wizard common labels.
+// This is intentionally a curated list — NOT every key — so the guard catches
+// chrome leaks on the surfaces that matter without failing on the many
+// intentionally-untranslated long-form landing keys (which fall back to ko).
+const REQUIRED_UI_KEYS = [
+  // Manual-to-law fallback (source panel)
+  'manualToLawFallbackLabel', 'manualToLawFallbackChecked', 'manualToLawFallbackNote',
+  // Document-modal procedure-stage titles
+  'docModalTitleNew', 'docModalTitleExt', 'docModalTitleChange',
+  'docModalTitleSub', 'docModalTitleSubGeneric', 'docStageReference',
+  // Jurisdiction modal chrome
+  'jurSidoPlaceholder', 'jurSigunguPlaceholder', 'jurMissingInfo',
+  // AI modal + source / law-grounding panel
+  'aiModalTitle', 'aiActionLabels', 'aiSourcePanelTitle',
+  'sourceStatusTitle', 'manualActionLabels',
+  'lawGroundingStatusLabel', 'lawGroundingStatusUsed', 'lawGroundingStatusUnavailable',
+  'lawGroundingStatusDisabled', 'lawGroundingStatusNotAttempted',
+  // Selected-scenario checklist + deadline tool
+  'scenarioChecklistTitle', 'scenarioChecklistCopy', 'scenarioChecklistReset',
+  'deadlineCalcTitle', 'deadlineCompute', 'deadlineAddToCalendar',
+  // Route-wizard common
+  'routeShowAll',
+];
+
+// Keys whose translated value may intentionally embed official Korean source
+// terms (official document names, statute names, or copy that is explicitly
+// ABOUT Korean text being preserved). The Hangul check skips these so the guard
+// does not flag legitimately-Korean source/data text as a UI leak.
+const INTENTIONAL_KOREAN_ALLOWLIST = new Set([
+  'scenarioOfficialLabelsKoNote',
+  'officialDocumentNamesKoNote',
+  'partialLanguageNotice',
+]);
+
+/**
+ * Validate that every REQUIRED_UI_KEY is present + non-empty in every full
+ * language, and free of Korean Hangul in non-ko packs (unless allowlisted).
+ * Catches UI-chrome leaks without failing on intentionally-Korean source text.
+ */
+function checkRequiredKeysAcrossLanguages(translations) {
+  for (const lang of REQUIRED_LANGS) {
+    const pack = translations[lang];
+    if (!pack || typeof pack !== 'object') {
+      fail(`Missing \`${lang}\` translation pack`);
+      continue;
+    }
+    for (const key of REQUIRED_UI_KEYS) {
+      if (!(key in pack)) {
+        fail(`Required UI key "${key}" missing in ${lang}`);
+        continue;
+      }
+      const value = pack[key];
+      if (isEmptyString(value)) {
+        fail(`Required UI key "${key}" is empty in ${lang}`);
+      }
+      if (Array.isArray(value) && value.some(isEmptyString)) {
+        fail(`Required UI key "${key}" has an empty entry in ${lang}`);
+      }
+      // Korean Hangul in a non-ko required-chrome value is a leak, unless the
+      // key is explicitly allowlisted as intentionally-Korean source text.
+      if (lang !== 'ko' && !INTENTIONAL_KOREAN_ALLOWLIST.has(key) && containsHangul(value)) {
+        fail(`UI-chrome leak: required key "${key}" still contains Korean in ${lang}: ${JSON.stringify(value)}`);
+      }
+    }
+  }
+}
+
 function main() {
   const html = readIndex();
   const source = extractTranslationsSource(html);
@@ -234,6 +313,9 @@ function main() {
     }
   ];
 
+  // Required UI-chrome keys must be translated across ko/en/zh/zhHant.
+  checkRequiredKeysAcrossLanguages(translations);
+
   for (const item of targetedCoverage) {
     if (!html.includes(item.hardcoded)) continue;
     for (const key of item.keys) {
@@ -252,7 +334,12 @@ function main() {
   if (process.exitCode === 1) {
     console.error('[check_i18n] FAILED');
   } else {
-    console.log(`[check_i18n] OK — ${Object.keys(en).length} keys in en, ${Object.keys(ko).length} in ko`);
+    const zhCount = translations.zh ? Object.keys(translations.zh).length : 0;
+    const zhHantCount = translations.zhHant ? Object.keys(translations.zhHant).length : 0;
+    console.log(
+      `[check_i18n] OK — ${Object.keys(en).length} keys in en, ${Object.keys(ko).length} in ko, ` +
+      `${zhCount} in zh, ${zhHantCount} in zhHant; ${REQUIRED_UI_KEYS.length} required UI keys verified across ${REQUIRED_LANGS.join('/')}`
+    );
   }
 }
 

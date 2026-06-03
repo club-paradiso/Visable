@@ -79,12 +79,20 @@ OPENROUTER_MODEL: str = (
 GROQ_MODEL: str = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
 
 # Whether Groq may be used as a fallback when OpenRouter is not configured.
-# Default true preserves prior behaviour (Groq is only ever reached when
-# OPENROUTER_API_KEY is unset). Set ALLOW_GROQ_FALLBACK=false to hard-require
-# OpenRouter/Gemma and return 503 instead of silently answering via Groq.
+# Production intent is strict OpenRouter/Gemma, so the default is now FALSE:
+# Groq is only ever reached when OPENROUTER_API_KEY is unset AND the operator
+# has explicitly opted in with ALLOW_GROQ_FALLBACK=true. With the default,
+# /api/ask returns a safe 503 (no_llm_provider_configured) instead of silently
+# answering via a different provider/model when OpenRouter is expected.
+#
+# Migration note: a deployment that ran Groq-only and relied on the previous
+# default (true) must now set ALLOW_GROQ_FALLBACK=true explicitly. Deployments
+# that configure OPENROUTER_API_KEY (the intended production setup, including
+# Railway) are unaffected because OpenRouter always takes precedence.
+_GROQ_FALLBACK_TRUE_TOKENS = {"1", "true", "yes", "on"}
 ALLOW_GROQ_FALLBACK: bool = (
-    (os.environ.get("ALLOW_GROQ_FALLBACK", "true") or "true").strip().lower()
-    not in {"0", "false", "no", "off"}
+    (os.environ.get("ALLOW_GROQ_FALLBACK", "false") or "false").strip().lower()
+    in _GROQ_FALLBACK_TRUE_TOKENS
 )
 
 SITE_URL: str = os.environ.get("SITE_URL", "")
@@ -192,6 +200,18 @@ class AskResponse(BaseModel):
     law_search_query: str = ""
     law_grounding_warnings: List[str] = Field(default_factory=list)
     citation_verification: Optional[Dict[str, Any]] = None
+    # Manual-to-law fallback transparency. Coarse, non-secret signals only.
+    #   manual_grounding_status: "present" when deterministic manual / source-
+    #     confirmed structured requirements were available for this question;
+    #     "absent" when no manual document grounding was found.
+    #   manual_to_law_fallback_used: True when manual document grounding was
+    #     absent for a legal/activity-scope question and the system therefore
+    #     leaned on law-grounding (statute/enforcement-decree) context instead.
+    #     This NEVER produces a required-document checklist — only legal context.
+    #   manual_to_law_fallback_reason: short machine-readable reason code.
+    manual_grounding_status: str = "absent"
+    manual_to_law_fallback_used: bool = False
+    manual_to_law_fallback_reason: str = ""
 
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -222,18 +242,37 @@ def _providers_configured() -> Dict[str, bool]:
     }
 
 
+def _groq_fallback_warnings(provider: str) -> List[str]:
+    """Non-secret advisory markers about Groq fallback posture.
+
+    Strict OpenRouter/Gemma is the intended production posture. These markers
+    let /health and the debug endpoint flag when the silent-provider-switch
+    path is armed (``GROQ_FALLBACK_ENABLED``) or actually selected
+    (``GROQ_FALLBACK_ACTIVE``) without ever exposing a key value.
+    """
+    warnings: List[str] = []
+    if ALLOW_GROQ_FALLBACK:
+        warnings.append("GROQ_FALLBACK_ENABLED")
+    if provider == "groq":
+        warnings.append("GROQ_FALLBACK_ACTIVE")
+    return warnings
+
+
 def _resolve_llm_config() -> Dict[str, Any]:
     """Resolve the active LLM provider + model without exposing any secret.
 
-    Precedence (unchanged from prior behaviour):
+    Precedence:
       1. OpenRouter, whenever OPENROUTER_API_KEY is set (model = OPENROUTER_MODEL).
       2. Groq, only if OpenRouter is unset, Groq key is present, AND
-         ALLOW_GROQ_FALLBACK is true (model = GROQ_MODEL).
-      3. Otherwise no provider is configured.
+         ALLOW_GROQ_FALLBACK is true (model = GROQ_MODEL). This is opt-in: the
+         default for ALLOW_GROQ_FALLBACK is now false, so a Groq-only deployment
+         must set it explicitly.
+      3. Otherwise no provider is configured (strict OpenRouter/Gemma intent).
 
-    Returns only non-sensitive descriptors (provider name, model id, flags).
-    Model ids (e.g. ``google/gemma-4-31b-it:free``) are public catalog
-    identifiers, not secrets, so they are safe to surface on /health.
+    Returns only non-sensitive descriptors (provider name, model id, flags,
+    advisory warnings). Model ids (e.g. ``google/gemma-4-31b-it:free``) are
+    public catalog identifiers, not secrets, so they are safe to surface on
+    /health. ``warnings`` never contains key material.
     """
     if OPENROUTER_API_KEY:
         return {
@@ -241,6 +280,7 @@ def _resolve_llm_config() -> Dict[str, Any]:
             "model": OPENROUTER_MODEL,
             "configured": True,
             "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
+            "warnings": _groq_fallback_warnings("openrouter"),
         }
     if GROQ_API_KEY and ALLOW_GROQ_FALLBACK:
         return {
@@ -248,12 +288,14 @@ def _resolve_llm_config() -> Dict[str, Any]:
             "model": GROQ_MODEL,
             "configured": True,
             "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
+            "warnings": _groq_fallback_warnings("groq"),
         }
     return {
         "provider": "none",
         "model": None,
         "configured": False,
         "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
+        "warnings": _groq_fallback_warnings("none"),
     }
 
 
@@ -1665,12 +1707,15 @@ async def health() -> Dict[str, Any]:
         "version": app.version,
         "providers": _providers_configured(),
         # Non-secret active LLM descriptor. Model ids are public catalog
-        # identifiers; API keys are never included here.
+        # identifiers; API keys are never included here. ``warnings`` flags the
+        # Groq-fallback posture (e.g. GROQ_FALLBACK_ENABLED) so operators can see
+        # at a glance whether strict OpenRouter/Gemma is in effect.
         "llm": {
             "provider": llm["provider"],
             "model": llm["model"],
             "configured": llm["configured"],
             "groq_fallback_allowed": llm["groq_fallback_allowed"],
+            "warnings": llm.get("warnings", []),
         },
         "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
     }
@@ -1897,6 +1942,40 @@ async def ask(req: AskRequest) -> AskResponse:
             law_search_query = build_law_search_query(prompt, law_grounding_intent_reasons)
             law_grounding_warnings = ["LAW_GROUNDING_DISABLED"]
 
+    # Manual-to-law fallback policy. When NO deterministic manual / source-
+    # confirmed structured requirements grounding was found for a legal or
+    # activity-scope question (legal basis, activity scope, reporting/permission
+    # duty, deadlines, status-change/extension framing, etc.), lean on law
+    # grounding for legal CONTEXT instead of generic-only guidance. This never
+    # fabricates a required-document checklist — manual/HiKorea/office sources
+    # remain authoritative for documents, fees, and operational steps.
+    manual_present = (grounding is not None) or bool(structured_block)
+    manual_grounding_status = "present" if manual_present else "absent"
+    manual_to_law_fallback_used = False
+    manual_to_law_fallback_reason = ""
+    if not manual_present and intent.get("should_attempt"):
+        if mode in {"audit", "enabled"}:
+            manual_to_law_fallback_used = True
+            manual_to_law_fallback_reason = "manual_grounding_absent_law_intent"
+            # Tell the model to frame the answer honestly: manual-specific
+            # document guidance was not found, legal context may still apply,
+            # and it must NOT invent a document checklist.
+            final_prompt += (
+                "\n\n[Manual-to-law fallback]\n"
+                "- Specific manual document guidance was NOT found for this question.\n"
+                "- Do NOT invent or imply a required-document checklist.\n"
+                "- You MAY explain legal basis, activity scope, activities outside status,"
+                " permission/reporting duties, deadlines, and definitions in general terms.\n"
+                "- State that manual-specific guidance was not found and that these points"
+                " should be confirmed with HiKorea / 1345 / the competent immigration office.\n"
+                "- Preserve official Korean legal/administrative terms; any English/Chinese"
+                " rendering is a non-authoritative helper, not an official translation."
+            )
+        else:
+            # Fallback was warranted but law grounding is disabled by config.
+            # Expose the state without making any external call.
+            manual_to_law_fallback_reason = "manual_grounding_absent_law_intent_grounding_disabled"
+
     llm = _resolve_llm_config()
     if llm["provider"] == "openrouter":
         answer = await _call_openrouter(final_prompt, model=req.model)
@@ -1919,6 +1998,9 @@ async def ask(req: AskRequest) -> AskResponse:
             law_search_query=law_search_query,
             law_grounding_warnings=law_grounding_warnings,
             citation_verification=citation_verification,
+            manual_grounding_status=manual_grounding_status,
+            manual_to_law_fallback_used=manual_to_law_fallback_used,
+            manual_to_law_fallback_reason=manual_to_law_fallback_reason,
         )
     if llm["provider"] == "groq":
         answer = await _call_groq(final_prompt, model=req.model)
@@ -1941,6 +2023,9 @@ async def ask(req: AskRequest) -> AskResponse:
             law_search_query=law_search_query,
             law_grounding_warnings=law_grounding_warnings,
             citation_verification=citation_verification,
+            manual_grounding_status=manual_grounding_status,
+            manual_to_law_fallback_used=manual_to_law_fallback_used,
+            manual_to_law_fallback_reason=manual_to_law_fallback_reason,
         )
 
     raise HTTPException(
@@ -1966,6 +2051,9 @@ async def ask(req: AskRequest) -> AskResponse:
             "law_search_query": law_search_query,
             "law_grounding_warnings": law_grounding_warnings,
             "citation_verification": citation_verification,
+            "manual_grounding_status": manual_grounding_status,
+            "manual_to_law_fallback_used": manual_to_law_fallback_used,
+            "manual_to_law_fallback_reason": manual_to_law_fallback_reason,
         },
     )
 
