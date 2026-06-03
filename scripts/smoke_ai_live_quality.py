@@ -85,6 +85,18 @@ SAMPLE_QUESTIONS = [
         "selected_procedure_key": "statusChange",
         "selected_procedure_variant_id": "g-1-10-medical-patient-status-change",
     },
+    {
+        "id": "d10_to_e7",
+        "visa_code": "D-10",
+        "question": "D-10에서 E-7로 바꾸려면 무엇을 봐야 하나요?",
+        "selected_procedure_key": "statusChange",
+        "selected_procedure_variant_id": "d-10-1-points-status-change",
+    },
+    {
+        "id": "h2_to_f4",
+        "visa_code": "H-2",
+        "question": "H-2에서 F-4로 변경할 수 있나요?",
+    },
 ]
 
 # Conservative, obviously-unsupported approval/guarantee phrasing. We do NOT
