@@ -27,9 +27,9 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 CANDS = [
+    "qwen/qwen3-next-80b-a3b-instruct:free",
     "google/gemma-4-31b-it:free",
     "moonshotai/kimi-k2.6:free",
-    "qwen/qwen3-next-80b-a3b-instruct:free",
     "meta-llama/llama-3.3-70b-instruct:free",
 ]
 H1_Q = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
@@ -44,6 +44,8 @@ def _client(pb):
     from fastapi.testclient import TestClient  # type: ignore
     pb._reset_visas_cache_for_tests()
     pb._reset_grounding_cache_for_tests()
+    if hasattr(pb, "_reset_openrouter_model_cooldowns_for_tests"):
+        pb._reset_openrouter_model_cooldowns_for_tests()
     return TestClient(pb.app)
 
 
@@ -111,13 +113,13 @@ class CandidateListParsingTests(unittest.TestCase):
     def test_default_candidate_list_matches_approved_policy(self):
         pb = _pb()
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
-        with patch.object(pb, "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"):
+        with patch.object(pb, "OPENROUTER_MODEL", CANDS[0]):
             cands = pb._resolve_openrouter_candidates()
         self.assertEqual(cands, CANDS)
 
     def test_default_candidate_list_excludes_random_routing(self):
         pb = _pb()
-        with patch.object(pb, "OPENROUTER_MODEL", "google/gemma-4-31b-it:free"):
+        with patch.object(pb, "OPENROUTER_MODEL", CANDS[0]):
             cands = pb._resolve_openrouter_candidates()
         for c in cands:
             self.assertNotIn("auto", c.lower())
@@ -192,7 +194,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
             resp = client.post("/api/ask", json=payload)
         return resp, calls
 
-    def test_primary_gemma_used_first(self):
+    def test_primary_qwen_used_first(self):
         pb = _pb()
         resp, calls = self._ask(pb, {})  # all ok
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -201,7 +203,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertFalse(body["model_fallback_used"])
         self.assertEqual(calls, [CANDS[0]])
 
-    def test_gemma_429_triggers_kimi(self):
+    def test_qwen_429_triggers_gemma(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit")})
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -211,7 +213,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(calls, [CANDS[0], CANDS[1]])
         self.assertEqual(body["upstream_statuses"], [429])
 
-    def test_kimi_failure_triggers_qwen(self):
+    def test_gemma_failure_triggers_kimi(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit"), CANDS[1]: (503, "No healthy upstream")})
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -219,7 +221,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(body["final_model"], CANDS[2])
         self.assertEqual(calls, [CANDS[0], CANDS[1], CANDS[2]])
 
-    def test_qwen_failure_triggers_llama(self):
+    def test_kimi_failure_triggers_llama(self):
         pb = _pb()
         resp, calls = self._ask(pb, {
             CANDS[0]: (429, "rate limit"),
@@ -234,21 +236,23 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
     def test_all_candidates_fail_returns_safe_provider_unavailable(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (503, "No healthy upstream") for c in CANDS})
-        self.assertEqual(resp.status_code, 503)
-        detail = resp.json()["detail"]
-        self.assertEqual(detail["error"], "provider_unavailable")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        detail = resp.json()
+        self.assertTrue(detail["deterministic_fallback_answer_used"])
+        self.assertEqual(detail["fallback_answer_kind"], "source_aware_preparation_note")
         self.assertTrue(detail["all_candidates_failed"])
         self.assertTrue(detail["retryable_provider_error"])
         self.assertEqual(detail["attempted_models"], CANDS)
         self.assertFalse(detail["provider_family_fallback_used"])
+        self.assertIn("copy_safe_answer", detail)
         # No raw provider JSON keys leak through.
         self.assertNotIn("choices", resp.text)
 
     def test_non_retryable_invalid_key_does_not_retry_blindly(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (401, "Invalid API key") for c in CANDS})
-        self.assertEqual(resp.status_code, 503)
-        detail = resp.json()["detail"]
+        self.assertEqual(resp.status_code, 200, resp.text)
+        detail = resp.json()
         self.assertEqual(detail["provider_error_type"], "invalid_provider_config")
         self.assertEqual(calls, [CANDS[0]], "must stop after first non-retryable error")
         self.assertFalse(detail["all_candidates_failed"])
@@ -256,9 +260,9 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
     def test_bad_request_does_not_retry_blindly(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (400, "Bad request") for c in CANDS})
-        self.assertEqual(resp.status_code, 503)
+        self.assertEqual(resp.status_code, 200, resp.text)
         self.assertEqual(calls, [CANDS[0]])
-        self.assertEqual(resp.json()["detail"]["provider_error_type"], "invalid_request")
+        self.assertEqual(resp.json()["provider_error_type"], "invalid_request")
 
     def test_grounding_metadata_survives_model_retries(self):
         pb = _pb()
@@ -299,10 +303,10 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
     def test_provider_family_fallback_not_used_when_disabled(self):
         pb = _pb()
         resp = self._ask_all_fail(pb, allow_groq=False)
-        self.assertEqual(resp.status_code, 503)
-        detail = resp.json()["detail"]
+        self.assertEqual(resp.status_code, 200, resp.text)
+        detail = resp.json()
         self.assertFalse(detail["provider_family_fallback_used"])
-        self.assertEqual(detail["error"], "provider_unavailable")
+        self.assertTrue(detail["deterministic_fallback_answer_used"])
 
     def test_provider_family_fallback_explicit_when_enabled(self):
         pb = _pb()
@@ -314,6 +318,125 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
         self.assertEqual(body["answer"], "GROQ ANSWER")
         # Candidate attempt metadata is preserved for audit.
         self.assertEqual(body["attempted_models"], CANDS)
+
+class CooldownAndFallbackBehaviorTests(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        self.pb = _pb()
+        self.pb._reset_openrouter_model_cooldowns_for_tests()
+
+    async def asyncTearDown(self):
+        self.pb._reset_openrouter_model_cooldowns_for_tests()
+
+    async def test_429_marks_model_cooling_down(self):
+        fake, calls = _fake_openrouter({CANDS[0]: (429, "rate limit"), CANDS[1]: "ok"})
+        with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(self.pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 300), \
+                patch.object(self.pb, "_call_openrouter", fake):
+            result = await self.pb._openrouter_complete_with_candidates("x")
+        self.assertEqual(calls, [CANDS[0], CANDS[1]])
+        self.assertIn(CANDS[0], result["cooling_down_models"])
+
+    async def test_503_marks_model_cooling_down_and_skips_next_request(self):
+        fake, calls = _fake_openrouter({CANDS[0]: (503, "No healthy upstream"), CANDS[1]: "ok"})
+        with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(self.pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 300), \
+                patch.object(self.pb, "_call_openrouter", fake):
+            first = await self.pb._openrouter_complete_with_candidates("x")
+            second = await self.pb._openrouter_complete_with_candidates("x")
+        self.assertIn(CANDS[0], first["cooling_down_models"])
+        self.assertEqual(second["skipped_models_due_to_cooldown"], [CANDS[0]])
+        self.assertEqual(calls, [CANDS[0], CANDS[1], CANDS[1]])
+
+    async def test_all_cooling_down_skips_to_deterministic_path_metadata(self):
+        fake, calls = _fake_openrouter({c: (503, "No healthy upstream") for c in CANDS})
+        with patch.object(self.pb, "OPENROUTER_MODEL", CANDS[0]), \
+                patch.object(self.pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(self.pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 300), \
+                patch.object(self.pb, "_call_openrouter", fake):
+            await self.pb._openrouter_complete_with_candidates("x")
+            result = await self.pb._openrouter_complete_with_candidates("x")
+        self.assertEqual(calls, CANDS)
+        self.assertEqual(result["attempted_models"], [])
+        self.assertEqual(result["skipped_models_due_to_cooldown"], CANDS)
+        self.assertEqual(result["provider_error_type"], "all_candidates_cooling_down")
+
+
+class DeterministicFallbackAndOllamaTests(unittest.TestCase):
+    def _ask(self, *, enable_ollama=False, ollama=None, question="Can I take summer semester course in Korean universities even though I have a H-1 visa?", lang="en"):
+        pb = _pb()
+        fake, calls = _fake_openrouter({c: (503, '{"error":"No healthy upstream"}') for c in CANDS})
+        patches = [
+            patch.object(pb, "OPENROUTER_API_KEY", "or-key"),
+            patch.object(pb, "GROQ_API_KEY", None),
+            patch.object(pb, "ALLOW_GROQ_FALLBACK", False),
+            patch.object(pb, "OPENROUTER_MODEL", CANDS[0]),
+            patch.object(pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)),
+            patch.object(pb, "OPENROUTER_MODEL_COOLDOWN_SECONDS", 0),
+            patch.object(pb, "ENABLE_OLLAMA_FALLBACK", enable_ollama),
+            patch.object(pb, "OLLAMA_MODEL", "qwen3:8b"),
+            patch.object(pb, "_call_openrouter", fake),
+        ]
+        if ollama is not None:
+            patches.append(patch.object(pb, "_call_ollama", ollama))
+        exits = [p.__enter__() for p in patches]
+        try:
+            client = _client(pb)
+            resp = client.post("/api/ask", json={"question": question, "lang": lang})
+        finally:
+            for p in reversed(patches):
+                p.__exit__(None, None, None)
+        return resp, calls
+
+    def test_openrouter_all_fail_ollama_disabled_returns_fallback_answer(self):
+        resp, calls = self._ask()
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertTrue(body["deterministic_fallback_answer_used"])
+        self.assertTrue(body["llm_unavailable"])
+        self.assertEqual(body["visa_code_detected"], "H-1")
+        self.assertEqual(body["question_type_detected"], "activity_on_status")
+        self.assertIn("credit-bearing", body["fallback_answer"])
+        self.assertEqual(body["copy_safe_answer"], body["fallback_answer"])
+        self.assertNotIn("No healthy upstream", body["fallback_answer"])
+        self.assertNotIn("documents", body["fallback_answer"].lower())
+        self.assertNotIn("you may", body["fallback_answer"].lower())
+        self.assertEqual(calls, CANDS)
+
+    def test_h1_korean_all_fail_preserves_status_and_confirmation_questions(self):
+        resp, _ = self._ask(question=H1_Q, lang="ko")
+        body = resp.json()
+        self.assertEqual(body["visa_code_detected"], "H-1")
+        self.assertTrue(body["official_confirmation_questions"])
+        self.assertIn("AI 모델이 일시적으로 응답하지", body["answer"])
+
+    def test_ollama_enabled_mocked_success_returns_ollama_answer(self):
+        async def ollama_ok(prompt, model=None):
+            return "OLLAMA ANSWER"
+        resp, _ = self._ask(enable_ollama=True, ollama=ollama_ok)
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(body["provider"], "ollama")
+        self.assertTrue(body["ollama_fallback_used"])
+        self.assertFalse(body["deterministic_fallback_answer_used"])
+        self.assertEqual(body["answer"], "OLLAMA ANSWER")
+        self.assertEqual(body["copy_safe_answer"], "OLLAMA ANSWER")
+
+    def test_ollama_enabled_timeout_returns_deterministic_fallback(self):
+        async def ollama_timeout(prompt, model=None):
+            raise HTTPException(status_code=503, detail={"error": "ollama_timeout"})
+        resp, _ = self._ask(enable_ollama=True, ollama=ollama_timeout)
+        body = resp.json()
+        self.assertTrue(body["deterministic_fallback_answer_used"])
+        self.assertEqual(body["ollama_error_type"], "ollama_timeout")
+        self.assertNotIn("or-key", resp.text)
+
+    def test_law_manual_metadata_survives_fallback(self):
+        resp, _ = self._ask(question=H1_Q, lang="ko")
+        body = resp.json()
+        self.assertTrue(body["law_grounding_attempted"])
+        self.assertIn(body["manual_grounding_status"], {"absent", "present"})
 
 
 # ---------------------------------------------------------------------------

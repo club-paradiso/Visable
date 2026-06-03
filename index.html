@@ -12153,6 +12153,7 @@ function buildModelBadgeHtml(result) {
     let label = rawModel || provider || 'AI';
     if (provider === 'openrouter' && rawModel) label = `OpenRouter · ${rawModel}`;
     else if (provider === 'groq' && rawModel) label = `Groq · ${rawModel}`;
+    else if (provider === 'ollama' && rawModel) label = `${tx('aiOllamaFallbackProvider')} · ${rawModel}`;
     return `<div style="margin-top:.65rem;font-size:.75rem;color:var(--t3);">${escapeHtml(tx('aiResponseModel'))}: <span style="display:inline-block;border:1px solid var(--bd);background:var(--bg2);padding:.15rem .5rem;border-radius:999px;color:var(--t2);font-weight:700;">${escapeHtml(label)}</span></div>`;
 }
 
@@ -12167,6 +12168,7 @@ function buildProviderErrorHtml(detail) {
     if (code === 'no_llm_provider_configured') {
         return `<b>${escapeHtml(tx('aiNoProvider'))}</b>`;
     }
+    const fallbackAnswer = detail.fallback_answer || detail.copy_safe_answer || '';
     const attempted = Array.isArray(detail.attempted_models) ? detail.attempted_models : [];
     const statuses = Array.isArray(detail.upstream_statuses) ? detail.upstream_statuses : [];
     const techBits = [];
@@ -12176,6 +12178,10 @@ function buildProviderErrorHtml(detail) {
     const tech = techBits.length
         ? `<details class="ai-provider-error-tech" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);"><summary>${escapeHtml(tx('aiShowTechnicalDetails'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(techBits.join('\n'))}</pre></details>`
         : '';
+    if (fallbackAnswer) {
+        const safe = escapeHtml(String(fallbackAnswer)).replace(/\n/g, '<br>');
+        return `<div class="ai-provider-error"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b><p style="margin-top:.4rem;">${escapeHtml(tx('aiLimitedPreparationNote'))}</p><p style="margin-top:.25rem;">${escapeHtml(tx('aiAllCandidatesUnavailable'))}</p><p style="margin-top:.25rem;">${escapeHtml(tx('aiTryAgainShortly'))}</p><p style="margin-top:.25rem;color:var(--t3);font-size:.82rem;">${escapeHtml(tx('aiFallbackFromMetadata'))}</p><div class="ai-fallback-answer" style="margin-top:.7rem;">${safe}</div>${tech}</div>`;
+    }
     return `<div class="ai-provider-error"><b>${escapeHtml(tx('aiProviderBusy'))}</b><p style="margin-top:.4rem;">${escapeHtml(tx('aiAllCandidatesFailed'))}</p>${tech}</div>`;
 }
 
@@ -12374,9 +12380,13 @@ async function submitAiAnalysis(actionType, btnEl) {
         let formattedText = escapeHtml(result.answer || tx('aiNoResult')).replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
         // If an OpenRouter candidate fallback was used, show a subtle note so the
         // user knows a different (still explicit, auditable) model answered.
-        const fallbackNote = result.model_fallback_used
-            ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiFallbackSucceeded'))}</div>`
-            : '';
+        const fallbackNote = result.ollama_fallback_used
+            ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiOllamaFallbackNote'))}: ${escapeHtml(result.ollama_model || result.model || '')}</div>`
+            : (result.deterministic_fallback_answer_used
+                ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b> · ${escapeHtml(tx('aiFallbackFromMetadata'))}</div>`
+                : (result.model_fallback_used
+                    ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiFallbackSucceeded'))}</div>`
+                    : ''));
         const modelBadge = buildModelBadgeHtml(result);
         const sourcePanel = renderGroundingSourcePanel(result);
         resultBox.innerHTML = formattedText + fallbackNote + modelBadge + sourcePanel; resultBox.style.display = 'block';
@@ -14534,7 +14544,7 @@ const UI_TRANSLATIONS = {
         aiModalContextLabel: '선택한 맥락', aiModalContextNote: '선택한 시나리오 식별 정보만 함께 전달되며, 체크리스트·알림 등 개인 입력은 전송되지 않습니다.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
-        aiProviderBusy: 'AI 모델이 일시적으로 혼잡합니다.', aiAllCandidatesFailed: '다른 모델 후보로 재시도했지만 현재 응답을 생성하지 못했습니다. 잠시 후 다시 시도하세요.', aiFallbackSucceeded: '다른 모델 후보로 재시도하여 응답했습니다.', aiResponseModel: '응답 모델', aiShowTechnicalDetails: '기술 세부정보 보기',
+        aiProviderBusy: 'AI 모델이 일시적으로 혼잡합니다.', aiProviderTemporarilyUnavailable: 'AI 모델이 일시적으로 응답하지 않습니다', aiLimitedPreparationNote: '제한적 준비 메모', aiAllCandidatesUnavailable: '모든 온라인 모델 후보가 현재 응답할 수 없습니다', aiTryAgainShortly: '잠시 후 다시 시도하세요', aiFallbackFromMetadata: '사용 가능한 출처/체류자격 메타데이터로 생성한 대체 답변입니다', aiOllamaFallbackNote: 'Provider: Ollama fallback · Response model', aiOllamaFallbackProvider: 'Ollama fallback', aiAllCandidatesFailed: '다른 모델 후보로 재시도했지만 현재 응답을 생성하지 못했습니다. 잠시 후 다시 시도하세요.', aiFallbackSucceeded: '다른 모델 후보로 재시도하여 응답했습니다.', aiResponseModel: '응답 모델', aiShowTechnicalDetails: '기술 세부정보 보기',
         manualToLawFallbackLabel: '매뉴얼 근거 부족', manualToLawFallbackChecked: '법령 근거로 보완 확인', manualToLawFallbackNote: '매뉴얼에 충분한 세부 안내가 없어 법령 근거 확인을 시도했습니다.',
         aiAnswerBasisLabel: '답변 근거', aiAnswerBasisConfirmed: '확인된 출처 근거', aiAnswerBasisAssisted: '참고 근거 있음 · 공식 확인 필요', aiAnswerBasisLimited: '근거 제한적 · 직접 출처 부족', aiAnswerBasisUnavailable: '확인된 출처 없음 · 공식 확인 필요', aiAnswerBasisGeneric: '일반 참고 안내', aiRelatedStatusLabel: '함께 확인할 관련 체류자격', aiRelatedStatusNote: '질문에 직접 답하는 출처가 아니라, 함께 확인해 볼 비교용 체류자격입니다.',
         docModalTitleNew: '신규 발급/신규 신청 구비서류', docModalTitleExt: '체류기간 연장 구비서류', docModalTitleChange: '체류자격 변경 구비서류', docModalTitleChangeNote: '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.', docModalTitleSub: '{name} 추가 구비서류', docModalTitleSubFallbackName: '해당 세부항목', docModalTitleSubGeneric: '세부항목 추가 구비서류', docStageReference: '준용',
@@ -14708,7 +14718,7 @@ const UI_TRANSLATIONS = {
         aiModalContextLabel: 'Selected context', aiModalContextNote: 'Only selected scenario identifiers are passed along; your checklist, reminders, and other local inputs are never sent.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
-        aiProviderBusy: 'The AI model is temporarily busy.', aiAllCandidatesFailed: 'Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.', aiFallbackSucceeded: 'Paradiso retried with another configured model candidate and generated a response.', aiResponseModel: 'Response model', aiShowTechnicalDetails: 'Show technical details',
+        aiProviderBusy: 'The AI model is temporarily busy.', aiProviderTemporarilyUnavailable: 'AI model temporarily unavailable', aiLimitedPreparationNote: 'Limited preparation note', aiAllCandidatesUnavailable: 'All online model candidates are currently unavailable', aiTryAgainShortly: 'Try again shortly', aiFallbackFromMetadata: 'Fallback answer generated from available source/status metadata', aiOllamaFallbackNote: 'Provider: Ollama fallback · Response model', aiOllamaFallbackProvider: 'Ollama fallback', aiAllCandidatesFailed: 'Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.', aiFallbackSucceeded: 'Paradiso retried with another configured model candidate and generated a response.', aiResponseModel: 'Response model', aiShowTechnicalDetails: 'Show technical details',
         manualToLawFallbackLabel: 'Manual guidance insufficient', manualToLawFallbackChecked: 'Checked supporting legal grounding', manualToLawFallbackNote: 'Manual-specific guidance was insufficient, so Paradiso attempted to check supporting legal grounding.',
         aiAnswerBasisLabel: 'Answer basis', aiAnswerBasisConfirmed: 'Source-confirmed', aiAnswerBasisAssisted: 'Source-assisted · official confirmation needed', aiAnswerBasisLimited: 'Limited grounding · direct source incomplete', aiAnswerBasisUnavailable: 'No confirmed source · official confirmation needed', aiAnswerBasisGeneric: 'General reference only', aiRelatedStatusLabel: 'Related status to verify', aiRelatedStatusNote: 'These are comparison statuses to verify — not a source that answers your question.',
         docModalTitleNew: 'Visa / new application documents', docModalTitleExt: 'Extension documents', docModalTitleChange: 'Change of status documents', docModalTitleChangeNote: 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.', docModalTitleSub: '{name} additional documents', docModalTitleSubFallbackName: 'Selected subcode', docModalTitleSubGeneric: 'Subcode additional documents', docStageReference: 'reference',
@@ -14826,7 +14836,7 @@ const UI_TRANSLATIONS = {
         aiModalContextLabel: '已选背景', aiModalContextNote: '仅传递所选情形的标识信息；您的清单、提醒等本地输入不会被发送。',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
-        aiProviderBusy: 'AI 模型暂时繁忙。', aiAllCandidatesFailed: 'Paradiso 已尝试配置的候选模型，但当前无法生成回复。请稍后再试。', aiFallbackSucceeded: 'Paradiso 已改用其他配置的候选模型并生成了回复。', aiResponseModel: '回复模型', aiShowTechnicalDetails: '查看技术细节',
+        aiProviderBusy: 'AI 模型暂时繁忙。', aiProviderTemporarilyUnavailable: 'AI 模型暂时无法响应', aiLimitedPreparationNote: '有限准备说明', aiAllCandidatesUnavailable: '所有在线候选模型目前均不可用', aiTryAgainShortly: '请稍后重试', aiFallbackFromMetadata: '基于可用来源/居留资格元数据生成的后备答复', aiOllamaFallbackNote: 'Provider: Ollama fallback · Response model', aiOllamaFallbackProvider: 'Ollama fallback', aiAllCandidatesFailed: 'Paradiso 已尝试配置的候选模型，但当前无法生成回复。请稍后再试。', aiFallbackSucceeded: 'Paradiso 已改用其他配置的候选模型并生成了回复。', aiResponseModel: '回复模型', aiShowTechnicalDetails: '查看技术细节',
         manualToLawFallbackLabel: '手册依据不足', manualToLawFallbackChecked: '已尝试以法令依据补充确认', manualToLawFallbackNote: '手册中的具体说明不足，因此 Paradiso 尝试确认补充性的法令依据。',
         aiAnswerBasisLabel: '答复依据', aiAnswerBasisConfirmed: '已确认来源依据', aiAnswerBasisAssisted: '有参考依据 · 需官方确认', aiAnswerBasisLimited: '依据有限 · 缺少直接来源', aiAnswerBasisUnavailable: '无已确认来源 · 需官方确认', aiAnswerBasisGeneric: '仅供一般参考', aiRelatedStatusLabel: '需一并确认的相关居留资格', aiRelatedStatusNote: '这些是供比较、需一并确认的居留资格，并非直接回答您问题的来源。',
         docModalTitleNew: '新发/新申请所需材料', docModalTitleExt: '停留期间延期所需材料', docModalTitleChange: '停留资格变更所需材料', docModalTitleChangeNote: '※[参照说明] 停留资格变更的专用材料清单尚未经过人工核验与规范化，因此暂以延期/新申请阶段的材料保守参照显示。这并非正式确定清单。', docModalTitleSub: '{name} 补充材料', docModalTitleSubFallbackName: '所选子类别', docModalTitleSubGeneric: '子类别补充材料', docStageReference: '参照',
@@ -14892,7 +14902,7 @@ const UI_TRANSLATIONS = {
         aiModalContextLabel: '已選背景', aiModalContextNote: '僅傳遞所選情形的識別資訊；您的清單、提醒等本機輸入不會被傳送。',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction + source-panel backfill (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
-        aiProviderBusy: 'AI 模型暫時繁忙。', aiAllCandidatesFailed: 'Paradiso 已嘗試設定的候選模型，但目前無法產生回覆。請稍後再試。', aiFallbackSucceeded: 'Paradiso 已改用其他設定的候選模型並產生了回覆。', aiResponseModel: '回覆模型', aiShowTechnicalDetails: '查看技術細節',
+        aiProviderBusy: 'AI 模型暫時繁忙。', aiProviderTemporarilyUnavailable: 'AI 模型暫時無法回應', aiLimitedPreparationNote: '有限準備說明', aiAllCandidatesUnavailable: '所有線上候選模型目前均不可用', aiTryAgainShortly: '請稍後重試', aiFallbackFromMetadata: '基於可用來源/居留資格中繼資料產生的後備答覆', aiOllamaFallbackNote: 'Provider: Ollama fallback · Response model', aiOllamaFallbackProvider: 'Ollama fallback', aiAllCandidatesFailed: 'Paradiso 已嘗試設定的候選模型，但目前無法產生回覆。請稍後再試。', aiFallbackSucceeded: 'Paradiso 已改用其他設定的候選模型並產生了回覆。', aiResponseModel: '回覆模型', aiShowTechnicalDetails: '查看技術細節',
         manualToLawFallbackLabel: '手冊依據不足', manualToLawFallbackChecked: '已嘗試以法令依據補充確認', manualToLawFallbackNote: '手冊中的具體說明不足，因此 Paradiso 嘗試確認補充性的法令依據。',
         aiAnswerBasisLabel: '答覆依據', aiAnswerBasisConfirmed: '已確認來源依據', aiAnswerBasisAssisted: '有參考依據 · 需官方確認', aiAnswerBasisLimited: '依據有限 · 缺少直接來源', aiAnswerBasisUnavailable: '無已確認來源 · 需官方確認', aiAnswerBasisGeneric: '僅供一般參考', aiRelatedStatusLabel: '需一併確認的相關居留資格', aiRelatedStatusNote: '這些是供比較、需一併確認的居留資格，並非直接回答您問題的來源。',
         docModalTitleNew: '新發/新申請所需文件', docModalTitleExt: '停留期間延期所需文件', docModalTitleChange: '停留資格變更所需文件', docModalTitleChangeNote: '※[參照說明] 停留資格變更的專用文件清單尚未經過人工核驗與規範化，因此暫以延期/新申請階段的文件保守參照顯示。這並非正式確定清單。', docModalTitleSub: '{name} 補充文件', docModalTitleSubFallbackName: '所選子類別', docModalTitleSubGeneric: '子類別補充文件', docStageReference: '參照',
