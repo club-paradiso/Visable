@@ -167,6 +167,10 @@ const REQUIRED_UI_KEYS = [
   // Provider error UX + OpenRouter candidate fallback
   'aiProviderBusy', 'aiAllCandidatesFailed', 'aiFallbackSucceeded',
   'aiResponseModel', 'aiShowTechnicalDetails',
+  // Answer-quality contract: answer-basis row + related-status chips
+  'aiAnswerBasisLabel', 'aiAnswerBasisConfirmed', 'aiAnswerBasisAssisted',
+  'aiAnswerBasisLimited', 'aiAnswerBasisUnavailable', 'aiAnswerBasisGeneric',
+  'aiRelatedStatusLabel', 'aiRelatedStatusNote',
 ];
 
 // Keys whose translated value may intentionally embed official Korean source

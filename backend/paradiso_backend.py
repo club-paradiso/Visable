@@ -33,6 +33,12 @@ from services.law_grounding import (
     law_grounding_preflight,
     should_attempt_law_grounding,
 )
+from services.answer_quality import (
+    ANSWER_STYLE_VERSION,
+    build_answer_directives,
+    classify_answer_quality,
+)
+from services import answer_quality as _answer_quality
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -277,6 +283,27 @@ class AskResponse(BaseModel):
     manual_grounding_status: str = "absent"
     manual_to_law_fallback_used: bool = False
     manual_to_law_fallback_reason: str = ""
+    # General answer-quality contract (non-secret). Computed deterministically
+    # from the grounding state above so the frontend can render honest
+    # source/state chips and the answer reads like a careful modern assistant.
+    #   answer_quality_mode: one of source_confirmed / source_assisted /
+    #     source_limited / source_unavailable / generic_advisory.
+    #   source_confidence_level: coarse UI hint (high/moderate/low/none).
+    #   requires_official_confirmation: True unless the answer is source_confirmed.
+    #   official_confirmation_questions: exact questions to ask 1345/HiKorea/office.
+    #   related_statuses_not_sources: comparison statuses to verify — NEVER a
+    #     source that proves what the asked-about status permits (e.g. D-2/D-4 for
+    #     an H-1 study question).
+    #   grounded_answer_limited: True when direct source support is incomplete.
+    #   answer_style_version: bumps when the answer contract changes.
+    answer_quality_mode: str = "generic_advisory"
+    source_confidence_level: str = "none"
+    requires_official_confirmation: bool = True
+    official_confirmation_questions: List[str] = Field(default_factory=list)
+    related_statuses_not_sources: List[str] = Field(default_factory=list)
+    grounded_answer_limited: bool = True
+    answer_style_version: str = ANSWER_STYLE_VERSION
+    question_type_detected: str = "general"
     # OpenRouter model-candidate fallback transparency (non-secret). When the
     # primary model is rate-limited / upstream-unavailable, Paradiso retries the
     # next explicit OpenRouter candidate rather than switching providers.
@@ -1260,13 +1287,12 @@ def _answer_language_instruction(lang: Optional[str]) -> str:
     The grounding content (제출서류, 출처) is Korea-specific regardless of
     answer language. Only the language the model writes the answer in
     varies.
+
+    Delegates to ``services.answer_quality.answer_language_instruction`` so the
+    instruction also carries anti-mixed-language guardrails (no ``sojourn资格``
+    artifacts) and explicit Simplified/Traditional Chinese handling.
     """
-    normalized = (lang or "").strip().lower()
-    if normalized == "ko":
-        return "- 한국어로 답하십시오."
-    if normalized == "en":
-        return "- Answer in English."
-    return "- Answer in the same language as the user's question."
+    return _answer_quality.answer_language_instruction(lang)
 
 
 def _build_grounded_prompt(
@@ -1897,14 +1923,11 @@ def _build_ungrounded_korea_scoped_prompt(
         f"{f6_divorce_addendum}"
         f"{high_risk_addendum}\n\n"
         "[답변 형식]\n"
-        "다음 6개 섹션을 순서대로 포함하십시오:\n"
-        "1. 현재 알려진 사실 (사용자 질문에서 명시된 정보만, 추측 없이)\n"
-        "2. 한국 체류 측면의 쟁점 (왜 이 문제가 한국 체류에 중요한지)\n"
-        "3. 가능한 경로 — 검증 필요 (각 경로에 '출입국·외국인청 / 1345 / HiKorea 확인 필요' 표기)\n"
-        "4. 확인이 필요한 정보 (사용자가 제공하지 않은, 결과에 영향을 주는 사실)\n"
-        "5. 다음 단계 및 문의처 (관할 출입국·외국인청/사무소/출장소, 1345 외국인종합안내센터,"
-        " HiKorea, 필요 시 행정사·변호사; 미국·영국 등 타국 기관 제외)\n"
-        "6. 출처 한계 안내 (이 답변은 검증된 매뉴얼 발췌가 없으므로 반드시 공식 채널에서 확인해야 한다는 점)\n\n"
+        "긴 '현재 알려진 사실' 단락으로 시작하지 말고, 먼저 핵심에 대한 실용적인 답을 제시하십시오."
+        " 아래 [답변 품질 지침]의 유연한 구조를 따르되, 단순한 질문에는 짧게, 복잡한 시나리오에만"
+        " 깊이 있게 답하십시오. 같은 주의사항을 여러 번 반복하지 말고 한 번만 명확히 적으십시오."
+        " 확인이 필요한 사항은 1345 외국인종합안내센터 · HiKorea · 관할 출입국·외국인청에"
+        " 문의하도록 안내하십시오(미국·영국 등 타국 기관 제외).\n\n"
         "[답변 지침]\n"
         f"{answer_language_line}\n\n"
         "[사용자 질문]\n"
@@ -2224,6 +2247,25 @@ async def ask(req: AskRequest) -> AskResponse:
             # Expose the state without making any external call.
             manual_to_law_fallback_reason = "manual_grounding_absent_law_intent_grounding_disabled"
 
+    # General answer-quality contract. Folds the grounding state above + the
+    # question's user intent into (a) non-secret response metadata for honest
+    # source/state chips and (b) prompt directives that make the answer read
+    # like a careful modern assistant (direct first, readable, source-aware,
+    # not a wall of warnings). This NEVER changes provider/model selection.
+    quality = classify_answer_quality(
+        prompt=prompt,
+        visa_code=visa_code_detected,
+        task_type=task_type_detected,
+        manual_grounding_present=(grounding is not None),
+        structured_requirements_present=bool(structured_block),
+        procedure_variant_present=bool(procedure_variant_block),
+        law_grounding_used=law_grounding_used,
+        law_grounding_status=law_grounding_status,
+        manual_to_law_fallback_used=manual_to_law_fallback_used,
+        law_intent=bool(intent.get("should_attempt")),
+    )
+    final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
+
     llm = _resolve_llm_config()
 
     # Shared, non-secret grounding/law metadata reused across all response paths.
@@ -2246,6 +2288,14 @@ async def ask(req: AskRequest) -> AskResponse:
         manual_grounding_status=manual_grounding_status,
         manual_to_law_fallback_used=manual_to_law_fallback_used,
         manual_to_law_fallback_reason=manual_to_law_fallback_reason,
+        answer_quality_mode=quality["answer_quality_mode"],
+        source_confidence_level=quality["source_confidence_level"],
+        requires_official_confirmation=quality["requires_official_confirmation"],
+        official_confirmation_questions=quality["official_confirmation_questions"],
+        related_statuses_not_sources=quality["related_statuses_not_sources"],
+        grounded_answer_limited=quality["grounded_answer_limited"],
+        answer_style_version=quality["answer_style_version"],
+        question_type_detected=quality["question_type"],
     )
 
     if llm["provider"] == "openrouter":

@@ -7831,6 +7831,23 @@ body.searched .vc.manual-result .manual-section-title {
   color: var(--p-ink-mute);
 }
 .manual-result .ai-grounding-panel .gp-row.state-advisory::before { content: var(--lang-gp-advisory, "참고"); }
+/* Answer-basis row: a quiet summary line, not a loud per-source chip. */
+.manual-result .ai-grounding-panel .gp-row.gp-row-answer-basis { font-weight: 600; }
+/* Related statuses to verify — visibly distinct from source grounding so
+   comparison statuses (e.g. D-2 / D-4 for an H-1 study question) never read as
+   a source that answers the question. */
+.manual-result .ai-grounding-panel .gp-row.state-related {
+  border-color: color-mix(in srgb, var(--color-info, #2563eb) 45%, transparent);
+  background: color-mix(in srgb, var(--color-info, #2563eb) 6%, #fff);
+  color: #1d4ed8;
+}
+.manual-result .ai-grounding-panel .gp-row.state-related::before { content: var(--lang-gp-related, "관련 자격"); }
+.ai-grounding-panel .gp-related-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.35rem; }
+.ai-grounding-panel .gp-related-chip {
+  display: inline-block; padding: 0.1rem 0.5rem; border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--color-info, #2563eb) 35%, transparent);
+  background: #fff; color: #1d4ed8; font-size: 0.74rem; font-weight: 600;
+}
 .manual-result .ai-grounding-panel .gp-variant-note { color: var(--p-ink-mute); font-style: italic; }
 .manual-result .ai-grounding-panel .gp-row.state-extracted-only,
 .manual-result .ai-grounding-panel .gp-row.state-source-linked-unverified {
@@ -12191,6 +12208,24 @@ function renderGroundingSourcePanel(metadata) {
     // Honest disclosure state classes — mirror docs/ai/CITATION_AND_UNCERTAINTY_SCHEMA.md states.
     // CSS in the STRUCTURAL RESULT-CARD HIERARCHY v2 layer styles gp-row.state-*.
     const rows = [];
+
+    // Answer-basis row (answer-quality contract). A single compact line that
+    // tells the user how strongly the answer is grounded — high/moderate/low —
+    // without repeating the long disclaimers below. Distinct from per-source
+    // rows: it summarizes source STATE, not an individual source.
+    const qualityMode = m.answer_quality_mode ? String(m.answer_quality_mode) : '';
+    const QUALITY_TEXT = {
+        source_confirmed: { key: 'aiAnswerBasisConfirmed', cls: 'state-verified' },
+        source_assisted: { key: 'aiAnswerBasisAssisted', cls: 'state-partial' },
+        source_limited: { key: 'aiAnswerBasisLimited', cls: 'state-needs-review' },
+        source_unavailable: { key: 'aiAnswerBasisUnavailable', cls: 'state-disabled' },
+        generic_advisory: { key: 'aiAnswerBasisGeneric', cls: 'state-advisory' }
+    };
+    if (QUALITY_TEXT[qualityMode]) {
+        const qd = QUALITY_TEXT[qualityMode];
+        rows.push(`<div class="gp-row ${qd.cls} gp-row-answer-basis"><strong>${escapeHtml(tx('aiAnswerBasisLabel'))}</strong>: ${escapeHtml(tx(qd.key))}</div>`);
+    }
+
     if (manual) {
         rows.push(`<div class="gp-row state-source-supported"><strong>${escapeHtml(tx('aiManualGroundingLabel'))}</strong>: ${escapeHtml(tx('aiManualGroundingStatus'))}</div>`);
     }
@@ -12251,7 +12286,26 @@ function renderGroundingSourcePanel(metadata) {
         const variantTitle = selectedScenario ? tx('aiSelectedScenarioLabel') : tx('aiScenarioGroundingLabel');
         rows.push('<div class="gp-row state-needs-review"><strong>' + escapeHtml(variantTitle) + '</strong>: ' + escapeHtml(tx('aiScenarioCandidateStatus')) + listHtml + noteHtml + '</div>');
     }
-    if (!rows.length) {
+    // Related statuses to verify — rendered as DISTINCT chips, never as source
+    // grounding. For an H-1 study question, D-2 / D-4 are comparison statuses
+    // the user may need to check; they must not look like a manual source that
+    // proves what H-1 permits (answer-quality contract, Part F).
+    const relatedStatuses = Array.isArray(m.related_statuses_not_sources) ? m.related_statuses_not_sources.filter(Boolean) : [];
+    if (relatedStatuses.length) {
+        const chips = relatedStatuses.map(function(code) {
+            return '<span class="gp-related-chip">' + escapeHtml(String(code)) + '</span>';
+        }).join('');
+        rows.push(
+            '<div class="gp-row state-related gp-row-related"><strong>' + escapeHtml(tx('aiRelatedStatusLabel')) + '</strong>'
+            + '<div class="gp-related-chips">' + chips + '</div>'
+            + '<div class="gp-subnote">' + escapeHtml(tx('aiRelatedStatusNote')) + '</div></div>'
+        );
+    }
+
+    // The answer-basis row already conveys the grounding state, so an extra
+    // advisory row is only needed when there is no other signal at all.
+    const hasSignal = rows.some(function(r) { return r.indexOf('gp-row-answer-basis') === -1 && r.indexOf('gp-row-related') === -1; });
+    if (!hasSignal && !QUALITY_TEXT[qualityMode]) {
         // No strong grounding signal — still surface an advisory row so the
         // 1345 / HiKorea / immigration-office disclosure stays visible.
         rows.push(`<div class="gp-row state-advisory"><strong>${escapeHtml(tx('aiAdvisoryLabel'))}</strong>: ${escapeHtml(tx('aiAdvisoryText'))}</div>`);
@@ -14407,7 +14461,7 @@ const UI_TRANSLATIONS = {
         aiSourcePanelTitle: '출처 · 검증 상태', aiManualGroundingLabel: '행정 매뉴얼 근거', aiManualGroundingStatus: '매뉴얼 출처 확인됨 · 참고용 (법적 결정이 아니며 개별 검증은 진행 중)', aiLawVerificationLabel: '법령 인용 검증', aiPublicDataLabel: '공공데이터 근거', aiPublicDataStatus: '출처 표시 · 개별 항목 검증은 진행 중',
         aiSelectedScenarioLabel: '선택한 시나리오 기준', aiScenarioGroundingLabel: '시나리오별 서류 근거', aiScenarioCandidateStatus: '매뉴얼 기반 후보 · 최종 확인 필요', aiScenarioMatchNote: '세부 자격·사유가 맞는 경우에만 참고하세요.', aiScenarioMoreCount: '외 {count}건', aiAdvisoryLabel: '일반 안내', aiAdvisoryText: '확인된 개별 출처가 연결되지 않은 일반 참고 안내입니다.', aiTechnicalDetails: '기술 세부정보 보기', aiSourceDisclosure: '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
         aiLawStatusDisabled: '기능 꺼짐', aiLawStatusSourcePresent: '출처 있음', aiLawStatusUnverified: '미검증', aiLawStatusSourceLinked: '출처 연결됨 · 미검증', aiLawStatusFailed: '검증 실패', aiLawStatusNeedsReview: '확인 필요', aiLawStatusNotWired: '인용 검증 미연결', aiLawWarningDisabled: '법령 검증 기능이 꺼져 있음', aiLawWarningMissingKey: '법령 API 키 미설정', aiLawWarningSourceUnavailable: '법령 출처 확인 불가', aiLawWarningTimeout: '법령 조회 시간 초과', aiLawWarningNotWired: '인용 검증 미연결',
-        aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패'],
+        aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
         manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
         sourceStructuredData: '구조화 데이터 기준', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 확인 필요', sourceManualConfirmed: '공식 매뉴얼 확인됨', sourceManualPending: '매뉴얼 검토 필요', sourceNeedLinking: '출처 확인 필요', sourceProvisional: '준용/임시 안내', sourceEvidenceTitle: '출처 및 근거', sourceVerifiedNote: '표시된 항목은 현재 구조화 데이터 기준으로 공식 매뉴얼 출처가 확인된 항목입니다. 관할 출입국관서에서 추가 서류를 요구할 수 있습니다.', sourcePendingReviewNote: '이 항목은 아직 공식 매뉴얼 대조가 완료되지 않았습니다. 신청 전 HiKorea 또는 관할 출입국·외국인관서에서 확인하세요.', sourceNeedLinkingNote: '페이지 또는 출처 단서가 있으나, 항목별 공식 근거 연결은 아직 정리 중입니다.', sourceUnverifiedNote: 'Paradiso 내부 구조화 데이터에 정리된 안내입니다. 공식 결정이나 법률 자문이 아닙니다.', sourceProvisionalNote: '다른 절차 또는 유사 체류자격의 기준을 참고한 임시 안내일 수 있습니다. 실제 신청 전 공식 매뉴얼과 관할 기관 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
         /* STEP 0-A: HiKorea 회원가입 준비 */
@@ -14482,6 +14536,7 @@ const UI_TRANSLATIONS = {
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
         aiProviderBusy: 'AI 모델이 일시적으로 혼잡합니다.', aiAllCandidatesFailed: '다른 모델 후보로 재시도했지만 현재 응답을 생성하지 못했습니다. 잠시 후 다시 시도하세요.', aiFallbackSucceeded: '다른 모델 후보로 재시도하여 응답했습니다.', aiResponseModel: '응답 모델', aiShowTechnicalDetails: '기술 세부정보 보기',
         manualToLawFallbackLabel: '매뉴얼 근거 부족', manualToLawFallbackChecked: '법령 근거로 보완 확인', manualToLawFallbackNote: '매뉴얼에 충분한 세부 안내가 없어 법령 근거 확인을 시도했습니다.',
+        aiAnswerBasisLabel: '답변 근거', aiAnswerBasisConfirmed: '확인된 출처 근거', aiAnswerBasisAssisted: '참고 근거 있음 · 공식 확인 필요', aiAnswerBasisLimited: '근거 제한적 · 직접 출처 부족', aiAnswerBasisUnavailable: '확인된 출처 없음 · 공식 확인 필요', aiAnswerBasisGeneric: '일반 참고 안내', aiRelatedStatusLabel: '함께 확인할 관련 체류자격', aiRelatedStatusNote: '질문에 직접 답하는 출처가 아니라, 함께 확인해 볼 비교용 체류자격입니다.',
         docModalTitleNew: '신규 발급/신규 신청 구비서류', docModalTitleExt: '체류기간 연장 구비서류', docModalTitleChange: '체류자격 변경 구비서류', docModalTitleChangeNote: '※ [준용 안내] 체류자격 변경 전용 문서목록이 아직 수작업 검증·정규화되지 않아 연장/신규 단계 문서를 보수적으로 준용 표시합니다. 공식 확정 목록이 아닙니다.', docModalTitleSub: '{name} 추가 구비서류', docModalTitleSubFallbackName: '해당 세부항목', docModalTitleSubGeneric: '세부항목 추가 구비서류', docStageReference: '준용',
         jurSidoPlaceholder: '시/도 선택', jurSigunguPlaceholder: '시/군/구 선택', jurMissingInfo: '관할 관서 정보가 누락되었습니다.', jurResultMsg: '귀하의 등록된 체류지에 따른 관할 출입국·외국인관서는 <b>[{office}]</b>입니다.<br>반드시 지정된 관할 관서를 방문해야 하며, 타 관서 방문 시 민원 접수가 즉각 반려됩니다.'
     },
@@ -14585,7 +14640,7 @@ const UI_TRANSLATIONS = {
         aiSourcePanelTitle: 'Sources · verification status', aiManualGroundingLabel: 'Administrative manual source', aiManualGroundingStatus: 'Manual source identified · for reference only (not a legal decision; item-level verification is ongoing)', aiLawVerificationLabel: 'Legal citation verification', aiPublicDataLabel: 'Public-data source', aiPublicDataStatus: 'Source shown · item-level verification is ongoing',
         aiSelectedScenarioLabel: 'Based on selected scenario', aiScenarioGroundingLabel: 'Scenario-specific document source', aiScenarioCandidateStatus: 'Manual-based candidate · final confirmation needed', aiScenarioMatchNote: 'Use this only if the sub-status/reason matches your situation.', aiScenarioMoreCount: '{count} more', aiAdvisoryLabel: 'General guidance', aiAdvisoryText: 'General reference guidance without a linked item-level source.', aiTechnicalDetails: 'View technical details', aiSourceDisclosure: 'This answer is reference guidance based on public sources. Confirm final decisions with 1345, HiKorea, or the competent immigration office.',
         aiLawStatusDisabled: 'Disabled', aiLawStatusSourcePresent: 'Source present', aiLawStatusUnverified: 'Unverified', aiLawStatusSourceLinked: 'Source linked · unverified', aiLawStatusFailed: 'Verification failed', aiLawStatusNeedsReview: 'Needs review', aiLawStatusNotWired: 'Citation verification not connected', aiLawWarningDisabled: 'Legal verification is disabled', aiLawWarningMissingKey: 'Legal API key is not configured', aiLawWarningSourceUnavailable: 'Legal source unavailable', aiLawWarningTimeout: 'Legal source lookup timed out', aiLawWarningNotWired: 'Citation verification not connected',
-        aiSourceBadgeLabels: ['Verified', 'Source present', 'Partial', 'Needs review', 'Reference', 'Unverified', 'Link only', 'Disabled', 'Not connected', 'Verification failed'],
+        aiSourceBadgeLabels: ['Verified', 'Source present', 'Partial', 'Needs review', 'Reference', 'Unverified', 'Link only', 'Disabled', 'Not connected', 'Verification failed', 'Related status'],
         manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
         sourceStructuredData: 'Structured-data guidance', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source check needed', sourceManualConfirmed: 'Manual-backed', sourceManualPending: 'Manual review needed', sourceNeedLinking: 'Source linkage needed', sourceProvisional: 'Provisional guidance', sourceEvidenceTitle: 'Source & Evidence', sourceVerifiedNote: 'This item is shown from structured data with an identified official manual source. Additional documents may still be requested by the competent office.', sourcePendingReviewNote: 'Official manual cross-check for this item is still pending. Confirm with HiKorea or the competent immigration office before filing.', sourceNeedLinkingNote: 'A page/source clue exists, but per-item official source linkage is still being organized.', sourceUnverifiedNote: 'This is guidance organized from Paradiso’s internal structured catalog. It is not an official decision or legal advice.', sourceProvisionalNote: 'This may be provisional guidance referencing a similar status or procedure. Confirm against official manuals and the competent office before filing.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
         step0aTitle: 'STEP 0-A · HiKorea Account Setup Preparation',
@@ -14655,6 +14710,7 @@ const UI_TRANSLATIONS = {
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
         aiProviderBusy: 'The AI model is temporarily busy.', aiAllCandidatesFailed: 'Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.', aiFallbackSucceeded: 'Paradiso retried with another configured model candidate and generated a response.', aiResponseModel: 'Response model', aiShowTechnicalDetails: 'Show technical details',
         manualToLawFallbackLabel: 'Manual guidance insufficient', manualToLawFallbackChecked: 'Checked supporting legal grounding', manualToLawFallbackNote: 'Manual-specific guidance was insufficient, so Paradiso attempted to check supporting legal grounding.',
+        aiAnswerBasisLabel: 'Answer basis', aiAnswerBasisConfirmed: 'Source-confirmed', aiAnswerBasisAssisted: 'Source-assisted · official confirmation needed', aiAnswerBasisLimited: 'Limited grounding · direct source incomplete', aiAnswerBasisUnavailable: 'No confirmed source · official confirmation needed', aiAnswerBasisGeneric: 'General reference only', aiRelatedStatusLabel: 'Related status to verify', aiRelatedStatusNote: 'These are comparison statuses to verify — not a source that answers your question.',
         docModalTitleNew: 'Visa / new application documents', docModalTitleExt: 'Extension documents', docModalTitleChange: 'Change of status documents', docModalTitleChangeNote: 'Note: the dedicated change-of-status document list has not yet been manually verified and normalized, so extension/new-application documents are shown conservatively. This is not an official final list.', docModalTitleSub: '{name} additional documents', docModalTitleSubFallbackName: 'Selected subcode', docModalTitleSubGeneric: 'Subcode additional documents', docStageReference: 'reference',
         jurSidoPlaceholder: 'Select province/city', jurSigunguPlaceholder: 'Select city/county/district', jurMissingInfo: 'Jurisdiction office information is missing.', jurResultMsg: 'Based on your registered residence, your competent immigration office is <b>[{office}]</b>.<br>You must visit the designated competent office; filing at another office may be rejected on the spot.'
     },
@@ -14715,7 +14771,7 @@ const UI_TRANSLATIONS = {
         aiSourcePanelTitle: '来源 · 核实状态', aiManualGroundingLabel: '行政手册依据', aiManualGroundingStatus: '已确认手册来源 · 仅供参考（不构成法律决定，逐项核实仍在进行中）', aiLawVerificationLabel: '法规引用核实', aiPublicDataLabel: '公共数据依据', aiPublicDataStatus: '已显示来源 · 逐项核实仍在进行中',
         aiSelectedScenarioLabel: '基于所选情形', aiScenarioGroundingLabel: '分情形材料依据', aiScenarioCandidateStatus: '基于手册的候选信息 · 需最终确认', aiScenarioMatchNote: '仅在细分资格或申请事由相符时参考。', aiScenarioMoreCount: '另有 {count} 项', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未关联逐项已确认来源的一般参考指引。', aiTechnicalDetails: '查看技术详情', aiSourceDisclosure: '本答复是基于公开资料的参考指引。最终判断请向 1345、HiKorea 或管辖出入境外国人机构确认。',
         aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有来源', aiLawStatusUnverified: '未经核实', aiLawStatusSourceLinked: '已关联来源 · 未经核实', aiLawStatusFailed: '核实失败', aiLawStatusNeedsReview: '需核实', aiLawStatusNotWired: '引用核实尚未连接', aiLawWarningDisabled: '法规核实功能已停用', aiLawWarningMissingKey: '未设置法规 API 密钥', aiLawWarningSourceUnavailable: '无法确认法规来源', aiLawWarningTimeout: '法规查询超时', aiLawWarningNotWired: '引用核实尚未连接',
-        aiSourceBadgeLabels: ['已核实', '有来源', '部分', '需核实', '参考', '未经核实', '仅链接', '已停用', '未连接', '核实失败'],
+        aiSourceBadgeLabels: ['已核实', '有来源', '部分', '需核实', '参考', '未经核实', '仅链接', '已停用', '未连接', '核实失败', '相关资格'],
         procedureTitle: '各流程指引', subcodeTitle: '细类代码', commonDocs: '通用材料', requiredDocs: '必备材料', additionalDocs: '附加/审查材料', conditionalDocs: '条件性材料', eligibilityLabel: '对象/要求', notesLabel: '注意事项', manualReviewNeededShort: '需手册确认', docGroupEmpty: '需手册确认：此流程的结构化材料尚未在代表数据中。',
         manualNeedsReview: '需手册确认', docReviewFallback: '此流程的结构化材料清单尚未核实。请查阅官方手册、HiKorea或管辖出入境机构。', procedureSectionTitle: '各流程指引', subcodesTitle: '细类代码', commonWarningsTitle: '手册通用注意事项', sourceManualFallback: '来源手册', pageNeedsReview: '需核实页码', confidenceLabel: '可信度', confidenceNeedsReview: '需手册确认', sourceStatusTitle: '来源及核实状态', sourceReviewDone: '代表数据审核完成', sourceReviewPending: '代表数据，全量手动核实进行中。', sourceLegalNote: '本服务仅供参考，实际许可与否取决于官方审查。',
         manualActionLabels: ['签证/新申请材料', '延期材料', '变更材料', 'Paradiso AI 情况分析'], actionNewDocs: '签证/新申请材料', actionExtDocs: '延期材料', actionChangeDocs: '变更材料', actionAi: 'Paradiso AI 情况分析',
@@ -14772,6 +14828,7 @@ const UI_TRANSLATIONS = {
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
         aiProviderBusy: 'AI 模型暂时繁忙。', aiAllCandidatesFailed: 'Paradiso 已尝试配置的候选模型，但当前无法生成回复。请稍后再试。', aiFallbackSucceeded: 'Paradiso 已改用其他配置的候选模型并生成了回复。', aiResponseModel: '回复模型', aiShowTechnicalDetails: '查看技术细节',
         manualToLawFallbackLabel: '手册依据不足', manualToLawFallbackChecked: '已尝试以法令依据补充确认', manualToLawFallbackNote: '手册中的具体说明不足，因此 Paradiso 尝试确认补充性的法令依据。',
+        aiAnswerBasisLabel: '答复依据', aiAnswerBasisConfirmed: '已确认来源依据', aiAnswerBasisAssisted: '有参考依据 · 需官方确认', aiAnswerBasisLimited: '依据有限 · 缺少直接来源', aiAnswerBasisUnavailable: '无已确认来源 · 需官方确认', aiAnswerBasisGeneric: '仅供一般参考', aiRelatedStatusLabel: '需一并确认的相关居留资格', aiRelatedStatusNote: '这些是供比较、需一并确认的居留资格，并非直接回答您问题的来源。',
         docModalTitleNew: '新发/新申请所需材料', docModalTitleExt: '停留期间延期所需材料', docModalTitleChange: '停留资格变更所需材料', docModalTitleChangeNote: '※[参照说明] 停留资格变更的专用材料清单尚未经过人工核验与规范化，因此暂以延期/新申请阶段的材料保守参照显示。这并非正式确定清单。', docModalTitleSub: '{name} 补充材料', docModalTitleSubFallbackName: '所选子类别', docModalTitleSubGeneric: '子类别补充材料', docStageReference: '参照',
         jurSidoPlaceholder: '选择市/道', jurSigunguPlaceholder: '选择市/郡/区', jurMissingInfo: '管辖机关信息缺失。', jurResultMsg: '根据您登记的居住地，您的管辖出入境·外国人机关为 <b>[{office}]</b>。<br>请务必前往指定的管辖机关；在其他机关办理可能被当场退回。'
     },
@@ -14804,7 +14861,7 @@ const UI_TRANSLATIONS = {
         aiSourcePanelTitle: '來源 · 核實狀態', aiManualGroundingLabel: '行政手冊依據', aiManualGroundingStatus: '已確認手冊來源 · 僅供參考（不構成法律決定，逐項核實仍在進行中）', aiLawVerificationLabel: '法規引用核實', aiPublicDataLabel: '公共資料依據', aiPublicDataStatus: '已顯示來源 · 逐項核實仍在進行中',
         aiSelectedScenarioLabel: '基於所選情形', aiScenarioGroundingLabel: '分情形文件依據', aiScenarioCandidateStatus: '基於手冊的候選資訊 · 需最終確認', aiScenarioMatchNote: '僅在細分資格或申請事由相符時參考。', aiScenarioMoreCount: '另有 {count} 項', aiAdvisoryLabel: '一般指引', aiAdvisoryText: '尚未關聯逐項已確認來源的一般參考指引。', aiTechnicalDetails: '查看技術詳情', aiSourceDisclosure: '本答覆是基於公開資料的參考指引。最終判斷請向 1345、HiKorea 或管轄出入境外國人機構確認。',
         aiLawStatusDisabled: '已停用', aiLawStatusSourcePresent: '有來源', aiLawStatusUnverified: '未經核實', aiLawStatusSourceLinked: '已關聯來源 · 未經核實', aiLawStatusFailed: '核實失敗', aiLawStatusNeedsReview: '需核實', aiLawStatusNotWired: '引用核實尚未連接', aiLawWarningDisabled: '法規核實功能已停用', aiLawWarningMissingKey: '未設定法規 API 金鑰', aiLawWarningSourceUnavailable: '無法確認法規來源', aiLawWarningTimeout: '法規查詢逾時', aiLawWarningNotWired: '引用核實尚未連接',
-        aiSourceBadgeLabels: ['已核實', '有來源', '部分', '需核實', '參考', '未經核實', '僅連結', '已停用', '未連接', '核實失敗'],
+        aiSourceBadgeLabels: ['已核實', '有來源', '部分', '需核實', '參考', '未經核實', '僅連結', '已停用', '未連接', '核實失敗', '相關資格'],
         /* Route-aware F-4 wizard + deadline calculator + HiKorea caution + procedure fallbacks */
         f4RouteTitle: '您屬於哪一種 F-4 辦理路徑？', f4RouteIntro: 'F-4 可能涉及不同路徑，包括入境前簽證核發、境內資格變更、國內居所申報和停留期間延期。請先確認哪一種路徑符合您的情況。', f4RouteShowAll: '查看全部 F-4 路徑', f4RouteChooserAria: 'F-4 路徑選擇', f4RouteSelectedPrefix: '已選路徑', f4RouteSourceNote: '選擇路徑並不代表符合資格或獲得許可。實際適用與否請向 HiKorea、1345 或管轄出入境外國人機構確認。', f4RouteNoDocsNote: '此路徑尚未連結經來源確認的文件清單。請直接向 HiKorea、1345 或管轄出入境外國人機構確認。',
         f4Route1Label: '透過駐外韓國使領館取得 F-4 簽證後入境', f4Route2Label: '以 B-2、C-3 等身分入境後在韓國境內變更為 F-4', f4Route3Label: '從 H-2 變更為 F-4', f4Route4Label: 'F-4 國內居所申報', f4Route5Label: 'F-4 停留期間延期',
@@ -14837,6 +14894,7 @@ const UI_TRANSLATIONS = {
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
         aiProviderBusy: 'AI 模型暫時繁忙。', aiAllCandidatesFailed: 'Paradiso 已嘗試設定的候選模型，但目前無法產生回覆。請稍後再試。', aiFallbackSucceeded: 'Paradiso 已改用其他設定的候選模型並產生了回覆。', aiResponseModel: '回覆模型', aiShowTechnicalDetails: '查看技術細節',
         manualToLawFallbackLabel: '手冊依據不足', manualToLawFallbackChecked: '已嘗試以法令依據補充確認', manualToLawFallbackNote: '手冊中的具體說明不足，因此 Paradiso 嘗試確認補充性的法令依據。',
+        aiAnswerBasisLabel: '答覆依據', aiAnswerBasisConfirmed: '已確認來源依據', aiAnswerBasisAssisted: '有參考依據 · 需官方確認', aiAnswerBasisLimited: '依據有限 · 缺少直接來源', aiAnswerBasisUnavailable: '無已確認來源 · 需官方確認', aiAnswerBasisGeneric: '僅供一般參考', aiRelatedStatusLabel: '需一併確認的相關居留資格', aiRelatedStatusNote: '這些是供比較、需一併確認的居留資格，並非直接回答您問題的來源。',
         docModalTitleNew: '新發/新申請所需文件', docModalTitleExt: '停留期間延期所需文件', docModalTitleChange: '停留資格變更所需文件', docModalTitleChangeNote: '※[參照說明] 停留資格變更的專用文件清單尚未經過人工核驗與規範化，因此暫以延期/新申請階段的文件保守參照顯示。這並非正式確定清單。', docModalTitleSub: '{name} 補充文件', docModalTitleSubFallbackName: '所選子類別', docModalTitleSubGeneric: '子類別補充文件', docStageReference: '參照',
         jurSidoPlaceholder: '選擇市/道', jurSigunguPlaceholder: '選擇市/郡/區', jurMissingInfo: '管轄機關資訊缺失。', jurResultMsg: '根據您登記的居住地，您的管轄出入境·外國人機關為 <b>[{office}]</b>。<br>請務必前往指定的管轄機關；在其他機關辦理可能被當場退回。',
         sourceStatusTitle: '來源與核實狀態', manualActionLabels: ['簽證/新辦文件', '延期文件', '變更文件', 'Paradiso AI 情況分析'],
@@ -15537,7 +15595,8 @@ function applyLanguage(code, options = {}) {
         ['--lang-gp-source-linked-unverified', 6, '링크만'],
         ['--lang-gp-disabled', 7, '사용 안 함'],
         ['--lang-gp-not-wired', 8, '미연결'],
-        ['--lang-gp-failed', 9, '검증 실패']
+        ['--lang-gp-failed', 9, '검증 실패'],
+        ['--lang-gp-related', 10, '관련 자격']
     ].forEach(([property, index, fallback]) => {
         document.documentElement.style.setProperty(property, JSON.stringify(sourceBadgeLabels[index] || fallback));
     });
