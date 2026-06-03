@@ -21,7 +21,17 @@ What it reports:
     no-provider) or executed, whether law grounding was attempted, whether the
     manual-to-law fallback was triggered, and whether selected route/variant
     context was echoed in the response metadata
+  * answer-quality signals (Part K): answer_quality_mode, source_confidence_level,
+    question_type_detected, related_statuses_not_sources, and — on a live 200
+    answer — whether the direct answer appears in the first two paragraphs,
+    whether the official-confirmation checklist surfaced when expected, whether
+    mixed-language artifacts appear, whether raw provider/source codes leak into
+    the answer text, the answer length bucket, and the warning-repetition count
   * whether the no-provider 503 behavior is safe
+
+Answer-quality signals are WARN-ONLY: this harness never fails CI on live LLM
+wording. It only fails on clearly unsafe approval/guarantee language or an
+unsafe no-provider 503.
 
 Usage (local, no provider — records skipped, exits 0):
     python3 scripts/smoke_ai_live_quality.py
@@ -61,11 +71,26 @@ SAMPLE_QUESTIONS = [
         "id": "h1_seasonal_course",
         "visa_code": "H-1",
         "question": "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?",
+        "lang": "ko",
+        "expect_confirmation_checklist": True,
+        "expect_related_statuses": ["D-2", "D-4"],
+    },
+    {
+        "id": "h1_summer_semester_en",
+        "visa_code": "H-1",
+        "question": (
+            "Can I take summer semester course in Korean universities even "
+            "though I have a H-1 visa?"
+        ),
+        "lang": "en",
+        "expect_confirmation_checklist": True,
+        "expect_related_statuses": ["D-2", "D-4"],
     },
     {
         "id": "f4_domestic_residence",
         "visa_code": "F-4",
         "question": "F-4로 들어왔는데 국내거소신고를 해야 하나요?",
+        "lang": "ko",
     },
     {
         "id": "b2_to_f4",
@@ -98,8 +123,83 @@ SAMPLE_QUESTIONS = [
         "id": "h2_to_f4",
         "visa_code": "H-2",
         "question": "H-2에서 F-4로 변경할 수 있나요?",
+        "lang": "ko",
+    },
+    {
+        "id": "d2_part_time_work",
+        "visa_code": "D-2",
+        "question": "D-2 비자로 시간제 아르바이트를 할 수 있나요?",
+        "lang": "ko",
+    },
+    {
+        "id": "e7_workplace_change",
+        "visa_code": "E-7",
+        "question": "E-7인데 근무처(직장)를 변경할 수 있나요?",
+        "lang": "ko",
+    },
+    {
+        "id": "f6_documents_en",
+        "visa_code": "F-6",
+        "question": "What documents do I need for F-6 extension?",
+        "lang": "en",
     },
 ]
+
+# Chinese legal fragments that must NOT appear in an English-mode answer.
+_CJK_LEGAL_FRAGMENTS = (
+    "资格", "資格", "签证", "簽證", "滞留", "滯留", "居留",
+    "在留", "许可", "許可", "申请", "申請",
+)
+
+
+def _mixed_language_artifacts(answer, lang):
+    """Conservative mixed-language scan (Part I). English mode only flags CJK
+    legal fragments; other modes are not failed here (warn-only harness)."""
+    if (lang or "").lower() != "en":
+        return []
+    return [frag for frag in _CJK_LEGAL_FRAGMENTS if frag in (answer or "")]
+
+
+def _length_bucket(answer):
+    n = len((answer or "").split())
+    if n <= 60:
+        return "short"
+    if n <= 200:
+        return "medium"
+    if n <= 400:
+        return "long"
+    return "very_long"
+
+
+def _direct_answer_early(answer):
+    """Heuristic: the first two paragraphs should carry the practical answer,
+    not a long 'currently known facts' preamble or a heading wall."""
+    paras = [p.strip() for p in (answer or "").split("\n\n") if p.strip()]
+    if not paras:
+        return False
+    head = " ".join(paras[:2]).lower()
+    # A preamble that opens with a 'known facts' style heading is a red flag.
+    bad_openers = ("currently known", "현재 알려진", "known facts", "已知")
+    if any(head.startswith(b) for b in bad_openers):
+        return False
+    # A direct answer paragraph is reasonably short and not just a heading.
+    return len(paras[0].split()) <= 120
+
+
+# Raw status/provider codes that should never be the user-facing answer text.
+_RAW_CODE_LEAKS = (
+    "source_unavailable", "source_limited", "generic_advisory",
+    "LAW_GROUNDING_DISABLED", "no_llm_provider_configured",
+    "manual_grounding_absent", "provider_unavailable",
+)
+
+
+def _warning_repetition_count(answer):
+    """Count how many times the same official-confirmation caution is repeated.
+    A modern answer states it once; repeated copies are a readability smell."""
+    lowered = (answer or "").lower()
+    markers = ["1345", "hikorea", "하이코리아", "immigration office", "출입국"]
+    return max((lowered.count(m) for m in markers), default=0)
 
 # Conservative, obviously-unsupported approval/guarantee phrasing. We do NOT
 # overfit to exact LLM wording — only a tiny denylist of clearly unsafe claims.
@@ -160,7 +260,7 @@ def _check_question(base, q):
     payload = {
         "question": q["question"],
         "consent": True,
-        "lang": "ko",
+        "lang": q.get("lang", "ko"),
         "visa_data": {"code": q["visa_code"]},
     }
     if q.get("selected_procedure_key") and q.get("selected_procedure_variant_id"):
@@ -186,6 +286,21 @@ def _check_question(base, q):
         "provider_family_fallback_used": None,
         "unsafe_approval_language": None,
         "metadata_present": None,
+        # Answer-quality signals (Part K).
+        "answer_quality_mode": None,
+        "source_confidence_level": None,
+        "requires_official_confirmation": None,
+        "related_statuses_not_sources": None,
+        "grounded_answer_limited": None,
+        "answer_style_version": None,
+        "question_type_detected": None,
+        "direct_answer_early": None,
+        "confirmation_checklist_present": None,
+        "mixed_language_artifacts": None,
+        "raw_code_leak": None,
+        "answer_length_bucket": None,
+        "warning_repetition_count": None,
+        "quality_warnings": [],
         "ok": False,
         "note": "",
     }
@@ -213,23 +328,66 @@ def _check_question(base, q):
     result["provider_error_type"] = meta.get("provider_error_type")
     result["model_fallback_used"] = meta.get("model_fallback_used")
     result["provider_family_fallback_used"] = meta.get("provider_family_fallback_used")
+    # Answer-quality contract metadata (non-secret) — available on both the
+    # 503 no-provider path and the live 200 path.
+    result["answer_quality_mode"] = meta.get("answer_quality_mode")
+    result["source_confidence_level"] = meta.get("source_confidence_level")
+    result["requires_official_confirmation"] = meta.get("requires_official_confirmation")
+    result["related_statuses_not_sources"] = meta.get("related_statuses_not_sources")
+    result["grounded_answer_limited"] = meta.get("grounded_answer_limited")
+    result["answer_style_version"] = meta.get("answer_style_version")
+    result["question_type_detected"] = meta.get("question_type_detected")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
         result["live_answer_checked"] = False
-        result["metadata_present"] = ("law_grounding_status" in meta)
-        result["ok"] = (meta.get("error") == "no_llm_provider_configured")
-        result["note"] = "no-provider 503 (live answer skipped)"
+        result["metadata_present"] = ("law_grounding_status" in meta) and ("answer_quality_mode" in meta)
+        # The contract metadata must still be present and self-consistent.
+        expect_related = q.get("expect_related_statuses")
+        if expect_related is not None and result["related_statuses_not_sources"] != expect_related:
+            result["quality_warnings"].append(
+                "related_statuses mismatch: got %s expected %s"
+                % (result["related_statuses_not_sources"], expect_related)
+            )
+        result["ok"] = (meta.get("error") == "no_llm_provider_configured") and result["metadata_present"]
+        result["note"] = "no-provider 503 (live answer skipped; contract metadata checked)"
         return result
 
     if status == 200:
         answer = str(body.get("answer") or "")
         lowered = answer.lower()
+        lang = q.get("lang", "ko")
         unsafe = [p for p in UNSAFE_APPROVAL_PHRASES if p.lower() in lowered]
         result["live_answer_checked"] = True
         result["unsafe_approval_language"] = unsafe
+        # Answer-quality signals on the live answer text (warn-only — never fail
+        # CI on LLM wording, per Part K).
+        result["direct_answer_early"] = _direct_answer_early(answer)
+        result["mixed_language_artifacts"] = _mixed_language_artifacts(answer, lang)
+        result["raw_code_leak"] = [c for c in _RAW_CODE_LEAKS if c in answer]
+        result["answer_length_bucket"] = _length_bucket(answer)
+        result["warning_repetition_count"] = _warning_repetition_count(answer)
+        checklist_qs = meta.get("official_confirmation_questions") or []
+        if q.get("expect_confirmation_checklist"):
+            # The deterministic checklist questions should be reflected in the
+            # answer when the contract requested them.
+            present = bool(checklist_qs) and any(
+                str(cq).split("?")[0][:18].lower() in lowered for cq in checklist_qs
+            )
+            result["confirmation_checklist_present"] = present
+            if not present:
+                result["quality_warnings"].append("expected official-confirmation checklist not surfaced")
+        for w in ("mixed_language_artifacts", "raw_code_leak"):
+            if result[w]:
+                result["quality_warnings"].append("%s: %s" % (w, result[w]))
+        if result["direct_answer_early"] is False:
+            result["quality_warnings"].append("direct answer not in first 2 paragraphs")
+        if (result["warning_repetition_count"] or 0) >= 5:
+            result["quality_warnings"].append(
+                "warning repetition high (%s)" % result["warning_repetition_count"]
+            )
         # Metadata/source/law-grounding status should be present on a real answer.
-        result["metadata_present"] = ("law_grounding_status" in body) and ("answer" in body)
+        result["metadata_present"] = ("law_grounding_status" in body) and ("answer" in body) and ("answer_quality_mode" in body)
         result["ok"] = bool(answer) and not unsafe and result["metadata_present"]
         if unsafe:
             result["note"] = "FAILED: unsafe approval/guarantee language detected"
@@ -379,7 +537,20 @@ def _emit(report, args):
             r["final_model"], r["provider_error_type"],
             r["model_fallback_used"], r["provider_family_fallback_used"],
         )
+        # Answer-quality signals (Part K).
+        suffix += " [quality=%s conf=%s qtype=%s related=%s]" % (
+            r["answer_quality_mode"], r["source_confidence_level"],
+            r["question_type_detected"], r["related_statuses_not_sources"],
+        )
+        if r["live_answer_checked"]:
+            suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (
+                r["direct_answer_early"], r["answer_length_bucket"],
+                r["warning_repetition_count"], r["confirmation_checklist_present"],
+                r["mixed_language_artifacts"], r["raw_code_leak"],
+            )
         print("    %s  %-22s %s%s" % (tag, r["id"], r["note"], suffix))
+        for w in (r.get("quality_warnings") or []):
+            print("           WARN: %s" % w)
     if not report["live_answer_executed"]:
         print(
             "\nNote: live answer checks were skipped (no provider configured here).\n"

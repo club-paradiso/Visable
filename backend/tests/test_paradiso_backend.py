@@ -732,40 +732,45 @@ class GroundedPromptLanguageTests(unittest.TestCase):
 
     def test_lang_en_instructs_english_not_korean(self):
         built = self._built("en")
-        self.assertIn("Answer in English.", built)
-        self.assertNotIn("한국어로 답하십시오.", built)
+        # The answer-language instruction now carries anti-mixed-language
+        # guardrails; assert on the stable substring rather than exact wording.
+        self.assertIn("natural English", built)
+        self.assertNotIn("한국어로 자연스럽게 답하십시오", built)
         # Korea-specific source attribution still present.
         self.assertIn("외국인체류 안내매뉴얼", built)
         self.assertIn("법무부 출입국·외국인정책본부", built)
 
     def test_lang_ko_instructs_korean(self):
         built = self._built("ko")
-        self.assertIn("한국어로 답하십시오.", built)
-        self.assertNotIn("Answer in English.", built)
+        self.assertIn("한국어로 자연스럽게 답하십시오", built)
+        self.assertNotIn("natural English", built)
         self.assertIn("외국인체류 안내매뉴얼", built)
 
     def test_unknown_lang_falls_back_to_user_language(self):
         built = self._built(None)
-        self.assertIn("Answer in the same language as the user's question.", built)
-        self.assertNotIn("한국어로 답하십시오.", built)
-        self.assertNotIn("Answer in English.", built)
+        self.assertIn("same language as the user's question", built)
+        self.assertNotIn("한국어로 자연스럽게 답하십시오", built)
+        self.assertNotIn("natural English", built)
         # Korea-specific source attribution unchanged.
         self.assertIn("외국인체류 안내매뉴얼", built)
 
     def test_unrecognized_lang_value_also_falls_back(self):
         built = self._built("fr")
-        self.assertIn("Answer in the same language as the user's question.", built)
+        self.assertIn("same language as the user's question", built)
 
     def test_answer_language_helper_directly(self):
         _, mod = _client()
-        self.assertEqual(mod._answer_language_instruction("ko"), "- 한국어로 답하십시오.")
-        self.assertEqual(mod._answer_language_instruction("KO"), "- 한국어로 답하십시오.")
-        self.assertEqual(mod._answer_language_instruction("en"), "- Answer in English.")
-        self.assertEqual(mod._answer_language_instruction("EN"), "- Answer in English.")
+        self.assertIn("한국어로 자연스럽게", mod._answer_language_instruction("ko"))
+        self.assertIn("한국어로 자연스럽게", mod._answer_language_instruction("KO"))
+        self.assertIn("natural English", mod._answer_language_instruction("en"))
+        self.assertIn("natural English", mod._answer_language_instruction("EN"))
+        # Chinese modes are now explicit and distinct.
+        self.assertIn("简体", mod._answer_language_instruction("zh-CN"))
+        self.assertIn("繁體", mod._answer_language_instruction("zh-TW"))
         for unknown in (None, "", "fr", "ja", "x"):
-            self.assertEqual(
+            self.assertIn(
+                "same language as the user's question",
                 mod._answer_language_instruction(unknown),
-                "- Answer in the same language as the user's question.",
             )
 
 
@@ -1406,14 +1411,14 @@ class UngroundedFallbackPromptTests(unittest.TestCase):
     def test_ungrounded_prompt_lang_ko(self):
         _, mod = _client()
         built = mod._build_ungrounded_korea_scoped_prompt("질문", lang="ko")
-        self.assertIn("한국어로 답하십시오", built)
-        self.assertNotIn("Answer in English", built)
+        self.assertIn("한국어로 자연스럽게 답하십시오", built)
+        self.assertNotIn("natural English", built)
 
     def test_ungrounded_prompt_lang_en(self):
         _, mod = _client()
         built = mod._build_ungrounded_korea_scoped_prompt("question", lang="en")
-        self.assertIn("Answer in English", built)
-        self.assertNotIn("한국어로 답하십시오", built)
+        self.assertIn("natural English", built)
+        self.assertNotIn("한국어로 자연스럽게 답하십시오", built)
 
     def test_ungrounded_prompt_lang_default(self):
         _, mod = _client()
@@ -1643,6 +1648,47 @@ class GoldenEvalSuiteTests(unittest.TestCase):
         grounding = mod._select_grounding(top, task, sub)
         self.assertEqual(task, "academic_status_change")
         self.assertIsNone(grounding)
+
+    # ---- 6. Answer-quality contract regression (H-1 study golden case) ----
+
+    def _ask_detail(self, question, *, lang="ko", code=None):
+        client, _ = _client()
+        payload = {"question": question, "consent": True, "lang": lang}
+        if code is not None:
+            payload["visa_data"] = {"code": code}
+        resp = client.post("/api/ask", json=payload)
+        self.assertEqual(resp.status_code, 503, resp.text)
+        return resp.json()["detail"]
+
+    def test_h1_summer_semester_contract_metadata(self):
+        d = self._ask_detail(
+            "Can I take summer semester course in Korean universities even "
+            "though I have a H-1 visa?",
+            lang="en", code="H-1",
+        )
+        self.assertEqual(d["answer_quality_mode"], "source_limited")
+        self.assertEqual(d["question_type_detected"], "activity_on_status")
+        self.assertEqual(d["related_statuses_not_sources"], ["D-2", "D-4"])
+        # D-2 / D-4 must never be presented as direct manual source grounding.
+        self.assertFalse(d["grounding_used"])
+        self.assertEqual(d["grounding_sources"], [])
+        self.assertEqual(len(d["official_confirmation_questions"]), 7)
+
+    def test_d2_extension_is_source_confirmed(self):
+        d = self._ask_detail("D-2 비자 연장에 필요한 서류는?", lang="ko", code="D-2")
+        self.assertTrue(d["grounding_used"])
+        self.assertEqual(d["answer_quality_mode"], "source_confirmed")
+        self.assertFalse(d["requires_official_confirmation"])
+
+    def test_contract_metadata_always_present(self):
+        d = self._ask_detail("일반 질문", lang="ko")
+        for key in (
+            "answer_quality_mode", "source_confidence_level",
+            "requires_official_confirmation", "official_confirmation_questions",
+            "related_statuses_not_sources", "grounded_answer_limited",
+            "answer_style_version", "question_type_detected",
+        ):
+            self.assertIn(key, d, f"missing answer-quality key: {key}")
 
 
 class LawPublicDataScaffoldTests(unittest.TestCase):
@@ -2596,6 +2642,142 @@ class UnionResolverE4AParityTests(unittest.TestCase):
         self.assertTrue(srep["simulated_user_facing_content_parity"],
                         "simulated E-4B user-facing content parity failed")
         self.assertEqual(srep["simulated_duplicate_codes"], srep["visa_data_duplicate_codes"])
+
+
+class AnswerQualityGoldenSuiteTests(unittest.TestCase):
+    """Golden answer-quality regression suite for /api/ask.
+
+    These tests are deterministic: they run with no LLM provider configured, so
+    /api/ask returns 503 with the full non-secret metadata under ``detail``. We
+    assert on the answer-quality contract (modes, question types, related
+    statuses, official-confirmation questions) — NOT on LLM wording — so the
+    suite stays stable while still guarding answer experience.
+
+    Covers the Part J case list, including the H-1 study/activity-scope golden
+    regression in both Korean and English.
+    """
+
+    def _ask(self, question, *, lang="ko", code=None, **extra):
+        client, _ = _client()
+        payload = {"question": question, "consent": True, "lang": lang}
+        if code is not None:
+            payload["visa_data"] = {"code": code}
+        payload.update(extra)
+        resp = client.post("/api/ask", json=payload)
+        self.assertEqual(resp.status_code, 503, resp.text)
+        return resp.json()["detail"]
+
+    # -- H-1 study / activity-scope golden regression (Part E) --------------
+    def test_h1_korean_seasonal_course(self):
+        d = self._ask(
+            "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?",
+            lang="ko", code="H-1",
+        )
+        self.assertEqual(d["answer_quality_mode"], "source_limited")
+        self.assertEqual(d["question_type_detected"], "activity_on_status")
+        self.assertEqual(d["related_statuses_not_sources"], ["D-2", "D-4"])
+        self.assertTrue(d["grounded_answer_limited"])
+        self.assertTrue(d["requires_official_confirmation"])
+        self.assertFalse(d["grounding_used"])
+        self.assertEqual(d["manual_grounding_status"], "absent")
+        # Exact official-confirmation questions are present (Part E checklist).
+        qs = " ".join(d["official_confirmation_questions"]).lower()
+        self.assertIn("credit-bearing", qs)
+        self.assertIn("degree-related", qs)
+        self.assertIn("main purpose", qs)
+        self.assertIn("d-2 / d-4", qs)
+
+    def test_h1_english_summer_semester(self):
+        d = self._ask(
+            "Can I take summer semester course in Korean universities even "
+            "though I have a H-1 visa?",
+            lang="en", code="H-1",
+        )
+        self.assertEqual(d["answer_quality_mode"], "source_limited")
+        self.assertEqual(d["question_type_detected"], "activity_on_status")
+        self.assertEqual(d["related_statuses_not_sources"], ["D-2", "D-4"])
+        self.assertTrue(d["grounded_answer_limited"])
+        # D-2 / D-4 must NOT be presented as direct manual grounding.
+        self.assertFalse(d["grounding_used"])
+        self.assertEqual(d["grounding_sources"], [])
+        self.assertEqual(len(d["official_confirmation_questions"]), 7)
+
+    # -- Other Part J golden cases ------------------------------------------
+    def test_f4_domestic_residence_report(self):
+        d = self._ask("F-4로 들어왔는데 국내거소신고를 해야 하나요?", lang="ko", code="F-4")
+        self.assertIn(
+            d["answer_quality_mode"],
+            ("source_unavailable", "source_limited", "source_assisted", "source_confirmed"),
+        )
+        self.assertTrue(d["answer_style_version"])
+
+    def test_b2_c3_to_f4_change(self):
+        d = self._ask("B-2로 들어와서 F-4로 바꿀 수 있나요?", lang="ko", code="F-4")
+        self.assertEqual(d["question_type_detected"], "status_change")
+        self.assertTrue(d["requires_official_confirmation"])
+        # Status-change must never promise eligibility from no source.
+        self.assertNotEqual(d["answer_quality_mode"], "source_confirmed")
+        self.assertTrue(len(d["official_confirmation_questions"]) >= 1)
+
+    def test_f6_divorce_extension(self):
+        d = self._ask("F-6인데 이혼 후에도 체류기간 연장이 가능한가요?", lang="ko", code="F-6")
+        self.assertEqual(d["risk_level_detected"], "high")
+        self.assertTrue(d["requires_official_confirmation"])
+
+    def test_g1_medical_treatment(self):
+        d = self._ask("G-1으로 치료 목적 체류를 하려면 어떤 절차를 봐야 하나요?", lang="ko", code="G-1")
+        self.assertIn("answer_quality_mode", d)
+        self.assertTrue(d["answer_style_version"])
+
+    def test_d2_extension_manual_present(self):
+        d = self._ask("D-2 비자 연장에 필요한 서류는?", lang="ko", code="D-2")
+        # Manual grounding exists for D-2 extension -> source_confirmed.
+        self.assertTrue(d["grounding_used"])
+        self.assertEqual(d["answer_quality_mode"], "source_confirmed")
+        self.assertEqual(d["source_confidence_level"], "high")
+        self.assertFalse(d["requires_official_confirmation"])
+        self.assertFalse(d["grounded_answer_limited"])
+
+    def test_e7_workplace_change(self):
+        d = self._ask("E-7인데 직장(근무처)을 변경할 수 있나요?", lang="ko", code="E-7")
+        self.assertEqual(d["question_type_detected"], "status_change")
+        self.assertIn("answer_quality_mode", d)
+
+    def test_d2_part_time_outside_status_activity(self):
+        d = self._ask("D-2 비자로 아르바이트(시간제 취업)를 할 수 있나요?", lang="ko", code="D-2")
+        self.assertEqual(d["question_type_detected"], "activity_on_status")
+        # D-2 has manual grounding, so this is source_confirmed.
+        self.assertEqual(d["answer_quality_mode"], "source_confirmed")
+
+    def test_general_documents_f6_extension(self):
+        d = self._ask("What documents do I need for F-6 extension?", lang="en", code="F-6")
+        self.assertEqual(d["question_type_detected"], "documents_needed")
+        self.assertIn("answer_quality_mode", d)
+
+    # -- Cross-cutting invariants -------------------------------------------
+    def test_metadata_present_on_no_provider_503(self):
+        d = self._ask("아무 질문", lang="ko")
+        for key in (
+            "answer_quality_mode",
+            "source_confidence_level",
+            "requires_official_confirmation",
+            "official_confirmation_questions",
+            "related_statuses_not_sources",
+            "grounded_answer_limited",
+            "answer_style_version",
+            "question_type_detected",
+        ):
+            self.assertIn(key, d, f"missing metadata key: {key}")
+
+    def test_related_statuses_never_appear_in_grounding_sources(self):
+        d = self._ask(
+            "Can I take a summer course on H-1?", lang="en", code="H-1"
+        )
+        self.assertEqual(d["related_statuses_not_sources"], ["D-2", "D-4"])
+        # The related statuses must not leak into grounding_sources.
+        src_text = repr(d.get("grounding_sources") or [])
+        self.assertNotIn("D-2", src_text)
+        self.assertNotIn("D-4", src_text)
 
 
 if __name__ == "__main__":
