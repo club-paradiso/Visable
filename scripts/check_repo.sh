@@ -9,6 +9,7 @@ fi
 
 TEST_PYTHON="python3"
 ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
+BACKEND_BOOTSTRAP_RESTRICTED=0
 
 run_offline_backend_checks() {
   echo "INFO: Running offline-safe backend syntax checks..."
@@ -41,12 +42,19 @@ PY
     exit 1
   fi
 
-  if ! .venv-check/bin/python -m pip install -r backend/requirements.txt; then
+  local pip_log
+  pip_log="$(mktemp)"
+  if ! .venv-check/bin/python -m pip install -r backend/requirements.txt 2>&1 | tee "$pip_log"; then
     echo "WARNING: Backend dependency bootstrap failed; likely network/package-index restriction." >&2
     echo "WARNING: Could not install backend requirements into .venv-check." >&2
     echo "         Recovery (full mode): .venv-check/bin/python -m pip install -r backend/requirements.txt" >&2
+    if rg -q "ProxyError|Tunnel connection failed|403 Forbidden|No matching distribution found" "$pip_log" 2>/dev/null; then
+      BACKEND_BOOTSTRAP_RESTRICTED=1
+    fi
+    rm -f "$pip_log"
     return 1
   fi
+  rm -f "$pip_log"
 
   TEST_PYTHON=".venv-check/bin/python"
 }
@@ -210,6 +218,9 @@ else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
     echo "WARNING: Backend tests skipped due dependency bootstrap failure (ALLOW_BACKEND_TEST_SKIP=1)." >&2
+  elif [[ "${CI:-}" != "true" && "$BACKEND_BOOTSTRAP_RESTRICTED" == "1" ]]; then
+    echo "WARNING: Backend tests skipped because package-index/proxy restrictions prevented dependency bootstrap." >&2
+    echo "         This automatic restricted-environment skip is disabled when CI=true." >&2
   else
     echo "ERROR: Backend tests could not run because dependency bootstrap failed." >&2
     echo "       Re-run with network/package-index access, or use:" >&2
@@ -226,6 +237,8 @@ echo "[14/14] Running Paradiso AI golden eval (non-strict)..."
 # there are zero regression failures.
 if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
   echo "WARNING: Skipping golden eval because backend dependency bootstrap was allowed to skip." >&2
+elif [[ "${CI:-}" != "true" && "$BACKEND_BOOTSTRAP_RESTRICTED" == "1" ]]; then
+  echo "WARNING: Skipping golden eval because package-index/proxy restrictions prevented dependency bootstrap." >&2
 elif ensure_backend_test_runtime; then
   ${TEST_PYTHON} scripts/evaluate_paradiso_ai_golden_questions.py
 else

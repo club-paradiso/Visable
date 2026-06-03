@@ -307,6 +307,13 @@ def _check_question(base, q):
         "provider_error_type": None,
         "model_fallback_used": None,
         "provider_family_fallback_used": None,
+        "skipped_models_due_to_cooldown": None,
+        "cooling_down_models": None,
+        "ollama_fallback_enabled": None,
+        "ollama_fallback_used": None,
+        "deterministic_fallback_answer_used": None,
+        "visa_code_detected": None,
+        "llm_provider": None,
         "unsafe_approval_language": None,
         "metadata_present": None,
         # Answer-quality signals (Part K).
@@ -351,6 +358,13 @@ def _check_question(base, q):
     result["provider_error_type"] = meta.get("provider_error_type")
     result["model_fallback_used"] = meta.get("model_fallback_used")
     result["provider_family_fallback_used"] = meta.get("provider_family_fallback_used")
+    result["skipped_models_due_to_cooldown"] = meta.get("skipped_models_due_to_cooldown")
+    result["cooling_down_models"] = meta.get("cooling_down_models")
+    result["ollama_fallback_enabled"] = meta.get("ollama_fallback_enabled")
+    result["ollama_fallback_used"] = meta.get("ollama_fallback_used")
+    result["deterministic_fallback_answer_used"] = meta.get("deterministic_fallback_answer_used")
+    result["visa_code_detected"] = meta.get("visa_code_detected")
+    result["llm_provider"] = meta.get("llm_provider")
     # Answer-quality contract metadata (non-secret) — available on both the
     # 503 no-provider path and the live 200 path.
     result["answer_quality_mode"] = meta.get("answer_quality_mode")
@@ -411,7 +425,17 @@ def _check_question(base, q):
             )
         # Metadata/source/law-grounding status should be present on a real answer.
         result["metadata_present"] = ("law_grounding_status" in body) and ("answer" in body) and ("answer_quality_mode" in body)
-        result["ok"] = bool(answer) and not unsafe and result["metadata_present"]
+        # Warn rather than fail when all live candidates are unavailable but the
+        # deterministic fallback answer exists; fail if provider failure has no
+        # fallback answer.
+        has_fallback = bool(meta.get("fallback_answer") or meta.get("copy_safe_answer"))
+        if meta.get("deterministic_fallback_answer_used") and has_fallback:
+            result["quality_warnings"].append("online candidates unavailable; deterministic fallback answer rendered")
+        if meta.get("provider_unavailable") and not has_fallback:
+            result["quality_warnings"].append("provider failure produced no fallback answer")
+            result["ok"] = False
+        else:
+            result["ok"] = bool(answer) and not unsafe and result["metadata_present"]
         if unsafe:
             result["note"] = "FAILED: unsafe approval/guarantee language detected"
         else:
@@ -428,6 +452,9 @@ def main(argv=None):
     )
     parser.add_argument("--json", action="store_true", help="Emit a JSON report.")
     parser.add_argument("--backend-url", default=None, help="Override BACKEND_URL.")
+    parser.add_argument("--ollama-smoke", action="store_true", help="Report Ollama fallback fields when backend enables them; does not require Ollama.")
+    parser.add_argument("--mock-provider-failure", action="store_true", help="Reserved for local harnesses that mock provider failure; no-op for remote smoke.")
+    parser.add_argument("--force-openrouter-failure", action="store_true", help="Reserved for local harnesses that force OpenRouter failure; no-op for remote smoke.")
     parser.add_argument(
         "--require-live",
         action="store_true",
@@ -445,7 +472,14 @@ def main(argv=None):
         "primary_model": None,
         "model_candidates": None,
         "candidate_warnings": None,
+        "cooling_down_models": None,
+        "model_cooldown_seconds": None,
+        "cooldown_enabled": None,
         "provider_family_fallback_allowed": None,
+        "ollama_fallback_enabled": None,
+        "ollama_model": None,
+        "ollama_configured": None,
+        "ollama_timeout_seconds": None,
         "groq_fallback_allowed": None,
         "llm_warnings": None,
         "law_grounding_mode": None,
@@ -482,7 +516,14 @@ def main(argv=None):
     report["primary_model"] = llm.get("primary_model")
     report["model_candidates"] = llm.get("model_candidates")
     report["candidate_warnings"] = llm.get("candidate_warnings")
+    report["cooling_down_models"] = llm.get("cooling_down_models")
+    report["model_cooldown_seconds"] = llm.get("model_cooldown_seconds")
+    report["cooldown_enabled"] = llm.get("cooldown_enabled")
     report["provider_family_fallback_allowed"] = llm.get("provider_family_fallback_allowed")
+    report["ollama_fallback_enabled"] = llm.get("ollama_fallback_enabled")
+    report["ollama_model"] = llm.get("ollama_model")
+    report["ollama_configured"] = llm.get("ollama_configured")
+    report["ollama_timeout_seconds"] = llm.get("ollama_timeout_seconds")
     # Non-secret Groq-fallback posture surfaced by /health (no key material).
     report["groq_fallback_allowed"] = llm.get("groq_fallback_allowed")
     report["llm_warnings"] = llm.get("warnings")
@@ -539,7 +580,11 @@ def _emit(report, args):
     print("  primary model            : %s" % report["primary_model"])
     print("  model candidates         : %s" % report["model_candidates"])
     print("  candidate warnings       : %s" % report["candidate_warnings"])
+    print("  cooling down models      : %s" % report["cooling_down_models"])
+    print("  cooldown enabled/seconds : %s / %s" % (report["cooldown_enabled"], report["model_cooldown_seconds"]))
     print("  provider-family fallback : %s" % report["provider_family_fallback_allowed"])
+    print("  Ollama enabled/configured: %s / %s" % (report["ollama_fallback_enabled"], report["ollama_configured"]))
+    print("  Ollama model/timeout     : %s / %s" % (report["ollama_model"], report["ollama_timeout_seconds"]))
     print("  groq fallback allowed    : %s" % report["groq_fallback_allowed"])
     print("  llm warnings             : %s" % report["llm_warnings"])
     print("  law grounding mode       : %s" % report["law_grounding_mode"])
@@ -565,9 +610,14 @@ def _emit(report, args):
             r["manual_grounding_status"], r["law_grounding_status"],
             r["manual_to_law_fallback_used"],
         )
-        suffix += " [final_model=%s err=%s model_fallback=%s family_fallback=%s]" % (
-            r["final_model"], r["provider_error_type"],
+        suffix += " [provider=%s final_model=%s err=%s model_fallback=%s family_fallback=%s]" % (
+            r["llm_provider"], r["final_model"], r["provider_error_type"],
             r["model_fallback_used"], r["provider_family_fallback_used"],
+        )
+        suffix += " [cooldown skipped=%s cooling=%s ollama_enabled=%s ollama_used=%s deterministic_fallback=%s visa=%s]" % (
+            r["skipped_models_due_to_cooldown"], r["cooling_down_models"],
+            r["ollama_fallback_enabled"], r["ollama_fallback_used"],
+            r["deterministic_fallback_answer_used"], r["visa_code_detected"],
         )
         # Answer-quality signals (Part K).
         suffix += " [quality=%s conf=%s qtype=%s related=%s]" % (

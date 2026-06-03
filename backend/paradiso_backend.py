@@ -20,6 +20,7 @@ import json
 import logging
 import os
 import re
+import time
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
@@ -77,9 +78,9 @@ SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 
 # Pin Paradiso AI to a deterministic OpenRouter model rather than the
 # variable `openrouter/auto` router. The verified free model id is mirrored
-# in backend/.env.example and docs/ai/OPENROUTER_GEMMA_PIN_AND_LAW_GROUNDING_NEXT_STEPS.md.
+# in backend/.env.example and docs/data/MODEL_PRIORITY_COOLDOWN_OLLAMA_SCAFFOLD_2026_05.md.
 # Override per-deploy with the OPENROUTER_MODEL env var if the catalog changes.
-_DEFAULT_OPENROUTER_MODEL: str = "google/gemma-4-31b-it:free"
+_DEFAULT_OPENROUTER_MODEL: str = "qwen/qwen3-next-80b-a3b-instruct:free"
 OPENROUTER_MODEL: str = (
     os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
 )
@@ -91,14 +92,14 @@ OPENROUTER_MODEL: str = (
 # free-model routing (openrouter/auto) is intentionally NOT used — Paradiso
 # needs predictable model behaviour and auditable response metadata.
 _DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = [
+    "qwen/qwen3-next-80b-a3b-instruct:free",
     "google/gemma-4-31b-it:free",
     "moonshotai/kimi-k2.6:free",
-    "qwen/qwen3-next-80b-a3b-instruct:free",
     "meta-llama/llama-3.3-70b-instruct:free",
 ]
 
 # Model ids that denote random / non-deterministic routing — disallowed here.
-_RANDOM_ROUTING_TOKENS = {"openrouter/auto", "auto"}
+_RANDOM_ROUTING_TOKENS = {"openrouter/auto", "openrouter/free", "auto", "free"}
 _MODEL_ID_RE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._:-]+$")
 
 
@@ -133,6 +134,33 @@ def _resolve_openrouter_candidates() -> List[str]:
 OPENROUTER_MODEL_CANDIDATES: List[str] = _resolve_openrouter_candidates()
 
 
+def _env_bool(name: str, default: bool = False) -> bool:
+    raw = os.environ.get(name)
+    if raw is None:
+        return default
+    return str(raw).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_float(name: str, default: float) -> float:
+    raw = os.environ.get(name)
+    if raw is None or str(raw).strip() == "":
+        return default
+    try:
+        return max(0.0, float(str(raw).strip()))
+    except (TypeError, ValueError):
+        return default
+
+
+OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN_SECONDS", 300.0)
+# In-memory only: model id -> unix timestamp when the retryable failure occurred.
+_OPENROUTER_MODEL_COOLDOWNS: Dict[str, float] = {}
+
+ENABLE_OLLAMA_FALLBACK: bool = _env_bool("ENABLE_OLLAMA_FALLBACK", False)
+OLLAMA_BASE_URL: str = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434").strip() or "http://localhost:11434"
+OLLAMA_MODEL: str = os.environ.get("OLLAMA_MODEL", "qwen3:8b").strip() or "qwen3:8b"
+OLLAMA_TIMEOUT_SECONDS: float = _env_float("OLLAMA_TIMEOUT_SECONDS", 20.0)
+
+
 def _validate_model_candidates(candidates: List[str]) -> List[str]:
     """Non-secret formatting/policy warnings about the candidate list."""
     warnings: List[str] = []
@@ -150,7 +178,7 @@ def _validate_model_candidates(candidates: List[str]) -> List[str]:
 GROQ_MODEL: str = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
 
 # Whether Groq may be used as a fallback when OpenRouter is not configured.
-# Production intent is strict OpenRouter/Gemma, so the default is now FALSE:
+# Production intent is strict OpenRouter-first, so the default is now FALSE:
 # Groq is only ever reached when OPENROUTER_API_KEY is unset AND the operator
 # has explicitly opted in with ALLOW_GROQ_FALLBACK=true. With the default,
 # /api/ask returns a safe 503 (no_llm_provider_configured) instead of silently
@@ -319,6 +347,21 @@ class AskResponse(BaseModel):
     upstream_statuses: List[int] = Field(default_factory=list)
     retryable_provider_error: bool = False
     all_candidates_failed: bool = False
+    skipped_models_due_to_cooldown: List[str] = Field(default_factory=list)
+    cooling_down_models: List[str] = Field(default_factory=list)
+    model_cooldown_seconds: float = 0
+    cooldown_enabled: bool = False
+    deterministic_fallback_answer_used: bool = False
+    llm_unavailable: bool = False
+    provider_unavailable: bool = False
+    fallback_answer_reason: str = ""
+    fallback_answer_kind: str = ""
+    fallback_answer: str = ""
+    copy_safe_answer: str = ""
+    ollama_fallback_enabled: bool = False
+    ollama_fallback_used: bool = False
+    ollama_model: Optional[str] = None
+    ollama_error_type: Optional[str] = None
 
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -344,6 +387,7 @@ def _providers_configured() -> Dict[str, bool]:
         "openrouter": bool(OPENROUTER_API_KEY),
         "groq": bool(GROQ_API_KEY),
         "law_api": bool(LAW_API_KEY),
+        "ollama": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
         "database": bool(DATABASE_URL),
         "supabase": bool(SUPABASE_URL and SUPABASE_SERVICE_KEY),
     }
@@ -352,7 +396,7 @@ def _providers_configured() -> Dict[str, bool]:
 def _groq_fallback_warnings(provider: str) -> List[str]:
     """Non-secret advisory markers about Groq fallback posture.
 
-    Strict OpenRouter/Gemma is the intended production posture. These markers
+    Strict OpenRouter-first is the intended production posture. These markers
     let /health and the debug endpoint flag when the silent-provider-switch
     path is armed (``GROQ_FALLBACK_ENABLED``) or actually selected
     (``GROQ_FALLBACK_ACTIVE``) without ever exposing a key value.
@@ -374,7 +418,7 @@ def _resolve_llm_config() -> Dict[str, Any]:
          ALLOW_GROQ_FALLBACK is true (model = GROQ_MODEL). This is opt-in: the
          default for ALLOW_GROQ_FALLBACK is now false, so a Groq-only deployment
          must set it explicitly.
-      3. Otherwise no provider is configured (strict OpenRouter/Gemma intent).
+      3. Otherwise no provider is configured (strict OpenRouter-first intent).
 
     Returns only non-sensitive descriptors (provider name, model id, flags,
     advisory warnings). Model ids (e.g. ``google/gemma-4-31b-it:free``) are
@@ -634,24 +678,245 @@ def _classify_openrouter_error(
     return "unknown_provider_error", False
 
 
+def _now() -> float:
+    return time.time()
+
+
+def _cooldown_enabled() -> bool:
+    return OPENROUTER_MODEL_COOLDOWN_SECONDS > 0
+
+
+def _cooling_down_models(now: Optional[float] = None) -> List[str]:
+    if not _cooldown_enabled():
+        return []
+    ts = _now() if now is None else now
+    expired = [
+        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
+        if ts - failed_at >= OPENROUTER_MODEL_COOLDOWN_SECONDS
+    ]
+    for model in expired:
+        _OPENROUTER_MODEL_COOLDOWNS.pop(model, None)
+    return [
+        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
+        if ts - failed_at < OPENROUTER_MODEL_COOLDOWN_SECONDS
+    ]
+
+
+def _mark_openrouter_model_cooling_down(model: str, now: Optional[float] = None) -> None:
+    if not model or not _cooldown_enabled():
+        return
+    _OPENROUTER_MODEL_COOLDOWNS[model] = _now() if now is None else now
+
+
+def _reset_openrouter_model_cooldowns_for_tests() -> None:
+    _OPENROUTER_MODEL_COOLDOWNS.clear()
+
+
+def _openrouter_cooldown_metadata() -> Dict[str, Any]:
+    return {
+        "cooling_down_models": _cooling_down_models(),
+        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+        "cooldown_enabled": _cooldown_enabled(),
+    }
+
+
+async def _call_ollama(prompt: str, model: Optional[str] = None) -> str:
+    """Disabled-by-default private Ollama fallback adapter.
+
+    This helper is only called when ENABLE_OLLAMA_FALLBACK=true and OpenRouter
+    candidates have already failed. It never runs during /health and tests mock
+    it, so CI does not need a live Ollama server.
+    """
+    if not ENABLE_OLLAMA_FALLBACK:
+        raise HTTPException(status_code=503, detail={"error": "ollama_disabled"})
+    if httpx is None:
+        raise HTTPException(status_code=500, detail={"error": "httpx_missing"})
+    payload = {
+        "model": model or OLLAMA_MODEL,
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": False,
+    }
+    try:
+        async with httpx.AsyncClient(timeout=OLLAMA_TIMEOUT_SECONDS) as client:
+            resp = await client.post(
+                OLLAMA_BASE_URL.rstrip("/") + "/api/chat",
+                json=payload,
+            )
+    except Exception as exc:  # httpx timeout/connect errors are optional-fallback only
+        name = exc.__class__.__name__.lower()
+        err = "ollama_timeout" if "timeout" in name else "ollama_unavailable"
+        raise HTTPException(status_code=503, detail={"error": err, "message": str(exc)[:200]})
+    if resp.status_code >= 400:
+        raise HTTPException(
+            status_code=503,
+            detail={"error": "ollama_unavailable", "status": resp.status_code, "message": resp.text[:200]},
+        )
+    try:
+        data = resp.json()
+        content = data.get("message", {}).get("content") or data.get("response")
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+    except Exception:
+        pass
+    raise HTTPException(status_code=502, detail={"error": "ollama_bad_response"})
+
+
+def _classify_ollama_error(exc: HTTPException) -> str:
+    detail = exc.detail if isinstance(exc.detail, dict) else {}
+    code = str(detail.get("error") or "").strip()
+    if code in {"ollama_unavailable", "ollama_timeout", "ollama_bad_response", "ollama_disabled"}:
+        return code
+    if exc.status_code == 504:
+        return "ollama_timeout"
+    return "ollama_unavailable"
+
+
+def _localized_fallback_answer(
+    *,
+    prompt: str,
+    lang: Optional[str],
+    visa_code: Optional[str],
+    question_type: Optional[str],
+    official_questions: List[str],
+) -> str:
+    norm = str(lang or "").lower()
+    is_ko = norm.startswith("ko") or bool(re.search(r"[가-힣]", prompt or ""))
+    is_zh_hant = norm in {"zh-hant", "zh_tw", "zh-tw", "zh-hk", "zh-mo"}
+    is_zh = norm.startswith("zh") and not is_zh_hant
+    status = visa_code or "the requested status"
+    questions = official_questions or [
+        "Is the course credit-bearing?",
+        "Is it degree-related?",
+        "How many weeks and hours per week?",
+        f"Would the activity become the main purpose of stay under {status}?",
+        "Does the university require D-2/D-4 or another status?",
+        "Would immigration require activities-outside-status permission or a change of sojourn status?",
+    ]
+    if is_ko:
+        qs = [
+            "수업이 학점 인정 과목인가요?",
+            "학위 과정과 관련된 수업인가요?",
+            "수업 기간과 주당 수업 시간은 얼마인가요?",
+            "공부가 체류의 주된 목적이 되나요?",
+            f"{status} 체류자격으로 일도 병행하나요?",
+            "학교가 D-2/D-4 또는 다른 체류자격을 요구하나요?",
+            "자격외활동허가나 체류자격 변경이 필요한 사안으로 볼 수 있나요?",
+        ]
+        return "\n".join([
+            "AI 모델이 일시적으로 응답하지 않지만, Paradiso가 제한적인 준비 메모를 표시할 수 있습니다.",
+            "",
+            f"현재 확인된 출처만으로는 {status} 소지자가 해당 대학 계절학기를 수강할 수 있는지 확정할 수 없습니다.",
+            "",
+            "수강 신청이나 등록금 납부 전에 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
+            *[f"* {q}" for q in qs],
+            "",
+            "이 내용은 최종 결정이 아닙니다. 개별 사안의 답변은 공식 기관에 확인하세요.",
+        ])
+    if is_zh or is_zh_hant:
+        chars = {
+            "intro": "AI 模型暂时无法响应，但 Paradiso 仍可显示一份有限的准备说明。" if is_zh else "AI 模型暫時無法回應，但 Paradiso 仍可顯示一份有限的準備說明。",
+            "confirm": f"目前已核验的来源无法确认 {status} 持有人是否可以参加该大学暑期课程。" if is_zh else f"目前已核驗的來源無法確認 {status} 持有人是否可以參加該大學暑期課程。",
+            "ask": "在选课或支付学费前，请向 1345、HiKorea 或管辖出入境机构确认：" if is_zh else "在選課或支付學費前，請向 1345、HiKorea 或管轄出入境機構確認：",
+            "final": "这不是最终决定。请向官方机构确认个案答案。" if is_zh else "這不是最終決定。請向官方機構確認個案答案。",
+        }
+        qs = [
+            "课程是否计入学分？" if is_zh else "課程是否計入學分？",
+            "是否与学位课程相关？" if is_zh else "是否與學位課程相關？",
+            "课程持续几周、每周多少小时？" if is_zh else "課程持續幾週、每週多少小時？",
+            "学习是否会成为停留的主要目的？" if is_zh else "學習是否會成為停留的主要目的？",
+            f"是否也会以 {status} 身份工作？" if is_zh else f"是否也會以 {status} 身分工作？",
+            "学校是否要求 D-2/D-4 或其他居留资格？" if is_zh else "學校是否要求 D-2/D-4 或其他居留資格？",
+            "出入境机构是否会视为资格外活动或要求变更居留资格？" if is_zh else "出入境機構是否會視為資格外活動或要求變更居留資格？",
+        ]
+        return "\n".join([chars["intro"], "", chars["confirm"], "", chars["ask"], *[f"* {q}" for q in qs], "", chars["final"]])
+    return "\n".join([
+        "The AI model is temporarily unavailable, but Paradiso can still show a limited preparation note.",
+        "",
+        f"Paradiso cannot confirm from currently verified sources that a {status} holder may take this university summer course.",
+        "",
+        "Before enrolling or paying tuition, ask 1345, HiKorea, or the competent immigration office:",
+        *[f"* {q}" for q in questions],
+        "",
+        "This is not a final decision. Confirm the case-specific answer with the official office.",
+    ])
+
+
+def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base_meta: Dict[str, Any], attempt_meta: Dict[str, Any], reason: str) -> Dict[str, Any]:
+    answer = _localized_fallback_answer(
+        prompt=prompt,
+        lang=lang,
+        visa_code=base_meta.get("visa_code_detected"),
+        question_type=base_meta.get("question_type_detected"),
+        official_questions=list(base_meta.get("official_confirmation_questions") or []),
+    )
+    return {
+        **attempt_meta,
+        **base_meta,
+        "answer": answer,
+        "provider": "deterministic_fallback",
+        "model": "source-aware-preparation-note",
+        "llm_provider": "deterministic_fallback",
+        "final_model": None,
+        "provider_family_fallback_used": False,
+        "deterministic_fallback_answer_used": True,
+        "llm_unavailable": True,
+        "provider_unavailable": True,
+        "fallback_answer_reason": reason,
+        "fallback_answer_kind": "source_aware_preparation_note",
+        "fallback_answer": answer,
+        "copy_safe_answer": answer,
+        "ollama_fallback_enabled": ENABLE_OLLAMA_FALLBACK,
+        "ollama_fallback_used": False,
+        "ollama_model": OLLAMA_MODEL,
+    }
+
+
 async def _openrouter_complete_with_candidates(
     prompt: str, requested_model: Optional[str] = None
 ) -> Dict[str, Any]:
-    """Try OpenRouter candidates in order, retrying the NEXT candidate only on
-    retryable provider errors. Never raises for provider failures; never returns
-    secrets. Returns non-secret attempt metadata.
+    """Try OpenRouter candidates in order, skipping models in short cooldown.
+
+    Retryable failures (429/503/timeout/temporary upstream unavailability) mark
+    that model in an in-memory cooldown map. Later requests skip cooling models.
+    If every candidate is cooling down, this function does not hammer any model;
+    it returns deterministic metadata so /api/ask can use the preparation-note
+    fallback (or an explicitly enabled provider-family/private fallback).
     """
     if requested_model:
         candidates = _dedupe_preserve_order([requested_model, *OPENROUTER_MODEL_CANDIDATES])
     else:
         candidates = list(OPENROUTER_MODEL_CANDIDATES) or [OPENROUTER_MODEL]
 
+    cooling = set(_cooling_down_models())
+    runnable = [model for model in candidates if model not in cooling]
+    skipped = [model for model in candidates if model in cooling]
+
+    if not runnable:
+        return {
+            "ok": False,
+            "answer": None,
+            "primary_model": candidates[0] if candidates else OPENROUTER_MODEL,
+            "requested_model": requested_model,
+            "model_candidates": candidates,
+            "attempted_models": [],
+            "skipped_models_due_to_cooldown": skipped,
+            "cooling_down_models": _cooling_down_models(),
+            "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+            "cooldown_enabled": _cooldown_enabled(),
+            "final_model": None,
+            "model_fallback_used": False,
+            "provider_error_type": "all_candidates_cooling_down",
+            "upstream_statuses": [],
+            "retryable_provider_error": True,
+            "all_candidates_failed": True,
+        }
+
     attempted: List[str] = []
     upstream_statuses: List[int] = []
     last_error_type: Optional[str] = None
     last_retryable = False
 
-    for model in candidates:
+    for model in runnable:
         attempted.append(model)
         try:
             answer = await _call_openrouter(prompt, model=model)
@@ -665,6 +930,8 @@ async def _openrouter_complete_with_candidates(
             last_error_type, last_retryable = _classify_openrouter_error(
                 detail.get("status"), detail.get("message"), detail.get("error")
             )
+            if last_retryable:
+                _mark_openrouter_model_cooling_down(model)
             if not last_retryable:
                 break  # auth/bad-request/model-not-found/safety: stop early
             continue
@@ -675,6 +942,10 @@ async def _openrouter_complete_with_candidates(
             "requested_model": requested_model,
             "model_candidates": candidates,
             "attempted_models": attempted,
+            "skipped_models_due_to_cooldown": skipped,
+            "cooling_down_models": _cooling_down_models(),
+            "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+            "cooldown_enabled": _cooldown_enabled(),
             "final_model": model,
             "model_fallback_used": model != candidates[0],
             "provider_error_type": last_error_type,
@@ -690,12 +961,16 @@ async def _openrouter_complete_with_candidates(
         "requested_model": requested_model,
         "model_candidates": candidates,
         "attempted_models": attempted,
+        "skipped_models_due_to_cooldown": skipped,
+        "cooling_down_models": _cooling_down_models(),
+        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+        "cooldown_enabled": _cooldown_enabled(),
         "final_model": None,
-        "model_fallback_used": len(attempted) > 1,
+        "model_fallback_used": len(attempted) > 1 or bool(skipped),
         "provider_error_type": last_error_type or "unknown_provider_error",
         "upstream_statuses": upstream_statuses,
         "retryable_provider_error": last_retryable,
-        "all_candidates_failed": len(attempted) == len(candidates),
+        "all_candidates_failed": len(attempted) + len(skipped) == len(candidates),
     }
 
 
@@ -1077,9 +1352,9 @@ def _detect_visa_codes(
     *which* document list applies and must come from the caller, not from
     a free-text guess.
 
-    Text detection is restricted to visa codes that currently have a
-    verified grounding entry; codes outside that set still resolve from
-    explicit payload fields but are not inferred from free-text alone.
+    Text detection preserves explicit status-code mentions before any LLM call,
+    even for statuses without deterministic manual grounding (for example H-1
+    activity-scope questions). Manual grounding remains a separate decision.
     """
     import re
 
@@ -1093,14 +1368,15 @@ def _detect_visa_codes(
             return _split_visa_code(normalized)
     if not text:
         return None, None
-    # Match "D-2", "D2", "유학(D-2)" etc. (and equivalents for D-4 / E-7),
-    # case-insensitive. The 1-9 digit class avoids accidental two-digit
-    # matches like 'D-22' or 'E-71'. The (?!-?\d) lookahead also avoids
-    # claiming 'D-4' for a 'D-4-2' substring.
-    for letter, digit in (("D", "2"), ("D", "4"), ("E", "7")):
-        pattern = rf"\b{letter}[\s-]?{digit}\b(?!-?\d)"
+    # Match explicit status codes like "H-1", "D2", "F-6" before the LLM call.
+    # Preserve intent/status metadata even when the status has no deterministic
+    # manual grounding fixture. The negative lookahead avoids claiming D-4 for
+    # a longer D-4-2 sub-code; free-text sub-code routing still stays disabled.
+    for code in sorted(_VALID_MAIN_CODES, key=len, reverse=True):
+        letter, digit = code.split("-", 1)
+        pattern = rf"\b{letter}[\s-]?{re.escape(digit)}\b(?!-?\d)"
         if re.search(pattern, text, flags=re.IGNORECASE):
-            return f"{letter}-{digit}", None
+            return code, None
     return None, None
 
 
@@ -1975,7 +2251,7 @@ async def health() -> Dict[str, Any]:
         # Non-secret active LLM descriptor. Model ids are public catalog
         # identifiers; API keys are never included here. ``warnings`` flags the
         # Groq-fallback posture (e.g. GROQ_FALLBACK_ENABLED) so operators can see
-        # at a glance whether strict OpenRouter/Gemma is in effect.
+        # at a glance whether strict OpenRouter-first is in effect.
         "llm": {
             "provider": llm["provider"],
             "model": llm["model"],
@@ -1987,6 +2263,11 @@ async def health() -> Dict[str, Any]:
             "model_candidates": candidates,
             "provider_family_fallback_allowed": llm["groq_fallback_allowed"],
             "candidate_warnings": candidate_warnings,
+            **_openrouter_cooldown_metadata(),
+            "ollama_fallback_enabled": ENABLE_OLLAMA_FALLBACK,
+            "ollama_model": OLLAMA_MODEL,
+            "ollama_configured": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
+            "ollama_timeout_seconds": OLLAMA_TIMEOUT_SECONDS,
         },
         "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
     }
@@ -2315,6 +2596,10 @@ async def ask(req: AskRequest) -> AskResponse:
             upstream_statuses=result["upstream_statuses"],
             retryable_provider_error=result["retryable_provider_error"],
             all_candidates_failed=result["all_candidates_failed"],
+            skipped_models_due_to_cooldown=result.get("skipped_models_due_to_cooldown", []),
+            cooling_down_models=result.get("cooling_down_models", []),
+            model_cooldown_seconds=result.get("model_cooldown_seconds", OPENROUTER_MODEL_COOLDOWN_SECONDS),
+            cooldown_enabled=result.get("cooldown_enabled", _cooldown_enabled()),
         )
         if result["ok"]:
             return AskResponse(
@@ -2327,7 +2612,7 @@ async def ask(req: AskRequest) -> AskResponse:
             )
         # All OpenRouter candidates failed (or stopped on a non-retryable error).
         # Provider-family fallback to Groq ONLY if explicitly enabled + configured
-        # (strict OpenRouter/Gemma is the default — no silent provider switch).
+        # (strict OpenRouter-first is the default — no silent provider switch).
         if ALLOW_GROQ_FALLBACK and GROQ_API_KEY:
             try:
                 groq_answer = await _call_groq(final_prompt, model=None)
@@ -2344,20 +2629,41 @@ async def ask(req: AskRequest) -> AskResponse:
                     **fam,
                     **base_meta,
                 )
-        # No silent provider switch: safe, non-secret provider-unavailable.
-        raise HTTPException(
-            status_code=503,
-            detail={
-                "error": "provider_unavailable",
-                "message": (
-                    "All configured OpenRouter model candidates are temporarily "
-                    "unavailable. Please try again shortly."
-                ),
-                "provider_family_fallback_used": False,
-                **attempt_meta,
-                **base_meta,
-            },
+        # Optional private Ollama fallback scaffold. Disabled by default; never
+        # reached unless the operator explicitly enables it and OpenRouter failed.
+        ollama_error_type = "ollama_disabled"
+        if ENABLE_OLLAMA_FALLBACK:
+            try:
+                ollama_answer = await _call_ollama(final_prompt, model=OLLAMA_MODEL)
+            except HTTPException as exc:
+                ollama_error_type = _classify_ollama_error(exc)
+            else:
+                ollama_meta = dict(attempt_meta)
+                ollama_meta.update({
+                    "llm_provider": "ollama",
+                    "final_model": OLLAMA_MODEL,
+                    "ollama_fallback_enabled": True,
+                    "ollama_fallback_used": True,
+                    "ollama_model": OLLAMA_MODEL,
+                    "ollama_error_type": None,
+                    "deterministic_fallback_answer_used": False,
+                    "copy_safe_answer": ollama_answer,
+                })
+                return AskResponse(
+                    answer=ollama_answer,
+                    provider="ollama",
+                    model=OLLAMA_MODEL,
+                    provider_family_fallback_used=False,
+                    **ollama_meta,
+                    **base_meta,
+                )
+
+        fallback_payload = _build_deterministic_fallback_payload(
+            prompt, req.lang, base_meta, attempt_meta,
+            reason="openrouter_all_candidates_failed",
         )
+        fallback_payload["ollama_error_type"] = ollama_error_type
+        return AskResponse(**fallback_payload)
 
     if llm["provider"] == "groq":
         answer = await _call_groq(final_prompt, model=req.model)
