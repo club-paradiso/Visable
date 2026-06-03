@@ -123,7 +123,7 @@ into the image. See `.env.example` for the full list.
 | `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. |
 | `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true. |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |
-| `ALLOW_GROQ_FALLBACK`   | optional  | Defaults to `true`. Set `false` to hard-require OpenRouter/Gemma (503 instead of a silent Groq answer). |
+| `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter/Gemma). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
 | `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
 | `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
 | `FRONTEND_URL`          | optional  | Surfaced by `GET /` so a user who opens the bare backend URL sees where the real app lives. |
@@ -309,10 +309,13 @@ agreement tracks), and the planned next batches.
 
 `/health` should return `status: "ok"`, a `providers` map showing
 which integrations are configured, and an `llm` object reporting the
-resolved provider/model — e.g. `{"provider":"openrouter","model":"google/gemma-4-31b-it:free","configured":true,"groq_fallback_allowed":true}`.
-Model ids are public catalog identifiers (not secrets); API keys are
-never surfaced. The resolved provider/model is also logged once at
-startup. `/api/visas` should return a non-empty `data` array and
+resolved provider/model — e.g. `{"provider":"openrouter","model":"google/gemma-4-31b-it:free","configured":true,"groq_fallback_allowed":false,"warnings":[]}`.
+With strict OpenRouter/Gemma (the default), `groq_fallback_allowed` is
+`false`; if you set `ALLOW_GROQ_FALLBACK=true`, `llm.warnings` includes
+`GROQ_FALLBACK_ENABLED` (and `GROQ_FALLBACK_ACTIVE` when Groq is the
+resolved provider). Model ids are public catalog identifiers (not
+secrets); API keys are never surfaced. The resolved provider/model is
+also logged once at startup. `/api/visas` should return a non-empty `data` array and
 `source_type: "backend-data"` (no `warning` field) once the deploy
 includes `backend/data/visas.json`.
 
