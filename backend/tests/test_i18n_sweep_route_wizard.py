@@ -108,16 +108,24 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("'Foreigner registration'", self.html)
 
     # --- Part C/D/E: route wizard config ----------------------------------
-    def test_route_wizard_config_includes_f4_f6_g1(self):
+    def test_route_wizard_config_includes_existing_and_remaining_p1_statuses(self):
         cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
         self.assertIn("'F-4'", cfg)
         self.assertIn("'F-6'", cfg)
         self.assertIn("'G-1'", cfg)
+        self.assertIn("'F-2'", cfg)
+        self.assertIn("'D-10'", cfg)
+        self.assertIn("'H-2'", cfg)
+        self.assertIn("'E-7'", cfg)
+        self.assertIn("'D-4'", cfg)
+        self.assertIn("'F-1'", cfg)
+        for code in ("F-4", "F-6", "G-1", "F-2", "D-10", "H-2", "E-7", "D-4", "F-1"):
+            self.assertRegex(cfg, r"(?m)^    '%s':" % code)
 
     def test_route_wizard_not_shown_for_unconfigured_status(self):
         cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
-        # Genuinely route-simple / unconfigured statuses must not appear as keys.
-        for unconfigured in ("'A-1'", "'B-2'", "'E-9'", "'D-8'", "'H-1'"):
+        # Statuses without an explicit route configuration remain excluded.
+        for unconfigured in ("'D-2'", "'H-1'", "'F-3'"):
             self.assertNotIn(unconfigured + ":", cfg.replace(" ", ""))
         # Render returns nothing when there is no config for the record.
         render = self._slice("function renderF4RouteChooser", "function selectF4Route")
@@ -168,8 +176,40 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
             "f-6-3-marriage-terminated-status-change",
             "g-1-3-litigation-status-change",
             "g-1-5-6-refugee-humanitarian-status-change",
+            "f-2-7-point-based-talent-status-change",
+            "d-10-2-tech-startup-extension",
+            "h-2-employment-start-workplace-change-report",
         ):
             self.assertIn("variantId: '%s'" % variant_id, cfg)
+
+    def test_f2_d10_h2_route_titles_and_labels_in_four_languages(self):
+        for key, title, count in (
+            ("f2RouteTitle", "Which F-2 route applies to you?", 7),
+            ("d10RouteTitle", "Which D-10 route applies to you?", 7),
+            ("h2RouteTitle", "Which H-2 procedure do you need?", 3),
+        ):
+            self.assertIn("%s: '%s'" % (key, title), self.html)
+            for idx in range(1, count + 1):
+                self.assertEqual(self.html.count("%sRoute%dLabel:" % (key[:-10], idx)), 4)
+
+    def test_h2_workplace_report_uses_existing_procedure_key(self):
+        cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
+        h2 = cfg.split("'H-2'", 1)[1]
+        self.assertIn("procedureKey: 'workplaceChange'", h2)
+        self.assertIn("variantId: 'h-2-employment-start-workplace-change-report'", h2)
+
+    def test_broad_routes_do_not_preselect_a_single_subtype(self):
+        cfg = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
+        for route_id in ("'f6-4'", "'g1-4'", "'g1-5'"):
+            start = cfg.index(route_id)
+            entry = cfg[start:cfg.index("}", start)]
+            self.assertNotIn("variantId", entry, "%s should not preselect a subtype" % route_id)
+
+    def test_broad_route_resets_scenario_selector_to_show_all(self):
+        handler = self._slice("function selectF4Route", "function resetF4Route")
+        self.assertIn("choices.find(c => c.dataset.variantId === variantId)", handler)
+        self.assertIn("choices.find(c => !(c.dataset.variantId || ''))", handler)
+        self.assertIn("selectProcedureVariant(target)", handler)
 
     # --- Part G: integration with checklist / AI --------------------------
     def test_selected_scenario_checklist_behavior_intact(self):
