@@ -179,6 +179,11 @@ def _check_question(base, q):
         "manual_grounding_status": None,
         "manual_to_law_fallback_used": None,
         "variant_context_used": None,
+        "attempted_models": None,
+        "final_model": None,
+        "provider_error_type": None,
+        "model_fallback_used": None,
+        "provider_family_fallback_used": None,
         "unsafe_approval_language": None,
         "metadata_present": None,
         "ok": False,
@@ -202,6 +207,12 @@ def _check_question(base, q):
     result["manual_grounding_status"] = meta.get("manual_grounding_status")
     result["manual_to_law_fallback_used"] = meta.get("manual_to_law_fallback_used")
     result["variant_context_used"] = meta.get("procedure_variant_context_used")
+    # OpenRouter candidate-fallback transparency (non-secret).
+    result["attempted_models"] = meta.get("attempted_models")
+    result["final_model"] = meta.get("final_model")
+    result["provider_error_type"] = meta.get("provider_error_type")
+    result["model_fallback_used"] = meta.get("model_fallback_used")
+    result["provider_family_fallback_used"] = meta.get("provider_family_fallback_used")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
@@ -250,11 +261,16 @@ def main(argv=None):
         "provider_configured": None,
         "provider_flags": None,
         "model": None,
+        "primary_model": None,
+        "model_candidates": None,
+        "candidate_warnings": None,
+        "provider_family_fallback_allowed": None,
         "groq_fallback_allowed": None,
         "llm_warnings": None,
         "law_grounding_mode": None,
         "live_answer_executed": False,
         "manual_to_law_fallback_executed": False,
+        "model_fallback_executed": False,
         "questions": [],
         "no_provider_safe": None,
         "blocker": None,
@@ -280,6 +296,11 @@ def main(argv=None):
     report["provider_configured"] = bool(llm.get("configured"))
     report["provider_flags"] = health.get("providers")
     report["model"] = llm.get("model")
+    # Non-secret OpenRouter candidate-fallback posture (public model ids only).
+    report["primary_model"] = llm.get("primary_model")
+    report["model_candidates"] = llm.get("model_candidates")
+    report["candidate_warnings"] = llm.get("candidate_warnings")
+    report["provider_family_fallback_allowed"] = llm.get("provider_family_fallback_allowed")
     # Non-secret Groq-fallback posture surfaced by /health (no key material).
     report["groq_fallback_allowed"] = llm.get("groq_fallback_allowed")
     report["llm_warnings"] = llm.get("warnings")
@@ -288,6 +309,9 @@ def main(argv=None):
     results = [_check_question(base, q) for q in SAMPLE_QUESTIONS]
     report["questions"] = results
     report["live_answer_executed"] = any(r["live_answer_checked"] for r in results)
+    report["model_fallback_executed"] = any(
+        bool(r.get("model_fallback_used")) for r in results
+    )
     report["manual_to_law_fallback_executed"] = any(
         bool(r.get("manual_to_law_fallback_used")) for r in results
     )
@@ -330,10 +354,15 @@ def _emit(report, args):
     print("  provider configured      : %s" % report["provider_configured"])
     print("  provider flags           : %s" % report["provider_flags"])
     print("  model                    : %s" % report["model"])
+    print("  primary model            : %s" % report["primary_model"])
+    print("  model candidates         : %s" % report["model_candidates"])
+    print("  candidate warnings       : %s" % report["candidate_warnings"])
+    print("  provider-family fallback : %s" % report["provider_family_fallback_allowed"])
     print("  groq fallback allowed    : %s" % report["groq_fallback_allowed"])
     print("  llm warnings             : %s" % report["llm_warnings"])
     print("  law grounding mode       : %s" % report["law_grounding_mode"])
     print("  live answer executed     : %s" % report["live_answer_executed"])
+    print("  model fallback hit       : %s" % report["model_fallback_executed"])
     print("  manual->law fallback hit : %s" % report["manual_to_law_fallback_executed"])
     print("  no-provider 503 safe     : %s" % report["no_provider_safe"])
     print("  questions:")
@@ -345,6 +374,10 @@ def _emit(report, args):
         suffix += " [manual=%s law=%s m2l=%s]" % (
             r["manual_grounding_status"], r["law_grounding_status"],
             r["manual_to_law_fallback_used"],
+        )
+        suffix += " [final_model=%s err=%s model_fallback=%s family_fallback=%s]" % (
+            r["final_model"], r["provider_error_type"],
+            r["model_fallback_used"], r["provider_family_fallback_used"],
         )
         print("    %s  %-22s %s%s" % (tag, r["id"], r["note"], suffix))
     if not report["live_answer_executed"]:

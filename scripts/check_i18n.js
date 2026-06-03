@@ -164,6 +164,9 @@ const REQUIRED_UI_KEYS = [
   'deadlineCalcTitle', 'deadlineCompute', 'deadlineAddToCalendar',
   // Route-wizard common
   'routeShowAll',
+  // Provider error UX + OpenRouter candidate fallback
+  'aiProviderBusy', 'aiAllCandidatesFailed', 'aiFallbackSucceeded',
+  'aiResponseModel', 'aiShowTechnicalDetails',
 ];
 
 // Keys whose translated value may intentionally embed official Korean source

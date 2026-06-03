@@ -19,6 +19,7 @@ from __future__ import annotations
 import json
 import logging
 import os
+import re
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
@@ -76,6 +77,70 @@ _DEFAULT_OPENROUTER_MODEL: str = "google/gemma-4-31b-it:free"
 OPENROUTER_MODEL: str = (
     os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
 )
+
+# Explicit, predictable OpenRouter fallback candidates. When the primary model
+# is rate-limited (429) or its upstream is unavailable (503 / "no healthy
+# upstream"), Paradiso retries the NEXT OpenRouter candidate rather than
+# silently switching providers or surfacing raw provider JSON. Random
+# free-model routing (openrouter/auto) is intentionally NOT used — Paradiso
+# needs predictable model behaviour and auditable response metadata.
+_DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = [
+    "google/gemma-4-31b-it:free",
+    "moonshotai/kimi-k2.6:free",
+    "qwen/qwen3-next-80b-a3b-instruct:free",
+    "meta-llama/llama-3.3-70b-instruct:free",
+]
+
+# Model ids that denote random / non-deterministic routing — disallowed here.
+_RANDOM_ROUTING_TOKENS = {"openrouter/auto", "auto"}
+_MODEL_ID_RE = re.compile(r"^[A-Za-z0-9._-]+/[A-Za-z0-9._:-]+$")
+
+
+def _dedupe_preserve_order(items: List[str]) -> List[str]:
+    seen = set()
+    out: List[str] = []
+    for item in items:
+        clean = (item or "").strip()
+        if clean and clean not in seen:
+            seen.add(clean)
+            out.append(clean)
+    return out
+
+
+def _resolve_openrouter_candidates() -> List[str]:
+    """Ordered, de-duplicated OpenRouter candidate list (primary model first).
+
+    OPENROUTER_MODEL is always attempted first. OPENROUTER_MODEL_CANDIDATES
+    (optional, comma-separated) supplies the rest; when unset we fall back to the
+    built-in policy list. Random-routing ids are never injected by us.
+    """
+    raw = (os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip()
+    configured = (
+        [c.strip() for c in raw.split(",")]
+        if raw
+        else list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
+    )
+    # Primary model is always first; duplicates are collapsed preserving order.
+    return _dedupe_preserve_order([OPENROUTER_MODEL, *configured])
+
+
+OPENROUTER_MODEL_CANDIDATES: List[str] = _resolve_openrouter_candidates()
+
+
+def _validate_model_candidates(candidates: List[str]) -> List[str]:
+    """Non-secret formatting/policy warnings about the candidate list."""
+    warnings: List[str] = []
+    if not candidates:
+        warnings.append("MODEL_CANDIDATES_EMPTY")
+        return warnings
+    for c in candidates:
+        low = c.strip().lower()
+        if low in _RANDOM_ROUTING_TOKENS or low.endswith("/auto"):
+            warnings.append("MODEL_CANDIDATES_RANDOM_ROUTING")
+        elif not _MODEL_ID_RE.match(c.strip()):
+            warnings.append("MODEL_CANDIDATES_MALFORMED")
+    return _dedupe_preserve_order(warnings)
+
 GROQ_MODEL: str = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
 
 # Whether Groq may be used as a fallback when OpenRouter is not configured.
@@ -212,6 +277,21 @@ class AskResponse(BaseModel):
     manual_grounding_status: str = "absent"
     manual_to_law_fallback_used: bool = False
     manual_to_law_fallback_reason: str = ""
+    # OpenRouter model-candidate fallback transparency (non-secret). When the
+    # primary model is rate-limited / upstream-unavailable, Paradiso retries the
+    # next explicit OpenRouter candidate rather than switching providers.
+    llm_provider: str = ""
+    requested_model: Optional[str] = None
+    primary_model: Optional[str] = None
+    model_candidates: List[str] = Field(default_factory=list)
+    attempted_models: List[str] = Field(default_factory=list)
+    final_model: Optional[str] = None
+    model_fallback_used: bool = False
+    provider_family_fallback_used: bool = False
+    provider_error_type: Optional[str] = None
+    upstream_statuses: List[int] = Field(default_factory=list)
+    retryable_provider_error: bool = False
+    all_candidates_failed: bool = False
 
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -431,6 +511,165 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
                 "message": f"Unexpected Groq payload: {exc}",
             },
         )
+
+
+# ---------------------------------------------------------------------------
+# OpenRouter provider-error classification + candidate fallback
+# ---------------------------------------------------------------------------
+
+# Retryable classes trigger the NEXT OpenRouter candidate; non-retryable classes
+# stop the candidate loop (the failure is not transient/model-specific load).
+_RETRYABLE_PROVIDER_ERROR_TYPES = {
+    "rate_limited",
+    "upstream_unavailable",
+    "provider_unavailable",
+}
+
+
+def _classify_openrouter_error(
+    status: Optional[int], message: Optional[str], error_code: Optional[str] = None
+) -> tuple:
+    """Map an OpenRouter failure to ``(error_type, retryable)`` — no secrets.
+
+    ``status`` is the upstream HTTP status (e.g. 429/503) when known; ``message``
+    is sanitized provider text. The observed production failure (503 with
+    "no healthy upstream", preceded by a Google AI Studio 429) classifies as a
+    retryable ``upstream_unavailable`` / ``rate_limited`` error.
+    """
+    msg = (message or "").lower()
+    code = (error_code or "").lower()
+    try:
+        status_int = int(status) if status is not None else None
+    except (TypeError, ValueError):
+        status_int = None
+
+    if (
+        status_int == 429
+        or "rate limit" in msg
+        or "rate-limit" in msg
+        or "too many requests" in msg
+        or "quota" in msg
+        or "429" in msg
+    ):
+        return "rate_limited", True
+    if (
+        status_int in (502, 503, 504)
+        or "no healthy upstream" in msg
+        or "no instances available" in msg
+        or "overloaded" in msg
+        or "temporarily unavailable" in msg
+        or "service unavailable" in msg
+        or "bad gateway" in msg
+    ):
+        return "upstream_unavailable", True
+    if "timeout" in msg or "timed out" in msg or code == "timeout":
+        return "upstream_unavailable", True
+    # Auth / config: affects every candidate -> do not retry.
+    if (
+        status_int in (401, 403)
+        or "invalid api key" in msg
+        or "unauthorized" in msg
+        or "no auth credentials" in msg
+        or "authentication" in msg
+    ):
+        return "invalid_provider_config", False
+    # Model not found / unauthorized model -> do not retry blindly.
+    if (
+        status_int == 404
+        or "not found" in msg
+        or "no endpoints" in msg
+        or "no allowed providers" in msg
+        or "unknown model" in msg
+    ):
+        return "invalid_provider_config", False
+    # Safety / moderation / policy rejection.
+    if (
+        status_int == 451
+        or "moderation" in msg
+        or "flagged" in msg
+        or "safety" in msg
+        or "content policy" in msg
+        or "content filter" in msg
+    ):
+        return "policy_or_safety_rejection", False
+    # Bad request / validation / malformed payload.
+    if (
+        status_int == 400
+        or code == "openrouter_bad_response"
+        or "bad request" in msg
+        or "invalid request" in msg
+        or "validation" in msg
+    ):
+        return "invalid_request", False
+    # Other 5xx without a clearer reason -> retryable provider unavailability.
+    if status_int is not None and status_int >= 500:
+        return "provider_unavailable", True
+    return "unknown_provider_error", False
+
+
+async def _openrouter_complete_with_candidates(
+    prompt: str, requested_model: Optional[str] = None
+) -> Dict[str, Any]:
+    """Try OpenRouter candidates in order, retrying the NEXT candidate only on
+    retryable provider errors. Never raises for provider failures; never returns
+    secrets. Returns non-secret attempt metadata.
+    """
+    if requested_model:
+        candidates = _dedupe_preserve_order([requested_model, *OPENROUTER_MODEL_CANDIDATES])
+    else:
+        candidates = list(OPENROUTER_MODEL_CANDIDATES) or [OPENROUTER_MODEL]
+
+    attempted: List[str] = []
+    upstream_statuses: List[int] = []
+    last_error_type: Optional[str] = None
+    last_retryable = False
+
+    for model in candidates:
+        attempted.append(model)
+        try:
+            answer = await _call_openrouter(prompt, model=model)
+        except HTTPException as exc:
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            upstream = detail.get("status", exc.status_code)
+            try:
+                upstream_statuses.append(int(upstream))
+            except (TypeError, ValueError):
+                pass
+            last_error_type, last_retryable = _classify_openrouter_error(
+                detail.get("status"), detail.get("message"), detail.get("error")
+            )
+            if not last_retryable:
+                break  # auth/bad-request/model-not-found/safety: stop early
+            continue
+        return {
+            "ok": True,
+            "answer": answer,
+            "primary_model": candidates[0],
+            "requested_model": requested_model,
+            "model_candidates": candidates,
+            "attempted_models": attempted,
+            "final_model": model,
+            "model_fallback_used": model != candidates[0],
+            "provider_error_type": last_error_type,
+            "upstream_statuses": upstream_statuses,
+            "retryable_provider_error": last_retryable,
+            "all_candidates_failed": False,
+        }
+
+    return {
+        "ok": False,
+        "answer": None,
+        "primary_model": candidates[0],
+        "requested_model": requested_model,
+        "model_candidates": candidates,
+        "attempted_models": attempted,
+        "final_model": None,
+        "model_fallback_used": len(attempted) > 1,
+        "provider_error_type": last_error_type or "unknown_provider_error",
+        "upstream_statuses": upstream_statuses,
+        "retryable_provider_error": last_retryable,
+        "all_candidates_failed": len(attempted) == len(candidates),
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -1701,6 +1940,10 @@ async def root() -> Dict[str, Any]:
 @app.get("/health")
 async def health() -> Dict[str, Any]:
     llm = _resolve_llm_config()
+    candidates = OPENROUTER_MODEL_CANDIDATES
+    candidate_warnings = _validate_model_candidates(candidates)
+    if llm.get("groq_fallback_allowed"):
+        candidate_warnings = [*candidate_warnings, "PROVIDER_FAMILY_FALLBACK_ENABLED"]
     return {
         "status": "ok",
         "service": "paradiso-backend",
@@ -1716,6 +1959,11 @@ async def health() -> Dict[str, Any]:
             "configured": llm["configured"],
             "groq_fallback_allowed": llm["groq_fallback_allowed"],
             "warnings": llm.get("warnings", []),
+            # OpenRouter candidate fallback posture (non-secret).
+            "primary_model": OPENROUTER_MODEL,
+            "model_candidates": candidates,
+            "provider_family_fallback_allowed": llm["groq_fallback_allowed"],
+            "candidate_warnings": candidate_warnings,
         },
         "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
     }
@@ -1977,55 +2225,106 @@ async def ask(req: AskRequest) -> AskResponse:
             manual_to_law_fallback_reason = "manual_grounding_absent_law_intent_grounding_disabled"
 
     llm = _resolve_llm_config()
+
+    # Shared, non-secret grounding/law metadata reused across all response paths.
+    base_meta: Dict[str, Any] = dict(
+        grounding_used=bool(grounding),
+        grounding_sources=grounding_sources,
+        procedure_variant_context_used=bool(procedure_variant_block),
+        procedure_variant_context_sources=procedure_variant_context_sources,
+        visa_code_detected=visa_code_detected,
+        visa_sub_code_detected=visa_sub_code_detected,
+        task_type_detected=task_type_detected,
+        risk_level_detected=risk_level_detected,
+        law_grounding_used=law_grounding_used,
+        law_grounding_attempted=law_grounding_attempted,
+        law_grounding_status=law_grounding_status,
+        law_grounding_intent_reasons=law_grounding_intent_reasons,
+        law_search_query=law_search_query,
+        law_grounding_warnings=law_grounding_warnings,
+        citation_verification=citation_verification,
+        manual_grounding_status=manual_grounding_status,
+        manual_to_law_fallback_used=manual_to_law_fallback_used,
+        manual_to_law_fallback_reason=manual_to_law_fallback_reason,
+    )
+
     if llm["provider"] == "openrouter":
-        answer = await _call_openrouter(final_prompt, model=req.model)
-        return AskResponse(
-            answer=answer,
-            provider="openrouter",
-            model=req.model or OPENROUTER_MODEL,
-            grounding_used=bool(grounding),
-            grounding_sources=grounding_sources,
-            procedure_variant_context_used=bool(procedure_variant_block),
-            procedure_variant_context_sources=procedure_variant_context_sources,
-            visa_code_detected=visa_code_detected,
-            visa_sub_code_detected=visa_sub_code_detected,
-            task_type_detected=task_type_detected,
-            risk_level_detected=risk_level_detected,
-            law_grounding_used=law_grounding_used,
-            law_grounding_attempted=law_grounding_attempted,
-            law_grounding_status=law_grounding_status,
-            law_grounding_intent_reasons=law_grounding_intent_reasons,
-            law_search_query=law_search_query,
-            law_grounding_warnings=law_grounding_warnings,
-            citation_verification=citation_verification,
-            manual_grounding_status=manual_grounding_status,
-            manual_to_law_fallback_used=manual_to_law_fallback_used,
-            manual_to_law_fallback_reason=manual_to_law_fallback_reason,
+        result = await _openrouter_complete_with_candidates(
+            final_prompt, requested_model=req.model
         )
+        # Non-secret attempt metadata (model ids + classified error only).
+        attempt_meta: Dict[str, Any] = dict(
+            llm_provider="openrouter",
+            requested_model=result["requested_model"],
+            primary_model=result["primary_model"],
+            model_candidates=result["model_candidates"],
+            attempted_models=result["attempted_models"],
+            final_model=result["final_model"],
+            model_fallback_used=result["model_fallback_used"],
+            provider_error_type=result["provider_error_type"],
+            upstream_statuses=result["upstream_statuses"],
+            retryable_provider_error=result["retryable_provider_error"],
+            all_candidates_failed=result["all_candidates_failed"],
+        )
+        if result["ok"]:
+            return AskResponse(
+                answer=result["answer"],
+                provider="openrouter",
+                model=result["final_model"] or OPENROUTER_MODEL,
+                provider_family_fallback_used=False,
+                **attempt_meta,
+                **base_meta,
+            )
+        # All OpenRouter candidates failed (or stopped on a non-retryable error).
+        # Provider-family fallback to Groq ONLY if explicitly enabled + configured
+        # (strict OpenRouter/Gemma is the default — no silent provider switch).
+        if ALLOW_GROQ_FALLBACK and GROQ_API_KEY:
+            try:
+                groq_answer = await _call_groq(final_prompt, model=None)
+            except HTTPException:
+                groq_answer = None
+            if groq_answer is not None:
+                fam = dict(attempt_meta)
+                fam["llm_provider"] = "groq"
+                return AskResponse(
+                    answer=groq_answer,
+                    provider="groq",
+                    model=GROQ_MODEL,
+                    provider_family_fallback_used=True,
+                    **fam,
+                    **base_meta,
+                )
+        # No silent provider switch: safe, non-secret provider-unavailable.
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "provider_unavailable",
+                "message": (
+                    "All configured OpenRouter model candidates are temporarily "
+                    "unavailable. Please try again shortly."
+                ),
+                "provider_family_fallback_used": False,
+                **attempt_meta,
+                **base_meta,
+            },
+        )
+
     if llm["provider"] == "groq":
         answer = await _call_groq(final_prompt, model=req.model)
+        groq_model = req.model or GROQ_MODEL
         return AskResponse(
             answer=answer,
             provider="groq",
-            model=req.model or GROQ_MODEL,
-            grounding_used=bool(grounding),
-            grounding_sources=grounding_sources,
-            procedure_variant_context_used=bool(procedure_variant_block),
-            procedure_variant_context_sources=procedure_variant_context_sources,
-            visa_code_detected=visa_code_detected,
-            visa_sub_code_detected=visa_sub_code_detected,
-            task_type_detected=task_type_detected,
-            risk_level_detected=risk_level_detected,
-            law_grounding_used=law_grounding_used,
-            law_grounding_attempted=law_grounding_attempted,
-            law_grounding_status=law_grounding_status,
-            law_grounding_intent_reasons=law_grounding_intent_reasons,
-            law_search_query=law_search_query,
-            law_grounding_warnings=law_grounding_warnings,
-            citation_verification=citation_verification,
-            manual_grounding_status=manual_grounding_status,
-            manual_to_law_fallback_used=manual_to_law_fallback_used,
-            manual_to_law_fallback_reason=manual_to_law_fallback_reason,
+            model=groq_model,
+            llm_provider="groq",
+            requested_model=req.model,
+            primary_model=GROQ_MODEL,
+            model_candidates=[groq_model],
+            attempted_models=[groq_model],
+            final_model=groq_model,
+            model_fallback_used=False,
+            provider_family_fallback_used=False,
+            **base_meta,
         )
 
     raise HTTPException(
@@ -2036,24 +2335,8 @@ async def ask(req: AskRequest) -> AskResponse:
                 "No LLM provider is configured. Set OPENROUTER_API_KEY or "
                 "GROQ_API_KEY in the backend environment."
             ),
-            "grounding_used": bool(grounding),
-            "grounding_sources": grounding_sources,
-            "procedure_variant_context_used": bool(procedure_variant_block),
-            "procedure_variant_context_sources": procedure_variant_context_sources,
-            "visa_code_detected": visa_code_detected,
-            "visa_sub_code_detected": visa_sub_code_detected,
-            "task_type_detected": task_type_detected,
-            "risk_level_detected": risk_level_detected,
-            "law_grounding_used": law_grounding_used,
-            "law_grounding_attempted": law_grounding_attempted,
-            "law_grounding_status": law_grounding_status,
-            "law_grounding_intent_reasons": law_grounding_intent_reasons,
-            "law_search_query": law_search_query,
-            "law_grounding_warnings": law_grounding_warnings,
-            "citation_verification": citation_verification,
-            "manual_grounding_status": manual_grounding_status,
-            "manual_to_law_fallback_used": manual_to_law_fallback_used,
-            "manual_to_law_fallback_reason": manual_to_law_fallback_reason,
+            "llm_provider": "none",
+            **base_meta,
         },
     )
 

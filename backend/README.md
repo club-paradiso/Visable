@@ -120,8 +120,9 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. |
-| `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true. |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next candidate. Unset → built-in policy list (Gemma → Kimi K2.6 → Qwen3 Next 80B → Llama 3.3 70B). Random routing (`openrouter/auto`) is rejected. `/health` lists the resolved candidates. |
+| `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true (or, with that flag, as a last-resort provider-family fallback after all OpenRouter candidates fail). |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |
 | `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter/Gemma). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
 | `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
