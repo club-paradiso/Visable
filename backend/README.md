@@ -120,11 +120,16 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `google/gemma-4-31b-it:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first. |
-| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next candidate. Unset → built-in policy list (Gemma → Kimi K2.6 → Qwen3 Next 80B → Llama 3.3 70B). Random routing (`openrouter/auto`) is rejected. `/health` lists the resolved candidates. |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next non-cooling candidate. Unset → built-in policy list (Qwen3 Next 80B → Gemma 4 31B → Kimi K2.6 → Llama 3.3 70B). Random routing (`openrouter/auto`, `openrouter/free`) is warned/rejected by policy metadata. `/health` lists the resolved candidates. |
+| `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
 | `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true (or, with that flag, as a last-resort provider-family fallback after all OpenRouter candidates fail). |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |
-| `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter/Gemma). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
+| `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter-first posture). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
+| `ENABLE_OLLAMA_FALLBACK` | optional | Defaults to `false`. Future private fallback scaffold only; CI and production do not require a live Ollama server. |
+| `OLLAMA_BASE_URL`      | optional  | Defaults to `http://localhost:11434`. Keep private if enabled later; `/health` does not probe it. |
+| `OLLAMA_MODEL`         | optional  | Defaults to `qwen3:8b`. Used only when `ENABLE_OLLAMA_FALLBACK=true` and all OpenRouter candidates fail. |
+| `OLLAMA_TIMEOUT_SECONDS` | optional | Defaults to `20`. Short timeout for optional fallback. |
 | `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
 | `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
 | `FRONTEND_URL`          | optional  | Surfaced by `GET /` so a user who opens the bare backend URL sees where the real app lives. |
@@ -310,8 +315,8 @@ agreement tracks), and the planned next batches.
 
 `/health` should return `status: "ok"`, a `providers` map showing
 which integrations are configured, and an `llm` object reporting the
-resolved provider/model — e.g. `{"provider":"openrouter","model":"google/gemma-4-31b-it:free","configured":true,"groq_fallback_allowed":false,"warnings":[]}`.
-With strict OpenRouter/Gemma (the default), `groq_fallback_allowed` is
+resolved provider/model — e.g. `{"provider":"openrouter","model":"qwen/qwen3-next-80b-a3b-instruct:free","configured":true,"groq_fallback_allowed":false,"warnings":[]}`.
+With strict OpenRouter-first (the default), `groq_fallback_allowed` is
 `false`; if you set `ALLOW_GROQ_FALLBACK=true`, `llm.warnings` includes
 `GROQ_FALLBACK_ENABLED` (and `GROQ_FALLBACK_ACTIVE` when Groq is the
 resolved provider). Model ids are public catalog identifiers (not

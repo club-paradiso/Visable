@@ -1699,6 +1699,7 @@ select:focus-visible {
             if (!resolved && provider) label = provider.toUpperCase();
             if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
             if (provider === 'groq' && resolved) label = `Groq · ${resolved}`;
+            if (provider === 'ollama' && resolved) label = `${tt('en', {ko:'Ollama fallback', en:'Ollama fallback', zh:'Ollama fallback', zhHant:'Ollama fallback'})} · ${resolved}`;
             return `<div class="model-badge">응답 모델: ${escapeHtml(label)}</div>`;
         }
 
@@ -1802,6 +1803,7 @@ select:focus-visible {
             if (!resolved && provider) label = provider.toUpperCase();
             if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
             if (provider === 'groq' && resolved) label = `Groq · ${resolved}`;
+            if (provider === 'ollama' && resolved) label = `${tt('en', {ko:'Ollama fallback', en:'Ollama fallback', zh:'Ollama fallback', zhHant:'Ollama fallback'})} · ${resolved}`;
             return label;
         }
 
@@ -2081,6 +2083,21 @@ select:focus-visible {
             `;
         }
 
+        function buildDegradedStateBanner(result, lang) {
+            if (!result || (!result.deterministic_fallback_answer_used && !result.ollama_fallback_used)) return '';
+            if (result.ollama_fallback_used) {
+                return `<div class="answer-note">${escapeHtml(tt(lang, { ko: 'Provider: Ollama fallback · Response model', en: 'Provider: Ollama fallback · Response model', zh: 'Provider: Ollama fallback · Response model', zhHant: 'Provider: Ollama fallback · Response model' }))}: ${escapeHtml(result.ollama_model || result.model || '')}</div>`;
+            }
+            const title = tt(lang, { ko: 'AI 모델이 일시적으로 응답하지 않습니다', en: 'AI model temporarily unavailable', zh: 'AI 模型暂时无法响应', zhHant: 'AI 模型暫時無法回應' });
+            const lines = [
+                tt(lang, { ko: '제한적 준비 메모', en: 'Limited preparation note', zh: '有限准备说明', zhHant: '有限準備說明' }),
+                tt(lang, { ko: '모든 온라인 모델 후보가 현재 응답할 수 없습니다', en: 'All online model candidates are currently unavailable', zh: '所有在线候选模型目前均不可用', zhHant: '所有線上候選模型目前均不可用' }),
+                tt(lang, { ko: '잠시 후 다시 시도하세요', en: 'Try again shortly', zh: '请稍后重试', zhHant: '請稍後重試' }),
+                tt(lang, { ko: '사용 가능한 출처/체류자격 메타데이터로 생성한 대체 답변입니다', en: 'Fallback answer generated from available source/status metadata', zh: '基于可用来源/居留资格元数据生成的后备答复', zhHant: '基於可用來源/居留資格中繼資料產生的後備答覆' })
+            ];
+            return `<div class="answer-note"><strong>${escapeHtml(title)}</strong><ul>${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul></div>`;
+        }
+
         function sourceTextForCopy(sources) {
             if (!Array.isArray(sources) || !sources.length) return '';
             return sources.map((source) => {
@@ -2092,7 +2109,7 @@ select:focus-visible {
                 function appendAiAnswer(result, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
-            const answer = result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
+            const answer = result.copy_safe_answer || result.fallback_answer || result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
             const copyId = getCopyId();
             const sourceCopy = sourceTextForCopy(result.grounding_sources);
             COPY_PAYLOADS[copyId] = { answer, source: sourceCopy };
@@ -2119,6 +2136,7 @@ select:focus-visible {
                         <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
                     </header>
                     ${buildContextRow(result, lang)}
+                    ${buildDegradedStateBanner(result, lang)}
                     <div class="answer-body">${formatAnswerText(answer, lang)}</div>
                     ${generateBadges(answer, lang, result)}
                     ${sourcePanelHtml}
@@ -2143,7 +2161,16 @@ select:focus-visible {
                 law_grounding_used: Boolean(detail.law_grounding_used || payload.law_grounding_used),
                 law_grounding_attempted: Boolean(detail.law_grounding_attempted || payload.law_grounding_attempted),
                 law_grounding_warnings: detail.law_grounding_warnings || payload.law_grounding_warnings || [],
-                citation_verification: detail.citation_verification || payload.citation_verification || null
+                citation_verification: detail.citation_verification || payload.citation_verification || null,
+                answer_quality_mode: detail.answer_quality_mode || payload.answer_quality_mode || '',
+                source_confidence_level: detail.source_confidence_level || payload.source_confidence_level || '',
+                official_confirmation_questions: detail.official_confirmation_questions || payload.official_confirmation_questions || [],
+                related_statuses_not_sources: detail.related_statuses_not_sources || payload.related_statuses_not_sources || [],
+                fallback_answer: detail.fallback_answer || payload.fallback_answer || '',
+                copy_safe_answer: detail.copy_safe_answer || payload.copy_safe_answer || '',
+                deterministic_fallback_answer_used: Boolean(detail.deterministic_fallback_answer_used || payload.deterministic_fallback_answer_used),
+                attempted_models: detail.attempted_models || payload.attempted_models || [],
+                upstream_statuses: detail.upstream_statuses || payload.upstream_statuses || []
             };
         }
 
@@ -2152,12 +2179,15 @@ select:focus-visible {
             if (!hist) return;
             const payload = error && error.payload ? error.payload : null;
             const detail = payload && payload.detail;
+            const fallbackAnswer = detail && typeof detail === 'object' ? (detail.copy_safe_answer || detail.fallback_answer || '') : '';
             const rawMessage = detail && typeof detail === 'object' ? detail.message : (detail || (payload && payload.message));
-            const userMessage = rawMessage && error.status && error.status < 500
+            const userMessage = fallbackAnswer || (rawMessage && error.status && error.status < 500
                 ? String(rawMessage)
-                : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.');
+                : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.'));
             const grounding = extractGroundingFromErrorPayload(payload || {});
             const details = payload ? JSON.stringify(payload, null, 2) : (error && error.message ? error.message : '');
+            const copyId = fallbackAnswer ? getCopyId() : '';
+            if (fallbackAnswer) COPY_PAYLOADS[copyId] = { answer: fallbackAnswer, source: '' };
             const row = document.createElement('div');
             row.className = 'msg-row ai answer sys-err';
             row.innerHTML = `
@@ -2169,8 +2199,10 @@ select:focus-visible {
                         </div>
                     </header>
                     ${buildContextRow(grounding, lang)}
-                    <div class="answer-body"><p>${escapeHtml(userMessage)}</p></div>
+                    ${fallbackAnswer ? buildDegradedStateBanner(grounding, lang) : ''}
+                    <div class="answer-body">${fallbackAnswer ? formatAnswerText(userMessage, lang) : `<p>${escapeHtml(userMessage)}</p>`}</div>
                     ${renderGroundingSourcePanel(grounding, lang)}
+                    ${fallbackAnswer ? buildAnswerActions(copyId, false, lang) : ''}
                     ${details ? `<details class="error-details"><summary>${t(lang, '기술 세부정보 보기', 'Show technical details')}</summary><pre>${escapeHtml(details)}</pre></details>` : ''}
                     <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
                 </article>

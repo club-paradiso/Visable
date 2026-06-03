@@ -13,7 +13,7 @@ Backend under test: `https://web-production-14f9a.up.railway.app`.
 ## 1. Purpose
 
 Free OpenRouter models are occasionally rate-limited or upstream-unavailable.
-When the primary model (Gemma free) fails for a **transient** provider reason,
+When the primary model (now Qwen Next free; previously Gemma free) fails for a **transient** provider reason,
 Paradiso should retry an explicit, ordered OpenRouter candidate list — not
 silently switch providers, not use random free-model routing, and not show raw
 provider JSON to users. This PR adds that candidate fallback, a provider-error
@@ -52,14 +52,12 @@ tokens, request headers, and user ids are never shown.
 
 ## 4. Candidate policy
 
-Ordered, explicit, de-duplicated (primary first):
+Current ordered, explicit, de-duplicated default (primary first):
 
-1. **Primary — `google/gemma-4-31b-it:free`** — intended primary model.
-2. **`moonshotai/kimi-k2.6:free`** — first general fallback candidate.
-3. **`qwen/qwen3-next-80b-a3b-instruct:free`** — instruction-tuned, long-context
-   assistant/RAG-style fallback.
-4. **`meta-llama/llama-3.3-70b-instruct:free`** — later general fallback; Korean
-   quality must be smoke-tested.
+1. **Primary — `qwen/qwen3-next-80b-a3b-instruct:free`** — instruction-tuned, long-context assistant/RAG-style default.
+2. **`google/gemma-4-31b-it:free`** — strong multilingual legal/administrative fallback, but free upstream availability can be unstable.
+3. **`moonshotai/kimi-k2.6:free`** — long-context fallback.
+4. **`meta-llama/llama-3.3-70b-instruct:free`** — later general fallback; Korean quality must be smoke-tested.
 
 `OPENROUTER_MODEL` is always attempted first; `OPENROUTER_MODEL_CANDIDATES`
 (optional, comma-separated) overrides the rest. When unset, the built-in list
@@ -103,7 +101,7 @@ It happens only when `ALLOW_GROQ_FALLBACK=true` (default `false`) **and** Groq i
 configured **and** every OpenRouter candidate has failed. When it happens it is
 marked explicitly as `provider_family_fallback_used: true` (distinct from a
 within-OpenRouter `model_fallback_used`). Otherwise all-candidates-failed returns
-a safe `503 provider_unavailable` with metadata — no silent provider switch.
+a deterministic limited preparation note with degraded metadata — no silent provider switch.
 
 Non-secret response metadata: `llm_provider`, `requested_model`, `primary_model`,
 `model_candidates`, `attempted_models`, `final_model`, `model_fallback_used`,
@@ -116,8 +114,9 @@ manual-to-law fallback metadata are preserved across model retries.
 ## 8. Railway env vars
 
 ```
-OPENROUTER_MODEL=google/gemma-4-31b-it:free
-OPENROUTER_MODEL_CANDIDATES=google/gemma-4-31b-it:free,moonshotai/kimi-k2.6:free,qwen/qwen3-next-80b-a3b-instruct:free,meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
+OPENROUTER_MODEL_CANDIDATES=qwen/qwen3-next-80b-a3b-instruct:free,google/gemma-4-31b-it:free,moonshotai/kimi-k2.6:free,meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL_COOLDOWN_SECONDS=300
 ALLOW_GROQ_FALLBACK=false
 LAW_GROUNDING_MODE=audit
 ```
@@ -174,3 +173,7 @@ machine; local live-answer checks here are recorded as **skipped, not passed**.
 AI answers, model fallback, law grounding, manual guidance, route explanations,
 deadline calculations, and checklists are preparation aids only and do not
 determine eligibility, approval, or final required documents.
+
+## 2026-05 follow-up
+
+See [MODEL_PRIORITY_COOLDOWN_OLLAMA_SCAFFOLD_2026_05.md](MODEL_PRIORITY_COOLDOWN_OLLAMA_SCAFFOLD_2026_05.md) for the Qwen-first candidate priority, in-memory per-model cooldown behavior, deterministic fallback answer safety net, and disabled-by-default Ollama scaffold.
