@@ -209,6 +209,10 @@
         .bdg { display: inline-flex; align-items: center; height: 28px; font-size: 0.72rem; font-weight: 700; padding: 0 var(--sp-3); border-radius: var(--btn-r-sm); border: 1px solid; background: var(--bg2); cursor: pointer; transition: var(--btn-tr); text-decoration: none; line-height: 1; }
         .bdg.bdg-visa { color: var(--ac); border-color: var(--ac); }
         .bdg.bdg-link { color: var(--cy); border-color: var(--cy); }
+        /* Checked (detected, not manual-grounded) status: neutral tone. */
+        .bdg.bdg-checked { color: var(--t2); border-color: rgba(199,191,168,0.45); }
+        /* Related status to verify: visibly distinct from a manual source chip. */
+        .bdg.bdg-related { color: #7aa7ff; border-color: rgba(122,167,255,0.55); background: rgba(122,167,255,0.06); font-weight: 600; }
         .bdg:hover { filter: brightness(1.2); transform: translateY(-1px); }
 
         /* Input Area (Glassmorphism) */
@@ -991,6 +995,21 @@
             color: #fda4af;
         }
         .source-list .source-row.state-failed::before { content: "FAILED"; }
+        /* Related status to verify row — distinct from any source-grounding row. */
+        .source-list .source-row.state-related {
+            border-color: rgba(122,167,255,0.5);
+            background: rgba(122,167,255,0.07);
+            color: #aac4ff;
+        }
+        .source-list .source-row.state-related::before { content: "RELATED"; }
+        /* Answer-basis row — quiet identity line, calmer than the law-citation row. */
+        .source-list .source-row.answer-basis-row { font-weight: 700; }
+        .source-list .source-row.answer-basis-row::before { content: "BASIS"; }
+        .source-list .source-row.answer-basis-row.basis-confirmed { border-color: rgba(110,231,183,0.45); background: rgba(110,231,183,0.06); }
+        .source-list .source-row.answer-basis-row.basis-assisted { border-color: rgba(199,191,168,0.4); background: rgba(244,238,224,0.04); }
+        .source-list .source-row.answer-basis-row.basis-limited { border-color: rgba(252,211,77,0.4); background: rgba(252,211,77,0.05); }
+        .source-list .source-row.answer-basis-row.basis-generic { border-color: rgba(199,191,168,0.3); background: transparent; }
+        .source-list .source-row .source-subnote { margin-top: 0.3rem; font-size: 0.72rem; color: var(--t3); line-height: 1.5; font-weight: 400; }
         .source-panel .source-disclosure {
             margin: 0.6rem 0 0;
             padding-top: 0.5rem;
@@ -1095,7 +1114,7 @@ select:focus-visible {
             <div class="msg-time">시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.</div>
         </div>
     </main>
-    <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
+    <p id="referenceDisclaimer" class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
 
     <!-- Input Area -->
     <footer class="chat-input-area">
@@ -1683,7 +1702,7 @@ select:focus-visible {
             return `<div class="model-badge">응답 모델: ${escapeHtml(label)}</div>`;
         }
 
-        function generateBadges(text, lang = 'ko') {
+        function generateBadges(text, lang = 'ko', result = null) {
             if (!text) return '';
             const matchVisas = [...new Set([
                 ...(text.match(/[A-Z]-\d+-[A-Z0-9]+/g) || []),
@@ -1691,10 +1710,48 @@ select:focus-visible {
             ])];
             if (!matchVisas.length && !text.includes('1345')) return '';
 
-            let html = '<div class="bdg-wrap">';
-            matchVisas.forEach(v => {
-                html += `<a href="index.html?q=${encodeURIComponent(v)}" class="bdg bdg-visa">${t(lang, '매뉴얼', 'Manual')}: ${v}</a>`;
+            const meta = result || {};
+            // Related comparison statuses to verify — NOT direct source grounding.
+            // PR #256 surfaces these in related_statuses_not_sources.
+            const relatedSet = new Set(
+                (Array.isArray(meta.related_statuses_not_sources) ? meta.related_statuses_not_sources : [])
+                    .map((c) => String(c).toUpperCase())
+            );
+            // The status the question is actually about (detected / checked).
+            const detectedSet = new Set(
+                [meta.visa_code_detected, meta.visa_sub_code_detected]
+                    .filter(Boolean).map((c) => String(c).toUpperCase())
+            );
+            const grounded = Boolean(meta.grounding_used);
+
+            // Localized chip labels (Part A).
+            const checkedLabel = tt(lang, { ko: '확인한 체류자격', en: 'Checked status', zh: '已确认的居留资格', zhHant: '已確認的居留資格' });
+            const manualLabel = tt(lang, { ko: '매뉴얼 근거', en: 'Manual source', zh: '手册依据', zhHant: '手冊依據' });
+            const relatedLabel = tt(lang, { ko: '함께 확인할 관련 체류자격', en: 'Related status to verify', zh: '需一并确认的相关居留资格', zhHant: '需一併確認的相關居留資格' });
+
+            const directChips = [];
+            const relatedChips = [];
+            matchVisas.forEach((v) => {
+                const code = v.toUpperCase();
+                const href = `index.html?q=${encodeURIComponent(v)}`;
+                if (relatedSet.has(code)) {
+                    // Comparison status the user should verify separately.
+                    relatedChips.push(`<a href="${href}" class="bdg bdg-related" data-chip-kind="related">${relatedLabel}: ${v}</a>`);
+                } else if (detectedSet.has(code)) {
+                    // The asked-about status. Only call it a manual source when the
+                    // answer is actually manual-grounded; otherwise it is "checked".
+                    const label = grounded ? manualLabel : checkedLabel;
+                    const cls = grounded ? 'bdg-visa' : 'bdg-checked';
+                    directChips.push(`<a href="${href}" class="bdg ${cls}" data-chip-kind="${grounded ? 'manual' : 'checked'}">${label}: ${v}</a>`);
+                } else {
+                    // Any other code mentioned in the answer is a comparison status
+                    // to verify, never presented as a direct manual source.
+                    relatedChips.push(`<a href="${href}" class="bdg bdg-related" data-chip-kind="related">${relatedLabel}: ${v}</a>`);
+                }
             });
+
+            let html = '<div class="bdg-wrap">';
+            html += directChips.join('') + relatedChips.join('');
             if (text.includes('1345')) {
                 html += `<a href="tel:1345" class="bdg bdg-link">${t(lang, '☎ 1345 문의', '☎ Call 1345')}</a>`;
             }
@@ -1704,6 +1761,39 @@ select:focus-visible {
 
         function t(lang, ko, en) {
             return lang === 'en' ? en : ko;
+        }
+
+        // Four-language localized label helper for the answer shell. ai.html is
+        // primarily a ko/en surface (detectUserLang only returns ko/en), but the
+        // answer-shell source-semantics labels carry zh / zhHant variants so the
+        // shell is ready for Simplified/Traditional Chinese and so the labels are
+        // testable. Falls back en -> ko when a variant is missing.
+        function tt(lang, map) {
+            const norm = String(lang || '').toLowerCase();
+            if (norm === 'en') return map.en != null ? map.en : map.ko;
+            if (norm === 'zh' || norm === 'zh-cn' || norm === 'zh-hans' || norm === 'zh-sg') {
+                return map.zh != null ? map.zh : (map.en != null ? map.en : map.ko);
+            }
+            if (norm === 'zh-tw' || norm === 'zh-hant' || norm === 'zh-hk' || norm === 'zh-mo') {
+                return map.zhHant != null ? map.zhHant : (map.zh != null ? map.zh : map.ko);
+            }
+            return map.ko;
+        }
+
+        // Single source of truth for the footer/disclaimer text in four languages
+        // (Part E i18n fix). Official Korean institution names stay in Korean.
+        const SHELL_FOOTER_DISCLAIMER = {
+            ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
+            en: 'Paradiso provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
+            zh: 'Paradiso 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
+            zhHant: 'Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
+        };
+
+        // Apply the detected UI language to static shell chrome (currently the
+        // footer disclaimer). Keeps English mode from leaking Korean footer text.
+        function applyShellLanguage(lang) {
+            const footer = document.getElementById('referenceDisclaimer');
+            if (footer) footer.textContent = tt(lang, SHELL_FOOTER_DISCLAIMER);
         }
 
         function getModelLabel(model, provider, modelResolved) {
@@ -1803,6 +1893,39 @@ select:focus-visible {
             return t(lang, '기능 꺼짐', 'Disabled');
         }
 
+        // Compact answer-basis row driven by answer_quality_mode (PR #256).
+        // Less alarming than the legal-citation row; communicates how strongly
+        // the answer is grounded without implying official approval.
+        const ANSWER_BASIS_LABELS = {
+            source_confirmed: { ko: '공식 매뉴얼 근거 확인', en: 'Source-confirmed manual guidance', zh: '已确认官方手册依据', zhHant: '已確認官方手冊依據', cls: 'basis-confirmed' },
+            source_assisted: { ko: '참고 근거 보조 안내', en: 'Source-assisted guidance', zh: '有参考依据的辅助指引', zhHant: '有參考依據的輔助指引', cls: 'basis-assisted' },
+            source_limited: { ko: '제한적 근거 안내', en: 'Source-limited guidance', zh: '依据有限的指引', zhHant: '依據有限的指引', cls: 'basis-limited' },
+            source_unavailable: { ko: '확인된 근거 없음 안내', en: 'Source-unavailable guidance', zh: '无已确认依据的指引', zhHant: '無已確認依據的指引', cls: 'basis-limited' },
+            generic_advisory: { ko: '일반 참고 안내', en: 'General advisory guidance', zh: '一般参考指引', zhHant: '一般參考指引', cls: 'basis-generic' }
+        };
+
+        function answerBasisText(mode, lang) {
+            const entry = ANSWER_BASIS_LABELS[mode];
+            if (!entry) return '';
+            return tt(lang, entry);
+        }
+
+        function buildAnswerBasisRow(metadata, lang) {
+            const mode = metadata && metadata.answer_quality_mode ? String(metadata.answer_quality_mode) : '';
+            const entry = ANSWER_BASIS_LABELS[mode];
+            if (!entry) return '';
+            const head = tt(lang, { ko: '답변 근거', en: 'Answer basis', zh: '答复依据', zhHant: '答覆依據' });
+            return `<div class="source-row answer-basis-row ${entry.cls}" data-basis-mode="${escapeHtml(mode)}"><strong>${escapeHtml(head)}</strong>: ${escapeHtml(answerBasisText(mode, lang))}</div>`;
+        }
+
+        // True when the answer-basis row already tells the user the answer is
+        // weakly grounded — used to suppress the duplicate "general AI answer"
+        // caution (Part D warning de-duplication).
+        function answerBasisCommunicatesLimit(metadata) {
+            const mode = metadata && metadata.answer_quality_mode ? String(metadata.answer_quality_mode) : '';
+            return mode === 'source_limited' || mode === 'source_unavailable' || mode === 'generic_advisory';
+        }
+
         function renderGroundingSourcePanel(metadata, lang) {
             const safe = metadata || {};
             const manualSources = Array.isArray(safe.grounding_sources)
@@ -1819,8 +1942,26 @@ select:focus-visible {
             // Honest disclosure state classes per docs/ai/CITATION_AND_UNCERTAINTY_SCHEMA.md.
             const rows = [];
 
+            // Answer-basis row first: the answer's overall identity (Part B).
+            const basisRow = buildAnswerBasisRow(safe, lang);
+            if (basisRow) rows.push(basisRow);
+
             if (manualSources.length) {
                 rows.push(`<div class="source-row state-source-supported"><strong>${t(lang, '행정 매뉴얼 근거', 'Manual / Immigration procedure source')}</strong>: ${t(lang, '매뉴얼 출처 있음 (개별 검증 진행 중)', 'Manual source present (per-entry verification in progress)')}</div>`);
+            }
+
+            // Related statuses to verify — shown as a distinct supporting row,
+            // never as direct source grounding (Part A / Part F).
+            const relatedStatuses = Array.isArray(safe.related_statuses_not_sources) ? safe.related_statuses_not_sources.filter(Boolean) : [];
+            if (relatedStatuses.length) {
+                const relHead = tt(lang, { ko: '함께 확인할 관련 체류자격', en: 'Related status to verify', zh: '需一并确认的相关居留资格', zhHant: '需一併確認的相關居留資格' });
+                const relNote = tt(lang, {
+                    ko: '질문에 직접 답하는 출처가 아니라, 함께 확인해 볼 비교용 체류자격입니다.',
+                    en: 'Comparison statuses to verify — not a source that answers the question.',
+                    zh: '这些是供比较、需一并确认的居留资格，并非直接回答问题的来源。',
+                    zhHant: '這些是供比較、需一併確認的居留資格，並非直接回答問題的來源。'
+                });
+                rows.push(`<div class="source-row state-related" data-row-kind="related-status"><strong>${escapeHtml(relHead)}</strong>: ${relatedStatuses.map(escapeHtml).join(' · ')}<div class="source-subnote">${escapeHtml(relNote)}</div></div>`);
             }
 
             if (lawUsed || lawAttempted || hasCitation) {
@@ -1831,10 +1972,31 @@ select:focus-visible {
                 else if (citationStatus === 'failed_verification') stateClass = 'state-failed';
                 else if (citationStatus === 'not_wired' || (lawWarnings.indexOf && lawWarnings.indexOf('CITATION_VERIFICATION_NOT_WIRED') !== -1)) stateClass = 'state-not-wired';
                 else if (lawAttempted) stateClass = 'state-partial';
-                const label = lawVerificationStatus(safe, lang);
-                const friendly = lawWarnings.slice(0, 2).map((w) => mapLawWarningToFriendly(w, lang));
-                const extra = friendly.length ? ` (${friendly.join(', ')})` : '';
-                rows.push(`<div class="source-row ${stateClass}"><strong>${t(lang, '법령 인용 검증', 'Legal citation verification')}</strong>: ${label}${extra}</div>`);
+                // When the supporting law source could not be retrieved and the
+                // answer is already source-limited / source-unavailable, show a
+                // friendly supporting-source line instead of a blunt
+                // "Legal citation verification: Needs review" (Part C). Raw codes
+                // like SOURCE_UNAVAILABLE stay in the technical details block only.
+                const lawUnavailable = !lawUsed && (
+                    citationStatus === '' || citationStatus === 'not_wired'
+                    || (lawWarnings.indexOf && lawWarnings.indexOf('SOURCE_UNAVAILABLE') !== -1)
+                    || lawAttempted
+                );
+                if (lawUnavailable && answerBasisCommunicatesLimit(safe)) {
+                    const friendlyLine = tt(lang, {
+                        ko: '이 답변에 사용할 보조 법령 근거를 가져오지 못했습니다.',
+                        en: 'Supporting legal source could not be retrieved for this answer.',
+                        zh: '未能为本答复获取补充性法令依据。',
+                        zhHant: '未能為本答覆取得補充性法令依據。'
+                    });
+                    const supHead = tt(lang, { ko: '보조 법령 근거', en: 'Supporting legal source', zh: '补充法令依据', zhHant: '補充法令依據' });
+                    rows.push(`<div class="source-row state-partial" data-row-kind="law-supporting"><strong>${escapeHtml(supHead)}</strong>: ${escapeHtml(friendlyLine)}</div>`);
+                } else {
+                    const label = lawVerificationStatus(safe, lang);
+                    const friendly = lawWarnings.slice(0, 2).map((w) => mapLawWarningToFriendly(w, lang));
+                    const extra = friendly.length ? ` (${friendly.join(', ')})` : '';
+                    rows.push(`<div class="source-row ${stateClass}"><strong>${t(lang, '법령 인용 검증', 'Legal citation verification')}</strong>: ${label}${extra}</div>`);
+                }
             }
 
             if (hasPublicData) {
@@ -1936,6 +2098,15 @@ select:focus-visible {
             COPY_PAYLOADS[copyId] = { answer, source: sourceCopy };
             const grounded = Boolean(result.grounding_used);
             const modelLabel = getModelLabel(result.model, result.provider, result.model_resolved);
+            // Warning de-duplication (Part D). The source panel carries the one
+            // primary caution (its disclosure line). When the panel renders, we
+            // suppress the duplicate "general AI answer" note and the trailing
+            // msg-disc so the same "confirm with 1345 / HiKorea / immigration
+            // office" phrase is not repeated three times in one card.
+            const sourcePanelHtml = renderGroundingSourcePanel(result, lang);
+            const hasPanel = Boolean(sourcePanelHtml);
+            const groundingNoteHtml = (hasPanel || answerBasisCommunicatesLimit(result)) ? '' : buildGroundingNote(result, lang);
+            const trailingDisc = hasPanel ? '' : `<span class="msg-disc">${escapeHtml(answerDisclaimer(result, lang))}</span>`;
             const row = document.createElement('div');
             row.className = 'msg-row ai answer';
             row.innerHTML = `
@@ -1949,11 +2120,11 @@ select:focus-visible {
                     </header>
                     ${buildContextRow(result, lang)}
                     <div class="answer-body">${formatAnswerText(answer, lang)}</div>
-                    ${generateBadges(answer, lang)}
-                    ${renderGroundingSourcePanel(result, lang)}
-                    ${buildGroundingNote(result, lang)}
+                    ${generateBadges(answer, lang, result)}
+                    ${sourcePanelHtml}
+                    ${groundingNoteHtml}
                     ${buildAnswerActions(copyId, Boolean(sourceCopy), lang)}
-                    <span class="msg-disc">${escapeHtml(answerDisclaimer(result, lang))}</span>
+                    ${trailingDisc}
                 </article>
                 <div class="msg-time">Paradiso AI · ${formatTime()}</div>
             `;
@@ -2064,6 +2235,9 @@ select:focus-visible {
             
             try {
                 const userLang = detectUserLang(text);
+                // Keep the static shell (footer disclaimer) in the user's language
+                // so English questions don't leave a Korean footer behind (Part E).
+                applyShellLanguage(userLang);
                 const visaPayload = buildVisaDataPayload(text, VISA_DATA);
                 const contextText = buildAskContext(userLang);
                 const response = await fetch(`${API_BASE}/api/ask`, {
