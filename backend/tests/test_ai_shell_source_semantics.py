@@ -153,6 +153,7 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
             "Analogical legal analysis",
             "No direct scenario-specific authority found",
             "Source lookup technical issue",
+            "Structured legal analysis note available",
         ):
             self.assertIn(label, self.html + self.index_html)
 

@@ -627,7 +627,8 @@ class RiskyPhraseTests(unittest.TestCase):
         )
         directive = aq.build_answer_directives(q, lang="en")
         self.assertNotIn("Paradiso cannot verify that an H-1 holder may take", directive)
-        self.assertIn("Treat a credit-bearing or degree-related university summer course as a high-risk activity under H-1", directive)
+        self.assertIn("backend-prepared legal_analysis", directive)
+        self.assertIn("Do not reuse study/course wording unless", directive)
         self.assertIn("official confirmation is required", directive)
 
 

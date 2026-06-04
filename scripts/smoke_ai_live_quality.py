@@ -70,6 +70,8 @@ SAMPLE_QUESTIONS = [
     {"id": "h1_study", "visa_code": "H-1", "question": "H-1 비자인데 한국 대학에서 학점 계절학기를 수강할 수 있을까요?", "lang": "ko", "expect_confirmation_checklist": True, "expect_related_statuses": ["D-2", "D-4"]},
     {"id": "g1_5_study_audit", "visa_code": "G-1-5", "question": "G-1-5 난민소송 중 대학 정규 등록이나 청강 수업이 가능한가요?", "lang": "ko", "expect_confirmation_checklist": True},
     {"id": "e7_to_f299_side_job", "question": "E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "h1_foreigner_registration", "visa_code": "H-1", "question": "H-1 외국인등록은 언제 해야 하나요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "h1_to_f299_change", "visa_code": "H-1", "question": "Can I change status to F-2-99?", "lang": "en", "expect_confirmation_checklist": True},
     {"id": "d2_work", "visa_code": "D-2", "question": "D-2 비자로 시간제 아르바이트를 할 수 있나요?", "lang": "ko"},
     {"id": "d10_freelance", "visa_code": "D-10", "question": "D-10 구직비자로 프리랜서 일을 해도 되나요?", "lang": "ko"},
     {"id": "e7_side_job", "visa_code": "E-7", "question": "E-7인데 본업 외 부업을 해도 되나요?", "lang": "ko"},
@@ -235,6 +237,14 @@ def _safe_health(base):
         return None
 
 
+def _contains_unrelated_h1_study_template(answer, question):
+    combined = (answer or "")
+    q = question or ""
+    h1_leak = "H-1" in combined and "H-1" not in q
+    study_leak = any(term in combined for term in ("H-1의 허용 활동범위", "credit-bearing university summer course", "계절학기", "학점 인정", "D-2/D-4")) and not any(term in q for term in ("H-1", "계절학기", "학점", "summer", "course", "등록", "청강"))
+    return bool(h1_leak or study_leak)
+
+
 def _check_question(base, q):
     """POST one sample question and classify the outcome safely."""
     payload = {
@@ -269,6 +279,9 @@ def _check_question(base, q):
         "ollama_fallback_enabled": None,
         "ollama_fallback_used": None,
         "deterministic_fallback_answer_used": None,
+        "fallback_answer_kind": None,
+        "legal_analysis_exists": None,
+        "answer_contains_unrelated_h1_study_template": None,
         "visa_code_detected": None,
         "llm_provider": None,
         "unsafe_approval_language": None,
@@ -348,6 +361,8 @@ def _check_question(base, q):
     result["ollama_fallback_enabled"] = meta.get("ollama_fallback_enabled")
     result["ollama_fallback_used"] = meta.get("ollama_fallback_used")
     result["deterministic_fallback_answer_used"] = meta.get("deterministic_fallback_answer_used")
+    result["fallback_answer_kind"] = meta.get("fallback_answer_kind")
+    result["legal_analysis_exists"] = meta.get("legal_analysis_exists") if meta.get("legal_analysis_exists") is not None else bool(meta.get("legal_analysis"))
     result["visa_code_detected"] = meta.get("visa_code_detected")
     result["llm_provider"] = meta.get("llm_provider")
     # Answer-quality contract metadata (non-secret) — available on both the
@@ -448,6 +463,9 @@ def _check_question(base, q):
             if not present:
                 result["quality_warnings"].append("expected official-confirmation checklist not surfaced")
         result["raw_code_default_ui_leak"] = bool(result.get("raw_code_leak"))
+        result["answer_contains_unrelated_h1_study_template"] = _contains_unrelated_h1_study_template(answer, q.get("question"))
+        if result["answer_contains_unrelated_h1_study_template"]:
+            result["quality_warnings"].append("unrelated H-1 study template detected")
         if result.get("first_sentence_quality_warning") is None:
             result["first_sentence_quality_warning"] = ""
         for w in ("mixed_language_artifacts", "raw_code_leak"):
@@ -660,10 +678,12 @@ def _emit(report, args):
             r["llm_provider"], r["final_model"], r["provider_error_type"],
             r["model_fallback_used"], r["provider_family_fallback_used"],
         )
-        suffix += " [cooldown skipped=%s cooling=%s ollama_enabled=%s ollama_used=%s deterministic_fallback=%s visa=%s]" % (
+        suffix += " [cooldown skipped=%s cooling=%s ollama_enabled=%s ollama_used=%s deterministic_fallback=%s kind=%s legal_analysis_exists=%s visa=%s unrelated_h1_study_template=%s]" % (
             r["skipped_models_due_to_cooldown"], r["cooling_down_models"],
             r["ollama_fallback_enabled"], r["ollama_fallback_used"],
-            r["deterministic_fallback_answer_used"], r["visa_code_detected"],
+            r["deterministic_fallback_answer_used"], r.get("fallback_answer_kind"),
+            r.get("legal_analysis_exists"), r["visa_code_detected"],
+            r.get("answer_contains_unrelated_h1_study_template"),
         )
         # Answer-quality signals (Part K).
         suffix += " [quality=%s conf=%s qtype=%s related=%s]" % (

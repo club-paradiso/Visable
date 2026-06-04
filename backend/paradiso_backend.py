@@ -344,6 +344,7 @@ class AskResponse(BaseModel):
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
     legal_analysis: Optional[Dict[str, Any]] = None
+    legal_analysis_exists: bool = False
     immigration_facts: Dict[str, Any] = Field(default_factory=dict)
     legal_issue_types: List[str] = Field(default_factory=list)
     proposed_activity_type: List[str] = Field(default_factory=list)
@@ -813,90 +814,293 @@ def _classify_ollama_error(exc: HTTPException) -> str:
     return "ollama_unavailable"
 
 
-def _localized_fallback_answer(
+def _legal_analysis_facts_for_answer(base_meta: Dict[str, Any], legal_analysis: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    if isinstance(legal_analysis, dict):
+        facts = legal_analysis.get("immigration_facts")
+        if isinstance(facts, dict):
+            merged = dict(base_meta.get("immigration_facts") or {})
+            merged.update({k: v for k, v in facts.items() if v not in (None, "", [], {})})
+            return merged
+    return dict(base_meta.get("immigration_facts") or {})
+
+
+def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
+    labels_ko = {
+        "activity_scope": "현재 체류자격의 활동범위",
+        "outside_status_activity": "자격외활동 허가 필요성",
+        "status_change": "체류자격 변경 경로",
+        "extension": "체류기간 연장",
+        "documents_needed": "공식 매뉴얼 기준 서류 확인",
+        "reporting_duty": "신고의무",
+        "workplace_change_addition": "근무처 변경·추가 신고/허가",
+        "registration_or_residence_report": "외국인등록·거소신고 등 체류 신고",
+        "reentry": "재입국·출국 절차",
+        "overstay_or_risk": "초과체류 등 체류 위험",
+        "approval_condition": "개별 승인 조건",
+        "status_purpose_alignment": "체류 목적과 활동의 정합성",
+        "employment_restriction": "취업 제한",
+        "study_on_non_study_status": "비유학 체류자격에서의 수학 활동",
+        "work_on_non_work_status": "비취업·제한 체류자격에서의 근로/사업 활동",
+        "post_status_change_residual_duty": "체류자격 변경 후 이전 자격 관련 잔존 신고 쟁점",
+        "nationality_or_refugee_context": "국적·난민 관련 체류 맥락",
+        "legal_general": "일반 법률 쟁점",
+        "non_immigration_adjacent_issue": "인접 쟁점",
+    }
+    labels_en = {
+        "activity_scope": "current-status activity scope",
+        "outside_status_activity": "activities outside status / permission risk",
+        "status_change": "status-change route",
+        "extension": "extension procedure",
+        "documents_needed": "official-manual document checklist boundary",
+        "reporting_duty": "reporting duty",
+        "workplace_change_addition": "workplace change/addition reporting or permission",
+        "registration_or_residence_report": "alien registration / residence reporting",
+        "reentry": "re-entry or departure procedure",
+        "overstay_or_risk": "overstay/status-risk triage",
+        "approval_condition": "case-specific approval conditions",
+        "status_purpose_alignment": "alignment with the purpose of stay",
+        "employment_restriction": "employment restrictions",
+        "study_on_non_study_status": "study activity on a non-study status",
+        "work_on_non_work_status": "work or business activity on a non-work/restricted status",
+        "post_status_change_residual_duty": "residual duty after a status change",
+        "nationality_or_refugee_context": "nationality/refugee residence context",
+        "legal_general": "general legal issue",
+        "non_immigration_adjacent_issue": "adjacent issue",
+    }
+    labels = labels_ko if is_ko else labels_en
+    return [labels.get(issue, issue.replace("_", " ")) for issue in issues if issue][:6]
+
+
+def _activity_labels_for_fallback(activities: List[str], *, is_ko: bool) -> List[str]:
+    labels_ko = {
+        "credit_bearing_study": "학점 인정 수업",
+        "formal_enrollment": "학교 등록/정규 수학",
+        "non_credit_audit": "청강/비학점 수강",
+        "non_credit_cultural_or_hobby": "취미·문화 비학점 활동",
+        "language_training": "어학연수/한국어 수업",
+        "paid_work": "보수 있는 근로",
+        "unpaid_internship": "무급 인턴",
+        "paid_internship": "유급 인턴",
+        "freelance_work": "프리랜서/외주",
+        "side_job": "부업",
+        "additional_employment": "추가 고용",
+        "business_activity": "사업활동/사업자등록",
+        "workplace_change": "근무처 변경",
+        "workplace_addition": "근무처 추가",
+        "registration_or_reporting": "외국인등록·신고",
+        "status_change_route": "체류자격 변경",
+    }
+    labels_en = {k: k.replace("_", " ") for k in [
+        "credit_bearing_study", "formal_enrollment", "non_credit_audit", "non_credit_cultural_or_hobby",
+        "language_training", "paid_work", "unpaid_internship", "paid_internship", "freelance_work",
+        "side_job", "additional_employment", "business_activity", "workplace_change", "workplace_addition",
+        "registration_or_reporting", "status_change_route",
+    ]}
+    labels = labels_ko if is_ko else labels_en
+    return [labels.get(activity, activity.replace("_", " ")) for activity in activities if activity][:6]
+
+
+def _localized_source_boundary_note(*, is_ko: bool, source_state: str, legal_analysis: Dict[str, Any]) -> str:
+    confidence = legal_analysis.get("confidence") or "limited"
+    missing_direct = bool(legal_analysis.get("missing_direct_authority"))
+    if is_ko:
+        if source_state in {"source_unavailable", "unavailable", "disabled"}:
+            return "출처 조회가 제한되었지만, 추출된 사실관계와 법률 쟁점 구조를 기준으로 준비 메모를 표시합니다."
+        if missing_direct:
+            return "직접적인 사안별 근거가 충분하지 않을 수 있어, 이 메모는 확인 질문과 쟁점 정리에 초점을 둡니다."
+        return f"확인된 근거 수준은 {confidence}이며, 최종 판단은 관할 기관 확인이 필요합니다."
+    if source_state in {"source_unavailable", "unavailable", "disabled"}:
+        return "Source lookup is limited, but Paradiso can still organize the extracted facts and legal issues into a preparation note."
+    if missing_direct:
+        return "Direct scenario-specific authority may be limited, so this note focuses on the issues and facts to confirm."
+    return f"The available source confidence is {confidence}; final outcomes still require competent-office confirmation."
+
+
+
+
+def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activities: List[str], activity_labels: List[str]) -> str:
+    current = facts.get("current_status") or "현재 체류자격"
+    previous = facts.get("previous_status")
+    target = facts.get("target_status")
+    if "post_status_change_residual_duty" in issues and previous:
+        return f"현재 {current}의 활동범위와 승인 조건을 먼저 보되, 이전 {previous} 승인 조건·신고 이력이 현재 활동 판단에 관련 사실로 남는지 확인해야 합니다."
+    if "status_change" in issues and target:
+        return f"{current}에서 {target}로의 체류자격 변경 가능성과 국내 변경 절차를 목표 자격 기준으로 검토해야 합니다."
+    if "study_on_non_study_status" in issues:
+        acts = ", ".join(activity_labels) or "수학 활동"
+        return f"{current}에서 {acts}이/가 현재 체류 목적과 활동범위 안에 들어가는지, 또는 자격외활동허가나 체류자격 변경이 필요한지 확인해야 합니다."
+    if "registration_or_residence_report" in issues:
+        return f"{current}의 외국인등록·체류 신고 기한, 신고 사유, 접수 방법을 공식 절차 기준으로 확인해야 합니다."
+    if "workplace_change_addition" in issues or "reporting_duty" in issues:
+        return "신고 대상 사건인지, 신고 기산일이 언제인지, 사전 허가가 필요한지부터 확인해야 합니다."
+    return "추출된 체류자격, 활동 유형, 신고·허가 쟁점을 기준으로 공식 확인 질문을 준비해야 합니다."
+
+
+def _korean_main_issue_fallback(issues: List[str], facts: Dict[str, Any], activity_labels: List[str]) -> str:
+    current = facts.get("current_status") or "현재 체류자격"
+    previous = facts.get("previous_status")
+    target = facts.get("target_status")
+    if "post_status_change_residual_duty" in issues and previous:
+        return f"추가 활동이 현재 {current}의 활동범위, 승인 조건, 일반 신고/허가 의무와 충돌하는지, 그리고 이전 {previous} 관련 신고 의무가 잔존하는지입니다."
+    if "status_change" in issues and target:
+        return f"{current}에서 {target}로 국내 체류자격 변경을 신청할 수 있는 경로와 제한 조건입니다."
+    if "study_on_non_study_status" in issues:
+        acts = ", ".join(activity_labels) or "수학 활동"
+        return f"{acts}이/가 {current}의 허용 활동범위 안인지, 아니면 자격외활동허가 또는 D-2/D-4 등 다른 체류자격 검토가 필요한지입니다."
+    if "registration_or_residence_report" in issues:
+        return f"{current} 보유자의 외국인등록·체류 신고 시점과 절차입니다."
+    if "workplace_change_addition" in issues or "reporting_duty" in issues:
+        return "해당 사실변경이 신고 대상인지, 근무처 변경·추가 또는 별도 허가 사안인지입니다."
+    return "한국 출입국 체류 절차에서 어떤 공식 근거와 사실관계가 판단을 좌우하는지입니다."
+
+def build_legal_analysis_fallback_answer(
     *,
     prompt: str,
     lang: Optional[str],
-    visa_code: Optional[str],
-    question_type: Optional[str],
-    official_questions: List[str],
+    base_meta: Dict[str, Any],
+    legal_analysis: Optional[Dict[str, Any]],
 ) -> str:
+    """Build a deterministic outage fallback from generalized legal_analysis.
+
+    This deliberately avoids status/activity templates. Study-specific wording
+    appears only when legal_analysis actually classified the issue/activity as
+    study-related.
+    """
     norm = str(lang or "").lower()
     is_ko = norm.startswith("ko") or bool(re.search(r"[가-힣]", prompt or ""))
-    is_zh_hant = norm in {"zh-hant", "zh_tw", "zh-tw", "zh-hk", "zh-mo"}
-    is_zh = norm.startswith("zh") and not is_zh_hant
-    status = visa_code or "the requested status"
-    questions = official_questions or [
-        "Is the course credit-bearing?",
-        "Is it degree-related?",
-        "How many weeks and hours per week?",
-        f"Would the activity become the main purpose of stay under {status}?",
-        "Does the university require D-2/D-4 or another status?",
-        "Would immigration require activities-outside-status permission or a change of sojourn status?",
-    ]
-    if is_ko:
-        qs = [
-            "수업이 학점 인정 과목인가요?",
-            "학위 과정과 관련된 수업인가요?",
-            "수업 기간과 주당 수업 시간은 얼마인가요?",
-            "공부가 체류의 주된 목적이 되나요?",
-            f"{status} 체류자격으로 일도 병행하나요?",
-            "학교가 D-2/D-4 또는 다른 체류자격을 요구하나요?",
-            "자격외활동허가나 체류자격 변경이 필요한 사안으로 볼 수 있나요?",
-        ]
-        return "\n".join([
-            "AI 모델이 일시적으로 응답하지 않지만, Paradiso가 제한적인 준비 메모를 표시할 수 있습니다.",
-            "",
-            f"학점 인정 또는 학위 관련 대학 계절학기는 {status}에서 고위험 활동으로 보고, 출입국기관 확인 전에는 등록·납부를 보류하는 것이 안전합니다.",
-            "",
-            "핵심 쟁점은 출입국기관이 그 수업을 H-1의 허용 활동범위(활동범위) 안으로 보는지, 아니면 체류자격외활동 또는 체류자격 변경이 필요한 사안으로 보는지입니다. 직접적인 H-1 계절학기 확인 근거가 없을 수 있으므로 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
-            *[f"* {q}" for q in qs],
-            "",
-            "이 내용은 최종 결정이 아닙니다. 개별 사안의 답변은 공식 기관에 확인하세요.",
-        ])
-    if is_zh or is_zh_hant:
-        chars = {
-            "intro": "AI 模型暂时无法响应，但 Paradiso 仍可显示一份有限的准备说明。" if is_zh else "AI 模型暫時無法回應，但 Paradiso 仍可顯示一份有限的準備說明。",
-            "confirm": f"在 {status} 身份下参加计学分或学位相关大学暑期课程，应先按高风险活动处理，确认前不要依赖其可行性。" if is_zh else f"在 {status} 身分下參加計學分或學位相關大學暑期課程，應先按高風險活動處理，確認前不要依賴其可行性。",
-            "ask": "在选课或支付学费前，请向 1345、HiKorea 或管辖出入境机构确认：" if is_zh else "在選課或支付學費前，請向 1345、HiKorea 或管轄出入境機構確認：",
-            "final": "这不是最终决定。请向官方机构确认个案答案。" if is_zh else "這不是最終決定。請向官方機構確認個案答案。",
-        }
-        qs = [
-            "课程是否计入学分？" if is_zh else "課程是否計入學分？",
-            "是否与学位课程相关？" if is_zh else "是否與學位課程相關？",
-            "课程持续几周、每周多少小时？" if is_zh else "課程持續幾週、每週多少小時？",
-            "学习是否会成为停留的主要目的？" if is_zh else "學習是否會成為停留的主要目的？",
-            f"是否也会以 {status} 身份工作？" if is_zh else f"是否也會以 {status} 身分工作？",
-            "学校是否要求 D-2/D-4 或其他居留资格？" if is_zh else "學校是否要求 D-2/D-4 或其他居留資格？",
-            "出入境机构是否会视为资格外活动或要求变更居留资格？" if is_zh else "出入境機構是否會視為資格外活動或要求變更居留資格？",
-        ]
-        return "\n".join([chars["intro"], "", chars["confirm"], "", chars["ask"], *[f"* {q}" for q in qs], "", chars["final"]])
-    return "\n".join([
-        "The AI model is temporarily unavailable, but Paradiso can still show a limited preparation note.",
-        "",
-        f"Treat a credit-bearing or degree-related university summer course as a high-risk activity under {status} until immigration confirms otherwise.",
-        "",
-        "The central legal issue is whether immigration treats the course as within H-1's permitted activity scope (활동범위) or as activities outside the scope of status (체류자격외활동) requiring separate permission or a change of sojourn status. Paradiso did not find direct scenario-specific authority in this fallback note, so ask 1345, HiKorea, or the competent immigration office:",
-        *[f"* {q}" for q in questions],
-        "",
-        "This is not a final decision. Confirm the case-specific answer with the official office.",
-    ])
+    la = legal_analysis if isinstance(legal_analysis, dict) else {}
+    facts = _legal_analysis_facts_for_answer(base_meta, la)
+    issues = list(la.get("legal_issue_types") or base_meta.get("legal_issue_types") or [])
+    activities = list(facts.get("proposed_activities") or base_meta.get("proposed_activity_type") or [])
+    issue_labels = _issue_labels_for_fallback(issues, is_ko=is_ko)
+    activity_labels = _activity_labels_for_fallback(activities, is_ko=is_ko)
+    decisive = list(la.get("decisive_facts") or [])[:6]
+    questions = list(la.get("official_confirmation_questions") or base_meta.get("official_confirmation_questions") or [])[:8]
+    current = facts.get("current_status") or base_meta.get("visa_code_detected")
+    previous = facts.get("previous_status")
+    target = facts.get("target_status")
+    source_state = str(base_meta.get("source_state") or la.get("analysis_mode") or "").lower()
+    source_note = _localized_source_boundary_note(is_ko=is_ko, source_state=source_state, legal_analysis=la)
 
+    practical = str(la.get("practical_posture") or "").strip()
+    main_issue = str(la.get("main_issue") or base_meta.get("main_issue") or "").strip()
+    if is_ko:
+        practical = _korean_practical_fallback(issues, facts, activities, activity_labels)
+        main_issue = _korean_main_issue_fallback(issues, facts, activity_labels)
+        intro = "AI 모델이 일시적으로 응답하지 않아, Paradiso가 구조화된 법률 분석 메모를 대신 표시합니다."
+        lines = [intro, ""]
+        if "post_status_change_residual_duty" in issues and previous and current:
+            lines.append(
+                f"{previous}에서 {current}로 이미 체류자격이 변경된 상태라면, 질문은 원칙적으로 현재 체류자격인 {current} 기준에서 먼저 검토해야 합니다. "
+                f"과거 {previous}의 신고·승인 조건 논리가 자동으로 계속 적용된다고 단정할 수는 없지만, 반대로 신고의무가 전혀 없다고 단정할 수도 없습니다."
+            )
+        elif "status_change" in issues and target:
+            from_status = current or previous or "현재 체류자격"
+            lines.append(f"이 질문은 {from_status}에서 {target}로 체류자격을 변경할 수 있는지에 관한 경로와 요건을 먼저 확인해야 하는 사안입니다.")
+        elif "study_on_non_study_status" in issues:
+            status = current or "현재 체류자격"
+            acts = ", ".join(activity_labels) or "수학 활동"
+            lines.append(f"{status} 상태에서 {acts}을/를 하려는 사안이므로, 먼저 현재 체류자격의 활동범위와 체류 목적 정합성 기준에서 검토해야 합니다.")
+        elif "registration_or_residence_report" in issues:
+            status = current or "현재 체류자격"
+            lines.append(f"{status} 관련 외국인등록·체류 신고 문제이므로, 학교 등록이 아니라 출입국 체류 신고의 기한·대상·관할을 중심으로 확인해야 합니다.")
+        elif practical:
+            lines.append(practical)
+        elif current or activity_labels:
+            lines.append(f"현재 체류자격 {current or '미확인'}에서 {', '.join(activity_labels) or '해당 활동'}에 관한 쟁점을 기준으로 확인해야 합니다.")
+        if practical and practical not in lines[-1:]:
+            lines.extend(["", f"실무상 접근: {practical}"])
+        if main_issue:
+            lines.extend(["", f"핵심 쟁점은 {main_issue}"])
+        if issue_labels:
+            lines.extend(["", "주요 쟁점:", *[f"* {label}" for label in issue_labels]])
+        fact_lines: List[str] = []
+        if current:
+            fact_lines.append(f"현재 ARC상 체류자격/세부자격이 {current}인지")
+        if previous:
+            fact_lines.append(f"이전 체류자격 {previous}의 승인 조건이나 신고 이력이 남아 있는지")
+        if target:
+            fact_lines.append(f"목표 체류자격/절차가 {target}인지")
+        if activity_labels:
+            fact_lines.append(f"활동 유형이 {', '.join(activity_labels)} 중 무엇인지")
+        fact_lines.extend([d for d in decisive if isinstance(d, str) and d not in fact_lines])
+        if fact_lines:
+            lines.extend(["", "확인할 사실:", *[f"* {item}" for item in fact_lines[:8]]])
+        if questions:
+            lines.extend(["", "공식 확인 질문:", *[f"* {q}" for q in questions]])
+        lines.extend(["", source_note, "이 메모는 최종 판단이 아니며, 시작 전 1345, HiKorea 또는 관할 출입국·외국인청에 위 사실관계를 기준으로 확인하세요."])
+        return "\n".join(lines)
+
+    intro = "The AI model is temporarily unavailable, so Paradiso is showing a structured legal-analysis preparation note."
+    lines = [intro, ""]
+    if "post_status_change_residual_duty" in issues and previous and current:
+        lines.append(
+            f"Because the status has already changed from {previous} to {current}, analyze the side activity first under the current {current} status. "
+            f"A reporting logic tied to the former {previous} status does not automatically continue, but it also cannot be treated as automatically irrelevant without checking approval conditions and reporting rules."
+        )
+    elif "status_change" in issues and target:
+        from_status = current or previous or "the current status"
+        lines.append(f"Treat this as a route question about changing from {from_status} to {target}, not merely as an activity-scope question about the current status.")
+    elif "study_on_non_study_status" in issues:
+        status = current or "the current status"
+        acts = ", ".join(activity_labels) or "study activity"
+        lines.append(f"For {acts} on {status}, review the current status's permitted activity scope and purpose-of-stay alignment first.")
+    elif "registration_or_residence_report" in issues:
+        status = current or "the current status"
+        lines.append(f"This is an alien-registration/residence-reporting issue for {status}; do not treat the word registration as school enrollment unless the facts say that. ")
+    elif practical:
+        lines.append(practical)
+    elif current or activity_labels:
+        lines.append(f"Review {', '.join(activity_labels) or 'the activity'} under {current or 'the current status'}.")
+    if practical and practical not in lines[-1:]:
+        lines.extend(["", f"Practical posture: {practical}"])
+    if main_issue:
+        lines.extend(["", f"Main issue: {main_issue}"])
+    if issue_labels:
+        lines.extend(["", "Key issues:", *[f"* {label}" for label in issue_labels]])
+    fact_lines = []
+    if current:
+        fact_lines.append(f"current ARC status/sub-status: {current}")
+    if previous:
+        fact_lines.append(f"previous-status approval/reporting conditions tied to {previous}")
+    if target:
+        fact_lines.append(f"target status/procedure: {target}")
+    if activity_labels:
+        fact_lines.append(f"activity category: {', '.join(activity_labels)}")
+    fact_lines.extend([d for d in decisive if isinstance(d, str) and d not in fact_lines])
+    if fact_lines:
+        lines.extend(["", "Facts to confirm:", *[f"* {item}" for item in fact_lines[:8]]])
+    if questions:
+        lines.extend(["", "Questions to confirm with the official office:", *[f"* {q}" for q in questions]])
+    lines.extend(["", source_note, "This is not a final determination. Before acting, confirm the fact pattern with 1345, HiKorea, or the competent immigration office."])
+    return "\n".join(lines)
 
 def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base_meta: Dict[str, Any], attempt_meta: Dict[str, Any], reason: str) -> Dict[str, Any]:
-    answer = _localized_fallback_answer(
+    legal_analysis = base_meta.get("legal_analysis") if isinstance(base_meta.get("legal_analysis"), dict) else None
+    answer = build_legal_analysis_fallback_answer(
         prompt=prompt,
         lang=lang,
-        visa_code=base_meta.get("visa_code_detected"),
-        question_type=base_meta.get("question_type_detected"),
-        official_questions=list(base_meta.get("official_confirmation_questions") or []),
+        base_meta=base_meta,
+        legal_analysis=legal_analysis,
     )
+    legal_analysis_exists = bool(legal_analysis)
+    fallback_meta = dict(base_meta)
+    fallback_meta["legal_analysis_exists"] = legal_analysis_exists
+    if legal_analysis_exists:
+        fallback_meta["fallback_answer_kind"] = "legal_analysis_preparation_note"
+        if fallback_meta.get("answer_quality_mode") == "source_unavailable":
+            fallback_meta["answer_quality_mode"] = "source_limited"
+            fallback_meta["source_confidence_level"] = "low"
+        if str(fallback_meta.get("source_state") or "").lower() in {"", "source_unavailable", "unavailable", "disabled"}:
+            fallback_meta["source_state"] = "legal_analysis_preparation_note"
+    else:
+        fallback_meta["fallback_answer_kind"] = "structured_preparation_note"
     return {
         **attempt_meta,
-        **base_meta,
+        **fallback_meta,
         "answer": answer,
         "provider": "deterministic_fallback",
-        "model": "source-aware-preparation-note",
+        "model": "legal-analysis-preparation-note",
         "llm_provider": "deterministic_fallback",
         "final_model": None,
         "provider_family_fallback_used": False,
@@ -904,7 +1108,7 @@ def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base
         "llm_unavailable": True,
         "provider_unavailable": True,
         "fallback_answer_reason": reason,
-        "fallback_answer_kind": "source_aware_preparation_note",
+        "fallback_answer_kind": fallback_meta.get("fallback_answer_kind") or "legal_analysis_preparation_note",
         "fallback_answer": answer,
         "copy_safe_answer": answer,
         "ollama_fallback_enabled": ENABLE_OLLAMA_FALLBACK,
@@ -2691,6 +2895,7 @@ async def ask(req: AskRequest) -> AskResponse:
         law_sources=(law_evidence_pack or {}).get("law_sources", []),
         law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
         legal_analysis=(law_evidence_pack or {}).get("legal_analysis"),
+        legal_analysis_exists=bool((law_evidence_pack or {}).get("legal_analysis")),
         immigration_facts=(law_evidence_pack or {}).get("immigration_facts", {}),
         legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types", []),
         proposed_activity_type=(law_evidence_pack or {}).get("proposed_activity_type", []),
