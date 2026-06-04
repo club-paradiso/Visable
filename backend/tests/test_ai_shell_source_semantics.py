@@ -89,10 +89,10 @@ class AiShellStaticTests(unittest.TestCase):
     # -- Law-source unavailable display (Part C) ----------------------------
     def test_law_unavailable_uses_friendly_text(self):
         self.assertIn(
-            "Supporting legal source could not be retrieved for this answer.",
+            "Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.",
             self.html,
         )
-        self.assertIn("이 답변에 사용할 보조 법령 근거를 가져오지 못했습니다.", self.html)
+        self.assertIn("법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.", self.html)
 
     def test_raw_source_unavailable_not_default_user_text(self):
         # The raw code may exist only in the warning-code map / details block,

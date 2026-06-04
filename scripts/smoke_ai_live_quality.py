@@ -240,6 +240,7 @@ def _ai_shell_static_signals():
         "footer_english_present": "Paradiso provides public law/manual-based reference information" in html,
         "english_footer_leak": "Paradiso provides public law/manual-based reference information" not in html,
         "raw_source_code_in_prose": "SOURCE_UNAVAILABLE could not" in html,
+        "raw_internal_codes_in_default_ui": any(code in html and (code + " could") in html for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED")),
     }
 
 # Conservative, obviously-unsupported approval/guarantee phrasing. We do NOT
@@ -345,6 +346,13 @@ def _check_question(base, q):
         # Law evidence tool-layer signals (Part I).
         "planned_law_queries": None,
         "law_evidence_count": None,
+        "law_error_type": None,
+        "parser_status": None,
+        "response_shape_hint": None,
+        "citation_verification_status": None,
+        "source_panel_status": None,
+        "raw_internal_codes_in_default_ui": None,
+        "h1_first_line_warning": None,
         "risky_phrase_warnings": None,
         "direct_answer_early": None,
         "confirmation_checklist_present": None,
@@ -399,6 +407,12 @@ def _check_question(base, q):
     # Law evidence tool-layer signals (Part I) — sanitized, no secrets.
     result["planned_law_queries"] = meta.get("planned_law_queries")
     result["law_evidence_count"] = meta.get("law_evidence_count")
+    result["law_error_type"] = meta.get("law_grounding_error")
+    result["parser_status"] = meta.get("parser_status")
+    result["response_shape_hint"] = meta.get("response_shape_hint")
+    cv = meta.get("citation_verification") if isinstance(meta.get("citation_verification"), dict) else {}
+    result["citation_verification_status"] = cv.get("status")
+    result["source_panel_status"] = meta.get("source_panel_status") or cv.get("status")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
@@ -433,6 +447,12 @@ def _check_question(base, q):
         result["risky_phrase_warnings"] = _risky_phrase_warnings(
             answer, result.get("answer_quality_mode")
         )
+        first_line = next((line.strip() for line in answer.splitlines() if line.strip()), "")
+        if first_line.lower().startswith("whether you can"):
+            result["h1_first_line_warning"] = "answer starts with Whether you can"
+            result["quality_warnings"].append(result["h1_first_line_warning"])
+        if result.get("answer_quality_mode") in ("source_limited", "source_unavailable") and "may be permissible" in lowered:
+            result["quality_warnings"].append("unsupported may be permissible in source-limited answer")
         if result["risky_phrase_warnings"]:
             result["quality_warnings"].append(
                 "risky_phrase_warnings: %s" % result["risky_phrase_warnings"]
@@ -642,6 +662,7 @@ def _emit(report, args):
         print("    english footer present : %s" % sh["footer_english_present"])
         print("    english footer leak    : %s" % sh["english_footer_leak"])
         print("    raw source code in UI  : %s" % sh["raw_source_code_in_prose"])
+        print("    raw internal code leak : %s" % sh.get("raw_internal_codes_in_default_ui"))
     print("  questions:")
     for r in report["questions"]:
         tag = "OK  " if r["ok"] else ("SKIP" if r["status"] == 503 else "FAIL")
@@ -667,9 +688,11 @@ def _emit(report, args):
             r["question_type_detected"], r["related_statuses_not_sources"],
         )
         # Law evidence tool-layer signals (Part I).
-        suffix += " [law_planned=%s law_evidence=%s risky=%s]" % (
+        suffix += " [law_planned=%s law_evidence=%s law_error=%s parser=%s shape=%s citation=%s panel=%s risky=%s]" % (
             len(r["planned_law_queries"]) if r["planned_law_queries"] else 0,
-            r["law_evidence_count"], r["risky_phrase_warnings"],
+            r["law_evidence_count"], r["law_error_type"], r["parser_status"],
+            r["response_shape_hint"], r["citation_verification_status"],
+            r["source_panel_status"], r["risky_phrase_warnings"],
         )
         if r["live_answer_checked"]:
             suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (

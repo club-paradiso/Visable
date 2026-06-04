@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Sequence
 
-from .citation_verifier import verify_citations
+from .citation_verifier import build_law_evidence_citation_verification, verify_citations
 from .grounding_config import load_grounding_config
 
 
@@ -245,10 +245,15 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         from . import law_tools
 
         law_result = law_tools.search_laws(law_search_query, config=config)
-        # Citation verification stays extracted-only here: the user question
-        # rarely contains a statute citation, and we do not issue extra
-        # per-citation live calls from this hot path.
-        citation_verification = verify_citations(question, law_client=None)
+        if law_result.get("status") == "ok":
+            citation_verification = build_law_evidence_citation_verification(
+                law_result.get("results", []), query=law_search_query, law_api_attempted=True,
+            )
+        else:
+            citation_verification = build_law_evidence_citation_verification(
+                [], query=law_search_query,
+                law_error_type=law_result.get("error_type", ""), law_api_attempted=True,
+            )
     except Exception:
         return {
             "attempted": True,
@@ -277,7 +282,11 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         "law_grounding_used": used,
         "law_grounding": law_result.get("results", []) if used else [],
         "citation_verification": citation_verification,
-        "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query}],
+        "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query, "error_type": law_result.get("error_type", ""), "parser_status": law_result.get("parser_status", ""), "response_shape_hint": law_result.get("response_shape_hint", ""), "source_url": law_result.get("source_url", "")}],
+        "parser_status": law_result.get("parser_status", ""),
+        "response_shape_hint": law_result.get("response_shape_hint", ""),
+        "source_url": law_result.get("source_url", ""),
+        "error_type": law_result.get("error_type", ""),
         "grounding_warnings": list(dict.fromkeys(warnings)),
     }
 

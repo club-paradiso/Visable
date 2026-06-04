@@ -325,14 +325,59 @@ class LawToolTests(unittest.TestCase):
             lt.LAW_API_TIMEOUT,
         )
 
-    def test_malformed_body_maps_to_parse_error(self):
+    def test_html_body_maps_to_bad_response_without_body_leak(self):
         cfg = _audit_oc_cfg()
         def transport(url, timeout):
-            return lt.LawHttpResponse(ok=True, status_code=200, text="<html>not json</html>")
-        self.assertEqual(
-            lt.search_laws("x", config=cfg, transport=transport)["error_type"],
-            lt.LAW_API_PARSE_ERROR,
-        )
+            return lt.LawHttpResponse(ok=True, status_code=200, text="<html><body>secret-ish failure page</body></html>")
+        result = lt.search_laws("x", config=cfg, transport=transport)
+        self.assertEqual(result["error_type"], lt.LAW_API_BAD_RESPONSE)
+        self.assertEqual(result["response_shape_hint"], "html")
+        self.assertNotIn("secret-ish", json.dumps(result))
+
+    def test_text_body_maps_to_bad_response(self):
+        cfg = _audit_oc_cfg()
+        def transport(url, timeout):
+            return lt.LawHttpResponse(ok=True, status_code=200, text="temporary gateway text")
+        result = lt.search_laws("x", config=cfg, transport=transport)
+        self.assertEqual(result["error_type"], lt.LAW_API_BAD_RESPONSE)
+        self.assertEqual(result["response_shape_hint"], "text")
+
+
+    def test_json_single_object_response_parses(self):
+        cfg = _audit_oc_cfg()
+        body = json.dumps({"법령명한글": "출입국관리법", "법령ID": "001386"}, ensure_ascii=False)
+        result = lt.search_laws("출입국관리법", config=cfg, transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["response_shape_hint"], "json_object")
+        self.assertEqual(result["results"][0]["law_name"], "출입국관리법")
+
+    def test_json_nested_response_shape_parses(self):
+        cfg = _audit_oc_cfg()
+        body = json.dumps({"response": {"body": {"items": {"item": [{"법령명한글": "출입국관리법 시행령", "MST": "267999"}]}}}}, ensure_ascii=False)
+        result = lt.search_laws("시행령", config=cfg, transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["results"][0]["law_name"], "출입국관리법 시행령")
+
+    def test_xml_response_parses_to_normalized_evidence(self):
+        cfg = _audit_oc_cfg()
+        body = """<?xml version='1.0' encoding='UTF-8'?><LawSearch><law><법령명한글>출입국관리법</법령명한글><법령ID>001386</법령ID></law></LawSearch>"""
+        result = lt.search_laws("출입국관리법", config=cfg, transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["response_shape_hint"], "xml")
+        self.assertEqual(result["results"][0]["law_name"], "출입국관리법")
+
+    def test_official_error_payload_maps_to_official_error(self):
+        cfg = _audit_oc_cfg()
+        body = json.dumps({"LawSearch": {"resultCode": "99", "message": "ERROR invalid request"}}, ensure_ascii=False)
+        result = lt.search_laws("x", config=cfg, transport=_RecordingTransport(body))
+        self.assertEqual(result["error_type"], lt.LAW_API_OFFICIAL_ERROR)
+        self.assertEqual(result["parser_status"], "official_error")
+
+    def test_empty_result_maps_to_no_results_with_shape_hint(self):
+        cfg = _audit_oc_cfg()
+        result = lt.search_laws("x", config=cfg, transport=_RecordingTransport(""))
+        self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
+        self.assertEqual(result["response_shape_hint"], "empty")
 
     def test_unexpected_json_maps_to_no_results(self):
         cfg = _audit_oc_cfg()
@@ -384,7 +429,7 @@ class QueryPlanningTests(unittest.TestCase):
             visa_code="H-1",
         )
         joined = " ".join(plan["queries"])
-        for token in ("활동범위", "체류자격외활동", "체류자격 변경", "관광취업"):
+        for token in ("출입국관리법 시행령 별표 체류자격 관광취업", "관광취업 H-1 활동범위", "체류자격외활동 허가"):
             self.assertIn(token, joined, token)
         self.assertEqual(plan["question_type"], lt.LQ_ACTIVITY_ON_STATUS)
 
@@ -393,6 +438,12 @@ class QueryPlanningTests(unittest.TestCase):
         a = lt.plan_law_queries(q, visa_code="D-2")
         b = lt.plan_law_queries(q, visa_code="D-2")
         self.assertEqual(a, b)
+
+    def test_h1_korean_study_plan_includes_high_signal_queries(self):
+        plan = lt.plan_law_queries("H-1 비자인데 한국 대학 계절학기 수강 가능?", visa_code="H-1")
+        joined = " ".join(plan["queries"])
+        self.assertIn("출입국관리법 시행령 별표 체류자격 관광취업", joined)
+        self.assertIn("체류자격외활동 허가", joined)
 
     def test_plan_respects_max_queries(self):
         plan = lt.plan_law_queries("H-1 계절학기 수강 활동범위 체류자격외활동", visa_code="H-1", max_queries=2)
@@ -477,6 +528,25 @@ class EvidencePackTests(unittest.TestCase):
         self.assertEqual(pack["related_statuses_not_sources"], ["D-2", "D-4"])
         self.assertEqual(pack["direct_manual_sources"], [])
 
+    def test_normalized_law_evidence_wires_citation_verification(self):
+        cfg = _audit_oc_cfg()
+        pack = lt.build_law_evidence_pack(
+            "H-1으로 계절학기 수강 가능?", visa_code="H-1", config=cfg,
+            transport=_RecordingTransport(law_search_body()),
+        )
+        cv = pack["citation_verification"]
+        self.assertNotEqual(cv["status"], "not_wired")
+        self.assertEqual(cv["status"], "verified_law_evidence")
+        self.assertEqual(cv["citations"][0]["source_type"], "law")
+
+    def test_no_law_evidence_does_not_report_not_wired(self):
+        pack = lt.build_law_evidence_pack(
+            "Can I take a summer course on H-1?", visa_code="H-1",
+            config=GroundingConfig(mode="audit"),
+        )
+        self.assertIn(pack["citation_verification"]["status"], {"law_api_unavailable", "law_evidence_unavailable", "citation_verification_not_applicable"})
+        self.assertNotEqual(pack["citation_verification"]["status"], "not_wired")
+
     def test_law_used_is_context_not_checklist(self):
         cfg = _audit_oc_cfg()
         rec = _RecordingTransport(law_search_body())
@@ -556,7 +626,7 @@ class RiskyPhraseTests(unittest.TestCase):
             law_intent=True,
         )
         directive = aq.build_answer_directives(q, lang="en")
-        self.assertIn("Paradiso cannot confirm from currently verified sources", directive)
+        self.assertIn("Paradiso cannot verify that an H-1 holder may take", directive)
         self.assertIn("official confirmation is required", directive)
 
 
