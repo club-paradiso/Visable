@@ -25,6 +25,10 @@ if str(BACKEND_DIR) not in sys.path:
 
 from services.grounding_config import load_grounding_config  # noqa: E402
 from services.law_tools import _sanitize_url, inspect_law_api_response_shape  # noqa: E402
+from services.evidence_ontology import (  # noqa: E402
+    build_immigration_core_batch,
+    source_family_support_status,
+)
 
 DEFAULT_HOST = "http://www.law.go.kr"
 SEARCH_PATH = "/DRF/lawSearch.do"
@@ -134,14 +138,92 @@ def capture(family: str, query: str, display: int, timeout: float) -> Dict[str, 
     }
 
 
+def _batch_record(family: str, query: str, display: int, timeout: float, extra: Dict[str, Any]) -> Dict[str, Any]:
+    """Sanitized capture record for one batch (probe, family) pair.
+
+    Families the Open Law API tooling cannot retrieve (manual, precedent,
+    constitutional_decision, intelligent_search, or any None-target family) are
+    reported as ``unsupported`` / ``planned_not_wired`` WITHOUT a network call —
+    an unwired family is a planning state, never a parser ``bad_response``.
+    """
+    support = source_family_support_status(family)
+    base = {
+        "probe_id": extra.get("probe_id", ""),
+        "source_family": family,
+        "support_status": support,
+        "query": query,
+        "evidence_goal": extra.get("evidence_goal", ""),
+        "legal_issue_types": extra.get("legal_issue_types", []),
+    }
+    if family not in FAMILY_TARGETS or not FAMILY_TARGETS.get(family):
+        # Two distinct non-error states (never bad_response):
+        #   * planned_not_wired — an official family with no adapter yet;
+        #   * not_api_retrievable — a pipeline-wired family (e.g. the manual)
+        #     that is grounded locally, not via the Open Law API this helper
+        #     samples.
+        not_wired = support == "planned_not_wired"
+        state = "unsupported" if not_wired else "not_api_retrievable"
+        base.update({
+            "source_family_status": state,
+            "response_shape_hint": "unknown",
+            "parser_status": "planned_not_wired" if not_wired else "not_api_retrievable",
+            "normalized_count": 0,
+            "safe_error_type": "",
+            "sanitized_url": "",
+        })
+        return base
+    meta = capture(family, query, max(1, min(display, 10)), timeout)
+    base.update({
+        "source_family_status": meta.get("status", "unknown"),
+        "response_shape_hint": meta.get("response_shape_hint", "unknown"),
+        "parser_status": meta.get("parser_status", ""),
+        "normalized_count": int(meta.get("normalized_count", 0) or 0),
+        "safe_error_type": meta.get("safe_error_message", meta.get("parser_status", "")) if meta.get("status") in {"transport_error", "not_configured", "unsupported"} else "",
+        "sanitized_url": meta.get("sanitized_url", ""),
+    })
+    return base
+
+
+def capture_batch(batch_name: str, display: int, timeout: float) -> Dict[str, Any]:
+    """Run a named batch generated from the evidence ontology/query planner.
+
+    The batch is produced by build_immigration_core_batch() so the probes come
+    from the same ontology + planner the live pipeline uses, not a disconnected
+    hardcoded list. Output is fully sanitized (no OC/API-key leakage, no raw
+    response bodies).
+    """
+    if batch_name != "immigration-core":
+        raise ValueError(f"Unknown batch: {batch_name}")
+    records = []
+    for entry in build_immigration_core_batch():
+        records.append(_batch_record(
+            entry["source_family"],
+            entry.get("query_ko") or entry.get("query_en") or "",
+            display,
+            timeout,
+            entry,
+        ))
+    return {
+        "batch": batch_name,
+        "generated_from": "evidence_ontology.build_immigration_core_batch",
+        "record_count": len(records),
+        "records": records,
+    }
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description="Capture sanitized Open Law API response-shape metadata; never prints OC/API keys.")
     ap.add_argument("--family", choices=sorted(FAMILY_TARGETS), default="statute", help="official source family to sample")
     ap.add_argument("--query", default="", help="sample query; defaults to a family-specific immigration-law query")
+    ap.add_argument("--batch", choices=["immigration-core"], default=None, help="run an ontology-generated batch across representative families/issues")
     ap.add_argument("--display", type=int, default=3, help="Open Law API display count (metadata only)")
     ap.add_argument("--timeout", type=float, default=8.0, help="HTTP timeout seconds")
     ap.add_argument("--write-fixture", action="store_true", help="write sanitized metadata fixture under backend/tests/fixtures/law_api_shapes/")
     args = ap.parse_args()
+    if args.batch:
+        result = capture_batch(args.batch, max(1, min(args.display, 10)), args.timeout)
+        print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
+        return 0
     query = args.query or FAMILY_QUERY_HINTS[args.family]
     meta = capture(args.family, query, max(1, min(args.display, 10)), args.timeout)
     print(json.dumps(meta, ensure_ascii=False, indent=2, sort_keys=True))

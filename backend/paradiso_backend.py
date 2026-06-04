@@ -365,6 +365,15 @@ class AskResponse(BaseModel):
     source_panel_status: str = ""
     source_family_statuses: Dict[str, str] = Field(default_factory=dict)
     parser_status_by_family: Dict[str, str] = Field(default_factory=dict)
+    # Generalized official-evidence ontology + structured query plan (non-secret).
+    # The ontology snapshot describes the detected issue dimensions; the query
+    # plan is a list of structured query objects (source_family, evidence_goal,
+    # status anchors, reason). source_family_support flags wired vs planned-not-
+    # wired families. See evidence_ontology.py / the generalized-retrieval doc.
+    evidence_ontology: Dict[str, Any] = Field(default_factory=dict)
+    evidence_query_plan: List[Dict[str, Any]] = Field(default_factory=list)
+    evidence_goal_by_query: List[str] = Field(default_factory=list)
+    source_family_support: Dict[str, str] = Field(default_factory=dict)
     direct_evidence_count: int = 0
     related_evidence_count: int = 0
     analogical_evidence_count: int = 0
@@ -3320,6 +3329,10 @@ async def ask(req: AskRequest) -> AskResponse:
         source_type_statuses=(law_evidence_pack or {}).get("source_type_statuses", {}),
         source_family_statuses=(law_evidence_pack or {}).get("source_family_statuses", {}),
         parser_status_by_family=(law_evidence_pack or {}).get("parser_status_by_family", {}),
+        evidence_ontology=(law_evidence_pack or {}).get("evidence_ontology", {}),
+        evidence_query_plan=(law_evidence_pack or {}).get("evidence_query_plan", []),
+        evidence_goal_by_query=(law_evidence_pack or {}).get("evidence_goal_by_query", []),
+        source_family_support=(law_evidence_pack or {}).get("source_family_support", {}),
         direct_evidence_count=(law_evidence_pack or {}).get("direct_evidence_count", 0),
         related_evidence_count=(law_evidence_pack or {}).get("related_evidence_count", 0),
         analogical_evidence_count=(law_evidence_pack or {}).get("analogical_evidence_count", 0),

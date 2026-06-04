@@ -52,6 +52,14 @@ from .legal_analysis import (
     extract_immigration_facts,
     score_evidence_relevance,
 )
+from .evidence_ontology import (
+    ONTOLOGY_VERSION,
+    is_source_family_wired,
+    plan_evidence_queries,
+    route_source_families,
+    source_family_support_status,
+    status_family,
+)
 
 LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v4-official-source-family-adapters"
 
@@ -1707,6 +1715,14 @@ def build_law_evidence_pack(
 
     immigration_facts = extract_immigration_facts(text, visa_code=visa_code)
     legal_issue_types = classify_legal_issue_types(text, immigration_facts)
+    # Generalized, structured evidence query plan (ontology-driven). Each entry
+    # carries its source family, status-role anchor, evidence goal and reason —
+    # so the plan is auditable and never a per-visa hardcode (Parts A/B/C).
+    evidence_query_plan = plan_evidence_queries(
+        immigration_facts, legal_issue_types,
+        activity_types=immigration_facts.get("proposed_activities"),
+        max_queries=max_queries,
+    )
     codes = [c for c in [
         immigration_facts.get("previous_status"),
         immigration_facts.get("current_status"),
@@ -1894,6 +1910,31 @@ def build_law_evidence_pack(
         "immigration_facts": immigration_facts,
         "legal_issue_types": legal_issue_types,
         "proposed_activity_type": immigration_facts.get("proposed_activities", []),
+        # Generalized ontology snapshot + structured query plan (Parts A/B/C).
+        "evidence_ontology": {
+            "ontology_version": ONTOLOGY_VERSION,
+            "status_family": status_family(
+                immigration_facts.get("current_parent_status")
+                or immigration_facts.get("current_status")
+            ),
+            "activity_types": immigration_facts.get("proposed_activities", []),
+            "legal_issue_types": legal_issue_types,
+            "source_families_planned": route_source_families(legal_issue_types),
+            "wired_families_planned": [
+                f for f in route_source_families(legal_issue_types)
+                if is_source_family_wired(f)
+            ],
+            "unwired_families_planned": [
+                f for f in route_source_families(legal_issue_types)
+                if not is_source_family_wired(f)
+            ],
+        },
+        "evidence_query_plan": evidence_query_plan,
+        "evidence_goal_by_query": [q["evidence_goal"] for q in evidence_query_plan],
+        "source_family_support": {
+            f: source_family_support_status(f)
+            for f in route_source_families(legal_issue_types)
+        },
         # Evidence buckets (kept strictly separate — Part D / evidence discipline)
         "direct_manual_sources": direct_manual_sources,
         "related_manual_sources": related_manual_sources,
