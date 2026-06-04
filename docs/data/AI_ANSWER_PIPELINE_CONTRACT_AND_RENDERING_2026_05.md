@@ -195,7 +195,53 @@ Guarantees:
   `raw_code_default_ui_leak`, `copy_safe_answer_diagnostic_leak`, plus the H-1 /
   E-7 / G-1-5 / F-2-99 / C-3 sample questions.
 
-## 9. Known limitations
+## 9. Risk disposition and operator verification
+
+These limits are **not PR blockers**, because fixing them in this rendering-contract
+PR would either require live external credentials, change the product safety
+model, or expand the source-adapter scope beyond the bug being fixed.
+
+| Risk | Status | Handling |
+|---|---|---|
+| Live Open Law API returns no direct evidence | Expected product limit | Keep `direct/contextual/limited` states honest; do not invent citations |
+| Deterministic fallback is not a full LLM memo | Intentional safety boundary | Keep it as a preparation note; use live LLM only when provider succeeds |
+| Source-family support is incremental | Follow-up roadmap | Add legal interpretation / appeal / precedent adapters separately |
+| Live-provider wording is not exercised in CI | Environment limit | Use mocked contract tests in CI and post-merge live smoke in production |
+
+Operator post-merge smoke checklist:
+
+```bash
+curl -sS https://web-production-14f9a.up.railway.app/health | python3 -m json.tool
+BACKEND_URL="https://web-production-14f9a.up.railway.app" python3 scripts/smoke_ai_live_quality.py --json
+```
+
+Then open:
+
+```text
+https://lucanomics.github.io/Paradiso/?v=answer-contract-272
+```
+
+Manual questions:
+
+```text
+H-1 외국인등록은 언제 해야 하나요?
+E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?
+G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?
+Can I change status to F-2-99?
+C-3 단기방문으로 paid work를 할 수 있나요?
+```
+
+Pass criteria:
+
+- no `Can't find variable` / frontend render crash;
+- render failures, if any, are labeled `frontend_render`, not `network`;
+- raw diagnostic codes are not default source-panel labels;
+- copy-safe answer does not include developer diagnostics;
+- H-1 registration does not mention school enrollment / credits / D-2 / D-4;
+- G-1-5 Korean fallback has no snake_case labels and no English questions;
+- E-7 to F-2-99 answer remains confidence-gated.
+
+## 10. Known limitations
 
 - The live Open Law API can still return **no direct evidence**; the panel then
   honestly reports limited/contextual authority rather than inventing citations.
@@ -205,8 +251,12 @@ Guarantees:
   enforcement-decree / administrative-rule family is parsed yet, so per-family
   diagnostics may show `no_results` / `unsupported` (normal "nothing to cite"
   outcomes, **not** parser failures).
+- Live-provider answer wording is not asserted as a hard CI gate because the
+  provider response is nondeterministic and requires external credentials. CI
+  instead checks the deterministic backend/frontend contract; live wording is
+  verified by post-merge smoke.
 
-## 10. Safety note
+## 11. Safety note
 
 This work does **not** enable Ollama, change OpenRouter model policy, change law
 API credentials, invent official citations, hide real source limitations, or
