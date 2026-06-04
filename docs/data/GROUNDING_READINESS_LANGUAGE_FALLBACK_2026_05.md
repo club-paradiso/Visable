@@ -122,10 +122,10 @@ wording, not just the summary. The calculator remains ephemeral — no
 ## 10. Model configuration status
 
 Model resolution was hardened in PR #246 and is confirmed here by tests:
-`_resolve_llm_config()` defaults `OPENROUTER_MODEL` to the verified
-`google/gemma-4-31b-it:free`, honors an env override, and returns provider
-`none` (safe 503, no secret leak) when no key is set. `ALLOW_GROQ_FALLBACK`
-(default true) gates Groq when OpenRouter is absent. `/health` reports
+`_resolve_llm_config()` defaults `OPENROUTER_MODEL` to the approved
+`qwen/qwen3-next-80b-a3b-instruct:free`, honors an env override, and returns provider
+`none` (safe 503, no secret leak) when no key is set. Gemma remains an explicit
+OpenRouter fallback candidate. `ALLOW_GROQ_FALLBACK` gates Groq when OpenRouter is absent. `/health` reports
 provider/model (public ids only). No code change was needed; coverage is proven
 by `ModelConfigResolutionTests` and the env vars are documented below.
 
@@ -142,8 +142,8 @@ eligibility/approval. Guarded by `F4RouteFollowThroughTests`.
 | Variable | Purpose |
 | --- | --- |
 | `OPENROUTER_API_KEY` | Enables `/api/ask` via OpenRouter (preferred). |
-| `OPENROUTER_MODEL` | Defaults to `google/gemma-4-31b-it:free`; override if catalog changes. |
-| `ALLOW_GROQ_FALLBACK` | `true` (default) allows Groq when OpenRouter is unset; `false` hard-requires OpenRouter/Gemma. |
+| `OPENROUTER_MODEL` | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free`; Gemma remains a fallback candidate; override if catalog changes. |
+| `ALLOW_GROQ_FALLBACK` | Allows Groq only when explicitly enabled; `false` hard-requires OpenRouter/Qwen-first routing. |
 | `LAW_GROUNDING_MODE` | `disabled` (default) / `audit` / `enabled`. |
 | `LAW_API_KEY` | Required for any external law call (audit/enabled). |
 | `LAW_API_BASE_URL` | Law API base URL (audit/enabled). |

@@ -170,7 +170,7 @@ G-1 medical treatment (with G-1 route/variant context).
   `/health` exposes `providers` booleans, the public `model` id, and
   `law_grounding_mode`; `/api/debug/law-grounding/preflight` exposes the
   law-grounding mode and readiness booleans. No key values are ever exposed.
-* `OPENROUTER_MODEL` resolves to `google/gemma-4-31b-it:free` by default
+* `OPENROUTER_MODEL` resolves to `qwen/qwen3-next-80b-a3b-instruct:free` by default
   (`backend/paradiso_backend.py`), overridable per-deploy by the `OPENROUTER_MODEL`
   env var.
 * `LAW_GROUNDING_MODE` defaults to `disabled` (safe-by-default). Live law

@@ -409,7 +409,7 @@ class DocumentationTests(unittest.TestCase):
             "smoke_ai_live_quality.py",
             "ALLOW_GROQ_FALLBACK",
             "manual_to_law_fallback_used",
-            "OPENROUTER_MODEL=google/gemma-4-31b-it:free",
+            "OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free",
             "LAW_GROUNDING_MODE=audit",
             "preparation aids only",
         ):

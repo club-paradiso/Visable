@@ -2628,8 +2628,6 @@ async def ask(req: AskRequest) -> AskResponse:
                     "provider_unavailable": False,
                     "deterministic_fallback_answer_used": False,
                     "provider_family_fallback_used": False,
-                    "copy_safe_answer": "",
-                    "fallback_answer": "",
                 },
             )
         # All retryable OpenRouter candidates failed.

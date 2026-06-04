@@ -20,7 +20,7 @@ edges. This pass:
 2. adds a manual-to-law grounding **fallback** so legal/activity-scope questions
    with no manual document grounding still get statutory *context* (never an
    invented checklist);
-3. makes Groq fallback explicit and **strict-by-default** (OpenRouter/Gemma);
+3. makes Groq fallback explicit and **strict-by-default** (OpenRouter/Qwen-first routing);
 4. adds provider-aware deployed live smoke + reproducible commands;
 5. adds deterministic tests and this documentation.
 
@@ -157,7 +157,7 @@ Question: `H-1 비자인데 한국 대학에서 계절학기를 수강할 수 �
 ## 9. Deployed Railway health status observed
 
 Per the task brief, the deployed `/health` after the Railway env update reported:
-backend `status: ok`; OpenRouter configured; model `google/gemma-4-31b-it:free`;
+backend `status: ok`; OpenRouter configured; model `qwen/qwen3-next-80b-a3b-instruct:free`;
 provider `openrouter`; `law_api` true; `law_grounding_mode: audit`;
 `groq_fallback_allowed: true`.
 
@@ -232,7 +232,7 @@ BACKEND_URL="https://web-production-14f9a.up.railway.app" \
   python3 scripts/smoke_ai_live_quality.py --json
 ```
 
-Expected: no secrets in any response; OpenRouter/Gemma confirmed on `/health`;
+Expected: no secrets in any response; OpenRouter/Qwen-first routing confirmed on `/health`;
 law grounding reported as `audit`; H-1 activity-scope questions attempt law
 grounding (or expose why not); answers avoid invented approval/prohibition and
 do not guarantee eligibility; metadata/source/law-grounding status present.
@@ -242,7 +242,7 @@ do not guarantee eligibility; metadata/source/law-grounding status present.
 ## 12. Groq fallback control behavior
 
 - Controlled by the existing `ALLOW_GROQ_FALLBACK` env var (we did **not** invent
-  a new name). Its **code default is now `false`** (strict OpenRouter/Gemma).
+  a new name). Its **code default is now `false`** (strict OpenRouter/Qwen Next).
 - Precedence is unchanged: OpenRouter is used whenever `OPENROUTER_API_KEY` is
   set; Groq is reached only when OpenRouter is unset **and**
   `ALLOW_GROQ_FALLBACK=true`. There is no silent runtime switch from a failing
@@ -264,8 +264,8 @@ do not guarantee eligibility; metadata/source/law-grounding status present.
 | Variable | Recommended value | Notes |
 | --- | --- | --- |
 | `OPENROUTER_API_KEY` | (secret) | Required for live answers; intended production provider. |
-| `OPENROUTER_MODEL` | `google/gemma-4-31b-it:free` | Also the code default; pin verified against the OpenRouter catalog. |
-| `ALLOW_GROQ_FALLBACK` | `false` | Strict OpenRouter/Gemma. Leave unset to inherit the strict default; set `true` only for an intentional Groq-only deployment. |
+| `OPENROUTER_MODEL` | `qwen/qwen3-next-80b-a3b-instruct:free` | Also the code default; Gemma remains a fallback candidate. |
+| `ALLOW_GROQ_FALLBACK` | `false` | Strict OpenRouter/Qwen-first routing. Leave unset to inherit the strict default; set `true` only for an intentional Groq-only deployment. |
 | `LAW_GROUNDING_MODE` | `audit` | Enables law-grounding intent + audit-mode external calls. |
 | `LAW_API_KEY` | (secret) | Needed for real law-API calls in audit/enabled mode. |
 | `LAW_API_BASE_URL` | (endpoint) | Law-API base URL (audit/enabled). |
@@ -275,7 +275,7 @@ do not guarantee eligibility; metadata/source/law-grounding status present.
 Non-secret assignments (set the secret values in the Railway dashboard, not here):
 
 ```
-OPENROUTER_MODEL=google/gemma-4-31b-it:free
+OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
 ALLOW_GROQ_FALLBACK=false
 LAW_GROUNDING_MODE=audit
 ```

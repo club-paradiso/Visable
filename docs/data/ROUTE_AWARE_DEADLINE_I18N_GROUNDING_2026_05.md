@@ -174,18 +174,17 @@ helper; live runs are still environment-blocked here and documented as such.
 
 ## 11. Model configuration changes, including Gemma 4 free status (Parts H/H-0)
 
-- **Mismatch reconciled:** the backend default was `openrouter/auto` while
-  `.env.example` pinned `google/gemma-4-31b-it:free`. The code default is now
-  `_DEFAULT_OPENROUTER_MODEL = "google/gemma-4-31b-it:free"`, so Gemma free is
-  used even if `OPENROUTER_MODEL` is unset. The id is verified against the
-  committed `.env.example` and `docs/ai/OPENROUTER_GEMMA_PIN_AND_LAW_GROUNDING_NEXT_STEPS.md`;
-  override per-deploy with `OPENROUTER_MODEL` if the catalog changes.
+- **Mismatch reconciled:** the backend default no longer uses random routing.
+  The code default is now
+  `_DEFAULT_OPENROUTER_MODEL = "qwen/qwen3-next-80b-a3b-instruct:free"`, with
+  Gemma free retained as the second explicit OpenRouter fallback candidate.
+  Override per-deploy with `OPENROUTER_MODEL` if the catalog changes.
 - New `_resolve_llm_config()` centralizes provider/model resolution
   (OpenRouter → Groq-if-allowed → none) and is logged once at startup and
   surfaced on `/health` (`llm.provider`, `llm.model`, `groq_fallback_allowed`) —
   model ids only, never API keys.
 - New `ALLOW_GROQ_FALLBACK` env (default `true`, preserving prior behavior).
-  Set `false` to hard-require OpenRouter/Gemma; `/api/ask` then returns 503
+  Set `false` to hard-require OpenRouter/Qwen-first routing; `/api/ask` then returns 503
   rather than silently answering via Groq.
 
 ## 12. Tests added
