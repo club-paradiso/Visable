@@ -69,6 +69,7 @@ DEFAULT_BACKEND = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000")
 SAMPLE_QUESTIONS = [
     {"id": "h1_study", "visa_code": "H-1", "question": "H-1 비자인데 한국 대학에서 학점 계절학기를 수강할 수 있을까요?", "lang": "ko", "expect_confirmation_checklist": True, "expect_related_statuses": ["D-2", "D-4"]},
     {"id": "g1_5_study_audit", "visa_code": "G-1-5", "question": "G-1-5 난민소송 중 대학 정규 등록이나 청강 수업이 가능한가요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "g1_5_study_multi", "visa_code": "G-1-5", "question": "G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?", "lang": "ko", "expect_confirmation_checklist": True},
     {"id": "e7_to_f299_side_job", "question": "E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?", "lang": "ko", "expect_confirmation_checklist": True},
     {"id": "h1_foreigner_registration", "visa_code": "H-1", "question": "H-1 외국인등록은 언제 해야 하나요?", "lang": "ko", "expect_confirmation_checklist": True},
     {"id": "h1_to_f299_change", "visa_code": "H-1", "question": "Can I change status to F-2-99?", "lang": "en", "expect_confirmation_checklist": True},
@@ -163,12 +164,39 @@ def _warning_repetition_count(answer):
     return max((lowered.count(m) for m in markers), default=0)
 
 
-def _ai_shell_static_signals():
-    """Static signals about the ai.html answer shell (Part G).
+def _extract_js_function(src, name):
+    """Brace-match a top-level ``function NAME(...) { ... }`` body (no deps)."""
+    import re
 
-    These describe the rendered shell (chips/footer), which the API response
-    cannot show, so we read the local ai.html. Returns None if ai.html is not
-    found (e.g. running against a remote backend from elsewhere). Warn-only."""
+    m = re.search(r"function\s+" + re.escape(name) + r"\s*\(", src)
+    if not m:
+        return ""
+    try:
+        i = src.index("{", m.end())
+    except ValueError:
+        return ""
+    depth = 0
+    for j in range(i, len(src)):
+        ch = src[j]
+        if ch == "{":
+            depth += 1
+        elif ch == "}":
+            depth -= 1
+            if depth == 0:
+                return src[m.start():j + 1]
+    return ""
+
+
+def _ai_shell_static_signals():
+    """Static signals about the ai.html answer shell (Part G + answer pipeline
+    contract).
+
+    These describe the rendered shell (chips/footer) and the answer-rendering
+    contract, which the API response cannot show, so we read the local ai.html.
+    Returns None if ai.html is not found (e.g. running against a remote backend
+    from elsewhere). Warn-only."""
+    import re
+
     here = os.path.dirname(os.path.abspath(__file__))
     ai_html = os.path.join(os.path.dirname(here), "ai.html")
     try:
@@ -176,6 +204,57 @@ def _ai_shell_static_signals():
             html = fh.read()
     except OSError:
         return None
+
+    render_fn = _extract_js_function(html, "renderGroundingSourcePanel")
+    normalize_fn = _extract_js_function(html, "normalizeAnswerMetadata")
+
+    # The original production bug: renderGroundingSourcePanel referenced a
+    # helper-local ``errorType`` it never declared.
+    possible_free_variable_errortype = bool(
+        render_fn
+        and re.search(r"\berrorType\b", render_fn)
+        and not re.search(r"const\s+errorType\s*=", render_fn)
+    )
+    contract_fields = (
+        "law_grounding_warnings", "law_lookup_error_type", "parser_status",
+        "source_family_statuses", "parser_status_by_family", "law_sources",
+        "grounding_sources", "related_statuses_not_sources", "legal_analysis",
+        "legal_analysis_exists", "citation_verification",
+        "deterministic_fallback_answer_used", "fallback_answer_kind",
+        "copy_safe_answer", "answer_certainty_level", "source_panel_state",
+    )
+    missing_source_panel_metadata_defaults = (
+        not normalize_fn
+        or "normalizeAnswerMetadata(" not in render_fn
+        or any(f not in normalize_fn for f in contract_fields)
+    )
+    copy_assigns = re.findall(r"COPY_PAYLOADS\[[^\]]+\]\s*=\s*\{[^}]*\}", html)
+    copy_safe_answer_diagnostic_leak = any(
+        any(tok in a for tok in ("data-diagnostics", "error-details", "developer"))
+        for a in copy_assigns
+    )
+    raw_code_default_ui_leak = any(
+        code in html and (code + " could") in html
+        for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED")
+    )
+    error_classes_wired = all(
+        ("'%s'" % cls) in html for cls in ("network", "backend_http", "provider", "frontend_render")
+    )
+    details_open_by_default = "<details open" in html.lower()
+
+    answer_rendering_contract_ok = (
+        bool(render_fn)
+        and not possible_free_variable_errortype
+        and not missing_source_panel_metadata_defaults
+        and not copy_safe_answer_diagnostic_leak
+        and not raw_code_default_ui_leak
+        and not details_open_by_default
+        and "function classifyAskError(" in html
+        and "frontend_render_error" in html
+        and error_classes_wired
+    )
+    frontend_contract_risk = not answer_rendering_contract_ok
+
     return {
         "related_chips_distinct": ("bdg-related" in html) and ("Related status to verify" in html),
         "related_shown_as_related_not_source": "related_statuses_not_sources" in html,
@@ -183,7 +262,16 @@ def _ai_shell_static_signals():
         "footer_english_present": "Paradiso provides public law/manual-based reference information" in html,
         "english_footer_leak": "Paradiso provides public law/manual-based reference information" not in html,
         "raw_source_code_in_prose": "SOURCE_UNAVAILABLE could not" in html,
-        "raw_internal_codes_in_default_ui": any(code in html and (code + " could") in html for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED")),
+        "raw_internal_codes_in_default_ui": raw_code_default_ui_leak,
+        # AI answer pipeline contract & rendering signals.
+        "answer_rendering_contract_ok": answer_rendering_contract_ok,
+        "frontend_contract_risk": frontend_contract_risk,
+        "possible_free_variable_errorType": possible_free_variable_errortype,
+        "missing_source_panel_metadata_defaults": missing_source_panel_metadata_defaults,
+        "raw_code_default_ui_leak": raw_code_default_ui_leak,
+        "copy_safe_answer_diagnostic_leak": copy_safe_answer_diagnostic_leak,
+        "error_classes_wired": error_classes_wired,
+        "developer_diagnostics_open_by_default": details_open_by_default,
     }
 
 # Conservative, obviously-unsupported approval/guarantee phrasing. We do NOT
@@ -696,8 +784,22 @@ def main(argv=None):
         if args.require_live:
             print("\nFAIL: --require-live set but backend is unreachable.", file=sys.stderr)
             return 1
+        # The ai.html answer-rendering contract is a STATIC check, so surface it
+        # even when the backend is unreachable (it does not need a live backend).
+        sh = report.get("ai_shell")
+        if sh is not None:
+            print("\n  ai answer pipeline contract (static, ai.html):")
+            print("    answer rendering ok    : %s" % sh.get("answer_rendering_contract_ok"))
+            print("    frontend contract risk : %s" % sh.get("frontend_contract_risk"))
+            print("    free-var errorType risk: %s" % sh.get("possible_free_variable_errorType"))
+            print("    missing metadata defs  : %s" % sh.get("missing_source_panel_metadata_defaults"))
+            print("    raw_code default leak  : %s" % sh.get("raw_code_default_ui_leak"))
+            print("    copy_safe diag leak    : %s" % sh.get("copy_safe_answer_diagnostic_leak"))
+            print("    error classes wired    : %s" % sh.get("error_classes_wired"))
         print(
-            "\nSKIPPED: backend unreachable. To run against deployed Railway backend:\n"
+            "\nSKIPPED: backend unreachable (live answer checks). The static ai.html\n"
+            "answer-rendering contract above does not require a live backend.\n"
+            "To run live checks against the deployed Railway backend:\n"
             "  BACKEND_URL=\"https://YOUR-RAILWAY-BACKEND.up.railway.app\" "
             "python3 scripts/smoke_ai_live_quality.py"
         )
@@ -804,6 +906,15 @@ def _emit(report, args):
         print("    english footer leak    : %s" % sh["english_footer_leak"])
         print("    raw source code in UI  : %s" % sh["raw_source_code_in_prose"])
         print("    raw internal code leak : %s" % sh.get("raw_internal_codes_in_default_ui"))
+        print("  ai answer pipeline contract (static, ai.html):")
+        print("    answer rendering ok    : %s" % sh.get("answer_rendering_contract_ok"))
+        print("    frontend contract risk : %s" % sh.get("frontend_contract_risk"))
+        print("    free-var errorType risk: %s" % sh.get("possible_free_variable_errorType"))
+        print("    missing metadata defs  : %s" % sh.get("missing_source_panel_metadata_defaults"))
+        print("    raw_code default leak  : %s" % sh.get("raw_code_default_ui_leak"))
+        print("    copy_safe diag leak    : %s" % sh.get("copy_safe_answer_diagnostic_leak"))
+        print("    error classes wired    : %s" % sh.get("error_classes_wired"))
+        print("    diagnostics open default: %s" % sh.get("developer_diagnostics_open_by_default"))
     print("  questions:")
     for r in report["questions"]:
         tag = "OK  " if r["ok"] else ("SKIP" if r["status"] == 503 else "FAIL")
