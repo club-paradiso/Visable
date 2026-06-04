@@ -361,6 +361,10 @@ class AskResponse(BaseModel):
     missing_direct_authority: bool = True
     authority_summary: str = ""
     source_state: str = ""
+    source_panel_state: str = ""
+    source_panel_label_key: str = ""
+    law_lookup_error_type: str = ""
+    default_source_panel_should_show_raw_codes: bool = False
     answer_first_sentence: str = ""
     first_sentence_quality_warning: str = ""
     direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
@@ -397,6 +401,121 @@ class AskResponse(BaseModel):
     ollama_model: Optional[str] = None
     ollama_error_type: Optional[str] = None
 
+
+SOURCE_PANEL_DIRECT_SOURCE_VERIFIED = "direct_source_verified"
+SOURCE_PANEL_MANUAL_GROUNDING_AVAILABLE = "manual_grounding_available"
+SOURCE_PANEL_LAW_GROUNDING_AVAILABLE = "law_grounding_available"
+SOURCE_PANEL_RELATED_LEGAL_CONTEXT_AVAILABLE = "related_legal_context_available"
+SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE = "structured_legal_analysis_available"
+SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE = "structured_fallback_available"
+SOURCE_PANEL_NO_DIRECT_AUTHORITY_FOUND = "no_direct_authority_found"
+SOURCE_PANEL_LIVE_LAW_LOOKUP_TECHNICAL_ISSUE = "live_law_lookup_technical_issue"
+SOURCE_PANEL_SOURCE_UNAVAILABLE = "source_unavailable"
+
+_LAW_LOOKUP_ERROR_CODES = {
+    "SOURCE_UNAVAILABLE",
+    "LAW_API_BAD_RESPONSE",
+    "LAW_API_PARSE_ERROR",
+    "LAW_API_TIMEOUT",
+    "LAW_API_OFFICIAL_ERROR",
+    "LAW_API_NOT_CONFIGURED",
+    "LAW_API_KEY_MISSING",
+    "CITATION_VERIFICATION_NOT_WIRED",
+}
+
+def _source_panel_label_key(state: str, *, legal_analysis_exists: bool, law_lookup_error_type: str) -> str:
+    if state == SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE:
+        return "structured_fallback"
+    if legal_analysis_exists and law_lookup_error_type in {"LAW_API_BAD_RESPONSE", "LAW_API_PARSE_ERROR", "SOURCE_UNAVAILABLE"}:
+        return "structured_legal_analysis_law_lookup_issue"
+    if state == SOURCE_PANEL_RELATED_LEGAL_CONTEXT_AVAILABLE:
+        return "related_legal_context"
+    if state == SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE:
+        return "structured_legal_analysis"
+    if state == SOURCE_PANEL_LIVE_LAW_LOOKUP_TECHNICAL_ISSUE:
+        return "live_law_lookup_technical_issue"
+    if state == SOURCE_PANEL_DIRECT_SOURCE_VERIFIED:
+        return "direct_source_verified"
+    if state == SOURCE_PANEL_MANUAL_GROUNDING_AVAILABLE:
+        return "manual_grounding_available"
+    if state == SOURCE_PANEL_LAW_GROUNDING_AVAILABLE:
+        return "law_grounding_available"
+    if state == SOURCE_PANEL_NO_DIRECT_AUTHORITY_FOUND:
+        return "no_direct_authority_found"
+    return "source_unavailable"
+
+def _derive_law_lookup_error_type(pack: Optional[Dict[str, Any]], citation_verification: Optional[Dict[str, Any]], law_grounding_warnings: Optional[List[str]], law_grounding_error: str = "") -> str:
+    candidates: List[Any] = []
+    if law_grounding_error:
+        candidates.append(law_grounding_error)
+    if pack:
+        candidates.extend([pack.get("law_grounding_error"), pack.get("error_type"), pack.get("law_lookup_error_type")])
+        candidates.extend(pack.get("law_grounding_warnings") or [])
+    candidates.extend(law_grounding_warnings or [])
+    if citation_verification:
+        candidates.extend([citation_verification.get("status"), citation_verification.get("error_type")])
+        candidates.extend(citation_verification.get("warnings") or [])
+    for candidate in candidates:
+        code = str(candidate or "").upper()
+        if code in _LAW_LOOKUP_ERROR_CODES:
+            return code
+    return ""
+
+def _derive_source_panel_metadata(
+    *,
+    law_evidence_pack: Optional[Dict[str, Any]],
+    citation_verification: Optional[Dict[str, Any]],
+    law_grounding_used: bool,
+    law_grounding_attempted: bool,
+    law_grounding_status: str,
+    law_grounding_warnings: Optional[List[str]],
+    manual_grounding_status: str,
+    deterministic_fallback_answer_used: bool = False,
+    fallback_answer_kind: str = "",
+) -> Dict[str, Any]:
+    pack = law_evidence_pack or {}
+    legal_analysis = pack.get("legal_analysis") if isinstance(pack.get("legal_analysis"), dict) else None
+    legal_analysis_exists = bool(legal_analysis)
+    direct_count = int(pack.get("direct_evidence_count") or 0)
+    related_count = int(pack.get("related_evidence_count") or 0)
+    analogical_count = int(pack.get("analogical_evidence_count") or 0)
+    law_evidence_count = int(pack.get("law_evidence_count") or 0)
+    law_lookup_error_type = _derive_law_lookup_error_type(pack, citation_verification, law_grounding_warnings, pack.get("law_grounding_error", ""))
+    citation_status = str((citation_verification or {}).get("status") or "")
+
+    direct_verified = bool(law_grounding_used or citation_status == "verified" or direct_count > 0)
+    manual_available = manual_grounding_status in {"manual_grounding_available", "present"}
+    law_available = law_evidence_count > 0 or bool(pack.get("law_sources"))
+    has_lookup_issue = bool(law_lookup_error_type) or law_grounding_status in {"unavailable", "disabled"} or (law_grounding_attempted and not law_grounding_used)
+
+    if direct_verified:
+        state = SOURCE_PANEL_DIRECT_SOURCE_VERIFIED
+    elif manual_available:
+        state = SOURCE_PANEL_MANUAL_GROUNDING_AVAILABLE
+    elif law_available and not has_lookup_issue:
+        state = SOURCE_PANEL_LAW_GROUNDING_AVAILABLE
+    elif deterministic_fallback_answer_used and legal_analysis_exists:
+        state = SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE
+    elif legal_analysis_exists and has_lookup_issue:
+        state = SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE
+    elif legal_analysis_exists and (related_count > 0 or analogical_count > 0):
+        state = SOURCE_PANEL_RELATED_LEGAL_CONTEXT_AVAILABLE
+    elif legal_analysis_exists:
+        state = SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE
+    elif law_grounding_attempted and has_lookup_issue:
+        state = SOURCE_PANEL_LIVE_LAW_LOOKUP_TECHNICAL_ISSUE
+    elif pack.get("missing_direct_authority"):
+        state = SOURCE_PANEL_NO_DIRECT_AUTHORITY_FOUND
+    else:
+        state = SOURCE_PANEL_SOURCE_UNAVAILABLE
+
+    return {
+        "source_panel_state": state,
+        "source_panel_label_key": _source_panel_label_key(state, legal_analysis_exists=legal_analysis_exists, law_lookup_error_type=law_lookup_error_type),
+        "legal_analysis_exists": legal_analysis_exists,
+        "law_lookup_error_type": law_lookup_error_type,
+        "default_source_panel_should_show_raw_codes": False,
+    }
 
 class JobCodeKeywordsRequest(BaseModel):
     query: str = Field(..., min_length=1)
@@ -1093,8 +1212,15 @@ def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base
             fallback_meta["source_confidence_level"] = "low"
         if str(fallback_meta.get("source_state") or "").lower() in {"", "source_unavailable", "unavailable", "disabled"}:
             fallback_meta["source_state"] = "legal_analysis_preparation_note"
+        if str(fallback_meta.get("source_panel_state") or "") != SOURCE_PANEL_DIRECT_SOURCE_VERIFIED:
+            fallback_meta["source_panel_state"] = SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE
+            fallback_meta["source_panel_label_key"] = "structured_fallback"
+        fallback_meta["default_source_panel_should_show_raw_codes"] = False
     else:
         fallback_meta["fallback_answer_kind"] = "structured_preparation_note"
+        if not fallback_meta.get("source_panel_state"):
+            fallback_meta["source_panel_state"] = SOURCE_PANEL_SOURCE_UNAVAILABLE
+            fallback_meta["source_panel_label_key"] = "source_unavailable"
     return {
         **attempt_meta,
         **fallback_meta,
@@ -2861,6 +2987,16 @@ async def ask(req: AskRequest) -> AskResponse:
     llm = _resolve_llm_config()
 
     # Shared, non-secret grounding/law metadata reused across all response paths.
+    source_panel_meta = _derive_source_panel_metadata(
+        law_evidence_pack=law_evidence_pack,
+        citation_verification=citation_verification,
+        law_grounding_used=law_grounding_used,
+        law_grounding_attempted=law_grounding_attempted,
+        law_grounding_status=law_grounding_status,
+        law_grounding_warnings=law_grounding_warnings,
+        manual_grounding_status=manual_grounding_status,
+    )
+
     base_meta: Dict[str, Any] = dict(
         grounding_used=bool(grounding),
         grounding_sources=grounding_sources,
@@ -2895,7 +3031,6 @@ async def ask(req: AskRequest) -> AskResponse:
         law_sources=(law_evidence_pack or {}).get("law_sources", []),
         law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
         legal_analysis=(law_evidence_pack or {}).get("legal_analysis"),
-        legal_analysis_exists=bool((law_evidence_pack or {}).get("legal_analysis")),
         immigration_facts=(law_evidence_pack or {}).get("immigration_facts", {}),
         legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types", []),
         proposed_activity_type=(law_evidence_pack or {}).get("proposed_activity_type", []),
@@ -2918,6 +3053,7 @@ async def ask(req: AskRequest) -> AskResponse:
         parser_status=(law_evidence_pack or {}).get("parser_status", ""),
         response_shape_hint=(law_evidence_pack or {}).get("response_shape_hint", ""),
         source_panel_status=((law_evidence_pack or {}).get("citation_verification") or {}).get("status", ""),
+        **source_panel_meta,
     )
 
     if llm["provider"] == "openrouter":

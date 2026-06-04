@@ -1929,9 +1929,29 @@ select:focus-visible {
         }
 
 
-        function lawSourcePanelMessage(safe, lang) {
+        function sourcePanelCopyForState(safe, lang) {
+            const state = String(safe.source_panel_state || '');
+            const key = String(safe.source_panel_label_key || '');
             const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
-            const errorType = String(safe.law_grounding_error || '').toUpperCase();
+            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
+            const hasBadLawResponse = warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE';
+            if (state === 'structured_fallback_available' || key === 'structured_fallback') {
+                return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
+            }
+            if ((safe.legal_analysis_exists || key === 'structured_legal_analysis_law_lookup_issue') && hasBadLawResponse) {
+                return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '실시간 법령 조회에 기술 문제가 있어 직접 법령 인용은 제한되지만, 답변은 추출된 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
+            }
+            if (state === 'related_legal_context_available' || key === 'related_legal_context') {
+                return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Paradiso separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
+            }
+            return null;
+        }
+
+        function lawSourcePanelMessage(safe, lang) {
+            const normalized = sourcePanelCopyForState(safe, lang);
+            if (normalized) return { cls: normalized.cls, text: normalized.label, subtext: normalized.subtext };
+            const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
+            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
             const legalAnalysis = safe.legal_analysis || {};
             const mode = String(safe.analysis_mode || legalAnalysis.analysis_mode || '');
             const directCount = Number(safe.direct_evidence_count || legalAnalysis.direct_evidence_count || 0);
@@ -1940,12 +1960,15 @@ select:focus-visible {
             const missingDirect = Boolean(safe.missing_direct_authority || legalAnalysis.missing_direct_authority);
             const hasEvidence = Boolean(safe.law_evidence_count) || (Array.isArray(safe.law_sources) && safe.law_sources.length > 0);
             const hasLegalAnalysis = Boolean(safe.legal_analysis_exists || (legalAnalysis && Object.keys(legalAnalysis).length));
-            const isLegalAnalysisFallback = Boolean(safe.deterministic_fallback_answer_used && String(safe.fallback_answer_kind || '') === 'legal_analysis_preparation_note');
-            if (isLegalAnalysisFallback && hasLegalAnalysis && (mode === 'source_unavailable' || mode === '' || String(safe.source_state || '') === 'legal_analysis_preparation_note')) {
-                return { cls: 'state-needs-review', text: tt(lang, { ko: '구조화된 법률 분석 메모 사용', en: 'Structured legal analysis note available', zh: '已提供结构化法律分析说明', zhHant: '已提供結構化法律分析說明' }) };
+            if (hasLegalAnalysis && (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || warnings.indexOf('SOURCE_UNAVAILABLE') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE')) {
+                const copy = sourcePanelCopyForState({ ...safe, source_panel_label_key: 'structured_legal_analysis_law_lookup_issue', legal_analysis_exists: true }, lang);
+                return { cls: copy.cls, text: copy.label, subtext: copy.subtext };
             }
             if (directCount > 0 || mode === 'direct_authority') return { cls: 'state-verified', text: tt(lang, { ko: '직접 공식 근거 확인', en: 'Direct official authority found', zh: '已找到直接官方依据', zhHant: '已找到直接官方依據' }) };
-            if (relatedCount > 0 || mode === 'contextual_authority') return { cls: 'state-partial', text: tt(lang, { ko: '관련 법적 맥락 확인', en: 'Related legal context checked', zh: '已检查相关法律背景', zhHant: '已檢查相關法律背景' }) };
+            if (relatedCount > 0 || mode === 'contextual_authority') {
+                const copy = sourcePanelCopyForState({ ...safe, source_panel_state: 'related_legal_context_available' }, lang);
+                return { cls: copy.cls, text: copy.label, subtext: copy.subtext };
+            }
             if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
             if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접적인 사안별 근거 없음', en: 'No direct scenario-specific authority found', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
             if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
@@ -2022,7 +2045,7 @@ select:focus-visible {
                 if (lawUnavailable && answerBasisCommunicatesLimit(safe)) {
                     const lawMsg = lawSourcePanelMessage(safe, lang);
                     const supHead = tt(lang, { ko: '법률 분석 근거', en: 'Legal analysis basis', zh: '法律分析依据', zhHant: '法律分析依據' });
-                    rows.push(`<div class="source-row ${lawMsg.cls}" data-row-kind="law-supporting"><strong>${escapeHtml(supHead)}</strong>: ${escapeHtml(lawMsg.text)}</div>`);
+                    rows.push(`<div class="source-row ${lawMsg.cls}" data-row-kind="law-supporting"><strong>${escapeHtml(supHead)}</strong>: ${escapeHtml(lawMsg.text)}${lawMsg.subtext ? `<div class="source-subnote">${escapeHtml(lawMsg.subtext)}</div>` : ''}</div>`);
                 } else {
                     const label = lawVerificationStatus(safe, lang);
                     const friendly = lawWarnings.slice(0, 2).map((w) => mapLawWarningToFriendly(w, lang));

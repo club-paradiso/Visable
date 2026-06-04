@@ -12203,9 +12203,29 @@ function mapLawWarningToFriendly(code) {
 }
 
 
-function lawSourcePanelText(m, statusKey) {
+function sourcePanelCopyForState(m) {
+    const state = String(m.source_panel_state || '');
+    const key = String(m.source_panel_label_key || '');
     const warnings = Array.isArray(m.law_grounding_warnings) ? m.law_grounding_warnings : [];
-    const errorType = String(m.law_grounding_error || '').toUpperCase();
+    const errorType = String(m.law_lookup_error_type || m.law_grounding_error || '').toUpperCase();
+    const hasBadLawResponse = warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE';
+    if (state === 'structured_fallback_available' || key === 'structured_fallback') {
+        return { text: tx('sourcePanelStructuredFallbackLabel'), subtext: tx('sourcePanelStructuredFallbackSubtext'), cls: 'state-needs-review' };
+    }
+    if ((m.legal_analysis_exists || key === 'structured_legal_analysis_law_lookup_issue') && hasBadLawResponse) {
+        return { text: tx('sourcePanelStructuredAnalysisUsedLabel'), subtext: tx('sourcePanelStructuredAnalysisUsedSubtext'), cls: 'state-partial' };
+    }
+    if (state === 'related_legal_context_available' || key === 'related_legal_context') {
+        return { text: tx('sourcePanelRelatedContextLabel'), subtext: tx('sourcePanelRelatedContextSubtext'), cls: 'state-partial' };
+    }
+    return null;
+}
+
+function lawSourcePanelText(m, statusKey) {
+    const normalized = sourcePanelCopyForState(m);
+    if (normalized) return normalized;
+    const warnings = Array.isArray(m.law_grounding_warnings) ? m.law_grounding_warnings : [];
+    const errorType = String(m.law_lookup_error_type || m.law_grounding_error || '').toUpperCase();
     const legalAnalysis = m.legal_analysis || {};
     const mode = String(m.analysis_mode || legalAnalysis.analysis_mode || '');
     const directCount = Number(m.direct_evidence_count || legalAnalysis.direct_evidence_count || 0);
@@ -12213,8 +12233,9 @@ function lawSourcePanelText(m, statusKey) {
     const analogicalCount = Number(m.analogical_evidence_count || legalAnalysis.analogical_evidence_count || 0);
     const missingDirect = Boolean(m.missing_direct_authority || legalAnalysis.missing_direct_authority);
     const hasEvidence = Boolean(m.law_evidence_count) || (Array.isArray(m.law_sources) && m.law_sources.length > 0);
+    if ((m.legal_analysis_exists || (legalAnalysis && Object.keys(legalAnalysis).length)) && (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || warnings.indexOf('SOURCE_UNAVAILABLE') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE')) return { text: tx('sourcePanelStructuredAnalysisUsedLabel'), subtext: tx('sourcePanelStructuredAnalysisUsedSubtext'), cls: 'state-partial' };
     if (directCount > 0 || mode === 'direct_authority') return { text: tx('lawAnalysisDirectAuthority'), cls: 'state-verified' };
-    if (relatedCount > 0 || mode === 'contextual_authority') return { text: tx('lawAnalysisRelatedContext'), cls: 'state-partial' };
+    if (relatedCount > 0 || mode === 'contextual_authority') return { text: tx('sourcePanelRelatedContextLabel'), subtext: tx('sourcePanelRelatedContextSubtext'), cls: 'state-partial' };
     if (analogicalCount > 0 || mode === 'analogical_analysis') return { text: tx('lawAnalysisAnalogical'), cls: 'state-partial' };
     if (missingDirect && (hasEvidence || statusKey === 'used' || mode === 'limited_authority')) return { text: tx('lawAnalysisNoDirect'), cls: 'state-needs-review' };
     if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') return { text: tx('lawSourceTimeout'), cls: 'state-partial' };
@@ -12277,9 +12298,10 @@ function renderGroundingSourcePanel(metadata) {
             ? m.law_sources.filter(function(src) { return src && src.law_name; }).slice(0, 3).map(function(src) { return String(src.law_name); })
             : [];
         const lawSourceNote = lawSourceNames.length ? `<div class="gp-subnote">${lawSourceNames.map(escapeHtml).join(' · ')}</div>` : '';
-        const reassureHtml = (lawStatusKey === 'unavailable' || lawStatusKey === 'disabled')
+        const stateSubnote = sourceState.subtext ? `<div class="gp-subnote">${escapeHtml(sourceState.subtext)}</div>` : '';
+        const reassureHtml = (!stateSubnote && (lawStatusKey === 'unavailable' || lawStatusKey === 'disabled'))
             ? `<div class="gp-subnote">${escapeHtml(tx('lawGroundingReassure'))}</div>` : '';
-        rows.push(`<div class="gp-row ${sourceState.cls}"><strong>${escapeHtml(tx('lawGroundingStatusLabel'))}</strong>: ${escapeHtml(sourceState.text)}${lawSourceNote}${reassureHtml}</div>`);
+        rows.push(`<div class="gp-row ${sourceState.cls}"><strong>${escapeHtml(tx('lawGroundingStatusLabel'))}</strong>: ${escapeHtml(sourceState.text)}${sourceState.subtext ? stateSubnote : lawSourceNote}${reassureHtml}</div>`);
     }
     // Manual-to-law fallback — kept visibly DISTINCT from source-confirmed
     // manual grounding (state-source-supported above) and from needs-review
@@ -12342,7 +12364,7 @@ function renderGroundingSourcePanel(metadata) {
         rows.push(`<div class="gp-row state-advisory"><strong>${escapeHtml(tx('aiAdvisoryLabel'))}</strong>: ${escapeHtml(tx('aiAdvisoryText'))}</div>`);
     }
 
-    const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiTechnicalDetails'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
+    const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiDeveloperDiagnostics'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
     return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div><p class="gp-lead">${escapeHtml(tx('aiSourcePanelLead'))}</p>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
 }
 
@@ -14565,7 +14587,7 @@ const UI_TRANSLATIONS = {
         partialLanguageNotice: '이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.', languagePartialBadge: '일부 번역',
         deadlineSourceCommonRule: '공통 규칙 기반 준비 참고일', deadlineSourceCustom: '사용자 지정 알림', deadlineCalendarCaution: 'Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
         nextActionTitle: '지금 할 수 있는 일', nextActionHikoreaKicker: '방문예약', nextActionHikoreaTitle: 'HiKorea 예약 도우미', nextActionHikoreaDesc: '방문예약, 기관 선택, 업무 유형 선택을 단계별로 안내합니다.', nextActionDocsKicker: '서류', nextActionDocsTitle: '구비서류 확인', nextActionDocsDesc: '최초 신청, 외국인등록, 연장 서류 탭을 확인합니다.', nextActionAiKicker: 'AI', nextActionAiDesc: '내 상황을 입력해 가능성과 주의사항을 점검합니다.',
-        aiSourcePanelLead: '아래는 이 답변이 어떤 자료에 근거했는지 보여주는 요약입니다. 최종 확인이 아닙니다.', lawGroundingReassure: '공식 확인은 여전히 필요합니다. 직접 근거 부재는 출처 한계이지 시스템 실패가 아닙니다.', lawSourceRetrieved: '보조 법령 근거를 조회했습니다', lawSourceNoDirect: '이 특정 상황에 대한 직접 보조 법령 근거를 찾지 못했습니다.', lawSourceUnavailableDeploy: '이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.', lawSourceBadResponse: '법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.', lawSourceOfficialError: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', lawSourceTimeout: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', lawAnalysisDirectAuthority: '직접 공식 근거 확인', lawAnalysisRelatedContext: '관련 법적 맥락 확인', lawAnalysisAnalogical: '유추 법률 분석', lawAnalysisNoDirect: '직접적인 사안별 근거 없음', lawAnalysisLookupUnavailable: '출처 조회 사용 불가', lawAnalysisTechnicalIssue: '출처 조회 기술 문제',
+        aiSourcePanelLead: '아래는 이 답변이 어떤 자료에 근거했는지 보여주는 요약입니다. 최종 확인이 아닙니다.', lawGroundingReassure: '공식 확인은 여전히 필요합니다. 직접 근거 부재는 출처 한계이지 시스템 실패가 아닙니다.', lawSourceRetrieved: '보조 법령 근거를 조회했습니다', lawSourceNoDirect: '이 특정 상황에 대한 직접 보조 법령 근거를 찾지 못했습니다.', lawSourceUnavailableDeploy: '이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.', lawSourceBadResponse: '법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.', lawSourceOfficialError: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', lawSourceTimeout: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', lawAnalysisDirectAuthority: '직접 공식 근거 확인', lawAnalysisRelatedContext: '관련 법적 맥락 확인', lawAnalysisAnalogical: '유추 법률 분석', lawAnalysisNoDirect: '직접적인 사안별 근거 없음', lawAnalysisLookupUnavailable: '출처 조회 사용 불가', lawAnalysisTechnicalIssue: '출처 조회 기술 문제', sourcePanelStructuredFallbackLabel: '구조화된 법률 분석 메모', sourcePanelStructuredFallbackSubtext: 'AI 모델 응답이 제한되어, Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', sourcePanelStructuredAnalysisUsedLabel: '구조화된 법률 분석 사용', sourcePanelStructuredAnalysisUsedSubtext: '실시간 법령 조회에 기술 문제가 있어 직접 법령 인용은 제한되지만, 답변은 추출된 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', sourcePanelRelatedContextLabel: '관련 법적 맥락 분석', sourcePanelRelatedContextSubtext: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', aiDeveloperDiagnostics: '개발자 진단 정보 보기',
         aiModalContextLabel: '선택한 맥락', aiModalContextNote: '선택한 시나리오 식별 정보만 함께 전달되며, 체크리스트·알림 등 개인 입력은 전송되지 않습니다.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
@@ -14739,7 +14761,7 @@ const UI_TRANSLATIONS = {
         partialLanguageNotice: 'Some interface text may still appear in Korean for this language. Official document names remain in Korean to match the immigration manual.', languagePartialBadge: 'Partial',
         deadlineSourceCommonRule: 'Common-rule preparation date', deadlineSourceCustom: 'Custom reminder', deadlineCalendarCaution: 'Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.',
         nextActionTitle: 'What you can do now', nextActionHikoreaKicker: 'Book a visit', nextActionHikoreaTitle: 'HiKorea reservation helper', nextActionHikoreaDesc: 'Step-by-step help with visit booking, office selection, and task type.', nextActionDocsKicker: 'Documents', nextActionDocsTitle: 'Check required documents', nextActionDocsDesc: 'Review the initial application, foreigner registration, and extension document tabs.', nextActionAiKicker: 'AI', nextActionAiDesc: 'Enter your situation to check possibilities and cautions.',
-        aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.', lawGroundingReassure: 'Official confirmation still required; absence of direct authority is a source limit, not a system failure.', lawSourceRetrieved: 'Supporting legal source retrieved', lawSourceNoDirect: 'No direct supporting legal source was found for this specific scenario.', lawSourceUnavailableDeploy: 'Legal source lookup is not available in this deployment.', lawSourceBadResponse: 'Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.', lawSourceOfficialError: 'The official legal source service returned an error. Paradiso is using limited guidance.', lawSourceTimeout: 'Legal source lookup timed out. Paradiso is using limited guidance.', lawAnalysisDirectAuthority: 'Direct official authority found', lawAnalysisRelatedContext: 'Related legal context checked', lawAnalysisAnalogical: 'Analogical legal analysis', lawAnalysisNoDirect: 'No direct scenario-specific authority found', lawAnalysisLookupUnavailable: 'Source lookup unavailable', lawAnalysisTechnicalIssue: 'Source lookup technical issue',
+        aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.', lawGroundingReassure: 'Official confirmation still required; absence of direct authority is a source limit, not a system failure.', lawSourceRetrieved: 'Supporting legal source retrieved', lawSourceNoDirect: 'No direct supporting legal source was found for this specific scenario.', lawSourceUnavailableDeploy: 'Legal source lookup is not available in this deployment.', lawSourceBadResponse: 'Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.', lawSourceOfficialError: 'The official legal source service returned an error. Paradiso is using limited guidance.', lawSourceTimeout: 'Legal source lookup timed out. Paradiso is using limited guidance.', lawAnalysisDirectAuthority: 'Direct official authority found', lawAnalysisRelatedContext: 'Related legal context checked', lawAnalysisAnalogical: 'Analogical legal analysis', lawAnalysisNoDirect: 'No direct scenario-specific authority found', lawAnalysisLookupUnavailable: 'Source lookup unavailable', lawAnalysisTechnicalIssue: 'Source lookup technical issue', sourcePanelStructuredFallbackLabel: 'Structured legal analysis note', sourcePanelStructuredFallbackSubtext: 'The live AI response was unavailable, so Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', sourcePanelStructuredAnalysisUsedLabel: 'Structured legal analysis used', sourcePanelStructuredAnalysisUsedSubtext: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', sourcePanelRelatedContextLabel: 'Related legal context analysis', sourcePanelRelatedContextSubtext: 'When direct provisions or manual authority are limited, Paradiso separates related issues and comparison statuses for analysis.', aiDeveloperDiagnostics: 'Show developer diagnostics',
         aiModalContextLabel: 'Selected context', aiModalContextNote: 'Only selected scenario identifiers are passed along; your checklist, reminders, and other local inputs are never sent.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
@@ -14853,7 +14875,7 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: '以下项目用于帮助您准备预约。即使不勾选也可继续下一步。提前准备好电子邮箱、密码和停留期限到期日会让预约更顺利。',
         procFallbackInitial: '此为入境前签证签发或相应停留资格申请阶段需确认的程序。详细要件与提交材料请向驻外韩国使领馆、HiKorea 或主管机关确认。', procFallbackRegistration: '在韩国长期停留的外国人，可能因对象与情况需要办理外国人登记或国内居所申报。登记/申报对象、期限与提交材料可能因停留资格和个人情况而不同。', procFallbackExtension: '如计划超过当前许可期间继续停留，需确认是否需要延期许可以及适用的材料。请在到期日前留出充足时间确认。',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawAnalysisDirectAuthority: '已找到直接官方依据', lawAnalysisRelatedContext: '已检查相关法律背景', lawAnalysisAnalogical: '类比法律分析', lawAnalysisNoDirect: '未找到直接针对该情形的依据', lawAnalysisLookupUnavailable: '来源查询不可用', lawAnalysisTechnicalIssue: '来源查询技术问题', lawGroundingStatusLabel: '法律分析依据', lawGroundingStatusNotAttempted: '未尝试', lawGroundingStatusDisabled: '因设置而停用', lawGroundingStatusUnavailable: '无法确认外部法令 API', lawGroundingStatusUsed: '已使用法令搜索结果',
+        lawAnalysisDirectAuthority: '已找到直接官方依据', lawAnalysisRelatedContext: '已检查相关法律背景', lawAnalysisAnalogical: '类比法律分析', lawAnalysisNoDirect: '未找到直接针对该情形的依据', lawAnalysisLookupUnavailable: '来源查询不可用', lawAnalysisTechnicalIssue: '来源查询技术问题', sourcePanelStructuredFallbackLabel: '结构化法律分析备忘', sourcePanelStructuredFallbackSubtext: '实时 AI 响应不可用，因此 Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', sourcePanelStructuredAnalysisUsedLabel: '已使用结构化法律分析', sourcePanelStructuredAnalysisUsedSubtext: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', sourcePanelRelatedContextLabel: '相关法律背景分析', sourcePanelRelatedContextSubtext: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', aiDeveloperDiagnostics: '查看开发者诊断', lawGroundingStatusLabel: '法律分析依据', lawGroundingStatusNotAttempted: '未尝试', lawGroundingStatusDisabled: '因设置而停用', lawGroundingStatusUnavailable: '无法确认外部法令 API', lawGroundingStatusUsed: '已使用法令搜索结果',
         partialLanguageNotice: '此语言的部分界面文字仍可能显示为韩文。正式材料名称会保留韩文，以便与出入境手册一致。', languagePartialBadge: '部分翻译',
         deadlineSourceCommonRule: '基于通用规则的准备参考日期', deadlineSourceCustom: '自定义提醒', deadlineCalendarCaution: 'Paradiso 准备提醒。并非正式期限；请向 HiKorea、1345 或管辖出入境外国人机构确认。',
         nextActionTitle: '现在可以做的事', nextActionHikoreaKicker: '预约访问', nextActionHikoreaTitle: 'HiKorea 预约助手', nextActionHikoreaDesc: '分步引导访问预约、机构选择和业务类型选择。', nextActionDocsKicker: '材料', nextActionDocsTitle: '确认所需材料', nextActionDocsDesc: '查看初次申请、外国人登记和延期材料标签页。', nextActionAiKicker: 'AI', nextActionAiDesc: '输入您的情况以检查可能性和注意事项。',
@@ -14919,7 +14941,7 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: '以下項目用於協助您準備預約。即使不勾選也可繼續下一步。提前準備好電子郵件、密碼和停留期限到期日會讓預約更順利。',
         procFallbackInitial: '此為入境前簽證核發或相應停留資格申請階段需確認的程序。詳細要件與提交文件請向駐外韓國使領館、HiKorea 或主管機關確認。', procFallbackRegistration: '在韓國長期停留的外國人，可能因對象與情況需要辦理外國人登錄或國內居所申報。登錄/申報對象、期限與提交文件可能因停留資格和個人情況而不同。', procFallbackExtension: '如計劃超過目前許可期間繼續停留，需確認是否需要延期許可以及適用的文件。請在到期日前預留充足時間確認。',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawAnalysisDirectAuthority: '已找到直接官方依據', lawAnalysisRelatedContext: '已檢查相關法律背景', lawAnalysisAnalogical: '類比法律分析', lawAnalysisNoDirect: '未找到直接針對該情形的依據', lawAnalysisLookupUnavailable: '來源查詢不可用', lawAnalysisTechnicalIssue: '來源查詢技術問題', lawGroundingStatusLabel: '法律分析依據', lawGroundingStatusNotAttempted: '未嘗試', lawGroundingStatusDisabled: '因設定而停用', lawGroundingStatusUnavailable: '無法確認外部法令 API', lawGroundingStatusUsed: '已使用法令搜尋結果',
+        lawAnalysisDirectAuthority: '已找到直接官方依據', lawAnalysisRelatedContext: '已檢查相關法律背景', lawAnalysisAnalogical: '類比法律分析', lawAnalysisNoDirect: '未找到直接針對該情形的依據', lawAnalysisLookupUnavailable: '來源查詢不可用', lawAnalysisTechnicalIssue: '來源查詢技術問題', sourcePanelStructuredFallbackLabel: '結構化法律分析備忘', sourcePanelStructuredFallbackSubtext: '即時 AI 回應不可用，因此 Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。', sourcePanelStructuredAnalysisUsedLabel: '已使用結構化法律分析', sourcePanelStructuredAnalysisUsedSubtext: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。', sourcePanelRelatedContextLabel: '相關法律背景分析', sourcePanelRelatedContextSubtext: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。', aiDeveloperDiagnostics: '查看開發者診斷', lawGroundingStatusLabel: '法律分析依據', lawGroundingStatusNotAttempted: '未嘗試', lawGroundingStatusDisabled: '因設定而停用', lawGroundingStatusUnavailable: '無法確認外部法令 API', lawGroundingStatusUsed: '已使用法令搜尋結果',
         partialLanguageNotice: '此語言的部分介面文字仍可能顯示為韓文。正式文件名稱會保留韓文，以便與出入境手冊一致。', languagePartialBadge: '部分翻譯',
         deadlineSourceCommonRule: '基於通用規則的準備參考日期', deadlineSourceCustom: '自訂提醒', deadlineCalendarCaution: 'Paradiso 準備提醒。並非正式期限；請向 HiKorea、1345 或管轄出入境外國人機構確認。',
         nextActionTitle: '現在可以做的事', nextActionHikoreaKicker: '預約訪問', nextActionHikoreaTitle: 'HiKorea 預約助手', nextActionHikoreaDesc: '分步引導訪問預約、機構選擇和業務類型選擇。', nextActionDocsKicker: '文件', nextActionDocsTitle: '確認所需文件', nextActionDocsDesc: '查看初次申請、外國人登錄和延期文件標籤頁。', nextActionAiKicker: 'AI', nextActionAiDesc: '輸入您的情況以檢查可能性和注意事項。',
