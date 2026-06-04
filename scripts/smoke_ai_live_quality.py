@@ -129,6 +129,7 @@ def _direct_answer_early(answer):
 # Raw status/provider codes that should never be the user-facing answer text.
 _RAW_CODE_LEAKS = (
     "source_unavailable", "source_limited", "generic_advisory",
+    "SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED",
     "LAW_GROUNDING_DISABLED", "no_llm_provider_configured",
     "manual_grounding_absent", "provider_unavailable",
 )
@@ -141,12 +142,14 @@ _RISKY_CONFIDENCE_PHRASES = (
     "may be permissible", "is allowed", "you can", "no need to", "does not require",
     "definitely", "guaranteed", "will be approved", "will be denied",
     "automatically", "always", "never",
+    "신고 의무는 없습니다", "반드시 신고해야 합니다", "허용됩니다", "가능합니다",
+    "더 이상 적용되지 않습니다",
 )
 
 
 def _risky_phrase_warnings(answer, mode):
     """Risky certainty phrases found in a weak-source-mode answer (warn-only)."""
-    if not answer or mode not in ("source_limited", "source_unavailable"):
+    if not answer or mode not in ("source_limited", "source_unavailable", "limited", "unavailable"):
         return []
     low = answer.lower()
     return [p for p in _RISKY_CONFIDENCE_PHRASES if p in low]
@@ -303,8 +306,17 @@ def _check_question(base, q):
         "citation_verification_status": None,
         "source_panel_status": None,
         "source_panel_state": None,
+        "source_panel_confidence": None,
+        "direct_authority_available": None,
+        "direct_citation_available": None,
+        "legal_analysis_available": None,
+        "law_lookup_failed": None,
+        "answer_certainty_level": None,
         "source_panel_default_label": None,
         "source_panel_default_raw_code_leak": None,
+        "default_source_panel_trust_warning": None,
+        "raw_code_copy_leak": None,
+        "overconfident_phrase_warning": None,
         "technical_details_collapsed": None,
         "law_lookup_error_type": None,
         "legal_analysis": None,
@@ -398,6 +410,12 @@ def _check_question(base, q):
     result["citation_verification_status"] = cv.get("status")
     result["source_panel_status"] = meta.get("source_panel_status") or cv.get("status")
     result["source_panel_state"] = meta.get("source_panel_state")
+    result["source_panel_confidence"] = meta.get("source_panel_confidence")
+    result["direct_authority_available"] = meta.get("direct_authority_available")
+    result["direct_citation_available"] = meta.get("direct_citation_available")
+    result["legal_analysis_available"] = meta.get("legal_analysis_available")
+    result["law_lookup_failed"] = meta.get("law_lookup_failed")
+    result["answer_certainty_level"] = meta.get("answer_certainty_level")
     result["law_lookup_error_type"] = meta.get("law_lookup_error_type") or meta.get("law_grounding_error")
     label_key = meta.get("source_panel_label_key")
     label_map = {
@@ -430,7 +448,10 @@ def _check_question(base, q):
     if result.get("source_panel_default_raw_code_leak"):
         result["quality_warnings"].append("raw law diagnostic code appears in default source panel label")
     if result.get("legal_analysis_exists") and result.get("source_panel_state") == "source_unavailable":
-        result["quality_warnings"].append("legal_analysis_exists=true but source_panel_state=source_unavailable")
+        result["default_source_panel_trust_warning"] = "legal_analysis_exists=true but source_panel_state=source_unavailable"
+        result["quality_warnings"].append(result["default_source_panel_trust_warning"])
+    if result.get("law_lookup_error_type") == "LAW_API_BAD_RESPONSE" and result.get("source_panel_default_raw_code_leak"):
+        result["quality_warnings"].append("LAW_API_BAD_RESPONSE appears as default source label")
     if result.get("deterministic_fallback_answer_used") and result.get("source_panel_state") not in ("structured_fallback_available", "direct_source_verified"):
         result["quality_warnings"].append("deterministic fallback source_panel_state is not structured_fallback_available or equivalent")
 
@@ -481,10 +502,15 @@ def _check_question(base, q):
             result["quality_warnings"].append("related evidence mislabeled as direct authority")
         if result.get("answer_quality_mode") in ("source_limited", "source_unavailable") and "may be permissible" in lowered:
             result["quality_warnings"].append("unsupported may be permissible in source-limited answer")
+        result["overconfident_phrase_warning"] = bool(result["risky_phrase_warnings"] and (result.get("answer_certainty_level") in ("limited", "unavailable") or result.get("answer_quality_mode") in ("source_limited", "source_unavailable")))
         if result["risky_phrase_warnings"]:
             result["quality_warnings"].append(
-                "risky_phrase_warnings: %s" % result["risky_phrase_warnings"]
+                "overconfident_phrase_warning: %s" % result["risky_phrase_warnings"]
             )
+        copy_text = str(body.get("copy_safe_answer") or body.get("fallback_answer") or "")
+        result["raw_code_copy_leak"] = [c for c in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED") if c in copy_text]
+        if result["raw_code_copy_leak"]:
+            result["quality_warnings"].append("raw_code_copy_leak: %s" % result["raw_code_copy_leak"])
         checklist_qs = meta.get("official_confirmation_questions") or []
         if q.get("expect_confirmation_checklist") and not checklist_qs:
             result["quality_warnings"].append("official confirmation section lacks concrete questions")
@@ -721,8 +747,10 @@ def _emit(report, args):
             r.get("answer_contains_unrelated_h1_study_template"),
         )
         # Answer-quality signals (Part K).
-        suffix += " [quality=%s conf=%s qtype=%s related=%s]" % (
-            r["answer_quality_mode"], r["source_confidence_level"],
+        suffix += " [quality=%s conf=%s certainty=%s panel_conf=%s direct_auth=%s direct_cite=%s legal_analysis=%s law_failed=%s qtype=%s related=%s]" % (
+            r["answer_quality_mode"], r["source_confidence_level"], r.get("answer_certainty_level"),
+            r.get("source_panel_confidence"), r.get("direct_authority_available"), r.get("direct_citation_available"),
+            r.get("legal_analysis_available"), r.get("law_lookup_failed"),
             r["question_type_detected"], r["related_statuses_not_sources"],
         )
         # Law evidence tool-layer signals (Part I).
@@ -739,6 +767,10 @@ def _emit(report, args):
             r["source_panel_status"], r.get("source_panel_state"), r.get("source_panel_default_label"),
             r.get("source_panel_default_raw_code_leak"), r.get("technical_details_collapsed"),
             r.get("law_lookup_error_type"), r["risky_phrase_warnings"],
+        )
+        suffix += " [overconfident=%s trust_warn=%s raw_ui=%s raw_copy=%s]" % (
+            r.get("overconfident_phrase_warning"), r.get("default_source_panel_trust_warning"),
+            r.get("raw_code_default_ui_leak"), r.get("raw_code_copy_leak"),
         )
         if r["live_answer_checked"]:
             suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (

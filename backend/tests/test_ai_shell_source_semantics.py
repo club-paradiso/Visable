@@ -99,7 +99,7 @@ class AiShellStaticTests(unittest.TestCase):
         # never welded into a friendly sentence.
         self.assertNotIn("SOURCE_UNAVAILABLE could not", self.html)
         # The technical-details <details> block is still present for raw codes.
-        self.assertIn("기술 세부정보 보기", self.html)
+        self.assertIn("개발자 진단 정보 보기", self.html)
 
     # -- Warning de-duplication (Part D) ------------------------------------
     def test_warning_dedup_guards_present(self):
@@ -166,6 +166,12 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
         self.assertNotIn("SOURCE_UNAVAILABLE could not", self.html + self.index_html)
         self.assertNotIn("LAW_API_BAD_RESPONSE could", self.html + self.index_html)
         self.assertIn("developer diagnostics", (self.html + self.index_html).lower())
+        self.assertIn("일반 사용자는 확인하지 않아도 됩니다", self.html + self.index_html)
+        self.assertIn("실시간 법령 조회 응답을 파싱하지 못했습니다", self.html + self.index_html)
+        details_pos = self.html.find("실시간 법령 조회 응답을 파싱하지 못했습니다")
+        raw_after_details = self.html.find("raw developer codes", details_pos)
+        self.assertGreaterEqual(details_pos, 0)
+        self.assertGreater(raw_after_details, details_pos)
         self.assertIn("<details", self.html + self.index_html)
         self.assertNotIn("<details open", (self.html + self.index_html).lower())
 
@@ -174,6 +180,7 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
         self.assertIn("구조화된 법률 분석 메모", combined)
         self.assertIn("Structured legal analysis note", combined)
         self.assertIn("구조화된 법률 분석 사용", combined)
+        self.assertIn("직접 법령 인용은 제한되지만, 답변은 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.", combined)
         self.assertIn("Structured legal analysis used", combined)
         default_copy_slice = " ".join(line for line in combined.splitlines() if "sourcePanelStructured" in line or "sourcePanelCopyForState" in line or "lawSourcePanelMessage" in line)
         self.assertNotIn("SOURCE_UNAVAILABLE could", default_copy_slice)

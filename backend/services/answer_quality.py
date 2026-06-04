@@ -29,7 +29,7 @@ from typing import Any, Dict, List, Optional, Sequence
 # Bumped whenever the answer contract / prompt directives change in a way the
 # frontend or smoke harness should be able to detect. Surfaced as
 # ``answer_style_version`` in the response metadata.
-ANSWER_STYLE_VERSION = "2026-05-quality-v2-legal-analysis"
+ANSWER_STYLE_VERSION = "2026-05-quality-v3-confidence-gated"
 
 # ---------------------------------------------------------------------------
 # Answer quality modes (source state)
@@ -573,7 +573,10 @@ def build_answer_directives(
             " \"will be approved\", \"will be denied\", \"automatically\")."
             " official confirmation is required before acting. Do not claim final"
             " eligibility, permission, approval, denial, illegality, or invent"
-            " document lists."
+            " document lists. In Korean, also avoid definitive phrases such as"
+            " 신고 의무는 없습니다, 반드시 신고해야 합니다, 허용됩니다, 가능합니다,"
+            " and 원칙적으로 이전 E-7 의무는 더 이상 적용되지 않습니다 unless"
+            " backend metadata says answer_certainty_level=direct."
         )
 
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")
