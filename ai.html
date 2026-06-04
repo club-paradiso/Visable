@@ -2076,8 +2076,37 @@ select:focus-visible {
 
             if (!rows.length) return '';
 
-            const debugWarnings = lawWarnings.length
-                ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml([tt(lang, { ko: '실시간 법령 조회 응답을 파싱하지 못했습니다.', en: 'The live legal lookup response could not be parsed.', zh: '无法解析实时法令查询响应。', zhHant: '無法解析即時法令查詢回應。' }), tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }), '--- raw developer codes ---'].concat(lawWarnings).join('\\n'))}</pre></details>`
+            // Developer diagnostics (Part G). Prefer per-family statuses
+            // (statute: no_results, enforcement_rule: official_error,
+            // administrative_rule: unsupported, ...) over a single dominant
+            // LAW_API_BAD_RESPONSE. Only call it a parser failure when a
+            // parser_status is actually parse_error / bad_response; no_results /
+            // unsupported are normal "nothing to cite" outcomes, NOT failures.
+            const familyStatuses = (safe.source_family_statuses && typeof safe.source_family_statuses === 'object') ? safe.source_family_statuses : {};
+            const parserByFamily = (safe.parser_status_by_family && typeof safe.parser_status_by_family === 'object') ? safe.parser_status_by_family : {};
+            const topParser = String(safe.parser_status || '').toLowerCase();
+            const PARSE_FAIL = ['parse_error', 'bad_response'];
+            let parserFailed = PARSE_FAIL.indexOf(topParser) !== -1 || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'LAW_API_BAD_RESPONSE';
+            const familyKeys = Object.keys(familyStatuses).filter(function(f) { return familyStatuses[f]; });
+            familyKeys.forEach(function(f) {
+                const ps = String(parserByFamily[f] || '').toLowerCase();
+                const st = String(familyStatuses[f] || '').toLowerCase();
+                if (PARSE_FAIL.indexOf(ps) !== -1 || PARSE_FAIL.indexOf(st) !== -1) parserFailed = true;
+            });
+            const familyLines = familyKeys.map(function(f) { return f + ': ' + String(familyStatuses[f]); });
+            const headerLines = parserFailed
+                ? [
+                    tt(lang, { ko: '실시간 법령 조회 응답을 파싱하지 못했습니다.', en: 'The live legal lookup response could not be parsed.', zh: '无法解析实时法令查询响应。', zhHant: '無法解析即時法令查詢回應。' }),
+                    tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }),
+                  ]
+                : [
+                    tt(lang, { ko: '실시간 법령 조회에서 직접 인용 가능한 결과를 찾지 못했습니다(파서 오류 아님).', en: 'The live legal lookup returned no directly citable result (not a parser failure).', zh: '实时法令查询未返回可直接引用的结果（非解析失败）。', zhHant: '即時法令查詢未返回可直接引用的結果（非解析失敗）。' }),
+                    tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }),
+                  ];
+            const familyBlock = familyLines.length ? [''].concat([tt(lang, { ko: '법령군별 상태:', en: 'Per-family status:', zh: '各法令类别状态：', zhHant: '各法令類別狀態：' })]).concat(familyLines) : [];
+            const diagBody = headerLines.concat(familyBlock).concat(['', '--- raw developer codes ---']).concat(lawWarnings);
+            const debugWarnings = (lawWarnings.length || familyLines.length)
+                ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(diagBody.join('\\n'))}</pre></details>`
                 : '';
 
             const disclosure = t(

@@ -1153,6 +1153,170 @@ def _korean_main_issue_fallback(issues: List[str], facts: Dict[str, Any], activi
         return "해당 사실변경이 신고 대상인지, 근무처 변경·추가 또는 별도 허가 사안인지입니다."
     return "한국 출입국 체류 절차에서 어떤 공식 근거와 사실관계가 판단을 좌우하는지입니다."
 
+
+_STUDY_ACTS = {
+    "credit_bearing_study", "formal_enrollment", "non_credit_audit",
+    "non_credit_cultural_or_hobby", "language_training",
+}
+_WORK_ACTS = {
+    "paid_work", "paid_internship", "freelance_work", "side_job",
+    "additional_employment", "business_activity", "workplace_change",
+    "workplace_addition",
+}
+
+
+def _fallback_activity_kinds(issues: List[str], activities: List[str]) -> Dict[str, bool]:
+    """Classify a fallback question into mutually-aware activity kinds.
+
+    Used so the deterministic memo asks issue-appropriate facts/questions and
+    never leaks study wording into a registration or side-job question (or vice
+    versa).
+    """
+    issue_set = set(issues or [])
+    act_set = set(activities or [])
+    study = bool(act_set & _STUDY_ACTS) or "study_on_non_study_status" in issue_set
+    work = bool(act_set & _WORK_ACTS) or bool(
+        issue_set & {"work_on_non_work_status", "workplace_change_addition", "post_status_change_residual_duty"}
+    )
+    registration = bool(issue_set & {"registration_or_residence_report", "reporting_duty"}) and not study
+    status_change = "status_change" in issue_set
+    return {"study": study, "work": work, "registration": registration, "status_change": status_change}
+
+
+def _fallback_fact_lines_localized(issues: List[str], facts: Dict[str, Any], activities: List[str], *, is_ko: bool) -> List[str]:
+    """Issue-aware 'facts to confirm' bullets with natural-language labels.
+
+    Replaces the internal snake_case ``decisive_facts`` list (current_status/
+    sub_status, paid_or_credit_bearing, duration/employer_or_school, ...) so the
+    user-facing memo never exposes backend field names (Part D / Part E).
+    """
+    kinds = _fallback_activity_kinds(issues, activities)
+    lines: List[str] = []
+    if is_ko:
+        if kinds["study"]:
+            lines.append("학점 인정 여부 또는 학위 과정 관련성")
+            lines.append("수업 기간, 주당 시간, 학교 등록 방식")
+        if kinds["work"]:
+            lines.append("보수 발생 여부와 부업·근로 형태(고용/프리랜서/사업/단순 부수입)")
+            lines.append("추가 고용주·사업자등록 여부, 업종·근무시간·계약형태")
+        if "post_status_change_residual_duty" in set(issues or []):
+            lines.append("이전 체류자격의 승인 조건과 신고 이력이 현재 활동에 남는지")
+        if kinds["registration"]:
+            lines.append("신고 기산일(입국·자격변경·주소변경 등)과 현재 체류자격 기준 신고 기한")
+            lines.append("신고 접수 방법(하이코리아 또는 관할 출입국·외국인청)")
+        return list(dict.fromkeys(lines))[:6]
+    if kinds["study"]:
+        lines.append("whether the course is credit-bearing or degree-related")
+        lines.append("the course duration, weekly hours, and how the school registers it")
+    if kinds["work"]:
+        lines.append("whether it is paid and the work form (employment/freelance/business/incidental)")
+        lines.append("any additional employer/business registration, industry, hours, and contract type")
+    if "post_status_change_residual_duty" in set(issues or []):
+        lines.append("whether the previous status's approval conditions or reporting history still apply")
+    if kinds["registration"]:
+        lines.append("the event that starts the deadline (entry, status change, address change) and the time limit")
+        lines.append("the filing channel (HiKorea or the competent immigration office)")
+    return list(dict.fromkeys(lines))[:6]
+
+
+def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[str, Any], activities: List[str], *, is_ko: bool) -> List[str]:
+    """Localized, issue-scoped official-confirmation questions for the memo.
+
+    Korean questions stay Korean; English stays English (Part E). Unrelated
+    deadline/address-change questions are only emitted for genuine
+    registration/reporting issues (Part D). Returns ``[]`` when no issue-specific
+    set applies, so the caller can fall back to existing localized questions.
+    """
+    issue_set = set(issues or [])
+    kinds = _fallback_activity_kinds(issues, activities)
+    current = facts.get("current_status") or ("현재 체류자격" if is_ko else "the current status")
+    if is_ko:
+        if "post_status_change_residual_duty" in issue_set:
+            return [
+                f"현재 ARC상 {current}인지",
+                f"{current} 승인 조건",
+                "부업 형태: 고용/프리랜서/사업/단순 부수입",
+                "추가 고용주 또는 사업자등록 여부",
+                "업종/근무시간/보수/계약형태",
+                "출입국이 이를 근무처 추가, 신고 대상, 자격외활동, 또는 별도 제한으로 보는지",
+            ]
+        if kinds["study"]:
+            return [
+                f"현재 {current} 부여 사유가 무엇인지",
+                "등록/청강/계절학기 중 어떤 활동인지",
+                "학점 인정 또는 학위 과정 관련성이 있는지",
+                "수업 기간과 주당 시간이 얼마인지",
+                "학교가 D-2/D-4 등 유학 체류자격을 요구하는지",
+                f"출입국이 이를 {current} 체류 목적과 양립 가능한 활동으로 보는지",
+                "자격외활동허가 또는 체류자격 변경이 필요한지",
+            ]
+        if kinds["registration"]:
+            return [
+                "한국에 입국한 날짜(입국일)는 언제인지",
+                "부여받은 체류기간은 얼마인지",
+                "외국인등록 등 신고 기한은 며칠인지",
+                "신고를 어디서·어떻게(하이코리아 또는 관할 출입국·외국인청 방문) 하는지",
+            ]
+        if kinds["status_change"] and facts.get("target_status"):
+            target = facts.get("target_status")
+            return [
+                f"현재 체류자격이 {current}인지, 세부 코드는 무엇인지",
+                f"{target}로의 변경 요건을 충족하는지",
+                "국내 변경인지, 재외공관 사증 신청인지",
+                "남은 체류기간과 변경 신청 시점",
+            ]
+        if kinds["work"]:
+            return [
+                f"현재 체류자격이 {current}인지와 활동범위",
+                "보수 발생 여부와 근로·사업 형태",
+                "고용주·업종·근무시간·계약형태",
+                "출입국이 이를 자격외활동 또는 신고/허가 대상으로 보는지",
+            ]
+        return []
+    if "post_status_change_residual_duty" in issue_set:
+        return [
+            f"whether your ARC currently shows {current}",
+            f"the {current} approval conditions",
+            "the side-activity form: employment / freelance / business / incidental income",
+            "whether there is an additional employer or business registration",
+            "the industry, working hours, compensation, and contract type",
+            "whether immigration treats this as a workplace addition, a reportable change, activities outside status, or a separate restriction",
+        ]
+    if kinds["study"]:
+        return [
+            f"what the basis for your {current} status is",
+            "which activity it is: enrollment, audit, or summer-session course",
+            "whether it is credit-bearing or degree-related",
+            "the course duration and weekly hours",
+            "whether the school requires D-2 / D-4 or another study status",
+            f"whether immigration sees it as compatible with the purpose of {current}",
+            "whether it needs permission for activities outside status or a change of status",
+        ]
+    if kinds["registration"]:
+        return [
+            "your date of entry into Korea",
+            "the period of stay you were granted",
+            "the alien-registration / reporting deadline in days",
+            "where and how to file (HiKorea or the competent immigration office)",
+        ]
+    if kinds["status_change"] and facts.get("target_status"):
+        target = facts.get("target_status")
+        return [
+            f"whether your current status is {current} and its sub-code",
+            f"whether you meet the requirements to change to {target}",
+            "whether this is an in-country change or a consular visa application",
+            "your remaining period of stay and when you would apply",
+        ]
+    if kinds["work"]:
+        return [
+            f"whether your current status is {current} and its activity scope",
+            "whether it is paid and the work/business form",
+            "the employer, industry, working hours, and contract type",
+            "whether immigration treats this as activities outside status or a reportable/permission-required change",
+        ]
+    return []
+
+
 def build_legal_analysis_fallback_answer(
     *,
     prompt: str,
@@ -1174,8 +1338,20 @@ def build_legal_analysis_fallback_answer(
     activities = list(facts.get("proposed_activities") or base_meta.get("proposed_activity_type") or [])
     issue_labels = _issue_labels_for_fallback(issues, is_ko=is_ko)
     activity_labels = _activity_labels_for_fallback(activities, is_ko=is_ko)
-    decisive = list(la.get("decisive_facts") or [])[:6]
-    questions = list(la.get("official_confirmation_questions") or base_meta.get("official_confirmation_questions") or [])[:8]
+    # Localized, issue-scoped facts/questions. We deliberately do NOT render the
+    # backend ``decisive_facts`` (internal snake_case) or the English-canonical
+    # ``official_confirmation_questions`` into the user-facing memo (Part D/E).
+    extra_fact_lines = _fallback_fact_lines_localized(issues, facts, activities, is_ko=is_ko)
+    questions = _fallback_confirmation_questions_localized(issues, facts, activities, is_ko=is_ko)
+    if not questions:
+        # Fall back to localized confirmation questions (ko/en) only — never the
+        # raw English-canonical set when answering in Korean.
+        localized = base_meta.get("official_confirmation_questions_localized")
+        if is_ko and isinstance(localized, list) and localized:
+            questions = [q for q in localized if isinstance(q, str) and not re.search(r"[A-Za-z]{4,}", q)][:8]
+        elif not is_ko:
+            questions = list(la.get("official_confirmation_questions") or base_meta.get("official_confirmation_questions") or [])[:8]
+    questions = list(dict.fromkeys([q for q in questions if isinstance(q, str) and q.strip()]))[:8]
     current = facts.get("current_status") or base_meta.get("visa_code_detected")
     previous = facts.get("previous_status")
     target = facts.get("target_status")
@@ -1224,7 +1400,7 @@ def build_legal_analysis_fallback_answer(
             fact_lines.append(f"목표 체류자격/절차가 {target}인지")
         if activity_labels:
             fact_lines.append(f"활동 유형이 {', '.join(activity_labels)} 중 무엇인지")
-        fact_lines.extend([d for d in decisive if isinstance(d, str) and d not in fact_lines])
+        fact_lines.extend([d for d in extra_fact_lines if isinstance(d, str) and d not in fact_lines])
         if fact_lines:
             lines.extend(["", "확인할 사실:", *[f"* {item}" for item in fact_lines[:8]]])
         if questions:
@@ -1268,7 +1444,7 @@ def build_legal_analysis_fallback_answer(
         fact_lines.append(f"target status/procedure: {target}")
     if activity_labels:
         fact_lines.append(f"activity category: {', '.join(activity_labels)}")
-    fact_lines.extend([d for d in decisive if isinstance(d, str) and d not in fact_lines])
+    fact_lines.extend([d for d in extra_fact_lines if isinstance(d, str) and d not in fact_lines])
     if fact_lines:
         lines.extend(["", "Facts to confirm:", *[f"* {item}" for item in fact_lines[:8]]])
     if questions:
@@ -3392,6 +3568,7 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "confidence": ((pack or {}).get("legal_analysis") or {}).get("confidence"),
         "decisive_facts": ((pack or {}).get("legal_analysis") or {}).get("decisive_facts", []),
         "official_confirmation_questions": ((pack or {}).get("legal_analysis") or {}).get("official_confirmation_questions", []),
+        "official_confirmation_questions_localized": (pack or {}).get("official_confirmation_questions_localized", []),
         "source_types_attempted": (pack or {}).get("source_types_attempted", []),
         "source_types_returned": (pack or {}).get("source_types_returned", []),
         "source_families_planned": (pack or {}).get("source_families_planned", []),

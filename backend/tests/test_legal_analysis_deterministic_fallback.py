@@ -137,6 +137,81 @@ def test_registration_fallback_does_not_become_school_enrollment() -> None:
     assert body["immigration_facts"]["activity_facts"]["formal_enrollment"] == "false"
 
 
+_INTERNAL_SNAKE_LABELS = (
+    "current_status/sub_status", "previous_status/approval_conditions",
+    "target_status/route", "paid_or_credit_bearing", "duration/employer_or_school",
+)
+_ENGLISH_QUESTION_STEMS = (
+    "What exact current status", "What is your current sojourn",
+    "Is the course credit-bearing", "Does the school require",
+    "What event starts the deadline", "Where and how must the report",
+)
+
+
+def test_g15_korean_fallback_has_no_internal_field_names() -> None:
+    # Part D / Part E: no internal snake_case labels leak into the Korean memo.
+    body = _ask_fallback("G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?")
+    _assert_legal_analysis_fallback(body)
+    answer = body["answer"]
+    for label in _INTERNAL_SNAKE_LABELS:
+        assert label not in answer, label
+
+
+def test_g15_korean_fallback_has_no_english_official_questions() -> None:
+    body = _ask_fallback("G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?")
+    answer = body["answer"]
+    for stem in _ENGLISH_QUESTION_STEMS:
+        assert stem not in answer, stem
+
+
+def test_g15_korean_fallback_has_no_unrelated_deadline_address_questions() -> None:
+    # Part D: a study/audit question must not carry deadline/address-change Qs.
+    body = _ask_fallback("G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?")
+    answer = body["answer"]
+    for unrelated in ("주소변경", "신고 기한은 며칠", "입국한 날짜", "address change"):
+        assert unrelated not in answer, unrelated
+
+
+def test_g15_korean_fallback_includes_g15_specific_confirmation_questions() -> None:
+    # Part D: the exact G-1-5 study confirmation set should be present.
+    body = _ask_fallback("G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?")
+    answer = body["answer"]
+    assert "G-1-5 부여 사유" in answer
+    assert "등록/청강/계절학기 중 어떤 활동인지" in answer
+    assert "학점 인정 또는 학위 과정 관련성" in answer
+    assert "D-2/D-4 등 유학 체류자격을 요구하는지" in answer
+    assert "자격외활동허가 또는 체류자격 변경이 필요한지" in answer
+
+
+def test_h1_registration_korean_fallback_asks_registration_facts() -> None:
+    # Part C / Part D: entry date, stay period, registration deadline, channel.
+    body = _ask_fallback("H-1 외국인등록은 언제 해야 하나요?")
+    _assert_legal_analysis_fallback(body)
+    answer = body["answer"]
+    assert "입국" in answer        # entry date
+    assert "체류기간" in answer     # stay period
+    assert "기한" in answer         # registration deadline
+    assert "하이코리아" in answer or "출입국·외국인청" in answer  # filing channel
+    for bad in ("계절학기", "학점", "대학 수업", "D-2/D-4"):
+        assert bad not in answer, bad
+    for label in _INTERNAL_SNAKE_LABELS:
+        assert label not in answer, label
+
+
+def test_english_fallback_stays_english() -> None:
+    # Part E: English mode confirmation questions/facts remain English (no Hangul
+    # confirmation labels), while official Korean term references may still appear
+    # inside the legal-analysis wording.
+    body = _ask_fallback("Can I change status to F-2-99?", lang="en", visa_code="H-1")
+    _assert_legal_analysis_fallback(body)
+    answer = body["answer"]
+    assert "change" in answer.lower()
+    # The localized confirmation block should be English questions.
+    assert ("Questions to confirm" in answer) or ("requirements to change" in answer)
+    for label in _INTERNAL_SNAKE_LABELS:
+        assert label not in answer, label
+
+
 def test_target_status_fallback_preserves_target_route() -> None:
     body = _ask_fallback("Can I change status to F-2-99?", lang="en", visa_code="H-1")
     _assert_legal_analysis_fallback(body)
