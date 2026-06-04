@@ -1932,11 +1932,17 @@ select:focus-visible {
         function lawSourcePanelMessage(safe, lang) {
             const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
             const errorType = String(safe.law_grounding_error || '').toUpperCase();
-            const citation = safe.citation_verification || {};
-            const status = String(citation.status || '');
-            if (status === 'verified_law_evidence' || (Array.isArray(safe.law_sources) && safe.law_sources.length)) {
-                return { cls: 'state-verified', text: tt(lang, { ko: '보조 법령 근거를 조회했습니다.', en: 'Supporting legal source retrieved', zh: '已获取补充性法令依据。', zhHant: '已取得補充性法令依據。' }) };
-            }
+            const legalAnalysis = safe.legal_analysis || {};
+            const mode = String(safe.analysis_mode || legalAnalysis.analysis_mode || '');
+            const directCount = Number(safe.direct_evidence_count || legalAnalysis.direct_evidence_count || 0);
+            const relatedCount = Number(safe.related_evidence_count || legalAnalysis.related_evidence_count || 0);
+            const analogicalCount = Number(safe.analogical_evidence_count || legalAnalysis.analogical_evidence_count || 0);
+            const missingDirect = Boolean(safe.missing_direct_authority || legalAnalysis.missing_direct_authority);
+            const hasEvidence = Boolean(safe.law_evidence_count) || (Array.isArray(safe.law_sources) && safe.law_sources.length > 0);
+            if (directCount > 0 || mode === 'direct_authority') return { cls: 'state-verified', text: tt(lang, { ko: '직접 공식 근거 확인', en: 'Direct official authority found', zh: '已找到直接官方依据', zhHant: '已找到直接官方依據' }) };
+            if (relatedCount > 0 || mode === 'contextual_authority') return { cls: 'state-partial', text: tt(lang, { ko: '관련 법적 맥락 확인', en: 'Related legal context checked', zh: '已检查相关法律背景', zhHant: '已檢查相關法律背景' }) };
+            if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
+            if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접적인 사안별 근거 없음', en: 'No direct scenario-specific authority found', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
             if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
                 return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Paradiso is using limited guidance.', zh: '法律来源查询超时。Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Paradiso 將使用有限指引。' }) };
             }
@@ -1944,12 +1950,12 @@ select:focus-visible {
                 return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Paradiso is using limited guidance.', zh: '官方法律来源服务返回错误。Paradiso 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Paradiso 將使用有限指引。' }) };
             }
             if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') {
-                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.', zh: '法律来源查询返回了不支持的响应格式。在修复前 Paradiso 将使用有限指引。', zhHant: '法律來源查詢回傳了不支援的回應格式。在修復前 Paradiso 將使用有限指引。' }) };
+                return { cls: 'state-partial', text: tt(lang, { ko: '출처 조회 기술 문제', en: 'Source lookup technical issue', zh: '来源查询技术问题', zhHant: '來源查詢技術問題' }) };
             }
             if (warnings.indexOf('LAW_API_NOT_CONFIGURED') !== -1 || warnings.indexOf('LAW_API_KEY_MISSING') !== -1 || errorType === 'LAW_API_NOT_CONFIGURED') {
-                return { cls: 'state-disabled', text: tt(lang, { ko: '이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.', en: 'Legal source lookup is not available in this deployment.', zh: '此部署环境无法使用法律来源查询。', zhHant: '此部署環境無法使用法律來源查詢。' }) };
+                return { cls: 'state-disabled', text: tt(lang, { ko: '출처 조회 사용 불가', en: 'Source lookup unavailable', zh: '来源查询不可用', zhHant: '來源查詢不可用' }) };
             }
-            return { cls: 'state-partial', text: tt(lang, { ko: '이 특정 상황에 대한 직접 보조 법령 근거를 찾지 못했습니다.', en: 'No direct supporting legal source was found for this specific scenario.', zh: '未找到直接支持此具体情形的法律来源。', zhHant: '未找到直接支援此具體情形的法律來源。' }) };
+            return { cls: 'state-partial', text: tt(lang, { ko: '직접적인 사안별 근거 없음', en: 'No direct scenario-specific authority found', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
         }
 
         function renderGroundingSourcePanel(metadata, lang) {
@@ -2010,7 +2016,7 @@ select:focus-visible {
                 );
                 if (lawUnavailable && answerBasisCommunicatesLimit(safe)) {
                     const lawMsg = lawSourcePanelMessage(safe, lang);
-                    const supHead = tt(lang, { ko: '보조 법령 근거', en: 'Supporting legal source', zh: '补充法令依据', zhHant: '補充法令依據' });
+                    const supHead = tt(lang, { ko: '법률 분석 근거', en: 'Legal analysis basis', zh: '法律分析依据', zhHant: '法律分析依據' });
                     rows.push(`<div class="source-row ${lawMsg.cls}" data-row-kind="law-supporting"><strong>${escapeHtml(supHead)}</strong>: ${escapeHtml(lawMsg.text)}</div>`);
                 } else {
                     const label = lawVerificationStatus(safe, lang);
@@ -2395,6 +2401,7 @@ select:focus-visible {
                 _isConsentGranted = true;
             }
         });
+    /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
     </script>
 </body>
 </html>

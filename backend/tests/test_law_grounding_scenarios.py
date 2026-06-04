@@ -95,6 +95,10 @@ class H1WorkingHolidayScenarios(ScenarioBase):
         self.assertEqual(pack["related_statuses_not_sources"], ["D-2", "D-4"])
         self.assert_no_invented_direct_source(pack)
         self.assertEqual(pack["answer_quality_mode"], aq.SOURCE_LIMITED)
+        self.assertIn("legal_analysis", pack)
+        self.assertTrue(pack["legal_analysis"]["missing_direct_authority"])
+        self.assertIn("permitted activity scope", pack["legal_analysis"]["main_issue"])
+        self.assertIn(pack["legal_analysis"]["confidence"], ("contextual", "analogical", "limited", "unavailable"))
 
     def test_02_h1_korean_seasonal_semester(self):
         pack = self.pack("H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?", visa="H-1")

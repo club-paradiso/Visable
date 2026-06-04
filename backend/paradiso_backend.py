@@ -36,6 +36,7 @@ from services.law_grounding import (
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack
+from services.legal_analysis import first_sentence_quality_warning
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
     build_answer_directives,
@@ -342,6 +343,21 @@ class AskResponse(BaseModel):
     planned_law_queries: List[str] = Field(default_factory=list)
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
+    legal_analysis: Optional[Dict[str, Any]] = None
+    analysis_mode: str = ""
+    main_issue: str = ""
+    source_types_attempted: List[str] = Field(default_factory=list)
+    source_types_returned: List[str] = Field(default_factory=list)
+    source_type_statuses: Dict[str, str] = Field(default_factory=dict)
+    direct_evidence_count: int = 0
+    related_evidence_count: int = 0
+    analogical_evidence_count: int = 0
+    background_evidence_count: int = 0
+    missing_direct_authority: bool = True
+    authority_summary: str = ""
+    source_state: str = ""
+    answer_first_sentence: str = ""
+    first_sentence_quality_warning: str = ""
     direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_grounding_error: str = ""
@@ -827,9 +843,9 @@ def _localized_fallback_answer(
         return "\n".join([
             "AI 모델이 일시적으로 응답하지 않지만, Paradiso가 제한적인 준비 메모를 표시할 수 있습니다.",
             "",
-            f"Paradiso는 {status} 소지자가 한국 대학의 학점 인정 또는 학위 관련 계절학기를 수강할 수 있는지 확인된 출처로 검증할 수 없습니다. 수강 신청이나 등록금 납부 전 공식 확인이 필요하다고 보세요.",
+            f"학점 인정 또는 학위 관련 대학 계절학기는 {status}에서 고위험 활동으로 보고, 출입국기관 확인 전에는 등록·납부를 보류하는 것이 안전합니다.",
             "",
-            "핵심은 출입국기관이 그 수업을 H-1의 허용 활동범위 안으로 보는지, 아니면 체류자격외활동으로 보는지입니다. 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
+            "핵심 쟁점은 출입국기관이 그 수업을 H-1의 허용 활동범위(활동범위) 안으로 보는지, 아니면 체류자격외활동 또는 체류자격 변경이 필요한 사안으로 보는지입니다. 직접적인 H-1 계절학기 확인 근거가 없을 수 있으므로 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
             *[f"* {q}" for q in qs],
             "",
             "이 내용은 최종 결정이 아닙니다. 개별 사안의 답변은 공식 기관에 확인하세요.",
@@ -837,7 +853,7 @@ def _localized_fallback_answer(
     if is_zh or is_zh_hant:
         chars = {
             "intro": "AI 模型暂时无法响应，但 Paradiso 仍可显示一份有限的准备说明。" if is_zh else "AI 模型暫時無法回應，但 Paradiso 仍可顯示一份有限的準備說明。",
-            "confirm": f"目前已核验的来源无法确认 {status} 持有人是否可以参加该大学暑期课程。" if is_zh else f"目前已核驗的來源無法確認 {status} 持有人是否可以參加該大學暑期課程。",
+            "confirm": f"在 {status} 身份下参加计学分或学位相关大学暑期课程，应先按高风险活动处理，确认前不要依赖其可行性。" if is_zh else f"在 {status} 身分下參加計學分或學位相關大學暑期課程，應先按高風險活動處理，確認前不要依賴其可行性。",
             "ask": "在选课或支付学费前，请向 1345、HiKorea 或管辖出入境机构确认：" if is_zh else "在選課或支付學費前，請向 1345、HiKorea 或管轄出入境機構確認：",
             "final": "这不是最终决定。请向官方机构确认个案答案。" if is_zh else "這不是最終決定。請向官方機構確認個案答案。",
         }
@@ -854,9 +870,9 @@ def _localized_fallback_answer(
     return "\n".join([
         "The AI model is temporarily unavailable, but Paradiso can still show a limited preparation note.",
         "",
-        f"Paradiso cannot verify that a {status} holder may take a credit-bearing or degree-related university summer course in Korea. Treat this as requiring official confirmation before enrollment or payment.",
+        f"Treat a credit-bearing or degree-related university summer course as a high-risk activity under {status} until immigration confirms otherwise.",
         "",
-        "The key issue is whether immigration treats the course as within H-1's permitted activity scope or as activities outside the scope of status. Ask 1345, HiKorea, or the competent immigration office:",
+        "The central legal issue is whether immigration treats the course as within H-1's permitted activity scope (활동범위) or as activities outside the scope of status (체류자격외활동) requiring separate permission or a change of sojourn status. Paradiso did not find direct scenario-specific authority in this fallback note, so ask 1345, HiKorea, or the competent immigration office:",
         *[f"* {q}" for q in questions],
         "",
         "This is not a final decision. Confirm the case-specific answer with the official office.",
@@ -2598,12 +2614,15 @@ async def ask(req: AskRequest) -> AskResponse:
         citation_verification = law_evidence_pack.get("citation_verification")
 
     # Answer-prompt integration (Part E): inject ONE compact, normalized
-    # evidence summary (never a raw API dump) when law evidence exists or was
-    # attempted-but-unavailable. The answer-quality directives below still drive
-    # the source-aware tone; this only supplies the trimmed context.
+    # evidence summary (never a raw API dump) plus the backend-prepared legal
+    # analysis object. The model may explain this object; it must not invent it.
     if law_evidence_pack and (
-        law_evidence_pack.get("law_sources") or law_evidence_pack.get("law_api_attempted")
+        law_evidence_pack.get("law_sources") or law_evidence_pack.get("law_api_attempted") or law_evidence_pack.get("legal_analysis")
     ):
+        legal_analysis = law_evidence_pack.get("legal_analysis") or {}
+        confirmation_lines = "\n".join(
+            f"  - {q}" for q in (legal_analysis.get("official_confirmation_questions") or [])[:8]
+        )
         final_prompt += (
             "\n\n[Law/manual evidence pack — normalized context only]\n"
             "- This is supplemental legal CONTEXT, not a required-document checklist.\n"
@@ -2612,6 +2631,19 @@ async def ask(req: AskRequest) -> AskResponse:
             "- Do not invent article numbers, deadlines, fees, or documents.\n"
             + law_evidence_pack.get("evidence_summary", "")
         )
+        if legal_analysis:
+            final_prompt += (
+                "\n\n[Backend-prepared legal_analysis — explain this; do not invent it]\n"
+                f"analysis_mode: {legal_analysis.get('analysis_mode')}\n"
+                f"risk_posture: {legal_analysis.get('risk_posture')}\n"
+                f"confidence: {legal_analysis.get('confidence')}\n"
+                f"practical_posture: {legal_analysis.get('practical_posture')}\n"
+                f"main_issue: {legal_analysis.get('main_issue')}\n"
+                f"authority_summary: {legal_analysis.get('authority_summary')}\n"
+                f"missing_direct_authority: {legal_analysis.get('missing_direct_authority')}\n"
+                "Required framing: practical legal posture first; source limitation second; legal issue analysis third; concrete official-confirmation questions fourth.\n"
+                "Official-confirmation questions:\n" + confirmation_lines
+            )
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
@@ -2651,6 +2683,19 @@ async def ask(req: AskRequest) -> AskResponse:
         planned_law_queries=(law_evidence_pack or {}).get("planned_law_queries", []),
         law_sources=(law_evidence_pack or {}).get("law_sources", []),
         law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
+        legal_analysis=(law_evidence_pack or {}).get("legal_analysis"),
+        analysis_mode=(law_evidence_pack or {}).get("analysis_mode", ""),
+        main_issue=(law_evidence_pack or {}).get("main_issue", ""),
+        source_types_attempted=(law_evidence_pack or {}).get("source_types_attempted", []),
+        source_types_returned=(law_evidence_pack or {}).get("source_types_returned", []),
+        source_type_statuses=(law_evidence_pack or {}).get("source_type_statuses", {}),
+        direct_evidence_count=(law_evidence_pack or {}).get("direct_evidence_count", 0),
+        related_evidence_count=(law_evidence_pack or {}).get("related_evidence_count", 0),
+        analogical_evidence_count=(law_evidence_pack or {}).get("analogical_evidence_count", 0),
+        background_evidence_count=(law_evidence_pack or {}).get("background_evidence_count", 0),
+        missing_direct_authority=(law_evidence_pack or {}).get("missing_direct_authority", True),
+        authority_summary=(law_evidence_pack or {}).get("authority_summary", ""),
+        source_state=(law_evidence_pack or {}).get("analysis_mode", "") or law_grounding_status,
         direct_manual_sources=(law_evidence_pack or {}).get("direct_manual_sources", []),
         related_manual_sources=(law_evidence_pack or {}).get("related_manual_sources", []),
         law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
@@ -2682,13 +2727,17 @@ async def ask(req: AskRequest) -> AskResponse:
             cooldown_enabled=result.get("cooldown_enabled", _cooldown_enabled()),
         )
         if result["ok"]:
+            answer_text = result["answer"]
+            response_meta = dict(base_meta)
+            response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
+            response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(
-                answer=result["answer"],
+                answer=answer_text,
                 provider="openrouter",
                 model=result["final_model"] or OPENROUTER_MODEL,
                 provider_family_fallback_used=False,
                 **attempt_meta,
-                **base_meta,
+                **response_meta,
             )
         if not result.get("retryable_provider_error"):
             # Non-retryable provider failures (bad credentials, malformed
@@ -2763,11 +2812,16 @@ async def ask(req: AskRequest) -> AskResponse:
             reason="openrouter_all_candidates_failed",
         )
         fallback_payload["ollama_error_type"] = ollama_error_type
+        fallback_payload["answer_first_sentence"] = (fallback_payload.get("answer") or "").strip().split(".", 1)[0].strip()
+        fallback_payload["first_sentence_quality_warning"] = first_sentence_quality_warning(fallback_payload.get("answer") or "")
         return AskResponse(**fallback_payload)
 
     if llm["provider"] == "groq":
         answer = await _call_groq(final_prompt, model=req.model)
         groq_model = req.model or GROQ_MODEL
+        response_meta = dict(base_meta)
+        response_meta["answer_first_sentence"] = (answer or "").strip().split(".", 1)[0].strip()
+        response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer)
         return AskResponse(
             answer=answer,
             provider="groq",
@@ -2780,7 +2834,7 @@ async def ask(req: AskRequest) -> AskResponse:
             final_model=groq_model,
             model_fallback_used=False,
             provider_family_fallback_used=False,
-            **base_meta,
+            **response_meta,
         )
 
     raise HTTPException(
@@ -2882,6 +2936,21 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "source_confidence_level": (pack or {}).get("source_confidence_level"),
         "answer_quality_mode": (pack or {}).get("answer_quality_mode"),
         "law_grounding_error": (pack or {}).get("law_grounding_error", ""),
+        "legal_analysis": (pack or {}).get("legal_analysis"),
+        "analysis_mode": (pack or {}).get("analysis_mode"),
+        "main_issue": (pack or {}).get("main_issue"),
+        "risk_posture": ((pack or {}).get("legal_analysis") or {}).get("risk_posture"),
+        "confidence": ((pack or {}).get("legal_analysis") or {}).get("confidence"),
+        "source_types_attempted": (pack or {}).get("source_types_attempted", []),
+        "source_types_returned": (pack or {}).get("source_types_returned", []),
+        "direct_evidence_count": (pack or {}).get("direct_evidence_count", 0),
+        "related_evidence_count": (pack or {}).get("related_evidence_count", 0),
+        "analogical_evidence_count": (pack or {}).get("analogical_evidence_count", 0),
+        "background_evidence_count": (pack or {}).get("background_evidence_count", 0),
+        "missing_direct_authority": (pack or {}).get("missing_direct_authority", True),
+        "source_state": (pack or {}).get("analysis_mode") or (pack or {}).get("law_grounding_status"),
+        "answer_first_sentence": "",
+        "first_sentence_quality_warning": "",
         # Source URLs are sanitized (OC removed) at the tool boundary before
         # they ever reach a caller; the debug view never reconstructs the OC.
         "source_urls_sanitized": True,

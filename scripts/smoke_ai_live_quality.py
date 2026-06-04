@@ -351,6 +351,13 @@ def _check_question(base, q):
         "response_shape_hint": None,
         "citation_verification_status": None,
         "source_panel_status": None,
+        "legal_analysis": None,
+        "analysis_mode": None,
+        "direct_evidence_count": None,
+        "related_evidence_count": None,
+        "analogical_evidence_count": None,
+        "missing_direct_authority": None,
+        "source_types_attempted": None,
         "raw_internal_codes_in_default_ui": None,
         "h1_first_line_warning": None,
         "risky_phrase_warnings": None,
@@ -413,6 +420,13 @@ def _check_question(base, q):
     cv = meta.get("citation_verification") if isinstance(meta.get("citation_verification"), dict) else {}
     result["citation_verification_status"] = cv.get("status")
     result["source_panel_status"] = meta.get("source_panel_status") or cv.get("status")
+    result["legal_analysis"] = meta.get("legal_analysis")
+    result["analysis_mode"] = meta.get("analysis_mode") or ((meta.get("legal_analysis") or {}).get("analysis_mode") if isinstance(meta.get("legal_analysis"), dict) else None)
+    result["direct_evidence_count"] = meta.get("direct_evidence_count")
+    result["related_evidence_count"] = meta.get("related_evidence_count")
+    result["analogical_evidence_count"] = meta.get("analogical_evidence_count")
+    result["missing_direct_authority"] = meta.get("missing_direct_authority")
+    result["source_types_attempted"] = meta.get("source_types_attempted")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
@@ -448,9 +462,16 @@ def _check_question(base, q):
             answer, result.get("answer_quality_mode")
         )
         first_line = next((line.strip() for line in answer.splitlines() if line.strip()), "")
-        if first_line.lower().startswith("whether you can"):
-            result["h1_first_line_warning"] = "answer starts with Whether you can"
-            result["quality_warnings"].append(result["h1_first_line_warning"])
+        bad_starts = ("paradiso cannot verify", "whether you can", "it depends", "specific manual guidance was not found")
+        for bad in bad_starts:
+            if first_line.lower().startswith(bad):
+                result["h1_first_line_warning"] = "answer starts with %s" % bad
+                result["quality_warnings"].append(result["h1_first_line_warning"])
+                break
+        if result.get("question_type_detected") in ("activity_on_status", "status_change", "deadline_report", "documents_needed") and not result.get("legal_analysis"):
+            result["quality_warnings"].append("no legal_analysis object for legal/procedure question")
+        if (result.get("related_evidence_count") or 0) and result.get("analysis_mode") == "direct_authority" and not (result.get("direct_evidence_count") or 0):
+            result["quality_warnings"].append("related evidence mislabeled as direct authority")
         if result.get("answer_quality_mode") in ("source_limited", "source_unavailable") and "may be permissible" in lowered:
             result["quality_warnings"].append("unsupported may be permissible in source-limited answer")
         if result["risky_phrase_warnings"]:
@@ -458,6 +479,8 @@ def _check_question(base, q):
                 "risky_phrase_warnings: %s" % result["risky_phrase_warnings"]
             )
         checklist_qs = meta.get("official_confirmation_questions") or []
+        if q.get("expect_confirmation_checklist") and not checklist_qs:
+            result["quality_warnings"].append("official confirmation section lacks concrete questions")
         if q.get("expect_confirmation_checklist"):
             # The deterministic checklist questions should be reflected in the
             # answer when the contract requested them.

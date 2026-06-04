@@ -626,9 +626,85 @@ class RiskyPhraseTests(unittest.TestCase):
             law_intent=True,
         )
         directive = aq.build_answer_directives(q, lang="en")
-        self.assertIn("Paradiso cannot verify that an H-1 holder may take", directive)
+        self.assertNotIn("Paradiso cannot verify that an H-1 holder may take", directive)
+        self.assertIn("Treat a credit-bearing or degree-related university summer course as a high-risk activity under H-1", directive)
         self.assertIn("official confirmation is required", directive)
 
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+# ---------------------------------------------------------------------------
+# Legal analysis guidance engine (deterministic, no network required)
+# ---------------------------------------------------------------------------
+class LegalAnalysisGuidanceTests(unittest.TestCase):
+    def test_h1_summer_course_builds_legal_analysis_object(self):
+        pack = lt.build_law_evidence_pack(
+            "Can I take summer semester course in Korean universities even though I have a H-1 visa?",
+            visa_code="H-1",
+            config=GroundingConfig(mode="audit"),
+            retrieve=False,
+        )
+        la = pack["legal_analysis"]
+        self.assertEqual(la["risk_posture"], "medium")
+        self.assertIn(la["confidence"], ("contextual", "analogical", "limited", "unavailable"))
+        self.assertTrue(la["missing_direct_authority"])
+        self.assertIn("permitted activity scope", la["main_issue"])
+        self.assertIn("activities outside", la["main_issue"])
+        self.assertIn("change of sojourn status", la["main_issue"])
+        joined_q = " ".join(la["official_confirmation_questions"])
+        self.assertIn("credit-bearing", joined_q)
+        self.assertIn("D-2 / D-4", joined_q)
+        self.assertIn("source_types_attempted", la)
+
+    def test_evidence_relevance_direct_related_analogical_background_noise(self):
+        q = "Can I take a summer semester course on H-1?"
+        direct = {"law_name": "출입국관리법 시행령", "summary": "H-1 관광취업 활동범위와 체류자격외활동 허가"}
+        related = {"law_name": "유학 D-2", "summary": "D-2 유학 체류자격 활동범위"}
+        background = {"source_type": "legal_term", "term": "체류자격"}
+        noise = {"law_name": "도로교통법", "summary": "운전면허"}
+        self.assertEqual(lt.score_evidence_relevance(direct, question=q, visa_code="H-1", question_type="activity_on_status"), "direct")
+        self.assertIn(lt.score_evidence_relevance(related, question=q, visa_code="H-1", question_type="activity_on_status"), ("related", "analogical"))
+        self.assertNotEqual(lt.score_evidence_relevance(related, question=q, visa_code="H-1", question_type="activity_on_status"), "direct")
+        self.assertEqual(lt.score_evidence_relevance(background, question=q, visa_code="H-1", question_type="activity_on_status"), "background")
+        self.assertEqual(lt.score_evidence_relevance(noise, question=q, visa_code="H-1", question_type="activity_on_status"), "not_relevant")
+
+    def test_source_family_planning_by_question_type(self):
+        activity = lt.plan_source_families("Can I study on H-1?", visa_code="H-1")
+        self.assertEqual(activity["question_type"], lt.LQ_ACTIVITY_ON_STATUS)
+        for fam in ("statute", "enforcement_decree", "enforcement_rule"):
+            self.assertIn(fam, activity["source_types_attempted"])
+        self.assertIn("legal_interpretation", activity["unsupported_source_types"])
+
+        change = lt.plan_source_families("Can I change D-4 to D-2?", visa_code="D-4")
+        self.assertEqual(change["question_type"], lt.LQ_STATUS_CHANGE)
+        self.assertIn("manual", change["source_types_priority"])
+        self.assertIn("legal_interpretation", change["unsupported_source_types"])
+
+        docs = lt.plan_source_families("What documents do I need for D-2 extension?", visa_code="D-2")
+        self.assertEqual(docs["source_types_priority"][0], "manual")
+
+        high = lt.plan_source_families("I overstayed one day, what penalty?", visa_code="D-2")
+        self.assertEqual(high["question_type"], lt.LQ_HIGH_RISK_EXCEPTION)
+        self.assertIn("administrative_appeal", high["unsupported_source_types"])
+
+        nat = lt.plan_source_families("What are general naturalization requirements?", visa_code="F-2")
+        self.assertEqual(nat["question_type"], lt.LQ_NATIONALITY)
+        self.assertIn("statute", nat["source_types_attempted"])
+
+    def test_h1_plan_includes_all_target_queries_when_cap_allows(self):
+        plan = lt.plan_law_queries(
+            "Can I take summer semester course in Korean universities even though I have a H-1 visa?",
+            visa_code="H-1",
+            max_queries=7,
+        )
+        joined = " | ".join(plan["queries"])
+        for token in (
+            "출입국관리법 시행령 별표 체류자격 관광취업",
+            "관광취업 H-1 활동범위",
+            "체류자격외활동 허가",
+            "체류자격 변경 유학 D-2 D-4",
+            "유학 체류자격 활동범위",
+            "출입국관리법 체류자격 변경허가",
+        ):
+            self.assertIn(token, joined)

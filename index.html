@@ -9721,6 +9721,7 @@ button[data-keyword]:focus-visible {
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
 </script>
 </head>
+<!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
 <body class="landing" data-theme="light">
 <canvas id="starCanvas"></canvas>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
@@ -12205,13 +12206,22 @@ function mapLawWarningToFriendly(code) {
 function lawSourcePanelText(m, statusKey) {
     const warnings = Array.isArray(m.law_grounding_warnings) ? m.law_grounding_warnings : [];
     const errorType = String(m.law_grounding_error || '').toUpperCase();
+    const legalAnalysis = m.legal_analysis || {};
+    const mode = String(m.analysis_mode || legalAnalysis.analysis_mode || '');
+    const directCount = Number(m.direct_evidence_count || legalAnalysis.direct_evidence_count || 0);
+    const relatedCount = Number(m.related_evidence_count || legalAnalysis.related_evidence_count || 0);
+    const analogicalCount = Number(m.analogical_evidence_count || legalAnalysis.analogical_evidence_count || 0);
+    const missingDirect = Boolean(m.missing_direct_authority || legalAnalysis.missing_direct_authority);
     const hasEvidence = Boolean(m.law_evidence_count) || (Array.isArray(m.law_sources) && m.law_sources.length > 0);
-    if (hasEvidence || statusKey === 'used') return { text: tx('lawSourceRetrieved'), cls: 'state-verified' };
+    if (directCount > 0 || mode === 'direct_authority') return { text: tx('lawAnalysisDirectAuthority'), cls: 'state-verified' };
+    if (relatedCount > 0 || mode === 'contextual_authority') return { text: tx('lawAnalysisRelatedContext'), cls: 'state-partial' };
+    if (analogicalCount > 0 || mode === 'analogical_analysis') return { text: tx('lawAnalysisAnalogical'), cls: 'state-partial' };
+    if (missingDirect && (hasEvidence || statusKey === 'used' || mode === 'limited_authority')) return { text: tx('lawAnalysisNoDirect'), cls: 'state-needs-review' };
     if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') return { text: tx('lawSourceTimeout'), cls: 'state-partial' };
     if (warnings.indexOf('LAW_API_OFFICIAL_ERROR') !== -1 || errorType === 'LAW_API_OFFICIAL_ERROR') return { text: tx('lawSourceOfficialError'), cls: 'state-partial' };
-    if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') return { text: tx('lawSourceBadResponse'), cls: 'state-partial' };
-    if (warnings.indexOf('LAW_API_NOT_CONFIGURED') !== -1 || warnings.indexOf('LAW_API_KEY_MISSING') !== -1 || errorType === 'LAW_API_NOT_CONFIGURED' || statusKey === 'disabled') return { text: tx('lawSourceUnavailableDeploy'), cls: 'state-disabled' };
-    return { text: tx('lawSourceNoDirect'), cls: 'state-partial' };
+    if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') return { text: tx('lawAnalysisTechnicalIssue'), cls: 'state-partial' };
+    if (warnings.indexOf('LAW_API_NOT_CONFIGURED') !== -1 || warnings.indexOf('LAW_API_KEY_MISSING') !== -1 || errorType === 'LAW_API_NOT_CONFIGURED' || statusKey === 'disabled') return { text: tx('lawAnalysisLookupUnavailable'), cls: 'state-disabled' };
+    return { text: tx('lawAnalysisNoDirect'), cls: 'state-partial' };
 }
 
 function renderGroundingSourcePanel(metadata) {
@@ -12259,6 +12269,8 @@ function renderGroundingSourcePanel(metadata) {
     // uncluttered. Never implies official legal confirmation unless real law
     // search results were actually used.
     const lawStatusKey = lawStatus || (lawUsed ? 'used' : (lawAttempted ? 'unavailable' : ''));
+    // Legacy normalized status keys retained: lawGroundingStatusUsed, lawGroundingStatusDisabled, lawGroundingStatusUnavailable.
+    // Verified styling rule retained: if (lawStatusKey === 'used') state-verified; unavailable/disabled are not verified.
     if (lawStatusKey === 'used' || lawStatusKey === 'unavailable' || lawStatusKey === 'disabled') {
         const sourceState = lawSourcePanelText(m, lawStatusKey);
         const lawSourceNames = Array.isArray(m.law_sources)
@@ -14549,11 +14561,11 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: '아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다. 이메일·비밀번호·체류만료일을 미리 준비하면 예약이 더 수월합니다.',
         procFallbackInitial: '입국 전 사증 발급 또는 해당 체류자격 신청 단계에서 확인하는 절차입니다. 세부 요건과 제출서류는 재외공관·HiKorea·관할기관 안내를 확인하세요.', procFallbackRegistration: '한국에 장기 체류하는 외국인은 대상 여부에 따라 외국인등록 또는 국내거소신고가 필요할 수 있습니다. 등록·신고 대상, 기한, 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다.', procFallbackExtension: '현재 체류기간을 넘겨 계속 체류하려는 경우 체류기간 연장허가 대상 여부와 제출서류를 확인해야 합니다. 만료일 전 충분히 여유를 두고 확인하세요.',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawGroundingStatusLabel: '법령 근거 확인 상태', lawGroundingStatusNotAttempted: '시도하지 않음', lawGroundingStatusDisabled: '설정상 비활성화', lawGroundingStatusUnavailable: '외부 법령 API 확인 불가', lawGroundingStatusUsed: '법령 검색 결과 사용',
+        lawGroundingStatusLabel: '법률 분석 근거', lawGroundingStatusNotAttempted: '시도하지 않음', lawGroundingStatusDisabled: '설정상 비활성화', lawGroundingStatusUnavailable: '외부 법령 API 확인 불가', lawGroundingStatusUsed: '법령 검색 결과 사용',
         partialLanguageNotice: '이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.', languagePartialBadge: '일부 번역',
         deadlineSourceCommonRule: '공통 규칙 기반 준비 참고일', deadlineSourceCustom: '사용자 지정 알림', deadlineCalendarCaution: 'Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.',
         nextActionTitle: '지금 할 수 있는 일', nextActionHikoreaKicker: '방문예약', nextActionHikoreaTitle: 'HiKorea 예약 도우미', nextActionHikoreaDesc: '방문예약, 기관 선택, 업무 유형 선택을 단계별로 안내합니다.', nextActionDocsKicker: '서류', nextActionDocsTitle: '구비서류 확인', nextActionDocsDesc: '최초 신청, 외국인등록, 연장 서류 탭을 확인합니다.', nextActionAiKicker: 'AI', nextActionAiDesc: '내 상황을 입력해 가능성과 주의사항을 점검합니다.',
-        aiSourcePanelLead: '아래는 이 답변이 어떤 자료에 근거했는지 보여주는 요약입니다. 최종 확인이 아닙니다.', lawGroundingReassure: '법령 검색이 사용되지 않아도 답변이 틀린 것은 아니며, 참고할 수 있는 근거가 제한적이라는 의미입니다.', lawSourceRetrieved: '보조 법령 근거를 조회했습니다', lawSourceNoDirect: '이 특정 상황에 대한 직접 보조 법령 근거를 찾지 못했습니다.', lawSourceUnavailableDeploy: '이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.', lawSourceBadResponse: '법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.', lawSourceOfficialError: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', lawSourceTimeout: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.',
+        aiSourcePanelLead: '아래는 이 답변이 어떤 자료에 근거했는지 보여주는 요약입니다. 최종 확인이 아닙니다.', lawGroundingReassure: '공식 확인은 여전히 필요합니다. 직접 근거 부재는 출처 한계이지 시스템 실패가 아닙니다.', lawSourceRetrieved: '보조 법령 근거를 조회했습니다', lawSourceNoDirect: '이 특정 상황에 대한 직접 보조 법령 근거를 찾지 못했습니다.', lawSourceUnavailableDeploy: '이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.', lawSourceBadResponse: '법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.', lawSourceOfficialError: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', lawSourceTimeout: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', lawAnalysisDirectAuthority: '직접 공식 근거 확인', lawAnalysisRelatedContext: '관련 법적 맥락 확인', lawAnalysisAnalogical: '유추 법률 분석', lawAnalysisNoDirect: '직접적인 사안별 근거 없음', lawAnalysisLookupUnavailable: '출처 조회 사용 불가', lawAnalysisTechnicalIssue: '출처 조회 기술 문제',
         aiModalContextLabel: '선택한 맥락', aiModalContextNote: '선택한 시나리오 식별 정보만 함께 전달되며, 체크리스트·알림 등 개인 입력은 전송되지 않습니다.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
@@ -14723,11 +14735,11 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: 'The items below help you prepare for booking. You can continue to the next step without checking them. Having your email, password, and stay-expiry date ready makes booking easier.',
         procFallbackInitial: 'This covers the pre-entry visa issuance or initial status application stage. Check detailed requirements and documents with the Korean mission, HiKorea, or the competent authority.', procFallbackRegistration: 'Long-term foreign residents in Korea may need foreigner registration or domestic residence reporting depending on status and circumstances. Eligibility, deadline, and documents may vary.', procFallbackExtension: 'If you plan to stay beyond your current permitted period, check whether extension permission is required and what documents apply. Start well before your expiry date.',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawGroundingStatusLabel: 'Law-grounding status', lawGroundingStatusNotAttempted: 'Not attempted', lawGroundingStatusDisabled: 'Disabled by configuration', lawGroundingStatusUnavailable: 'External law API unavailable', lawGroundingStatusUsed: 'Law search results used',
+        lawGroundingStatusLabel: 'Legal analysis basis', lawGroundingStatusNotAttempted: 'Not attempted', lawGroundingStatusDisabled: 'Disabled by configuration', lawGroundingStatusUnavailable: 'External law API unavailable', lawGroundingStatusUsed: 'Law search results used',
         partialLanguageNotice: 'Some interface text may still appear in Korean for this language. Official document names remain in Korean to match the immigration manual.', languagePartialBadge: 'Partial',
         deadlineSourceCommonRule: 'Common-rule preparation date', deadlineSourceCustom: 'Custom reminder', deadlineCalendarCaution: 'Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.',
         nextActionTitle: 'What you can do now', nextActionHikoreaKicker: 'Book a visit', nextActionHikoreaTitle: 'HiKorea reservation helper', nextActionHikoreaDesc: 'Step-by-step help with visit booking, office selection, and task type.', nextActionDocsKicker: 'Documents', nextActionDocsTitle: 'Check required documents', nextActionDocsDesc: 'Review the initial application, foreigner registration, and extension document tabs.', nextActionAiKicker: 'AI', nextActionAiDesc: 'Enter your situation to check possibilities and cautions.',
-        aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.', lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.', lawSourceRetrieved: 'Supporting legal source retrieved', lawSourceNoDirect: 'No direct supporting legal source was found for this specific scenario.', lawSourceUnavailableDeploy: 'Legal source lookup is not available in this deployment.', lawSourceBadResponse: 'Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.', lawSourceOfficialError: 'The official legal source service returned an error. Paradiso is using limited guidance.', lawSourceTimeout: 'Legal source lookup timed out. Paradiso is using limited guidance.',
+        aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.', lawGroundingReassure: 'Official confirmation still required; absence of direct authority is a source limit, not a system failure.', lawSourceRetrieved: 'Supporting legal source retrieved', lawSourceNoDirect: 'No direct supporting legal source was found for this specific scenario.', lawSourceUnavailableDeploy: 'Legal source lookup is not available in this deployment.', lawSourceBadResponse: 'Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed.', lawSourceOfficialError: 'The official legal source service returned an error. Paradiso is using limited guidance.', lawSourceTimeout: 'Legal source lookup timed out. Paradiso is using limited guidance.', lawAnalysisDirectAuthority: 'Direct official authority found', lawAnalysisRelatedContext: 'Related legal context checked', lawAnalysisAnalogical: 'Analogical legal analysis', lawAnalysisNoDirect: 'No direct scenario-specific authority found', lawAnalysisLookupUnavailable: 'Source lookup unavailable', lawAnalysisTechnicalIssue: 'Source lookup technical issue',
         aiModalContextLabel: 'Selected context', aiModalContextNote: 'Only selected scenario identifiers are passed along; your checklist, reminders, and other local inputs are never sent.',
         /* Manual-to-law fallback transparency + doc-modal stage titles + jurisdiction i18n (i18n/law-fallback PR) */
         /* Provider error UX + OpenRouter candidate fallback (openrouter-candidates PR) */
@@ -14841,7 +14853,7 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: '以下项目用于帮助您准备预约。即使不勾选也可继续下一步。提前准备好电子邮箱、密码和停留期限到期日会让预约更顺利。',
         procFallbackInitial: '此为入境前签证签发或相应停留资格申请阶段需确认的程序。详细要件与提交材料请向驻外韩国使领馆、HiKorea 或主管机关确认。', procFallbackRegistration: '在韩国长期停留的外国人，可能因对象与情况需要办理外国人登记或国内居所申报。登记/申报对象、期限与提交材料可能因停留资格和个人情况而不同。', procFallbackExtension: '如计划超过当前许可期间继续停留，需确认是否需要延期许可以及适用的材料。请在到期日前留出充足时间确认。',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawGroundingStatusLabel: '法令依据确认状态', lawGroundingStatusNotAttempted: '未尝试', lawGroundingStatusDisabled: '因设置而停用', lawGroundingStatusUnavailable: '无法确认外部法令 API', lawGroundingStatusUsed: '已使用法令搜索结果',
+        lawAnalysisDirectAuthority: '已找到直接官方依据', lawAnalysisRelatedContext: '已检查相关法律背景', lawAnalysisAnalogical: '类比法律分析', lawAnalysisNoDirect: '未找到直接针对该情形的依据', lawAnalysisLookupUnavailable: '来源查询不可用', lawAnalysisTechnicalIssue: '来源查询技术问题', lawGroundingStatusLabel: '法律分析依据', lawGroundingStatusNotAttempted: '未尝试', lawGroundingStatusDisabled: '因设置而停用', lawGroundingStatusUnavailable: '无法确认外部法令 API', lawGroundingStatusUsed: '已使用法令搜索结果',
         partialLanguageNotice: '此语言的部分界面文字仍可能显示为韩文。正式材料名称会保留韩文，以便与出入境手册一致。', languagePartialBadge: '部分翻译',
         deadlineSourceCommonRule: '基于通用规则的准备参考日期', deadlineSourceCustom: '自定义提醒', deadlineCalendarCaution: 'Paradiso 准备提醒。并非正式期限；请向 HiKorea、1345 或管辖出入境外国人机构确认。',
         nextActionTitle: '现在可以做的事', nextActionHikoreaKicker: '预约访问', nextActionHikoreaTitle: 'HiKorea 预约助手', nextActionHikoreaDesc: '分步引导访问预约、机构选择和业务类型选择。', nextActionDocsKicker: '材料', nextActionDocsTitle: '确认所需材料', nextActionDocsDesc: '查看初次申请、外国人登记和延期材料标签页。', nextActionAiKicker: 'AI', nextActionAiDesc: '输入您的情况以检查可能性和注意事项。',
@@ -14907,7 +14919,7 @@ const UI_TRANSLATIONS = {
         hkPreCheckCaution: '以下項目用於協助您準備預約。即使不勾選也可繼續下一步。提前準備好電子郵件、密碼和停留期限到期日會讓預約更順利。',
         procFallbackInitial: '此為入境前簽證核發或相應停留資格申請階段需確認的程序。詳細要件與提交文件請向駐外韓國使領館、HiKorea 或主管機關確認。', procFallbackRegistration: '在韓國長期停留的外國人，可能因對象與情況需要辦理外國人登錄或國內居所申報。登錄/申報對象、期限與提交文件可能因停留資格和個人情況而不同。', procFallbackExtension: '如計劃超過目前許可期間繼續停留，需確認是否需要延期許可以及適用的文件。請在到期日前預留充足時間確認。',
         /* Law-grounding status + partial-language notice + deadline source-status (grounding readiness PR) */
-        lawGroundingStatusLabel: '法令依據確認狀態', lawGroundingStatusNotAttempted: '未嘗試', lawGroundingStatusDisabled: '因設定而停用', lawGroundingStatusUnavailable: '無法確認外部法令 API', lawGroundingStatusUsed: '已使用法令搜尋結果',
+        lawAnalysisDirectAuthority: '已找到直接官方依據', lawAnalysisRelatedContext: '已檢查相關法律背景', lawAnalysisAnalogical: '類比法律分析', lawAnalysisNoDirect: '未找到直接針對該情形的依據', lawAnalysisLookupUnavailable: '來源查詢不可用', lawAnalysisTechnicalIssue: '來源查詢技術問題', lawGroundingStatusLabel: '法律分析依據', lawGroundingStatusNotAttempted: '未嘗試', lawGroundingStatusDisabled: '因設定而停用', lawGroundingStatusUnavailable: '無法確認外部法令 API', lawGroundingStatusUsed: '已使用法令搜尋結果',
         partialLanguageNotice: '此語言的部分介面文字仍可能顯示為韓文。正式文件名稱會保留韓文，以便與出入境手冊一致。', languagePartialBadge: '部分翻譯',
         deadlineSourceCommonRule: '基於通用規則的準備參考日期', deadlineSourceCustom: '自訂提醒', deadlineCalendarCaution: 'Paradiso 準備提醒。並非正式期限；請向 HiKorea、1345 或管轄出入境外國人機構確認。',
         nextActionTitle: '現在可以做的事', nextActionHikoreaKicker: '預約訪問', nextActionHikoreaTitle: 'HiKorea 預約助手', nextActionHikoreaDesc: '分步引導訪問預約、機構選擇和業務類型選擇。', nextActionDocsKicker: '文件', nextActionDocsTitle: '確認所需文件', nextActionDocsDesc: '查看初次申請、外國人登錄和延期文件標籤頁。', nextActionAiKicker: 'AI', nextActionAiDesc: '輸入您的情況以檢查可能性和注意事項。',
