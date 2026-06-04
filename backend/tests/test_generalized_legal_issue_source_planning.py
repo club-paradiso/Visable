@@ -4,7 +4,7 @@ import pytest
 
 from services.grounding_config import GroundingConfig
 from services.law_tools import build_law_evidence_pack
-from services.legal_analysis import classify_legal_issue_types, extract_immigration_facts
+from services.legal_analysis import classify_activity_types, classify_legal_issue_types, extract_immigration_facts
 
 CFG = GroundingConfig(mode="audit")
 
@@ -61,6 +61,32 @@ def test_status_transition_preserves_current_and_previous_substatus():
     assert facts["current_parent_status"] == "F-2"
     assert facts["current_sub_status"] == "F-2-99"
     assert facts["status_transition_detected"] is True
+
+
+def test_visa_hint_preserves_in_text_target_status_for_status_change():
+    pack = build_law_evidence_pack("Can I change status to F-2-99?", visa_code="H-1", config=CFG, retrieve=False)
+    facts = pack["immigration_facts"]
+    assert facts["current_status"] == "H-1"
+    assert facts["previous_status"] == "H-1"
+    assert facts["target_status"] == "F-2-99"
+    assert facts["target_parent_status"] == "F-2"
+    assert facts["target_sub_status"] == "F-2-99"
+    assert facts["status_transition_detected"] is True
+    assert "status_change" in pack["legal_issue_types"]
+    assert any("F-2-99" in query for query in pack["planned_law_queries"])
+    assert "F-2-99" in pack["legal_analysis"]["main_issue"]
+
+
+def test_registration_phrases_are_not_school_enrollment():
+    for question in [
+        "H-1 외국인등록은 언제 해야 하나요?",
+        "H-1에서 사업자등록을 내고 부업을 해도 되나요?",
+        "F-4 국내거소신고와 외국인등록 차이는 무엇인가요?",
+    ]:
+        activities = set(classify_activity_types(question))
+        issues = set(classify_legal_issue_types(question))
+        assert "formal_enrollment" not in activities
+        assert "study_on_non_study_status" not in issues
 
 
 @pytest.mark.parametrize("status", ["H-1", "G-1", "F-2-99", "D-2", "D-4", "D-10", "E-7", "F-4", "F-6", "B-2", "C-3"])
