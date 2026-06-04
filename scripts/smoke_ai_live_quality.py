@@ -240,6 +240,71 @@ def _safe_health(base):
         return None
 
 
+# Internal backend field names that must never appear in a user-facing memo
+# (Part H). These leaked from legal_analysis.decisive_facts before the fix.
+_INTERNAL_SNAKE_LABELS = (
+    "current_status/sub_status", "previous_status/approval_conditions",
+    "target_status/route", "paid_or_credit_bearing", "duration/employer_or_school",
+    "current_sub_status", "proposed_activities", "activity_facts",
+)
+# English official-confirmation question stems that must not appear inside a
+# Korean fallback answer (Part E / Part H).
+_ENGLISH_QUESTION_STEMS = (
+    "what exact current status", "what is your current sojourn", "is the course credit-bearing",
+    "does the school require", "what event starts the deadline", "where and how must the report",
+    "what are the activity start date",
+)
+# Study terms that must NOT show up in a registration/reporting answer (Part H).
+_STUDY_TERMS_FOR_REGISTRATION = ("계절학기", "학점", "대학 수업", "수강", "청강", "D-2/D-4", "D-2", "D-4")
+
+
+def _korean_fallback_snake_case_warnings(answer):
+    return [lbl for lbl in _INTERNAL_SNAKE_LABELS if lbl in (answer or "")]
+
+
+def _korean_fallback_english_question_warnings(answer):
+    low = (answer or "").lower()
+    return [stem for stem in _ENGLISH_QUESTION_STEMS if stem in low]
+
+
+def _registration_answer_study_leak(answer, question):
+    q = question or ""
+    if not any(t in q for t in ("외국인등록", "거소신고", "신고")):
+        return []
+    if any(t in q for t in ("수강", "청강", "계절학기", "학점", "대학", "수업")):
+        return []  # the question itself is about study — not a leak
+    return [t for t in _STUDY_TERMS_FOR_REGISTRATION if t in (answer or "")]
+
+
+def _family_statuses_collapse_warnings(result):
+    """Part H: detect the dominant-LAW_API_BAD_RESPONSE / mislabeled-parser bug."""
+    warnings = []
+    fam = result.get("source_family_statuses")
+    parser_by_family = result.get("parser_status_by_family") or {}
+    if isinstance(fam, dict) and fam:
+        values = {str(v).lower() for v in fam.values() if v}
+        # All families collapsed to bad_response is the symptom we fixed.
+        if values and values <= {"bad_response"}:
+            warnings.append("all source family statuses collapse to bad_response")
+        # no_results / unsupported are normal; the panel must NOT call them a
+        # parser failure.
+        normal = {"no_results", "unsupported", "not_configured", "no_results_or_unsupported"}
+        only_normal = bool(values) and values <= normal
+        parser_vals = {str(v).lower() for v in parser_by_family.values() if v}
+        top_parser = str(result.get("parser_status") or "").lower()
+        parser_actually_failed = bool(
+            ({"parse_error", "bad_response"} & parser_vals)
+            or top_parser in {"parse_error", "bad_response"}
+            or str(result.get("law_lookup_error_type") or "").upper() in {"LAW_API_PARSE_ERROR", "LAW_API_BAD_RESPONSE"}
+        )
+        if only_normal and parser_actually_failed:
+            warnings.append("source panel labels parser failure while families are only no_results/unsupported")
+    # no_results misclassified as bad_response at the top-level error type.
+    if str(result.get("law_error_type") or "").upper() == "LAW_API_BAD_RESPONSE" and str(result.get("response_shape_hint") or "").lower() in {"empty", "json_object", "json_list", "xml"}:
+        warnings.append("no_results-shaped response classified as LAW_API_BAD_RESPONSE")
+    return warnings
+
+
 def _contains_unrelated_h1_study_template(answer, question):
     combined = (answer or "")
     q = question or ""
@@ -527,6 +592,20 @@ def _check_question(base, q):
         result["answer_contains_unrelated_h1_study_template"] = _contains_unrelated_h1_study_template(answer, q.get("question"))
         if result["answer_contains_unrelated_h1_study_template"]:
             result["quality_warnings"].append("unrelated H-1 study template detected")
+        # Part H — fallback localization + diagnostics taxonomy warnings.
+        is_ko_answer = str(q.get("lang", "")).lower().startswith("ko")
+        if is_ko_answer:
+            snake = _korean_fallback_snake_case_warnings(answer)
+            if snake:
+                result["quality_warnings"].append("internal snake_case labels in Korean fallback: %s" % snake)
+            eng_qs = _korean_fallback_english_question_warnings(answer)
+            if eng_qs:
+                result["quality_warnings"].append("English official questions in Korean fallback: %s" % eng_qs)
+        reg_leak = _registration_answer_study_leak(answer, q.get("question"))
+        if reg_leak:
+            result["quality_warnings"].append("registration/reporting answer leaks study terms: %s" % reg_leak)
+        for w in _family_statuses_collapse_warnings(result):
+            result["quality_warnings"].append(w)
         if result.get("first_sentence_quality_warning") is None:
             result["first_sentence_quality_warning"] = ""
         for w in ("mixed_language_artifacts", "raw_code_leak"):

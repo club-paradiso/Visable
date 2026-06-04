@@ -190,3 +190,26 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
         panel_slice = (self.html + self.index_html)
         self.assertNotIn("LAW_API_OC", panel_slice)
         self.assertNotIn("OC=paradiso", panel_slice)
+
+    # -- Part G: developer diagnostics taxonomy ----------------------------
+    def test_developer_diagnostics_use_per_family_statuses(self):
+        # The diagnostics block reads per-family statuses, not just a dominant
+        # LAW_API_BAD_RESPONSE warning.
+        self.assertIn("source_family_statuses", self.html)
+        self.assertIn("parser_status_by_family", self.html)
+        for label in ("법령군별 상태:", "Per-family status:"):
+            self.assertIn(label, self.html)
+
+    def test_developer_diagnostics_only_label_parser_failure_when_parser_failed(self):
+        # A neutral "no directly citable result (not a parser failure)" line must
+        # exist for the no_results / unsupported case, distinct from the parse-
+        # failure line.
+        self.assertIn("실시간 법령 조회에서 직접 인용 가능한 결과를 찾지 못했습니다(파서 오류 아님).", self.html)
+        self.assertIn("parserFailed", self.html)
+        self.assertIn("PARSE_FAIL", self.html)
+        # The parse-failure line still exists (shown only when parser truly failed)
+        # and the raw codes block stays at the bottom.
+        details_pos = self.html.find("실시간 법령 조회 응답을 파싱하지 못했습니다")
+        raw_pos = self.html.find("raw developer codes", details_pos)
+        self.assertGreaterEqual(details_pos, 0)
+        self.assertGreater(raw_pos, details_pos)

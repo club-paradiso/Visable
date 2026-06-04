@@ -433,7 +433,11 @@ def _official_error_info(payload: Any) -> Tuple[bool, str, str]:
             lowered = {str(k).lower(): v for k, v in node.items()}
             for key, value in lowered.items():
                 sval = str(value).strip().lower()
-                if key in {"error", "errorcode", "errcode"} and sval:
+                # A success code (errorCode "0"/"00"/"OK") must NOT be flagged as
+                # an official error — otherwise a perfectly good search response
+                # carrying errorCode=0 would collapse into official_error and
+                # then look like a bad response downstream.
+                if key in {"error", "errorcode", "errcode"} and sval and sval not in success_values:
                     found = True; set_code(value)
                 if key in {"resultcode", "code"} and sval and sval not in success_values:
                     found = True; set_code(value)
@@ -1755,6 +1759,20 @@ def build_law_evidence_pack(
         law_queries_attempted = [law_context.get("law_search_query", "")] if law_context.get("law_search_query") else []
         law_grounding_warnings = list(law_context.get("grounding_warnings") or [])
         law_grounding_error = law_context.get("error_type", "") or law_context.get("law_grounding_error", "") or ""
+        # Derive a granular statute-family status from the single reused law call
+        # so the source panel / developer diagnostics show a real per-family
+        # status (statute: no_results / official_error / bad_response / ...)
+        # instead of collapsing everything into one dominant LAW_API_BAD_RESPONSE.
+        if law_api_attempted:
+            ctx_status = (
+                SOURCE_STATUS_RESULTS_FOUND if context_used_hint and law_sources
+                else _ERROR_TO_SOURCE_STATUS.get(law_grounding_error or LAW_API_NO_RESULTS, SOURCE_STATUS_NO_RESULTS)
+            )
+            source_family_retrieval["source_family_statuses"] = {"statute": ctx_status}
+            source_family_retrieval["parser_statuses"] = {"statute": law_context.get("parser_status", "")}
+            source_family_retrieval["response_shape_hints"] = {"statute": law_context.get("response_shape_hint", "")}
+            source_family_retrieval["law_error_types"] = {"statute": law_grounding_error or ""}
+            source_family_retrieval["source_family_result_counts"] = {"statute": len(law_sources)}
     else:
         should_retrieve = retrieve if retrieve is not None else (
             law_intent and cfg.mode in {"audit", "enabled"}

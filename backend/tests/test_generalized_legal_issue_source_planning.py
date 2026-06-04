@@ -128,6 +128,33 @@ def test_official_source_family_plans_for_required_scenarios() -> None:
         assert plan["source_family_statuses"].get("precedent", "not_attempted") in {"not_attempted", "unsupported"}
 
 
+def test_h1_foreigner_registration_classification_is_not_school_enrollment() -> None:
+    # Part C: "H-1 외국인등록은 언제 해야 하나요?" must be a registration/reporting
+    # question, never a school-enrollment / study-on-non-study-status question.
+    question = "H-1 외국인등록은 언제 해야 하나요?"
+    facts = extract_immigration_facts(question, visa_code="H-1")
+    activities = set(classify_activity_types(question))
+    issues = set(classify_legal_issue_types(question, facts))
+    assert "registration_or_reporting" in activities
+    assert "formal_enrollment" not in activities
+    assert {"reporting_duty", "registration_or_residence_report"} <= issues
+    assert "study_on_non_study_status" not in issues
+    assert facts["activity_facts"]["formal_enrollment"] == "false"
+
+
+def test_h1_foreigner_registration_source_plan_prioritizes_manual_statute_rules() -> None:
+    # Part C: manual first, then statute / enforcement_decree / enforcement_rule.
+    question = "H-1 외국인등록은 언제 해야 하나요?"
+    facts = extract_immigration_facts(question, visa_code="H-1")
+    issues = classify_legal_issue_types(question, facts)
+    plan = build_generalized_source_plan(question, facts, issues)
+    priority = plan["source_families_planned"]
+    assert priority[0] == "manual"
+    assert {"manual", "statute", "enforcement_decree", "enforcement_rule"} <= set(priority)
+    # statute must precede legal_interpretation in the priority order.
+    assert priority.index("statute") < priority.index("legal_interpretation")
+
+
 def test_status_change_target_query_preserves_target_status() -> None:
     question = "Can I change status to F-2-99?"
     facts = extract_immigration_facts(question, visa_code="H-1")

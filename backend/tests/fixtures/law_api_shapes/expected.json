@@ -1,0 +1,9 @@
+{
+  "statute_json_results.txt":          {"source_type": "law", "error_type": "",                    "response_shape_hint": "json_object", "min_results": 2},
+  "statute_json_empty.txt":            {"source_type": "law", "error_type": "law_api_no_results",   "response_shape_hint": "json_object", "min_results": 0},
+  "statute_xml_results.txt":           {"source_type": "law", "error_type": "",                    "response_shape_hint": "xml",         "min_results": 1},
+  "statute_xml_official_error.txt":    {"source_type": "law", "error_type": "law_api_official_error", "parser_status": "official_error", "response_shape_hint": "xml", "min_results": 0},
+  "statute_json_official_error.txt":   {"source_type": "law", "error_type": "law_api_official_error", "parser_status": "official_error", "response_shape_hint": "json_object", "min_results": 0},
+  "statute_html_service_page.txt":     {"source_type": "law", "error_type": "law_api_bad_response", "response_shape_hint": "html",        "min_results": 0},
+  "enforcement_decree_json_nested.txt":{"source_type": "law", "error_type": "",                    "response_shape_hint": "json_object", "min_results": 1}
+}

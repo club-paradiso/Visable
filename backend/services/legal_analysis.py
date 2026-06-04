@@ -349,7 +349,12 @@ def build_generalized_source_plan(
         elif issue == "status_change":
             add("manual", "statute", "enforcement_decree", "legal_interpretation", "administrative_appeal")
         elif issue in {"reporting_duty", "workplace_change_addition", "registration_or_residence_report"}:
-            add("manual", "statute", "enforcement_rule", "administrative_rule", "legal_interpretation")
+            # Registration / reporting / workplace-change duties are grounded in
+            # the Act + Enforcement Decree (별표 / duty triggers) + Enforcement
+            # Rule (deadlines, attached forms) + the practical manual, with the
+            # manual leading. Enforcement Decree must be present so a foreigner-
+            # registration ("외국인등록은 언제") question is not under-sourced.
+            add("manual", "statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "legal_interpretation")
         elif issue == "overstay_or_risk":
             add("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal")
         elif issue == "nationality_or_refugee_context":

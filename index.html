@@ -12364,7 +12364,11 @@ function renderGroundingSourcePanel(metadata) {
         rows.push(`<div class="gp-row state-advisory"><strong>${escapeHtml(tx('aiAdvisoryLabel'))}</strong>: ${escapeHtml(tx('aiAdvisoryText'))}</div>`);
     }
 
-    const debug = lawWarnings.length ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiDeveloperDiagnostics'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(lawWarnings.join('\\n'))}</pre></details>` : '';
+    // Developer diagnostics (Part G): per-family statuses first, raw codes last.
+    const familyStatuses = (m.source_family_statuses && typeof m.source_family_statuses === 'object') ? m.source_family_statuses : {};
+    const familyLines = Object.keys(familyStatuses).filter(function(f) { return familyStatuses[f]; }).map(function(f) { return f + ': ' + String(familyStatuses[f]); });
+    const diagLines = (familyLines.length ? familyLines.concat(['', '--- raw developer codes ---']) : []).concat(lawWarnings);
+    const debug = (lawWarnings.length || familyLines.length) ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiDeveloperDiagnostics'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(diagLines.join('\\n'))}</pre></details>` : '';
     return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div><p class="gp-lead">${escapeHtml(tx('aiSourcePanelLead'))}</p>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
 }
 
