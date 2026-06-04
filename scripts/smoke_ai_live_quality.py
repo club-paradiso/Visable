@@ -193,6 +193,24 @@ _RAW_CODE_LEAKS = (
     "manual_grounding_absent", "provider_unavailable",
 )
 
+# Over-confident certainty phrases that must be softened when the source state
+# is limited/unavailable (Part N). Mirrors
+# services.answer_quality.RISKY_CONFIDENCE_PHRASES; inlined so this script stays
+# dependency-free. Warn-only — never fails CI on LLM wording.
+_RISKY_CONFIDENCE_PHRASES = (
+    "may be permissible", "is allowed", "you can", "no need to", "does not require",
+    "definitely", "guaranteed", "will be approved", "will be denied",
+    "automatically", "always", "never",
+)
+
+
+def _risky_phrase_warnings(answer, mode):
+    """Risky certainty phrases found in a weak-source-mode answer (warn-only)."""
+    if not answer or mode not in ("source_limited", "source_unavailable"):
+        return []
+    low = answer.lower()
+    return [p for p in _RISKY_CONFIDENCE_PHRASES if p in low]
+
 
 def _warning_repetition_count(answer):
     """Count how many times the same official-confirmation caution is repeated.
@@ -324,6 +342,10 @@ def _check_question(base, q):
         "grounded_answer_limited": None,
         "answer_style_version": None,
         "question_type_detected": None,
+        # Law evidence tool-layer signals (Part I).
+        "planned_law_queries": None,
+        "law_evidence_count": None,
+        "risky_phrase_warnings": None,
         "direct_answer_early": None,
         "confirmation_checklist_present": None,
         "mixed_language_artifacts": None,
@@ -374,6 +396,9 @@ def _check_question(base, q):
     result["grounded_answer_limited"] = meta.get("grounded_answer_limited")
     result["answer_style_version"] = meta.get("answer_style_version")
     result["question_type_detected"] = meta.get("question_type_detected")
+    # Law evidence tool-layer signals (Part I) — sanitized, no secrets.
+    result["planned_law_queries"] = meta.get("planned_law_queries")
+    result["law_evidence_count"] = meta.get("law_evidence_count")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
@@ -404,6 +429,14 @@ def _check_question(base, q):
         result["raw_code_leak"] = [c for c in _RAW_CODE_LEAKS if c in answer]
         result["answer_length_bucket"] = _length_bucket(answer)
         result["warning_repetition_count"] = _warning_repetition_count(answer)
+        # Over-confident wording in a weak source mode (Part N) — warn-only.
+        result["risky_phrase_warnings"] = _risky_phrase_warnings(
+            answer, result.get("answer_quality_mode")
+        )
+        if result["risky_phrase_warnings"]:
+            result["quality_warnings"].append(
+                "risky_phrase_warnings: %s" % result["risky_phrase_warnings"]
+            )
         checklist_qs = meta.get("official_confirmation_questions") or []
         if q.get("expect_confirmation_checklist"):
             # The deterministic checklist questions should be reflected in the
@@ -483,6 +516,9 @@ def main(argv=None):
         "groq_fallback_allowed": None,
         "llm_warnings": None,
         "law_grounding_mode": None,
+        # Non-secret Open Law API posture (booleans only, never the OC/key value).
+        "law_api_oc_configured": None,
+        "law_api_key_fallback_configured": None,
         "live_answer_executed": False,
         "manual_to_law_fallback_executed": False,
         "model_fallback_executed": False,
@@ -528,6 +564,10 @@ def main(argv=None):
     report["groq_fallback_allowed"] = llm.get("groq_fallback_allowed")
     report["llm_warnings"] = llm.get("warnings")
     report["law_grounding_mode"] = health.get("law_grounding_mode")
+    # Non-secret Open Law API flags from /health (booleans only; no OC/key value).
+    law_api = health.get("law_api") if isinstance(health.get("law_api"), dict) else {}
+    report["law_api_oc_configured"] = law_api.get("law_api_oc_configured")
+    report["law_api_key_fallback_configured"] = law_api.get("law_api_key_fallback_configured")
 
     results = [_check_question(base, q) for q in SAMPLE_QUESTIONS]
     report["questions"] = results
@@ -588,6 +628,8 @@ def _emit(report, args):
     print("  groq fallback allowed    : %s" % report["groq_fallback_allowed"])
     print("  llm warnings             : %s" % report["llm_warnings"])
     print("  law grounding mode       : %s" % report["law_grounding_mode"])
+    print("  law_api oc configured    : %s" % report["law_api_oc_configured"])
+    print("  law_api key fallback     : %s" % report["law_api_key_fallback_configured"])
     print("  live answer executed     : %s" % report["live_answer_executed"])
     print("  model fallback hit       : %s" % report["model_fallback_executed"])
     print("  manual->law fallback hit : %s" % report["manual_to_law_fallback_executed"])
@@ -623,6 +665,11 @@ def _emit(report, args):
         suffix += " [quality=%s conf=%s qtype=%s related=%s]" % (
             r["answer_quality_mode"], r["source_confidence_level"],
             r["question_type_detected"], r["related_statuses_not_sources"],
+        )
+        # Law evidence tool-layer signals (Part I).
+        suffix += " [law_planned=%s law_evidence=%s risky=%s]" % (
+            len(r["planned_law_queries"]) if r["planned_law_queries"] else 0,
+            r["law_evidence_count"], r["risky_phrase_warnings"],
         )
         if r["live_answer_checked"]:
             suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (

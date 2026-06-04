@@ -42,7 +42,9 @@ class KoreanLawClient:
             return self._result(status="invalid_request", query=query, warnings=["LAW_QUERY_EMPTY"])
         if self.config.mode == "disabled":
             return self._result(status="disabled", query=q, warnings=["LAW_GROUNDING_DISABLED"])
-        if not self.config.law_api_key:
+        if not self.config.law_api_credential:
+            # No credential at all (neither the preferred LAW_API_OC nor the
+            # legacy LAW_API_KEY fallback). Keep the historical warning marker.
             return self._result(status="unavailable", query=q, warnings=["LAW_API_KEY_MISSING"])
         if httpx is None:
             return self._result(status="unavailable", query=q, warnings=["SOURCE_UNAVAILABLE"])
@@ -55,7 +57,7 @@ class KoreanLawClient:
             return self._result(status="unavailable", query=query, warnings=["SOURCE_UNAVAILABLE"])
 
         url = _join_url(self.config.law_api_base_url, path)
-        headers = {"Authorization": f"Bearer {self.config.law_api_key}"}
+        headers = {"Authorization": f"Bearer {self.config.law_api_credential}"}
         try:
             with httpx.Client(timeout=self.config.timeout_seconds) as client:
                 resp = client.get(url, params=params, headers=headers)

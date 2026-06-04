@@ -34,6 +34,8 @@ from services.law_grounding import (
     law_grounding_preflight,
     should_attempt_law_grounding,
 )
+from services.grounding_config import load_grounding_config
+from services.law_tools import build_law_evidence_pack
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
     build_answer_directives,
@@ -332,6 +334,17 @@ class AskResponse(BaseModel):
     grounded_answer_limited: bool = True
     answer_style_version: str = ANSWER_STYLE_VERSION
     question_type_detected: str = "general"
+    # Structured law/manual evidence pack (Part D). Non-secret: sanitized source
+    # URLs only, OC/API-key values never appear. ``law_evidence_pack`` is the
+    # full structured object; the flat fields below are convenience projections
+    # for the frontend source panel and the smoke harness.
+    law_evidence_pack: Optional[Dict[str, Any]] = None
+    planned_law_queries: List[str] = Field(default_factory=list)
+    law_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    law_evidence_count: int = 0
+    direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    law_grounding_error: str = ""
     # OpenRouter model-candidate fallback transparency (non-secret). When the
     # primary model is rate-limited / upstream-unavailable, Paradiso retries the
     # next explicit OpenRouter candidate rather than switching providers.
@@ -376,6 +389,8 @@ class JobCodeKeywordsResponse(BaseModel):
 class DebugLawGroundingRequest(BaseModel):
     question: Optional[str] = None
     text: Optional[str] = None
+    visa_code: Optional[str] = None
+    status: Optional[str] = None
 
 
 # ---------------------------------------------------------------------------
@@ -383,10 +398,17 @@ class DebugLawGroundingRequest(BaseModel):
 # ---------------------------------------------------------------------------
 
 def _providers_configured() -> Dict[str, bool]:
+    # law_api reflects the EFFECTIVE Open Law API credential (preferred
+    # LAW_API_OC, or the legacy LAW_API_KEY fallback) read live, so the flag is
+    # accurate when only LAW_API_OC is set. The value itself is never exposed.
+    try:
+        law_api_configured = load_grounding_config().law_api_configured
+    except Exception:  # pragma: no cover - defensive
+        law_api_configured = bool(LAW_API_KEY)
     return {
         "openrouter": bool(OPENROUTER_API_KEY),
         "groq": bool(GROQ_API_KEY),
-        "law_api": bool(LAW_API_KEY),
+        "law_api": law_api_configured,
         "ollama": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
         "database": bool(DATABASE_URL),
         "supabase": bool(SUPABASE_URL and SUPABASE_SERVICE_KEY),
@@ -2243,6 +2265,24 @@ async def health() -> Dict[str, Any]:
     candidate_warnings = _validate_model_candidates(candidates)
     if llm.get("groq_fallback_allowed"):
         candidate_warnings = [*candidate_warnings, "PROVIDER_FAMILY_FALLBACK_ENABLED"]
+    # Non-secret Open Law API posture. NEVER exposes LAW_API_OC / LAW_API_KEY
+    # values — only booleans, the resolved mode, and which env var supplied the
+    # credential. Computed live so LAW_API_OC-only deployments report correctly.
+    try:
+        law_cfg = load_grounding_config()
+        law_api_status: Dict[str, Any] = {
+            "law_api_configured": law_cfg.law_api_configured,
+            "law_api_oc_configured": law_cfg.law_api_oc_configured,
+            "law_api_key_fallback_configured": law_cfg.law_api_key_fallback_configured,
+            "law_api_credential_source": law_cfg.law_api_credential_source,
+        }
+    except Exception:  # pragma: no cover - defensive
+        law_api_status = {
+            "law_api_configured": bool(LAW_API_KEY),
+            "law_api_oc_configured": False,
+            "law_api_key_fallback_configured": bool(LAW_API_KEY),
+            "law_api_credential_source": "LAW_API_KEY" if LAW_API_KEY else "",
+        }
     return {
         "status": "ok",
         "service": "paradiso-backend",
@@ -2270,6 +2310,8 @@ async def health() -> Dict[str, Any]:
             "ollama_timeout_seconds": OLLAMA_TIMEOUT_SECONDS,
         },
         "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
+        # Granular, non-secret Open Law API configuration flags (Part A).
+        "law_api": law_api_status,
     }
 
 
@@ -2472,21 +2514,8 @@ async def ask(req: AskRequest) -> AskResponse:
             citation_verification = law_context.get("citation_verification")
             law_search_query = law_context.get("law_search_query", "") or ""
             law_grounding_status = "used" if law_grounding_used else "unavailable"
-
-            candidates = law_context.get("law_grounding") or []
-            if law_grounding_used and candidates:
-                compact_items = []
-                for item in candidates[:3]:
-                    title = item.get("title") or item.get("law_name") or "(untitled law)"
-                    article = item.get("article") or item.get("article_no") or ""
-                    compact_items.append(f"- {title} {article}".rstrip())
-                final_prompt += (
-                    "\n\n[Supplemental Law Grounding]\n"
-                    "- This law information is supplemental context only.\n"
-                    "- Manual/HiKorea/procedure sources control required documents, fees, deadlines, and operational procedures.\n"
-                    "- Do not invent article numbers, deadlines, fees, or required documents.\n"
-                    + "\n".join(compact_items)
-                )
+            # The normalized law evidence is injected below via the structured
+            # evidence pack (a single compact summary), not as a second raw dump.
         else:
             # Intent detected but grounding is disabled: surface the state and
             # the query that WOULD be issued, without making any external call.
@@ -2545,6 +2574,42 @@ async def ask(req: AskRequest) -> AskResponse:
         manual_to_law_fallback_used=manual_to_law_fallback_used,
         law_intent=bool(intent.get("should_attempt")),
     )
+
+    # Structured evidence pack (Part D). Reuses the already-fetched law_context
+    # (NO second external call) and the computed quality so the pack's source
+    # confidence agrees with the response metadata. Never raises; secret-free.
+    try:
+        law_evidence_pack = build_law_evidence_pack(
+            prompt,
+            visa_code=visa_code_detected,
+            task_type=task_type_detected,
+            lang=req.lang or "",
+            manual_evidence={"direct": grounding_sources, "related": []},
+            manual_present=(grounding is not None),
+            structured_present=bool(structured_block),
+            procedure_variant_present=bool(procedure_variant_block),
+            law_context=law_context,
+            quality=quality,
+        )
+    except Exception:  # pragma: no cover - the pack must never break /api/ask
+        law_evidence_pack = None
+
+    # Answer-prompt integration (Part E): inject ONE compact, normalized
+    # evidence summary (never a raw API dump) when law evidence exists or was
+    # attempted-but-unavailable. The answer-quality directives below still drive
+    # the source-aware tone; this only supplies the trimmed context.
+    if law_evidence_pack and (
+        law_evidence_pack.get("law_sources") or law_evidence_pack.get("law_api_attempted")
+    ):
+        final_prompt += (
+            "\n\n[Law/manual evidence pack — normalized context only]\n"
+            "- This is supplemental legal CONTEXT, not a required-document checklist.\n"
+            "- Manual / HiKorea / competent-office sources control documents, fees,"
+            " deadlines, and operational procedures.\n"
+            "- Do not invent article numbers, deadlines, fees, or documents.\n"
+            + law_evidence_pack.get("evidence_summary", "")
+        )
+
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
     llm = _resolve_llm_config()
@@ -2577,6 +2642,15 @@ async def ask(req: AskRequest) -> AskResponse:
         grounded_answer_limited=quality["grounded_answer_limited"],
         answer_style_version=quality["answer_style_version"],
         question_type_detected=quality["question_type"],
+        # Structured law/manual evidence pack (Part D) + convenience fields.
+        # Secret-free: source URLs are sanitized and OC/keys never appear.
+        law_evidence_pack=law_evidence_pack,
+        planned_law_queries=(law_evidence_pack or {}).get("planned_law_queries", []),
+        law_sources=(law_evidence_pack or {}).get("law_sources", []),
+        law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
+        direct_manual_sources=(law_evidence_pack or {}).get("direct_manual_sources", []),
+        related_manual_sources=(law_evidence_pack or {}).get("related_manual_sources", []),
+        law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
     )
 
     if llm["provider"] == "openrouter":
@@ -2757,6 +2831,49 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
     logger.info("debug-law-grounding request received (text_length=%d)", len(prompt))
     context = build_law_grounding_context(prompt)
     context["preflight"] = law_grounding_preflight(prompt)
+
+    # Structured, secret-free evidence-pack view (Part F). Detects status /
+    # question type, exposes the deterministic plan, and reports the normalized
+    # evidence count + source confidence. Reuses ``context`` so it makes no extra
+    # external call. OC / API-key values never appear; source URLs are sanitized.
+    visa_hint = (req.visa_code or req.status or "").strip() or None
+    visa_code_detected, _sub = _detect_visa_codes(visa_hint, None, prompt)
+    task_type_detected = _detect_task_type(prompt)
+    try:
+        pack = build_law_evidence_pack(
+            prompt,
+            visa_code=visa_code_detected,
+            task_type=task_type_detected,
+            law_context=context,
+        )
+    except Exception:  # pragma: no cover - debug view must never crash
+        pack = None
+
+    cfg = load_grounding_config()
+    context["evidence_pack"] = pack
+    context["debug"] = {
+        "mode": cfg.mode,
+        "law_api_configured": cfg.law_api_configured,
+        "law_api_oc_configured": cfg.law_api_oc_configured,
+        "law_api_key_fallback_configured": cfg.law_api_key_fallback_configured,
+        "law_api_credential_source": cfg.law_api_credential_source,
+        "law_grounding_mode": cfg.mode,
+        "detected_status": visa_code_detected,
+        "task_type_detected": task_type_detected,
+        "question_type": (pack or {}).get("question_type"),
+        "risk_level": (pack or {}).get("risk_level"),
+        "planned_law_queries": (pack or {}).get("planned_law_queries", []),
+        "law_api_attempted": (pack or {}).get("law_api_attempted", False),
+        "law_queries_attempted": (pack or {}).get("law_queries_attempted", []),
+        "normalized_evidence_count": (pack or {}).get("law_evidence_count", 0),
+        "law_grounding_status": (pack or {}).get("law_grounding_status"),
+        "source_confidence_level": (pack or {}).get("source_confidence_level"),
+        "answer_quality_mode": (pack or {}).get("answer_quality_mode"),
+        "law_grounding_error": (pack or {}).get("law_grounding_error", ""),
+        # Source URLs are sanitized (OC removed) at the tool boundary before
+        # they ever reach a caller; the debug view never reconstructs the OC.
+        "source_urls_sanitized": True,
+    }
     return context
 
 

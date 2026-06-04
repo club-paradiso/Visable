@@ -120,6 +120,8 @@ echo
 
 call GET /api/debug/law-grounding/preflight
 echo "Preflight mode=$(field "$LAST_BODY" mode), external_calls=$(field "$LAST_BODY" external_calls), key_configured=$(field "$LAST_BODY" law_api_key_configured), endpoint_configured=$(field "$LAST_BODY" law_api_endpoint_configured), ready=$(field "$LAST_BODY" ready_for_external_calls)"
+# Non-secret OC posture (booleans only; never the OC/key value).
+echo "  law_api_oc_configured=$(field "$LAST_BODY" law_api_oc_configured), law_api_key_fallback_configured=$(field "$LAST_BODY" law_api_key_fallback_configured), credential_source=$(field "$LAST_BODY" law_api_credential_source)"
 if printf '%s' "$LAST_BODY" | grep -q 'LAW_GROUNDING_DISABLED'; then
   echo "NOTE: LAW_GROUNDING_DISABLED (expected-safe default)."
 fi
@@ -139,6 +141,7 @@ SAMPLES=(
 for q in "${SAMPLES[@]}"; do
   call POST /api/debug/law-grounding "{\"question\":$(printf '%s' "$q" | python3 -c 'import json,sys;print(json.dumps(sys.stdin.read()))')}"
   echo "  -> sample_would_trigger=$(field "$LAST_BODY" sample_would_trigger), attempted=$(field "$LAST_BODY" attempted)"
+  echo "  -> question_type=$(field "$LAST_BODY" question_type), law_grounding_status=$(field "$LAST_BODY" law_grounding_status), source_confidence_level=$(field "$LAST_BODY" source_confidence_level), normalized_evidence_count=$(field "$LAST_BODY" normalized_evidence_count)"
   echo
 done
 

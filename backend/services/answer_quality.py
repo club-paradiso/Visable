@@ -533,6 +533,21 @@ def build_answer_directives(
 
     parts.append(_MODE_SOURCE_DIRECTIVE[mode])
 
+    # Limited / unavailable source state: forbid unsupported certainty wording
+    # and supply the canonical safer phrasings (Part E / Part N).
+    if mode in (SOURCE_LIMITED, SOURCE_UNAVAILABLE):
+        parts.append(
+            "Because direct sources are limited, do NOT use unsupported certainty"
+            " wording (\"may be permissible\", \"is allowed\", \"you can\", \"no need"
+            " to\", \"does not require\", \"guaranteed\", \"will be approved\","
+            " \"will be denied\", \"automatically\", \"always\", \"never\"). Prefer:"
+            " \"Paradiso cannot confirm from currently verified sources that ...\""
+            " and \"may be assessed differently, but official confirmation is"
+            " required\". Tell the user to confirm with 1345, HiKorea, or the"
+            " competent immigration office. Do not claim final eligibility,"
+            " permission, approval, denial, or illegality."
+        )
+
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")
     if qdir:
         parts.append(qdir)
@@ -598,3 +613,49 @@ def scan_mixed_language_artifacts(text: str, lang: Optional[str]) -> List[str]:
         return findings
 
     return findings
+
+
+# ---------------------------------------------------------------------------
+# Unsupported-confidence phrase guard (Part N) — used by tests + smoke harness
+# ---------------------------------------------------------------------------
+# Phrases that over-claim certainty. In a source_limited / source_unavailable
+# answer these must be softened to wording like "may be assessed differently,
+# but official confirmation is required".
+RISKY_CONFIDENCE_PHRASES = (
+    "may be permissible",
+    "is allowed",
+    "you can",
+    "no need to",
+    "does not require",
+    "definitely",
+    "guaranteed",
+    "will be approved",
+    "will be denied",
+    "automatically",
+    "always",
+    "never",
+)
+
+SAFER_CONFIDENCE_PHRASES = (
+    "may be assessed differently, but official confirmation is required",
+    "paradiso cannot confirm from currently verified sources that",
+    "check whether this requires permission or a change of sojourn status",
+    "confirm with 1345, hikorea, or the competent immigration office",
+)
+
+# Modes where over-confident wording is unsafe.
+_RISKY_FLAG_MODES = {SOURCE_LIMITED, SOURCE_UNAVAILABLE}
+
+
+def scan_unsupported_confidence_phrases(text: str, mode: str) -> List[str]:
+    """Return risky certainty phrases found in ``text`` for a weak source mode.
+
+    Only flags in ``source_limited`` / ``source_unavailable`` modes — a
+    ``source_confirmed`` answer is allowed to be definite. Case-insensitive.
+    Returns an empty list when the answer is clean or the mode tolerates
+    certainty. Deterministic; safe for tests and the smoke harness.
+    """
+    if not text or mode not in _RISKY_FLAG_MODES:
+        return []
+    low = text.lower()
+    return [phrase for phrase in RISKY_CONFIDENCE_PHRASES if phrase in low]
