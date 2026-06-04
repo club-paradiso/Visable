@@ -29,7 +29,7 @@ from typing import Any, Dict, List, Optional, Sequence
 # Bumped whenever the answer contract / prompt directives change in a way the
 # frontend or smoke harness should be able to detect. Surfaced as
 # ``answer_style_version`` in the response metadata.
-ANSWER_STYLE_VERSION = "2026-05-quality-v1"
+ANSWER_STYLE_VERSION = "2026-05-quality-v2-legal-analysis"
 
 # ---------------------------------------------------------------------------
 # Answer quality modes (source state)
@@ -433,16 +433,17 @@ _MODE_SOURCE_DIRECTIVE = {
     ),
     SOURCE_LIMITED: (
         "Source state: only related or partial information exists; direct source"
-        " support for the exact question is incomplete. Do not present related"
-        " statuses or general legal context as if they directly answer the"
-        " question. Be honest that the source gap limits how definitive you can be."
+        " support for the exact question is incomplete. Lead with the strongest"
+        " legally supportable practical posture, then state the source limitation."
+        " Do not present related statuses or general legal context as direct"
+        " authority for the asked status."
     ),
     SOURCE_UNAVAILABLE: (
         "Source state: verified manual/law grounding is unavailable for this"
-        " question. Do NOT produce broad legal reasoning as if it were grounded."
-        " Give a limited, practical answer, clearly state that the source gap"
-        " prevents a definitive answer, and steer the user to ask the exact"
-        " question to 1345 / HiKorea / the competent immigration office."
+        " question. Lead with limited practical preparation/risk posture, then"
+        " clearly state the source gap. Do not invent holdings, documents, fees,"
+        " deadlines, or final outcomes; provide exact facts/questions for"
+        " 1345 / HiKorea / the competent immigration office."
     ),
     GENERIC_ADVISORY: (
         "Source state: general reference only. Keep the answer short, label it as"
@@ -521,6 +522,15 @@ def build_answer_directives(
         " necessary."
     )
 
+    if qtype in {Q_ACTIVITY_ON_STATUS, Q_STATUS_CHANGE, Q_DEADLINE_REPORT, Q_SPECIAL_SITUATION}:
+        parts.append(
+            "For legal/procedure questions, use these concise sections when useful:"
+            " Practical answer; Legal issue; Source-based analysis; What the"
+            " sources do not directly answer; Questions to confirm with"
+            " 1345/HiKorea/competent office; Source status / basis summary. Do not"
+            " force this template on simple source-confirmed document checklists."
+        )
+
     # Anti-patterns (Part B) + warning de-duplication (Part H).
     parts.append(
         "Avoid: starting with a long \"currently known facts\" section; excessive"
@@ -534,27 +544,30 @@ def build_answer_directives(
     parts.append(_MODE_SOURCE_DIRECTIVE[mode])
 
     # Limited / unavailable source state: forbid unsupported certainty wording
-    # and supply the canonical safer phrasings (Part E / Part N).
+    # and require legal-analysis-first framing rather than failure-first prose.
     if mode in (SOURCE_LIMITED, SOURCE_UNAVAILABLE):
         parts.append(
-            "Because direct sources are limited, start with a practical safety"
-            " conclusion, not a vague \"whether you can...\" opening. For an"
-            " H-1 credit-bearing / degree-related Korean university summer course,"
-            " use this lead: \"Paradiso cannot verify that an H-1 holder may take"
-            " a credit-bearing or degree-related university summer course in Korea."
-            " Treat this as requiring official confirmation before enrollment or"
-            " payment.\" Then explain: \"The key issue is whether immigration"
-            " treats the course as within H-1's permitted activity scope or as"
-            " activities outside the scope of status.\" Do NOT use unsupported"
-            " certainty wording (\"may be permissible\", \"is allowed\", \"you"
-            " can\", \"no need to\", \"does not require\", \"guaranteed\","
-            " \"will be approved\", \"will be denied\", \"automatically\")."
-            " Avoid standalone \"may be permissible\"; for casual/non-credit"
-            " activities say \"may be assessed differently, but official"
-            " confirmation is required\". Tell the user not to enroll or pay until"
-            " confirmed and to ask 1345, HiKorea, or the competent immigration"
-            " office exact questions. Do not claim final eligibility, permission,"
-            " approval, denial, illegality, or invent document lists."
+            "Because direct sources are limited, start with the strongest"
+            " legally supportable practical posture — NOT with \"Paradiso cannot"
+            " verify...\", \"Whether you can...\", \"It depends...\", or \"Specific"
+            " manual guidance was not found...\". For an H-1 credit-bearing /"
+            " degree-related Korean university summer course, use this lead:"
+            " \"Treat a credit-bearing or degree-related university summer course"
+            " as a high-risk activity under H-1 until immigration confirms"
+            " otherwise. The central legal issue is whether immigration treats the"
+            " course as within H-1's permitted activity scope or as activities"
+            " outside the scope of status requiring separate permission or a change"
+            " of sojourn status.\" Then state the limitation second: Paradiso did"
+            " not find direct scenario-specific authority confirming H-1 summer-"
+            " semester enrollment, so the analysis is based on related/contextual"
+            " legal concepts and must be confirmed with 1345, HiKorea, or the"
+            " competent office. Do NOT use unsupported certainty wording (\"may be"
+            " permissible\", \"is allowed\", \"you can\", \"no need to\", \"does"
+            " not require\", \"guaranteed\", \"will be approved\", \"will be"
+            " denied\", \"automatically\"). For casual/non-credit activities say"
+            " they may be assessed differently, but official confirmation is"
+            " required. Do not claim final eligibility, permission, approval,"
+            " denial, illegality, or invent document lists."
         )
 
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")

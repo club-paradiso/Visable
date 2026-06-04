@@ -45,8 +45,9 @@ from .answer_quality import (
     classify_question_type,
     detect_related_statuses,
 )
+from .legal_analysis import build_legal_analysis, score_evidence_relevance
 
-LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v1"
+LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v2-legal-analysis"
 
 # ---------------------------------------------------------------------------
 # Stable error types (Part B contract). Returned in tool output ``error_type``.
@@ -69,8 +70,8 @@ _SERVICE_PATH = "/DRF/lawService.do"
 
 # Conservative request ceiling so a single /api/ask never fans out into a
 # burst of law-API calls. The planner keeps the set small; this is a hard cap.
-_DEFAULT_MAX_QUERIES = 4
-_HARD_MAX_QUERIES = 6
+_DEFAULT_MAX_QUERIES = 7
+_HARD_MAX_QUERIES = 8
 _DEFAULT_DISPLAY = 5
 
 _USER_AGENT = "Paradiso-law-tool-layer/2026.05"
@@ -781,7 +782,7 @@ def _signal_flags(text: str) -> Dict[str, bool]:
                      "학점", "인턴", "course", "study", "studying", "class", "semester", "enroll", "lecture"),
         "work_holiday": has("관광취업", "워킹홀리데이", "워홀", "working holiday") or ("H-1" in codes),
         "employment": has("취업", "근무처", "이직", "직장", "아르바이트", "알바", "부업", "side job",
-                          "part-time", "part time", "employ", "work", "job", "freelance", "프리랜서", "intern"),
+                          "part-time", "part time", "employ", "work", "job", "freelance", "프리랜서", "intern", "인턴", "인턴십"),
         "overseas_korean": has("재외동포", "국적상실", "방문취업", "거소신고", "국내거소") or bool({"F-4", "H-2"} & codes),
         "family": has("결혼", "이혼", "사망", "가정폭력", "별거", "양육", "배우자", "혼인", "생계",
                       "divorce", "marriage", "spouse", "widow", "domestic violence") or ("F-6" in codes),
@@ -917,7 +918,7 @@ _CATEGORY_QUERIES: Dict[str, List[str]] = {
         "출입국관리법 체류자격외활동허가",
     ],
     "employment": [
-        "취업활동 근무처 변경 근무처 추가 신고",
+        "취업활동 인턴십 근무처 변경 근무처 추가 신고",
         "체류자격외활동 특정활동 허가",
         "구직 취업활동 활동범위 체류자격",
     ],
@@ -1086,6 +1087,123 @@ def plan_law_queries(
         "visa_code": (visa_code or "").upper() or None,
     }
 
+
+
+
+# ---------------------------------------------------------------------------
+# Official source-family planning (legal-analysis guidance engine)
+# ---------------------------------------------------------------------------
+SOURCE_FAMILIES = (
+    "manual",
+    "statute",
+    "enforcement_decree",
+    "enforcement_rule",
+    "administrative_rule",
+    "legal_interpretation",
+    "precedent",
+    "administrative_appeal",
+    "constitutional_decision",
+    "legal_term",
+    "intelligent_search",
+)
+_SUPPORTED_SOURCE_FAMILIES = {
+    "manual", "statute", "enforcement_decree", "enforcement_rule",
+    "administrative_rule", "legal_term",
+}
+
+
+def _source_families_for(question_type: str, signals: Dict[str, bool]) -> List[str]:
+    families: List[str] = []
+
+    def add(*names: str) -> None:
+        for name in names:
+            if name in SOURCE_FAMILIES and name not in families:
+                families.append(name)
+
+    if question_type == LQ_ACTIVITY_ON_STATUS:
+        add("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "administrative_appeal")
+        if signals.get("study"):
+            add("legal_term")
+    elif question_type == LQ_STATUS_CHANGE:
+        add("manual", "statute", "enforcement_decree", "legal_interpretation", "administrative_appeal")
+    elif question_type == LQ_DOCUMENTS_NEEDED:
+        add("manual", "statute", "enforcement_rule")
+    elif question_type == LQ_DEADLINE_OR_REPORT:
+        add("statute", "enforcement_decree", "enforcement_rule", "manual", "administrative_rule")
+    elif question_type == LQ_HIGH_RISK_EXCEPTION:
+        add("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "administrative_appeal")
+        if signals.get("urgent") or signals.get("family"):
+            add("precedent")
+    elif question_type in {LQ_NATIONALITY, LQ_REFUGEE}:
+        add("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation")
+    else:
+        add("manual", "statute", "enforcement_decree", "enforcement_rule", "legal_term")
+    return families
+
+
+def plan_source_families(
+    question: str,
+    *,
+    visa_code: Optional[str] = None,
+    task_type: Optional[str] = None,
+    question_type: Optional[str] = None,
+    manual_present: bool = False,
+    law_sources: Optional[Sequence[Dict[str, Any]]] = None,
+    law_api_attempted: bool = False,
+    law_grounding_status: str = "not_attempted",
+) -> Dict[str, Any]:
+    """Plan and status official source families without requiring all to work.
+
+    The Open Law API tooling currently supports statute-family search through
+    target=law, administrative rules through target=admrul, and legal terms
+    through target=lstrm.  Other official families are represented as safe
+    scaffolding and marked unsupported unless later wired.
+    """
+    classified = classify_law_question_type(question, visa_code, task_type)
+    qtype = question_type or classified["question_type"]
+    selected = _source_families_for(qtype, classified["signals"])
+    law_sources = list(law_sources or [])
+    returned_types = set()
+    if law_sources:
+        for src in law_sources:
+            st = str(src.get("source_type") or src.get("target") or "law").lower()
+            if st in {"law", "statute"}:
+                returned_types.update({"statute", "enforcement_decree", "enforcement_rule"})
+            elif st in {"admin_rule", "admrul", "administrative_rule"}:
+                returned_types.add("administrative_rule")
+            elif st in {"law_term", "lstrm", "legal_term"}:
+                returned_types.add("legal_term")
+
+    statuses: Dict[str, str] = {}
+    for family in SOURCE_FAMILIES:
+        if family == "manual":
+            if manual_present:
+                statuses[family] = "results_found"
+            elif family in selected:
+                statuses[family] = "attempted"
+            else:
+                statuses[family] = "not_attempted"
+            continue
+        if family not in selected:
+            statuses[family] = "not_attempted"
+        elif family not in _SUPPORTED_SOURCE_FAMILIES:
+            statuses[family] = "unsupported"
+        elif family in returned_types:
+            statuses[family] = "results_found"
+        elif law_api_attempted:
+            statuses[family] = "no_results" if law_grounding_status != "unavailable" else "unavailable"
+        else:
+            statuses[family] = "attempted"
+
+    attempted = [f for f in selected if statuses.get(f) in {"attempted", "unavailable", "no_results", "results_found", "parse_error"}]
+    return {
+        "question_type": qtype,
+        "statuses": statuses,
+        "source_types_priority": selected,
+        "source_types_attempted": attempted,
+        "source_types_returned": [f for f in SOURCE_FAMILIES if statuses.get(f) == "results_found"],
+        "unsupported_source_types": [f for f in selected if statuses.get(f) == "unsupported"],
+    }
 
 # ---------------------------------------------------------------------------
 # Localized official-confirmation questions (richer than the EN-canonical set
@@ -1389,6 +1507,28 @@ def build_law_evidence_pack(
         question_type, lang=lang or "ko", is_study=is_study,
         source_status=source_status, target_status=target_status,
     )
+    source_type_plan = plan_source_families(
+        text,
+        visa_code=visa_code,
+        task_type=task_type,
+        question_type=question_type,
+        manual_present=(manual_present or structured_present),
+        law_sources=law_sources,
+        law_api_attempted=law_api_attempted,
+        law_grounding_status=law_grounding_status,
+    )
+    legal_analysis = build_legal_analysis(
+        question=text,
+        question_type=question_type,
+        visa_code=(visa_code or "").upper() or (codes[0] if codes else None),
+        risk_level=risk_level,
+        source_type_plan=source_type_plan,
+        direct_manual_sources=direct_manual_sources,
+        related_manual_sources=related_manual_sources,
+        law_sources=law_sources,
+        official_confirmation_questions=list(quality.get("official_confirmation_questions") or localized_confirm),
+        law_grounding_status=law_grounding_status,
+    )
 
     pack: Dict[str, Any] = {
         "law_tool_layer_version": LAW_TOOL_LAYER_VERSION,
@@ -1421,6 +1561,19 @@ def build_law_evidence_pack(
         "sanitized_source_url": law_context.get("source_url", "") if law_context else (law_sources[0].get("source_url", "") if law_sources else ""),
         "attempted_targets": ["law"] if (law_api_attempted or law_sources) else [],
         "intent_reasons": list(intent.get("reasons") or []),
+        "source_type_plan": source_type_plan,
+        "source_type_statuses": source_type_plan.get("statuses", {}),
+        "source_types_attempted": source_type_plan.get("source_types_attempted", []),
+        "source_types_returned": source_type_plan.get("source_types_returned", []),
+        "legal_analysis": legal_analysis,
+        "analysis_mode": legal_analysis.get("analysis_mode"),
+        "main_issue": legal_analysis.get("main_issue"),
+        "direct_evidence_count": legal_analysis.get("direct_evidence_count", 0),
+        "related_evidence_count": legal_analysis.get("related_evidence_count", 0),
+        "analogical_evidence_count": legal_analysis.get("analogical_evidence_count", 0),
+        "background_evidence_count": legal_analysis.get("background_evidence_count", 0),
+        "missing_direct_authority": legal_analysis.get("missing_direct_authority", True),
+        "authority_summary": legal_analysis.get("authority_summary", ""),
     }
     pack["citation_verification"] = build_law_evidence_citation_verification(
         law_sources,
@@ -1464,6 +1617,12 @@ def build_evidence_summary(pack: Dict[str, Any]) -> str:
         f"confidence={pack.get('source_confidence_level')}, "
         f"answer mode={pack.get('answer_quality_mode')}."
     )
+    legal_analysis = pack.get("legal_analysis") or {}
+    if legal_analysis:
+        lines.append("Legal analysis object (backend-prepared; do not invent beyond it):")
+        lines.append(f"  - practical posture: {legal_analysis.get('practical_posture')}")
+        lines.append(f"  - main issue: {legal_analysis.get('main_issue')}")
+        lines.append(f"  - authority: {legal_analysis.get('authority_summary')}")
     law_sources = pack.get("law_sources") or []
     if law_sources:
         lines.append("Normalized law evidence (context only — not a document checklist):")

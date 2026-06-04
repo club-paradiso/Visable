@@ -243,3 +243,25 @@ class PromptIntegrationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+class LegalAnalysisFirstFramingTests(unittest.TestCase):
+    def test_limited_h1_directive_is_not_failure_first(self):
+        quality = aq.classify_answer_quality(
+            prompt="Can I take summer semester course in Korean universities even though I have a H-1 visa?",
+            visa_code="H-1",
+            task_type=None,
+            manual_grounding_present=False,
+            structured_requirements_present=False,
+            procedure_variant_present=False,
+            law_grounding_used=False,
+            law_grounding_status="unavailable",
+            manual_to_law_fallback_used=False,
+            law_intent=True,
+        )
+        directive = aq.build_answer_directives(quality, lang="en")
+        self.assertNotIn('use this lead: "Paradiso cannot verify', directive)
+        self.assertIn("strongest legally supportable practical posture", directive)
+        self.assertIn("Treat a credit-bearing or degree-related university summer course as a high-risk activity under H-1", directive)
+        self.assertIn("Source-based analysis", directive)
+        self.assertIn("official-confirmation questions", directive)
+        self.assertNotIn("may be permissible", directive.split("Do NOT use unsupported certainty wording", 1)[0])

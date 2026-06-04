@@ -138,3 +138,32 @@ class DocumentationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
+
+class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.html = AI_HTML.read_text(encoding="utf-8")
+        cls.index_html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+
+    def test_legal_analysis_source_panel_labels_exist(self):
+        for label in (
+            "Legal analysis basis",
+            "Direct official authority found",
+            "Related legal context checked",
+            "Analogical legal analysis",
+            "No direct scenario-specific authority found",
+            "Source lookup technical issue",
+        ):
+            self.assertIn(label, self.html + self.index_html)
+
+    def test_raw_technical_codes_stay_in_details_not_default_labels(self):
+        for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED"):
+            self.assertIn(code, self.html + self.index_html)
+        self.assertNotIn("SOURCE_UNAVAILABLE could not", self.html + self.index_html)
+        self.assertNotIn("LAW_API_BAD_RESPONSE could", self.html + self.index_html)
+        self.assertIn("technical details", (self.html + self.index_html).lower())
+
+    def test_no_oc_or_api_key_value_in_source_panel_copy(self):
+        panel_slice = (self.html + self.index_html)
+        self.assertNotIn("LAW_API_OC", panel_slice)
+        self.assertNotIn("OC=paradiso", panel_slice)
