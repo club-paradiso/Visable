@@ -151,6 +151,176 @@ check(/applyShellLanguage\(userLang\)/.test(src), 'applyShellLanguage is not wir
 check(/const hasPanel = Boolean\(sourcePanelHtml\)/.test(src), 'panel-presence dedup guard missing');
 check(/answerBasisCommunicatesLimit/.test(src), 'answerBasisCommunicatesLimit dedup helper missing');
 
+// ===========================================================================
+// AI answer pipeline contract & rendering checks (Part F).
+//
+// These guard the class of bug that produced the production
+// "Can't find variable: errorType" ReferenceError: a source-panel renderer
+// referencing a variable that is only declared inside a sibling helper. Full
+// JS AST tooling is intentionally avoided (no new deps); we use brace-matched
+// function extraction plus targeted free-variable scans.
+// ===========================================================================
+
+// Strip a `function name(args) {` signature, returning just the body text.
+function bodyOf(fnSrc) {
+  if (!fnSrc) return '';
+  const i = fnSrc.indexOf('{');
+  return i < 0 ? fnSrc : fnSrc.slice(i + 1, fnSrc.length - 1);
+}
+// True when `name` is declared (const/let/var) or is a parameter of fnSrc.
+function declaresLocal(fnSrc, name) {
+  if (!fnSrc) return false;
+  const body = bodyOf(fnSrc);
+  if (new RegExp('(?:const|let|var)\\s+' + name + '\\b').test(body)) return true;
+  const sig = fnSrc.slice(0, fnSrc.indexOf('{'));
+  return new RegExp('\\(([^)]*\\b)?' + name + '\\b').test(sig);
+}
+function references(fnSrc, name) {
+  return new RegExp('\\b' + name + '\\b').test(bodyOf(fnSrc));
+}
+
+const renderPanelSrc = extractFunction('renderGroundingSourcePanel');
+const sourceCopySrc = extractFunction('sourcePanelCopyForState');
+const lawMsgSrc = extractFunction('lawSourcePanelMessage');
+const normalizeSrc = extractFunction('normalizeAnswerMetadata');
+
+check(Boolean(renderPanelSrc), 'could not extract renderGroundingSourcePanel() from ai.html');
+check(Boolean(normalizeSrc), 'normalizeAnswerMetadata() is missing from ai.html');
+
+if (renderPanelSrc) {
+  // (1) errorType: if referenced, it MUST be declared locally (the original bug).
+  check(!references(renderPanelSrc, 'errorType') || declaresLocal(renderPanelSrc, 'errorType'),
+        'renderGroundingSourcePanel() references errorType without declaring it locally (the production ReferenceError)');
+  // (2) parser-status variables must be locally declared, not borrowed.
+  for (const v of ['topParser', 'familyStatuses', 'parserByFamily', 'PARSE_FAIL', 'parserFailed']) {
+    check(!references(renderPanelSrc, v) || declaresLocal(renderPanelSrc, v),
+          'renderGroundingSourcePanel() references ' + v + ' without a local declaration');
+  }
+  // (3) obvious free variables that only exist inside sibling helpers must not
+  // leak into the panel renderer.
+  for (const v of ['hasBadLawResponse', 'normalized', 'legalAnalysis', 'directCount', 'relatedCount']) {
+    check(!references(renderPanelSrc, v) || declaresLocal(renderPanelSrc, v),
+          'renderGroundingSourcePanel() references helper-local variable ' + v);
+  }
+  // (7) the renderer must route metadata through normalizeAnswerMetadata().
+  check(/normalizeAnswerMetadata\(/.test(renderPanelSrc),
+        'renderGroundingSourcePanel() does not call normalizeAnswerMetadata()');
+}
+
+// Sibling source-panel helpers must also declare their own errorType.
+for (const [name, fn] of [['sourcePanelCopyForState', sourceCopySrc], ['lawSourcePanelMessage', lawMsgSrc]]) {
+  if (fn) {
+    check(!references(fn, 'errorType') || declaresLocal(fn, 'errorType'),
+          name + '() references errorType without declaring it locally');
+  }
+}
+
+// (4) developer diagnostics: raw codes must come AFTER the human-readable line.
+const detailsPos = src.indexOf('실시간 법령 조회 응답을 파싱하지 못했습니다');
+const rawCodesPos = src.indexOf('raw developer codes', detailsPos >= 0 ? detailsPos : 0);
+check(detailsPos >= 0, 'human-readable parse-failure diagnostic line missing');
+check(rawCodesPos > detailsPos, 'raw developer codes must appear AFTER the human-readable diagnostic line');
+
+// (5) the developer-diagnostics <details> block must NOT be open by default.
+check(!/<details\s+open/i.test(src), 'developer diagnostics <details> must not be open by default');
+
+// (6) copy-safe answer must not weld in developer diagnostics. The COPY_PAYLOADS
+// assignments only ever carry { answer, source }.
+const copyAssigns = src.match(/COPY_PAYLOADS\[[^\]]+\]\s*=\s*\{[^}]*\}/g) || [];
+check(copyAssigns.length > 0, 'no COPY_PAYLOADS assignments found');
+for (const a of copyAssigns) {
+  check(!/data-diagnostics|error-details|developer/.test(a),
+        'copy payload must not include developer diagnostics: ' + a);
+}
+
+// normalizeAnswerMetadata must default the contract fields to stable types.
+if (normalizeSrc) {
+  for (const field of [
+    'law_grounding_warnings', 'law_lookup_error_type', 'parser_status',
+    'source_family_statuses', 'parser_status_by_family', 'law_sources',
+    'grounding_sources', 'related_statuses_not_sources', 'legal_analysis',
+    'legal_analysis_exists', 'source_panel_state', 'citation_verification',
+    'deterministic_fallback_answer_used', 'fallback_answer_kind', 'copy_safe_answer',
+  ]) {
+    check(new RegExp(field + '\\s*:').test(normalizeSrc),
+          'normalizeAnswerMetadata() does not default the ' + field + ' field');
+  }
+}
+
+// Frontend error classification (Part C): the four error classes must exist and
+// a render crash must not be reported only as a network/communication error.
+check(/function classifyAskError\(/.test(src), 'classifyAskError() error-classifier missing');
+check(/frontend_render/.test(src), 'frontend_render error class missing');
+check(/frontend_render_error/.test(src), 'frontend_render_error developer-diagnostic record missing');
+for (const cls of ['backend_http', 'provider', 'network']) {
+  check(new RegExp("'" + cls + "'").test(src), 'error class ' + cls + ' missing from classifyAskError wiring');
+}
+// appendAiAnswer must be wrapped so a render exception is classified, not leaked
+// as a network error.
+check(/catch \(renderErr\)/.test(src), 'appendAiAnswer render-exception guard missing');
+
+// ---------------------------------------------------------------------------
+// Behavioral: exercise the real renderGroundingSourcePanel against hostile and
+// empty metadata. None may throw or leak a "Can't find variable" string.
+// ---------------------------------------------------------------------------
+function extractConst(name) {
+  const re = new RegExp('const\\s+' + name + '\\s*=\\s*', 'g');
+  const m = re.exec(src);
+  if (!m) return null;
+  let i = src.indexOf('{', re.lastIndex);
+  if (i < 0) return null;
+  let depth = 0;
+  for (let j = i; j < src.length; j++) {
+    const ch = src[j];
+    if (ch === '{') depth++;
+    else if (ch === '}') { depth--; if (depth === 0) return src.slice(m.index, j + 1) + ';'; }
+  }
+  return null;
+}
+
+let renderPanel = null;
+try {
+  // Minimal document stub so escapeHtml works under node.
+  const docStub = { createElement: function () { let _t = ''; return { set textContent(v) { _t = v == null ? '' : String(v); }, get innerHTML() { return _t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); } }; } };
+  const deps = ['normalizeAnswerMetadata', 't', 'tt', 'escapeHtml', 'sourceValue',
+    'answerBasisText', 'buildAnswerBasisRow', 'answerBasisCommunicatesLimit',
+    'sourcePanelCopyForState', 'lawSourcePanelMessage', 'mapLawWarningToFriendly',
+    'lawVerificationStatus', 'renderGroundingSourcePanel'];
+  let code = (extractConst('ANSWER_BASIS_LABELS') || '') + '\n';
+  for (const n of deps) { const f = extractFunction(n); if (!f) throw new Error('missing dep ' + n); code += f + '\n'; }
+  code += 'return renderGroundingSourcePanel;';
+  // eslint-disable-next-line no-eval
+  renderPanel = eval('(function(document){' + code + '})')(docStub);
+} catch (e) {
+  check(false, 'could not assemble renderGroundingSourcePanel harness: ' + e.message);
+}
+
+if (renderPanel) {
+  const COMBOS = [
+    {}, null, undefined,
+    { law_grounding_attempted: true },
+    { law_grounding_attempted: true, law_grounding_warnings: [] },
+    { law_grounding_attempted: true, law_lookup_error_type: 'LAW_API_PARSE_ERROR' },
+    { law_grounding_attempted: true, source_family_statuses: { statute: 'no_results' } },
+    { law_grounding_attempted: true, legal_analysis: { analysis_mode: 'analogical_analysis' }, legal_analysis_exists: true },
+    { law_grounding_attempted: true, source_panel_state: 'totally_unknown_state' },
+    { law_grounding_warnings: 'not-an-array', source_family_statuses: ['x'], law_sources: null, citation_verification: 'oops', legal_analysis: 7, parser_status_by_family: 5 },
+    { law_grounding_attempted: true, law_grounding_warnings: ['LAW_API_BAD_RESPONSE'], legal_analysis_exists: true, answer_quality_mode: 'source_limited' },
+    { deterministic_fallback_answer_used: true, fallback_answer_kind: 'legal_analysis_preparation_note', source_panel_state: 'structured_fallback_available', legal_analysis_exists: true },
+  ];
+  for (const meta of COMBOS) {
+    for (const lang of ['ko', 'en', 'zh', 'zh-tw']) {
+      try {
+        const html = renderPanel(meta, lang);
+        check(typeof html === 'string', 'renderGroundingSourcePanel returned a non-string for ' + JSON.stringify(meta));
+        check(!/Can't find variable|is not defined/.test(html), 'renderGroundingSourcePanel leaked a runtime-error string for ' + JSON.stringify(meta));
+      } catch (e) {
+        check(false, 'renderGroundingSourcePanel threw for meta=' + JSON.stringify(meta) + ' lang=' + lang + ': ' + e.message);
+      }
+    }
+  }
+}
+
 if (failures.length) {
   console.error('[check_ai_shell_semantics] FAIL:');
   for (const f of failures) console.error('  - ' + f);

@@ -1929,7 +1929,45 @@ select:focus-visible {
         }
 
 
-        function sourcePanelCopyForState(safe, lang) {
+        // Defensive normalization of the /api/ask metadata before any renderer
+        // touches it (AI answer pipeline contract). Every source-panel / answer
+        // renderer routes its input through this so a missing, null, or renamed
+        // backend field can never produce a ReferenceError / TypeError. Unknown
+        // fields are preserved (so richer diagnostics keep working); only the
+        // contract fields are coerced to a stable type with a safe default.
+        // See docs/data/AI_ANSWER_PIPELINE_CONTRACT_AND_RENDERING_2026_05.md.
+        function normalizeAnswerMetadata(metadata) {
+            const m = (metadata && typeof metadata === 'object') ? metadata : {};
+            const asArray = (v) => (Array.isArray(v) ? v : []);
+            const asObject = (v) => (v && typeof v === 'object' && !Array.isArray(v)) ? v : {};
+            const asString = (v) => (v === null || v === undefined ? '' : String(v));
+            return {
+                ...m,
+                law_grounding_warnings: asArray(m.law_grounding_warnings),
+                law_lookup_error_type: asString(m.law_lookup_error_type),
+                law_grounding_error: asString(m.law_grounding_error),
+                parser_status: asString(m.parser_status),
+                source_family_statuses: asObject(m.source_family_statuses),
+                parser_status_by_family: asObject(m.parser_status_by_family),
+                law_sources: asArray(m.law_sources),
+                grounding_sources: asArray(m.grounding_sources),
+                related_statuses_not_sources: asArray(m.related_statuses_not_sources),
+                legal_analysis: asObject(m.legal_analysis),
+                legal_analysis_exists: Boolean(m.legal_analysis_exists),
+                answer_quality_mode: asString(m.answer_quality_mode),
+                source_panel_state: asString(m.source_panel_state),
+                source_panel_label_key: asString(m.source_panel_label_key),
+                citation_verification: (m.citation_verification && typeof m.citation_verification === 'object') ? m.citation_verification : null,
+                public_data_grounding: (m.public_data_grounding === undefined ? null : m.public_data_grounding),
+                deterministic_fallback_answer_used: Boolean(m.deterministic_fallback_answer_used),
+                fallback_answer_kind: asString(m.fallback_answer_kind),
+                copy_safe_answer: asString(m.copy_safe_answer),
+                answer_certainty_level: asString(m.answer_certainty_level)
+            };
+        }
+
+        function sourcePanelCopyForState(rawSafe, lang) {
+            const safe = normalizeAnswerMetadata(rawSafe);
             const state = String(safe.source_panel_state || '');
             const key = String(safe.source_panel_label_key || '');
             const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
@@ -1947,7 +1985,8 @@ select:focus-visible {
             return null;
         }
 
-        function lawSourcePanelMessage(safe, lang) {
+        function lawSourcePanelMessage(rawSafe, lang) {
+            const safe = normalizeAnswerMetadata(rawSafe);
             const normalized = sourcePanelCopyForState(safe, lang);
             if (normalized) return { cls: normalized.cls, text: normalized.label, subtext: normalized.subtext };
             const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
@@ -1987,7 +2026,14 @@ select:focus-visible {
         }
 
         function renderGroundingSourcePanel(metadata, lang) {
-            const safe = metadata || {};
+            const safe = normalizeAnswerMetadata(metadata);
+            // Helper-local declaration of the law-lookup error type. This is also
+            // computed inside sourcePanelCopyForState() / lawSourcePanelMessage(),
+            // but the developer-diagnostics block below references it directly, so
+            // it MUST be declared in this function's own scope. Omitting it caused
+            // the production "Can't find variable: errorType" ReferenceError that
+            // crashed the whole answer card (AI answer pipeline contract fix).
+            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
             const manualSources = Array.isArray(safe.grounding_sources)
                 ? safe.grounding_sources.filter((src) => src && (sourceValue(src, 'source_title') || sourceValue(src, 'source_file') || sourceValue(src, 'source_date')))
                 : [];
@@ -2159,7 +2205,8 @@ select:focus-visible {
             `;
         }
 
-        function buildGroundingNote(result, lang) {
+        function buildGroundingNote(rawResult, lang) {
+            const result = normalizeAnswerMetadata(rawResult);
             if (result && result.grounding_used) return '';
             return `<div class="answer-note">${t(
                 lang,
@@ -2204,9 +2251,13 @@ select:focus-visible {
             }).filter(Boolean).join('\n\n');
         }
 
-                function appendAiAnswer(result, lang) {
+                function appendAiAnswer(rawResult, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
+            const result = normalizeAnswerMetadata(rawResult);
+            // copy_safe_answer is the backend-sanitized, diagnostics-free answer
+            // text. The clipboard payload only ever carries this (and the source
+            // lines) — never the developer-diagnostics block (Part G copy-safe).
             const answer = result.copy_safe_answer || result.fallback_answer || result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
             const copyId = getCopyId();
             const sourceCopy = sourceTextForCopy(result.grounding_sources);
@@ -2249,6 +2300,42 @@ select:focus-visible {
             scrollConversationToEnd(row);
         }
 
+        // Client-side error classification (AI answer pipeline contract, Part C).
+        // A frontend render crash must NOT be reported as "통신 오류 / Network
+        // error" when the fetch actually succeeded. Returns one of:
+        //   'network'         — fetch rejected / no HTTP response was received.
+        //   'backend_http'    — the backend returned a non-OK HTTP status.
+        //   'provider'        — backend reported an AI provider outage/upstream error.
+        //   'frontend_render' — a JavaScript exception was thrown while rendering
+        //                       an otherwise-successful response.
+        function classifyAskError(error) {
+            if (error && error.renderError) return 'frontend_render';
+            if (error && error.errorClass) return error.errorClass;
+            const status = error && error.status;
+            if (status) {
+                const payload = error && error.payload ? error.payload : null;
+                const detail = payload && typeof payload.detail === 'object' ? payload.detail : (payload || {});
+                const codes = [
+                    detail && detail.error,
+                    detail && detail.provider_error_type,
+                    detail && detail.fallback_answer_reason,
+                    payload && payload.error
+                ].map((v) => String(v || '').toLowerCase());
+                const providerSignal = Boolean(detail && (detail.provider_unavailable || detail.llm_unavailable || detail.deterministic_fallback_answer_used))
+                    || codes.some((c) => c.indexOf('provider') !== -1 || c.indexOf('openrouter') !== -1 || c.indexOf('upstream') !== -1);
+                if (providerSignal) return 'provider';
+                return 'backend_http';
+            }
+            return 'network';
+        }
+
+        function errorClassBadge(errorClass, status, lang) {
+            if (errorClass === 'backend_http' && status) return `HTTP ${escapeHtml(status)}`;
+            if (errorClass === 'provider') return tt(lang, { ko: 'AI 제공자 오류', en: 'AI provider unavailable', zh: 'AI 提供方不可用', zhHant: 'AI 提供方不可用' });
+            if (errorClass === 'frontend_render') return tt(lang, { ko: '화면 표시 오류', en: 'Display error', zh: '显示错误', zhHant: '顯示錯誤' });
+            return tt(lang, { ko: '통신 오류', en: 'Network error', zh: '通信错误', zhHant: '通訊錯誤' });
+        }
+
         function extractGroundingFromErrorPayload(payload) {
             const detail = payload && payload.detail && typeof payload.detail === 'object' ? payload.detail : {};
             return {
@@ -2279,16 +2366,42 @@ select:focus-visible {
         function appendAiError(error, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
+            const errorClass = classifyAskError(error);
             const payload = error && error.payload ? error.payload : null;
             const detail = payload && payload.detail;
             const fallbackAnswer = detail && typeof detail === 'object' ? (detail.copy_safe_answer || detail.fallback_answer || '') : '';
             const rawMessage = detail && typeof detail === 'object' ? detail.message : (detail || (payload && payload.message));
-            const userMessage = fallbackAnswer || (rawMessage && error.status && error.status < 500
-                ? String(rawMessage)
-                : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.'));
+            const userMessage = fallbackAnswer || (errorClass === 'frontend_render'
+                ? t(lang, '답변을 표시하는 중 문제가 발생했습니다. 답변은 생성되었으나 화면에 표시하지 못했습니다.', 'Something went wrong while displaying the answer. The answer was generated but could not be rendered.')
+                : (rawMessage && error.status && error.status < 500
+                    ? String(rawMessage)
+                    : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.')));
             const grounding = extractGroundingFromErrorPayload(payload || {});
-            const details = payload ? JSON.stringify(payload, null, 2) : (error && error.message ? error.message : '');
+            // Developer diagnostics. Human-readable classification line first, then
+            // the structured machine detail. For a frontend render crash we surface
+            // an explicit "frontend_render_error" record (message + safe location)
+            // instead of a misleading network-error payload (Part C).
+            const diagHeader = {
+                network: tt(lang, { ko: '네트워크 오류: 서버 응답을 받지 못했습니다.', en: 'Network error: no response was received from the server.', zh: '网络错误：未收到服务器响应。', zhHant: '網路錯誤：未收到伺服器回應。' }),
+                backend_http: tt(lang, { ko: '백엔드 HTTP 오류: 서버가 오류 상태를 반환했습니다.', en: 'Backend HTTP error: the server returned an error status.', zh: '后端 HTTP 错误：服务器返回了错误状态。', zhHant: '後端 HTTP 錯誤：伺服器回傳了錯誤狀態。' }),
+                provider: tt(lang, { ko: 'AI 제공자 오류: 모델 제공자가 일시적으로 응답하지 않습니다.', en: 'Provider error: the AI model provider is temporarily unavailable.', zh: 'AI 提供方错误：模型提供方暂时不可用。', zhHant: 'AI 提供方錯誤：模型提供方暫時不可用。' }),
+                frontend_render: tt(lang, { ko: '프런트엔드 표시 오류: 답변은 수신되었으나 화면 렌더링 중 예외가 발생했습니다.', en: 'Frontend render error: the answer was received but an exception occurred while rendering it.', zh: '前端渲染错误：已收到答复，但渲染时发生异常。', zhHant: '前端渲染錯誤：已收到答覆，但渲染時發生例外。' })
+            }[errorClass] || '';
+            let diagDetail;
+            if (errorClass === 'frontend_render') {
+                const renderRecord = {
+                    error_class: 'frontend_render_error',
+                    message: (error && (error.renderMessage || error.message)) ? String(error.renderMessage || error.message) : '',
+                    location: (error && error.renderLocation) ? String(error.renderLocation) : ''
+                };
+                diagDetail = JSON.stringify(renderRecord, null, 2);
+            } else {
+                diagDetail = payload ? JSON.stringify(payload, null, 2) : (error && error.message ? String(error.message) : '');
+            }
+            const details = [diagHeader, diagDetail].filter(Boolean).join('\n\n');
             const copyId = fallbackAnswer ? getCopyId() : '';
+            // Copy payload carries ONLY the user-facing fallback answer — never the
+            // developer diagnostics (Part D / G copy-safe guarantee).
             if (fallbackAnswer) COPY_PAYLOADS[copyId] = { answer: fallbackAnswer, source: '' };
             const row = document.createElement('div');
             row.className = 'msg-row ai answer sys-err';
@@ -2297,7 +2410,7 @@ select:focus-visible {
                     <header class="answer-head">
                         <div>
                             <span class="answer-kicker">${t(lang, '답변 생성 오류', 'Answer error')}</span>
-                            <span class="answer-model">${error.status ? `HTTP ${escapeHtml(error.status)}` : t(lang, '통신 오류', 'Network error')}</span>
+                            <span class="answer-model" data-error-class="${escapeHtml(errorClass)}">${errorClassBadge(errorClass, error && error.status, lang)}</span>
                         </div>
                     </header>
                     ${buildContextRow(grounding, lang)}
@@ -2398,15 +2511,32 @@ select:focus-visible {
                     const apiError = new Error(`서버 응답 오류 (${response.status})`);
                     apiError.status = response.status;
                     apiError.payload = result;
+                    // Pre-classify so the error card distinguishes a provider
+                    // outage from a generic backend HTTP error (Part C).
+                    apiError.errorClass = classifyAskError(apiError);
                     throw apiError;
                 }
-                
+
                 useQuota();
 
                 const loader = document.getElementById(lid);
                 if (loader) loader.remove();
 
-                appendAiAnswer(result || {}, userLang);
+                // Rendering the answer is isolated so a frontend render exception
+                // is reported as a render error — never mislabeled as a network /
+                // communication error (the original errorType ReferenceError class).
+                try {
+                    appendAiAnswer(result || {}, userLang);
+                } catch (renderErr) {
+                    const wrapped = new Error('frontend render error');
+                    wrapped.renderError = true;
+                    wrapped.errorClass = 'frontend_render';
+                    wrapped.renderMessage = renderErr && renderErr.message ? renderErr.message : String(renderErr);
+                    wrapped.renderLocation = (renderErr && renderErr.stack ? String(renderErr.stack).split('\n')[1] || '' : '').trim();
+                    appendAiError(wrapped, userLang);
+                    setStatus('표시 오류 — 재시도 요망');
+                    return;
+                }
                 setStatus('분석 완료');
 
             } catch (err) {

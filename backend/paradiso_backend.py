@@ -354,6 +354,17 @@ class AskResponse(BaseModel):
     source_types_attempted: List[str] = Field(default_factory=list)
     source_types_returned: List[str] = Field(default_factory=list)
     source_type_statuses: Dict[str, str] = Field(default_factory=dict)
+    # Source-panel developer-diagnostics contract (AI answer pipeline contract).
+    # These back the per-family diagnostics rows the frontend source panel reads
+    # (parser_status / source_family_statuses / parser_status_by_family). They are
+    # declared here so the values are part of the stable, type-checked response
+    # rather than being silently dropped as undeclared kwargs. Non-secret:
+    # coarse status strings only, never URLs/keys.
+    parser_status: str = ""
+    response_shape_hint: str = ""
+    source_panel_status: str = ""
+    source_family_statuses: Dict[str, str] = Field(default_factory=dict)
+    parser_status_by_family: Dict[str, str] = Field(default_factory=dict)
     direct_evidence_count: int = 0
     related_evidence_count: int = 0
     analogical_evidence_count: int = 0
@@ -3307,6 +3318,8 @@ async def ask(req: AskRequest) -> AskResponse:
         source_types_attempted=(law_evidence_pack or {}).get("source_types_attempted", []),
         source_types_returned=(law_evidence_pack or {}).get("source_types_returned", []),
         source_type_statuses=(law_evidence_pack or {}).get("source_type_statuses", {}),
+        source_family_statuses=(law_evidence_pack or {}).get("source_family_statuses", {}),
+        parser_status_by_family=(law_evidence_pack or {}).get("parser_status_by_family", {}),
         direct_evidence_count=(law_evidence_pack or {}).get("direct_evidence_count", 0),
         related_evidence_count=(law_evidence_pack or {}).get("related_evidence_count", 0),
         analogical_evidence_count=(law_evidence_pack or {}).get("analogical_evidence_count", 0),
