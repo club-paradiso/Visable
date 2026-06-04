@@ -2005,6 +2005,22 @@ select:focus-visible {
                 rows.push(`<div class="source-row state-partial"><strong>${t(lang, '공공데이터 근거', 'Public-data source')}</strong>: ${t(lang, '출처 표시 · 개별 항목 검증 진행 중', 'Source listed · per-item verification in progress')}</div>`);
             }
 
+            // Normalized Open Law API evidence names (context only, never a
+            // document checklist). Shown only when real law evidence exists; the
+            // adapter sanitizes any OC/key out of source URLs before this point.
+            const lawSources = Array.isArray(safe.law_sources) ? safe.law_sources.filter((s) => s && s.law_name) : [];
+            if (lawSources.length) {
+                const head = tt(lang, { ko: '참고 법령', en: 'Reference law', zh: '参考法令', zhHant: '參考法令' });
+                const names = lawSources.slice(0, 3).map((s) => escapeHtml(String(s.law_name))).join(' · ');
+                const note = tt(lang, {
+                    ko: '맥락 참고용 법령입니다. 필요 서류·최종 판단은 1345/하이코리아/관할 출입국 확인이 필요합니다.',
+                    en: 'Legal context only — documents and final decisions require 1345 / HiKorea / the competent office.',
+                    zh: '仅供法律背景参考；所需材料与最终判断需经 1345／HiKorea／主管出入境确认。',
+                    zhHant: '僅供法律背景參考；所需材料與最終判斷需經 1345／HiKorea／主管出入境確認。'
+                });
+                rows.push(`<div class="source-row state-partial" data-row-kind="law-evidence"><strong>${escapeHtml(head)}</strong>: ${names}<div class="source-subnote">${escapeHtml(note)}</div></div>`);
+            }
+
             if (!rows.length) return '';
 
             const debugWarnings = lawWarnings.length

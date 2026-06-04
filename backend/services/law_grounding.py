@@ -5,7 +5,6 @@ from typing import Any, Dict, List, Sequence
 
 from .citation_verifier import verify_citations
 from .grounding_config import load_grounding_config
-from .korean_law_client import KoreanLawClient
 
 
 _INTENT_PATTERNS = [
@@ -40,7 +39,54 @@ _INTENT_PATTERNS = [
 
     # Tourism-working-holiday (관광취업 / 워킹홀리데이 / H-1) context.
     ("관광취업/워킹홀리데이/H-1", re.compile(r"관광\s*취업|워킹\s*홀리데이|워홀|working\s+holiday|\bH\s*-?\s*1\b", re.IGNORECASE)),
+
+    # Status-change framing (체류자격 변경 / "A에서 B로" / "B로 변경"). A change of
+    # sojourn status is squarely a law/manual question, so attempt grounding.
+    ("체류자격 변경/status change", re.compile(
+        r"체류자격\s*변경|변경허가|change\s+of\s+status|status\s+change|"
+        r"[A-Za-z]\s*-?\s*\d{1,2}\s*[가-힣A-Za-z ]{0,10}?(?:에서|으로|로|to|->|→)\s*"
+        r"[가-힣A-Za-z ]{0,10}?(?:[A-Za-z]\s*-?\s*\d{1,2}|변경|바꾸|전환)",
+        re.IGNORECASE)),
+
+    # Family / marriage-migrant exceptions (이혼/사망/가정폭력/배우자/결혼이민).
+    ("결혼/가족 체류", re.compile(
+        r"결혼이민|배우자|이혼|가정폭력|별거|사별|혼인|divorce|domestic\s+violence|"
+        r"spouse|marriage\s+migrant", re.IGNORECASE)),
+
+    # Humanitarian / medical / litigation / refugee context (G-1 etc.).
+    ("인도적/의료/소송", re.compile(
+        r"인도적|치료|소송|난민|humanitarian|medical\s+treatment|litigation|asylum|refugee",
+        re.IGNORECASE)),
+
+    # Short-term status limits (사증면제/무비자/단기취업/단기방문).
+    ("단기체류/사증면제", re.compile(
+        r"사증면제|무비자|단기\s*취업|단기\s*방문|단기\s*알바|visa[-\s]?free|short[-\s]?term",
+        re.IGNORECASE)),
+
+    # Nationality / naturalization (국적/귀화).
+    ("국적/귀화", re.compile(r"귀화|국적상실|국적\s*취득|국적법|naturaliz|nationality|citizenship", re.IGNORECASE)),
+
+    # Reporting / registration duties not already covered above
+    # (근무처 변경/추가, 체류지 변경, 신고의무).
+    ("신고/등록 의무", re.compile(r"근무처\s*변경|근무처\s*추가|체류지\s*변경|신고의무|시간제\s*취업", re.IGNORECASE)),
+
+    # Employment / work-activity questions (취업/아르바이트/part-time/internship).
+    ("취업/근로 활동", re.compile(
+        r"시간제\s*취업|아르바이트|알바|부업|side\s+job|part[-\s]?time|intern(?:ship)?|"
+        r"취업활동|취업|근로|freelance|프리랜서|moonlight", re.IGNORECASE)),
+
+    # Penalty / violation exposure (벌금/과태료/범칙금/도과/강제퇴거).
+    ("위반/처벌", re.compile(r"벌금|과태료|범칙금|체류기간\s*도과|도과|강제퇴거|출국명령", re.IGNORECASE)),
 ]
+
+# A status code paired with an activity/permission marker ("can I ...", "가능한가요")
+# is an activity-scope question even without explicit statutory wording, so it
+# should attempt official grounding. Lookarounds handle trailing Korean particles.
+_STATUS_CODE_INTENT_RE = re.compile(r"(?<![A-Za-z0-9])[A-H]\s*-?\s*\d{1,2}(?![0-9])", re.IGNORECASE)
+_ACTIVITY_MARKER_RE = re.compile(
+    r"가능|되나요|할\s*수\s*있|해도\s*되|can\s+i|may\s+i|am\s+i\s+allowed|able\s+to",
+    re.IGNORECASE,
+)
 
 _LEGAL_BASIS_REASON_LABELS = {
     "근거 법령",
@@ -88,6 +134,11 @@ def should_attempt_law_grounding(question: str) -> Dict[str, Any]:
         return {"should_attempt": False, "reasons": []}
 
     reasons: List[str] = [label for label, pattern in _INTENT_PATTERNS if pattern.search(text)]
+    # Status-scoped activity/permission question (e.g. "Can I ... on D-4?",
+    # "C-3로 ... 가능한가요?") — attempt grounding even without statutory wording.
+    if _STATUS_CODE_INTENT_RE.search(text) and _ACTIVITY_MARKER_RE.search(text):
+        if "체류자격 활동 질문" not in reasons:
+            reasons.append("체류자격 활동 질문")
     return {"should_attempt": bool(reasons), "reasons": reasons}
 
 
@@ -123,6 +174,30 @@ def build_law_search_query(question: str, reasons: Sequence[str] | None = None) 
 
     if "관광취업/워킹홀리데이/H-1" in reason_set:
         queries.append("출입국관리법 시행령 관광취업 H-1 체류자격 활동범위 체류자격외활동")
+
+    if "체류자격 변경/status change" in reason_set:
+        queries.append("출입국관리법 체류자격 변경허가 체류자격 변경")
+
+    if "결혼/가족 체류" in reason_set:
+        queries.append("출입국관리법 결혼이민 체류기간 연장 체류자격 변경 체류자격 유지")
+
+    if "인도적/의료/소송" in reason_set:
+        queries.append("출입국관리법 시행령 기타 G-1 인도적 사유 난민 체류")
+
+    if "단기체류/사증면제" in reason_set:
+        queries.append("출입국관리법 사증면제 단기방문 단기취업 활동범위")
+
+    if "국적/귀화" in reason_set:
+        queries.append("국적법 귀화 요건 절차 국적상실")
+
+    if "신고/등록 의무" in reason_set:
+        queries.append("출입국관리법 외국인등록 체류지 변경 근무처 변경 신고의무")
+
+    if {"취업/근로 활동", "체류자격 활동 질문"} & reason_set:
+        queries.append("출입국관리법 체류자격외활동 활동범위 취업활동 체류자격")
+
+    if "위반/처벌" in reason_set:
+        queries.append("출입국관리법 체류기간 도과 범칙금 과태료 강제퇴거 출국명령")
 
     if reason_set & _LEGAL_BASIS_REASON_LABELS:
         queries.append(text)
@@ -164,9 +239,16 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         }
 
     try:
-        law_client = KoreanLawClient(config)
-        law_result = law_client.search_law(law_search_query)
-        citation_verification = verify_citations(question, law_client=law_client)
+        # Lazy import breaks the module-load cycle (law_tools imports this
+        # module for intent detection). The tool layer is the real Open Law
+        # API adapter (DRF endpoints + OC); it never exposes the OC value.
+        from . import law_tools
+
+        law_result = law_tools.search_laws(law_search_query, config=config)
+        # Citation verification stays extracted-only here: the user question
+        # rarely contains a statute citation, and we do not issue extra
+        # per-citation live calls from this hot path.
+        citation_verification = verify_citations(question, law_client=None)
     except Exception:
         return {
             "attempted": True,
@@ -179,13 +261,21 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
             "grounding_warnings": ["SOURCE_UNAVAILABLE"],
         }
 
-    warnings = [*law_result.get("warnings", []), *citation_verification.get("warnings", []), *config.warnings]
+    used = law_result.get("status") == "ok"
+    tool_warnings: List[str] = []
+    if not used:
+        tool_warnings.append("SOURCE_UNAVAILABLE")
+        error_type = law_result.get("error_type") or ""
+        if error_type:
+            # Typed, non-secret marker (e.g. LAW_API_NO_RESULTS). Never the OC.
+            tool_warnings.append(error_type.upper())
+    warnings = [*tool_warnings, *citation_verification.get("warnings", []), *config.warnings]
     return {
         "attempted": True,
         "intent_reasons": intent["reasons"],
         "law_search_query": law_search_query,
-        "law_grounding_used": law_result.get("status") == "ok",
-        "law_grounding": law_result.get("results", []),
+        "law_grounding_used": used,
+        "law_grounding": law_result.get("results", []) if used else [],
         "citation_verification": citation_verification,
         "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query}],
         "grounding_warnings": list(dict.fromkeys(warnings)),
@@ -210,7 +300,12 @@ def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
     reasons = intent.get("reasons", [])
     query = build_law_search_query(sample, reasons) if intent.get("should_attempt") else ""
 
-    key_configured = bool(config.law_api_key)
+    # ``key_configured`` reflects whether ANY Open Law API credential is
+    # present (the preferred LAW_API_OC, or the legacy LAW_API_KEY fallback).
+    # Neither value is ever returned — only booleans and the non-secret source.
+    key_configured = config.law_api_configured
+    # A custom endpoint is "configured" only when explicitly set; the tool layer
+    # otherwise falls back to the fixed public DRF endpoints, reported below.
     endpoint_configured = bool(config.law_api_base_url and config.law_api_search_path)
 
     if config.mode == "disabled":
@@ -232,16 +327,22 @@ def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
             warnings.append("LAW_API_ENDPOINT_MISSING")
     warnings.extend(config.warnings)
 
-    # Whether a real external law-API call could actually happen.
-    ready_for_external_calls = (
-        config.mode in {"audit", "enabled"} and key_configured and endpoint_configured
-    )
+    # The tool layer can call the fixed public DRF endpoints with just an OC,
+    # so a real external call is possible once a credential is present.
+    ready_for_external_calls = config.mode in {"audit", "enabled"} and key_configured
 
     return {
         "mode": config.mode,
         "external_calls": external_calls,
+        # Backward-compatible aggregate flag (any credential present).
         "law_api_key_configured": key_configured,
+        # Explicit, granular, non-secret flags (Part A).
+        "law_api_configured": config.law_api_configured,
+        "law_api_oc_configured": config.law_api_oc_configured,
+        "law_api_key_fallback_configured": config.law_api_key_fallback_configured,
+        "law_api_credential_source": config.law_api_credential_source,
         "law_api_endpoint_configured": endpoint_configured,
+        "law_api_default_endpoint_available": True,
         "ready_for_external_calls": ready_for_external_calls,
         "sample_question": sample,
         "sample_would_trigger": bool(intent.get("should_attempt")),

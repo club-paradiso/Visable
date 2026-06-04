@@ -378,6 +378,22 @@ class CooldownAndFallbackBehaviorTests(unittest.IsolatedAsyncioTestCase):
 
 
 class DeterministicFallbackAndOllamaTests(unittest.TestCase):
+    # These cases assert that law/manual grounding metadata survives the
+    # deterministic-fallback path. ``law_grounding_attempted`` is only True when
+    # law grounding is active, so make that precondition explicit (audit mode,
+    # no credential -> attempted but unavailable, no external call).
+    def setUp(self):
+        self._saved_mode = os.environ.get("LAW_GROUNDING_MODE")
+        os.environ["LAW_GROUNDING_MODE"] = "audit"
+        for key in ("LAW_API_OC", "LAW_API_KEY"):
+            os.environ.pop(key, None)
+
+    def tearDown(self):
+        if self._saved_mode is None:
+            os.environ.pop("LAW_GROUNDING_MODE", None)
+        else:
+            os.environ["LAW_GROUNDING_MODE"] = self._saved_mode
+
     def _ask(self, *, enable_ollama=False, ollama=None, question="Can I take summer semester course in Korean universities even though I have a H-1 visa?", lang="en"):
         pb = _pb()
         fake, calls = _fake_openrouter({c: (503, '{"error":"No healthy upstream"}') for c in CANDS})

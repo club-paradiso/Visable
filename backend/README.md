@@ -133,7 +133,8 @@ into the image. See `.env.example` for the full list.
 | `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
 | `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
 | `FRONTEND_URL`          | optional  | Surfaced by `GET /` so a user who opens the bare backend URL sees where the real app lives. |
-| `LAW_API_KEY`           | optional  | Reserved for future law-data integration.                |
+| `LAW_API_OC`            | optional  | **Preferred** Open Law API auth identifier (the `OC` query param for open.law.go.kr). Backend-only; never exposed in `/health`, debug, logs, or sanitized URLs. With `LAW_GROUNDING_MODE=audit` it activates the internal law tool layer. |
+| `LAW_API_KEY`           | optional  | **Backward-compatibility fallback only.** Used as the OC value when `LAW_API_OC` is unset. If only this is set, `/health` adds `law_api.law_api_credential_source:"LAW_API_KEY"` and a non-secret `LAW_API_OC_RECOMMENDED` warning is surfaced. Do not overwrite an existing Railway value — add `LAW_API_OC` alongside it. |
 | `DATABASE_URL`          | optional  | Reserved for future Postgres integration.                |
 | `SUPABASE_URL`          | optional  | Reserved for future Supabase integration.                |
 | `SUPABASE_SERVICE_KEY`  | optional  | Reserved for future Supabase integration.                |
@@ -170,8 +171,13 @@ for `/api/ask` to return answers.
    OPENROUTER_API_KEY=...        # or GROQ_API_KEY=...
    CORS_ALLOW_ORIGINS=https://paradiso.example.com
    SITE_URL=https://paradiso.example.com
+   # Korean Open Law API grounding (preferred OC + audit mode):
+   LAW_API_OC=paradiso
+   LAW_GROUNDING_MODE=audit
+   # Keep the EXISTING Railway LAW_API_KEY unchanged (backward-compat fallback);
+   # do NOT overwrite it — just add LAW_API_OC above.
+   # LAW_API_KEY=<existing value, unchanged>
    # Optional, declared but not yet wired:
-   # LAW_API_KEY=...
    # DATABASE_URL=...
    # SUPABASE_URL=...
    # SUPABASE_SERVICE_KEY=...
@@ -336,11 +342,25 @@ source panel can be honest without overclaiming:
 - `law_grounding_intent_reasons` — which intent signals fired (e.g.
   `유학/수강/계절학기`, `관광취업/워킹홀리데이/H-1`, `활동범위/자격외활동`).
 - `law_search_query` — the compact statutory query that would be/was issued.
+- `law_evidence_pack` — the structured evidence pack (Part D): normalized
+  `law_sources`, `planned_law_queries`, `direct_manual_sources` vs
+  `related_manual_sources`, `source_confidence_level`, `answer_quality_mode`,
+  and localized official-confirmation questions. Secret-free (sanitized URLs).
 
 Intent now covers activity-scope/study/working-holiday questions (H-1
-계절학기 수강, 체류자격외활동, etc.), not just explicit legal-basis wording.
-External law-API calls still only happen when `LAW_GROUNDING_MODE` is
-`audit`/`enabled` (default `disabled`).
+계절학기 수강, 체류자격외활동, etc.), status changes, family/marriage edge cases,
+humanitarian/G-1, short-term work/study, reporting duties, and overstay risk —
+not just explicit legal-basis wording.
+
+The internal **law tool layer** (`services/law_tools.py`) is a typed, mockable
+adapter over the National Law Information Open API (open.law.go.kr / DRF
+endpoints). It prefers `LAW_API_OC` (falling back to `LAW_API_KEY`), builds the
+`OC` parameter internally, and returns normalized, secret-free evidence. External
+law-API calls only happen when `LAW_GROUNDING_MODE` is `audit`/`enabled` and a
+credential is configured. `/health` exposes the posture as booleans only under
+`law_api` (`law_api_configured`, `law_api_oc_configured`,
+`law_api_key_fallback_configured`, `law_api_credential_source`) — never the OC/key
+value. See `docs/data/LAW_API_OC_EVIDENCE_TOOL_LAYER_2026_05.md`.
 
 ## Wiring the frontend
 
