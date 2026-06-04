@@ -45,9 +45,15 @@ from .answer_quality import (
     classify_question_type,
     detect_related_statuses,
 )
-from .legal_analysis import build_legal_analysis, score_evidence_relevance
+from .legal_analysis import (
+    build_generalized_source_plan,
+    build_legal_analysis,
+    classify_legal_issue_types,
+    extract_immigration_facts,
+    score_evidence_relevance,
+)
 
-LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v2-legal-analysis"
+LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v3-generalized-issues"
 
 # ---------------------------------------------------------------------------
 # Stable error types (Part B contract). Returned in tool output ``error_type``.
@@ -1410,15 +1416,30 @@ def build_law_evidence_pack(
     risk_level = classified["risk_level"]
     signals = classified["signals"]
 
-    codes = extract_status_codes(text)
-    source_status, target_status = _status_change_pair(text, codes)
+    immigration_facts = extract_immigration_facts(text, visa_code=visa_code)
+    legal_issue_types = classify_legal_issue_types(text, immigration_facts)
+    codes = [c for c in [
+        immigration_facts.get("previous_status"),
+        immigration_facts.get("current_status"),
+        immigration_facts.get("target_status"),
+    ] if c]
+    for c in extract_status_codes(text):
+        if c not in codes:
+            codes.append(c)
+    source_status = immigration_facts.get("previous_status") or ""
+    target_status = immigration_facts.get("target_status") or ""
+    if not (source_status or target_status):
+        source_status, target_status = _status_change_pair(text, codes)
     related_statuses = detect_related_statuses(text, visa_code, task_type)
 
-    plan = plan_law_queries(
+    initial_source_plan = build_generalized_source_plan(
+        text, immigration_facts, legal_issue_types, max_queries=max_queries,
+    )
+    legacy_plan = plan_law_queries(
         text, visa_code=visa_code, task_type=task_type,
         question_type=question_type, max_queries=max_queries,
     )
-    planned_queries = plan["queries"]
+    planned_queries = list(dict.fromkeys([*legacy_plan.get("queries", []), *initial_source_plan.get("queries", [])]))[:max(1, min(max_queries, _HARD_MAX_QUERIES))]
 
     # --- Retrieval (single network seam; never required in tests) ----------
     law_sources: List[Dict[str, Any]] = []
@@ -1507,20 +1528,20 @@ def build_law_evidence_pack(
         question_type, lang=lang or "ko", is_study=is_study,
         source_status=source_status, target_status=target_status,
     )
-    source_type_plan = plan_source_families(
+    source_type_plan = build_generalized_source_plan(
         text,
-        visa_code=visa_code,
-        task_type=task_type,
-        question_type=question_type,
+        immigration_facts,
+        legal_issue_types,
         manual_present=(manual_present or structured_present),
         law_sources=law_sources,
         law_api_attempted=law_api_attempted,
         law_grounding_status=law_grounding_status,
+        max_queries=max_queries,
     )
     legal_analysis = build_legal_analysis(
         question=text,
         question_type=question_type,
-        visa_code=(visa_code or "").upper() or (codes[0] if codes else None),
+        visa_code=immigration_facts.get("current_status") or (visa_code or "").upper() or (codes[0] if codes else None),
         risk_level=risk_level,
         source_type_plan=source_type_plan,
         direct_manual_sources=direct_manual_sources,
@@ -1528,16 +1549,21 @@ def build_law_evidence_pack(
         law_sources=law_sources,
         official_confirmation_questions=list(quality.get("official_confirmation_questions") or localized_confirm),
         law_grounding_status=law_grounding_status,
+        immigration_facts=immigration_facts,
+        legal_issue_types=legal_issue_types,
     )
 
     pack: Dict[str, Any] = {
         "law_tool_layer_version": LAW_TOOL_LAYER_VERSION,
         "question_type": question_type,
         "risk_level": risk_level,
-        "visa_code": (visa_code or "").upper() or (codes[0] if codes else None),
+        "visa_code": immigration_facts.get("current_status") or (visa_code or "").upper() or (codes[0] if codes else None),
         "detected_statuses": codes,
         "source_status": source_status,
         "target_status": target_status,
+        "immigration_facts": immigration_facts,
+        "legal_issue_types": legal_issue_types,
+        "proposed_activity_type": immigration_facts.get("proposed_activities", []),
         # Evidence buckets (kept strictly separate — Part D / evidence discipline)
         "direct_manual_sources": direct_manual_sources,
         "related_manual_sources": related_manual_sources,
@@ -1562,6 +1588,7 @@ def build_law_evidence_pack(
         "attempted_targets": ["law"] if (law_api_attempted or law_sources) else [],
         "intent_reasons": list(intent.get("reasons") or []),
         "source_type_plan": source_type_plan,
+        "source_plan": source_type_plan,
         "source_type_statuses": source_type_plan.get("statuses", {}),
         "source_types_attempted": source_type_plan.get("source_types_attempted", []),
         "source_types_returned": source_type_plan.get("source_types_returned", []),

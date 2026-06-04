@@ -67,84 +67,22 @@ DEFAULT_BACKEND = os.environ.get("BACKEND_URL", "http://127.0.0.1:8000")
 # non-personal visa_data context (code only) plus optional selected route/variant
 # identifiers (never checklist/reminder state, never personal data).
 SAMPLE_QUESTIONS = [
-    {
-        "id": "h1_seasonal_course",
-        "visa_code": "H-1",
-        "question": "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?",
-        "lang": "ko",
-        "expect_confirmation_checklist": True,
-        "expect_related_statuses": ["D-2", "D-4"],
-    },
-    {
-        "id": "h1_summer_semester_en",
-        "visa_code": "H-1",
-        "question": (
-            "Can I take summer semester course in Korean universities even "
-            "though I have a H-1 visa?"
-        ),
-        "lang": "en",
-        "expect_confirmation_checklist": True,
-        "expect_related_statuses": ["D-2", "D-4"],
-    },
-    {
-        "id": "f4_domestic_residence",
-        "visa_code": "F-4",
-        "question": "F-4로 들어왔는데 국내거소신고를 해야 하나요?",
-        "lang": "ko",
-    },
-    {
-        "id": "b2_to_f4",
-        "visa_code": "F-4",
-        "question": "B-2로 들어와서 F-4로 바꿀 수 있나요?",
-    },
-    {
-        "id": "f6_divorce_extension",
-        "visa_code": "F-6",
-        "question": "F-6인데 이혼 후에도 체류기간 연장이 가능한가요?",
-        # Route -> source-backed F-6 marriage-terminated variant (safe ids only).
-        "selected_procedure_key": "statusChange",
-        "selected_procedure_variant_id": "f-6-3-marriage-terminated-status-change",
-    },
-    {
-        "id": "g1_medical",
-        "visa_code": "G-1",
-        "question": "G-1으로 치료 목적 체류를 하려면 어떤 절차를 봐야 하나요?",
-        "selected_procedure_key": "statusChange",
-        "selected_procedure_variant_id": "g-1-10-medical-patient-status-change",
-    },
-    {
-        "id": "d10_to_e7",
-        "visa_code": "D-10",
-        "question": "D-10에서 E-7로 바꾸려면 무엇을 봐야 하나요?",
-        "selected_procedure_key": "statusChange",
-        "selected_procedure_variant_id": "d-10-1-points-status-change",
-    },
-    {
-        "id": "h2_to_f4",
-        "visa_code": "H-2",
-        "question": "H-2에서 F-4로 변경할 수 있나요?",
-        "lang": "ko",
-    },
-    {
-        "id": "d2_part_time_work",
-        "visa_code": "D-2",
-        "question": "D-2 비자로 시간제 아르바이트를 할 수 있나요?",
-        "lang": "ko",
-    },
-    {
-        "id": "e7_workplace_change",
-        "visa_code": "E-7",
-        "question": "E-7인데 근무처(직장)를 변경할 수 있나요?",
-        "lang": "ko",
-    },
-    {
-        "id": "f6_documents_en",
-        "visa_code": "F-6",
-        "question": "What documents do I need for F-6 extension?",
-        "lang": "en",
-    },
+    {"id": "h1_study", "visa_code": "H-1", "question": "H-1 비자인데 한국 대학에서 학점 계절학기를 수강할 수 있을까요?", "lang": "ko", "expect_confirmation_checklist": True, "expect_related_statuses": ["D-2", "D-4"]},
+    {"id": "g1_5_study_audit", "visa_code": "G-1-5", "question": "G-1-5 난민소송 중 대학 정규 등록이나 청강 수업이 가능한가요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "e7_to_f299_side_job", "question": "E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "d2_work", "visa_code": "D-2", "question": "D-2 비자로 시간제 아르바이트를 할 수 있나요?", "lang": "ko"},
+    {"id": "d10_freelance", "visa_code": "D-10", "question": "D-10 구직비자로 프리랜서 일을 해도 되나요?", "lang": "ko"},
+    {"id": "e7_side_job", "visa_code": "E-7", "question": "E-7인데 본업 외 부업을 해도 되나요?", "lang": "ko"},
+    {"id": "f4_employment", "visa_code": "F-4", "question": "F-4 재외동포의 취업 제한은 어떻게 확인하나요?", "lang": "ko"},
+    {"id": "f4_domestic_residence", "visa_code": "F-4", "question": "F-4 재외동포는 국내거소신고를 해야 하나요?", "lang": "ko"},
+    {"id": "c3_paid_work", "visa_code": "C-3", "question": "C-3 단기방문으로 paid work를 할 수 있나요?", "lang": "ko"},
+    {"id": "one_day_overstay", "question": "체류기간이 하루 overstay 됐습니다. 어떻게 해야 하나요?", "lang": "ko", "expect_confirmation_checklist": True},
+    {"id": "refugee_g1", "visa_code": "G-1", "question": "난민 신청 후 G-1 체류 context에서 연장해야 하나요?", "lang": "ko"},
+    {"id": "f6_divorce_extension", "visa_code": "F-6", "question": "F-6인데 이혼 후 체류기간 연장이 가능한가요?", "lang": "ko"},
+    {"id": "g1_medical", "visa_code": "G-1", "question": "G-1으로 치료 목적 체류를 하려면 어떤 절차를 봐야 하나요?", "lang": "ko"},
 ]
 
+# Chinese legal fragments
 # Chinese legal fragments that must NOT appear in an English-mode answer.
 _CJK_LEGAL_FRAGMENTS = (
     "资格", "資格", "签证", "簽證", "滞留", "滯留", "居留",
@@ -352,7 +290,17 @@ def _check_question(base, q):
         "citation_verification_status": None,
         "source_panel_status": None,
         "legal_analysis": None,
+        "immigration_facts": None,
+        "legal_issue_types": None,
+        "proposed_activity_type": None,
+        "source_plan": None,
         "analysis_mode": None,
+        "risk_posture": None,
+        "confidence": None,
+        "decisive_facts": None,
+        "official_confirmation_questions": None,
+        "first_sentence_quality_warning": None,
+        "raw_code_default_ui_leak": None,
         "direct_evidence_count": None,
         "related_evidence_count": None,
         "analogical_evidence_count": None,
@@ -421,7 +369,15 @@ def _check_question(base, q):
     result["citation_verification_status"] = cv.get("status")
     result["source_panel_status"] = meta.get("source_panel_status") or cv.get("status")
     result["legal_analysis"] = meta.get("legal_analysis")
+    result["immigration_facts"] = meta.get("immigration_facts") or ((meta.get("legal_analysis") or {}).get("immigration_facts") if isinstance(meta.get("legal_analysis"), dict) else None)
+    result["legal_issue_types"] = meta.get("legal_issue_types") or ((meta.get("legal_analysis") or {}).get("legal_issue_types") if isinstance(meta.get("legal_analysis"), dict) else None)
+    result["proposed_activity_type"] = meta.get("proposed_activity_type") or ((result.get("immigration_facts") or {}).get("proposed_activities") if isinstance(result.get("immigration_facts"), dict) else None)
+    result["source_plan"] = meta.get("source_plan") or ((meta.get("legal_analysis") or {}).get("source_plan") if isinstance(meta.get("legal_analysis"), dict) else None)
     result["analysis_mode"] = meta.get("analysis_mode") or ((meta.get("legal_analysis") or {}).get("analysis_mode") if isinstance(meta.get("legal_analysis"), dict) else None)
+    result["risk_posture"] = (meta.get("legal_analysis") or {}).get("risk_posture") if isinstance(meta.get("legal_analysis"), dict) else None
+    result["confidence"] = (meta.get("legal_analysis") or {}).get("confidence") if isinstance(meta.get("legal_analysis"), dict) else None
+    result["decisive_facts"] = (meta.get("legal_analysis") or {}).get("decisive_facts") if isinstance(meta.get("legal_analysis"), dict) else None
+    result["official_confirmation_questions"] = (meta.get("legal_analysis") or {}).get("official_confirmation_questions") or meta.get("official_confirmation_questions")
     result["direct_evidence_count"] = meta.get("direct_evidence_count")
     result["related_evidence_count"] = meta.get("related_evidence_count")
     result["analogical_evidence_count"] = meta.get("analogical_evidence_count")
@@ -466,6 +422,7 @@ def _check_question(base, q):
         for bad in bad_starts:
             if first_line.lower().startswith(bad):
                 result["h1_first_line_warning"] = "answer starts with %s" % bad
+                result["first_sentence_quality_warning"] = result["h1_first_line_warning"]
                 result["quality_warnings"].append(result["h1_first_line_warning"])
                 break
         if result.get("question_type_detected") in ("activity_on_status", "status_change", "deadline_report", "documents_needed") and not result.get("legal_analysis"):
@@ -490,6 +447,9 @@ def _check_question(base, q):
             result["confirmation_checklist_present"] = present
             if not present:
                 result["quality_warnings"].append("expected official-confirmation checklist not surfaced")
+        result["raw_code_default_ui_leak"] = bool(result.get("raw_code_leak"))
+        if result.get("first_sentence_quality_warning") is None:
+            result["first_sentence_quality_warning"] = ""
         for w in ("mixed_language_artifacts", "raw_code_leak"):
             if result[w]:
                 result["quality_warnings"].append("%s: %s" % (w, result[w]))
@@ -711,6 +671,12 @@ def _emit(report, args):
             r["question_type_detected"], r["related_statuses_not_sources"],
         )
         # Law evidence tool-layer signals (Part I).
+        suffix += " [facts=%s issues=%s activities=%s source_plan=%s mode=%s risk=%s conf=%s decisive=%s confirm_qs=%s first_warn=%s raw_ui_leak=%s]" % (
+            bool(r.get("immigration_facts")), r.get("legal_issue_types"), r.get("proposed_activity_type"),
+            bool(r.get("source_plan")), r.get("analysis_mode"), r.get("risk_posture"), r.get("confidence"),
+            r.get("decisive_facts"), r.get("official_confirmation_questions"), r.get("first_sentence_quality_warning"),
+            r.get("raw_code_default_ui_leak"),
+        )
         suffix += " [law_planned=%s law_evidence=%s law_error=%s parser=%s shape=%s citation=%s panel=%s risky=%s]" % (
             len(r["planned_law_queries"]) if r["planned_law_queries"] else 0,
             r["law_evidence_count"], r["law_error_type"], r["parser_status"],
