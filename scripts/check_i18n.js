@@ -171,6 +171,10 @@ const REQUIRED_UI_KEYS = [
   'aiAnswerBasisLabel', 'aiAnswerBasisConfirmed', 'aiAnswerBasisAssisted',
   'aiAnswerBasisLimited', 'aiAnswerBasisUnavailable', 'aiAnswerBasisGeneric',
   'aiRelatedStatusLabel', 'aiRelatedStatusNote',
+  'sourcePanelStructuredFallbackLabel', 'sourcePanelStructuredFallbackSubtext',
+  'sourcePanelStructuredAnalysisUsedLabel', 'sourcePanelStructuredAnalysisUsedSubtext',
+  'sourcePanelRelatedContextLabel', 'sourcePanelRelatedContextSubtext',
+  'aiDeveloperDiagnostics',
 ];
 
 // Keys whose translated value may intentionally embed official Korean source

@@ -153,7 +153,10 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
             "Analogical legal analysis",
             "No direct scenario-specific authority found",
             "Source lookup technical issue",
-            "Structured legal analysis note available",
+            "Structured legal analysis note",
+            "Structured legal analysis used",
+            "Related legal context analysis",
+            "Show developer diagnostics",
         ):
             self.assertIn(label, self.html + self.index_html)
 
@@ -162,7 +165,19 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
             self.assertIn(code, self.html + self.index_html)
         self.assertNotIn("SOURCE_UNAVAILABLE could not", self.html + self.index_html)
         self.assertNotIn("LAW_API_BAD_RESPONSE could", self.html + self.index_html)
-        self.assertIn("technical details", (self.html + self.index_html).lower())
+        self.assertIn("developer diagnostics", (self.html + self.index_html).lower())
+        self.assertIn("<details", self.html + self.index_html)
+        self.assertNotIn("<details open", (self.html + self.index_html).lower())
+
+    def test_structured_fallback_copy_does_not_use_raw_codes_as_default_label(self):
+        combined = self.html + self.index_html
+        self.assertIn("구조화된 법률 분석 메모", combined)
+        self.assertIn("Structured legal analysis note", combined)
+        self.assertIn("구조화된 법률 분석 사용", combined)
+        self.assertIn("Structured legal analysis used", combined)
+        default_copy_slice = " ".join(line for line in combined.splitlines() if "sourcePanelStructured" in line or "sourcePanelCopyForState" in line or "lawSourcePanelMessage" in line)
+        self.assertNotIn("SOURCE_UNAVAILABLE could", default_copy_slice)
+        self.assertNotIn("LAW_API_BAD_RESPONSE could", default_copy_slice)
 
     def test_no_oc_or_api_key_value_in_source_panel_copy(self):
         panel_slice = (self.html + self.index_html)

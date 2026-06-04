@@ -76,6 +76,9 @@ def _assert_legal_analysis_fallback(body: dict) -> None:
     assert body["legal_analysis_exists"] is True
     assert body["fallback_answer_kind"] == "legal_analysis_preparation_note"
     assert body["legal_analysis"]
+    assert body["source_panel_state"] == "structured_fallback_available"
+    assert body["source_panel_label_key"] == "structured_fallback"
+    assert body["default_source_panel_should_show_raw_codes"] is False
     first = (body["answer"] or "").strip()
     assert first
     assert not first.startswith(BAD_FIRST_SENTENCE_PREFIXES)
@@ -170,3 +173,48 @@ def test_e7_fallback_source_panel_metadata_has_no_unrelated_h1_study_chips() -> 
     assert "D-2" not in default_chip_text
     assert "D-4" not in default_chip_text
     assert body["source_state"] == "legal_analysis_preparation_note"
+    assert body["source_panel_state"] == "structured_fallback_available"
+    assert body["source_panel_label_key"] == "structured_fallback"
+    assert "H-1" not in body["answer"]
+
+
+def test_copy_safe_answer_does_not_include_raw_diagnostics() -> None:
+    body = _ask_fallback("E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?")
+    _assert_legal_analysis_fallback(body)
+    copied = body.get("copy_safe_answer") or body.get("answer") or ""
+    for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED"):
+        assert code not in copied
+
+
+def test_legal_analysis_with_bad_law_response_uses_structured_analysis_state() -> None:
+    pack = {
+        "legal_analysis": {"analysis_mode": "limited_authority"},
+        "law_grounding_warnings": ["SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE"],
+    }
+    meta = pb._derive_source_panel_metadata(
+        law_evidence_pack=pack,
+        citation_verification={"status": "not_wired"},
+        law_grounding_used=False,
+        law_grounding_attempted=True,
+        law_grounding_status="unavailable",
+        law_grounding_warnings=["SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE"],
+        manual_grounding_status="manual_grounding_missing",
+    )
+    assert meta["source_panel_state"] == "structured_legal_analysis_available"
+    assert meta["source_panel_label_key"] == "structured_legal_analysis_law_lookup_issue"
+    assert meta["law_lookup_error_type"] == "SOURCE_UNAVAILABLE"
+    assert meta["default_source_panel_should_show_raw_codes"] is False
+
+
+def test_pure_no_source_no_legal_analysis_maps_to_source_unavailable() -> None:
+    meta = pb._derive_source_panel_metadata(
+        law_evidence_pack={},
+        citation_verification=None,
+        law_grounding_used=False,
+        law_grounding_attempted=False,
+        law_grounding_status="not_attempted",
+        law_grounding_warnings=[],
+        manual_grounding_status="manual_grounding_missing",
+    )
+    assert meta["source_panel_state"] == "source_unavailable"
+    assert meta["source_panel_label_key"] == "source_unavailable"

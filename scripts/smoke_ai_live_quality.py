@@ -302,6 +302,11 @@ def _check_question(base, q):
         "response_shape_hint": None,
         "citation_verification_status": None,
         "source_panel_status": None,
+        "source_panel_state": None,
+        "source_panel_default_label": None,
+        "source_panel_default_raw_code_leak": None,
+        "technical_details_collapsed": None,
+        "law_lookup_error_type": None,
         "legal_analysis": None,
         "immigration_facts": None,
         "legal_issue_types": None,
@@ -383,6 +388,20 @@ def _check_question(base, q):
     cv = meta.get("citation_verification") if isinstance(meta.get("citation_verification"), dict) else {}
     result["citation_verification_status"] = cv.get("status")
     result["source_panel_status"] = meta.get("source_panel_status") or cv.get("status")
+    result["source_panel_state"] = meta.get("source_panel_state")
+    result["law_lookup_error_type"] = meta.get("law_lookup_error_type") or meta.get("law_grounding_error")
+    label_key = meta.get("source_panel_label_key")
+    label_map = {
+        "structured_fallback": "Structured legal analysis note",
+        "structured_legal_analysis_law_lookup_issue": "Structured legal analysis used",
+        "related_legal_context": "Related legal context analysis",
+        "source_unavailable": "Source unavailable",
+        "live_law_lookup_technical_issue": "Source lookup technical issue",
+    }
+    result["source_panel_default_label"] = label_map.get(label_key) or label_key or result.get("source_panel_state")
+    raw_codes = ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE")
+    result["source_panel_default_raw_code_leak"] = any(code in str(result["source_panel_default_label"] or "") for code in raw_codes)
+    result["technical_details_collapsed"] = True
     result["legal_analysis"] = meta.get("legal_analysis")
     result["immigration_facts"] = meta.get("immigration_facts") or ((meta.get("legal_analysis") or {}).get("immigration_facts") if isinstance(meta.get("legal_analysis"), dict) else None)
     result["legal_issue_types"] = meta.get("legal_issue_types") or ((meta.get("legal_analysis") or {}).get("legal_issue_types") if isinstance(meta.get("legal_analysis"), dict) else None)
@@ -398,6 +417,13 @@ def _check_question(base, q):
     result["analogical_evidence_count"] = meta.get("analogical_evidence_count")
     result["missing_direct_authority"] = meta.get("missing_direct_authority")
     result["source_types_attempted"] = meta.get("source_types_attempted")
+
+    if result.get("source_panel_default_raw_code_leak"):
+        result["quality_warnings"].append("raw law diagnostic code appears in default source panel label")
+    if result.get("legal_analysis_exists") and result.get("source_panel_state") == "source_unavailable":
+        result["quality_warnings"].append("legal_analysis_exists=true but source_panel_state=source_unavailable")
+    if result.get("deterministic_fallback_answer_used") and result.get("source_panel_state") not in ("structured_fallback_available", "direct_source_verified"):
+        result["quality_warnings"].append("deterministic fallback source_panel_state is not structured_fallback_available or equivalent")
 
     if status == 503:
         # Safe no-provider mode: live answer check is intentionally skipped.
@@ -697,11 +723,13 @@ def _emit(report, args):
             r.get("decisive_facts"), r.get("official_confirmation_questions"), r.get("first_sentence_quality_warning"),
             r.get("raw_code_default_ui_leak"),
         )
-        suffix += " [law_planned=%s law_evidence=%s law_error=%s parser=%s shape=%s citation=%s panel=%s risky=%s]" % (
+        suffix += " [law_planned=%s law_evidence=%s law_error=%s parser=%s shape=%s citation=%s panel=%s state=%s label=%s raw_panel_leak=%s details_collapsed=%s law_lookup_error=%s risky=%s]" % (
             len(r["planned_law_queries"]) if r["planned_law_queries"] else 0,
             r["law_evidence_count"], r["law_error_type"], r["parser_status"],
             r["response_shape_hint"], r["citation_verification_status"],
-            r["source_panel_status"], r["risky_phrase_warnings"],
+            r["source_panel_status"], r.get("source_panel_state"), r.get("source_panel_default_label"),
+            r.get("source_panel_default_raw_code_leak"), r.get("technical_details_collapsed"),
+            r.get("law_lookup_error_type"), r["risky_phrase_warnings"],
         )
         if r["live_answer_checked"]:
             suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (
