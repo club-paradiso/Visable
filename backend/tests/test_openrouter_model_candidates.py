@@ -248,16 +248,18 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         # No raw provider JSON keys leak through.
         self.assertNotIn("choices", resp.text)
 
-    def test_non_retryable_invalid_key_does_not_retry_blindly(self):
+    def test_non_retryable_invalid_key_returns_safe_503_without_retry(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (401, "Invalid API key") for c in CANDS})
         self.assertEqual(resp.status_code, 200, resp.text)
         detail = resp.json()
         self.assertEqual(detail["provider_error_type"], "invalid_provider_config")
+        self.assertEqual(detail["error"], "openrouter_provider_error")
         self.assertEqual(calls, [CANDS[0]], "must stop after first non-retryable error")
         self.assertFalse(detail["all_candidates_failed"])
+        self.assertFalse(detail["deterministic_fallback_answer_used"])
 
-    def test_bad_request_does_not_retry_blindly(self):
+    def test_bad_request_returns_safe_503_without_retry(self):
         pb = _pb()
         resp, calls = self._ask(pb, {c: (400, "Bad request") for c in CANDS})
         self.assertEqual(resp.status_code, 200, resp.text)

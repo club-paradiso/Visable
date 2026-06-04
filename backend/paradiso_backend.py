@@ -2610,7 +2610,29 @@ async def ask(req: AskRequest) -> AskResponse:
                 **attempt_meta,
                 **base_meta,
             )
-        # All OpenRouter candidates failed (or stopped on a non-retryable error).
+        if not result.get("retryable_provider_error"):
+            # Non-retryable provider failures (bad credentials, malformed
+            # requests, unavailable model ids, or safety/policy rejections) are
+            # not normal model-capacity outages. Do not convert them into a
+            # deterministic answer or fall through to another provider: surface a
+            # safe 503 with non-secret diagnostics so operators can repair the
+            # configuration/request while users do not see raw provider JSON.
+            raise HTTPException(
+                status_code=503,
+                detail={
+                    **attempt_meta,
+                    **base_meta,
+                    "error": "openrouter_provider_error",
+                    "message": "AI provider configuration or request error. Please retry after the service configuration is checked.",
+                    "llm_unavailable": True,
+                    "provider_unavailable": False,
+                    "deterministic_fallback_answer_used": False,
+                    "provider_family_fallback_used": False,
+                    "copy_safe_answer": "",
+                    "fallback_answer": "",
+                },
+            )
+        # All retryable OpenRouter candidates failed.
         # Provider-family fallback to Groq ONLY if explicitly enabled + configured
         # (strict OpenRouter-first is the default — no silent provider switch).
         if ALLOW_GROQ_FALLBACK and GROQ_API_KEY:
