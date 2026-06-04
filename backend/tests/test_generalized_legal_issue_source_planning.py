@@ -4,7 +4,7 @@ import pytest
 
 from services.grounding_config import GroundingConfig
 from services.law_tools import build_law_evidence_pack
-from services.legal_analysis import classify_activity_types, classify_legal_issue_types, extract_immigration_facts
+from services.legal_analysis import build_generalized_source_plan, classify_activity_types, classify_legal_issue_types, extract_immigration_facts, score_evidence_relevance
 
 CFG = GroundingConfig(mode="audit")
 
@@ -108,3 +108,39 @@ def test_matrix_workplace_addition_and_approval_condition():
     assert "workplace_change_addition" in issues
     assert "reporting_duty" in issues
     assert "approval_condition" in issues
+
+
+def test_official_source_family_plans_for_required_scenarios() -> None:
+    cases = [
+        ("E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?", {"statute", "enforcement_rule", "administrative_rule"}, "F-2-99"),
+        ("G-1-5로 체류 중인데 대학교에 등록하거나 청강하거나 여름 계절학기를 수강할 수 있나요?", {"statute", "enforcement_decree", "enforcement_rule"}, "G-1-5"),
+        ("H-1 외국인등록은 언제 해야 하나요?", {"statute", "enforcement_rule", "administrative_rule"}, "H-1"),
+        ("Can I change status to F-2-99?", {"manual", "statute", "enforcement_decree"}, "H-1"),
+        ("D-2 유학생인데 시간제 아르바이트를 할 수 있나요?", {"statute", "enforcement_decree", "enforcement_rule"}, "D-2"),
+        ("C-3 단기방문으로 paid work를 할 수 있나요?", {"statute", "enforcement_decree", "enforcement_rule"}, "C-3"),
+    ]
+    for question, expected, visa in cases:
+        facts = extract_immigration_facts(question, visa_code=visa)
+        issues = classify_legal_issue_types(question, facts)
+        plan = build_generalized_source_plan(question, facts, issues)
+        planned = set(plan["source_families_planned"])
+        assert expected <= planned
+        assert plan["source_family_statuses"].get("precedent", "not_attempted") in {"not_attempted", "unsupported"}
+
+
+def test_status_change_target_query_preserves_target_status() -> None:
+    question = "Can I change status to F-2-99?"
+    facts = extract_immigration_facts(question, visa_code="H-1")
+    issues = classify_legal_issue_types(question, facts)
+    plan = build_generalized_source_plan(question, facts, issues)
+    assert facts["target_status"] == "F-2-99"
+    assert any("F-2-99" in q for q in plan["queries"])
+
+
+def test_previous_status_evidence_is_related_not_direct_after_change() -> None:
+    question = "E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?"
+    facts = extract_immigration_facts(question)
+    issues = classify_legal_issue_types(question, facts)
+    evidence = {"source_type": "statute", "law_name": "E-7 근무처 변경 신고", "summary": "근무처 신고의무"}
+    rel = score_evidence_relevance(evidence, question=question, immigration_facts=facts, legal_issue_types=issues)
+    assert rel == "related"
