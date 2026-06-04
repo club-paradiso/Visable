@@ -1878,7 +1878,7 @@ select:focus-visible {
             const labels = {
                 LAW_GROUNDING_DISABLED: t(lang, '법령 검증 기능이 꺼져 있음', 'Legal verification is disabled'),
                 LAW_API_KEY_MISSING: t(lang, '법령 API 키 미설정', 'Law API key is not configured'),
-                SOURCE_UNAVAILABLE: t(lang, '법령 출처 확인 불가', 'Law source unavailable'),
+                SOURCE_UNAVAILABLE: t(lang, '직접 법령 인용 제한', 'Direct legal citation limited'),
                 LAW_API_TIMEOUT: t(lang, '법령 조회 시간 초과', 'Law lookup timed out'),
                 CITATION_VERIFICATION_NOT_WIRED: t(lang, '인용 검증 미연결', 'Citation verification not wired')
             };
@@ -1939,7 +1939,7 @@ select:focus-visible {
                 return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
             }
             if ((safe.legal_analysis_exists || key === 'structured_legal_analysis_law_lookup_issue') && hasBadLawResponse) {
-                return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '실시간 법령 조회에 기술 문제가 있어 직접 법령 인용은 제한되지만, 답변은 추출된 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
+                return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '직접 법령 인용은 제한되지만, 답변은 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
             }
             if (state === 'related_legal_context_available' || key === 'related_legal_context') {
                 return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Paradiso separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
@@ -1970,7 +1970,7 @@ select:focus-visible {
                 return { cls: copy.cls, text: copy.label, subtext: copy.subtext };
             }
             if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
-            if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접적인 사안별 근거 없음', en: 'No direct scenario-specific authority found', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
+            if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접 근거 제한', en: 'Direct authority limited', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
             if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
                 return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Paradiso is using limited guidance.', zh: '法律来源查询超时。Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Paradiso 將使用有限指引。' }) };
             }
@@ -1983,7 +1983,7 @@ select:focus-visible {
             if (warnings.indexOf('LAW_API_NOT_CONFIGURED') !== -1 || warnings.indexOf('LAW_API_KEY_MISSING') !== -1 || errorType === 'LAW_API_NOT_CONFIGURED') {
                 return { cls: 'state-disabled', text: tt(lang, { ko: '출처 조회 사용 불가', en: 'Source lookup unavailable', zh: '来源查询不可用', zhHant: '來源查詢不可用' }) };
             }
-            return { cls: 'state-partial', text: tt(lang, { ko: '직접적인 사안별 근거 없음', en: 'No direct scenario-specific authority found', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
+            return { cls: 'state-partial', text: tt(lang, { ko: '직접 근거 제한', en: 'Direct authority limited', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
         }
 
         function renderGroundingSourcePanel(metadata, lang) {
@@ -2077,7 +2077,7 @@ select:focus-visible {
             if (!rows.length) return '';
 
             const debugWarnings = lawWarnings.length
-                ? `<details class="error-details"><summary>${t(lang, '기술 세부정보 보기', 'Show technical details')}</summary><pre>${escapeHtml(lawWarnings.join('\\n'))}</pre></details>`
+                ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml([tt(lang, { ko: '실시간 법령 조회 응답을 파싱하지 못했습니다.', en: 'The live legal lookup response could not be parsed.', zh: '无法解析实时法令查询响应。', zhHant: '無法解析即時法令查詢回應。' }), tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }), '--- raw developer codes ---'].concat(lawWarnings).join('\\n'))}</pre></details>`
                 : '';
 
             const disclosure = t(
@@ -2276,7 +2276,7 @@ select:focus-visible {
                     <div class="answer-body">${fallbackAnswer ? formatAnswerText(userMessage, lang) : `<p>${escapeHtml(userMessage)}</p>`}</div>
                     ${renderGroundingSourcePanel(grounding, lang)}
                     ${fallbackAnswer ? buildAnswerActions(copyId, false, lang) : ''}
-                    ${details ? `<details class="error-details"><summary>${t(lang, '기술 세부정보 보기', 'Show technical details')}</summary><pre>${escapeHtml(details)}</pre></details>` : ''}
+                    ${details ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(details)}</pre></details>` : ''}
                     <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
                 </article>
                 <div class="msg-time">${t(lang, '시스템 오류', 'System error')} · ${formatTime()}</div>

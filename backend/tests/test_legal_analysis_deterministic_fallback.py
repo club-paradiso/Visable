@@ -202,7 +202,7 @@ def test_legal_analysis_with_bad_law_response_uses_structured_analysis_state() -
     )
     assert meta["source_panel_state"] == "structured_legal_analysis_available"
     assert meta["source_panel_label_key"] == "structured_legal_analysis_law_lookup_issue"
-    assert meta["law_lookup_error_type"] == "SOURCE_UNAVAILABLE"
+    assert meta["law_lookup_error_type"] == "LAW_API_BAD_RESPONSE"
     assert meta["default_source_panel_should_show_raw_codes"] is False
 
 
@@ -218,3 +218,86 @@ def test_pure_no_source_no_legal_analysis_maps_to_source_unavailable() -> None:
     )
     assert meta["source_panel_state"] == "source_unavailable"
     assert meta["source_panel_label_key"] == "source_unavailable"
+
+
+def test_e7_side_job_low_direct_authority_confidence_gates_answer() -> None:
+    body = _ask_fallback("E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?")
+    _assert_legal_analysis_fallback(body)
+    answer = body["answer"]
+    assert "원칙적으로 이전 자격인 E-7에 묶여 있던 근무처 변경·추가 신고 의무는 더 이상 적용되지 않습니다" not in answer
+    assert "신고 의무는 없습니다" not in answer
+    assert "반드시 신고해야 합니다" not in answer
+    assert "현재 F-2-99" in answer
+    assert "이전 E-7 기준만으로 판단할 사안은 아니" in answer
+    assert "개별 승인 조건" in answer
+    assert "부업의 형태" in answer
+    assert body["missing_direct_authority"] is True
+    assert body["direct_evidence_count"] == 0
+    assert body["direct_authority_available"] is False
+    assert body["answer_certainty_level"] in {"limited", "unavailable"}
+
+
+def test_direct_mocked_authority_allows_direct_certainty() -> None:
+    pack = {
+        "legal_analysis": {"analysis_mode": "direct_authority"},
+        "direct_evidence_count": 1,
+        "related_evidence_count": 0,
+        "analogical_evidence_count": 0,
+        "law_evidence_count": 1,
+        "law_sources": [{"law_name": "mock direct authority"}],
+        "missing_direct_authority": False,
+    }
+    meta = pb._derive_source_panel_metadata(
+        law_evidence_pack=pack,
+        citation_verification={"status": "verified", "warnings": []},
+        law_grounding_used=True,
+        law_grounding_attempted=True,
+        law_grounding_status="used",
+        law_grounding_warnings=[],
+        manual_grounding_status="absent",
+    )
+    assert meta["direct_authority_available"] is True
+    assert meta["direct_citation_available"] is True
+    assert meta["answer_certainty_level"] == "direct"
+    strong = "신고 의무는 없습니다"
+    assert pb._confidence_gate_answer_text(strong, meta) == strong
+
+
+def test_h1_study_low_authority_avoids_definitive_permission_or_denial() -> None:
+    body = _ask_fallback("H-1으로 한국 대학 계절학기 학점 수업을 들어도 되나요?")
+    answer = body["answer"]
+    for phrase in ("허용됩니다", "가능합니다", "반드시 불가능", "금지됩니다"):
+        assert phrase not in answer
+    assert "활동범위" in answer or "체류 목적" in answer
+    assert body["answer_certainty_level"] in {"limited", "unavailable"}
+
+
+def test_c3_paid_work_source_limited_no_invented_penalty_or_overconfident_conclusion() -> None:
+    body = _ask_fallback("C-3로 한국에서 유급 일을 하면 벌금이 얼마인가요?", visa_code="C-3")
+    answer = body["answer"]
+    assert "벌금" not in answer or "확인" in answer or "단정" in answer
+    assert "신고 의무는 없습니다" not in answer
+    assert "허용됩니다" not in answer
+    assert body["answer_certainty_level"] in {"limited", "unavailable"}
+
+
+def test_source_panel_contract_for_legal_analysis_bad_law_response() -> None:
+    pack = {
+        "legal_analysis": {"analysis_mode": "source_unavailable"},
+        "law_grounding_warnings": ["SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE"],
+        "direct_evidence_count": 0,
+    }
+    meta = pb._derive_source_panel_metadata(
+        law_evidence_pack=pack,
+        citation_verification={"status": "law_api_unavailable", "warnings": ["SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE"]},
+        law_grounding_used=False,
+        law_grounding_attempted=True,
+        law_grounding_status="unavailable",
+        law_grounding_warnings=["SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE"],
+        manual_grounding_status="absent",
+    )
+    assert meta["source_panel_state"] == "structured_legal_analysis_available"
+    assert meta["source_panel_label_key"] == "structured_legal_analysis_law_lookup_issue"
+    assert meta["law_lookup_error_type"] == "LAW_API_BAD_RESPONSE"
+    assert meta["source_panel_confidence"] == "low"
+    assert meta["law_lookup_failed"] is True

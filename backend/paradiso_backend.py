@@ -365,6 +365,14 @@ class AskResponse(BaseModel):
     source_panel_label_key: str = ""
     law_lookup_error_type: str = ""
     default_source_panel_should_show_raw_codes: bool = False
+    source_panel_confidence: str = "none"
+    direct_authority_available: bool = False
+    direct_citation_available: bool = False
+    legal_analysis_available: bool = False
+    law_lookup_failed: bool = False
+    citation_verification_status: str = ""
+    manual_grounding_status_detail: str = ""
+    answer_certainty_level: str = "unavailable"
     answer_first_sentence: str = ""
     first_sentence_quality_warning: str = ""
     direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
@@ -455,11 +463,64 @@ def _derive_law_lookup_error_type(pack: Optional[Dict[str, Any]], citation_verif
     if citation_verification:
         candidates.extend([citation_verification.get("status"), citation_verification.get("error_type")])
         candidates.extend(citation_verification.get("warnings") or [])
-    for candidate in candidates:
-        code = str(candidate or "").upper()
+    normalized = [str(candidate or "").upper() for candidate in candidates]
+    for preferred in ("LAW_API_BAD_RESPONSE", "LAW_API_PARSE_ERROR", "LAW_API_TIMEOUT", "LAW_API_OFFICIAL_ERROR", "SOURCE_UNAVAILABLE"):
+        if preferred in normalized:
+            return preferred
+    for code in normalized:
         if code in _LAW_LOOKUP_ERROR_CODES:
             return code
     return ""
+
+
+def _derive_answer_certainty_level(*, direct_evidence_count: int, related_evidence_count: int, analogical_evidence_count: int, legal_analysis_exists: bool, citation_status: str, law_lookup_failed: bool) -> str:
+    """Map evidence state to the public answer-certainty contract."""
+    verified = str(citation_status or "").lower() == "verified"
+    if direct_evidence_count > 0 and verified:
+        return "direct"
+    if related_evidence_count > 0 or analogical_evidence_count > 0:
+        return "contextual"
+    if legal_analysis_exists:
+        return "limited"
+    return "unavailable"
+
+
+def _answer_requires_confidence_gating(meta: Dict[str, Any]) -> bool:
+    if str(meta.get("answer_certainty_level") or "") != "direct":
+        return True
+    state = str(meta.get("source_panel_state") or "")
+    if state in {SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE, SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE, SOURCE_PANEL_LIVE_LAW_LOOKUP_TECHNICAL_ISSUE, SOURCE_PANEL_NO_DIRECT_AUTHORITY_FOUND}:
+        return True
+    err = str(meta.get("law_lookup_error_type") or "").upper()
+    return bool(err in {"LAW_API_BAD_RESPONSE", "SOURCE_UNAVAILABLE", "BAD_RESPONSE", "SOURCE_UNAVAILABLE"})
+
+
+def _confidence_gate_answer_text(answer: str, meta: Dict[str, Any]) -> str:
+    """Soften unsafe deterministic/LLM wording when direct authority is absent."""
+    if not answer or not _answer_requires_confidence_gating(meta):
+        return answer
+    replacement = (
+        "F-2-99로 체류자격 변경이 완료되었다면, 부업 여부는 이전 E-7 기준만으로 판단할 사안은 아니고 "
+        "현재 F-2-99의 활동범위와 승인 조건을 기준으로 다시 검토해야 합니다. 다만 E-7의 근무처 추가 신고 의무가 "
+        "자동으로 계속 적용되는지, 또는 전혀 적용되지 않는지는 개별 승인 조건과 부업의 형태를 확인해야 합니다."
+    )
+    risky_patterns = [
+        r"체류자격이\s*E-7\(특정활동\)에서\s*F-2-99\(거주\)로\s*변경되었다면,?\s*원칙적으로\s*이전\s*자격인\s*E-7에\s*묶여\s*있던\s*근무처\s*변경·추가\s*신고\s*의무는\s*더\s*이상\s*적용되지\s*않습니다\. ?",
+        r"원칙적으로\s*이전\s*자격인\s*E-7에\s*묶여\s*있던\s*근무처\s*변경·추가\s*신고\s*의무는\s*더\s*이상\s*적용되지\s*않습니다\. ?",
+    ]
+    out = answer
+    for pat in risky_patterns:
+        out = re.sub(pat, replacement + " ", out)
+    softeners = {
+        "신고 의무는 없습니다": "신고 의무가 없는지 단정하려면 현재 승인 조건과 활동 형태 확인이 필요합니다",
+        "반드시 신고해야 합니다": "신고 대상인지 여부는 현재 승인 조건과 활동 형태에 따라 확인해야 합니다",
+        "허용됩니다": "허용 여부를 확인해야 합니다",
+        "가능합니다": "가능 여부를 확인해야 합니다",
+    }
+    for risky, soft in softeners.items():
+        if risky in out:
+            out = out.replace(risky, soft)
+    return out
 
 def _derive_source_panel_metadata(
     *,
@@ -483,19 +544,31 @@ def _derive_source_panel_metadata(
     law_lookup_error_type = _derive_law_lookup_error_type(pack, citation_verification, law_grounding_warnings, pack.get("law_grounding_error", ""))
     citation_status = str((citation_verification or {}).get("status") or "")
 
-    direct_verified = bool(law_grounding_used or citation_status == "verified" or direct_count > 0)
+    law_lookup_failed = bool(law_lookup_error_type) or law_grounding_status in {"unavailable", "disabled"} or (law_grounding_attempted and not law_grounding_used)
+    direct_citation_available = citation_status == "verified"
+    direct_authority_available = direct_count > 0 and direct_citation_available
     manual_available = manual_grounding_status in {"manual_grounding_available", "present"}
     law_available = law_evidence_count > 0 or bool(pack.get("law_sources"))
-    has_lookup_issue = bool(law_lookup_error_type) or law_grounding_status in {"unavailable", "disabled"} or (law_grounding_attempted and not law_grounding_used)
+    has_lookup_issue = law_lookup_failed
+    answer_certainty_level = _derive_answer_certainty_level(
+        direct_evidence_count=direct_count,
+        related_evidence_count=related_count,
+        analogical_evidence_count=analogical_count,
+        legal_analysis_exists=legal_analysis_exists,
+        citation_status=citation_status,
+        law_lookup_failed=law_lookup_failed,
+    )
 
-    if direct_verified:
+    if direct_authority_available:
         state = SOURCE_PANEL_DIRECT_SOURCE_VERIFIED
+    elif deterministic_fallback_answer_used and legal_analysis_exists:
+        state = SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE
+    elif legal_analysis_exists and has_lookup_issue and (direct_count == 0 or pack.get("missing_direct_authority", True)):
+        state = SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE
     elif manual_available:
         state = SOURCE_PANEL_MANUAL_GROUNDING_AVAILABLE
     elif law_available and not has_lookup_issue:
         state = SOURCE_PANEL_LAW_GROUNDING_AVAILABLE
-    elif deterministic_fallback_answer_used and legal_analysis_exists:
-        state = SOURCE_PANEL_STRUCTURED_FALLBACK_AVAILABLE
     elif legal_analysis_exists and has_lookup_issue:
         state = SOURCE_PANEL_STRUCTURED_LEGAL_ANALYSIS_AVAILABLE
     elif legal_analysis_exists and (related_count > 0 or analogical_count > 0):
@@ -515,6 +588,14 @@ def _derive_source_panel_metadata(
         "legal_analysis_exists": legal_analysis_exists,
         "law_lookup_error_type": law_lookup_error_type,
         "default_source_panel_should_show_raw_codes": False,
+        "source_panel_confidence": {"direct": "high", "contextual": "moderate", "limited": "low", "unavailable": "none"}.get(answer_certainty_level, "none"),
+        "direct_authority_available": direct_authority_available,
+        "direct_citation_available": direct_citation_available,
+        "legal_analysis_available": legal_analysis_exists,
+        "law_lookup_failed": law_lookup_failed,
+        "citation_verification_status": citation_status,
+        "manual_grounding_status_detail": manual_grounding_status,
+        "answer_certainty_level": answer_certainty_level,
     }
 
 class JobCodeKeywordsRequest(BaseModel):
@@ -1110,8 +1191,9 @@ def build_legal_analysis_fallback_answer(
         lines = [intro, ""]
         if "post_status_change_residual_duty" in issues and previous and current:
             lines.append(
-                f"{previous}에서 {current}로 이미 체류자격이 변경된 상태라면, 질문은 원칙적으로 현재 체류자격인 {current} 기준에서 먼저 검토해야 합니다. "
-                f"과거 {previous}의 신고·승인 조건 논리가 자동으로 계속 적용된다고 단정할 수는 없지만, 반대로 신고의무가 전혀 없다고 단정할 수도 없습니다."
+                f"{current}로 체류자격 변경이 완료되었다면, 부업 여부는 이전 {previous} 기준만으로 판단할 사안은 아니고 "
+                f"현재 {current}의 활동범위와 승인 조건을 기준으로 다시 검토해야 합니다. 다만 {previous}의 근무처 추가 신고 의무가 "
+                "자동으로 계속 적용되는지, 또는 전혀 적용되지 않는지는 개별 승인 조건과 부업의 형태를 확인해야 합니다."
             )
         elif "status_change" in issues and target:
             from_status = current or previous or "현재 체류자격"
@@ -1204,6 +1286,7 @@ def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base
     )
     legal_analysis_exists = bool(legal_analysis)
     fallback_meta = dict(base_meta)
+    answer = _confidence_gate_answer_text(answer, fallback_meta)
     fallback_meta["legal_analysis_exists"] = legal_analysis_exists
     if legal_analysis_exists:
         fallback_meta["fallback_answer_kind"] = "legal_analysis_preparation_note"
@@ -2947,6 +3030,17 @@ async def ask(req: AskRequest) -> AskResponse:
     if law_evidence_pack and law_evidence_pack.get("citation_verification"):
         citation_verification = law_evidence_pack.get("citation_verification")
 
+    # Shared, non-secret grounding/law metadata reused across prompt and response paths.
+    source_panel_meta = _derive_source_panel_metadata(
+        law_evidence_pack=law_evidence_pack,
+        citation_verification=citation_verification,
+        law_grounding_used=law_grounding_used,
+        law_grounding_attempted=law_grounding_attempted,
+        law_grounding_status=law_grounding_status,
+        law_grounding_warnings=law_grounding_warnings,
+        manual_grounding_status=manual_grounding_status,
+    )
+
     # Answer-prompt integration (Part E): inject ONE compact, normalized
     # evidence summary (never a raw API dump) plus the backend-prepared legal
     # analysis object. The model may explain this object; it must not invent it.
@@ -2978,6 +3072,14 @@ async def ask(req: AskRequest) -> AskResponse:
                 f"answer_template: {legal_analysis.get('answer_template')}\n"
                 f"authority_summary: {legal_analysis.get('authority_summary')}\n"
                 f"missing_direct_authority: {legal_analysis.get('missing_direct_authority')}\n"
+                f"source_panel_state: {source_panel_meta.get('source_panel_state')}\n"
+                f"direct_evidence_count: {(law_evidence_pack or {}).get('direct_evidence_count', 0)}\n"
+                f"related_evidence_count: {(law_evidence_pack or {}).get('related_evidence_count', 0)}\n"
+                f"law_lookup_error_type: {source_panel_meta.get('law_lookup_error_type')}\n"
+                f"citation_verification_status: {source_panel_meta.get('citation_verification_status')}\n"
+                f"manual_grounding_status: {manual_grounding_status}\n"
+                f"answer_certainty_level: {source_panel_meta.get('answer_certainty_level')}\n"
+                "Confidence gate: if answer_certainty_level is not direct, missing_direct_authority is true, direct_evidence_count is 0, or law_lookup_error_type is LAW_API_BAD_RESPONSE/SOURCE_UNAVAILABLE, avoid final conclusion verbs. Do not say 신고 의무는 없습니다, 반드시 신고해야 합니다, 허용됩니다, 가능합니다, or 원칙적으로 이전 E-7 의무는 더 이상 적용되지 않습니다 unless direct authority supports it. For E-7→F-2-99 side-job questions, say current F-2-99 status is primary, prior E-7 is related/comparative, and decisive facts are F-2-99 approval conditions plus side activity form/employer/client/industry/hours/compensation.\n"
                 "Required framing: use the issue-based template; practical legal posture first; identify current status/activity/issue; explain backend legal_analysis; source basis later; concrete official-confirmation questions fourth; no final administrative determination.\n"
                 "Official-confirmation questions:\n" + confirmation_lines
             )
@@ -2985,17 +3087,6 @@ async def ask(req: AskRequest) -> AskResponse:
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
     llm = _resolve_llm_config()
-
-    # Shared, non-secret grounding/law metadata reused across all response paths.
-    source_panel_meta = _derive_source_panel_metadata(
-        law_evidence_pack=law_evidence_pack,
-        citation_verification=citation_verification,
-        law_grounding_used=law_grounding_used,
-        law_grounding_attempted=law_grounding_attempted,
-        law_grounding_status=law_grounding_status,
-        law_grounding_warnings=law_grounding_warnings,
-        manual_grounding_status=manual_grounding_status,
-    )
 
     base_meta: Dict[str, Any] = dict(
         grounding_used=bool(grounding),
@@ -3079,8 +3170,8 @@ async def ask(req: AskRequest) -> AskResponse:
             cooldown_enabled=result.get("cooldown_enabled", _cooldown_enabled()),
         )
         if result["ok"]:
-            answer_text = result["answer"]
             response_meta = dict(base_meta)
+            answer_text = _confidence_gate_answer_text(result["answer"], response_meta)
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(
@@ -3139,6 +3230,7 @@ async def ask(req: AskRequest) -> AskResponse:
             except HTTPException as exc:
                 ollama_error_type = _classify_ollama_error(exc)
             else:
+                ollama_answer = _confidence_gate_answer_text(ollama_answer, base_meta)
                 ollama_meta = dict(attempt_meta)
                 ollama_meta.update({
                     "llm_provider": "ollama",
@@ -3172,6 +3264,7 @@ async def ask(req: AskRequest) -> AskResponse:
         answer = await _call_groq(final_prompt, model=req.model)
         groq_model = req.model or GROQ_MODEL
         response_meta = dict(base_meta)
+        answer = _confidence_gate_answer_text(answer, response_meta)
         response_meta["answer_first_sentence"] = (answer or "").strip().split(".", 1)[0].strip()
         response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer)
         return AskResponse(

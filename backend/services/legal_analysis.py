@@ -708,6 +708,18 @@ def build_legal_analysis(
     concepts = list(dict.fromkeys(concepts))
     missing_direct = direct_count == 0
     authority_summary = f"direct={direct_count}, related={related_count}, analogical={analogical_count}, background={background_count}; " + ("no direct scenario-specific authority found" if missing_direct else "direct authority found")
+    decisive_facts = [
+        "current_status/sub_status", "previous_status/approval_conditions", "target_status/route",
+        "activity category", "paid_or_credit_bearing", "duration/employer_or_school",
+    ]
+    if facts.get("current_status") == "F-2-99" or facts.get("target_status") == "F-2-99" or "post_status_change_residual_duty" in issues:
+        decisive_facts[1:1] = [
+            "F-2-99 approval conditions",
+            "side activity form (employment/freelance/business)",
+            "employer/client/industry/hours/compensation",
+        ]
+    decisive_facts = list(dict.fromkeys(decisive_facts))
+
     analysis = {
         "analysis_mode": mode,
         "main_issue": _main_issue(issues, facts),
@@ -730,9 +742,7 @@ def build_legal_analysis(
         "risk_posture": risk,
         "confidence": _CONFIDENCE_BY_MODE.get(mode, "limited"),
         "practical_posture": _practical_posture(issues, facts, mode, risk),
-        "decisive_facts": [
-            "current_status/sub_status", "previous_status/approval_conditions", "target_status/route", "activity category", "paid_or_credit_bearing", "duration/employer_or_school",
-        ],
+        "decisive_facts": decisive_facts,
         "official_confirmation_questions": _confirmation_questions(issues, facts, official_confirmation_questions or []),
         "direct_evidence_count": direct_count,
         "related_evidence_count": related_count,
