@@ -304,9 +304,20 @@ def official_confirmation_questions(
     text = (prompt or "").lower()
     is_study = any(h in text for h in _STUDY_HINTS)
 
-    # Golden H-1 study/activity-scope case (Part E).
+    # Study/activity-scope case. Keep H-1-specific work-history wording only for H-1;
+    # otherwise the deterministic fallback would leak unrelated H-1 context into
+    # G-1/F-2/E-7 study questions.
     if question_type == Q_ACTIVITY_ON_STATUS and is_study:
-        return list(_H1_STUDY_CONFIRMATION_QUESTIONS)
+        if (visa_code or "").upper().startswith("H-1"):
+            return list(_H1_STUDY_CONFIRMATION_QUESTIONS)
+        return [
+            "Is the course credit-bearing?",
+            "Is it degree-related or part of formal enrollment?",
+            "Is it audit/non-credit, language training, or a regular university course?",
+            "How many weeks / hours is it, and would study become the main purpose of stay?",
+            "Does the school require D-2 / D-4 or another status?",
+            "Would immigration treat this as activities outside the scope of status (체류자격외활동) or require a change of status?",
+        ]
 
     if question_type == Q_ACTIVITY_ON_STATUS:
         return [
@@ -548,26 +559,21 @@ def build_answer_directives(
     if mode in (SOURCE_LIMITED, SOURCE_UNAVAILABLE):
         parts.append(
             "Because direct sources are limited, start with the strongest"
-            " legally supportable practical posture — NOT with \"Paradiso cannot"
-            " verify...\", \"Whether you can...\", \"It depends...\", or \"Specific"
-            " manual guidance was not found...\". For an H-1 credit-bearing /"
-            " degree-related Korean university summer course, use this lead:"
-            " \"Treat a credit-bearing or degree-related university summer course"
-            " as a high-risk activity under H-1 until immigration confirms"
-            " otherwise. The central legal issue is whether immigration treats the"
-            " course as within H-1's permitted activity scope or as activities"
-            " outside the scope of status requiring separate permission or a change"
-            " of sojourn status.\" Then state the limitation second: Paradiso did"
-            " not find direct scenario-specific authority confirming H-1 summer-"
-            " semester enrollment, so the analysis is based on related/contextual"
-            " legal concepts and must be confirmed with 1345, HiKorea, or the"
-            " competent office. Do NOT use unsupported certainty wording (\"may be"
-            " permissible\", \"is allowed\", \"you can\", \"no need to\", \"does"
-            " not require\", \"guaranteed\", \"will be approved\", \"will be"
-            " denied\", \"automatically\"). For casual/non-credit activities say"
-            " they may be assessed differently, but official confirmation is"
-            " required. Do not claim final eligibility, permission, approval,"
-            " denial, illegality, or invent document lists."
+            " legally supportable practical posture from the backend-prepared"
+            " legal_analysis — NOT with \"Paradiso cannot verify...\","
+            " \"Whether you can...\", \"It depends...\", or \"Specific manual"
+            " guidance was not found...\". Keep the framing specific to the"
+            " extracted immigration_facts, legal_issue_types, proposed_activity_type,"
+            " main_issue, sub_issues, decisive_facts, and official-confirmation"
+            " questions. Do not reuse study/course wording unless the issue is"
+            " study_on_non_study_status or the activity is credit_bearing_study,"
+            " formal_enrollment, non_credit_audit, or language_training. Do NOT use"
+            " unsupported certainty wording (\"may be permissible\", \"is allowed\","
+            " \"you can\", \"no need to\", \"does not require\", \"guaranteed\","
+            " \"will be approved\", \"will be denied\", \"automatically\")."
+            " official confirmation is required before acting. Do not claim final"
+            " eligibility, permission, approval, denial, illegality, or invent"
+            " document lists."
         )
 
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")

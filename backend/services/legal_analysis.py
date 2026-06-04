@@ -228,7 +228,7 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
         previous_status = _norm_code(transition.group(1))
         target_status = _norm_code(transition.group(2))
         current_status = target_status
-    elif explicit_hint and codes and _asks_status_change_to_target(text):
+    elif explicit_hint and codes and len(codes) < 2 and _asks_status_change_to_target(text):
         target_candidates = [code for code in codes if code != explicit_hint]
         if target_candidates:
             previous_status = explicit_hint
@@ -562,8 +562,6 @@ def _practical_posture(issues: Sequence[str], facts: Dict[str, Any], mode: str, 
 
 
 def _confirmation_questions(issues: Sequence[str], facts: Dict[str, Any], existing: Sequence[str]) -> List[str]:
-    if existing:
-        return list(existing)
     questions = [
         f"What exact current status/sub-status and period of stay apply ({facts.get('current_status') or 'unknown'})?",
         "What are the activity start date, duration, hours, location, and compensation or enrollment terms?",
@@ -573,7 +571,7 @@ def _confirmation_questions(issues: Sequence[str], facts: Dict[str, Any], existi
     if "study_on_non_study_status" in issues or "status_purpose_alignment" in issues:
         questions.extend([
             "Is the course credit-bearing, degree-related, or part of formal enrollment?",
-            "Does the school require D-2/D-4 or another status independently of immigration's activity-scope assessment?",
+            "Does the school require D-2 / D-4 or another status independently of immigration's activity-scope assessment?",
         ])
     if "workplace_change_addition" in issues or "reporting_duty" in issues:
         questions.append("Is this a workplace change/addition, side activity, or reportable change under the current approval conditions?")
@@ -582,6 +580,9 @@ def _confirmation_questions(issues: Sequence[str], facts: Dict[str, Any], existi
     if "overstay_or_risk" in issues:
         questions.append("What was the exact expiry date and how many calendar days have passed?")
     questions.append("Does the competent office treat this as within status, reportable, permission-required, or status-change-required?")
+    for q in existing or []:
+        if isinstance(q, str) and q.strip():
+            questions.append(q.strip())
     return list(dict.fromkeys(questions))[:8]
 
 

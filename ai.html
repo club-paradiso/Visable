@@ -1939,6 +1939,11 @@ select:focus-visible {
             const analogicalCount = Number(safe.analogical_evidence_count || legalAnalysis.analogical_evidence_count || 0);
             const missingDirect = Boolean(safe.missing_direct_authority || legalAnalysis.missing_direct_authority);
             const hasEvidence = Boolean(safe.law_evidence_count) || (Array.isArray(safe.law_sources) && safe.law_sources.length > 0);
+            const hasLegalAnalysis = Boolean(safe.legal_analysis_exists || (legalAnalysis && Object.keys(legalAnalysis).length));
+            const isLegalAnalysisFallback = Boolean(safe.deterministic_fallback_answer_used && String(safe.fallback_answer_kind || '') === 'legal_analysis_preparation_note');
+            if (isLegalAnalysisFallback && hasLegalAnalysis && (mode === 'source_unavailable' || mode === '' || String(safe.source_state || '') === 'legal_analysis_preparation_note')) {
+                return { cls: 'state-needs-review', text: tt(lang, { ko: '구조화된 법률 분석 메모 사용', en: 'Structured legal analysis note available', zh: '已提供结构化法律分析说明', zhHant: '已提供結構化法律分析說明' }) };
+            }
             if (directCount > 0 || mode === 'direct_authority') return { cls: 'state-verified', text: tt(lang, { ko: '직접 공식 근거 확인', en: 'Direct official authority found', zh: '已找到直接官方依据', zhHant: '已找到直接官方依據' }) };
             if (relatedCount > 0 || mode === 'contextual_authority') return { cls: 'state-partial', text: tt(lang, { ko: '관련 법적 맥락 확인', en: 'Related legal context checked', zh: '已检查相关法律背景', zhHant: '已檢查相關法律背景' }) };
             if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
@@ -2210,6 +2215,10 @@ select:focus-visible {
                 fallback_answer: detail.fallback_answer || payload.fallback_answer || '',
                 copy_safe_answer: detail.copy_safe_answer || payload.copy_safe_answer || '',
                 deterministic_fallback_answer_used: Boolean(detail.deterministic_fallback_answer_used || payload.deterministic_fallback_answer_used),
+                fallback_answer_kind: detail.fallback_answer_kind || payload.fallback_answer_kind || '',
+                legal_analysis_exists: Boolean(detail.legal_analysis_exists || payload.legal_analysis_exists),
+                legal_analysis: detail.legal_analysis || payload.legal_analysis || null,
+                source_state: detail.source_state || payload.source_state || '',
                 attempted_models: detail.attempted_models || payload.attempted_models || [],
                 upstream_statuses: detail.upstream_statuses || payload.upstream_statuses || []
             };
