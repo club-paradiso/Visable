@@ -1,6 +1,6 @@
 """Deterministic legal-analysis guidance layer for Paradiso.
 
-The LLM may explain this object, but must not invent it.  This module builds a
+The LLM may explain this object, but must not invent it. This module builds a
 small, secret-free model from extracted immigration facts, issue taxonomy,
 planned official source families, manual/law evidence, and deterministic
 relevance scoring.
@@ -62,7 +62,6 @@ SOURCE_FAMILIES = (
     "intelligent_search",
 )
 
-# Includes sub-statuses such as G-1-5 and F-2-99; retains exact sub-status.
 _STATUS_RE = re.compile(r"(?<![A-Za-z0-9])([A-H])\s*-?\s*(\d{1,2})(?:\s*-?\s*(\d{1,3}))?(?![0-9])", re.IGNORECASE)
 _TRANSITION_RE = re.compile(
     r"([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)\s*(?:에서|부터|->|→|to|from)\s*([A-H]\s*-?\s*\d{1,2}(?:\s*-?\s*\d{1,3})?)",
@@ -71,7 +70,6 @@ _TRANSITION_RE = re.compile(
 _PARENT_STUDY = {"D-2", "D-4"}
 _PARENT_WORK = {"E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-9", "C-4", "H-2"}
 _RESTRICTED_WORK = {"C-3", "B-1", "B-2", "D-10", "H-1", "G-1"}
-_SHORT_TERM = {"B-1", "B-2", "C-1", "C-3", "C-4"}
 
 
 def _norm_code(raw: str) -> str:
@@ -113,9 +111,31 @@ def _has_any(text: str, *needles: str) -> bool:
     return any(n.lower() in low for n in needles)
 
 
+def _has_formal_enrollment_context(text: str) -> bool:
+    """Detect school enrollment without treating every Korean 등록 as study.
+
+    Bare 등록 also appears in 외국인등록 and 사업자등록. Those must route to
+    registration/reporting or business issues, not study-on-non-study-status.
+    """
+    if _has_any(text, "입학", "정규과정", "enroll", "enrollment", "matriculat", "university program"):
+        return True
+    if _has_any(text, "대학교 등록", "대학 등록", "학교 등록", "수강 등록", "학기 등록", "학생 등록"):
+        return True
+    if "등록" in (text or "") and _has_any(text, "대학교", "대학", "학교", "수강", "학기", "정규"):
+        return True
+    return False
+
+
+def _asks_status_change_to_target(text: str) -> bool:
+    return _has_any(
+        text,
+        "change status", "change to", "switch to", "status to", "convert to",
+        "변경", "전환", "바꾸", "자격변경", "체류자격 변경", "으로 변경", "로 변경",
+    )
+
+
 def detect_question_language(text: str) -> str:
     if re.search(r"[\u4e00-\u9fff]", text or "") and not re.search(r"[가-힣]", text or ""):
-        # Script-only heuristic; simplified Chinese vs Traditional is best-effort.
         return "zhHant" if re.search(r"[學國臺簽證體]", text or "") else "zh"
     if re.search(r"[가-힣]", text or ""):
         return "ko"
@@ -135,7 +155,7 @@ def classify_activity_types(question: str) -> List[str]:
 
     if _has_any(text, "학점", "credit-bearing", "credits", "credit course", "계절학기", "summer semester", "summer course"):
         add("credit_bearing_study")
-    if _has_any(text, "입학", "등록", "정규과정", "enroll", "enrollment", "matriculat", "university program"):
+    if _has_formal_enrollment_context(text):
         add("formal_enrollment")
     if _has_any(text, "청강", "audit", "non-credit", "noncredit", "비학점"):
         add("non_credit_audit")
@@ -208,12 +228,19 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
         previous_status = _norm_code(transition.group(1))
         target_status = _norm_code(transition.group(2))
         current_status = target_status
+    elif explicit_hint and codes and _asks_status_change_to_target(text):
+        target_candidates = [code for code in codes if code != explicit_hint]
+        if target_candidates:
+            previous_status = explicit_hint
+            target_status = target_candidates[-1]
+            # The UI often supplies the selected/current visa separately. Preserve
+            # that current status and record the in-text code as the target route.
+            current_status = explicit_hint
     elif len(codes) >= 2 and _has_any(text, "from", "에서", "->", "→", "to", "변경", "전환"):
         previous_status = codes[0]
         target_status = codes[-1] if _has_any(text, "변경", "전환", "change", "switch") else codes[1]
         current_status = target_status
 
-    # If wording asks about old-status duties/conditions, retain current as target but flag issue later.
     acts = classify_activity_types(text)
     paid = "true" if any(a in acts for a in ("paid_work", "paid_internship", "freelance_work", "side_job", "additional_employment", "business_activity")) else _tri(text, ("paid", "유급", "급여", "보수"), ("unpaid", "무급"))
     facts = {
@@ -232,7 +259,7 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
             "credit_bearing": "true" if "credit_bearing_study" in acts else _tri(text, ("학점", "credit-bearing", "credits"), ("non-credit", "noncredit", "비학점", "청강")),
             "degree_related": _tri(text, ("degree", "학위", "정규과정", "전공"), ("hobby", "취미", "문화", "non-credit", "청강")),
             "paid": paid,
-            "formal_enrollment": "true" if "formal_enrollment" in acts else _tri(text, ("enroll", "입학", "정규과정", "등록"), ("audit", "청강", "non-credit")),
+            "formal_enrollment": "true" if "formal_enrollment" in acts else ("false" if _has_any(text, "외국인등록", "사업자등록", "거소신고") else _tri(text, ("enroll", "입학", "정규과정", "대학교 등록", "대학 등록", "학교 등록", "수강 등록"), ("audit", "청강", "non-credit"))),
             "institution_registered": _tri(text, ("registered institution", "인가", "등록된 기관")),
             "duration_known": "true" if re.search(r"\b\d+\s*(?:day|days|week|weeks|month|months|hour|hours)\b|\d+\s*(?:일|주|개월|시간)", text, re.IGNORECASE) else "false",
             "employer_or_client_known": "true" if _has_any(text, "employer", "client", "회사", "고용주", "근무처") else "false",
@@ -419,13 +446,6 @@ def _has_activity_scope(text: str) -> bool:
 
 
 def score_evidence_relevance(evidence: Dict[str, Any], *, question: str, visa_code: Optional[str] = None, question_type: str = "", immigration_facts: Optional[Dict[str, Any]] = None, legal_issue_types: Optional[Sequence[str]] = None) -> str:
-    """Classify evidence as direct/related/analogical/background/noise.
-
-    Direct evidence must match current status (including retained sub-status when
-    present) and a legal/activity concept. Previous-status evidence in a status
-    transition stays related/comparative unless the issue is residual duties or
-    approval conditions.
-    """
     if not isinstance(evidence, dict):
         return RELEVANCE_NOT_RELEVANT
     text = _haystack(evidence)
@@ -473,13 +493,15 @@ def _authority_stub(item: Dict[str, Any], relevance: str) -> Dict[str, Any]:
 
 def _main_issue(issues: Sequence[str], facts: Dict[str, Any]) -> str:
     code = facts.get("current_status") or "the current status"
+    target = facts.get("target_status")
     acts = facts.get("proposed_activities") or []
     if "post_status_change_residual_duty" in issues:
         return f"Whether duties tied to {facts.get('previous_status')} remain relevant after the current {code} status, especially reporting or approval-condition duties."
     if "documents_needed" in issues:
         return "Which required documents are source-confirmed by the official manual, without turning law-only authority into a checklist."
     if "status_change" in issues:
-        return "Whether the requested in-country change of sojourn status is procedurally and legally available on the user's facts."
+        route = f" from {code} to {target}" if target and target != code else ""
+        return f"Whether the requested in-country change of sojourn status{route} is procedurally and legally available on the user's facts."
     if "overstay_or_risk" in issues:
         return "How a possible overstay affects status risk and what immediate official steps should be confirmed without inventing penalties."
     if "nationality_or_refugee_context" in issues:
@@ -503,6 +525,8 @@ def _sub_issues(issues: Sequence[str], facts: Dict[str, Any]) -> List[str]:
         out.append("case-specific approval condition as a potentially decisive fact")
     if facts.get("previous_status"):
         out.append("current status authority versus previous-status comparative authority")
+    if facts.get("target_status"):
+        out.append("target-status route and source family planning")
     return out or ["source-confirmed facts", "case-specific variables", "remaining official uncertainty"]
 
 
@@ -516,11 +540,14 @@ def _risk_from_issues(issues: Sequence[str], risk: str) -> str:
 
 def _practical_posture(issues: Sequence[str], facts: Dict[str, Any], mode: str, risk: str) -> str:
     code = facts.get("current_status") or "the current status"
+    target = facts.get("target_status")
     acts = facts.get("proposed_activities") or []
     if "overstay_or_risk" in issues:
         return "Treat this as time-sensitive status-risk triage; confirm the overstay date and available correction/departure options before assuming any penalty or outcome."
     if "post_status_change_residual_duty" in issues:
         return f"Analyze the current {code} status first, but preserve previous-status approval/reporting conditions as related facts that may still matter."
+    if "status_change" in issues and target:
+        return f"Analyze the requested change from {code} to {target} as a target-status route, not only as a question about the current status."
     if "study_on_non_study_status" in issues:
         return f"Treat the study activity on {code} as a status-scope and purpose-alignment issue, with higher risk for credit-bearing or formal enrollment."
     if "work_on_non_work_status" in issues:
@@ -541,6 +568,8 @@ def _confirmation_questions(issues: Sequence[str], facts: Dict[str, Any], existi
         f"What exact current status/sub-status and period of stay apply ({facts.get('current_status') or 'unknown'})?",
         "What are the activity start date, duration, hours, location, and compensation or enrollment terms?",
     ]
+    if facts.get("target_status"):
+        questions.append(f"What exact target status/procedure is being requested ({facts.get('target_status')})?")
     if "study_on_non_study_status" in issues or "status_purpose_alignment" in issues:
         questions.extend([
             "Is the course credit-bearing, degree-related, or part of formal enrollment?",
@@ -676,7 +705,7 @@ def build_legal_analysis(
         "confidence": _CONFIDENCE_BY_MODE.get(mode, "limited"),
         "practical_posture": _practical_posture(issues, facts, mode, risk),
         "decisive_facts": [
-            "current_status/sub_status", "previous_status/approval_conditions", "activity category", "paid_or_credit_bearing", "duration/employer_or_school",
+            "current_status/sub_status", "previous_status/approval_conditions", "target_status/route", "activity category", "paid_or_credit_bearing", "duration/employer_or_school",
         ],
         "official_confirmation_questions": _confirmation_questions(issues, facts, official_confirmation_questions or []),
         "direct_evidence_count": direct_count,
