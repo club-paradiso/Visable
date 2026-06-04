@@ -258,6 +258,11 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(calls, [CANDS[0]], "must stop after first non-retryable error")
         self.assertFalse(detail["all_candidates_failed"])
         self.assertFalse(detail["deterministic_fallback_answer_used"])
+        self.assertEqual(detail["attempted_models"], [CANDS[0]])
+        self.assertNotIn("fallback_answer", detail)
+        self.assertNotIn("copy_safe_answer", detail)
+        self.assertNotIn("Invalid API key", resp.text)
+        self.assertNotIn("or-sentinel-key", resp.text)
 
     def test_bad_request_returns_safe_503_without_retry(self):
         pb = _pb()
@@ -268,6 +273,10 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(detail["provider_error_type"], "invalid_request")
         self.assertEqual(detail["error"], "openrouter_provider_error")
         self.assertFalse(detail["deterministic_fallback_answer_used"])
+        self.assertEqual(detail["attempted_models"], [CANDS[0]])
+        self.assertNotIn("fallback_answer", detail)
+        self.assertNotIn("copy_safe_answer", detail)
+        self.assertNotIn("Bad request", resp.text)
 
     def test_grounding_metadata_survives_model_retries(self):
         pb = _pb()

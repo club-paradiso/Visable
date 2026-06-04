@@ -11,7 +11,7 @@ The immediate production problem was not only answer quality. The backend had to
 Use this Railway variable:
 
 ```text
-OPENROUTER_MODEL=google/gemma-4-31b-it:free
+OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
 ```
 
 Also leave Groq unset unless intentionally testing it:
@@ -34,7 +34,7 @@ Expected UI-level behavior:
 
 - Provider still shows OpenRouter.
 - Model should no longer show `openrouter/auto`.
-- Model should show or resolve to `google/gemma-4-31b-it:free`.
+- Model should show or resolve to `qwen/qwen3-next-80b-a3b-instruct:free`; Gemma remains a fallback candidate.
 - The answer may still be ungrounded until law/manual grounding is expanded.
 
 ## Known limitation

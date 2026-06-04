@@ -161,7 +161,7 @@ available.
 
 * Provider keys are configured in Railway. This PR added/printed/committed no
   secrets and verified only through safe metadata.
-* `OPENROUTER_MODEL` resolves to `google/gemma-4-31b-it:free` by default
+* `OPENROUTER_MODEL` resolves to `qwen/qwen3-next-80b-a3b-instruct:free` by default
   (`backend/paradiso_backend.py`); `/health` exposes `providers` booleans, the
   public `model` id, `llm.configured`, `llm.groq_fallback_allowed`, and
   `law_grounding_mode` — never key values.
