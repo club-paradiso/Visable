@@ -344,6 +344,10 @@ class AskResponse(BaseModel):
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
     legal_analysis: Optional[Dict[str, Any]] = None
+    immigration_facts: Dict[str, Any] = Field(default_factory=dict)
+    legal_issue_types: List[str] = Field(default_factory=list)
+    proposed_activity_type: List[str] = Field(default_factory=list)
+    source_plan: Dict[str, Any] = Field(default_factory=dict)
     analysis_mode: str = ""
     main_issue: str = ""
     source_types_attempted: List[str] = Field(default_factory=list)
@@ -2639,9 +2643,12 @@ async def ask(req: AskRequest) -> AskResponse:
                 f"confidence: {legal_analysis.get('confidence')}\n"
                 f"practical_posture: {legal_analysis.get('practical_posture')}\n"
                 f"main_issue: {legal_analysis.get('main_issue')}\n"
+                f"legal_issue_types: {legal_analysis.get('legal_issue_types')}\n"
+                f"immigration_facts: {json.dumps(legal_analysis.get('immigration_facts') or {}, ensure_ascii=False)}\n"
+                f"answer_template: {legal_analysis.get('answer_template')}\n"
                 f"authority_summary: {legal_analysis.get('authority_summary')}\n"
                 f"missing_direct_authority: {legal_analysis.get('missing_direct_authority')}\n"
-                "Required framing: practical legal posture first; source limitation second; legal issue analysis third; concrete official-confirmation questions fourth.\n"
+                "Required framing: use the issue-based template; practical legal posture first; identify current status/activity/issue; explain backend legal_analysis; source basis later; concrete official-confirmation questions fourth; no final administrative determination.\n"
                 "Official-confirmation questions:\n" + confirmation_lines
             )
 
@@ -2684,6 +2691,10 @@ async def ask(req: AskRequest) -> AskResponse:
         law_sources=(law_evidence_pack or {}).get("law_sources", []),
         law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
         legal_analysis=(law_evidence_pack or {}).get("legal_analysis"),
+        immigration_facts=(law_evidence_pack or {}).get("immigration_facts", {}),
+        legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types", []),
+        proposed_activity_type=(law_evidence_pack or {}).get("proposed_activity_type", []),
+        source_plan=(law_evidence_pack or {}).get("source_plan", {}),
         analysis_mode=(law_evidence_pack or {}).get("analysis_mode", ""),
         main_issue=(law_evidence_pack or {}).get("main_issue", ""),
         source_types_attempted=(law_evidence_pack or {}).get("source_types_attempted", []),
@@ -2922,6 +2933,10 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "task_type_detected": task_type_detected,
         "question_type": (pack or {}).get("question_type"),
         "risk_level": (pack or {}).get("risk_level"),
+        "immigration_facts": (pack or {}).get("immigration_facts", {}),
+        "legal_issue_types": (pack or {}).get("legal_issue_types", []),
+        "proposed_activity_type": (pack or {}).get("proposed_activity_type", []),
+        "source_plan": (pack or {}).get("source_plan", {}),
         "planned_law_queries": (pack or {}).get("planned_law_queries", []),
         "law_api_attempted": (pack or {}).get("law_api_attempted", False),
         "law_queries_attempted": (pack or {}).get("law_queries_attempted", []),
@@ -2941,6 +2956,8 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "main_issue": (pack or {}).get("main_issue"),
         "risk_posture": ((pack or {}).get("legal_analysis") or {}).get("risk_posture"),
         "confidence": ((pack or {}).get("legal_analysis") or {}).get("confidence"),
+        "decisive_facts": ((pack or {}).get("legal_analysis") or {}).get("decisive_facts", []),
+        "official_confirmation_questions": ((pack or {}).get("legal_analysis") or {}).get("official_confirmation_questions", []),
         "source_types_attempted": (pack or {}).get("source_types_attempted", []),
         "source_types_returned": (pack or {}).get("source_types_returned", []),
         "direct_evidence_count": (pack or {}).get("direct_evidence_count", 0),
@@ -2951,6 +2968,7 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "source_state": (pack or {}).get("analysis_mode") or (pack or {}).get("law_grounding_status"),
         "answer_first_sentence": "",
         "first_sentence_quality_warning": "",
+        "raw_code_default_ui_leak": False,
         # Source URLs are sanitized (OC removed) at the tool boundary before
         # they ever reach a caller; the debug view never reconstructs the OC.
         "source_urls_sanitized": True,
