@@ -99,3 +99,46 @@ def verify_citations(text: str, law_client: Optional[Any] = None) -> Dict[str, A
     else:
         status = "ok"
     return {"status": status, "citations": normalized, "warnings": dedup_warnings}
+
+def build_law_evidence_citation_verification(
+    law_sources: List[Dict[str, Any]],
+    *,
+    query: str = "",
+    law_error_type: str = "",
+    law_api_attempted: bool = False,
+) -> Dict[str, Any]:
+    """Build user-facing citation verification from normalized law evidence.
+
+    This does not claim article-level legal verification. It wires normalized
+    Open Law API evidence into the citation metadata so the UI can distinguish
+    verified law evidence, evidence-present-but-not-article-verified, and
+    unavailable API states without showing NOT_WIRED to users.
+    """
+    citations: List[Dict[str, Any]] = []
+    for source in law_sources or []:
+        if not isinstance(source, dict):
+            continue
+        law_name = source.get("law_name") or source.get("term") or ""
+        if not law_name:
+            continue
+        article = source.get("article_or_clause") or source.get("article") or source.get("reference") or ""
+        citations.append({
+            "source_type": source.get("source_type") or "law",
+            "law_name": law_name,
+            "article_or_clause": article,
+            "query": source.get("query") or query or "",
+            "retrieval_status": source.get("retrieval_status") or "ok",
+            "source_url": source.get("source_url") or "",
+            "verification_status": "verified_law_evidence" if source.get("retrieval_status") == "ok" else "law_evidence_present_unverified",
+        })
+    if citations:
+        status = "verified_law_evidence" if any(c["verification_status"] == "verified_law_evidence" for c in citations) else "law_evidence_present_unverified"
+        return {"status": status, "citations": citations, "warnings": []}
+    if law_error_type == "law_api_not_configured":
+        return {"status": "law_api_unavailable", "citations": [], "warnings": ["SOURCE_UNAVAILABLE", law_error_type.upper()]}
+    if law_api_attempted or law_error_type:
+        warnings = ["SOURCE_UNAVAILABLE"]
+        if law_error_type:
+            warnings.append(law_error_type.upper())
+        return {"status": "law_evidence_unavailable", "citations": [], "warnings": list(dict.fromkeys(warnings))}
+    return {"status": "citation_verification_not_applicable", "citations": [], "warnings": []}

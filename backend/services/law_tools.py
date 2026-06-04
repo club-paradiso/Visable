@@ -31,6 +31,7 @@ from __future__ import annotations
 
 import json
 import re
+import xml.etree.ElementTree as ET
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
@@ -38,6 +39,7 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .grounding_config import GroundingConfig, load_grounding_config
 from .law_grounding import should_attempt_law_grounding
+from .citation_verifier import build_law_evidence_citation_verification
 from .answer_quality import (
     classify_answer_quality,
     classify_question_type,
@@ -55,6 +57,7 @@ LAW_API_TIMEOUT = "law_api_timeout"
 LAW_API_BAD_RESPONSE = "law_api_bad_response"
 LAW_API_NO_RESULTS = "law_api_no_results"
 LAW_API_PARSE_ERROR = "law_api_parse_error"
+LAW_API_OFFICIAL_ERROR = "law_api_official_error"
 
 # Default DRF endpoints for the National Law Information Open API. These are
 # public, fixed endpoints (confirmed by scripts/probe_korean_law_open_api_2026_05.py);
@@ -270,15 +273,111 @@ def _walk_candidates(payload: Any, source_type: str, limit: int) -> List[Dict[st
     return found[:limit]
 
 
-def _parse_payload(text: str) -> Tuple[Optional[Any], Optional[str]]:
-    """Parse a response body as JSON. Returns ``(payload, error_type)``."""
-    stripped = (text or "").strip()
+def _shape_hint(text: str) -> str:
+    """Small, safe response-shape hint for debug output; never includes body."""
+    stripped = (text or "").lstrip("\ufeff\ufeff").strip()
     if not stripped:
-        return None, LAW_API_BAD_RESPONSE
-    try:
-        return json.loads(stripped), None
-    except Exception:
-        return None, LAW_API_PARSE_ERROR
+        return "empty"
+    lower = stripped[:200].lower()
+    if lower.startswith("<!doctype html") or lower.startswith("<html") or "<body" in lower:
+        return "html"
+    if lower.startswith("<?xml") or lower.startswith("<"):
+        return "xml"
+    if stripped.startswith("["):
+        return "json_list"
+    if stripped.startswith("{"):
+        return "json_object"
+    return "text"
+
+
+def _xml_to_obj(elem: ET.Element) -> Any:
+    children = list(elem)
+    text = (elem.text or "").strip()
+    if not children:
+        return text
+    out: Dict[str, Any] = {}
+    for child in children:
+        key = child.tag.split("}", 1)[-1]
+        val = _xml_to_obj(child)
+        if key in out:
+            if not isinstance(out[key], list):
+                out[key] = [out[key]]
+            out[key].append(val)
+        else:
+            out[key] = val
+    if text:
+        out["_text"] = text
+    return out
+
+
+def _contains_official_error(payload: Any) -> bool:
+    """Detect official API error objects without exposing message/body."""
+    error_keys = {"error", "errorcode", "errcode", "resultcode", "code", "message", "msg"}
+    success_values = {"00", "0", "success", "ok", "정상"}
+    found_error_word = False
+
+    def walk(node: Any) -> bool:
+        nonlocal found_error_word
+        if isinstance(node, dict):
+            lowered = {str(k).lower(): v for k, v in node.items()}
+            for key, value in lowered.items():
+                sval = str(value).strip().lower()
+                if key in {"error", "errorcode", "errcode"} and sval:
+                    return True
+                if key in {"resultcode", "code"} and sval and sval not in success_values:
+                    return True
+                if key in {"message", "msg"} and sval and any(w in sval for w in ("error", "오류", "not", "invalid", "fail")):
+                    found_error_word = True
+            return any(walk(v) for v in node.values())
+        if isinstance(node, list):
+            return any(walk(v) for v in node)
+        return False
+
+    return walk(payload) or found_error_word
+
+
+def _parse_payload(text: str) -> Tuple[Optional[Any], Optional[str], str, str]:
+    """Parse response as JSON or XML. Returns (payload, error_type, parser_status, shape_hint)."""
+    stripped = (text or "").strip()
+    shape = _shape_hint(stripped)
+    if shape == "empty":
+        return None, LAW_API_NO_RESULTS, "empty", shape
+    if shape == "html":
+        return None, LAW_API_BAD_RESPONSE, "unsupported_html", shape
+    if shape in {"json_object", "json_list"}:
+        try:
+            payload = json.loads(stripped)
+        except Exception:
+            return None, LAW_API_PARSE_ERROR, "json_parse_error", shape
+        if _contains_official_error(payload):
+            return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
+        return payload, None, "parsed_json", shape
+    if shape == "xml":
+        try:
+            root = ET.fromstring(stripped)
+            payload = {root.tag.split("}", 1)[-1]: _xml_to_obj(root)}
+        except Exception:
+            return None, LAW_API_PARSE_ERROR, "xml_parse_error", shape
+        if _contains_official_error(payload):
+            return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
+        return payload, None, "parsed_xml", shape
+    return None, LAW_API_BAD_RESPONSE, "unsupported_text", shape
+
+
+def parse_law_search_response(text: str, *, source_type: str = "law", limit: int = _DEFAULT_DISPLAY) -> Dict[str, Any]:
+    payload, error, parser_status, shape = _parse_payload(text)
+    results = [] if error else _walk_candidates(payload, source_type, limit)
+    if not error and not results:
+        error = LAW_API_NO_RESULTS
+    return {"payload": payload if error is None else None, "results": results, "error_type": error or "", "parser_status": parser_status, "response_shape_hint": shape}
+
+
+def parse_law_detail_response(text: str, *, limit: int = 1) -> Dict[str, Any]:
+    return parse_law_search_response(text, source_type="law", limit=limit)
+
+
+def parse_admin_rule_response(text: str, *, limit: int = _DEFAULT_DISPLAY) -> Dict[str, Any]:
+    return parse_law_search_response(text, source_type="admin_rule", limit=limit)
 
 
 # ---------------------------------------------------------------------------
@@ -296,7 +395,8 @@ def _build_request_url(config: GroundingConfig, path: str, params: Dict[str, str
 
 
 def _tool_error(tool: str, *, query: str, target: str, error_type: str,
-                source_url: str = "", raw_status: int = 0) -> Dict[str, Any]:
+                source_url: str = "", raw_status: int = 0, parser_status: str = "",
+                response_shape_hint: str = "", failure_reason: str = "") -> Dict[str, Any]:
     return {
         "tool": tool,
         "status": "error",
@@ -305,6 +405,10 @@ def _tool_error(tool: str, *, query: str, target: str, error_type: str,
         "target": target,
         "source_url": source_url,
         "raw_status": raw_status,
+        "parser_status": parser_status,
+        "response_shape_hint": response_shape_hint,
+        "failure_reason": failure_reason,
+        "attempted_targets": [target] if target else [],
         "results": [],
         "result_count": 0,
         "retrieved_at": _now_iso(),
@@ -326,7 +430,7 @@ def _execute(
 ) -> Dict[str, Any]:
     """Shared request → transport → normalize pipeline for every tool."""
     if not config.law_api_configured:
-        return _tool_error(tool, query=query, target=target, error_type=LAW_API_NOT_CONFIGURED)
+        return _tool_error(tool, query=query, target=target, error_type=LAW_API_NOT_CONFIGURED, failure_reason="not_configured")
 
     url = _build_request_url(config, path, params)
     sanitized = _sanitize_url(url)
@@ -335,7 +439,7 @@ def _execute(
         response = send(url, config.timeout_seconds)
     except Exception:  # pragma: no cover - transport must not raise, but guard
         return _tool_error(tool, query=query, target=target,
-                           error_type=LAW_API_BAD_RESPONSE, source_url=sanitized)
+                           error_type=LAW_API_BAD_RESPONSE, source_url=sanitized, failure_reason="transport_exception")
 
     if not response.ok:
         mapping = {
@@ -345,21 +449,30 @@ def _execute(
         }
         error_type = mapping.get(response.error_type, LAW_API_BAD_RESPONSE)
         return _tool_error(tool, query=query, target=target, error_type=error_type,
-                           source_url=sanitized, raw_status=response.status_code)
+                           source_url=sanitized, raw_status=response.status_code, failure_reason=response.error_type or "transport_error")
 
     if response.status_code >= 400:
         return _tool_error(tool, query=query, target=target, error_type=LAW_API_HTTP_ERROR,
-                           source_url=sanitized, raw_status=response.status_code)
+                           source_url=sanitized, raw_status=response.status_code, failure_reason="http_status")
 
-    payload, parse_error = _parse_payload(response.text)
-    if parse_error is not None:
-        return _tool_error(tool, query=query, target=target, error_type=parse_error,
-                           source_url=sanitized, raw_status=response.status_code)
+    parsed = parse_admin_rule_response(response.text, limit=limit) if source_type == "admin_rule" else parse_law_search_response(response.text, source_type=source_type, limit=limit)
+    parse_error = parsed.get("error_type")
+    if parse_error:
+        return _tool_error(
+            tool, query=query, target=target, error_type=parse_error,
+            source_url=sanitized, raw_status=response.status_code,
+            parser_status=parsed.get("parser_status", ""),
+            response_shape_hint=parsed.get("response_shape_hint", ""),
+            failure_reason="official_api_error" if parse_error == LAW_API_OFFICIAL_ERROR else parsed.get("parser_status", ""),
+        )
 
-    results = _walk_candidates(payload, source_type, limit)
-    if not results:
-        return _tool_error(tool, query=query, target=target, error_type=LAW_API_NO_RESULTS,
-                           source_url=sanitized, raw_status=response.status_code)
+    payload = parsed.get("payload")
+    results = parsed.get("results") or []
+
+    for item in results:
+        if isinstance(item, dict) and sanitized:
+            item.setdefault("source_url", sanitized)
+            item.setdefault("query", query)
 
     ok_result: Dict[str, Any] = {
         "tool": tool,
@@ -369,6 +482,10 @@ def _execute(
         "target": target,
         "source_url": sanitized,
         "raw_status": response.status_code,
+        "parser_status": parsed.get("parser_status", ""),
+        "response_shape_hint": parsed.get("response_shape_hint", ""),
+        "failure_reason": "",
+        "attempted_targets": [target] if target else [],
         "results": results,
         "result_count": len(results),
         "retrieved_at": _now_iso(),
@@ -789,14 +906,15 @@ _CATEGORY_QUERIES: Dict[str, List[str]] = {
         "출입국관리법 체류자격 변경허가 체류자격 변경",
     ],
     "student_activity": [
-        "출입국관리법 시행령 유학 어학연수 체류자격외활동 활동범위",
-        "유학 시간제취업 인턴십 활동범위 체류자격외활동",
         "체류자격 변경 유학 D-2 D-4",
+        "유학 체류자격 활동범위",
+        "출입국관리법 체류자격 변경허가",
     ],
     "working_holiday": [
-        "출입국관리법 시행령 관광취업 H-1 체류자격 활동범위",
-        "관광취업 유학 활동범위 체류자격외활동",
-        "H-1 관광취업 체류자격외활동 체류자격 변경",
+        "출입국관리법 시행령 별표 체류자격 관광취업",
+        "관광취업 H-1 활동범위",
+        "체류자격외활동 허가",
+        "출입국관리법 체류자격외활동허가",
     ],
     "employment": [
         "취업활동 근무처 변경 근무처 추가 신고",
@@ -1202,6 +1320,7 @@ def build_law_evidence_pack(
                 law_sources.append(normalized)
         law_queries_attempted = [law_context.get("law_search_query", "")] if law_context.get("law_search_query") else []
         law_grounding_warnings = list(law_context.get("grounding_warnings") or [])
+        law_grounding_error = law_context.get("error_type", "") or law_context.get("law_grounding_error", "") or ""
     else:
         should_retrieve = retrieve if retrieve is not None else (
             law_intent and cfg.mode in {"audit", "enabled"}
@@ -1297,8 +1416,18 @@ def build_law_evidence_pack(
         "official_confirmation_questions": list(quality.get("official_confirmation_questions") or []),
         "official_confirmation_questions_localized": localized_confirm,
         "law_evidence_count": len(law_sources),
+        "parser_status": law_context.get("parser_status", "") if law_context else "",
+        "response_shape_hint": law_context.get("response_shape_hint", "") if law_context else "",
+        "sanitized_source_url": law_context.get("source_url", "") if law_context else (law_sources[0].get("source_url", "") if law_sources else ""),
+        "attempted_targets": ["law"] if (law_api_attempted or law_sources) else [],
         "intent_reasons": list(intent.get("reasons") or []),
     }
+    pack["citation_verification"] = build_law_evidence_citation_verification(
+        law_sources,
+        query=(law_queries_attempted[0] if law_queries_attempted else ""),
+        law_error_type=law_grounding_error,
+        law_api_attempted=law_api_attempted,
+    )
     pack["evidence_summary"] = build_evidence_summary(pack)
     return pack
 

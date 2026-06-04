@@ -461,7 +461,7 @@ class FrontendSourceDisplayTests(unittest.TestCase):
         cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
 
     def test_friendly_unavailable_text_present(self):
-        self.assertIn("Supporting legal source could not be retrieved", self.ai)
+        self.assertIn("Legal source lookup returned an unsupported response format", self.ai)
 
     def test_related_status_row_is_distinct_from_manual(self):
         self.assertIn("related-status", self.ai)

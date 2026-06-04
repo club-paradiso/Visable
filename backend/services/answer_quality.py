@@ -537,15 +537,24 @@ def build_answer_directives(
     # and supply the canonical safer phrasings (Part E / Part N).
     if mode in (SOURCE_LIMITED, SOURCE_UNAVAILABLE):
         parts.append(
-            "Because direct sources are limited, do NOT use unsupported certainty"
-            " wording (\"may be permissible\", \"is allowed\", \"you can\", \"no need"
-            " to\", \"does not require\", \"guaranteed\", \"will be approved\","
-            " \"will be denied\", \"automatically\", \"always\", \"never\"). Prefer:"
-            " \"Paradiso cannot confirm from currently verified sources that ...\""
-            " and \"may be assessed differently, but official confirmation is"
-            " required\". Tell the user to confirm with 1345, HiKorea, or the"
-            " competent immigration office. Do not claim final eligibility,"
-            " permission, approval, denial, or illegality."
+            "Because direct sources are limited, start with a practical safety"
+            " conclusion, not a vague \"whether you can...\" opening. For an"
+            " H-1 credit-bearing / degree-related Korean university summer course,"
+            " use this lead: \"Paradiso cannot verify that an H-1 holder may take"
+            " a credit-bearing or degree-related university summer course in Korea."
+            " Treat this as requiring official confirmation before enrollment or"
+            " payment.\" Then explain: \"The key issue is whether immigration"
+            " treats the course as within H-1's permitted activity scope or as"
+            " activities outside the scope of status.\" Do NOT use unsupported"
+            " certainty wording (\"may be permissible\", \"is allowed\", \"you"
+            " can\", \"no need to\", \"does not require\", \"guaranteed\","
+            " \"will be approved\", \"will be denied\", \"automatically\")."
+            " Avoid standalone \"may be permissible\"; for casual/non-credit"
+            " activities say \"may be assessed differently, but official"
+            " confirmation is required\". Tell the user not to enroll or pay until"
+            " confirmed and to ask 1345, HiKorea, or the competent immigration"
+            " office exact questions. Do not claim final eligibility, permission,"
+            " approval, denial, illegality, or invent document lists."
         )
 
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")

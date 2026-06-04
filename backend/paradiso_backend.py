@@ -827,9 +827,9 @@ def _localized_fallback_answer(
         return "\n".join([
             "AI 모델이 일시적으로 응답하지 않지만, Paradiso가 제한적인 준비 메모를 표시할 수 있습니다.",
             "",
-            f"현재 확인된 출처만으로는 {status} 소지자가 해당 대학 계절학기를 수강할 수 있는지 확정할 수 없습니다.",
+            f"Paradiso는 {status} 소지자가 한국 대학의 학점 인정 또는 학위 관련 계절학기를 수강할 수 있는지 확인된 출처로 검증할 수 없습니다. 수강 신청이나 등록금 납부 전 공식 확인이 필요하다고 보세요.",
             "",
-            "수강 신청이나 등록금 납부 전에 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
+            "핵심은 출입국기관이 그 수업을 H-1의 허용 활동범위 안으로 보는지, 아니면 체류자격외활동으로 보는지입니다. 1345, HiKorea 또는 관할 출입국·외국인청에 다음을 확인하세요:",
             *[f"* {q}" for q in qs],
             "",
             "이 내용은 최종 결정이 아닙니다. 개별 사안의 답변은 공식 기관에 확인하세요.",
@@ -854,9 +854,9 @@ def _localized_fallback_answer(
     return "\n".join([
         "The AI model is temporarily unavailable, but Paradiso can still show a limited preparation note.",
         "",
-        f"Paradiso cannot confirm from currently verified sources that a {status} holder may take this university summer course.",
+        f"Paradiso cannot verify that a {status} holder may take a credit-bearing or degree-related university summer course in Korea. Treat this as requiring official confirmation before enrollment or payment.",
         "",
-        "Before enrolling or paying tuition, ask 1345, HiKorea, or the competent immigration office:",
+        "The key issue is whether immigration treats the course as within H-1's permitted activity scope or as activities outside the scope of status. Ask 1345, HiKorea, or the competent immigration office:",
         *[f"* {q}" for q in questions],
         "",
         "This is not a final decision. Confirm the case-specific answer with the official office.",
@@ -2594,6 +2594,9 @@ async def ask(req: AskRequest) -> AskResponse:
     except Exception:  # pragma: no cover - the pack must never break /api/ask
         law_evidence_pack = None
 
+    if law_evidence_pack and law_evidence_pack.get("citation_verification"):
+        citation_verification = law_evidence_pack.get("citation_verification")
+
     # Answer-prompt integration (Part E): inject ONE compact, normalized
     # evidence summary (never a raw API dump) when law evidence exists or was
     # attempted-but-unavailable. The answer-quality directives below still drive
@@ -2651,6 +2654,9 @@ async def ask(req: AskRequest) -> AskResponse:
         direct_manual_sources=(law_evidence_pack or {}).get("direct_manual_sources", []),
         related_manual_sources=(law_evidence_pack or {}).get("related_manual_sources", []),
         law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
+        parser_status=(law_evidence_pack or {}).get("parser_status", ""),
+        response_shape_hint=(law_evidence_pack or {}).get("response_shape_hint", ""),
+        source_panel_status=((law_evidence_pack or {}).get("citation_verification") or {}).get("status", ""),
     )
 
     if llm["provider"] == "openrouter":
@@ -2866,6 +2872,12 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
         "law_api_attempted": (pack or {}).get("law_api_attempted", False),
         "law_queries_attempted": (pack or {}).get("law_queries_attempted", []),
         "normalized_evidence_count": (pack or {}).get("law_evidence_count", 0),
+        "error_type": (pack or {}).get("law_grounding_error", "") or context.get("error_type", ""),
+        "parser_status": (pack or {}).get("parser_status", "") or context.get("parser_status", ""),
+        "response_shape_hint": (pack or {}).get("response_shape_hint", "") or context.get("response_shape_hint", ""),
+        "sanitized_source_url": (pack or {}).get("sanitized_source_url", "") or context.get("source_url", ""),
+        "attempted_targets": (pack or {}).get("attempted_targets", []),
+        "citation_verification_status": ((pack or {}).get("citation_verification") or context.get("citation_verification") or {}).get("status", ""),
         "law_grounding_status": (pack or {}).get("law_grounding_status"),
         "source_confidence_level": (pack or {}).get("source_confidence_level"),
         "answer_quality_mode": (pack or {}).get("answer_quality_mode"),

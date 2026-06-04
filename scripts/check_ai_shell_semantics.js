@@ -128,9 +128,9 @@ check(/已确认的居留资格/.test(src), 'Simplified Chinese checked-status l
 check(/已確認的居留資格/.test(src), 'Traditional Chinese checked-status label missing');
 
 // --- Static: friendly law-unavailable text + raw code only in details -------
-check(/Supporting legal source could not be retrieved for this answer\./.test(src),
+check(/Legal source lookup returned an unsupported response format\. Paradiso is using limited guidance until this is fixed\./.test(src),
       'English friendly law-unavailable text missing');
-check(/이 답변에 사용할 보조 법령 근거를 가져오지 못했습니다\./.test(src),
+check(/법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다\. 수정 전까지 Paradiso는 제한적 안내를 사용합니다\./.test(src),
       'Korean friendly law-unavailable text missing');
 // Raw SOURCE_UNAVAILABLE must only appear inside the warning-code mapping /
 // technical details, never as default user-facing prose. We approximate this
