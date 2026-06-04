@@ -32,7 +32,7 @@ from __future__ import annotations
 import json
 import re
 import xml.etree.ElementTree as ET
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from typing import Any, Callable, Dict, List, Optional, Sequence, Tuple
 from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
@@ -53,7 +53,7 @@ from .legal_analysis import (
     score_evidence_relevance,
 )
 
-LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v3-generalized-issues"
+LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v4-official-source-family-adapters"
 
 # ---------------------------------------------------------------------------
 # Stable error types (Part B contract). Returned in tool output ``error_type``.
@@ -65,6 +65,26 @@ LAW_API_BAD_RESPONSE = "law_api_bad_response"
 LAW_API_NO_RESULTS = "law_api_no_results"
 LAW_API_PARSE_ERROR = "law_api_parse_error"
 LAW_API_OFFICIAL_ERROR = "law_api_official_error"
+
+SOURCE_STATUS_RESULTS_FOUND = "results_found"
+SOURCE_STATUS_NO_RESULTS = "no_results"
+SOURCE_STATUS_OFFICIAL_ERROR = "official_error"
+SOURCE_STATUS_HTTP_ERROR = "http_error"
+SOURCE_STATUS_TIMEOUT = "timeout"
+SOURCE_STATUS_BAD_RESPONSE = "bad_response"
+SOURCE_STATUS_PARSE_ERROR = "parse_error"
+SOURCE_STATUS_UNSUPPORTED = "unsupported"
+SOURCE_STATUS_NOT_CONFIGURED = "not_configured"
+
+_ERROR_TO_SOURCE_STATUS = {
+    LAW_API_NOT_CONFIGURED: SOURCE_STATUS_NOT_CONFIGURED,
+    LAW_API_HTTP_ERROR: SOURCE_STATUS_HTTP_ERROR,
+    LAW_API_TIMEOUT: SOURCE_STATUS_TIMEOUT,
+    LAW_API_BAD_RESPONSE: SOURCE_STATUS_BAD_RESPONSE,
+    LAW_API_NO_RESULTS: SOURCE_STATUS_NO_RESULTS,
+    LAW_API_PARSE_ERROR: SOURCE_STATUS_PARSE_ERROR,
+    LAW_API_OFFICIAL_ERROR: SOURCE_STATUS_OFFICIAL_ERROR,
+}
 
 # Default DRF endpoints for the National Law Information Open API. These are
 # public, fixed endpoints (confirmed by scripts/probe_korean_law_open_api_2026_05.py);
@@ -153,7 +173,11 @@ def _sanitize_url(url: str) -> str:
     except Exception:  # pragma: no cover - defensive
         return ""
     secret_keys = {"oc", "authorization", "key", "apikey", "api_key", "serviceкey", "servicekey"}
-    kept = [(k, v) for k, v in parse_qsl(parts.query, keep_blank_values=False)
+    known_secrets = {
+        (load_grounding_config().law_api_oc or "").strip(),
+        (load_grounding_config().law_api_key or "").strip(),
+    }
+    kept = [(k, "[REDACTED]" if v in known_secrets and v else v) for k, v in parse_qsl(parts.query, keep_blank_values=False)
             if k.lower() not in secret_keys]
     return urlunsplit((parts.scheme, parts.netloc, parts.path, urlencode(kept), parts.fragment))
 
@@ -189,6 +213,35 @@ class SearchLawTermsInput:
     limit: int = _DEFAULT_DISPLAY
 
 
+@dataclass
+class OfficialEvidence:
+    source_type: str
+    title: str = ""
+    law_name: str = ""
+    article: str = ""
+    case_name: str = ""
+    case_number: str = ""
+    decision_date: str = ""
+    summary: str = ""
+    query: str = ""
+    source_url: str = ""
+    retrieval_status: str = ""
+    relevance: str = "background"
+
+
+@dataclass
+class OfficialSourceResult:
+    source_family: str
+    status: str
+    query: str
+    normalized_items: List[Dict[str, Any]] = field(default_factory=list)
+    response_shape_hint: str = ""
+    parser_status: str = ""
+    sanitized_source_url: str = ""
+    error_type: str = ""
+    safe_error_message: str = ""
+
+
 # ---------------------------------------------------------------------------
 # Normalization helpers
 # ---------------------------------------------------------------------------
@@ -208,11 +261,20 @@ def _normalize_candidate(obj: Dict[str, Any], source_type: str) -> Optional[Dict
         term = _first(obj, "법령용어명", "용어명", "법령용어", "term", "termName")
         if not term:
             return None
+        definition = _first(obj, "법령용어정의", "용어설명", "정의", "definition") or ""
         return {
-            "term": term,
-            "definition": _first(obj, "법령용어정의", "용어설명", "정의", "definition") or "",
             "source_type": "law_term",
+            "title": term,
+            "term": term,
+            "law_name": "",
+            "article": "",
+            "case_name": "",
+            "case_number": "",
+            "decision_date": "",
+            "summary": definition[:700],
+            "definition": definition,
             "retrieval_status": "ok",
+            "relevance": "background",
         }
     if source_type == "admin_rule":
         name = _first(obj, "행정규칙명", "행정규칙명한글", "admRulNm", "lawName")
@@ -220,15 +282,23 @@ def _normalize_candidate(obj: Dict[str, Any], source_type: str) -> Optional[Dict
         rule_id = _first(obj, "행정규칙ID", "admRulId", "ID")
         if not (name or serial or rule_id):
             return None
+        title = name or "(행정규칙)"
         return {
-            "law_name": name or "(행정규칙)",
+            "source_type": "admin_rule",
+            "title": title,
+            "law_name": title,
             "law_id": rule_id or "",
             "law_serial_no": serial or "",
             "reference": rule_id or serial or "",
+            "article": _first(obj, "조문번호", "article") or "",
+            "case_name": "",
+            "case_number": "",
+            "decision_date": _first(obj, "발령일자", "시행일자") or "",
+            "summary": _first(obj, "행정규칙요약", "summary", "내용") or "",
             "rule_type": _first(obj, "행정규칙종류", "행정규칙구분명") or "",
             "department": _first(obj, "소관부처명", "담당부처명") or "",
-            "source_type": "admin_rule",
             "retrieval_status": "ok",
+            "relevance": "background",
         }
     # Default: a statute / enforcement decree / rule.
     name = _first(obj, "법령명한글", "법령명", "법령명_한글", "lawName")
@@ -236,17 +306,31 @@ def _normalize_candidate(obj: Dict[str, Any], source_type: str) -> Optional[Dict
     law_id = _first(obj, "법령ID", "lawId", "ID")
     if not (name or serial or law_id):
         return None
+    law_division = _first(obj, "법령구분명", "법종구분명") or ""
+    normalized_type = source_type if source_type in {"statute", "enforcement_decree", "enforcement_rule"} else "statute"
+    if "시행령" in (name or law_division):
+        normalized_type = "enforcement_decree"
+    elif "시행규칙" in (name or law_division):
+        normalized_type = "enforcement_rule"
+    title = name or "(법령)"
     return {
-        "law_name": name or "(법령)",
+        "source_type": "law",
+        "title": title,
+        "law_name": title,
         "law_id": law_id or "",
         "law_serial_no": serial or "",
         "reference": law_id or serial or "",
-        "law_division": _first(obj, "법령구분명", "법종구분명") or "",
+        "article": _first(obj, "조문번호", "article", "조") or "",
+        "case_name": "",
+        "case_number": "",
+        "decision_date": "",
+        "summary": _first(obj, "조문내용", "내용", "summary") or "",
+        "law_division": law_division,
         "promulgation_date": _first(obj, "공포일자") or "",
         "enforcement_date": _first(obj, "시행일자") or "",
         "department": _first(obj, "소관부처명") or "",
-        "source_type": "law",
         "retrieval_status": "ok",
+        "relevance": "background",
     }
 
 
@@ -317,30 +401,95 @@ def _xml_to_obj(elem: ET.Element) -> Any:
     return out
 
 
-def _contains_official_error(payload: Any) -> bool:
-    """Detect official API error objects without exposing message/body."""
-    error_keys = {"error", "errorcode", "errcode", "resultcode", "code", "message", "msg"}
+def _safe_text(value: Any, *, limit: int = 160) -> str:
+    text = str(value or "").strip()[:limit]
+    for secret in (load_grounding_config().law_api_oc, load_grounding_config().law_api_key):
+        if secret:
+            text = text.replace(secret, "[REDACTED]")
+    text = re.sub(r"(?i)(OC|LAW_API_OC|LAW_API_KEY|apikey|api_key|servicekey)=([^&\s]+)", r"\1=[REDACTED]", text)
+    return text
+
+
+def _official_error_info(payload: Any) -> Tuple[bool, str, str]:
+    """Detect official API error objects and return safe code/message only."""
     success_values = {"00", "0", "success", "ok", "정상"}
-    found_error_word = False
+    found = False
+    code = ""
+    message = ""
+
+    def set_code(value: Any) -> None:
+        nonlocal code
+        if not code and value not in (None, ""):
+            code = _safe_text(value, limit=80)
+
+    def set_message(value: Any) -> None:
+        nonlocal message
+        if not message and value not in (None, ""):
+            message = _safe_text(value, limit=180)
 
     def walk(node: Any) -> bool:
-        nonlocal found_error_word
+        nonlocal found
         if isinstance(node, dict):
             lowered = {str(k).lower(): v for k, v in node.items()}
             for key, value in lowered.items():
                 sval = str(value).strip().lower()
                 if key in {"error", "errorcode", "errcode"} and sval:
-                    return True
+                    found = True; set_code(value)
                 if key in {"resultcode", "code"} and sval and sval not in success_values:
-                    return True
-                if key in {"message", "msg"} and sval and any(w in sval for w in ("error", "오류", "not", "invalid", "fail")):
-                    found_error_word = True
-            return any(walk(v) for v in node.values())
-        if isinstance(node, list):
-            return any(walk(v) for v in node)
-        return False
+                    found = True; set_code(value)
+                if key in {"message", "msg", "errmsg", "errormessage"}:
+                    set_message(value)
+                    if sval and any(w in sval for w in ("error", "오류", "not", "invalid", "fail", "인증", "권한")):
+                        found = True
+            for value in node.values():
+                walk(value)
+        elif isinstance(node, list):
+            for value in node:
+                walk(value)
+        return found
 
-    return walk(payload) or found_error_word
+    walk(payload)
+    return found, code, message
+
+
+def _contains_official_error(payload: Any) -> bool:
+    """Detect official API error objects without exposing message/body."""
+    return _official_error_info(payload)[0]
+
+
+def _xml_root_tag(text: str) -> str:
+    try:
+        root = ET.fromstring((text or "").strip())
+        return root.tag.split("}", 1)[-1]
+    except Exception:
+        return ""
+
+
+def inspect_law_api_response_shape(text: str) -> Dict[str, Any]:
+    """Safe parser/shape metadata for capture tooling and debug output."""
+    payload, error, parser_status, shape = _parse_payload(text or "")
+    info = {"response_shape_hint": shape, "parser_status": parser_status, "error_type": error or ""}
+    if shape in {"json_object", "json_list"}:
+        try:
+            obj = json.loads((text or "").strip())
+            if isinstance(obj, dict):
+                info["json_root_keys"] = list(obj.keys())[:20]
+            elif isinstance(obj, list):
+                info["list_item_count"] = len(obj)
+            official, code, msg = _official_error_info(obj)
+            if official:
+                info["official_error_code"] = code
+                info["official_error_message"] = msg
+        except Exception:
+            pass
+    elif shape == "xml":
+        info["xml_root_tag"] = _xml_root_tag(text or "")
+        if payload is not None:
+            official, code, msg = _official_error_info(payload)
+            if official:
+                info["official_error_code"] = code
+                info["official_error_message"] = msg
+    return info
 
 
 def _parse_payload(text: str) -> Tuple[Optional[Any], Optional[str], str, str]:
@@ -694,6 +843,142 @@ def search_law_terms(
         limit=capped,
     )
 
+
+
+
+# ---------------------------------------------------------------------------
+# Official source-family adapters (typed result contract)
+# ---------------------------------------------------------------------------
+_TARGET_BY_SOURCE_FAMILY = {
+    "statute": "law",
+    "enforcement_decree": "law",
+    "enforcement_rule": "law",
+    "administrative_rule": "admrul",
+    "legal_term": "lstrm",
+}
+_WIRED_SOURCE_FAMILIES = set(_TARGET_BY_SOURCE_FAMILY)
+
+
+def _adapter_status_from_tool_result(result: Dict[str, Any]) -> str:
+    if result.get("status") == "ok" and result.get("results"):
+        return SOURCE_STATUS_RESULTS_FOUND
+    return _ERROR_TO_SOURCE_STATUS.get(result.get("error_type") or LAW_API_NO_RESULTS, SOURCE_STATUS_BAD_RESPONSE)
+
+
+def _evidence_from_tool_item(item: Dict[str, Any], *, source_family: str, query: str, status: str, source_url: str) -> Dict[str, Any]:
+    source_type = source_family if source_family in {
+        "enforcement_decree", "enforcement_rule",
+        "legal_interpretation", "precedent", "administrative_appeal", "constitutional_decision", "manual",
+    } else str(item.get("source_type") or source_family)
+    out = {
+        "source_type": source_type,
+        "title": str(item.get("title") or item.get("law_name") or item.get("term") or item.get("case_name") or "")[:180],
+        "law_name": str(item.get("law_name") or "")[:180],
+        "article": str(item.get("article") or "")[:80],
+        "case_name": str(item.get("case_name") or "")[:180],
+        "case_number": str(item.get("case_number") or "")[:80],
+        "decision_date": str(item.get("decision_date") or item.get("enforcement_date") or "")[:40],
+        "summary": str(item.get("summary") or item.get("definition") or item.get("text") or "")[:700],
+        "query": query,
+        "source_url": _sanitize_url(source_url or item.get("source_url") or ""),
+        "retrieval_status": "ok" if status == SOURCE_STATUS_RESULTS_FOUND else status,
+        "relevance": str(item.get("relevance") or "background"),
+    }
+    for key in ("law_id", "law_serial_no", "reference", "law_division", "rule_type", "department", "term", "definition"):
+        if item.get(key) not in (None, ""):
+            out[key] = item.get(key)
+    return out
+
+
+def _official_result_from_tool(source_family: str, query: str, tool_result: Dict[str, Any]) -> Dict[str, Any]:
+    status = _adapter_status_from_tool_result(tool_result)
+    source_url = _sanitize_url(tool_result.get("source_url") or "")
+    items = [
+        _evidence_from_tool_item(item, source_family=source_family, query=query, status=status, source_url=source_url)
+        for item in (tool_result.get("results") or [])
+        if isinstance(item, dict)
+    ]
+    return asdict(OfficialSourceResult(
+        source_family=source_family,
+        status=status,
+        query=query,
+        normalized_items=items,
+        response_shape_hint=str(tool_result.get("response_shape_hint") or ""),
+        parser_status=str(tool_result.get("parser_status") or ""),
+        sanitized_source_url=source_url,
+        error_type=str(tool_result.get("error_type") or ""),
+        safe_error_message=_safe_text(tool_result.get("failure_reason") or tool_result.get("error_type") or ""),
+    ))
+
+
+def retrieve_official_source_family(
+    source_family: str,
+    query: str,
+    *,
+    limit: int = 3,
+    config: Optional[GroundingConfig] = None,
+    transport: Optional[LawTransport] = None,
+) -> Dict[str, Any]:
+    """Retrieve one official source family with explicit adapter status.
+
+    Unsupported families are reported as ``unsupported`` rather than being
+    collapsed into LAW_API_BAD_RESPONSE. Returned items are normalized evidence
+    only; raw response bodies/payloads are never exposed.
+    """
+    family = (source_family or "").strip().lower()
+    q = (query or "").strip()
+    if family not in SOURCE_FAMILIES:
+        return asdict(OfficialSourceResult(source_family=family or "unknown", status=SOURCE_STATUS_UNSUPPORTED, query=q, safe_error_message="unsupported_source_family"))
+    if family not in _WIRED_SOURCE_FAMILIES:
+        return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_UNSUPPORTED, query=q, safe_error_message="planned_not_wired"))
+    cfg = config or load_grounding_config()
+    if not cfg.law_api_configured:
+        return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_NOT_CONFIGURED, query=q, error_type=LAW_API_NOT_CONFIGURED, safe_error_message="not_configured"))
+    if not q:
+        return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_NO_RESULTS, query=q, error_type=LAW_API_NO_RESULTS, safe_error_message="empty_query"))
+    if family == "administrative_rule":
+        tool_result = search_admin_rules(q, limit=limit, config=cfg, transport=transport)
+    elif family == "legal_term":
+        tool_result = search_law_terms(q, limit=limit, config=cfg, transport=transport)
+    else:
+        tool_result = search_laws(q, target="law", limit=limit, config=cfg, transport=transport)
+    return _official_result_from_tool(family, q, tool_result)
+
+
+def retrieve_planned_official_sources(
+    source_plan: Dict[str, Any],
+    *,
+    config: Optional[GroundingConfig] = None,
+    transport: Optional[LawTransport] = None,
+    limit_per_family: int = 2,
+    max_attempts: int = _HARD_MAX_QUERIES,
+) -> Dict[str, Any]:
+    families = list(source_plan.get("source_types_priority") or [])
+    queries = list(source_plan.get("queries") or [])
+    results: List[Dict[str, Any]] = []
+    normalized: List[Dict[str, Any]] = []
+    attempts = 0
+    for idx, family in enumerate(families):
+        if family == "manual":
+            continue
+        query = queries[min(idx, len(queries) - 1)] if queries else "출입국관리법 체류자격"
+        result = retrieve_official_source_family(family, query, limit=limit_per_family, config=config, transport=transport)
+        results.append(result)
+        attempts += 1
+        normalized.extend(result.get("normalized_items") or [])
+        if attempts >= max(1, min(max_attempts, _HARD_MAX_QUERIES)):
+            break
+    statuses = {r["source_family"]: r["status"] for r in results}
+    return {
+        "source_family_results": results,
+        "normalized_evidence": normalized,
+        "source_family_statuses": statuses,
+        "source_family_result_counts": {r["source_family"]: len(r.get("normalized_items") or []) for r in results},
+        "response_shape_hints": {r["source_family"]: r.get("response_shape_hint", "") for r in results},
+        "parser_statuses": {r["source_family"]: r.get("parser_status", "") for r in results},
+        "law_error_types": {r["source_family"]: r.get("error_type", "") for r in results},
+        "sanitized_source_urls": [r.get("sanitized_source_url", "") for r in results if r.get("sanitized_source_url")],
+    }
 
 # ---------------------------------------------------------------------------
 # Status / question-type detection (richer law taxonomy used for planning)
@@ -1448,6 +1733,16 @@ def build_law_evidence_pack(
     law_grounding_error = ""
     law_grounding_warnings: List[str] = []
     context_used_hint = False
+    source_family_retrieval: Dict[str, Any] = {
+        "source_family_results": [],
+        "normalized_evidence": [],
+        "source_family_statuses": {},
+        "source_family_result_counts": {},
+        "response_shape_hints": {},
+        "parser_statuses": {},
+        "law_error_types": {},
+        "sanitized_source_urls": [],
+    }
 
     if law_context is not None:
         # Reuse already-fetched results (no duplicate live call).
@@ -1470,15 +1765,18 @@ def build_law_evidence_pack(
                 law_grounding_error = LAW_API_NOT_CONFIGURED
                 law_grounding_warnings.append("SOURCE_UNAVAILABLE")
             else:
-                for query in planned_queries:
-                    result = search_laws(query, config=cfg, transport=transport, limit=cfg_display(cfg))
-                    law_queries_attempted.append(query)
-                    if result["status"] == "ok":
-                        law_sources.extend(result["results"])
-                    elif not law_grounding_error:
-                        law_grounding_error = result["error_type"]
-                    if len(law_sources) >= _HARD_MAX_QUERIES:
-                        break
+                source_family_retrieval = retrieve_planned_official_sources(
+                    initial_source_plan, config=cfg, transport=transport,
+                    limit_per_family=max(1, min(cfg_display(cfg), 3)),
+                    max_attempts=max_queries,
+                )
+                law_sources.extend(source_family_retrieval.get("normalized_evidence") or [])
+                law_queries_attempted = [
+                    r.get("query", "") for r in source_family_retrieval.get("source_family_results", []) if r.get("query")
+                ]
+                for result in source_family_retrieval.get("source_family_results", []):
+                    if result.get("error_type") and not law_grounding_error:
+                        law_grounding_error = result.get("error_type")
                 # Trim/dedupe normalized law sources for a compact pack.
                 law_sources = _dedupe_sources(law_sources)[:_HARD_MAX_QUERIES]
                 if not law_sources and not law_grounding_error:
@@ -1538,6 +1836,20 @@ def build_law_evidence_pack(
         law_grounding_status=law_grounding_status,
         max_queries=max_queries,
     )
+    if source_family_retrieval.get("source_family_statuses"):
+        merged_statuses = dict(source_type_plan.get("statuses") or {})
+        merged_statuses.update(source_family_retrieval.get("source_family_statuses") or {})
+        source_type_plan["statuses"] = merged_statuses
+        source_type_plan["source_family_statuses"] = merged_statuses
+        attempted_families = list(dict.fromkeys([
+            *(source_type_plan.get("source_types_attempted") or []),
+            *source_family_retrieval.get("source_family_statuses", {}).keys(),
+        ]))
+        source_type_plan["source_types_attempted"] = attempted_families
+        source_type_plan["source_families_attempted"] = attempted_families
+        returned_families = [f for f, st in merged_statuses.items() if st == SOURCE_STATUS_RESULTS_FOUND]
+        source_type_plan["source_types_returned"] = returned_families
+        source_type_plan["source_families_returned"] = returned_families
     legal_analysis = build_legal_analysis(
         question=text,
         question_type=question_type,
@@ -1582,6 +1894,16 @@ def build_law_evidence_pack(
         "official_confirmation_questions": list(quality.get("official_confirmation_questions") or []),
         "official_confirmation_questions_localized": localized_confirm,
         "law_evidence_count": len(law_sources),
+        "normalized_evidence_count": len(law_sources),
+        "source_family_results": source_family_retrieval.get("source_family_results", []),
+        "source_families_planned": source_type_plan.get("source_families_planned") or source_type_plan.get("source_types_priority", []),
+        "source_families_attempted": source_type_plan.get("source_families_attempted") or source_type_plan.get("source_types_attempted", []),
+        "source_family_statuses": source_type_plan.get("source_family_statuses") or source_type_plan.get("statuses", {}),
+        "source_family_result_counts": source_family_retrieval.get("source_family_result_counts", {}),
+        "response_shape_hint_by_family": source_family_retrieval.get("response_shape_hints", {}),
+        "parser_status_by_family": source_family_retrieval.get("parser_statuses", {}),
+        "law_error_type_by_family": source_family_retrieval.get("law_error_types", {}),
+        "sanitized_source_urls": source_family_retrieval.get("sanitized_source_urls", []),
         "parser_status": law_context.get("parser_status", "") if law_context else "",
         "response_shape_hint": law_context.get("response_shape_hint", "") if law_context else "",
         "sanitized_source_url": law_context.get("source_url", "") if law_context else (law_sources[0].get("source_url", "") if law_sources else ""),

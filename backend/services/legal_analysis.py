@@ -363,7 +363,15 @@ def build_generalized_source_plan(
     if not families:
         add("manual", "statute", "legal_term")
 
-    query_bits = [facts.get("current_status"), facts.get("previous_status"), facts.get("target_status"), " ".join(facts.get("proposed_activities") or []), " ".join(issues)]
+    # Query anchors intentionally include current/previous/target statuses and
+    # activity concepts, but keep the total query count capped.
+    query_bits = [
+        facts.get("current_status"), facts.get("current_parent_status"),
+        facts.get("previous_status"), facts.get("previous_parent_status"),
+        facts.get("target_status"), facts.get("target_parent_status"),
+        " ".join(facts.get("proposed_activities") or []),
+        " ".join(issues),
+    ]
     queries = []
     for family in families:
         anchor = {
@@ -410,15 +418,21 @@ def build_generalized_source_plan(
             statuses[family] = "unavailable" if law_grounding_status == "unavailable" else "no_results"
         else:
             statuses[family] = "attempted"
-    attempted = [f for f in families if statuses.get(f) in {"attempted", "results_found", "no_results", "unavailable", "parse_error"}]
+    attempted = [f for f in families if statuses.get(f) in {"attempted", "results_found", "no_results", "unavailable", "parse_error", "official_error", "bad_response", "timeout", "http_error", "not_configured"}]
+    returned = [f for f in SOURCE_FAMILIES if statuses.get(f) == "results_found"]
     return {
         "legal_issue_types": issues,
         "immigration_facts": facts,
         "source_types_priority": families,
+        "source_families_planned": families,
         "source_types_attempted": attempted,
-        "source_types_returned": [f for f in SOURCE_FAMILIES if statuses.get(f) == "results_found"],
+        "source_families_attempted": attempted,
+        "source_types_returned": returned,
+        "source_families_returned": returned,
         "unsupported_source_types": [f for f in families if statuses.get(f) == "unsupported"],
+        "unsupported_source_families": [f for f in families if statuses.get(f) == "unsupported"],
         "statuses": statuses,
+        "source_family_statuses": statuses,
         "queries": queries,
         "max_queries": max(1, min(max_queries, 8)),
     }
@@ -459,8 +473,11 @@ def score_evidence_relevance(evidence: Dict[str, Any], *, question: str, visa_co
     source_type = str(evidence.get("source_type") or evidence.get("target") or "").lower()
     low = text.lower()
 
+    exact_issue_term = any(str(issue).replace("_", " ") in low or issue in low for issue in issues)
     if source_type in {"law_term", "legal_term", "lstrm"} or "법령용어" in text:
-        return RELEVANCE_BACKGROUND
+        return RELEVANCE_RELATED if exact_issue_term and (asked_code and asked_code in ev_codes) else RELEVANCE_BACKGROUND
+    target_code = facts.get("target_status")
+    target_matches = bool(target_code and target_code in ev_codes)
     if previous_code and previous_code in ev_codes and asked_code not in ev_codes:
         return RELEVANCE_RELATED if issues & {"post_status_change_residual_duty", "approval_condition", "reporting_duty", "workplace_change_addition"} else RELEVANCE_ANALOGICAL
 
@@ -475,8 +492,13 @@ def score_evidence_relevance(evidence: Dict[str, Any], *, question: str, visa_co
         or (_has_study(question) and _has_study(text))
         or (_has_work(question) and _has_work(text))
     )
+    adjudicative = source_type in {"administrative_appeal", "precedent", "constitutional_decision"}
     if status_matches and concept_matches:
         return RELEVANCE_DIRECT
+    if target_matches and "status_change" in issues and concept_matches:
+        return RELEVANCE_DIRECT if source_type in {"manual", "statute", "enforcement_decree", "enforcement_rule"} else RELEVANCE_RELATED
+    if adjudicative and concept_matches:
+        return RELEVANCE_RELATED if status_matches or target_matches else RELEVANCE_ANALOGICAL
     if status_matches or (parent_matches and not facts.get("current_sub_status")):
         return RELEVANCE_RELATED
     if concept_matches:
@@ -696,6 +718,9 @@ def build_legal_analysis(
         "source_types_attempted": attempted,
         "source_types_returned": returned,
         "source_type_statuses": statuses,
+        "source_family_statuses": statuses,
+        "source_families_planned": list(source_type_plan.get("source_families_planned") or source_type_plan.get("source_types_priority") or []),
+        "source_families_attempted": list(source_type_plan.get("source_families_attempted") or attempted),
         "source_plan": source_type_plan,
         "direct_authority": [_authority_stub(i, RELEVANCE_DIRECT) for i in buckets[RELEVANCE_DIRECT][:5]],
         "related_authority": [_authority_stub(i, RELEVANCE_RELATED) for i in buckets[RELEVANCE_RELATED][:5]],

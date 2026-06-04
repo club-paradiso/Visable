@@ -709,3 +709,89 @@ class LegalAnalysisGuidanceTests(unittest.TestCase):
             "출입국관리법 체류자격 변경허가",
         ):
             self.assertIn(token, joined)
+
+# ---------------------------------------------------------------------------
+# Official source-family adapter hardening (2026-05)
+# ---------------------------------------------------------------------------
+class OfficialSourceAdapterParserTests(unittest.TestCase):
+    def cfg(self):
+        return GroundingConfig(mode="audit", law_api_oc="secret-oc")
+
+    def test_json_object_response_normalizes_evidence(self):
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(law_search_body()))
+        self.assertEqual(result["status"], "results_found")
+        self.assertTrue(result["normalized_items"])
+        self.assertEqual(result["response_shape_hint"], "json_object")
+        self.assertNotIn("secret-oc", result["sanitized_source_url"])
+
+    def test_json_list_response_normalizes_evidence(self):
+        body = json.dumps([{"법령명한글": "출입국관리법", "법령ID": "001386"}], ensure_ascii=False)
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "results_found")
+        self.assertEqual(result["response_shape_hint"], "json_list")
+
+    def test_nested_json_response_normalizes_evidence(self):
+        body = json.dumps({"outer": {"items": [{"법령명한글": "출입국관리법 시행규칙", "법령ID": "RULE"}]}}, ensure_ascii=False)
+        result = lt.retrieve_official_source_family("enforcement_rule", "시행규칙", config=self.cfg(), transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "results_found")
+        self.assertEqual(result["normalized_items"][0]["source_type"], "enforcement_rule")
+
+    def test_xml_response_normalizes_or_clean_status(self):
+        body = """<?xml version='1.0'?><LawSearch><law><법령명한글>출입국관리법</법령명한글><법령ID>001386</법령ID></law></LawSearch>"""
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(body))
+        self.assertEqual(result["response_shape_hint"], "xml")
+        self.assertIn(result["status"], {"results_found", "no_results"})
+        self.assertIn(result["parser_status"], {"parsed_xml", "empty"})
+
+    def test_official_error_response_maps_official_error(self):
+        body = json.dumps({"errorCode": "INVALID", "message": "invalid request"})
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(body))
+        self.assertEqual(result["status"], "official_error")
+        self.assertEqual(result["error_type"], lt.LAW_API_OFFICIAL_ERROR)
+
+    def test_empty_response_maps_no_results(self):
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(""))
+        self.assertEqual(result["status"], "no_results")
+        self.assertEqual(result["error_type"], lt.LAW_API_NO_RESULTS)
+
+    def test_html_text_and_malformed_payloads_are_safe(self):
+        html = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport("<html><body>maintenance</body></html>"))
+        self.assertEqual(html["status"], "bad_response")
+        self.assertEqual(html["response_shape_hint"], "html")
+        malformed = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport('{"bad"'))
+        self.assertEqual(malformed["status"], "parse_error")
+        self.assertEqual(malformed["parser_status"], "json_parse_error")
+
+    def test_raw_body_not_exposed_in_adapter_metadata(self):
+        raw = "<html><body>secret body text that must not propagate</body></html>"
+        result = lt.retrieve_official_source_family("statute", "출입국관리법", config=self.cfg(), transport=_RecordingTransport(raw))
+        dumped = json.dumps(result, ensure_ascii=False)
+        self.assertNotIn("secret body text", dumped)
+        self.assertNotIn("secret-oc", dumped)
+
+
+class OfficialSourceFamilyStatusTests(unittest.TestCase):
+    def cfg(self):
+        return GroundingConfig(mode="audit", law_api_oc="secret-oc")
+
+    def test_unsupported_source_family_not_bad_response(self):
+        result = lt.retrieve_official_source_family("precedent", "출입국", config=self.cfg())
+        self.assertEqual(result["status"], "unsupported")
+        self.assertNotEqual(result["status"], "bad_response")
+
+    def test_not_configured_status(self):
+        result = lt.retrieve_official_source_family("statute", "출입국", config=GroundingConfig(mode="audit"))
+        self.assertEqual(result["status"], "not_configured")
+
+    def test_results_no_results_official_error_and_timeout_statuses(self):
+        ok = lt.retrieve_official_source_family("administrative_rule", "체류", config=self.cfg(), transport=_RecordingTransport(admin_body()))
+        self.assertEqual(ok["status"], "results_found")
+        no = lt.retrieve_official_source_family("legal_term", "체류", config=self.cfg(), transport=_RecordingTransport(""))
+        self.assertEqual(no["status"], "no_results")
+        err = lt.retrieve_official_source_family("statute", "체류", config=self.cfg(), transport=_RecordingTransport(json.dumps({"errorCode": "X", "message": "error"})))
+        self.assertEqual(err["status"], "official_error")
+
+        def timeout(_url, _timeout):
+            return lt.LawHttpResponse(ok=False, error_type="timeout")
+        timed = lt.retrieve_official_source_family("statute", "체류", config=self.cfg(), transport=timeout)
+        self.assertEqual(timed["status"], "timeout")
