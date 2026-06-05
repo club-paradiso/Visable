@@ -336,6 +336,14 @@ def normalize_law_source_attempts(
                 statuses[family] = str(result.get("status") or "")
 
     for family, raw_status in statuses.items():
+        # The "manual" family is a planning/status signal here, not a law-source
+        # row. Manual evidence is normalized separately by
+        # ``normalize_manual_source_attempts`` (with real titles/snippets), so
+        # emitting it again from the law side only produces an empty duplicate
+        # ``manual: available`` source — noise in the LLM prompt and a meaningless
+        # "manual" chip in the public source list. Skip it here.
+        if family == "manual":
+            continue
         items = by_family.get(family, [])
         if items:
             for item in items[:4]:
