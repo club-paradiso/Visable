@@ -2056,7 +2056,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 24",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2080,7 +2082,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 24-24",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -2093,7 +2097,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -2102,7 +2108,10 @@
       "sectionPageRange": "pp. 24-24",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -2218,11 +2227,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "B-1",
       "available": true,
       "entryCount": 1,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -2309,7 +2320,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 25",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2333,7 +2346,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 25-25",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -2346,7 +2361,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -2355,7 +2372,10 @@
       "sectionPageRange": "pp. 25-25",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -2475,11 +2495,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "B-2",
       "available": true,
       "entryCount": 1,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -2812,7 +2834,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 27-28",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2833,7 +2857,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2852,7 +2878,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2881,7 +2909,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 28",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2900,7 +2930,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2919,7 +2951,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -2938,7 +2972,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -2964,7 +3000,9 @@
         "manualVersion": "2026.5",
         "pageRange": "매뉴얼 확인 필요",
         "confidence": "needs_review",
-        "needsManualReview": true
+        "needsManualReview": true,
+        "sourceDate": "2026-06-01",
+        "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
       }
     ],
     "sourceManualStatus": {
@@ -2976,7 +3014,9 @@
         "C-3 representative hierarchy uses existing data; C-3-1 through C-3-10 labels still need 2026.5 manual page verification.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -2985,7 +3025,10 @@
       "sectionPageRange": "pp. 27-28",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -3219,11 +3262,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "C-3",
       "available": true,
       "entryCount": 12,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -3272,7 +3317,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 31",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -3296,7 +3343,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 29-31",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -3309,7 +3358,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -3318,7 +3369,10 @@
       "sectionPageRange": "pp. 29-31",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -3419,11 +3473,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "C-4",
       "available": true,
       "entryCount": 6,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -3497,7 +3553,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 33",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -3521,7 +3579,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 32-34",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -3552,7 +3612,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 34",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -3565,7 +3627,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -3574,7 +3638,10 @@
       "sectionPageRange": "pp. 32-34",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -3712,11 +3779,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-1",
       "available": true,
-      "entryCount": 3,
-      "requiresHumanReview": true
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -4058,7 +4127,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 42-44",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4080,7 +4151,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4099,7 +4172,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4129,7 +4204,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 44",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4151,7 +4228,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4170,7 +4249,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4192,7 +4273,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -4218,7 +4301,9 @@
         "manualVersion": "2026.5",
         "pageRange": "매뉴얼 확인 필요",
         "confidence": "needs_review",
-        "needsManualReview": true
+        "needsManualReview": true,
+        "sourceDate": "2026-06-01",
+        "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
       }
     ],
     "sourceManualStatus": {
@@ -4230,7 +4315,9 @@
         "D-2 representative hierarchy uses existing data; D-2-1 through D-2-8 labels still need 2026.5 manual page verification.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -4239,7 +4326,10 @@
       "sectionPageRange": "pp. 35-55",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -4511,11 +4601,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-2",
       "available": true,
-      "entryCount": 5,
-      "requiresHumanReview": true
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -4612,7 +4704,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 56",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4636,7 +4730,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 56-82",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -4649,7 +4745,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -4658,7 +4756,10 @@
       "sectionPageRange": "pp. 56-82",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -4814,11 +4915,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-3",
       "available": true,
       "entryCount": 3,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -4968,7 +5071,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 90-91",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -4992,7 +5097,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 83-101",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -5023,7 +5130,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 93",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -5064,7 +5173,8 @@
                 "pageRange": "pp. 83-84",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -5093,7 +5203,8 @@
                 "pageRange": "p. 84",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -5131,7 +5242,8 @@
                 "pageRange": "pp. 85-86",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -5154,7 +5266,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -5163,7 +5277,10 @@
       "sectionPageRange": "pp. 83-101",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -5394,11 +5511,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-4",
       "available": true,
       "entryCount": 15,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -5477,7 +5596,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 90-91",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -5501,7 +5622,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 83-101",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -5514,7 +5637,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -5523,7 +5648,10 @@
       "sectionPageRange": "pp. 83-101",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -5661,12 +5789,14 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-4",
       "available": true,
       "entryCount": 15,
       "requiresHumanReview": true,
-      "mappingNote": "D-4-1 evidence is represented under structured statusCode D-4"
+      "mappingNote": "D-4-1 evidence is represented under structured statusCode D-4",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -5786,7 +5916,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 112",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -5810,7 +5942,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 108-114",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -5841,7 +5975,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 113",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -5854,7 +5990,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -5863,7 +6001,10 @@
       "sectionPageRange": "pp. 108-114",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -6058,11 +6199,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-7",
       "available": true,
-      "entryCount": 12,
-      "requiresHumanReview": true
+      "entryCount": 13,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -6188,7 +6331,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 122",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -6212,7 +6357,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 115-129",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -6243,7 +6390,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 126",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -6286,7 +6435,8 @@
                 "pageRange": "pp. 119-120",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6319,7 +6469,8 @@
                 "pageRange": "p. 120",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6356,7 +6507,8 @@
                 "pageRange": "pp. 120-121",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6389,7 +6541,8 @@
                 "pageRange": "pp. 121-122",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6412,7 +6565,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -6421,7 +6576,10 @@
       "sectionPageRange": "pp. 115-129",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -6615,11 +6773,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-8",
       "available": true,
-      "entryCount": 17,
-      "requiresHumanReview": true
+      "entryCount": 18,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -6732,7 +6892,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 133",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -6756,7 +6918,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 136",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -6794,7 +6958,9 @@
                 "manualVersion": "2026.5",
                 "pageRange": "p. 131",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01",
+                "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
               }
             ],
             "notes": [
@@ -6827,7 +6993,8 @@
                 "pageRange": "pp. 131-132",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6863,7 +7030,8 @@
                 "pageRange": "pp. 132-133",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -6904,7 +7072,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 136",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -6917,7 +7087,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -6926,7 +7098,10 @@
       "sectionPageRange": "pp. 130-141",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -7105,11 +7280,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-9",
       "available": true,
       "entryCount": 10,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -7238,7 +7415,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 155",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -7271,7 +7450,8 @@
                 "pageRange": "pp. 155-156",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7309,7 +7489,8 @@
                 "pageRange": "p. 157",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7350,7 +7531,8 @@
                 "pageRange": "p. 157",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7381,7 +7563,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 142-165",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -7432,7 +7616,8 @@
                 "pageRange": "pp. 143-149",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7469,7 +7654,8 @@
                 "pageRange": "p. 149",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7510,7 +7696,8 @@
                 "pageRange": "p. 151",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7551,7 +7738,8 @@
                 "pageRange": "pp. 151-152",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7574,7 +7762,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -7583,7 +7773,10 @@
       "sectionPageRange": "pp. 142-165",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -7774,11 +7967,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-10",
       "available": true,
       "entryCount": 2,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -7848,7 +8043,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 172",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -7872,7 +8069,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 166-173",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -7911,7 +8110,8 @@
                 "pageRange": "p. 172",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7944,7 +8144,8 @@
                 "pageRange": "p. 171",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7976,7 +8177,8 @@
                 "pageRange": "p. 172",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -7999,7 +8201,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -8008,7 +8212,10 @@
       "sectionPageRange": "pp. 166-173",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -8138,11 +8345,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-1",
       "available": true,
       "entryCount": 11,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -8242,7 +8451,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 180",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8266,7 +8477,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 174-184",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8297,7 +8510,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 173",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8336,7 +8551,8 @@
                 "pageRange": "p. 180",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8389,7 +8605,8 @@
                 "pageRange": "pp. 181-182",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8423,7 +8640,8 @@
                 "pageRange": "p. 181",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8454,7 +8672,8 @@
                 "pageRange": "pp. 182-183",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8477,7 +8696,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -8486,7 +8707,10 @@
       "sectionPageRange": "pp. 174-184",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -8666,11 +8890,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-2",
       "available": true,
-      "entryCount": 9,
-      "requiresHumanReview": true
+      "entryCount": 10,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -8740,7 +8966,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 193",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8764,7 +8992,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 185-194",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8795,7 +9025,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 194",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -8832,7 +9064,8 @@
                 "pageRange": "p. 189",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8882,7 +9115,8 @@
                 "pageRange": "pp. 192-193",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8917,7 +9151,8 @@
                 "pageRange": "p. 188",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -8939,7 +9174,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -8948,7 +9185,10 @@
       "sectionPageRange": "pp. 185-194",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -9078,11 +9318,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-3",
       "available": true,
-      "entryCount": 14,
-      "requiresHumanReview": true
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -9147,7 +9389,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 199",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9171,7 +9415,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 195-199",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9202,7 +9448,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 199",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9241,7 +9489,8 @@
                 "pageRange": "p. 197",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -9289,7 +9538,8 @@
                 "pageRange": "pp. 197-198",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -9312,7 +9562,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -9321,7 +9573,10 @@
       "sectionPageRange": "pp. 195-199",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -9443,11 +9698,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-4",
       "available": true,
-      "entryCount": 7,
-      "requiresHumanReview": true
+      "entryCount": 8,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -9512,7 +9769,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 203",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9536,7 +9795,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 200-204",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9567,7 +9828,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 203",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9605,7 +9868,8 @@
                 "pageRange": "pp. 201-202",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -9652,7 +9916,8 @@
                 "pageRange": "p. 202",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -9675,7 +9940,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -9684,7 +9951,10 @@
       "sectionPageRange": "pp. 200-204",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -9802,11 +10072,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-5",
       "available": true,
-      "entryCount": 5,
-      "requiresHumanReview": true
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -9909,7 +10181,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 210",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9933,7 +10207,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 205-211",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -9964,7 +10240,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 211",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -10003,7 +10281,8 @@
                 "pageRange": "pp. 205-206",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -10051,7 +10330,8 @@
                 "pageRange": "pp. 206-207",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -10082,7 +10362,8 @@
                 "pageRange": "p. 207",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -10128,7 +10409,8 @@
                 "pageRange": "pp. 208-209",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -10150,7 +10432,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -10159,7 +10443,10 @@
       "sectionPageRange": "pp. 205-211",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -10327,11 +10614,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-6",
       "available": true,
-      "entryCount": 7,
-      "requiresHumanReview": true
+      "entryCount": 8,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -10339,7 +10628,7 @@
     "name": "특정활동",
     "cat": "work",
     "period": "3년, 연장가능(트랙별 상이)",
-    "newReq": "고용계약서, 학력/경력, 고용추천서(필요직종), 임금증빙(전년도 1인당 GNI 1배 이상). 직종: E-7-1 전문인력(67개), E-7-2 준전문(10개), E-7-3 일반기능(14개), E-7-4 숙련기능점수제(3개). '25.6 현재 총 91개 직종(278개 세부분류).",
+    "newReq": "고용계약서, 학력/경력, 고용추천서(필요직종), 임금증빙(전년도 1인당 GNI 1배 이상). 직종: E-7-1 전문인력(67개), E-7-2 준전문(10개), E-7-3 일반기능(14개), E-7-4 숙련기능점수제(3개). 2026-06-01 체류민원 매뉴얼은 E-7-4 K-point E74 선발인원 33,000명, 최근 10년 E-9/E-10/H-2 4년 이상 체류, 현 근무처에서 향후 2년 이상 E-7-4 고용계약 및 연봉요건, 고용기업 추천, 300점 만점 200점 이상 기준을 반영.",
     "newReqDocs": [
       "doc_emp_contract",
       "doc_degree",
@@ -10398,12 +10687,26 @@
       },
       {
         "code": "E-7-4",
-        "name": "숙련기능(점수제)",
-        "addReq": "점수 60점↑, E-9/H-2 4년↑. 농림축산어업·제조·건설 등 3개 직종.",
+        "name": "숙련기능인력(K-point E74, 점수제)",
+        "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,500만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31).",
         "addReqDocs": [
-          "doc_purpose"
+          "doc_app_form",
+          "doc_passport_copy",
+          "doc_point_table",
+          "doc_personal_statement",
+          "doc_emp_contract",
+          "doc_inc_proof",
+          "doc_topik",
+          "doc_kiip",
+          "doc_guarantee",
+          "doc_biz_reg",
+          "doc_tax_cert",
+          "doc_employment_insurance_list",
+          "doc_emp_recom",
+          "doc_specialty",
+          "doc_degree"
         ],
-        "note": "비전문→숙련. 연간 쿼터."
+        "note": "체류민원 안내매뉴얼 2026-06-01 PDF pp.298-309 기준. 필수서류에는 통합신청서, 여권사본, 점수제 자체 심사표, 신상기술서, E-7-4 표준근로계약서, 최근 2년 소득금액증명원, 한국어능력 입증, 신원보증서, 사업자등록증 또는 농업경영체등록, 국세·지방세 납세증명서, 4대보험 사업장 가입자 명부 등, 고용기업 추천서 및 추천자 신분증 사본이 포함됨. 자격증·국내학위·운전면허증·뿌리기업·조선업·내항정기운송 등은 해당자 추가서류."
       },
       {
         "code": "E-7-S",
@@ -10510,7 +10813,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 226",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -10534,7 +10839,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 212-323",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -10572,7 +10879,8 @@
                 "pageRange": "pp. 221-222",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -10596,8 +10904,11 @@
       "needsManualReview": true,
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026-06-01 체류민원 매뉴얼 pp.298-309에서 E-7-4 숙련기능인력(K-point E74) 개선 기준을 반영했습니다. 하위직종·쿼터·예외는 계속 수동 확인 필요."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -10606,7 +10917,10 @@
       "sectionPageRange": "pp. 212-323",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -10691,7 +11005,8 @@
     ],
     "hikorea_task_type": "체류기간 연장허가",
     "_source_notes": {
-      "extReq": "2026.5_manual_extract"
+      "extReq": "2026.5_manual_extract",
+      "e74Refresh": "2026-06-01_stay_manual_pp298_309"
     },
     "searchAliases": [
       "E-7-1",
@@ -10861,12 +11176,17 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-7",
       "available": true,
-      "entryCount": 38,
-      "requiresHumanReview": true
-    }
+      "entryCount": 39,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "commonWarnings": [
+      "E-7-4 숙련기능인력은 2026-06-01 체류민원 매뉴얼의 K-point E74 개선 기준을 우선 확인해야 합니다."
+    ]
   },
   {
     "code": "E-8",
@@ -10934,7 +11254,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 325",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -10958,7 +11280,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 324-325",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -10971,7 +11295,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -10980,7 +11306,10 @@
       "sectionPageRange": "pp. 324-325",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -11102,11 +11431,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-8",
       "available": true,
       "entryCount": 3,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -11272,7 +11603,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 329",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -11296,7 +11629,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 326-335",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -11334,7 +11669,9 @@
                 "manualVersion": "2026.5",
                 "pageRange": "pp. 328-329",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01",
+                "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
               }
             ],
             "notes": [
@@ -11365,7 +11702,8 @@
                 "pageRange": "pp. 327-328",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -11388,7 +11726,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -11397,7 +11737,10 @@
       "sectionPageRange": "pp. 326-335",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -11639,11 +11982,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-9",
       "available": true,
       "entryCount": 5,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -11736,7 +12081,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 337",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -11760,7 +12107,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 336-340",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -11773,7 +12122,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -11782,7 +12133,10 @@
       "sectionPageRange": "pp. 336-340",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -11950,11 +12304,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "E-10",
       "available": true,
-      "entryCount": 3,
-      "requiresHumanReview": true
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -12111,7 +12467,9 @@
                 "manualVersion": "2026.5",
                 "pageRange": "pp. 347-348",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01",
+                "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
               }
             ],
             "notes": [
@@ -12144,7 +12502,8 @@
                 "pageRange": "pp. 345-346",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12173,7 +12532,8 @@
                 "pageRange": "p. 346",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12203,7 +12563,8 @@
                 "pageRange": "p. 348",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12239,7 +12600,8 @@
                 "pageRange": "p. 350",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12275,7 +12637,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 351",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -12299,7 +12663,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 341-357",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -12336,7 +12702,8 @@
                 "pageRange": "p. 343",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12364,7 +12731,8 @@
                 "pageRange": "p. 343",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12386,7 +12754,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -12395,7 +12765,10 @@
       "sectionPageRange": "pp. 341-357",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -12633,11 +13006,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "F-1",
       "available": true,
       "entryCount": 20,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -12757,7 +13132,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 394",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -12781,7 +13158,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 360-420",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -12823,7 +13202,8 @@
                 "pageRange": "p. 365",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12855,7 +13235,8 @@
                 "pageRange": "p. 365",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12900,7 +13281,8 @@
                 "pageRange": "pp. 368-374",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12942,7 +13324,8 @@
                 "pageRange": "pp. 369-374",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -12986,7 +13369,8 @@
                 "pageRange": "pp. 375-378",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13026,7 +13410,8 @@
                 "pageRange": "pp. 379-385",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13051,7 +13436,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -13060,7 +13447,10 @@
       "sectionPageRange": "pp. 360-420",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -13276,11 +13666,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "F-2",
       "available": true,
       "entryCount": 18,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -13368,7 +13760,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 421-425",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -13392,7 +13786,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 421-425",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -13423,7 +13819,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 425",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -13461,7 +13859,8 @@
                 "pageRange": "pp. 421-422",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13493,7 +13892,8 @@
                 "pageRange": "p. 422",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13545,7 +13945,8 @@
                 "pageRange": "p. 424",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13595,7 +13996,8 @@
                 "pageRange": "pp. 423-424",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -13617,7 +14019,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -13626,7 +14030,10 @@
       "sectionPageRange": "pp. 421-425",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -13790,11 +14197,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "F-3",
       "available": true,
       "entryCount": 6,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -13978,7 +14387,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 534",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -14007,7 +14418,8 @@
                 "pageRange": "PDF pp. 530-531 (embedded manual pp. 10-11)",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -14040,7 +14452,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 532-583",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -14071,7 +14485,8 @@
                 "pageRange": "PDF p. 530 (embedded manual p. 10)",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -14125,7 +14540,8 @@
                 "pageRange": "PDF pp. 528-530 (embedded manual pp. 8-10)",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -14148,7 +14564,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -14157,7 +14575,10 @@
       "sectionPageRange": "pp. 532-583",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -14419,12 +14840,14 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "FORDIASP",
       "available": true,
       "entryCount": 5,
       "requiresHumanReview": true,
-      "mappingNote": "F-4 evidence is represented under structured statusCode FORDIASP"
+      "mappingNote": "F-4 evidence is represented under structured statusCode FORDIASP",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -14549,7 +14972,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 429",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -14573,7 +14998,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 426-473",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -14586,7 +15013,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -14595,7 +15024,10 @@
       "sectionPageRange": "pp. 426-473",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -14811,11 +15243,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "F-5",
       "available": true,
       "entryCount": 8,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -15070,7 +15504,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 494-497",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -15103,7 +15539,8 @@
                 "pageRange": "pp. 490-491",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15145,7 +15582,8 @@
                 "pageRange": "p. 491",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15184,7 +15622,8 @@
                 "pageRange": "p. 491",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15224,7 +15663,8 @@
                 "pageRange": "p. 491",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15254,7 +15694,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -15285,7 +15727,8 @@
                 "pageRange": "p. 488",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15320,7 +15763,8 @@
                 "pageRange": "pp. 488-489",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15350,7 +15794,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15381,7 +15827,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 494",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15400,7 +15848,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15419,7 +15869,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15441,7 +15893,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -15467,7 +15921,9 @@
         "manualVersion": "2026.5",
         "pageRange": "매뉴얼 확인 필요",
         "confidence": "needs_review",
-        "needsManualReview": true
+        "needsManualReview": true,
+        "sourceDate": "2026-06-01",
+        "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
       }
     ],
     "sourceManualStatus": {
@@ -15479,7 +15935,9 @@
         "F-6 representative hierarchy uses existing data; F-6-1 through F-6-3 details still need 2026.5 manual page verification.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -15488,7 +15946,10 @@
       "sectionPageRange": "pp. 474-497",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -15719,11 +16180,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "F-6",
       "available": true,
       "entryCount": 9,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -15853,7 +16316,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 513",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15877,7 +16342,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 498-513",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -15916,7 +16383,8 @@
                 "pageRange": "p. 504",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15950,7 +16418,8 @@
                 "pageRange": "pp. 504-505",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -15984,7 +16453,8 @@
                 "pageRange": "p. 505",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16016,7 +16486,8 @@
                 "pageRange": "pp. 505-506",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16046,7 +16517,8 @@
                 "pageRange": "p. 506",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16076,7 +16548,8 @@
                 "pageRange": "pp. 506-507",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16109,7 +16582,8 @@
                 "pageRange": "p. 507",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16139,7 +16613,8 @@
                 "pageRange": "p. 507",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16162,7 +16637,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -16171,7 +16648,10 @@
       "sectionPageRange": "pp. 498-513",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -16364,11 +16844,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "G-1",
       "available": true,
       "entryCount": 10,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -16583,7 +17065,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 517",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -16607,7 +17091,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 514-517",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -16636,7 +17122,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 517",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -16649,7 +17137,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -16658,7 +17148,10 @@
       "sectionPageRange": "pp. 514-517",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -16776,11 +17269,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "H-1",
       "available": true,
       "entryCount": 3,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -16847,7 +17342,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 531",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -16872,7 +17369,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 526-531",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ],
         "variants": [
@@ -16905,7 +17404,8 @@
                 "pageRange": "PDF pp. 524-525 (embedded manual pp. 4-5)",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16955,7 +17455,8 @@
                 "pageRange": "PDF pp. 525-526 (embedded manual pp. 5-6)",
                 "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
                 "confidence": "manual_extracted_needs_review",
-                "needsManualReview": true
+                "needsManualReview": true,
+                "sourceDate": "2026-06-01"
               }
             ],
             "notes": [
@@ -16979,7 +17480,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -16988,7 +17491,10 @@
       "sectionPageRange": "pp. 526-531",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
@@ -17101,11 +17607,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "H-2",
       "available": true,
       "entryCount": 5,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -17149,7 +17657,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 16",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -17173,7 +17683,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 17",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -17186,7 +17698,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -17195,7 +17709,10 @@
       "sectionPageRange": "pp. 14-17",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -17284,11 +17801,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "A-1",
       "available": true,
       "entryCount": 4,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -17331,7 +17850,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 20",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -17355,7 +17876,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 20",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -17368,7 +17891,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -17377,7 +17902,10 @@
       "sectionPageRange": "pp. 18-20",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -17466,11 +17994,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "A-2",
       "available": true,
       "entryCount": 2,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -17514,7 +18044,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 22",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -17539,7 +18071,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 23",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -17552,7 +18086,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -17561,7 +18097,10 @@
       "sectionPageRange": "pp. 21-23",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -17650,11 +18189,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "A-3",
       "available": true,
       "entryCount": 4,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -17700,7 +18241,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 26",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -17724,7 +18267,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 26-26",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -17737,7 +18282,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -17746,7 +18293,10 @@
       "sectionPageRange": "pp. 26-26",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -17839,11 +18389,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "C-1",
       "available": true,
       "entryCount": 3,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -17904,7 +18456,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 103",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -17928,7 +18482,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 102-104",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -17941,7 +18497,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -17950,7 +18508,10 @@
       "sectionPageRange": "pp. 102-104",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -18068,11 +18629,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-5",
       "available": true,
-      "entryCount": 3,
-      "requiresHumanReview": true
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -18133,7 +18696,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 107",
             "confidence": "auto_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18157,7 +18722,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 105-107",
             "confidence": "needs_manual_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18188,7 +18755,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 107",
             "confidence": "manual_extracted_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -18201,7 +18770,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -18210,7 +18781,10 @@
       "sectionPageRange": "pp. 105-107",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -18328,11 +18902,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-6",
       "available": true,
-      "entryCount": 4,
-      "requiresHumanReview": true
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -18392,7 +18968,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 91-92",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18418,7 +18996,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 94",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -18431,7 +19011,9 @@
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -18440,7 +19022,10 @@
       "sectionPageRange": "pp. 83-101",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -18588,12 +19173,14 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "D-4",
       "available": true,
       "entryCount": 15,
       "requiresHumanReview": true,
-      "mappingNote": "D-4-2K evidence is represented under structured statusCode D-4"
+      "mappingNote": "D-4-2K evidence is represented under structured statusCode D-4",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -18689,7 +19276,9 @@
             "manualVersion": "2026.5",
             "pageRange": "p. 749",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18713,7 +19302,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18732,7 +19323,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18756,7 +19349,9 @@
             "manualVersion": "2026.5",
             "pageRange": "pp. 746-757",
             "confidence": "manual_page_extract_needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18775,7 +19370,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18794,7 +19391,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       },
@@ -18816,7 +19415,9 @@
             "manualVersion": "2026.5",
             "pageRange": "매뉴얼 확인 필요",
             "confidence": "needs_review",
-            "needsManualReview": true
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
           }
         ]
       }
@@ -18842,7 +19443,9 @@
         "manualVersion": "2026.5",
         "pageRange": "매뉴얼 확인 필요",
         "confidence": "needs_review",
-        "needsManualReview": true
+        "needsManualReview": true,
+        "sourceDate": "2026-06-01",
+        "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
       }
     ],
     "sourceManualStatus": {
@@ -18854,7 +19457,9 @@
         "K-STAR is present as a representative special-track record; full 2026.5 manual verification is deferred.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
@@ -18863,7 +19468,10 @@
       "sectionPageRange": "pp. 746-757",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": [
       {
@@ -19003,11 +19611,13 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "K-STAR",
       "available": true,
       "entryCount": 2,
-      "requiresHumanReview": true
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   },
   {
@@ -19015,27 +19625,109 @@
     "name": "지역특화·광역형 비자 시범사업",
     "cat": "etc",
     "period": "시범사업 공고 기준",
-    "newReq": "지자체 추천, 체류지·근무지 요건, 소득·고용 요건 확인.",
+    "newReq": "지역특화형 비자와 광역형 비자 시범사업은 트랙별 지자체 추천, 체류지·근무지, 가족동반, 소득·고용·재학 요건을 각각 확인해야 함. 2026-06-01 체류민원 매뉴얼은 지역특화 숙련기능인력(E-7-4R) 동반가족(F-3-3R), 지역특화동포(F-4-R) 및 광역형 D-2/E-7 특례를 별도 절차로 제시함.",
     "newReqDocs": [
       "doc_local_recommendation",
       "doc_address",
-      "doc_emp_contract"
+      "doc_emp_contract",
+      "doc_case_specific_evidence"
     ],
-    "extReq": "체류기간 연장허가 특례를 받은 사람, 연구유학(D 5)는 제외 ○ (대상자 요건) - (체류기간 기준) 전문학사 3학기 이상 ‧ 학사 3학년 이상 수료 후, 석․박사 제한 없음 - (한국어 능력 기준) 사통프로그램 4단계 이상(또는 TOPIK 4급 이상) - (영어트랙과정 어학능력) 학년에 관계없이 TOEFL 530(CBT 197, iBT 71), IELTS 5.5, CEFR B2, TEPS 601점(NEW TEPS 327점) 이상 기준을 충족한 사람은 한국어 능력 기준을 충족한 것으로 봄 ※ 단, 영어를 모국어 또는 공용어로 하는 국가 유학생은 증빙서류 제출 면제 - (성적 기준) 신청일 기준 직전 학기 평균 성적 B학점 이상 ※ 단, 입학 후 최초 1학기 수강 중인 자로 성적표가 미발급된 경우는 제외 - (허용 기간) 1회, 최대 1년 이내(단, 전문학사의 경우 1회, 최대 6개월 이내) ○ (활동 내용) 대학 외부기관 및 기업체에서의 전문분야(E-1~E-7) 인턴*활동 허용 * 소정의 연수 수당을 받고 전문분야(",
+    "extReq": "전체 공통 연장요건으로 단일화하지 않음. 지역특화 숙련기능인력(E-7-4R) 가족은 F-3-3R 체류자격 변경·부여·연장별로 가족관계, 동일 지역 실거주, 배우자 사회통합프로그램, 학령기 아동 재학·입학 또는 예외 입증을 확인. 지역특화동포(F-4-R)는 지역동포 유형, 가족 동반/순차 이주, 재학·입학 예정 또는 진단서, 직업 및 연간 소득금액 신고서 등을 트랙별로 확인. 광역형 비자(D-2/E-7)는 별도 시범사업 요건과 지자체별 기준을 확인.",
     "extReqDocs": [
-      "doc_address",
-      "doc_inc_proof",
-      "doc_emp_contract"
+      "doc_case_specific_evidence",
+      "doc_local_recommendation",
+      "doc_address"
     ],
-    "faq": "Q: 전국 어디서나 가능?\nA: 지정된 지역 및 시범사업 대상군에 한정.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-    "subCodes": [],
+    "faq": "Q: 전국 어디서나 가능?\nA: 아닙니다. 지정 지역, 추천 지자체, 대상 대학·직종·가족동반 요건에 한정됩니다.\nQ: REGION-S의 서류를 하나의 공통 목록으로 봐도 되나요?\nA: 안 됩니다. F-2-R, E-7-4R, F-3-3R, F-4-R, 광역형 D-2/E-7 등 세부 트랙별로 확인해야 합니다.\n\n[2026-06-01 체류민원 매뉴얼 유의사항] 제출서류는 세부 트랙과 관할기관 심사에 따라 가감될 수 있으며, 지자체 추천·체류지·가족관계·재학·소득·범죄경력 등은 해당 절차별로 확인해야 합니다.",
+    "subCodes": [
+      {
+        "code": "F-2-R",
+        "name": "지역특화 우수인재",
+        "addReq": "인구감소지역 등 추천지역 거주·취업·창업 요건과 광역지자체 추천을 확인.",
+        "addReqDocs": [
+          "doc_local_recommendation",
+          "doc_address",
+          "doc_inc_proof",
+          "doc_case_specific_evidence"
+        ],
+        "note": "세부 요건은 지역특화형 비자 섹션 및 지자체별 공고 확인."
+      },
+      {
+        "code": "E-7-4R",
+        "name": "지역특화 숙련기능인력",
+        "addReq": "E-9/E-10/H-2 등 체류이력, 추천지역 거주·취업, 점수제, 연봉 및 고용계약 요건 확인.",
+        "addReqDocs": [
+          "doc_local_recommendation",
+          "doc_address",
+          "doc_emp_contract",
+          "doc_point_table",
+          "doc_inc_proof"
+        ],
+        "note": "E-7-4에서 E-7-4R로 전환하는 경우 체류기간 연장 시 세부약호 변경으로 처리되는 경우가 있음."
+      },
+      {
+        "code": "F-3-3R",
+        "name": "지역특화 숙련기능인력 동반가족",
+        "addReq": "E-7-4R 주체류자의 배우자 및 미성년자녀. 가족관계, 동일 지역 실거주, 배우자 KIIP 2단계, 학령기 아동 재학·입학 또는 예외 입증 확인.",
+        "addReqDocs": [
+          "doc_fam_rel",
+          "doc_address",
+          "doc_kiip",
+          "doc_enroll",
+          "doc_case_specific_evidence"
+        ],
+        "note": "2026-06-01 체류민원 매뉴얼 pp.619-621 변경 구간 반영."
+      },
+      {
+        "code": "F-4-R",
+        "name": "지역특화동포",
+        "addReq": "지역동포 유형, 가족 동반/순차 이주, 국내·해외 전입자, 학령기 미성년 자녀 요건 등을 트랙별로 확인.",
+        "addReqDocs": [
+          "doc_local_recommendation",
+          "doc_passport_copy",
+          "doc_address",
+          "doc_f4_proof",
+          "doc_crim",
+          "doc_job_report",
+          "doc_enroll",
+          "doc_health"
+        ],
+        "note": "2026-06-01 체류민원 매뉴얼 pp.623-624, p.627 변경 구간 반영."
+      },
+      {
+        "code": "REGIONAL-D-2",
+        "name": "광역형 비자 유학생",
+        "addReq": "광역 시·도지사 추천, 지정 대학·학과, 시간제취업·인턴활동·재정능력 특례 등 지자체별 기준 확인.",
+        "addReqDocs": [
+          "doc_local_recommendation",
+          "doc_enroll",
+          "doc_finance",
+          "doc_topik",
+          "doc_case_specific_evidence"
+        ],
+        "note": "광역형 비자 시범사업 D-2 특례는 지자체별로 다름."
+      },
+      {
+        "code": "REGIONAL-E-7",
+        "name": "광역형 비자 특정활동",
+        "addReq": "E-7-1/E-7-2/E-7-3 대상 직종, 광역 시·도지사 추천, 지정 직종 여부 확인.",
+        "addReqDocs": [
+          "doc_local_recommendation",
+          "doc_emp_contract",
+          "doc_specialty",
+          "doc_case_specific_evidence"
+        ],
+        "note": "광역형 비자 시범사업 E-7 특례는 지자체별로 다름."
+      }
+    ],
     "initialReqDocs": [
       "doc_local_recommendation",
       "doc_address"
     ],
     "extensionReqDocs": [
-      "doc_address",
-      "doc_inc_proof"
+      "doc_case_specific_evidence",
+      "doc_local_recommendation",
+      "doc_address"
     ],
     "changeReqDocs": [
       "doc_local_recommendation"
@@ -19043,7 +19735,7 @@
     "procedures": {
       "extension": {
         "available": false,
-        "summary": "지역특화·광역형 비자 섹션은 세부 시범사업·트랙별 요건이 나뉘어 있어 전체 연장 제출서류를 자동 구조화하지 않았습니다.",
+        "summary": "지역특화·광역형 비자는 트랙별 제출서류가 달라 전체 연장 제출서류를 하나로 확정하지 않습니다. 2026-06-01 매뉴얼에서 변경된 E-7-4R 동반가족(F-3-3R) 및 지역특화동포(F-4-R) 제출서류를 하위 트랙 설명에 반영했습니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -19053,13 +19745,16 @@
           "conditionalDocs": []
         },
         "notes": [
-          "시범사업별 추천서, 학교/기업/지자체 확인서 등은 수동 원문 대조 후 별도 모델링해야 합니다."
+          "지역특화형 비자와 광역형 비자 시범사업은 세부 트랙·지자체별 공고·가족동반 여부에 따라 제출서류가 달라집니다.",
+          "2026-06-01 체류민원 매뉴얼 변경 페이지는 REGIONAL p.619-621, p.623-624, p.627이며, 부모 레코드에 보편 제출서류로 평탄화하지 않았습니다."
         ],
         "manualRefs": [
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 696-745",
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+            "pageRange": "pp.587-638, pp.689-745",
             "confidence": "manual_page_extract_needs_review",
             "needsManualReview": true
           }
@@ -19067,7 +19762,7 @@
       },
       "registration": {
         "available": false,
-        "summary": "지역특화·광역형 비자 섹션에서 외국인등록 전용 제출서류 표제를 자동 확정하지 못했습니다.",
+        "summary": "지역특화·광역형 비자 섹션에서 외국인등록 전용 제출서류는 트랙별로 확인해야 합니다. 공통 레코드에서는 매뉴얼/지자체 공고 확인 필요로 유지합니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -19083,7 +19778,9 @@
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 696-745",
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+            "pageRange": "pp.587-638, pp.689-745",
             "confidence": "manual_page_extract_needs_review",
             "needsManualReview": true
           }
@@ -19097,24 +19794,31 @@
       "needsManualReview": true,
       "reviewNotes": [
         "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
-      ]
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026-06-01 체류민원 매뉴얼 변경 페이지를 반영해 REGION-S를 트랙별 안내로 보수화했습니다. 부모 레코드에 보편 서류목록으로 평탄화하지 않았습니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
     },
     "manualRequiredDocAudit": {
       "manualName": "체류민원",
       "manualVersion": "2026.5",
       "scope": "extension_and_foreigner_registration",
-      "sectionPageRange": "pp. 696-745",
+      "sectionPageRange": "pp.587-638, pp.689-745",
       "method": "pdf_text_conservative_auto_extract",
       "needsManualReview": true,
-      "updatedAt": "2026-05-07"
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
     "documents_initial": "DATA_MISSING",
     "documents_registration": "DATA_MISSING",
     "documents_extension": "DATA_MISSING",
     "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
-      "extReq": "2026.5_manual_extract"
+      "extReq": "2026.5_manual_extract",
+      "regionalRefresh": "2026-06-01_stay_manual_changed_pages_619_621_623_624_627"
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -19187,12 +19891,14 @@
       }
     },
     "structuredRequirementsRef": {
-      "source": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
       "statusCode": "REGIONAL",
       "available": true,
       "entryCount": 15,
       "requiresHumanReview": true,
-      "mappingNote": "REGION-S evidence is represented under structured statusCode REGIONAL"
+      "mappingNote": "REGION-S evidence is represented under structured statusCode REGIONAL",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     }
   }
 ]

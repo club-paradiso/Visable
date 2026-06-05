@@ -53,13 +53,14 @@ MATRIX_PATH = os.path.join(
     REPO_ROOT, "backend", "data", "eval", "paradiso_coverage_matrix.json"
 )
 DEFAULT_MANUAL = os.path.join(
-    REPO_ROOT, "docs", "source-manuals", "2026-05", "stay_manual_2026_05.pdf"
+    REPO_ROOT, "docs", "source-manuals", "2026-06", "stay_manual_2026_06_01.pdf"
 )
 DEFAULT_OUT_DIR = os.path.join(
     REPO_ROOT, "backend", "data", "manual_grounding", "candidates"
 )
 SOURCE_TITLE = "외국인체류 안내매뉴얼"
 SOURCE_DATE = "2026.5"
+SOURCE_REVISION_DATE = "2026-06-01"
 ISSUING_BODY = "법무부 출입국·외국인정책본부"
 
 _REFUSED_COVERAGE_STATUSES = {"active_grounded", "unsupported"}
@@ -409,6 +410,7 @@ def _build_candidate(
         "source_file": source_file_rel,
         "source_title": SOURCE_TITLE,
         "source_date": SOURCE_DATE,
+        "source_revision_date": SOURCE_REVISION_DATE,
         "issuing_body": ISSUING_BODY,
         "source_verification_status": "machine_extracted",
         "source_confidence": "low",

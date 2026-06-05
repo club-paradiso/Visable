@@ -13693,7 +13693,9 @@ function renderSourceReferences(v) {
         if (getManualDomains(v).includes('stay_sojourn')) refs.push({ manualName: txAt('domainLabels', 2, '체류민원'), manualVersion: status.stayManualVersion || '2026.5', pageRange: tx('manualNeedsReview'), confidence: 'needs_review' });
     }
     const refItems = refs.map(ref => {
-        const bits = [ref.manualName || ref.manual || tx('sourceManualFallback'), ref.manualVersion || ref.version || '2026.5', ref.pageRange || tx('pageNeedsReview'), ref.confidence ? `${tx('confidenceLabel')}: ${ref.confidence}` : `${tx('confidenceLabel')}: ${tx('confidenceNeedsReview')}`];
+        const sourceDate = ref.sourceDate || ref.sourceRevisionDate || ref.revisionDate || '';
+        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.5'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.5');
+        const bits = [ref.manualName || ref.manual || tx('sourceManualFallback'), versionLabel, ref.pageRange || tx('pageNeedsReview'), ref.confidence ? `${tx('confidenceLabel')}: ${ref.confidence}` : `${tx('confidenceLabel')}: ${tx('confidenceNeedsReview')}`];
         return `<li>${bits.map(escapeHtml).join(' · ')}</li>`;
     }).join('');
     const reviewText = status.needsManualReview === false ? tx('sourceReviewDone') : tx('sourceReviewPending');
@@ -13863,7 +13865,11 @@ function isDocFieldMissing(field) {
 
 function formatDocumentTabRefNote(refs) {
     if (!Array.isArray(refs) || !refs.length) return '';
-    const bits = refs.map(ref => [ref.manualName || ref.manual || '체류민원', ref.manualVersion || ref.version || '2026.5', ref.pageRange || '페이지 확인 필요'].filter(Boolean).join(' · '));
+    const bits = refs.map(ref => {
+        const sourceDate = ref.sourceDate || ref.sourceRevisionDate || ref.revisionDate || '';
+        const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.5'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.5');
+        return [ref.manualName || ref.manual || '체류민원', versionLabel, ref.pageRange || '페이지 확인 필요'].filter(Boolean).join(' · ');
+    });
     return `${currentLanguage === 'en' ? 'Source' : '출처'}: ${bits.join(' / ')}`;
 }
 

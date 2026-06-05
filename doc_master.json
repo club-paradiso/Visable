@@ -105,13 +105,13 @@
     "id": "doc_emp_recom",
     "ko_name": "고용추천서",
     "en_name": "Employment Recommendation",
-    "description": "관계 부처 또는 사용자가 발급한 고용추천서 (E-7 등에서 요구되는 경우)."
+    "description": "관계 부처, 지방자치단체, 고용기업 또는 사용자가 발급한 추천서. E-7 일반 고용추천서와 E-7-4 고용기업 추천서 등에서 요구되는 경우 사용."
   },
   {
     "id": "doc_employment_insurance_list",
-    "ko_name": "고용보험 피보험자 명부",
-    "en_name": "Employment Insurance Insured List",
-    "description": "사용자 사업장 고용보험 피보험자 명부 또는 상시근로자 수 입증자료."
+    "ko_name": "고용보험·4대보험 가입자 명부",
+    "en_name": "Employment/Social Insurance Insured List",
+    "description": "사용자 사업장 고용보험 피보험자 명부, 4대 사회보험 사업장 가입자 명부 또는 상시근로자 수 입증자료."
   },
   {
     "id": "doc_employment_proof",
@@ -472,5 +472,11 @@
     "ko_name": "외국인등록증 발급 수수료",
     "en_name": "Alien Registration Card Issuance Fee",
     "description": "외국인등록증 발급 및 재발급 수수료 35,000원. 외국인체류 안내매뉴얼(2026.5) 공통사항 수수료 표 기준입니다."
+  },
+  {
+    "id": "doc_personal_statement",
+    "ko_name": "신상기술서",
+    "en_name": "Personal Statement / Bio Statement",
+    "description": "E-7-4 등 일부 체류자격에서 신청인이 작성하는 신상기술서 또는 자기소개·이력 관련 서식."
   }
 ]

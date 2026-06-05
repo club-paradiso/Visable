@@ -1,0 +1,36 @@
+{
+  "reportDate": "2026-06-05",
+  "manual": {
+    "path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+    "userProvidedPath": "/Users/seonjaekim/Downloads/stay_manual_260601.pdf",
+    "sha256": "e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+    "sourceDate": "2026-06-01",
+    "manualVersion": "2026.5",
+    "byteIdenticalToUserProvidedPdf": true
+  },
+  "comparison": {
+    "sourceAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
+    "stayEntriesSeen": 225,
+    "stayEntriesRelabelledToJunePdf": 218,
+    "stayEntriesRequiringReextraction": 7,
+    "changedPages": [299, 619, 620, 621, 623, 624, 627],
+    "affectedStructuredStatusCodes": ["E-7", "REGIONAL"]
+  },
+  "productionChanges": {
+    "visaDataCodesUpdated": ["E-7", "REGION-S"],
+    "docMasterIdsUpdated": ["doc_emp_recom", "doc_employment_insurance_list"],
+    "docMasterIdsAdded": ["doc_personal_statement"],
+    "uiFilesUpdated": ["index.html", "prototype/index.html"],
+    "helperScriptsUpdated": [
+      "scripts/extract_manual_page_text.py",
+      "scripts/generate_candidate_from_matrix.py"
+    ],
+    "backendParityUpdated": true
+  },
+  "guardrails": {
+    "verifiedPromotions": 0,
+    "needsManualReviewDemotions": 0,
+    "parentLevelFlatteningApplied": false,
+    "hwpParsedAsSource": false
+  }
+}
