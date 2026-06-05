@@ -489,6 +489,15 @@ def _check_question(base, q):
         "analogical_evidence_count": None,
         "missing_direct_authority": None,
         "source_types_attempted": None,
+        "ontology_detected": None,
+        "evidence_query_plan": None,
+        "evidence_goal_by_query": None,
+        "source_families_planned": None,
+        "source_family_support": None,
+        "direct_official_evidence_available": None,
+        "contextual_official_evidence_available": None,
+        "analogical_evidence_available": None,
+        "background_evidence_available": None,
         "raw_internal_codes_in_default_ui": None,
         "h1_first_line_warning": None,
         "risky_phrase_warnings": None,
@@ -597,6 +606,77 @@ def _check_question(base, q):
     result["analogical_evidence_count"] = meta.get("analogical_evidence_count")
     result["missing_direct_authority"] = meta.get("missing_direct_authority")
     result["source_types_attempted"] = meta.get("source_types_attempted")
+
+    # Generalized official-evidence ontology + query-plan signals (Part H).
+    ontology = meta.get("evidence_ontology") or {}
+    query_plan = meta.get("evidence_query_plan") or []
+    facts = result.get("immigration_facts") or {}
+    issues = list(result.get("legal_issue_types") or [])
+    result["ontology_detected"] = bool(ontology)
+    result["evidence_query_plan"] = query_plan
+    result["evidence_goal_by_query"] = meta.get("evidence_goal_by_query") or [
+        q.get("evidence_goal") for q in query_plan
+    ]
+    result["source_families_planned"] = (
+        ontology.get("source_families_planned") or result.get("source_families_planned")
+    )
+    result["source_family_support"] = meta.get("source_family_support") or {}
+    result["direct_official_evidence_available"] = bool(result.get("direct_evidence_count"))
+    result["contextual_official_evidence_available"] = bool(result.get("related_evidence_count"))
+    result["analogical_evidence_available"] = bool(result.get("analogical_evidence_count"))
+    result["background_evidence_available"] = bool(meta.get("background_evidence_count"))
+
+    # WARN: planner emitted no query although a legal issue was detected.
+    substantive_issues = [
+        i for i in issues if i not in ("legal_general", "non_immigration_adjacent_issue")
+    ]
+    if substantive_issues and not query_plan:
+        result["quality_warnings"].append(
+            "evidence planner emitted no query for legal issues: %s" % substantive_issues
+        )
+    # WARN: direct evidence exists but answer certainty stayed unavailable.
+    if result.get("direct_evidence_count") and result.get("answer_certainty_level") in (
+        "unavailable", "source_unavailable",
+    ):
+        result["quality_warnings"].append(
+            "direct evidence exists but answer_certainty_level is unavailable"
+        )
+    # WARN: previous-status evidence planned as direct for a current-status issue.
+    if facts.get("status_transition_detected"):
+        for q in query_plan:
+            if q.get("status_role") == "previous_status" and q.get("evidence_goal") == "direct":
+                result["quality_warnings"].append(
+                    "previous-status query planned as direct authority after a status transition"
+                )
+                break
+    # WARN: target status lost in a status-change question.
+    target = facts.get("target_status")
+    if "status_change" in issues and target:
+        target_in_plan = any(
+            target in (q.get("expected_status_codes") or []) for q in query_plan
+        )
+        if not target_in_plan:
+            result["quality_warnings"].append(
+                "target status %s lost in status-change query plan" % target
+            )
+    # WARN: a registration/reporting question drifted into study enrollment.
+    activities = list(result.get("proposed_activity_type") or [])
+    if "registration_or_residence_report" in issues and (
+        "study_on_non_study_status" in issues or "formal_enrollment" in activities
+    ):
+        result["quality_warnings"].append(
+            "registration/reporting question classified as study enrollment"
+        )
+    # WARN: an unsupported/unwired source family is labeled a parser bad_response.
+    fam_support = result["source_family_support"]
+    fam_statuses = result.get("source_family_statuses") or {}
+    for fam, support in fam_support.items():
+        if support == "planned_not_wired" and str(fam_statuses.get(fam, "")).lower() in (
+            "bad_response", "parse_error",
+        ):
+            result["quality_warnings"].append(
+                "unsupported source family %s labeled bad_response" % fam
+            )
 
     if result.get("source_panel_default_raw_code_leak"):
         result["quality_warnings"].append("raw law diagnostic code appears in default source panel label")
@@ -961,6 +1041,14 @@ def _emit(report, args):
         suffix += " [overconfident=%s trust_warn=%s raw_ui=%s raw_copy=%s]" % (
             r.get("overconfident_phrase_warning"), r.get("default_source_panel_trust_warning"),
             r.get("raw_code_default_ui_leak"), r.get("raw_code_copy_leak"),
+        )
+        # Generalized official-evidence ontology / query-plan signals (Part H).
+        suffix += " [ontology=%s families_planned=%s n_queries=%s goals=%s direct_ev=%s contextual_ev=%s analogical_ev=%s background_ev=%s certainty=%s panel_state=%s]" % (
+            r.get("ontology_detected"), r.get("source_families_planned"),
+            len(r.get("evidence_query_plan") or []), r.get("evidence_goal_by_query"),
+            r.get("direct_official_evidence_available"), r.get("contextual_official_evidence_available"),
+            r.get("analogical_evidence_available"), r.get("background_evidence_available"),
+            r.get("answer_certainty_level"), r.get("source_panel_state"),
         )
         if r["live_answer_checked"]:
             suffix += " [direct_early=%s len=%s warn_reps=%s checklist=%s mixed=%s leak=%s]" % (

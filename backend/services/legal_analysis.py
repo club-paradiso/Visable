@@ -334,39 +334,22 @@ def build_generalized_source_plan(
 ) -> Dict[str, Any]:
     facts = immigration_facts or extract_immigration_facts(question)
     issues = list(legal_issue_types or classify_legal_issue_types(question, facts))
-    families: List[str] = []
+
+    # Source-family routing lives in exactly one place: the generalized
+    # evidence ontology. This replaces the previous inline per-issue if/elif
+    # ladder so the routing table is reusable and testable (Part C). Output is
+    # identical: families are added in issue order, first occurrence wins.
+    from .evidence_ontology import route_source_families, FALLBACK_WHEN_EMPTY
+
+    families: List[str] = [f for f in route_source_families(issues) if f in SOURCE_FAMILIES]
 
     def add(*names: str) -> None:
         for name in names:
             if name in SOURCE_FAMILIES and name not in families:
                 families.append(name)
 
-    for issue in issues:
-        if issue == "documents_needed":
-            add("manual", "statute", "enforcement_rule")
-        elif issue in {"activity_scope", "outside_status_activity", "status_purpose_alignment", "employment_restriction", "study_on_non_study_status", "work_on_non_work_status"}:
-            add("statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "legal_interpretation", "administrative_appeal", "manual")
-        elif issue == "status_change":
-            add("manual", "statute", "enforcement_decree", "legal_interpretation", "administrative_appeal")
-        elif issue in {"reporting_duty", "workplace_change_addition", "registration_or_residence_report"}:
-            # Registration / reporting / workplace-change duties are grounded in
-            # the Act + Enforcement Decree (별표 / duty triggers) + Enforcement
-            # Rule (deadlines, attached forms) + the practical manual, with the
-            # manual leading. Enforcement Decree must be present so a foreigner-
-            # registration ("외국인등록은 언제") question is not under-sourced.
-            add("manual", "statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "legal_interpretation")
-        elif issue == "overstay_or_risk":
-            add("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal")
-        elif issue == "nationality_or_refugee_context":
-            add("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "manual")
-        elif issue == "post_status_change_residual_duty":
-            add("manual", "statute", "enforcement_rule", "administrative_rule", "legal_interpretation")
-        elif issue in {"reentry", "extension", "approval_condition"}:
-            add("manual", "statute", "enforcement_decree", "enforcement_rule", "administrative_rule", "legal_interpretation")
-        else:
-            add("manual", "statute", "enforcement_decree", "enforcement_rule", "legal_term")
     if not families:
-        add("manual", "statute", "legal_term")
+        add(*FALLBACK_WHEN_EMPTY)
 
     # Query anchors intentionally include current/previous/target statuses and
     # activity concepts, but keep the total query count capped.
