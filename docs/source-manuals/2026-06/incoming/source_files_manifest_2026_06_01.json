@@ -1,0 +1,40 @@
+{
+  "source_intake_date": "2026-06-05",
+  "source_revision_date": "2026-06-01",
+  "purpose": "Install updated 체류민원/외국인체류 안내매뉴얼 source artifacts supplied by the user.",
+  "canonical_current_pdf": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+  "stored_only_hwp": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
+  "files": [
+    {
+      "original_path": "/Users/seonjaekim/Downloads/stay_manual_260601.pdf",
+      "repo_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "format": "pdf",
+      "bytes": 14894357,
+      "sha256": "e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+      "pages": 777,
+      "extraction_role": "primary_indexed_pdf",
+      "verification": "pypdf page count/metadata/cover/TOC sampled; runtime grounding pages 43,44,90,91,226 compared to prior current PDF and matched by extracted text hash."
+    },
+    {
+      "original_path": "/Users/seonjaekim/Downloads/260601_체류민원_자격별_안내_매뉴얼(숙련기능인력 제도 개선사항 반영).hwp",
+      "repo_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
+      "format": "hwp",
+      "bytes": 3177472,
+      "sha256": "9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d",
+      "hwp_flags_raw": "0x5",
+      "compressed": true,
+      "distribution_mode": true,
+      "encrypted": false,
+      "view_text_sections": 23,
+      "body_text_sections": 1,
+      "bindata_streams": 16,
+      "extraction_role": "stored_only_official_artifact",
+      "verification": "olefile storage inspection succeeded; body text extraction returned only distribution-mode notice, so this HWP is not parsed or indexed."
+    }
+  ],
+  "downstream_indexing": {
+    "pdf_indexed_or_sampled": true,
+    "hwp_indexed": false,
+    "note": "Existing broad structured requirement fixtures are still May-derived and should be regenerated in a follow-up before their per-entry source references are relabeled."
+  }
+}

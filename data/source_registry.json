@@ -14,6 +14,22 @@
   ],
   "sources": [
     {
+      "id": "stay_manual_2026_06_01_pdf",
+      "type": "pdf_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.5; 2026-06-01 source file)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.5; 2026-06-01 source file)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.5",
+      "source_date": "2026-06-01",
+      "local_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "url": null,
+      "last_known_hash": "sha256:e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+      "last_checked_at": null,
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "Primary source for stay/extension manual grounding; canonical PDF installed from user-provided 2026-06-01 source PDF, 777 pages. Companion HWP is stored-only because distribution-mode body extraction is blocked."
+    },
+    {
       "id": "stay_manual_2026_05_pdf",
       "type": "pdf_manual",
       "title": "외국인체류 안내매뉴얼 (2026.5)",
@@ -25,8 +41,9 @@
       "last_known_hash": "sha256:dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
       "last_checked_at": null,
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Primary source for stay/extension manual grounding (schema 1.2); canonical PDF installed from 2026-05-21 source PDF, 777 pages."
+      "status": "deprecated",
+      "notes": "Superseded by stay_manual_2026_06_01_pdf; retained for source-history audit.",
+      "superseded_by": "stay_manual_2026_06_01_pdf"
     },
     {
       "id": "visa_manual_2026_05_pdf",

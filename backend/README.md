@@ -278,10 +278,11 @@ agreement tracks), and the planned next batches.
   `docs/manual_grounding_expansion_plan.md` § "Schema 1.2" for the
   exact selector rules.
 - When both fire, the prompt is wrapped with a Korea-specific context
-  block built from
+  block built from the legacy compatibility fixture
   `backend/data/manual_grounding/stay_manual_grounding_2026_05.json`,
-  which mirrors the 제출서류 listed in the
-  *외국인체류 안내매뉴얼 (2026.5)* — 법무부 출입국·외국인정책본부.
+  whose source references now point at the current June 1 stay/residence
+  PDF, *외국인체류 안내매뉴얼 (2026.5; 2026-06-01 source file)* —
+  법무부 출입국·외국인정책본부.
 - The response carries grounding metadata on the top-level
   `AskResponse`:
 
@@ -293,9 +294,10 @@ agreement tracks), and the planned next batches.
     "grounding_used": true,
     "grounding_sources": [
       {
-        "source_file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "source_file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
         "source_title": "외국인체류 안내매뉴얼",
         "source_date": "2026.5",
+        "source_revision_date": "2026-06-01",
         "issuing_body": "법무부 출입국·외국인정책본부",
         "visa_code": "D-2",
         "procedure_type": "체류기간 연장허가",

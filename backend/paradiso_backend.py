@@ -354,6 +354,10 @@ class AskResponse(BaseModel):
     legal_issue_types: List[str] = Field(default_factory=list)
     proposed_activity_type: List[str] = Field(default_factory=list)
     source_plan: Dict[str, Any] = Field(default_factory=dict)
+    query_classification: Dict[str, Any] = Field(default_factory=dict)
+    official_grounding_context: Dict[str, Any] = Field(default_factory=dict)
+    public_source_status: Dict[str, Any] = Field(default_factory=dict)
+    public_official_sources: List[Dict[str, Any]] = Field(default_factory=list)
     analysis_mode: str = ""
     main_issue: str = ""
     source_types_attempted: List[str] = Field(default_factory=list)
@@ -537,14 +541,24 @@ def _confidence_gate_answer_text(answer: str, meta: Dict[str, Any]) -> str:
     """Soften unsafe deterministic/LLM wording when direct authority is absent."""
     if not answer or not _answer_requires_confidence_gating(meta):
         return answer
+    facts = meta.get("immigration_facts") if isinstance(meta.get("immigration_facts"), dict) else {}
+    current_status = facts.get("current_status") or meta.get("visa_code_detected") or "현재 체류자격"
+    previous_status = facts.get("previous_status")
+    target_status = facts.get("target_status")
+    activities = facts.get("proposed_activities") or meta.get("proposed_activity_type") or []
+    activity_text = ", ".join(str(a) for a in activities if a) or "해당 활동"
+    route_text = f"{previous_status}에서 {current_status}" if previous_status else str(current_status)
+    if target_status and target_status != current_status:
+        route_text = f"{current_status}에서 {target_status}"
     replacement = (
-        "F-2-99로 체류자격 변경이 완료되었다면, 부업 여부는 이전 E-7 기준만으로 판단할 사안은 아니고 "
-        "현재 F-2-99의 활동범위와 승인 조건을 기준으로 다시 검토해야 합니다. 다만 E-7의 근무처 추가 신고 의무가 "
-        "자동으로 계속 적용되는지, 또는 전혀 적용되지 않는지는 개별 승인 조건과 부업의 형태를 확인해야 합니다."
+        f"{route_text} 맥락에서는 {activity_text}을(를) 이전 자격 기준만으로 단정하지 말고 "
+        f"{current_status}의 활동범위, 승인 조건, 신고·허가 대상 여부를 기준으로 다시 확인해야 합니다. "
+        "종전 자격의 의무가 자동으로 계속 적용되거나 소멸한다고 단정하려면 직접 공식 근거와 개별 승인 조건 확인이 필요합니다."
     )
     risky_patterns = [
-        r"체류자격이\s*E-7\(특정활동\)에서\s*F-2-99\(거주\)로\s*변경되었다면,?\s*원칙적으로\s*이전\s*자격인\s*E-7에\s*묶여\s*있던\s*근무처\s*변경·추가\s*신고\s*의무는\s*더\s*이상\s*적용되지\s*않습니다\. ?",
-        r"원칙적으로\s*이전\s*자격인\s*E-7에\s*묶여\s*있던\s*근무처\s*변경·추가\s*신고\s*의무는\s*더\s*이상\s*적용되지\s*않습니다\. ?",
+        r"체류자격이\s*[A-H]-?\d{1,2}(?:-\d{1,3})?.{0,40}?[A-H]-?\d{1,2}(?:-\d{1,3})?.{0,80}?더\s*이상\s*적용되지\s*않습니다\. ?",
+        r"원칙적으로\s*이전\s*자격.{0,100}?더\s*이상\s*적용되지\s*않습니다\. ?",
+        r"previous\s+status.{0,100}?(?:no\s+longer|does\s+not)\s+apply\. ?",
     ]
     out = answer
     for pat in risky_patterns:
@@ -2357,6 +2371,12 @@ def _build_grounded_prompt(
     excerpt = grounding.get("source_excerpt", "") or ""
     source_title = bundle.get("source_title", "외국인체류 안내매뉴얼")
     source_date = bundle.get("source_date", "2026.5")
+    source_revision_date = bundle.get("source_revision_date")
+    source_date_label = (
+        f"{source_date}; source file {source_revision_date}"
+        if source_revision_date and source_revision_date != source_date
+        else source_date
+    )
     issuing_body = bundle.get("issuing_body", "법무부 출입국·외국인정책본부")
     page_range = grounding.get("page_range")
     page_label = f", pp. {page_range}" if page_range else ""
@@ -2373,7 +2393,7 @@ def _build_grounded_prompt(
         " 확장하지 마십시오. 모호한 표현 대신 한국의 출입국 제도를 구체적으로 적시하고,"
         " 매뉴얼에 없는 항목을 임의로 추가하지 마십시오. 본 매뉴얼 발췌에 포함되지 않은 다른 체류자격(비자)의"
         " 제출서류를 끌어와 답변에 섞지 마십시오.\n\n"
-        f"[참고 자료] {source_title} ({source_date}) — {issuing_body}{page_label}\n"
+        f"[참고 자료] {source_title} ({source_date_label}) — {issuing_body}{page_label}\n"
         f"섹션: {section_label} / {procedure_label}\n\n"
         "제출서류 (매뉴얼 발췌):\n"
         f"{docs_block}\n\n"
@@ -2386,7 +2406,7 @@ def _build_grounded_prompt(
         "[답변 지침]\n"
         f"{answer_language_line}\n"
         "- 위 제출서류와 유의사항을 명시적으로 인용하십시오.\n"
-        f"- 출처를 다음과 같이 명시하십시오: {source_title} ({source_date}), {issuing_body}.\n"
+        f"- 출처를 다음과 같이 명시하십시오: {source_title} ({source_date_label}), {issuing_body}.\n"
         "- 관할 출입국·외국인청/사무소/출장소가 개별 사안에 따라 서류를 추가하거나 면제할 수 있다는 점을 명시하십시오."
     )
 
@@ -2401,6 +2421,7 @@ def _grounding_source_summary(grounding: Dict[str, Any], bundle: Dict[str, Any])
         "source_file": bundle.get("source_file"),
         "source_title": bundle.get("source_title"),
         "source_date": bundle.get("source_date"),
+        "source_revision_date": bundle.get("source_revision_date"),
         "issuing_body": bundle.get("issuing_body"),
         "visa_code": grounding.get("visa_code"),
         "procedure_type": grounding.get("procedure_type"),
@@ -2867,9 +2888,9 @@ def _build_source_confirmed_structured_requirements_block(
         return ""
 
     header = (
-        "[Source-confirmed structured requirements from 2026-05 official manuals]\n"
-        "The items below were locally verified against the official 2026-05"
-        " manual at the cited page(s) and are limited to the exact section/"
+        "[Source-confirmed structured requirements from current official manuals]\n"
+        "The items below were locally verified against the current official"
+        " manual source at the cited page(s) and are limited to the exact section/"
         "sub-code scope shown. They SUPPLEMENT — and do not override — the"
         " manual grounding, warnings, disclaimers, and page references above."
         " Do not generalize a sub-code-scoped list to other sub-codes, and do"
@@ -3384,6 +3405,11 @@ async def ask(req: AskRequest) -> AskResponse:
             "- Do not invent article numbers, deadlines, fees, or documents.\n"
             + law_evidence_pack.get("evidence_summary", "")
         )
+        if law_evidence_pack.get("grounding_context_prompt"):
+            final_prompt += (
+                "\n\n[Generalized official-source grounding context]\n"
+                + law_evidence_pack.get("grounding_context_prompt", "")
+            )
         if legal_analysis:
             final_prompt += (
                 "\n\n[Backend-prepared legal_analysis — explain this; do not invent it]\n"
@@ -3404,7 +3430,7 @@ async def ask(req: AskRequest) -> AskResponse:
                 f"citation_verification_status: {source_panel_meta.get('citation_verification_status')}\n"
                 f"manual_grounding_status: {manual_grounding_status}\n"
                 f"answer_certainty_level: {source_panel_meta.get('answer_certainty_level')}\n"
-                "Confidence gate: if answer_certainty_level is not direct, missing_direct_authority is true, direct_evidence_count is 0, or law_lookup_error_type is LAW_API_BAD_RESPONSE/SOURCE_UNAVAILABLE, avoid final conclusion verbs. Do not say 신고 의무는 없습니다, 반드시 신고해야 합니다, 허용됩니다, 가능합니다, or 원칙적으로 이전 E-7 의무는 더 이상 적용되지 않습니다 unless direct authority supports it. For E-7→F-2-99 side-job questions, say current F-2-99 status is primary, prior E-7 is related/comparative, and decisive facts are F-2-99 approval conditions plus side activity form/employer/client/industry/hours/compensation.\n"
+                "Confidence gate: if answer_certainty_level is not direct, missing_direct_authority is true, direct_evidence_count is 0, or law_lookup_error_type indicates a lookup issue, avoid final conclusion verbs. Do not say 신고 의무는 없습니다, 반드시 신고해야 합니다, 허용됩니다, 가능합니다, or that previous-status duties automatically continue/expire unless direct authority supports it. When previous/current/target statuses are present, analyze current status first, treat previous status as related/comparative unless a direct source says otherwise, and identify decisive facts such as approval conditions, activity form, employer/client, industry, hours, compensation, timing, and jurisdiction.\n"
                 "Required framing: use the issue-based template; practical legal posture first; identify current status/activity/issue; explain backend legal_analysis; source basis later; concrete official-confirmation questions fourth; no final administrative determination.\n"
                 "Official-confirmation questions:\n" + confirmation_lines
             )
@@ -3473,6 +3499,10 @@ async def ask(req: AskRequest) -> AskResponse:
         legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types", []),
         proposed_activity_type=(law_evidence_pack or {}).get("proposed_activity_type", []),
         source_plan=(law_evidence_pack or {}).get("source_plan", {}),
+        query_classification=(law_evidence_pack or {}).get("query_classification", {}),
+        official_grounding_context=(law_evidence_pack or {}).get("official_grounding_context", {}),
+        public_source_status=(law_evidence_pack or {}).get("public_source_status", {}),
+        public_official_sources=(law_evidence_pack or {}).get("public_official_sources", []),
         analysis_mode=(law_evidence_pack or {}).get("analysis_mode", ""),
         main_issue=(law_evidence_pack or {}).get("main_issue", ""),
         source_types_attempted=(law_evidence_pack or {}).get("source_types_attempted", []),

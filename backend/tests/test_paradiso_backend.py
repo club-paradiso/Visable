@@ -238,9 +238,10 @@ class GroundingFixtureTests(unittest.TestCase):
     def test_fixture_metadata_is_korea_specific(self):
         import json as _json
         data = _json.loads(self.FIXTURE.read_text(encoding="utf-8"))
-        self.assertEqual(data.get("source_file"), "docs/source-manuals/2026-05/stay_manual_2026_05.pdf")
+        self.assertEqual(data.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
         self.assertEqual(data.get("source_title"), "외국인체류 안내매뉴얼")
         self.assertEqual(data.get("source_date"), "2026.5")
+        self.assertEqual(data.get("source_revision_date"), "2026-06-01")
         self.assertEqual(data.get("issuing_body"), "법무부 출입국·외국인정책본부")
         groundings = data.get("groundings") or []
         self.assertTrue(groundings, "groundings list must not be empty")
@@ -312,9 +313,10 @@ class AskEndpointGroundingTests(unittest.TestCase):
         sources = detail.get("grounding_sources") or []
         self.assertEqual(len(sources), 1)
         src = sources[0]
-        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-05/stay_manual_2026_05.pdf")
+        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
         self.assertEqual(src.get("source_title"), "외국인체류 안내매뉴얼")
         self.assertEqual(src.get("source_date"), "2026.5")
+        self.assertEqual(src.get("source_revision_date"), "2026-06-01")
         self.assertEqual(src.get("visa_code"), "D-2")
         self.assertEqual(src.get("procedure_type"), "체류기간 연장허가")
 
@@ -460,7 +462,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
         self.assertEqual(src.get("visa_code"), "D-4")
         self.assertEqual(src.get("procedure_type"), "체류기간 연장허가")
         self.assertEqual(src.get("page_range"), "90-91")
-        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-05/stay_manual_2026_05.pdf")
+        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
 
     def test_d4_extension_english_question_selects_grounding(self):
         resp = self._post({

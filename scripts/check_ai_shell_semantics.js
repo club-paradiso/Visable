@@ -138,6 +138,17 @@ check(/법령 출처 조회가 지원되지 않는 응답 형식을 반환했습
 check(!/SOURCE_UNAVAILABLE[^A-Z_]*could not/.test(src),
       'raw SOURCE_UNAVAILABLE leaked into user-facing prose');
 
+// --- Static: public source-status chips -------------------------------------
+check(/source-status-chips/.test(src), 'public source-status chip wrapper missing');
+check(/source-chip/.test(src), 'public source-status chip style missing');
+check(/data-row-kind="public-source-status"/.test(src), 'public source-status row marker missing');
+check(/source-name-list/.test(src), 'public source name/version subnote missing');
+check(/versionDate/.test(src), 'public source-status renderer must include source version dates');
+check(/manualSources\.length && !publicLabels\.length/.test(src),
+      'manual fallback row should be suppressed when public source labels are present');
+check(/@media \(max-width: 480px\)[\s\S]*source-status-chips/.test(src),
+      'mobile source-status chip wrapping rule missing');
+
 // --- Static: footer disclaimer i18n (4 languages, natural English) ----------
 check(/id="referenceDisclaimer"/.test(src), 'footer is missing the referenceDisclaimer id');
 check(/SHELL_FOOTER_DISCLAIMER\s*=/.test(src), 'SHELL_FOOTER_DISCLAIMER map missing');

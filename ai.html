@@ -1010,6 +1010,37 @@
         .source-list .source-row.answer-basis-row.basis-limited { border-color: rgba(252,211,77,0.4); background: rgba(252,211,77,0.05); }
         .source-list .source-row.answer-basis-row.basis-generic { border-color: rgba(199,191,168,0.3); background: transparent; }
         .source-list .source-row .source-subnote { margin-top: 0.3rem; font-size: 0.72rem; color: var(--t3); line-height: 1.5; font-weight: 400; }
+        .source-list .source-row.source-row-public {
+            align-items: flex-start;
+        }
+        .source-status-chips {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 0.28rem;
+            min-width: 0;
+            max-width: 100%;
+            vertical-align: top;
+        }
+        .source-chip {
+            display: inline-flex;
+            align-items: center;
+            min-height: 24px;
+            max-width: 100%;
+            padding: 0.12rem 0.48rem;
+            border-radius: 999px;
+            border: 1px solid rgba(110,231,183,0.35);
+            background: rgba(52,212,168,0.08);
+            color: color-mix(in srgb, var(--p-emerald-soft) 88%, var(--p-paper));
+            font-size: 0.72rem;
+            font-weight: 800;
+            line-height: 1.35;
+            white-space: normal;
+            overflow-wrap: anywhere;
+        }
+        .source-name-list {
+            flex-basis: 100%;
+            margin-top: 0.18rem;
+        }
         .source-panel .source-disclosure {
             margin: 0.6rem 0 0;
             padding-top: 0.5rem;
@@ -1025,6 +1056,13 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.3rem;
+            }
+            .source-status-chips {
+                display: flex;
+                width: 100%;
+            }
+            .source-chip {
+                max-width: 100%;
             }
         }
         /* ============================================================
@@ -1402,7 +1440,7 @@ select:focus-visible {
         // Visa Code Extraction & Language Detection
         // ==========================================
         const SOURCE_MANUAL_VERSION = '2026.5';
-        const SOURCE_MANUALS = ['visa_manual_2026_05', 'stay_manual_2026_05'];
+        const SOURCE_MANUALS = ['visa_manual_2026_05', 'stay_manual_2026_06_01'];
 
         // Allowed first-letter classes (single-letter Korean visa families).
         // K-STAR is handled explicitly because it is a local structured record.
@@ -1957,6 +1995,10 @@ select:focus-visible {
                 answer_quality_mode: asString(m.answer_quality_mode),
                 source_panel_state: asString(m.source_panel_state),
                 source_panel_label_key: asString(m.source_panel_label_key),
+                query_classification: asObject(m.query_classification),
+                official_grounding_context: asObject(m.official_grounding_context),
+                public_source_status: asObject(m.public_source_status),
+                public_official_sources: asArray(m.public_official_sources),
                 citation_verification: (m.citation_verification && typeof m.citation_verification === 'object') ? m.citation_verification : null,
                 public_data_grounding: (m.public_data_grounding === undefined ? null : m.public_data_grounding),
                 deterministic_fallback_answer_used: Boolean(m.deterministic_fallback_answer_used),
@@ -2052,7 +2094,29 @@ select:focus-visible {
             const basisRow = buildAnswerBasisRow(safe, lang);
             if (basisRow) rows.push(basisRow);
 
-            if (manualSources.length) {
+            const publicStatus = (safe.public_source_status && typeof safe.public_source_status === "object") ? safe.public_source_status : {};
+            const publicLabels = Array.isArray(publicStatus.labels) ? publicStatus.labels.filter(Boolean) : [];
+            if (publicLabels.length) {
+                const head = tt(lang, { ko: "공식 출처 상태", en: "Official source status", zh: "官方来源状态", zhHant: "官方來源狀態" });
+                const sourceNames = Array.isArray(safe.public_official_sources)
+                    ? safe.public_official_sources
+                        .filter((src) => src && src.publicStatus === "available")
+                        .map((src) => {
+                            const name = src.title || src.sourceName || src.family;
+                            const version = src.versionDate ? String(src.versionDate) : "";
+                            return [name, version].filter(Boolean).join(" · ");
+                        })
+                        .filter(Boolean)
+                        .slice(0, 3)
+                    : [];
+                const subnote = sourceNames.length
+                    ? `<div class="source-subnote source-name-list">${sourceNames.map((name) => escapeHtml(String(name))).join(" · ")}</div>`
+                    : "";
+                const chips = publicLabels.map((label) => `<span class="source-chip">${escapeHtml(String(label))}</span>`).join("");
+                rows.push(`<div class="source-row state-source-supported source-row-public" data-row-kind="public-source-status"><strong>${escapeHtml(head)}</strong><span class="source-status-chips">${chips}</span>${subnote}</div>`);
+            }
+
+            if (manualSources.length && !publicLabels.length) {
                 rows.push(`<div class="source-row state-source-supported"><strong>${t(lang, '행정 매뉴얼 근거', 'Manual / Immigration procedure source')}</strong>: ${t(lang, '매뉴얼 출처 있음 (개별 검증 진행 중)', 'Manual source present (per-entry verification in progress)')}</div>`);
             }
 

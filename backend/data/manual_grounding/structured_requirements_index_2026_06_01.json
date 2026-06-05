@@ -1,0 +1,1036 @@
+{
+  "schemaVersion": "1.0",
+  "generated": "2026-06-05",
+  "description": "Join table from statusCode to summary metrics for structured_requirements_2026_06_01.json.",
+  "structuredLayer": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+  "statusCount": 42,
+  "index": {
+    "A-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 4,
+      "documentItemCount": 19,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 2,
+        "unclear": 2
+      },
+      "procedureTypes": {
+        "visa_issuance": 1,
+        "other": 3
+      },
+      "confidence": {
+        "MEDIUM": 2,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "A-1"
+      ]
+    },
+    "A-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 2,
+      "documentItemCount": 12,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 2
+      },
+      "procedureTypes": {
+        "other": 2
+      },
+      "confidence": {
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "A-2"
+      ]
+    },
+    "A-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 4,
+      "documentItemCount": 23,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 4
+      },
+      "procedureTypes": {
+        "other": 4
+      },
+      "confidence": {
+        "MEDIUM": 4
+      },
+      "mappedProductionCodes": [
+        "A-3"
+      ]
+    },
+    "B-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 1,
+      "documentItemCount": 2,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 1
+      },
+      "procedureTypes": {
+        "other": 1
+      },
+      "confidence": {
+        "MEDIUM": 1
+      },
+      "mappedProductionCodes": [
+        "B-1"
+      ]
+    },
+    "B-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 1,
+      "documentItemCount": 2,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 1
+      },
+      "procedureTypes": {
+        "other": 1
+      },
+      "confidence": {
+        "MEDIUM": 1
+      },
+      "mappedProductionCodes": [
+        "B-2"
+      ]
+    },
+    "C-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 3,
+      "documentItemCount": 6,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 1,
+        "unclear": 2
+      },
+      "procedureTypes": {
+        "other": 2,
+        "extension": 1
+      },
+      "confidence": {
+        "MEDIUM": 1,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "C-1"
+      ]
+    },
+    "C-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 12,
+      "documentItemCount": 66,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 9,
+        "scenario_specific": 3
+      },
+      "procedureTypes": {
+        "other": 12
+      },
+      "confidence": {
+        "MEDIUM": 8,
+        "LOW": 4
+      },
+      "mappedProductionCodes": [
+        "C-3"
+      ]
+    },
+    "C-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 50,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 4,
+        "unclear": 1,
+        "sub_code_specific": 1
+      },
+      "procedureTypes": {
+        "other": 6
+      },
+      "confidence": {
+        "LOW": 2,
+        "MEDIUM": 4
+      },
+      "mappedProductionCodes": [
+        "C-4"
+      ]
+    },
+    "D-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 4,
+      "documentItemCount": 28,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 1,
+        "scenario_specific": 2,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "visa_issuance": 2,
+        "other": 1,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 2,
+        "LOW": 1,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "D-1"
+      ]
+    },
+    "D-10": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 2,
+      "documentItemCount": 4,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 1,
+        "scenario_specific": 1
+      },
+      "procedureTypes": {
+        "other": 2
+      },
+      "confidence": {
+        "LOW": 1,
+        "MEDIUM": 1
+      },
+      "mappedProductionCodes": [
+        "D-10"
+      ]
+    },
+    "D-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 34,
+      "readyCount": 2,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 1,
+        "scenario_specific": 2,
+        "unclear": 1,
+        "parent_code_level": 2
+      },
+      "procedureTypes": {
+        "visa_issuance": 2,
+        "other": 2,
+        "extension": 1,
+        "registration": 1
+      },
+      "confidence": {
+        "LOW": 2,
+        "MEDIUM": 2,
+        "HIGH": 2
+      },
+      "mappedProductionCodes": [
+        "D-2"
+      ]
+    },
+    "D-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 3,
+      "documentItemCount": 17,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 2,
+        "unclear": 1
+      },
+      "procedureTypes": {
+        "other": 3
+      },
+      "confidence": {
+        "MEDIUM": 1,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "D-3"
+      ]
+    },
+    "D-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 15,
+      "documentItemCount": 142,
+      "readyCount": 1,
+      "hasSubCodeEvidence": true,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 4,
+        "scenario_specific": 4,
+        "sub_code_specific": 7
+      },
+      "procedureTypes": {
+        "other": 14,
+        "extension": 1
+      },
+      "confidence": {
+        "LOW": 6,
+        "MEDIUM": 8,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "D-4"
+      ]
+    },
+    "D-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 5,
+      "documentItemCount": 23,
+      "readyCount": 2,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 2,
+        "unclear": 1,
+        "parent_code_level": 2
+      },
+      "procedureTypes": {
+        "visa_issuance": 1,
+        "other": 2,
+        "registration": 1,
+        "extension": 1
+      },
+      "confidence": {
+        "MEDIUM": 2,
+        "LOW": 1,
+        "HIGH": 2
+      },
+      "mappedProductionCodes": [
+        "D-5"
+      ]
+    },
+    "D-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 38,
+      "readyCount": 2,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 4,
+        "parent_code_level": 2
+      },
+      "procedureTypes": {
+        "visa_issuance": 2,
+        "other": 2,
+        "registration": 1,
+        "extension": 1
+      },
+      "confidence": {
+        "MEDIUM": 4,
+        "HIGH": 2
+      },
+      "mappedProductionCodes": [
+        "D-6"
+      ]
+    },
+    "D-7": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 13,
+      "documentItemCount": 113,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 7,
+        "unclear": 5,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 12,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 7,
+        "LOW": 5,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "D-7"
+      ]
+    },
+    "D-8": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 18,
+      "documentItemCount": 157,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 8,
+        "unclear": 3,
+        "sub_code_specific": 6,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 17,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 12,
+        "LOW": 5,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "D-8"
+      ]
+    },
+    "D-9": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 10,
+      "documentItemCount": 87,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 7,
+        "unclear": 2,
+        "sub_code_specific": 1
+      },
+      "procedureTypes": {
+        "other": 10
+      },
+      "confidence": {
+        "MEDIUM": 7,
+        "LOW": 3
+      },
+      "mappedProductionCodes": [
+        "D-9"
+      ]
+    },
+    "E-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 11,
+      "documentItemCount": 92,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 4,
+        "scenario_specific": 6,
+        "sub_code_specific": 1
+      },
+      "procedureTypes": {
+        "visa_issuance": 4,
+        "other": 7
+      },
+      "confidence": {
+        "LOW": 6,
+        "MEDIUM": 5
+      },
+      "mappedProductionCodes": [
+        "E-1"
+      ]
+    },
+    "E-10": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 4,
+      "documentItemCount": 46,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 1,
+        "scenario_specific": 2,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 3,
+        "registration": 1
+      },
+      "confidence": {
+        "LOW": 2,
+        "MEDIUM": 1,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-10"
+      ]
+    },
+    "E-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 10,
+      "documentItemCount": 69,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 2,
+        "scenario_specific": 5,
+        "unclear": 2,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 9,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 7,
+        "LOW": 2,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-2"
+      ]
+    },
+    "E-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 15,
+      "documentItemCount": 132,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 6,
+        "scenario_specific": 7,
+        "sub_code_specific": 1,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 14,
+        "registration": 1
+      },
+      "confidence": {
+        "LOW": 7,
+        "MEDIUM": 7,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-3"
+      ]
+    },
+    "E-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 8,
+      "documentItemCount": 57,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 3,
+        "scenario_specific": 3,
+        "sub_code_specific": 1,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "other": 7,
+        "registration": 1
+      },
+      "confidence": {
+        "LOW": 4,
+        "MEDIUM": 3,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-4"
+      ]
+    },
+    "E-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 41,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 3,
+        "unclear": 1,
+        "sub_code_specific": 1,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "visa_issuance": 1,
+        "other": 4,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 4,
+        "LOW": 1,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-5"
+      ]
+    },
+    "E-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 8,
+      "documentItemCount": 67,
+      "readyCount": 1,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 5,
+        "sub_code_specific": 2,
+        "parent_code_level": 1
+      },
+      "procedureTypes": {
+        "visa_issuance": 1,
+        "other": 6,
+        "registration": 1
+      },
+      "confidence": {
+        "MEDIUM": 6,
+        "LOW": 1,
+        "HIGH": 1
+      },
+      "mappedProductionCodes": [
+        "E-6"
+      ]
+    },
+    "E-7": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 39,
+      "documentItemCount": 217,
+      "readyCount": 2,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 16,
+        "universal": 1,
+        "unclear": 19,
+        "sub_code_specific": 1,
+        "parent_code_level": 2
+      },
+      "procedureTypes": {
+        "other": 37,
+        "extension": 1,
+        "registration": 1
+      },
+      "confidence": {
+        "LOW": 21,
+        "MEDIUM": 16,
+        "HIGH": 2
+      },
+      "mappedProductionCodes": [
+        "E-7"
+      ]
+    },
+    "E-8": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 3,
+      "documentItemCount": 42,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 3
+      },
+      "procedureTypes": {
+        "other": 3
+      },
+      "confidence": {
+        "MEDIUM": 1,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "E-8"
+      ]
+    },
+    "E-9": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 5,
+      "documentItemCount": 32,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 2,
+        "scenario_specific": 3
+      },
+      "procedureTypes": {
+        "other": 5
+      },
+      "confidence": {
+        "LOW": 3,
+        "MEDIUM": 2
+      },
+      "mappedProductionCodes": [
+        "E-9"
+      ]
+    },
+    "F-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 20,
+      "documentItemCount": 198,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 5,
+        "sub_code_specific": 14,
+        "unclear": 1
+      },
+      "procedureTypes": {
+        "other": 20
+      },
+      "confidence": {
+        "LOW": 7,
+        "MEDIUM": 13
+      },
+      "mappedProductionCodes": [
+        "F-1"
+      ]
+    },
+    "F-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 18,
+      "documentItemCount": 156,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 8,
+        "scenario_specific": 6,
+        "unclear": 4
+      },
+      "procedureTypes": {
+        "other": 18
+      },
+      "confidence": {
+        "MEDIUM": 13,
+        "LOW": 5
+      },
+      "mappedProductionCodes": [
+        "F-2"
+      ]
+    },
+    "F-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 72,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 1,
+        "sub_code_specific": 3,
+        "scenario_specific": 2
+      },
+      "procedureTypes": {
+        "other": 6
+      },
+      "confidence": {
+        "LOW": 2,
+        "MEDIUM": 4
+      },
+      "mappedProductionCodes": [
+        "F-3"
+      ]
+    },
+    "F-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 8,
+      "documentItemCount": 34,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 4,
+        "unclear": 2,
+        "sub_code_specific": 2
+      },
+      "procedureTypes": {
+        "other": 8
+      },
+      "confidence": {
+        "MEDIUM": 6,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "F-5"
+      ]
+    },
+    "F-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 9,
+      "documentItemCount": 89,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 8,
+        "unclear": 1
+      },
+      "procedureTypes": {
+        "other": 9
+      },
+      "confidence": {
+        "MEDIUM": 7,
+        "LOW": 2
+      },
+      "mappedProductionCodes": [
+        "F-6"
+      ]
+    },
+    "FORDIASP": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 5,
+      "documentItemCount": 20,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "universal": 2,
+        "scenario_specific": 1,
+        "sub_code_specific": 2
+      },
+      "procedureTypes": {
+        "other": 5
+      },
+      "confidence": {
+        "MEDIUM": 5
+      },
+      "mappedProductionCodes": [
+        "FORDIASP"
+      ]
+    },
+    "G-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 10,
+      "documentItemCount": 70,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 2,
+        "scenario_specific": 5,
+        "sub_code_specific": 3
+      },
+      "procedureTypes": {
+        "visa_issuance": 4,
+        "other": 6
+      },
+      "confidence": {
+        "LOW": 4,
+        "MEDIUM": 6
+      },
+      "mappedProductionCodes": [
+        "G-1"
+      ]
+    },
+    "H-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 3,
+      "documentItemCount": 11,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 1,
+        "unclear": 2
+      },
+      "procedureTypes": {
+        "other": 3
+      },
+      "confidence": {
+        "LOW": 3
+      },
+      "mappedProductionCodes": [
+        "H-1"
+      ]
+    },
+    "H-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 5,
+      "documentItemCount": 20,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "universal": 2,
+        "scenario_specific": 1,
+        "sub_code_specific": 2
+      },
+      "procedureTypes": {
+        "other": 5
+      },
+      "confidence": {
+        "MEDIUM": 5
+      },
+      "mappedProductionCodes": [
+        "H-2"
+      ]
+    },
+    "K-STAR": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 2,
+      "documentItemCount": 20,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "scenario_specific": 2
+      },
+      "procedureTypes": {
+        "other": 2
+      },
+      "confidence": {
+        "MEDIUM": 2
+      },
+      "mappedProductionCodes": [
+        "K-STAR"
+      ]
+    },
+    "METRO": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 13,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 4,
+        "scenario_specific": 2
+      },
+      "procedureTypes": {
+        "other": 6
+      },
+      "confidence": {
+        "LOW": 4,
+        "MEDIUM": 2
+      },
+      "mappedProductionCodes": [
+        "METRO"
+      ]
+    },
+    "REGIONAL": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 15,
+      "documentItemCount": 108,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "sub_code_specific": 6,
+        "scenario_specific": 3,
+        "unclear": 6
+      },
+      "procedureTypes": {
+        "other": 15
+      },
+      "confidence": {
+        "MEDIUM": 8,
+        "LOW": 7
+      },
+      "mappedProductionCodes": [
+        "REGIONAL"
+      ]
+    },
+    "TOPTIER": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 15,
+      "documentItemCount": 115,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "unclear": 7,
+        "sub_code_specific": 6,
+        "scenario_specific": 2
+      },
+      "procedureTypes": {
+        "other": 15
+      },
+      "confidence": {
+        "LOW": 9,
+        "MEDIUM": 6
+      },
+      "mappedProductionCodes": [
+        "TOPTIER"
+      ]
+    },
+    "YOUTH": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "entryCount": 6,
+      "documentItemCount": 53,
+      "readyCount": 0,
+      "hasSubCodeEvidence": false,
+      "hasScenarioEvidence": false,
+      "requiresHumanReview": true,
+      "boundaryTypes": {
+        "universal": 2,
+        "sub_code_specific": 3,
+        "unclear": 1
+      },
+      "procedureTypes": {
+        "other": 6
+      },
+      "confidence": {
+        "MEDIUM": 5,
+        "LOW": 1
+      },
+      "mappedProductionCodes": [
+        "YOUTH"
+      ]
+    }
+  }
+}

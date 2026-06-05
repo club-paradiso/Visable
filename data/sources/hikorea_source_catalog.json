@@ -2,7 +2,7 @@
   "schema_version": "1.0",
   "catalog_version": "v1",
   "generated_for": "Paradiso PR data/hikorea-source-catalog-v1",
-  "generated_at": "2026-05-24",
+  "generated_at": "2026-06-05",
   "notes": [
     "This catalog is descriptive. No runtime code path reads it.",
     "It is the first machine-readable index of public official sources Paradiso",
@@ -43,7 +43,12 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "visa",
       "category_path": "hikorea/visa_guide",
-      "language": ["ko", "en", "zh", "vi"],
+      "language": [
+        "ko",
+        "en",
+        "zh",
+        "vi"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -65,7 +70,10 @@
       "url": "https://www.visa.go.kr/",
       "domain": "visa",
       "category_path": "mofa/visa_portal",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "medium",
       "extract_mode": "link_only",
@@ -87,7 +95,9 @@
       "url": null,
       "domain": "visa",
       "category_path": "moj/manuals/visa_issuance",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "manual",
       "monitoring_priority": "high",
       "extract_mode": "metadata_mirror",
@@ -109,7 +119,12 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "sojourn",
       "category_path": "hikorea/sojourn_guide",
-      "language": ["ko", "en", "zh", "vi"],
+      "language": [
+        "ko",
+        "en",
+        "zh",
+        "vi"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -131,7 +146,10 @@
       "url": null,
       "domain": "sojourn",
       "category_path": "hikorea/sojourn_guide/reporting/change_of_residence",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -153,7 +171,10 @@
       "url": null,
       "domain": "sojourn",
       "category_path": "hikorea/sojourn_guide/reporting/workplace_change",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "high",
       "extract_mode": "content_extract",
@@ -169,13 +190,15 @@
       "retrieved_at": null
     },
     {
-      "source_id": "moj_stay_manual_2026_05",
-      "title_ko": "외국인체류 안내매뉴얼 (2026.5)",
-      "title_en": "Foreigner Stay/Residence Guide Manual (2026.5)",
+      "source_id": "moj_stay_manual_2026_06_01",
+      "title_ko": "외국인체류 안내매뉴얼 (2026.5; 2026-06-01 source file)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.5; 2026-06-01 source file)",
       "url": null,
       "domain": "sojourn",
       "category_path": "moj/manuals/stay_residence",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "manual",
       "monitoring_priority": "high",
       "extract_mode": "metadata_mirror",
@@ -183,7 +206,7 @@
       "include_in_user_search": false,
       "legal_sensitivity": "low",
       "expected_update_frequency": "irregular",
-      "notes": "Authoritative manual already mirrored under docs/source-manuals/2026-05/stay_manual_2026_05.pdf and registered in data/source_registry.json (id: stay_manual_2026_05_pdf). Catalog reference only.",
+      "notes": "Authoritative manual mirrored under docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf and registered in data/source_registry.json (id: stay_manual_2026_06_01_pdf). Catalog reference only. Companion HWP is stored-only and not indexed.",
       "status": "active",
       "needs_review": false,
       "scrape_allowed": false,
@@ -197,7 +220,10 @@
       "url": null,
       "domain": "nationality",
       "category_path": "hikorea/nationality_guide",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -219,7 +245,9 @@
       "url": "https://www.law.go.kr/",
       "domain": "nationality",
       "category_path": "law/statute/nationality_act",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "statute",
       "monitoring_priority": "high",
       "extract_mode": "monitor_only",
@@ -241,7 +269,10 @@
       "url": null,
       "domain": "naturalization",
       "category_path": "hikorea/nationality_guide/naturalization",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -263,7 +294,9 @@
       "url": "https://www.socinet.go.kr/",
       "domain": "naturalization",
       "category_path": "socinet/kiip/naturalization_track",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -285,7 +318,10 @@
       "url": null,
       "domain": "overseas_korean",
       "category_path": "hikorea/visa_guide/overseas_korean_f4",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -307,7 +343,10 @@
       "url": "https://www.oka.go.kr/",
       "domain": "overseas_korean",
       "category_path": "oka/root",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -329,7 +368,9 @@
       "url": "https://www.law.go.kr/",
       "domain": "overseas_korean",
       "category_path": "law/statute/overseas_koreans_act",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "statute",
       "monitoring_priority": "medium",
       "extract_mode": "monitor_only",
@@ -351,7 +392,10 @@
       "url": null,
       "domain": "refugee",
       "category_path": "hikorea/refugee_guide",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -373,7 +417,9 @@
       "url": "https://www.law.go.kr/",
       "domain": "refugee",
       "category_path": "law/statute/refugee_act",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "statute",
       "monitoring_priority": "medium",
       "extract_mode": "monitor_only",
@@ -395,7 +441,10 @@
       "url": null,
       "domain": "certificate",
       "category_path": "hikorea/certificate_guide",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -417,7 +466,10 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "certificate",
       "category_path": "hikorea/services/residence_card_validity_check",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "service_portal",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -439,7 +491,10 @@
       "url": null,
       "domain": "office_lookup",
       "category_path": "hikorea/info/office_directory",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "directory",
       "monitoring_priority": "medium",
       "extract_mode": "metadata_mirror",
@@ -461,7 +516,9 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "office_lookup",
       "category_path": "hikorea/services/office_lookup",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "service_portal",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -483,7 +540,10 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "reservation",
       "category_path": "hikorea/services/visit_reservation",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "service_portal",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -505,7 +565,10 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "e_application",
       "category_path": "hikorea/services/e_application",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "service_portal",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -520,17 +583,19 @@
       "monitor_enabled": false,
       "retrieved_at": null
     },
-  {
-    "source_id": "hikorea_civil_petition_forms_index",
-    "title_ko": "민원서식",
-    "title_en": "Civil Petition Forms",
-    "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1",
-    "url_review_status": "operator_reviewed",
-    "url_reviewed_at": "2026-05-26",
-    "url_review_note": "Official HiKorea public civil-petition application-form index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
-    "domain": "civil_forms",
+    {
+      "source_id": "hikorea_civil_petition_forms_index",
+      "title_ko": "민원서식",
+      "title_en": "Civil Petition Forms",
+      "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1",
+      "url_review_status": "operator_reviewed",
+      "url_reviewed_at": "2026-05-26",
+      "url_review_note": "Official HiKorea public civil-petition application-form index. The page is a public board listing and does not require login, personal data input, CAPTCHA, transaction submission, e-Application, visit reservation, residence-card validity check, or form submission when used as an index_snapshot target.",
+      "domain": "civil_forms",
       "category_path": "hikorea/info/petition_forms",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "form_catalog",
       "monitoring_priority": "medium",
       "extract_mode": "metadata_mirror",
@@ -548,15 +613,15 @@
       "operator_review_required": true,
       "proposed_monitor_mode": "index_snapshot",
       "proposed_fetch_method": "GET",
-    "robots_review_status": "manual_review_required",
-    "rate_limit_policy": "manual_smoke_only",
-    "activation_status": "url_reviewed_candidate",
-    "activation_blockers": [
-      "Review robots.txt and site terms.",
-      "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
-      "Keep monitor_enabled=false until a future reviewed PR approves activation.",
-      "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
-    ],
+      "robots_review_status": "manual_review_required",
+      "rate_limit_policy": "manual_smoke_only",
+      "activation_status": "url_reviewed_candidate",
+      "activation_blockers": [
+        "Review robots.txt and site terms.",
+        "Keep monitoring limited to manual workflow_dispatch allow-network smoke until a later reviewed PR explicitly approves any automation.",
+        "Keep monitor_enabled=false until a future reviewed PR approves activation.",
+        "Keep form files link-only unless a later reviewed PR explicitly adds safe hash monitoring."
+      ],
       "retrieved_at": null
     },
     {
@@ -566,7 +631,13 @@
       "url": "https://www.hikorea.go.kr/",
       "domain": "notices",
       "category_path": "hikorea/root",
-      "language": ["ko", "en", "zh", "vi", "ja"],
+      "language": [
+        "ko",
+        "en",
+        "zh",
+        "vi",
+        "ja"
+      ],
       "source_type": "sitemap",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -588,7 +659,10 @@
       "url": "https://www.immigration.go.kr/",
       "domain": "notices",
       "category_path": "immigration/root",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "sitemap",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -610,7 +684,10 @@
       "url": "https://www.moj.go.kr/",
       "domain": "notices",
       "category_path": "moj/root",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "sitemap",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -632,7 +709,9 @@
       "url": "https://www.socinet.go.kr/",
       "domain": "social_integration",
       "category_path": "socinet/root",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "medium",
       "extract_mode": "link_only",
@@ -654,7 +733,10 @@
       "url": null,
       "domain": "social_integration",
       "category_path": "hikorea/info/kiip_overview",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "medium",
       "extract_mode": "content_extract",
@@ -676,7 +758,10 @@
       "url": null,
       "domain": "seasonal_worker",
       "category_path": "hikorea/visa_guide/seasonal_worker_e8",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "guide_page",
       "monitoring_priority": "high",
       "extract_mode": "content_extract",
@@ -698,7 +783,9 @@
       "url": "https://www.immigration.go.kr/",
       "domain": "statistics",
       "category_path": "immigration/statistics",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "policy_page",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -720,7 +807,10 @@
       "url": "https://kosis.kr/",
       "domain": "statistics",
       "category_path": "kosis/root",
-      "language": ["ko", "en"],
+      "language": [
+        "ko",
+        "en"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "low",
       "extract_mode": "link_only",
@@ -742,7 +832,13 @@
       "url": "https://www.1345.go.kr/",
       "domain": "notices",
       "category_path": "1345/root",
-      "language": ["ko", "en", "zh", "vi", "ja"],
+      "language": [
+        "ko",
+        "en",
+        "zh",
+        "vi",
+        "ja"
+      ],
       "source_type": "adjacent_official",
       "monitoring_priority": "low",
       "extract_mode": "metadata_mirror",
@@ -764,7 +860,9 @@
       "url": "https://www.law.go.kr/",
       "domain": "sojourn",
       "category_path": "law/statute/immigration_control_act",
-      "language": ["ko"],
+      "language": [
+        "ko"
+      ],
       "source_type": "statute",
       "monitoring_priority": "high",
       "extract_mode": "monitor_only",

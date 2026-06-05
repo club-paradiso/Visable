@@ -60,6 +60,15 @@ from .evidence_ontology import (
     source_family_support_status,
     status_family,
 )
+from .source_grounding import (
+    build_official_grounding_context,
+    classify_query_for_grounding,
+    developer_source_diagnostics,
+    normalize_law_source_attempts,
+    normalize_manual_source_attempts,
+    project_public_source_status,
+    render_grounding_context_for_prompt,
+)
 
 LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v4-official-source-family-adapters"
 
@@ -1983,6 +1992,42 @@ def build_law_evidence_pack(
         "missing_direct_authority": legal_analysis.get("missing_direct_authority", True),
         "authority_summary": legal_analysis.get("authority_summary", ""),
     }
+    normalized_official_sources = [
+        *normalize_manual_source_attempts(
+            direct_manual_sources,
+            related_manual_sources,
+            manual_present=(manual_present or structured_present),
+        ),
+        *normalize_law_source_attempts(
+            law_sources=law_sources,
+            source_family_statuses=pack.get("source_family_statuses") or {},
+            parser_status_by_family=pack.get("parser_status_by_family") or {},
+            law_error_type_by_family=pack.get("law_error_type_by_family") or {},
+            source_family_results=pack.get("source_family_results") or [],
+        ),
+    ]
+    query_classification = classify_query_for_grounding(
+        text,
+        visa_code=visa_code,
+        task_type=task_type,
+    )
+    official_grounding_context = build_official_grounding_context(
+        query_classification=query_classification,
+        normalized_sources=normalized_official_sources,
+        source_plan=source_type_plan,
+    )
+
+    pack["query_classification"] = query_classification
+    pack["normalized_official_sources"] = normalized_official_sources
+    pack["official_grounding_context"] = official_grounding_context
+    pack["grounding_context_prompt"] = render_grounding_context_for_prompt(official_grounding_context)
+    pack["public_source_status"] = project_public_source_status(
+        normalized_official_sources,
+        lang=lang or "ko",
+    )
+    pack["public_official_sources"] = pack["public_source_status"].get("sources", [])
+    pack["developer_source_diagnostics"] = developer_source_diagnostics(normalized_official_sources)
+
     pack["citation_verification"] = build_law_evidence_citation_verification(
         law_sources,
         query=(law_queries_attempted[0] if law_queries_attempted else ""),
@@ -2025,6 +2070,9 @@ def build_evidence_summary(pack: Dict[str, Any]) -> str:
         f"confidence={pack.get('source_confidence_level')}, "
         f"answer mode={pack.get('answer_quality_mode')}."
     )
+    if pack.get("grounding_context_prompt"):
+        lines.append("Generalized source-grounding context:")
+        lines.append(pack.get("grounding_context_prompt"))
     legal_analysis = pack.get("legal_analysis") or {}
     if legal_analysis:
         lines.append("Legal analysis object (backend-prepared; do not invent beyond it):")

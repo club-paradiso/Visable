@@ -1,6 +1,6 @@
 """Tests for the source-confirmed structured requirements runtime integration.
 
-Covers PR #229 (feat/use-source-confirmed-structured-requirements-2026-05):
+Covers the source-confirmed structured-requirements runtime contract:
 
   - the structured_requirements helper loads and filters correctly
   - only HIGH / STRUCTURED_EVIDENCE_READY entries are exposed by default
@@ -37,7 +37,7 @@ HIGH_RISK_NEEDS_REVIEW = ["E-9", "F-5", "F-6", "G-1", "H-2", "C-3", "F-1", "F-2"
 READY_STATUSES = ["D-2", "D-4", "E-7"]
 
 # Full set of statuses with at least one source-confirmed entry after the
-# 2026-05 procedure-coverage expansion (sorted as the helper returns them).
+# structured procedure-coverage expansion (sorted as the helper returns them).
 SOURCE_CONFIRMED_CODES = [
     "D-1", "D-2", "D-4", "D-5", "D-6", "D-7", "D-8",
     "E-10", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7",
@@ -206,7 +206,7 @@ class StructuredRequirementsGroundingTests(unittest.TestCase):
             blk = mod._build_source_confirmed_structured_requirements_block(code, None)
             self.assertTrue(blk, f"{code} should produce a source-confirmed block")
             self.assertIn(
-                "Source-confirmed structured requirements from 2026-05 official manuals",
+                "Source-confirmed structured requirements from current official manuals",
                 blk,
             )
         for code in HIGH_RISK_NEEDS_REVIEW:
@@ -229,7 +229,7 @@ class StructuredRequirementsGroundingTests(unittest.TestCase):
             mod, {"message": "D-4 연장 제출서류 알려줘", "visa_code": "D-4"}
         )
         self.assertIn(
-            "Source-confirmed structured requirements from 2026-05 official manuals",
+            "Source-confirmed structured requirements from current official manuals",
             prompt,
         )
 
@@ -241,7 +241,7 @@ class StructuredRequirementsGroundingTests(unittest.TestCase):
                 mod, {"message": f"{code} 관련 질문", "visa_code": code}
             )
             self.assertNotIn(
-                "Source-confirmed structured requirements from 2026-05 official manuals",
+                "Source-confirmed structured requirements from current official manuals",
                 prompt,
                 f"{code} prompt must not carry the source-confirmed block",
             )
@@ -262,7 +262,7 @@ class StructuredRequirementsPromotionTests(unittest.TestCase):
 
     def test_total_source_confirmed_count(self):
         # 4 prior (D-2 ext+reg, D-4 ext, E-7 ext) + 14 promoted in the
-        # 2026-05 procedure-coverage expansion = 18.
+        # procedure-coverage expansion = 18.
         total = 0
         for code in self.sr.source_confirmed_status_codes():
             total += len(self.sr.get_source_confirmed_structured_requirements(code))
@@ -370,7 +370,7 @@ class SourceConfirmedProcedureCoverageExpansionTests(unittest.TestCase):
             self.assertEqual(e["manualSource"]["pageEnd"], page)
             self.assertEqual(e["evidenceSource"], "pdf_verified")
             self.assertTrue(
-                e["manualSource"]["file"].endswith("stay_manual_2026_05.pdf")
+                e["manualSource"]["file"].endswith("stay_manual_2026_06_01.pdf")
             )
             self.assertEqual(len(e["documents"]), ndocs)
             # Conditions stay at document level; no doc carries a non-parent

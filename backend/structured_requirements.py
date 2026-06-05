@@ -1,8 +1,8 @@
-"""Runtime accessor for the 2026-05 structured manual-evidence requirements.
+"""Runtime accessor for the structured manual-evidence requirements.
 
 This module exposes the structured requirements layer
-(`backend/data/manual_grounding/structured_requirements_2026_05.json`,
-introduced in PR #228) to the backend at runtime.
+(`backend/data/manual_grounding/structured_requirements_2026_06_01.json`) to
+the backend at runtime.
 
 Safety policy (critical):
   Only entries that are BOTH ``confidence == "HIGH"`` AND
@@ -26,7 +26,7 @@ from typing import Any, Dict, List, Optional
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _STRUCTURED_FILE = os.path.join(
-    _HERE, "data", "manual_grounding", "structured_requirements_2026_05.json"
+    _HERE, "data", "manual_grounding", "structured_requirements_2026_06_01.json"
 )
 
 # A source-confirmed entry must satisfy BOTH of these.

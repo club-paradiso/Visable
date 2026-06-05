@@ -1,6 +1,6 @@
 {
   "schema_version": "1.2",
-  "source_file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+  "source_file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
   "source_title": "외국인체류 안내매뉴얼",
   "source_date": "2026.5",
   "issuing_body": "법무부 출입국·외국인정책본부",
@@ -17,7 +17,7 @@
       "section": "유학(D-2)",
       "page_range": "43-44",
       "source_verification_status": "verified_locally",
-      "verification_note": "Confirmed via pdftotext extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The 다. 제출서류 list for 유학(D-2) 체류기간 연장허가 appears on PDF pages 43-44, which correspond to the printed manual page footer '- 43 -'. Range refers to absolute PDF page numbers in the committed source file.",
+      "verification_note": "Confirmed via pdftotext extraction of docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf. The 다. 제출서류 list for 유학(D-2) 체류기간 연장허가 appears on PDF pages 43-44, which correspond to the printed manual page footer '- 43 -'. Range refers to absolute PDF page numbers in the committed source file. Rechecked against the 2026-06-01 current stay manual PDF on 2026-06-05; extracted text for this cited page range matched the prior canonical source.",
       "source_confidence": "high",
       "language": "ko",
       "country_scope": "KR",
@@ -44,7 +44,10 @@
       "grounding_id": "d4_extension_2026_05",
       "visa_code": "D-4",
       "visa_sub_code": null,
-      "sub_codes_covered": ["D-4-1", "D-4-7"],
+      "sub_codes_covered": [
+        "D-4-1",
+        "D-4-7"
+      ],
       "scenario": null,
       "scenarios_covered": null,
       "requires_clarification_when_missing_subcode": false,
@@ -52,7 +55,7 @@
       "section": "일반연수(D-4) — 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가",
       "page_range": "90-91",
       "source_verification_status": "verified_locally",
-      "verification_note": "Confirmed via pdftotext -f 90 -l 91 extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The section header '체류기간 연장허가 / 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가' begins on the PDF page bearing the printed footer '- 90 -' and the '나. 제출서류' list completes on the page bearing the printed footer '- 91 -'. Range refers to absolute PDF page numbers in the committed source file. Scope is limited to the 어학연수생(D-4-1, D-4-7) sub-track; other D-4 sub-codes (D-4-2K, D-4-3, D-4-5, D-4-6) have separate document lists on subsequent pages and are not included in this entry.",
+      "verification_note": "Confirmed via pdftotext -f 90 -l 91 extraction of docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf. The section header '체류기간 연장허가 / 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가' begins on the PDF page bearing the printed footer '- 90 -' and the '나. 제출서류' list completes on the page bearing the printed footer '- 91 -'. Range refers to absolute PDF page numbers in the committed source file. Scope is limited to the 어학연수생(D-4-1, D-4-7) sub-track; other D-4 sub-codes (D-4-2K, D-4-3, D-4-5, D-4-6) have separate document lists on subsequent pages and are not included in this entry. Rechecked against the 2026-06-01 current stay manual PDF on 2026-06-05; extracted text for this cited page range matched the prior canonical source.",
       "source_confidence": "high",
       "language": "ko",
       "country_scope": "KR",
@@ -81,13 +84,15 @@
       "visa_sub_code": null,
       "sub_codes_covered": null,
       "scenario": "general",
-      "scenarios_covered": ["general"],
+      "scenarios_covered": [
+        "general"
+      ],
       "requires_clarification_when_missing_subcode": false,
       "procedure_type": "체류기간 연장허가",
       "section": "특정활동(E-7) — 1. 제출 서류 및 확인사항",
       "page_range": "226",
       "source_verification_status": "verified_locally",
-      "verification_note": "Confirmed via pdftotext -f 226 -l 226 extraction of docs/source-manuals/2026-05/stay_manual_2026_05.pdf. The '체류기간 연장허가 / 1. 제출 서류 및 확인사항 / 가. 제출서류' subsection appears in full on the PDF page bearing the printed footer '- 226 -'. Page range refers to the absolute PDF page number in the committed source file. The page contains the general E-7 extension document list; agreement-based special-track sub-sections (한·인도 CEPA 독립전문가, 한·러 협정, 외국법자문법률사무소 파견자 등) continue on subsequent pages and are not included in this entry.",
+      "verification_note": "Confirmed via pdftotext -f 226 -l 226 extraction of docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf. The '체류기간 연장허가 / 1. 제출 서류 및 확인사항 / 가. 제출서류' subsection appears in full on the PDF page bearing the printed footer '- 226 -'. Page range refers to the absolute PDF page number in the committed source file. The page contains the general E-7 extension document list; agreement-based special-track sub-sections (한·인도 CEPA 독립전문가, 한·러 협정, 외국법자문법률사무소 파견자 등) continue on subsequent pages and are not included in this entry. Rechecked against the 2026-06-01 current stay manual PDF on 2026-06-05; extracted text for this cited page range matched the prior canonical source.",
       "source_confidence": "high",
       "language": "ko",
       "country_scope": "KR",
@@ -113,5 +118,8 @@
       ],
       "source_excerpt": "체류기간 연장허가\n1. 제출 서류 및 확인사항\n가. 제출서류\n  ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료  ② 고용계약서\n  ③ 개인 소득금액 증명(필수)\n     - 소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급)\n  ④ 사업자등록증 사본 또는 법인등기부등본\n  ⑤ 신원보증서 원본(아래 직종에 한해 징구)\n     기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)]\n  ⑥ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)\n  ⑦ 고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)"
     }
-  ]
+  ],
+  "source_revision_date": "2026-06-01",
+  "source_file_sha256": "e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+  "source_refresh_note": "Current stay manual source advanced to the user-provided 2026-06-01 PDF. Runtime grounding pages 43, 44, 90, 91, and 226 were rechecked against the June PDF and matched the previous canonical PDF by extracted text hash. Broad structured requirement layers remain May-derived until regenerated."
 }

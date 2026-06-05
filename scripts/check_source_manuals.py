@@ -111,7 +111,7 @@ def main() -> None:
     if duplicates:
         fail(f"duplicate or missing current manual role(s): {', '.join(duplicates)}")
 
-    print("[check_source_manuals] OK - current 2026.5 source manuals are registered.")
+    print("[check_source_manuals] OK - current source manuals are registered.")
 
 
 if __name__ == "__main__":

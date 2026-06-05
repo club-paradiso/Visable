@@ -1,0 +1,107 @@
+{
+  "generated": "2026-06-05",
+  "script": "scripts/regenerate_2026_06_01_structured_stay_manual_indexes.py",
+  "inputs": {
+    "oldStructured": "backend/data/manual_grounding/structured_requirements_2026_05.json",
+    "oldIndex": "backend/data/manual_grounding/structured_requirements_index_2026_05.json",
+    "oldStayPdf": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+    "newStayPdf": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+    "newStayHwp": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp"
+  },
+  "outputs": {
+    "structured": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+    "index": "backend/data/manual_grounding/structured_requirements_index_2026_06_01.json",
+    "auditReport": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+  },
+  "pageAudit": {
+    "uniquePagesChecked": 212,
+    "pagesMatched": 205,
+    "pagesChanged": 7,
+    "pagesMissingText": [],
+    "changedPages": [
+      {
+        "page": 299,
+        "oldTextSha256": "c1274cdbadbeb580b0a2c2ad99cfada5b830c218be6d98b6b9bcf5b1c99c0806",
+        "newTextSha256": "1a2b9ef2c240493991ac15c3f9ca472068b11aaabe323364db28c72a20989e2f",
+        "oldChars": 738,
+        "newChars": 662,
+        "oldHead": "- 299 - ○ (일정) 연중 상시 접수 ○ (방법) 하이코리아 전자민원을 통한 온라인 접수 원칙 ↳ 하이코리아 홈페이지(www.hikorea.go.kr) 공지사항(신청방법) 참고 - (신청 5부제) 신청인의 출생 연도 끝자리에 따른 신청 요일 지정 (예: 1990년생→금요일, 199",
+        "newHead": "- 299 - 2신청 일정 및 방법 ○ (일정) 연중 상시 접수 ○ (방법) 하이코리아 전자민원을 통한 온라인 접수 원칙 ↳ 하이코리아 홈페이지(www.hikorea.go.kr) 공지사항(신청방법) 참고 - (신청 5부제) 신청인의 출생 연도 끝자리에 따른 신청 요일 지정 (예: 199"
+      },
+      {
+        "page": 619,
+        "oldTextSha256": "9fd7008e8af07801d12993276d9f41af15032a100f6ca64080b1a03eb3aa3835",
+        "newTextSha256": "3617b7bc123729d03b97243134158fbf74dfd4d0dfbcae0630c24048f6675ad5",
+        "oldChars": 811,
+        "newChars": 844,
+        "oldHead": "- 99 - 【 국내 초·중·고교 입학 및 재학 요건의 기준 】 ∘ (초·중·고교) 다음의 어느 하나에 해당하여야 함 - 「초‧중등교육법｣ 제2조 제1호 내지 제3호에 따른 초·중·고등학교(공민학교, 고등공민학교, 방송통신중·고등학교, 고등기술학교는 제외) - ｢초‧중등교육법｣ 제2조 ",
+        "newHead": "- 99 - - 학령기인 경우에는 다음의 기준에 따른 국내 초·중·고교에 입학 예정이거나 재학하여야 함수(초중고 모두 포함, 위반 시 주체류자격자 허가 취소)【 국내 초·중·고교 입학 및 재학 요건의 기준 】 ∘ (초·중·고교) 다음의 어느 하나에 해당하여야 함 - 「초‧중등교육법｣ 제"
+      },
+      {
+        "page": 620,
+        "oldTextSha256": "6e8d34104bca72acfba1bb01f07f238854283e5ed6d6b1d1fbd8fdc0bc2faad0",
+        "newTextSha256": "4b269143808cd33c87e139b765fa11f8400450e078c0ee4aaf91376776bdf0e4",
+        "oldChars": 349,
+        "newChars": 336,
+        "oldHead": "- 100 - 2. 체류자격 부여가. 대상 ❍ 지역특화 숙련기능인력(E-7-4R) 자격 소지자의 국내 출생 자녀나. 요건 ❍ 출생일로부터 90일 이내 신청 - 90일 이내 출국할 경우 자격부여 신청 불필요다. 제출서류 ① 통합신청서, 여권, 사진 ② 출생증명서(중국의 경우 호구부) ③ ",
+        "newHead": "- 100 - ❍ (체류자격) F-3-3R ❍ (체류기간) 주체류자격자의 체류만료일과 동일하게 부여2. 체류자격 부여가. 대상 ❍ 지역특화 숙련기능인력(E-7-4R) 자격 소지자의 국내 출생 자녀나. 요건 ❍ 출생일로부터 90일 이내 신청 - 90일 이내 출국할 경우 자격부여 신청 불필"
+      },
+      {
+        "page": 621,
+        "oldTextSha256": "dce74165e59e49f5bf7ba84efe0e37fb3add91334bb4b7d9732abac5e73ad733",
+        "newTextSha256": "0e8c64b284895a9767e8d48f9da91d67a50dbfd4ec4ae33d4a2d9107e6d40945",
+        "oldChars": 508,
+        "newChars": 521,
+        "oldHead": "- 101 - 나. 요건 ❍ 상기 Ⅳ-2. 동반가족 체류자격 변경 요건과 동일 ❍ 주체류자격자가 최초 허가를 받은 후 2년이 지나 동일 광역자치단체 내 다른 인구감소지역으로의 거주지 이전이 가능한 경우 동반가족도 동일하게 적용다. 제출서류 ① 통합신청서, 여권 ② 외국인등록증 ③ 주 체",
+        "newHead": "- 101 - 가. 대상 ❍ 지역특화 숙련기능인력(E-7-4R) 자격 소지자의 배우자 및 미성년자녀* * 배우자가 없을 것나. 요건 ❍ 상기 Ⅳ-2. 동반가족 체류자격 변경 요건과 동일 ❍ 주체류자격자가 최초 허가를 받은 후 2년이 지나 동일 광역자치단체 내 다른 인구감소지역으로의 거주"
+      },
+      {
+        "page": 623,
+        "oldTextSha256": "5e49f2099108a3cb10c85ef34b1bafa62201950b764cbe1705b374e2156fcdb3",
+        "newTextSha256": "4eff94e99f000e28e26e294c2616604dfb9ca3ef98350c397cf4b85a18d2302a",
+        "oldChars": 898,
+        "newChars": 892,
+        "oldHead": "- 103 - ❍ (해외 전입자) 해외에 거주하다가 사업지역으로 가족과 동반이주하려는 60세 미만 외국국적동포(사증발급신청 등 첨부서류에 관한 고시 국가 限) 나. “가”목에 해당하는 동포의 학령기 미성년 친생자녀(추천 필요) ❍ (대상) 만 6세 이상 19세 미만 동포 ❍ (추가요건)",
+        "newHead": "- 103 - ❍ (국내 전입자) 비인구감소지역에 거주하다가 사업지역으로 가족(배우자, 자녀)과 동반 이주하려는 60세 미만 외국국적동포 ❍ (해외 전입자) 해외에 거주하다가 사업지역으로 가족과 동반이주하려는 60세 미만 외국국적동포(사증발급신청 등 첨부서류에 관한 고시 국가 限) 나."
+      },
+      {
+        "page": 624,
+        "oldTextSha256": "e330cff67ad69038b346daa0fc3881a5722081b88fe03253b4ee73bd04197e3c",
+        "newTextSha256": "e09006edffb676d7d61e584981a414aecc3f23786668a7261482b0b4dcaf771a",
+        "oldChars": 510,
+        "newChars": 547,
+        "oldHead": "- 104 - ※ 범죄경력증명서 제출·면제 대상 등 세부기준은「외국국적동포 업무처리 지침」준용 ❍ (학령기 동포) 재학·입학 예정 입증서류 또는 진단서 등 ❍ (해외전입자) 건강진단서 ❍ (임의서류) 한국어능력 입증서류 ❍ 그 밖에 관할 출입국·외국인관서의 장이 심사에 필요하다고 인정하",
+        "newHead": "- 104 - 신청서, 표준규격사진 1매, 체류지 입증서류, 수수료, 동포입증서류, 해외 범죄경력증명서, 직업 및 연간 소득금액 신고서(직업만 체크) ※ 범죄경력증명서 제출·면제 대상 등 세부기준은「외국국적동포 업무처리 지침」준용 ❍ (학령기 동포) 재학·입학 예정 입증서류 또는 진단서"
+      },
+      {
+        "page": 627,
+        "oldTextSha256": "5fb54c24cf4048dae5c4217b074f366a09e3a7390cd640f1c52968e40680926f",
+        "newTextSha256": "1a7aad42f86b0718176e3382c4e23cf03516eed3f52a2a45e929966f88474b77",
+        "oldChars": 618,
+        "newChars": 638,
+        "oldHead": "- 107 - 후부터 기산2. 요건 ❍ (대한민국 법령 준수 등 품행 단정 요건) 「외국국적동포 업무처리 지침」에 따름 ❍ (생계유지능력 요건) 소득 기준을 1인당 국민총소득(GNI)의 70%로 완화 ❍ (기본소양 요건) 다음의 기준에 따름 - (원칙) 사회통합프로그램 5단계 이상 이수",
+        "newHead": "- 107 - ** 국내‧외 전입자 중 순차 이주한 사람은 가족동반 요건 충족(전입신고일 기준) 후부터 기산2. 요건 ❍ (대한민국 법령 준수 등 품행 단정 요건) 「외국국적동포 업무처리 지침」에 따름 ❍ (생계유지능력 요건) 소득 기준을 1인당 국민총소득(GNI)의 70%로 완화 ❍ "
+      }
+    ]
+  },
+  "refreshAudit": {
+    "stayEntriesSeen": 225,
+    "stayEntriesRelabelledToJunePdf": 218,
+    "stayEntriesRequiringReextraction": 7,
+    "sourceConfirmedEntriesDowngraded": 0,
+    "changedEntryKeys": [
+      "E-7:other",
+      "REGIONAL:other",
+      "REGIONAL:other",
+      "REGIONAL:other",
+      "REGIONAL:other",
+      "REGIONAL:other",
+      "REGIONAL:other"
+    ]
+  },
+  "hwpHandling": {
+    "path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
+    "role": "stored_only_official_artifact",
+    "reason": "HWP distribution-mode body extraction is blocked; PDF is the extraction source."
+  }
+}
