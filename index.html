@@ -13903,34 +13903,72 @@ function getDocumentMissingNotice(panelKey) {
 
 function renderDocumentTabPanel(v, cfg, isActive) {
     const items = getDocumentTabItems(v, cfg);
+    // Procedure-scoped, source-honest limitation note (NEVER show repeated
+    // generic missing-data tiles such as "문서명 미상" / "비고 정보 없음" as
+    // user-facing content — the static visa result rendering contract treats
+    // those as quality regressions).
     const bodyHtml = !items.length
         ? `<div class="docs-missing-notice" role="note">${escapeHtml(getDocumentMissingNotice(cfg.key))}</div>`
         : `<ol class="docs-list">${items.map(item => {
-            const name = (item && item.name) || 'DATA_MISSING';
-            const note = (item && item.note) || '';
-            const nameIsMissing = name === 'DATA_MISSING';
-            const noteIsMissing = !note || note === 'DATA_MISSING';
-            const nameHtml = nameIsMissing
-                ? `<div class="docs-list-name docs-list-missing">${escapeHtml('문서명 미상')}</div>`
-                : `<div class="docs-list-name">${escapeHtml(name)}</div>`;
+            const rawName = (item && item.name) || '';
+            const rawNote = (item && item.note) || '';
+            const nameIsMissing = !rawName || rawName === 'DATA_MISSING';
+            // Skip rows whose document name is missing — rendering "문서명 미상"
+            // as if it were a checklist line is misleading.
+            if (nameIsMissing) return '';
+            const noteIsMissing = !rawNote || rawNote === 'DATA_MISSING';
+            const nameHtml = `<div class="docs-list-name">${escapeHtml(rawName)}</div>`;
+            // Drop the empty "비고 정보 없음" placeholder entirely; rendering
+            // an explicit "no note" row buries the actual document name.
             const noteHtml = noteIsMissing
-                ? `<div class="docs-list-note docs-list-missing">${escapeHtml('비고 정보 없음')}</div>`
-                : `<div class="docs-list-note">${renderManualDetailBlock(note, [], 120)}</div>`;
+                ? ''
+                : `<div class="docs-list-note">${renderManualDetailBlock(rawNote, [], 120)}</div>`;
             return `<li class="docs-list-row">${nameHtml}${noteHtml}</li>`;
-        }).join('')}</ol>`;
+        }).filter(Boolean).join('')}</ol>`;
     return `<div class="docs-panel${isActive ? ' active' : ''}" data-docs-panel="${cfg.key}" role="tabpanel">${bodyHtml}</div>`;
+}
+
+// True when the procedure-first section (renderProcedures) already renders a
+// checklist for this visa, so the legacy 구비서류 strip would only duplicate it.
+function procedureSectionOwnsDocuments(v) {
+    if (!Array.isArray(PROCEDURE_CONFIG)) return false;
+    for (const cfg of PROCEDURE_CONFIG) {
+        const proc = getProcedure(v, cfg);
+        if (!proc || !proc.available || !proc.docs) continue;
+        const total = (proc.docs.commonDocs || []).length
+            + (proc.docs.requiredDocs || []).length
+            + (proc.docs.additionalDocs || []).length
+            + (proc.docs.conditionalDocs || []).length;
+        if (total > 0) return true;
+    }
+    return false;
 }
 
 function renderDocumentTabs(v) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const hasAnyField = DOCUMENT_TAB_CONFIG.some(cfg => v[cfg.field] !== undefined);
     if (!hasAnyField) return '';
-    const firstKey = DOCUMENT_TAB_CONFIG[0].key;
-    const tabsHtml = DOCUMENT_TAB_CONFIG.map(cfg => {
+    // De-duplicate against 절차별 안내: when the procedure-first section already
+    // owns the document checklists, do NOT render a parallel 구비서류 strip as
+    // a second authoritative surface. The procedure-scoped 구비서류 확인 CTA
+    // still deep-links into the procedure panel that owns the documents.
+    if (procedureSectionOwnsDocuments(v)) return '';
+    // Only render tabs whose underlying field actually yields document items —
+    // skip the empty 구조화 서류 데이터 없음 panels so the section is not
+    // dominated by repeated missing-data notices.
+    const tabsWithItems = DOCUMENT_TAB_CONFIG.filter(cfg => getDocumentTabItems(v, cfg).length > 0);
+    if (!tabsWithItems.length) {
+        return `<section class="manual-section docs-section docs-section-limited" aria-label="${escapeHtml(tx('documentSectionTitle'))}">
+            <h4 class="manual-section-title">${escapeHtml(tx('documentSectionTitle'))}</h4>
+            <div class="docs-missing-notice" role="note">${escapeHtml(getDocumentMissingNotice(DOCUMENT_TAB_CONFIG[0].key))}</div>
+        </section>`;
+    }
+    const firstKey = tabsWithItems[0].key;
+    const tabsHtml = tabsWithItems.map(cfg => {
         const isActive = cfg.key === firstKey;
         return `<button type="button" class="docs-tab${isActive ? ' active' : ''}" data-action="select-docs-tab" data-docs-tab="${cfg.key}" role="tab" aria-selected="${isActive ? 'true' : 'false'}"><span class="docs-tab-icon" aria-hidden="true">${cfg.icon}</span><span class="docs-tab-label">${escapeHtml(getDocumentTabLabel(cfg))}</span></button>`;
     }).join('');
-    const panelsHtml = DOCUMENT_TAB_CONFIG.map(cfg => renderDocumentTabPanel(v, cfg, cfg.key === firstKey)).join('');
+    const panelsHtml = tabsWithItems.map(cfg => renderDocumentTabPanel(v, cfg, cfg.key === firstKey)).join('');
     return `<section class="manual-section docs-section" aria-label="${escapeHtml(tx('documentSectionTitle'))}">
         <h4 class="manual-section-title">${escapeHtml(tx('documentSectionTitle'))}</h4>
         <div class="docs-tabs" role="tablist">${tabsHtml}</div>
