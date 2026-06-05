@@ -448,20 +448,20 @@
     },
     {
       "array_index": 24,
-      "code": "D-4-2K",
-      "name": "한국어연수(K-연수생)",
+      "code": "D-4-1",
+      "name": "한국어연수 (대학부설어학원)",
       "current_cat": "study",
       "primary_type": "visa_status",
       "source_grounding": "manual_grounded",
       "keep_in_visa_data": "keep",
       "future_destination": "visa_status_master",
-      "migration_risk": "med: DUPLICATE CODE (indices 24 & 55); structure valid but code collision",
+      "migration_risk": "low: code collision resolved (recoded to D-4-1 per 2026.5 stay manual p.83)",
       "ui_search_dependency": "UI status-card; search",
       "ai_dependency": "AI context",
       "verified": false,
       "needsManualReview": true,
-      "recommended_action": "keep in master; duplicate/sub-code resolution via separate D-content PR (do not delete)",
-      "note": "DUPLICATE CODE (array indices 24 and 55); resolution deferred to D-content PR"
+      "recommended_action": "resolved in D-content PR: 한국어연수 recoded D-4-2K -> D-4-1 (manual p.83); no deletion",
+      "note": "Former DUPLICATE CODE with index 55 resolved: 한국어연수 recoded D-4-2K -> D-4-1"
     },
     {
       "array_index": 25,
@@ -952,13 +952,13 @@
       "source_grounding": "manual_grounded",
       "keep_in_visa_data": "keep",
       "future_destination": "visa_status_master",
-      "migration_risk": "med: DUPLICATE CODE (indices 24 & 55); structure valid but code collision",
+      "migration_risk": "low: code collision resolved (한국어연수 recoded to D-4-1; D-4-2K now uniquely K-Trainee)",
       "ui_search_dependency": "UI status-card; search",
       "ai_dependency": "AI context",
       "verified": false,
       "needsManualReview": true,
-      "recommended_action": "keep in master; duplicate/sub-code resolution via separate D-content PR (do not delete)",
-      "note": "DUPLICATE CODE (array indices 24 and 55); resolution deferred to D-content PR"
+      "recommended_action": "resolved in D-content PR: D-4-2K now uniquely 기업 맞춤형 인턴십(K-Trainee) (manual pp.91-92, 94)",
+      "note": "Former DUPLICATE CODE with index 24 resolved: D-4-2K now uniquely K-Trainee"
     },
     {
       "array_index": 56,
