@@ -2478,9 +2478,10 @@ class UnionResolverE4AParityTests(unittest.TestCase):
     preserves current /api/visas behavior exactly:
       - record count stays at 58
       - key records remain present
-      - D-4-2K pre-existing duplicate behavior is unchanged
+      - the former D-4-2K code collision is resolved (single K-Trainee
+        record; 한국어연수 now carries its correct manual code D-4-1)
       - migrationMeta does not leak into AI context fields
-      - union resolver introduces no new duplicate codes
+      - union resolver introduces no duplicate codes
     """
 
     EXPECTED_COUNT = 58
@@ -2507,28 +2508,44 @@ class UnionResolverE4AParityTests(unittest.TestCase):
         for code in self.KEY_CODES:
             self.assertIn(code, codes, f"code {code} missing from /api/visas response")
 
-    def test_d4_2k_duplicate_behavior_unchanged(self):
-        """D-4-2K pre-existing duplicate (indices 24 and 55) must still appear twice."""
+    def test_d4_2k_code_collision_resolved(self):
+        """D-4-2K must resolve to the single K-Trainee record, and the former
+        duplicate (한국어연수) must now carry its correct manual code D-4-1.
+
+        The 2026.5 외국인체류 안내매뉴얼 assigns D-4-2K to 기업 맞춤형 인턴십
+        (K-Trainee, stay manual pp. 91-92, 94) and 한국어연수 to D-4-1
+        (대학부설어학원, p. 83). Previously both top-level records shared code
+        D-4-2K (array indices 24 & 55), so the K-Trainee record was unreachable
+        via VISA_DATA.find(v => v.code === code) in the viewer and analyzer.
+        """
         visas = self._visas()
         d4_2k = [v for v in visas if v.get("code") == "D-4-2K"]
         self.assertEqual(
             len(d4_2k),
-            2,
-            f"D-4-2K appeared {len(d4_2k)} time(s); expected 2 (pre-existing dup unchanged)",
+            1,
+            f"D-4-2K appeared {len(d4_2k)} time(s); expected exactly 1 (K-Trainee)",
         )
+        self.assertIn("K-Trainee", d4_2k[0].get("name", ""))
+        d4_1 = [v for v in visas if v.get("code") == "D-4-1"]
+        self.assertEqual(
+            len(d4_1),
+            1,
+            f"D-4-1 (한국어연수) appeared {len(d4_1)} time(s); expected exactly 1",
+        )
+        self.assertIn("한국어연수", d4_1[0].get("name", ""))
 
-    def test_union_introduces_no_new_duplicate_codes(self):
-        """The union must not introduce any duplicate codes beyond D-4-2K."""
+    def test_union_has_no_duplicate_codes(self):
+        """The union must expose no duplicate top-level visa codes."""
         visas = self._visas()
         counts: dict = {}
         for v in visas:
             c = v.get("code")
             counts[c] = counts.get(c, 0) + 1
-        new_dupes = {c for c, n in counts.items() if n > 1 and c != "D-4-2K"}
+        dupes = {c for c, n in counts.items() if n > 1}
         self.assertEqual(
-            new_dupes,
+            dupes,
             set(),
-            f"union introduced unexpected new duplicate codes: {new_dupes}",
+            f"union exposed duplicate codes: {dupes}",
         )
 
     def test_migration_meta_not_in_ai_context_block(self):
