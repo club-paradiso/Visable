@@ -43,6 +43,11 @@ from services.answer_quality import (
     classify_answer_quality,
 )
 from services import answer_quality as _answer_quality
+from services.answer_shape import (
+    ANSWER_SHAPE_VERSION,
+    build_answer_shape_contract,
+    evaluate_answer_shape,
+)
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -395,6 +400,19 @@ class AskResponse(BaseModel):
     answer_certainty_level: str = "unavailable"
     answer_first_sentence: str = ""
     first_sentence_quality_warning: str = ""
+    # Evidence-backed answer-shape quality gate (Part A/B/C/F). Non-secret: a
+    # contract key, pass/fail, and coarse warning strings only. These let the
+    # frontend + smoke harness see whether the final answer satisfied the
+    # issue-type answer-shape contract, and whether a weak live-model answer was
+    # repaired by deterministic synthesis instead of being shown unmodified.
+    answer_shape_contract: str = ""
+    answer_shape_version: str = ANSWER_SHAPE_VERSION
+    answer_quality_gate_passed: bool = True
+    answer_quality_gate_warnings: List[str] = Field(default_factory=list)
+    missing_answer_slots: List[str] = Field(default_factory=list)
+    final_model_quality_warning: bool = False
+    answer_shape_failed_by_model: bool = False
+    model_answer_repaired_by_deterministic_synthesis: bool = False
     direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_grounding_error: str = ""
@@ -1343,12 +1361,20 @@ def build_legal_analysis_fallback_answer(
     lang: Optional[str],
     base_meta: Dict[str, Any],
     legal_analysis: Optional[Dict[str, Any]],
+    intro_mode: str = "outage",
 ) -> str:
-    """Build a deterministic outage fallback from generalized legal_analysis.
+    """Build a deterministic synthesis from generalized legal_analysis.
 
     This deliberately avoids status/activity templates. Study-specific wording
     appears only when legal_analysis actually classified the issue/activity as
     study-related.
+
+    ``intro_mode`` controls the leading line:
+      * ``"outage"`` (default): the provider was unavailable, so the note opens
+        by saying Paradiso is showing a structured analysis instead.
+      * ``"quality_repair"``: the live model DID answer but failed the
+        answer-shape gate, so we lead directly with the practical answer (no
+        outage line and no uncertainty-first opening — Part C / Part G).
     """
     norm = str(lang or "").lower()
     is_ko = norm.startswith("ko") or bool(re.search(r"[가-힣]", prompt or ""))
@@ -1377,14 +1403,26 @@ def build_legal_analysis_fallback_answer(
     target = facts.get("target_status")
     source_state = str(base_meta.get("source_state") or la.get("analysis_mode") or "").lower()
     source_note = _localized_source_boundary_note(is_ko=is_ko, source_state=source_state, legal_analysis=la)
+    # Part G: for registration/reporting answers, use concise source-limitation
+    # wording that points to the official channels for the deadline/filing detail
+    # instead of a generic "this is not based on the manual" disclaimer.
+    if "registration_or_residence_report" in issues or "reporting_duty" in issues:
+        source_note = (
+            "현재 연결된 직접 근거는 제한적이므로, 최종 기한과 제출 방식은 1345/HiKorea/관할 관서에서 확인하세요."
+            if is_ko else
+            "Direct sources are currently limited, so confirm the exact deadline and"
+            " filing method with 1345 / HiKorea / the competent immigration office."
+        )
 
     practical = str(la.get("practical_posture") or "").strip()
     main_issue = str(la.get("main_issue") or base_meta.get("main_issue") or "").strip()
     if is_ko:
         practical = _korean_practical_fallback(issues, facts, activities, activity_labels)
         main_issue = _korean_main_issue_fallback(issues, facts, activity_labels)
-        intro = "AI 모델이 일시적으로 응답하지 않아, Paradiso가 구조화된 법률 분석 메모를 대신 표시합니다."
-        lines = [intro, ""]
+        if intro_mode == "quality_repair":
+            lines = []
+        else:
+            lines = ["AI 모델이 일시적으로 응답하지 않아, Paradiso가 구조화된 법률 분석 메모를 대신 표시합니다.", ""]
         if "post_status_change_residual_duty" in issues and previous and current:
             lines.append(
                 f"{current}로 체류자격 변경이 완료되었다면, 부업 여부는 이전 {previous} 기준만으로 판단할 사안은 아니고 "
@@ -1428,8 +1466,10 @@ def build_legal_analysis_fallback_answer(
         lines.extend(["", source_note, "이 메모는 최종 판단이 아니며, 시작 전 1345, HiKorea 또는 관할 출입국·외국인청에 위 사실관계를 기준으로 확인하세요."])
         return "\n".join(lines)
 
-    intro = "The AI model is temporarily unavailable, so Paradiso is showing a structured legal-analysis preparation note."
-    lines = [intro, ""]
+    if intro_mode == "quality_repair":
+        lines = []
+    else:
+        lines = ["The AI model is temporarily unavailable, so Paradiso is showing a structured legal-analysis preparation note.", ""]
     if "post_status_change_residual_duty" in issues and previous and current:
         lines.append(
             f"Because the status has already changed from {previous} to {current}, analyze the side activity first under the current {current} status. "
@@ -1520,6 +1560,82 @@ def _build_deterministic_fallback_payload(prompt: str, lang: Optional[str], base
         "ollama_fallback_used": False,
         "ollama_model": OLLAMA_MODEL,
     }
+
+
+def _apply_answer_shape_gate(
+    answer: str,
+    response_meta: Dict[str, Any],
+    answer_shape_contract: Dict[str, Any],
+    *,
+    prompt: str,
+    lang: Optional[str],
+    final_model: Optional[str],
+    primary_model: Optional[str],
+) -> tuple:
+    """Run the answer-shape quality gate on a live model answer (Part B/C/F).
+
+    Returns ``(final_answer, gate_meta)``. When the live answer fails the
+    issue-type contract *structurally* and a backend legal_analysis exists, the
+    weak answer is replaced by deterministic synthesis (leading with the
+    practical answer, not an outage notice). Never raises; never changes
+    provider/model selection or the model attempt metadata.
+    """
+    contract_key = answer_shape_contract.get("contract_key", "")
+    final_model_quality_warning = bool(
+        final_model and primary_model and final_model != primary_model
+    )
+    gate_meta: Dict[str, Any] = {
+        "answer_shape_contract": contract_key,
+        "answer_shape_version": answer_shape_contract.get("answer_shape_version", ANSWER_SHAPE_VERSION),
+        "final_model_quality_warning": final_model_quality_warning,
+        "answer_shape_failed_by_model": False,
+        "model_answer_repaired_by_deterministic_synthesis": False,
+    }
+
+    try:
+        gate = evaluate_answer_shape(answer, response_meta, answer_shape_contract)
+    except Exception:  # pragma: no cover - the gate must never break /api/ask
+        gate_meta.update(
+            answer_quality_gate_passed=True,
+            answer_quality_gate_warnings=[],
+            missing_answer_slots=[],
+            copy_safe_answer=answer,
+        )
+        return answer, gate_meta
+
+    gate_meta.update(
+        answer_quality_gate_passed=gate["passed"],
+        answer_quality_gate_warnings=gate["warnings"],
+        missing_answer_slots=gate["missing_slots"],
+    )
+
+    legal_analysis = (
+        response_meta.get("legal_analysis")
+        if isinstance(response_meta.get("legal_analysis"), dict)
+        else None
+    )
+    if (not gate["passed"]) and gate["repair_strategy"] == "deterministic_synthesis" and legal_analysis:
+        repaired = build_legal_analysis_fallback_answer(
+            prompt=prompt,
+            lang=lang,
+            base_meta=response_meta,
+            legal_analysis=legal_analysis,
+            intro_mode="quality_repair",
+        )
+        repaired = _confidence_gate_answer_text(repaired, response_meta)
+        regate = evaluate_answer_shape(repaired, response_meta, answer_shape_contract)
+        gate_meta.update(
+            answer_shape_failed_by_model=True,
+            model_answer_repaired_by_deterministic_synthesis=True,
+            answer_quality_gate_passed=regate["passed"],
+            answer_quality_gate_warnings=regate["warnings"],
+            missing_answer_slots=regate["missing_slots"],
+            copy_safe_answer=repaired,
+        )
+        return repaired, gate_meta
+
+    gate_meta["copy_safe_answer"] = answer
+    return answer, gate_meta
 
 
 async def _openrouter_complete_with_candidates(
@@ -3237,6 +3353,19 @@ async def ask(req: AskRequest) -> AskResponse:
         manual_grounding_status=manual_grounding_status,
     )
 
+    # Evidence-backed answer-shape contract (Part A). Picks ONE issue-type
+    # contract (registration / activity-scope / workplace-change / status-change
+    # / documents / study / work-restriction) and the required answer slots. The
+    # same object feeds the prompt directive, the post-answer quality gate, and
+    # the deterministic synthesis repair so all three agree on what a good answer
+    # for this issue must contain.
+    answer_shape_contract = build_answer_shape_contract(
+        legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types") or [],
+        immigration_facts=(law_evidence_pack or {}).get("immigration_facts") or {},
+        answer_certainty_level=source_panel_meta.get("answer_certainty_level", ""),
+        question_type=quality.get("question_type", ""),
+    )
+
     # Answer-prompt integration (Part E): inject ONE compact, normalized
     # evidence summary (never a raw API dump) plus the backend-prepared legal
     # analysis object. The model may explain this object; it must not invent it.
@@ -3282,6 +3411,22 @@ async def ask(req: AskRequest) -> AskResponse:
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
+    # Steer the live model toward the issue-type answer-shape contract so the
+    # post-answer quality gate has to repair fewer answers. This is guidance
+    # only; it never invents facts and never changes provider/model selection.
+    if answer_shape_contract.get("required_slots"):
+        final_prompt += (
+            "\n\n[Answer shape contract — required content for this issue type]\n"
+            f"- Issue-type contract: {answer_shape_contract['contract_key']}.\n"
+            "- Make sure the answer actually contains, in natural prose (not as"
+            " labels): " + ", ".join(answer_shape_contract["required_slots"]).replace("_", " ") + ".\n"
+            "- Lead with the direct practical answer; put any source-limitation"
+            " note AFTER the practical analysis, not as the first line; do not say"
+            " the answer is not based on the manual when structured legal analysis"
+            " context is provided; do not introduce study/course wording unless the"
+            " issue is genuinely about study."
+        )
+
     llm = _resolve_llm_config()
 
     base_meta: Dict[str, Any] = dict(
@@ -3311,6 +3456,12 @@ async def ask(req: AskRequest) -> AskResponse:
         grounded_answer_limited=quality["grounded_answer_limited"],
         answer_style_version=quality["answer_style_version"],
         question_type_detected=quality["question_type"],
+        # Answer-shape contract (Part A). Gate pass/warnings are filled on the
+        # live-answer path below; defaults (passed, empty warnings) hold for the
+        # deterministic-synthesis / provider-family fallback paths whose answers
+        # are gate-safe by construction.
+        answer_shape_contract=answer_shape_contract["contract_key"],
+        answer_shape_version=answer_shape_contract["answer_shape_version"],
         # Structured law/manual evidence pack (Part D) + convenience fields.
         # Secret-free: source URLs are sanitized and OC/keys never appear.
         law_evidence_pack=law_evidence_pack,
@@ -3374,6 +3525,19 @@ async def ask(req: AskRequest) -> AskResponse:
         if result["ok"]:
             response_meta = dict(base_meta)
             answer_text = _confidence_gate_answer_text(result["answer"], response_meta)
+            # Evidence-backed answer-shape quality gate (Part B/C/F). If the live
+            # model answer fails the issue-type contract structurally, repair it
+            # with deterministic synthesis instead of showing the weak answer.
+            answer_text, gate_meta = _apply_answer_shape_gate(
+                answer_text,
+                response_meta,
+                answer_shape_contract,
+                prompt=prompt,
+                lang=req.lang,
+                final_model=result.get("final_model"),
+                primary_model=result.get("primary_model"),
+            )
+            response_meta.update(gate_meta)
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(

@@ -222,6 +222,14 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
     explicit_hint = _norm_code(visa_code or "") if visa_code else None
     previous_status: Optional[str] = None
     current_status: Optional[str] = explicit_hint or (codes[0] if codes else None)
+    # Prefer a more-specific sub-code the user explicitly typed over a parent-only
+    # hint (e.g. UI hint "G-1" but the question text says "G-1-5"). This keeps the
+    # exact sub-status the user named instead of collapsing it to the parent.
+    if explicit_hint and current_status == explicit_hint:
+        for code in codes:
+            if code != explicit_hint and code.startswith(explicit_hint + "-"):
+                current_status = code
+                break
     target_status: Optional[str] = None
     transition = _TRANSITION_RE.search(text)
     if transition:

@@ -393,6 +393,58 @@ def _family_statuses_collapse_warnings(result):
     return warnings
 
 
+# Answer-shape quality-gate static signals (Part H). These mirror the backend
+# services.answer_shape gate but are inlined so this harness stays dependency-free.
+_GENERIC_AVOIDANCE_OPENERS = (
+    "paradiso cannot verify", "whether you can", "it depends", "this depends",
+    "i cannot", "unfortunately", "specific manual guidance was not found",
+    "정확히 확인", "정확한 확인", "확인이 필요합니다", "단정하기 어렵",
+    "말씀드리기 어렵", "답변드리기 어렵", "경우에 따라 다", "상황에 따라 다",
+)
+_SOURCE_LIMITATION_FIRST_MARKERS = (
+    "근거하지 않", "매뉴얼에 근거", "직접 근거는 제한", "직접 근거가 제한",
+    "직접적인 근거가 없", "출처 조회가 제한", "근거가 제한적",
+    "cannot verify", "not based on", "source is limited", "no direct source",
+)
+_REGISTRATION_SLOT_MARKERS = {
+    "deadline": ("기한", "이내", "유예", "deadline", "days", "within"),
+    "trigger": ("입국", "entry", "체류자격 변경", "주소", "address", "등록", "사유"),
+    "filing_channel": ("hikorea", "하이코리아", "1345", "관할", "출입국", "immigration office", "방문"),
+}
+
+
+def _first_nonempty_line(answer):
+    for line in (answer or "").splitlines():
+        if line.strip():
+            return line.strip()
+    return ""
+
+
+def _generic_avoidance_warning(answer):
+    first = _first_nonempty_line(answer).lower()
+    return bool(first) and any(first.startswith(op.lower()) for op in _GENERIC_AVOIDANCE_OPENERS)
+
+
+def _source_limitation_first_line_warning(answer):
+    first = _first_nonempty_line(answer).lower()
+    return any(marker in first for marker in _SOURCE_LIMITATION_FIRST_MARKERS)
+
+
+def _registration_missing_slot_warning(answer, question, issues):
+    """Part H: a registration/reporting answer must carry deadline + trigger +
+    filing-channel content (warn-only)."""
+    is_registration = "registration_or_residence_report" in (issues or []) or any(
+        t in (question or "") for t in ("외국인등록", "거소신고")
+    )
+    if not is_registration:
+        return []
+    missing = []
+    for slot, markers in _REGISTRATION_SLOT_MARKERS.items():
+        if not any(m in (answer or "").lower() for m in markers):
+            missing.append(slot)
+    return missing
+
+
 def _contains_unrelated_h1_study_template(answer, question):
     combined = (answer or "")
     q = question or ""
@@ -450,6 +502,17 @@ def _check_question(base, q):
         "grounded_answer_limited": None,
         "answer_style_version": None,
         "question_type_detected": None,
+        # Evidence-backed answer-shape quality-gate signals (Part H).
+        "answer_shape_contract": None,
+        "answer_quality_gate_passed": None,
+        "answer_quality_gate_warnings": None,
+        "missing_answer_slots": None,
+        "final_model_quality_warning": None,
+        "model_answer_repaired_by_deterministic_synthesis": None,
+        "answer_shape_failed_by_model": None,
+        "generic_avoidance_warning": None,
+        "source_limitation_first_line_warning": None,
+        "irrelevant_term_warning": None,
         # Law evidence tool-layer signals (Part I).
         "planned_law_queries": None,
         "law_evidence_count": None,
@@ -553,6 +616,15 @@ def _check_question(base, q):
     result["grounded_answer_limited"] = meta.get("grounded_answer_limited")
     result["answer_style_version"] = meta.get("answer_style_version")
     result["question_type_detected"] = meta.get("question_type_detected")
+    # Evidence-backed answer-shape quality-gate metadata (Part H) — present on
+    # both the live 200 path and the no-provider 503 path's base metadata.
+    result["answer_shape_contract"] = meta.get("answer_shape_contract")
+    result["answer_quality_gate_passed"] = meta.get("answer_quality_gate_passed")
+    result["answer_quality_gate_warnings"] = meta.get("answer_quality_gate_warnings")
+    result["missing_answer_slots"] = meta.get("missing_answer_slots")
+    result["final_model_quality_warning"] = meta.get("final_model_quality_warning")
+    result["model_answer_repaired_by_deterministic_synthesis"] = meta.get("model_answer_repaired_by_deterministic_synthesis")
+    result["answer_shape_failed_by_model"] = meta.get("answer_shape_failed_by_model")
     # Law evidence tool-layer signals (Part I) — sanitized, no secrets.
     result["planned_law_queries"] = meta.get("planned_law_queries")
     result["law_evidence_count"] = meta.get("law_evidence_count")
@@ -772,6 +844,27 @@ def _check_question(base, q):
         reg_leak = _registration_answer_study_leak(answer, q.get("question"))
         if reg_leak:
             result["quality_warnings"].append("registration/reporting answer leaks study terms: %s" % reg_leak)
+        # Part H — evidence-backed answer-shape quality-gate static checks.
+        issues_h = list(result.get("legal_issue_types") or [])
+        result["generic_avoidance_warning"] = _generic_avoidance_warning(answer)
+        if result["generic_avoidance_warning"]:
+            result["quality_warnings"].append("answer starts with generic uncertainty/avoidance")
+        result["source_limitation_first_line_warning"] = _source_limitation_first_line_warning(answer)
+        if result["source_limitation_first_line_warning"]:
+            result["quality_warnings"].append("source limitation appears before practical analysis")
+        result["irrelevant_term_warning"] = bool(reg_leak)
+        reg_missing = _registration_missing_slot_warning(answer, q.get("question"), issues_h)
+        if reg_missing:
+            result["quality_warnings"].append("registration/reporting answer lacks slots: %s" % reg_missing)
+        # Surface the backend gate's own results (cross-check; warn-only).
+        if result.get("answer_quality_gate_passed") is False:
+            result["quality_warnings"].append(
+                "answer_quality_gate failed: %s" % (result.get("answer_quality_gate_warnings") or result.get("missing_answer_slots"))
+            )
+        if result.get("final_model_quality_warning"):
+            result["quality_warnings"].append("final model is not the configured primary model")
+        if result.get("model_answer_repaired_by_deterministic_synthesis"):
+            result["quality_warnings"].append("weak model answer repaired by deterministic synthesis")
         for w in _family_statuses_collapse_warnings(result):
             result["quality_warnings"].append(w)
         if result.get("first_sentence_quality_warning") is None:
@@ -924,6 +1017,21 @@ def main(argv=None):
     report["no_provider_safe"] = all(
         (r["status"] != 503) or r["ok"] for r in results
     )
+    # Evidence-backed answer-shape quality-gate aggregates (Part H).
+    report["answer_shape_gate_failures"] = sum(
+        1 for r in results if r.get("answer_quality_gate_passed") is False
+    )
+    report["answer_shape_repaired_count"] = sum(
+        1 for r in results if r.get("model_answer_repaired_by_deterministic_synthesis")
+    )
+    report["final_model_quality_warning_count"] = sum(
+        1 for r in results if r.get("final_model_quality_warning")
+    )
+    report["generic_avoidance_count"] = sum(1 for r in results if r.get("generic_avoidance_warning"))
+    report["source_limitation_first_line_count"] = sum(
+        1 for r in results if r.get("source_limitation_first_line_warning")
+    )
+    report["irrelevant_term_count"] = sum(1 for r in results if r.get("irrelevant_term_warning"))
 
     _emit(report, args)
 
@@ -977,6 +1085,13 @@ def _emit(report, args):
     print("  model fallback hit       : %s" % report["model_fallback_executed"])
     print("  manual->law fallback hit : %s" % report["manual_to_law_fallback_executed"])
     print("  no-provider 503 safe     : %s" % report["no_provider_safe"])
+    print("  answer-shape gate (Part H):")
+    print("    gate failures          : %s" % report.get("answer_shape_gate_failures"))
+    print("    repaired by synthesis  : %s" % report.get("answer_shape_repaired_count"))
+    print("    final-model warnings   : %s" % report.get("final_model_quality_warning_count"))
+    print("    generic avoidance      : %s" % report.get("generic_avoidance_count"))
+    print("    source-limit-first     : %s" % report.get("source_limitation_first_line_count"))
+    print("    irrelevant-term leaks  : %s" % report.get("irrelevant_term_count"))
     if report.get("ai_shell") is not None:
         sh = report["ai_shell"]
         print("  ai shell (static, ai.html):")
