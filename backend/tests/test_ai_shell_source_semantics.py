@@ -101,6 +101,20 @@ class AiShellStaticTests(unittest.TestCase):
         # The technical-details <details> block is still present for raw codes.
         self.assertIn("개발자 진단 정보 보기", self.html)
 
+    def test_public_source_status_chips_are_rendered_safely(self):
+        for token in (
+            "source-status-chips",
+            "source-chip",
+            'data-row-kind="public-source-status"',
+            "source-name-list",
+            "versionDate",
+        ):
+            self.assertIn(token, self.html)
+        self.assertIn("manualSources.length && !publicLabels.length", self.html)
+        self.assertIn("@media (max-width: 480px)", self.html)
+        self.assertIn(".source-status-chips", self.html)
+        self.assertIn("overflow-wrap: anywhere", self.html)
+
     # -- Warning de-duplication (Part D) ------------------------------------
     def test_warning_dedup_guards_present(self):
         self.assertIn("const hasPanel = Boolean(sourcePanelHtml)", self.html)

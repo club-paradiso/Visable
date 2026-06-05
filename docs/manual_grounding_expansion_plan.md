@@ -22,14 +22,18 @@ caveats, and excerpt into the prompt sent to the LLM.
 
 ## Source manual
 
-- File: `docs/source-manuals/2026-05/stay_manual_2026_05.pdf`
+- File: `docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf`
 - Title (Korean): 외국인체류 안내매뉴얼
-- Date: 2026.5
+- Printed version: 2026.5
+- Source file date: 2026-06-01
 - Issuing body: 법무부 출입국·외국인정책본부
 - Total pages (PDF): 777
 - Note: a related, separate file
   `docs/source-manuals/2026-05/visa_manual_2026_05.pdf` (visa-issuance
   manual) exists but is not used for stay/extension grounding.
+- Note: the matching 2026-06-01 HWP is stored as an official artifact, but
+  distribution-mode body extraction is blocked, so PDF remains the extraction
+  source.
 
 ## Verification method
 
@@ -187,7 +191,7 @@ either ship a sub-code-specific entry or leave the request ungrounded.
 The deterministic-lookup approach was chosen to:
 
 - Keep responses faithful to a specific, auditable PDF snapshot
-  (`stay_manual_2026_05.pdf`).
+  (`stay_manual_2026_06_01.pdf`).
 - Avoid introducing embeddings, a vector store, chunking heuristics,
   retrieval evaluation, or new runtime dependencies before the legal /
   source-attribution shape of the product is settled.
@@ -222,15 +226,15 @@ explicitly **out of scope** for this PR.
 which pdfinfo pdftotext || sudo apt-get install -y poppler-utils
 
 # Sanity-check the manual
-pdfinfo docs/source-manuals/2026-05/stay_manual_2026_05.pdf
+pdfinfo docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf
 
 # Extract the whole manual to a flat text file
-pdftotext -layout docs/source-manuals/2026-05/stay_manual_2026_05.pdf /tmp/stay_manual_2026_05.txt
+pdftotext -layout docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf /tmp/stay_manual_2026_06_01.txt
 
 # Spot-check the three grounded sections
-pdftotext -layout -f 43  -l 44  docs/source-manuals/2026-05/stay_manual_2026_05.pdf -   # D-2
-pdftotext -layout -f 90  -l 91  docs/source-manuals/2026-05/stay_manual_2026_05.pdf -   # D-4 어학연수
-pdftotext -layout -f 226 -l 226 docs/source-manuals/2026-05/stay_manual_2026_05.pdf -   # E-7
+pdftotext -layout -f 43  -l 44  docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf -   # D-2
+pdftotext -layout -f 90  -l 91  docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf -   # D-4 어학연수
+pdftotext -layout -f 226 -l 226 docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf -   # E-7
 ```
 
 ## Next batches (suggested order)

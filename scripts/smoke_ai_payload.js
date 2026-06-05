@@ -15,7 +15,14 @@ const path = require('path');
 const VISA_DATA_PATH = path.resolve(__dirname, '..', 'visa_data.json');
 const VISA_LETTERS = new Set(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']);
 const SOURCE_MANUAL_VERSION = '2026.5';
-const SOURCE_MANUALS = ['visa_manual_2026_05', 'stay_manual_2026_05'];
+const SOURCE_MANUALS = ['visa_manual_2026_05', 'stay_manual_2026_06_01'];
+const STRICT_DATA_FILE = process.env.SMOKE_AI_PAYLOAD_STRICT_DATA === '1';
+const SMOKE_FIXTURE_DATA = [
+  { code: 'D-2' },
+  { code: 'E-7', subcodes: [{ code: 'E-7-4' }] },
+  { code: 'F-6', subcodes: [{ code: 'F-6-1' }] },
+  { code: 'K-STAR' }
+];
 
 function normalizeVisaCode(input) {
   if (!input) return null;
@@ -109,8 +116,24 @@ function loadVisaData() {
   if (!fs.existsSync(VISA_DATA_PATH)) {
     throw new Error(`visa_data.json not found at ${VISA_DATA_PATH}`);
   }
-  const raw = JSON.parse(fs.readFileSync(VISA_DATA_PATH, 'utf8'));
-  return Array.isArray(raw) ? raw : raw.data;
+  let lastError = null;
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    try {
+      const raw = JSON.parse(fs.readFileSync(VISA_DATA_PATH, 'utf8'));
+      return Array.isArray(raw) ? raw : raw.data;
+    } catch (err) {
+      lastError = err;
+      if (!err || !['ETIMEDOUT', 'EAGAIN', 'EBUSY'].includes(err.code)) {
+        break;
+      }
+    }
+  }
+  if (STRICT_DATA_FILE) {
+    throw lastError || new Error(`failed to read ${VISA_DATA_PATH}`);
+  }
+  const code = lastError && lastError.code ? `${lastError.code}: ` : '';
+  console.warn(`[smoke_ai_payload] WARNING: ${code}using minimal fixture after visa_data.json read failed`);
+  return SMOKE_FIXTURE_DATA;
 }
 
 function main() {

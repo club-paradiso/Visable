@@ -52,26 +52,26 @@
       "title_ko": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
       "version": "2026.5",
-      "source_date": "2026-05-21",
-      "source_label": "2026-05-21 외국인체류 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
-      "supersedes": null,
+      "source_date": "2026-06-01",
+      "source_label": "2026-06-01 외국인체류 안내매뉴얼 (2026.5; 숙련기능인력 제도 개선사항 반영; user-provided source PDF installed)",
+      "supersedes": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
       "authority": "법무부 출입국·외국인정책본부",
       "pages": 777,
-      "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-      "file_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
-      "file_size_bytes": 14884075,
-      "pdf_internal_creation_date": "2026-05-24T11:56:30Z",
+      "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "file_sha256": "e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+      "file_size_bytes": 14894357,
+      "pdf_internal_creation_date": "2026-06-05T02:27:11Z",
       "pdf_internal_title": "무제",
       "pdf_internal_producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
       "role": "stay_residence_manual",
       "status": "current",
-      "verification_status": "source_file_compared",
-      "verification_note": "Incoming user-provided PDF docs/source-manuals/2026-05/incoming/stay_manual_2026_05_21_source.pdf was compared against prior canonical docs/source-manuals/2026-05/stay_manual_2026_05.pdf by SHA-256, page count, PDF metadata, cover/TOC text, and sampled page-level text extraction. Canonical replacement was performed on branch data/install-2026-05-21-source-pdfs. The source PDF filename contains 260521/2026-05-21 evidence, and PDF page-level extraction confirms the expected 외국인체류 안내매뉴얼 manual structure. The cover label remains month-level '2026. 5.' and does not independently encode the day; HWP distribution-mode body extraction was not used as proof.",
+      "verification_status": "source_file_received_pdf_text_sampled",
+      "verification_note": "User-provided PDF docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf was installed as the current stay/residence manual. The source filename contains 260601/2026-06-01 evidence, pypdf 6.10.0 reports 777 pages, PDF metadata was sampled, cover/TOC text extraction confirms the expected 외국인체류 안내매뉴얼 structure, and runtime-cited pages 43, 44, 90, 91, and 226 were compared against the prior May canonical PDF and matched by extracted text hash. The cover label remains month-level '2026. 5.' and does not independently encode the day; the companion HWP is stored-only because distribution-mode body extraction is blocked.",
       "alternate_source_files": [
         {
-          "file": "docs/source-manuals/2026-05/stay_manual_2026_05_21.hwp",
+          "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
           "format": "hwp",
-          "hwp_version": "5.1.0.1",
+          "hwp_version": "5.x",
           "hwp_flags_raw": "0x5",
           "hwp_flags": {
             "compressed": true,
@@ -80,21 +80,30 @@
             "script_protected": false,
             "drm": false
           },
-          "source_date": "2026-05-21",
-          "source_date_evidence": "filename_only",
-          "source_date_evidence_note": "Upload filename contains '260521' (YYMMDD). HWP PrvText preview confirms cover label '2026. 5.' and TOC head matching the foreigner stay/residence manual, but does not encode a day-level date.",
-          "file_sha256": "b9c7402807e007563c589235e63a0791dfcb864c6d1e6964dcd1d492caf77ce3",
-          "file_size_bytes": 3175424,
+          "source_date": "2026-06-01",
+          "source_date_evidence": "filename_user_provided",
+          "source_date_evidence_note": "Upload filename contains '260601' (YYMMDD). BodyText extraction returns only the distribution-mode notice, so filename-level evidence and the paired PDF are recorded without pretending HWP body text was indexed.",
+          "file_sha256": "9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d",
+          "file_size_bytes": 3177472,
           "view_text_sections": 23,
           "body_text_sections": 1,
           "bindata_streams": 16,
           "extraction_primary_format": "pdf",
-          "extraction_blocker": "hwp_distribution_mode_view_text_encrypted",
-          "extraction_blocker_detail": "ViewText sections start with HWPTAG_DISTRIBUTE_DOC_DATA (tag 0x1c, 256-byte payload) followed by an encrypted payload. Raw zlib deflate fails. LibreOffice 24.2.7 + libreoffice-h2orestart 0.6.1 returns 'source file could not be loaded'. pyhwp current releases require Python 2.7 only.",
+          "extraction_blocker": "hwp_distribution_mode_body_text_placeholder",
+          "extraction_blocker_detail": "The HWP 5.x file is compressed distribution-mode (flags raw 0x5). Available local HWP inspection sees 1 BodyText stream and 23 ViewText sections, but BodyText extraction returns only the distribution-mode warning text rather than the manual body. Downstream extraction/indexing therefore uses the paired PDF only.",
           "verification_status": "source_file_received_distribution_mode_blocks_text_extraction",
-          "verification_note": "HWP 배포용 (distribution-mode) file received via user upload on 2026-05-24 and installed at the repo path above. Filename-level evidence supports 2026-05-21 issuance, but page-level body extraction is blocked, so we do not promote this evidence to the PDF entry's 'source_date'. See docs/data/2026_05_21_SOURCE_FILE_INTAKE_REPORT.md and docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md."
+          "verification_note": "HWP distribution-mode file received via user-provided local download path on 2026-06-05 and installed at the repo path above as an official artifact. It is not parsed, indexed, or used as the primary extraction source."
         }
-      ]
+      ],
+      "archived_previous_current": {
+        "source_date": "2026-05-21",
+        "source_label": "2026-05-21 외국인체류 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
+        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "file_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
+        "file_size_bytes": 14884075,
+        "pdf_internal_creation_date": "2026-05-24T11:56:30Z",
+        "verification_status": "source_file_compared"
+      }
     }
   },
   "audit_history": [
@@ -172,11 +181,45 @@
         "no external source sites fetched",
         "HWP body extraction not used as proof"
       ]
+    },
+    {
+      "audit_date": "2026-06-05",
+      "branch": "fix/generalized-legal-grounding-and-source-ux",
+      "scope": "Install user-provided 2026-06-01 stay/residence manual PDF/HWP as current source artifacts; no broad visa_data.json rewrite.",
+      "files_received": [
+        "stay_manual_260601.pdf (stay, 14,894,357 bytes, sha256 e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0)",
+        "260601_체류민원_자격별_안내_매뉴얼(숙련기능인력 제도 개선사항 반영).hwp (stay, 3,177,472 bytes, sha256 9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d)"
+      ],
+      "files_installed": [
+        "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+        "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp"
+      ],
+      "extraction_tooling": "pypdf 6.10.0 (PDF metadata/page-count/text sampling; emitted recoverable wrong-object warnings), python3 olefile 0.47 (HWP storage/flag inspection).",
+      "page_count_check": "PDF page count 777; HWP page count unavailable because distribution-mode body extraction is blocked.",
+      "comparison": {
+        "prior_current_stay_pdf": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+        "new_current_stay_pdf": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+        "runtime_grounding_pages_checked": [
+          43,
+          44,
+          90,
+          91,
+          226
+        ],
+        "result": "extracted text hashes matched on all checked runtime grounding pages"
+      },
+      "decision": "advance current stay_residence_manual to the June 1 PDF; store the HWP as official artifact only; leave existing broad structured requirement layers as May-derived until a full regeneration PR.",
+      "constraints_observed": [
+        "visa_data.json not rewritten",
+        "doc_master.json not rewritten",
+        "HWP not indexed or treated as parsed",
+        "visa issuance manual remains 2026-05-21 current"
+      ]
     }
   ],
   "schema_notes": [
     "The 'source_date' field uses ISO 8601 calendar dates for verified-day manuals, or the literal string 'unresolved' when a within-month revision date has not been independently verified.",
-    "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'source_file_received_distribution_mode_blocks_text_extraction', 'pending', or 'unknown'.",
+    "The 'verification_status' field uses one of: 'source_file_compared', 'source_file_received_pdf_text_sampled', 'source_file_hash_match_only', 'user_attached_pdf_not_accessible_in_environment', 'source_file_received_distribution_mode_blocks_text_extraction', 'pending', or 'unknown'.",
     "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual.",
     "The optional 'alternate_source_files' array on each 'current' entry holds non-primary source artifacts (e.g., HWP, HWPX, archived PDF exports) with their own per-file 'source_date', 'source_date_evidence', 'file_sha256', 'extraction_primary_format', and 'verification_status'. Filename-level evidence on an alternate source file does not by itself promote the primary entry's 'source_date'.",
     "The 'source_date' and the 'pdf_internal_creation_date' fields encode different facts. 'source_date' is the source-file revision date as identified by filename, source-file manifest, or page-level evidence (e.g., '2026-05-21'). 'pdf_internal_creation_date' is the export timestamp recorded inside the PDF /Info dictionary by the PDF generator (e.g., macOS Quartz PDFContext writes the time at which the PDF was rendered from the HWP). They commonly differ when the source manual is authored in HWP and exported to PDF some days after the source revision; the manifest must record both honestly without conflating them.",
