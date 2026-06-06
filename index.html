@@ -1365,6 +1365,12 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .procedure-tab:disabled { opacity: 0.45; cursor: not-allowed; }
 .procedure-panel { display: none; border-top: 1px dashed var(--bd2); margin-top: 0.78rem; padding-top: 0.92rem; }
 .procedure-panel.active { display: block; }
+.procedure-source-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.45rem; margin-bottom: 0.68rem; padding: 0.62rem 0.72rem; border: 1px solid var(--bd2); border-left: 3px solid var(--ac); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 78%, var(--bg1)); }
+.procedure-source-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.36rem; color: var(--t1); font-size: 0.82rem; font-weight: 900; word-break: keep-all; }
+.procedure-source-code { display: inline-flex; align-items: center; min-height: 22px; padding: 0 0.42rem; border-radius: 6px; background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); color: var(--t1); font-size: 0.74rem; font-weight: 900; }
+.procedure-source-badge { display: inline-flex; align-items: center; min-height: 24px; padding: 0 0.48rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg1); color: var(--t2); font-size: 0.68rem; font-weight: 850; }
+.procedure-source-badge.confirmed { color: var(--ac); border-color: color-mix(in srgb, var(--ac) 42%, var(--bd2)); background: color-mix(in srgb, var(--acL) 64%, var(--bg1)); }
+.procedure-source-ref { flex: 1 1 100%; color: var(--t3); font-size: 0.72rem; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
 .procedure-summary { margin-bottom: 0.7rem; color: var(--t2); font-size: 0.84rem; line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
 .procedure-summary-fallback { color: var(--t3); font-style: normal; }
 .procedure-tab.is-route-muted { opacity: 0.45; }
@@ -12545,19 +12551,22 @@ function getProcedureFeeInfo(v, procedureKey) {
     if (raw && raw.feeInfo) return raw.feeInfo;
     const base = DEFAULT_PROCEDURE_FEES[procedureKey];
     if (!base) return null;
-    const fee = { ...base, notes: [...(base.notes || [])] };
+    const fee = { ...base, commonReference: true, notes: [...(base.notes || [])] };
     if (procedureKey === 'statusChange') {
         if (v.code === 'F-5') {
             fee.revenueStamp = 200000;
             fee.notes = ['영주(F-5) 자격 변경허가 정부수입인지 200,000원'];
+            fee.commonReference = false;
         } else if (v.code === 'F-6') {
             fee.revenueStamp = 40000;
             fee.notes = ['결혼이민(F-6) 자격 변경허가 정부수입인지 40,000원'];
+            fee.commonReference = false;
         }
     }
     if (procedureKey === 'extension' && v.code === 'F-6') {
         fee.revenueStamp = 30000;
         fee.notes = ['결혼이민(F-6) 체류기간 연장허가 정부수입인지 30,000원'];
+        fee.commonReference = false;
     }
     return fee;
 }
@@ -12570,8 +12579,11 @@ function renderProcedureFeeBox(feeInfo) {
     if (typeof feeInfo.cardIssueFee === 'number' && feeInfo.cardIssueFee > 0) amountBits.push(`${currentLanguage === 'en' ? 'registration card' : '등록증'} ${formatWon(feeInfo.cardIssueFee)}`);
     const amountText = amountBits.length ? amountBits.join(' · ') : (currentLanguage === 'en' ? 'Amount needs confirmation' : '금액 확인 필요');
     const notes = Array.isArray(feeInfo.notes) ? feeInfo.notes : [];
+    const title = feeInfo.commonReference
+        ? (currentLanguage === 'en' ? 'Common fee reference' : '공통 수수료 참고')
+        : (currentLanguage === 'en' ? 'Fee' : (feeInfo.label || '수수료'));
     return `<div class="procedure-fee-box">
-        <div class="procedure-fee-title"><span>${escapeHtml(currentLanguage === 'en' ? 'Fee' : (feeInfo.label || '수수료'))}</span><span class="procedure-fee-amount">${escapeHtml(amountText)}</span></div>
+        <div class="procedure-fee-title"><span>${escapeHtml(title)}</span><span class="procedure-fee-amount">${escapeHtml(amountText)}</span></div>
         ${notes.length ? `<ul class="procedure-fee-list">${notes.map(note => `<li>${escapeHtml(note)}</li>`).join('')}</ul>` : ''}
         <div class="procedure-fee-note">${escapeHtml(feeInfo.sourceNote || STAY_FEE_SOURCE_NOTE)}</div>
     </div>`;
@@ -12716,21 +12728,114 @@ function renderReviewBadge(v) {
     return `<span class="manual-badge review-needed">${escapeHtml(txAt('reviewLabels', 2, '2026.5 매뉴얼 확인 필요'))}</span>`;
 }
 
+const SOURCE_CONFIRMED_PROCEDURE_KEY_MAP = {
+    visa_issuance: 'visaIssuance',
+    initial: 'visaIssuance',
+    certificate_of_visa_issuance: 'certificateOfVisaIssuance',
+    change_of_status: 'statusChange',
+    status_change: 'statusChange',
+    extension: 'extension',
+    extension_of_stay: 'extension',
+    status_grant: 'statusGrant',
+    registration: 'registration',
+    foreigner_registration: 'registration',
+    alien_registration: 'registration',
+    registration_or_residence_report: 'registration',
+    reporting_duty: 'registration',
+    activities_outside_status: 'activitiesOutsideStatus',
+    activity_outside_status: 'activitiesOutsideStatus',
+    workplace_change_or_addition: 'workplaceChange',
+    workplace_change_addition: 'workplaceChange',
+    reentry: 'reentry',
+    reentry_permit: 'reentry'
+};
+
+function procedureKeyForSourceConfirmedType(type) {
+    const key = String(type || '').trim().toLowerCase();
+    return SOURCE_CONFIRMED_PROCEDURE_KEY_MAP[key] || '';
+}
+
+function getSourceConfirmedEntriesForProcedure(v, procedureKey) {
+    const entries = Array.isArray(v?.sourceConfirmedStructuredRequirements) ? v.sourceConfirmedStructuredRequirements : [];
+    return entries.filter(entry => procedureKeyForSourceConfirmedType(entry?.procedureType) === procedureKey);
+}
+
+function canonicalizeSourceConfirmedDocText(text, procedureKey) {
+    const value = String(text || '').replace(/^\s*[①-⑳]\s*/g, '').trim();
+    if (!value || isDocPlaceholder(value)) return '';
+    if (procedureKey !== 'visaIssuance' && value === '신청서') return '통합신청서(별지 제34호 서식)';
+    if (procedureKey !== 'visaIssuance' && /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value)) return '통합신청서(별지 제34호 서식)';
+    return value;
+}
+
+function groupSourceConfirmedDocuments(entries, procedureKey) {
+    const groups = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
+    (entries || []).forEach(entry => {
+        (entry.documents || []).forEach(doc => {
+            const text = canonicalizeSourceConfirmedDocText(doc?.textKo || doc?.text || doc?.name, procedureKey);
+            if (!text) return;
+            const requiredness = String(doc?.requiredness || '').toLowerCase();
+            if (/common|basic|공통|기본/.test(requiredness)) groups.commonDocs.push(text);
+            else if (/conditional|condition|조건/.test(requiredness)) groups.conditionalDocs.push(text);
+            else if (/additional|review|supplement|추가|심사/.test(requiredness)) groups.additionalDocs.push(text);
+            else groups.requiredDocs.push(text);
+        });
+    });
+    return mergeDocGroups(groups);
+}
+
+function sourceConfirmedManualRefs(entries) {
+    const seen = new Set();
+    return (entries || []).map(entry => {
+        const source = entry.source || {};
+        const pageStart = entry.pageStart || source.pageStart;
+        const pageEnd = entry.pageEnd || source.pageEnd;
+        const pageRange = pageStart && pageEnd && pageStart !== pageEnd ? `pp. ${pageStart}-${pageEnd}` : (pageStart ? `p. ${pageStart}` : '');
+        return {
+            manualName: source.manualName || entry.manualName || '외국인체류 안내매뉴얼',
+            manualVersion: source.manualVersion || entry.manualVersion || '2026.5',
+            pageRange,
+            sectionTitle: entry.sectionTitle || '',
+            subCode: entry.subCode || '',
+            sourceConfirmed: true
+        };
+    }).filter(ref => {
+        const key = [ref.manualName, ref.manualVersion, ref.pageRange, ref.sectionTitle, ref.subCode].join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
+function mergeManualRefs(...refLists) {
+    const seen = new Set();
+    return refLists.flat().filter(ref => {
+        if (!ref) return false;
+        const key = [ref.manualName || ref.manual || '', ref.manualVersion || ref.version || '', ref.pageRange || '', ref.sectionTitle || '', ref.subCode || ''].join('|');
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+    });
+}
+
 function getProcedure(v, cfg) {
     const raw = v.procedures && v.procedures[cfg.key] ? v.procedures[cfg.key] : null;
+    const structuredEntries = getSourceConfirmedEntriesForProcedure(v, cfg.key);
+    const structuredDocs = groupSourceConfirmedDocuments(structuredEntries, cfg.key);
+    const structuredRefs = sourceConfirmedManualRefs(structuredEntries);
     const legacyDocs = normalizeDocGroups(null, v, {
         commonDocs: ['commonDocs'],
         requiredDocs: cfg.docFields?.requiredDocs || cfg.oldDocs || [],
         additionalDocs: ['additionalDocs', ...(cfg.docFields?.additionalDocs || [])],
         conditionalDocs: ['conditionalDocs']
     });
-    const legacyAvailable = hasAnyDocs(legacyDocs) || !!(cfg.oldText && v[cfg.oldText]);
+    const legacyAvailable = hasAnyDocs(structuredDocs) || hasAnyDocs(legacyDocs) || !!(cfg.oldText && v[cfg.oldText]);
     const hasExplicitAvailability = !!(raw && Object.prototype.hasOwnProperty.call(raw, 'available'));
     const explicitUnavailable = hasExplicitAvailability && raw.available === false;
     const explicitAvailable = hasExplicitAvailability && raw.available === true;
     const available = explicitUnavailable ? false : (explicitAvailable || legacyAvailable);
     const rawDocs = normalizeDocGroups(raw?.requiredDocs, raw || {});
-    const docs = mergeDocGroups(rawDocs, legacyDocs);
+    const docs = mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
     return {
         key: cfg.key,
         label: txAt('procedureLabels', cfg.labelIndex, cfg.label),
@@ -12742,7 +12847,8 @@ function getProcedure(v, cfg) {
         docs,
         variants: normalizeProcedureVariants(raw?.variants),
         feeInfo: getProcedureFeeInfo(v, cfg.key),
-        manualRefs: raw?.manualRefs || []
+        manualRefs: mergeManualRefs(structuredRefs, raw?.manualRefs || []),
+        sourceConfirmed: hasAnyDocs(structuredDocs)
     };
 }
 
@@ -12936,6 +13042,29 @@ function renderProcedureDocGroups(groups, keywords) {
         renderDocGroup(txAt('docGroupLabels', 2, '추가/심사 필요 서류'), groups.additionalDocs, keywords, 'group-additional'),
         renderDocGroup(txAt('docGroupLabels', 3, '조건부 서류'), groups.conditionalDocs, keywords, 'group-conditional')
     ].filter(Boolean).join('');
+}
+
+function renderProcedureHeader(v, proc) {
+    const sourceLabel = proc.sourceConfirmed
+        ? (currentLanguage === 'en' ? 'Official source confirmed' : '공식근거 직접 확인')
+        : (proc.manualRefs && proc.manualRefs.length
+            ? (currentLanguage === 'en' ? 'Official reference available' : '관련 공식근거 있음')
+            : (currentLanguage === 'en' ? 'Official source limited' : '공식근거 제한'));
+    const badgeClass = proc.sourceConfirmed ? ' confirmed' : '';
+    const refBits = (proc.manualRefs || []).map(ref => {
+        const title = [ref.manualName || ref.manual, ref.manualVersion || ref.version, ref.pageRange].filter(Boolean).join(' · ');
+        const section = ref.sectionTitle ? ` — ${ref.sectionTitle}` : '';
+        const sub = ref.subCode ? ` (${ref.subCode})` : '';
+        return `${title}${section}${sub}`.trim();
+    }).filter(Boolean);
+    const refHtml = refBits.length
+        ? `<div class="procedure-source-ref">${escapeHtml(refBits.slice(0, 3).join(' / '))}</div>`
+        : '';
+    return `<div class="procedure-source-header">
+        <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureLabel(proc))}</span></div>
+        <span class="procedure-source-badge${badgeClass}">${escapeHtml(sourceLabel)}</span>
+        ${refHtml}
+    </div>`;
 }
 
 function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selectedByDefault = false) {
@@ -13261,6 +13390,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
+        ${renderProcedureHeader(v, proc)}
         ${eligibilityHtml}${summaryHtml}${notesHtml}
         ${feeHtml}
         ${countHtml}
@@ -14384,10 +14514,8 @@ function renderResults(query){
                     ${renderSubcodes(v, kw, ms)}
                     ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
-                    ${renderDeadlineCalculator(v, isVisaCode)}
                     ${renderDocumentTabs(v)}
                     ${renderCautionBlock()}
-                    ${renderSourceConfirmedRequirements(v)}
                     ${renderSourceEvidencePanel(v)}
                     ${renderManualActions(v, isVisaCode)}
                     ${ddHtml}
@@ -17565,6 +17693,9 @@ function showVisaDocForAction(visaCode) {
   }
 
   function insertFeeNotice(card, fee) {
+    // Fee guidance is rendered by renderProcedureFeeBox inside the selected
+    // procedure tab. Keep this legacy shim from injecting duplicate notices.
+    return;
     if (!fee || card.querySelector(".paradiso-fee-notice")) return;
 
     const anchor =

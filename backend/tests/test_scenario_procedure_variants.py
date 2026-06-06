@@ -440,7 +440,7 @@ class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
         self.assertIn("f-1-employment-parent-born-child-status-grant", birth)
         self.assertIn("f-1-refugee-born-child-status-grant", birth)
 
-    def test_outside_status_mapping_is_ready_without_changing_existing_detector(self):
+    def test_outside_status_mapping_and_foreigner_registration_detector_are_ready(self):
         mod = _module()
         block = mod._build_procedure_variant_context_block(
             _record("E-6"),
@@ -448,7 +448,7 @@ class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
             user_text="E-6 체류자격외활동 서류는?",
         )
         self.assertIn("e-6-broadcast-film-model-activities-outside-status", block)
-        self.assertIsNone(mod._detect_task_type("D-2 외국인등록 신청 서류는?"))
+        self.assertEqual(mod._detect_task_type("D-2 외국인등록 신청 서류는?"), "foreigner_registration")
 
     def test_api_reports_d9_variant_context_without_claiming_grounding(self):
         client = _client()
@@ -502,7 +502,7 @@ class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
         }).json()["detail"]
         self.assertFalse(unrelated["procedure_variant_context_used"])
         self.assertEqual(unrelated["procedure_variant_context_sources"], [])
-        self.assertIsNone(registration["task_type_detected"])
+        self.assertEqual(registration["task_type_detected"], "foreigner_registration")
         self.assertFalse(registration["procedure_variant_context_used"])
         self.assertEqual(registration["procedure_variant_context_sources"], [])
 

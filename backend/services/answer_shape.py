@@ -121,6 +121,8 @@ _ISSUE_TO_CONTRACT_PRIORITY: Sequence[tuple] = (
     ("study_on_non_study_status", CONTRACT_STUDY),
     ("work_on_non_work_status", CONTRACT_WORK_RESTRICTION),
     ("employment_restriction", CONTRACT_WORK_RESTRICTION),
+    ("registration_deadline", CONTRACT_REGISTRATION),
+    ("deadline_trigger", CONTRACT_REGISTRATION),
     ("registration_or_residence_report", CONTRACT_REGISTRATION),
     ("reporting_duty", CONTRACT_REGISTRATION),
     ("status_change", CONTRACT_STATUS_CHANGE),
@@ -141,6 +143,11 @@ _STUDY_FORBIDDEN_FOR = {
 _IRRELEVANT_STUDY_TERMS = (
     "계절학기", "여름 계절학기", "학점", "대학 수업", "대학교 수업", "수강", "청강",
     "D-2", "D-4", "summer semester", "summer course", "credit-bearing", "audit course",
+)
+_IRRELEVANT_WORK_TERMS = (
+    "자격외활동", "체류자격외활동", "근로", "보수", "고용주", "계약형태",
+    "근무처", "프리랜서", "사업자등록", "paid work", "employer",
+    "employment", "contract form", "freelance", "activities outside status",
 )
 
 
@@ -568,15 +575,52 @@ def _detect_says_not_based_on_manual(answer: str, meta: Dict[str, Any]) -> bool:
 
 
 def _detect_irrelevant_terms(answer: str, contract_key: str, issues: Sequence[str], activities: Sequence[str]) -> List[str]:
-    if contract_key not in _STUDY_FORBIDDEN_FOR:
-        return []
-    # If the underlying issue is genuinely study-related, study terms are fine.
-    if "study_on_non_study_status" in set(issues) or any(
-        a in set(activities)
-        for a in ("credit_bearing_study", "formal_enrollment", "non_credit_audit", "language_training")
+    found: List[str] = []
+    issue_set = set(issues)
+    activity_set = set(activities)
+    if contract_key in _STUDY_FORBIDDEN_FOR and not (
+        "study_on_non_study_status" in issue_set
+        or any(
+            a in activity_set
+            for a in ("credit_bearing_study", "formal_enrollment", "non_credit_audit", "language_training")
+        )
     ):
-        return []
-    return [t for t in _IRRELEVANT_STUDY_TERMS if t in (answer or "")]
+        found.extend(t for t in _IRRELEVANT_STUDY_TERMS if t in (answer or ""))
+    if contract_key == CONTRACT_REGISTRATION and not (
+        issue_set & {"work_on_non_work_status", "outside_status_activity", "employment_restriction", "workplace_change_addition"}
+        or activity_set & {
+            "paid_work", "paid_internship", "freelance_work", "side_job",
+            "additional_employment", "business_activity", "workplace_change",
+            "workplace_addition",
+        }
+    ):
+        found.extend(t for t in _IRRELEVANT_WORK_TERMS if t in (answer or ""))
+    return list(dict.fromkeys(found))
+
+
+def _korean_date_label(iso_date: str) -> str:
+    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", iso_date or "")
+    if not m:
+        return ""
+    return f"{int(m.group(1))}년 {int(m.group(2))}월 {int(m.group(3))}일"
+
+
+def _detect_missing_registration_deadline_date(c: Dict[str, Any], contract_key: str) -> bool:
+    if contract_key != CONTRACT_REGISTRATION:
+        return False
+    deadline = str((c.get("facts") or {}).get("registration_deadline_date") or "").strip()
+    if not deadline:
+        return False
+    return deadline not in (c["answer"] or "") and _korean_date_label(deadline) not in (c["answer"] or "")
+
+
+def _detect_asks_for_provided_entry_date(c: Dict[str, Any], contract_key: str) -> bool:
+    if contract_key != CONTRACT_REGISTRATION:
+        return False
+    if not (c.get("facts") or {}).get("entry_date"):
+        return False
+    answer = c["answer"] or ""
+    return bool(re.search(r"(입국일|entry date).{0,16}(알려|제공|필요|입력|언제|provide|needed|required)", answer, re.IGNORECASE))
 
 
 def _work_capability_for(code: Optional[str]) -> str:
@@ -769,6 +813,16 @@ def evaluate_answer_shape(
     if overbroad_paid_work:
         warnings.append("paid_work_treated_as_outside_status_for_work_permitting_status")
 
+    # 7c) Registration-deadline questions with a known entry date must answer
+    #     the calculated date directly and must not ask the user to provide the
+    #     same entry date again.
+    missing_registration_deadline_date = _detect_missing_registration_deadline_date(c, contract_key)
+    if missing_registration_deadline_date:
+        warnings.append("missing_calculated_registration_deadline")
+    asks_for_entry_date = _detect_asks_for_provided_entry_date(c, contract_key)
+    if asks_for_entry_date:
+        warnings.append("asks_for_entry_date_already_provided")
+
     # 8) Missing current status / activity classification / decisive facts /
     #    source confidence (cross-contract minimums, reported as warnings too).
     if c["current"] and not _slot_current_status_primary(c):
@@ -784,6 +838,8 @@ def evaluate_answer_shape(
         or "source_limitation_first_line" in warnings
         or "confirmation_overuse_without_analysis" in warnings
         or overbroad_paid_work
+        or missing_registration_deadline_date
+        or asks_for_entry_date
         or irrelevant
         or len(missing_slots) >= 2
     )

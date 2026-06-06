@@ -263,7 +263,7 @@
       "source_status": "source_needed",
       "active_grounding_ref": null,
       "candidate_ref": null,
-      "expected_task_type": null,
+      "expected_task_type": "foreigner_registration",
       "requires_subcode": true,
       "requires_scenario": true,
       "notes": "F-5 holders do not extend the visa itself; they renew the 영주증 card on a separate schedule. The /api/ask 'extension' task type is the wrong frame for F-5. Backend has no permanent_residence_card_renewal task type today; route to scoped fallback.",
@@ -386,8 +386,8 @@
       "expected_task_type": null,
       "requires_subcode": false,
       "requires_scenario": false,
-      "notes": "Backend has no foreigner_registration task type detector today even though _TASK_RISK_LEVELS lists it. _detect_task_type does not return 'foreigner_registration'. Must be addressed before any grounding is added.",
-      "next_action": "Add 외국인등록 detection signals AND locate primary source; both required."
+      "notes": "Backend foreigner_registration task detection is wired. Source grounding remains scoped fallback until a primary source is promoted.",
+      "next_action": "Locate and promote primary source grounding for 외국인등록."
     },
     {
       "id": "common_status_change_general",
