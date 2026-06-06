@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Deterministic per-page text extraction + footer verification for the
-2026-05 official manuals (stay / visa) PDFs.
+current official manuals (stay / visa) PDFs.
 
 This is the repeatable evidence helper used by the source-confirmed
 procedure-coverage work. It extracts the text of one or more *printed*
@@ -8,8 +8,8 @@ pages from a committed manual PDF using PyMuPDF and asserts that the
 printed footer ("- N -") matches the requested printed page number, so a
 citation of "p. N" is provably the page whose footer reads "- N -".
 
-The 2026-05 manuals are 1:1 — printed page N == 1-based PDF page N — but
-this tool re-verifies that on every call rather than assuming it.
+The current committed PDFs are 1:1 — printed page N == 1-based PDF page N —
+but this tool re-verifies that on every call rather than assuming it.
 
 Usage:
     python3 scripts/extract_manual_page_text.py stay 44
@@ -30,7 +30,7 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO = os.path.dirname(_HERE)
 _MANUALS = {
     "stay": os.path.join(
-        _REPO, "docs", "source-manuals", "2026-05", "stay_manual_2026_05.pdf"
+        _REPO, "docs", "source-manuals", "2026-06", "stay_manual_2026_06_01.pdf"
     ),
     "visa": os.path.join(
         _REPO, "docs", "source-manuals", "2026-05", "visa_manual_2026_05.pdf"
