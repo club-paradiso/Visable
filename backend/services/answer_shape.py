@@ -219,6 +219,27 @@ _RISKY_CONFIDENCE_KO = (
     "더 이상 적용되지 않습니다", "문제되지 않습니다", "걱정하지 않으셔도",
 )
 
+# Markers that frame paid work as an outside-status / activity-scope VIOLATION
+# (the "it is paid, therefore it is a high-risk outside-status activity" failure
+# mode). Multilingual; case-folded for the English markers.
+_OUTSIDE_STATUS_VIOLATION_MARKERS = (
+    "자격외활동 위반", "자격외활동에 해당", "체류자격 위반", "위반 위험이 높",
+    "위반할 위험", "위반에 해당할 위험", "취업활동을 할 수 없", "근로가 허용되지 않",
+    "취업이 허용되지 않", "일을 할 수 없",
+    "activities outside status", "outside-status activity", "outside status activity",
+    "high risk of violating", "violates your status", "not permitted to work",
+    "cannot work", "work is not allowed", "not allowed to work",
+)
+# Nuance acknowledging a work-permitting / work-limited status may allow some
+# (short-term, agreement-limited, conditional) paid work. When present alongside
+# violation framing, the answer is balanced and the over-broad gate stays quiet.
+_WORK_LIMITED_NUANCE_MARKERS = (
+    "단기", "협정", "허용될 수", "허용될 수도", "허용되는 범위", "허용 범위",
+    "범위 내", "범위 안", "취업이 가능", "조건부", "직종", "근무 기간",
+    "may allow", "may permit", "short-term", "agreement", "within the status",
+    "within the", "permitted within", "depending on", "job type", "duration",
+)
+
 
 # ---------------------------------------------------------------------------
 # Slot detectors (Part A/B). Each takes a context dict and returns bool.
@@ -558,6 +579,58 @@ def _detect_irrelevant_terms(answer: str, contract_key: str, issues: Sequence[st
     return [t for t in _IRRELEVANT_STUDY_TERMS if t in (answer or "")]
 
 
+def _work_capability_for(code: Optional[str]) -> str:
+    """Work capability for the current status (parent-level), gate-safe.
+
+    Delegates to the shared ``legal_analysis.status_work_capability`` model so the
+    gate and the issue classifier agree on which statuses may permit work. Imports
+    lazily and never raises (the gate must never break /api/ask)."""
+    try:
+        from .legal_analysis import status_work_capability
+
+        parent = _parent_code((code or "").upper())
+        return status_work_capability(parent)
+    except Exception:  # pragma: no cover - defensive only
+        return "unknown"
+
+
+_WORK_ACTIVITY_NAMES = {
+    "paid_work", "paid_internship", "freelance_work", "side_job",
+    "additional_employment", "business_activity", "workplace_change",
+    "workplace_addition",
+}
+_WORK_ISSUE_NAMES = {
+    "work_on_non_work_status", "outside_status_activity",
+    "employment_restriction", "activity_scope",
+}
+
+
+def _detect_overbroad_paid_work_outside_status(c: Dict[str, Any], contract_key: str) -> bool:
+    """Catch the "paid => outside-status risk" failure for work-permitting statuses.
+
+    Fires only for work/activity-scope contracts where the current status may
+    actually permit work (work_authorized / work_limited, e.g. H-1 Working
+    Holiday) AND the answer frames paid work as a high-risk outside-status
+    violation WITHOUT the nuance that the status may allow short-term /
+    agreement-limited work. Statuses where paid work genuinely is outside status
+    (study/visit statuses) are excluded, so honest violation framing is kept.
+    """
+    if contract_key not in (CONTRACT_WORK_RESTRICTION, CONTRACT_ACTIVITY_SCOPE):
+        return False
+    is_work_question = bool(
+        set(c.get("activities") or []) & _WORK_ACTIVITY_NAMES
+        or set(c.get("issues") or []) & _WORK_ISSUE_NAMES
+    )
+    if not is_work_question:
+        return False
+    if _work_capability_for(c.get("current")) not in ("work_authorized", "work_limited"):
+        return False
+    answer = c["answer"]
+    if not _has_any(answer, *_OUTSIDE_STATUS_VIOLATION_MARKERS):
+        return False
+    return not _has_any(answer, *_WORK_LIMITED_NUANCE_MARKERS)
+
+
 def _detect_overconfidence(answer: str, certainty: str) -> List[str]:
     if str(certainty or "").lower() == "direct":
         return []
@@ -688,6 +761,14 @@ def evaluate_answer_shape(
     if overconf:
         warnings.append("overconfident_language:%s" % ",".join(overconf[:6]))
 
+    # 7b) Paid work framed as an outside-status violation for a status that may
+    #     actually permit work (work-limited / work-authorized). This is the H-1
+    #     interpreter failure mode: "it is paid, therefore high risk of violating
+    #     activity scope" without distinguishing job type / duration / agreement.
+    overbroad_paid_work = _detect_overbroad_paid_work_outside_status(c, contract_key)
+    if overbroad_paid_work:
+        warnings.append("paid_work_treated_as_outside_status_for_work_permitting_status")
+
     # 8) Missing current status / activity classification / decisive facts /
     #    source confidence (cross-contract minimums, reported as warnings too).
     if c["current"] and not _slot_current_status_primary(c):
@@ -702,6 +783,7 @@ def evaluate_answer_shape(
         or "claims_not_based_on_manual_despite_context" in warnings
         or "source_limitation_first_line" in warnings
         or "confirmation_overuse_without_analysis" in warnings
+        or overbroad_paid_work
         or irrelevant
         or len(missing_slots) >= 2
     )

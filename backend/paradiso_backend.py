@@ -36,7 +36,7 @@ from services.law_grounding import (
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack
-from services.legal_analysis import first_sentence_quality_warning
+from services.legal_analysis import first_sentence_quality_warning, status_work_capability
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
     build_answer_directives,
@@ -1170,6 +1170,11 @@ def _localized_source_boundary_note(*, is_ko: bool, source_state: str, legal_ana
 
 
 
+def _is_work_limited_status(facts: Dict[str, Any]) -> bool:
+    parent = facts.get("current_parent_status") or facts.get("current_status")
+    return status_work_capability(parent) == "work_limited"
+
+
 def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activities: List[str], activity_labels: List[str]) -> str:
     current = facts.get("current_status") or "현재 체류자격"
     previous = facts.get("previous_status")
@@ -1181,8 +1186,23 @@ def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activit
     if "study_on_non_study_status" in issues:
         acts = ", ".join(activity_labels) or "수학 활동"
         return f"{current}에서 {acts}이/가 현재 체류 목적과 활동범위 안에 들어가는지, 또는 자격외활동허가나 체류자격 변경이 필요한지 확인해야 합니다."
+    if "employment_restriction" in issues and _is_work_limited_status(facts):
+        # Work-limited statuses (H-1 Working Holiday 등): paid work is not
+        # automatically an outside-status violation. Distinguish job type and
+        # duration rather than treating any compensation as a high-risk activity.
+        return (
+            f"{current}은(는) 체류 목적과 국가별 협정 한도 안에서 단기 취업이 일부 허용될 수 있는 체류자격이므로, "
+            "보수를 받는다는 사실만으로 곧바로 자격외활동 위반이 되는 것은 아닙니다. 다만 일의 형태(예: 단기 일반 "
+            "통역·번역 보조 / 장기·전임 전문 통역사 취업 / 관광통역안내(가이드) / 외국어 교습·강의)와 근무 기간, "
+            "국가별 협정 조건, 국내 자격·면허 요건, 주된 체류 목적 부합 여부에 따라 허용 범위가 달라지므로 이를 "
+            "기준으로 확인해야 합니다."
+        )
     if "registration_or_residence_report" in issues:
-        return f"{current}의 외국인등록·체류 신고 기한, 신고 사유, 접수 방법을 공식 절차 기준으로 확인해야 합니다."
+        return (
+            f"{current} 외국인등록은 보통 입국일 또는 체류자격 부여·변경일을 기준으로, 체류기간이 90일을 초과하는 "
+            "경우 등록 대상이 되는 신고성 절차로 접근하는 것이 실무적입니다. 다만 정확한 등록 기한과 대상 여부는 "
+            "개별 체류자격과 부여받은 체류기간에 따라 달라질 수 있으므로, 아래 사실관계를 먼저 확인해야 합니다."
+        )
     if "workplace_change_addition" in issues or "reporting_duty" in issues:
         return "신고 대상 사건인지, 신고 기산일이 언제인지, 사전 허가가 필요한지부터 확인해야 합니다."
     return "추출된 체류자격, 활동 유형, 신고·허가 쟁점을 기준으로 공식 확인 질문을 준비해야 합니다."
@@ -1199,6 +1219,11 @@ def _korean_main_issue_fallback(issues: List[str], facts: Dict[str, Any], activi
     if "study_on_non_study_status" in issues:
         acts = ", ".join(activity_labels) or "수학 활동"
         return f"{acts}이/가 {current}의 허용 활동범위 안인지, 아니면 자격외활동허가 또는 D-2/D-4 등 다른 체류자격 검토가 필요한지입니다."
+    if "employment_restriction" in issues and _is_work_limited_status(facts):
+        return (
+            f"해당 일이 {current}에서 허용되는 단기 취업 범위에 들어가는지, 아니면 직종·근무 기간·국가별 협정 조건이나 "
+            "국내 자격·면허 요건 때문에 제한되는지입니다."
+        )
     if "registration_or_residence_report" in issues:
         return f"{current} 보유자의 외국인등록·체류 신고 시점과 절차입니다."
     if "workplace_change_addition" in issues or "reporting_duty" in issues:
@@ -1243,30 +1268,41 @@ def _fallback_fact_lines_localized(issues: List[str], facts: Dict[str, Any], act
     user-facing memo never exposes backend field names (Part D / Part E).
     """
     kinds = _fallback_activity_kinds(issues, activities)
+    work_limited = _is_work_limited_status(facts)
     lines: List[str] = []
     if is_ko:
         if kinds["study"]:
             lines.append("학점 인정 여부 또는 학위 과정 관련성")
             lines.append("수업 기간, 주당 시간, 학교 등록 방식")
-        if kinds["work"]:
+        if kinds["work"] and work_limited:
+            lines.append("국가별 워킹홀리데이·협정에서 정한 취업 가능 직종과 근무 기간·시간 제한")
+            lines.append("일의 형태: 단기 일반 통역·번역 보조인지, 장기·전임 전문 통역사 취업인지, 관광통역안내(가이드)인지, 외국어 교습·강의인지")
+            lines.append("관광통역안내사·교원 등 국내 자격·면허가 필요한 직종인지")
+        elif kinds["work"]:
             lines.append("보수 발생 여부와 부업·근로 형태(고용/프리랜서/사업/단순 부수입)")
             lines.append("추가 고용주·사업자등록 여부, 업종·근무시간·계약형태")
         if "post_status_change_residual_duty" in set(issues or []):
             lines.append("이전 체류자격의 승인 조건과 신고 이력이 현재 활동에 남는지")
         if kinds["registration"]:
-            lines.append("신고 기산일(입국·자격변경·주소변경 등)과 현재 체류자격 기준 신고 기한")
+            lines.append("입국일 또는 체류자격 부여·변경일 등 신고 기산일")
+            lines.append("부여받은 체류기간과 90일 초과 여부 등 외국인등록 대상·기한 기준")
             lines.append("신고 접수 방법(하이코리아 또는 관할 출입국·외국인청)")
         return list(dict.fromkeys(lines))[:6]
     if kinds["study"]:
         lines.append("whether the course is credit-bearing or degree-related")
         lines.append("the course duration, weekly hours, and how the school registers it")
-    if kinds["work"]:
+    if kinds["work"] and work_limited:
+        lines.append("the work types and the work-period/hour limits set by your nationality's working-holiday or agreement terms")
+        lines.append("the work form: short-term general interpretation/translation help, long-term professional interpreter employment, tourist-guide interpretation, or foreign-language teaching")
+        lines.append("whether the job needs a domestic license or qualification (e.g. tourist guide, teaching)")
+    elif kinds["work"]:
         lines.append("whether it is paid and the work form (employment/freelance/business/incidental)")
         lines.append("any additional employer/business registration, industry, hours, and contract type")
     if "post_status_change_residual_duty" in set(issues or []):
         lines.append("whether the previous status's approval conditions or reporting history still apply")
     if kinds["registration"]:
-        lines.append("the event that starts the deadline (entry, status change, address change) and the time limit")
+        lines.append("the event that starts the deadline (entry date or status grant/change date)")
+        lines.append("your granted period of stay and whether it exceeds the 90-day registration threshold")
         lines.append("the filing channel (HiKorea or the competent immigration office)")
     return list(dict.fromkeys(lines))[:6]
 
@@ -1281,6 +1317,7 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
     """
     issue_set = set(issues or [])
     kinds = _fallback_activity_kinds(issues, activities)
+    work_limited = _is_work_limited_status(facts)
     current = facts.get("current_status") or ("현재 체류자격" if is_ko else "the current status")
     if is_ko:
         if "post_status_change_residual_duty" in issue_set:
@@ -1316,6 +1353,14 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
                 f"{target}로의 변경 요건을 충족하는지",
                 "국내 변경인지, 재외공관 사증 신청인지",
                 "남은 체류기간과 변경 신청 시점",
+            ]
+        if kinds["work"] and work_limited:
+            return [
+                f"현재 체류자격이 {current}인지와 활동범위",
+                "국적별 워킹홀리데이·협정에서 정한 취업 가능 직종과 근무 기간·시간 제한",
+                "일의 형태: 단기 일반 통역·번역 보조 / 장기·전임 전문 통역사 취업 / 관광통역안내(가이드) / 외국어 교습·강의 중 무엇인지",
+                "관광통역안내사·교원 등 국내 자격·면허가 필요한 직종인지",
+                "출입국이 이를 허용 범위 내 단기 취업으로 보는지, 아니면 자격외활동허가나 별도 제한 대상으로 보는지",
             ]
         if kinds["work"]:
             return [
@@ -1358,6 +1403,14 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
             f"whether you meet the requirements to change to {target}",
             "whether this is an in-country change or a consular visa application",
             "your remaining period of stay and when you would apply",
+        ]
+    if kinds["work"] and work_limited:
+        return [
+            f"whether your current status is {current} and its activity scope",
+            "the permitted work types and the work-period/hour limits under your nationality's working-holiday or agreement terms",
+            "the work form: short-term general interpretation/translation, long-term professional interpreter employment, tourist-guide interpretation, or foreign-language teaching",
+            "whether the job needs a domestic license or qualification (e.g. tourist guide, teaching)",
+            "whether immigration treats this as short-term work within the allowed scope or as activities needing separate permission",
         ]
     if kinds["work"]:
         return [
@@ -1450,9 +1503,16 @@ def build_legal_analysis_fallback_answer(
             status = current or "현재 체류자격"
             acts = ", ".join(activity_labels) or "수학 활동"
             lines.append(f"{status} 상태에서 {acts}을/를 하려는 사안이므로, 먼저 현재 체류자격의 활동범위와 체류 목적 정합성 기준에서 검토해야 합니다.")
+        elif "employment_restriction" in issues and _is_work_limited_status(facts):
+            status = current or "현재 체류자격"
+            lines.append(
+                f"{status}은(는) 체류 목적과 국가별 협정 한도 안에서 단기 취업이 일부 허용될 수 있는 체류자격이므로, "
+                "보수를 받는다는 사실만으로 자격외활동 위반으로 단정할 사안은 아니고, 일의 형태와 근무 기간, 협정 조건을 "
+                "기준으로 허용 범위를 검토해야 합니다."
+            )
         elif "registration_or_residence_report" in issues:
             status = current or "현재 체류자격"
-            lines.append(f"{status} 관련 외국인등록·체류 신고 문제이므로, 학교 등록이 아니라 출입국 체류 신고의 기한·대상·관할을 중심으로 확인해야 합니다.")
+            lines.append(f"{status} 외국인등록·체류 신고 사안이므로, 출입국 체류 신고의 기산일·기한·대상·관할을 중심으로 확인해야 합니다.")
         elif practical:
             lines.append(practical)
         elif current or activity_labels:
@@ -1496,9 +1556,18 @@ def build_legal_analysis_fallback_answer(
         status = current or "the current status"
         acts = ", ".join(activity_labels) or "study activity"
         lines.append(f"For {acts} on {status}, review the current status's permitted activity scope and purpose-of-stay alignment first.")
+    elif "employment_restriction" in issues and _is_work_limited_status(facts):
+        status = current or "the current status"
+        lines.append(
+            f"{status} may allow short-term paid work within the status purpose and your nationality's agreement limits, "
+            "so being paid does not by itself make this an outside-status violation. Whether it is allowed turns on the "
+            "work type (short-term general interpretation/translation, long-term professional interpreter employment, "
+            "tourist-guide interpretation, or foreign-language teaching), the duration, the agreement terms, and any "
+            "domestic license requirement."
+        )
     elif "registration_or_residence_report" in issues:
         status = current or "the current status"
-        lines.append(f"This is an alien-registration/residence-reporting issue for {status}; do not treat the word registration as school enrollment unless the facts say that. ")
+        lines.append(f"This is an alien-registration/residence-reporting issue for {status}; focus on the filing trigger, deadline, scope, and competent office.")
     elif practical:
         lines.append(practical)
     elif current or activity_labels:
@@ -3455,13 +3524,33 @@ async def ask(req: AskRequest) -> AskResponse:
 
     llm = _resolve_llm_config()
 
+    # Public detected-status display preserves an explicit sub-code the user typed
+    # (e.g. G-1-5) even though sub-code DOCUMENT ROUTING stays payload-only. The
+    # parent code (G-1) remains available internally for family-level lookup; only
+    # the public chip / answer metadata gets the exact sub-code so it is not
+    # collapsed to the parent.
+    _detected_facts = (law_evidence_pack or {}).get("immigration_facts") or {}
+    _exact_sub = _detected_facts.get("current_sub_status")
+    _exact_current = _detected_facts.get("current_status")
+    public_visa_code_detected = visa_code_detected
+    public_visa_sub_code_detected = visa_sub_code_detected
+    if _exact_sub and not public_visa_sub_code_detected:
+        public_visa_code_detected = (
+            _detected_facts.get("current_parent_status")
+            or public_visa_code_detected
+            or _exact_sub.rsplit("-", 1)[0]
+        )
+        public_visa_sub_code_detected = _exact_sub
+    elif _exact_current and not public_visa_code_detected:
+        public_visa_code_detected = _detected_facts.get("current_parent_status") or _exact_current
+
     base_meta: Dict[str, Any] = dict(
         grounding_used=bool(grounding),
         grounding_sources=grounding_sources,
         procedure_variant_context_used=bool(procedure_variant_block),
         procedure_variant_context_sources=procedure_variant_context_sources,
-        visa_code_detected=visa_code_detected,
-        visa_sub_code_detected=visa_sub_code_detected,
+        visa_code_detected=public_visa_code_detected,
+        visa_sub_code_detected=public_visa_sub_code_detected,
         task_type_detected=task_type_detected,
         risk_level_detected=risk_level_detected,
         law_grounding_used=law_grounding_used,
