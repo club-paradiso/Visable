@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://paradiso.local/schemas/source-evidence.schema.json",
+  "title": "Paradiso Source Evidence Metadata",
+  "description": "Recommended metadata for official-source support on Paradiso visa/status data and claim-level AI grounding. This schema is advisory and does not force a production data migration.",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "sourceStatus": {
+      "type": "string",
+      "enum": [
+        "source_confirmed",
+        "source_partial",
+        "source_contextual",
+        "official_unavailable",
+        "needs_manual_review"
+      ],
+      "description": "Evidence status from docs/verification/source-status-taxonomy.md."
+    },
+    "sourceType": {
+      "type": "string",
+      "enum": [
+        "official_law",
+        "official_manual",
+        "official_hikorea",
+        "official_immigration",
+        "official_visa_portal",
+        "official_notice",
+        "official_form",
+        "official_directory",
+        "official_api",
+        "official_adjacent_agency",
+        "internal_normalized",
+        "unavailable"
+      ],
+      "description": "Type of source used to support the claim. Internal normalized data is not legal authority unless it links to an official source."
+    },
+    "sourceName": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable official source title, manual name, law name, notice title, form name, or service page name."
+    },
+    "sourceVersionDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$|^\\d{4}-\\d{2}$|^\\d{4}$",
+      "description": "Source version, publication date, manual date, or known source month/year."
+    },
+    "sourceUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Official URL when applicable. Do not use unofficial summaries as authority."
+    },
+    "sourceLocator": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Precise locator such as repo file path, URL plus notice id, manual file plus page, law article, form id, table row, or section heading."
+    },
+    "sourcePage": {
+      "oneOf": [
+        {
+          "type": "integer",
+          "minimum": 1
+        },
+        {
+          "type": "string",
+          "minLength": 1
+        }
+      ],
+      "description": "Printed page, PDF page, or page range when applicable."
+    },
+    "sourceSection": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Section heading, law article, appendix, table title, form section, or page subsection."
+    },
+    "sourceQuoteKo": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact Korean quote supporting a high-impact claim, when available."
+    },
+    "preciseSectionReference": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Precise official section, article, table, appendix, or row reference used when an exact quote is unavailable."
+    },
+    "supportLevel": {
+      "type": "string",
+      "enum": [
+        "direct",
+        "partial",
+        "contextual",
+        "unavailable"
+      ],
+      "description": "Relationship between the source and the exact claim."
+    },
+    "reviewerNotes": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reviewer explanation of what was verified, scope limits, caveats, and remaining gaps."
+    },
+    "lastChecked": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Date the official source support was last checked."
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "sourceStatus": {
+            "const": "source_confirmed"
+          }
+        },
+        "required": [
+          "sourceStatus"
+        ]
+      },
+      "then": {
+        "properties": {
+          "supportLevel": {
+            "const": "direct"
+          }
+        }
+      }
+    }
+  ]
+}
