@@ -121,6 +121,12 @@ PROCEDURE_DIMENSIONS: Tuple[str, ...] = (
 
 # Legal issue dimensions — mirror legal_analysis.LEGAL_ISSUE_TYPES plus the
 # deadline_trigger dimension named in the ontology spec.
+#
+# The three adjudicative-leaning dimensions at the end (denial/remedy,
+# constitutional rights, ambiguous interpretation) are the only issues that
+# route precedent-family / constitutional-decision sources. They are detected
+# with high-precision signals so ordinary document/registration/work questions
+# never over-query case law.
 LEGAL_ISSUE_DIMENSIONS: Tuple[str, ...] = (
     "activity_scope", "outside_status_activity", "status_purpose_alignment",
     "reporting_duty", "registration_or_residence_report",
@@ -129,6 +135,8 @@ LEGAL_ISSUE_DIMENSIONS: Tuple[str, ...] = (
     "work_on_non_work_status", "post_status_change_residual_duty",
     "approval_condition", "deadline_trigger", "overstay_or_risk",
     "nationality_or_refugee_context", "extension", "reentry",
+    "denial_revocation_or_remedy", "constitutional_or_fundamental_rights",
+    "discretionary_or_ambiguous_interpretation",
     "legal_general", "non_immigration_adjacent_issue",
 )
 
@@ -173,6 +181,24 @@ _PROCEDURE_ROUTE = (
     "manual", "statute", "enforcement_decree", "enforcement_rule",
     "administrative_rule", "legal_interpretation",
 )
+# Adjudicative-leaning routes. These are the ONLY routes that pull court
+# precedent / constitutional-decision families. They lead with the controlling
+# statute/decree (the binding rule) and only then add analogical adjudicative
+# sources (administrative appeal decisions, court precedent, constitutional
+# decisions, legal interpretations). The manual is included for remedy/denial
+# questions because the official manual documents objection/appeal procedure.
+_DENIAL_REMEDY_ROUTE = (
+    "manual", "statute", "enforcement_decree", "enforcement_rule",
+    "administrative_appeal", "precedent", "legal_interpretation",
+)
+_CONSTITUTIONAL_RIGHTS_ROUTE = (
+    "statute", "enforcement_decree", "constitutional_decision",
+    "precedent", "legal_interpretation",
+)
+_AMBIGUOUS_INTERPRETATION_ROUTE = (
+    "statute", "enforcement_decree", "enforcement_rule",
+    "legal_interpretation", "administrative_appeal", "precedent",
+)
 
 SOURCE_FAMILY_ROUTING: Dict[str, Tuple[str, ...]] = {
     "documents_needed": ("manual", "statute", "enforcement_rule"),
@@ -187,12 +213,19 @@ SOURCE_FAMILY_ROUTING: Dict[str, Tuple[str, ...]] = {
     "workplace_change_addition": _REGISTRATION_ROUTE,
     "registration_or_residence_report": _REGISTRATION_ROUTE,
     "deadline_trigger": _REGISTRATION_ROUTE,
-    "overstay_or_risk": ("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal"),
-    "nationality_or_refugee_context": ("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "manual"),
+    # Overstay / removal / departure-order / sanction questions are adjudicative:
+    # add administrative-appeal and court-precedent (analogical) sources.
+    "overstay_or_risk": ("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal", "precedent"),
+    # Refugee/humanitarian procedural disputes can hinge on appeal/precedent.
+    "nationality_or_refugee_context": ("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "administrative_appeal", "precedent", "manual"),
     "post_status_change_residual_duty": ("manual", "statute", "enforcement_rule", "administrative_rule", "legal_interpretation"),
     "reentry": _PROCEDURE_ROUTE,
     "extension": _PROCEDURE_ROUTE,
     "approval_condition": _PROCEDURE_ROUTE,
+    # Adjudicative dimensions (high-precision detection in legal_analysis).
+    "denial_revocation_or_remedy": _DENIAL_REMEDY_ROUTE,
+    "constitutional_or_fundamental_rights": _CONSTITUTIONAL_RIGHTS_ROUTE,
+    "discretionary_or_ambiguous_interpretation": _AMBIGUOUS_INTERPRETATION_ROUTE,
 }
 # Default route for issues without an explicit rule (legal_general,
 # non_immigration_adjacent_issue, ...).
@@ -267,6 +300,125 @@ SOURCE_FAMILY_TERMS_EN: Dict[str, str] = {
     "intelligent_search": "intelligent search",
 }
 
+# ---------------------------------------------------------------------------
+# Source-family definitions (Phase 4 scaffold)
+#
+# Additive metadata layer over SOURCE_FAMILIES. This does NOT change the coarse
+# ``source_family_support_status`` contract (wired / planned_not_wired); it adds
+# a richer, public-safe definition per family for the precedent-family scaffold:
+# stable id, KO/EN public labels, citation-grade capability, a baseline live
+# adapter status, and the public-safe "not connected / unavailable" wording.
+# ---------------------------------------------------------------------------
+LIVE_ADAPTER_STATUSES: Tuple[str, ...] = (
+    "wired", "scaffold_only", "not_configured", "temporarily_unavailable",
+)
+
+# Families whose retrieval interface is scaffolded — normalizers, routing, and
+# (for precedent) a target=prec list-search builder + optional shape-capture
+# hook — but which are NOT yet verified live citation-grade adapters. In this
+# scaffold PR they never auto-fire a live call in the production retrieval
+# fan-out; they surface as public-safe "not yet connected" source limitations.
+SCAFFOLD_ONLY_SOURCE_FAMILIES: frozenset = frozenset({
+    "legal_interpretation", "administrative_appeal", "precedent",
+    "constitutional_decision", "intelligent_search",
+})
+
+# Families that, when fully wired, can anchor a *direct* citation: a statute /
+# decree / rule article, an official manual section, an issued interpretation,
+# or a case / decision identity. legal_term is background; intelligent_search is
+# an aggregator. Capability here means "may produce citation-grade evidence",
+# not "is wired today".
+CITATION_GRADE_CAPABLE_FAMILIES: frozenset = frozenset({
+    "manual", "statute", "enforcement_decree", "enforcement_rule",
+    "administrative_rule", "legal_interpretation", "administrative_appeal",
+    "precedent", "constitutional_decision",
+})
+
+# The four adjudicative precedent-family sources (case law / decisions /
+# interpretations). Court precedent + administrative appeal + constitutional
+# decision are decision-bodies; legal interpretation is an authoritative
+# reading. Used for public-safe labelling and citation grading.
+ADJUDICATIVE_SOURCE_FAMILIES: frozenset = frozenset({
+    "precedent", "administrative_appeal", "constitutional_decision",
+    "legal_interpretation",
+})
+
+# Public-safe "direct grounding not available" wording per family. These never
+# expose raw adapter codes (unsupported / planned_not_wired / scaffold_only).
+SOURCE_FAMILY_PUBLIC_UNAVAILABLE_KO: Dict[str, str] = {
+    "precedent": "판례 직접 근거는 아직 연결되지 않았습니다.",
+    "administrative_appeal": "행정심판례 직접 근거는 현재 사용할 수 없습니다.",
+    "legal_interpretation": "법령해석례 직접 근거는 현재 사용할 수 없습니다.",
+    "constitutional_decision": "헌재결정례 직접 근거는 현재 사용할 수 없습니다.",
+}
+SOURCE_FAMILY_PUBLIC_UNAVAILABLE_EN: Dict[str, str] = {
+    "precedent": "Direct court-precedent grounding is not connected yet.",
+    "administrative_appeal": "Direct administrative-appeal grounding is currently unavailable.",
+    "legal_interpretation": "Direct legal-interpretation grounding is currently unavailable.",
+    "constitutional_decision": "Direct constitutional-decision grounding is currently unavailable.",
+}
+
+
+def source_family_live_adapter_status(family: str) -> str:
+    """Baseline live-adapter status for a family (Phase 4 enum).
+
+    Returns one of ``LIVE_ADAPTER_STATUSES``. This is the *static* baseline:
+    ``wired`` for families with a verified live adapter, ``scaffold_only`` for
+    families with a scaffolded-but-unverified interface, and ``not_configured``
+    for an unknown family with no adapter at all. The runtime
+    ``not_configured`` (LAW_API_OC missing) and ``temporarily_unavailable``
+    (API error) states are layered on at retrieval time, not here.
+    """
+    fam = str(family or "")
+    if fam in WIRED_SOURCE_FAMILIES:
+        return "wired"
+    if fam in SOURCE_FAMILIES:
+        return "scaffold_only"
+    return "not_configured"
+
+
+def is_citation_grade_capable(family: str) -> bool:
+    """Whether a family can (when wired) anchor a direct citation."""
+    return str(family or "") in CITATION_GRADE_CAPABLE_FAMILIES
+
+
+def source_family_public_unavailable_label(family: str, *, lang: str = "ko") -> str:
+    """Public-safe 'direct grounding unavailable' label for a family.
+
+    Falls back to a generic stored-official-sources message for families
+    without a specific adjudicative label. Never returns a raw status code.
+    """
+    fam = str(family or "")
+    if str(lang or "").lower().startswith("en"):
+        return SOURCE_FAMILY_PUBLIC_UNAVAILABLE_EN.get(
+            fam, "Direct grounding for this source is currently unavailable."
+        )
+    return SOURCE_FAMILY_PUBLIC_UNAVAILABLE_KO.get(
+        fam, "해당 출처의 직접 근거는 현재 사용할 수 없습니다."
+    )
+
+
+def source_family_definition(family: str) -> Dict[str, Any]:
+    """Public-safe normalized definition for one source family."""
+    fam = str(family or "")
+    return {
+        "family": fam,
+        "labelKo": SOURCE_FAMILY_TERMS_KO.get(fam, fam),
+        "labelEn": SOURCE_FAMILY_TERMS_EN.get(fam, fam),
+        "supportStatus": source_family_support_status(fam),
+        "liveAdapterStatus": source_family_live_adapter_status(fam),
+        "citationGradeCapable": is_citation_grade_capable(fam),
+        "adjudicative": fam in ADJUDICATIVE_SOURCE_FAMILIES,
+        "publicUnavailableLabelKo": source_family_public_unavailable_label(fam, lang="ko"),
+        "publicUnavailableLabelEn": source_family_public_unavailable_label(fam, lang="en"),
+    }
+
+
+def all_source_family_definitions() -> Dict[str, Dict[str, Any]]:
+    """Definitions for every known source family (stable, deterministic)."""
+    return {fam: source_family_definition(fam) for fam in SOURCE_FAMILIES}
+
+
 # Issue → Korean concept phrase (official wording) + English concept keywords.
 ISSUE_CONCEPT_KO: Dict[str, str] = {
     "activity_scope": "체류자격 활동범위",
@@ -287,6 +439,9 @@ ISSUE_CONCEPT_KO: Dict[str, str] = {
     "nationality_or_refugee_context": "국적 난민 인도적체류",
     "extension": "체류기간 연장허가",
     "reentry": "재입국허가",
+    "denial_revocation_or_remedy": "불허가 취소 처분 행정심판 구제",
+    "constitutional_or_fundamental_rights": "기본권 위헌 헌법소원",
+    "discretionary_or_ambiguous_interpretation": "재량 법령해석 유권해석",
     "legal_general": "체류자격",
     "non_immigration_adjacent_issue": "체류자격",
 }
@@ -309,6 +464,9 @@ ISSUE_CONCEPT_EN: Dict[str, str] = {
     "nationality_or_refugee_context": "nationality refugee humanitarian",
     "extension": "extension of stay",
     "reentry": "re-entry permit",
+    "denial_revocation_or_remedy": "denial revocation remedy administrative appeal",
+    "constitutional_or_fundamental_rights": "fundamental rights constitutional decision",
+    "discretionary_or_ambiguous_interpretation": "discretion legal interpretation",
     "legal_general": "sojourn status",
     "non_immigration_adjacent_issue": "sojourn status",
 }
@@ -325,6 +483,8 @@ ISSUE_PROCEDURE_TERM_KO: Dict[str, str] = {
     "overstay_or_risk": "출국 신고",
     "deadline_trigger": "기한",
     "approval_condition": "허가조건",
+    "denial_revocation_or_remedy": "행정심판 청구",
+    "discretionary_or_ambiguous_interpretation": "법령해석 요청",
 }
 
 _PRIMARY_AUTHORITY_FAMILIES = frozenset(

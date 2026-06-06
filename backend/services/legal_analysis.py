@@ -40,6 +40,10 @@ LEGAL_ISSUE_TYPES = (
     "approval_condition", "status_purpose_alignment", "employment_restriction",
     "study_on_non_study_status", "work_on_non_work_status",
     "post_status_change_residual_duty", "nationality_or_refugee_context",
+    # Adjudicative-leaning dimensions (high-precision detection). These are the
+    # only issues that route court precedent / constitutional-decision sources.
+    "denial_revocation_or_remedy", "constitutional_or_fundamental_rights",
+    "discretionary_or_ambiguous_interpretation",
     "legal_general", "non_immigration_adjacent_issue",
 )
 
@@ -361,6 +365,36 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
                 add("employment_restriction")
     if facts.get("status_transition_detected") and (acts & {"side_job", "workplace_change", "workplace_addition", "additional_employment"} or _has_any(text, "이전", "previous", "old status", "residual")):
         add("post_status_change_residual_duty")
+    # Adjudicative-leaning signals. High-precision keywords only, detected after
+    # the substantive procedure/activity issues so those keep routing priority.
+    # These are the only issues that pull court-precedent / constitutional
+    # sources, so ordinary document / registration / work questions never route
+    # case law. (Generalized by signal, never by visa code.)
+    if _has_any(
+        text,
+        "불허", "불허가", "거부", "반려", "취소", "철회", "직권취소",
+        "출국명령", "강제퇴거", "행정심판", "이의신청", "행정소송",
+        "불복", "구제", "재결", "심판청구",
+        "denial", "denied", "refus", "revoc", "revoke", "revoked",
+        "cancellation", "cancelled", "canceled", "deportation",
+        "removal order", "departure order", "objection", "appeal",
+        "remedy", "grievance", "sanction",
+    ):
+        add("denial_revocation_or_remedy")
+    if _has_any(
+        text,
+        "헌법", "헌법소원", "위헌", "기본권", "평등권", "적법절차", "헌재",
+        "constitution", "unconstitutional", "fundamental right",
+        "human rights", "equal protection", "due process",
+    ):
+        add("constitutional_or_fundamental_rights")
+    if _has_any(
+        text,
+        "법령해석", "유권해석", "해석상", "해석이", "재량", "재량권", "모호",
+        "legal interpretation", "interpretation of", "discretion",
+        "discretionary", "ambiguous",
+    ):
+        add("discretionary_or_ambiguous_interpretation")
     if not issues and _has_any(text, "법", "legal", "allowed", "가능", "can i", "may i"):
         add("legal_general")
     if not issues:
