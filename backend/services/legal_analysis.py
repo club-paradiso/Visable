@@ -8,6 +8,7 @@ relevance scoring.
 
 from __future__ import annotations
 
+from datetime import date, timedelta
 import re
 from typing import Any, Dict, List, Optional, Sequence
 
@@ -36,7 +37,8 @@ _CONFIDENCE_BY_MODE = {
 LEGAL_ISSUE_TYPES = (
     "activity_scope", "outside_status_activity", "status_change", "extension",
     "documents_needed", "reporting_duty", "workplace_change_addition",
-    "registration_or_residence_report", "reentry", "overstay_or_risk",
+    "registration_or_residence_report", "registration_deadline",
+    "deadline_trigger", "reentry", "overstay_or_risk",
     "approval_condition", "status_purpose_alignment", "employment_restriction",
     "study_on_non_study_status", "work_on_non_work_status",
     "post_status_change_residual_duty", "nationality_or_refugee_context",
@@ -162,6 +164,97 @@ def _has_formal_enrollment_context(text: str) -> bool:
     return False
 
 
+_REGISTRATION_DEADLINE_TERMS = (
+    "외국인등록", "외국인 등록", "외국인등록증", "등록증", "거소신고",
+    "arc 등록", "arc", "alien registration", "foreigner registration",
+    "registration card", "when do i need to register",
+    "by when should i register", "when should i register",
+)
+_REGISTRATION_DEADLINE_PHRASES = (
+    "등록 언제까지", "등록은 언제까지", "등록 기한", "등록기한",
+    "등록 마감", "등록 기간", "90일 이내", "90 일 이내",
+    "90일내", "입국일", "입국했", "입국한 날짜", "date of entry",
+    "entry date", "entered korea", "entered on", "within 90 days",
+)
+_REGISTRATION_EXCLUSION_TERMS = (
+    "사업자등록", "사업자 등록", "business registration",
+)
+_EXPLICIT_WORK_TERMS = (
+    "근무", "근로", "취업", "아르바이트", "알바", "일하", "일할",
+    "일을", "고용주", "보수", "급여", "임금", "프리랜서", "부업",
+    "계약형태", "근무처", "work", "job", "employment", "employer",
+    "salary", "wage", "paid", "freelance", "side job", "contract",
+)
+
+
+def is_registration_deadline_query(text: str) -> bool:
+    """Return True for foreigner-registration / ARC deadline questions.
+
+    The rule is signal-based and status-agnostic. It intentionally treats
+    entry-date / 90-day wording as registration-deadline context when paired
+    with registration language, while excluding business-registration wording
+    unless the user also names foreigner/ARC registration.
+    """
+    raw = text or ""
+    low = _low(raw)
+    has_registration = any(term in low for term in _REGISTRATION_DEADLINE_TERMS)
+    has_deadline = any(term in low for term in _REGISTRATION_DEADLINE_PHRASES)
+    excluded_business = any(term in low for term in _REGISTRATION_EXCLUSION_TERMS)
+    if excluded_business and not any(term in low for term in ("외국인등록", "외국인 등록", "arc", "alien registration", "foreigner registration")):
+        return False
+    has_status_context = bool(_STATUS_RE.search(raw)) or _has_any(raw, "비자", "visa", "체류", "stay", "sojourn", "한국", "korea")
+    has_entry_or_90_day_context = _has_any(raw, "입국일", "입국했", "입국한 날짜", "date of entry", "entry date", "entered korea", "entered on", "90일 이내", "90 일 이내", "within 90 days")
+    return bool(
+        has_registration
+        or (has_deadline and ("등록" in raw or "register" in low or "registration" in low))
+        or (has_status_context and has_entry_or_90_day_context)
+    )
+
+
+def has_explicit_work_query(text: str) -> bool:
+    """True only for real work/activity questions, not date suffixes like 27일."""
+    low = _low(text or "")
+    return any(term in low for term in _EXPLICIT_WORK_TERMS)
+
+
+_KOREAN_DATE_RE = re.compile(r"(20\d{2})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일")
+_NUMERIC_DATE_RE = re.compile(r"(20\d{2})[-./](\d{1,2})[-./](\d{1,2})")
+
+
+def _coerce_iso_date(year: str, month: str, day: str) -> Optional[str]:
+    try:
+        parsed = date(int(year), int(month), int(day))
+    except ValueError:
+        return None
+    return parsed.isoformat()
+
+
+def extract_entry_date(question: str) -> Optional[str]:
+    """Extract a user-provided Korea entry date in supported common formats."""
+    text = question or ""
+    candidates: List[tuple[int, str]] = []
+    for regex in (_KOREAN_DATE_RE, _NUMERIC_DATE_RE):
+        for match in regex.finditer(text):
+            iso = _coerce_iso_date(match.group(1), match.group(2), match.group(3))
+            if not iso:
+                continue
+            window = text[max(0, match.start() - 16): min(len(text), match.end() + 16)]
+            score = 0 if _has_any(window, "입국", "entered", "entry") else 1
+            candidates.append((score, iso))
+    if not candidates:
+        return None
+    candidates.sort(key=lambda item: item[0])
+    return candidates[0][1]
+
+
+def add_calendar_days(iso_date: str, days: int) -> Optional[str]:
+    try:
+        parsed = date.fromisoformat(iso_date)
+    except (TypeError, ValueError):
+        return None
+    return (parsed + timedelta(days=days)).isoformat()
+
+
 def _asks_status_change_to_target(text: str) -> bool:
     return _has_any(
         text,
@@ -184,6 +277,7 @@ def classify_activity_types(question: str) -> List[str]:
     """Deterministic multilingual activity classifier; one question may have many."""
     text = question or ""
     activities: List[str] = []
+    registration_deadline = is_registration_deadline_query(text)
 
     def add(name: str) -> None:
         if name in ACTIVITY_TYPES and name not in activities:
@@ -227,7 +321,7 @@ def classify_activity_types(question: str) -> List[str]:
         add("family_or_marriage_related")
     if _has_any(text, "난민", "인도적", "refugee", "asylum", "humanitarian"):
         add("refugee_or_humanitarian_context")
-    if _has_any(text, "외국인등록", "거소신고", "신고", "report", "registration", "residence report", "ARC"):
+    if registration_deadline or _has_any(text, "외국인등록", "외국인 등록", "거소신고", "신고", "report", "registration", "residence report", "ARC"):
         add("registration_or_reporting")
     if _has_any(text, "재입국", "출국", "re-entry", "reentry", "depart", "leave korea"):
         add("reentry_or_departure")
@@ -237,7 +331,7 @@ def classify_activity_types(question: str) -> List[str]:
         add("status_extension")
     if _has_any(text, "변경", "전환", "switch", "change status", "status change") or _TRANSITION_RE.search(text):
         add("status_change_route")
-    if not activities and _has_any(text, "일", "근무", "work", "job", "employment", "아르바이트", "알바", "취업"):
+    if not activities and not registration_deadline and has_explicit_work_query(text):
         add("paid_work")
     if not activities and _has_any(text, "수업", "강의", "course", "class", "study"):
         add("formal_enrollment")
@@ -303,7 +397,7 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
             "credit_bearing": "true" if "credit_bearing_study" in acts else _tri(text, ("학점", "credit-bearing", "credits"), ("non-credit", "noncredit", "비학점", "청강")),
             "degree_related": _tri(text, ("degree", "학위", "정규과정", "전공"), ("hobby", "취미", "문화", "non-credit", "청강")),
             "paid": paid,
-            "formal_enrollment": "true" if "formal_enrollment" in acts else ("false" if _has_any(text, "외국인등록", "사업자등록", "거소신고") else _tri(text, ("enroll", "입학", "정규과정", "대학교 등록", "대학 등록", "학교 등록", "수강 등록"), ("audit", "청강", "non-credit"))),
+            "formal_enrollment": "true" if "formal_enrollment" in acts else ("false" if _has_any(text, "외국인등록", "외국인 등록", "사업자등록", "사업자 등록", "거소신고") else _tri(text, ("enroll", "입학", "정규과정", "대학교 등록", "대학 등록", "학교 등록", "수강 등록"), ("audit", "청강", "non-credit"))),
             "institution_registered": _tri(text, ("registered institution", "인가", "등록된 기관")),
             "duration_known": "true" if re.search(r"\b\d+\s*(?:day|days|week|weeks|month|months|hour|hours)\b|\d+\s*(?:일|주|개월|시간)", text, re.IGNORECASE) else "false",
             "employer_or_client_known": "true" if _has_any(text, "employer", "client", "회사", "고용주", "근무처") else "false",
@@ -312,6 +406,13 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
         },
         "user_question_language": detect_question_language(text),
     }
+    entry_date = extract_entry_date(text)
+    if entry_date:
+        facts["entry_date"] = entry_date
+        facts["registration_deadline_basis_days"] = 90
+        deadline = add_calendar_days(entry_date, 90)
+        if deadline:
+            facts["registration_deadline_date"] = deadline
     return facts
 
 
@@ -332,7 +433,10 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
         add("extension")
     if acts & {"status_change_route"} or facts.get("status_transition_detected"):
         add("status_change")
-    if acts & {"registration_or_reporting"}:
+    if is_registration_deadline_query(text):
+        add("registration_deadline"); add("deadline_trigger")
+        add("reporting_duty"); add("registration_or_residence_report")
+    elif acts & {"registration_or_reporting"}:
         add("reporting_duty"); add("registration_or_residence_report")
     if acts & {"workplace_change", "workplace_addition", "additional_employment"}:
         add("reporting_duty"); add("workplace_change_addition")

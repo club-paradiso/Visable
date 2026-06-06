@@ -34,6 +34,7 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 from services import answer_shape as ashape  # noqa: E402
+from services import legal_analysis as lanalysis  # noqa: E402
 
 CANDS = ["qwen/qwen3-next-80b-a3b-instruct:free", "google/gemma-4-31b-it:free"]
 
@@ -73,6 +74,10 @@ class ContractGenerationTests(unittest.TestCase):
         self.assertEqual(c["contract_key"], ashape.CONTRACT_REGISTRATION)
         for slot in ("trigger_event", "deadline_basis_or_uncertainty", "filing_channel", "source_confidence"):
             self.assertIn(slot, c["required_slots"])
+
+    def test_registration_deadline_contract_uses_registration_shape(self):
+        c = _contract(["registration_deadline", "deadline_trigger"], {"current_status": "D-2"})
+        self.assertEqual(c["contract_key"], ashape.CONTRACT_REGISTRATION)
 
     def test_study_contract_selected_for_study_on_non_study(self):
         c = _contract(["activity_scope", "study_on_non_study_status"], {"current_status": "G-1-5"})
@@ -144,6 +149,39 @@ class QualityGateTests(unittest.TestCase):
         c = _contract(["registration_or_residence_report"], {"current_status": "H-1"})
         r = ashape.evaluate_answer_shape(bad, _meta(["registration_or_residence_report"], {"current_status": "H-1"}), c)
         self.assertIn("source_limitation_first_line", r["warnings"])
+
+    def test_gate_flags_work_contamination_in_registration_deadline_answer(self):
+        bad = (
+            "D-2 외국인등록은 입국일 기준입니다. 다만 자격외활동, 근로, 보수, 고용주, 계약형태를 확인하세요. "
+            "하이코리아 또는 관할 출입국·외국인청에서 접수합니다."
+        )
+        facts = {"current_status": "D-2", "entry_date": "2026-02-27", "registration_deadline_date": "2026-05-28"}
+        c = _contract(["registration_deadline", "reporting_duty"], facts)
+        r = ashape.evaluate_answer_shape(bad, _meta(["registration_deadline", "reporting_duty"], facts), c)
+        self.assertFalse(r["passed"])
+        self.assertTrue(any(w.startswith("irrelevant_terms") for w in r["warnings"]), r)
+
+    def test_gate_requires_calculated_registration_deadline_when_entry_date_known(self):
+        bad = (
+            "D-2 외국인등록은 입국일 기준 90일 이내에 해야 합니다. 신고는 하이코리아 또는 관할 관서에서 접수합니다. "
+            "현재 연결된 직접 근거는 제한적이므로 확인하세요."
+        )
+        facts = {"current_status": "D-2", "entry_date": "2026-02-27", "registration_deadline_date": "2026-05-28"}
+        c = _contract(["registration_deadline", "reporting_duty"], facts)
+        r = ashape.evaluate_answer_shape(bad, _meta(["registration_deadline", "reporting_duty"], facts), c)
+        self.assertFalse(r["passed"])
+        self.assertIn("missing_calculated_registration_deadline", r["warnings"])
+
+    def test_gate_flags_asking_for_entry_date_already_provided(self):
+        bad = (
+            "외국인등록 기한은 입국일 기준 90일 이내입니다. 입국일을 알려주시면 계산할 수 있습니다. "
+            "하이코리아 또는 관할 관서에서 접수합니다."
+        )
+        facts = {"current_status": "D-2", "entry_date": "2026-02-27", "registration_deadline_date": "2026-05-28"}
+        c = _contract(["registration_deadline", "reporting_duty"], facts)
+        r = ashape.evaluate_answer_shape(bad, _meta(["registration_deadline", "reporting_duty"], facts), c)
+        self.assertFalse(r["passed"])
+        self.assertIn("asks_for_entry_date_already_provided", r["warnings"])
 
     def test_gate_flags_overconfidence_when_certainty_limited(self):
         over = (
@@ -246,6 +284,28 @@ class DeterministicRepairIntegrationTests(_AskHarness):
         idx_limit = answer.find("직접 근거는 제한")
         self.assertGreater(idx_limit, idx_practical)
 
+    def test_d2_registration_deadline_repair_calculates_date_without_work_contamination(self):
+        b = self._ask("d-2 비자로 들어온 학생은 외국인 등록을 언제까지 해야해? 2026년 2월 27일에 입국했어.", visa_code="D-2")
+        self.assertEqual(b["answer_shape_contract"], ashape.CONTRACT_REGISTRATION)
+        facts = b["immigration_facts"]
+        self.assertEqual(facts["current_status"], "D-2")
+        self.assertEqual(facts["entry_date"], "2026-02-27")
+        self.assertEqual(facts["registration_deadline_date"], "2026-05-28")
+        self.assertIn("2026-05-28", b["answer"])
+        for bad in ("자격외활동", "근로", "보수", "고용주", "계약형태"):
+            self.assertNotIn(bad, b["answer"])
+
+    def test_e7_registration_deadline_repair_is_not_workplace_answer(self):
+        b = self._ask("E-7 ARC registration deadline if entered Korea on 2026.3.1?", lang="en", visa_code="E-7")
+        self.assertEqual(b["answer_shape_contract"], ashape.CONTRACT_REGISTRATION)
+        facts = b["immigration_facts"]
+        self.assertEqual(facts["current_status"], "E-7")
+        self.assertEqual(facts["entry_date"], "2026-03-01")
+        self.assertEqual(facts["registration_deadline_date"], "2026-05-30")
+        self.assertIn("2026-05-30", b["answer"])
+        for bad in ("workplace", "employer", "contract type", "salary"):
+            self.assertNotIn(bad, b["answer"].lower())
+
     def test_e7_to_f299_residual_duty_not_overconfident(self):
         b = self._ask("E-7에서 F-2-99로 변경 후 부업을 하면 예전 근무처 신고의무가 남나요?")
         answer = b["answer"]
@@ -307,6 +367,53 @@ class DeterministicRepairIntegrationTests(_AskHarness):
         self.assertFalse(b["model_answer_repaired_by_deterministic_synthesis"])
         self.assertTrue(b["answer_quality_gate_passed"])
         self.assertEqual(b["answer"], good)
+
+
+class RegistrationDeadlineClassifierTests(unittest.TestCase):
+    def test_entry_date_extraction_supported_formats_and_plus_90(self):
+        for text in (
+            "2026년 2월 27일에 입국했어",
+            "2026-02-27에 입국했어",
+            "2026.2.27에 입국했어",
+            "2026/02/27에 입국했어",
+        ):
+            self.assertEqual(lanalysis.extract_entry_date(text), "2026-02-27")
+        self.assertEqual(lanalysis.add_calendar_days("2026-02-27", 90), "2026-05-28")
+        self.assertEqual(lanalysis.add_calendar_days("2026-03-01", 90), "2026-05-30")
+
+    def test_registration_deadline_routes_all_representative_statuses_without_work(self):
+        fixtures = [
+            ("D-2", "d-2 비자로 들어온 학생은 외국인 등록을 언제까지 해야해? 2026년 2월 27일에 입국했어.", "2026-02-27", "2026-05-28"),
+            ("H-1", "H-1 외국인등록 기한 알려줘. 2026-02-27 입국.", "2026-02-27", "2026-05-28"),
+            ("E-7", "E-7 ARC registration deadline if entered Korea on 2026.3.1?", "2026-03-01", "2026-05-30"),
+            ("F-6", "F-6 외국인등록은 언제까지? 2026/02/27 입국", "2026-02-27", "2026-05-28"),
+            ("G-1-5", "G-1-5 외국인등록 기한은? 2026년 2월 27일 입국", "2026-02-27", "2026-05-28"),
+            ("F-4", "F-4 거소신고 등록 기한은 언제야? 2026-02-27 입국", "2026-02-27", "2026-05-28"),
+            ("H-2", "H-2 외국인 등록 기한. 2026.2.27 입국했어", "2026-02-27", "2026-05-28"),
+            ("C-3", "C-3 비자로 입국일 기준 90일 이내가 언제야? 2026/02/27 입국", "2026-02-27", "2026-05-28"),
+        ]
+        for status, question, entry_date, deadline in fixtures:
+            with self.subTest(status=status):
+                facts = lanalysis.extract_immigration_facts(question)
+                issues = lanalysis.classify_legal_issue_types(question, facts)
+                self.assertIn("registration_deadline", issues)
+                self.assertIn("deadline_trigger", issues)
+                self.assertIn("reporting_duty", issues)
+                self.assertEqual(facts["current_status"], status)
+                if status == "G-1-5":
+                    self.assertEqual(facts["current_sub_status"], "G-1-5")
+                self.assertEqual(facts["entry_date"], entry_date)
+                self.assertEqual(facts["registration_deadline_date"], deadline)
+                for work_activity in ("paid_work", "freelance_work", "side_job", "workplace_change", "workplace_addition"):
+                    self.assertNotIn(work_activity, facts["proposed_activities"])
+
+    def test_explicit_work_question_still_routes_to_work(self):
+        question = "D-2 학생이 아르바이트 근로를 할 수 있어?"
+        facts = lanalysis.extract_immigration_facts(question)
+        issues = lanalysis.classify_legal_issue_types(question, facts)
+        self.assertIn("paid_work", facts["proposed_activities"])
+        self.assertIn("work_on_non_work_status", issues)
+        self.assertNotIn("registration_deadline", issues)
 
 
 # ---------------------------------------------------------------------------

@@ -436,13 +436,13 @@
       "question": "I just arrived in Korea on a student visa and need to complete foreigner registration.",
       "visa_code": null,
       "visa_sub_code": null,
-      "expected_task_type": null,
+      "expected_task_type": "foreigner_registration",
       "expected_grounding_status": "scoped_fallback",
-      "expected_risk_level": "low",
+      "expected_risk_level": "medium",
       "expected_must_include_metadata": [],
       "expected_must_not_include_terms": [],
       "matrix_row_id": "common_foreigner_registration",
-      "notes": "Known gap: backend has no foreigner_registration detector in _detect_task_type. task_type_detected=null is expected and reported as a gap, not a failure."
+      "notes": "Foreigner-registration detection is now wired through _detect_task_type; task_type_detected=foreigner_registration is expected."
     },
     {
       "id": "gq_foreigner_registration_ko_01",
@@ -450,13 +450,13 @@
       "question": "한국에 처음 입국했는데 외국인등록은 어디에서 하나요?",
       "visa_code": null,
       "visa_sub_code": null,
-      "expected_task_type": null,
+      "expected_task_type": "foreigner_registration",
       "expected_grounding_status": "scoped_fallback",
-      "expected_risk_level": "low",
+      "expected_risk_level": "medium",
       "expected_must_include_metadata": [],
       "expected_must_not_include_terms": [],
       "matrix_row_id": "common_foreigner_registration",
-      "notes": "Known gap: '외국인등록' is not yet a detection signal in _detect_task_type. Expected null task type."
+      "notes": "외국인등록 detection is now wired through _detect_task_type; task_type_detected=foreigner_registration is expected."
     },
     {
       "id": "gq_status_change_en_01",

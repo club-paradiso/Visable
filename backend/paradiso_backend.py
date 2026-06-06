@@ -36,7 +36,7 @@ from services.law_grounding import (
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack
-from services.legal_analysis import first_sentence_quality_warning, status_work_capability
+from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
     build_answer_directives,
@@ -1097,6 +1097,8 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "reporting_duty": "신고의무",
         "workplace_change_addition": "근무처 변경·추가 신고/허가",
         "registration_or_residence_report": "외국인등록·거소신고 등 체류 신고",
+        "registration_deadline": "외국인등록 기한",
+        "deadline_trigger": "신고 기산일",
         "reentry": "재입국·출국 절차",
         "overstay_or_risk": "초과체류 등 체류 위험",
         "approval_condition": "개별 승인 조건",
@@ -1118,6 +1120,8 @@ def _issue_labels_for_fallback(issues: List[str], *, is_ko: bool) -> List[str]:
         "reporting_duty": "reporting duty",
         "workplace_change_addition": "workplace change/addition reporting or permission",
         "registration_or_residence_report": "alien registration / residence reporting",
+        "registration_deadline": "alien-registration deadline",
+        "deadline_trigger": "deadline trigger",
         "reentry": "re-entry or departure procedure",
         "overstay_or_risk": "overstay/status-risk triage",
         "approval_condition": "case-specific approval conditions",
@@ -1186,6 +1190,31 @@ def _is_work_limited_status(facts: Dict[str, Any]) -> bool:
     return status_work_capability(parent) == "work_limited"
 
 
+def _format_korean_iso_date(value: Any) -> str:
+    text = str(value or "").strip()
+    m = re.match(r"^(\d{4})-(\d{2})-(\d{2})$", text)
+    if not m:
+        return text
+    return f"{int(m.group(1))}년 {int(m.group(2))}월 {int(m.group(3))}일"
+
+
+def _format_registration_deadline_formula(facts: Dict[str, Any], *, is_ko: bool) -> Optional[str]:
+    entry_date = facts.get("entry_date")
+    deadline = facts.get("registration_deadline_date")
+    if not entry_date or not deadline:
+        return None
+    status = facts.get("current_status") or ("현재 체류자격" if is_ko else "the current status")
+    if is_ko:
+        return (
+            f"결론: {status} 외국인등록 기한은 입국일 {entry_date}에 90일을 더해 계산하면 "
+            f"{deadline}({_format_korean_iso_date(deadline)})입니다."
+        )
+    return (
+        f"Bottom line: for {status} alien registration, adding 90 calendar days "
+        f"to the entry date {entry_date} gives a deadline of {deadline}."
+    )
+
+
 def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activities: List[str], activity_labels: List[str]) -> str:
     current = facts.get("current_status") or "현재 체류자격"
     previous = facts.get("previous_status")
@@ -1208,6 +1237,8 @@ def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activit
             "국가별 협정 조건, 국내 자격·면허 요건, 주된 체류 목적 부합 여부에 따라 허용 범위가 달라지므로 이를 "
             "기준으로 확인해야 합니다."
         )
+    if "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
+        return _format_registration_deadline_formula(facts, is_ko=True) or ""
     if "registration_or_residence_report" in issues:
         return (
             f"{current} 외국인등록은 보통 입국일 또는 체류자격 부여·변경일을 기준으로, 체류기간이 90일을 초과하는 "
@@ -1235,6 +1266,8 @@ def _korean_main_issue_fallback(issues: List[str], facts: Dict[str, Any], activi
             f"해당 일이 {current}에서 허용되는 단기 취업 범위에 들어가는지, 아니면 직종·근무 기간·국가별 협정 조건이나 "
             "국내 자격·면허 요건 때문에 제한되는지입니다."
         )
+    if "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
+        return f"{current} 보유자의 입국일 기준 외국인등록 기한 계산입니다."
     if "registration_or_residence_report" in issues:
         return f"{current} 보유자의 외국인등록·체류 신고 시점과 절차입니다."
     if "workplace_change_addition" in issues or "reporting_duty" in issues:
@@ -1266,7 +1299,7 @@ def _fallback_activity_kinds(issues: List[str], activities: List[str]) -> Dict[s
     work = bool(act_set & _WORK_ACTS) or bool(
         issue_set & {"work_on_non_work_status", "workplace_change_addition", "post_status_change_residual_duty"}
     )
-    registration = bool(issue_set & {"registration_or_residence_report", "reporting_duty"}) and not study
+    registration = bool(issue_set & {"registration_or_residence_report", "registration_deadline", "deadline_trigger", "reporting_duty"}) and not study
     status_change = "status_change" in issue_set
     return {"study": study, "work": work, "registration": registration, "status_change": status_change}
 
@@ -1295,7 +1328,14 @@ def _fallback_fact_lines_localized(issues: List[str], facts: Dict[str, Any], act
         if "post_status_change_residual_duty" in set(issues or []):
             lines.append("이전 체류자격의 승인 조건과 신고 이력이 현재 활동에 남는지")
         if kinds["registration"]:
-            lines.append("입국일 또는 체류자격 부여·변경일 등 신고 기산일")
+            if facts.get("entry_date"):
+                deadline = facts.get("registration_deadline_date")
+                if deadline:
+                    lines.append(f"입국일 {facts.get('entry_date')} + 90일 = {deadline}({_format_korean_iso_date(deadline)})")
+                else:
+                    lines.append(f"입국일 {facts.get('entry_date')}을 기준으로 한 신고 기산일")
+            else:
+                lines.append("입국일 또는 체류자격 부여·변경일 등 신고 기산일")
             lines.append("부여받은 체류기간과 90일 초과 여부 등 외국인등록 대상·기한 기준")
             lines.append("신고 접수 방법(하이코리아 또는 관할 출입국·외국인청)")
         return list(dict.fromkeys(lines))[:6]
@@ -1312,7 +1352,14 @@ def _fallback_fact_lines_localized(issues: List[str], facts: Dict[str, Any], act
     if "post_status_change_residual_duty" in set(issues or []):
         lines.append("whether the previous status's approval conditions or reporting history still apply")
     if kinds["registration"]:
-        lines.append("the event that starts the deadline (entry date or status grant/change date)")
+        if facts.get("entry_date"):
+            deadline = facts.get("registration_deadline_date")
+            if deadline:
+                lines.append(f"entry date {facts.get('entry_date')} + 90 calendar days = {deadline}")
+            else:
+                lines.append(f"the deadline trigger based on entry date {facts.get('entry_date')}")
+        else:
+            lines.append("the event that starts the deadline (entry date or status grant/change date)")
         lines.append("your granted period of stay and whether it exceeds the 90-day registration threshold")
         lines.append("the filing channel (HiKorea or the competent immigration office)")
     return list(dict.fromkeys(lines))[:6]
@@ -1351,12 +1398,17 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
                 "자격외활동허가 또는 체류자격 변경이 필요한지",
             ]
         if kinds["registration"]:
-            return [
-                "한국에 입국한 날짜(입국일)는 언제인지",
+            questions = []
+            if not facts.get("entry_date"):
+                questions.append("한국에 입국한 날짜(입국일)는 언제인지")
+            else:
+                questions.append(f"입국일 {facts.get('entry_date')} 기준 계산일 {facts.get('registration_deadline_date') or '확인 필요'}을 적용해도 되는지")
+            questions.extend([
                 "부여받은 체류기간은 얼마인지",
                 "외국인등록 등 신고 기한은 며칠인지",
                 "신고를 어디서·어떻게(하이코리아 또는 관할 출입국·외국인청 방문) 하는지",
-            ]
+            ])
+            return questions
         if kinds["status_change"] and facts.get("target_status"):
             target = facts.get("target_status")
             return [
@@ -1401,12 +1453,20 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
             "whether it needs permission for activities outside status or a change of status",
         ]
     if kinds["registration"]:
-        return [
-            "your date of entry into Korea",
+        questions = []
+        if not facts.get("entry_date"):
+            questions.append("your date of entry into Korea")
+        else:
+            questions.append(
+                f"whether the calculated date {facts.get('registration_deadline_date') or 'to be confirmed'}"
+                f" from entry date {facts.get('entry_date')} applies to your case"
+            )
+        questions.extend([
             "the period of stay you were granted",
             "the alien-registration / reporting deadline in days",
             "where and how to file (HiKorea or the competent immigration office)",
-        ]
+        ])
+        return questions
     if kinds["status_change"] and facts.get("target_status"):
         target = facts.get("target_status")
         return [
@@ -1484,7 +1544,7 @@ def build_legal_analysis_fallback_answer(
     # Part G: for registration/reporting answers, use concise source-limitation
     # wording that points to the official channels for the deadline/filing detail
     # instead of a generic "this is not based on the manual" disclaimer.
-    if "registration_or_residence_report" in issues or "reporting_duty" in issues:
+    if "registration_or_residence_report" in issues or "registration_deadline" in issues or "reporting_duty" in issues:
         source_note = (
             "현재 연결된 직접 근거는 제한적이므로, 최종 기한과 제출 방식은 1345/HiKorea/관할 관서에서 확인하세요."
             if is_ko else
@@ -1521,9 +1581,17 @@ def build_legal_analysis_fallback_answer(
                 "보수를 받는다는 사실만으로 자격외활동 위반으로 단정할 사안은 아니고, 일의 형태와 근무 기간, 협정 조건을 "
                 "기준으로 허용 범위를 검토해야 합니다."
             )
-        elif "registration_or_residence_report" in issues:
+        elif "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
+            lines.append(_format_registration_deadline_formula(facts, is_ko=True) or "")
+        elif "registration_or_residence_report" in issues or "registration_deadline" in issues:
             status = current or "현재 체류자격"
-            lines.append(f"{status} 외국인등록·체류 신고 사안이므로, 출입국 체류 신고의 기산일·기한·대상·관할을 중심으로 확인해야 합니다.")
+            if facts.get("entry_date"):
+                lines.append(
+                    f"{status} 외국인등록은 입국일 {facts.get('entry_date')}을 기준으로 90일 이내 원칙을 적용해 "
+                    "기한을 계산하고, 대상 여부와 접수 방식은 관할 기관에서 확인해야 합니다."
+                )
+            else:
+                lines.append(f"{status} 외국인등록·체류 신고 사안이므로, 출입국 체류 신고의 기산일·기한·대상·관할을 중심으로 확인해야 합니다.")
         elif practical:
             lines.append(practical)
         elif current or activity_labels:
@@ -1576,9 +1644,17 @@ def build_legal_analysis_fallback_answer(
             "tourist-guide interpretation, or foreign-language teaching), the duration, the agreement terms, and any "
             "domestic license requirement."
         )
-    elif "registration_or_residence_report" in issues:
+    elif "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
+        lines.append(_format_registration_deadline_formula(facts, is_ko=False) or "")
+    elif "registration_or_residence_report" in issues or "registration_deadline" in issues:
         status = current or "the current status"
-        lines.append(f"This is an alien-registration/residence-reporting issue for {status}; focus on the filing trigger, deadline, scope, and competent office.")
+        if facts.get("entry_date"):
+            lines.append(
+                f"For {status} alien registration, calculate from entry date {facts.get('entry_date')}"
+                " using the 90-calendar-day rule, then confirm applicability and filing method with the competent office."
+            )
+        else:
+            lines.append(f"This is an alien-registration/residence-reporting issue for {status}; focus on the filing trigger, deadline, scope, and competent office.")
     elif practical:
         lines.append(practical)
     elif current or activity_labels:
@@ -2255,6 +2331,13 @@ def _detect_task_type(text: str) -> Optional[str]:
 
     if not text:
         return None
+
+    # --- foreigner_registration / registration deadline ---
+    # Run before work/status detectors so "외국인등록 언제까지" with an entry
+    # date does not get routed to an activity/work template just because the
+    # sentence contains Korean date suffixes such as "27일".
+    if is_registration_deadline_query(text):
+        return "foreigner_registration"
 
     # --- marriage_divorce_status_change (highest priority, high risk) ---
     divorce_ko = ("이혼", "혼인 무효", "혼인단절", "별거", "사별", "재혼", "혼인관계 해소")

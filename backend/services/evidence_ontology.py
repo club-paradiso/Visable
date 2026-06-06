@@ -129,7 +129,7 @@ PROCEDURE_DIMENSIONS: Tuple[str, ...] = (
 # never over-query case law.
 LEGAL_ISSUE_DIMENSIONS: Tuple[str, ...] = (
     "activity_scope", "outside_status_activity", "status_purpose_alignment",
-    "reporting_duty", "registration_or_residence_report",
+    "reporting_duty", "registration_or_residence_report", "registration_deadline",
     "workplace_change_addition", "status_change", "documents_needed",
     "employment_restriction", "study_on_non_study_status",
     "work_on_non_work_status", "post_status_change_residual_duty",
@@ -212,6 +212,7 @@ SOURCE_FAMILY_ROUTING: Dict[str, Tuple[str, ...]] = {
     "reporting_duty": _REGISTRATION_ROUTE,
     "workplace_change_addition": _REGISTRATION_ROUTE,
     "registration_or_residence_report": _REGISTRATION_ROUTE,
+    "registration_deadline": _REGISTRATION_ROUTE,
     "deadline_trigger": _REGISTRATION_ROUTE,
     # Overstay / removal / departure-order / sanction questions are adjudicative:
     # add administrative-appeal and court-precedent (analogical) sources.
