@@ -68,6 +68,17 @@ try:  # optional structured manual-evidence layer (PR #228); guard import
 except Exception:  # pragma: no cover - import-time guard only
     _structured_requirements = None  # type: ignore
 
+try:  # procedure packet builder + safe 통합신청서 typing helper (scaffold)
+    from services.procedure_packet_builder import (  # type: ignore
+        build_procedure_packet as _build_procedure_packet,
+        build_available_packets_for_status as _build_available_packets_for_status,
+        SUPPORTED_PACKET_TYPES as _SUPPORTED_PACKET_TYPES,
+    )
+except Exception:  # pragma: no cover - import-time guard only
+    _build_procedure_packet = None  # type: ignore
+    _build_available_packets_for_status = None  # type: ignore
+    _SUPPORTED_PACKET_TYPES = ()  # type: ignore
+
 
 logger = logging.getLogger("paradiso.backend")
 logging.basicConfig(level=os.environ.get("LOG_LEVEL", "INFO"))
@@ -3244,6 +3255,61 @@ async def get_structured_requirements_endpoint(
             "and must not be shown to end users."
         )
     return payload
+
+
+@app.get("/api/procedure-packet")
+async def get_procedure_packet_endpoint(
+    status: str, procedure: str, locale: str = "ko"
+) -> Dict[str, Any]:
+    """Build a source-graded procedure preparation packet (deterministic).
+
+    Inputs are non-personal only: ``status`` (a status/visa code, parent or
+    exact sub-code) and ``procedure`` (a procedure key such as
+    ``registration``/``extension``/``statusChange`` or a public packet type such
+    as ``foreigner_registration``). No personal field values are accepted or
+    stored, no LLM is called, and the output carries only public-safe source
+    labels (never raw developer diagnostics). The packet's
+    ``applicationTypingHelper`` is typing-guide-only and never holds values.
+    """
+    if _build_procedure_packet is None:
+        raise HTTPException(
+            status_code=503,
+            detail={"error": "packet_builder_unavailable",
+                    "message": "Procedure packet builder is not available."},
+        )
+    status_code = (status or "").strip()
+    procedure_key = (procedure or "").strip()
+    if not status_code or not procedure_key:
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "missing_parameters",
+                    "message": "Provide non-empty 'status' and 'procedure'."},
+        )
+    packet = _build_procedure_packet(status_code, procedure_key, locale=locale or "ko")
+    if packet.get("packetType") == "unknown":
+        raise HTTPException(
+            status_code=400,
+            detail={"error": "unsupported_procedure",
+                    "message": "요청한 절차 유형을 인식할 수 없습니다.",
+                    "supportedPacketTypes": list(_SUPPORTED_PACKET_TYPES)},
+        )
+    return packet
+
+
+@app.get("/api/visas/{status_code}/packets")
+async def get_available_packets_endpoint(
+    status_code: str, locale: str = "ko"
+) -> Dict[str, Any]:
+    """List preparation packets buildable for a status (deterministic, no LLM)."""
+    if _build_available_packets_for_status is None:
+        return {"statusCode": status_code, "available": False, "packets": []}
+    summaries = _build_available_packets_for_status(status_code, locale=locale or "ko")
+    return {
+        "statusCode": status_code,
+        "available": bool(summaries),
+        "packetCount": len(summaries),
+        "packets": summaries,
+    }
 
 
 @app.post("/api/ask", response_model=AskResponse)
