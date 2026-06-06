@@ -29,9 +29,14 @@ from services.evidence_ontology import (  # noqa: E402
     build_immigration_core_batch,
     source_family_support_status,
 )
+from services.precedent_sources import PRECEDENT_LIST_TARGET  # noqa: E402
 
 DEFAULT_HOST = "http://www.law.go.kr"
 SEARCH_PATH = "/DRF/lawSearch.do"
+# ``precedent`` uses the documented ``target=prec`` list-search endpoint, so the
+# operator can optionally capture its (sanitized) response shape to verify it.
+# The other precedent-family targets are NOT guessed (None == unconfirmed):
+# they stay scaffold-only / fixture-driven until officially verified.
 FAMILY_TARGETS = {
     "statute": "law",
     "enforcement_decree": "law",
@@ -39,8 +44,9 @@ FAMILY_TARGETS = {
     "administrative_rule": "admrul",
     "legal_term": "lstrm",
     "legal_interpretation": None,
-    "precedent": None,
+    "precedent": PRECEDENT_LIST_TARGET,
     "administrative_appeal": None,
+    "constitutional_decision": None,
 }
 FAMILY_QUERY_HINTS = {
     "statute": "출입국관리법 체류자격",
@@ -51,6 +57,7 @@ FAMILY_QUERY_HINTS = {
     "legal_interpretation": "체류자격외활동 법령해석",
     "precedent": "출입국관리 체류자격 판례",
     "administrative_appeal": "체류자격외활동 행정심판",
+    "constitutional_decision": "외국인 강제퇴거 기본권 헌법재판소",
 }
 
 

@@ -11,6 +11,11 @@ from .law_tools import (
     search_law_terms,
     search_laws,
 )
+from .precedent_sources import (
+    PRECEDENT_LIST_TARGET,
+    normalize_source_family_response,
+    search_precedents,
+)
 
 __all__ = [
     "GroundingConfig",
@@ -23,4 +28,7 @@ __all__ = [
     "search_admin_rules",
     "search_law_terms",
     "get_law_detail",
+    "PRECEDENT_LIST_TARGET",
+    "search_precedents",
+    "normalize_source_family_response",
 ]

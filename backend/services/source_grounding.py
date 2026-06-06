@@ -73,6 +73,9 @@ _INTERNAL_STATUS_MAP = {
     "not_configured": "not_configured",
     "unsupported": "not_configured",
     "planned_not_wired": "not_configured",
+    # Precedent-family scaffold: a scaffolded-but-unverified adapter projects as
+    # not_configured → public "unavailable" (never a raw code in the UI).
+    "scaffold_only": "not_configured",
     "not_attempted": "not_relevant",
     "not_relevant": "not_relevant",
 }
