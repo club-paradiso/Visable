@@ -1902,8 +1902,12 @@ select:focus-visible {
 
         function buildContextRow(result, lang) {
             const parts = [];
-            if (result && result.visa_code_detected) {
-                parts.push(t(lang, `감지된 체류자격: ${escapeHtml(result.visa_code_detected)}`, `Detected status: ${escapeHtml(result.visa_code_detected)}`));
+            // Preserve an explicit sub-code (e.g. G-1-5) for the public chip so it
+            // is not collapsed to the parent (G-1). The parent stays available in
+            // visa_code_detected for internal family lookup.
+            const detectedStatusDisplay = (result && (result.visa_sub_code_detected || result.visa_code_detected)) || '';
+            if (detectedStatusDisplay) {
+                parts.push(t(lang, `감지된 체류자격: ${escapeHtml(detectedStatusDisplay)}`, `Detected status: ${escapeHtml(detectedStatusDisplay)}`));
             }
             if (result && result.task_type_detected) {
                 parts.push(t(lang, `절차: ${escapeHtml(displayProcedure(result.task_type_detected, lang))}`, `Procedure: ${escapeHtml(displayProcedure(result.task_type_detected, lang))}`));
@@ -2215,8 +2219,21 @@ select:focus-visible {
                   ];
             const familyBlock = familyLines.length ? [''].concat([tt(lang, { ko: '법령군별 상태:', en: 'Per-family status:', zh: '各法令类别状态：', zhHant: '各法令類別狀態：' })]).concat(familyLines) : [];
             const diagBody = headerLines.concat(familyBlock).concat(['', '--- raw developer codes ---']).concat(lawWarnings);
-            const debugWarnings = (lawWarnings.length || familyLines.length)
-                ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(diagBody.join('\\n'))}</pre></details>`
+            // Public-safe contract: raw internal codes (bad_response, not_attempted,
+            // statute:/enforcement_decree: family dumps, LAW_API_* warnings) must
+            // NOT render for normal users. The developer-diagnostics block is shown
+            // ONLY when an explicit developer/debug mode is enabled (?debug=1 /
+            // ?dev=1, localStorage paradisoDevDiagnostics=1, or window flag). The
+            // typeof guards keep this safe under the headless check harness (no
+            // window/location/localStorage globals there).
+            let devDiagnosticsEnabled = false;
+            try {
+                if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) devDiagnosticsEnabled = true;
+                else if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') devDiagnosticsEnabled = true;
+                else if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) devDiagnosticsEnabled = true;
+            } catch (e) { devDiagnosticsEnabled = false; }
+            const debugWarnings = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length))
+                ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(diagBody.join('\n'))}</pre></details>`
                 : '';
 
             const disclosure = t(

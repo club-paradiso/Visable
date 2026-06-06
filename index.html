@@ -12365,10 +12365,21 @@ function renderGroundingSourcePanel(metadata) {
     }
 
     // Developer diagnostics (Part G): per-family statuses first, raw codes last.
+    // Public-safe contract: raw internal codes (bad_response / not_attempted /
+    // statute: family dumps / LAW_API_* warnings) must NOT render for normal
+    // users. This block is emitted ONLY when an explicit developer/debug mode is
+    // enabled (?debug=1 / ?dev=1, localStorage paradisoDevDiagnostics=1, or
+    // window.PARADISO_DEV_DIAGNOSTICS). typeof guards keep it crash-safe.
+    let devDiagnosticsEnabled = false;
+    try {
+        if (typeof window !== 'undefined' && window.PARADISO_DEV_DIAGNOSTICS) devDiagnosticsEnabled = true;
+        else if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') devDiagnosticsEnabled = true;
+        else if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) devDiagnosticsEnabled = true;
+    } catch (e) { devDiagnosticsEnabled = false; }
     const familyStatuses = (m.source_family_statuses && typeof m.source_family_statuses === 'object') ? m.source_family_statuses : {};
     const familyLines = Object.keys(familyStatuses).filter(function(f) { return familyStatuses[f]; }).map(function(f) { return f + ': ' + String(familyStatuses[f]); });
     const diagLines = (familyLines.length ? familyLines.concat(['', '--- raw developer codes ---']) : []).concat(lawWarnings);
-    const debug = (lawWarnings.length || familyLines.length) ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiDeveloperDiagnostics'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(diagLines.join('\\n'))}</pre></details>` : '';
+    const debug = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length)) ? `<details style="margin-top:.35rem;"><summary>${escapeHtml(tx('aiDeveloperDiagnostics'))}</summary><pre style="white-space:pre-wrap;">${escapeHtml(diagLines.join('\n'))}</pre></details>` : '';
     return `<div class="ai-grounding-panel"><div class="gp-title">${escapeHtml(tx('aiSourcePanelTitle'))}</div><p class="gp-lead">${escapeHtml(tx('aiSourcePanelLead'))}</p>${rows.join('')}${debug}<p class="gp-disclosure">${escapeHtml(tx('aiSourceDisclosure'))}</p></div>`;
 }
 

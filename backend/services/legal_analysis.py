@@ -70,6 +70,38 @@ _TRANSITION_RE = re.compile(
 _PARENT_STUDY = {"D-2", "D-4"}
 _PARENT_WORK = {"E-1", "E-2", "E-3", "E-4", "E-5", "E-6", "E-7", "E-9", "C-4", "H-2"}
 _RESTRICTED_WORK = {"C-3", "B-1", "B-2", "D-10", "H-1", "G-1"}
+# Statuses that may permit *short-term / conditional* paid work within the status
+# purpose and (for working-holiday) nationality-agreement limits. Paid work on a
+# work-limited status is therefore NOT automatically an outside-status activity;
+# it is an employment-restriction question. H-1 is the Korean Working Holiday
+# status. Kept as a small reusable set so the issue classifier and the
+# answer-shape gate share one capability model instead of hardcoding visa codes.
+_WORK_LIMITED = {"H-1"}
+_WORK_AUTHORIZED_RESIDENCE = {"F-2", "F-4", "F-5", "F-6"}
+
+
+def status_work_capability(parent_code: Optional[str]) -> str:
+    """Return a generalized work capability for a parent status code.
+
+    One of ``"work_authorized"`` (paid work is a main-purpose activity),
+    ``"work_limited"`` (short-term / conditional paid work may be allowed within
+    the status purpose and agreement limits), ``"work_prohibited"`` (paid work
+    needs separate permission or is outside status), or ``"unknown"``.
+
+    This is intentionally coarse and visa-code agnostic in its *consumers*: the
+    issue classifier and the answer-shape gate ask the model "may this status
+    permit work?" rather than branching on a specific visa code.
+    """
+    code = (parent_code or "").upper()
+    if not code:
+        return "unknown"
+    if code in _PARENT_WORK or code in _WORK_AUTHORIZED_RESIDENCE:
+        return "work_authorized"
+    if code in _WORK_LIMITED:
+        return "work_limited"
+    if code in _RESTRICTED_WORK or code in _PARENT_STUDY:
+        return "work_prohibited"
+    return "unknown"
 
 
 def _norm_code(raw: str) -> str:
@@ -316,10 +348,17 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
             add("study_on_non_study_status")
     if work_acts:
         add("activity_scope")
-        if current_parent not in _PARENT_WORK and current_parent not in {"F-2", "F-4", "F-5", "F-6"}:
-            add("outside_status_activity"); add("work_on_non_work_status")
-        if current_parent in _RESTRICTED_WORK or current_parent in {"F-4", "D-4"}:
+        if current_parent in _WORK_LIMITED:
+            # Work-limited statuses (e.g. H-1 Working Holiday) may allow short-term
+            # paid work within the status purpose and nationality-agreement limits,
+            # so paid work is NOT automatically an outside-status activity. Frame it
+            # as an employment-restriction question, not work_on_non_work_status.
             add("employment_restriction")
+        else:
+            if current_parent not in _PARENT_WORK and current_parent not in {"F-2", "F-4", "F-5", "F-6"}:
+                add("outside_status_activity"); add("work_on_non_work_status")
+            if current_parent in _RESTRICTED_WORK or current_parent in {"F-4", "D-4"}:
+                add("employment_restriction")
     if facts.get("status_transition_detected") and (acts & {"side_job", "workplace_change", "workplace_addition", "additional_employment"} or _has_any(text, "이전", "previous", "old status", "residual")):
         add("post_status_change_residual_duty")
     if not issues and _has_any(text, "법", "legal", "allowed", "가능", "can i", "may i"):
