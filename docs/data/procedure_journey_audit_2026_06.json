@@ -13,15 +13,15 @@
       "statusGrant",
       "reentry"
     ],
-    "totalDocuments": 342,
-    "totalRiskFlags": 148,
+    "totalDocuments": 324,
+    "totalRiskFlags": 137,
     "riskFlagBreakdown": {
-      "PROCEDURE_NO_DOCS": 68,
-      "REGISTRATION_MISSING_APPLICATION_FORM": 18,
-      "RENDER_PATH_GAP": 19,
+      "PROCEDURE_NO_DOCS": 85,
       "SUBCODE_AMBIGUOUS": 28,
       "GENERIC_MISSING_NOTICE": 4,
-      "NO_NEXT_ACTION_HINT": 11
+      "NO_NEXT_ACTION_HINT": 11,
+      "REGISTRATION_MISSING_APPLICATION_FORM": 4,
+      "RENDER_PATH_GAP": 5
     }
   },
   "topHighRisk": [
@@ -108,47 +108,6 @@
       }
     },
     {
-      "statusCode": "D-8",
-      "statusName": "기업투자",
-      "riskScore": 4,
-      "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 1,
-        "SUBCODE_AMBIGUOUS": 1
-      }
-    },
-    {
-      "statusCode": "E-3",
-      "statusName": "연구",
-      "riskScore": 4,
-      "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
-      }
-    },
-    {
-      "statusCode": "E-4",
-      "statusName": "기술지도",
-      "riskScore": 4,
-      "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
-      }
-    },
-    {
-      "statusCode": "E-5",
-      "statusName": "전문직업",
-      "riskScore": 4,
-      "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
-      }
-    },
-    {
       "statusCode": "F-2",
       "statusName": "거주",
       "riskScore": 4,
@@ -168,12 +127,47 @@
       }
     },
     {
-      "statusCode": "B-1",
-      "statusName": "사증면제협정",
+      "statusCode": "D-10",
+      "statusName": "구직",
       "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 2,
+        "SUBCODE_AMBIGUOUS": 1
+      }
+    },
+    {
+      "statusCode": "D-4",
+      "statusName": "일반연수",
+      "riskScore": 3,
+      "flagCounts": {
+        "PROCEDURE_NO_DOCS": 2,
+        "SUBCODE_AMBIGUOUS": 1
+      }
+    },
+    {
+      "statusCode": "D-8",
+      "statusName": "기업투자",
+      "riskScore": 3,
+      "flagCounts": {
+        "PROCEDURE_NO_DOCS": 2,
+        "SUBCODE_AMBIGUOUS": 1
+      }
+    },
+    {
+      "statusCode": "D-9",
+      "statusName": "무역경영",
+      "riskScore": 3,
+      "flagCounts": {
+        "PROCEDURE_NO_DOCS": 2,
+        "SUBCODE_AMBIGUOUS": 1
+      }
+    },
+    {
+      "statusCode": "E-10",
+      "statusName": "선원취업",
+      "riskScore": 3,
+      "flagCounts": {
+        "PROCEDURE_NO_DOCS": 2,
         "SUBCODE_AMBIGUOUS": 1
       }
     }
@@ -599,10 +593,9 @@
       "sourceVerified": false,
       "procedureCount": 2,
       "duplicateFeeBlocks": 0,
-      "riskScore": 3,
+      "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 1,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -632,8 +625,8 @@
           "statusName": "사증면제협정",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -642,12 +635,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -750,10 +739,9 @@
       "sourceVerified": false,
       "procedureCount": 2,
       "duplicateFeeBlocks": 0,
-      "riskScore": 3,
+      "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 1,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -783,8 +771,8 @@
           "statusName": "관광통과·무사증",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -793,12 +781,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -901,10 +885,9 @@
       "sourceVerified": false,
       "procedureCount": 2,
       "duplicateFeeBlocks": 0,
-      "riskScore": 2,
+      "riskScore": 1,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1
+        "PROCEDURE_NO_DOCS": 1
       },
       "recordFlags": [],
       "procedures": [
@@ -928,8 +911,8 @@
           "statusName": "일시취재",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -938,12 +921,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -1241,8 +1220,7 @@
       "duplicateFeeBlocks": 0,
       "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1
+        "PROCEDURE_NO_DOCS": 2
       },
       "recordFlags": [],
       "procedures": [
@@ -1266,8 +1244,8 @@
           "statusName": "단기취업",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -1276,12 +1254,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -1291,14 +1265,19 @@
           "procedureKey": "extension",
           "exists": true,
           "available": true,
-          "documentCount": 1,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
           "placeholderRowCount": 0,
           "diagnosticCount": 0,
           "sourceStatus": "source-backed",
-          "riskFlags": []
+          "riskFlags": [
+            {
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
+            }
+          ]
         },
         {
           "statusCode": "C-4",
@@ -1384,10 +1363,9 @@
       "sourceVerified": false,
       "procedureCount": 3,
       "duplicateFeeBlocks": 0,
-      "riskScore": 3,
+      "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 1,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -1417,8 +1395,8 @@
           "statusName": "문화예술",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -1427,12 +1405,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -1442,7 +1416,7 @@
           "procedureKey": "extension",
           "exists": true,
           "available": true,
-          "documentCount": 5,
+          "documentCount": 4,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -1871,10 +1845,9 @@
       "sourceVerified": false,
       "procedureCount": 2,
       "duplicateFeeBlocks": 0,
-      "riskScore": 3,
+      "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 1,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -1904,8 +1877,8 @@
           "statusName": "기술연수",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -1914,12 +1887,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -2451,10 +2420,9 @@
       "sourceVerified": false,
       "procedureCount": 2,
       "duplicateFeeBlocks": 0,
-      "riskScore": 2,
+      "riskScore": 1,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1
+        "PROCEDURE_NO_DOCS": 1
       },
       "recordFlags": [],
       "procedures": [
@@ -2478,8 +2446,8 @@
           "statusName": "취재",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -2488,12 +2456,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -2596,10 +2560,9 @@
       "sourceVerified": false,
       "procedureCount": 3,
       "duplicateFeeBlocks": 0,
-      "riskScore": 2,
+      "riskScore": 1,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1
+        "PROCEDURE_NO_DOCS": 1
       },
       "recordFlags": [],
       "procedures": [
@@ -2623,8 +2586,8 @@
           "statusName": "종교",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -2633,12 +2596,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -2741,10 +2700,9 @@
       "sourceVerified": false,
       "procedureCount": 3,
       "duplicateFeeBlocks": 0,
-      "riskScore": 3,
+      "riskScore": 2,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 1,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -2774,8 +2732,8 @@
           "statusName": "주재",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -2784,12 +2742,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -2892,11 +2846,9 @@
       "sourceVerified": false,
       "procedureCount": 4,
       "duplicateFeeBlocks": 0,
-      "riskScore": 4,
+      "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 1,
+        "PROCEDURE_NO_DOCS": 2,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -2926,8 +2878,8 @@
           "statusName": "기업투자",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -2936,12 +2888,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -3049,9 +2997,9 @@
       "sourceVerified": false,
       "procedureCount": 4,
       "duplicateFeeBlocks": 0,
-      "riskScore": 2,
+      "riskScore": 3,
       "flagCounts": {
-        "PROCEDURE_NO_DOCS": 1,
+        "PROCEDURE_NO_DOCS": 2,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -3082,14 +3030,19 @@
           "procedureKey": "registration",
           "exists": true,
           "available": true,
-          "documentCount": 1,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
           "placeholderRowCount": 0,
           "diagnosticCount": 0,
           "sourceStatus": "source-backed",
-          "riskFlags": []
+          "riskFlags": [
+            {
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
+            }
+          ]
         },
         {
           "statusCode": "D-9",
@@ -3342,8 +3295,7 @@
       "duplicateFeeBlocks": 0,
       "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
+        "PROCEDURE_NO_DOCS": 2,
         "SUBCODE_AMBIGUOUS": 1
       },
       "recordFlags": [
@@ -3373,8 +3325,8 @@
           "statusName": "선원취업",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -3383,12 +3335,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -3398,14 +3346,19 @@
           "procedureKey": "extension",
           "exists": true,
           "available": true,
-          "documentCount": 1,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
           "placeholderRowCount": 0,
           "diagnosticCount": 0,
           "sourceStatus": "source-backed",
-          "riskFlags": []
+          "riskFlags": [
+            {
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
+            }
+          ]
         },
         {
           "statusCode": "E-10",
@@ -3652,11 +3605,9 @@
       "sourceVerified": false,
       "procedureCount": 5,
       "duplicateFeeBlocks": 0,
-      "riskScore": 4,
+      "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
+        "PROCEDURE_NO_DOCS": 3
       },
       "recordFlags": [],
       "procedures": [
@@ -3680,8 +3631,8 @@
           "statusName": "연구",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -3690,12 +3641,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -3808,11 +3755,9 @@
       "sourceVerified": false,
       "procedureCount": 5,
       "duplicateFeeBlocks": 0,
-      "riskScore": 4,
+      "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
+        "PROCEDURE_NO_DOCS": 3
       },
       "recordFlags": [],
       "procedures": [
@@ -3836,8 +3781,8 @@
           "statusName": "기술지도",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -3846,12 +3791,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
@@ -3964,11 +3905,9 @@
       "sourceVerified": false,
       "procedureCount": 5,
       "duplicateFeeBlocks": 0,
-      "riskScore": 4,
+      "riskScore": 3,
       "flagCounts": {
-        "REGISTRATION_MISSING_APPLICATION_FORM": 1,
-        "RENDER_PATH_GAP": 1,
-        "PROCEDURE_NO_DOCS": 2
+        "PROCEDURE_NO_DOCS": 3
       },
       "recordFlags": [],
       "procedures": [
@@ -3992,8 +3931,8 @@
           "statusName": "전문직업",
           "procedureKey": "registration",
           "exists": true,
-          "available": false,
-          "documentCount": 1,
+          "available": true,
+          "documentCount": 0,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -4002,12 +3941,8 @@
           "sourceStatus": "source-backed",
           "riskFlags": [
             {
-              "id": "REGISTRATION_MISSING_APPLICATION_FORM",
-              "detail": "Source-backed registration tab does not mention 통합신청서/신청서."
-            },
-            {
-              "id": "RENDER_PATH_GAP",
-              "detail": "Source-confirmed docs exist but available=false, so the tab is filtered out of the UI."
+              "id": "PROCEDURE_NO_DOCS",
+              "detail": "Procedure is present/available but lists no documents."
             }
           ]
         },
