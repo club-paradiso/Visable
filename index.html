@@ -9889,9 +9889,9 @@ button[data-keyword]:focus-visible {
             <button type="button" class="p-cmd-close" data-action="close-cmd-palette" aria-label="검색 닫기"><span aria-hidden="true">✕</span><span class="p-cmd-close-label">닫기</span></button>
             <div class="sbar">
                 <svg class="sbar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
-                <input type="search" id="q" aria-label="비자 자격 및 키워드 검색" placeholder="데이터 로딩 중…" autocomplete="off" spellcheck="false" disabled>
+                <input type="search" id="q" data-testid="visa-search-input" aria-label="비자 자격 및 키워드 검색" placeholder="데이터 로딩 중…" autocomplete="off" spellcheck="false" disabled>
                 <button type="button" class="xb" id="xb" data-action="clear-search" aria-label="검색어 지우기">✕</button>
-                <button type="submit" class="sbar-go" aria-label="검색" disabled>
+                <button type="submit" class="sbar-go" data-testid="visa-search-submit" aria-label="검색" disabled>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </button>
             </div>
@@ -13409,7 +13409,7 @@ function renderProcedures(v, keywords) {
         </section>`;
     }
     const firstActive = procedures.find(p => p.available) || procedures[0];
-    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" ${p.available ? '' : 'disabled'}>${getProcedureLabel(p)}</button>`).join('');
+    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" data-testid="procedure-tab" data-procedure-key="${p.key}" ${p.available ? '' : 'disabled'}>${getProcedureLabel(p)}</button>`).join('');
     const panels = procedures.map(p => renderProcedurePanel(v, p, keywords, p.key === firstActive.key)).join('');
     return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('procedureSectionTitle'))}</h4><div class="procedure-tabs" role="tablist">${tabs}</div>${panels}</div>`;
 }
@@ -14481,8 +14481,9 @@ function renderResults(query){
     renderCompactResults(filtered, kw);
     const fg=document.createDocumentFragment();
     filtered.forEach((v,idx)=>{
-        const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
+        const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.dataset.testid = 'visa-result-card'; c.dataset.visaCode = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
         const isVisaCode = !['faq', 'scn', 'nhis'].includes(v.cat), subs=getVisaSubcodes(v), hs=subs.length>0;
+        if (subs.length) c.dataset.visaSubcode = subs.map(s => s.code).filter(Boolean).join(' ');
         let ms=[]; if(hs&&kw.length) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
         if(kw.length&&(v._score>=50||ms.length)) c.classList.add('open');
         const periodHtml = v.period ? `<span class="manual-badge">${hl(v.period,kw)}</span>` : '';
@@ -15987,6 +15988,20 @@ function toggleTheme(){
 function toggleAccordions(c){document.querySelectorAll('.vc,.su').forEach(el=>{if(c)el.classList.remove('open');else el.classList.add('open');});}
 
 function initUI(){
+    // Bootstrap from ?q= URL parameter — skip landing animation, go straight to results.
+    try {
+        const qParam = new URLSearchParams(window.location.search).get('q');
+        if (qParam && qEl) {
+            const normalized = isCodeLikeQuery(qParam) ? normalizeCodeLikeQuery(qParam) : qParam.trim();
+            if (normalized) {
+                qEl.value = normalized;
+                document.body.classList.remove('landing', 'launching', 'anagram-run', 'searching');
+                document.body.setAttribute('data-scene', 'searched');
+                document.body.classList.add('searched');
+                renderResults(normalized);
+            }
+        }
+    } catch (e) {}
     const lf=getLandingHintItems();
     const lc=document.getElementById('landingHints');
     if(lc) {
