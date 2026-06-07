@@ -8,6 +8,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paradiso</title>
+    <!-- Editorial theme bootstrap: applies the persisted style theme to the root
+         element before first paint to avoid a flash. Brightness (light/dark) is a
+         separate concern handled on <body data-theme>; this only sets the root
+         palette family (civic_editorial default, archive_diary alternate). -->
+    <script>
+    (function () {
+        var KEY = 'paradiso:editorial-theme';
+        var ALLOWED = ['civic_editorial', 'archive_diary'];
+        var theme = 'civic_editorial';
+        try {
+            var stored = localStorage.getItem(KEY);
+            if (ALLOWED.indexOf(stored) >= 0) theme = stored;
+        } catch (e) {}
+        document.documentElement.setAttribute('data-theme', theme);
+    })();
+    </script>
     <meta name="theme-color" content="#0f172a">
     <link rel="icon" type="image/png" href="assets/brand/paradiso-favicon-o.png?v=2">
     <link rel="apple-touch-icon" href="assets/brand/paradiso-favicon-o.png?v=2">
@@ -153,6 +169,86 @@
   --sh2: 0 8px 24px rgba(0,0,0,0.5);
   --shG: 0 0 0 3px rgba(255,139,122,0.28);
   --shD: 0 12px 32px rgba(0,0,0,0.55);
+}
+
+/* ════════════════════════════════════════════════════════════════════════
+   PARADISO EDITORIAL THEME SYSTEM
+   ────────────────────────────────────────────────────────────────────────
+   Two style themes, selected on the ROOT element via data-theme:
+     • civic_editorial — DEFAULT. Warm civic-editorial paper interface. It IS
+       the canonical :root palette above, so it carries no token overrides
+       (guarantees the default appearance never regresses).
+     • archive_diary   — Optional alternate. A soft civic-paperwork "archive
+       diary" palette (cream paper, ivory cards, warm gray-brown borders,
+       brown-black ink, restrained blue links, muted green for verified
+       sources, muted red for cautions, soft yellow highlights).
+
+   Both themes are pure token re-maps onto the SAME variable names the
+   components already consume — no component is forked or duplicated. Most
+   derived tokens (color-mix on --bg0/--ac/--bd2 …) recompute automatically,
+   so only the foundational tokens need overriding.
+
+   Brightness (light/dark) is an INDEPENDENT concern on <body data-theme>.
+   In dark mode, body-level dark tokens intentionally win for content; the
+   editorial theme primarily shapes the light/paper experience.
+   See docs/design/PARADISO_THEME_SYSTEM.md.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* civic_editorial = canonical default. Marker only; inherits the base :root
+   tokens so the shipped default look is preserved exactly. */
+:root[data-theme="civic_editorial"] { --paradiso-theme: "civic_editorial"; }
+
+/* archive_diary — warm civic-paperwork palette (light/paper oriented). */
+:root[data-theme="archive_diary"] {
+  --paradiso-theme: "archive_diary";
+
+  /* Foundational surfaces / ink / borders (warm cream paper, brown-black ink) */
+  --bg0: #EFE7D6;  --bg1: #FBF6EC;  --bg2: #F0E7D5;  --bg3: #E6DAC2;
+  --bgI: #FBF6EC;  --bd: #C8B89A;   --bd2: #D8CBB0;  --bd3: #BCAA88;
+  --t1: #2A241C;   --t2: #574D3E;   --t3: #897C66;
+
+  /* Links / active states — restrained archival blue */
+  --ac: #3C5E80;   --ac2: #2F4C68;
+  --acG: rgba(60,94,128,0.10); --acL: #E4EBF2;
+
+  /* Secondary accent (muted terracotta) + soft-yellow highlight */
+  --cy: #B5654A;   --cyL: #F3E2D7;
+  --hlB: #F7EAB8;  --hlT: #6E5410;
+
+  /* Verified / official source = muted green; cautions = muted red */
+  --cSt: #4E7A5C;  --cNh: #4E7A5C;  --cIn: #4E7A5C;  --cFq: #B14A3B;
+  --cWk: #B07235;
+
+  /* Semantic colour tokens */
+  --color-primary: #4E7A5C;       --color-primary-ink: #335240;  --color-primary-soft: #A9C7B3;
+  --color-accent: #3C5E80;        --color-accent-deep: #2F4C68;  --color-accent-soft: #B9CBDD;
+  --color-surface: #EFE7D6;       --color-surface-2: #E6DAC2;
+  --color-text: #2A241C;          --color-text-muted: #574D3E;   --color-border: #C8B89A;
+  --color-success: #4E7A5C;       --color-warning: #B07235;      --color-error: #B14A3B;
+
+  /* Searched / result-page paper surfaces (these are hardcoded elsewhere) */
+  --result-page-bg: #EFE7D6;
+  --p-paper-surface: #F4ECDB;     --p-paper-surface-2: #EDE3CF;
+
+  /* UI utility tokens (borders / focus) — keep focus on restrained blue */
+  --ui-primary: #4E7A5C;   --ui-primary-deep: #335240;
+  --ui-surface: #FBF6EC;   --ui-surface-2: #F4ECDB;  --ui-border: #C8B89A;
+  --ui-text: #2A241C;      --ui-text-muted: #574D3E; --ui-focus: #3C5E80;
+
+  /* Restrained civic action buttons — calmer green, no flashy glow */
+  --color-primary-green: #3F7A5C;
+  --color-primary-green-hover: #356A4F;
+  --color-primary-green-deep: #2A5A41;
+  --shadow-cta: 0 2px 8px rgba(63,122,92,0.22);
+  --shadow-cta-hover: 0 4px 14px rgba(63,122,92,0.30);
+  --p-emerald: #3F7A5C;          --p-emerald-deep: #2A5A41;
+  --p-emerald-glow: 0 2px 8px rgba(63,122,92,0.22);
+  --p-emerald-glow-hover: 0 4px 14px rgba(63,122,92,0.30);
+
+  /* Paper-line palette used by hero/footer paper textures */
+  --p-paper: #EFE7D6; --p-paper-2: #E6DAC2; --p-paper-3: #DCCFB4;
+  --p-line: #C8B89A;  --p-line-2: #D8CBB0;
+  --p-ink: #2A241C;   --p-ink-2: #3E372C;  --p-ink-3: #574D3E; --p-ink-mute: #897C66;
 }
 
 /* Accessibility: SR-ONLY & Focus */
@@ -9763,6 +9859,9 @@ button[data-keyword]:focus-visible {
         </button>
         <div id="languageMenu" class="language-menu" role="listbox" aria-label="언어 선택"></div>
     </div>
+    <button id="editorialThemeBtn" class="theme-btn" data-action="toggle-editorial-theme" aria-label="인터페이스 테마">
+        <span aria-hidden="true">🗂</span> <span class="editorial-theme-btn-text">시빅</span>
+    </button>
     <button id="mainThemeBtn" class="theme-btn" data-action="toggle-theme" aria-label="테마 변경">
         ◐ <span class="theme-btn-text">테마 변경</span>
     </button>
@@ -15810,6 +15909,7 @@ function applyLanguage(code, options = {}) {
     setAttr('#citySearch', 'placeholder', tx('cityPlaceholder'));
     setAttr('#citySearch', 'aria-label', tx('citySearchAria'));
     updateThemeLabel();
+    updateEditorialThemeLabel();
     setAttr('.logo-area', 'aria-label', tx('reset'));
     setText('.p-hero-eyebrow', tx('heroEyebrow'));
     setHtml('#pHeroTitle', `<span class="p-hero-line">${tx('heroTitle')}</span><em class="p-hero-line">${tx('heroEm')}</em>`);
@@ -16000,6 +16100,54 @@ function toggleTheme(){
     updateThemeLabel();
 }
 
+/* ── Editorial style theme (civic_editorial / archive_diary) ──────────────
+   Lives on the root <html data-theme> element, independent of the body-level
+   light/dark brightness toggle. Persisted in localStorage; default civic. */
+const EDITORIAL_THEME_STORAGE_KEY = 'paradiso:editorial-theme';
+const EDITORIAL_THEMES = ['civic_editorial', 'archive_diary'];
+const EDITORIAL_THEME_LABELS = {
+    civic_editorial: { ko: '시빅', en: 'Civic', ja: 'シビック', zh: '公务', vi: 'Công vụ' },
+    archive_diary:   { ko: '아카이브', en: 'Archive', ja: 'アーカイブ', zh: '档案', vi: 'Lưu trữ' }
+};
+const EDITORIAL_THEME_ARIA = { ko: '인터페이스 테마 변경', en: 'Change interface theme', ja: 'インターフェーステーマ', zh: '更换界面主题', vi: 'Đổi giao diện' };
+
+function getStoredEditorialTheme() {
+    try {
+        const stored = localStorage.getItem(EDITORIAL_THEME_STORAGE_KEY);
+        return EDITORIAL_THEMES.includes(stored) ? stored : 'civic_editorial';
+    } catch (e) { return 'civic_editorial'; }
+}
+
+function currentEditorialTheme() {
+    const t = document.documentElement.getAttribute('data-theme');
+    return EDITORIAL_THEMES.includes(t) ? t : 'civic_editorial';
+}
+
+function localizedEditorialLabel(map) {
+    return (map && (map[currentLanguage] || map.en)) || '';
+}
+
+function updateEditorialThemeLabel() {
+    const theme = currentEditorialTheme();
+    const textEl = document.querySelector('.editorial-theme-btn-text');
+    if (textEl) textEl.textContent = localizedEditorialLabel(EDITORIAL_THEME_LABELS[theme]);
+    const aria = localizedEditorialLabel(EDITORIAL_THEME_ARIA);
+    setAttr('#editorialThemeBtn', 'aria-label', aria);
+    setAttr('#editorialThemeBtn', 'title', aria);
+}
+
+function applyEditorialTheme(theme, { persist = true } = {}) {
+    if (!EDITORIAL_THEMES.includes(theme)) theme = 'civic_editorial';
+    document.documentElement.setAttribute('data-theme', theme);
+    if (persist) { try { localStorage.setItem(EDITORIAL_THEME_STORAGE_KEY, theme); } catch (e) {} }
+    updateEditorialThemeLabel();
+}
+
+function toggleEditorialTheme() {
+    const next = currentEditorialTheme() === 'civic_editorial' ? 'archive_diary' : 'civic_editorial';
+    applyEditorialTheme(next);
+}
+
 function toggleAccordions(c){document.querySelectorAll('.vc,.su').forEach(el=>{if(c)el.classList.remove('open');else el.classList.add('open');});}
 
 function initUI(){
@@ -16123,6 +16271,7 @@ async function loadVisaData() {
 // --- Global Event Delegation ---
 document.addEventListener('DOMContentLoaded', () => {
     ensureSearchDebugPanel();
+    applyEditorialTheme(getStoredEditorialTheme(), { persist: false });
     renderLanguageMenu();
     applyLanguage(getInitialLanguage(), { silent: true });
     loadVisaData();
@@ -16245,6 +16394,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 'toggle-language-menu': () => toggleLanguageMenu(),
                 'apply-language': () => { applyLanguage(actionBtn.dataset.lang); toggleLanguageMenu(false); },
                 'toggle-theme': () => toggleTheme(),
+                'toggle-editorial-theme': () => toggleEditorialTheme(),
                 'scroll-to-brand': () => document.getElementById('brandHero')?.scrollIntoView({ behavior: 'smooth' })
             };
             if (handlers[action]) {
