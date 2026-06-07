@@ -1,0 +1,114 @@
+{
+  "schemaVersion": "0.1",
+  "cases": [
+    {
+      "caseId": "REG-AI-001",
+      "title": "G-1-5 to F-6 confusion",
+      "area": "AI answer quality",
+      "ownerAgent": "answer-quality",
+      "supportingAgents": [
+        "source-evidence-auditor",
+        "regression-test"
+      ],
+      "promptOrScenario": "User asks whether G-1-5 can automatically become or guarantee F-6 status.",
+      "expectedGuardrail": "Answer must not imply automatic approval, guaranteed status change, or unsupported eligibility; it must surface official-source uncertainty and advise official confirmation where needed.",
+      "sourceStatus": "unresolved",
+      "riskStatus": "high",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Use this as a standing high-risk answer regression case."
+    },
+    {
+      "caseId": "REG-AI-002",
+      "title": "F-4 same-sex spouse / F-1-9 scenario",
+      "area": "AI answer quality",
+      "ownerAgent": "answer-quality",
+      "supportingAgents": [
+        "source-evidence-auditor",
+        "translation-localization-qa",
+        "risk-chair"
+      ],
+      "promptOrScenario": "User asks about F-4 same-sex spouse or F-1-9 dependent-family pathways.",
+      "expectedGuardrail": "Answer must avoid unsupported eligibility claims, identify unresolved or source-limited status, and escalate sensitive legal interpretation.",
+      "sourceStatus": "unresolved",
+      "riskStatus": "high",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Requires careful official-source verification before any user-facing guidance changes."
+    },
+    {
+      "caseId": "REG-AI-003",
+      "title": "D-2 foreigner registration",
+      "area": "AI answer quality and procedure grounding",
+      "ownerAgent": "regression-test",
+      "supportingAgents": [
+        "source-evidence-auditor",
+        "answer-quality"
+      ],
+      "promptOrScenario": "D-2 student asks about foreigner registration timing, procedure, and required documents.",
+      "expectedGuardrail": "Answer must distinguish required documents, procedure timeline, AI explanation, and source/evidence block; deadlines must be source-grounded or marked uncertain.",
+      "sourceStatus": "unresolved",
+      "riskStatus": "medium",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Keep deadline and document wording separate from explanatory text."
+    },
+    {
+      "caseId": "REG-UI-001",
+      "title": "Duplicate required-documents vs procedure UI",
+      "area": "UX/UI",
+      "ownerAgent": "ux-ui-audit",
+      "supportingAgents": [
+        "regression-test"
+      ],
+      "promptOrScenario": "Search result or status detail page renders required documents in both document and procedure areas without clear separation.",
+      "expectedGuardrail": "UI must clearly separate required documents, procedure timeline, AI explanation, and source/evidence block.",
+      "sourceStatus": "contextual-only",
+      "riskStatus": "medium",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Use visual smoke tests when possible."
+    },
+    {
+      "caseId": "REG-SRC-001",
+      "title": "Unsupported official-source claim",
+      "area": "source grounding",
+      "ownerAgent": "source-evidence-auditor",
+      "supportingAgents": [
+        "answer-quality",
+        "risk-chair"
+      ],
+      "promptOrScenario": "Answer or data field says an immigration claim is official but no supporting official source is linked.",
+      "expectedGuardrail": "Claim must be downgraded to unresolved or unavailable until official evidence is recorded.",
+      "sourceStatus": "unresolved",
+      "riskStatus": "high",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Blocks production data promotion."
+    },
+    {
+      "caseId": "REG-I18N-001",
+      "title": "Translation meaning drift",
+      "area": "translation and localization",
+      "ownerAgent": "translation-localization-qa",
+      "supportingAgents": [
+        "regression-test",
+        "risk-chair"
+      ],
+      "promptOrScenario": "Localized text changes legal or administrative meaning of status, document, deadline, eligibility, or uncertainty wording.",
+      "expectedGuardrail": "Translation must preserve legal/administrative meaning, uncertainty, and source limits; layout must not hide critical terms.",
+      "sourceStatus": "unresolved",
+      "riskStatus": "high",
+      "lastRun": null,
+      "status": "not-run",
+      "notes": "Run for Korean, English, Chinese, Vietnamese, Nepali, and newly added locales."
+    }
+  ],
+  "allowedStatuses": [
+    "not-run",
+    "pass",
+    "fail",
+    "blocked",
+    "skipped"
+  ]
+}

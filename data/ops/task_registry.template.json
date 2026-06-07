@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "0.1",
+  "tasks": [
+    {
+      "taskId": "TASK-YYYYMMDD-001",
+      "title": "Short task title",
+      "status": "proposed",
+      "ownerAgent": "ops-orchestrator",
+      "supportingAgents": [],
+      "priority": "P2",
+      "sourceStatus": "unresolved",
+      "riskStatus": "not-reviewed",
+      "reportPath": null,
+      "issueUrl": null,
+      "prUrl": null,
+      "nextAction": "Define the next durable GitHub writeback."
+    }
+  ],
+  "allowedStatuses": [
+    "proposed",
+    "triaged",
+    "in-progress",
+    "blocked",
+    "ready-for-review",
+    "complete",
+    "closed-no-action"
+  ],
+  "allowedPriorities": [
+    "P0",
+    "P1",
+    "P2",
+    "P3"
+  ],
+  "allowedSourceStatuses": [
+    "source-confirmed",
+    "contextual-only",
+    "unavailable",
+    "unresolved"
+  ],
+  "allowedRiskStatuses": [
+    "not-reviewed",
+    "low",
+    "medium",
+    "high",
+    "blocked",
+    "go",
+    "go-with-warning",
+    "no-go"
+  ]
+}

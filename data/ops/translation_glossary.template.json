@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "0.1",
+  "terms": [
+    {
+      "termId": "TERM-001",
+      "koreanTerm": "체류자격",
+      "englishTerm": "status of stay",
+      "chineseTerm": "滞留资格",
+      "vietnameseTerm": "tư cách lưu trú",
+      "nepaliTerm": "बसोबास स्थिति",
+      "notes": "Administrative immigration status term. Locale terms are glossary candidates and require native/legal QA before production use.",
+      "forbiddenTranslations": [
+        "tourist visa",
+        "citizenship status",
+        "guaranteed visa"
+      ]
+    },
+    {
+      "termId": "TERM-002",
+      "koreanTerm": "외국인등록",
+      "englishTerm": "foreigner registration",
+      "chineseTerm": "外国人登记",
+      "vietnameseTerm": "đăng ký người nước ngoài",
+      "nepaliTerm": "विदेशी दर्ता",
+      "notes": "Use consistently for the Korean administrative registration process, not as a generic account signup.",
+      "forbiddenTranslations": [
+        "sign up",
+        "membership registration"
+      ]
+    },
+    {
+      "termId": "TERM-003",
+      "koreanTerm": "구비서류",
+      "englishTerm": "required documents",
+      "chineseTerm": "所需材料",
+      "vietnameseTerm": "giấy tờ cần chuẩn bị",
+      "nepaliTerm": "आवश्यक कागजात",
+      "notes": "Keep separate from procedure steps and AI explanation in UI.",
+      "forbiddenTranslations": [
+        "optional documents",
+        "recommended files"
+      ]
+    },
+    {
+      "termId": "TERM-004",
+      "koreanTerm": "체류기간 연장허가",
+      "englishTerm": "permission to extend period of stay",
+      "chineseTerm": "延长滞留期限许可",
+      "vietnameseTerm": "cho phép gia hạn thời gian lưu trú",
+      "nepaliTerm": "बसोबास अवधि विस्तार अनुमति",
+      "notes": "Do not shorten to a guaranteed extension. Preserve permission/approval meaning.",
+      "forbiddenTranslations": [
+        "automatic extension",
+        "extension guaranteed"
+      ]
+    },
+    {
+      "termId": "TERM-005",
+      "koreanTerm": "체류자격 변경허가",
+      "englishTerm": "permission to change status of stay",
+      "chineseTerm": "变更滞留资格许可",
+      "vietnameseTerm": "cho phép thay đổi tư cách lưu trú",
+      "nepaliTerm": "बसोबास स्थिति परिवर्तन अनुमति",
+      "notes": "Must preserve that approval is discretionary and source-dependent.",
+      "forbiddenTranslations": [
+        "automatic status change",
+        "guaranteed conversion"
+      ]
+    }
+  ]
+}

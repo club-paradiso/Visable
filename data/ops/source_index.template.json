@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "0.1",
+  "sources": [
+    {
+      "sourceId": "SRC-YYYYMMDD-001",
+      "sourceType": "HiKorea notice | immigration manual | statute | enforcement decree | enforcement rule | official notice | other official source",
+      "title": "Official source title",
+      "url": null,
+      "localPath": null,
+      "checkedAt": null,
+      "checkedBy": "source-evidence-auditor",
+      "status": "unresolved",
+      "notes": "Record whether the source confirms, contextualizes, or fails to support the claim."
+    }
+  ],
+  "allowedStatuses": [
+    "source-confirmed",
+    "contextual-only",
+    "unavailable",
+    "unresolved"
+  ]
+}
