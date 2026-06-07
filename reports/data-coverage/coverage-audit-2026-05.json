@@ -1,0 +1,104 @@
+{
+  "_comment": "NON-PRODUCTION audit helper. Not imported by the app or backend. Generated for the 2026-05/06 manual-backed coverage audit. Source of truth for the human-readable audit is docs/data/DATA_COVERAGE_AUDIT_2026_05_MANUALS.md.",
+  "generatedAt": "2026-06-07",
+  "manualsInspected": [
+    {
+      "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "type": "체류민원 안내매뉴얼 (stay)",
+      "version": "2026.5 (2026-06-01 build)",
+      "pages": 777,
+      "usedForAudit": true,
+      "pageMappingVerified": "printed page N == PDF page N (footer '- N -' confirmed on sampled pages)"
+    },
+    {
+      "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+      "type": "사증발급 안내매뉴얼 (visa)",
+      "version": "2026.5",
+      "usedForAudit": false,
+      "note": "Issuance-side; not the source for the stay-side registration gaps audited here."
+    }
+  ],
+  "verdicts": {
+    "source-confirmed-scenario-specific": "manual provides a direct, status-specific list",
+    "source-missing": "no status-specific section found in the code's manual chapter",
+    "policy-limited": "issuance suspended / coverage constrained by policy"
+  },
+  "coverage": [
+    {
+      "code": "E-10",
+      "procedure": "registration",
+      "before": "empty (준비 중)",
+      "verdict": "source-confirmed-scenario-specific",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "page": "pp. 338-339",
+      "section": "외국인등록 / 1. 외국인등록 신청서류",
+      "action": "FILLED",
+      "severity": "P1"
+    },
+    {
+      "code": "D-8",
+      "procedure": "registration",
+      "before": "empty (준비 중)",
+      "verdict": "source-confirmed-scenario-specific",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "page": "p. 126",
+      "section": "외국인등록 / 1. 외국인등록 신청서류",
+      "action": "FILLED",
+      "severity": "P1"
+    },
+    {
+      "code": "H-1",
+      "procedure": "registration",
+      "before": "empty (준비 중)",
+      "verdict": "source-confirmed-scenario-specific",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "page": "p. 517",
+      "section": "외국인등록 / 제출서류 (90일 초과 체류자 대상, 협정상 예외 없음)",
+      "action": "FILLED",
+      "evidenceNote": "H-1-specific section (travel-itinerary / working-holiday wording), not a borrowed list.",
+      "severity": "P1"
+    },
+    {
+      "code": "D-10",
+      "procedure": "registration",
+      "before": "empty (준비 중)",
+      "verdict": "source-missing",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "page": "chapter pp. 142-165 scanned; no 외국인등록 제출서류 subsection",
+      "action": "DO-NOT-FILL",
+      "severity": "P2"
+    },
+    {
+      "code": "F-2",
+      "procedure": "registration",
+      "verdict": "source-missing",
+      "page": "chapter pp. 360-420 scanned; no parent 외국인등록 제출서류 subsection (sub-code dependent)",
+      "action": "DO-NOT-FILL",
+      "severity": "P2"
+    },
+    {
+      "code": "G-1",
+      "procedure": "registration",
+      "verdict": "source-missing",
+      "page": "chapter pp. 498-513 scanned; no parent 외국인등록 제출서류 subsection",
+      "action": "DO-NOT-FILL",
+      "severity": "P2"
+    },
+    {
+      "code": "H-2",
+      "procedure": "registration",
+      "verdict": "policy-limited",
+      "note": "신규발급 중단; stay-manual H-2 coverage is appendix-based (별첨 3, footer renumbered). No clean main-chapter 외국인등록 list.",
+      "action": "DO-NOT-FILL",
+      "severity": "P2"
+    },
+    {
+      "code": "B-1",
+      "procedure": "registration",
+      "verdict": "source-missing",
+      "note": "사증면제; 90일 초과 등록은 예외적. No status-specific 외국인등록 list in chapter p. 24.",
+      "action": "DO-NOT-FILL",
+      "severity": "P3"
+    }
+  ]
+}
