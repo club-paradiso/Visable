@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "0.1",
+  "risks": [
+    {
+      "riskId": "RISK-001",
+      "riskArea": "source grounding",
+      "severity": "high",
+      "likelihood": "medium",
+      "description": "A user-facing immigration claim is presented without source-confirmed official evidence.",
+      "mitigation": "Require Source Evidence Auditor review and downgrade unsupported claims to unresolved or unavailable.",
+      "ownerAgent": "source-evidence-auditor",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-002",
+      "riskArea": "production data",
+      "severity": "high",
+      "likelihood": "low",
+      "description": "Production visa/status data is edited without all required gates and human approval.",
+      "mitigation": "Enforce Source Evidence Auditor approval, Data Update Planner plan, Regression & Test pass, Risk Chair GO, and human approval.",
+      "ownerAgent": "risk-chair",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-003",
+      "riskArea": "answer quality",
+      "severity": "high",
+      "likelihood": "medium",
+      "description": "AI answer overstates eligibility, approval likelihood, or automatic status change.",
+      "mitigation": "Run Answer Quality review and maintain regression cases for overconfident claims.",
+      "ownerAgent": "answer-quality",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-004",
+      "riskArea": "UX confusion",
+      "severity": "medium",
+      "likelihood": "medium",
+      "description": "UI blurs required documents, procedure timeline, AI explanation, and source/evidence block.",
+      "mitigation": "Require UX/UI Audit review and UI smoke tests for affected flows.",
+      "ownerAgent": "ux-ui-audit",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-005",
+      "riskArea": "translation",
+      "severity": "high",
+      "likelihood": "medium",
+      "description": "Localized text changes legal or administrative meaning or hides uncertainty.",
+      "mitigation": "Require Translation & Localization QA review and glossary regression cases.",
+      "ownerAgent": "translation-localization-qa",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-006",
+      "riskArea": "regression",
+      "severity": "medium",
+      "likelihood": "medium",
+      "description": "Known source, answer, search, UI, or translation regressions are not re-run before release.",
+      "mitigation": "Require Regression & Test report before Risk Chair final review.",
+      "ownerAgent": "regression-test",
+      "status": "open"
+    },
+    {
+      "riskId": "RISK-007",
+      "riskArea": "memory",
+      "severity": "medium",
+      "likelihood": "medium",
+      "description": "Operational decisions or unresolved issues remain only in Slack and are forgotten.",
+      "mitigation": "Require GitHub Issue, PR, report, or file writeback for every important task state and decision.",
+      "ownerAgent": "ops-orchestrator",
+      "status": "open"
+    }
+  ],
+  "allowedSeverities": [
+    "low",
+    "medium",
+    "high",
+    "critical"
+  ],
+  "allowedLikelihoods": [
+    "low",
+    "medium",
+    "high"
+  ],
+  "allowedStatuses": [
+    "open",
+    "monitoring",
+    "mitigated",
+    "closed"
+  ]
+}

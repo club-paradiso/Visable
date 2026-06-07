@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "0.1",
+  "lastUpdated": null,
+  "agents": {
+    "ops-orchestrator": {
+      "name": "Ops Orchestrator Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "source-evidence-auditor": {
+      "name": "Source Evidence Auditor Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "immigration-news-monitor": {
+      "name": "Immigration News Monitor Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "data-update-planner": {
+      "name": "Data Update Planner Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "answer-quality": {
+      "name": "Answer Quality Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "ux-ui-audit": {
+      "name": "UX/UI Audit Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "product-priority": {
+      "name": "Product Priority Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "translation-localization-qa": {
+      "name": "Translation & Localization QA Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "regression-test": {
+      "name": "Regression & Test Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    },
+    "risk-chair": {
+      "name": "Risk Chair Agent",
+      "lastRun": null,
+      "openIssues": [],
+      "blockedItems": [],
+      "currentFocus": null,
+      "lastReportPath": null
+    }
+  }
+}

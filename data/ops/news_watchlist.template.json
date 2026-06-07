@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "watchlist": [
+    {
+      "watchId": "NEWS-001",
+      "sourceName": "HiKorea notices",
+      "sourceType": "official notice",
+      "url": "https://www.hikorea.go.kr/",
+      "ownerAgent": "immigration-news-monitor",
+      "freshnessSchedule": "Check every business day during Phase 1; escalate relevant changes within 1 business day.",
+      "lastChecked": null,
+      "status": "unresolved",
+      "notes": "Use the current official HiKorea notice path when the monitor is implemented. News is a change signal only."
+    },
+    {
+      "watchId": "NEWS-002",
+      "sourceName": "Ministry of Justice immigration notices",
+      "sourceType": "official notice",
+      "url": "https://www.immigration.go.kr/",
+      "ownerAgent": "immigration-news-monitor",
+      "freshnessSchedule": "Check every business day during Phase 1; escalate relevant changes within 1 business day.",
+      "lastChecked": null,
+      "status": "unresolved",
+      "notes": "Treat notices as source candidates until Source Evidence Auditor verifies affected claims."
+    },
+    {
+      "watchId": "NEWS-003",
+      "sourceName": "Immigration manual update checks",
+      "sourceType": "official manual",
+      "url": null,
+      "ownerAgent": "immigration-news-monitor",
+      "freshnessSchedule": "Check weekly and whenever a related official notice mentions manual changes.",
+      "lastChecked": null,
+      "status": "unresolved",
+      "notes": "Record manual version/date, local snapshot path, and affected sections before routing to Source Evidence Auditor."
+    },
+    {
+      "watchId": "NEWS-004",
+      "sourceName": "Law amendment checks",
+      "sourceType": "law and regulation",
+      "url": "https://www.law.go.kr/",
+      "ownerAgent": "immigration-news-monitor",
+      "freshnessSchedule": "Check weekly for relevant statute, enforcement decree, and enforcement rule amendments.",
+      "lastChecked": null,
+      "status": "unresolved",
+      "notes": "Use law changes as signals; legal interpretation or data changes require Source Evidence Auditor and Risk Chair review."
+    }
+  ],
+  "allowedStatuses": [
+    "source-confirmed",
+    "contextual-only",
+    "unavailable",
+    "unresolved"
+  ]
+}
