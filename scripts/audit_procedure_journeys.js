@@ -291,8 +291,11 @@ function auditProcedure(record, procKey, ctx) {
       addFlag('ISSUANCE_MIXED_DOMESTIC', `Visa-issuance document list references domestic-stay procedures: ${mixed.join(', ')}`);
     }
   }
-  // 8. registration lacks application form where source-backed data suggests it
-  if (procKey === 'registration' && exists && sourceStatus !== 'none') {
+  // 8. registration lacks application form where source-backed data suggests
+  // it should exist. Only meaningful when the registration actually lists
+  // documents — a doc-less source-limited registration is already covered by
+  // PROCEDURE_NO_DOCS, so we don't double-flag it here.
+  if (procKey === 'registration' && exists && docs.length > 0 && sourceStatus !== 'none') {
     const hasForm = APPLICATION_FORM_TERMS.some((t) => joined.includes(t));
     if (!hasForm) {
       addFlag('REGISTRATION_MISSING_APPLICATION_FORM', 'Source-backed registration tab does not mention 통합신청서/신청서.');
