@@ -281,11 +281,14 @@ function auditProcedure(record, procKey, ctx) {
   if (diagnosticHits.length > 0) {
     addFlag('RAW_DIAGNOSTIC', `Raw diagnostic token(s) in data: ${diagnosticHits.join(', ')}`);
   }
-  // 7. visa issuance mixed with domestic stay procedure
+  // 7. visa issuance mixed with domestic stay procedure. We scan the actual
+  // document rows (not summary/notes prose) so that a legitimate contrast
+  // sentence — e.g. "이 절차는 외국인등록과 별개입니다" — is not mis-flagged.
   if (procKey === 'visaIssuance' && exists) {
-    const mixed = DOMESTIC_STAY_TERMS.filter((t) => joined.includes(t));
+    const docsText = docs.join('\n');
+    const mixed = DOMESTIC_STAY_TERMS.filter((t) => docsText.includes(t));
     if (mixed.length > 0) {
-      addFlag('ISSUANCE_MIXED_DOMESTIC', `Visa-issuance tab references domestic-stay procedures: ${mixed.join(', ')}`);
+      addFlag('ISSUANCE_MIXED_DOMESTIC', `Visa-issuance document list references domestic-stay procedures: ${mixed.join(', ')}`);
     }
   }
   // 8. registration lacks application form where source-backed data suggests it

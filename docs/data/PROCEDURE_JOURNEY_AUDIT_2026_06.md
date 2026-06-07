@@ -9,7 +9,7 @@
 | --- | --- |
 | Status records audited | 41 |
 | Procedures present | 146 |
-| Documents counted | 362 |
+| Documents counted | 367 |
 | Total risk flags | 154 |
 
 ### Risk flag breakdown
@@ -83,8 +83,8 @@
 | D-10 | 구직 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | D-10 | 구직 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | D-2 | 유학 | visaIssuance | 4 | 1 | Y | 0 | 0 | needs-review | GENERIC_MISSING_NOTICE |
-| D-2 | 유학 | registration | 7 | 1 | Y | 0 | 0 | source-backed | - |
-| D-2 | 유학 | extension | 5 | 1 | Y | 0 | 0 | source-backed | - |
+| D-2 | 유학 | registration | 9 | 1 | Y | 0 | 0 | source-backed | - |
+| D-2 | 유학 | extension | 8 | 1 | Y | 0 | 0 | source-backed | - |
 | D-2 | 유학 | statusChange | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-2 | 유학 | activitiesOutsideStatus | 0 | 1 | - | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-2 | 유학 | workplaceChange | 0 | 1 | - | 0 | 0 | source-backed | PROCEDURE_NO_DOCS, NO_NEXT_ACTION_HINT |
