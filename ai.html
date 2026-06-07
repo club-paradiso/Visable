@@ -2598,16 +2598,17 @@ select:focus-visible {
                     throw apiError;
                 }
 
-                useQuota();
-
                 const loader = document.getElementById(lid);
                 if (loader) loader.remove();
 
                 // Rendering the answer is isolated so a frontend render exception
                 // is reported as a render error — never mislabeled as a network /
                 // communication error (the original errorType ReferenceError class).
+                // useQuota is placed after appendAiAnswer so that a render crash
+                // does not silently consume a quota slot (quota-safety guarantee).
                 try {
                     appendAiAnswer(result || {}, userLang);
+                    useQuota();
                 } catch (renderErr) {
                     const wrapped = new Error('frontend render error');
                     wrapped.renderError = true;
