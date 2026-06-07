@@ -6361,24 +6361,36 @@
         "available": true,
         "summary": "[입국 후 · 국내 체류절차] 기업투자(D-8) 자격으로 입국하여 90일을 초과해 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
         "requiredDocs": {
-          "commonDocs": [],
-          "requiredDocs": [],
+          "commonDocs": [
+            "신청서(별지 제34호 서식)",
+            "여권 원본",
+            "doc_standard_photo_one",
+            "doc_fee_generic"
+          ],
+          "requiredDocs": [
+            "사업자등록증",
+            "체류지 입증서류(부동산 임대차계약서 등)"
+          ],
           "additionalDocs": [],
-          "conditionalDocs": []
+          "conditionalDocs": [
+            "법인 등기사항전부증명서(법인기업인 경우)"
+          ]
         },
         "notes": [
           "다음 단계: ① HiKorea(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 HiKorea·1345 또는 관할 출입국·외국인관서에서 확인.",
-          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다."
+          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다.",
+          "외국인등록 제출서류는 2026.5 체류민원 매뉴얼 p. 126 '외국인등록 신청서류' 항목에서 직접 정리했습니다. 재외공관에서 기업투자(D-8) 자격을 직접 받아 입국한 경우에는 체류자격 변경신청 제출서류를 준용하며, 세부 사항은 관할 출입국·외국인관서에서 최종 확인이 필요합니다."
         ],
         "manualRefs": [
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 115-129",
-            "confidence": "needs_manual_review",
+            "pageRange": "p. 126",
+            "confidence": "manual_page_extract_needs_review",
             "needsManualReview": true,
             "sourceDate": "2026-06-01",
-            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+            "section": "외국인등록 신청서류"
           }
         ]
       },
@@ -6598,7 +6610,11 @@
       "updatedAt": "2026-05-07",
       "sourceDate": "2026-06-01",
       "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
+      "registrationDocsPage": "p. 126",
+      "registrationDocsSection": "외국인등록 신청서류",
+      "registrationDocsMethod": "pdf_text_manual_page_verified",
+      "registrationDocsUpdatedAt": "2026-06-07"
     },
     "documents_initial": [
       {
@@ -12101,24 +12117,37 @@
         "available": true,
         "summary": "[입국 후 · 국내 체류절차] 선원취업(E-10) 자격으로 입국하여 90일을 초과해 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
         "requiredDocs": {
-          "commonDocs": [],
-          "requiredDocs": [],
+          "commonDocs": [
+            "신청서(별지 제34호 서식)",
+            "여권 원본",
+            "doc_standard_photo_one",
+            "doc_fee_generic"
+          ],
+          "requiredDocs": [
+            "내항여객운송사업면허증 또는 내항화물운송등록증",
+            "건강검진서(밀봉된 상태로 제출, 개봉 불가)",
+            "마약검사 확인서(밀봉된 상태로 제출, 개봉 불가)",
+            "산업재해보상보험 또는 상해보험 가입증명원",
+            "doc_residence_proof_generic"
+          ],
           "additionalDocs": [],
           "conditionalDocs": []
         },
         "notes": [
           "다음 단계: ① HiKorea(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 HiKorea·1345 또는 관할 출입국·외국인관서에서 확인.",
-          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다."
+          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다.",
+          "외국인등록 제출서류는 2026.5 체류민원 매뉴얼 pp. 338-339 '외국인등록 신청서류' 항목에서 직접 정리했습니다. 일부 서류는 선종(내항·어선·순항)·근무처 형태에 따라 달라질 수 있어 관할 출입국·외국인관서에서 최종 확인이 필요합니다."
         ],
         "manualRefs": [
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 336-340",
-            "confidence": "needs_manual_review",
+            "pageRange": "pp. 338-339",
+            "confidence": "manual_page_extract_needs_review",
             "needsManualReview": true,
             "sourceDate": "2026-06-01",
-            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+            "section": "외국인등록 신청서류"
           }
         ]
       }
@@ -12145,7 +12174,11 @@
       "updatedAt": "2026-05-07",
       "sourceDate": "2026-06-01",
       "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
+      "registrationDocsPage": "pp. 338-339",
+      "registrationDocsSection": "외국인등록 신청서류",
+      "registrationDocsMethod": "pdf_text_manual_page_verified",
+      "registrationDocsUpdatedAt": "2026-06-07"
     },
     "documents_initial": [
       {
@@ -17076,25 +17109,37 @@
         "available": true,
         "summary": "[입국 후 · 국내 체류절차] 관광취업(H-1) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
         "requiredDocs": {
-          "commonDocs": [],
-          "requiredDocs": [],
+          "commonDocs": [
+            "신청서(별지 제34호 서식)",
+            "doc_passport_generic",
+            "doc_standard_photo_one",
+            "doc_fee_generic"
+          ],
+          "requiredDocs": [
+            "여행일정 및 활동계획서",
+            "체류지 입증서류(월세계약서 등)"
+          ],
           "additionalDocs": [],
-          "conditionalDocs": []
+          "conditionalDocs": [
+            "근무처의 사업자등록증 사본 및 계약서 등(취업 중인 경우)"
+          ]
         },
         "notes": [
           "외국인등록 절차는 취업 범위·근로조건 안내와 별개입니다. 근무 가능 범위는 관광취업(H-1) 사증·협정 조건을 따로 확인하세요.",
           "다음 단계: ① HiKorea(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 HiKorea·1345 또는 관할 출입국·외국인관서에서 확인.",
-          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다."
+          "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·HiKorea에서 최종 확인이 필요합니다.",
+          "외국인등록 제출서류는 2026.5 체류민원 매뉴얼 p. 517 관광취업(H-1) '외국인등록 / 제출서류' 항목(90일 초과 체류자 대상, 협정상 예외 없음)에서 직접 정리했습니다(타 자격에서 빌려온 목록이 아님). 세부 사항은 관할 출입국·외국인관서에서 최종 확인이 필요합니다."
         ],
         "manualRefs": [
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "pp. 514-517",
-            "confidence": "needs_manual_review",
+            "pageRange": "p. 517",
+            "confidence": "manual_page_extract_needs_review",
             "needsManualReview": true,
             "sourceDate": "2026-06-01",
-            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+            "section": "외국인등록 제출서류"
           }
         ]
       },
@@ -17152,7 +17197,11 @@
       "updatedAt": "2026-05-07",
       "sourceDate": "2026-06-01",
       "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
+      "registrationDocsPage": "p. 517",
+      "registrationDocsSection": "외국인등록 제출서류",
+      "registrationDocsMethod": "pdf_text_manual_page_verified",
+      "registrationDocsUpdatedAt": "2026-06-07"
     },
     "documents_initial": [
       {
