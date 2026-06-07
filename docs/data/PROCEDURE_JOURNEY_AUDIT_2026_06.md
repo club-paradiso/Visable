@@ -9,8 +9,8 @@
 | --- | --- |
 | Status records audited | 41 |
 | Procedures present | 146 |
-| Documents counted | 342 |
-| Total risk flags | 148 |
+| Documents counted | 324 |
+| Total risk flags | 137 |
 
 ### Risk flag breakdown
 
@@ -18,9 +18,9 @@
 | --- | --- |
 | GENERIC_MISSING_NOTICE | 4 |
 | NO_NEXT_ACTION_HINT | 11 |
-| PROCEDURE_NO_DOCS | 68 |
-| REGISTRATION_MISSING_APPLICATION_FORM | 18 |
-| RENDER_PATH_GAP | 19 |
+| PROCEDURE_NO_DOCS | 85 |
+| REGISTRATION_MISSING_APPLICATION_FORM | 4 |
+| RENDER_PATH_GAP | 5 |
 | SUBCODE_AMBIGUOUS | 28 |
 
 ## 2. Top high-risk statuses
@@ -35,13 +35,13 @@
 | E-2 | 회화지도 | 5 | PROCEDURE_NO_DOCS:4, SUBCODE_AMBIGUOUS:1 |
 | E-6 | 예술흥행 | 5 | PROCEDURE_NO_DOCS:4, SUBCODE_AMBIGUOUS:1 |
 | F-1 | 방문동거 | 5 | PROCEDURE_NO_DOCS:4, SUBCODE_AMBIGUOUS:1 |
-| D-8 | 기업투자 | 4 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:1, PROCEDURE_NO_DOCS:1, SUBCODE_AMBIGUOUS:1 |
-| E-3 | 연구 | 4 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:1, PROCEDURE_NO_DOCS:2 |
-| E-4 | 기술지도 | 4 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:1, PROCEDURE_NO_DOCS:2 |
-| E-5 | 전문직업 | 4 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:1, PROCEDURE_NO_DOCS:2 |
 | F-2 | 거주 | 4 | PROCEDURE_NO_DOCS:3, SUBCODE_AMBIGUOUS:1 |
 | REGION-S | 지역특화·광역형 비자 시범사업 | 4 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:2, SUBCODE_AMBIGUOUS:1 |
-| B-1 | 사증면제협정 | 3 | REGISTRATION_MISSING_APPLICATION_FORM:1, RENDER_PATH_GAP:1, SUBCODE_AMBIGUOUS:1 |
+| D-10 | 구직 | 3 | PROCEDURE_NO_DOCS:2, SUBCODE_AMBIGUOUS:1 |
+| D-4 | 일반연수 | 3 | PROCEDURE_NO_DOCS:2, SUBCODE_AMBIGUOUS:1 |
+| D-8 | 기업투자 | 3 | PROCEDURE_NO_DOCS:2, SUBCODE_AMBIGUOUS:1 |
+| D-9 | 무역경영 | 3 | PROCEDURE_NO_DOCS:2, SUBCODE_AMBIGUOUS:1 |
+| E-10 | 선원취업 | 3 | PROCEDURE_NO_DOCS:2, SUBCODE_AMBIGUOUS:1 |
 
 ## 3. Per-status procedure matrix
 
@@ -53,13 +53,13 @@
 | A-2 | 공무 | extension | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | A-3 | 협정 | registration | 2 | 1 | Y | 0 | 0 | source-backed | - |
 | A-3 | 협정 | extension | 1 | 1 | Y | 0 | 0 | source-backed | - |
-| B-1 | 사증면제협정 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| B-1 | 사증면제협정 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | B-1 | 사증면제협정 | extension | 2 | 1 | Y | 0 | 0 | source-backed | - |
 | B-1 | 사증면제협정 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| B-2 | 관광통과·무사증 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| B-2 | 관광통과·무사증 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | B-2 | 관광통과·무사증 | extension | 2 | 1 | Y | 0 | 0 | source-backed | - |
 | B-2 | 관광통과·무사증 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| C-1 | 일시취재 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| C-1 | 일시취재 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | C-1 | 일시취재 | extension | 2 | 1 | Y | 0 | 0 | source-backed | - |
 | C-3 | 단기방문 | visaIssuance | 8 | 1 | Y | 0 | 0 | needs-review | GENERIC_MISSING_NOTICE |
 | C-3 | 단기방문 | registration | 6 | 1 | Y | 0 | 0 | source-backed | - |
@@ -71,10 +71,10 @@
 | C-3 | 단기방문 | reentry | 0 | 1 | - | 0 | 0 | source-backed | PROCEDURE_NO_DOCS, NO_NEXT_ACTION_HINT |
 | C-3 | 단기방문 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | C-3 | 단기방문 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| C-4 | 단기취업 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
-| C-4 | 단기취업 | extension | 1 | 1 | Y | 0 | 0 | source-backed | - |
-| D-1 | 문화예술 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
-| D-1 | 문화예술 | extension | 5 | 1 | Y | 0 | 0 | source-backed | - |
+| C-4 | 단기취업 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
+| C-4 | 단기취업 | extension | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
+| D-1 | 문화예술 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
+| D-1 | 문화예술 | extension | 4 | 1 | Y | 0 | 0 | source-backed | - |
 | D-1 | 문화예술 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
 | D-1 | 문화예술 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | D-10 | 구직 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
@@ -91,7 +91,7 @@
 | D-2 | 유학 | reentry | 0 | 1 | - | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-2 | 유학 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | D-2 | 유학 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| D-3 | 기술연수 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| D-3 | 기술연수 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-3 | 기술연수 | extension | 12 | 1 | Y | 0 | 0 | source-backed | - |
 | D-3 | 기술연수 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | D-4 | 일반연수 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
@@ -103,21 +103,21 @@
 | D-4-1 | 한국어연수 (대학부설어학원) | extension | 6 | 1 | Y | 0 | 0 | source-backed | - |
 | D-4-2K | 기업맞춤형인턴십(K-Trainee) | registration | 3 | 1 | Y | 0 | 0 | source-backed | - |
 | D-4-2K | 기업맞춤형인턴십(K-Trainee) | extension | 3 | 1 | Y | 0 | 0 | source-backed | - |
-| D-5 | 취재 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| D-5 | 취재 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-5 | 취재 | extension | 3 | 1 | Y | 0 | 0 | source-backed | - |
-| D-6 | 종교 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| D-6 | 종교 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-6 | 종교 | extension | 3 | 1 | Y | 0 | 0 | source-backed | - |
 | D-6 | 종교 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
-| D-7 | 주재 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| D-7 | 주재 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-7 | 주재 | extension | 12 | 1 | Y | 0 | 0 | source-backed | - |
 | D-7 | 주재 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
 | D-7 | 주재 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| D-8 | 기업투자 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| D-8 | 기업투자 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-8 | 기업투자 | extension | 12 | 1 | Y | 0 | 0 | source-backed | - |
 | D-8 | 기업투자 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | D-8 | 기업투자 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
 | D-8 | 기업투자 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| D-9 | 무역경영 | registration | 1 | 1 | Y | 0 | 0 | source-backed | - |
+| D-9 | 무역경영 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | D-9 | 무역경영 | extension | 12 | 1 | Y | 0 | 0 | source-backed | - |
 | D-9 | 무역경영 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | D-9 | 무역경영 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
@@ -125,8 +125,8 @@
 | E-1 | 교수 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-1 | 교수 | extension | 6 | 1 | Y | 0 | 0 | source-backed | - |
 | E-1 | 교수 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
-| E-10 | 선원취업 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
-| E-10 | 선원취업 | extension | 1 | 1 | Y | 0 | 0 | source-backed | - |
+| E-10 | 선원취업 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
+| E-10 | 선원취업 | extension | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-10 | 선원취업 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
 | E-2 | 회화지도 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-2 | 회화지도 | extension | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
@@ -134,17 +134,17 @@
 | E-2 | 회화지도 | workplaceChange | 0 | 0 | - | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-2 | 회화지도 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
 | E-2 | 회화지도 | (record) | - | - | - | - | - | - | SUBCODE_AMBIGUOUS |
-| E-3 | 연구 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| E-3 | 연구 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-3 | 연구 | extension | 6 | 1 | Y | 0 | 0 | source-backed | - |
 | E-3 | 연구 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-3 | 연구 | workplaceChange | 0 | 0 | - | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-3 | 연구 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
-| E-4 | 기술지도 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| E-4 | 기술지도 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-4 | 기술지도 | extension | 5 | 1 | Y | 0 | 0 | source-backed | - |
 | E-4 | 기술지도 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-4 | 기술지도 | workplaceChange | 0 | 0 | - | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-4 | 기술지도 | reentry | 5 | 1 | - | 0 | 0 | source-backed | - |
-| E-5 | 전문직업 | registration | 1 | 1 | Y | 0 | 0 | source-backed | REGISTRATION_MISSING_APPLICATION_FORM, RENDER_PATH_GAP |
+| E-5 | 전문직업 | registration | 0 | 1 | Y | 0 | 0 | source-backed | PROCEDURE_NO_DOCS |
 | E-5 | 전문직업 | extension | 7 | 1 | Y | 0 | 0 | source-backed | - |
 | E-5 | 전문직업 | statusChange | 0 | 0 | Y | 0 | 0 | none | PROCEDURE_NO_DOCS |
 | E-5 | 전문직업 | workplaceChange | 0 | 0 | - | 0 | 0 | none | PROCEDURE_NO_DOCS |
