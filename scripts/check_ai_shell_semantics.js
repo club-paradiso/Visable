@@ -332,6 +332,95 @@ if (renderPanel) {
   }
 }
 
+// ===========================================================================
+// Part H: quota-safety ordering, date rendering, form reload, diagnostic-key
+// leakage. Added for fix/ai-rendering-quota-safety.
+// ===========================================================================
+
+// --- H-1: useQuota must be called AFTER appendAiAnswer in sendAi ------------
+const sendAiSrc = extractFunction('sendAi');
+check(Boolean(sendAiSrc), 'could not extract sendAi() from ai.html');
+if (sendAiSrc) {
+  const body = bodyOf(sendAiSrc);
+  const appendPos = body.indexOf('appendAiAnswer(');
+  const quotaPos  = body.indexOf('useQuota();');
+  check(appendPos >= 0, 'sendAi() does not call appendAiAnswer()');
+  check(quotaPos  >= 0, 'sendAi() does not call useQuota()');
+  check(quotaPos > appendPos,
+        'quota-safety: sendAi() must call useQuota() AFTER appendAiAnswer() — quota must not be consumed before visible render');
+}
+
+// --- H-2: formatAnswerText preserves D-2 / E-7 date strings verbatim -------
+{
+  let formatText = null;
+  try {
+    const docStub2 = {
+      createElement: function () {
+        let _t = '';
+        return {
+          set textContent(v) { _t = v == null ? '' : String(v); },
+          get innerHTML() { return _t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+        };
+      }
+    };
+    let code2 = '';
+    for (const n of ['escapeHtml', 'inlineFormat', 't', 'formatAnswerText']) {
+      const f = extractFunction(n);
+      if (!f) throw new Error('missing dep ' + n);
+      code2 += f + '\n';
+    }
+    code2 += 'return formatAnswerText;';
+    // eslint-disable-next-line no-eval
+    formatText = eval('(function(document){' + code2 + '})')(docStub2);
+  } catch (e) {
+    check(false, 'could not assemble formatAnswerText harness: ' + e.message);
+  }
+  if (formatText) {
+    const d2Html = formatText('D-2 비자 등록 마감일은 2026-05-28입니다.', 'ko');
+    check(d2Html.indexOf('2026-05-28') !== -1,
+          'formatAnswerText must preserve D-2 date 2026-05-28 verbatim');
+    const e7Html = formatText('E-7 registration deadline: 2026-05-30.', 'en');
+    check(e7Html.indexOf('2026-05-30') !== -1,
+          'formatAnswerText must preserve E-7 date 2026-05-30 verbatim');
+  }
+}
+
+// --- H-3: send button must be type="button" and Enter handler must call
+//          e.preventDefault() — prevent accidental form-reload on submit. ----
+check(/type="button"[^>]*id="sendBtn"|id="sendBtn"[^>]*type="button"/.test(src),
+      'sendBtn must have type="button" to prevent accidental form submission / page reload');
+check(/e\.preventDefault\(\)[\s\S]{0,120}sendAi\(\)/.test(src),
+      'Enter-key handler must call e.preventDefault() before sendAi() to block form submit');
+
+// --- H-4: raw diagnostic keys must NOT appear in user-facing panel HTML -----
+// In the node harness devDiagnosticsEnabled is always false (window/localStorage/
+// location are all undefined), so the <details> block is suppressed. None of
+// the raw internal status codes should appear verbatim in the rendered rows.
+if (renderPanel) {
+  const diagMeta = {
+    law_grounding_attempted: true,
+    law_grounding_used: false,
+    grounding_used: false,
+    law_grounding_warnings: ['LAW_API_BAD_RESPONSE'],
+    source_family_statuses: { statute: 'bad_response', enforcement_rule: 'not_attempted' },
+    parser_status: 'bad_response',
+    answer_quality_mode: 'source_limited',
+  };
+  for (const lang of ['ko', 'en']) {
+    let panelHtml = '';
+    try {
+      panelHtml = renderPanel(diagMeta, lang);
+    } catch (e) {
+      check(false, 'renderPanel threw for diagnostic-key leak test (lang=' + lang + '): ' + e.message);
+      continue;
+    }
+    for (const rawKey of ['bad_response', 'not_attempted', 'source_family_statuses', 'law_grounding_warnings']) {
+      check(panelHtml.indexOf(rawKey) === -1,
+            'raw diagnostic key "' + rawKey + '" must not appear in user-facing panel HTML (lang=' + lang + ')');
+    }
+  }
+}
+
 if (failures.length) {
   console.error('[check_ai_shell_semantics] FAIL:');
   for (const f of failures) console.error('  - ' + f);
