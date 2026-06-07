@@ -13,7 +13,7 @@
       "statusGrant",
       "reentry"
     ],
-    "totalDocuments": 362,
+    "totalDocuments": 367,
     "totalRiskFlags": 154,
     "riskFlagBreakdown": {
       "REGISTRATION_MISSING_APPLICATION_FORM": 31,
@@ -1726,7 +1726,7 @@
           "riskFlags": [
             {
               "id": "GENERIC_MISSING_NOTICE",
-              "detail": "Generic notice(s) without concrete source: 매뉴얼 확인 필요"
+              "detail": "Generic notice(s) without concrete source: 매뉴얼 확인 필요, 확인이 필요"
             }
           ]
         },
@@ -1736,7 +1736,7 @@
           "procedureKey": "registration",
           "exists": true,
           "available": true,
-          "documentCount": 7,
+          "documentCount": 9,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
@@ -1751,7 +1751,7 @@
           "procedureKey": "extension",
           "exists": true,
           "available": true,
-          "documentCount": 5,
+          "documentCount": 8,
           "sourceRefCount": 1,
           "feePresent": true,
           "duplicateDocCount": 0,
