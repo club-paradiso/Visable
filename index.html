@@ -9818,6 +9818,70 @@ button[data-keyword]:focus-visible {
   line-height: 1.5;
 }
 
+/* ════════════════════════════════════════════════════════════════════════
+   UI CONTAINMENT — layout stability across desktop / tablet / mobile.
+   Fixes sticky-control overlap, over-dense scenario/document grids, oversized
+   manual-excerpt cards, and the floating AI CTA covering content. Token-based
+   and theme-agnostic (applies to both civic_editorial and archive_diary); no
+   component is duplicated per theme. Placed last so it wins on source order.
+   ════════════════════════════════════════════════════════════════════════ */
+
+/* 1 · Scenario (procedure-variant) cards are document-heavy — never pack them
+       into 3–4 narrow columns. Desktop: max 2; tablet & mobile: 1. The simple
+       sub-code chip grid (.manual-subcode-grid without --docs) is unaffected. */
+.manual-subcode-grid--docs { grid-template-columns: 1fr; }
+@media (min-width: 1025px) {
+  .manual-subcode-grid--docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.manual-subcode-grid--docs > .manual-subcode-card { min-width: 0; max-width: 100%; }
+
+/* 2 · Required-document checklist — cap at 2 columns (was up to 3 on tablet),
+       lighten the per-item chrome so long lists stay scannable, and let a long
+       manual excerpt span the whole row instead of forming an oversized card. */
+@media (min-width: 640px) {
+  .manual-result .doc-checklist { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+.manual-result .doc-chk-item { box-shadow: none; padding: 8px 12px; align-items: flex-start; }
+.manual-result .doc-chk-item > span { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+.manual-result .doc-chk-item--block {
+  grid-column: 1 / -1;
+  font-weight: 600;
+  background: var(--bg0);
+  font-size: 0.8rem;
+  line-height: 1.55;
+}
+
+/* 3 · Top locale/theme controls must not float over scrolling content on
+       tablet/mobile. On the searched view they scroll with the page (absolute)
+       instead of permanently covering procedure tabs / section headers. The
+       sticky search header already provides the persistent top bar. */
+@media (max-width: 1024px) {
+  body.searched #topCtrls { position: absolute; }
+}
+
+/* 4 · Floating AI CTA — compact and safe-area-docked on tablet/mobile, and the
+       result column reserves bottom space so the last card / caution / source
+       block is never trapped beneath it. Copy is unchanged. */
+@media (max-width: 1024px) {
+  .ai-fab {
+    bottom: calc(0.9rem + env(safe-area-inset-bottom, 0px));
+    right: calc(0.9rem + env(safe-area-inset-right, 0px));
+    padding: 0.55rem 0.9rem;
+    font-size: 0.8rem;
+    min-height: 42px;
+    max-width: calc(100vw - 1.8rem);
+  }
+  /* Reserve bottom space so the last card / caution / source block is never
+     trapped beneath the docked CTA (copy and existing mobile full-width
+     treatment are left unchanged). */
+  body.searched .results-area { padding-bottom: 5.5rem; }
+}
+
+/* 5 · Long Korean text never forces horizontal overflow inside result cards. */
+.manual-result .manual-subcode-card,
+.manual-result .doc-group,
+.manual-result .procedure-summary { min-width: 0; overflow-wrap: anywhere; }
+
 </style>
 <script>
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
@@ -12575,8 +12639,11 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         let officialName = DOC_DICT[key] || (typeof key === 'string' && key.startsWith('doc_') ? `문서요건(${key.replace('doc_','').replace(/_/g,' ')})` : key);
         const isCritical = ['doc_health', 'doc_crim', 'doc_tb'].includes(key);
         const criticalClass = isCritical ? ' critical' : '';
+        // Long manual excerpts shouldn't become an oversized card squeezed into
+        // one grid cell — flag them so CSS can let them span the full row.
+        const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
-        return `<div class="doc-chk-item${criticalClass}">${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
+        return `<div class="doc-chk-item${criticalClass}${blockClass}">${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
     }).join('');
     const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docGroupLabels', 2, '추가/심사 필요 서류'))}</div>` : '';
     return `<div class="doc-req-box" style="margin-top:0; padding:0; border:none; background:transparent;">${warningHtml}<div class="doc-checklist">${tagsHtml}</div></div>`;
@@ -13225,7 +13292,7 @@ function renderProcedureVariants(v, proc, keywords) {
     return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
         <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>
         ${choicesHtml}
-        <div class="manual-subcode-grid">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant)).join('')}</div>
+        <div class="manual-subcode-grid manual-subcode-grid--docs">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant)).join('')}</div>
     </div>`;
 }
 
