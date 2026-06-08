@@ -1,0 +1,112 @@
+{
+  "formId": "immigration_integrated_application_form",
+  "nameKo": "통합신청서(신고서)",
+  "nameEn": "Application Form (Report Form)",
+  "legalBasis": "출입국관리법 시행규칙 별지 제34호서식",
+  "legalBasisEn": "Attached Form No. 34 of the Enforcement Rule of the Immigration Act",
+  "revisionDate": "2022-04-12",
+  "issuingAuthority": "법무부 출입국·외국인정책본부",
+  "issuingAuthorityEn": "Korea Immigration Service, Ministry of Justice",
+  "officialPortal": "https://www.hikorea.go.kr",
+  "hotline": "1345",
+  "toolPage": "form-helper.html",
+  "toolPhase": "MVP Phase 1",
+  "toolVersion": "1.0.0",
+  "privacyNote": "This helper tool stores all input in browser memory only. No personal data is transmitted to or logged by Paradiso servers.",
+  "disclaimer": "This tool is a drafting aid only. It does not constitute legal advice, does not guarantee permit approval, and does not submit any application on the user's behalf.",
+  "applicationTypes": [
+    {
+      "id": "foreign_registration",
+      "formCheckboxKo": "외국인 등록",
+      "formCheckboxEn": "Foreign resident registration",
+      "needsPhoto": true,
+      "needsRefundAccount": true
+    },
+    {
+      "id": "activity_outside_status",
+      "formCheckboxKo": "체류자격외 활동허가",
+      "formCheckboxEn": "Engage in activities not covered by the status of sojourn",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "card_reissuance",
+      "formCheckboxKo": "등록증 재발급",
+      "formCheckboxEn": "Reissuance of registration card",
+      "needsPhoto": true,
+      "needsRefundAccount": true
+    },
+    {
+      "id": "workplace_change",
+      "formCheckboxKo": "근무처 변경ㆍ추가허가 / 신고",
+      "formCheckboxEn": "Change or addition of workplace (permit / report)",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "sojourn_extension",
+      "formCheckboxKo": "체류기간 연장허가",
+      "formCheckboxEn": "Extension of sojourn period",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "reentry_permit",
+      "formCheckboxKo": "재입국허가",
+      "formCheckboxEn": "Reentry permit",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "status_change",
+      "formCheckboxKo": "체류자격 변경허가",
+      "formCheckboxEn": "Change of status of sojourn",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "address_change",
+      "formCheckboxKo": "체류지 변경신고",
+      "formCheckboxEn": "Alteration of residence",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "status_granting",
+      "formCheckboxKo": "체류자격 부여",
+      "formCheckboxEn": "Granting status of sojourn",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    },
+    {
+      "id": "registration_change",
+      "formCheckboxKo": "등록사항 변경신고",
+      "formCheckboxEn": "Change of information on registration",
+      "needsPhoto": false,
+      "needsRefundAccount": false
+    }
+  ],
+  "conditionalNotes": {
+    "photoRequired": "사진은 외국인 등록 및 등록증 재발급 신청 시에만 필요합니다. Photo is required only for foreign resident registration and registration card reissuance.",
+    "refundAccountRequired": "반환용 계좌번호는 외국인 등록 및 등록증 재발급 신청 시에만 기재합니다. Refund bank account number is only for foreign resident registration and card reissuance.",
+    "photoSpec": "최근 6개월 이내 촬영, 3.5×4.5cm, 흰 배경, 모자 미착용. Taken within last 6 months, 3.5×4.5cm, white background, no hat.",
+    "signatureNote": "서명 또는 인감은 신청인이 신청서 제출 시 직접 기재합니다. Signature or seal is applied by the applicant at the time of submission."
+  },
+  "outOfScope": [
+    "Automatic HiKorea submission",
+    "Login automation",
+    "Server-side storage of completed forms",
+    "Digital signature collection",
+    "Official PDF coordinate filling",
+    "Payment or revenue stamp handling",
+    "Final legal eligibility determination"
+  ],
+  "phase2Ideas": [
+    "PDF fill/export",
+    "Full multilingual mode (beyond KO/EN)",
+    "Procedure-specific document checklist integration",
+    "HiKorea reservation preparation mode",
+    "Saved local draft with explicit opt-in encryption",
+    "Direct link from AI answer to prefilled form helper"
+  ]
+}
