@@ -1410,17 +1410,101 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .subcode-view-btn { margin-left: auto; flex: none; text-decoration: none; font-size: 0.72rem; font-weight: 900; color: #fff; background: var(--ac); border-radius: 7px; padding: 0.32rem 0.62rem; white-space: nowrap; }
 .subcode-view-btn:hover, .subcode-view-btn:focus-visible { filter: brightness(1.07); }
 .manual-subcode-card.match { scroll-margin-top: 90px; }
-.procedure-variant-list { display: grid; gap: 0.72rem; }
-.scenario-selector-heading { margin: 0; color: var(--t1); font-size: 0.9rem; font-weight: 900; }
-.scenario-selector-copy { margin: 0.3rem 0 0; color: var(--t2); font-size: 0.78rem; line-height: 1.6; word-break: keep-all; }
-.scenario-choice-list { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-.scenario-choice { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 0.2rem; min-height: 38px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 8px; padding: 0.48rem 0.62rem; font: inherit; cursor: pointer; text-align: left; transition: var(--btn-tr); }
-.scenario-choice:hover, .scenario-choice:focus-visible { border-color: var(--ac); background: var(--acL); color: var(--t1); }
-.scenario-choice:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 1px; }
-.scenario-choice[aria-pressed="true"] { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 11%, var(--bg1)); color: var(--t1); box-shadow: inset 3px 0 0 var(--ac); }
-.scenario-choice[aria-pressed="true"]::before { content: var(--lang-scenario-selected-choice, "✓ 선택됨"); color: var(--ac); font-size: 0.67rem; font-weight: 900; }
-.scenario-choice-main { display: inline-flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem; font-size: 0.78rem; font-weight: 850; }
-.scenario-choice-preview { max-width: 32rem; color: var(--t3); font-size: 0.7rem; line-height: 1.45; }
+.procedure-variant-list {
+  display: grid;
+  gap: 1rem;
+  margin: 0.95rem 0 0.85rem;
+  padding: 1rem;
+  border: 1px solid color-mix(in srgb, var(--ac) 18%, var(--bd2));
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--bg1) 88%, white);
+}
+
+.scenario-selector-heading {
+  margin: 0;
+  color: var(--t1);
+  font-size: 0.98rem;
+  font-weight: 950;
+  letter-spacing: -0.01em;
+}
+
+.scenario-selector-copy {
+  margin: 0.35rem 0 0;
+  color: var(--t2);
+  font-size: 0.82rem;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.scenario-choice-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  gap: 0.55rem;
+}
+
+.scenario-choice {
+  width: 100%;
+  min-height: 72px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.28rem;
+  border: 1px solid var(--bd2);
+  background: color-mix(in srgb, var(--bg1) 96%, white);
+  color: var(--t2);
+  border-radius: 12px;
+  padding: 0.78rem 0.9rem;
+  font: inherit;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.scenario-choice:hover,
+.scenario-choice:focus-visible {
+  border-color: color-mix(in srgb, var(--ac) 48%, var(--bd2));
+  background: color-mix(in srgb, var(--ac) 7%, var(--bg1));
+  color: var(--t1);
+  transform: translateY(-1px);
+}
+
+.scenario-choice[aria-pressed="true"] {
+  border-color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 12%, var(--bg1));
+  color: var(--t1);
+  box-shadow: inset 4px 0 0 var(--ac);
+}
+
+.scenario-choice[aria-pressed="true"]::before {
+  content: var(--lang-scenario-selected-choice, "✓ 선택됨");
+  color: var(--ac);
+  font-size: 0.68rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.scenario-choice-main {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.86rem;
+  font-weight: 900;
+  line-height: 1.35;
+  word-break: keep-all;
+}
+
+.scenario-choice-preview {
+  max-width: 100%;
+  color: var(--t3);
+  font-size: 0.76rem;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 .official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
 .manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
@@ -13531,6 +13615,10 @@ function paradisoDedupeDocGroupsForRender20260609(groups) {
    common/required/additional/conditional groups so D-2 does not repeat the same
    checklist item as multiple authoritative rows. */
 function canonicalDocDedupeKey(doc) {
+    if (typeof paradisoCanonicalDocKey20260609 === 'function') {
+        return paradisoCanonicalDocKey20260609(doc);
+    }
+
     return String(doc || '')
         .normalize('NFKC')
         .replace(/\s+/g, '')
@@ -13736,9 +13824,10 @@ function renderProcedureHeader(v, proc) {
     </div>`;
 }
 
-function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selectedByDefault = false) {
-    const docsHtml = renderProcedureDocGroups(variant.docs, keywords);
-    const docCount = flattenDocGroups(variant.docs).length;
+function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selectedByDefault = false, parentDocs = null) {
+    const effectiveDocs = parentDocs ? mergeDocGroups(parentDocs, variant.docs) : variant.docs;
+    const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords);
+    const docCount = flattenDocGroups(effectiveDocs).length;
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
     const scenario = variant.scenario ? `<div class="manual-subcode-desc">${escapeHtml(variant.scenario)}</div>` : '';
     const notes = variant.notes.length ? `<div class="manual-subcode-desc">${variant.notes.map(escapeHtml).join('<br>')}</div>` : '';
@@ -13767,7 +13856,7 @@ function renderProcedureVariantChoice(procedureKey, variant) {
     </button>`;
 }
 
-function renderProcedureVariants(v, proc, keywords) {
+function renderProcedureVariants(v, proc, keywords, parentDocs = null) {
     if (!proc.variants.length) return '';
     const title = tx('scenarioSelectorTitle');
     const notice = tx('scenarioSelectorCopy');
@@ -13780,7 +13869,7 @@ function renderProcedureVariants(v, proc, keywords) {
     return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
         <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>
         ${choicesHtml}
-        <div class="manual-subcode-grid manual-subcode-grid--docs">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant)).join('')}</div>
+        <div class="manual-subcode-grid manual-subcode-grid--docs">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant, parentDocs)).join('')}</div>
     </div>`;
 }
 
@@ -14048,9 +14137,10 @@ function resetScenarioChecklist(button) {
 }
 
 function renderProcedurePanel(v, proc, keywords, isActive) {
+    const hasVariants = !!(proc.variants && proc.variants.length);
     const totalDocCount = proc.docs.commonDocs.length + proc.docs.requiredDocs.length + proc.docs.additionalDocs.length + proc.docs.conditionalDocs.length;
     const docsHtml = renderProcedureDocGroups(proc.docs, keywords);
-    const variantsHtml = renderProcedureVariants(v, proc, keywords);
+    const variantsHtml = renderProcedureVariants(v, proc, keywords, proc.docs);
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
     const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
@@ -14064,7 +14154,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         ${feeHtml}
         ${countHtml}
         ${officialDocumentNamesNote}
-        ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>` : ''}
+        ${docsHtml && !hasVariants ? `<div class="doc-group-grid">${docsHtml}</div>` : ''}
         ${variantsHtml || (!docsHtml ? reviewFallback : '')}
     </div>`;
 }
