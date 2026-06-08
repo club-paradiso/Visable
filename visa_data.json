@@ -4205,6 +4205,809 @@
     }
   },
   {
+    "code": "D-2",
+    "name": "유학",
+    "cat": "study",
+    "period": "2년, 연장가능",
+    "newReq": "표준입학허가서, 최종학력(아포스티유), 재정입증, 결핵진단서(고위험국).",
+    "newReqDocs": [
+      "doc_enroll",
+      "doc_degree",
+      "doc_finance",
+      "doc_tb"
+    ],
+    "extReq": "체류기간 연장허가 가. 기본원칙학사일정을 고려한 체류기간 부여❍ 유학 자격(D 1~D 4, D 7) - 외국인등록: 다음년도 3월말 또는 9월말로 조정 후 등록증 발급 - 변경․연장 시: 2년 이내에서 3월말 또는 9월말까지 허가❍ 연구유학 자격(D 5) - 연구유학생은 2년을 초과하여 체류할 수 없음(1회 부여할 수 있는 체류기간 상한: 1년)❍ 교환학생(D 6) 및 방문학생(D 8) 자격 - (외국인등록 및 변경·연장) 해당 과정 종료일로부터 1개월 범위 내에서 1월 말, 7월말로 조정하여 허가가사, 졸업연기 등을 위한 휴학 불인정❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단(휴학)자는 체류기간 연장 제한 ❍ 다만, 질병․사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치유학활동 종료자 등 체류기간 연장 특례 상한 - (전문학사) 입학 후 최대 3년(단, 3년제 전문학사의 경우 최대 4년) - (학사) 입학 후 최대 6년(단, 5년제 학사의 경우 최대 7년) - (석",
+    "extReqDocs": [
+      "doc_app_form",
+      "doc_passport",
+      "doc_id",
+      "doc_fee",
+      "doc_enroll",
+      "doc_prof_conf",
+      "doc_transcript",
+      "doc_attend",
+      "doc_finance",
+      "doc_address",
+      "doc_bank_bal"
+    ],
+    "faq": "Q: 아르바이트?\nA: 시간제취업 활동허가 필수. D-2-1~D-2-4, D-2-6, D-2-7 대상. D-4-1, D-4-7, D-2-8은 변경일(또는 입국일)로부터 6개월 경과 후.\nQ: 구직 변경?\nA: D-10 가능.\nQ: 학교 변경?\nA: 동급 학위과정 내 허용(TOPIK 3급↑ 필요). 제적자·하위과정 이동·비자심사강화대학 등은 제한.\nQ: 체류 상한?\nA: 전문학사 3년, 학사 6년, 석사 5년, 박사 8년(입학 후 기준).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+    "subCodes": [
+      {
+        "code": "D-2-1",
+        "name": "전문학사유학",
+        "addReq": "전문대 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 3년(3년제는 4년)."
+      },
+      {
+        "code": "D-2-2",
+        "name": "학사유학",
+        "addReq": "4년제 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "가장 일반적. 체류 상한: 입학 후 6년."
+      },
+      {
+        "code": "D-2-3",
+        "name": "석사유학",
+        "addReq": "석사 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 5년(3년제는 6년)."
+      },
+      {
+        "code": "D-2-4",
+        "name": "박사유학",
+        "addReq": "박사 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 8년(2년제는 7년)."
+      },
+      {
+        "code": "D-2-5",
+        "name": "연구유학",
+        "addReq": "연구과정 증명.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "1회 부여 상한 1년. 총 2년 초과 불가."
+      },
+      {
+        "code": "D-2-6",
+        "name": "교환학생",
+        "addReq": "교환 협정서, 본교 재학증명.",
+        "addReqDocs": [
+          "doc_purpose",
+          "doc_enroll"
+        ],
+        "note": "과정 종료일+1개월 범위 내 1월말/7월말 조정."
+      },
+      {
+        "code": "D-2-7",
+        "name": "일-학습연계 유학",
+        "addReq": "일-학습연계 프로그램 입증.",
+        "addReqDocs": [
+          "doc_purpose"
+        ],
+        "note": ""
+      },
+      {
+        "code": "D-2-8",
+        "name": "방문학생",
+        "addReq": "방문학생 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "과정 종료일+1개월 범위. 시간제취업은 입국 6개월 경과 후."
+      }
+    ],
+    "initialReqDocs": [
+      "doc_enroll",
+      "doc_degree",
+      "doc_finance",
+      "doc_tb"
+    ],
+    "extensionReqDocs": [
+      "doc_app_form",
+      "doc_passport",
+      "doc_id",
+      "doc_fee",
+      "doc_enroll",
+      "doc_prof_conf",
+      "doc_transcript",
+      "doc_attend",
+      "doc_finance",
+      "doc_address",
+      "doc_bank_bal"
+    ],
+    "changeReqDocs": [],
+    "nameKo": "유학",
+    "nameEn": "Study Abroad",
+    "manualDomains": [
+      "visa_issuance",
+      "stay_sojourn"
+    ],
+    "activityScope": "표준입학허가서, 최종학력(아포스티유), 재정입증, 결핵진단서(고위험국).",
+    "stayPeriodCap": "2년, 연장가능",
+    "subcodes": [
+      {
+        "code": "D-2-1",
+        "name": "전문학사유학",
+        "addReq": "전문대 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 3년(3년제는 4년).",
+        "nameKo": "전문학사유학",
+        "summary": "체류 상한: 입학 후 3년(3년제는 4년).",
+        "eligibility": [
+          "전문대 입학허가서."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-2",
+        "name": "학사유학",
+        "addReq": "4년제 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "가장 일반적. 체류 상한: 입학 후 6년.",
+        "nameKo": "학사유학",
+        "summary": "가장 일반적. 체류 상한: 입학 후 6년.",
+        "eligibility": [
+          "4년제 입학허가서."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-3",
+        "name": "석사유학",
+        "addReq": "석사 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 5년(3년제는 6년).",
+        "nameKo": "석사유학",
+        "summary": "체류 상한: 입학 후 5년(3년제는 6년).",
+        "eligibility": [
+          "석사 입학허가서."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-4",
+        "name": "박사유학",
+        "addReq": "박사 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "체류 상한: 입학 후 8년(2년제는 7년).",
+        "nameKo": "박사유학",
+        "summary": "체류 상한: 입학 후 8년(2년제는 7년).",
+        "eligibility": [
+          "박사 입학허가서."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-5",
+        "name": "연구유학",
+        "addReq": "연구과정 증명.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "1회 부여 상한 1년. 총 2년 초과 불가.",
+        "nameKo": "연구유학",
+        "summary": "1회 부여 상한 1년. 총 2년 초과 불가.",
+        "eligibility": [
+          "연구과정 증명."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-6",
+        "name": "교환학생",
+        "addReq": "교환 협정서, 본교 재학증명.",
+        "addReqDocs": [
+          "doc_purpose",
+          "doc_enroll"
+        ],
+        "note": "과정 종료일+1개월 범위 내 1월말/7월말 조정.",
+        "nameKo": "교환학생",
+        "summary": "과정 종료일+1개월 범위 내 1월말/7월말 조정.",
+        "eligibility": [
+          "교환 협정서, 본교 재학증명."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-7",
+        "name": "일-학습연계 유학",
+        "addReq": "일-학습연계 프로그램 입증.",
+        "addReqDocs": [
+          "doc_purpose"
+        ],
+        "note": "",
+        "nameKo": "일-학습연계 유학",
+        "summary": "일-학습연계 프로그램 입증.",
+        "eligibility": [
+          "일-학습연계 프로그램 입증."
+        ],
+        "manualRefs": []
+      },
+      {
+        "code": "D-2-8",
+        "name": "방문학생",
+        "addReq": "방문학생 입학허가서.",
+        "addReqDocs": [
+          "doc_enroll"
+        ],
+        "note": "과정 종료일+1개월 범위. 시간제취업은 입국 6개월 경과 후.",
+        "nameKo": "방문학생",
+        "summary": "과정 종료일+1개월 범위. 시간제취업은 입국 6개월 경과 후.",
+        "eligibility": [
+          "방문학생 입학허가서."
+        ],
+        "manualRefs": []
+      }
+    ],
+    "procedures": {
+      "visaIssuance": {
+        "available": true,
+        "summary": "[입국 전 · 재외공관 신청] 유학(D-2) 사증은 한국 입국 전에 거주지 관할 재외공관(대사관·총영사관)에서 신청합니다. 표준입학허가서, 최종학력(아포스티유/영사확인), 재정능력 입증, 결핵진단서(고위험국 해당자)를 준비합니다. 입국 후의 외국인등록·체류기간 연장과는 별개의 절차입니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [
+            "doc_enroll",
+            "doc_degree",
+            "doc_finance",
+            "doc_tb"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "다음 단계: ① 입학할 학교에서 표준입학허가서를 발급받기 → ② 학력·재정·결핵진단서 등 사증서류를 준비 → ③ 거주지 관할 재외공관에 D-2 사증을 신청.",
+          "세부 제출서류는 국적·학교·과정(D-2-1~D-2-8)에 따라 가감될 수 있어 관할 재외공관과 사증민원 매뉴얼 확인이 필요합니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "사증민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      "extension": {
+        "available": true,
+        "summary": "[입국 후 · 국내 체류절차] 유학(D-2) 체류기간 연장은 체류기간 만료 전에 신청합니다. 체류기간은 학사일정(재학·수료 예정일 등)을 기준으로 부여되며, 학업 수행 실적(성적·출석)과 재정·체류지 입증이 함께 검토됩니다.",
+        "requiredDocs": {
+          "commonDocs": [
+            "통합신청서(별지 제34호 서식)",
+            "doc_passport_generic",
+            "외국인등록증",
+            "doc_fee_generic"
+          ],
+          "requiredDocs": [
+            "학업 수행 입증서류(재학증명서, 성적증명서, 출석확인서 등)",
+            "재정입증 서류",
+            "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": [
+            "수료(예정)·논문학기 등 해당자: 수료증명서, 지도교수 및 유학담당자 확인서"
+          ]
+        },
+        "notes": [
+          "다음 단계: ① 체류기간 만료 전(보통 만료 4개월 전부터 신청 가능) HiKorea에서 연장 신청 또는 방문 예약 → ② 성적·출석 등 학업 수행 요건 충족 여부를 대학 국제처와 확인 → ③ 재정·체류지 입증서류를 최신 발급본으로 준비.",
+          "체류기간 만료일을 넘기면 불이익이 있을 수 있으니 만료 전에 신청하세요. 최종 허가 기간·요건은 심사 결과에 따라 달라집니다.",
+          "2026.5 체류민원 매뉴얼에서 보수적으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 최종 확인이 필요합니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "pp. 42-44",
+            "confidence": "auto_extracted_needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      },
+      "statusChange": {
+        "available": true,
+        "summary": "체류자격 변경 전용 서류는 매뉴얼 확인 필요",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "변경 가능 여부와 전용 서류는 기존 데이터에서 확정하지 않습니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      },
+      "statusGrant": {
+        "available": false,
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      },
+      "registration": {
+        "available": true,
+        "summary": "[입국 후 · 국내 체류절차] 유학(D-2)으로 입국한 학생은 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(ARC 발급)을 해야 합니다. 외국인등록과 동시에 체류기간 연장허가를 신청하는 경우에 한해 연장 수수료가 면제됩니다.",
+        "requiredDocs": {
+          "commonDocs": [
+            "통합신청서(별지 제34호 서식)",
+            "doc_passport_generic",
+            "doc_passport_copy",
+            "doc_standard_photo_one",
+            "doc_fee_generic"
+          ],
+          "requiredDocs": [
+            "재학(연구생)증명서 또는 등록금납입증명서 등 대체서류",
+            "doc_residence_proof_generic"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": [
+            "(인증대학 이상) 등록금납입증명서로 재학증명 대체 가능",
+            "(일반대학 이하) 협조요청서 및 등록금납입증명서 또는 단체접수 등록금납입증명서"
+          ]
+        },
+        "notes": [
+          "유학(D-2) 외국인등록 시 재정능력 입증서류는 제출 불요입니다(기관·국적·체류 이력별 예외가 있을 수 있어 확인 필요).",
+          "외국인등록증 발급·재발급 수수료는 수수료 면제 대상자도 납부해야 할 수 있습니다.",
+          "다음 단계: ① HiKorea(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 재학 중인 대학 국제처(외국인 유학생 담당)에서 제출서류·발급 절차 확인.",
+          "2026.5 체류민원 매뉴얼에서 보수적으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 최종 확인이 필요합니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "p. 44",
+            "confidence": "auto_extracted_needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      },
+      "activitiesOutsideStatus": {
+        "available": true,
+        "summary": "[자격외활동 허가 필요] 유학(D-2) 학생이 시간제취업(아르바이트 등) 등 본래 체류자격 외의 활동을 하려면 사전에 자격외활동 허가를 받아야 합니다. 허용 시간·업종은 학년·과정·한국어능력(TOPIK·KIIP 등) 등에 따라 제한됩니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "다음 단계: ① 재학 중인 대학 국제처에서 시간제취업 가능 여부·확인서 발급 절차 문의 → ② HiKorea에서 자격외활동 허가 신청(또는 방문 예약) → ③ 허가받은 범위(시간·업종) 내에서만 근무.",
+          "허용 시간·업종, 한국어능력 기준 등 세부 요건은 D-2 세부 유형별로 달라 2026.5 체류민원 매뉴얼·HiKorea·1345에서 확인이 필요합니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ],
+        "eligibility": [
+          "학생 본인: 학업을 성실히 이수(출석·성적)하고 있어야 하며, 일부 유형은 입국·등록 후 6개월 경과 등 요건이 적용될 수 있습니다.",
+          "학교(국제처): 시간제취업 확인·추천 등 학교 측 확인이 필요할 수 있습니다.",
+          "근무처(고용주): 허가받은 업종·시간 범위 내에서만 근무해야 하며, 근무처·근로조건 확인이 필요합니다."
+        ]
+      },
+      "workplaceChange": {
+        "available": false,
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      },
+      "reentry": {
+        "available": true,
+        "summary": "재입국 절차는 체류 이력과 허가 상태에 따라 확인 필요",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "대표 데이터에서 전용 구비서류를 확정하지 않습니다."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualVersion": "2026.5",
+            "pageRange": "매뉴얼 확인 필요",
+            "confidence": "needs_review",
+            "needsManualReview": true,
+            "sourceDate": "2026-06-01",
+            "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          }
+        ]
+      }
+    },
+    "commonWarnings": [
+      "서류는 심사 과정에서 가감될 수 있습니다.",
+      "국내 발급 서류는 별도 규정이 없으면 발급일로부터 3개월 이내 자료를 원칙으로 확인합니다.",
+      "이미 제출되어 기록에 보관 중인 서류는 생략될 수 있습니다.",
+      "공동이용 가능한 행정정보는 제출 생략 가능하나, 동의하지 않으면 제출이 필요할 수 있습니다.",
+      "건강진단서 등 일부 서류는 밀봉 제출이 요구될 수 있습니다.",
+      "체류허가 신청자는 국내 체류 중이어야 합니다."
+    ],
+    "manualRefs": [
+      {
+        "manualName": "사증민원",
+        "manualVersion": "2026.5",
+        "pageRange": "매뉴얼 확인 필요",
+        "confidence": "needs_review",
+        "needsManualReview": true
+      },
+      {
+        "manualName": "체류민원",
+        "manualVersion": "2026.5",
+        "pageRange": "매뉴얼 확인 필요",
+        "confidence": "needs_review",
+        "needsManualReview": true,
+        "sourceDate": "2026-06-01",
+        "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+      }
+    ],
+    "sourceManualStatus": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "D-2 representative hierarchy uses existing data; D-2-1 through D-2-8 labels still need 2026.5 manual page verification.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "manualRequiredDocAudit": {
+      "manualName": "체류민원",
+      "manualVersion": "2026.5",
+      "scope": "extension_and_foreigner_registration",
+      "sectionPageRange": "pp. 35-55",
+      "method": "pdf_text_conservative_auto_extract",
+      "needsManualReview": true,
+      "updatedAt": "2026-05-07",
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "documents_initial": [
+      {
+        "name": "표준입학허가서 또는 재학/수료증명서"
+      },
+      {
+        "name": "최종 학위/학력증명서",
+        "note": "아포스티유/영사확인 필수"
+      },
+      {
+        "name": "재정능력 입증서류",
+        "note": "잔고증명, 소득증명 등 총괄"
+      },
+      {
+        "name": "결핵건강진단서",
+        "note": "보건소/지정병원, 고위험 35개국 필수"
+      }
+    ],
+    "documents_extension": [
+      {
+        "name": "통합신청서(별지 제34호 서식)",
+        "note": "별지 제34호 서식"
+      },
+      {
+        "name": "여권 원본 및 인적사항면 사본"
+      },
+      {
+        "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+        "note": "기존 등록자에 한함"
+      },
+      {
+        "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+        "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+      },
+      {
+        "name": "표준입학허가서 또는 재학/수료증명서"
+      },
+      {
+        "name": "지도교수 또는 유학담당자 확인서"
+      },
+      {
+        "name": "성적증명서",
+        "note": "공식 발급본"
+      },
+      {
+        "name": "출석확인서",
+        "note": "출석률 명시"
+      },
+      {
+        "name": "재정능력 입증서류",
+        "note": "잔고증명, 소득증명 등 총괄"
+      },
+      {
+        "name": "체류지 입증서류",
+        "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
+      },
+      {
+        "name": "은행 잔고증명서",
+        "note": "최근 30일 이내 발급본"
+      }
+    ],
+    "hikorea_task_type": "체류기간 연장허가",
+    "_source_notes": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "searchAliases": [
+      "D-2-1",
+      "D-2-2",
+      "D-2-3",
+      "D-2-4",
+      "D-2-5",
+      "D-2-6",
+      "D-2-7",
+      "D-2-8",
+      "D-4-1",
+      "D-4-7"
+    ],
+    "_searchAliasAudit": {
+      "generatedAliases": [
+        {
+          "alias": "D-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-8",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-2-R",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-7",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "feeInfo": {
+      "paradisoDefault202605": {
+        "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+        "verified": false,
+        "needsManualReview": true,
+        "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+        "procedures": {
+          "foreignRegistration": {
+            "labelKo": "외국인등록",
+            "items": [
+              {
+                "name": "외국인등록증 발급 수수료",
+                "amountKRW": 35000,
+                "display": "외국인등록증 발급 수수료 35,000원"
+              }
+            ]
+          },
+          "extension": {
+            "labelKo": "체류기간 연장",
+            "items": [
+              {
+                "name": "체류기간 연장허가 수수료",
+                "amountKRW": 60000,
+                "display": "체류기간 연장허가 정부수입인지 60,000원"
+              }
+            ]
+          },
+          "statusChange": {
+            "labelKo": "체류자격 변경",
+            "items": [
+              {
+                "name": "체류자격 변경허가 수수료",
+                "amountKRW": 100000,
+                "display": "체류자격 변경허가 정부수입인지 100,000원"
+              },
+              {
+                "name": "외국인등록증 재발급/교체 수수료",
+                "amountKRW": 35000,
+                "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+              }
+            ]
+          },
+          "grantStatus": {
+            "labelKo": "체류자격 부여",
+            "items": [
+              {
+                "name": "체류자격 부여 수수료",
+                "amountKRW": 80000,
+                "display": "체류자격 부여 정부수입인지 80,000원"
+              },
+              {
+                "name": "외국인등록증 발급 수수료",
+                "amountKRW": 35000,
+                "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+              }
+            ]
+          },
+          "visaIssuance": {
+            "labelKo": "사증 발급",
+            "items": [
+              {
+                "name": "재외공관 사증발급 수수료",
+                "amountKRW": null,
+                "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "structuredRequirementsRef": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-2",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    }
+  },
+  {
     "code": "D-3",
     "name": "기술연수",
     "cat": "study",
