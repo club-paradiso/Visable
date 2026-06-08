@@ -1983,6 +1983,11 @@ def build_law_evidence_pack(
         "source_types_attempted": source_type_plan.get("source_types_attempted", []),
         "source_types_returned": source_type_plan.get("source_types_returned", []),
         "legal_analysis": legal_analysis,
+        # Public structured evidence items (compact grounding schema: source_id,
+        # source_title, source_type, version_or_date, authority_level, excerpt,
+        # page_or_section, url, directness, relevance_reason). Surfaced top-level
+        # for the source panel; also present inside legal_analysis.
+        "grounding_items": legal_analysis.get("grounding_items", []),
         "analysis_mode": legal_analysis.get("analysis_mode"),
         "main_issue": legal_analysis.get("main_issue"),
         "direct_evidence_count": legal_analysis.get("direct_evidence_count", 0),

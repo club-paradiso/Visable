@@ -579,6 +579,32 @@ def build_answer_directives(
             " backend metadata says answer_certainty_level=direct."
         )
 
+    # Ambiguous scenario questions whose exact case is not directly source-
+    # confirmed: require an explicit, concrete risk-variant breakdown and the
+    # single decisive dividing line, so the answer is practically useful instead
+    # of a generic caution. This implements the scenario/risk-classification and
+    # key-dividing-line slots without inventing rules or citations.
+    if qtype in {Q_ACTIVITY_ON_STATUS, Q_SPECIAL_SITUATION} and mode in {SOURCE_ASSISTED, SOURCE_LIMITED, SOURCE_UNAVAILABLE}:
+        parts.append(
+            "This is an ambiguous scenario the official sources do not answer"
+            " exactly. After the practical answer, briefly:\n"
+            "- Split the user's scenario into 2-4 concrete variants (e.g. by"
+            " whether the activity is informal vs. formally registered, paid vs."
+            " unpaid, credit/transcript-generating vs. not, one-off vs. ongoing).\n"
+            "- Give each variant a plain risk level: low practical risk, medium"
+            " risk, high risk, or not enough information — with the concrete"
+            " factor that drives it. Do not turn a risk level into a final"
+            " yes/no permission.\n"
+            "- State the single key dividing line that most changes the outcome"
+            " (the decisive legal/practical distinction).\n"
+            "- Provide two short copy-ready Korean inquiry scripts: one for the"
+            " relevant institution (e.g. the university/employer), and one for"
+            " 1345 / HiKorea / the competent immigration office — each naming the"
+            " exact thing to ask, not a generic 'call 1345'.\n"
+            "- End with one source-confidence line stating whether the answer is"
+            " directly, partially, generally, or mostly-inferentially grounded."
+        )
+
     qdir = _QUESTION_TYPE_DIRECTIVE.get(qtype, "")
     if qdir:
         parts.append(qdir)

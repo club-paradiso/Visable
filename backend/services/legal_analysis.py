@@ -287,12 +287,20 @@ def classify_activity_types(question: str) -> List[str]:
         add("credit_bearing_study")
     if _has_formal_enrollment_context(text):
         add("formal_enrollment")
-    if _has_any(text, "청강", "audit", "non-credit", "noncredit", "비학점"):
+    if _has_any(text, "청강", "audit", "non-credit", "noncredit", "비학점", "특강", "세미나", "guest lecture", "special lecture", "seminar"):
         add("non_credit_audit")
     if _has_any(text, "문화센터", "취미", "hobby", "cultural class", "culture class", "non-credit cultural"):
         add("non_credit_cultural_or_hobby")
     if _has_any(text, "어학", "language school", "language training", "korean class", "한국어 수업"):
         add("language_training")
+    if _has_any(text, "일반연수", "general training", "연수원", "trainee program"):
+        # General training (e.g. D-4 일반연수): an enrollment-style training
+        # activity, distinct from credit-bearing degree study.
+        add("formal_enrollment")
+    if _has_any(text, "원격근무", "재택근무", "원격으로", "remote work", "remotely", "work remotely", "telework", "telecommut"):
+        # Remote work (incl. remote work for an overseas employer) is still a
+        # work activity for status-scope purposes; the office decides the rest.
+        add("paid_work")
     if _has_any(text, "유급", "급여", "보수", "paid", "salary", "wage", "compensat"):
         add("paid_work")
     if _has_any(text, "무급 인턴", "unpaid internship"):
@@ -317,7 +325,9 @@ def classify_activity_types(question: str) -> List[str]:
         add("medical_treatment")
     if _has_any(text, "소송", "litigation", "lawsuit", "trial"):
         add("litigation_related_stay")
-    if _has_any(text, "결혼", "이혼", "배우자", "marriage", "divorce", "spouse"):
+    if _has_any(text, "결혼", "이혼", "배우자", "marriage", "divorce", "spouse",
+                "가족초청", "초청", "family invitation", "invite", "sponsor",
+                "동성 배우자", "동성배우자", "same-sex spouse", "same sex spouse"):
         add("family_or_marriage_related")
     if _has_any(text, "난민", "인도적", "refugee", "asylum", "humanitarian"):
         add("refugee_or_humanitarian_context")
@@ -469,6 +479,17 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
                 add("employment_restriction")
     if facts.get("status_transition_detected") and (acts & {"side_job", "workplace_change", "workplace_addition", "additional_employment"} or _has_any(text, "이전", "previous", "old status", "residual")):
         add("post_status_change_residual_duty")
+    # Concept-level question about activities-outside-status permission itself
+    # (e.g. "체류자격외활동허가가 필요한 경우는?"). Recognize the concept even when
+    # no status code or concrete activity was supplied, so it does not fall back
+    # to a non-immigration classification.
+    if _has_any(text, "체류자격외활동", "자격외활동"):
+        add("activity_scope"); add("outside_status_activity")
+    # Volunteer / unpaid-internship activity on a status is an activity-scope
+    # question (does it fit within the status, or need permission?), not a
+    # non-immigration matter — even though it is often permitted in practice.
+    if acts & {"volunteer_activity", "unpaid_internship"}:
+        add("activity_scope")
     # Adjudicative-leaning signals. High-precision keywords only, detected after
     # the substantive procedure/activity issues so those keep routing priority.
     # These are the only issues that pull court-precedent / constitutional
@@ -625,7 +646,7 @@ def _has_study(text: str) -> bool:
 
 
 def _has_work(text: str) -> bool:
-    return _has_any(text, "work", "job", "employment", "part-time", "intern", "freelance", "취업", "근무", "아르바이트", "알바", "인턴", "프리랜서", "부업")
+    return _has_any(text, "work", "job", "employment", "part-time", "intern", "freelance", "취업", "근무", "아르바이트", "알바", "인턴", "프리랜서", "부업", "원격근무", "재택근무", "remote work", "telework")
 
 
 def _has_activity_scope(text: str) -> bool:
@@ -683,7 +704,34 @@ def score_evidence_relevance(evidence: Dict[str, Any], *, question: str, visa_co
 
 def _authority_stub(item: Dict[str, Any], relevance: str) -> Dict[str, Any]:
     title = item.get("source_title") or item.get("law_name") or item.get("term") or item.get("title") or item.get("reference") or "official source"
-    return {"title": str(title)[:160], "source_type": item.get("source_type") or item.get("target") or "source", "relevance": relevance, "query": item.get("query", "")}
+    raw_type = item.get("source_type") or item.get("target") or "source"
+    # Authority level + public directness come from the shared ontology so the
+    # answer prompt and source panel agree on how strongly to weigh each item.
+    from .evidence_ontology import authority_level_for, public_directness_for
+    return {
+        "title": str(title)[:160],
+        "source_type": raw_type,
+        "relevance": relevance,
+        "directness": public_directness_for(relevance),
+        "authority_level": authority_level_for(raw_type),
+        "query": item.get("query", ""),
+    }
+
+
+# Short, templated explanation of why an evidence item carries a given
+# directness. It states the *relationship* to the question, never a legal
+# conclusion, and never claims the source says something it does not.
+_RELEVANCE_REASON_BY_LABEL: Dict[str, str] = {
+    RELEVANCE_DIRECT: "Directly addresses the asked status and the same activity/procedure.",
+    RELEVANCE_RELATED: "Covers the same status or procedure but not this exact scenario.",
+    RELEVANCE_ANALOGICAL: "Only supports cautious analogy from a related status/scenario.",
+    RELEVANCE_BACKGROUND: "States a general rule that may apply but is not scenario-specific.",
+    RELEVANCE_NOT_RELEVANT: "No scenario-specific match found in this source.",
+}
+
+
+def _relevance_reason(relevance: str) -> str:
+    return _RELEVANCE_REASON_BY_LABEL.get(relevance, _RELEVANCE_REASON_BY_LABEL[RELEVANCE_NOT_RELEVANT])
 
 
 def _main_issue(issues: Sequence[str], facts: Dict[str, Any]) -> str:
@@ -845,6 +893,17 @@ def build_legal_analysis(
     for row in scored:
         buckets.setdefault(row["relevance"], []).append(row["item"])
 
+    # Public structured evidence items (the compact grounding schema the answer
+    # prompt + source panel consume). Built once here so directness/authority on
+    # the items always agree with the relevance scoring above. Strongest first.
+    from .evidence_ontology import to_grounding_item as _to_grounding_item
+    _RELEVANCE_ORDER = {RELEVANCE_DIRECT: 0, RELEVANCE_RELATED: 1, RELEVANCE_ANALOGICAL: 2, RELEVANCE_BACKGROUND: 3, RELEVANCE_NOT_RELEVANT: 4}
+    grounding_items = [
+        _to_grounding_item(row["item"], relevance=row["relevance"], relevance_reason=_relevance_reason(row["relevance"]))
+        for row in sorted(scored, key=lambda r: _RELEVANCE_ORDER.get(r["relevance"], 5))
+        if row["relevance"] != RELEVANCE_NOT_RELEVANT
+    ][:12]
+
     direct_count = len(buckets[RELEVANCE_DIRECT])
     related_count = len(buckets[RELEVANCE_RELATED])
     analogical_count = len(buckets[RELEVANCE_ANALOGICAL])
@@ -911,6 +970,7 @@ def build_legal_analysis(
         "related_authority": [_authority_stub(i, RELEVANCE_RELATED) for i in buckets[RELEVANCE_RELATED][:5]],
         "analogical_authority": [_authority_stub(i, RELEVANCE_ANALOGICAL) for i in buckets[RELEVANCE_ANALOGICAL][:5]],
         "background_authority": [_authority_stub(i, RELEVANCE_BACKGROUND) for i in buckets[RELEVANCE_BACKGROUND][:5]],
+        "grounding_items": grounding_items,
         "missing_direct_authority": missing_direct,
         "risk_posture": risk,
         "confidence": _CONFIDENCE_BY_MODE.get(mode, "limited"),
