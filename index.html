@@ -9889,12 +9889,10 @@ button[data-keyword]:focus-visible {
 
 
 
-<!-- PARADISO_GATEWAY_HITBOX_FIX_START -->
-<style id="paradiso-gateway-hitbox-fix">
-  /*
-    Ensure each home gateway card owns its own click area after removing the 구비서류 shortcut.
-    Do not reorder cards here: HiKorea remains first, Paradiso.ai remains second.
-  */
+
+
+<!-- PARADISO_GATEWAY_ACTION_HARDWIRE_FIX_START -->
+<style id="paradiso-gateway-action-hardwire-fix">
   .p-gateway .p-gw-primary {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -9904,6 +9902,7 @@ button[data-keyword]:focus-visible {
 
   .p-gateway .p-gw-primary > .p-gw-card {
     position: relative;
+    display: flex;
     width: 100%;
     min-width: 0;
     z-index: 1;
@@ -9919,7 +9918,7 @@ button[data-keyword]:focus-visible {
     }
   }
 </style>
-<!-- PARADISO_GATEWAY_HITBOX_FIX_END -->
+<!-- PARADISO_GATEWAY_ACTION_HARDWIRE_FIX_END -->
 
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
@@ -10032,6 +10031,7 @@ button[data-keyword]:focus-visible {
                 </span>
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
+
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
                 <button type="button" class="p-gw-card" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
@@ -10045,6 +10045,7 @@ button[data-keyword]:focus-visible {
                     <span class="p-gw-card-sub">상황을 설명하면 경로를 정리해 드립니다</span>
                 </a>
             </div>
+
 
             <div class="p-gw-utility" role="group" aria-label="보조 도구">
                 <button type="button" class="p-gw-util" data-action="open-jobcode-modal">
