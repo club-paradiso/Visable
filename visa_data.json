@@ -2873,7 +2873,10 @@
       "sourceDate": "2026-06-01",
       "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
       "note": "원본 JSON에 D-2 canonical record가 없어서 수동 추가했습니다. structured_requirements 파일이 별도로 존재하면 D-2 항목 생성 여부를 후속 확인해야 합니다."
-    }
+    },
+    "manualDomains": [
+      "stay_sojourn"
+    ]
   },
   {
     "code": "D-3",

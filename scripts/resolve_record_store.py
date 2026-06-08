@@ -46,10 +46,37 @@ def load_visa_data():
 
 
 def load_scenario_help_shadow():
-    """E-1 shadow entries (list of envelope objects with a nested `record`)."""
+    """E-1 shadow entries (list of envelope objects with a nested `record`).
+
+    Supports the current `{"records": [...]}` envelope format and an
+    optional legacy top-level list format. Returns only dict entries that
+    carry a truthy `code`.
+    """
     if not SCENARIO_HELP.exists():
         return []
-    return json.loads(SCENARIO_HELP.read_text(encoding="utf-8")).get("records", [])
+
+    raw = json.loads(SCENARIO_HELP.read_text(encoding="utf-8"))
+    if isinstance(raw, dict):
+        records = raw.get("records", [])
+    elif isinstance(raw, list):
+        records = raw
+    else:
+        return []
+
+    clean = []
+    for entry in records:
+        if not isinstance(entry, dict):
+            continue
+        nested = entry.get("record")
+        code = None
+        if isinstance(nested, dict):
+            code = nested.get("code")
+        else:
+            code = entry.get("code")
+        if not code:
+            continue
+        clean.append(entry)
+    return clean
 
 
 def shadow_index():
@@ -68,29 +95,48 @@ def shadow_index():
 
 
 def union_view(prefer: str = "visa_data"):
-    """Deterministic de-duplicated union of canonical + shadow records.
+    """Deterministic merged union of canonical + shadow records.
 
-    During E-2 `prefer` is always "visa_data": the canonical record wins and
-    shadow copies (which duplicate canonical records) are NOT appended, so the
-    union is exactly visa_data.json. The `prefer` arg is a seam for the future
-    E-3/E-4 resolver, where shadow records may become authoritative.
+    The union preserves all canonical visa_data.json records and appends
+    additional scenario/help records only when their codes do not already
+    appear canonically. Shadow records are deduplicated by code and canonical
+    records are preferred when collisions occur.
     """
     visas = load_visa_data()
-    by_key = {(i, r.get("code")): r for i, r in enumerate(visas)}
-    order = [(i, r.get("code")) for i, r in enumerate(visas)]
+    canonical = [r for r in visas if isinstance(r, dict) and r.get("code")]
+    canonical_codes = {r.get("code") for r in canonical}
+    union = list(canonical)
+    shadow_codes = set()
 
-    for e in load_scenario_help_shadow():
-        key = (e.get("sourceVisaDataIndex"), e.get("sourceVisaDataCode"))
-        if key in by_key:
-            # Shadow duplicates a canonical record -> de-dup; keep canonical.
-            if prefer == "scenario_help":
-                by_key[key] = e.get("record")
+    for entry in load_scenario_help_shadow():
+        if not isinstance(entry, dict):
             continue
-        # Not present canonically (would only happen post E-4): include it.
-        by_key[key] = e.get("record")
-        order.append(key)
 
-    return [by_key[k] for k in order]
+        shadow_record = entry.get("record")
+        if not isinstance(shadow_record, dict):
+            if isinstance(entry.get("code"), str):
+                shadow_record = entry
+            else:
+                continue
+
+        code = shadow_record.get("code")
+        if not code:
+            continue
+
+        if code in canonical_codes:
+            if prefer == "scenario_help":
+                for idx, existing in enumerate(union):
+                    if existing.get("code") == code:
+                        union[idx] = shadow_record
+            continue
+
+        if code in shadow_codes:
+            continue
+
+        union.append(shadow_record)
+        shadow_codes.add(code)
+
+    return union
 
 
 def _dupe_codes(records):
@@ -198,14 +244,19 @@ def parity_report():
     union = union_view()
     canon = lambda o: json.dumps(o, ensure_ascii=False, sort_keys=True)
     # Note: D-4-2K is a pre-existing duplicate code in visa_data.json
-    # (indices 24 & 55), deferred to the D-content track. The E-2 invariant
-    # is that the union introduces NO new duplicate codes beyond visa_data.
+    # (indices 24 & 55), deferred to the D-content track. The current union
+    # semantics preserve all canonical records and append additional shadow
+    # records only when their codes are not already present canonically.
     alias_deprecated = sorted(_alias_deprecated_codes(visas))
+    visa_codes = [r.get("code") for r in visas if isinstance(r, dict)]
+    union_codes = [r.get("code") for r in union if isinstance(r, dict)]
     return {
         "visa_data_count": len(visas),
         "scenario_help_shadow_count": len(shadow),
         "union_count": len(union),
         "union_equals_visa_data": canon(union) == canon(visas),
+        "union_shadow_only_count": len([c for c in union_codes if c not in visa_codes]),
+        "union_contains_all_canonical_codes": all(c in union_codes for c in visa_codes),
         "duplicate_codes_in_union": _dupe_codes(union),
         "duplicate_codes_in_visa_data": _dupe_codes(visas),
         "shadow_codes": sorted(e.get("sourceVisaDataCode") for e in shadow),
