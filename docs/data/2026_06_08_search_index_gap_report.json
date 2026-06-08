@@ -1,0 +1,6 @@
+{
+  "generated": "2026-06-08",
+  "indexer_extended_to_variant_statusCodes": true,
+  "variant_only_statuscodes_now_indexed": [],
+  "note": "These statusCodes are reachable by exact search via the getExactQueryMatchRank variant-statusCode index path even though they are not surfaced as subCodes/searchAliases. E-7-H is intentionally excluded (internal 전산기호)."
+}

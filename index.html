@@ -1390,6 +1390,26 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-code { font-weight: 900; color: var(--ac); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .manual-subcode-name { font-size: 0.82rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
 .manual-subcode-desc { font-size: 0.77rem; color: var(--t2); line-height: 1.5; word-break: keep-all; }
+/* 2026-06-08 manual coverage: grouped subcode grid + source/status chips. */
+.manual-subcode-group { margin-top: 0.5rem; }
+.manual-subcode-group:first-of-type { margin-top: 0; }
+.manual-subcode-group-title { font-size: 0.72rem; font-weight: 900; color: var(--t3); letter-spacing: 0.02em; margin: 0 0 0.35rem; text-transform: none; }
+.manual-subcode-more-body { margin-top: 0.45rem; display: grid; gap: 0.5rem; }
+.subcode-chip { margin-left: auto; flex: none; border-radius: 999px; padding: 0.08rem 0.42rem; font-size: 0.62rem; font-weight: 900; white-space: nowrap; line-height: 1.5; border: 1px solid transparent; }
+.subcode-chip.chip-official { color: #15803d; background: color-mix(in srgb, #22c55e 16%, var(--bg1)); border-color: color-mix(in srgb, #22c55e 38%, var(--bd)); }
+.subcode-chip.chip-review { color: #b45309; background: color-mix(in srgb, #f59e0b 15%, var(--bg1)); border-color: color-mix(in srgb, #f59e0b 38%, var(--bd)); }
+.subcode-chip.chip-auto { color: #6d28d9; background: color-mix(in srgb, #8b5cf6 14%, var(--bg1)); border-color: color-mix(in srgb, #8b5cf6 36%, var(--bd)); }
+.subcode-chip.chip-deprecated { color: var(--t3); background: color-mix(in srgb, var(--t3) 12%, var(--bg1)); border-color: var(--bd2); }
+.manual-subcode-card.is-inactive { opacity: 0.72; background: color-mix(in srgb, var(--bg1) 96%, var(--t3)); border-style: dashed; }
+.manual-subcode-card.is-inactive .manual-subcode-code { color: var(--t3); }
+.manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: var(--t3); line-height: 1.45; font-style: italic; }
+.subcode-matched-banner { display: grid; gap: 0.4rem; margin: 0 0 0.6rem; }
+.subcode-matched-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; border: 1px solid color-mix(in srgb, var(--ac) 38%, var(--bd)); background: color-mix(in srgb, var(--ac) 8%, var(--bg1)); border-radius: 8px; padding: 0.45rem 0.6rem; }
+.subcode-matched-label { font-size: 0.66rem; font-weight: 900; color: var(--ac); background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); border-radius: 999px; padding: 0.08rem 0.42rem; }
+.subcode-matched-name { font-size: 0.8rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
+.subcode-view-btn { margin-left: auto; flex: none; text-decoration: none; font-size: 0.72rem; font-weight: 900; color: #fff; background: var(--ac); border-radius: 7px; padding: 0.32rem 0.62rem; white-space: nowrap; }
+.subcode-view-btn:hover, .subcode-view-btn:focus-visible { filter: brightness(1.07); }
+.manual-subcode-card.match { scroll-margin-top: 90px; }
 .procedure-variant-list { display: grid; gap: 0.72rem; }
 .scenario-selector-heading { margin: 0; color: var(--t1); font-size: 0.9rem; font-weight: 900; }
 .scenario-selector-copy { margin: 0.3rem 0 0; color: var(--t2); font-size: 0.78rem; line-height: 1.6; word-break: keep-all; }
@@ -1673,7 +1693,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     body.searched .ctrls { max-width: none; flex-wrap: wrap; justify-content: flex-start; }
     body.searched .smeta { flex-direction: column; align-items: flex-start; line-height: 1.35; }
     body.searched .qf { max-height: 72px; overflow: auto; padding-bottom: 0.15rem; }
-    .ai-fab { bottom: 0.75rem; right: 0.75rem; padding: 0.55rem 0.7rem; }
+    .ai-fab { bottom: 0.75rem; right: 0.75rem; padding: 0.55rem 0.7rem; max-width: 60vw; }
+    /* 2026-06-08: keep the floating AI button clear of document/checklist
+       controls at the bottom of a result card on small screens. */
+    .rlist { padding-bottom: 6.5rem; }
+    .scenario-selected-actions, .doc-checklist { scroll-margin-bottom: 6rem; }
 }
 
 /* Ambient Glow */
@@ -11040,7 +11064,16 @@ const DOC_DICT = {
     "doc_passport_change": "등록사항 변경 신고서 (통합신청서), 신여권 원본 및 사본, 기존 외국인등록증", "doc_arc_reissue": "외국인등록증 재발급 신청서 (통합신청서), 여권, 사유 소명 서류(경찰서 분실신고증 등), 사진 1매",
     "doc_credit_report": "신용정보조회서 또는 신용상태 입증서류", "doc_income_tax": "소득세 납세사실증명서 또는 소득세 신고내역", "doc_resident_reg": "주민등록등본(해당 시)", "doc_tax_cert": "국세·지방세 납세증명서", "doc_kiip_cert": "사회통합프로그램(KIIP) 이수증/합격증명서", "doc_property_proof": "재산세 과세증명 또는 부동산 보유 입증서류", "doc_employment_proof": "재직증명서 또는 근무사실 입증서류", "doc_emp_certificate": "재직증명서", "doc_employment_insurance_list": "고용보험 가입자 명부", "doc_point_table": "점수제 자기평가표 및 증빙서류", "doc_reason_proof": "신청 사유 입증서류", "doc_job_search_plan": "구직활동계획서", "doc_internship_plan": "인턴십(연수) 계획서", "doc_cvi": "사증발급인정서(Certificate for Visa Issuance)",
     // PR D batch 2: stable machine IDs migrated from former Korean-string doc IDs; labels preserved verbatim so rendering is unchanged.
-    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매"
+    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매",
+    // 2026-06-08 manual coverage corrections: keep DOC_DICT in sync with doc_master.json
+    // so newly referenced doc ids resolve to Korean labels instead of leaking raw ids.
+    "doc_local_recommendation": "지자체 추천서", "doc_personal_statement": "신상기술서", "doc_top_tier_degree": "최우수인재 대학 학위 증명",
+    "doc_labor_complaint": "노동관서 진정서 사본", "doc_unpaid_wage_confirmation": "체불금품 확인원", "doc_litigation_document": "소송 관련 서류",
+    "doc_medical_treatment_proof": "치료·요양 필요성 입증서류", "doc_family_guardian_proof": "가족관계·보호자 입증서류", "doc_livelihood_review": "생계유지능력 심사확인서",
+    "doc_injury_or_death_proof": "산재·사고·사망 입증서류", "doc_pregnancy_birth_proof": "임신·출산 입증서류", "doc_humanitarian_reason_proof": "인도적 사유 입증서류",
+    "doc_seasonal_worker_recommendation": "계절근로자 추천·배정 서류", "doc_mou_local_government": "지자체 간 계절근로 MOU 서류",
+    "doc_digital_nomad_income_proof": "디지털노마드 소득 입증서류", "doc_remote_work_employment_proof": "원격근무·해외 재직 입증서류", "doc_private_medical_insurance": "민간 의료보험 가입 입증서류",
+    "doc_startup_korea_recommendation": "스타트업 코리아 추천·창업 입증서류", "doc_kstar_university_recommendation": "K-STAR 참여대학 추천서"
 };
 
 // --- Star Canvas Effect ---
@@ -12692,14 +12725,20 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     const cleanKeys = (docKeys || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
     if (!cleanKeys.length) return '<div class="text-desc" style="color:var(--t3);">요구되는 추가 서류가 없습니다.</div>';
     const tagsHtml = cleanKeys.map(key => {
-        let officialName = DOC_DICT[key] || (typeof key === 'string' && key.startsWith('doc_') ? `문서요건(${key.replace('doc_','').replace(/_/g,' ')})` : key);
+        // Resolve every doc id through DOC_DICT (kept in sync with doc_master.json).
+        // Unknown ids must never surface their raw machine id to users — show a
+        // friendly "문서 정의 필요" label and stash the raw id in a debug-only
+        // data attribute so developers can still trace it.
+        const isUnresolvedId = typeof key === 'string' && key.startsWith('doc_') && !DOC_DICT[key];
+        let officialName = DOC_DICT[key] || (isUnresolvedId ? (tx('docDefinitionNeeded') || '문서 정의 필요') : key);
+        const debugAttr = isUnresolvedId ? ` data-doc-id="${escapeHtml(key)}"` : '';
         const isCritical = ['doc_health', 'doc_crim', 'doc_tb'].includes(key);
         const criticalClass = isCritical ? ' critical' : '';
         // Long manual excerpts shouldn't become an oversized card squeezed into
         // one grid cell — flag them so CSS can let them span the full row.
         const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
-        return `<div class="doc-chk-item${criticalClass}${blockClass}">${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
+        return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
     }).join('');
     const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docGroupLabels', 2, '추가/심사 필요 서류'))}</div>` : '';
     return `<div class="doc-req-box" style="margin-top:0; padding:0; border:none; background:transparent;">${warningHtml}<div class="doc-checklist">${tagsHtml}</div></div>`;
@@ -12858,6 +12897,21 @@ function getExactQueryMatchRank(item, query) {
             ...(Array.isArray(s.searchAliases) ? s.searchAliases : [])
         ];
         if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 3;
+    }
+    // Procedure-variant statusCodes: some official codes live only inside a
+    // procedure variant (e.g. status-change scenarios). Index them so an exact
+    // code query still resolves to the parent card even when the code is not
+    // (yet) surfaced as a subCode.
+    const procs = item.procedures && typeof item.procedures === 'object' ? item.procedures : {};
+    for (const key of Object.keys(procs)) {
+        const proc = procs[key];
+        const variants = proc && Array.isArray(proc.variants) ? proc.variants : [];
+        for (const variant of variants) {
+            const codes = [];
+            if (variant.statusCode) codes.push(variant.statusCode);
+            if (Array.isArray(variant.statusCodes)) codes.push(...variant.statusCodes);
+            if (codes.some(c => normalizeVisaCode(c) === qNorm)) return 3;
+        }
     }
     return 0;
 }
@@ -14034,28 +14088,77 @@ function renderSourceConfirmedRequirements(v) {
     </div>`;
 }
 
+// Source/status chip for a subcode. Distinguishes official-confirmed vs.
+// manual-review vs. auto-extracted vs. deprecated/inactive, per the source
+// transparency requirement (never hide uncertainty).
+function subcodeSourceChip(s) {
+    const st = s.status || 'active';
+    if (st !== 'active') return `<span class="subcode-chip chip-deprecated">${escapeHtml(tx('sourceChipDeprecated'))}</span>`;
+    const conf = (Array.isArray(s.manualRefs) && s.manualRefs[0] && s.manualRefs[0].confidence) || '';
+    if (s.needsManualReview === false) return `<span class="subcode-chip chip-official">${escapeHtml(tx('sourceChipOfficial'))}</span>`;
+    if (/auto/i.test(conf)) return `<span class="subcode-chip chip-auto">${escapeHtml(tx('sourceChipAuto'))}</span>`;
+    return `<span class="subcode-chip chip-review">${escapeHtml(tx('sourceChipReview'))}</span>`;
+}
+
 function renderSubcodes(v, keywords, matchingSubcodes) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
+    const visaCode = v.code || '';
+    const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
+
     const renderCard = (s) => {
         const label = s.nameKo || s.name || '';
         const desc = s.summary || (Array.isArray(s.eligibility) && s.eligibility[0]) || s.note || s.addReq || tx('manualNeedsReview');
-        return `<div class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}">
-            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span></div>
-            <div class="manual-subcode-desc">${hl(desc, keywords)}</div>
+        const inactive = s.status && s.status !== 'active';
+        const statusNote = inactive && s.statusNote ? `<div class="manual-subcode-status">${escapeHtml(s.statusNote)}</div>` : '';
+        return `<div id="${cardId(s)}" class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}">
+            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}</div>
+            <div class="manual-subcode-desc">${hl(desc, keywords)}</div>${statusNote}
         </div>`;
     };
-    const visibleSubs = subs.length > 4 ? subs.slice(0, 4) : subs;
-    const hiddenSubs = subs.length > 4 ? subs.slice(4) : [];
-    const cards = visibleSubs.map(renderCard).join('');
-    const moreHtml = hiddenSubs.length
-        ? `<details class="manual-subcode-more">
-            <summary><span class="more-open">세부코드 더 보기 (${hiddenSubs.length})</span><span class="more-close">접기</span></summary>
-            <div class="manual-subcode-grid">${hiddenSubs.map(renderCard).join('')}</div>
-        </details>`
+
+    // Group subcodes by category (order preserved by first appearance).
+    const groups = [];
+    const groupMap = new Map();
+    subs.forEach(s => {
+        const g = s.group || '기타';
+        if (!groupMap.has(g)) { groupMap.set(g, []); groups.push(g); }
+        groupMap.get(g).push(s);
+    });
+    const hasGroups = subs.some(s => s.group);
+    const renderGroup = (g) => {
+        const cards = groupMap.get(g).map(renderCard).join('');
+        const title = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
+        return `<div class="manual-subcode-group">${title}<div class="manual-subcode-grid">${cards}</div></div>`;
+    };
+
+    // Matched-subcode banner: "일치 세부코드: CODE · label" + source chip +
+    // "이 세부코드 보기" anchor that scrolls to the highlighted card.
+    const matched = (matchingSubcodes || []).filter(s => s.code);
+    const bannerHtml = matched.length
+        ? `<div class="subcode-matched-banner">${matched.slice(0, 4).map(s => {
+            const label = s.nameKo || s.name || '';
+            return `<div class="subcode-matched-row"><span class="subcode-matched-label">${escapeHtml(tx('subcodeMatchedLabel'))}</span><span class="manual-subcode-code">${escapeHtml(s.code)}</span><span class="subcode-matched-name">${escapeHtml(label)}</span>${subcodeSourceChip(s)}<a class="subcode-view-btn" href="#${cardId(s)}">${escapeHtml(tx('subcodeViewMatched'))}</a></div>`;
+        }).join('')}</div>`
         : '';
-    return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4><div class="manual-subcode-grid">${cards}</div>${moreHtml}</div>`;
+
+    const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
+    // Single group or short list → render flat (no awkward collapse).
+    if (groups.length <= 1 || subs.length <= 4) {
+        return `<div class="manual-section">${title}${bannerHtml}${groups.map(renderGroup).join('')}</div>`;
+    }
+    // Many groups → show the first group, collapse the rest behind a full-width
+    // "더 보기 / 접기" toggle (auto-open when a hidden group holds a match).
+    const firstGroup = renderGroup(groups[0]);
+    const restGroups = groups.slice(1);
+    const matchInRest = restGroups.some(g => groupMap.get(g).some(s => matchSet.has(s.code)));
+    const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
+    const moreHtml = `<details class="manual-subcode-more"${matchInRest ? ' open' : ''}>
+            <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
+            <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
+        </details>`;
+    return `<div class="manual-section">${title}${bannerHtml}${firstGroup}${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
@@ -14903,7 +15006,8 @@ const UI_TRANSLATIONS = {
         resultSubtypes: '세부 {count}', resultDataDate: '데이터 기준:', resultCount: '{count}건', resultSubtypeCount: '세부 {count}건', resultTotal: '총 {count}개', resultRelated: '관련도 정렬',
         resultDomainsBoth: '공통/양쪽', resultDomainVisa: '사증발급', resultDomainStay: '체류민원', reviewOk: '2026.5 매뉴얼 확인됨', reviewPartial: '일부 정보 미검증', reviewNeeded: '2026.5 매뉴얼 확인 필요',
         procedureTitle: '절차별 안내', subcodeTitle: '세부코드', commonDocs: '공통서류', requiredDocs: '필수서류', additionalDocs: '추가/심사 필요 서류', conditionalDocs: '조건부 서류',
-        docGroupEmpty: '매뉴얼 확인 필요: 이 절차의 구조화된 구비서류는 아직 대표 데이터에 없습니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', manualReviewNeededShort: '매뉴얼 확인 필요',
+        docGroupEmpty: '매뉴얼 확인 필요: 이 절차의 구조화된 구비서류는 아직 대표 데이터에 없습니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', manualReviewNeededShort: '매뉴얼 확인 필요', docDefinitionNeeded: '문서 정의 필요',
+        sourceChipOfficial: '공식근거 있음', sourceChipReview: '매뉴얼 확인 필요', sourceChipAuto: '자동추출 검토 필요', sourceChipDeprecated: '폐지/비활성', subcodeMatchedLabel: '일치 세부코드', subcodeViewMatched: '이 세부코드 보기',
         feeRevenueStamp: '수입인지', feeNoRevenueStamp: '수입인지 없음', feeCardIssue: '등록증', feeAmountCheckNeeded: '금액 확인 필요', feeDefaultLabel: '수수료',
         commonWarningsTitle: '공통 매뉴얼 유의사항', sourceTitleResult: '출처 및 검증 상태', sourceManualFallback: '출처 매뉴얼', pageCheckNeeded: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceCheckNeeded: '매뉴얼 확인 필요',
         reviewComplete: '대표 데이터 검토 완료', reviewIncomplete: '대표 데이터이며 전체 수작업 검증 전입니다.', serviceDisclaimerShort: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.',
@@ -15082,7 +15186,8 @@ const UI_TRANSLATIONS = {
         resultSubtypes: '{count} subcodes', resultDataDate: 'Data as of:', resultCount: '{count} results', resultSubtypeCount: '{count} subcodes', resultTotal: '{count} total records', resultRelated: 'Sorted by relevance',
         resultDomainsBoth: 'Both manuals', resultDomainVisa: 'Visa issuance', resultDomainStay: 'Stay/residence', reviewOk: 'Verified against 2026.5 manuals', reviewPartial: 'Partly unverified', reviewNeeded: 'Needs 2026.5 manual review',
         procedureTitle: 'Procedure guidance', subcodeTitle: 'Subcodes', commonDocs: 'Common documents', requiredDocs: 'Required documents', additionalDocs: 'Additional/review documents', conditionalDocs: 'Conditional documents',
-        docGroupEmpty: 'Manual review needed: structured document data for this procedure is not yet in representative data.', eligibilityLabel: 'Eligibility/requirements', notesLabel: 'Notes', manualReviewNeededShort: 'Manual review needed',
+        docGroupEmpty: 'Manual review needed: structured document data for this procedure is not yet in representative data.', eligibilityLabel: 'Eligibility/requirements', notesLabel: 'Notes', manualReviewNeededShort: 'Manual review needed', docDefinitionNeeded: 'Document definition needed',
+        sourceChipOfficial: 'Official source', sourceChipReview: 'Manual review needed', sourceChipAuto: 'Auto-extracted, review needed', sourceChipDeprecated: 'Deprecated/inactive', subcodeMatchedLabel: 'Matched subcode', subcodeViewMatched: 'View this subcode',
         feeRevenueStamp: 'Revenue stamp', feeNoRevenueStamp: 'No revenue stamp', feeCardIssue: 'Residence card', feeAmountCheckNeeded: 'Amount check needed', feeDefaultLabel: 'Fee',
         commonWarningsTitle: 'Common manual cautions', sourceTitleResult: 'Sources and review status', sourceManualFallback: 'Source manual', pageCheckNeeded: 'Page check needed', confidenceLabel: 'Confidence', confidenceCheckNeeded: 'manual review needed',
         reviewComplete: 'Representative data reviewed', reviewIncomplete: 'Representative data before full manual review.', serviceDisclaimerShort: 'This service is informational, and actual permission depends on official review.',
