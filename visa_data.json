@@ -100,7 +100,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -218,7 +228,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -324,7 +344,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -430,7 +460,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -536,7 +576,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "searchAliases": [
       "F-1-5"
@@ -660,7 +710,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "searchAliases": [
       "F-1-6"
@@ -792,7 +852,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -898,7 +968,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1009,7 +1089,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "searchAliases": [
       "E-6-2"
@@ -1167,7 +1257,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1290,7 +1390,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1412,7 +1522,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1522,7 +1642,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1628,7 +1758,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -1771,7 +1911,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "searchAliases": [
       "B-2-1",
@@ -1916,7 +2066,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -2000,7 +2160,7 @@
     "newReqDocs": [
       "doc_passport"
     ],
-    "extReq": "체류자격변경 및체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+    "extReq": "체류자격변경 및 체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
     "extReqDocs": [],
     "faq": "Q: 사증면제협정국이면 취업이나 영리활동도 가능한가?\nA: 아니오. 단기 비영리 방문 중심으로 보며, 취업·영리활동은 별도 체류자격 또는 사증 필요 여부를 심사해야 함.\nQ: B-1과 B-2의 차이?\nA: B-1은 국가 간 협정에 의한 사증면제, B-2는 상호주의·일방면제·제주 특례 등에 의한 관광통과(45개국·지역).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "aliases": [
@@ -2037,7 +2197,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류자격변경 및체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+        "summary": "[입국 후 · 국내 체류절차] 체류자격변경 및 체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -2114,13 +2274,9 @@
     },
     "documents_initial": [
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -2247,7 +2403,7 @@
       "doc_passport",
       "doc_flight"
     ],
-    "extReq": "체류자격변경 및체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+    "extReq": "체류자격변경 및 체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
     "extReqDocs": [],
     "faq": "Q: 제주 무사증과 사증면제협정국은 같은 제도인가?\nA: 아니오. 제주 무사증은 제주 한정 체계이므로 일반 사증면제협정과 분리해 안내해야 함.\nQ: B-2-2 제주 무사증 제외국은?\nA: 법무부장관 고시 23개국: 시리아, 수단, 이란, 쿠바, 코소보, 팔레스타인, 아프가니스탄, 이라크, 나이지리아, 가나, 예멘, 감비아, 세네갈, 방글라데시, 키르기스, 파키스탄, 소말리아, 우즈베키스탄, 네팔, 카메룬, 스리랑카, 미얀마, 이집트.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "aliases": [
@@ -2300,7 +2456,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류자격변경 및체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+        "summary": "[입국 후 · 국내 체류절차] 체류자격변경 및 체류기간연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 신청서(34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -2377,17 +2533,13 @@
     },
     "documents_initial": [
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "왕복항공권",
         "note": "또는 제3국행 예약증"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -2518,7 +2670,7 @@
       "doc_schedule",
       "doc_finance"
     ],
-    "extReq": "체류기간 연장허가1. 체류기간 연장 허가 ❍ 단기방문(C-3) 활동 범위에 해당하고, 불법취업의 의심이 없으며 연장의 필요성이 인정되는 경우에 입국일로부터 체류기간 90일 범위 내 연장 가능 - (연장사유 예시) ①출국할 선박 등이 없거나 입국당시 예측하지 못한 사고․질병 등의 부득이한 사유를 입증하는 경우 ② 친지방문, 어학연수 등을 목적으로 입국한 자로 불법취업이 의심되지 않는 경우 (한국계 외국인, 결혼이민자 가족 등) ③상용목적자로 수출입 선적 지연, 출항지연 등의 사유로 체류기간 연장이 필요한 경우 ④ 복수사증 소지자가 입국한 뒤 부여된 체류기간을 초과하여 계속 체류할 필요성을 소명하는 경우 등2. 단체관광(C 2) 사증 소지자에 대한 체류기간연장 제한 단체관광객(C 2)과 보증개별사증(C 2)을 소지한 자에 대해서는 출국할 항공기 등이 없거나 영주․귀화신청 등 부득이한 사유가 있는 경우에 한하여 체류기간 연장 또는",
+    "extReq": "체류기간 연장허가 1. 체류기간 연장 허가 ❍ 단기방문(C-3) 활동 범위에 해당하고, 불법취업의 의심이 없으며 연장의 필요성이 인정되는 경우에 입국일로부터 체류기간 90일 범위 내 연장 가능 - (연장사유 예시) ①출국할 선박 등이 없거나 입국당시 예측하지 못한 사고․질병 등의 부득이한 사유를 입증하는 경우 ② 친지방문, 어학연수 등을 목적으로 입국한 자로 불법취업이 의심되지 않는 경우 (한국계 외국인, 결혼이민자 가족 등) ③상용목적자로 수출입 선적 지연, 출항지연 등의 사유로 체류기간 연장이 필요한 경우 ④ 복수사증 소지자가 입국한 뒤 부여된 체류기간을 초과하여 계속 체류할 필요성을 소명하는 경우 등2. 단체관광(C 2) 사증 소지자에 대한 체류기간연장 제한 단체관광객(C 2)과 보증개별사증(C 2)을 소지한 자에 대해서는 출국할 항공기 등이 없거나 영주․귀화신청 등 부득이한 사유가 있는 경우에 한하여 체류기간 연장 또는",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -3038,8 +3190,7 @@
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
@@ -3054,8 +3205,7 @@
         "note": "또는 제3국행 예약증"
       },
       {
-        "name": "숙소 제공 확인서 및 제공자 신분증 사본",
-        "note": "DATA_MISSING"
+        "name": "숙소 제공 확인서 및 제공자 신분증 사본"
       },
       {
         "name": "국내 체류 일정표",
@@ -3066,22 +3216,19 @@
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "기타 체류목적 입증서류",
         "note": "별도 소명자료"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -3379,25 +3526,20 @@
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
         "note": "3.5x4.5cm, 최근 6개월"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "해당 분야 전문성 입증서류",
         "note": "국가공인자격증 등"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -3494,7 +3636,7 @@
       "doc_career",
       "doc_finance"
     ],
-    "extReq": "체류기간 연장허가1. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료 ② 연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
+    "extReq": "체류기간 연장허가 1. 제출 서류 필수서류 ①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료 ② 연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -3530,7 +3672,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료 ② 연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 제출 서류 필수서류 ①신청서(별지 제34호서식), 여권 원본, 외국인등록증, 수수료 ② 연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -3592,7 +3734,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -3647,31 +3789,27 @@
         "note": "초청목적, 귀국보증 등 상세 명시"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       },
       {
         "name": "최종 학위/학력증명서",
         "note": "아포스티유/영사확인 필수"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "재정능력 입증서류",
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -3682,7 +3820,6 @@
         "note": "출석부, 진도표 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -4354,8 +4491,7 @@
     },
     "documents_initial": [
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       },
       {
         "name": "최종 학위/학력증명서",
@@ -4370,15 +4506,13 @@
         "note": "보건소/지정병원, 고위험 35개국 필수"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -4389,12 +4523,10 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       },
       {
-        "name": "지도교수 또는 유학담당자 확인서",
-        "note": "DATA_MISSING"
+        "name": "지도교수 또는 유학담당자 확인서"
       },
       {
         "name": "성적증명서",
@@ -4788,27 +4920,23 @@
         "note": "초청목적, 귀국보증 등 상세 명시"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       },
       {
         "name": "재정능력 입증서류",
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -4819,7 +4947,6 @@
         "note": "출석부, 진도표 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -4957,7 +5084,7 @@
       "doc_degree",
       "doc_finance"
     ],
-    "extReq": "체류기간 연장허가1. 어학연수생(D 1, D 7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병․사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청 : 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지",
+    "extReq": "체류기간 연장허가 1. 어학연수생(D 1, D 7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병․사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청 : 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -5063,7 +5190,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "체류기간 연장허가1. 어학연수생(D 1, D 7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병․사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청 : 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지 ",
+        "summary": "체류기간 연장허가 1. 어학연수생(D 1, D 7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병․사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청 : 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지 ",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -5131,7 +5258,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -5246,7 +5373,7 @@
                 "국내 체류비용 부담능력 입증서류",
                 "후견 보증서",
                 "후견인과의 관계 증명서류",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -5303,12 +5430,10 @@
     },
     "documents_initial": [
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "최종 학위/학력증명서",
@@ -5319,15 +5444,13 @@
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -5342,8 +5465,7 @@
         "note": "3.5x4.5cm, 최근 6개월"
       },
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       },
       {
         "name": "출석확인서",
@@ -5682,8 +5804,7 @@
         "note": "대조용 필수지참"
       },
       {
-        "name": "여권 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 인적사항면 사본"
       },
       {
         "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
@@ -5698,15 +5819,13 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       },
       {
         "name": "출석확인서",
         "note": "출석률 명시"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
@@ -5717,8 +5836,7 @@
         "note": "대조용 필수지참"
       },
       {
-        "name": "여권 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -5733,7 +5851,6 @@
         "note": "출석률 명시"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -5976,7 +6093,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -6035,27 +6152,23 @@
         "note": "발급 3개월 이내"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "납세증명서",
         "note": "국세 및 지방세 완납증명"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -6070,16 +6183,14 @@
         "note": "3.5x4.5cm, 최근 6개월"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "파견명령서",
         "note": "본사 발급, 파견기간 및 직책 명시"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "납세증명서",
@@ -6090,7 +6201,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -6449,7 +6559,7 @@
                 "투자기업등록증 사본",
                 "투자자금 도입관련 입증서류",
                 "영업실적(수출입실적 등) 증명서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "사업장 존재 입증서류"
               ],
               "additionalDocs": [],
@@ -6486,7 +6596,7 @@
                 "사업자등록증 사본, 법인등기사항전부증명서",
                 "벤처기업확인서 또는 예비벤처기업확인서",
                 "지식재산권 보유 또는 우수 기술력 입증서류",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "사무실 임대차계약서",
                 "영업실적(수출입실적 등) 증명서"
               ],
@@ -6522,7 +6632,7 @@
                 "공동사업자인 국민의 사업자금 사용내역 입증서류",
                 "투자자금 도입관련 입증서류",
                 "영업실적(수출입실적 등) 증명서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "사업장 존재 입증서류"
               ],
               "additionalDocs": [],
@@ -6622,31 +6732,26 @@
         "note": "발급 3개월 이내"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
-        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류",
-        "note": "DATA_MISSING"
+        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류"
       },
       {
         "name": "재정능력 입증서류",
         "note": "잔고증명, 소득증명 등 총괄"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -6657,8 +6762,7 @@
         "note": "발급 3개월 이내"
       },
       {
-        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류",
-        "note": "DATA_MISSING"
+        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류"
       },
       {
         "name": "납세증명서",
@@ -6669,7 +6773,6 @@
         "note": "최근 1년"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -6828,7 +6931,7 @@
       "doc_tax",
       "doc_plan"
     ],
-    "extReq": "체류기간 연장허가1. 점수제 무역비자(D 1) 소지자의 기간연장 체류기간 연장허가 가. 허가요건: 무역비자 점수제의 총 50점 중 필수항목 점수가 5점 이상인 자로 각 연장기준 적용 <붙임1 점수표의 ‘체류기간 연장기준’> - (추천서 특례) 무역교육 기관이 자체 심사를 거쳐 외국인을 추천할 경우 필수항목 점수(5점)로 인정하여 체류기간 연장 허용 ❍ (심화교육과정 특례) 무역교육 기관에서 심화교육 과정(30시간 이상)을 이수한 외국인에게 체류기간 연장 허가에 필요한 항목별 점수(선택항목)에 3점 추가 부여 나. 신청서류 ❍ 신청서 (별지 제34호 서식), 여권, 외국인등록증, 수수료 등 ❍ 사업자등록증 사본, 사업장 존재 입증서류(임대차계약서 등) ❍ 주거지 입증 서류 (임대차계약서, 월세 지급 입증서류 등) ❍ 점수제 해당 점수 입증서류 - 무역실적 입증서류(택1 ① 한국무역협회장 또는 한국무역통계진흥원장44)이 발행하는 “수출입실적증명서” ② 외국환 은행 발행 “수출실적 증명원” ③ 온라인몰 거래내역(단, 수출입",
+    "extReq": "체류기간 연장허가 1. 점수제 무역비자(D 1) 소지자의 기간연장 체류기간 연장허가 가. 허가요건: 무역비자 점수제의 총 50점 중 필수항목 점수가 5점 이상인 자로 각 연장기준 적용 <붙임1 점수표의 ‘체류기간 연장기준’> - (추천서 특례) 무역교육 기관이 자체 심사를 거쳐 외국인을 추천할 경우 필수항목 점수(5점)로 인정하여 체류기간 연장 허용 ❍ (심화교육과정 특례) 무역교육 기관에서 심화교육 과정(30시간 이상)을 이수한 외국인에게 체류기간 연장 허가에 필요한 항목별 점수(선택항목)에 3점 추가 부여 나. 신청서류 ❍ 신청서 (별지 제34호 서식), 여권, 외국인등록증, 수수료 등 ❍ 사업자등록증 사본, 사업장 존재 입증서류(임대차계약서 등) ❍ 주거지 입증 서류 (임대차계약서, 월세 지급 입증서류 등) ❍ 점수제 해당 점수 입증서류 - 무역실적 입증서류(택1 ① 한국무역협회장 또는 한국무역통계진흥원장44)이 발행하는 “수출입실적증명서” ② 외국환 은행 발행 “수출실적 증명원” ③ 온라인몰 거래내역(단, 수출입",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -6898,7 +7001,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 점수제 무역비자(D 1) 소지자의 기간연장 체류기간 연장허가 가. 허가요건: 무역비자 점수제의 총 50점 중 필수항목 점수가 5점 이상인 자로 각 연장기준 적용 <붙임1 점수표의 ‘체류기간 연장기준’> - (추천서 특례) 무역교육 기관이 자체 심사를 거쳐 외국인을 추천할 경우 필수항목 점수(5점)로 인정하여 체류기간 연장 허용 ❍ (심화교육과정 특례) 무역교육 기관에서 심화교육 과정(30시간 이상)을 이수한 외국인에게 체류기간 연장 허가에 필요한 항목별 점수(선택항목)에 3점 추가 부여 나. 신청서류 ❍ 신청서 (별지 제34호 서식), 여권, 외국인등록증, 수수료 등 ❍ 사업자등록증 사본, 사업장 존재 입증서류(임대차계약서 등) ❍ 주거지 입증 서류 (임대차계약서, 월세 지급 입증서류 등) ❍ 점수제 해당 점수 입증서류 - 무역실적 입증서류(택1 ① 한국무역협회장 또는 한국무역통계진흥원장44)이 발행하는 “수출입실적증명서” ② 외국환 은행 발행 “수출실적 증명원” ③ 온라인몰 거래내역(단, 수출입",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 점수제 무역비자(D 1) 소지자의 기간연장 체류기간 연장허가 가. 허가요건: 무역비자 점수제의 총 50점 중 필수항목 점수가 5점 이상인 자로 각 연장기준 적용 <붙임1 점수표의 ‘체류기간 연장기준’> - (추천서 특례) 무역교육 기관이 자체 심사를 거쳐 외국인을 추천할 경우 필수항목 점수(5점)로 인정하여 체류기간 연장 허용 ❍ (심화교육과정 특례) 무역교육 기관에서 심화교육 과정(30시간 이상)을 이수한 외국인에게 체류기간 연장 허가에 필요한 항목별 점수(선택항목)에 3점 추가 부여 나. 신청서류 ❍ 신청서 (별지 제34호 서식), 여권, 외국인등록증, 수수료 등 ❍ 사업자등록증 사본, 사업장 존재 입증서류(임대차계약서 등) ❍ 주거지 입증 서류 (임대차계약서, 월세 지급 입증서류 등) ❍ 점수제 해당 점수 입증서류 - 무역실적 입증서류(택1 ① 한국무역협회장 또는 한국무역통계진흥원장44)이 발행하는 “수출입실적증명서” ② 외국환 은행 발행 “수출실적 증명원” ③ 온라인몰 거래내역(단, 수출입",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -7089,7 +7192,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -7140,27 +7243,23 @@
     },
     "documents_initial": [
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "납세증명서",
         "note": "국세 및 지방세 완납증명"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -7171,8 +7270,7 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "납세증명서",
@@ -7187,7 +7285,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -7470,7 +7567,7 @@
               ],
               "requiredDocs": [
                 "구직활동계획서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "체류비 입증서류"
               ],
               "additionalDocs": [],
@@ -7509,7 +7606,7 @@
               ],
               "requiredDocs": [
                 "기술창업 활동계획서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "체류비 입증서류"
               ],
               "additionalDocs": [],
@@ -7552,7 +7649,7 @@
                 "초청기업의 고용보험가입자 명부 또는 연구시설·연구인력 입증서류",
                 "초청기업 자격요건 유지 입증서류",
                 "인턴 또는 구직 활동계획서",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -7676,7 +7773,7 @@
               "requiredDocs": [
                 "구직활동계획서",
                 "국내 정규 대학 전문학사 이상 학위증 또는 졸업증명서",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": []
@@ -7818,27 +7915,23 @@
         "note": "아포스티유/영사확인 필수"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       },
       {
         "name": "재정능력 입증서류",
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -7861,12 +7954,10 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       },
       {
-        "name": "구직활동계획서",
-        "note": "DATA_MISSING"
+        "name": "구직활동계획서"
       },
       {
-        "name": "점수제 자기평가표 및 증빙서류",
-        "note": "DATA_MISSING"
+        "name": "점수제 자기평가표 및 증빙서류"
       },
       {
         "name": "결핵건강진단서",
@@ -8252,31 +8343,26 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "최종 학위/학력증명서",
         "note": "아포스티유/영사확인 필수"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -8287,12 +8373,10 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "납세증명서",
@@ -8303,7 +8387,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -8523,7 +8606,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -8745,8 +8828,7 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "최종 학위/학력증명서",
@@ -8761,23 +8843,20 @@
         "note": "법무부 지정 마약검사 필수 포함"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "기타 체류목적 입증서류",
         "note": "별도 소명자료"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -8788,12 +8867,10 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "납세증명서",
@@ -8804,7 +8881,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -9038,7 +9114,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -9223,31 +9299,26 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "최종 학위/학력증명서",
         "note": "아포스티유/영사확인 필수"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -9258,12 +9329,10 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "납세증명서",
@@ -9274,7 +9343,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -9369,7 +9437,7 @@
       "doc_career",
       "doc_emp_contract"
     ],
-    "extReq": "체류기간 연장허가1. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 파견명령서(본사발행) 또는 재직증명서 ③ 기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본 ④ 사업자등록증 사본 ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+    "extReq": "체류기간 연장허가 1. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 파견명령서(본사발행) 또는 재직증명서 ③ 기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본 ④ 사업자등록증 사본 ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -9398,7 +9466,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 파견명령서(본사발행) 또는 재직증명서 ③ 기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본 ④ 사업자등록증 사본 ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 파견명령서(본사발행) 또는 재직증명서 ③ 기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본 ④ 사업자등록증 사본 ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -9461,7 +9529,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -9615,23 +9683,19 @@
         "note": "국가공인자격증 등"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -9642,19 +9706,16 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -9748,7 +9809,7 @@
       "doc_specialty",
       "doc_emp_contract"
     ],
-    "extReq": "체류기간 연장허가1. 제출서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 고용계약서 사본 ③ ‘부가가치세법’에 따른 사업자등록증 ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+    "extReq": "체류기간 연장허가 1. 제출서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 고용계약서 사본 ③ ‘부가가치세법’에 따른 사업자등록증 ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -9776,7 +9837,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 제출서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 고용계약서 사본 ③ ‘부가가치세법’에 따른 사업자등록증 ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 제출서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 고용계약서 사본 ③ ‘부가가치세법’에 따른 사업자등록증 ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -9841,7 +9902,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -9993,19 +10054,16 @@
         "note": "국가공인자격증 등"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -10020,15 +10078,13 @@
         "note": "국가공인자격증 등"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -10252,7 +10308,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -10480,31 +10536,26 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "기타 체류목적 입증서류",
         "note": "별도 소명자료"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -10515,19 +10566,16 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -10953,35 +11001,30 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "최종 학위/학력증명서",
         "note": "아포스티유/영사확인 필수"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "주무부처 고용추천서",
         "note": "해당 직종 한정"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -10992,16 +11035,13 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "법인등기사항전부증명서",
@@ -11020,16 +11060,13 @@
         "note": "국세 및 지방세 완납증명"
       },
       {
-        "name": "신청 사유 입증서류",
-        "note": "DATA_MISSING"
+        "name": "신청 사유 입증서류"
       },
       {
-        "name": "국세·지방세 납세증명서",
-        "note": "DATA_MISSING"
+        "name": "국세·지방세 납세증명서"
       },
       {
-        "name": "고용보험 가입자 명부",
-        "note": "DATA_MISSING"
+        "name": "고용보험 가입자 명부"
       }
     ],
     "hikorea_task_type": "체류기간 연장허가",
@@ -11346,8 +11383,7 @@
         "note": "고용노동부 발급"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "의료기관 건강진단서",
@@ -11358,15 +11394,13 @@
         "note": "보건소/지정병원, 고위험 35개국 필수"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -11377,15 +11411,13 @@
         "note": "고용노동부 발급"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -11772,31 +11804,26 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "의료기관 건강진단서",
         "note": "법무부 지정 마약검사 필수 포함"
       },
       {
-        "name": "표준입학허가서 또는 재학/수료증명서",
-        "note": "DATA_MISSING"
+        "name": "표준입학허가서 또는 재학/수료증명서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -11811,12 +11838,10 @@
         "note": "고용노동부 발급"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "기타 체류목적 입증서류",
@@ -12030,7 +12055,7 @@
       "doc_specialty",
       "doc_health"
     ],
-    "extReq": "체류기간 연장허가1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E 1, E 3, 한국해운조합), 선원취업활동기간연장 추천서(E 2, 수협중앙회) ⑥ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상 : 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류 : ① 신청서(별지 34호서식), 여권 및 외국인 등록증 ② 각서",
+    "extReq": "체류기간 연장허가 1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E 1, E 3, 한국해운조합), 선원취업활동기간연장 추천서(E 2, 수협중앙회) ⑥ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상 : 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류 : ① 신청서(별지 34호서식), 여권 및 외국인 등록증 ② 각서",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -12090,7 +12115,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E 1, E 3, 한국해운조합), 선원취업활동기간연장 추천서(E 2, 수협중앙회) ⑥ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상 : 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류 : ① 신청서(별지 34호서식), 여권 및 외국인 등록증 ② 각서",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 신청서(별지 34호서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E 1, E 3, 한국해운조합), 선원취업활동기간연장 추천서(E 2, 수협중앙회) ⑥ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상 : 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류 : ① 신청서(별지 34호서식), 여권 및 외국인 등록증 ② 각서",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [],
@@ -12182,8 +12207,7 @@
     },
     "documents_initial": [
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
         "name": "해당 분야 전문성 입증서류",
@@ -12194,15 +12218,13 @@
         "note": "법무부 지정 마약검사 필수 포함"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -12213,12 +12235,10 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "표준근로계약서 또는 고용계약서 원본/사본",
-        "note": "DATA_MISSING"
+        "name": "표준근로계약서 또는 고용계약서 원본/사본"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "신원보증서",
@@ -12229,7 +12249,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -12367,7 +12386,7 @@
       "doc_fam_rel",
       "doc_purpose"
     ],
-    "extReq": "체류기간 연장허가1. 국내 친․인척 방문목적으로 입국한 자의 체류기간연장 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친․인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간연장 가. 허가기준 : 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준 : 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
+    "extReq": "체류기간 연장허가 1. 국내 친․인척 방문목적으로 입국한 자의 체류기간연장 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친․인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간연장 가. 허가기준 : 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준 : 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -12530,7 +12549,7 @@
                 "신원보증서",
                 "이혼 사실이 기재된 혼인관계 증명서",
                 "체류 불가피성 소명자료",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -12593,7 +12612,7 @@
                 "신청서(별지 34호 서식), 여권 및 외국인등록증, 표준규격사진 1매, 수수료",
                 "배우자 또는 그 부모의 난민인정증명서",
                 "난민인정자의 가족임을 입증하는 서류",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": []
@@ -12627,7 +12646,7 @@
                 "미성년 외국인 자녀의 여권 및 출생 관련 공적 증명서류 원본과 사본",
                 "양육권 보유관계 입증서류",
                 "결혼이민자와 한국인 배우자의 신원보증서",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -12660,7 +12679,7 @@
       },
       "extension": {
         "available": true,
-        "summary": "체류기간 연장허가1. 국내 친․인척 방문목적으로 입국한 자의 체류기간연장 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친․인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간연장 가. 허가기준 : 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준 : 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
+        "summary": "체류기간 연장허가 1. 국내 친․인척 방문목적으로 입국한 자의 체류기간연장 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친․인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만 료 예 고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간연장 가. 허가기준 : 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준 : 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [],
@@ -12759,7 +12778,7 @@
               "requiredDocs": [
                 "신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료",
                 "출생증명서 등 부모와의 가족관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": []
@@ -12812,8 +12831,7 @@
     },
     "documents_initial": [
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -12828,15 +12846,13 @@
         "note": "별도 소명자료"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -12859,8 +12875,7 @@
         "note": "상세"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       }
     ],
     "hikorea_task_type": "체류기간 연장허가",
@@ -13500,23 +13515,19 @@
         "note": "잔고증명, 소득증명 등 총괄"
       },
       {
-        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류",
-        "note": "DATA_MISSING"
+        "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류"
       },
       {
-        "name": "TOPIK 성적표 또는 한국어능력 입증서류",
-        "note": "DATA_MISSING"
+        "name": "TOPIK 성적표 또는 한국어능력 입증서류"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -13535,12 +13546,10 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       },
       {
-        "name": "점수제 자기평가표 및 증빙서류",
-        "note": "DATA_MISSING"
+        "name": "점수제 자기평가표 및 증빙서류"
       },
       {
-        "name": "국세·지방세 납세증명서",
-        "note": "DATA_MISSING"
+        "name": "국세·지방세 납세증명서"
       }
     ],
     "hikorea_task_type": "체류기간 연장허가",
@@ -13837,7 +13846,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -13963,7 +13972,7 @@
               "requiredDocs": [
                 "가족관계 입증서류(결혼 또는 출생증명서 등)",
                 "체류경비 등 재정능력 입증서류",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "신원보증서",
                 "체류자격 변경 사유서 및 관련 증빙 서류"
               ],
@@ -14073,8 +14082,7 @@
     },
     "documents_initial": [
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -14085,19 +14093,16 @@
         "note": "본국 권한기관 발급 및 공증/확인"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -14439,7 +14444,7 @@
               ],
               "requiredDocs": [
                 "한국어능력 입증서류",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -14503,7 +14508,7 @@
                 "수수료"
               ],
               "requiredDocs": [
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -14615,8 +14620,7 @@
     },
     "documents_initial": [
       {
-        "name": "TOPIK 성적표 또는 한국어능력 입증서류",
-        "note": "DATA_MISSING"
+        "name": "TOPIK 성적표 또는 한국어능력 입증서류"
       },
       {
         "name": "해외 범죄경력증명서",
@@ -14627,11 +14631,9 @@
         "note": "공적장부 등"
       },
       {
-        "name": "사회통합프로그램(KIIP) 이수증/합격증",
-        "note": "DATA_MISSING"
+        "name": "사회통합프로그램(KIIP) 이수증/합격증"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
@@ -14895,7 +14897,7 @@
       "doc_inc_proof",
       "doc_kiip"
     ],
-    "extReq": "체류기간 연장허가필수서류① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료② 체류지 입증서류(임대차계약서, 부동산 등기부등본, 전세계약서, 매매계약서 등 및 숙소제공 확인서)추가서류③ 배우자 또는 부모의 외국인등록증",
+    "extReq": "영주(F-5)는 체류기간 상한이 없는 영주자격으로 일반적인 체류기간 연장 대상이 아니며, 영주증(영주카드)은 유효기간 10년으로 만료 전 재발급이 필요합니다. 제출서류는 세부약호·사안에 따라 다르므로 관할 출입국·외국인관서 및 체류민원 매뉴얼에서 확인하세요.",
     "extReqDocs": [
       "doc_app_form",
       "doc_id",
@@ -14984,18 +14986,20 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "체류기간 연장허가필수서류① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료② 체류지 입증서류(임대차계약서, 부동산 등기부등본, 전세계약서, 매매계약서 등 및 숙소제공 확인서)추가서류③ 배우자 또는 부모의 외국인등록증",
+        "summary": "[입국 후 · 국내 체류절차] 영주(F-5)는 체류기간 상한이 없는 영주자격으로, 일반적인 '체류기간 연장' 대상이 아닙니다. 다만 영주증(영주카드)의 유효기간은 10년이며 만료 전 재발급이 필요합니다(영주자격 자체의 연장이 아니라 영주증 재발급 절차). 세부약호·국적·체류 이력에 따라 제출서류가 달라질 수 있어 관할 출입국·외국인관서 및 체류민원 매뉴얼 확인이 필요합니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
             "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료",
-            "체류지 입증서류(임대차계약서, 부동산 등기부등본, 전세계약서, 매매계약서 등 및 숙소제공 확인서)추가서류",
-            "배우자 또는 부모의 외국인등록증"
+            "체류지 입증서류(임대차계약서, 부동산 등기부등본, 전세계약서, 매매계약서 등 및 숙소제공 확인서)",
+            "추가서류: 배우자 또는 부모의 외국인등록증 등(사안별 해당 시)",
+            "위 항목은 영주증 재발급 등 절차 기준으로 자동 추출되었으며, 세부 사안은 공식 확인이 필요합니다."
           ],
           "additionalDocs": [],
           "conditionalDocs": []
         },
         "notes": [
+          "[2026-06-08 출처 대조] 2026-06-01 체류민원 매뉴얼 영주(F-5) 절 '영주증 발급 및 재발급 특례' 기준: 영주증 유효기간은 발급일로부터 10년이며 만료일 전 재발급이 필요(기간 도과 시 과태료). 영주(F-5)는 체류기간 상한이 없어 일반적인 '체류기간 연장' 절차와 구분되며, 여기 표시된 항목은 영주증 재발급 등 절차 기준입니다. 세부약호·사안별 서류는 수동 확인이 필요합니다.",
           "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
         ],
         "manualRefs": [
@@ -15070,15 +15074,12 @@
         "note": "자국 정부 발급, 아포스티유/영사확인"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       },
       {
-        "name": "사회통합프로그램(KIIP) 이수증/합격증",
-        "note": "DATA_MISSING"
+        "name": "사회통합프로그램(KIIP) 이수증/합격증"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
@@ -15093,27 +15094,22 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "국세·지방세 납세증명서",
-        "note": "DATA_MISSING"
+        "name": "국세·지방세 납세증명서"
       },
       {
-        "name": "사회통합프로그램(KIIP) 이수증/합격증명서",
-        "note": "DATA_MISSING"
+        "name": "사회통합프로그램(KIIP) 이수증/합격증명서"
       },
       {
-        "name": "재산세 과세증명 또는 부동산 보유 입증서류",
-        "note": "DATA_MISSING"
+        "name": "재산세 과세증명 또는 부동산 보유 입증서류"
       },
       {
-        "name": "재직증명서 또는 근무사실 입증서류",
-        "note": "DATA_MISSING"
+        "name": "재직증명서 또는 근무사실 입증서류"
       },
       {
         "name": "신원보증서",
         "note": "보증기간 명시"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -15300,7 +15296,7 @@
       "doc_health",
       "doc_topik"
     ],
-    "extReq": "체류기간 연장허가(F 1)국민의 배우자(F 1)에 대한 체류기간 연장허가1. 1. 국민의 배우자(F 1)국민의 배우자(F 1)에 대한 에 대한 체류기간연장허가체류기간연장허가가. 가. 최초최초 체류기간 연장허가 체류기간 연장허가 결혼이민(F 1, 90일) 사증으로 입국 후 90일 이내에 주소지 관할 결혼이민(F 1, 90일) 사증으로 입국 후 90일 이내에 주소지 관할 청(사무소·출장소)에 체류기간 연장 및 외국인등록 신청청(사무소·출장소)에 체류기간 연장 및 외국인등록 신청 체류허가기간 : 입국일로부터 체류허가기간 : 입국일로부터 1년1년 - 단, 법무부장관이 고시한 국제결혼 안내프로그램 대상 7개 국가*의 - 단, 법무부장관이 고시한 국제결혼 안내프로그램 대상 7개 국가*의 국민이 입국 후 조기적응프로그램을 이수한 경우 외국인등록 시 2국민이 입국 후 조기적응프로그램을 이수한 경우 외국인등록 시 2년, 미년, 미이수자는 입국일로부터 2년까지 6개월 단위로 체류기간 부여이수자는 입국일로부터 2년까지 6개월 단위로 체류",
+    "extReq": "체류기간 연장허가(F 1)국민의 배우자(F 1)에 대한 체류기간 연장허가 1. 1. 국민의 배우자(F 1)국민의 배우자(F 1)에 대한 에 대한 체류기간연장허가체류기간연장허가가. 가. 최초최초 체류기간 연장허가 체류기간 연장허가 결혼이민(F 1, 90일) 사증으로 입국 후 90일 이내에 주소지 관할 결혼이민(F 1, 90일) 사증으로 입국 후 90일 이내에 주소지 관할 청(사무소·출장소)에 체류기간 연장 및 외국인등록 신청청(사무소·출장소)에 체류기간 연장 및 외국인등록 신청 체류허가기간 : 입국일로부터 체류허가기간 : 입국일로부터 1년1년 - 단, 법무부장관이 고시한 국제결혼 안내프로그램 대상 7개 국가*의 - 단, 법무부장관이 고시한 국제결혼 안내프로그램 대상 7개 국가*의 국민이 입국 후 조기적응프로그램을 이수한 경우 외국인등록 시 2국민이 입국 후 조기적응프로그램을 이수한 경우 외국인등록 시 2년, 미년, 미이수자는 입국일로부터 2년까지 6개월 단위로 체류기간 부여이수자는 입국일로부터 2년까지 6개월 단위로 체류",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -15558,7 +15554,7 @@
                 "한국인 배우자의 혼인관계증명서(상세)",
                 "한국인 배우자의 주민등록등본",
                 "외국인 직업 신고서",
-                "체류지 입증서류"
+                "doc_residence_proof_generic"
               ],
               "additionalDocs": [],
               "conditionalDocs": [
@@ -15599,7 +15595,7 @@
                 "한국인 배우자의 혼인관계증명서(상세)",
                 "한국인 배우자의 주민등록등본",
                 "외국인 직업 신고서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "별거 사유를 입증하는 서류"
               ],
               "additionalDocs": [],
@@ -15641,7 +15637,7 @@
                 "한국인 배우자의 혼인관계증명서(상세)",
                 "한국인 배우자의 주민등록등본",
                 "외국인 직업 신고서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "이혼소송 계속 사실을 입증하는 서류"
               ],
               "additionalDocs": [],
@@ -15681,7 +15677,7 @@
                 "한국인 배우자의 혼인관계증명서(상세)",
                 "한국인 배우자의 주민등록등본",
                 "외국인 직업 신고서",
-                "체류지 입증서류",
+                "doc_residence_proof_generic",
                 "배우자 실종 사실을 입증하는 서류"
               ],
               "additionalDocs": [],
@@ -16000,8 +15996,7 @@
         "note": "상세"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       },
       {
         "name": "체류지 입증서류",
@@ -16020,19 +16015,16 @@
         "note": "법무부 지정 마약검사 필수 포함"
       },
       {
-        "name": "TOPIK 성적표 또는 한국어능력 입증서류",
-        "note": "DATA_MISSING"
+        "name": "TOPIK 성적표 또는 한국어능력 입증서류"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -16059,8 +16051,7 @@
         "note": "본국 권한기관 발급 및 공증/확인"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       },
       {
         "name": "체류지 입증서류",
@@ -16071,16 +16062,13 @@
         "note": "보증기간 명시"
       },
       {
-        "name": "외국인 취업정보 온라인 신고 내역",
-        "note": "DATA_MISSING"
+        "name": "외국인 취업정보 온라인 신고 내역"
       },
       {
-        "name": "신용정보조회서 또는 신용상태 입증서류",
-        "note": "DATA_MISSING"
+        "name": "신용정보조회서 또는 신용상태 입증서류"
       },
       {
-        "name": "소득세 납세사실증명서 또는 소득세 신고내역",
-        "note": "DATA_MISSING"
+        "name": "소득세 납세사실증명서 또는 소득세 신고내역"
       },
       {
         "name": "주민등록등본",
@@ -16236,7 +16224,7 @@
       "doc_plan",
       "doc_finance"
     ],
-    "extReq": "체류기간 연장허가 체류기간 연장허가 1. 산업재해 청구 및 치료 중인 사람과 그 가족 가. 체류허가기간 원칙적으로 체류허가기간 6월 범위 내 (단, 중증 환자는 1년의 범위 내) 나. 제출서류 ① 신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 산재로 인한 병원 진단서 ③ 근로복지공단 발행 ‘진료계획 심사 결정 통지서(산재보험카드)’, 후유증상서비스 카드 등 ④ 기타(G-1) 자격 심사확인서(별첨 2 서식) ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 질병, 사고로 치료 중인 사람과 그 가족 가. 체류허가기간 원칙적으로 1회 체류허가기간 6월 범위 내 나. 제출서류 ① 신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 의료기관에서 발행한 진단서 등 장기치료의 필요성을 입증하는 서류 ③ 치료 및 체류 비용 조달 능력 입증서류 ④ 신원보증서 ⑤ 기타(G-1) 자격 심사확인서(별첨 2 서식) ⑥ 가족관계 입증서류(",
+    "extReq": "기타(G-1)는 세부약호별로 연장 요건·허가기간·제출서류가 크게 다릅니다(예: 산업재해·질병치료·소송·임금체불·난민신청 관련 등). 공통 신청서류 외 세부약호별 서류는 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인하세요.",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -16322,34 +16310,25 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "체류기간 연장허가 체류기간 연장허가 1. 산업재해 청구 및 치료 중인 사람과 그 가족 가. 체류허가기간 원칙적으로 체류허가기간 6월 범위 내 (단, 중증 환자는 1년의 범위 내) 나. 제출서류 ① 신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 산재로 인한 병원 진단서 ③ 근로복지공단 발행 ‘진료계획 심사 결정 통지서(산재보험카드)’, 후유증상서비스 카드 등 ④ 기타(G-1) 자격 심사확인서(별첨 2 서식) ⑤ 체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 질병, 사고로 치료 중인 사람과 그 가족 가. 체류허가기간 원칙적으로 1회 체류허가기간 6월 범위 내 나. 제출서류 ① 신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 의료기관에서 발행한 진단서 등 장기치료의 필요성을 입증하는 서류 ③ 치료 및 체류 비용 조달 능력 입증서류 ④ 신원보증서 ⑤ 기타(G-1) 자격 심사확인서(별첨 2 서식) ⑥ 가족관계 입증서류(",
+        "summary": "[입국 후 · 국내 체류절차] 기타(G-1) 자격의 체류기간 연장 요건과 제출서류는 세부약호(예: 산업재해 치료, 질병·사고 치료, 소송 진행, 임금체불 구제, 난민신청 관련 등)에 따라 크게 다릅니다. 공통적으로 통합신청서(별지 제34호 서식)·여권·외국인등록증·수수료가 필요하며, 세부약호별 추가서류와 허가기간은 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인해야 합니다.",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
-            "통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
-            "산재로 인한 병원 진단서",
-            "근로복지공단 발행 ‘진료계획 심사 결정 통지서(산재보험카드)’, 후유증상서비스 카드 등",
-            "기타(G-1) 자격 심사확인서(별첨 2 서식)",
-            "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 질병, 사고로 치료 중인 사람과 그 가족 가. 체류허가기간 원칙적으로 1회 체류허가기간 6월 범위 내 나. 제출서류",
-            "의료기관에서 발행한 진단서 등 장기치료의 필요성을 입증하는 서류",
-            "치료 및 체류 비용 조달 능력 입증서류",
-            "가족관계 입증서류(배우자 또는 직계가족 동반시만 해당)",
-            "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등3. 각종 소송진행 중인 사람 (G 3) 가. 체류허가기간 1회 체류허가기간 6월 범위 내 나. 제출서류",
-            "소장 사본, 소송제기 증명원, 법률구조결정서 사본, 기타 청구권의 체류기간 연장허가 존재를 확인할 수 있는 서류",
-            "가족관계 또는 보호자 입증서류(가족․보호자에 한함)",
-            "체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등4. 임금체불 노동관서 중재중인 사람 (G 4) 가. 체류허가기간 G 4 자격 소지자는 6개월 범위 내에서 체류기간연장 ‘출국기간의 유예’를 받은 자는 3개월 범위 내에서 기간연장 나. 제출서류"
+            "통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 (공통 신청서류)",
+            "세부약호별(산업재해·질병치료·소송·임금체불·난민신청 관련 등) 추가 제출서류 및 허가기간은 사안마다 달라 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인 (G-1은 세부약호별로 요건이 상이)"
           ],
           "additionalDocs": [],
           "conditionalDocs": []
         },
         "notes": [
+          "[2026-06-08 출처 대조] 2026-06-01 체류민원 매뉴얼 기타(G-1) p.498 '해당자(법무부장관이 인정하는 사람)' 목록 기준: 산업재해 청구·치료, 질병/사고 치료, 소송 진행, 임금체불 중재, 난민신청 등 세부 사례별로 요건이 상이합니다. 특정 세부 사례(예: 산업재해)의 서류를 G-1 일반 연장요건으로 일반화하지 않습니다(상위코드 승격 금지). 세부약호별 서류는 수동 확인이 필요합니다.",
           "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
         ],
         "manualRefs": [
           {
             "manualName": "체류민원",
             "manualVersion": "2026.5",
-            "pageRange": "p. 513",
+            "pageRange": "pp. 498-513",
             "confidence": "auto_extracted_needs_review",
             "needsManualReview": true,
             "sourceDate": "2026-06-01",
@@ -16689,31 +16668,27 @@
     },
     "documents_initial": [
       {
-        "name": "난민인정신청서 원본",
-        "note": "DATA_MISSING"
+        "name": "난민인정신청서 원본"
       },
       {
         "name": "의료기관 진단서",
         "note": "상병명, 요양기간 명시"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       },
       {
         "name": "재정능력 입증서류",
         "note": "잔고증명, 소득증명 등 총괄"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -16728,7 +16703,6 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -16969,7 +16943,17 @@
       "removalFromVisaDataAllowed": false,
       "requiresParityBeforeRemoval": true,
       "aliasDeprecatedAt": "2026-05-21-source-audit",
-      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
+      "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+      "sourceGroundedCleanup20260608": {
+        "reviewedAt": "2026-06-08",
+        "classification": "non_canonical_scenario_help_faq",
+        "notOfficialVisaStatusGuidance": true,
+        "verified": false,
+        "needsManualReview": true,
+        "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+        "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+        "canonicalStore": "data/scenario_help_records.json"
+      }
     },
     "feeInfo": {
       "paradisoDefault202605": {
@@ -17150,9 +17134,9 @@
           "commonDocs": [],
           "requiredDocs": [
             "신청서 (별지 34호 서식)",
-            "여권",
+            "doc_passport_generic",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": []
@@ -17217,19 +17201,16 @@
         "note": "법무부 지정 마약검사 필수 포함"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -17244,7 +17225,6 @@
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -17543,16 +17523,13 @@
       "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
       "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
-    "documents_initial": "DATA_MISSING",
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -17567,19 +17544,16 @@
         "note": "공적장부 등"
       },
       {
-        "name": "TOPIK 성적표 또는 한국어능력 입증서류",
-        "note": "DATA_MISSING"
+        "name": "TOPIK 성적표 또는 한국어능력 입증서류"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       },
       {
-        "name": "사회통합프로그램(KIIP) 이수증/합격증",
-        "note": "DATA_MISSING"
+        "name": "사회통합프로그램(KIIP) 이수증/합격증"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -17765,13 +17739,9 @@
         "note": "본사 발급, 파견기간 및 직책 명시"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -17956,13 +17926,9 @@
         "note": "본사 발급, 파견기간 및 직책 명시"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -18056,7 +18022,7 @@
       "doc_dispatch",
       "doc_purpose"
     ],
-    "extReq": "체류기간 연장허가1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여",
+    "extReq": "체류기간 연장허가 1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여",
     "extReqDocs": [],
     "faq": "Q: 대상?\nA: 주한미군, 군속 및 가족.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
     "subCodes": [],
@@ -18069,7 +18035,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "체류기간 연장허가1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여",
+        "summary": "체류기간 연장허가 1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -18155,9 +18121,6 @@
         "note": "별도 소명자료"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -18342,21 +18305,16 @@
     },
     "documents_initial": [
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
         "note": "기존 등록자에 한함"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -18451,7 +18409,7 @@
       "doc_dispatch",
       "doc_plan"
     ],
-    "extReq": "체류기간 연장허가1. 제출서류 ① 신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 재직증명서 또는 파견명령서(본사발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+    "extReq": "체류기간 연장허가 1. 제출서류 ① 신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 재직증명서 또는 파견명령서(본사발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -18478,7 +18436,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 제출서류 ① 신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 재직증명서 또는 파견명령서(본사발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 제출서류 ① 신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ② 재직증명서 또는 파견명령서(본사발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -18557,27 +18515,23 @@
     },
     "documents_initial": [
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "파견명령서",
         "note": "본사 발급, 파견기간 및 직책 명시"
       },
       {
-        "name": "체류/구직/연수 계획서 또는 사유서",
-        "note": "DATA_MISSING"
+        "name": "체류/구직/연수 계획서 또는 사유서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -18588,15 +18542,13 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -18691,7 +18643,7 @@
       "doc_dispatch",
       "doc_career"
     ],
-    "extReq": "체류기간 연장허가1. 제출서류 ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ②재직증명서 또는 파송명령서(파송단체 발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+    "extReq": "체류기간 연장허가 1. 제출서류 ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ②재직증명서 또는 파송명령서(파송단체 발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
     "extReqDocs": [
       "doc_app_form",
       "doc_passport",
@@ -18718,7 +18670,7 @@
     "procedures": {
       "extension": {
         "available": true,
-        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가1. 제출서류 ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ②재직증명서 또는 파송명령서(파송단체 발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
+        "summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 제출서류 ①신청서(별지34호 서식), 여권 및 외국인등록증, 수수료 ②재직증명서 또는 파송명령서(파송단체 발행) ③체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)",
         "requiredDocs": {
           "commonDocs": [],
           "requiredDocs": [
@@ -18779,7 +18731,7 @@
             "신청서(별지 34호서식)",
             "여권 원본",
             "외국인등록증",
-            "수수료"
+            "doc_fee_generic"
           ],
           "additionalDocs": [],
           "conditionalDocs": [
@@ -18830,27 +18782,23 @@
     },
     "documents_initial": [
       {
-        "name": "사업자등록증 사본",
-        "note": "DATA_MISSING"
+        "name": "사업자등록증 사본"
       },
       {
         "name": "파견명령서",
         "note": "본사 발급, 파견기간 및 직책 명시"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "통합신청서(별지 제34호 서식)",
         "note": "별지 제34호 서식"
       },
       {
-        "name": "여권 원본 및 인적사항면 사본",
-        "note": "DATA_MISSING"
+        "name": "여권 원본 및 인적사항면 사본"
       },
       {
         "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
@@ -18861,15 +18809,13 @@
         "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
       },
       {
-        "name": "해외 및 국내 경력증명서",
-        "note": "DATA_MISSING"
+        "name": "해외 및 국내 경력증명서"
       },
       {
         "name": "체류지 입증서류",
         "note": "임대차계약서, 숙소제공확인서, 공공요금 영수증 등"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -18995,7 +18941,7 @@
           "commonDocs": [],
           "requiredDocs": [
             "신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "기간연장 사유서 및 인턴·연수 활동 계획서"
           ],
           "additionalDocs": [],
@@ -19023,7 +18969,7 @@
           "commonDocs": [],
           "requiredDocs": [
             "신청서(별지 제34호 서식), 여권, 사진(6개월 내 촬영 반명함) 1장, 수수료",
-            "체류지 입증서류",
+            "doc_residence_proof_generic",
             "기업 맞춤형 인턴십(D-4-2K) 자격 소지자는 매뉴얼 붙임 1·2 안내문 참고"
           ],
           "additionalDocs": [],
@@ -19071,12 +19017,10 @@
     },
     "documents_initial": [
       {
-        "name": "인턴십(연수) 계획서",
-        "note": "DATA_MISSING"
+        "name": "인턴십(연수) 계획서"
       },
       {
-        "name": "재직증명서",
-        "note": "DATA_MISSING"
+        "name": "재직증명서"
       },
       {
         "name": "초청장",
@@ -19087,18 +19031,14 @@
         "note": "Certificate for Visa Issuance"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
-        "name": "인턴십(연수) 계획서",
-        "note": "DATA_MISSING"
+        "name": "인턴십(연수) 계획서"
       },
       {
-        "name": "재직증명서",
-        "note": "DATA_MISSING"
+        "name": "재직증명서"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -19525,18 +19465,15 @@
         "note": "해당 직종 한정"
       }
     ],
-    "documents_registration": "DATA_MISSING",
     "documents_extension": [
       {
         "name": "기타 체류목적 입증서류",
         "note": "별도 소명자료"
       },
       {
-        "name": "소득금액증명원 등 소득입증서류",
-        "note": "DATA_MISSING"
+        "name": "소득금액증명원 등 소득입증서류"
       }
     ],
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract"
     },
@@ -19854,10 +19791,6 @@
       "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
       "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
     },
-    "documents_initial": "DATA_MISSING",
-    "documents_registration": "DATA_MISSING",
-    "documents_extension": "DATA_MISSING",
-    "hikorea_task_type": "DATA_MISSING",
     "_source_notes": {
       "extReq": "2026.5_manual_extract",
       "regionalRefresh": "2026-06-01_stay_manual_changed_pages_619_621_623_624_627"
