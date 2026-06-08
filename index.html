@@ -9891,34 +9891,54 @@ button[data-keyword]:focus-visible {
 
 
 
-<!-- PARADISO_GATEWAY_ACTION_HARDWIRE_FIX_START -->
-<style id="paradiso-gateway-action-hardwire-fix">
+
+
+<!-- PARADISO_GATEWAY_RATIO_POLISH_START -->
+<style id="paradiso-gateway-ratio-polish">
+  /*
+    Final gateway ratio polish.
+    Keeps the two primary cards visually balanced without changing actions:
+    - HiKorea visit reservation guidance remains first.
+    - Paradiso.ai remains second.
+  */
   .p-gateway .p-gw-primary {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: clamp(10px, 1.4vw, 16px);
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    gap: clamp(12px, 1.5vw, 18px);
     align-items: stretch;
   }
 
   .p-gateway .p-gw-primary > .p-gw-card {
-    position: relative;
-    display: flex;
     width: 100%;
     min-width: 0;
-    z-index: 1;
+    min-height: clamp(112px, 12vw, 136px);
+    box-sizing: border-box;
   }
 
   .p-gateway .p-gw-primary > .p-gw-card > * {
     pointer-events: none;
   }
 
-  @media (max-width: 720px) {
+  .p-gateway .p-gw-card-label {
+    line-height: 1.25;
+  }
+
+  .p-gateway .p-gw-card-sub {
+    line-height: 1.45;
+    word-break: keep-all;
+  }
+
+  @media (max-width: 860px) {
     .p-gateway .p-gw-primary {
       grid-template-columns: 1fr;
     }
+
+    .p-gateway .p-gw-primary > .p-gw-card {
+      min-height: auto;
+    }
   }
 </style>
-<!-- PARADISO_GATEWAY_ACTION_HARDWIRE_FIX_END -->
+<!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
 
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
@@ -10032,7 +10052,7 @@ button[data-keyword]:focus-visible {
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
-                <button type="button" class="p-gw-card" data-action="open-hikorea-guide">
+                <button type="button" class="p-gw-card p-gw-card-hikorea" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
                     <span class="p-gw-card-label">HiKorea 방문예약 안내</span>
                     <span class="p-gw-card-sub">방문 전 HiKorea 온라인 예약 절차를 확인합니다.</span>
