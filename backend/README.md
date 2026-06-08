@@ -120,8 +120,13 @@ into the image. See `.env.example` for the full list.
 | Variable                | Required? | Notes                                                    |
 | ----------------------- | --------- | -------------------------------------------------------- |
 | `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
-| `OPENROUTER_MODEL`      | optional  | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first. |
-| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next non-cooling candidate. Unset → built-in policy list (Qwen3 Next 80B → Gemma 4 31B → Kimi K2.6 → Llama 3.3 70B). Random routing (`openrouter/auto`, `openrouter/free`) is warned/rejected by policy metadata. `/health` lists the resolved candidates. |
+| `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first for core Paradiso final answers. |
+| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next non-cooling candidate. Unset → built-in policy list (Nemotron 3 Ultra → Nemotron 3 Super → gpt-oss-120b → Gemma 4 31B). Random routing (`openrouter/auto`, `openrouter/free`) is warned/rejected by policy metadata. `/health` lists the resolved candidates. |
+| `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
+| `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
+| `AI_VERIFIER_MODEL` | optional | Defaults to `openai/gpt-oss-120b:free`. Used as the declared verifier / structured answer-audit model policy. |
+| `AI_CHINESE_MODEL` | optional | Defaults to `deepseek/deepseek-r1-0528:free`. Reserved for Chinese-language routes only. |
+| `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free,moonshotai/kimi-k2.6:free`. Reserved for Chinese-language fallback only. |
 | `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
 | `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true (or, with that flag, as a last-resort provider-family fallback after all OpenRouter candidates fail). |
 | `GROQ_MODEL`            | optional  | Defaults to `llama-3.1-8b-instant`.                      |

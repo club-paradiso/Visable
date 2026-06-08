@@ -27,10 +27,10 @@ if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
 CANDS = [
-    "qwen/qwen3-next-80b-a3b-instruct:free",
+    "nvidia/nemotron-3-ultra-550b-a55b:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+    "openai/gpt-oss-120b:free",
     "google/gemma-4-31b-it:free",
-    "moonshotai/kimi-k2.6:free",
-    "meta-llama/llama-3.3-70b-instruct:free",
 ]
 H1_Q = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"
 
@@ -194,7 +194,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
             resp = client.post("/api/ask", json=payload)
         return resp, calls
 
-    def test_primary_qwen_used_first(self):
+    def test_primary_nemotron_ultra_used_first(self):
         pb = _pb()
         resp, calls = self._ask(pb, {})  # all ok
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -203,7 +203,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertFalse(body["model_fallback_used"])
         self.assertEqual(calls, [CANDS[0]])
 
-    def test_qwen_429_triggers_gemma(self):
+    def test_ultra_429_triggers_super(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit")})
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -213,7 +213,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(calls, [CANDS[0], CANDS[1]])
         self.assertEqual(body["upstream_statuses"], [429])
 
-    def test_gemma_failure_triggers_kimi(self):
+    def test_super_failure_triggers_gpt_oss(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit"), CANDS[1]: (503, "No healthy upstream")})
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -221,7 +221,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(body["final_model"], CANDS[2])
         self.assertEqual(calls, [CANDS[0], CANDS[1], CANDS[2]])
 
-    def test_kimi_failure_triggers_llama(self):
+    def test_gpt_oss_failure_triggers_gemma(self):
         pb = _pb()
         resp, calls = self._ask(pb, {
             CANDS[0]: (429, "rate limit"),

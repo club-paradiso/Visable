@@ -48,6 +48,13 @@ from services.answer_shape import (
     build_answer_shape_contract,
     evaluate_answer_shape,
 )
+from services.model_policy import (
+    CHINESE_ONLY_MODEL_PREFIXES,
+    DEFAULT_FINAL_ANSWER_MODEL,
+    DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES,
+    MODEL_POLICY_VERSION,
+    sanitize_model_role_policy_for_public,
+)
 
 
 class UTF8JSONResponse(JSONResponse):
@@ -96,10 +103,19 @@ SUPABASE_URL: Optional[str] = os.environ.get("SUPABASE_URL")
 SUPABASE_SERVICE_KEY: Optional[str] = os.environ.get("SUPABASE_SERVICE_KEY")
 
 # Pin Paradiso AI to a deterministic OpenRouter model rather than the
-# variable `openrouter/auto` router. The verified free model id is mirrored
-# in backend/.env.example and docs/data/MODEL_PRIORITY_COOLDOWN_OLLAMA_SCAFFOLD_2026_05.md.
-# Override per-deploy with the OPENROUTER_MODEL env var if the catalog changes.
-_DEFAULT_OPENROUTER_MODEL: str = "qwen/qwen3-next-80b-a3b-instruct:free"
+# variable `openrouter/auto` router. The model-role policy lives in
+# services.model_policy so the final-answer, router, translation, verifier, and
+# Chinese-language model choices remain explicit and testable.
+#
+# Core policy:
+# - final answers: Nemotron Ultra -> Nemotron Super -> gpt-oss -> Gemma
+# - router / translation: Gemma
+# - verifier: gpt-oss
+# - Chinese-language route only: DeepSeek / Qwen / Kimi family
+#
+# Override per-deploy with OPENROUTER_MODEL and OPENROUTER_MODEL_CANDIDATES if
+# the OpenRouter catalog changes. Random routing is still forbidden.
+_DEFAULT_OPENROUTER_MODEL: str = DEFAULT_FINAL_ANSWER_MODEL
 OPENROUTER_MODEL: str = (
     os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
 )
@@ -110,12 +126,7 @@ OPENROUTER_MODEL: str = (
 # silently switching providers or surfacing raw provider JSON. Random
 # free-model routing (openrouter/auto) is intentionally NOT used — Paradiso
 # needs predictable model behaviour and auditable response metadata.
-_DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = [
-    "qwen/qwen3-next-80b-a3b-instruct:free",
-    "google/gemma-4-31b-it:free",
-    "moonshotai/kimi-k2.6:free",
-    "meta-llama/llama-3.3-70b-instruct:free",
-]
+_DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = list(DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)
 
 # Model ids that denote random / non-deterministic routing — disallowed here.
 _RANDOM_ROUTING_TOKENS = {"openrouter/auto", "openrouter/free", "auto", "free"}
@@ -192,6 +203,8 @@ def _validate_model_candidates(candidates: List[str]) -> List[str]:
             warnings.append("MODEL_CANDIDATES_RANDOM_ROUTING")
         elif not _MODEL_ID_RE.match(c.strip()):
             warnings.append("MODEL_CANDIDATES_MALFORMED")
+        elif any(low.startswith(prefix) for prefix in CHINESE_ONLY_MODEL_PREFIXES):
+            warnings.append("MODEL_CANDIDATES_CHINESE_MODEL_RESTRICTED_TO_CHINESE")
     return _dedupe_preserve_order(warnings)
 
 GROQ_MODEL: str = os.environ.get("GROQ_MODEL", "llama-3.1-8b-instant")
@@ -731,6 +744,7 @@ def _resolve_llm_config() -> Dict[str, Any]:
     public catalog identifiers, not secrets, so they are safe to surface on
     /health. ``warnings`` never contains key material.
     """
+    model_role_policy = sanitize_model_role_policy_for_public()
     if OPENROUTER_API_KEY:
         return {
             "provider": "openrouter",
@@ -738,6 +752,8 @@ def _resolve_llm_config() -> Dict[str, Any]:
             "configured": True,
             "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
             "warnings": _groq_fallback_warnings("openrouter"),
+            "model_policy_version": MODEL_POLICY_VERSION,
+            "model_role_policy": model_role_policy,
         }
     if GROQ_API_KEY and ALLOW_GROQ_FALLBACK:
         return {
@@ -746,6 +762,8 @@ def _resolve_llm_config() -> Dict[str, Any]:
             "configured": True,
             "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
             "warnings": _groq_fallback_warnings("groq"),
+            "model_policy_version": MODEL_POLICY_VERSION,
+            "model_role_policy": model_role_policy,
         }
     return {
         "provider": "none",
@@ -753,6 +771,8 @@ def _resolve_llm_config() -> Dict[str, Any]:
         "configured": False,
         "groq_fallback_allowed": ALLOW_GROQ_FALLBACK,
         "warnings": _groq_fallback_warnings("none"),
+            "model_policy_version": MODEL_POLICY_VERSION,
+            "model_role_policy": model_role_policy,
     }
 
 
