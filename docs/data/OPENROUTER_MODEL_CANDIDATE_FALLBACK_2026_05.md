@@ -13,7 +13,7 @@ Backend under test: `https://web-production-14f9a.up.railway.app`.
 ## 1. Purpose
 
 Free OpenRouter models are occasionally rate-limited or upstream-unavailable.
-When the primary model (now Qwen Next free; previously Gemma free) fails for a **transient** provider reason,
+When the primary model (now Nemotron Ultra free; previously Gemma free) fails for a **transient** provider reason,
 Paradiso should retry an explicit, ordered OpenRouter candidate list — not
 silently switch providers, not use random free-model routing, and not show raw
 provider JSON to users. This PR adds that candidate fallback, a provider-error
@@ -54,10 +54,10 @@ tokens, request headers, and user ids are never shown.
 
 Current ordered, explicit, de-duplicated default (primary first):
 
-1. **Primary — `qwen/qwen3-next-80b-a3b-instruct:free`** — instruction-tuned, long-context assistant/RAG-style default.
+1. **Primary — `nvidia/nemotron-3-ultra-550b-a55b:free`** — instruction-tuned, long-context assistant/RAG-style default.
 2. **`google/gemma-4-31b-it:free`** — strong multilingual legal/administrative fallback, but free upstream availability can be unstable.
-3. **`moonshotai/kimi-k2.6:free`** — long-context fallback.
-4. **`meta-llama/llama-3.3-70b-instruct:free`** — later general fallback; Korean quality must be smoke-tested.
+3. **`openai/gpt-oss-120b:free`** — long-context fallback.
+4. **`google/gemma-4-31b-it:free`** — later general fallback; Korean quality must be smoke-tested.
 
 `OPENROUTER_MODEL` is always attempted first; `OPENROUTER_MODEL_CANDIDATES`
 (optional, comma-separated) overrides the rest. When unset, the built-in list
@@ -114,8 +114,8 @@ manual-to-law fallback metadata are preserved across model retries.
 ## 8. Railway env vars
 
 ```
-OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
-OPENROUTER_MODEL_CANDIDATES=qwen/qwen3-next-80b-a3b-instruct:free,google/gemma-4-31b-it:free,moonshotai/kimi-k2.6:free,meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+OPENROUTER_MODEL_CANDIDATES=nvidia/nemotron-3-ultra-550b-a55b:free,google/gemma-4-31b-it:free,openai/gpt-oss-120b:free,google/gemma-4-31b-it:free
 OPENROUTER_MODEL_COOLDOWN_SECONDS=300
 ALLOW_GROQ_FALLBACK=false
 LAW_GROUNDING_MODE=audit
@@ -160,7 +160,7 @@ machine; local live-answer checks here are recorded as **skipped, not passed**.
 
 - Free models may be rate-limited or unavailable at any time; fallback improves
   availability but does **not** guarantee answer quality.
-- Llama 3.3 70B Korean quality must be smoke-tested before relying on it.
+- Gemma 4 31B Korean quality must be smoke-tested before relying on it.
 - Candidate availability/ids may change on OpenRouter — verify against the live
   catalog before deploy.
 - Deployed live-answer quality could not be verified from this sandbox (egress

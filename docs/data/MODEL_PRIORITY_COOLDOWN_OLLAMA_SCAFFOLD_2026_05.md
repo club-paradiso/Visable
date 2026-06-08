@@ -12,10 +12,10 @@ OpenRouter `:free` models can be unavailable because the upstream provider is ra
 
 The built-in default ordered candidate list is now:
 
-1. Qwen Next — `qwen/qwen3-next-80b-a3b-instruct:free`
+1. Nemotron Ultra — `nvidia/nemotron-3-ultra-550b-a55b:free`
 2. Gemma — `google/gemma-4-31b-it:free`
-3. Kimi — `moonshotai/kimi-k2.6:free`
-4. Llama — `meta-llama/llama-3.3-70b-instruct:free`
+3. Kimi — `openai/gpt-oss-120b:free`
+4. Llama — `google/gemma-4-31b-it:free`
 
 `OPENROUTER_MODEL` remains the primary model and is resolved first, then the comma-separated `OPENROUTER_MODEL_CANDIDATES` list is de-duplicated while preserving order. Random routing identifiers such as `openrouter/auto` or `openrouter/free` are surfaced as candidate warnings because Paradiso needs auditable model behavior.
 
@@ -60,8 +60,8 @@ Production Ollama would require separate compute, private networking, capacity p
 Recommended production posture:
 
 ```env
-OPENROUTER_MODEL=qwen/qwen3-next-80b-a3b-instruct:free
-OPENROUTER_MODEL_CANDIDATES=qwen/qwen3-next-80b-a3b-instruct:free,google/gemma-4-31b-it:free,moonshotai/kimi-k2.6:free,meta-llama/llama-3.3-70b-instruct:free
+OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+OPENROUTER_MODEL_CANDIDATES=nvidia/nemotron-3-ultra-550b-a55b:free,google/gemma-4-31b-it:free,openai/gpt-oss-120b:free,google/gemma-4-31b-it:free
 OPENROUTER_MODEL_COOLDOWN_SECONDS=300
 ALLOW_GROQ_FALLBACK=false
 LAW_GROUNDING_MODE=audit
