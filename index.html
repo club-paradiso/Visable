@@ -13238,7 +13238,14 @@ function renderProcedureFeeBox(feeInfo) {
 }
 
 function normalizeVisaCode(value) {
-    return String(value || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const cleaned = String(value || '')
+        .trim()
+        .toUpperCase()
+        .replace(/[‐\-‒–—―－]/g, '-')
+        .replace(/\s+/g, '')
+        .replace(/^([A-H])(\d)([A-Z])/,  "$1-$2-$3")
+        .replace(/^([A-H])(\d)$/,        "$1-$2");
+    return cleaned;
 }
 
 function normalizeCodeLikeQuery(value) {
@@ -13283,24 +13290,24 @@ function getExactQueryMatchRank(item, query) {
     if (!qNorm) return 0;
     const codeNorm = normalizeVisaCode(item.code);
     const isHelperRecord = ['faq', 'scn', 'nhis'].includes(item.cat);
-    if (codeNorm === qNorm) return 6;
+    if (codeNorm === qNorm) return 10000;
 
     for (const s of getVisaSubcodes(item)) {
-        if (normalizeVisaCode(s.code) === qNorm) return 5;
+        if (normalizeVisaCode(s.code) === qNorm) return 5000;
     }
 
     const aliases = [
         ...(Array.isArray(item.aliases) ? item.aliases : []),
         ...(Array.isArray(item.searchAliases) ? item.searchAliases : [])
     ];
-    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return isHelperRecord ? 2 : 4;
+    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return isHelperRecord ? 200 : 4000;
 
     for (const s of getVisaSubcodes(item)) {
         const subAliases = [
             ...(Array.isArray(s.aliases) ? s.aliases : []),
             ...(Array.isArray(s.searchAliases) ? s.searchAliases : [])
         ];
-        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 3;
+        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 3000;
     }
     // Procedure-variant statusCodes: some official codes live only inside a
     // procedure variant (e.g. status-change scenarios). Index them so an exact
@@ -15073,11 +15080,11 @@ function getExactCodeMatchRank(item, keywords) {
     const normalizedKeywords = keywords.map(kw => normalizeVisaCode(kw)).filter(Boolean);
     if (!normalizedKeywords.length) return 0;
     const codeNorm = normalizeVisaCode(item.code);
-    if (codeNorm && normalizedKeywords.some(kw => codeNorm === kw)) return 4;
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm === kw)) return 10000;
     const subcodeNorms = getVisaSubcodes(item).map(s => normalizeVisaCode(s.code)).filter(Boolean);
-    if (subcodeNorms.some(sCode => normalizedKeywords.some(kw => sCode === kw))) return 3;
-    if (codeNorm && normalizedKeywords.some(kw => codeNorm.startsWith(kw))) return 2;
-    if (codeNorm && normalizedKeywords.some(kw => codeNorm.includes(kw))) return 1;
+    if (subcodeNorms.some(sCode => normalizedKeywords.some(kw => sCode === kw))) return 5000;
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm.startsWith(kw))) return 200;
+    if (codeNorm && normalizedKeywords.some(kw => codeNorm.includes(kw))) return 100;
     return 0;
 }
 
