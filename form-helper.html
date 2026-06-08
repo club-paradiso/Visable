@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<!-- form-helper: 통합신청서 작성 도우미 — MVP Phase 1 -->
+<html lang="ko" data-theme="civic_editorial">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>통합신청서 작성 도우미 — Paradiso</title>
+<script>
+(function(){
+  var KEY='paradiso:editorial-theme';
+  var ALLOWED=['civic_editorial','archive_diary'];
+  var t='civic_editorial';
+  try{var s=localStorage.getItem(KEY);if(ALLOWED.indexOf(s)>=0)t=s;}catch(e){}
+  document.documentElement.setAttribute('data-theme',t);
+})();
+</script>
+<link rel="icon" type="image/png" href="assets/brand/paradiso-favicon-o.png?v=2">
+<link rel="apple-touch-icon" href="assets/brand/paradiso-favicon-o.png?v=2">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* ── Paradiso design tokens (mirrors index.html :root) ── */
+:root {
+  --p-ink:#0E1F1A; --p-ink-2:#233530; --p-ink-3:#4A5852; --p-ink-mute:#7A8580;
+  --p-paper:#F4EEE0; --p-paper-2:#EAE2D0; --p-paper-3:#DDD4BD;
+  --p-green:#1F4F3D; --p-green-deep:#143329; --p-green-soft:#2E6B53;
+  --p-mint:#B7D9C8; --p-mint-soft:#DCE9DD;
+  --p-coral:#C95440; --p-coral-deep:#9F3A28; --p-coral-soft:#F2C9BD;
+  --p-line:#C9BFA5; --p-line-2:#DCD3BC;
+  --p-fs-xs:.75rem; --p-fs-sm:.8125rem; --p-fs-base:.9375rem;
+  --p-fs-md:1.0625rem; --p-fs-lg:1.25rem; --p-fs-xl:1.5rem; --p-fs-2xl:2rem;
+  --p-s-1:.25rem; --p-s-2:.5rem; --p-s-3:.75rem; --p-s-4:1rem;
+  --p-s-5:1.5rem; --p-s-6:2rem; --p-s-7:3rem; --p-s-8:4rem;
+  --p-r-sm:6px; --p-r-md:10px; --p-r-lg:16px; --p-r-xl:24px;
+  --p-shadow-1:0 1px 0 rgba(14,31,26,.04),0 1px 2px rgba(14,31,26,.05);
+  --p-shadow-2:0 4px 12px rgba(14,31,26,.06),0 1px 2px rgba(14,31,26,.04);
+  --p-shadow-3:0 12px 32px rgba(14,31,26,.10),0 2px 6px rgba(14,31,26,.05);
+  --p-ease:cubic-bezier(.22,.61,.36,1);
+  --p-dur-1:180ms; --p-dur-2:320ms;
+  --ff:"Pretendard","Pretendard Variable",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --color-warning:#E68A3A; --color-error:#E05B4A; --color-success:#0EA37B;
+  --bg0:#f5f2ea; --bg1:#fcfaf5; --bd:#d1c6b4;
+  --t1:#202221; --t2:#4f5552;
+}
+[data-theme="dark"] {
+  --p-ink:#F3EEDF; --p-ink-2:#C7BFA8; --p-ink-3:#8C8572; --p-ink-mute:#6a6457;
+  --p-paper:#0B2A24; --p-paper-2:#113B32; --p-paper-3:#184B40;
+  --p-line:#2D5A50; --p-line-2:#224A41;
+  --p-mint-soft:#163E36;
+  --bg0:#0B2A24; --bg1:#113B32; --bd:#2D5A50;
+  --t1:#F3EEDF; --t2:#C7BFA8;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:clamp(14px,1.35vw,16px)}
+body{
+  font-family:var(--ff);
+  background:var(--p-paper);
+  color:var(--p-ink);
+  line-height:1.6;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+
+/* ── Header ── */
+.fh-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:.75rem 1.5rem;
+  border-bottom:1px solid var(--p-line-2);
+  background:var(--p-paper);
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+.fh-header-left{display:flex;align-items:center;gap:.75rem}
+.fh-back{
+  display:flex;align-items:center;gap:.35rem;
+  font-size:var(--p-fs-sm);color:var(--p-ink-3);
+  text-decoration:none;
+  padding:.35rem .6rem;border-radius:var(--p-r-sm);
+  border:1px solid var(--p-line-2);
+  transition:all var(--p-dur-1);
+}
+.fh-back:hover{color:var(--p-green);border-color:var(--p-green)}
+.fh-logo{
+  font-size:var(--p-fs-base);font-weight:800;
+  color:var(--p-ink);text-decoration:none;letter-spacing:-.01em;
+}
+.fh-logo span{color:var(--p-green)}
+.fh-header-right{display:flex;align-items:center;gap:.5rem}
+.fh-theme-btn{
+  background:transparent;border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-sm);padding:.35rem .6rem;
+  font-size:var(--p-fs-sm);color:var(--p-ink-3);cursor:pointer;
+  font-family:var(--ff);transition:all var(--p-dur-1);
+}
+.fh-theme-btn:hover{color:var(--p-ink);border-color:var(--p-line)}
+.fh-lang-btn{
+  background:transparent;border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-sm);padding:.35rem .6rem;
+  font-size:var(--p-fs-sm);color:var(--p-ink-3);cursor:pointer;
+  font-family:var(--ff);transition:all var(--p-dur-1);
+}
+.fh-lang-btn:hover{color:var(--p-ink);border-color:var(--p-line)}
+
+/* ── Main layout ── */
+main{flex:1;padding:0 1rem 3rem}
+.fh-page{max-width:1100px;margin:0 auto;padding:1.5rem 0}
+
+/* ── Hero ── */
+.fh-hero{
+  padding:1.5rem 0 1.25rem;
+  border-bottom:1px solid var(--p-line-2);
+  margin-bottom:1.75rem;
+}
+.fh-kicker{
+  font-size:var(--p-fs-xs);font-weight:700;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--p-green);margin-bottom:.4rem;
+}
+.fh-hero-title{
+  font-size:clamp(1.4rem,3vw,2rem);font-weight:850;
+  line-height:1.25;color:var(--p-ink);margin-bottom:.5rem;
+  word-break:keep-all;
+}
+.fh-hero-sub{
+  font-size:var(--p-fs-base);color:var(--p-ink-3);
+  max-width:620px;line-height:1.6;word-break:keep-all;
+}
+.fh-privacy-notice{
+  margin-top:.9rem;
+  padding:.65rem .9rem;
+  background:rgba(183,217,200,.18);
+  border:1px solid color-mix(in srgb,var(--p-mint) 60%,transparent);
+  border-radius:var(--p-r-md);
+  font-size:var(--p-fs-xs);
+  color:var(--p-ink-3);
+  line-height:1.55;
+  max-width:720px;
+}
+.fh-privacy-notice strong{color:var(--p-green-soft);font-weight:700}
+
+/* ── Two-column layout ── */
+.fh-layout{
+  display:grid;
+  grid-template-columns:1fr 360px;
+  gap:1.75rem;
+  align-items:start;
+}
+@media(max-width:900px){
+  .fh-layout{grid-template-columns:1fr}
+}
+
+/* ── Stepper ── */
+.fh-stepper{
+  display:flex;align-items:center;
+  gap:0;margin-bottom:1.75rem;
+  overflow-x:auto;padding-bottom:.25rem;
+}
+.fh-step-item{display:flex;align-items:center;gap:.35rem;flex-shrink:0}
+.fh-step-dot{
+  width:26px;height:26px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;font-weight:800;transition:all var(--p-dur-1);flex-shrink:0;
+}
+.fh-step-dot.done{background:var(--p-mint);color:var(--p-green-deep)}
+.fh-step-dot.active{background:var(--p-green);color:#fff;box-shadow:0 0 0 3px rgba(31,79,61,.18)}
+.fh-step-dot.pending{background:transparent;border:1.5px solid var(--p-line);color:var(--p-ink-3)}
+.fh-step-label{
+  font-size:.72rem;font-weight:600;white-space:nowrap;
+  color:var(--p-ink-3);
+}
+.fh-step-label.active{color:var(--p-ink);font-weight:750}
+.fh-step-label.done{color:var(--p-green-soft)}
+.fh-step-conn{flex:1 1 16px;height:1px;background:var(--p-line-2);min-width:12px;max-width:40px}
+
+/* ── Step panels ── */
+.fh-step-panel{display:none}
+.fh-step-panel.visible{display:block}
+.fh-step-heading{
+  font-size:var(--p-fs-lg);font-weight:800;
+  color:var(--p-ink);margin-bottom:.25rem;word-break:keep-all;
+}
+.fh-step-subheading{
+  font-size:var(--p-fs-sm);color:var(--p-ink-3);
+  margin-bottom:1.25rem;line-height:1.55;word-break:keep-all;
+}
+
+/* ── Application type cards ── */
+.fh-type-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
+  gap:.65rem;
+  margin-top:.75rem;
+}
+.fh-type-card{
+  border:1.5px solid var(--p-line-2);
+  border-radius:var(--p-r-md);
+  padding:.85rem .9rem;
+  cursor:pointer;
+  text-align:left;
+  font-family:var(--ff);
+  background:transparent;
+  transition:all var(--p-dur-1) var(--p-ease);
+  color:var(--p-ink);
+  display:flex;flex-direction:column;gap:.3rem;
+}
+.fh-type-card:hover{
+  border-color:var(--p-green-soft);
+  background:var(--p-mint-soft);
+  transform:translateY(-1px);
+  box-shadow:var(--p-shadow-2);
+}
+.fh-type-card.selected{
+  border-color:var(--p-green);
+  background:var(--p-mint-soft);
+  box-shadow:0 0 0 3px rgba(31,79,61,.12);
+}
+.fh-type-card:focus-visible{
+  outline:2px solid var(--p-green);outline-offset:2px;
+}
+.fh-type-checkbox{
+  font-size:.68rem;font-weight:700;letter-spacing:.04em;
+  color:var(--p-green);background:rgba(31,79,61,.08);
+  border-radius:3px;padding:.1rem .35rem;
+  width:fit-content;
+  font-family:var(--ff);
+}
+.fh-type-ko{font-size:var(--p-fs-base);font-weight:780;word-break:keep-all}
+.fh-type-en{font-size:var(--p-fs-xs);color:var(--p-ink-3);word-break:keep-all;line-height:1.4}
+.fh-type-sub{font-size:.72rem;color:var(--p-ink-mute);margin-top:.1rem;word-break:keep-all;line-height:1.4}
+.fh-type-tags{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
+.fh-tag{
+  font-size:.66rem;font-weight:650;
+  padding:.1rem .4rem;border-radius:3px;
+  border:1px solid var(--p-line);color:var(--p-ink-3);
+}
+.fh-tag.photo{background:rgba(201,84,64,.07);border-color:rgba(201,84,64,.25);color:var(--p-coral-deep)}
+.fh-tag.account{background:rgba(14,163,123,.07);border-color:rgba(14,163,123,.25);color:var(--p-green-deep)}
+
+/* ── Field groups ── */
+.fh-field-group{display:grid;gap:1.1rem;margin-top:.25rem}
+.fh-field-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media(max-width:560px){.fh-field-row{grid-template-columns:1fr}}
+.fh-field{display:grid;gap:.3rem}
+.fh-label{
+  font-size:.82rem;font-weight:700;color:var(--p-ink-2);
+  display:flex;align-items:center;gap:.35rem;
+}
+.fh-label-en{font-weight:500;color:var(--p-ink-3);font-size:.75rem}
+.fh-required{color:var(--p-coral);font-size:.8rem;line-height:1}
+.fh-help{font-size:.74rem;color:var(--p-ink-3);line-height:1.5;word-break:keep-all}
+.fh-input,.fh-select,.fh-textarea{
+  border:1.5px solid var(--p-line);
+  border-radius:var(--p-r-sm);
+  padding:.55rem .7rem;
+  font-family:var(--ff);
+  font-size:var(--p-fs-sm);
+  background:var(--bg1,var(--p-paper));
+  color:var(--p-ink);
+  width:100%;
+  transition:border-color var(--p-dur-1),box-shadow var(--p-dur-1);
+}
+.fh-input:focus,.fh-select:focus,.fh-textarea:focus{
+  outline:none;
+  border-color:var(--p-green);
+  box-shadow:0 0 0 3px rgba(31,79,61,.1);
+}
+.fh-input.has-error,.fh-select.has-error{border-color:var(--color-error)}
+.fh-textarea{resize:vertical;min-height:72px;line-height:1.55}
+.fh-radio-group{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.15rem}
+.fh-radio-opt{
+  display:flex;align-items:center;gap:.4rem;
+  border:1.5px solid var(--p-line);border-radius:var(--p-r-sm);
+  padding:.4rem .7rem;cursor:pointer;
+  font-size:var(--p-fs-sm);font-family:var(--ff);
+  background:transparent;color:var(--p-ink);
+  transition:all var(--p-dur-1);
+}
+.fh-radio-opt:hover{border-color:var(--p-green-soft);background:var(--p-mint-soft)}
+.fh-radio-opt.selected{border-color:var(--p-green);background:var(--p-mint-soft);font-weight:700}
+.fh-radio-opt input{position:absolute;opacity:0;pointer-events:none}
+
+/* ── Notes / caution boxes ── */
+.fh-note{
+  border-left:3px solid var(--p-mint);
+  background:rgba(183,217,200,.12);
+  border-radius:0 var(--p-r-sm) var(--p-r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;line-height:1.55;color:var(--p-ink-2);
+  word-break:keep-all;
+}
+.fh-caution{
+  border-left:3px solid var(--color-warning);
+  background:rgba(230,138,58,.08);
+  border-radius:0 var(--p-r-sm) var(--p-r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;line-height:1.55;color:var(--p-ink-2);
+  word-break:keep-all;
+}
+.fh-caution-title{font-weight:750;color:var(--color-warning);margin-bottom:.2rem}
+.fh-error-box{
+  border-left:3px solid var(--color-error);
+  background:rgba(224,91,74,.07);
+  border-radius:0 var(--p-r-sm) var(--p-r-sm) 0;
+  padding:.6rem .85rem;
+  font-size:.78rem;line-height:1.55;color:var(--p-ink-2);
+  word-break:keep-all;
+}
+.fh-section-divider{
+  border:none;border-top:1px solid var(--p-line-2);
+  margin:1.25rem 0;
+}
+.fh-section-label{
+  font-size:.72rem;font-weight:750;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--p-ink-3);
+  margin-bottom:.75rem;margin-top:1.5rem;
+}
+
+/* ── Validation summary ── */
+.fh-val-list{display:grid;gap:.5rem;margin-top:.5rem}
+.fh-val-item{
+  display:flex;align-items:flex-start;gap:.5rem;
+  font-size:.82rem;line-height:1.5;
+  padding:.5rem .75rem;
+  border-radius:var(--p-r-sm);
+  word-break:keep-all;
+}
+.fh-val-item.error{background:rgba(224,91,74,.07);color:var(--p-ink-2);border:1px solid rgba(224,91,74,.2)}
+.fh-val-item.warn{background:rgba(230,138,58,.07);color:var(--p-ink-2);border:1px solid rgba(230,138,58,.18)}
+.fh-val-item.ok{background:rgba(14,163,123,.06);color:var(--p-ink-2);border:1px solid rgba(14,163,123,.18)}
+.fh-val-icon{flex-shrink:0;font-style:normal}
+
+/* ── Output panel (step 6) ── */
+.fh-output{display:grid;gap:1.1rem;margin-top:.5rem}
+.fh-output-section{
+  border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-lg);
+  overflow:hidden;
+}
+.fh-output-head{
+  padding:.6rem 1rem;
+  background:color-mix(in srgb,var(--p-paper-2) 60%,transparent);
+  border-bottom:1px solid var(--p-line-2);
+  font-size:.78rem;font-weight:750;color:var(--p-ink-2);
+  letter-spacing:.04em;
+}
+.fh-output-body{padding:.85rem 1rem;font-size:var(--p-fs-sm);line-height:1.65;color:var(--p-ink-2)}
+.fh-output-body ul{margin:.35rem 0 .35rem 1.1rem;display:grid;gap:.2rem}
+.fh-output-body li{word-break:keep-all}
+.fh-output-row{
+  display:flex;flex-wrap:wrap;gap:.25rem .5rem;
+  border-bottom:1px solid var(--p-line-2);
+  padding:.45rem 1rem;font-size:.82rem;
+}
+.fh-output-row:last-child{border-bottom:none}
+.fh-output-key{color:var(--p-ink-3);min-width:120px;flex-shrink:0}
+.fh-output-val{color:var(--p-ink);font-weight:600;word-break:break-all}
+.fh-output-val.empty{color:var(--p-ink-mute);font-weight:400;font-style:italic}
+.fh-checkbox-display{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:var(--p-fs-base);font-weight:750;color:var(--p-green);
+  padding:.5rem .85rem;
+  background:rgba(31,79,61,.07);
+  border:1.5px solid color-mix(in srgb,var(--p-green) 30%,var(--p-line));
+  border-radius:var(--p-r-sm);
+}
+
+/* ── Output action buttons ── */
+.fh-output-actions{
+  display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.75rem;
+}
+.fh-btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  border-radius:var(--p-r-sm);padding:.55rem 1rem;
+  font-size:.82rem;font-weight:700;
+  font-family:var(--ff);cursor:pointer;
+  transition:all var(--p-dur-1);border:1.5px solid transparent;
+  text-decoration:none;
+}
+.fh-btn-primary{
+  background:var(--p-green);color:#fff;
+  border-color:var(--p-green);
+}
+.fh-btn-primary:hover{background:var(--p-green-soft);border-color:var(--p-green-soft)}
+.fh-btn-secondary{
+  background:transparent;color:var(--p-ink);
+  border-color:var(--p-line);
+}
+.fh-btn-secondary:hover{border-color:var(--p-green);color:var(--p-green)}
+.fh-btn-ghost{
+  background:transparent;color:var(--p-ink-3);
+  border-color:var(--p-line-2);
+}
+.fh-btn-ghost:hover{color:var(--color-error);border-color:var(--color-error)}
+
+/* ── Navigation row ── */
+.fh-nav{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:1.25rem 0 0;
+  border-top:1px solid var(--p-line-2);
+  margin-top:1.5rem;
+}
+.fh-nav-left,.fh-nav-right{display:flex;gap:.5rem}
+.fh-btn-nav{
+  display:inline-flex;align-items:center;gap:.4rem;
+  border-radius:var(--p-r-sm);
+  padding:.6rem 1.1rem;
+  font-size:var(--p-fs-sm);font-weight:700;
+  font-family:var(--ff);cursor:pointer;
+  transition:all var(--p-dur-1);
+}
+.fh-btn-prev{
+  background:transparent;border:1.5px solid var(--p-line);
+  color:var(--p-ink-3);
+}
+.fh-btn-prev:hover{border-color:var(--p-green);color:var(--p-green)}
+.fh-btn-next{
+  background:var(--p-green);border:1.5px solid var(--p-green);
+  color:#fff;
+}
+.fh-btn-next:hover{background:var(--p-green-soft);border-color:var(--p-green-soft)}
+.fh-btn-nav:disabled{opacity:.45;cursor:not-allowed;pointer-events:none}
+
+/* ── Live preview aside ── */
+.fh-aside{
+  position:sticky;top:72px;
+}
+.fh-preview-card{
+  border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-lg);
+  overflow:hidden;
+  background:var(--p-paper);
+  box-shadow:var(--p-shadow-1);
+}
+.fh-preview-head{
+  padding:.7rem 1rem;
+  background:color-mix(in srgb,var(--p-green) 8%,var(--p-paper));
+  border-bottom:1px solid var(--p-line-2);
+  display:flex;align-items:center;gap:.5rem;
+}
+.fh-preview-title{
+  font-size:.78rem;font-weight:750;color:var(--p-ink-2);letter-spacing:.04em;
+}
+.fh-preview-badge{
+  font-size:.65rem;font-weight:750;letter-spacing:.06em;
+  background:var(--p-green);color:#fff;
+  border-radius:3px;padding:.1rem .4rem;margin-left:auto;
+}
+.fh-preview-body{padding:.85rem 1rem;font-size:.78rem;line-height:1.6;color:var(--p-ink-3)}
+.fh-preview-row{
+  display:flex;gap:.5rem;padding:.3rem 0;
+  border-bottom:1px solid var(--p-line-2);
+}
+.fh-preview-row:last-child{border-bottom:none}
+.fh-preview-k{color:var(--p-ink-mute);flex-shrink:0;min-width:80px;font-size:.74rem}
+.fh-preview-v{color:var(--p-ink);font-weight:600;word-break:break-word;font-size:.78rem}
+.fh-preview-v.empty{color:var(--p-ink-mute);font-weight:400;font-style:italic}
+.fh-preview-empty{
+  padding:1.5rem;text-align:center;color:var(--p-ink-mute);
+  font-size:.82rem;line-height:1.55;
+}
+
+/* ── Disclaimer footer ── */
+.fh-footer{
+  border-top:1px solid var(--p-line-2);
+  padding:1.25rem 1.5rem;
+  font-size:.74rem;color:var(--p-ink-3);
+  line-height:1.6;
+  background:var(--p-paper-2);
+}
+.fh-footer p+p{margin-top:.4rem}
+.fh-footer strong{color:var(--p-ink-2)}
+.fh-footer a{color:var(--p-green);text-decoration:none}
+.fh-footer a:hover{text-decoration:underline}
+
+/* ── Source metadata badge ── */
+.fh-source-meta{
+  display:inline-flex;flex-wrap:wrap;gap:.3rem;
+  align-items:center;
+  margin-top:.75rem;
+  font-size:.7rem;color:var(--p-ink-mute);
+}
+.fh-source-meta span{
+  border:1px solid var(--p-line-2);border-radius:3px;
+  padding:.08rem .35rem;
+}
+
+/* ── Print mode ── */
+@media print{
+  .fh-header,.fh-stepper,.fh-nav,.fh-aside,.fh-step-panel:not(.visible),
+  .fh-output-actions,.fh-hero,.fh-footer .fh-non-print{display:none!important}
+  .fh-layout{grid-template-columns:1fr}
+  .fh-output{break-inside:avoid}
+  body{background:#fff;color:#000}
+}
+
+/* ── Responsive ── */
+@media(max-width:640px){
+  .fh-stepper .fh-step-label{display:none}
+  .fh-type-grid{grid-template-columns:1fr 1fr}
+  .fh-hero-title{font-size:1.3rem}
+  .fh-output-key{min-width:90px}
+}
+@media(max-width:400px){
+  .fh-type-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- Header -->
+<header class="fh-header" role="banner">
+  <div class="fh-header-left">
+    <a class="fh-back" href="index.html" aria-label="Paradiso 메인으로 돌아가기">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+      메인
+    </a>
+    <a class="fh-logo" href="index.html" aria-label="Paradiso 홈">Para<span>diso</span></a>
+  </div>
+  <div class="fh-header-right">
+    <button class="fh-lang-btn" id="fhLangBtn" type="button" aria-label="언어 / Language">
+      <span id="fhLangLabel">한국어 · EN</span>
+    </button>
+    <button class="fh-theme-btn" id="fhThemeBtn" type="button" aria-label="다크 모드 전환">☾</button>
+  </div>
+</header>
+
+<main id="fhMain">
+<div class="fh-page">
+
+  <!-- Hero -->
+  <div class="fh-hero">
+    <p class="fh-kicker">Immigration form guide</p>
+    <h1 class="fh-hero-title">통합신청서 작성 도우미</h1>
+    <p class="fh-hero-sub" id="fhHeroSub">어떤 칸을 체크하고 무엇을 적어야 하는지 단계별로 정리합니다.<br>
+      <span style="font-size:.85em">Step-by-step guide for filling out the Korean immigration Application Form (Report Form).</span></p>
+    <div class="fh-privacy-notice" role="note">
+      <strong>개인정보 안내</strong> — 입력하신 정보는 이 페이지 안에서만 사용되며, 서버에 전송되거나 저장되지 않습니다. 민감한 항목(여권번호, 등록번호, 주소 등)은 브라우저 메모리에만 보관됩니다. 제출 전 최신 공식 서식과 관할 출입국·외국인청 안내를 확인하세요.
+    </div>
+    <div class="fh-source-meta" aria-label="참고 서식 정보">
+      <span>통합신청서(신고서)</span>
+      <span>출입국관리법 시행규칙 별지 제34호서식</span>
+      <span>서식 기준: 2022. 4. 12.</span>
+      <span>Paradiso 참고용 도구 · 법적 효력 없음</span>
+    </div>
+  </div>
+
+  <!-- Two-column layout -->
+  <div class="fh-layout">
+
+    <!-- Wizard (left/main) -->
+    <div class="fh-wizard">
+
+      <!-- Stepper -->
+      <nav class="fh-stepper" aria-label="단계 진행" id="fhStepper"></nav>
+
+      <!-- Step 1: Application type -->
+      <section class="fh-step-panel" id="fhStep1" aria-labelledby="fhStep1Heading">
+        <h2 class="fh-step-heading" id="fhStep1Heading">신청/신고 유형 선택</h2>
+        <p class="fh-step-subheading">어떤 신청 또는 신고를 하려 하십니까? 통합신청서에서 체크할 항목이 결정됩니다.</p>
+        <div class="fh-type-grid" id="fhTypeGrid" role="radiogroup" aria-label="신청/신고 유형"></div>
+      </section>
+
+      <!-- Step 2: Status & purpose -->
+      <section class="fh-step-panel" id="fhStep2" aria-labelledby="fhStep2Heading">
+        <h2 class="fh-step-heading" id="fhStep2Heading">체류자격 및 목적</h2>
+        <p class="fh-step-subheading">현재 체류자격과 신청 목적을 입력하세요. 해당 항목만 표시됩니다.</p>
+        <div class="fh-field-group" id="fhStep2Fields"></div>
+      </section>
+
+      <!-- Step 3: Personal info -->
+      <section class="fh-step-panel" id="fhStep3" aria-labelledby="fhStep3Heading">
+        <h2 class="fh-step-heading" id="fhStep3Heading">기본 인적사항</h2>
+        <p class="fh-step-subheading">신청서 공통 기재 항목입니다. 민감한 정보는 이 페이지 안에서만 사용되며 외부로 전송되지 않습니다.</p>
+        <div class="fh-field-group" id="fhStep3Fields"></div>
+      </section>
+
+      <!-- Step 4: Procedure-specific -->
+      <section class="fh-step-panel" id="fhStep4" aria-labelledby="fhStep4Heading">
+        <h2 class="fh-step-heading" id="fhStep4Heading">절차별 추가정보</h2>
+        <p class="fh-step-subheading">선택하신 신청 유형에 따라 추가 입력 항목이 표시됩니다.</p>
+        <div class="fh-field-group" id="fhStep4Fields"></div>
+      </section>
+
+      <!-- Step 5: Validation -->
+      <section class="fh-step-panel" id="fhStep5" aria-labelledby="fhStep5Heading">
+        <h2 class="fh-step-heading" id="fhStep5Heading">누락 및 확인 필요 항목</h2>
+        <p class="fh-step-subheading">입력하신 내용을 바탕으로 확인이 필요한 사항을 정리합니다.</p>
+        <div id="fhValResult"></div>
+      </section>
+
+      <!-- Step 6: Output guide -->
+      <section class="fh-step-panel" id="fhStep6" aria-labelledby="fhStep6Heading">
+        <h2 class="fh-step-heading" id="fhStep6Heading">작성 가이드</h2>
+        <p class="fh-step-subheading">아래 내용을 참고하여 통합신청서를 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.</p>
+        <div id="fhOutputContent"></div>
+        <div class="fh-output-actions" id="fhOutputActions">
+          <button type="button" class="fh-btn fh-btn-primary" id="fhCopyBtn">📋 작성 가이드 복사</button>
+          <button type="button" class="fh-btn fh-btn-secondary" id="fhPrintBtn">🖨 인쇄용 보기</button>
+          <button type="button" class="fh-btn fh-btn-ghost" id="fhResetBtn">↺ 초기화</button>
+        </div>
+        <div class="fh-caution" style="margin-top:1rem">
+          <p class="fh-caution-title">⚠ 제출 전 반드시 확인하세요</p>
+          이 도구는 통합신청서 작성을 돕는 참고용 도구입니다. 체류자격 허가 여부, 제출서류의 최종 적합성, 접수 가능 여부는 관할 출입국·외국인청의 판단에 따릅니다. 최신 서식 및 제출 요건은 <a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer" style="color:var(--p-green)">HiKorea</a> 또는 관할 출입국·외국인청(☎ 1345)에서 확인하세요.
+        </div>
+      </section>
+
+      <!-- Navigation -->
+      <div class="fh-nav" id="fhNav">
+        <div class="fh-nav-left">
+          <button type="button" class="fh-btn-nav fh-btn-prev" id="fhPrevBtn" disabled>← 이전</button>
+        </div>
+        <div class="fh-nav-right">
+          <button type="button" class="fh-btn-nav fh-btn-next" id="fhNextBtn">다음 →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live preview (right/aside) -->
+    <aside class="fh-aside" aria-label="신청서 미리보기">
+      <div class="fh-preview-card">
+        <div class="fh-preview-head">
+          <span class="fh-preview-title">신청서에 반영될 내용</span>
+          <span class="fh-preview-badge" id="fhPreviewBadge">작성 중</span>
+        </div>
+        <div class="fh-preview-body" id="fhPreviewBody">
+          <div class="fh-preview-empty">신청 유형을 선택하면<br>미리보기가 업데이트됩니다.</div>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- /.fh-layout -->
+</div><!-- /.fh-page -->
+</main>
+
+<!-- Footer -->
+<footer class="fh-footer" role="contentinfo">
+  <p><strong>이 도구는 통합신청서(신고서) 작성을 돕는 참고용 도구입니다.</strong> 체류자격 허가 여부, 제출서류의 최종 적합성, 접수 가능 여부는 관할 출입국·외국인청의 판단에 따릅니다.</p>
+  <p class="fh-non-print">입력값은 브라우저 메모리에만 저장되며 서버로 전송되지 않습니다. 공식 서식: 출입국관리법 시행규칙 별지 제34호서식 (2022. 4. 12.) · <a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea</a> · 1345</p>
+</footer>
+
+<script>
+'use strict';
+
+/* ═══════════════════════════════════════════════════════════════
+   APPLICATION TYPE DEFINITIONS
+   ═══════════════════════════════════════════════════════════════ */
+const APP_TYPES = [
+  {
+    id: 'foreign_registration',
+    ko: '외국인등록',
+    en: 'Foreign Resident Registration',
+    sub: '처음 국내에 등록하는 경우',
+    formCheckbox: '외국인 등록',
+    needsPhoto: true,
+    needsRefundAccount: true,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '입국일로부터 90일 이내에 신청해야 합니다. 최근 6개월 이내 여권용 사진이 필요합니다.',
+  },
+  {
+    id: 'sojourn_extension',
+    ko: '체류기간 연장',
+    en: 'Extension of Sojourn Period',
+    sub: '체류기간 만료 전 연장 신청',
+    formCheckbox: '체류기간 연장허가',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: true,
+    needsExtensionReason: true,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '체류기간 만료일 전에 신청하세요. 체류기간 내 신청이 원칙입니다.',
+  },
+  {
+    id: 'status_change',
+    ko: '체류자격 변경',
+    en: 'Change of Status of Sojourn',
+    sub: '현재 자격을 다른 자격으로 변경',
+    formCheckbox: '체류자격 변경허가',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: true,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '변경하고자 하는 자격의 요건을 충족하는지 반드시 확인하세요.',
+  },
+  {
+    id: 'activity_outside_status',
+    ko: '체류자격외활동허가',
+    en: 'Activities Outside Status',
+    sub: '현재 자격 범위 외의 활동 허가',
+    formCheckbox: '체류자격외 활동허가',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: true,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '예: D-2 비자로 아르바이트 허가 신청. 활동 내용·기간·기관을 구체적으로 기재하세요.',
+  },
+  {
+    id: 'workplace_change',
+    ko: '근무처 변경/추가',
+    en: 'Change or Addition of Workplace',
+    sub: '근무처 변경 또는 추가 허가/신고',
+    formCheckbox: '근무처 변경ㆍ추가허가 / 신고',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: true,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '허가 대상인지 신고 대상인지는 체류자격에 따라 다릅니다. 관할 출입국·외국인청에 확인하세요.',
+  },
+  {
+    id: 'address_change',
+    ko: '체류지 변경신고',
+    en: 'Alteration of Residence',
+    sub: '국내 거주지 주소 변경 신고',
+    formCheckbox: '체류지 변경신고',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: true,
+    needsChangedItem: false,
+    note: '이사 후 14일 이내에 체류지 변경신고를 해야 합니다.',
+  },
+  {
+    id: 'registration_change',
+    ko: '등록사항 변경신고',
+    en: 'Change of Registration Info',
+    sub: '외국인등록 기재사항 변경 신고',
+    formCheckbox: '등록사항 변경신고',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: true,
+    note: '등록사항 변경 후 14일 이내에 신고해야 합니다.',
+  },
+  {
+    id: 'reentry_permit',
+    ko: '재입국허가',
+    en: 'Reentry Permit',
+    sub: '출국 후 재입국 허가 신청',
+    formCheckbox: '재입국허가',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: true,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '허가 기간과 단수/복수 여부를 확인하세요. 출국 전에 신청해야 합니다.',
+  },
+  {
+    id: 'card_reissuance',
+    ko: '등록증 재발급',
+    en: 'Reissuance of Registration Card',
+    sub: '분실·훼손 등으로 등록증 재발급',
+    formCheckbox: '등록증 재발급',
+    needsPhoto: true,
+    needsRefundAccount: true,
+    needsDesiredStatus: false,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '분실·훼손·기재사항 변경 등의 사유를 확인하세요. 사진이 필요합니다.',
+  },
+  {
+    id: 'status_granting',
+    ko: '체류자격 부여',
+    en: 'Granting Status of Sojourn',
+    sub: '체류자격이 없는 경우 자격 부여',
+    formCheckbox: '체류자격 부여',
+    needsPhoto: false,
+    needsRefundAccount: false,
+    needsDesiredStatus: true,
+    needsWorkplace: false,
+    needsReentryPeriod: false,
+    needsCurrentExpiry: false,
+    needsExtensionReason: false,
+    needsDesiredActivity: false,
+    needsAddressChange: false,
+    needsChangedItem: false,
+    note: '신청하고자 하는 체류자격을 명확히 기재하세요.',
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   STATE — session/memory only; never persisted to localStorage
+   ═══════════════════════════════════════════════════════════════ */
+const state = {
+  currentStep: 1,
+  appTypeId: null,
+  lang: 'ko',
+  // Step 2
+  currentStatus: '',
+  desiredStatus: '',
+  desiredActivity: '',
+  activityDescription: '',
+  activityInstitution: '',
+  activityPeriod: '',
+  reentryType: 'single',
+  // Step 3 — sensitive, memory only
+  surname: '',
+  givenName: '',
+  dob: '',
+  sex: '',
+  nationality: '',
+  arcNumber: '',
+  passportNumber: '',
+  passportIssueDate: '',
+  passportExpiryDate: '',
+  koreanAddress: '',
+  phone: '',
+  email: '',
+  applicationDate: new Date().toISOString().slice(0, 10),
+  // Step 4
+  currentWorkplace: '',
+  newWorkplace: '',
+  bizRegNumber: '',
+  workplacePhone: '',
+  currentExpiryDate: '',
+  extensionReason: '',
+  newAddress: '',
+  moveDate: '',
+  changedItem: '',
+  newInfo: '',
+  reentryPeriod: '',
+  refundAccount: '',
+};
+
+const STEPS = [
+  { num: 1, label: '신청 유형', shortLabel: '유형' },
+  { num: 2, label: '체류자격', shortLabel: '자격' },
+  { num: 3, label: '인적사항', shortLabel: '인적' },
+  { num: 4, label: '추가정보', shortLabel: '추가' },
+  { num: 5, label: '누락 확인', shortLabel: '확인' },
+  { num: 6, label: '작성 가이드', shortLabel: '가이드' },
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   HELPERS
+   ═══════════════════════════════════════════════════════════════ */
+function getAppType() {
+  return APP_TYPES.find(t => t.id === state.appTypeId) || null;
+}
+
+function esc(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fieldHTML(id, labelKo, labelEn, type, value, helpText, required, opts) {
+  opts = opts || {};
+  const reqMark = required ? '<span class="fh-required" aria-hidden="true">*</span>' : '';
+  if (type === 'select') {
+    const options = (opts.options || []).map(o =>
+      `<option value="${esc(o.value)}" ${o.value === value ? 'selected' : ''}>${esc(o.label)}</option>`
+    ).join('');
+    return `<div class="fh-field">
+      <label class="fh-label" for="${id}">${reqMark}${labelKo} <span class="fh-label-en">${labelEn}</span></label>
+      ${helpText ? `<p class="fh-help" id="${id}_help">${helpText}</p>` : ''}
+      <select class="fh-select" id="${id}" name="${id}" ${required ? 'required' : ''} aria-describedby="${helpText ? id+'_help' : ''}" data-state="${id}">${options}</select>
+    </div>`;
+  }
+  if (type === 'textarea') {
+    return `<div class="fh-field">
+      <label class="fh-label" for="${id}">${reqMark}${labelKo} <span class="fh-label-en">${labelEn}</span></label>
+      ${helpText ? `<p class="fh-help" id="${id}_help">${helpText}</p>` : ''}
+      <textarea class="fh-textarea" id="${id}" name="${id}" aria-describedby="${helpText ? id+'_help' : ''}" data-state="${id}">${esc(value)}</textarea>
+    </div>`;
+  }
+  return `<div class="fh-field">
+    <label class="fh-label" for="${id}">${reqMark}${labelKo} <span class="fh-label-en">${labelEn}</span></label>
+    ${helpText ? `<p class="fh-help" id="${id}_help">${helpText}</p>` : ''}
+    <input class="fh-input" type="${type}" id="${id}" name="${id}" value="${esc(value)}" ${required ? 'required' : ''} aria-describedby="${helpText ? id+'_help' : ''}" data-state="${id}"${opts.placeholder ? ` placeholder="${esc(opts.placeholder)}"` : ''}>
+  </div>`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER STEPPER
+   ═══════════════════════════════════════════════════════════════ */
+function renderStepper() {
+  const el = document.getElementById('fhStepper');
+  let html = '';
+  STEPS.forEach((s, i) => {
+    const status = s.num < state.currentStep ? 'done' : s.num === state.currentStep ? 'active' : 'pending';
+    const ariaLabel = `${status === 'done' ? '완료' : status === 'active' ? '현재' : '대기'} 단계 ${s.num}: ${s.label}`;
+    html += `<div class="fh-step-item">
+      <div class="fh-step-dot ${status}" role="status" aria-label="${ariaLabel}">${status === 'done' ? '✓' : s.num}</div>
+      <span class="fh-step-label ${status}">${s.label}</span>
+    </div>`;
+    if (i < STEPS.length - 1) html += '<div class="fh-step-conn" aria-hidden="true"></div>';
+  });
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER TYPE GRID (Step 1)
+   ═══════════════════════════════════════════════════════════════ */
+function renderTypeGrid() {
+  const grid = document.getElementById('fhTypeGrid');
+  grid.innerHTML = APP_TYPES.map(t => {
+    const tags = [];
+    if (t.needsPhoto) tags.push('<span class="fh-tag photo">사진 필요</span>');
+    if (t.needsRefundAccount) tags.push('<span class="fh-tag account">반환계좌 필요</span>');
+    return `<button
+      type="button"
+      class="fh-type-card${state.appTypeId === t.id ? ' selected' : ''}"
+      data-type="${t.id}"
+      role="radio"
+      aria-checked="${state.appTypeId === t.id}"
+      aria-label="${t.ko} (${t.en})">
+      <span class="fh-type-checkbox">☑ ${esc(t.formCheckbox)}</span>
+      <span class="fh-type-ko">${esc(t.ko)}</span>
+      <span class="fh-type-en">${esc(t.en)}</span>
+      <span class="fh-type-sub">${esc(t.sub)}</span>
+      ${tags.length ? `<span class="fh-type-tags">${tags.join('')}</span>` : ''}
+    </button>`;
+  }).join('');
+  grid.querySelectorAll('.fh-type-card').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.appTypeId = btn.dataset.type;
+      renderTypeGrid();
+      updatePreview();
+      updateNavButtons();
+    });
+    btn.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); btn.click(); }
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER STEP 2 — Status & purpose
+   ═══════════════════════════════════════════════════════════════ */
+function renderStep2() {
+  const t = getAppType();
+  const container = document.getElementById('fhStep2Fields');
+  if (!t) { container.innerHTML = '<p class="fh-caution">신청 유형을 먼저 선택하세요.</p>'; return; }
+  let html = '';
+
+  html += fieldHTML('currentStatus', '현재 체류자격', 'Current status of sojourn', 'text', state.currentStatus,
+    '예: D-2, E-7-1, F-4 등. 등록증 또는 비자 스티커에서 확인할 수 있습니다.', false, { placeholder: 'D-2, E-7-1, F-4 …' });
+
+  if (t.needsDesiredStatus) {
+    html += fieldHTML('desiredStatus', '희망 체류자격', 'Desired status of sojourn', 'text', state.desiredStatus,
+      '체류자격 변경 또는 부여 신청 시 신청하려는 자격을 기재합니다. 예: E-1, F-2-7, D-10', true, { placeholder: 'E-1, F-2-7, D-10 …' });
+  }
+
+  if (t.needsDesiredActivity) {
+    html += fieldHTML('desiredActivity', '희망 활동/자격', 'Desired activity or status', 'text', state.desiredActivity,
+      '체류자격외활동허가 신청 시 허가받고자 하는 활동 또는 자격을 기재합니다.', true, { placeholder: '아르바이트, 시간제 취업 …' });
+    html += fieldHTML('activityDescription', '활동 내용', 'Activity description', 'textarea', state.activityDescription,
+      '구체적인 활동 내용(업무 종류, 장소, 시간 등)을 적어두면 작성 시 참고가 됩니다.', false);
+    html += fieldHTML('activityInstitution', '활동 기관/사업장명', 'Institution or employer', 'text', state.activityInstitution,
+      '허가 신청 대상 기관 또는 사업장의 명칭을 입력하세요.', false);
+    html += fieldHTML('activityPeriod', '활동 희망 기간', 'Desired activity period', 'text', state.activityPeriod,
+      '예: 2026.07.01 ~ 2026.12.31', false, { placeholder: 'YYYY.MM.DD ~ YYYY.MM.DD' });
+  }
+
+  if (t.needsReentryPeriod) {
+    html += `<div class="fh-field">
+      <label class="fh-label">재입국허가 종류 <span class="fh-label-en">Single / Multiple</span></label>
+      <p class="fh-help">단수 또는 복수 재입국허가 여부를 선택하세요. 체류기간 및 자격에 따라 복수 허가가 가능할 수 있습니다.</p>
+      <div class="fh-radio-group" role="radiogroup" aria-label="재입국허가 종류">
+        <button type="button" class="fh-radio-opt${state.reentryType === 'single' ? ' selected' : ''}" data-reentry="single" role="radio" aria-checked="${state.reentryType === 'single'}">단수 Single</button>
+        <button type="button" class="fh-radio-opt${state.reentryType === 'multiple' ? ' selected' : ''}" data-reentry="multiple" role="radio" aria-checked="${state.reentryType === 'multiple'}">복수 Multiple</button>
+      </div>
+    </div>`;
+  }
+
+  if (t.note) {
+    html += `<div class="fh-note">ℹ ${esc(t.note)}</div>`;
+  }
+
+  container.innerHTML = html;
+  bindStep2Events();
+}
+
+function bindStep2Events() {
+  ['currentStatus','desiredStatus','desiredActivity','activityDescription','activityInstitution','activityPeriod']
+    .forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); }); });
+  document.querySelectorAll('[data-reentry]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.reentryType = btn.dataset.reentry;
+      document.querySelectorAll('[data-reentry]').forEach(b => {
+        b.classList.toggle('selected', b.dataset.reentry === state.reentryType);
+        b.setAttribute('aria-checked', b.dataset.reentry === state.reentryType);
+      });
+      updatePreview();
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER STEP 3 — Personal info
+   ═══════════════════════════════════════════════════════════════ */
+function renderStep3() {
+  const t = getAppType();
+  const container = document.getElementById('fhStep3Fields');
+  let html = '';
+
+  html += `<div class="fh-field-row">
+    ${fieldHTML('surname', '성 (Surname)', 'Family name', 'text', state.surname, '여권 영문 표기와 동일하게 입력하세요.', true, { placeholder: 'KIM' })}
+    ${fieldHTML('givenName', '이름 (Given names)', 'Given names', 'text', state.givenName, '여권 영문 표기와 동일하게 입력하세요.', true, { placeholder: 'MINSOO' })}
+  </div>`;
+
+  html += `<div class="fh-field-row">
+    ${fieldHTML('dob', '생년월일', 'Date of birth', 'date', state.dob, '', true)}
+    ${fieldHTML('sex', '성별', 'Sex', 'select', state.sex, '', true, { options: [
+      { value: '', label: '— 선택 —' },
+      { value: 'M', label: '남(Male)' },
+      { value: 'F', label: '여(Female)' }
+    ]})}
+  </div>`;
+
+  html += fieldHTML('nationality', '국적', 'Nationality', 'text', state.nationality,
+    '여권에 기재된 국적을 입력하세요. 예: Republic of Korea, United States of America, China', true, { placeholder: '예: United States of America' });
+
+  html += `<p class="fh-section-label">여권 정보 Passport</p>`;
+  html += `<div class="fh-field-row">
+    ${fieldHTML('passportNumber', '여권번호', 'Passport number', 'text', state.passportNumber, '예: M12345678', true, { placeholder: 'M12345678' })}
+    ${fieldHTML('arcNumber', '외국인등록번호', 'Foreign resident registration number', 'text', state.arcNumber, '이미 외국인등록을 한 경우 입력합니다. 최초 신청자는 빈칸으로 둡니다.', false, { placeholder: '000000-0000000' })}
+  </div>`;
+
+  html += `<div class="fh-field-row">
+    ${fieldHTML('passportIssueDate', '여권 발급일', 'Passport issue date', 'date', state.passportIssueDate, '', false)}
+    ${fieldHTML('passportExpiryDate', '여권 유효기간', 'Passport expiry date', 'date', state.passportExpiryDate, '신청일보다 이전이면 갱신이 필요합니다.', true)}
+  </div>`;
+
+  html += `<p class="fh-section-label">연락처 Contact</p>`;
+  html += fieldHTML('koreanAddress', '대한민국 내 주소', 'Korean address', 'text', state.koreanAddress, '현재 거주지 주소를 입력하세요.', true, { placeholder: '서울특별시 …' });
+  html += `<div class="fh-field-row">
+    ${fieldHTML('phone', '휴대전화', 'Cell phone number', 'tel', state.phone, '예: 010-1234-5678', false, { placeholder: '010-XXXX-XXXX' })}
+    ${fieldHTML('email', '전자우편', 'Email', 'email', state.email, 'HiKorea 등록 이메일을 입력하면 참고가 됩니다.', false, { placeholder: 'example@email.com' })}
+  </div>`;
+  html += fieldHTML('applicationDate', '신청일', 'Application date', 'date', state.applicationDate, '신청서를 제출하는 날짜를 입력하세요.', false);
+
+  html += `<div class="fh-note" style="margin-top:.75rem">
+    ℹ <strong>서명/인</strong>: 신청서 제출 시 신청인 서명 또는 인감을 직접 기재합니다. 이 도구에서는 서명을 수집하지 않습니다.
+  </div>`;
+
+  container.innerHTML = html;
+  bindStep3Events();
+}
+
+function bindStep3Events() {
+  ['surname','givenName','dob','sex','nationality','arcNumber','passportNumber',
+   'passportIssueDate','passportExpiryDate','koreanAddress','phone','email','applicationDate']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER STEP 4 — Procedure-specific
+   ═══════════════════════════════════════════════════════════════ */
+function renderStep4() {
+  const t = getAppType();
+  const container = document.getElementById('fhStep4Fields');
+  if (!t) { container.innerHTML = '<p class="fh-caution">신청 유형을 먼저 선택하세요.</p>'; return; }
+  let html = '';
+  let hasFields = false;
+
+  if (t.needsCurrentExpiry) {
+    hasFields = true;
+    html += fieldHTML('currentExpiryDate', '현재 체류기간 만료일', 'Current sojourn expiry date', 'date', state.currentExpiryDate,
+      '등록증 또는 허가서에 기재된 현재 체류기간 만료일입니다.', true);
+    html += fieldHTML('extensionReason', '연장 사유', 'Reason for extension', 'textarea', state.extensionReason,
+      '계속 체류해야 하는 이유를 간략히 적어두면 실제 작성 시 도움이 됩니다.', false);
+  }
+
+  if (t.needsWorkplace) {
+    hasFields = true;
+    html += `<p class="fh-section-label">현재 근무처 Current Workplace</p>`;
+    html += fieldHTML('currentWorkplace', '현재 근무처명', 'Current workplace name', 'text', state.currentWorkplace, '', false);
+    html += `<p class="fh-section-label">새 근무처 New Workplace</p>`;
+    html += fieldHTML('newWorkplace', '새 근무처명', 'New workplace name', 'text', state.newWorkplace, '', true);
+    html += `<div class="fh-field-row">
+      ${fieldHTML('bizRegNumber', '사업자등록번호', 'Business registration number', 'text', state.bizRegNumber, '새 근무처의 사업자등록번호를 입력하세요.', false, { placeholder: '000-00-00000' })}
+      ${fieldHTML('workplacePhone', '근무처 전화번호', 'Workplace phone number', 'tel', state.workplacePhone, '', false, { placeholder: '02-XXX-XXXX' })}
+    </div>`;
+  }
+
+  if (t.needsReentryPeriod) {
+    hasFields = true;
+    html += fieldHTML('reentryPeriod', '재입국 예정 기간', 'Intended period of reentry', 'text', state.reentryPeriod,
+      '예: 1개월, 6개월 이내. 여권 유효기간 및 체류기간 범위 내에서 신청합니다.', true, { placeholder: '예: 3개월' });
+  }
+
+  if (t.needsAddressChange) {
+    hasFields = true;
+    html += fieldHTML('newAddress', '변경 후 주소', 'New address', 'text', state.newAddress,
+      '이사 후 새로운 거주지 주소를 입력하세요.', true, { placeholder: '서울특별시 …' });
+    html += fieldHTML('moveDate', '이사 날짜', 'Move-in date', 'date', state.moveDate,
+      '실제 이사한 날짜를 입력하세요.', false);
+  }
+
+  if (t.needsChangedItem) {
+    hasFields = true;
+    html += fieldHTML('changedItem', '변경 항목', 'Changed item', 'text', state.changedItem,
+      '변경된 사항의 항목명을 입력하세요. 예: 여권번호, 성명 등.', true);
+    html += fieldHTML('newInfo', '변경된 새 정보', 'New information', 'text', state.newInfo,
+      '변경 후의 새로운 정보를 입력하세요.', true);
+  }
+
+  if (t.needsPhoto) {
+    hasFields = true;
+    html += `<div class="fh-caution">
+      <p class="fh-caution-title">📷 사진 제출 필요 / Photo required</p>
+      최근 6개월 이내에 촬영한 여권용 사진(3.5 × 4.5cm, 흰 배경, 모자 미착용)이 필요합니다. 신청 전 사진 규격을 관할청에 확인하세요.
+    </div>`;
+  }
+
+  if (t.needsRefundAccount) {
+    hasFields = true;
+    html += `<div class="fh-note" style="margin-bottom:.5rem">
+      반환용 계좌번호는 외국인등록 또는 등록증 재발급 신청 시에만 기재하는 항목입니다. 수수료 초과 납부 시 반환을 위한 계좌입니다.
+    </div>`;
+    html += fieldHTML('refundAccount', '반환용 계좌번호', 'Refund bank account number', 'text', state.refundAccount,
+      '수수료 반환이 필요한 경우를 위한 계좌번호입니다. 입력하신 정보는 이 페이지를 벗어나면 사라집니다.', false, { placeholder: '은행명 + 계좌번호' });
+  }
+
+  if (!hasFields) {
+    html = `<div class="fh-note">선택하신 신청 유형에 해당하는 추가 입력 항목이 없습니다. 다음 단계로 진행하세요.</div>`;
+  }
+
+  container.innerHTML = html;
+  bindStep4Events();
+}
+
+function bindStep4Events() {
+  ['currentExpiryDate','extensionReason','currentWorkplace','newWorkplace','bizRegNumber','workplacePhone',
+   'reentryPeriod','newAddress','moveDate','changedItem','newInfo','refundAccount']
+    .forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
+    });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VALIDATION (Step 5)
+   ═══════════════════════════════════════════════════════════════ */
+function runValidation() {
+  const t = getAppType();
+  const issues = [];
+  const today = new Date().toISOString().slice(0, 10);
+
+  if (!t) {
+    issues.push({ type: 'error', msg: '신청/신고 유형을 선택하지 않았습니다.' });
+    return issues;
+  }
+
+  if (!state.surname.trim()) issues.push({ type: 'error', field: 'surname', msg: '성(Surname)이 입력되지 않았습니다.' });
+  if (!state.givenName.trim()) issues.push({ type: 'error', field: 'givenName', msg: '이름(Given names)이 입력되지 않았습니다.' });
+  if (!state.dob) issues.push({ type: 'error', field: 'dob', msg: '생년월일이 입력되지 않았습니다.' });
+  if (!state.nationality.trim()) issues.push({ type: 'error', field: 'nationality', msg: '국적이 입력되지 않았습니다.' });
+  if (!state.passportNumber.trim()) issues.push({ type: 'error', field: 'passportNumber', msg: '여권번호가 입력되지 않았습니다.' });
+  if (!state.passportExpiryDate) issues.push({ type: 'error', field: 'passportExpiryDate', msg: '여권 유효기간이 입력되지 않았습니다.' });
+  if (!state.koreanAddress.trim()) issues.push({ type: 'error', field: 'koreanAddress', msg: '대한민국 내 주소가 입력되지 않았습니다.' });
+
+  if (state.passportExpiryDate && state.applicationDate && state.passportExpiryDate < state.applicationDate) {
+    issues.push({ type: 'warn', msg: '여권 유효기간이 신청일보다 앞서 있습니다. 여권 갱신 여부를 확인하세요.' });
+  }
+
+  if (t.needsDesiredStatus && !state.desiredStatus.trim()) {
+    issues.push({ type: 'error', msg: '희망 체류자격이 입력되지 않았습니다.' });
+  }
+
+  if (t.needsDesiredActivity && !state.desiredActivity.trim()) {
+    issues.push({ type: 'error', msg: '희망 활동/자격이 입력되지 않았습니다.' });
+  }
+
+  if (t.needsCurrentExpiry) {
+    if (!state.currentExpiryDate) {
+      issues.push({ type: 'error', msg: '현재 체류기간 만료일이 입력되지 않았습니다.' });
+    } else if (state.currentExpiryDate < today) {
+      issues.push({ type: 'warn', msg: '현재 체류기간 만료일이 오늘보다 이전입니다. 이미 기간이 지났다면 관할 출입국·외국인청에 즉시 문의하세요.' });
+    }
+  }
+
+  if (t.needsWorkplace && !state.newWorkplace.trim()) {
+    issues.push({ type: 'error', msg: '새 근무처 정보가 입력되지 않았습니다.' });
+  }
+
+  if (t.needsReentryPeriod && !state.reentryPeriod.trim()) {
+    issues.push({ type: 'error', msg: '재입국 예정 기간이 입력되지 않았습니다.' });
+  }
+
+  if (t.needsAddressChange && !state.newAddress.trim()) {
+    issues.push({ type: 'error', msg: '변경 후 주소가 입력되지 않았습니다.' });
+  }
+
+  if (t.needsChangedItem) {
+    if (!state.changedItem.trim()) issues.push({ type: 'error', msg: '변경 항목이 입력되지 않았습니다.' });
+    if (!state.newInfo.trim()) issues.push({ type: 'error', msg: '변경된 새 정보가 입력되지 않았습니다.' });
+  }
+
+  // General reminders
+  issues.push({ type: 'ok', msg: '실제 신청서 제출 전 관할 출입국·외국인청에서 최신 서식 및 제출서류를 확인하세요.' });
+  issues.push({ type: 'ok', msg: 'HiKorea(www.hikorea.go.kr) 또는 1345로 문의하면 신청 절차 안내를 받을 수 있습니다.' });
+  if (t.needsPhoto) issues.push({ type: 'warn', msg: '📷 여권용 사진(최근 6개월 이내, 3.5×4.5cm)을 준비하세요.' });
+  if (t.needsRefundAccount) issues.push({ type: 'ok', msg: '반환용 계좌번호를 신청서에 기재하는 항목이 있습니다. 신청서 원본에서 확인하세요.' });
+
+  return issues;
+}
+
+function renderValidation() {
+  const issues = runValidation();
+  const el = document.getElementById('fhValResult');
+  if (!issues.length) {
+    el.innerHTML = '<div class="fh-val-item ok"><em class="fh-val-icon">✓</em> 모든 항목이 입력되었습니다.</div>';
+    return;
+  }
+  const errors = issues.filter(i => i.type === 'error');
+  const warns = issues.filter(i => i.type === 'warn');
+  const oks = issues.filter(i => i.type === 'ok');
+
+  let html = '';
+  if (errors.length) {
+    html += `<p class="fh-section-label" style="color:var(--color-error)">누락 항목 (${errors.length})</p>`;
+    html += '<div class="fh-val-list">';
+    errors.forEach(i => { html += `<div class="fh-val-item error"><em class="fh-val-icon">✗</em>${esc(i.msg)}</div>`; });
+    html += '</div>';
+  }
+  if (warns.length) {
+    html += `<p class="fh-section-label" style="color:var(--color-warning);margin-top:1rem">확인 필요 (${warns.length})</p>`;
+    html += '<div class="fh-val-list">';
+    warns.forEach(i => { html += `<div class="fh-val-item warn"><em class="fh-val-icon">!</em>${esc(i.msg)}</div>`; });
+    html += '</div>';
+  }
+  if (oks.length) {
+    html += `<p class="fh-section-label" style="margin-top:1rem">안내사항</p>`;
+    html += '<div class="fh-val-list">';
+    oks.forEach(i => { html += `<div class="fh-val-item ok"><em class="fh-val-icon">ℹ</em>${esc(i.msg)}</div>`; });
+    html += '</div>';
+  }
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RENDER OUTPUT (Step 6)
+   ═══════════════════════════════════════════════════════════════ */
+function renderOutput() {
+  const t = getAppType();
+  const el = document.getElementById('fhOutputContent');
+  if (!t) { el.innerHTML = '<p class="fh-caution">신청 유형이 선택되지 않았습니다.</p>'; return; }
+
+  const issues = runValidation();
+  const errors = issues.filter(i => i.type === 'error');
+
+  function row(key, val, sensitive) {
+    const display = val ? esc(val) : '';
+    const cls = display ? '' : ' empty';
+    const displayVal = display || (sensitive ? '(민감 정보 — 직접 기재)' : '(미입력)');
+    return `<div class="fh-output-row"><span class="fh-output-key">${key}</span><span class="fh-output-val${cls}">${displayVal}</span></div>`;
+  }
+
+  let html = '';
+
+  // Section 1: Checkbox
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">① 통합신청서에서 체크할 항목</div>
+    <div class="fh-output-body">
+      <p style="margin-bottom:.5rem">다음 항목에 체크(☑)하세요:</p>
+      <div class="fh-checkbox-display">☑ ${esc(t.formCheckbox)}</div>
+      ${t.needsDesiredStatus && state.desiredStatus ? `<p style="margin-top:.5rem;font-size:.8rem">→ 희망 체류자격란: <strong>${esc(state.desiredStatus)}</strong></p>` : ''}
+      ${t.needsDesiredActivity && state.desiredActivity ? `<p style="margin-top:.5rem;font-size:.8rem">→ 희망 활동/자격란: <strong>${esc(state.desiredActivity)}</strong></p>` : ''}
+      ${t.needsReentryPeriod ? `<p style="margin-top:.5rem;font-size:.8rem">→ 재입국 종류: <strong>${state.reentryType === 'single' ? '단수' : '복수'}</strong>${state.reentryPeriod ? ' · 기간: ' + esc(state.reentryPeriod) : ''}</p>` : ''}
+    </div>
+  </div>`;
+
+  // Section 2: Personal info
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">② 기본 인적사항</div>
+    ${row('성 Surname', state.surname)}
+    ${row('이름 Given names', state.givenName)}
+    ${row('생년월일 DOB', state.dob)}
+    ${row('성별 Sex', state.sex === 'M' ? '남(Male)' : state.sex === 'F' ? '여(Female)' : '')}
+    ${row('국적 Nationality', state.nationality)}
+    ${row('외국인등록번호', state.arcNumber || '', true)}
+    ${row('여권번호 Passport No.', state.passportNumber || '', true)}
+    ${row('여권 발급일', state.passportIssueDate)}
+    ${row('여권 유효기간', state.passportExpiryDate)}
+    ${row('대한민국 내 주소', state.koreanAddress || '', true)}
+    ${row('휴대전화', state.phone || '', true)}
+    ${row('전자우편 Email', state.email || '', true)}
+    ${row('신청일', state.applicationDate)}
+  </div>`;
+
+  // Section 3: Procedure-specific
+  let step3Rows = '';
+  if (state.currentStatus) step3Rows += row('현재 체류자격', state.currentStatus);
+  if (t.needsDesiredStatus) step3Rows += row('희망 체류자격', state.desiredStatus);
+  if (t.needsDesiredActivity) {
+    step3Rows += row('희망 활동/자격', state.desiredActivity);
+    if (state.activityDescription) step3Rows += row('활동 내용', state.activityDescription);
+    if (state.activityInstitution) step3Rows += row('활동 기관명', state.activityInstitution);
+    if (state.activityPeriod) step3Rows += row('활동 기간', state.activityPeriod);
+  }
+  if (t.needsCurrentExpiry) {
+    step3Rows += row('현재 체류기간 만료일', state.currentExpiryDate);
+    if (state.extensionReason) step3Rows += row('연장 사유', state.extensionReason);
+  }
+  if (t.needsWorkplace) {
+    step3Rows += row('현재 근무처', state.currentWorkplace || '');
+    step3Rows += row('새 근무처명', state.newWorkplace);
+    if (state.bizRegNumber) step3Rows += row('사업자등록번호', state.bizRegNumber || '', true);
+    if (state.workplacePhone) step3Rows += row('근무처 전화번호', state.workplacePhone || '', true);
+  }
+  if (t.needsReentryPeriod) {
+    step3Rows += row('재입국 종류', state.reentryType === 'single' ? '단수' : '복수');
+    step3Rows += row('재입국 예정 기간', state.reentryPeriod);
+  }
+  if (t.needsAddressChange) {
+    step3Rows += row('변경 후 주소', state.newAddress || '', true);
+    if (state.moveDate) step3Rows += row('이사 날짜', state.moveDate);
+  }
+  if (t.needsChangedItem) {
+    step3Rows += row('변경 항목', state.changedItem);
+    step3Rows += row('변경된 새 정보', state.newInfo);
+  }
+
+  if (step3Rows) {
+    html += `<div class="fh-output-section">
+      <div class="fh-output-head">③ 절차별 추가 입력정보</div>
+      ${step3Rows}
+    </div>`;
+  }
+
+  // Section 4: Conditional reminders
+  let condNotes = '';
+  if (t.needsPhoto) condNotes += '<li>📷 <strong>사진 필요</strong>: 최근 6개월 이내 여권용 사진(3.5×4.5cm, 흰 배경, 모자 미착용)</li>';
+  if (t.needsRefundAccount) condNotes += `<li>🏦 <strong>반환용 계좌번호</strong>: 신청서 원본에 직접 기재하세요. (입력한 경우: ${state.refundAccount ? esc(state.refundAccount) : '미입력'})</li>`;
+  condNotes += '<li>✍ <strong>서명/인</strong>: 신청인 본인이 신청서에 직접 서명 또는 날인합니다.</li>';
+  condNotes += '<li>📋 <strong>행정정보 공동이용 동의</strong>: 신청서 내 동의 항목을 확인하세요.</li>';
+
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">④ 사진·계좌·서명 등 조건부 안내</div>
+    <div class="fh-output-body"><ul>${condNotes}</ul></div>
+  </div>`;
+
+  // Section 5: Validation summary
+  if (errors.length) {
+    const errList = errors.map(i => `<li>${esc(i.msg)}</li>`).join('');
+    html += `<div class="fh-output-section">
+      <div class="fh-output-head" style="color:var(--color-error)">⑤ 누락 또는 확인 필요 항목 (${errors.length})</div>
+      <div class="fh-output-body"><ul>${errList}</ul></div>
+    </div>`;
+  }
+
+  // Section 6: Pre-submission checklist
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">⑥ 제출 전 확인 체크리스트</div>
+    <div class="fh-output-body"><ul>
+      <li>최신 통합신청서(신고서) 서식(별지 제34호서식)을 HiKorea 또는 관할청에서 받아 사용하세요.</li>
+      <li>제출 서류는 체류자격별·절차별로 다릅니다. 관할 출입국·외국인청 또는 HiKorea 홈페이지에서 확인하세요.</li>
+      <li>수수료 납부 방법(현장·인터넷)을 미리 확인하세요.</li>
+      <li>방문 전 온라인 예약(HiKorea)을 권장합니다.</li>
+      <li>신청 가능 기간(체류기간 만료 전 등)이 지나지 않았는지 확인하세요.</li>
+      <li>Paradiso 검색 또는 AI 검색에서 해당 절차의 서류 안내를 함께 확인하세요.</li>
+    </ul></div>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIVE PREVIEW
+   ═══════════════════════════════════════════════════════════════ */
+function updatePreview() {
+  const t = getAppType();
+  const body = document.getElementById('fhPreviewBody');
+  const badge = document.getElementById('fhPreviewBadge');
+
+  if (!t) {
+    body.innerHTML = '<div class="fh-preview-empty">신청 유형을 선택하면<br>미리보기가 업데이트됩니다.</div>';
+    badge.textContent = '작성 중';
+    return;
+  }
+
+  function prow(k, v, sensitive) {
+    const val = v ? esc(v) : '';
+    const cls = val ? '' : ' empty';
+    const disp = val || (sensitive ? '(직접 기재)' : '—');
+    return `<div class="fh-preview-row"><span class="fh-preview-k">${k}</span><span class="fh-preview-v${cls}">${disp}</span></div>`;
+  }
+
+  let html = '';
+  html += `<div class="fh-preview-row"><span class="fh-preview-k">체크 항목</span><span class="fh-preview-v" style="color:var(--p-green);font-weight:700">☑ ${esc(t.formCheckbox)}</span></div>`;
+  if (state.surname || state.givenName) html += prow('성명', (state.surname + ' ' + state.givenName).trim());
+  if (state.dob) html += prow('생년월일', state.dob);
+  if (state.nationality) html += prow('국적', state.nationality);
+  if (state.passportNumber) html += prow('여권번호', '****' + state.passportNumber.slice(-4), false);
+  if (state.passportExpiryDate) html += prow('여권만료일', state.passportExpiryDate);
+  if (state.koreanAddress) html += prow('주소', state.koreanAddress.slice(0, 18) + (state.koreanAddress.length > 18 ? '…' : ''));
+  if (state.currentStatus) html += prow('현 체류자격', state.currentStatus);
+  if (t.needsDesiredStatus && state.desiredStatus) html += prow('희망 자격', state.desiredStatus);
+  if (t.needsDesiredActivity && state.desiredActivity) html += prow('희망 활동', state.desiredActivity);
+  if (t.needsCurrentExpiry && state.currentExpiryDate) html += prow('만료일', state.currentExpiryDate);
+  if (t.needsWorkplace && state.newWorkplace) html += prow('새 근무처', state.newWorkplace);
+  if (t.needsReentryPeriod && state.reentryPeriod) html += prow('재입국 기간', state.reentryPeriod);
+  if (t.needsAddressChange && state.newAddress) html += prow('변경 주소', state.newAddress.slice(0,18)+'…');
+  if (t.needsPhoto) html += `<div class="fh-preview-row"><span class="fh-preview-k" style="color:var(--p-coral)">사진</span><span class="fh-preview-v" style="color:var(--p-coral)">필요</span></div>`;
+  if (t.needsRefundAccount) html += `<div class="fh-preview-row"><span class="fh-preview-k" style="color:var(--p-green)">반환계좌</span><span class="fh-preview-v">${state.refundAccount ? '입력됨' : '미입력'}</span></div>`;
+
+  body.innerHTML = html;
+
+  const issues = runValidation();
+  const errorCount = issues.filter(i => i.type === 'error').length;
+  badge.textContent = errorCount > 0 ? `누락 ${errorCount}` : '입력 중';
+  badge.style.background = errorCount > 0 ? 'var(--color-warning)' : 'var(--p-green)';
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   NAVIGATION
+   ═══════════════════════════════════════════════════════════════ */
+function updateNavButtons() {
+  const prevBtn = document.getElementById('fhPrevBtn');
+  const nextBtn = document.getElementById('fhNextBtn');
+  prevBtn.disabled = state.currentStep === 1;
+  if (state.currentStep === 6) {
+    nextBtn.style.display = 'none';
+  } else {
+    nextBtn.style.display = '';
+    const isStep1 = state.currentStep === 1;
+    nextBtn.disabled = isStep1 && !state.appTypeId;
+    nextBtn.textContent = state.currentStep === 5 ? '작성 가이드 보기 →' : '다음 →';
+  }
+}
+
+function goToStep(n) {
+  state.currentStep = n;
+  document.querySelectorAll('.fh-step-panel').forEach(p => p.classList.remove('visible'));
+  const panel = document.getElementById(`fhStep${n}`);
+  if (panel) {
+    panel.classList.add('visible');
+    panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  renderStepper();
+  updateNavButtons();
+  if (n === 2) renderStep2();
+  if (n === 3) renderStep3();
+  if (n === 4) renderStep4();
+  if (n === 5) renderValidation();
+  if (n === 6) renderOutput();
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OUTPUT ACTIONS
+   ═══════════════════════════════════════════════════════════════ */
+function buildCopyText() {
+  const t = getAppType();
+  if (!t) return '신청 유형을 먼저 선택하세요.';
+  const lines = [];
+  lines.push('=== 통합신청서 작성 가이드 (Paradiso 참고용) ===');
+  lines.push(`신청 유형: ${t.ko} (${t.formCheckbox})`);
+  lines.push('');
+  lines.push('[기본 인적사항]');
+  if (state.surname || state.givenName) lines.push(`성명: ${state.surname} ${state.givenName}`);
+  if (state.dob) lines.push(`생년월일: ${state.dob}`);
+  if (state.sex) lines.push(`성별: ${state.sex === 'M' ? '남' : '여'}`);
+  if (state.nationality) lines.push(`국적: ${state.nationality}`);
+  lines.push('여권번호: (여권 직접 확인)');
+  if (state.passportExpiryDate) lines.push(`여권 유효기간: ${state.passportExpiryDate}`);
+  if (state.koreanAddress) lines.push(`주소: (직접 기재)`);
+  if (state.applicationDate) lines.push(`신청일: ${state.applicationDate}`);
+  lines.push('');
+  lines.push('[절차별 추가정보]');
+  if (state.currentStatus) lines.push(`현재 체류자격: ${state.currentStatus}`);
+  if (t.needsDesiredStatus) lines.push(`희망 체류자격: ${state.desiredStatus || '(미입력)'}`);
+  if (t.needsDesiredActivity) lines.push(`희망 활동: ${state.desiredActivity || '(미입력)'}`);
+  if (t.needsCurrentExpiry) lines.push(`현재 체류기간 만료일: ${state.currentExpiryDate || '(미입력)'}`);
+  if (t.needsWorkplace) lines.push(`새 근무처: ${state.newWorkplace || '(미입력)'}`);
+  if (t.needsReentryPeriod) lines.push(`재입국 종류: ${state.reentryType === 'single' ? '단수' : '복수'} / 기간: ${state.reentryPeriod || '(미입력)'}`);
+  if (t.needsAddressChange) lines.push(`변경 후 주소: (직접 기재)`);
+  lines.push('');
+  lines.push('[조건부 항목]');
+  if (t.needsPhoto) lines.push('- 사진: 최근 6개월 이내 여권용 사진 필요');
+  if (t.needsRefundAccount) lines.push('- 반환용 계좌번호: 신청서에 직접 기재');
+  lines.push('- 서명/인: 신청서에 직접 서명 또는 날인');
+  lines.push('');
+  lines.push('[주의]');
+  lines.push('이 내용은 참고용입니다. 최신 서식과 제출서류는 HiKorea(www.hikorea.go.kr) 또는 1345에서 확인하세요.');
+  lines.push(`출처: 통합신청서(신고서) 출입국관리법 시행규칙 별지 제34호서식 (2022. 4. 12.)`);
+  return lines.join('\n');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   THEME & INIT
+   ═══════════════════════════════════════════════════════════════ */
+function initTheme() {
+  const themeBtn = document.getElementById('fhThemeBtn');
+  function applyTheme(isDark) {
+    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    themeBtn.textContent = isDark ? '☀' : '☾';
+    themeBtn.setAttribute('aria-label', isDark ? '라이트 모드로 전환' : '다크 모드로 전환');
+  }
+  themeBtn.addEventListener('click', () => {
+    applyTheme(document.body.getAttribute('data-theme') !== 'dark');
+  });
+}
+
+function initLang() {
+  const btn = document.getElementById('fhLangBtn');
+  btn.addEventListener('click', () => {
+    state.lang = state.lang === 'ko' ? 'en' : 'ko';
+    document.getElementById('fhLangLabel').textContent = state.lang === 'ko' ? '한국어 · EN' : 'EN · 한국어';
+    // Language toggle is cosmetic in MVP; full i18n is Phase 2
+  });
+}
+
+function initURLParams() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const typeParam = params.get('type');
+    if (typeParam && APP_TYPES.find(t => t.id === typeParam)) {
+      state.appTypeId = typeParam;
+    }
+    const statusParam = params.get('status');
+    if (statusParam) state.currentStatus = decodeURIComponent(statusParam);
+  } catch (e) {}
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  initTheme();
+  initLang();
+  initURLParams();
+  renderStepper();
+  renderTypeGrid();
+  goToStep(1);
+  updatePreview();
+
+  document.getElementById('fhPrevBtn').addEventListener('click', () => {
+    if (state.currentStep > 1) goToStep(state.currentStep - 1);
+  });
+  document.getElementById('fhNextBtn').addEventListener('click', () => {
+    if (state.currentStep < 6) goToStep(state.currentStep + 1);
+  });
+
+  document.getElementById('fhCopyBtn').addEventListener('click', () => {
+    const text = buildCopyText();
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('fhCopyBtn');
+      const orig = btn.textContent;
+      btn.textContent = '✓ 복사됨';
+      setTimeout(() => { btn.textContent = orig; }, 2000);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    });
+  });
+
+  document.getElementById('fhPrintBtn').addEventListener('click', () => {
+    window.print();
+  });
+
+  document.getElementById('fhResetBtn').addEventListener('click', () => {
+    if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+    Object.keys(state).forEach(k => {
+      if (k === 'currentStep') { state[k] = 1; }
+      else if (k === 'applicationDate') { state[k] = new Date().toISOString().slice(0, 10); }
+      else if (k === 'reentryType') { state[k] = 'single'; }
+      else if (k === 'lang') { /* keep */ }
+      else { state[k] = ''; }
+    });
+    state.appTypeId = null;
+    renderTypeGrid();
+    goToStep(1);
+    updatePreview();
+  });
+});
+</script>
+</body>
+</html>
