@@ -161,6 +161,149 @@ EVIDENCE_GOALS: Tuple[str, ...] = (
 )
 
 # ---------------------------------------------------------------------------
+# Part B2 — authority hierarchy + public grounding-item schema
+#
+# A single, reusable place that ranks official sources by binding authority and
+# projects internal retrieval fields onto the compact, public structured
+# evidence item the answer prompt / source panel consume. This is additive: it
+# never replaces the internal normalized-candidate shape, it only *views* it.
+#
+# Authority levels (1 = strongest binding authority, 7 = non-source inference):
+#   1  Statutes / binding legal provisions
+#   2  Enforcement decrees and rules, official legal regulations
+#   3  Ministry of Justice / HiKorea official manuals and public guidance
+#   4  Official notices, forms, administrative guidance, official glossaries
+#   5  Case law, administrative adjudication, precedent-like materials
+#   6  Paradiso internal explanatory data
+#   7  LLM inference (NOT official source material)
+# ---------------------------------------------------------------------------
+AUTHORITY_LEVEL_LABELS: Dict[int, str] = {
+    1: "statute / binding legal provision",
+    2: "enforcement decree or rule / official regulation",
+    3: "Ministry of Justice / HiKorea manual or public guidance",
+    4: "official notice, form, administrative guidance, or glossary",
+    5: "case law / administrative adjudication / precedent",
+    6: "Paradiso internal explanatory data",
+    7: "LLM inference (not official source material)",
+}
+
+# Map every internal source_type / source_family token to an authority level.
+# Unknown tokens default to 6 (treated as internal explanatory data, never as
+# binding authority) so a mislabeled source can never be over-ranked.
+_AUTHORITY_LEVEL_BY_SOURCE_TYPE: Dict[str, int] = {
+    "statute": 1, "law": 1,
+    "enforcement_decree": 2, "enforcement_rule": 2, "regulation": 2,
+    "administrative_rule": 2, "admin_rule": 2,
+    "manual": 3, "hikorea": 3,
+    "notice": 4, "form": 4, "administrative_guidance": 4,
+    "legal_term": 4, "law_term": 4, "lstrm": 4,
+    "legal_interpretation": 5, "administrative_appeal": 5,
+    "precedent": 5, "constitutional_decision": 5, "case_law": 5,
+    "internal": 6, "visa_data": 6, "doc_master": 6,
+    "inference": 7,
+}
+
+# Project fine-grained internal source types onto the public source-type
+# vocabulary used by the structured evidence item / source panel.
+_PUBLIC_SOURCE_TYPE_BY_SOURCE_TYPE: Dict[str, str] = {
+    "statute": "statute", "law": "statute",
+    "enforcement_decree": "regulation", "enforcement_rule": "regulation",
+    "administrative_rule": "regulation", "admin_rule": "regulation",
+    "regulation": "regulation",
+    "manual": "manual", "hikorea": "hikorea",
+    "notice": "notice", "form": "notice", "administrative_guidance": "notice",
+    "legal_term": "internal", "law_term": "internal", "lstrm": "internal",
+    "legal_interpretation": "case_law", "administrative_appeal": "case_law",
+    "precedent": "case_law", "constitutional_decision": "case_law",
+    "case_law": "case_law",
+    "internal": "internal", "visa_data": "internal", "doc_master": "internal",
+    "inference": "inference",
+}
+
+# Map the internal relevance vocabulary (legal_analysis.RELEVANCE_*) onto the
+# public directness vocabulary the task / source panel use. Anything unknown
+# degrades to NOT_FOUND so the answer never over-claims a match.
+PUBLIC_DIRECTNESS_BY_RELEVANCE: Dict[str, str] = {
+    "direct": "DIRECT",
+    "related": "PARTIAL",
+    "background": "GENERAL",
+    "analogical": "ANALOGICAL",
+    "not_relevant": "NOT_FOUND",
+    "": "NOT_FOUND",
+}
+
+
+def authority_level_for(source_type: Optional[str]) -> int:
+    """Return the binding-authority level (1-7) for an internal source type."""
+    return _AUTHORITY_LEVEL_BY_SOURCE_TYPE.get(str(source_type or "").strip().lower(), 6)
+
+
+def public_source_type_for(source_type: Optional[str]) -> str:
+    """Project an internal source type onto the public source-type vocabulary."""
+    return _PUBLIC_SOURCE_TYPE_BY_SOURCE_TYPE.get(str(source_type or "").strip().lower(), "internal")
+
+
+def public_directness_for(relevance: Optional[str]) -> str:
+    """Project the internal relevance label onto the public directness label."""
+    return PUBLIC_DIRECTNESS_BY_RELEVANCE.get(str(relevance or "").strip().lower(), "NOT_FOUND")
+
+
+def _first_nonempty(item: Dict[str, Any], *keys: str) -> str:
+    for key in keys:
+        value = item.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+        if value not in (None, "", [], {}):
+            return str(value)
+    return ""
+
+
+def to_grounding_item(
+    item: Dict[str, Any],
+    *,
+    relevance: str = "",
+    relevance_reason: str = "",
+    excerpt_chars: int = 400,
+) -> Dict[str, Any]:
+    """Project one internal evidence dict onto the public structured schema.
+
+    The output is the compact, secret-free grounding item the answer prompt and
+    source panel consume. It preserves whatever the internal item actually has
+    and never fabricates fields: missing values stay empty rather than guessed.
+    ``directness`` defaults to NOT_FOUND and ``authority_level`` to 6 so an
+    under-described item can never be presented as binding direct authority.
+    """
+    if not isinstance(item, dict):
+        item = {}
+    raw_type = str(item.get("source_type") or item.get("target") or "").strip().lower()
+    rel = relevance or str(item.get("relevance") or "")
+    excerpt = _first_nonempty(item, "excerpt", "summary", "definition", "snippet", "holdingSummary")
+    return {
+        "source_id": _first_nonempty(
+            item, "source_id", "law_id", "law_serial_no", "reference",
+            "case_number", "serialNumber", "decisionNumber",
+        ),
+        "source_title": _first_nonempty(
+            item, "source_title", "law_name", "title", "term", "case_name",
+            "sourceName",
+        ) or "official source",
+        "source_type": public_source_type_for(raw_type),
+        "version_or_date": _first_nonempty(
+            item, "version_or_date", "enforcement_date", "promulgation_date",
+            "decision_date", "decisionDate", "source_date", "source_revision_date",
+        ),
+        "authority_level": authority_level_for(raw_type),
+        "excerpt": excerpt[:excerpt_chars],
+        "page_or_section": _first_nonempty(
+            item, "page_or_section", "article", "section", "page_range",
+        ),
+        "url": _first_nonempty(item, "url", "source_url", "sanitized_source_url"),
+        "directness": public_directness_for(rel),
+        "relevance_reason": (relevance_reason or _first_nonempty(item, "relevance_reason")),
+    }
+
+
+# ---------------------------------------------------------------------------
 # Part C — generalized source-family routing (single source of truth)
 #
 # Keyed by legal issue dimension. Each value is an ordered priority list of

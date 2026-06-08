@@ -1,0 +1,162 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Deterministic regression cases for nuanced scenario AI answers (grounding audit 2026-06). Tests the backend classification/grounding/answer-shape pipeline only; no live LLM calls. Assertions are tolerant 'any-of' intersections so they stay robust as the model layer evolves, while still locking in that ambiguous scenarios route to the right issue/contract and that the structured grounding schema is well-formed.",
+  "is_training_data": false,
+  "is_llm_eval": false,
+  "notes": "Do not assert hard yes/no answers here. The goal is that each scenario is classified, risk-aware, and structurally grounded. See docs/ops/AI_ANSWER_GROUNDING_AUDIT_2026_06.md.",
+  "cases": [
+    {
+      "id": "sc_g15_jeju_audit_ko",
+      "question": "G-1-5로 체류중인데 제주대학교에서 수업 청강이 가능할까?",
+      "visa_code": "G-1-5",
+      "expect_status_contains": "G-1",
+      "expect_activities_any": ["non_credit_audit"],
+      "expect_issues_any": ["study_on_non_study_status", "activity_scope"],
+      "expect_contracts_any": ["study_on_non_study_status"]
+    },
+    {
+      "id": "sc_g15_korean_noncredit_ko",
+      "question": "G-1-5인데 대학교 한국어 수업을 비학점으로 들어도 돼?",
+      "visa_code": "G-1-5",
+      "expect_status_contains": "G-1",
+      "expect_activities_any": ["non_credit_audit", "language_training", "credit_bearing_study"],
+      "expect_issues_any": ["study_on_non_study_status", "activity_scope"],
+      "expect_contracts_any": ["study_on_non_study_status"]
+    },
+    {
+      "id": "sc_f4_audit_ko",
+      "question": "F-4인데 대학 강의를 청강할 수 있어?",
+      "visa_code": "F-4",
+      "expect_status_contains": "F-4",
+      "expect_activities_any": ["non_credit_audit"],
+      "expect_issues_any": ["study_on_non_study_status", "activity_scope"],
+      "expect_contracts_any": ["study_on_non_study_status"]
+    },
+    {
+      "id": "sc_d2_online_lecture_ko",
+      "question": "D-2 유학생인데 온라인 강의를 들어도 체류자격 문제가 생겨?",
+      "visa_code": "D-2",
+      "expect_status_contains": "D-2",
+      "expect_activities_any": ["formal_enrollment", "non_credit_audit"],
+      "expect_issues_any": ["activity_scope", "status_purpose_alignment"],
+      "expect_contracts_any": ["activity_scope", "study_on_non_study_status"]
+    },
+    {
+      "id": "sc_d4_special_lecture_ko",
+      "question": "D-4인데 다른 대학 특강을 들어도 돼?",
+      "visa_code": "D-4",
+      "expect_status_contains": "D-4",
+      "expect_activities_any": ["non_credit_audit", "formal_enrollment"],
+      "expect_issues_any": ["activity_scope", "status_purpose_alignment"],
+      "expect_contracts_any": ["activity_scope", "study_on_non_study_status"]
+    },
+    {
+      "id": "sc_d10_unpaid_internship_ko",
+      "question": "D-10인데 무급 인턴십 가능해?",
+      "visa_code": "D-10",
+      "expect_status_contains": "D-10",
+      "expect_activities_any": ["unpaid_internship"],
+      "expect_issues_any": ["legal_general", "activity_scope"],
+      "expect_contracts_any": ["legal_general", "activity_scope", "work_on_non_work_status"]
+    },
+    {
+      "id": "sc_d2_volunteer_ko",
+      "question": "D-2 유학생인데 무급 봉사활동 해도 돼?",
+      "visa_code": "D-2",
+      "expect_status_contains": "D-2",
+      "expect_activities_any": ["volunteer_activity"],
+      "expect_issues_any": ["legal_general", "non_immigration_adjacent_issue", "activity_scope"],
+      "expect_contracts_any": ["legal_general", "activity_scope"]
+    },
+    {
+      "id": "sc_g15_church_interpreting_volunteer_ko",
+      "question": "G-1-5인데 교회에서 통역 봉사를 해도 돼?",
+      "visa_code": "G-1-5",
+      "expect_status_contains": "G-1",
+      "expect_activities_any": ["volunteer_activity"],
+      "expect_issues_any": ["legal_general", "non_immigration_adjacent_issue", "activity_scope"],
+      "expect_contracts_any": ["legal_general", "activity_scope"]
+    },
+    {
+      "id": "sc_f6_freelance_ko",
+      "question": "F-6인데 프리랜서 일을 해도 돼?",
+      "visa_code": "F-6",
+      "expect_status_contains": "F-6",
+      "expect_activities_any": ["freelance_work"],
+      "expect_issues_any": ["activity_scope"],
+      "expect_contracts_any": ["activity_scope", "work_on_non_work_status"]
+    },
+    {
+      "id": "sc_h1_remote_foreign_work_ko",
+      "question": "H-1인데 원격으로 해외 회사 일을 해도 돼?",
+      "visa_code": "H-1",
+      "expect_status_contains": "H-1",
+      "expect_activities_any": ["paid_work"],
+      "expect_issues_any": ["activity_scope", "employment_restriction", "work_on_non_work_status"],
+      "expect_contracts_any": ["work_on_non_work_status", "activity_scope"]
+    },
+    {
+      "id": "sc_outside_status_permission_when_ko",
+      "question": "체류자격외활동허가가 필요한 경우는 언제야?",
+      "visa_code": null,
+      "expect_status_contains": null,
+      "expect_activities_any": [],
+      "expect_issues_any": ["outside_status_activity", "activity_scope"],
+      "expect_contracts_any": ["activity_scope", "legal_general"]
+    },
+    {
+      "id": "sc_change_vs_outside_activity_ko",
+      "question": "자격변경이랑 체류자격외활동허가 차이가 뭐야?",
+      "visa_code": null,
+      "expect_status_contains": null,
+      "expect_activities_any": ["status_change_route"],
+      "expect_issues_any": ["status_change", "outside_status_activity", "activity_scope"],
+      "expect_contracts_any": ["status_change_route", "activity_scope"]
+    },
+    {
+      "id": "sc_d2_to_d10_timing_ko",
+      "question": "D-2에서 D-10으로 바꾸려면 언제 신청해야 해?",
+      "visa_code": "D-2",
+      "expect_status_contains": "D-10",
+      "expect_activities_any": ["status_change_route"],
+      "expect_issues_any": ["status_change"],
+      "expect_contracts_any": ["status_change_route"]
+    },
+    {
+      "id": "sc_g1_to_f6_change_ko",
+      "question": "G-1에서 F-6으로 변경할 수 있어?",
+      "visa_code": "G-1",
+      "expect_status_contains": "F-6",
+      "expect_activities_any": ["status_change_route"],
+      "expect_issues_any": ["status_change"],
+      "expect_contracts_any": ["status_change_route"]
+    },
+    {
+      "id": "sc_f4_samesex_spouse_invite_ko",
+      "question": "F-4 미국 국적자가 동성 배우자를 한국에 데려오면 어떤 체류자격이 가능해?",
+      "visa_code": "F-4",
+      "expect_status_contains": "F-4",
+      "expect_activities_any": ["family_or_marriage_related"],
+      "expect_issues_any": ["nationality_or_refugee_context", "legal_general"],
+      "expect_contracts_any": ["legal_general", "status_change_route"]
+    },
+    {
+      "id": "sc_refugee_applicant_study_ko",
+      "question": "난민신청 중인데 대학 수업을 들을 수 있어?",
+      "visa_code": null,
+      "expect_status_contains": null,
+      "expect_activities_any": ["refugee_or_humanitarian_context", "formal_enrollment"],
+      "expect_issues_any": ["nationality_or_refugee_context", "activity_scope", "legal_general"],
+      "expect_contracts_any": ["legal_general", "activity_scope", "study_on_non_study_status"]
+    },
+    {
+      "id": "sc_g15_part_time_work_ko",
+      "question": "G-1-5 체류자가 아르바이트를 할 수 있어?",
+      "visa_code": "G-1-5",
+      "expect_status_contains": "G-1",
+      "expect_activities_any": ["paid_work"],
+      "expect_issues_any": ["work_on_non_work_status", "outside_status_activity", "activity_scope"],
+      "expect_contracts_any": ["work_on_non_work_status", "activity_scope"]
+    }
+  ]
+}
