@@ -1549,7 +1549,14 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
    buttons, next-action grid). Goal: clean wrapping, comfortable tap targets, and
    no horizontal overflow on phones — without redesigning the desktop layout. */
 @media (max-width: 480px) {
-    .next-action-grid { grid-template-columns: 1fr; }
+    /* Single column on phones. Scoped to .next-action-panel so this beats the
+       wider `@media (max-width:640px)` rule below, which sets a 2-column grid +
+       grid-template-areas and otherwise wins on source order at ≤480px —
+       collapsing the "구비서류 확인" card to a ~34px column (vertical text). */
+    .next-action-panel .next-action-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: "primary" "doc" "ai";
+    }
     .f4-route-chip, .f4-route-showall { flex: 1 1 100%; min-height: 44px; }
     .scenario-choice-list { flex-direction: column; }
     .scenario-choice { width: 100%; min-height: 44px; }
