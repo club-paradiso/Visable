@@ -2632,8 +2632,8 @@ class UnionResolverE4AParityTests(unittest.TestCase):
             f"unexpected warning in union-resolver response: {body.get('warning')!r}",
         )
 
-    def test_resolver_parity_report_matches_visa_data(self):
-        """union_view() must equal visa_data.json code-multiset and count."""
+    def test_resolver_parity_report_matches_union_semantics(self):
+        """union_view() must preserve canonical records and append shadow-only records."""
         import sys
         from pathlib import Path
         scripts_dir = str(Path(REPO_ROOT) / "scripts")
@@ -2641,8 +2641,19 @@ class UnionResolverE4AParityTests(unittest.TestCase):
             sys.path.insert(0, scripts_dir)
         import resolve_record_store as R  # noqa: E402
         report = R.parity_report()
-        self.assertTrue(report["union_equals_visa_data"], "union != visa_data.json")
-        self.assertEqual(report["union_count"], report["visa_data_count"])
+        self.assertTrue(
+            report["union_contains_all_canonical_codes"],
+            "union does not contain all canonical visa_data codes",
+        )
+        self.assertEqual(
+            report["union_shadow_only_count"],
+            report["scenario_help_shadow_count"],
+            "union must include all shadow-only scenario/help records",
+        )
+        self.assertEqual(
+            report["union_count"],
+            report["visa_data_count"] + report["union_shadow_only_count"],
+        )
         self.assertEqual(
             report["duplicate_codes_in_union"],
             report["duplicate_codes_in_visa_data"],
