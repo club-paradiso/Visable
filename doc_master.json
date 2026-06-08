@@ -478,5 +478,131 @@
     "ko_name": "신상기술서",
     "en_name": "Personal Statement / Bio Statement",
     "description": "E-7-4 등 일부 체류자격에서 신청인이 작성하는 신상기술서 또는 자기소개·이력 관련 서식."
+  },
+  {
+    "id": "doc_labor_complaint",
+    "ko_name": "노동관서 진정서 사본",
+    "en_name": "Labor office complaint copy",
+    "description": "고용노동부(노동관서)에 제출한 임금체불 진정서 사본."
+  },
+  {
+    "id": "doc_unpaid_wage_confirmation",
+    "ko_name": "체불금품 확인원",
+    "en_name": "Unpaid wage confirmation",
+    "description": "노동부가 발급한 체불금품 확인원 등 임금체불 사실을 입증하는 서류."
+  },
+  {
+    "id": "doc_litigation_document",
+    "ko_name": "소송 관련 서류",
+    "en_name": "Litigation documents",
+    "description": "소장 사본, 소송제기 증명원, 법률구조결정서 등 진행 중인 소송을 입증하는 서류."
+  },
+  {
+    "id": "doc_medical_treatment_proof",
+    "ko_name": "치료·요양 필요성 입증서류",
+    "en_name": "Medical treatment necessity proof",
+    "description": "의료기관에서 발행한 진단서·소견서 등 치료 또는 장기요양의 필요성을 입증하는 서류."
+  },
+  {
+    "id": "doc_family_guardian_proof",
+    "ko_name": "가족관계·보호자 입증서류",
+    "en_name": "Family relationship / guardian proof",
+    "description": "가족관계증명서 등 가족·보호자 관계를 입증하는 서류 (가족·보호자 동반 시 해당)."
+  },
+  {
+    "id": "doc_livelihood_review",
+    "ko_name": "생계유지능력 심사확인서",
+    "en_name": "Livelihood capacity review form",
+    "description": "생계유지능력 심사확인서. 체류기간 연장 심사 시 활용."
+  },
+  {
+    "id": "doc_injury_or_death_proof",
+    "ko_name": "산재·사고·사망 입증서류",
+    "en_name": "Industrial accident / injury / death proof",
+    "description": "산재보상심사청구서·재심청구서, 사고·사망 사실 확인서류 등 산업재해·사고·사망을 입증하는 서류."
+  },
+  {
+    "id": "doc_pregnancy_birth_proof",
+    "ko_name": "임신·출산 입증서류",
+    "en_name": "Pregnancy / childbirth proof",
+    "description": "진단서 등 임신·출산 사실 및 즉시 출국이 곤란함을 증명할 수 있는 서류."
+  },
+  {
+    "id": "doc_humanitarian_reason_proof",
+    "ko_name": "인도적 사유 입증서류",
+    "en_name": "Humanitarian reason proof",
+    "description": "성폭력·피해사실 확인서류, 권리구제 절차 진행 입증서류 등 인도적 고려가 필요한 사유를 입증하는 서류."
+  },
+  {
+    "id": "doc_seasonal_worker_recommendation",
+    "ko_name": "계절근로자 추천·배정 서류",
+    "en_name": "Seasonal worker recommendation",
+    "description": "지자체의 계절근로자 추천·배정 관련 서류."
+  },
+  {
+    "id": "doc_mou_local_government",
+    "ko_name": "지자체 간 계절근로 MOU 서류",
+    "en_name": "Local-government seasonal-work MOU",
+    "description": "국내·외국 지방자치단체 간 체결한 계절근로 수급 관련 MOU 서류."
+  },
+  {
+    "id": "doc_digital_nomad_income_proof",
+    "ko_name": "디지털노마드 소득 입증서류",
+    "en_name": "Digital nomad income proof",
+    "description": "디지털노마드(워케이션) 비자 소득 요건을 입증하는 연간 소득 증빙 서류."
+  },
+  {
+    "id": "doc_remote_work_employment_proof",
+    "ko_name": "원격근무·해외 재직 입증서류",
+    "en_name": "Remote work / overseas employment proof",
+    "description": "해외 소속 기업 재직 및 원격근무 사실을 입증하는 서류."
+  },
+  {
+    "id": "doc_private_medical_insurance",
+    "ko_name": "민간 의료보험 가입 입증서류",
+    "en_name": "Private medical insurance proof",
+    "description": "본인 및 동반가족의 의료비 보장을 위한 민간 의료보험 가입을 입증하는 서류."
+  },
+  {
+    "id": "doc_startup_korea_recommendation",
+    "ko_name": "스타트업 코리아 추천·창업 입증서류",
+    "en_name": "Startup Korea recommendation",
+    "description": "스타트업 코리아 특별비자(D-8-4S) 관련 부처 추천·창업 사실을 입증하는 서류."
+  },
+  {
+    "id": "doc_kstar_university_recommendation",
+    "ko_name": "K-STAR 참여대학 추천서",
+    "en_name": "K-STAR participating-university recommendation",
+    "description": "K-STAR 비자트랙 참여대학의 추천서 등 K-STAR 자격 입증서류."
+  },
+  {
+    "id": "doc_address_change",
+    "ko_name": "체류지 변경 신고서류",
+    "en_name": "Address change report",
+    "description": "체류지 변경 신고서(통합신청서), 신분증, 체류지 입증서류."
+  },
+  {
+    "id": "doc_arc_reissue",
+    "ko_name": "외국인등록증 재발급 서류",
+    "en_name": "ARC reissue documents",
+    "description": "외국인등록증 재발급 신청서(통합신청서), 여권, 사유 소명 서류(경찰서 분실신고증 등), 사진 1매."
+  },
+  {
+    "id": "doc_fam_rel_kr",
+    "ko_name": "가족관계증명서(상세, 한국인 명의)",
+    "en_name": "Korean family relation certificate (detailed)",
+    "description": "한국인 배우자 명의 가족관계증명서(상세). 자녀 양육 시 각 자녀 명의로 개별 발급."
+  },
+  {
+    "id": "doc_passport_change",
+    "ko_name": "여권 등록사항 변경 신고서류",
+    "en_name": "Passport change report",
+    "description": "등록사항 변경 신고서(통합신청서), 신여권 원본 및 사본, 기존 외국인등록증."
+  },
+  {
+    "id": "doc_score",
+    "ko_name": "점수제 평가표 및 증빙서류",
+    "en_name": "Points-table and supporting evidence",
+    "description": "점수제 평가표 및 해당 항목별 증빙서류 (점수제 적용 비자에 한함)."
   }
 ]

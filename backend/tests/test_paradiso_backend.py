@@ -2476,7 +2476,8 @@ class UnionResolverE4AParityTests(unittest.TestCase):
 
     Proves that wiring the backend to the record-store union resolver
     preserves current /api/visas behavior exactly:
-      - record count stays at 58
+      - record count stays at 59 (was 58; +1 for the YOUTH-STAY program
+        helper record added 2026-06-08: 국내 성장 기반 외국인 청소년 취업·정주 체류제도)
       - key records remain present
       - the former D-4-2K code collision is resolved (single K-Trainee
         record; 한국어연수 now carries its correct manual code D-4-1)
@@ -2484,7 +2485,7 @@ class UnionResolverE4AParityTests(unittest.TestCase):
       - union resolver introduces no duplicate codes
     """
 
-    EXPECTED_COUNT = 58
+    EXPECTED_COUNT = 59
     KEY_CODES = {"K-ETA", "SCN-6", "OVS-1", "FAQ-4", "NHIS-1", "COM-1", "RF-1"}
 
     def _visas(self):
@@ -2494,7 +2495,7 @@ class UnionResolverE4AParityTests(unittest.TestCase):
         return resp.json().get("data", [])
 
     def test_api_visas_count_unchanged(self):
-        """Union-resolved /api/visas must return exactly 58 records."""
+        """Union-resolved /api/visas must return exactly 59 records."""
         visas = self._visas()
         self.assertEqual(
             len(visas),

@@ -991,6 +991,22 @@
       "verified": false,
       "needsManualReview": true,
       "recommended_action": "keep; content via separate D-content PR"
+    },
+    {
+      "array_index": 58,
+      "code": "YOUTH-STAY",
+      "name": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "current_cat": "etc",
+      "primary_type": "special_program",
+      "source_grounding": "partially_manual_grounded",
+      "keep_in_visa_data": "keep",
+      "future_destination": "visa_status_master",
+      "migration_risk": "med: manual program/framework, no independent 체류자격 code",
+      "ui_search_dependency": "UI program card; search",
+      "ai_dependency": "AI context",
+      "verified": false,
+      "needsManualReview": true,
+      "recommended_action": "keep as program helper record; links to D-10 등 자격변경 절차"
     }
   ]
 }
