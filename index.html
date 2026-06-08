@@ -9887,25 +9887,39 @@ button[data-keyword]:focus-visible {
   window.PARADISO_BACKEND_URL = window.PARADISO_BACKEND_URL || "";
 </script>
 
-<!-- PARADISO_GATEWAY_CARD_RATIO_PATCH_START -->
-<style id="paradiso-gateway-card-ratio-patch">
+
+
+<!-- PARADISO_GATEWAY_HITBOX_FIX_START -->
+<style id="paradiso-gateway-hitbox-fix">
   /*
-    Balance remaining home gateway cards after removing the 구비서류 shortcut.
-    Scoped only to the home gateway card group.
+    Ensure each home gateway card owns its own click area after removing the 구비서류 shortcut.
+    Do not reorder cards here: HiKorea remains first, Paradiso.ai remains second.
   */
   .p-gateway .p-gw-primary {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(10px, 1.4vw, 16px);
     align-items: stretch;
   }
 
   .p-gateway .p-gw-primary > .p-gw-card {
+    position: relative;
     width: 100%;
     min-width: 0;
+    z-index: 1;
+  }
+
+  .p-gateway .p-gw-primary > .p-gw-card > * {
+    pointer-events: none;
+  }
+
+  @media (max-width: 720px) {
+    .p-gateway .p-gw-primary {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
-<!-- PARADISO_GATEWAY_CARD_RATIO_PATCH_END -->
+<!-- PARADISO_GATEWAY_HITBOX_FIX_END -->
 
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
@@ -10018,13 +10032,13 @@ button[data-keyword]:focus-visible {
                 </span>
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
-
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
-<button type="button" class="p-gw-card" data-action="open-hikorea-guide">
+                <button type="button" class="p-gw-card" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
                     <span class="p-gw-card-label">HiKorea 예약 안내</span>
                     <span class="p-gw-card-sub">방문 전 온라인 예약 도우미</span>
                 </button>
+
                 <a class="p-gw-card p-gw-card-ai" href="ai.html">
                     <span class="p-gw-card-icon" aria-hidden="true">✦</span>
                     <span class="p-gw-card-label">Paradiso.ai에게 묻기</span>
