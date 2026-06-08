@@ -9968,6 +9968,299 @@ button[data-keyword]:focus-visible {
       min-height: auto;
     }
   }
+
+/* =========================================
+   PARADISO_SAFE_UI_REFINEMENT_PATCH_20260609
+   Safe additive UI refinement overrides
+   ========================================= */
+
+/* PATCH 1: Landing Visual Rhythm */
+body:not(.searched) .hero-container {
+    padding-top: 3.75rem;
+    padding-bottom: 2.75rem;
+    letter-spacing: -0.012em;
+}
+
+/* PATCH 2: Search Grounding */
+body:not(.searched) .search-wrap {
+    border-radius: 16px;
+}
+
+body:not(.searched) .sbar {
+    box-shadow:
+        0 10px 28px color-mix(in srgb, var(--ac) 10%, transparent),
+        0 1px 2px rgba(24, 28, 26, 0.04);
+}
+
+.sbar:focus-within {
+    border-color: var(--color-primary, var(--ac));
+    box-shadow:
+        0 0 0 3px color-mix(in srgb, var(--ac) 18%, transparent),
+        0 12px 30px color-mix(in srgb, var(--ac) 13%, transparent);
+}
+
+/* PATCH 3: Result Card Hierarchy */
+.vc.manual-result,
+.manual-result {
+    border-color: color-mix(in srgb, var(--bd2) 78%, white);
+    box-shadow:
+        0 1px 2px rgba(14, 31, 26, 0.04),
+        0 10px 26px rgba(14, 31, 26, 0.045);
+}
+
+.vc.manual-result:hover,
+.manual-result:hover {
+    border-color: color-mix(in srgb, var(--ac) 20%, var(--bd2));
+}
+
+.manual-result .vc-h {
+    background:
+        linear-gradient(
+            180deg,
+            color-mix(in srgb, var(--bg1) 96%, white),
+            color-mix(in srgb, var(--bg2) 35%, var(--bg1))
+        );
+    border-bottom: 1px solid color-mix(in srgb, var(--bd2) 76%, transparent);
+}
+
+/* PATCH 4: Required Document Section */
+.docs-section {
+    background: color-mix(in srgb, var(--bg1) 94%, white);
+    border: 1px solid color-mix(in srgb, var(--bd2) 82%, transparent);
+    border-radius: 10px;
+    padding: 0.75rem;
+}
+
+.docs-list-row {
+    padding: 0.78rem 0.86rem;
+    background: color-mix(in srgb, white 72%, var(--bg1));
+    border-color: color-mix(in srgb, var(--bd2) 82%, transparent);
+}
+
+@media (min-width: 769px) {
+    .docs-tabs {
+        background: color-mix(in srgb, var(--bg2) 58%, transparent);
+        border-radius: 8px 8px 0 0;
+        padding: 0.35rem 0.45rem 0.45rem;
+    }
+
+    .docs-tab.active::after {
+        background: var(--color-primary, var(--ac));
+    }
+}
+
+/* PATCH 5: Mobile Hardening */
+@media (max-width: 768px) {
+    body:not(.searched) .hero-container {
+        padding-top: 2.4rem;
+        padding-bottom: 1.7rem;
+    }
+
+    .docs-section {
+        margin-inline: 0;
+        border-radius: 8px;
+        padding: 0.55rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .rlist {
+        padding-bottom: 6.75rem;
+    }
+
+    .ai-fab {
+        max-width: min(64vw, 260px);
+    }
+}
+
+
+/* =========================================
+   PARADISO_D2_RESULT_CLEANUP_PATCH_20260609
+   D-2 result readability + subcode card cleanup
+   ========================================= */
+
+/* 세부코드 카드: 5열 난장판 방지. D-2 계열명 세로쓰기 방지. */
+.manual-subcode-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: 0.72rem;
+}
+
+.manual-subcode-card {
+    min-width: 0;
+    padding: 0.82rem 0.86rem;
+}
+
+.manual-subcode-top {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+        "code name"
+        "chip chip";
+    align-items: center;
+    gap: 0.34rem 0.52rem;
+}
+
+.manual-subcode-top .manual-subcode-code {
+    grid-area: code;
+}
+
+.manual-subcode-top .manual-subcode-name {
+    grid-area: name;
+    min-width: 0;
+    line-height: 1.35;
+    word-break: keep-all;
+    overflow-wrap: normal;
+}
+
+.manual-subcode-top .subcode-chip {
+    grid-area: chip;
+    justify-self: start;
+    margin-left: 0;
+}
+
+.manual-subcode-desc {
+    margin-top: 0.48rem;
+    line-height: 1.58;
+}
+
+/* 결과 화면에서 우상단 컨트롤이 본문을 계속 덮지 않게 함. */
+body.searched .top-ctrls,
+body.searched #topCtrls {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+}
+
+/* D-2처럼 문서가 긴 화면에서 하단 AI 버튼이 마지막 근거/주의문을 덮지 않게 함. */
+body.searched .results-area {
+    padding-bottom: 6rem;
+}
+
+@media (max-width: 768px) {
+    .manual-subcode-grid {
+        grid-template-columns: 1fr;
+    }
+
+    body.searched .top-ctrls,
+    body.searched #topCtrls {
+        position: static;
+        justify-content: flex-end;
+        padding: 0.5rem 0.75rem 0;
+    }
+}
+
+
+/* =========================================
+   PARADISO_REMOVE_MOONSHOT_CANVAS_PATCH_20260609
+   Remove old mouse-following moonshot/star canvas residue
+   ========================================= */
+
+/* Kill the old animated horizon/star canvas. It was decorative only and
+   caused a cursor-following circular glow behind searched results. */
+#starCanvas {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+}
+
+/* Restore stable paper backgrounds now that the canvas no longer paints behind
+   the app. Keep searched result mode on its dedicated result background. */
+body {
+    background: var(--bg0) !important;
+}
+
+body.searched {
+    background: var(--result-page-bg, var(--bg0)) !important;
+}
+
+/* Remove the ambient floating glow layer as well. It belongs to the old
+   moonshot visual direction, not the current civic-editorial interface. */
+body::before {
+    display: none !important;
+    content: none !important;
+}
+
+/* Keep the searched header clean and non-cosmic. Yes, apparently this needed
+   to be said to a visa app. */
+body.searched .hero-container::before {
+    display: none !important;
+    content: none !important;
+}
+
+
+/* =========================================
+   PARADISO_D2_CARD_WRAP_KILL_PATCH_20260609
+   Stop D-2 subcode cards from vertical-title collapse
+   ========================================= */
+
+.manual-result .manual-subcode-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr)) !important;
+    gap: 0.85rem !important;
+}
+
+.manual-result .manual-subcode-card {
+    min-width: 0 !important;
+    padding: 0.9rem 1rem !important;
+}
+
+.manual-result .manual-subcode-top {
+    display: grid !important;
+    grid-template-columns: auto minmax(0, 1fr) !important;
+    grid-template-areas:
+        "code name"
+        "chip chip" !important;
+    align-items: center !important;
+    gap: 0.38rem 0.58rem !important;
+}
+
+.manual-result .manual-subcode-code {
+    grid-area: code !important;
+    white-space: nowrap !important;
+}
+
+.manual-result .manual-subcode-name {
+    grid-area: name !important;
+    display: block !important;
+    min-width: 0 !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    white-space: normal !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    line-height: 1.35 !important;
+}
+
+.manual-result .manual-subcode-top .subcode-chip {
+    grid-area: chip !important;
+    justify-self: start !important;
+    margin-left: 0 !important;
+}
+
+.manual-result .manual-subcode-desc {
+    line-height: 1.6 !important;
+    word-break: keep-all !important;
+    overflow-wrap: break-word !important;
+}
+
+@media (min-width: 1200px) {
+    .manual-result .manual-subcode-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 900px) {
+    .manual-result .manual-subcode-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .manual-result .manual-subcode-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
 </style>
 <!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
 
@@ -13182,6 +13475,84 @@ function dedupeDocs(docs) {
     });
 }
 
+/* PARADISO_DOC_RENDER_DEDUPE_HELPERS_20260609
+   Render-layer cleanup only. Keeps source wording intact, but prevents exact
+   and near-identical document rows from appearing repeatedly across groups. */
+function paradisoCanonicalDocKey20260609(doc) {
+    let text = String(doc || '').normalize('NFKC').trim();
+    if (!text || isDocPlaceholder(text)) return '';
+
+    text = text
+        .replace(/^\s*[①-⑳0-9]+[.)]?\s*/g, '')
+        .replace(/\s+/g, '')
+        .replace(/[ㆍ·•]/g, '')
+        .replace(/[()［］\[\]{}]/g, '')
+        .replace(/별지제?34호서식/g, '')
+        .replace(/원본및사본1부/g, '')
+        .replace(/원본/g, '')
+        .replace(/사본/g, '')
+        .trim();
+
+    if (/^통합?신청서|^신청서/.test(text)) return '신청서';
+    if (/^여권/.test(text)) return '여권';
+    if (/^외국인등록증|^등록증/.test(text)) return '외국인등록증';
+    if (/^수수료/.test(text)) return '수수료';
+    if (/^표준규격사진|^사진/.test(text)) return '표준규격사진';
+    if (/^표준입학허가서/.test(text)) return '표준입학허가서';
+    if (/^교육기관사업자등록증|^교육기관고유번호증|^사업자등록증|^고유번호증/.test(text)) return '교육기관사업자등록증';
+    if (/^재학증명서|^재학연구생증명서|^재학을입증하는서류/.test(text)) return '재학증명서';
+    if (/^성적증명서|^출석확인서|^학업을정상적으로수행/.test(text)) return '학업수행입증서류';
+    if (/^재정입증|^재정능력/.test(text)) return '재정입증서류';
+    if (/^체류지입증/.test(text)) return '체류지입증서류';
+    if (/^가족관계/.test(text)) return '가족관계입증서류';
+
+    return text;
+}
+
+function paradisoDedupeDocGroupsForRender20260609(groups) {
+    const seen = new Set();
+    const order = ['commonDocs', 'requiredDocs', 'additionalDocs', 'conditionalDocs'];
+
+    order.forEach(groupKey => {
+        groups[groupKey] = (groups[groupKey] || []).filter(doc => {
+            const key = paradisoCanonicalDocKey20260609(doc);
+            if (!key || seen.has(key)) return false;
+            seen.add(key);
+            return true;
+        });
+    });
+
+    return groups;
+}
+
+
+/* PARADISO_CROSS_GROUP_DOC_DEDUPE_20260609
+   Keep document wording intact, but suppress exact/canonical duplicates across
+   common/required/additional/conditional groups so D-2 does not repeat the same
+   checklist item as multiple authoritative rows. */
+function canonicalDocDedupeKey(doc) {
+    return String(doc || '')
+        .normalize('NFKC')
+        .replace(/\s+/g, '')
+        .replace(/[ㆍ·•]/g, '')
+        .replace(/[()［］\[\]{}]/g, '')
+        .trim();
+}
+
+function dedupeDocGroupsAcrossCategories(groups) {
+    const seen = new Set();
+    const orderedKeys = ['commonDocs', 'requiredDocs', 'additionalDocs', 'conditionalDocs'];
+    orderedKeys.forEach(groupKey => {
+        groups[groupKey] = (groups[groupKey] || []).filter(doc => {
+            const key = canonicalDocDedupeKey(doc);
+            if (!key || seen.has(key) || isDocPlaceholder(doc)) return false;
+            seen.add(key);
+            return true;
+        });
+    });
+    return groups;
+}
+
 function mergeDocGroups(...groupList) {
     const groups = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
     groupList.forEach(src => {
@@ -13193,7 +13564,7 @@ function mergeDocGroups(...groupList) {
     Object.keys(groups).forEach(groupKey => {
         groups[groupKey] = dedupeDocs(groups[groupKey]);
     });
-    return groups;
+    return dedupeDocGroupsAcrossCategories(groups);
 }
 
 function addDocField(groups, groupKey, value) {
