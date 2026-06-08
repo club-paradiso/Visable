@@ -1,2411 +1,2756 @@
-{
-  "schema_version": "1.0",
-  "store": "scenario_help",
-  "migrationTrack": "E",
-  "pr": "E-1 (after PR #169)",
-  "generated_from": "visa_data.json",
-  "classification_source": "docs/data/2026_05_21_visa_data_domain_classification.json",
-  "audit_date": "2026-05-25",
-  "purpose": "Duplicated copies (migration preparation) of the 17 scenario/help/AI-grounding candidate records from PR #169. NOT yet consumed at runtime. visa_data.json remains the live source; nothing is deleted from it in E-1.",
-  "disclaimer": "Internal migration-preparation artifact. Not legal advice. Each record's original content is preserved byte-for-byte under the 'record' key; migration metadata is sibling-only and does not alter the original record.",
-  "runtime_consumed": false,
-  "removal_from_visa_data_allowed": false,
-  "requires_parity_before_removal": true,
-  "count": 17,
-  "overstay_related_count": 3,
-  "records": [
-    {
-      "sourceVisaDataCode": "K-ETA",
-      "sourceVisaDataIndex": 0,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "K-ETA",
-        "name": "전자여행허가 (K-ETA) 종합 가이드",
-        "cat": "faq",
-        "period": "유효기간 3년 (여권 만료일 우선)",
-        "dataBadge": "116개국·지역 신청 가능",
-        "dataDate": "2026-04-14 (k-eta.go.kr 크롤링)",
-        "newReq": "무사증 입국 전 항공기·선박 탑승 전 신청 필수. 17세 이하·65세 이상 면제. 복수국적자(한국여권) 신청 제외. 수수료 1만원(결제수수료 3% 별도, 환불 불가). K-ETA 면제: 2026.12.31까지 선진국·주요국 대상 한시적 면제 시행 중.",
-        "newReqDocs": [
-          "doc_passport",
-          "doc_photo",
-          "doc_fee"
-        ],
-        "extReq": "여권 재발급, 분실 새 여권, 이름·여권번호 변경 시 재신청 필수. 체류지, 연락처, 입국목적 변경 시 여행정보 업데이트 가능.",
-        "extReqDocs": [
-          "doc_passport",
-          "doc_photo"
-        ],
-        "faq": "Q: 취업·유학 목적?\nA: 불가. 관광, 친지방문, 비영리 상용만 가능.\nQ: 심사 기간?\nA: 통상 72시간 이내, 급행 없음.\nQ: 총 대상국 수?\nA: B-1(사증면제협정) 67개국 + B-2(관광통과) 45개국 = 112개국·지역. K-ETA 사이트 기준 116개국·지역 신청 가능(영국 하위 유형 등 포함).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [
-          {
-            "code": "K-ETA-1",
-            "name": "대상 및 면제조건",
-            "addReq": "관광, 친지, 회의, 비영리 상용 목적 한정.",
-            "addReqDocs": [
-              "doc_purpose"
-            ],
-            "note": "입국일 기준 17세 이하 또는 65세 이상 면제(18세 도달 시 신청 필수). 외국인등록증 소지자 해당 체류자격 우선."
-          },
-          {
-            "code": "K-ETA-2",
-            "name": "신청 및 입력 규정",
-            "addReq": "여권, 이메일, 숙소(영문도로명, 특수문자 제외), 얼굴사진(히잡 등 허용, 이마~턱 노출).",
-            "addReqDocs": [
-              "doc_passport",
-              "doc_accom",
-              "doc_photo"
-            ],
-            "note": "가족/지인 대리 신청 가능. 연도만 있는 생일은 00월 00일 입력. 임시저장 7일 유효."
-          },
-          {
-            "code": "K-ETA-3",
-            "name": "수정 및 재신청",
-            "addReq": "재신청: 여권 재발급, 이름/여권번호 변경.",
-            "addReqDocs": [
-              "doc_passport"
-            ],
-            "note": "업데이트 가능: 입국목적, 체류지, 연락처, 동반인. 직업 변경 시 신청서(별지 제34호 서식) 재작성 불필요."
-          },
-          {
-            "code": "K-ETA-4",
-            "name": "주의 및 제한사항",
-            "addReq": "탑승 후/국내 체류 중 신청 시 불이익. 공식 사이트(k-eta.go.kr) 외 대행 주의.",
-            "addReqDocs": [],
-            "note": "허위 정보 시 입국제한(동반인 포함). 입국신고서 면제. 국내 체류자격 변경 절대 불가."
-          },
-          {
-            "code": "K-ETA-5",
-            "name": "90일 허용국 (65개국)",
-            "addReq": "과테말라, 그레나다, 노르웨이, 니카라과, 대만, 덴마크, 도미니카공화국, 도미니카연방, 독일, 라트비아, 루마니아, 리투아니아, 마카오, 모로코, 몰타, 미국, 바베이도스, 바하마, 베네수엘라, 보츠와나, 불가리아, 브라질, 세르비아, 세인트루시아, 세인트빈센트그레나딘, 세인트키츠네비스, 스웨덴, 스페인, 슬로바키아, 슬로베니아, 싱가포르, 아랍에미리트, 아르헨티나, 아이슬란드, 아이티, 아일랜드, 앤티가바부다, 에스토니아, 에콰도르, 엘살바도르, 영국, 오스트리아, 우루과이, 이스라엘, 이탈리아, 일본, 자메이카, 체코, 칠레, 카타르, 코스타리카, 콜롬비아, 쿠웨이트, 크로아티아, 태국, 튀르키예, 트리니다드토바고, 파나마, 페루, 폴란드, 프랑스, 핀란드, 헝가리, 호주, 홍콩.",
-            "addReqDocs": [],
-            "note": "k-eta.go.kr 2026-04-14 기준."
-          },
-          {
-            "code": "K-ETA-6",
-            "name": "30일 허용국 (36개국·지역)",
-            "addReq": "가이아나, 교황청, 나우루, 남아프리카공화국, 뉴칼레도니아, 마셜제도, 마이크로네시아연방, 모나코, 모리셔스, 몬테네그로, 바레인, 보스니아-헤르체고비나, 브루나이, 사모아, 사우디아라비아, 사이프러스, 산마리노, 세이셸, 솔로몬제도, 안도라, 알바니아, 에스와티니, 영국보호민, 영국속국민, 영국외지민, 영국외지시민, 영국해외영토시민, 오만, 온두라스, 키리바시, 통가, 투발루, 튀니지, 파라과이, 팔라우, 피지.",
-            "addReqDocs": [],
-            "note": "k-eta.go.kr 2026-04-14 기준."
-          },
-          {
-            "code": "K-ETA-7",
-            "name": "3개월·6개월·조건부 (15개국)",
-            "addReq": "[3개월] 그리스, 네덜란드, 뉴질랜드, 룩셈부르크, 리히텐슈타인, 말레이시아, 멕시코, 벨기에, 수리남, 스위스. [6개월] 캐나다. [조건부] 러시아(연속 60일, 180일 내 90일 이내), 카자흐스탄(연속 30일, 180일 내 60일 이내), 포르투갈(연속 90일, 180일 내 90일 이내).",
-            "addReqDocs": [],
-            "note": "k-eta.go.kr 2026-04-14 기준. 조건부 국가는 체류일수 계산에 주의."
-          }
-        ],
-        "initialReqDocs": [
-          "doc_passport",
-          "doc_photo",
-          "doc_fee"
-        ],
-        "extensionReqDocs": [
-          "doc_passport",
-          "doc_photo"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "K-ETA",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
+[
+  {
+    "code": "K-ETA",
+    "type": "travel_authorization",
+    "title": "전자여행허가 (K-ETA) 종합 가이드",
+    "relatedCodes": [
+      "B-1",
+      "B-2"
+    ],
+    "mentionedCodes": [
+      "B-1",
+      "B-2",
+      "K-ETA"
+    ],
+    "summary": "무사증 입국 전 항공기·선박 탑승 전 신청 필수. 17세 이하·65세 이상 면제. 복수국적자(한국여권) 신청 제외. 수수료 1만원(결제수수료 3% 별도, 환불 불가). K-ETA 면제: 2026.12.31까지 선진국·주요국 대상 한시적 면제 시행 중.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
     },
-    {
-      "sourceVisaDataCode": "TB-1",
-      "sourceVisaDataIndex": 1,
-      "primary_type": "procedure_helper",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "TB-1",
-        "name": "결핵 고위험 국가 진단서 제출 기준",
-        "cat": "scn",
-        "period": "비자 신청 시",
-        "newReq": "[제출 대상] 결핵 고위험 35개국 국민 중 90일 초과 장기 체류 목적 비자 신청자, 단기(C-4) 계절근로자 및 결핵환자 가족 간병인, 완전출국 후 신규 장기비자 신청자.",
-        "newReqDocs": [
-          "doc_tb"
-        ],
-        "extReq": "[검사 요건] 흉부 X선 검사, 객담검사 중 1가지 이상 결과 포함(의심 증상 시 둘 다 필수). 최근 3개월 이내 발급된 지정 병원 진단서만 인정.",
-        "extReqDocs": [
-          "doc_tb"
-        ],
-        "faq": "Q: 고위험 35개국 목록?\nA: 네팔, 동티모르, 러시아, 말레이시아, 몽골, 미얀마, 방글라데시, 베트남, 스리랑카, 우즈베키스탄, 인도, 인도네시아, 중국, 캄보디아, 키르기스, 태국, 파키스탄, 필리핀, 라오스, 카자흐스탄, 타지키스탄, 우크라이나, 아제르바이잔, 벨라루스, 몰도바공화국, 나이지리아, 남아프리카공화국, 에티오피아, 콩고민주공화국, 케냐, 모잠비크, 짐바브웨, 앙골라, 페루, 파푸아뉴기니.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [
-          {
-            "code": "TB-1-1",
-            "name": "제출 예외 및 유의사항",
-            "addReq": "결혼비자(F-6)의 경우 건강진단서에 결핵검사가 포함되어 있으면 별도 제출 면제.",
-            "addReqDocs": [
-              "doc_health"
-            ],
-            "note": "태국 등 국가별 결핵 검사 지정 병원은 관할 재외공관 첨부파일 참조 필수."
-          }
-        ],
-        "initialReqDocs": [
-          "doc_tb"
-        ],
-        "extensionReqDocs": [
-          "doc_tb"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "TB-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
     },
-    {
-      "sourceVisaDataCode": "SCN-1",
-      "sourceVisaDataIndex": 2,
-      "primary_type": "scenario",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-1",
-        "name": "글로벌 의사결정 매트릭스",
-        "cat": "scn",
-        "period": "기본 원칙",
-        "newReq": "[단기→장기] 원칙 불허 (예외적 인도적 사유만). [유학→취업] D-2 → D-10 → E-7 → F-2 → F-5 표준 흐름 적용.",
-        "newReqDocs": [],
-        "extReq": "[연장 핵심] 현재 자격 정의 충족 여부, 위반/과태료/세금 체납 등 감점 요소 평가.",
-        "extReqDocs": [],
-        "faq": "Q: F계열 자격 변경은?\nA: 동일 계열 내 변경은 원칙 허용, 타 계열 장기 변경은 일부만 예외적 허용.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "SCN-2",
-      "sourceVisaDataIndex": 3,
-      "primary_type": "scenario",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-2",
-        "name": "실무 변수 체크리스트",
-        "cat": "scn",
-        "period": "상시 검토",
-        "newReq": "[공통 변수] 현재 자격/만료일, 입국경로(사증 종류), 오버스테이 여부, 범죄경력, 세금/건보 납부 이력.",
-        "newReqDocs": [
-          "doc_tax",
-          "doc_crim"
-        ],
-        "extReq": "[특화 변수] 대한민국 남성 동포 병역상태, 혼인단절 사유 및 시점, 단순노무 종사 여부.",
-        "extReqDocs": [],
-        "faq": "Q: 체크리스트 활용법?\nA: 민원 접수 시 파라미터를 먼저 스캔하여 허용/불허 방향을 가늠할 것.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_tax",
-          "doc_crim"
-        ],
-        "extensionReqDocs": [],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-2",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "SCN-3",
-      "sourceVisaDataIndex": 4,
-      "primary_type": "scenario",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-3",
-        "name": "C-3 (단기) 자격변경 시나리오",
-        "cat": "scn",
-        "period": "불허 원칙",
-        "newReq": "[원칙] C-3에서 F-6, F-1-5/6, 취업(E-7 등) 자격으로의 국내 변경은 절대 불가.",
-        "newReqDocs": [],
-        "extReq": "취업·장기 체류 목적 시 본국 재외공관에서 정식 비자 발급 후 입국 안내 필수.",
-        "extReqDocs": [],
-        "faq": "Q: 예외?\nA: 인도적 사유(G-1)나 극히 중대한 사유 외에는 원칙 불허.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-3",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "searchAliases": [
-          "F-1-5"
-        ],
-        "_searchAliasAudit": {
-          "generatedAliases": [
-            {
-              "alias": "F-1-5",
-              "reason": "existing_record_text_code_token",
-              "source": "existing_repo_json_and_2026_05_manual_audit",
-              "sourceManualVersion": "2026.5",
-              "legalContentCreated": false,
-              "verified": false,
-              "needsManualReview": true,
-              "updatedAt": "2026-05-26"
-            }
+    "originalVisaDataRecord": {
+      "code": "K-ETA",
+      "name": "전자여행허가 (K-ETA) 종합 가이드",
+      "cat": "faq",
+      "period": "유효기간 3년 (여권 만료일 우선)",
+      "dataBadge": "116개국·지역 신청 가능",
+      "dataDate": "2026-04-14 (k-eta.go.kr 크롤링)",
+      "newReq": "무사증 입국 전 항공기·선박 탑승 전 신청 필수. 17세 이하·65세 이상 면제. 복수국적자(한국여권) 신청 제외. 수수료 1만원(결제수수료 3% 별도, 환불 불가). K-ETA 면제: 2026.12.31까지 선진국·주요국 대상 한시적 면제 시행 중.",
+      "newReqDocs": [
+        "doc_passport",
+        "doc_photo",
+        "doc_fee"
+      ],
+      "extReq": "여권 재발급, 분실 새 여권, 이름·여권번호 변경 시 재신청 필수. 체류지, 연락처, 입국목적 변경 시 여행정보 업데이트 가능.",
+      "extReqDocs": [
+        "doc_passport",
+        "doc_photo"
+      ],
+      "faq": "Q: 취업·유학 목적?\nA: 불가. 관광, 친지방문, 비영리 상용만 가능.\nQ: 심사 기간?\nA: 통상 72시간 이내, 급행 없음.\nQ: 총 대상국 수?\nA: B-1(사증면제협정) 67개국 + B-2(관광통과) 45개국 = 112개국·지역. K-ETA 사이트 기준 116개국·지역 신청 가능(영국 하위 유형 등 포함).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [
+        {
+          "code": "K-ETA-1",
+          "name": "대상 및 면제조건",
+          "addReq": "관광, 친지, 회의, 비영리 상용 목적 한정.",
+          "addReqDocs": [
+            "doc_purpose"
           ],
-          "method": "detail_code_alias_extraction_without_new_legal_content",
-          "verified": false,
-          "needsManualReview": true
+          "note": "입국일 기준 17세 이하 또는 65세 이상 면제(18세 도달 시 신청 필수). 외국인등록증 소지자 해당 체류자격 우선."
         },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "SCN-4",
-      "sourceVisaDataIndex": 5,
-      "primary_type": "scenario",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-4",
-        "name": "F-1-6 (혼인단절) 타이밍 시나리오",
-        "cat": "scn",
-        "period": "시점 주의",
-        "newReq": "[필수] F-1-6은 반드시 기존 장기 자격(F-6 등) 유지 상태에서 국내 체류 중 자격변경으로 신청서(별지 제34호 서식) 제출.",
-        "newReqDocs": [
-          "doc_app_form"
-        ],
-        "extReq": "[불허] 혼인단절 후 출국 → C-3 재입국 상태에서는 F-1-6 사후 구제 원칙 불허.",
-        "extReqDocs": [],
-        "faq": "Q: 체류 허가 기간?\nA: 6개월 단위 최장 1년.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_app_form"
-        ],
-        "extensionReqDocs": [],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-4",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "searchAliases": [
-          "F-1-6"
-        ],
-        "_searchAliasAudit": {
-          "generatedAliases": [
-            {
-              "alias": "F-1-6",
-              "reason": "existing_record_text_code_token",
-              "source": "existing_repo_json_and_2026_05_manual_audit",
-              "sourceManualVersion": "2026.5",
-              "legalContentCreated": false,
-              "verified": false,
-              "needsManualReview": true,
-              "updatedAt": "2026-05-26"
-            }
+        {
+          "code": "K-ETA-2",
+          "name": "신청 및 입력 규정",
+          "addReq": "여권, 이메일, 숙소(영문도로명, 특수문자 제외), 얼굴사진(히잡 등 허용, 이마~턱 노출).",
+          "addReqDocs": [
+            "doc_passport",
+            "doc_accom",
+            "doc_photo"
           ],
-          "method": "detail_code_alias_extraction_without_new_legal_content",
-          "verified": false,
-          "needsManualReview": true
+          "note": "가족/지인 대리 신청 가능. 연도만 있는 생일은 00월 00일 입력. 임시저장 7일 유효."
         },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "SCN-5",
-      "sourceVisaDataIndex": 6,
-      "primary_type": "scenario",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-5",
-        "name": "F-4/H-2 (동포) 제약 시나리오",
-        "cat": "scn",
-        "period": "제한 사항",
-        "newReq": "[2026.2.12 제도 변경] H-2 신규 발급 중단, F-4로 일원화. 기존 H-2 체류자는 자동 전환 안 됨 → 본인 직접 F-4 변경 신청 필요. [단순노무] F-4는 단순노무 일부 직종만 제한(H-2 대비 취업 범위 대폭 확대).",
-        "newReqDocs": [
-          "doc_app_form",
-          "doc_f4_proof"
-        ],
-        "extReq": "[병역 제한] 2018.5.1 이후 국적이탈 병역 미이행 남성은 40세 되는 해 12.31까지 F-4 제한. [한국어능력별 체류기간] 인정 3년 / 사통프 등록 2년 / 미등록 1년. [수수료 면제] H-2→F-4 변경 시 2027.12.31까지 수수료 면제.",
-        "extReqDocs": [
-          "doc_topik",
-          "doc_kiip"
-        ],
-        "faq": "Q: H-2→F-4 변경 안 하면?\nA: H-2 유효기간 내에서만 체류 가능. 신규 H-2 발급은 중단됐으므로 만료 후 재발급 불가.\nQ: 변경 불허 사유?\nA: 불법체류·범칙 이력, 동포 입증서류 불충분, 살인·강간·마약·보이스피싱 등 범죄이력.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_app_form",
-          "doc_f4_proof"
-        ],
-        "extensionReqDocs": [
-          "doc_topik",
-          "doc_kiip"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-5",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "SCN-6",
-      "sourceVisaDataIndex": 7,
-      "primary_type": "risk_warning",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": true,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "SCN-6",
-        "name": "오버스테이 (불법체류) 시나리오",
-        "cat": "scn",
-        "period": "기간별 조치",
-        "newReq": "[1~30일] 과태료+주의, 자진출국 권고. [31~90일] 과태료 상향, 입국규제 가능.",
-        "newReqDocs": [],
-        "extReq": "[91일↑] 강제퇴거 및 장기 입국규제 가능성 큼.",
-        "extReqDocs": [],
-        "faq": "Q: 자진신고 실익?\nA: 감경 가능성 있으나 내부 지침 재량 사항.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "SCN-6",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "OVS-1",
-      "sourceVisaDataIndex": 8,
-      "primary_type": "risk_warning",
-      "source_grounding": "scenario_policy_sensitive",
-      "overstay_related": true,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "OVS-1",
-        "name": "불법체류다발국가 목록",
-        "cat": "scn",
-        "period": "상시 적용",
-        "newReq": "[적용 제한] D-2(유학), D-4(일반연수), E-6-2(호텔유흥), F-4(재외동포) 사증 발급 시 추가 제한 적용. F-1(방문동거) 미성년 유학생 부모의 재정요건 강화.",
-        "newReqDocs": [
-          "doc_finance"
-        ],
-        "extReq": "[대상 21개국] 가나, 나이지리아, 네팔, 몽골, 미얀마, 방글라데시, 베트남, 스리랑카, 우즈베키스탄, 우크라이나, 이란, 인도, 인도네시아, 중국, 카자흐스탄, 키르기스스탄, 태국, 파키스탄, 필리핀, 이집트, 페루.",
-        "extReqDocs": [],
-        "faq": "Q: 불법체류다발국가 국민이면 입국 자체가 불가한가?\nA: 아니오. 입국은 가능하나 일부 체류자격의 사증 발급 요건이 강화됨.\nQ: 제주 무사증 제외국과의 관계?\nA: 별도 제도. 제주 무사증 제외국(23개국)과 불법체류다발국가(21개국)는 일부 겹치나 목록이 다름.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "aliases": [
-          "불법체류",
-          "불체",
-          "다발국가",
-          "불법체류다발",
-          "중점관리국가"
-        ],
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_finance"
-        ],
-        "extensionReqDocs": [],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "OVS-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "searchAliases": [
-          "E-6-2"
-        ],
-        "_searchAliasAudit": {
-          "generatedAliases": [
-            {
-              "alias": "E-6-2",
-              "reason": "existing_record_text_code_token",
-              "source": "existing_repo_json_and_2026_05_manual_audit",
-              "sourceManualVersion": "2026.5",
-              "legalContentCreated": false,
-              "verified": false,
-              "needsManualReview": true,
-              "updatedAt": "2026-05-26"
-            }
+        {
+          "code": "K-ETA-3",
+          "name": "수정 및 재신청",
+          "addReq": "재신청: 여권 재발급, 이름/여권번호 변경.",
+          "addReqDocs": [
+            "doc_passport"
           ],
-          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "note": "업데이트 가능: 입국목적, 체류지, 연락처, 동반인. 직업 변경 시 신청서(별지 제34호 서식) 재작성 불필요."
+        },
+        {
+          "code": "K-ETA-4",
+          "name": "주의 및 제한사항",
+          "addReq": "탑승 후/국내 체류 중 신청 시 불이익. 공식 사이트(k-eta.go.kr) 외 대행 주의.",
+          "addReqDocs": [],
+          "note": "허위 정보 시 입국제한(동반인 포함). 입국신고서 면제. 국내 체류자격 변경 절대 불가."
+        },
+        {
+          "code": "K-ETA-5",
+          "name": "90일 허용국 (65개국)",
+          "addReq": "과테말라, 그레나다, 노르웨이, 니카라과, 대만, 덴마크, 도미니카공화국, 도미니카연방, 독일, 라트비아, 루마니아, 리투아니아, 마카오, 모로코, 몰타, 미국, 바베이도스, 바하마, 베네수엘라, 보츠와나, 불가리아, 브라질, 세르비아, 세인트루시아, 세인트빈센트그레나딘, 세인트키츠네비스, 스웨덴, 스페인, 슬로바키아, 슬로베니아, 싱가포르, 아랍에미리트, 아르헨티나, 아이슬란드, 아이티, 아일랜드, 앤티가바부다, 에스토니아, 에콰도르, 엘살바도르, 영국, 오스트리아, 우루과이, 이스라엘, 이탈리아, 일본, 자메이카, 체코, 칠레, 카타르, 코스타리카, 콜롬비아, 쿠웨이트, 크로아티아, 태국, 튀르키예, 트리니다드토바고, 파나마, 페루, 폴란드, 프랑스, 핀란드, 헝가리, 호주, 홍콩.",
+          "addReqDocs": [],
+          "note": "k-eta.go.kr 2026-04-14 기준."
+        },
+        {
+          "code": "K-ETA-6",
+          "name": "30일 허용국 (36개국·지역)",
+          "addReq": "가이아나, 교황청, 나우루, 남아프리카공화국, 뉴칼레도니아, 마셜제도, 마이크로네시아연방, 모나코, 모리셔스, 몬테네그로, 바레인, 보스니아-헤르체고비나, 브루나이, 사모아, 사우디아라비아, 사이프러스, 산마리노, 세이셸, 솔로몬제도, 안도라, 알바니아, 에스와티니, 영국보호민, 영국속국민, 영국외지민, 영국외지시민, 영국해외영토시민, 오만, 온두라스, 키리바시, 통가, 투발루, 튀니지, 파라과이, 팔라우, 피지.",
+          "addReqDocs": [],
+          "note": "k-eta.go.kr 2026-04-14 기준."
+        },
+        {
+          "code": "K-ETA-7",
+          "name": "3개월·6개월·조건부 (15개국)",
+          "addReq": "[3개월] 그리스, 네덜란드, 뉴질랜드, 룩셈부르크, 리히텐슈타인, 말레이시아, 멕시코, 벨기에, 수리남, 스위스. [6개월] 캐나다. [조건부] 러시아(연속 60일, 180일 내 90일 이내), 카자흐스탄(연속 30일, 180일 내 60일 이내), 포르투갈(연속 90일, 180일 내 90일 이내).",
+          "addReqDocs": [],
+          "note": "k-eta.go.kr 2026-04-14 기준. 조건부 국가는 체류일수 계산에 주의."
+        }
+      ],
+      "initialReqDocs": [
+        "doc_passport",
+        "doc_photo",
+        "doc_fee"
+      ],
+      "extensionReqDocs": [
+        "doc_passport",
+        "doc_photo"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "K-ETA",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
           "verified": false,
-          "needsManualReview": true
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
         }
       },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "NHIS-1",
-      "sourceVisaDataIndex": 9,
-      "primary_type": "insurance_or_utility",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "NHIS-1",
-        "name": "국외 체류자 건강보험 면제·감면",
-        "cat": "nhis",
-        "period": "해외 체류 기간",
-        "newReq": "3개월↑ 국외 체류 시 면제. 직장가입자는 1개월↑ 업무 목적 시 감면 가능.",
-        "newReqDocs": [],
-        "extReq": "사전신청(출국 10일 전) 또는 사후 소급(출입국사실증명서). 공단 방문/팩스/우편.",
-        "extReqDocs": [],
-        "faq": "Q: 피부양자 국내 잔류?\nA: 약 50% 감면만 적용.\nQ: 국민연금?\nA: 별도 납부예외 신청.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [
-          {
-            "code": "NHIS-1-1",
-            "name": "필요 서류",
-            "addReq": "출입국사실증명서, 여권/항공권 사본",
-            "addReqDocs": [
-              "doc_passport_copy",
-              "doc_flight"
-            ],
-            "note": "상황에 따라 추가 서류"
-          },
-          {
-            "code": "NHIS-1-2",
-            "name": "제도 변경 유의",
-            "addReq": "2025년 7월 이후 개편",
-            "addReqDocs": [],
-            "note": "최신 지침 확인 필수"
-          },
-          {
-            "code": "NHIS-1-3",
-            "name": "가입자별 처리",
-            "addReq": "직장: 급여정지 / 지역: 본인 점수 제외",
-            "addReqDocs": [],
-            "note": "피부양자 잔류 시 전액 면제 불가"
-          },
-          {
-            "code": "NHIS-1-4",
-            "name": "주의(자동면제 불가)",
-            "addReq": "출국만으로 자동 면제 안 됨",
-            "addReqDocs": [],
-            "note": "별도 신청 필수"
-          }
-        ],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "NHIS-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "FAQ-1",
-      "sourceVisaDataIndex": 10,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "FAQ-1",
-        "name": "외국인등록 및 체류지 변경",
-        "cat": "faq",
-        "period": "체류기간 내",
-        "newReq": "90일 초과 체류 시 외국인등록 의무.",
-        "newReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_photo",
-          "doc_fee"
-        ],
-        "extReq": "체류지 변경 시 14일 이내 전입신고 필수.",
-        "extReqDocs": [
-          "doc_address"
-        ],
-        "faq": "Q: 미신고?\nA: 출입국관리법 위반 범칙금.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [
-          {
-            "code": "FAQ-1-1",
-            "name": "하이코리아 예약",
-            "addReq": "방문 전 사전예약 필수",
-            "addReqDocs": [],
-            "note": "hikorea.go.kr"
-          }
-        ],
-        "initialReqDocs": [
-          "doc_unified_application_form",
-          "doc_passport_generic",
-          "doc_photo_one_optional",
-          "doc_residence_proof_generic",
-          "doc_fee_generic"
-        ],
-        "extensionReqDocs": [
-          "doc_address"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "FAQ-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "FAQ-2",
-      "sourceVisaDataIndex": 11,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "FAQ-2",
-        "name": "체류기간 연장·자격 변경",
-        "cat": "faq",
-        "period": "자격별 상이",
-        "newReq": "만료일 4개월 전~당일까지 연장 가능.",
-        "newReqDocs": [],
-        "extReq": "자격 변경 시 요건 충족 증빙 제출.",
-        "extReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_id"
-        ],
-        "faq": "Q: 만료 후?\nA: 오버스테이 처리, 범칙금 부과.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [
-          {
-            "code": "FAQ-2-1",
-            "name": "전자민원",
-            "addReq": "하이코리아 전자민원",
-            "addReqDocs": [],
-            "note": "수수료 할인"
-          }
-        ],
-        "initialReqDocs": [],
-        "extensionReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_id"
-        ],
-        "changeReqDocs": [
-          "doc_unified_application_form_change",
-          "doc_passport_and_arc",
-          "doc_change_reason_evidence",
-          "doc_status_specific_attachments",
-          "doc_fee_generic"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "FAQ-2",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "FAQ-3",
-      "sourceVisaDataIndex": 12,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "FAQ-3",
-        "name": "재입국허가",
-        "cat": "faq",
-        "period": "허가 기간 내",
-        "newReq": "원칙 면제, 면제 기간 초과 시 사전 허가.",
-        "newReqDocs": [],
-        "extReq": "출국 전 하이코리아 또는 공항에서 신청.",
-        "extReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_id",
-          "doc_flight"
-        ],
-        "faq": "Q: 해외 연장?\nA: 부득이한 사유 시 재외공관 통해 가능.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [],
-        "extensionReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_id",
-          "doc_flight"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "FAQ-3",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "FAQ-4",
-      "sourceVisaDataIndex": 13,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": true,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "FAQ-4",
-        "name": "전자팩스·오버스테이·국적",
-        "cat": "faq",
-        "period": "상시",
-        "newReq": "[전자팩스] 1577-1346. [국적/영주] F-4/F-5 요건, 국적 취득/이탈 증명.",
-        "newReqDocs": [],
-        "extReq": "[오버스테이] 자진신고 시 제재 안내, 입국규제 해제 사전심사.",
-        "extReqDocs": [],
-        "faq": "Q: 다국어 상담?\nA: 1345 외국인종합안내센터.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "FAQ-4",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
-            }
-          }
-        }
-      },
-      "visaDataAliasDeprecated": true
-    },
-    {
-      "sourceVisaDataCode": "VW-1",
-      "sourceVisaDataIndex": 14,
-      "primary_type": "faq",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "VW-1",
-        "name": "무사증·사증면제 구분",
-        "cat": "faq",
-        "period": "입국 전 확인",
-        "newReq": "1) 국적 확인 → 2) 사증면제협정국·상호주의·일방면제 여부 확인 → 3) 제주 무사증인지 일반 무사증인지 구분 → 4) K-ETA 적용 여부 확인 → 5) 취업·영리활동 여부 별도 검토.",
-        "newReqDocs": [],
-        "extReq": "국적, 입국 경로, 제주 한정 여부, 체류 목적에 따라 적용 체계가 달라질 수 있음.",
-        "extReqDocs": [],
-        "faq": "Q: 민원인이 무비자라고 말하면 무엇부터 확인해야 하나?\nA: 협정국 기반 일반 무사증인지, 제주 무사증인지, K-ETA 대상인지 순서대로 확인.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "aliases": [
-          "사증면제협정국",
-          "무사증 차이",
-          "제주 무사증 차이",
-          "B-1 B-2-2 차이",
-          "K-ETA 무사증",
-          "무비자 차이"
-        ],
-        "subCodes": [
-          {
-            "code": "VW-1-1",
-            "name": "B-1 사증면제협정",
-            "addReq": "협정국·상호주의·일방면제 여부를 본다.",
-            "addReqDocs": [],
-            "note": "일반적인 단기 비영리 방문 체계 이해에 유용."
-          },
-          {
-            "code": "VW-1-2",
-            "name": "B-2-1 일반 무사증",
-            "addReq": "일반 무사증 허용 여부와 K-ETA 적용 여부를 본다.",
-            "addReqDocs": [],
-            "note": "제주 특례와 분리해서 설명."
-          },
-          {
-            "code": "VW-1-3",
-            "name": "B-2-2 제주 무사증",
-            "addReq": "제주 입도 경로, 제주 한정 체계, 타 지역 이동 문제를 본다.",
-            "addReqDocs": [],
-            "note": "혼동 문의가 많은 항목."
-          },
-          {
-            "code": "VW-1-4",
-            "name": "K-ETA",
-            "addReq": "무사증 입국 전 사전 허가 단계인지 확인.",
-            "addReqDocs": [],
-            "note": "무사증과 동일 개념이 아님."
-          }
-        ],
-        "initialReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "extensionReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "changeReqDocs": [
-          "doc_case_specific_evidence"
-        ],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "VW-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "searchAliases": [
-          "B-2-1",
-          "B-2-2"
-        ],
-        "_searchAliasAudit": {
-          "generatedAliases": [
-            {
-              "alias": "B-2-1",
-              "reason": "existing_record_text_code_token",
-              "source": "existing_repo_json_and_2026_05_manual_audit",
-              "sourceManualVersion": "2026.5",
-              "legalContentCreated": false,
-              "verified": false,
-              "needsManualReview": true,
-              "updatedAt": "2026-05-26"
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
             },
-            {
-              "alias": "B-2-2",
-              "reason": "existing_record_text_code_token",
-              "source": "existing_repo_json_and_2026_05_manual_audit",
-              "sourceManualVersion": "2026.5",
-              "legalContentCreated": false,
-              "verified": false,
-              "needsManualReview": true,
-              "updatedAt": "2026-05-26"
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
             }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "TB-1",
+    "type": "common_requirement",
+    "title": "결핵 고위험 국가 진단서 제출 기준",
+    "relatedCodes": [
+      "C-4",
+      "F-6"
+    ],
+    "mentionedCodes": [
+      "C-4",
+      "F-6"
+    ],
+    "summary": "[제출 대상] 결핵 고위험 35개국 국민 중 90일 초과 장기 체류 목적 비자 신청자, 단기(C-4) 계절근로자 및 결핵환자 가족 간병인, 완전출국 후 신규 장기비자 신청자.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "TB-1",
+      "name": "결핵 고위험 국가 진단서 제출 기준",
+      "cat": "scn",
+      "period": "비자 신청 시",
+      "newReq": "[제출 대상] 결핵 고위험 35개국 국민 중 90일 초과 장기 체류 목적 비자 신청자, 단기(C-4) 계절근로자 및 결핵환자 가족 간병인, 완전출국 후 신규 장기비자 신청자.",
+      "newReqDocs": [
+        "doc_tb"
+      ],
+      "extReq": "[검사 요건] 흉부 X선 검사, 객담검사 중 1가지 이상 결과 포함(의심 증상 시 둘 다 필수). 최근 3개월 이내 발급된 지정 병원 진단서만 인정.",
+      "extReqDocs": [
+        "doc_tb"
+      ],
+      "faq": "Q: 고위험 35개국 목록?\nA: 네팔, 동티모르, 러시아, 말레이시아, 몽골, 미얀마, 방글라데시, 베트남, 스리랑카, 우즈베키스탄, 인도, 인도네시아, 중국, 캄보디아, 키르기스, 태국, 파키스탄, 필리핀, 라오스, 카자흐스탄, 타지키스탄, 우크라이나, 아제르바이잔, 벨라루스, 몰도바공화국, 나이지리아, 남아프리카공화국, 에티오피아, 콩고민주공화국, 케냐, 모잠비크, 짐바브웨, 앙골라, 페루, 파푸아뉴기니.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [
+        {
+          "code": "TB-1-1",
+          "name": "제출 예외 및 유의사항",
+          "addReq": "결혼비자(F-6)의 경우 건강진단서에 결핵검사가 포함되어 있으면 별도 제출 면제.",
+          "addReqDocs": [
+            "doc_health"
           ],
-          "method": "detail_code_alias_extraction_without_new_legal_content",
+          "note": "태국 등 국가별 결핵 검사 지정 병원은 관할 재외공관 첨부파일 참조 필수."
+        }
+      ],
+      "initialReqDocs": [
+        "doc_tb"
+      ],
+      "extensionReqDocs": [
+        "doc_tb"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "TB-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
           "verified": false,
-          "needsManualReview": true
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
             }
           }
         }
-      },
-      "visaDataAliasDeprecated": true
+      }
+    }
+  },
+  {
+    "code": "SCN-1",
+    "type": "scenario",
+    "title": "글로벌 의사결정 매트릭스",
+    "relatedCodes": [
+      "D-10",
+      "D-2",
+      "E-7",
+      "F-2",
+      "F-5"
+    ],
+    "mentionedCodes": [
+      "D-10",
+      "D-2",
+      "E-7",
+      "F-2",
+      "F-5"
+    ],
+    "summary": "[단기→장기] 원칙 불허 (예외적 인도적 사유만). [유학→취업] D-2 → D-10 → E-7 → F-2 → F-5 표준 흐름 적용.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
     },
-    {
-      "sourceVisaDataCode": "COM-1",
-      "sourceVisaDataIndex": 15,
-      "primary_type": "procedure_helper",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "COM-1",
-        "name": "비자 공통 구비서류·팁",
-        "cat": "faq",
-        "period": "공통",
-        "newReq": "[재외공관] 사증발급신청서, 여권, 표준규격사진 1매, 수수료, 입증서류. [비자포털] 전자신청, 전자결제.",
-        "newReqDocs": [
-          "doc_app_form",
-          "doc_passport",
-          "doc_photo",
-          "doc_fee"
-        ],
-        "extReq": "[비자발급인정서] 초청인 대리 신청, 유효기간 3개월.",
-        "extReqDocs": [
-          "doc_invitation"
-        ],
-        "faq": "Q: 응대 팁?\nA: 상황파악→제도확인→서류목록→발급처매칭→제출처안내.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "subCodes": [],
-        "initialReqDocs": [
-          "doc_visa_application_form",
-          "doc_passport_generic",
-          "doc_standard_photo_one",
-          "doc_fee_generic"
-        ],
-        "extensionReqDocs": [
-          "doc_invitation"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "COM-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
-            "verified": false,
-            "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-1",
+      "name": "글로벌 의사결정 매트릭스",
+      "cat": "scn",
+      "period": "기본 원칙",
+      "newReq": "[단기→장기] 원칙 불허 (예외적 인도적 사유만). [유학→취업] D-2 → D-10 → E-7 → F-2 → F-5 표준 흐름 적용.",
+      "newReqDocs": [],
+      "extReq": "[연장 핵심] 현재 자격 정의 충족 여부, 위반/과태료/세금 체납 등 감점 요소 평가.",
+      "extReqDocs": [],
+      "faq": "Q: F계열 자격 변경은?\nA: 동일 계열 내 변경은 원칙 허용, 타 계열 장기 변경은 일부만 예외적 허용.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
             }
           }
         }
-      },
-      "visaDataAliasDeprecated": true
+      }
+    }
+  },
+  {
+    "code": "SCN-2",
+    "type": "scenario",
+    "title": "실무 변수 체크리스트",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "[공통 변수] 현재 자격/만료일, 입국경로(사증 종류), 오버스테이 여부, 범죄경력, 세금/건보 납부 이력.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
     },
-    {
-      "sourceVisaDataCode": "RF-1",
-      "sourceVisaDataIndex": 46,
-      "primary_type": "procedure_helper",
-      "source_grounding": "non_manual_operational",
-      "overstay_related": false,
-      "migrationTrack": "E",
-      "migrationStatus": "duplicated_from_visa_data",
-      "plannedCanonicalStore": "scenario_help",
-      "removalFromVisaDataAllowed": false,
-      "requiresParityBeforeRemoval": true,
-      "record": {
-        "code": "RF-1",
-        "name": "난민인정신청 제출서류 안내",
-        "cat": "scn",
-        "period": "신청 시",
-        "newReq": "[공식 필수서류] 1) 난민인정신청서, 2) 여권 또는 여권 미소지 사유서, 3) 외국인등록증(등록자에 한함), 4) 박해 입증자료, 5) 최근 6개월 이내 표준규격사진 1매, 6) 신체검사서, 7) 가족관계 서류(동반 가족 있는 경우), 8) 난민임시상륙허가서·조건부입국허가서(해당자).",
-        "newReqDocs": [
-          "doc_refugee",
-          "doc_passport",
-          "doc_id",
-          "doc_purpose",
-          "doc_photo",
-          "doc_medical",
-          "doc_fam_rel"
-        ],
-        "extReq": "[실무 보완서류(공식 필수 아님, 현장 요구 가능)] 신청서(별지 제34호 서식), 거주지증명서류(임대차계약서, 숙소제공확인서 등).",
-        "extReqDocs": [
-          "doc_app_form",
-          "doc_address"
-        ],
-        "faq": "Q: 신청 접수 거부가 가능한가?\nA: 법적으로 불가. 접수 거부 시 즉각 심사과 인계.\nQ: 체류 중 신청과 입국 시 신청의 차이?\nA: 체류 중 신청은 관할 출입국에서, 입국 시 신청은 입국심사대에서 가능.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
-        "aliases": [
-          "난민",
-          "난민신청",
-          "난민인정",
-          "난민서류",
-          "난민신청서류"
-        ],
-        "subCodes": [
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-2",
+      "name": "실무 변수 체크리스트",
+      "cat": "scn",
+      "period": "상시 검토",
+      "newReq": "[공통 변수] 현재 자격/만료일, 입국경로(사증 종류), 오버스테이 여부, 범죄경력, 세금/건보 납부 이력.",
+      "newReqDocs": [
+        "doc_tax",
+        "doc_crim"
+      ],
+      "extReq": "[특화 변수] 대한민국 남성 동포 병역상태, 혼인단절 사유 및 시점, 단순노무 종사 여부.",
+      "extReqDocs": [],
+      "faq": "Q: 체크리스트 활용법?\nA: 민원 접수 시 파라미터를 먼저 스캔하여 허용/불허 방향을 가늠할 것.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_tax",
+        "doc_crim"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-2",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "SCN-3",
+    "type": "scenario",
+    "title": "C-3 (단기) 자격변경 시나리오",
+    "relatedCodes": [
+      "C-3",
+      "E-7",
+      "F-1",
+      "F-1-5",
+      "F-6",
+      "G-1"
+    ],
+    "mentionedCodes": [
+      "C-3",
+      "E-7",
+      "F-1-5",
+      "F-6",
+      "G-1"
+    ],
+    "summary": "[원칙] C-3에서 F-6, F-1-5/6, 취업(E-7 등) 자격으로의 국내 변경은 절대 불가.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-3",
+      "name": "C-3 (단기) 자격변경 시나리오",
+      "cat": "scn",
+      "period": "불허 원칙",
+      "newReq": "[원칙] C-3에서 F-6, F-1-5/6, 취업(E-7 등) 자격으로의 국내 변경은 절대 불가.",
+      "newReqDocs": [],
+      "extReq": "취업·장기 체류 목적 시 본국 재외공관에서 정식 비자 발급 후 입국 안내 필수.",
+      "extReqDocs": [],
+      "faq": "Q: 예외?\nA: 인도적 사유(G-1)나 극히 중대한 사유 외에는 원칙 불허.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-3",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "searchAliases": [
+        "F-1-5"
+      ],
+      "_searchAliasAudit": {
+        "generatedAliases": [
           {
-            "code": "RF-1-1",
-            "name": "공식 필수서류 (Hi Korea 기준)",
-            "addReq": "난민인정신청서, 여권(또는 미소지 사유서), 외국인등록증, 박해 입증자료, 표준규격사진 1매, 신체검사서, 가족관계 서류, 난민임시상륙허가서.",
-            "addReqDocs": [
-              "doc_refugee",
-              "doc_passport",
-              "doc_id",
-              "doc_purpose",
-              "doc_photo",
-              "doc_medical",
-              "doc_fam_rel"
-            ],
-            "note": "Hi Korea 공식 기준. 서류 미비 시에도 접수 자체는 거부 불가."
+            "alias": "F-1-5",
+            "reason": "existing_record_text_code_token",
+            "source": "existing_repo_json_and_2026_05_manual_audit",
+            "sourceManualVersion": "2026.5",
+            "legalContentCreated": false,
+            "verified": false,
+            "needsManualReview": true,
+            "updatedAt": "2026-05-26"
+          }
+        ],
+        "method": "detail_code_alias_extraction_without_new_legal_content",
+        "verified": false,
+        "needsManualReview": true
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "SCN-4",
+    "type": "scenario",
+    "title": "F-1-6 (혼인단절) 타이밍 시나리오",
+    "relatedCodes": [
+      "C-3",
+      "F-1",
+      "F-6"
+    ],
+    "mentionedCodes": [
+      "C-3",
+      "F-1",
+      "F-1-6",
+      "F-6"
+    ],
+    "summary": "[필수] F-1-6은 반드시 기존 장기 자격(F-6 등) 유지 상태에서 국내 체류 중 자격변경으로 신청서(별지 제34호 서식) 제출.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-4",
+      "name": "F-1-6 (혼인단절) 타이밍 시나리오",
+      "cat": "scn",
+      "period": "시점 주의",
+      "newReq": "[필수] F-1-6은 반드시 기존 장기 자격(F-6 등) 유지 상태에서 국내 체류 중 자격변경으로 신청서(별지 제34호 서식) 제출.",
+      "newReqDocs": [
+        "doc_app_form"
+      ],
+      "extReq": "[불허] 혼인단절 후 출국 → C-3 재입국 상태에서는 F-1-6 사후 구제 원칙 불허.",
+      "extReqDocs": [],
+      "faq": "Q: 체류 허가 기간?\nA: 6개월 단위 최장 1년.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_app_form"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-4",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "searchAliases": [
+        "F-1-6"
+      ],
+      "_searchAliasAudit": {
+        "generatedAliases": [
+          {
+            "alias": "F-1-6",
+            "reason": "existing_record_text_code_token",
+            "source": "existing_repo_json_and_2026_05_manual_audit",
+            "sourceManualVersion": "2026.5",
+            "legalContentCreated": false,
+            "verified": false,
+            "needsManualReview": true,
+            "updatedAt": "2026-05-26"
+          }
+        ],
+        "method": "detail_code_alias_extraction_without_new_legal_content",
+        "verified": false,
+        "needsManualReview": true
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "SCN-5",
+    "type": "scenario",
+    "title": "F-4/H-2 (동포) 제약 시나리오",
+    "relatedCodes": [
+      "F-4",
+      "H-2"
+    ],
+    "mentionedCodes": [
+      "F-4",
+      "H-2"
+    ],
+    "summary": "[2026.2.12 제도 변경] H-2 신규 발급 중단, F-4로 일원화. 기존 H-2 체류자는 자동 전환 안 됨 → 본인 직접 F-4 변경 신청 필요. [단순노무] F-4는 단순노무 일부 직종만 제한(H-2 대비 취업 범위 대폭 확대).",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-5",
+      "name": "F-4/H-2 (동포) 제약 시나리오",
+      "cat": "scn",
+      "period": "제한 사항",
+      "newReq": "[2026.2.12 제도 변경] H-2 신규 발급 중단, F-4로 일원화. 기존 H-2 체류자는 자동 전환 안 됨 → 본인 직접 F-4 변경 신청 필요. [단순노무] F-4는 단순노무 일부 직종만 제한(H-2 대비 취업 범위 대폭 확대).",
+      "newReqDocs": [
+        "doc_app_form",
+        "doc_f4_proof"
+      ],
+      "extReq": "[병역 제한] 2018.5.1 이후 국적이탈 병역 미이행 남성은 40세 되는 해 12.31까지 F-4 제한. [한국어능력별 체류기간] 인정 3년 / 사통프 등록 2년 / 미등록 1년. [수수료 면제] H-2→F-4 변경 시 2027.12.31까지 수수료 면제.",
+      "extReqDocs": [
+        "doc_topik",
+        "doc_kiip"
+      ],
+      "faq": "Q: H-2→F-4 변경 안 하면?\nA: H-2 유효기간 내에서만 체류 가능. 신규 H-2 발급은 중단됐으므로 만료 후 재발급 불가.\nQ: 변경 불허 사유?\nA: 불법체류·범칙 이력, 동포 입증서류 불충분, 살인·강간·마약·보이스피싱 등 범죄이력.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_app_form",
+        "doc_f4_proof"
+      ],
+      "extensionReqDocs": [
+        "doc_topik",
+        "doc_kiip"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-5",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "SCN-6",
+    "type": "risk_guidance",
+    "title": "오버스테이 (불법체류) 시나리오",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "[1~30일] 과태료+주의, 자진출국 권고. [31~90일] 과태료 상향, 입국규제 가능.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "SCN-6",
+      "name": "오버스테이 (불법체류) 시나리오",
+      "cat": "scn",
+      "period": "기간별 조치",
+      "newReq": "[1~30일] 과태료+주의, 자진출국 권고. [31~90일] 과태료 상향, 입국규제 가능.",
+      "newReqDocs": [],
+      "extReq": "[91일↑] 강제퇴거 및 장기 입국규제 가능성 큼.",
+      "extReqDocs": [],
+      "faq": "Q: 자진신고 실익?\nA: 감경 가능성 있으나 내부 지침 재량 사항.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "SCN-6",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "OVS-1",
+    "type": "risk_guidance",
+    "title": "불법체류다발국가 목록",
+    "relatedCodes": [
+      "D-2",
+      "D-4",
+      "E-6",
+      "E-6-2",
+      "F-1",
+      "F-4"
+    ],
+    "mentionedCodes": [
+      "D-2",
+      "D-4",
+      "E-6-2",
+      "F-1",
+      "F-4"
+    ],
+    "summary": "[적용 제한] D-2(유학), D-4(일반연수), E-6-2(호텔유흥), F-4(재외동포) 사증 발급 시 추가 제한 적용. F-1(방문동거) 미성년 유학생 부모의 재정요건 강화.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "OVS-1",
+      "name": "불법체류다발국가 목록",
+      "cat": "scn",
+      "period": "상시 적용",
+      "newReq": "[적용 제한] D-2(유학), D-4(일반연수), E-6-2(호텔유흥), F-4(재외동포) 사증 발급 시 추가 제한 적용. F-1(방문동거) 미성년 유학생 부모의 재정요건 강화.",
+      "newReqDocs": [
+        "doc_finance"
+      ],
+      "extReq": "[대상 21개국] 가나, 나이지리아, 네팔, 몽골, 미얀마, 방글라데시, 베트남, 스리랑카, 우즈베키스탄, 우크라이나, 이란, 인도, 인도네시아, 중국, 카자흐스탄, 키르기스스탄, 태국, 파키스탄, 필리핀, 이집트, 페루.",
+      "extReqDocs": [],
+      "faq": "Q: 불법체류다발국가 국민이면 입국 자체가 불가한가?\nA: 아니오. 입국은 가능하나 일부 체류자격의 사증 발급 요건이 강화됨.\nQ: 제주 무사증 제외국과의 관계?\nA: 별도 제도. 제주 무사증 제외국(23개국)과 불법체류다발국가(21개국)는 일부 겹치나 목록이 다름.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "aliases": [
+        "불법체류",
+        "불체",
+        "다발국가",
+        "불법체류다발",
+        "중점관리국가"
+      ],
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_finance"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "OVS-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "searchAliases": [
+        "E-6-2"
+      ],
+      "_searchAliasAudit": {
+        "generatedAliases": [
+          {
+            "alias": "E-6-2",
+            "reason": "existing_record_text_code_token",
+            "source": "existing_repo_json_and_2026_05_manual_audit",
+            "sourceManualVersion": "2026.5",
+            "legalContentCreated": false,
+            "verified": false,
+            "needsManualReview": true,
+            "updatedAt": "2026-05-26"
+          }
+        ],
+        "method": "detail_code_alias_extraction_without_new_legal_content",
+        "verified": false,
+        "needsManualReview": true
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "NHIS-1",
+    "type": "life_admin",
+    "title": "국외 체류자 건강보험 면제·감면",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "3개월↑ 국외 체류 시 면제. 직장가입자는 1개월↑ 업무 목적 시 감면 가능.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "NHIS-1",
+      "name": "국외 체류자 건강보험 면제·감면",
+      "cat": "nhis",
+      "period": "해외 체류 기간",
+      "newReq": "3개월↑ 국외 체류 시 면제. 직장가입자는 1개월↑ 업무 목적 시 감면 가능.",
+      "newReqDocs": [],
+      "extReq": "사전신청(출국 10일 전) 또는 사후 소급(출입국사실증명서). 공단 방문/팩스/우편.",
+      "extReqDocs": [],
+      "faq": "Q: 피부양자 국내 잔류?\nA: 약 50% 감면만 적용.\nQ: 국민연금?\nA: 별도 납부예외 신청.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [
+        {
+          "code": "NHIS-1-1",
+          "name": "필요 서류",
+          "addReq": "출입국사실증명서, 여권/항공권 사본",
+          "addReqDocs": [
+            "doc_passport_copy",
+            "doc_flight"
+          ],
+          "note": "상황에 따라 추가 서류"
+        },
+        {
+          "code": "NHIS-1-2",
+          "name": "제도 변경 유의",
+          "addReq": "2025년 7월 이후 개편",
+          "addReqDocs": [],
+          "note": "최신 지침 확인 필수"
+        },
+        {
+          "code": "NHIS-1-3",
+          "name": "가입자별 처리",
+          "addReq": "직장: 급여정지 / 지역: 본인 점수 제외",
+          "addReqDocs": [],
+          "note": "피부양자 잔류 시 전액 면제 불가"
+        },
+        {
+          "code": "NHIS-1-4",
+          "name": "주의(자동면제 불가)",
+          "addReq": "출국만으로 자동 면제 안 됨",
+          "addReqDocs": [],
+          "note": "별도 신청 필수"
+        }
+      ],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "NHIS-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "FAQ-1",
+    "type": "faq",
+    "title": "외국인등록 및 체류지 변경",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "90일 초과 체류 시 외국인등록 의무.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "FAQ-1",
+      "name": "외국인등록 및 체류지 변경",
+      "cat": "faq",
+      "period": "체류기간 내",
+      "newReq": "90일 초과 체류 시 외국인등록 의무.",
+      "newReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_fee"
+      ],
+      "extReq": "체류지 변경 시 14일 이내 전입신고 필수.",
+      "extReqDocs": [
+        "doc_address"
+      ],
+      "faq": "Q: 미신고?\nA: 출입국관리법 위반 범칙금.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [
+        {
+          "code": "FAQ-1-1",
+          "name": "하이코리아 예약",
+          "addReq": "방문 전 사전예약 필수",
+          "addReqDocs": [],
+          "note": "hikorea.go.kr"
+        }
+      ],
+      "initialReqDocs": [
+        "doc_unified_application_form",
+        "doc_passport_generic",
+        "doc_photo_one_optional",
+        "doc_residence_proof_generic",
+        "doc_fee_generic"
+      ],
+      "extensionReqDocs": [
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "FAQ-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "FAQ-2",
+    "type": "faq",
+    "title": "체류기간 연장·자격 변경",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "만료일 4개월 전~당일까지 연장 가능.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "FAQ-2",
+      "name": "체류기간 연장·자격 변경",
+      "cat": "faq",
+      "period": "자격별 상이",
+      "newReq": "만료일 4개월 전~당일까지 연장 가능.",
+      "newReqDocs": [],
+      "extReq": "자격 변경 시 요건 충족 증빙 제출.",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id"
+      ],
+      "faq": "Q: 만료 후?\nA: 오버스테이 처리, 범칙금 부과.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [
+        {
+          "code": "FAQ-2-1",
+          "name": "전자민원",
+          "addReq": "하이코리아 전자민원",
+          "addReqDocs": [],
+          "note": "수수료 할인"
+        }
+      ],
+      "initialReqDocs": [],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id"
+      ],
+      "changeReqDocs": [
+        "doc_unified_application_form_change",
+        "doc_passport_and_arc",
+        "doc_change_reason_evidence",
+        "doc_status_specific_attachments",
+        "doc_fee_generic"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "FAQ-2",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "FAQ-3",
+    "type": "faq",
+    "title": "재입국허가",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "원칙 면제, 면제 기간 초과 시 사전 허가.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "FAQ-3",
+      "name": "재입국허가",
+      "cat": "faq",
+      "period": "허가 기간 내",
+      "newReq": "원칙 면제, 면제 기간 초과 시 사전 허가.",
+      "newReqDocs": [],
+      "extReq": "출국 전 하이코리아 또는 공항에서 신청.",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_flight"
+      ],
+      "faq": "Q: 해외 연장?\nA: 부득이한 사유 시 재외공관 통해 가능.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_flight"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "FAQ-3",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "FAQ-4",
+    "type": "risk_guidance",
+    "title": "전자팩스·오버스테이·국적",
+    "relatedCodes": [
+      "F-4",
+      "F-5"
+    ],
+    "mentionedCodes": [
+      "F-4",
+      "F-5"
+    ],
+    "summary": "[전자팩스] 1577-1346. [국적/영주] F-4/F-5 요건, 국적 취득/이탈 증명.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "FAQ-4",
+      "name": "전자팩스·오버스테이·국적",
+      "cat": "faq",
+      "period": "상시",
+      "newReq": "[전자팩스] 1577-1346. [국적/영주] F-4/F-5 요건, 국적 취득/이탈 증명.",
+      "newReqDocs": [],
+      "extReq": "[오버스테이] 자진신고 시 제재 안내, 입국규제 해제 사전심사.",
+      "extReqDocs": [],
+      "faq": "Q: 다국어 상담?\nA: 1345 외국인종합안내센터.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "FAQ-4",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "VW-1",
+    "type": "faq",
+    "title": "무사증·사증면제 구분",
+    "relatedCodes": [
+      "B-1",
+      "B-2",
+      "B-2-1",
+      "B-2-2"
+    ],
+    "mentionedCodes": [
+      "B-1",
+      "B-2-1",
+      "B-2-2",
+      "K-ETA"
+    ],
+    "summary": "1) 국적 확인 → 2) 사증면제협정국·상호주의·일방면제 여부 확인 → 3) 제주 무사증인지 일반 무사증인지 구분 → 4) K-ETA 적용 여부 확인 → 5) 취업·영리활동 여부 별도 검토.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "VW-1",
+      "name": "무사증·사증면제 구분",
+      "cat": "faq",
+      "period": "입국 전 확인",
+      "newReq": "1) 국적 확인 → 2) 사증면제협정국·상호주의·일방면제 여부 확인 → 3) 제주 무사증인지 일반 무사증인지 구분 → 4) K-ETA 적용 여부 확인 → 5) 취업·영리활동 여부 별도 검토.",
+      "newReqDocs": [],
+      "extReq": "국적, 입국 경로, 제주 한정 여부, 체류 목적에 따라 적용 체계가 달라질 수 있음.",
+      "extReqDocs": [],
+      "faq": "Q: 민원인이 무비자라고 말하면 무엇부터 확인해야 하나?\nA: 협정국 기반 일반 무사증인지, 제주 무사증인지, K-ETA 대상인지 순서대로 확인.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "aliases": [
+        "사증면제협정국",
+        "무사증 차이",
+        "제주 무사증 차이",
+        "B-1 B-2-2 차이",
+        "K-ETA 무사증",
+        "무비자 차이"
+      ],
+      "subCodes": [
+        {
+          "code": "VW-1-1",
+          "name": "B-1 사증면제협정",
+          "addReq": "협정국·상호주의·일방면제 여부를 본다.",
+          "addReqDocs": [],
+          "note": "일반적인 단기 비영리 방문 체계 이해에 유용."
+        },
+        {
+          "code": "VW-1-2",
+          "name": "B-2-1 일반 무사증",
+          "addReq": "일반 무사증 허용 여부와 K-ETA 적용 여부를 본다.",
+          "addReqDocs": [],
+          "note": "제주 특례와 분리해서 설명."
+        },
+        {
+          "code": "VW-1-3",
+          "name": "B-2-2 제주 무사증",
+          "addReq": "제주 입도 경로, 제주 한정 체계, 타 지역 이동 문제를 본다.",
+          "addReqDocs": [],
+          "note": "혼동 문의가 많은 항목."
+        },
+        {
+          "code": "VW-1-4",
+          "name": "K-ETA",
+          "addReq": "무사증 입국 전 사전 허가 단계인지 확인.",
+          "addReqDocs": [],
+          "note": "무사증과 동일 개념이 아님."
+        }
+      ],
+      "initialReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "changeReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "VW-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "searchAliases": [
+        "B-2-1",
+        "B-2-2"
+      ],
+      "_searchAliasAudit": {
+        "generatedAliases": [
+          {
+            "alias": "B-2-1",
+            "reason": "existing_record_text_code_token",
+            "source": "existing_repo_json_and_2026_05_manual_audit",
+            "sourceManualVersion": "2026.5",
+            "legalContentCreated": false,
+            "verified": false,
+            "needsManualReview": true,
+            "updatedAt": "2026-05-26"
           },
           {
-            "code": "RF-1-2",
-            "name": "실무 보완서류",
-            "addReq": "신청서(별지 제34호 서식), 거주지증명서류(임대차계약서, 숙소제공확인서 등).",
-            "addReqDocs": [
-              "doc_app_form",
-              "doc_address"
-            ],
-            "note": "법적 필수는 아니나 현장에서 요구하는 경우 있음. 구비 권고."
-          }
-        ],
-        "initialReqDocs": [
-          "doc_refugee",
-          "doc_passport",
-          "doc_id",
-          "doc_purpose",
-          "doc_photo",
-          "doc_medical",
-          "doc_fam_rel"
-        ],
-        "extensionReqDocs": [
-          "doc_app_form",
-          "doc_address"
-        ],
-        "changeReqDocs": [],
-        "documents_initial": "DATA_MISSING",
-        "documents_registration": "DATA_MISSING",
-        "documents_extension": "DATA_MISSING",
-        "hikorea_task_type": "DATA_MISSING",
-        "migrationMeta": {
-          "migrationTrack": "E",
-          "migrationStatus": "alias_deprecated_in_visa_data",
-          "plannedCanonicalStore": "scenario_help",
-          "canonicalShadowStore": "data/scenario_help_records.json",
-          "scenarioHelpStoreCode": "RF-1",
-          "removalFromVisaDataAllowed": false,
-          "requiresParityBeforeRemoval": true,
-          "aliasDeprecatedAt": "2026-05-21-source-audit",
-          "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4"
-        },
-        "feeInfo": {
-          "paradisoDefault202605": {
-            "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+            "alias": "B-2-2",
+            "reason": "existing_record_text_code_token",
+            "source": "existing_repo_json_and_2026_05_manual_audit",
+            "sourceManualVersion": "2026.5",
+            "legalContentCreated": false,
             "verified": false,
             "needsManualReview": true,
-            "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
-            "procedures": {
-              "foreignRegistration": {
-                "labelKo": "외국인등록",
-                "items": [
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록증 발급 수수료 35,000원"
-                  }
-                ]
-              },
-              "extension": {
-                "labelKo": "체류기간 연장",
-                "items": [
-                  {
-                    "name": "체류기간 연장허가 수수료",
-                    "amountKRW": 60000,
-                    "display": "체류기간 연장허가 정부수입인지 60,000원"
-                  }
-                ]
-              },
-              "statusChange": {
-                "labelKo": "체류자격 변경",
-                "items": [
-                  {
-                    "name": "체류자격 변경허가 수수료",
-                    "amountKRW": 100000,
-                    "display": "체류자격 변경허가 정부수입인지 100,000원"
-                  },
-                  {
-                    "name": "외국인등록증 재발급/교체 수수료",
-                    "amountKRW": 35000,
-                    "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
-                  }
-                ]
-              },
-              "grantStatus": {
-                "labelKo": "체류자격 부여",
-                "items": [
-                  {
-                    "name": "체류자격 부여 수수료",
-                    "amountKRW": 80000,
-                    "display": "체류자격 부여 정부수입인지 80,000원"
-                  },
-                  {
-                    "name": "외국인등록증 발급 수수료",
-                    "amountKRW": 35000,
-                    "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
-                  }
-                ]
-              },
-              "visaIssuance": {
-                "labelKo": "사증 발급",
-                "items": [
-                  {
-                    "name": "재외공관 사증발급 수수료",
-                    "amountKRW": null,
-                    "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
-                  }
-                ]
-              }
+            "updatedAt": "2026-05-26"
+          }
+        ],
+        "method": "detail_code_alias_extraction_without_new_legal_content",
+        "verified": false,
+        "needsManualReview": true
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
             }
           }
         }
-      },
-      "visaDataAliasDeprecated": true
+      }
     }
-  ],
-  "e3_status": "visa_data_records_alias_deprecated",
-  "e3_note": "As of E-3, the 17 source records in visa_data.json carry migrationMeta.migrationStatus=\"alias_deprecated_in_visa_data\" with removalFromVisaDataAllowed=false. Nested record copies here remain pristine pre-deprecation duplicates; removal from visa_data.json is gated until E-4 parity.",
-  "_searchAliasShadowSync": {
-    "updatedAt": "2026-05-26",
-    "method": "copy_search_alias_metadata_from_live_visa_data_for_e4_parity",
-    "fields": [
-      "searchAliases",
-      "_searchAliasAudit"
-    ],
-    "syncedCodes": [
-      "OVS-1",
-      "SCN-3",
-      "SCN-4",
-      "VW-1"
-    ],
-    "missingLiveCodes": [],
-    "legalContentCreated": false,
-    "verifiedPromotion": false,
-    "note": "Keeps scenario/help shadow copies content-equivalent for simulated E-4B removal after detail-code alias metadata was added to visa_data.json."
   },
-  "_docTermFeeShadowSync": {
-    "updatedAt": "2026-05-26",
-    "method": "copy_live_record_after_idempotent_doc_normalization_fix",
-    "syncedCodes": [],
-    "legalContentCreated": false,
-    "verifiedPromotion": false
+  {
+    "code": "COM-1",
+    "type": "faq",
+    "title": "비자 공통 구비서류·팁",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "[재외공관] 사증발급신청서, 여권, 표준규격사진 1매, 수수료, 입증서류. [비자포털] 전자신청, 전자결제.",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "COM-1",
+      "name": "비자 공통 구비서류·팁",
+      "cat": "faq",
+      "period": "공통",
+      "newReq": "[재외공관] 사증발급신청서, 여권, 표준규격사진 1매, 수수료, 입증서류. [비자포털] 전자신청, 전자결제.",
+      "newReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_fee"
+      ],
+      "extReq": "[비자발급인정서] 초청인 대리 신청, 유효기간 3개월.",
+      "extReqDocs": [
+        "doc_invitation"
+      ],
+      "faq": "Q: 응대 팁?\nA: 상황파악→제도확인→서류목록→발급처매칭→제출처안내.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "subCodes": [],
+      "initialReqDocs": [
+        "doc_visa_application_form",
+        "doc_passport_generic",
+        "doc_standard_photo_one",
+        "doc_fee_generic"
+      ],
+      "extensionReqDocs": [
+        "doc_invitation"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "COM-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "code": "RF-1",
+    "type": "refugee_guidance",
+    "title": "난민인정신청 제출서류 안내",
+    "relatedCodes": [],
+    "mentionedCodes": [],
+    "summary": "[공식 필수서류] 1) 난민인정신청서, 2) 여권 또는 여권 미소지 사유서, 3) 외국인등록증(등록자에 한함), 4) 박해 입증자료, 5) 최근 6개월 이내 표준규격사진 1매, 6) 신체검사서, 7) 가족관계 서류(동반 가족 있는 경우), 8) 난민임시상륙허가서·조건부입국허가서(해당자).",
+    "source": {
+      "sourceFile": "visa_data.json",
+      "extractedAt": "2026-06-09",
+      "reason": "noncanonical scenario/FAQ/common guidance record removed from canonical visa_data.json",
+      "preserveRuntimeContent": true,
+      "frontEndWiringDeferred": true,
+      "aiGroundingWiringDeferred": true
+    },
+    "sourceGrounding": {
+      "verified": false,
+      "needsManualReview": true,
+      "note": "Content preserved from the previous visa_data.json record. This PR only separates data layers; source re-audit and runtime consumption are intentionally deferred."
+    },
+    "originalVisaDataRecord": {
+      "code": "RF-1",
+      "name": "난민인정신청 제출서류 안내",
+      "cat": "scn",
+      "period": "신청 시",
+      "newReq": "[공식 필수서류] 1) 난민인정신청서, 2) 여권 또는 여권 미소지 사유서, 3) 외국인등록증(등록자에 한함), 4) 박해 입증자료, 5) 최근 6개월 이내 표준규격사진 1매, 6) 신체검사서, 7) 가족관계 서류(동반 가족 있는 경우), 8) 난민임시상륙허가서·조건부입국허가서(해당자).",
+      "newReqDocs": [
+        "doc_refugee",
+        "doc_passport",
+        "doc_id",
+        "doc_purpose",
+        "doc_photo",
+        "doc_medical",
+        "doc_fam_rel"
+      ],
+      "extReq": "[실무 보완서류(공식 필수 아님, 현장 요구 가능)] 신청서(별지 제34호 서식), 거주지증명서류(임대차계약서, 숙소제공확인서 등).",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_address"
+      ],
+      "faq": "Q: 신청 접수 거부가 가능한가?\nA: 법적으로 불가. 접수 거부 시 즉각 심사과 인계.\nQ: 체류 중 신청과 입국 시 신청의 차이?\nA: 체류 중 신청은 관할 출입국에서, 입국 시 신청은 입국심사대에서 가능.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "aliases": [
+        "난민",
+        "난민신청",
+        "난민인정",
+        "난민서류",
+        "난민신청서류"
+      ],
+      "subCodes": [
+        {
+          "code": "RF-1-1",
+          "name": "공식 필수서류 (Hi Korea 기준)",
+          "addReq": "난민인정신청서, 여권(또는 미소지 사유서), 외국인등록증, 박해 입증자료, 표준규격사진 1매, 신체검사서, 가족관계 서류, 난민임시상륙허가서.",
+          "addReqDocs": [
+            "doc_refugee",
+            "doc_passport",
+            "doc_id",
+            "doc_purpose",
+            "doc_photo",
+            "doc_medical",
+            "doc_fam_rel"
+          ],
+          "note": "Hi Korea 공식 기준. 서류 미비 시에도 접수 자체는 거부 불가."
+        },
+        {
+          "code": "RF-1-2",
+          "name": "실무 보완서류",
+          "addReq": "신청서(별지 제34호 서식), 거주지증명서류(임대차계약서, 숙소제공확인서 등).",
+          "addReqDocs": [
+            "doc_app_form",
+            "doc_address"
+          ],
+          "note": "법적 필수는 아니나 현장에서 요구하는 경우 있음. 구비 권고."
+        }
+      ],
+      "initialReqDocs": [
+        "doc_refugee",
+        "doc_passport",
+        "doc_id",
+        "doc_purpose",
+        "doc_photo",
+        "doc_medical",
+        "doc_fam_rel"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": "DATA_MISSING",
+      "documents_registration": "DATA_MISSING",
+      "documents_extension": "DATA_MISSING",
+      "hikorea_task_type": "DATA_MISSING",
+      "migrationMeta": {
+        "migrationTrack": "E",
+        "migrationStatus": "alias_deprecated_in_visa_data",
+        "plannedCanonicalStore": "scenario_help",
+        "canonicalShadowStore": "data/scenario_help_records.json",
+        "scenarioHelpStoreCode": "RF-1",
+        "removalFromVisaDataAllowed": false,
+        "requiresParityBeforeRemoval": true,
+        "aliasDeprecatedAt": "2026-05-21-source-audit",
+        "aliasDeprecationReason": "duplicated into scenario/help store; retained for runtime compatibility until E-4",
+        "sourceGroundedCleanup20260608": {
+          "reviewedAt": "2026-06-08",
+          "classification": "non_canonical_scenario_help_faq",
+          "notOfficialVisaStatusGuidance": true,
+          "verified": false,
+          "needsManualReview": true,
+          "action": "Retained byte-for-byte in visa_data.json for runtime lookups and shadow-store parity. Legal-prose stripping / physical removal is deferred to the E-4 runtime cutover (consume data/scenario_help_records.json and drop visa_data scenario lookups) and is out of scope for a visa_data.json-only edit.",
+          "quarantineSnapshot": "data/removed_from_visa_data_scenario_records_20260608.json",
+          "canonicalStore": "data/scenario_help_records.json"
+        }
+      },
+      "feeInfo": {
+        "paradisoDefault202605": {
+          "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+          "verified": false,
+          "needsManualReview": true,
+          "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 HiKorea, 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+          "procedures": {
+            "foreignRegistration": {
+              "labelKo": "외국인등록",
+              "items": [
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록증 발급 수수료 35,000원"
+                }
+              ]
+            },
+            "extension": {
+              "labelKo": "체류기간 연장",
+              "items": [
+                {
+                  "name": "체류기간 연장허가 수수료",
+                  "amountKRW": 60000,
+                  "display": "체류기간 연장허가 정부수입인지 60,000원"
+                }
+              ]
+            },
+            "statusChange": {
+              "labelKo": "체류자격 변경",
+              "items": [
+                {
+                  "name": "체류자격 변경허가 수수료",
+                  "amountKRW": 100000,
+                  "display": "체류자격 변경허가 정부수입인지 100,000원"
+                },
+                {
+                  "name": "외국인등록증 재발급/교체 수수료",
+                  "amountKRW": 35000,
+                  "display": "등록증 발급이 필요한 경우 35,000원 별도 가능"
+                }
+              ]
+            },
+            "grantStatus": {
+              "labelKo": "체류자격 부여",
+              "items": [
+                {
+                  "name": "체류자격 부여 수수료",
+                  "amountKRW": 80000,
+                  "display": "체류자격 부여 정부수입인지 80,000원"
+                },
+                {
+                  "name": "외국인등록증 발급 수수료",
+                  "amountKRW": 35000,
+                  "display": "외국인등록 대상자는 등록증 발급 수수료 35,000원 별도"
+                }
+              ]
+            },
+            "visaIssuance": {
+              "labelKo": "사증 발급",
+              "items": [
+                {
+                  "name": "재외공관 사증발급 수수료",
+                  "amountKRW": null,
+                  "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
   }
-}
+]

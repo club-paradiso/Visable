@@ -1,0 +1,100 @@
+{
+  "generatedAt": "2026-06-09",
+  "sourceFile": "visa_data_d2_added_20260609.json",
+  "task": "Split noncanonical scenario/FAQ/common guidance records out of visa_data.json while preserving them in data/scenario_help_records.json.",
+  "counts": {
+    "sourceRecords": 59,
+    "keptCanonicalRecords": 42,
+    "removedNoncanonicalRecords": 17,
+    "scenarioHelpRecords": 17
+  },
+  "removedCodes": [
+    "K-ETA",
+    "TB-1",
+    "SCN-1",
+    "SCN-2",
+    "SCN-3",
+    "SCN-4",
+    "SCN-5",
+    "SCN-6",
+    "OVS-1",
+    "NHIS-1",
+    "FAQ-1",
+    "FAQ-2",
+    "FAQ-3",
+    "FAQ-4",
+    "VW-1",
+    "COM-1",
+    "RF-1"
+  ],
+  "keptCodes": [
+    "B-1",
+    "B-2",
+    "C-3",
+    "C-4",
+    "D-1",
+    "D-2",
+    "D-3",
+    "D-4",
+    "D-4-1",
+    "D-7",
+    "D-8",
+    "D-9",
+    "D-10",
+    "E-1",
+    "E-2",
+    "E-3",
+    "E-4",
+    "E-5",
+    "E-6",
+    "E-7",
+    "E-8",
+    "E-9",
+    "E-10",
+    "F-1",
+    "F-2",
+    "F-3",
+    "F-4",
+    "F-5",
+    "F-6",
+    "G-1",
+    "H-1",
+    "H-2",
+    "A-1",
+    "A-2",
+    "A-3",
+    "C-1",
+    "D-5",
+    "D-6",
+    "D-4-2K",
+    "K-STAR",
+    "REGION-S",
+    "YOUTH-STAY"
+  ],
+  "deferredToSeparatePR": [
+    "Front-end search ranking and related guidance display",
+    "AI grounding split between visa_data and scenario_help_records"
+  ],
+  "criteria": {
+    "removedIfCatIn": [
+      "faq",
+      "nhis",
+      "scn"
+    ],
+    "removedIfCodePrefixIn": [
+      "SCN-",
+      "FAQ-",
+      "TB-",
+      "OVS-",
+      "NHIS-",
+      "RF-",
+      "VW-",
+      "COM-",
+      "K-ETA"
+    ],
+    "removedIfMigrationMeta": [
+      "migrationStatus=alias_deprecated_in_visa_data",
+      "plannedCanonicalStore=scenario_help"
+    ]
+  }
+}
