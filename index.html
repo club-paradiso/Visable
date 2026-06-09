@@ -15080,6 +15080,7 @@ function formatDocumentTabRefNote(refs) {
 
 // TODO: label map not used here — doc_* IDs in item.name or item.label would render as raw strings
 function normalizeDocumentTabItems(field) {
+    // items are pre-resolved Korean labels, DOC_DICT not needed
     if (isDocFieldMissing(field) || !Array.isArray(field)) return [];
     return field.map(item => {
         let name, note;
@@ -15113,7 +15114,7 @@ function getRegistrationProcedureTabItems(v) {
     const refNote = formatDocumentTabRefNote(proc.manualRefs);
     // TODO: label map not used here — falls back to raw doc string; unresolved doc_* IDs would surface to users
     return docs.map(doc => ({
-        name: DOC_DICT[doc] || doc,
+        name: DOC_DICT[doc] || '(서류명 확인 필요: ' + doc + ')',
         note: refNote || proc.summary || ''
     }));
 }
