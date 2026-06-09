@@ -15077,6 +15077,7 @@ function formatDocumentTabRefNote(refs) {
 }
 
 function normalizeDocumentTabItems(field) {
+    // items are pre-resolved Korean labels, DOC_DICT not needed
     if (isDocFieldMissing(field) || !Array.isArray(field)) return [];
     return field.map(item => {
         let name, note;
@@ -15109,7 +15110,7 @@ function getRegistrationProcedureTabItems(v) {
     if (!docs.length) return [];
     const refNote = formatDocumentTabRefNote(proc.manualRefs);
     return docs.map(doc => ({
-        name: DOC_DICT[doc] || doc,
+        name: DOC_DICT[doc] || '(서류명 확인 필요: ' + doc + ')',
         note: refNote || proc.summary || ''
     }));
 }
