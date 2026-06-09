@@ -13240,7 +13240,7 @@ const COMMON_MANUAL_WARNINGS = [
     '체류허가 신청자는 국내 체류 중이어야 합니다.'
 ];
 
-const STAY_FEE_SOURCE_NOTE = '체류민원_0504.pdf 공통사항 「각종 체류허가 등에 관한 심사수수료」 기준입니다. 접수된 심사수수료는 반환되지 않을 수 있습니다.';
+const STAY_FEE_SOURCE_NOTE = '출처: 법무부 체류민원 안내매뉴얼(2026.5) 공통사항 「각종 체류허가 등에 관한 심사수수료」 접수된 심사수수료는 반환되지 않을 수 있습니다.';
 const DEFAULT_PROCEDURE_FEES = {
     activitiesOutsideStatus: {
         label: '체류자격 외 활동허가',
@@ -14194,9 +14194,11 @@ function renderScenarioChecklist(visaCode, procedureKey, variant) {
         if (!items.length) return '';
         const groupTitle = txAt('docGroupLabels', group.labelIndex, group.fallback);
         const rows = items.map(item => {
-            const text = String(item || '').trim();
-            if (!text) return '';
-            const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, text);
+            const rawText = String(item || '').trim();
+            if (!rawText) return '';
+            const isDocId = rawText.startsWith('doc_');
+            const text = isDocId ? (DOC_DICT[rawText] || ('(서류명 확인 필요: ' + rawText + ')')) : rawText;
+            const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, rawText);
             const checked = scenarioChecklistStoreGet(storageKey) === '1' ? ' checked' : '';
             return `<li class="scenario-checklist-row">
                 <label class="scenario-checklist-label">
@@ -15076,6 +15078,7 @@ function formatDocumentTabRefNote(refs) {
     return `${currentLanguage === 'en' ? 'Source' : '출처'}: ${bits.join(' / ')}`;
 }
 
+// TODO: label map not used here — doc_* IDs in item.name or item.label would render as raw strings
 function normalizeDocumentTabItems(field) {
     if (isDocFieldMissing(field) || !Array.isArray(field)) return [];
     return field.map(item => {
@@ -15108,6 +15111,7 @@ function getRegistrationProcedureTabItems(v) {
     const docs = flattenDocGroups(proc.docs).filter(doc => !isDocPlaceholder(doc));
     if (!docs.length) return [];
     const refNote = formatDocumentTabRefNote(proc.manualRefs);
+    // TODO: label map not used here — falls back to raw doc string; unresolved doc_* IDs would surface to users
     return docs.map(doc => ({
         name: DOC_DICT[doc] || doc,
         note: refNote || proc.summary || ''
