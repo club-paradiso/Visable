@@ -1428,7 +1428,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   margin: 0;
   color: var(--t1);
   font-size: 0.98rem;
-  font-weight: 950;
+  font-weight: 700;
   letter-spacing: -0.01em;
 }
 
@@ -1441,9 +1441,9 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 }
 
 .scenario-choice-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
-  gap: 0.55rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .scenario-choice {
@@ -1457,8 +1457,8 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   border: 1px solid var(--bd2);
   background: color-mix(in srgb, var(--bg1) 96%, white);
   color: var(--t2);
-  border-radius: 12px;
-  padding: 0.78rem 0.9rem;
+  border-radius: var(--p-r-lg);
+  padding: 1rem 1.25rem;
   font: inherit;
   cursor: pointer;
   text-align: left;
@@ -1474,17 +1474,17 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 }
 
 .scenario-choice[aria-pressed="true"] {
-  border-color: var(--ac);
-  background: color-mix(in srgb, var(--ac) 12%, var(--bg1));
+  border-color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 10%, var(--bg1));
   color: var(--t1);
-  box-shadow: inset 4px 0 0 var(--ac);
+  box-shadow: inset 4px 0 0 var(--color-primary);
 }
 
 .scenario-choice[aria-pressed="true"]::before {
   content: var(--lang-scenario-selected-choice, "✓ 선택됨");
-  color: var(--ac);
+  color: var(--color-primary);
   font-size: 0.68rem;
-  font-weight: 950;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -1493,21 +1493,75 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   flex-wrap: wrap;
   align-items: baseline;
   gap: 0.4rem;
-  font-size: 0.86rem;
-  font-weight: 900;
+  font-size: 1rem;
+  font-weight: 600;
   line-height: 1.35;
   word-break: keep-all;
 }
 
 .scenario-choice-preview {
   max-width: 100%;
-  color: var(--t3);
-  font-size: 0.76rem;
-  line-height: 1.5;
+  color: var(--t2);
+  font-size: 0.875rem;
+  line-height: 1.65;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  word-break: keep-all;
+}
+/* Pill badge for status code inside scenario choice cards */
+.scenario-choice .manual-subcode-code {
+  background: var(--color-surface-2);
+  color: var(--color-primary-ink, var(--ac));
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  border: none;
+}
+/* Tertiary 전체 보기 action — lighter than scenario cards */
+.scenario-choice--showall {
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border: 1px dashed var(--bd2);
+  background: transparent;
+  color: var(--t2);
+  border-radius: var(--p-r-sm, 8px);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: none;
+}
+.scenario-choice--showall:hover,
+.scenario-choice--showall:focus-visible {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: color-mix(in srgb, var(--color-primary) 6%, var(--bg1));
+  transform: none;
+}
+.scenario-choice--showall[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  border-style: solid;
+  background: color-mix(in srgb, var(--color-primary) 8%, var(--bg1));
+  box-shadow: none;
+}
+.scenario-choice--showall[aria-pressed="true"]::before {
+  content: none;
+}
+/* Inner card scroll container — separates cards from the showall button */
+.scenario-cards-scroll {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--bd2);
+  margin-top: 0.5rem;
+}
+.scenario-cards-scroll--overflow {
+  max-height: 480px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 .official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
@@ -1646,8 +1700,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
         grid-template-areas: "primary" "doc" "ai";
     }
     .f4-route-chip, .f4-route-showall { flex: 1 1 100%; min-height: 44px; }
-    .scenario-choice-list { grid-template-columns: 1fr; }
-    .scenario-choice { width: 100%; min-height: 44px; }
+    .scenario-choice { width: 100%; }
     .scenario-checklist-actions { flex-wrap: wrap; }
     .scenario-checklist-actions .scenario-checklist-btn { flex: 1 1 calc(50% - 0.3rem); min-height: 44px; }
     .deadline-inputs { grid-template-columns: 1fr; }
@@ -14060,9 +14113,12 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
     const notice = tx('scenarioSelectorCopy');
     const officialLabelsNote = currentLanguage === 'ko' ? '' : `<p class="scenario-official-labels-note">${escapeHtml(tx('scenarioOfficialLabelsKoNote'))}</p>`;
     const singleVariant = proc.variants.length === 1;
+    const scrollClass = proc.variants.length > 5 ? ' scenario-cards-scroll--overflow' : '';
     const choicesHtml = singleVariant ? '' : `<div class="scenario-choice-list" role="group" aria-label="${escapeHtml(title)}">
-        <button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${escapeHtml(tx('scenarioShowAll'))}</span></button>
-        ${proc.variants.map(variant => renderProcedureVariantChoice(proc.key, variant)).join('')}
+        <button type="button" class="scenario-choice scenario-choice--showall" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${escapeHtml(tx('scenarioShowAll'))}</span></button>
+        <div class="scenario-cards-scroll${scrollClass}">
+            ${proc.variants.map(variant => renderProcedureVariantChoice(proc.key, variant)).join('')}
+        </div>
     </div>`;
     return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
         <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>
