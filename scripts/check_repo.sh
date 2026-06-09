@@ -203,6 +203,15 @@ python3 scripts/sync_visa_data.py --check
 echo "[12/14] Checking required-documents rendering coverage..."
 python3 scripts/check_required_documents_coverage.py
 
+echo "[12b/14] Checking duplicate / misclassified status-result rendering (SEVERE only)..."
+# Validation mode: fails only on SEVERE rendering issues that would reach the
+# user (identical tile repeated in a section, rendered doc tile >160 chars,
+# prose rendered as a doc tile, same item in 공통+필수 for one result, parent
+# rendering a subcode rule as a generic doc, 사증발급<->체류 procedure
+# contamination, or discovered!=audited code count). Medium/low data-hygiene
+# findings are warn-only and documented in audits/dedup-rendering-audit.md.
+python3 scripts/audit_duplicate_render_content.py --check
+
 echo "[13/14] Running backend regression tests..."
 if ensure_backend_test_runtime; then
   $TEST_PYTHON backend/tests/test_paradiso_backend.py

@@ -499,6 +499,10 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 [data-theme="dark"] .subcode-warning { background: #451a03; color: #fde68a; border-left-color: #f59e0b; }
 .doc-checklist { display: grid; grid-template-columns: 1fr; gap: 8px; }
 @media (min-width: 640px) { .doc-checklist { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); } }
+/* Relocated prose / example guidance (never a required-document tile). */
+.doc-checklist-notes { list-style: none; margin: 8px 0 0; padding: 8px 12px; background: var(--bg2, #f7f5ef); border: 1px dashed var(--bd); border-radius: 8px; display: grid; gap: 6px; }
+.doc-checklist-notes li { font-size: 0.76rem; color: var(--t2); line-height: 1.5; word-break: keep-all; padding-left: 14px; position: relative; }
+.doc-checklist-notes li::before { content: '※'; position: absolute; left: 0; color: var(--t3); }
 .doc-chk-item { display: flex; align-items: flex-start; gap: 10px; background: var(--bg1); border: 1px solid var(--bd); padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; color: var(--t1); box-shadow: 0 1px 2px rgba(0,0,0,0.02); line-height: 1.4; }
 .doc-chk-item svg { width: 18px; height: 18px; color: var(--ac); flex-shrink: 0; margin-top: 2px; }
 .doc-chk-item.critical { border-color: var(--color-error); background: #fef2f2; color: #991b1b; }
@@ -13108,6 +13112,9 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // rows even if an upstream path bypassed dedupeDocs().
     const cleanKeys = (docKeys || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
     if (!cleanKeys.length) return '<div class="text-desc" style="color:var(--t3);">요구되는 추가 서류가 없습니다.</div>';
+    // Explanatory prose that was authored inside a document array is relocated
+    // here (rendered as a note) instead of being shown as a fake checklist tile.
+    const relocatedNotes = [];
     const tagsHtml = cleanKeys.map(key => {
         // Resolve every doc id through DOC_DICT (kept in sync with doc_master.json).
         // Unknown ids must never surface their raw machine id to users — show a
@@ -13115,6 +13122,19 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         // data attribute so developers can still trace it.
         const isUnresolvedId = typeof key === 'string' && key.startsWith('doc_') && !DOC_DICT[key];
         let officialName = DOC_DICT[key] || (isUnresolvedId ? (tx('docDefinitionNeeded') || '문서 정의 필요') : key);
+        // Split off prose / over-long example text so only the concise document
+        // name renders as a checklist tile (source wording preserved as a note).
+        if (!isUnresolvedId) {
+            const split = paradisoSplitDocItem(officialName);
+            if (split.kind === 'prose') {
+                if (split.note) relocatedNotes.push(split.note);
+                return '';
+            }
+            if (split.label) {
+                officialName = split.label;
+                if (split.note) relocatedNotes.push(split.note);
+            }
+        }
         const debugAttr = isUnresolvedId ? ` data-doc-id="${escapeHtml(key)}"` : '';
         const isCritical = ['doc_health', 'doc_crim', 'doc_tb'].includes(key);
         const criticalClass = isCritical ? ' critical' : '';
@@ -13125,14 +13145,32 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
     }).join('');
     const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docGroupLabels', 2, '추가/심사 필요 서류'))}</div>` : '';
-    return `<div class="doc-req-box" style="margin-top:0; padding:0; border:none; background:transparent;">${warningHtml}<div class="doc-checklist">${tagsHtml}</div></div>`;
+    // De-duplicate relocated notes (canonicalized) and render them under the
+    // checklist as supplementary guidance, never as required-document rows.
+    const noteSeen = new Set();
+    const noteItems = relocatedNotes.filter(n => {
+        const k = canonicalDocDedupeKey(n);
+        if (!k || noteSeen.has(k)) return false;
+        noteSeen.add(k);
+        return true;
+    });
+    const notesHtml = noteItems.length
+        ? `<ul class="doc-checklist-notes" aria-label="${escapeHtml(currentLanguage === 'en' ? 'Notes' : '참고 사항')}">${noteItems.map(n => `<li>${hl(escapeHtml(n), keywords)}</li>`).join('')}</ul>`
+        : '';
+    const checklistHtml = tagsHtml ? `<div class="doc-checklist">${tagsHtml}</div>` : '';
+    return `<div class="doc-req-box" style="margin-top:0; padding:0; border:none; background:transparent;">${warningHtml}${checklistHtml}${notesHtml}</div>`;
 }
 
 const PROCEDURE_CONFIG = [
-    { key: 'visaIssuance', labelIndex: 0, label: '사증발급', oldType: 'new', oldDocs: ['initialReqDocs', 'newReqDocs'], oldText: 'newReq', docFields: { requiredDocs: ['initialReqDocs', 'newReqDocs', 'newReq', 'reqDocs', 'documents', 'requiredDocs', 'required_documents'], additionalDocs: ['addReqDocs', 'addReq'] } },
+    // NOTE: free-text summary fields (newReq / extReq / changeReq / chgReq) are
+    // deliberately NOT listed in docFields.requiredDocs. They are the procedure
+    // summaries (oldText) and aliasing them into the document checklist made the
+    // description prose render as a required-document tile AND duplicate the
+    // overview/detail text. They still render once as the procedure summary.
+    { key: 'visaIssuance', labelIndex: 0, label: '사증발급', oldType: 'new', oldDocs: ['initialReqDocs', 'newReqDocs'], oldText: 'newReq', docFields: { requiredDocs: ['initialReqDocs', 'newReqDocs', 'reqDocs', 'documents', 'requiredDocs', 'required_documents'], additionalDocs: ['addReqDocs'] } },
     { key: 'certificateOfVisaIssuance', labelIndex: 1, label: '사증발급인정서', oldType: 'new', oldDocs: ['cviReqDocs'] },
-    { key: 'statusChange', labelIndex: 2, label: '체류자격 변경', oldType: 'change', oldDocs: ['changeReqDocs'], oldText: 'changeReq', docFields: { requiredDocs: ['changeReqDocs', 'chgReqDocs', 'chgReq', 'changeReq'] } },
-    { key: 'extension', labelIndex: 3, label: '체류기간 연장', oldType: 'ext', oldDocs: ['extensionReqDocs', 'extReqDocs'], oldText: 'extReq', docFields: { requiredDocs: ['extensionReqDocs', 'extReqDocs', 'extReq'] } },
+    { key: 'statusChange', labelIndex: 2, label: '체류자격 변경', oldType: 'change', oldDocs: ['changeReqDocs'], oldText: 'changeReq', docFields: { requiredDocs: ['changeReqDocs', 'chgReqDocs'] } },
+    { key: 'extension', labelIndex: 3, label: '체류기간 연장', oldType: 'ext', oldDocs: ['extensionReqDocs', 'extReqDocs'], oldText: 'extReq', docFields: { requiredDocs: ['extensionReqDocs', 'extReqDocs'] } },
     { key: 'statusGrant', labelIndex: 4, label: '체류자격 부여', oldType: 'new', oldDocs: ['statusGrantReqDocs'] },
     { key: 'registration', labelIndex: 5, label: '외국인등록', oldType: 'new', oldDocs: ['registrationReqDocs'] },
     { key: 'activitiesOutsideStatus', labelIndex: 6, label: '자격외활동', oldType: 'change', oldDocs: ['activitiesOutsideStatusReqDocs'] },
@@ -13552,7 +13590,15 @@ const DOC_GROUP_ALIASES = {
 function toDocArray(value) {
     if (!value) return [];
     if (Array.isArray(value)) return value.flatMap(toDocArray);
-    if (typeof value === 'string') return value.split(/\n|;|·/).map(v => v.trim()).filter(v => v && !isDocPlaceholder(v));
+    if (typeof value === 'string') {
+        // Never fragment a single prose blob (e.g. "세부약호별(산업재해·질병치료·…)
+        // 추가 제출서류는 사안마다 다름") into pseudo-document tiles on the middot.
+        if (paradisoIsSingleProseBlob(value)) {
+            const v = value.trim();
+            return v && !isDocPlaceholder(v) ? [v] : [];
+        }
+        return value.split(/\n|;|·/).map(v => v.trim()).filter(v => v && !isDocPlaceholder(v));
+    }
     if (typeof value === 'object') {
         const label = value.name || value.label || value.title || value.text || value.description;
         return label ? [String(label).trim()].filter(v => v && !isDocPlaceholder(v)) : [];
@@ -13571,6 +13617,106 @@ const DOC_PLACEHOLDER_TOKENS = [
 ];
 function isDocPlaceholder(value) {
     return DOC_PLACEHOLDER_TOKENS.includes(String(value || '').trim());
+}
+
+/* PARADISO_DOC_PROSE_SPLIT_20260609
+   Single source of truth (mirrored by scripts/audit_duplicate_render_content.py)
+   for separating a raw document item into a concise checklist LABEL plus a
+   relocated NOTE. Explanatory prose / eligibility / stay-period / scope /
+   procedure text must never render as a required-document tile -- it is moved to
+   a note instead, and the underlying source wording is preserved verbatim. No
+   data is mutated: this is a render-layer transform only. */
+const PARADISO_DOC_LONG_THRESHOLD = 80;
+const PARADISO_DOC_SEVERE_THRESHOLD = 160;
+const PARADISO_DOC_SENTENCE_END_RE = /(?:습니다|입니다|합니다|됩니다|있습니다|없습니다|바랍니다|십시오|하십시오|가능|불가|불요|제한|부여|징구|면제|해당됩니다|필요합니다|수\s*없[다음]|할\s*수\s*있음|받을\s*수\s*있음)\.?$/;
+const PARADISO_DOC_PROSE_TOPIC_RE = /(원칙적으로|경우에\s*한|에\s*한해|해당자|대상으로\s*합니다|대상입니다|상한은|특례\s*상한|체류기간\s*상한|허가될\s*수|조정될\s*수|심사가\s*강화|생략될\s*수|제출\s*불요|초과할\s*수\s*없|기재하되|허위기재|처벌받을\s*수)/;
+const PARADISO_DOC_TAIL_RE = /(서류|증명서|확인서|신청서|계약서|등록증|영수증|진단서|보증서|결정문|입증자료|사업자등록증|고유번호증|허가서|동의서|사유서|계획서|증빙서류|여권|사본|원본|사진|수수료|인지|통지서|출석부|카드|공한|등본|초본|입증서류|증서|소견서|위임장|재학증명서|졸업증명서|인정서|확인증|납입증명서)$/;
+const PARADISO_DOC_HEADING_RE = /[□■◇▶▷※☞❍]|[0-9]{1,2}\.\s*\S+제출서류|체류기간\s*연장\s*제출서류/;
+const PARADISO_DOC_RESIDENCE_RE = /체류지\s*입증서류\s*\(\s*예\s*:[\s\S]*?준비\s*\)/;
+const PARADISO_DOC_SUBCODE_REF_RE = /[A-Z]{1,3}-[0-9]+-[0-9A-Z]+/;
+const PARADISO_DOC_PROSE_PREFIX_RE = /^(대상|예외|참고|유의|비고|주의|단,|대상:)/;
+const PARADISO_DOC_STRONG_PROSE_TOKENS = ['세부약호'];
+
+function paradisoNormalizeDocText(value) {
+    if (value == null) return '';
+    return String(value).normalize('NFKC').replace(/ /g, ' ').replace(/\s+/g, ' ').trim();
+}
+function paradisoStripLeadingDocMarks(value) {
+    let s = String(value || '');
+    const re = /^\s*(?:[①-⑳]|[0-9]+\s*[.)]|[-‣◦○●□■◇*※·•ㆍ])\s*/;
+    while (true) {
+        const next = s.replace(re, '');
+        if (next === s) return s.trim();
+        s = next;
+    }
+}
+// Returns { label, note, kind } where kind is 'doc' | 'prose' | 'empty'.
+function paradisoSplitDocItem(value) {
+    let text = paradisoNormalizeDocText(value);
+    if (!text || isDocPlaceholder(text)) return { label: '', note: '', kind: 'empty' };
+    text = paradisoStripLeadingDocMarks(text);
+    if (!text) return { label: '', note: '', kind: 'empty' };
+
+    const m = text.match(PARADISO_DOC_RESIDENCE_RE);
+    if (m) {
+        const block = m[0];
+        const before = text.slice(0, m.index).trim().replace(/,+$/, '').trim();
+        const after = text.slice(m.index + block.length).trim();
+        const inner = block.slice(block.indexOf('(') + 1, block.lastIndexOf(')')).trim();
+        const noteParts = [];
+        if (inner) noteParts.push(inner);
+        if (after) noteParts.push(paradisoStripLeadingDocMarks(after));
+        const note = noteParts.filter(Boolean).join(' / ');
+        const label = before ? (before + ', 체류지 입증서류') : '체류지 입증서류';
+        if (!before || !PARADISO_DOC_SENTENCE_END_RE.test(before)) return { label, note, kind: 'doc' };
+    }
+
+    const headCandidate = text.split(/[(（]|※|‣|◦|·|\s—\s/)[0].trim();
+    const looksLikeSentence = PARADISO_DOC_SENTENCE_END_RE.test(text) || PARADISO_DOC_PROSE_TOPIC_RE.test(text);
+    const hasDocTail = PARADISO_DOC_TAIL_RE.test(headCandidate);
+    const hasHeading = PARADISO_DOC_HEADING_RE.test(text);
+    const hasSubcodeRef = PARADISO_DOC_SUBCODE_REF_RE.test(text);
+    const prosePrefix = PARADISO_DOC_PROSE_PREFIX_RE.test(text);
+    const openP = (text.match(/[(（]/g) || []).length;
+    const closeP = (text.match(/[)）]/g) || []).length;
+    const unbalanced = openP !== closeP;
+    const strongProse = PARADISO_DOC_STRONG_PROSE_TOKENS.some(t => text.includes(t))
+        || text.includes('사증발급인정서') || unbalanced || hasSubcodeRef || prosePrefix;
+
+    if (!hasDocTail && (looksLikeSentence || text.length > PARADISO_DOC_LONG_THRESHOLD || strongProse)) {
+        return { label: '', note: text, kind: 'prose' };
+    }
+
+    if (hasDocTail && (text.length > PARADISO_DOC_LONG_THRESHOLD || hasHeading)) {
+        let cut = null;
+        const markers = ['(', '（', '※', '‣', '□', '■', '◇', '▶', '▷', '☞', '❍'];
+        markers.forEach(ch => {
+            const idx = text.indexOf(ch, headCandidate.length);
+            if (idx >= 0 && (cut === null || idx < cut)) cut = idx;
+        });
+        if (cut !== null && cut < text.length) {
+            const label = text.slice(0, cut).trim().replace(/,+$/, '').trim();
+            const note = paradisoStripLeadingDocMarks(text.slice(cut).trim().replace(/^[()（）\s]+/, ''));
+            if (PARADISO_DOC_TAIL_RE.test(label) && label.length <= PARADISO_DOC_SEVERE_THRESHOLD) {
+                return { label, note, kind: 'doc' };
+            }
+        }
+    }
+
+    if (text.length > PARADISO_DOC_SEVERE_THRESHOLD) return { label: '', note: text, kind: 'prose' };
+    return { label: text, note: '', kind: 'doc' };
+}
+// True when a bare string is one explanatory sentence rather than a
+// separator-joined document list (so toDocArray must not fragment it).
+function paradisoIsSingleProseBlob(value) {
+    const s = paradisoNormalizeDocText(value);
+    if (!s) return false;
+    if (PARADISO_DOC_STRONG_PROSE_TOKENS.some(t => s.includes(t))) return true;
+    const openP = (s.match(/[(（]/g) || []).length;
+    const closeP = (s.match(/[)）]/g) || []).length;
+    if (openP !== closeP) return true;
+    if (s.indexOf('·') >= 0 && (PARADISO_DOC_SENTENCE_END_RE.test(s) || PARADISO_DOC_PROSE_TOPIC_RE.test(s) || s.length > 120)) return true;
+    return false;
 }
 
 function dedupeDocs(docs) {
@@ -14877,10 +15023,26 @@ function formatDocumentTabRefNote(refs) {
 function normalizeDocumentTabItems(field) {
     if (isDocFieldMissing(field) || !Array.isArray(field)) return [];
     return field.map(item => {
-        if (typeof item === 'string') return { name: item, note: '' };
-        if (!item || typeof item !== 'object') return null;
-        return { name: item.name || item.label || item.title || 'DATA_MISSING', note: item.note || item.description || '' };
-    }).filter(item => item && item.name && !isDocPlaceholder(item.name));
+        let name, note;
+        if (typeof item === 'string') { name = item; note = ''; }
+        else if (!item || typeof item !== 'object') return null;
+        else { name = item.name || item.label || item.title || 'DATA_MISSING'; note = item.note || item.description || ''; }
+        // Keep prose / over-long example text out of the document name; relocate
+        // it into the note so the row reads as one concrete document.
+        if (name && name !== 'DATA_MISSING') {
+            const split = paradisoSplitDocItem(name);
+            if (split.kind === 'prose') {
+                // No concrete document name — render as a note-only row.
+                const merged = [split.note, note].filter(Boolean).join(' / ');
+                return { name: '', note: merged, isNote: true };
+            }
+            if (split.label) {
+                name = split.label;
+                if (split.note) note = [split.note, note].filter(Boolean).join(' / ');
+            }
+        }
+        return { name, note };
+    }).filter(item => item && ((item.name && !isDocPlaceholder(item.name)) || (item.isNote && item.note)));
 }
 
 function getRegistrationProcedureTabItems(v) {
@@ -14920,6 +15082,11 @@ function renderDocumentTabPanel(v, cfg, isActive) {
             const rawName = (item && item.name) || '';
             const rawNote = (item && item.note) || '';
             const nameIsMissing = !rawName || rawName === 'DATA_MISSING';
+            // Prose that carried no concrete document name is rendered as a
+            // note-only row instead of a fake checklist line.
+            if (nameIsMissing && item && item.isNote && rawNote && rawNote !== 'DATA_MISSING') {
+                return `<li class="docs-list-row docs-list-row--note"><div class="docs-list-note">${renderManualDetailBlock(rawNote, [], 120)}</div></li>`;
+            }
             // Skip rows whose document name is missing — rendering "문서명 미상"
             // as if it were a checklist line is misleading.
             if (nameIsMissing) return '';
