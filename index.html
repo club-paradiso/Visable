@@ -13954,6 +13954,17 @@ function hasAnyDocs(groups) {
     return !!(groups && (groups.commonDocs?.length || groups.requiredDocs?.length || groups.additionalDocs?.length || groups.conditionalDocs?.length));
 }
 
+/* "제출서류 N건" must match the checklist tiles the user actually sees.
+   renderDocTags() relocates prose-classified items into notes, so counting raw
+   array lengths overstates N whenever a document array still holds prose. */
+function countRenderableDocs(groups) {
+    return flattenDocGroups(groups).filter(key => {
+        const isUnresolvedId = typeof key === 'string' && key.startsWith('doc_') && !DOC_DICT[key];
+        if (isUnresolvedId) return true;
+        return paradisoSplitDocItem(DOC_DICT[key] || key).kind !== 'prose';
+    }).length;
+}
+
 function normalizeProcedureVariants(rawVariants) {
     if (!Array.isArray(rawVariants)) return [];
     return rawVariants.map(raw => {
@@ -14077,7 +14088,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
         ? subtractDocGroupsForRender(variant.docs, alreadyShownDocs)
         : variant.docs;
     const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords);
-    const docCount = flattenDocGroups(effectiveDocs).length;
+    const docCount = countRenderableDocs(effectiveDocs);
     const checklistVariant = { ...variant, docs: effectiveDocs };
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
     const scenario = variant.scenario ? `<div class="manual-subcode-desc">${escapeHtml(variant.scenario)}</div>` : '';
@@ -14394,7 +14405,7 @@ function resetScenarioChecklist(button) {
 
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const hasVariants = !!(proc.variants && proc.variants.length);
-    const totalDocCount = proc.docs.commonDocs.length + proc.docs.requiredDocs.length + proc.docs.additionalDocs.length + proc.docs.conditionalDocs.length;
+    const totalDocCount = countRenderableDocs(proc.docs);
     const docsHtml = renderProcedureDocGroups(proc.docs, keywords);
     const variantsHtml = renderProcedureVariants(v, proc, keywords, proc.docs);
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
@@ -14857,20 +14868,13 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         return `<div class="manual-subcode-group">${title}<div class="manual-subcode-grid">${cards}</div></div>`;
     };
 
-    // Matched-subcode banner: "일치 세부코드: CODE · label" + source chip +
-    // "이 세부코드 보기" anchor that scrolls to the highlighted card.
-    const matched = (matchingSubcodes || []).filter(s => s.code);
-    const bannerHtml = matched.length
-        ? `<div class="subcode-matched-banner">${matched.slice(0, 4).map(s => {
-            const label = s.nameKo || s.name || '';
-            return `<div class="subcode-matched-row"><span class="subcode-matched-label">${escapeHtml(tx('subcodeMatchedLabel'))}</span><span class="manual-subcode-code">${escapeHtml(s.code)}</span><span class="subcode-matched-name">${escapeHtml(label)}</span>${subcodeSourceChip(s)}<a class="subcode-view-btn" href="#${cardId(s)}">${escapeHtml(tx('subcodeViewMatched'))}</a></div>`;
-        }).join('')}</div>`
-        : '';
-
+    // Matched subcodes render only once, as highlighted cards in the grid
+    // below (matchSet → .match class). The former .subcode-matched-banner
+    // duplicated those cards, so it is no longer rendered.
     const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
     // Single group or short list → render flat (no awkward collapse).
     if (groups.length <= 1 || subs.length <= 4) {
-        return `<div class="manual-section">${title}${bannerHtml}${groups.map(renderGroup).join('')}</div>`;
+        return `<div class="manual-section">${title}${groups.map(renderGroup).join('')}</div>`;
     }
     // Many groups → show the first group, collapse the rest behind a full-width
     // "더 보기 / 접기" toggle (auto-open when a hidden group holds a match).
@@ -14882,7 +14886,7 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
             <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
             <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
         </details>`;
-    return `<div class="manual-section">${title}${bannerHtml}${firstGroup}${moreHtml}</div>`;
+    return `<div class="manual-section">${title}${firstGroup}${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
