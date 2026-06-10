@@ -15020,11 +15020,9 @@ function renderCardSummary(v, kw) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const raw = v.summary || v.newReq || v.extReq || '';
     if (!raw) return '';
-    const MAX = 150;
     const normalized = normalizeManualText(raw);
     if (!normalized) return '';
-    const trimmed = normalized.length > MAX ? normalized.slice(0, MAX).replace(/\s+\S*$/, '') + '…' : normalized;
-    return `<div class="vc-summary">${hl(trimmed, kw)}</div>`;
+    return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
 }
 
 function renderCautionBlock() {
