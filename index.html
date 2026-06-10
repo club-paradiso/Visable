@@ -299,10 +299,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 
 /* Hero Actions Panel */
 .hero-actions { display: grid; grid-template-columns: 1fr; gap: var(--sp-2); width: 100%; max-width: 680px; margin-top: var(--sp-5); }
-.qa-main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-2); width: 100%; max-width: 680px; margin-top: var(--sp-2); }
-.qa-main .hero-action-btn { min-width: 0; }
-body.searched .hero-actions,
-body.searched .qa-main { display: none !important; }
+body.searched .hero-actions { display: none !important; }
 body.searched .visa-manual-section.in-hero { display: none; }
 .hero-action-btn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-2); background: color-mix(in srgb, var(--bg1) 80%, transparent); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid var(--bd); min-height: var(--btn-h-xl); padding: var(--sp-3) var(--sp-3); border-radius: var(--btn-r-lg); font-family: var(--ff) !important; font-weight: var(--btn-fw); font-size: 0.82rem; color: var(--t2); cursor: pointer; transition: var(--btn-tr); box-shadow: var(--sh1); text-align: center; line-height: 1.35; }
 .hero-action-btn:hover { background: var(--acL); border-color: var(--ac); color: var(--ac); transform: translateY(-3px); box-shadow: var(--shD); }
@@ -1045,8 +1042,6 @@ body:not(.searched) .sbar-go { border-radius: 9999px; }
     body:not(.searched) .header-inner { display: flex; gap: var(--sp-5); }
     body:not(.searched) .hero-container { min-height: auto; padding: var(--sp-6) var(--sp-4) var(--sp-5); }
     .hero-actions { display: grid; grid-template-columns: 1fr; gap: var(--sp-2); width: 100%; max-width: 100%; min-width: 0; }
-    .qa-main { grid-template-columns: 1fr; gap: var(--sp-2); width: 100%; max-width: 100%; min-width: 0; }
-    .qa-main .hero-action-btn { width: 100%; }
     .hero-action-btn { flex-direction: row; min-height: var(--btn-h-lg); padding: var(--sp-3) var(--sp-4); gap: var(--sp-3); width: 100%; min-width: 0; box-sizing: border-box; }
     .hero-action-btn.search-toggle-btn { grid-column: auto; width: 100%; }
     .hero-action-btn .hero-action-icon { font-size: 1.2rem; flex-shrink: 0; }
@@ -1875,7 +1870,6 @@ body.searched .visa-manual-section.in-hero { display: none !important; }
 body.searched .search-toggle-btn { display: none !important; }
 body.searched #searchForm { display: block !important; }
 body.searching #searchForm { display: block !important; }
-body.searching .qa-main,
 body.searching #visaManualSection { display: none !important; }
 
 /* ══════════════════════════════════════════════════════════════
@@ -2055,7 +2049,7 @@ body:not(.searched) .hero-action-label {
 }
 
 /* 4 · Search toggle — primary CTA: stronger glass ───────────────
-   Overrides Phase 1 .11 alpha; still distinct from qa-main. */
+   Overrides Phase 1 .11 alpha. */
 body:not(.searched) .search-toggle-btn {
   background: rgba(255,255,255,.16);
   border-width: 1.5px;
@@ -2065,32 +2059,8 @@ body:not(.searched) .search-toggle-btn:hover {
   box-shadow: 0 14px 30px rgba(0,0,0,.34), 0 0 0 1px rgba(255,255,255,.26);
 }
 
-/* 5 · qa-main buttons — secondary: more restrained ──────────────
-   Slightly lower alpha than the primary search toggle. */
-body:not(.searched) .qa-main .hero-action-btn {
-  background: rgba(255,255,255,.07);
-  border-color: rgba(255,255,255,.12);
-  box-shadow: 0 2px 10px rgba(0,0,0,.14);
-}
-body:not(.searched) .qa-main .hero-action-btn:hover {
-  background: rgba(255,255,255,.17);
-  border-color: rgba(255,255,255,.26);
-  box-shadow: 0 12px 26px rgba(0,0,0,.30);
-}
-
 /* 6 · Section labels via ::before ────────────────────────────────
    CSS-only visual headings; no HTML added. */
-body:not(.searched) .qa-main::before {
-  content: '관련 행정 도구';
-  grid-column: 1 / -1;
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.10em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.36);
-  margin-bottom: 0.1rem;
-  align-self: end;
-}
 body:not(.searched) #visaManualSection::before {
   content: '체류 경로 선택';
   display: block;
@@ -2446,7 +2416,7 @@ body.searched .es { padding: 5rem 1rem; }
   #q { min-height: 48px; padding-top: 0.9rem; padding-bottom: 0.9rem; }
   #xb, .sbar-go { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
 
-  .hero-actions, .qa-main { margin-top: 0.8rem; }
+  .hero-actions { margin-top: 0.8rem; }
   .hero-action-btn { min-height: 52px; }
 
   .landing-hints-section { margin-top: 1rem; max-width: 100%; }
@@ -3569,7 +3539,6 @@ body:not(.searched) .figma-value-card:hover {
 
 
 /* UI stability refinements: keep decorations behind content and prevent scroll jank */
-body:not(.searched) .qa-main { align-items: stretch; }
 body:not(.searched) .hero-action-label { line-height: 1.45; word-break: keep-all; }
 body:not(.searched) .hero-ai-secondary { width: 100%; max-width: 680px; margin-top: 0.85rem; text-align: center; }
 body:not(.searched) .hero-ai-link { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; padding: 0.58rem 0.9rem; border-radius: 999px; font-size: 0.82rem; color: rgba(255,255,255,.78); text-decoration: none; border: 1px solid rgba(255,255,255,.20); background: rgba(0,0,0,.14); }
@@ -3581,7 +3550,6 @@ body:not(.searched) .hero-container::before { transform: none; animation: none; 
 .brand-hero > *, .figma-footer-hero > *, .footer-hero-img > *, .about-me > * { position: relative; z-index: 2; }
 
 @media (max-width: 980px) {
-  body:not(.searched) .qa-main { grid-template-columns: 1fr; }
   body:not(.searched) .visa-track-selector { grid-template-columns: 1fr; }
 }
 @media (max-width: 720px) {
@@ -3597,7 +3565,6 @@ body:not(.searched) .hero-container {
 body:not(.searched) .header-inner { max-width: min(1100px, 92vw); gap: clamp(1.2rem, 2.5vw, 2rem); }
 body:not(.searched) .search-wrap,
 body:not(.searched) .hero-actions,
-body:not(.searched) .qa-main,
 body:not(.searched) #visaManualSection { max-width: min(860px, 100%); }
 body:not(.searched) .sbar {
   background: linear-gradient(180deg, rgba(255,255,255,0.14), rgba(255,255,255,0.08));
@@ -3609,8 +3576,6 @@ body:not(.searched) .hero-action-btn {
   border-color: rgba(255,255,255,0.28);
   box-shadow: 0 8px 28px rgba(12,22,33,0.28);
 }
-body:not(.searched) .qa-main { gap: 0.7rem; }
-body:not(.searched) .qa-main .hero-action-btn { min-height: 50px; }
 body:not(.searched) .brand-feature,
 body:not(.searched) .about-me,
 body:not(.searched) .figma-start-section,
@@ -3854,7 +3819,6 @@ body:not(.searched) .search-wrap,
 body:not(.searched) .landing-hints-section,
 body:not(.searched) .reference-disclaimer,
 body:not(.searched) .hero-actions,
-body:not(.searched) .qa-main,
 body:not(.searched) #visaManualSection {
   width: 100%;
   max-width: min(860px, 100%) !important;
@@ -4788,10 +4752,6 @@ body:not(.searched) .visa-track-card {
   color: rgba(255, 250, 242, 0.94);
 }
 
-body:not(.searched) .qa-main .hero-action-btn {
-  border-color: rgba(244, 238, 224, 0.22);
-  background: rgba(244, 238, 224, 0.1);
-}
 
 body:not(.searched) .hero-action-btn:hover,
 body:not(.searched) .visa-track-card:hover {
@@ -4809,7 +4769,6 @@ body:not(.searched) .visa-track-desc {
   line-height: 1.65;
 }
 
-body:not(.searched) .qa-main::before,
 body:not(.searched) #visaManualSection::before,
 body:not(.searched) .landing-hints-title {
   color: rgba(244, 238, 224, 0.68) !important;
@@ -4954,9 +4913,6 @@ body.searched .smeta {
   line-height: 1.45;
 }
 
-body:not(.searched) .qa-main::before {
-  content: var(--lang-tools-label, '관련 행정 도구') !important;
-}
 
 body:not(.searched) #visaManualSection::before {
   content: var(--lang-visa-label, '체류 경로 선택') !important;
@@ -5517,26 +5473,6 @@ body:not(.searched) .hero-action-btn.search-toggle-btn.active {
   box-shadow: 0 10px 26px rgba(14, 163, 123, 0.22);
 }
 
-/* — Quick action grid: glass tiles with mint hover — */
-body:not(.searched) .qa-main .hero-action-btn {
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.14);
-  transition: background 220ms var(--fig-ease-out),
-              border-color 220ms var(--fig-ease-out),
-              transform 220ms var(--fig-ease-out),
-              box-shadow 220ms var(--fig-ease-out);
-}
-body:not(.searched) .qa-main .hero-action-btn:hover {
-  background: rgba(14, 163, 123, 0.16);
-  border-color: rgba(125, 216, 184, 0.45);
-  transform: translateY(-2px);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.22),
-              0 0 0 1px rgba(125, 216, 184, 0.22) inset;
-}
 
 /* — Keyword chips : mint-on-hover treatment from Figma — */
 body:not(.searched) .lh {
@@ -5879,7 +5815,6 @@ body:not(.searched) .visa-track-card:hover {
   body:not(.searched) .sbar:focus-within,
   body:not(.searched) .sbar .sbar-go:hover:not(:disabled),
   body:not(.searched) .hero-action-btn.search-toggle-btn:hover,
-  body:not(.searched) .qa-main .hero-action-btn:hover,
   body:not(.searched) .lh:hover,
   .p-entry-card:hover,
   .p-pathway-card:hover,
@@ -8274,7 +8209,6 @@ body, .faq-a, .feature-body, .brand-points li, .jur-list li, .jur-sub, .jur-offi
 /* Hide deprecated hero entry blocks on landing (markup preserved for safety) */
 body:not(.searched) .p-entry-rail,
 body:not(.searched) .hero-actions,
-body:not(.searched) .qa-main,
 body:not(.searched) .hikorea-landing-cta,
 body:not(.searched) .landing-hints-section,
 body:not(.searched) .hero-ai-secondary,
@@ -10538,6 +10472,10 @@ body.searched .hero-container::before {
                 <button type="button" class="p-gw-util" data-action="open-jobcode-modal">
                     <span class="p-gw-util-icon" aria-hidden="true">💼</span>
                     <span class="p-gw-util-label">직업·산업분류 조회</span>
+                </button>
+                <button type="button" class="p-gw-util" data-action="open-jurisdiction-modal">
+                    <span class="p-gw-util-icon" aria-hidden="true">🏛</span>
+                    <span class="p-gw-util-label">관할 출입국관서 조회</span>
                 </button>
                 <a class="p-gw-util" href="#agentFinder">
                     <span class="p-gw-util-icon" aria-hidden="true">🧭</span>
@@ -15762,7 +15700,7 @@ const UI_TRANSLATIONS = {
         entryRail: '시작 방식 선택', entryATitle: '비자 코드를 알고 있어요', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: '제 상황만 설명할 수 있어요', entryBSub: '안내 질문에 답하면 경로를 찾아드려요',
         searchOpen: '비자 코드 및 키워드 직접 검색', searchOpenAria: '비자 코드 및 키워드 직접 검색 열기', searchClose: '직접 검색 닫기',
-        toolsLabel: '관련 행정 도구', qaAria: '자주 사용하는 행정 도구', jobCode: '취업신고용 업종·직종 코드', jurisdiction: '관할 출입국관서 조회',
+        jobCode: '취업신고용 업종·직종 코드', jurisdiction: '관할 출입국관서 조회',
         visaLabel: '체류 경로 선택', preTrackAria: '입국 전 사증 발급 트랙', preTrackTitle: '입국 전 — 재외공관 사증 발급', preTrackDesc: '해외에서 재외공관을 통한 사증(비자) 신규 발급 절차',
         inTrackAria: '입국 후 체류 관리 트랙', inTrackTitle: '입국 후 — 외국인 등록·체류 연장', inTrackDesc: '외국인등록, 체류기간 연장, 자격 변경 등 국내 체류 민원',
         qAria: '비자 자격 및 키워드 검색', qPlaceholder: '비자 자격 및 키워드 검색', dataLoading: '데이터 로딩 중…', dataReady: '데이터 로드 완료 ({count}개) - {source}',
@@ -15942,7 +15880,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Choose how to start', entryATitle: 'I know my visa code', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'I can only explain my situation', entryBSub: 'Answer guided questions to find your path',
         searchOpen: 'Search by visa code or keyword', searchOpenAria: 'Open direct visa code and keyword search', searchClose: 'Close direct search',
-        toolsLabel: 'Administrative tools', qaAria: 'Frequently used administrative tools', jobCode: 'Occupation and industry codes', jurisdiction: 'Find your immigration office',
+        jobCode: 'Occupation and industry codes', jurisdiction: 'Find your immigration office',
         visaLabel: 'Choose a residence pathway', preTrackAria: 'Pre-entry visa issuance track', preTrackTitle: 'Before entry — consular visa issuance', preTrackDesc: 'New visa issuance through a Korean mission overseas',
         inTrackAria: 'In-Korea stay management track', inTrackTitle: 'After entry — registration and extension', inTrackDesc: 'Foreigner registration, extension of stay, status change, and other in-Korea services',
         qAria: 'Search visa status or keyword', qPlaceholder: 'Search visa status or keyword', dataLoading: 'Loading data…', dataReady: 'Data loaded ({count} items) — {source}',
@@ -16117,7 +16055,7 @@ const UI_TRANSLATIONS = {
         entryRail: '选择开始方式', entryATitle: '我知道签证代码', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: '我只能说明自己的情况', entryBSub: '回答引导问题，找到合适路径',
         searchOpen: '按签证代码或关键词搜索', searchOpenAria: '打开签证代码和关键词搜索', searchClose: '关闭直接搜索',
-        toolsLabel: '行政工具', qaAria: '常用行政工具', jobCode: '职业和行业代码', jurisdiction: '查询管辖出入境机构',
+        jobCode: '职业和行业代码', jurisdiction: '查询管辖出入境机构',
         visaLabel: '选择居留路径', preTrackAria: '入境前签证签发路径', preTrackTitle: '入境前 — 驻外使领馆签证签发', preTrackDesc: '在海外通过韩国驻外机构办理新签证',
         inTrackAria: '入境后居留管理路径', inTrackTitle: '入境后 — 外国人登记和延期', inTrackDesc: '外国人登记、居留延期、资格变更等韩国境内事务',
         qAria: '搜索签证资格或关键词', qPlaceholder: '搜索签证资格或关键词', dataLoading: '数据加载中…', dataReady: '数据已加载（{count}项）- {source}',
@@ -16236,7 +16174,7 @@ const UI_TRANSLATIONS = {
         entryRail: '選擇開始方式', entryATitle: '我知道簽證代碼', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: '我只能說明自己的情況', entryBSub: '回答引導問題，找到合適路徑',
         searchOpen: '以簽證代碼或關鍵字搜尋', searchOpenAria: '開啟簽證代碼與關鍵字搜尋', searchClose: '關閉直接搜尋',
-        toolsLabel: '行政工具', qaAria: '常用行政工具', jobCode: '職業與產業代碼', jurisdiction: '查詢管轄出入境機關',
+        jobCode: '職業與產業代碼', jurisdiction: '查詢管轄出入境機關',
         visaLabel: '選擇居留路徑', preTrackAria: '入境前簽證核發路徑', preTrackTitle: '入境前 — 駐外館處簽證核發', preTrackDesc: '在海外透過韓國駐外機構辦理新簽證',
         inTrackAria: '入境後居留管理路徑', inTrackTitle: '入境後 — 外國人登錄與延期', inTrackDesc: '外國人登錄、居留延期、資格變更等韓國境內事務',
         qAria: '搜尋簽證資格或關鍵字', qPlaceholder: '搜尋簽證資格或關鍵字', dataLoading: '資料載入中…', dataReady: '資料已載入（{count}項）- {source}',
@@ -16303,7 +16241,7 @@ const UI_TRANSLATIONS = {
         entryRail: '開始方法を選択', entryATitle: 'ビザコードが分かります', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: '状況だけ説明できます', entryBSub: '質問に答えるとルートを案内します',
         searchOpen: 'ビザコード・キーワードで検索', searchOpenAria: 'ビザコードとキーワード検索を開く', searchClose: '直接検索を閉じる',
-        toolsLabel: '行政ツール', qaAria: 'よく使う行政ツール', jobCode: '職業・産業コード', jurisdiction: '管轄出入国事務所を検索',
+        jobCode: '職業・産業コード', jurisdiction: '管轄出入国事務所を検索',
         visaLabel: '在留ルートを選択', preTrackAria: '入国前ビザ発給ルート', preTrackTitle: '入国前 — 在外公館でのビザ発給', preTrackDesc: '海外の韓国公館を通じた新規ビザ発給手続き',
         inTrackAria: '入国後の在留管理ルート', inTrackTitle: '入国後 — 外国人登録・在留延長', inTrackDesc: '外国人登録、在留期間延長、資格変更など韓国内の手続き',
         qAria: 'ビザ資格またはキーワード検索', qPlaceholder: 'ビザ資格またはキーワード検索', dataLoading: 'データ読み込み中…', dataReady: 'データ読み込み完了（{count}件）- {source}',
@@ -16327,7 +16265,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Choisir un point de départ', entryATitle: 'Je connais mon code visa', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Je peux seulement décrire ma situation', entryBSub: 'Répondez aux questions guidées pour trouver un parcours',
         searchOpen: 'Recherche par code visa ou mot-clé', searchOpenAria: 'Ouvrir la recherche par code visa ou mot-clé', searchClose: 'Fermer la recherche directe',
-        toolsLabel: 'Outils administratifs', qaAria: 'Outils administratifs fréquents', jobCode: 'Codes métier et industrie', jurisdiction: 'Trouver le bureau compétent',
+        jobCode: 'Codes métier et industrie', jurisdiction: 'Trouver le bureau compétent',
         visaLabel: 'Choisir un parcours de séjour', preTrackAria: 'Parcours visa avant entrée', preTrackTitle: 'Avant l’entrée — visa auprès du consulat', preTrackDesc: 'Délivrance d’un nouveau visa via une mission coréenne à l’étranger',
         inTrackAria: 'Parcours après entrée', inTrackTitle: 'Après l’entrée — enregistrement et prolongation', inTrackDesc: 'Enregistrement étranger, prolongation, changement de statut et démarches en Corée',
         qAria: 'Rechercher un statut de visa ou un mot-clé', qPlaceholder: 'Rechercher un statut de visa ou un mot-clé', dataLoading: 'Chargement des données…', dataReady: 'Données chargées ({count}) - {source}',
@@ -16351,7 +16289,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Pilih cara mulai', entryATitle: 'Saya tahu kode visa saya', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Saya hanya bisa menjelaskan situasi saya', entryBSub: 'Jawab pertanyaan terpandu untuk menemukan jalur',
         searchOpen: 'Cari kode visa atau kata kunci', searchOpenAria: 'Buka pencarian kode visa dan kata kunci', searchClose: 'Tutup pencarian langsung',
-        toolsLabel: 'Alat administrasi', qaAria: 'Alat administrasi yang sering dipakai', jobCode: 'Kode pekerjaan dan industri', jurisdiction: 'Cari kantor imigrasi berwenang',
+        jobCode: 'Kode pekerjaan dan industri', jurisdiction: 'Cari kantor imigrasi berwenang',
         visaLabel: 'Pilih jalur tinggal', preTrackAria: 'Jalur visa sebelum masuk', preTrackTitle: 'Sebelum masuk — penerbitan visa di konsulat', preTrackDesc: 'Penerbitan visa baru melalui perwakilan Korea di luar negeri',
         inTrackAria: 'Jalur setelah masuk Korea', inTrackTitle: 'Setelah masuk — registrasi dan perpanjangan', inTrackDesc: 'Registrasi orang asing, perpanjangan, perubahan status, dan layanan tinggal di Korea',
         qAria: 'Cari status visa atau kata kunci', qPlaceholder: 'Cari status visa atau kata kunci', dataLoading: 'Memuat data…', dataReady: 'Data dimuat ({count}) - {source}',
@@ -16375,7 +16313,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'शुरू करने का तरीका चुनें', entryATitle: 'मुझे अपना वीजा कोड पता है', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'मैं केवल अपनी स्थिति बता सकता/सकती हूं', entryBSub: 'मार्ग खोजने के लिए निर्देशित प्रश्नों का उत्तर दें',
         searchOpen: 'वीजा कोड या कीवर्ड से खोजें', searchOpenAria: 'वीजा कोड और कीवर्ड खोज खोलें', searchClose: 'सीधी खोज बंद करें',
-        toolsLabel: 'प्रशासनिक टूल', qaAria: 'अक्सर इस्तेमाल होने वाले प्रशासनिक टूल', jobCode: 'पेशा और उद्योग कोड', jurisdiction: 'इमिग्रेशन कार्यालय खोजें',
+        jobCode: 'पेशा और उद्योग कोड', jurisdiction: 'इमिग्रेशन कार्यालय खोजें',
         visaLabel: 'ठहराव मार्ग चुनें', preTrackAria: 'प्रवेश से पहले वीजा मार्ग', preTrackTitle: 'प्रवेश से पहले — दूतावास/कांसुलर वीजा', preTrackDesc: 'विदेश में कोरियाई मिशन के माध्यम से नया वीजा जारी करना',
         inTrackAria: 'कोरिया में प्रवेश के बाद मार्ग', inTrackTitle: 'प्रवेश के बाद — पंजीकरण और विस्तार', inTrackDesc: 'विदेशी पंजीकरण, अवधि विस्तार, स्थिति परिवर्तन और कोरिया में सेवाएं',
         qAria: 'वीजा स्थिति या कीवर्ड खोजें', qPlaceholder: 'वीजा स्थिति या कीवर्ड खोजें', dataLoading: 'डेटा लोड हो रहा है…', dataReady: 'डेटा लोड हुआ ({count}) - {source}',
@@ -16398,7 +16336,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'कसरी सुरु गर्ने छान्नुहोस्', entryATitle: 'मलाई मेरो भिसा कोड थाहा छ', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'म आफ्नो अवस्था मात्र भन्न सक्छु', entryBSub: 'मार्ग पत्ता लगाउन निर्देशित प्रश्नहरूको उत्तर दिनुहोस्',
         searchOpen: 'भिसा कोड वा किवर्ड खोज्नुहोस्', searchOpenAria: 'भिसा कोड र किवर्ड खोज खोल्नुहोस्', searchClose: 'प्रत्यक्ष खोज बन्द गर्नुहोस्',
-        toolsLabel: 'प्रशासनिक उपकरण', qaAria: 'प्रायः प्रयोग हुने प्रशासनिक उपकरण', jobCode: 'पेशा र उद्योग कोड', jurisdiction: 'सम्बन्धित अध्यागमन कार्यालय खोज्नुहोस्',
+        jobCode: 'पेशा र उद्योग कोड', jurisdiction: 'सम्बन्धित अध्यागमन कार्यालय खोज्नुहोस्',
         visaLabel: 'बसोबास मार्ग छान्नुहोस्', preTrackAria: 'प्रवेशअघि भिसा जारी मार्ग', preTrackTitle: 'प्रवेशअघि — कन्सुलर भिसा जारी', preTrackDesc: 'विदेशस्थित कोरियाली नियोगमार्फत नयाँ भिसा जारी प्रक्रिया',
         inTrackAria: 'कोरियामा प्रवेशपछि बसाइ व्यवस्थापन', inTrackTitle: 'प्रवेशपछि — दर्ता र अवधि थप', inTrackDesc: 'विदेशी दर्ता, बसाइ अवधि थप, स्थिति परिवर्तन र कोरियाभित्रका सेवा',
         qAria: 'भिसा स्थिति वा किवर्ड खोज्नुहोस्', qPlaceholder: 'भिसा स्थिति वा किवर्ड खोज्नुहोस्', dataLoading: 'डाटा लोड हुँदैछ…', dataReady: 'डाटा लोड भयो ({count}) - {source}',
@@ -16421,7 +16359,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Elige cómo empezar', entryATitle: 'Sé mi código de visa', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Solo puedo explicar mi situación', entryBSub: 'Responde preguntas guiadas para encontrar tu ruta',
         searchOpen: 'Buscar por código de visa o palabra clave', searchOpenAria: 'Abrir búsqueda por código de visa o palabra clave', searchClose: 'Cerrar búsqueda directa',
-        toolsLabel: 'Herramientas administrativas', qaAria: 'Herramientas administrativas frecuentes', jobCode: 'Códigos de ocupación e industria', jurisdiction: 'Buscar oficina de inmigración competente',
+        jobCode: 'Códigos de ocupación e industria', jurisdiction: 'Buscar oficina de inmigración competente',
         visaLabel: 'Elegir ruta de estancia', preTrackAria: 'Ruta de visa antes de entrar', preTrackTitle: 'Antes de entrar — visa consular', preTrackDesc: 'Emisión de nueva visa mediante una misión coreana en el extranjero',
         inTrackAria: 'Ruta después de entrar a Corea', inTrackTitle: 'Después de entrar — registro y extensión', inTrackDesc: 'Registro de extranjero, extensión, cambio de estatus y servicios dentro de Corea',
         qAria: 'Buscar estatus de visa o palabra clave', qPlaceholder: 'Buscar estatus de visa o palabra clave', dataLoading: 'Cargando datos…', dataReady: 'Datos cargados ({count}) - {source}',
@@ -16444,7 +16382,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Elige cómo empezar', entryATitle: 'Sé mi código de visa', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Solo puedo contar mi situación', entryBSub: 'Responde algunas preguntas y encuentra tu ruta',
         searchOpen: 'Buscar por código de visa o palabra clave', searchOpenAria: 'Abrir búsqueda por código de visa o palabra clave', searchClose: 'Cerrar búsqueda directa',
-        toolsLabel: 'Herramientas administrativas', qaAria: 'Herramientas administrativas frecuentes', jobCode: 'Códigos de ocupación e industria', jurisdiction: 'Buscar oficina de inmigración correspondiente',
+        jobCode: 'Códigos de ocupación e industria', jurisdiction: 'Buscar oficina de inmigración correspondiente',
         visaLabel: 'Elegir ruta de estancia', preTrackAria: 'Ruta de visa antes de entrar', preTrackTitle: 'Antes de entrar — visa consular', preTrackDesc: 'Emisión de una nueva visa mediante una misión coreana en el extranjero',
         inTrackAria: 'Ruta después de entrar a Corea', inTrackTitle: 'Después de entrar — registro y extensión', inTrackDesc: 'Registro de extranjero, extensión, cambio de estatus y trámites dentro de Corea',
         qAria: 'Buscar estatus de visa o palabra clave', qPlaceholder: 'Buscar estatus de visa o palabra clave', dataLoading: 'Cargando datos…', dataReady: 'Datos cargados ({count}) - {source}',
@@ -16467,7 +16405,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'เลือกวิธีเริ่มต้น', entryATitle: 'ฉันรู้รหัสวีซ่าแล้ว', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'ฉันอธิบายได้แค่สถานการณ์ของฉัน', entryBSub: 'ตอบคำถามนำทางเพื่อหาเส้นทางที่เหมาะกับคุณ',
         searchOpen: 'ค้นหาด้วยรหัสวีซ่าหรือคีย์เวิร์ด', searchOpenAria: 'เปิดการค้นหารหัสวีซ่าและคีย์เวิร์ด', searchClose: 'ปิดการค้นหาโดยตรง',
-        toolsLabel: 'เครื่องมือด้านเอกสารราชการ', qaAria: 'เครื่องมือด้านเอกสารราชการที่ใช้บ่อย', jobCode: 'รหัสอาชีพและอุตสาหกรรม', jurisdiction: 'ค้นหาสำนักงานตรวจคนเข้าเมืองที่รับผิดชอบ',
+        jobCode: 'รหัสอาชีพและอุตสาหกรรม', jurisdiction: 'ค้นหาสำนักงานตรวจคนเข้าเมืองที่รับผิดชอบ',
         visaLabel: 'เลือกเส้นทางการพำนัก', preTrackAria: 'เส้นทางออกวีซ่าก่อนเข้าประเทศ', preTrackTitle: 'ก่อนเข้าประเทศ — ออกวีซ่าผ่านสถานกงสุล', preTrackDesc: 'ขั้นตอนขอวีซ่าใหม่ผ่านสำนักงานตัวแทนเกาหลีในต่างประเทศ',
         inTrackAria: 'เส้นทางจัดการสถานะหลังเข้าประเทศ', inTrackTitle: 'หลังเข้าประเทศ — ลงทะเบียนและต่ออายุ', inTrackDesc: 'ลงทะเบียนคนต่างชาติ ต่ออายุ เปลี่ยนสถานะ และบริการพำนักในเกาหลี',
         qAria: 'ค้นหาสถานะวีซ่าหรือคีย์เวิร์ด', qPlaceholder: 'ค้นหาสถานะวีซ่าหรือคีย์เวิร์ด', dataLoading: 'กำลังโหลดข้อมูล…', dataReady: 'โหลดข้อมูลแล้ว ({count}) - {source}',
@@ -16490,7 +16428,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Kies hoe om te begin', entryATitle: 'Ek ken my visumkode', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Ek kan net my situasie beskryf', entryBSub: 'Beantwoord begeleidende vrae om die gepaste pad te vind',
         searchOpen: 'Soek met visumkode of sleutelwoord', searchOpenAria: 'Maak visumkode- en sleutelwoordsoektog oop', searchClose: 'Sluit direkte soektog',
-        toolsLabel: 'Verwante administratiewe hulpmiddels', qaAria: 'Gereeld gebruikte administratiewe hulpmiddels', jobCode: 'Beroeps- en bedryfskodes', jurisdiction: 'Vind die verantwoordelike immigrasiekantoor',
+        jobCode: 'Beroeps- en bedryfskodes', jurisdiction: 'Vind die verantwoordelike immigrasiekantoor',
         visaLabel: 'Kies verblyfroete', preTrackAria: 'Visumroete voor binnekoms', preTrackTitle: 'Voor binnekoms — visumuitreiking by konsulaat', preTrackDesc: 'Proses vir nuwe visum deur ’n Koreaanse sending in die buiteland',
         inTrackAria: 'Roete na binnekoms in Korea', inTrackTitle: 'Na binnekoms — registrasie en verlenging', inTrackDesc: 'Vreemdelingregistrasie, verlenging, statusverandering en verblyfdienste in Korea',
         qAria: 'Soek visumstatus of sleutelwoord', qPlaceholder: 'Soek visumstatus of sleutelwoord', dataLoading: 'Laai data…', dataReady: 'Data gelaai ({count}) - {source}',
@@ -16529,7 +16467,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Scegli come iniziare', entryATitle: 'Conosco il mio codice visto', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Posso solo descrivere la mia situazione', entryBSub: 'Rispondi alle domande guida per trovare il percorso adatto',
         searchOpen: 'Cerca per codice visto o parola chiave', searchOpenAria: 'Apri ricerca per codice visto e parola chiave', searchClose: 'Chiudi ricerca diretta',
-        toolsLabel: 'Strumenti amministrativi collegati', qaAria: 'Strumenti amministrativi usati di frequente', jobCode: 'Codici occupazione e settore', jurisdiction: 'Trova l’ufficio immigrazione competente',
+        jobCode: 'Codici occupazione e settore', jurisdiction: 'Trova l’ufficio immigrazione competente',
         visaLabel: 'Scegli percorso di soggiorno', preTrackAria: 'Percorso visto prima dell’ingresso', preTrackTitle: 'Prima dell’ingresso — rilascio visto consolare', preTrackDesc: 'Procedura per un nuovo visto tramite una missione coreana all’estero',
         inTrackAria: 'Percorso dopo l’ingresso in Corea', inTrackTitle: 'Dopo l’ingresso — registrazione ed estensione', inTrackDesc: 'Registrazione stranieri, estensione, cambio status e servizi di soggiorno in Corea',
         qAria: 'Cerca status visto o parola chiave', qPlaceholder: 'Cerca status visto o parola chiave', dataLoading: 'Caricamento dati…', dataReady: 'Dati caricati ({count}) - {source}',
@@ -16568,7 +16506,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Piliin kung paano magsisimula', entryATitle: 'Alam ko ang visa code ko', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Sitwasyon ko lang ang kaya kong ilarawan', entryBSub: 'Sagutin ang gabay na tanong para mahanap ang angkop na landas',
         searchOpen: 'Maghanap gamit ang visa code o keyword', searchOpenAria: 'Buksan ang paghahanap gamit ang visa code at keyword', searchClose: 'Isara ang direktang paghahanap',
-        toolsLabel: 'Mga kaugnay na administratibong tool', qaAria: 'Mga madalas gamitin na administratibong tool', jobCode: 'Mga code ng trabaho at industriya', jurisdiction: 'Hanapin ang sakop na immigration office',
+        jobCode: 'Mga code ng trabaho at industriya', jurisdiction: 'Hanapin ang sakop na immigration office',
         visaLabel: 'Piliin ang landas ng paninirahan', preTrackAria: 'Landas ng visa bago pumasok', preTrackTitle: 'Bago pumasok — pag-isyu ng visa sa konsulado', preTrackDesc: 'Proseso ng bagong visa sa Korean mission sa ibang bansa',
         inTrackAria: 'Landas pagkatapos pumasok sa Korea', inTrackTitle: 'Pagkatapos pumasok — registration at extension', inTrackDesc: 'Alien registration, extension of stay, change of status, at iba pang serbisyo sa Korea',
         qAria: 'Maghanap ng visa status o keyword', qPlaceholder: 'Maghanap ng visa status o keyword', dataLoading: 'Naglo-load ng data…', dataReady: 'Na-load ang data ({count}) - {source}',
@@ -16607,7 +16545,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Chọn cách bắt đầu', entryATitle: 'Tôi biết mã visa của mình', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Tôi chỉ có thể mô tả tình huống', entryBSub: 'Trả lời câu hỏi gợi ý để tìm lộ trình phù hợp',
         searchOpen: 'Tìm bằng mã visa hoặc từ khóa', searchOpenAria: 'Mở tìm kiếm mã visa và từ khóa', searchClose: 'Đóng tìm kiếm trực tiếp',
-        toolsLabel: 'Công cụ hành chính', qaAria: 'Công cụ hành chính thường dùng', jobCode: 'Mã nghề nghiệp và ngành', jurisdiction: 'Tìm văn phòng xuất nhập cảnh phụ trách',
+        jobCode: 'Mã nghề nghiệp và ngành', jurisdiction: 'Tìm văn phòng xuất nhập cảnh phụ trách',
         visaLabel: 'Chọn lộ trình cư trú', preTrackAria: 'Lộ trình cấp visa trước khi nhập cảnh', preTrackTitle: 'Trước khi nhập cảnh — cấp visa tại lãnh sự', preTrackDesc: 'Thủ tục xin visa mới qua cơ quan đại diện Hàn Quốc ở nước ngoài',
         inTrackAria: 'Lộ trình sau khi nhập cảnh', inTrackTitle: 'Sau khi nhập cảnh — đăng ký và gia hạn', inTrackDesc: 'Đăng ký người nước ngoài, gia hạn, đổi tư cách và thủ tục cư trú tại Hàn Quốc',
         qAria: 'Tìm tư cách visa hoặc từ khóa', qPlaceholder: 'Tìm tư cách visa hoặc từ khóa', dataLoading: 'Đang tải dữ liệu…', dataReady: 'Đã tải dữ liệu ({count}) - {source}',
@@ -16682,7 +16620,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'ជ្រើសរបៀបចាប់ផ្តើម', entryATitle: 'ខ្ញុំស្គាល់កូដវីសារបស់ខ្ញុំ', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'ខ្ញុំអាចពន្យល់តែស្ថានភាពរបស់ខ្ញុំ', entryBSub: 'ឆ្លើយសំណួរណែនាំ ដើម្បីរកផ្លូវសមរម្យ',
         searchOpen: 'ស្វែងរកតាមកូដវីសា ឬពាក្យគន្លឹះ', searchOpenAria: 'បើកការស្វែងរកកូដវីសា និងពាក្យគន្លឹះ', searchClose: 'បិទការស្វែងរកផ្ទាល់',
-        toolsLabel: 'ឧបករណ៍រដ្ឋបាល', qaAria: 'ឧបករណ៍រដ្ឋបាលដែលប្រើញឹកញាប់', jobCode: 'កូដមុខរបរ និងឧស្សាហកម្ម', jurisdiction: 'រកការិយាល័យអន្តោប្រវេសន៍ទទួលខុសត្រូវ',
+        jobCode: 'កូដមុខរបរ និងឧស្សាហកម្ម', jurisdiction: 'រកការិយាល័យអន្តោប្រវេសន៍ទទួលខុសត្រូវ',
         visaLabel: 'ជ្រើសផ្លូវស្នាក់នៅ', preTrackAria: 'ផ្លូវចេញវីសាមុនចូលប្រទេស', preTrackTitle: 'មុនចូលប្រទេស — ចេញវីសាតាមស្ថានកុងស៊ុល', preTrackDesc: 'ដំណើរការសុំវីសាថ្មីតាមស្ថានតំណាងកូរ៉េនៅបរទេស',
         inTrackAria: 'ផ្លូវបន្ទាប់ពីចូលកូរ៉េ', inTrackTitle: 'បន្ទាប់ពីចូល — ចុះបញ្ជី និងបន្តរយៈពេល', inTrackDesc: 'ចុះបញ្ជីជនបរទេស បន្តរយៈពេល ផ្លាស់ប្តូរស្ថានភាព និងសេវាស្នាក់នៅក្នុងកូរ៉េ',
         qAria: 'ស្វែងរកស្ថានភាពវីសា ឬពាក្យគន្លឹះ', qPlaceholder: 'ស្វែងរកស្ថានភាពវីសា ឬពាក្យគន្លឹះ', dataLoading: 'កំពុងផ្ទុកទិន្នន័យ…', dataReady: 'បានផ្ទុកទិន្នន័យ ({count}) - {source}',
@@ -16705,7 +16643,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'اختر طريقة البدء', entryATitle: 'أعرف رمز التأشيرة', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'أستطيع فقط شرح وضعي', entryBSub: 'أجب عن أسئلة موجهة للعثور على المسار المناسب',
         searchOpen: 'ابحث برمز التأشيرة أو كلمة مفتاحية', searchOpenAria: 'فتح البحث برمز التأشيرة والكلمات المفتاحية', searchClose: 'إغلاق البحث المباشر',
-        toolsLabel: 'أدوات إدارية', qaAria: 'أدوات إدارية شائعة', jobCode: 'رموز المهن والصناعات', jurisdiction: 'البحث عن مكتب الهجرة المختص',
+        jobCode: 'رموز المهن والصناعات', jurisdiction: 'البحث عن مكتب الهجرة المختص',
         visaLabel: 'اختر مسار الإقامة', preTrackAria: 'مسار إصدار التأشيرة قبل الدخول', preTrackTitle: 'قبل الدخول — إصدار التأشيرة عبر القنصلية', preTrackDesc: 'إجراءات إصدار تأشيرة جديدة عبر بعثة كورية في الخارج',
         inTrackAria: 'مسار إدارة الإقامة بعد الدخول', inTrackTitle: 'بعد الدخول — التسجيل والتمديد', inTrackDesc: 'تسجيل الأجانب، تمديد الإقامة، تغيير الصفة، وخدمات الإقامة داخل كوريا',
         qAria: 'البحث عن صفة التأشيرة أو كلمة مفتاحية', qPlaceholder: 'البحث عن صفة التأشيرة أو كلمة مفتاحية', dataLoading: 'جار تحميل البيانات…', dataReady: 'تم تحميل البيانات ({count}) - {source}',
@@ -16728,7 +16666,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Эхлэх аргаа сонгох', entryATitle: 'Би визний кодоо мэднэ', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Би нөхцөлөө л тайлбарлаж чадна', entryBSub: 'Чиглүүлэх асуултад хариулаад тохирох замаа олно',
         searchOpen: 'Визний код эсвэл түлхүүр үгээр хайх', searchOpenAria: 'Визний код болон түлхүүр үгийн хайлтыг нээх', searchClose: 'Шууд хайлтыг хаах',
-        toolsLabel: 'Захиргааны хэрэгслүүд', qaAria: 'Түгээмэл ашигладаг захиргааны хэрэгслүүд', jobCode: 'Мэргэжил ба салбарын код', jurisdiction: 'Хариуцах цагаачлалын албыг хайх',
+        jobCode: 'Мэргэжил ба салбарын код', jurisdiction: 'Хариуцах цагаачлалын албыг хайх',
         visaLabel: 'Оршин суух маршрутаа сонгох', preTrackAria: 'Орохоос өмнөх виз олголтын маршрут', preTrackTitle: 'Орохоос өмнө — консулын виз олголт', preTrackDesc: 'Гадаад дахь Солонгосын төлөөлөгчийн газраар шинэ виз авах журам',
         inTrackAria: 'Солонгост орсны дараах маршрут', inTrackTitle: 'Орсны дараа — бүртгэл ба сунгалт', inTrackDesc: 'Гадаад иргэний бүртгэл, хугацаа сунгах, статус өөрчлөх болон дотоод үйлчилгээ',
         qAria: 'Визний статус эсвэл түлхүүр үг хайх', qPlaceholder: 'Визний статус эсвэл түлхүүр үг хайх', dataLoading: 'Өгөгдөл ачаалж байна…', dataReady: 'Өгөгдөл ачааллаа ({count}) - {source}',
@@ -16751,7 +16689,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'روش شروع را انتخاب کنید', entryATitle: 'کد ویزای خود را می‌دانم', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'فقط می‌توانم شرایط خود را توضیح بدهم', entryBSub: 'با پاسخ به پرسش‌های راهنما مسیر مناسب را پیدا کنید',
         searchOpen: 'جست‌وجو با کد ویزا یا کلیدواژه', searchOpenAria: 'باز کردن جست‌وجوی کد ویزا و کلیدواژه', searchClose: 'بستن جست‌وجوی مستقیم',
-        toolsLabel: 'ابزارهای اداری', qaAria: 'ابزارهای اداری پرکاربرد', jobCode: 'کدهای شغل و صنعت', jurisdiction: 'یافتن اداره مهاجرت مسئول',
+        jobCode: 'کدهای شغل و صنعت', jurisdiction: 'یافتن اداره مهاجرت مسئول',
         visaLabel: 'انتخاب مسیر اقامت', preTrackAria: 'مسیر صدور ویزا پیش از ورود', preTrackTitle: 'پیش از ورود — صدور ویزا از طریق کنسولگری', preTrackDesc: 'فرآیند صدور ویزای جدید از طریق نمایندگی کره در خارج',
         inTrackAria: 'مسیر پس از ورود به کره', inTrackTitle: 'پس از ورود — ثبت و تمدید', inTrackDesc: 'ثبت خارجیان، تمدید اقامت، تغییر وضعیت و خدمات اقامت در کره',
         qAria: 'جست‌وجوی وضعیت ویزا یا کلیدواژه', qPlaceholder: 'جست‌وجوی وضعیت ویزا یا کلیدواژه', dataLoading: 'در حال بارگذاری داده‌ها…', dataReady: 'داده‌ها بارگذاری شد ({count}) - {source}',
@@ -16774,7 +16712,7 @@ const UI_TRANSLATIONS = {
         entryRail: 'Выберите способ начать', entryATitle: 'Я знаю свой код визы', entryASub: 'D-2 · F-2-7 · E-7-1 …',
         entryBTitle: 'Я могу только описать ситуацию', entryBSub: 'Ответьте на вопросы, чтобы найти подходящий путь',
         searchOpen: 'Поиск по коду визы или ключевому слову', searchOpenAria: 'Открыть поиск по коду визы и ключевому слову', searchClose: 'Закрыть прямой поиск',
-        toolsLabel: 'Административные инструменты', qaAria: 'Часто используемые административные инструменты', jobCode: 'Коды профессий и отраслей', jurisdiction: 'Найти компетентный офис иммиграции',
+        jobCode: 'Коды профессий и отраслей', jurisdiction: 'Найти компетентный офис иммиграции',
         visaLabel: 'Выберите путь пребывания', preTrackAria: 'Маршрут визы до въезда', preTrackTitle: 'До въезда — выдача визы в консульстве', preTrackDesc: 'Оформление новой визы через корейское представительство за рубежом',
         inTrackAria: 'Маршрут после въезда в Корею', inTrackTitle: 'После въезда — регистрация и продление', inTrackDesc: 'Регистрация иностранца, продление, смена статуса и услуги в Корее',
         qAria: 'Поиск статуса визы или ключевого слова', qPlaceholder: 'Поиск статуса визы или ключевого слова', dataLoading: 'Загрузка данных…', dataReady: 'Данные загружены ({count}) - {source}',
@@ -16957,7 +16895,7 @@ function applyLanguage(code, options = {}) {
     setText('.p-gw-search-sub', tx('gwSearchSub'));
     setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
-    setIndexedText('.p-gw-util-label', [tx('gwJobcodeLabel'), tx('gwAgentLabel'), tx('gwMedLabel')]);
+    setIndexedText('.p-gw-util-label', [tx('gwJobcodeLabel'), tx('jurisdiction'), tx('gwAgentLabel'), tx('gwMedLabel')]);
     setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
     setText('#pCmdDisclaimer', tx('cmdDisclaimer'));
     setText('.p-cmd-close-label', tx('cmdCloseLabel'));
@@ -16969,13 +16907,10 @@ function applyLanguage(code, options = {}) {
     setAttr('.p-entry-rail', 'aria-label', tx('entryRail'));
     setIndexedText('.p-entry-title', [tx('entryATitle'), tx('entryBTitle')]);
     setIndexedText('.p-entry-sub', [tx('entryASub'), tx('entryBSub')]);
-    setAttr('#qaMain', 'aria-label', tx('qaAria'));
-    setIndexedText('#qaMain .hero-action-label', [tx('jobCode'), tx('jurisdiction')]);
     setAttr('.visa-track-card:nth-child(1)', 'aria-label', tx('preTrackAria'));
     setAttr('.visa-track-card:nth-child(2)', 'aria-label', tx('inTrackAria'));
     setIndexedText('.visa-track-title', [tx('preTrackTitle'), tx('inTrackTitle')]);
     setIndexedText('.visa-track-desc', [tx('preTrackDesc'), tx('inTrackDesc')]);
-    document.documentElement.style.setProperty('--lang-tools-label', JSON.stringify(tx('toolsLabel')));
     document.documentElement.style.setProperty('--lang-visa-label', JSON.stringify(tx('visaLabel')));
     document.documentElement.style.setProperty('--lang-scenario-selected-choice', JSON.stringify(tx('scenarioSelectedChoice')));
     const sourceBadgeLabels = txArray('aiSourceBadgeLabels');
