@@ -1389,7 +1389,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .next-action-btn.primary .next-action-kicker { opacity: 0.85; }
 .manual-subcode-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr)); gap: 0.55rem; }
 .manual-subcode-card { border: 1px solid var(--result-border); background: color-mix(in srgb, var(--bg1) 94%, white); border-radius: 8px; padding: 0.66rem; min-width: 0; }
-.manual-subcode-card.match { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 9%, var(--bg1)); box-shadow: inset 3px 0 0 var(--ac); }
+.manual-subcode-card.match { border-color: color-mix(in srgb, var(--ac) 62%, var(--bd)); }
 .manual-subcode-top { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.35rem; }
 .manual-subcode-code { font-weight: 900; color: var(--ac); font-variant-numeric: tabular-nums; white-space: nowrap; }
 .manual-subcode-name { font-size: 0.82rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
@@ -1407,12 +1407,10 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-card.is-inactive { opacity: 0.72; background: color-mix(in srgb, var(--bg1) 96%, var(--t3)); border-style: dashed; }
 .manual-subcode-card.is-inactive .manual-subcode-code { color: var(--t3); }
 .manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: var(--t3); line-height: 1.45; font-style: italic; }
-.subcode-matched-banner { display: grid; gap: 0.4rem; margin: 0 0 0.6rem; }
-.subcode-matched-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; border: 1px solid color-mix(in srgb, var(--ac) 38%, var(--bd)); background: color-mix(in srgb, var(--ac) 8%, var(--bg1)); border-radius: 8px; padding: 0.45rem 0.6rem; }
-.subcode-matched-label { font-size: 0.66rem; font-weight: 900; color: var(--ac); background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); border-radius: 999px; padding: 0.08rem 0.42rem; }
-.subcode-matched-name { font-size: 0.8rem; font-weight: 800; color: var(--t1); word-break: keep-all; }
-.subcode-view-btn { margin-left: auto; flex: none; text-decoration: none; font-size: 0.72rem; font-weight: 900; color: #fff; background: var(--ac); border-radius: 7px; padding: 0.32rem 0.62rem; white-space: nowrap; }
-.subcode-view-btn:hover, .subcode-view-btn:focus-visible { filter: brightness(1.07); }
+/* Matched-subcode emphasis: quiet badge + slightly stronger border on the card. */
+.subcode-match-badge { flex: none; margin-left: auto; border-radius: 999px; padding: 0.08rem 0.42rem; font-size: 0.62rem; font-weight: 800; white-space: nowrap; line-height: 1.5; color: var(--ac); border: 1px solid color-mix(in srgb, var(--ac) 36%, var(--bd)); }
+.subcode-chip + .subcode-match-badge { margin-left: 0; }
+.subcode-match-divider { border: 0; border-top: 1px solid var(--bd2); margin: 0.75rem 0 0.6rem; }
 .manual-subcode-card.match { scroll-margin-top: 90px; }
 .procedure-variant-list {
   display: grid;
@@ -6335,10 +6333,13 @@ body.searched .sbar {
   padding: 0.72rem 0.8rem;
 }
 .manual-result .manual-subcode-card.match {
-  border-color: var(--p-emerald);
-  background: color-mix(in srgb, var(--p-emerald) 8%, #fff);
-  box-shadow: inset 3px 0 0 var(--p-emerald);
+  border-color: color-mix(in srgb, var(--p-emerald) 55%, var(--p-line));
 }
+.manual-result .subcode-match-badge {
+  color: var(--p-emerald-deep);
+  border-color: color-mix(in srgb, var(--p-emerald) 38%, var(--p-line));
+}
+.manual-result .subcode-match-divider { border-top-color: var(--p-line-2); }
 .manual-result .manual-subcode-code {
   color: var(--p-emerald-deep);
   font-weight: 800;
@@ -14849,46 +14850,57 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         const desc = s.summary || (Array.isArray(s.eligibility) && s.eligibility[0]) || s.note || s.addReq || tx('manualNeedsReview');
         const inactive = s.status && s.status !== 'active';
         const statusNote = inactive && s.statusNote ? `<div class="manual-subcode-status">${escapeHtml(s.statusNote)}</div>` : '';
+        const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="내 상황과 관련 가능성 있는 세부코드">관련 가능</span>` : '';
         return `<div id="${cardId(s)}" class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}">
-            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}</div>
+            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}</div>
             <div class="manual-subcode-desc">${hl(desc, keywords)}</div>${statusNote}
         </div>`;
     };
 
-    // Group subcodes by category (order preserved by first appearance).
-    const groups = [];
+    // Matched subcodes are lifted into their own labeled group up top
+    // (original code order preserved); the rest keep the category grouping
+    // and collapse behavior below. No matches → identical to before.
+    const matched = subs.filter(s => matchSet.has(s.code));
+    const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
+    let matchedHtml = '';
+    if (matched.length) {
+        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div><div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div></div>`;
+        if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
+    }
+
+    // Group remaining subcodes by category. Group order follows first
+    // appearance in the FULL list so lifting matched cards out never
+    // reshuffles the category sequence; empty groups are dropped.
     const groupMap = new Map();
     subs.forEach(s => {
         const g = s.group || '기타';
-        if (!groupMap.has(g)) { groupMap.set(g, []); groups.push(g); }
-        groupMap.get(g).push(s);
+        if (!groupMap.has(g)) groupMap.set(g, []);
     });
-    const hasGroups = subs.some(s => s.group);
+    rest.forEach(s => groupMap.get(s.group || '기타').push(s));
+    const groups = [...groupMap.keys()].filter(g => groupMap.get(g).length);
+    const hasGroups = rest.some(s => s.group);
     const renderGroup = (g) => {
         const cards = groupMap.get(g).map(renderCard).join('');
         const title = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
         return `<div class="manual-subcode-group">${title}<div class="manual-subcode-grid">${cards}</div></div>`;
     };
 
-    // Matched subcodes render only once, as highlighted cards in the grid
-    // below (matchSet → .match class). The former .subcode-matched-banner
-    // duplicated those cards, so it is no longer rendered.
     const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
     // Single group or short list → render flat (no awkward collapse).
-    if (groups.length <= 1 || subs.length <= 4) {
-        return `<div class="manual-section">${title}${groups.map(renderGroup).join('')}</div>`;
+    if (groups.length <= 1 || rest.length <= 4) {
+        return `<div class="manual-section">${title}${matchedHtml}${groups.map(renderGroup).join('')}</div>`;
     }
     // Many groups → show the first group, collapse the rest behind a full-width
-    // "더 보기 / 접기" toggle (auto-open when a hidden group holds a match).
+    // "더 보기 / 접기" toggle. (Matched subcodes never sit in the collapsed
+    // groups — they are lifted into the matched section above.)
     const firstGroup = renderGroup(groups[0]);
     const restGroups = groups.slice(1);
-    const matchInRest = restGroups.some(g => groupMap.get(g).some(s => matchSet.has(s.code)));
     const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
-    const moreHtml = `<details class="manual-subcode-more"${matchInRest ? ' open' : ''}>
+    const moreHtml = `<details class="manual-subcode-more">
             <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
             <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
         </details>`;
-    return `<div class="manual-section">${title}${firstGroup}${moreHtml}</div>`;
+    return `<div class="manual-section">${title}${matchedHtml}${firstGroup}${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
