@@ -12,44 +12,5 @@
         "b_idx": 6
       }
     ]
-  },
-  "F-4": {
-    "A": [],
-    "B": [],
-    "E": [
-      {
-        "loc": "F-4.procedures.extension.variants.0.manualRefs.0.pageRange",
-        "full": "PDF pp. 530-531 (embedded manual pp. 10-11)",
-        "match": "(embedded manual pp. 10-11)"
-      },
-      {
-        "loc": "F-4.procedures.registration.variants.0.manualRefs.0.pageRange",
-        "full": "PDF p. 530 (embedded manual p. 10)",
-        "match": "(embedded manual p. 10)"
-      },
-      {
-        "loc": "F-4.procedures.statusChange.variants.0.manualRefs.0.pageRange",
-        "full": "PDF pp. 528-530 (embedded manual pp. 8-10)",
-        "match": "(embedded manual pp. 8-10)"
-      }
-    ],
-    "N": []
-  },
-  "H-2": {
-    "A": [],
-    "B": [],
-    "E": [
-      {
-        "loc": "H-2.procedures.registration.variants.0.manualRefs.0.pageRange",
-        "full": "PDF pp. 524-525 (embedded manual pp. 4-5)",
-        "match": "(embedded manual pp. 4-5)"
-      },
-      {
-        "loc": "H-2.procedures.workplaceChange.variants.0.manualRefs.0.pageRange",
-        "full": "PDF pp. 525-526 (embedded manual pp. 5-6)",
-        "match": "(embedded manual pp. 5-6)"
-      }
-    ],
-    "N": []
   }
 }
