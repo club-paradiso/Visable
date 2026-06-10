@@ -10006,6 +10006,8 @@ button[data-keyword]:focus-visible {
   .manual-subcode-grid--docs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 .manual-subcode-grid--docs > .manual-subcode-card { min-width: 0; max-width: 100%; }
+/* Outer scenario-variant wrapper must stay single-column; 2-col applies only to inner doc grids */
+[data-procedure-variant-selector] > .manual-subcode-grid--docs { grid-template-columns: 1fr; }
 
 /* 2 · Required-document checklist — cap at 2 columns (was up to 3 on tablet),
        lighten the per-item chrome so long lists stay scannable, and let a long
