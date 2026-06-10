@@ -1,0 +1,335 @@
+{
+  "D-4": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|d-4-1-7-language-training-status-change]",
+      "section": "requiredDocs",
+      "idx": 2,
+      "value": "표준입학허가서(대학 총·학장 발행)",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|d-4-1-7-language-training-status-change]",
+      "section": "conditionalDocs",
+      "idx": 0,
+      "value": "부·모 잔고증명서 제출 시 가족관계증명서 추가 제출",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "D-8": [
+    {
+      "tab": "reentry",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 3,
+      "value": "수수료 면제",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|d-8-1-corporate-investment-status-change]",
+      "section": "requiredDocs",
+      "idx": 6,
+      "value": "사업장 존재 입증서류",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[2|d-8-3-individual-enterprise-status-change]",
+      "section": "requiredDocs",
+      "idx": 3,
+      "value": "공동사업자인 국민의 사업자금 사용내역 입증서류",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[2|d-8-3-individual-enterprise-status-change]",
+      "section": "requiredDocs",
+      "idx": 7,
+      "value": "사업장 존재 입증서류",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[3|d-8-4-tech-startup-status-change]",
+      "section": "requiredDocs",
+      "idx": 0,
+      "value": "신청서, 여권, 표준규격사진, 체류지 입증서류",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "D-9": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[1|d-9-equipment-specialist-status-change]",
+      "section": "requiredDocs",
+      "idx": 1,
+      "value": "체류자격 변경 사유서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "D-10": [
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 7,
+      "value": "체류지 입증서류 ⅱ) 국내 성장 기반 외국인 청소년",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 9,
+      "value": "체류지 입증서류 ⅲ) 유망인재",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "variants[1|d-10-2-tech-startup-extension]",
+      "section": "requiredDocs",
+      "idx": 0,
+      "value": "기술창업 활동계획서",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|d-10-1-points-status-change]",
+      "section": "requiredDocs",
+      "idx": 1,
+      "value": "학력 입증서류",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[2|d-10-2-tech-startup-status-change]",
+      "section": "requiredDocs",
+      "idx": 0,
+      "value": "학력 입증서류",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[3|d-10-3-high-tech-intern-status-change]",
+      "section": "requiredDocs",
+      "idx": 0,
+      "value": "인턴활동계획서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-1": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[1|e-1-professional-spouse-status-change]",
+      "section": "requiredDocs",
+      "idx": 2,
+      "value": "고용계약서(원본 및 사본)",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-2": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|e-2-registered-status-change]",
+      "section": "requiredDocs",
+      "idx": 2,
+      "value": "공적확인을 받은 학력증명서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-3": [
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 5,
+      "value": "국내·외 은행 잔고증명서(해당자)",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "reentry",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 0,
+      "value": "통합신청서(별지 제34호 서식)",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-6": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|e-6-d2-d10-status-change]",
+      "section": "requiredDocs",
+      "idx": 3,
+      "value": "고용·공연추천서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-7": [
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 9,
+      "value": "체류기간 연장허가,",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-8": [
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 7,
+      "value": "통합신청서 ※ 지방자치단체 방문 시:",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 8,
+      "value": "출입국·외국인관서 방문 시:",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-9": [
+    {
+      "tab": "workplaceChange",
+      "manual": "stay",
+      "scope": "variants[0|e-9-3-agriculture-workplace-addition]",
+      "section": "conditionalDocs",
+      "idx": 0,
+      "value": "외국인근로자(신청자)의 위임장(대행 시)",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "workplaceChange",
+      "manual": "stay",
+      "scope": "variants[1|e-9-standard-workplace-change]",
+      "section": "requiredDocs",
+      "idx": 3,
+      "value": "사업자등록증 등 사업장 관련 입증서류",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "E-10": [
+    {
+      "tab": "registration",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "commonDocs",
+      "idx": 1,
+      "value": "여권 원본",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "F-1": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|f-1-13-status-change]",
+      "section": "conditionalDocs",
+      "idx": 0,
+      "value": "재정능력 입증서류(불법체류 다발국가 국민에 한함)",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "F-4": [
+    {
+      "tab": "registration",
+      "manual": "stay",
+      "scope": "variants[0|f-4-domestic-residence-report]",
+      "section": "commonDocs",
+      "idx": 0,
+      "value": "통합신청서(별지 제1호 서식)",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|f-4-overseas-korean-status-change]",
+      "section": "commonDocs",
+      "idx": 0,
+      "value": "통합신청서(별지 제1호 서식)",
+      "kind": "D_naming_nearmiss"
+    },
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|f-4-overseas-korean-status-change]",
+      "section": "requiredDocs",
+      "idx": 2,
+      "value": "해외범죄경력증명서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "G-1": [
+    {
+      "tab": "statusChange",
+      "manual": "stay",
+      "scope": "variants[0|g-1-1-industrial-accident-status-change]",
+      "section": "requiredDocs",
+      "idx": 1,
+      "value": "산재로 인한 병원 진단서 등",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "H-1": [
+    {
+      "tab": "registration",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 1,
+      "value": "체류지 입증서류(월세계약서 등)",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "H-2": [
+    {
+      "tab": "registration",
+      "manual": "stay",
+      "scope": "variants[0|h-2-existing-holder-registration]",
+      "section": "commonDocs",
+      "idx": 2,
+      "value": "외국인등록 신청서",
+      "kind": "D_naming_nearmiss"
+    }
+  ],
+  "K-STAR": [
+    {
+      "tab": "extension",
+      "manual": "stay",
+      "scope": "requiredDocs",
+      "section": "requiredDocs",
+      "idx": 7,
+      "value": "대학 총장 추천서(발급일로부터 1년간 유효)",
+      "kind": "D_naming_nearmiss"
+    }
+  ]
+}
