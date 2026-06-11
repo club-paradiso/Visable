@@ -15249,7 +15249,7 @@ function generateHikoreaPassword() {
 function renderHikoreaGuide() {
     const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
     const langBtns = [['ko','한국어'],['en','English'],['zh','中文'],['vi','Tiếng Việt']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
-    const gtx = (key) => { const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || UI_TRANSLATIONS.ko; const v = p[key] ?? UI_TRANSLATIONS.ko[key] ?? key; return v; };
+    const gtx = (key) => { const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK; const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || koPack; const v = p[key] ?? koPack[key] ?? key; return v; };
     const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
     const titleEl = document.getElementById('hikoreaGuideTitle');
     const subEl = document.getElementById('hikoreaGuideSub');
@@ -16040,6 +16040,23 @@ function languageSupportLevel(code) {
 const I18N_MANIFEST_PATH = './data/i18n/manifest.json';
 const I18N_BASE_PATH = './data/i18n/';
 const UI_TRANSLATIONS = {};
+const BOOTSTRAP_KO_FALLBACK = {
+    languageButton: '언어 설정',
+    languageMenu: '언어 선택',
+    languageChanged: '언어가 한국어로 변경되었습니다.',
+    languagePartialBadge: '준비 중',
+    partialLanguageNotice: '번역 파일을 불러올 수 없어 한국어 기본 화면으로 표시됩니다.',
+    qPlaceholder: '비자 자격 및 키워드 검색',
+    qAria: '비자 자격 및 키워드 검색',
+    dataLoading: '데이터 로딩 중…',
+    dataReady: '{count}개 항목 로드됨 · {source}',
+    sourceApi: 'API',
+    sourceStatic: '정적 데이터',
+    visaDataLoadError: '비자 데이터를 불러오지 못했습니다.',
+    landingHints: ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'],
+    quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
+    aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격']
+};
 let I18N_MANIFEST = { defaultLocale: 'ko', canonicalLocale: 'ko', supportedLocales: ['ko', 'en', 'zh-CN'], localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' }, pendingLocales: [] };
 
 function normalizeLocaleCode(code) {
@@ -16071,19 +16088,23 @@ async function loadI18nTranslations() {
             return false;
         }
     }));
-    if (!UI_TRANSLATIONS.ko) {
-        UI_TRANSLATIONS.ko = {
-            languageButton: '언어 설정', languageMenu: '언어 선택', languageChanged: '언어가 한국어로 변경되었습니다.',
-            languagePartialBadge: '준비 중', partialLanguageNotice: '이 언어는 아직 정식 지원 전입니다. 한국어로 표시됩니다.',
-            qPlaceholder: '비자 자격 및 키워드 검색', qAria: '비자 자격 및 키워드 검색', dataLoading: '데이터 로딩 중…'
-        };
-    }
+    if (!UI_TRANSLATIONS.ko) UI_TRANSLATIONS.ko = BOOTSTRAP_KO_FALLBACK;
     return loaded.some(Boolean);
 }
 
+function hasFullKoI18nPack() {
+    return Boolean(
+        UI_TRANSLATIONS.ko &&
+        UI_TRANSLATIONS.ko.heroTitle &&
+        Array.isArray(UI_TRANSLATIONS.ko.landingHints) &&
+        Array.isArray(UI_TRANSLATIONS.ko.quickFilters)
+    );
+}
+
 function tx(key, vars = {}) {
-    const pack = UI_TRANSLATIONS[normalizeLocaleCode(currentLanguage)] || UI_TRANSLATIONS.ko;
-    let value = pack[key] ?? UI_TRANSLATIONS.ko[key] ?? key;
+    const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK;
+    const pack = UI_TRANSLATIONS[normalizeLocaleCode(currentLanguage)] || koPack;
+    let value = pack[key] ?? koPack[key] ?? key;
     if (typeof value !== 'string') return value;
     Object.entries(vars).forEach(([k, v]) => { value = value.replaceAll(`{${k}}`, v); });
     return value;
@@ -16187,15 +16208,17 @@ function toggleLanguageMenu(forceOpen) {
 }
 
 function getLandingHintItems() {
-    const labels = tx('landingHints');
-    const queries = ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'];
-    return queries.map((q, idx) => ({ l: labels[idx] || UI_TRANSLATIONS.ko.landingHints[idx], q }));
+    const labels = txArray('landingHints');
+    const koLabels = Array.isArray(UI_TRANSLATIONS.ko?.landingHints) ? UI_TRANSLATIONS.ko.landingHints : BOOTSTRAP_KO_FALLBACK.landingHints;
+    const queries = BOOTSTRAP_KO_FALLBACK.landingHints;
+    return queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
 }
 
 function getQuickFilterItems() {
-    const labels = tx('quickFilters');
-    const queries = ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'];
-    return queries.map((q, idx) => ({ l: labels[idx] || UI_TRANSLATIONS.ko.quickFilters[idx], q }));
+    const labels = txArray('quickFilters');
+    const koLabels = Array.isArray(UI_TRANSLATIONS.ko?.quickFilters) ? UI_TRANSLATIONS.ko.quickFilters : BOOTSTRAP_KO_FALLBACK.quickFilters;
+    const queries = BOOTSTRAP_KO_FALLBACK.quickFilters;
+    return queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
 }
 
 function updateThemeLabel() {
@@ -16217,6 +16240,7 @@ function updateSearchMetaText() {
 }
 
 function applyLanguage(code, options = {}) {
+    if (!hasFullKoI18nPack()) code = 'ko';
     code = normalizeLocaleCode(code);
     if (!LANGUAGE_OPTIONS.some(lang => lang.code === code)) code = 'ko';
     currentLanguage = code;
@@ -16231,6 +16255,11 @@ function applyLanguage(code, options = {}) {
     setText('#languageBtnCode', lang.short);
     setText('#languageBtnNative', lang.name);
     renderLanguageMenu();
+
+    if (!hasFullKoI18nPack()) {
+        updateSearchMetaText();
+        return;
+    }
 
     setAttr('#cityBtn', 'aria-label', tx('cityButton'));
     setAttr('#citySearch', 'placeholder', tx('cityPlaceholder'));
@@ -16269,20 +16298,21 @@ function applyLanguage(code, options = {}) {
     document.documentElement.style.setProperty('--lang-visa-label', JSON.stringify(tx('visaLabel')));
     document.documentElement.style.setProperty('--lang-scenario-selected-choice', JSON.stringify(tx('scenarioSelectedChoice')));
     const sourceBadgeLabels = txArray('aiSourceBadgeLabels');
+    const sourceBadgeFallbackLabels = BOOTSTRAP_KO_FALLBACK.aiSourceBadgeLabels;
     [
-        ['--lang-gp-verified', 0, '검증됨'],
-        ['--lang-gp-source-supported', 1, '출처 있음'],
-        ['--lang-gp-partial', 2, '부분'],
-        ['--lang-gp-needs-review', 3, '검토 필요'],
-        ['--lang-gp-advisory', 4, '참고'],
-        ['--lang-gp-extracted-only', 5, '미검증'],
-        ['--lang-gp-source-linked-unverified', 6, '링크만'],
-        ['--lang-gp-disabled', 7, '사용 안 함'],
-        ['--lang-gp-not-wired', 8, '미연결'],
-        ['--lang-gp-failed', 9, '검증 실패'],
-        ['--lang-gp-related', 10, '관련 자격']
-    ].forEach(([property, index, fallback]) => {
-        document.documentElement.style.setProperty(property, JSON.stringify(sourceBadgeLabels[index] || fallback));
+        ['--lang-gp-verified', 0],
+        ['--lang-gp-source-supported', 1],
+        ['--lang-gp-partial', 2],
+        ['--lang-gp-needs-review', 3],
+        ['--lang-gp-advisory', 4],
+        ['--lang-gp-extracted-only', 5],
+        ['--lang-gp-source-linked-unverified', 6],
+        ['--lang-gp-disabled', 7],
+        ['--lang-gp-not-wired', 8],
+        ['--lang-gp-failed', 9],
+        ['--lang-gp-related', 10]
+    ].forEach(([property, index]) => {
+        document.documentElement.style.setProperty(property, JSON.stringify(sourceBadgeLabels[index] || sourceBadgeFallbackLabels[index] || ''));
     });
 
     setAttr('#q', 'aria-label', tx('qAria'));
