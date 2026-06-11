@@ -1,0 +1,731 @@
+# Browser document QA after patch
+
+- Local URL: `http://127.0.0.1:8080/`
+- Method: Codex Desktop Browser DOM inspection against local static server after patch.
+- Scope: all 42 top-level searchable records from `visa_data.json`; high-risk list explicitly loaded in browser.
+- Inactive procedure panels are included because the app renders their document groups in the DOM and toggles active state by tab selection.
+
+## Summary
+
+- Top-level browser loads attempted: 42
+- High-risk browser loads attempted: 14
+- Navigation/evaluation failures: 0
+- Console errors captured: 0
+
+## F-6 verification after patch
+
+- Extension parent `기본 준비서류`: 7 items.
+- Basic labels: 통합신청서(별지 제34호 서식) / 여권 / 수수료 / 혼인관계증명서(상세) / 주민등록등본 / 외국인 직업 신고서 / 체류지 입증서류
+- Scenario/status-disruption labels remaining in basic: none
+- Extension `상황별 추가서류`: (부부 사이 출생 자녀가 있을 경우) 자녀 명의 가족관계증명서 / 별거 / 이혼소송 / 실종 / 사망 / 혼인단절 사안은 해당 입증서류 추가 필요
+- Extension `심사 중 추가 요청 가능`: 그 밖에 심사에 필요하다고 인정되는 서류(요청 시 제출)
+
+## High-risk browser-tested records
+
+- C-3 단기방문
+- D-2 유학
+- D-4 일반연수
+- D-8 기업투자
+- D-10 구직
+- E-7 특정활동
+- E-8 계절근로
+- E-9 비전문취업
+- F-2 거주
+- F-4 재외동포
+- F-5 영주
+- F-6 결혼이민
+- G-1 기타(난민등)
+- H-2 방문취업 (신규발급 중단)
+
+## Remaining issues needing manual-source review
+
+- See `document_taxonomy_check_after.txt` for review-needed findings. These are not unresolved high-confidence rendered-basic violations, but several manual-extract blobs still need source cleanup in future data work.
+
+## Per-record section capture
+
+### B-1 사증면제협정 (browser DOM pass)
+
+- No search result card rendered.
+
+### B-2 관광통과·무사증 (browser DOM pass)
+
+- No search result card rendered.
+
+### C-3 단기방문 (browser-observed high risk)
+
+- No search result card rendered.
+
+### C-4 단기취업 (browser DOM pass)
+
+- No search result card rendered.
+
+### D-1 문화예술 (browser DOM pass)
+
+- No search result card rendered.
+
+### D-2 유학 (browser-observed high risk)
+
+- No search result card rendered.
+
+### D-3 기술연수 (browser DOM pass)
+
+- No search result card rendered.
+
+### D-4 일반연수 (browser-observed high risk)
+
+- No search result card rendered.
+
+### D-4-1 한국어연수 (대학부설어학원) (browser DOM pass)
+
+- No search result card rendered.
+
+### D-7 주재 (browser DOM pass)
+
+- No search result card rendered.
+
+### D-8 기업투자 (browser-observed high risk)
+
+- No search result card rendered.
+
+### D-9 무역경영 (browser DOM pass)
+
+- No search result card rendered.
+
+### D-10 구직 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 및 국내 경력증명서 / 체류/구직/연수 계획서 또는 사유서 / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 구직활동계획서 / 학력 입증서류 / 체류비 입증서류
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 대학 순위 입증서류 / 근무 경력 입증서류 / 국내 연수활동 입증서류 / 한국어능력 입증서류 / 추천서 / 고소득 전문가 입증서류 / 그 밖의 점수 항목별 입증서류
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 구직활동계획서 / 국내 정규 대학 전문학사 이상 학위증 또는 졸업증명서 / 체류지 입증서류
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 학력 입증서류 / 기술창업계획서 / 체류비 입증서류
+- statusChange · 상황별 추가서류: 5 items
+  - first 10: 특허 / 실용신안 / 디자인 등록증 사본 또는 출원증명서 / OASIS 교육 이수증 또는 참여 입증서류 / OECD 국가 지식재산권 보유 입증서류
+- statusChange · 기본 준비서류: 14 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 인턴활동계획서 / 학적 또는 학위 입증서류와 대학 순위 입증서류 / 업체 / 분야 / 기간을 확인할 수 있는 인턴 근로계약서
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 인턴 근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류
+- extension · 기본 준비서류: 3 items
+  - first 10: 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) / 구직활동 계획서(붙임6) / 체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등
+- extension · 기본 준비서류: 6 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 체류비 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 점수 항목별 평가 입증서류
+- extension · 기본 준비서류: 7 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 기술창업 활동계획서 / 체류비 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: K-Startup Grand Challenge 참여 입증서류
+- extension · 기본 준비서류: 11 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 인턴 재직증명서 / 초청기업의 사업자등록증 사본 / 초청기업의 고용보험가입자 명부 또는 연구시설 / 연구인력 입증서류 / 초청기업 자격요건 유지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+
+### E-1 교수 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 및 국내 경력증명서 / 사업자등록증 사본
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 / 학위증 또는 경력증명서 / 고용업체 등 설립관련 서류(사업자등록증, 등기부등본 등)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 조교수 이상의 자격기준에 해당하는 전임교수 등은 학위증 또는 경력증명서 제출 생략
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 사업자등록증 / 학위증(원본 및 사본) 또는 경력증명서 / 고용계약서(원본 및 사본)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 원 근무처의 장의 동의서(원 근무처가 있는 경우만 해당)
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 졸업증명서 / 고용계약서 / 총(학)장의 고용추천서 / 사업자등록증
+- extension · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 표준규격사진 1매(3.5×4.5cm, 최근 6개월) / 수수료(절차별 정부수입인지/카드 발급 수수료 확인) / 체류지 입증서류
+- extension · 심사 중 추가 요청 가능: 1 items
+  - first 10: 고용계약서 원본 및 사본, 기타 심사에 필요한 자료*(필요시 1~2종 제출) * 교원활용계획서, 수강생 현황, 근로소득원천징수부 등
+- registration · (no document groups): 0 items [empty/no documents]
+
+### E-2 회화지도 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 6 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함) / 사업자등록증 사본 / 기타 체류목적 입증서류 (별도 소명자료)
+- statusChange · 기본 준비서류: 10 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 고용계약서 원본과 사본 / 사업자등록증 사본 / 공적확인을 받은 학력증명서 / 신청일로부터 6개월 이내 발급받은 공적확인 범죄경력증명서 / 채용신체검사서(반드시 밀봉된 상태로 제출, 개봉 불가)
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 자국 이외의 국가에서 학위를 취득한 경우 공적확인을 받은 제3국 범죄경력증명서 추가 제출 / 국내 대학에서 학위를 취득한 경우 공적확인 받지 않은 학위증 사본 제출 허용
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증(해당자) / 표준규격사진 1매 / 수수료 / 시 / 도교육감 또는 국립국제교육원장이 발급한 합격통지서 또는 통지서 / 고용계약서 원본과 사본 / 학교 사업자등록증 사본(또는 고유번호증 사본)
+- statusChange · 상황별 추가서류: 4 items
+  - first 10: 도교육감과 고용계약을 체결한 초 / 중등학교 영어보조교사 등은 학력 / 경력 증명서 및 채용신체검사서 제출을 면제하고 합격증명서 / 고용계약서 등 최소서류만 제출
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 / 학위증 또는 경력증명서 / 고용업체 등 설립관련 서류(사업자등록증, 학원설립증 등)
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 해외 및 국내 경력증명서 / 표준근로계약서 또는 고용계약서 원본/사본 / 납세증명서 (국세 및 지방세 완납증명) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 5 items
+  - first 10: 근무처 변경 / 추가신고서(붙임 9), 여권, 외국인등록증 / 고용계약서 / 사업자등록증 / 시설 설립 관련서류 등
+- workplaceChange · 상황별 추가서류: 2 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료일 또는 합의한 날짜까지 근무한 경우 면제, 휴 / 잔여 체류기간이 (새 고용계약기간 + 1개월)보다 짧은 경우 체류기간 연장허가 심사에 필요한 구비서류 추가 제출
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### E-3 연구 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 및 국내 경력증명서 / 사업자등록증 사본
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 또는 임용예정확인서 / 석사 학위 이상 학위증, 경력증명서(해당자) / 고용기관 설립 관련 서류(사업자등록증 또는 법인등기사항전부증명서 또는 연구기관 입증서류 등)
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 대학 대표자 명의로 발급된 졸업예정증명서·확인서 및 학위수여 날짜 확인 증명서(해당자) / 우수 학술논문의 저자임을 확인할 수 있는 입증자료(해당자)
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 및 SOFA ID / 수수료 / 고용계약서 또는 임용예정확인서 / 고용기관 설립 관련 서류(사업자등록증 또는 법인등기사항전부증명서 또는 연구기관 입증서류 등) / 석사 학위 이상 학위증, 경력증명서(해당자)
+- statusChange · 상황별 추가서류: 3 items
+  - first 10: SPONSOR인 경우 원 근무처장의 동의서 / 대학 대표자 명의로 발급된 졸업예정증명서·확인서 및 학위수여 날짜 확인 증명서(해당자) / 우수 학술논문의 저자임을 확인할 수 있는 입증자료(해당자)
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 또는 임용예정확인서 / 고용기관 설립 관련 서류(사업자등록증 또는 법인등기사항전부증명서 또는 연구기관 입증서류 등) / 체류지 입증서류 / 원 소속 고용계약 입증 서류(해당자)
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 사업자등록증 또는 법인등기사항전부증명서 또는 연구기관 입증서류 등 / 고용계약서 또는 임용예정확인서
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료일 또는 합의한 날짜까지 근무한 경우 면제, 휴
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### E-4 기술지도 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 3 items
+  - first 10: 해당 분야 전문성 입증서류 (국가공인자격증 등) / 해외 및 국내 경력증명서 / 표준근로계약서 또는 고용계약서 원본/사본
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 파견명령서(본사 발행) 또는 재직증명서 / 기술도입계약신고수리서, 기술도입계약서 또는 용역거래인증서, 또는 방위산업체지정서 사본 / 사업자등록증 사본
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 소관부처 장관의 고용추천서(필요시)
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 파견명령서(본사발행) 또는 재직증명서 / 기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본 / 사업자등록증 사본 / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 5 items
+  - first 10: 근무처 변경 / 추가 신고서(별지 제38호의3 서식), 여권 및 외국인등록증 / 사업자등록증 / 고용계약서 / 기술도입계약신고수리서, 기술도입계약서 또는 용역거래인증서, 또는 방위산업체지정서 사본 등
+- workplaceChange · 상황별 추가서류: 2 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료 등 면제사유가 있거나 휴 / 근무처 변경 시 소관부처 장관의 고용추천서
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### E-5 전문직업 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 2 items
+  - first 10: 해당 분야 전문성 입증서류 (국가공인자격증 등) / 표준근로계약서 또는 고용계약서 원본/사본
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 사본 / 사업자등록증 사본 또는 허가증이나 등록증(특정사업 허가 / 학위증 사본 및 자격증 사본 / 소관부처 장관의 고용추천서
+- extension · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 표준규격사진 1매(3.5×4.5cm, 최근 6개월) / 수수료(절차별 정부수입인지/카드 발급 수수료 확인) / 고용계약서 사본 / ‘부가가치세법’에 따른 사업자등록증 / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 4 items
+  - first 10: 근무처 변경 / 추가 신고서(별지 제38호의3 서식), 여권 및 외국인등록증 / 사업자등록증 / 고용계약서
+- workplaceChange · 상황별 추가서류: 2 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료 등 면제사유가 있거나 휴 / 근무처 변경 시 소관부처 장관의 고용추천서
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### E-6 예술흥행 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 해외 및 국내 경력증명서 / 사업자등록증 사본 / 기타 체류목적 입증서류 (별도 소명자료)
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 고용계약서 또는 공연계약서 / 사업자등록증 / 고용 / 공연추천서
+- extension · 기본 준비서류: 10 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용추천서 또는 공연추천서 ※ 추천서 발행기관: 영상물등급위원회, 문화체육관광부, 방송통신위원회 등 / 고용계약서 (또는 공연계약서) / 사업자등록증 사본 / 신원보증서(E 2자격만 징구) / 체류지 입증서류 / 건강보험특실 확인서(E 2자격만 징구)
+- extension · 심사 중 추가 요청 가능: 1 items
+  - first 10: 기타 심사에 필요한 자료* (필요 시 1
+- registration · (no document groups): 0 items [empty/no documents]
+- activitiesOutsideStatus · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 / 공연추천서 / 사업자등록증 등 단체 설립관련 서류
+- activitiesOutsideStatus · 상황별 추가서류: 2 items
+  - first 10: 원 근무처장의 동의서(해당자) / A-1, A-2 자격 소지자는 외교부장관 추천서 추가 제출
+- workplaceChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 사업자등록증 / 고용계약서 / 고용추천서 또는 공연 추천서
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료 등 면제사유가 있거나 휴
+- workplaceChange · 기본 준비서류: 9 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 사업자등록증 / 원 근무처 장의 동의서 / 고용계약서 / 공연 추천서(영상물등급위원회 발행) / 신원보증서 원본
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### E-7 특정활동 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 5 items
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 및 국내 경력증명서 / 주무부처 고용추천서 (해당 직종 한정) / 소득금액증명원 등 소득입증서류
+- extension · 기본 준비서류: 13 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 개인 소득금액 증명(필수) / 소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급) / 사업자등록증 사본 또는 법인등기부등본 / 신원보증서 원본 / 체류지 입증서류 / 고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)2. 협정상 사증
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호~제34호의2 서식) / 여권 / 외국인등록증 / 주무부처 장의 고용추천서 또는 고용의 필요성을 입증하는 서류 / 고용계약서 / 사업자등록증
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 원 근무처 장의 동의서(계약기간 만료일 또는 합의한 날짜까지 근무한 경우 면제, 휴
+
+### E-8 계절근로 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 고용허가서 사본 (고용노동부 발급) / 표준근로계약서 또는 고용계약서 원본/사본 / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함) / 결핵건강진단서 (보건소/지정병원, 고위험 35개국 필수)
+- extension · 기본 준비서류: 9 items
+  - first 10: 외국인 계절근로자(E-8) 체류기간 연장 추천 신청서 / 여권 및 외국인등록증 / 거주/숙소 제공 확인서 / 고용주 신분증 / 인신매매 피해 식별지표 / 체류기간 만료 계절근로자 체류기간 연장 추천서 / 통합신청서 / 출입국 / 외국인관서 방문 시:
+
+### E-9 비전문취업 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 사업자등록증 사본 / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함) / 표준입학허가서 또는 재학/수료증명서
+- extension · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 없음 / 자진출국 각서 / 구직등록필증 / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+- workplaceChange · 기본 준비서류: 7 items [review-needed wording in basic: 영농규모증명서 및 사업자등록증 또는 고유번호증 사본(없는 경우 주민등록등본)]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 추가근무처의 고용허가서 사본 / 추가근무처의 표준근로계약서 사본 / 영농규모증명서 및 사업자등록증 또는 고유번호증 사본(없는 경우 주민등록등본)
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 외국인근로자(신청자)의 위임장(대행 시)
+- workplaceChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 체류지 입증서류 / 고용허가서 사본 / 표준근로계약서 사본 / 사업자등록증 등 사업장 관련 입증서류
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 건설업체는 해당 현장 책임건설업체가 작성한 건설현장 외국인력 현황표 추가 제출
+
+### E-10 선원취업 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 3 items
+  - first 10: 표준근로계약서 또는 고용계약서 원본/사본 / 해당 분야 전문성 입증서류 (국가공인자격증 등) / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함)
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 표준근로계약서 또는 고용계약서 원본/사본 / 해외 및 국내 경력증명서 / 신원보증서 (보증기간 명시) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)
+- registration · 기본 준비서류: 9 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 표준규격사진 1매 / 수수료 / 내항여객운송사업면허증 또는 내항화물운송등록증 / 건강검진서(밀봉된 상태로 제출, 개봉 불가) / 마약검사 확인서(밀봉된 상태로 제출, 개봉 불가) / 산업재해보상보험 또는 상해보험 가입증명원 / 체류지 입증서류
+
+### F-1 방문동거 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 기타 체류목적 입증서류 (별도 소명자료)
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증(해당자) / 표준규격사진 1매 / 수수료 / 외국인유학생 입학허가서 또는 재학증명서 / 가족관계 입증서류 / 국내 체류비용 부담능력 입증서류(3개월 이상 계속 예치된 기준 이상 금액의 잔고증명서 등)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 재정능력 입증서류(불법체류 다발국가 국민에 한함)
+- statusChange · 기본 준비서류: 9 items [review-needed wording in basic: 이혼 사실이 기재된 혼인관계 증명서]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 사진 1매 / 수수료 / 신원보증서 / 이혼 사실이 기재된 혼인관계 증명서 / 체류 불가피성 소명자료 / 체류지 입증서류
+- statusChange · 심사 중 추가 요청 가능: 1 items
+  - first 10: 기타 심사에 필요하다고 인정되는 서류
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 신원보증서 / 귀화허가 또는 국적회복허가 신청사실증명서
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 배우자 또는 그 부모의 난민인정증명서 / 난민인정자의 가족임을 입증하는 서류 / 체류지 입증서류
+- statusChange · 기본 준비서류: 15 items
+  - first 10: 여권 / 통합신청서 / 표준규격사진 1매 / 수수료 / 외국인등록증(해당자) / 결혼이민자의 한국인 배우자의 기본증명서 / 가족관계증명서 / 혼인관계증명서 / 주민등록등본 / 결혼이민자의 여권
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 공교육 인정 대상 학교에 재학 중인 경우 재학증명서 추가 제출 / 결핵고위험국가의 경우 결핵진단서 추가 제출
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 혼인관계증명서 (상세) / 기본증명서 (상세) / 소득금액증명원 등 소득입증서류
+- statusGrant · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 출생증명서 / 부모의 외국인등록증 사본
+- statusGrant · 상황별 추가서류: 1 items
+  - first 10: 중국 국적자는 호구부 추가 제출
+- statusGrant · 기본 준비서류: 6 items [review-needed wording in basic: 출생증명서 등 부모와의 가족관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 출생증명서 등 부모와의 가족관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류 / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+
+### F-2 거주 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄) / 외국인투자기업등록증 사본 및 투자금 도입 입증서류 / TOPIK 성적표 또는 한국어능력 입증서류
+- statusChange · 기본 준비서류: 10 items [review-needed wording in basic: 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증 / 부모의 기본증명서 / 가족관계증명서 / 주민등록등본 / 신원보증서(양육권을 가진 부 또는 모)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 양육권 보유관계를 입증할 수 없을 때에는 ‘친권자’ 또는 ‘후견인’의 동의서(친권자
+- statusChange · 기본 준비서류: 7 items [review-needed wording in basic: (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / (배우자) 국내 배우자의 신원보증서 / (배우자) 초청장 / (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 고용계약서 / 점수표 / 점수 항목별 입증서류
+- statusChange · 상황별 추가서류: 8 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 학위증 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 이공계 특성화 대학 또는 연구기관의 석 / 박사 학위 취득 또는 취득예정 입증서류 / 대학 총장 추천서
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 투자 대상과 투자금액을 입증하는 서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 부동산 매매계약서 및 등기부등본 / 회원권 취득 관련 입증서류 / 미분양 주택 투자 관련 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 해외범죄경력증명서
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 신청서 / 여권 사본 / 사진 / 수수료 / 투자금 납부 입증서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 4 items
+  - first 10: 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 해외범죄경력증명서
+- extension · 기본 준비서류: 8 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 기타 체류목적 입증서류 (별도 소명자료) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 점수제 자기평가표 및 증빙서류 / 국세·지방세 납세증명서
+- registration · (no document groups): 0 items [empty/no documents]
+
+### F-3 동반 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 소득금액증명원 등 소득입증서류
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 가족관계 입증서류(결혼 또는 출생증명서 등) / 체류경비 등 재정능력 입증서류 / 체류지 입증서류 / 신원보증서 / 체류자격 변경 사유서 및 관련 증빙 서류
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 주자격자(배우자 또는 부모)의 외국인등록증 / 본국의 공적 서류는 번역자 확인서 첨부, 협약국은 아포스티유 확인, 미체약국은 주재국 대한민국 공관 영사확인 필요
+- extension · 기본 준비서류: 6 items
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)
+- statusGrant · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 부 또는 모의 외국인등록증 / 신원보증서 / 가족관계 입증서류(본국 출생증명서 원본, 국내 출생증명서, 친자관계 입증서류 등)
+- statusGrant · 상황별 추가서류: 2 items
+  - first 10: 중국의 경우 거민신분증, 결혼증, 호구부 등 추가 제출 / 본국의 공적 서류는 번역자 확인서 첨부, 협약국은 아포스티유 확인, 미체약국은 주재국 대한민국 공관 영사확인 필요
+- registration · (no document groups): 0 items [empty/no documents]
+- activitiesOutsideStatus · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 / 사업자등록증 사본 / 추천서(해당 기관장) / 학위증(원본 및 사본)
+- activitiesOutsideStatus · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 고용계약서 / 사업자등록증
+- activitiesOutsideStatus · 상황별 추가서류: 2 items
+  - first 10: E-2 활동: 학위증(E-2 자격요건과 동일), 범죄경력증명서, 채용신체검사서 / E-7 활동: 해당국 교원 자격증 원본
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### F-4 재외동포 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: TOPIK 성적표 또는 한국어능력 입증서류 / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 외국국적동포 입증서류 (공적장부 등) / 사회통합프로그램(KIIP) 이수증/합격증
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제1호 서식) / 여권 및 사본 / 사진 / 수수료 / 체류지 입증서류 / 재외동포 해당 여부 입증서류 / 한국어능력 입증서류 / 해외범죄경력증명서
+- statusChange · 상황별 추가서류: 3 items
+  - first 10: 결핵진단서 / 조기적응프로그램 이수증 / 한국어능력 또는 조기적응프로그램 면제 입증서류
+- extension · 기본 준비서류: 1 items
+  - first 10: 신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류
+- extension · 기본 준비서류: 3 items
+  - first 10: 신청서 / 한국어능력 입증서류 / 체류지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 한국어능력 면제 입증서류
+- registration · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제1호 서식) / 여권 및 사본 / 사진 / 수수료 / 체류지 입증서류
+- registration · 상황별 추가서류: 2 items
+  - first 10: 조기적응프로그램 이수증 / 조기적응프로그램 면제 입증서류
+
+### F-5 영주 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 기타 체류목적 입증서류 (별도 소명자료) / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 소득금액증명원 등 소득입증서류 / 사회통합프로그램(KIIP) 이수증/합격증
+- extension · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 체류지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 추가서류: 배우자 또는 부모의 외국인등록증 등(사안별 해당 시)
+- registration · (no document groups): 0 items [empty/no documents]
+
+### F-6 결혼이민 (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 9 items
+  - first 10: 기본증명서 (상세) / 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 혼인관계증명서 (상세) / 소득금액증명원 등 소득입증서류 / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 초청장 (초청목적, 귀국보증 등 상세 명시) / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함) / TOPIK 성적표 또는 한국어능력 입증서류
+- statusChange · 기본 준비서류: 9 items [review-needed wording in basic: 자녀가 국민인 경우 자녀 명의의 기본증명서 / 자녀양육 입증서류(양육권 관련 판결문, 자녀가 등재된 주민등록등본, 자녀의 5촌 이내 한국인 친척이나 주거지 통]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증(해당자) / 표준규격사진 1매 / 수수료 / 자녀가 국민인 경우 자녀 명의의 기본증명서 / 가족(친자)관계 입증서류(출생증명서, 유전자검사 확인 서류 등) / 자녀양육 입증서류(양육권 관련 판결문, 자녀가 등재된 주민등록등본, 자녀의 5촌 이내 한국인 친척이나 주거지 통 / 범죄경력증명서 및 건강진단서(旣제출자로서 해외 6개월 이상 연속 체류 사실이 없는 자는 면제)
+- statusChange · 상황별 추가서류: 0 items [empty/no documents]
+- statusChange · 심사 중 추가 요청 가능: 1 items
+  - first 10: 그 밖에 심사에 필요하다고 인정되는 서류
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 범죄경력증명서 및 건강진단서(旣제출자로서 해외 6개월 이상 연속 체류 사실이 없는 자는 면제)
+- statusChange · 상황별 추가서류: 3 items
+  - first 10: [사망] 배우자의 사망 입증서류(사망진단서, 배우자의 사망사실이 기재된 기본증명서 등), 가족관계 입증서류(혼인관계증명서 등) / [이혼] 이혼사실이 기재된 혼인관계증명서, 이혼 관련 소송서류 / [실종] 실종사실 증명서류(실종선고심판서), 가족관계 입증서류(혼인관계증명서 등)
+- statusChange · 심사 중 추가 요청 가능: 1 items
+  - first 10: 그 밖에 심사에 필요하다고 인정되는 서류
+- extension · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 수수료 / 혼인관계증명서(상세) / 주민등록등본 / 외국인 직업 신고서 / 체류지 입증서류
+- extension · 상황별 추가서류: 6 items
+  - first 10: (부부 사이 출생 자녀가 있을 경우) 자녀 명의 가족관계증명서 / 별거 / 이혼소송 / 실종 / 사망 / 혼인단절 사안은 해당 입증서류 추가 필요
+- extension · 심사 중 추가 요청 가능: 1 items
+  - first 10: 그 밖에 심사에 필요하다고 인정되는 서류(요청 시 제출)
+- extension · 기본 준비서류: 2 items
+  - first 10: 한국인 배우자의 혼인관계증명서(상세) / 한국인 배우자의 주민등록등본
+- extension · 상황별 추가서류: 2 items
+  - first 10: 부부 사이에 출생한 자녀가 있는 경우 자녀의 가족관계증명서 / 심사 과정에서 필요하다고 인정되는 경우 추가 입증서류
+- extension · 기본 준비서류: 4 items [review-needed wording in basic: 별거 사유를 입증하는 서류]
+  - first 10: 외국인등록증 / 한국인 배우자의 혼인관계증명서(상세) / 한국인 배우자의 주민등록등본 / 별거 사유를 입증하는 서류
+- extension · 상황별 추가서류: 5 items
+  - first 10: 배우자 가출신고서 / 상해 진단서 / 사진, 가정폭력 피해자 보호시설 확인서, 형사판결문, 지인 확인서 또는 여성단체 확인서 등 해당 사유 입증서류 / 배우자가 수감된 경우 수감증명서와 배우자 가족 확인서 / 부부 사이에 출생한 자녀가 있는 경우 자녀의 가족관계증명서
+- extension · 기본 준비서류: 4 items [review-needed wording in basic: 이혼소송 계속 사실을 입증하는 서류]
+  - first 10: 외국인등록증 / 한국인 배우자의 혼인관계증명서(상세) / 한국인 배우자의 주민등록등본 / 이혼소송 계속 사실을 입증하는 서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 부부 사이에 출생한 자녀가 있는 경우 자녀의 가족관계증명서
+- extension · 기본 준비서류: 4 items [review-needed wording in basic: 배우자 실종 사실을 입증하는 서류]
+  - first 10: 외국인등록증 / 한국인 배우자의 혼인관계증명서(상세) / 한국인 배우자의 주민등록등본 / 배우자 실종 사실을 입증하는 서류
+- extension · 상황별 추가서류: 2 items
+  - first 10: 실종선고 심판청구 접수증, 실종신고서, 지인 확인서 또는 여성단체 확인서 등 해당 사유 입증서류 / 부부 사이에 출생한 자녀가 있는 경우 자녀의 가족관계증명서
+- statusGrant · (no document groups): 0 items [empty/no documents]
+- registration · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 표준규격사진 1매(3.5×4.5cm, 최근 6개월) / 수수료(절차별 정부수입인지/카드 발급 수수료 확인) / 한국인 배우자의 혼인관계증명서(상세) 및 주민등록등본 / 외국인 직업 신고서 / 체류지 입증서류
+- registration · 상황별 추가서류: 1 items
+  - first 10: (부부 사이 출생 자녀가 있을 경우) 자녀 명의 가족관계증명서
+- reentry · (no document groups): 0 items [empty/no documents]
+
+### G-1 기타(난민등) (browser-observed high risk)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 난민인정신청서 원본 / 의료기관 진단서 (상병명, 요양기간 명시) / 체류/구직/연수 계획서 또는 사유서 / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 산재보상심사청구서 또는 재심청구서 / 산재로 인한 병원 진단서 등 / 생계유지능력 심사확인서
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 가족관계 및 기타 보호자 입증서류(가족 동반 시에 한함)
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 의료기관에서 발행한 소견서 등 장기치료의 필요성을 입증하는 서류 / 치료 및 체류 비용 조달 능력을 입증하는 서류 / 신원보증서 / 생계유지능력 심사확인서
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 가족관계 입증서류(배우자 또는 직계가족 동반 시에 한함)
+- statusChange · 기본 준비서류: 7 items [review-needed wording in basic: 소장 사본, 소송제기 증명원, 법률구조결정서 사본, 기타 청구권의 존재를 확인할 수 있는 서류]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 소장 사본, 소송제기 증명원, 법률구조결정서 사본, 기타 청구권의 존재를 확인할 수 있는 서류 / 신원보증서 / 생계유지능력 심사확인서
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 가족관계 또는 보호자 입증서류(보호자
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 노동부 제출 진정서 사본 / 노동부 발급 체불금품 확인원 등 / 신원보증서 / 생계유지능력 심사확인서(체류기간 연장 심사 시 활용)
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 표준규격사진 1매 / 수수료 / 난민인정신청 접수증 등 난민신청자 또는 인도적 체류허가자임을 입증할 수 있는 서류 / 체류지 입증서류
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 진단서 등 사유를 증명할 수 있는 서류 / 신원보증서
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 의료기관에서 발행한 소견서 등 장기 치료의 필요성을 입증할 수 있는 서류 / 치료 및 체류 비용 조달 능력을 입증할 수 있는 서류
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 가족관계 및 간병인 입증서류(동반가족
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 소송관련 서류 등 권리구제 입증서류 / 신원보증서
+- extension · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 (공통 신청서류)
+- registration · (no document groups): 0 items [empty/no documents]
+
+### H-1 관광취업 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 왕복항공권 (또는 제3국행 예약증) / 은행 잔고증명서 (최근 30일 이내 발급본) / 의료기관 건강진단서 (법무부 지정 마약검사 필수 포함) / 체류/구직/연수 계획서 또는 사유서
+- extension · 기본 준비서류: 2 items
+  - first 10: 체류기간 연장허가 입국한 날로부터 1년 범위 내에서 연장 / 캐나다는 2년까지 연장 가능 재입국허가1.
+- registration · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / 여행일정 및 활동계획서 / 체류지 입증서류(월세계약서 등)
+- registration · 상황별 추가서류: 1 items
+  - first 10: 근무처의 사업자등록증 사본 및 계약서 등(취업 중인 경우)
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료
+
+### H-2 방문취업 (신규발급 중단) (browser-observed high risk)
+
+- visaIssuance · (no document groups): 0 items [empty/no documents]
+- extension · 기본 준비서류: 8 items
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 표준규격사진 1매 (3.5x4.5cm, 최근 6개월) / 외국국적동포 입증서류 (공적장부 등) / TOPIK 성적표 또는 한국어능력 입증서류 / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 사회통합프로그램(KIIP) 이수증/합격증
+- registration · 기본 준비서류: 6 items
+  - first 10: 여권 / 최근 6개월 이내 촬영한 컬러 사진 / 외국인등록 신청서 / 수수료 / 조기적응프로그램 이수증 / 지정병원 발급 건강진단서
+- registration · 상황별 추가서류: 3 items
+  - first 10: 재외공관에서 체류자격을 부여받을 때 제출하지 않은 경우 한국어능력 입증서류 / 재외공관에서 체류자격을 부여받을 때 제출하지 않은 경우 해외범죄경력증명서 / 유학생 부모인 경우 유학생의 재학증명서 및 외국인등록증 사본
+- workplaceChange · 기본 준비서류: 5 items
+  - first 10: 취업개시 또는 근무처 변경 신고서 / 외국인등록증 사본 / 특례고용가능확인서 사본 / 표준근로계약서 사본 / 사업자등록증 사본
+- workplaceChange · 상황별 추가서류: 1 items
+  - first 10: 온라인 신고 시 시스템이 요구하는 입력정보
+
+### A-1 외교 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 2 items
+  - first 10: 파견명령서 (본사 발급, 파견기간 및 직책 명시) / 여권 원본 및 인적사항면 사본
+- extension · (no document groups): 0 items [empty/no documents]
+- registration · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 반명함판 천연색 사진(3.5×4.5cm) / 주한외국공관원 신분증 등 신분 입증서류
+
+### A-2 공무 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 2 items
+  - first 10: 파견명령서 (본사 발급, 파견기간 및 직책 명시) / 여권 원본 및 인적사항면 사본
+- extension · (no document groups): 0 items [empty/no documents]
+- registration · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 반명함판 천연색 사진(3.5×4.5cm) / 주한외국공관원 신분증 등 신분 입증서류
+
+### A-3 협정 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 2 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 파견명령서 (본사 발급, 파견기간 및 직책 명시) / 기타 체류목적 입증서류 (별도 소명자료)
+- extension · 기본 준비서류: 1 items
+  - first 10: 신청서
+- registration · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 반명함판 천연색 사진(3.5×4.5cm) / 주한외국공관원 신분증 등 신분 입증서류
+
+### C-1 일시취재 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 3 items
+  - first 10: 해외 및 국내 경력증명서 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 체류/구직/연수 계획서 또는 사유서
+- extension · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 수수료 / 체류기간 연장 필요성 소명 서류(본사의 취재명령서 또는 파견증명서, 외신 보도증 사본 또는 본사발생 재직증명서 등)
+- registration · (no document groups): 0 items [empty/no documents]
+
+### D-5 취재 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 3 items
+  - first 10: 해외 및 국내 경력증명서 / 파견명령서 (본사 발급, 파견기간 및 직책 명시) / 체류/구직/연수 계획서 또는 사유서
+- extension · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 재직증명서 또는 파견명령서(본사발행) / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+
+### D-6 종교 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 3 items
+  - first 10: 사업자등록증 사본 / 파견명령서 (본사 발급, 파견기간 및 직책 명시) / 해외 및 국내 경력증명서
+- extension · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 재직증명서 또는 파송명령서(파송단체 발행) / 체류지 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### D-4-2K 기업맞춤형인턴십(K-Trainee) (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 인턴십(연수) 계획서 / 재직증명서 / 초청장 (초청목적, 귀국보증 등 상세 명시) / 사증발급인정서(Certificate for Visa Issuance)
+- visaIssuance · 상황별 추가서류: 0 items [empty/no documents]
+- certificateOfVisaIssuance · 상황별 추가서류: 0 items [empty/no documents]
+- statusChange · 상황별 추가서류: 0 items [empty/no documents]
+- extension · 기본 준비서류: 7 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 체류지 입증서류 / 기간연장 사유서 및 인턴 / 연수 활동 계획서
+- statusGrant · 상황별 추가서류: 0 items [empty/no documents]
+- registration · 기본 준비서류: 6 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 사진(6개월 내 촬영 반명함) 1장 / 수수료 / 체류지 입증서류 / 2 안내문 참고
+- activitiesOutsideStatus · 상황별 추가서류: 0 items [empty/no documents]
+- workplaceChange · 상황별 추가서류: 0 items [empty/no documents]
+- reentry · 상황별 추가서류: 0 items [empty/no documents]
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 표준입학허가서 또는 재학/수료증명서 / 사업자등록증 사본 / 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)
+- statusChange · 기본 준비서류: 10 items
+  - first 10: 신청서 / 여권 / 외국인등록증(소지자) / 사진 1매 / 수수료 / 교육기관 사업자등록증 또는 고유번호증 사본 / 표준입학허가서(대학 총 / 재정능력입증서류 / 재학증명서 또는 최종학력입증서류 / 연수계획서(강의시간표, 강사구성표, 연수시설 등의 내용을 포함)
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 부 / 모 잔고증명서 제출 시 가족관계증명서 추가 제출
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 1매 / 수수료 / 연수의 필요성을 입증하는 서류(취업확인서, 연수계획서 등) / 외국인 투자기업 또는 외국에 투자한 국내기업임을 입증하는 서류
+- statusChange · 기본 준비서류: 13 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증(소지자) / 표준규격사진 1매 / 수수료 / 교육기관 사업자등록증 또는 고유번호증 사본 / 입학허가서(학교장 발행) 및 재학증명서(해당자) / 최종 학력 입증서류(졸업증명서 또는 재학증명서 등) / 학비 납부 내역서 / 국내 체류비용 부담능력 입증서류
+- statusChange · 상황별 추가서류: 2 items
+  - first 10: 후견인 면제 대상자는 학교장 명의 기숙사 입소확인서 제출 / 불법체류 다발국가 국민은 후견인 재정능력 입증서류 및 가족관계 입증서류 추가 제출
+- extension · 기본 준비서류: 12 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 재학을 입증하는 서류 / 학업을 정상적으로 수행하고 있음을 입증하는 서류 / 재정능력 입증서류(국내 본인계좌 예치금만 인정) / 모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함) / 체류지 입증서류 / 기간연장 사유서 및 인턴
+- registration · (no document groups): 0 items [empty/no documents]
+- reentry · 기본 준비서류: 4 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 / 외국인등록증 / 수수료
+- reentry · 상황별 추가서류: 3 items
+  - first 10: 사우디아라비아 / 이란 / 유학(D-2)
+
+### K-STAR K-STAR 비자트랙 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 2 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 기타 체류목적 입증서류 (별도 소명자료) / 주무부처 고용추천서 (해당 직종 한정)
+- statusChange · 기본 준비서류: 1 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 기타 체류목적 입증서류 (별도 소명자료)
+- extension · 기본 준비서류: 13 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 표준규격사진 1매(3.5×4.5cm, 최근 6개월) / 수수료(절차별 정부수입인지/카드 발급 수수료 확인) / 체류지 입증서류 / 해외범죄경력증명서(연장은 6개월 이상 해외 체류 시 제출) / 결핵진단서(해당자) / 대학 총장 추천서(발급일로부터 1년간 유효) / 석 / 박사 학위 취득(예정)증명서 또는 졸업(예정)증명서
+- reentry · (no document groups): 0 items [empty/no documents]
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 기타 체류목적 입증서류 (별도 소명자료) / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 소득금액증명원 등 소득입증서류 / 사회통합프로그램(KIIP) 이수증/합격증
+- extension · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 체류지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 추가서류: 배우자 또는 부모의 외국인등록증 등(사안별 해당 시)
+- registration · (no document groups): 0 items [empty/no documents]
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄) / 외국인투자기업등록증 사본 및 투자금 도입 입증서류 / TOPIK 성적표 또는 한국어능력 입증서류
+- statusChange · 기본 준비서류: 10 items [review-needed wording in basic: 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증 / 부모의 기본증명서 / 가족관계증명서 / 주민등록등본 / 신원보증서(양육권을 가진 부 또는 모)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 양육권 보유관계를 입증할 수 없을 때에는 ‘친권자’ 또는 ‘후견인’의 동의서(친권자
+- statusChange · 기본 준비서류: 7 items [review-needed wording in basic: (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / (배우자) 국내 배우자의 신원보증서 / (배우자) 초청장 / (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 고용계약서 / 점수표 / 점수 항목별 입증서류
+- statusChange · 상황별 추가서류: 8 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 학위증 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 이공계 특성화 대학 또는 연구기관의 석 / 박사 학위 취득 또는 취득예정 입증서류 / 대학 총장 추천서
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 투자 대상과 투자금액을 입증하는 서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 부동산 매매계약서 및 등기부등본 / 회원권 취득 관련 입증서류 / 미분양 주택 투자 관련 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 해외범죄경력증명서
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 신청서 / 여권 사본 / 사진 / 수수료 / 투자금 납부 입증서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 4 items
+  - first 10: 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 해외범죄경력증명서
+- extension · 기본 준비서류: 8 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 기타 체류목적 입증서류 (별도 소명자료) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 점수제 자기평가표 및 증빙서류 / 국세·지방세 납세증명서
+- registration · (no document groups): 0 items [empty/no documents]
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 최종 학위/학력증명서 (아포스티유/영사확인 필수) / 해외 및 국내 경력증명서 / 체류/구직/연수 계획서 또는 사유서 / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 구직활동계획서 / 학력 입증서류 / 체류비 입증서류
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 대학 순위 입증서류 / 근무 경력 입증서류 / 국내 연수활동 입증서류 / 한국어능력 입증서류 / 추천서 / 고소득 전문가 입증서류 / 그 밖의 점수 항목별 입증서류
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 구직활동계획서 / 국내 정규 대학 전문학사 이상 학위증 또는 졸업증명서 / 체류지 입증서류
+- statusChange · 기본 준비서류: 8 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 학력 입증서류 / 기술창업계획서 / 체류비 입증서류
+- statusChange · 상황별 추가서류: 5 items
+  - first 10: 특허 / 실용신안 / 디자인 등록증 사본 또는 출원증명서 / OASIS 교육 이수증 또는 참여 입증서류 / OECD 국가 지식재산권 보유 입증서류
+- statusChange · 기본 준비서류: 14 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 인턴활동계획서 / 학적 또는 학위 입증서류와 대학 순위 입증서류 / 업체 / 분야 / 기간을 확인할 수 있는 인턴 근로계약서
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 인턴 근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류
+- extension · 기본 준비서류: 3 items
+  - first 10: 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) / 구직활동 계획서(붙임6) / 체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등
+- extension · 기본 준비서류: 6 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 체류비 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 점수 항목별 평가 입증서류
+- extension · 기본 준비서류: 7 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 기술창업 활동계획서 / 체류비 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: K-Startup Grand Challenge 참여 입증서류
+- extension · 기본 준비서류: 11 items
+  - first 10: 신청서 / 사진 / 여권 사본 / 수수료 / 외국인등록증 사본 / 인턴 재직증명서 / 초청기업의 사업자등록증 사본 / 초청기업의 고용보험가입자 명부 또는 연구시설 / 연구인력 입증서류 / 초청기업 자격요건 유지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류
+- registration · (no document groups): 0 items [empty/no documents]
+
+### REGION-S 지역특화·광역형 비자 시범사업 (browser DOM pass)
+
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)]
+  - first 10: 지자체 추천서 / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 표준근로계약서 또는 고용계약서 원본/사본 / 개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)
+- statusChange · 기본 준비서류: 1 items
+  - first 10: 지자체 추천서
+- visaIssuance · 기본 준비서류: 4 items
+  - first 10: 가족관계증명서 (본국 권한기관 발급 및 공증/확인) / 재정능력 입증서류 (잔고증명, 소득증명 등 총괄) / 외국인투자기업등록증 사본 및 투자금 도입 입증서류 / TOPIK 성적표 또는 한국어능력 입증서류
+- statusChange · 기본 준비서류: 10 items [review-needed wording in basic: 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) / 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) / 자녀의 호구부 및 거민신분증 / 부모의 기본증명서 / 가족관계증명서 / 주민등록등본 / 신원보증서(양육권을 가진 부 또는 모)
+- statusChange · 상황별 추가서류: 1 items
+  - first 10: 양육권 보유관계를 입증할 수 없을 때에는 ‘친권자’ 또는 ‘후견인’의 동의서(친권자
+- statusChange · 기본 준비서류: 7 items [review-needed wording in basic: (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)]
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 표준규격사진 1매 / 수수료 / (배우자) 국내 배우자의 신원보증서 / (배우자) 초청장 / (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등)
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 고용계약서 / 점수표 / 점수 항목별 입증서류
+- statusChange · 상황별 추가서류: 8 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 학위증 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 9 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 체류지 입증서류 / 이공계 특성화 대학 또는 연구기관의 석 / 박사 학위 취득 또는 취득예정 입증서류 / 대학 총장 추천서
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 해외범죄경력증명서 / 가족관계 입증서류 / 결핵검진 확인서 / 재직증명서 / 사업자등록증 / 법인등기부등본 / 소득금액증명 등 해당 항목 입증서류
+- statusChange · 기본 준비서류: 7 items
+  - first 10: 신청서 / 여권 / 외국인등록증 / 사진 / 수수료 / 투자 대상과 투자금액을 입증하는 서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 7 items
+  - first 10: 부동산 매매계약서 및 등기부등본 / 회원권 취득 관련 입증서류 / 미분양 주택 투자 관련 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 해외범죄경력증명서
+- statusChange · 기본 준비서류: 6 items
+  - first 10: 신청서 / 여권 사본 / 사진 / 수수료 / 투자금 납부 입증서류 / 외국환 반입 관련 입증서류
+- statusChange · 상황별 추가서류: 4 items
+  - first 10: 배우자 또는 미혼 자녀가 함께 신청하는 경우 가족관계 입증서류 / 법인을 통한 간접투자 관련 입증서류 / 법인의 현직 임원 또는 주주임을 입증하는 서류 / 해외범죄경력증명서
+- extension · 기본 준비서류: 8 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 통합신청서 (별지 제34호 서식) / 여권 원본 및 인적사항면 사본 / 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함) / 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인) / 기타 체류목적 입증서류 (별도 소명자료) / 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등) / 점수제 자기평가표 및 증빙서류 / 국세·지방세 납세증명서
+- registration · (no document groups): 0 items [empty/no documents]
+- visaIssuance · 기본 준비서류: 4 items [review-needed wording in basic: 기타 체류목적 입증서류 (별도 소명자료)]
+  - first 10: 기타 체류목적 입증서류 (별도 소명자료) / 해외 범죄경력증명서 (자국 정부 발급, 아포스티유/영사확인) / 소득금액증명원 등 소득입증서류 / 사회통합프로그램(KIIP) 이수증/합격증
+- extension · 기본 준비서류: 5 items
+  - first 10: 통합신청서(별지 제34호 서식) / 여권 / 외국인등록증 / 수수료 / 체류지 입증서류
+- extension · 상황별 추가서류: 1 items
+  - first 10: 추가서류: 배우자 또는 부모의 외국인등록증 등(사안별 해당 시)
+- registration · (no document groups): 0 items [empty/no documents]
+
+### YOUTH-STAY 국내 성장 기반 외국인 청소년 취업·정주 체류제도 (browser DOM pass)
+
+- visaIssuance · (no document groups): 0 items [empty/no documents]
+- statusChange · (no document groups): 0 items [empty/no documents]

@@ -1,0 +1,113 @@
+Document taxonomy check
+Records scanned: 42
+Document scopes scanned: 248
+HIGH_CONFIDENCE_VIOLATION: 0
+REVIEW_NEEDED: 37
+NO_DOCUMENTS: 64
+
+Review-needed findings
+- C-3 / extension / parent [basic] 단체관광(C-3-2)은 출국 항공기 부재, 영주·귀화신청 등 부득이한 사유가 있는 경우에 한해 제한적으로 검토 :: Suspicious basic/common wording needs manual source review
+- C-3 / registration / parent [basic] 대상: 단기상용(C-3-4) 소지자로 91일 이상 체류하고자 하는 칠레 국민 :: Suspicious basic/common wording needs manual source review
+- D-3 / extension / parent [basic] 연수기간 연장신청 사유서(별도서식) ‣해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 지침 (제5조) 기술연수생의 연수기간은 원칙적으로 입국한 날로부터 6개월을 초과할 수 없다. 다만, 청(사무소·출장소)장이 추가로 연수가 필요하다고 인정하는 경우 입국한 날부터 2년을 초과하지 않는 한도 내에서 그 연수기간을 연장할 수 있다. :: Suspicious basic/common wording needs manual source review
+- D-4 / statusChange / d-4-3-school-student-status-change [basic] 입학허가서(학교장 발행) 및 재학증명서(해당자) :: Suspicious basic/common wording needs manual source review
+- D-7 / extension / parent [basic] 영 별표 1의 16. 주재(D-7)란의 “가”목 해당자 :: Suspicious basic/common wording needs manual source review
+- D-8 / extension / parent [basic] ※ 외국인투자기업등록지위를 갖춘 금융지주회사에서 100%출자한 자회사의 필수전문인력인 경우 제출서류 :: Suspicious basic/common wording needs manual source review
+- D-8 / extension / parent [basic] 주재활동의 경우 파견명령서(파견기간이 명시된 해외 본사 및 해외 본사의 제3국 소재 지사 발행) 및 재직증명서 :: Suspicious basic/common wording needs manual source review
+- D-8 / extension / parent [basic] 해당국 세관이나 본국 은행 (금융기관)의 외화반출허가(신고)서 (해당자) :: Suspicious basic/common wording needs manual source review
+- D-9 / statusChange / d-9-1-status-change [basic] 공동사업 약정서 원본 및 사본(공동사업자인 경우) :: Suspicious basic/common wording needs manual source review
+- D-9 / extension / parent [basic] 납세실적은 국세청 발급 “소득세 납세사실증명” 제출2. 선박건조·설비제작 감독 또는 수출설비(기계)의 설치·운영·보수 업무를 하려는 경우 :: Suspicious basic/common wording needs manual source review
+- D-10 / extension / parent [basic] 체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D 1): 점수제 적용 대상자 :: Suspicious basic/common wording needs manual source review
+- D-10 / extension / parent [basic] 기타 점수제 평가를 위해 필요하다고 인정되는 서류 1-2) 일반 구직(D 1): 점수제 면제 특례자 ⅰ) 국내 대학 졸업 한국어능력 우수자 :: Suspicious basic/common wording needs manual source review
+- E-3 / statusChange / e-3-d2-d10-status-change [basic] 석사 학위 이상 학위증, 경력증명서(해당자) :: Suspicious basic/common wording needs manual source review
+- E-3 / statusChange / e-3-a3-sofa-status-change [basic] 석사 학위 이상 학위증, 경력증명서(해당자) :: Suspicious basic/common wording needs manual source review
+- E-3 / extension / parent [basic] 원 소속 고용계약 입증 서류(해당자) :: Suspicious basic/common wording needs manual source review
+- E-3 / extension / parent [basic] 국내·외 은행 잔고증명서(해당자) :: Suspicious basic/common wording needs manual source review
+- E-6 / extension / parent [basic] 고용추천서 또는 공연추천서 ※ 추천서 발행기관: 영상물등급위원회, 문화체육관광부, 방송통신위원회 등 :: Suspicious basic/common wording needs manual source review
+- E-7 / extension / parent [basic] 신원보증서 원본(아래 직종에 한해 징구)기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)] :: Suspicious basic/common wording needs manual source review
+- E-7 / extension / parent [basic] 고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)2. 협정상 사증·체류허가 특례적용대상자에 대한 특례사항 규정 가. 한·인도 포괄적경제동반자협정(CEPA): 독립전문가(IP) 적용대상 :: Suspicious basic/common wording needs manual source review
+- E-7 / extension / parent [basic] 국내법인 또는 개인사업자와 서비스공급계약을 체결한 전문가로서의 자격요건을 갖추고 해당 분야에서 1년 이상 경력이 있는 자* * 협정상 양허직종(162개)에서 서비스를 제공하기 위해 ‘서비스공급계약’을 체결한 독립전문가에게만 적용 (고용계약을 체결하고 E-7 허용직종에서 취업하는 전문인력에 대해서는 E-7지침 일반 적용) 사증특례 :: Suspicious basic/common wording needs manual source review
+- E-7 / extension / parent [basic] 최대 1년의 범위 내에서 계약기간을 체류기간으로 하는 단수사증발급인정서 발급 (계약기간이 1년이 초과하는 경우에는 1년 부여) 체류특례 :: Suspicious basic/common wording needs manual source review
+- E-8 / extension / parent [basic] 거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요 :: Suspicious basic/common wording needs manual source review
+- E-9 / workplaceChange / e-9-3-agriculture-workplace-addition [basic] 영농규모증명서 및 사업자등록증 또는 고유번호증 사본(없는 경우 주민등록등본) :: Suspicious basic/common wording needs manual source review
+- F-1 / statusChange / f-1-6-marriage-cleanup-status-change [basic] 이혼 사실이 기재된 혼인관계 증명서 :: Suspicious basic/common wording needs manual source review
+- F-1 / statusChange / f-1-52-prior-marriage-child-status-change [basic] 미성년 외국인 자녀의 여권 및 출생 관련 공적 증명서류 원본과 사본 :: Suspicious basic/common wording needs manual source review
+- F-1 / statusGrant / f-1-refugee-born-child-status-grant [basic] 출생증명서 등 부모와의 가족관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류 :: Suspicious basic/common wording needs manual source review
+- F-2 / statusChange / f-2-2-national-minor-child-status-change [basic] 대한민국 국민과 해당 미성년자와의 관계 및 양육권 보유관계를 입증할 수 있는 서류(이혼판결문 등) :: Suspicious basic/common wording needs manual source review
+- F-2 / statusChange / f-2-2-national-minor-child-status-change [basic] 국민의 외국인 자녀임을 입증할 수 있는 서류(출생증명서, 호구부 등) :: Suspicious basic/common wording needs manual source review
+- F-2 / statusChange / f-2-2-national-minor-child-status-change [basic] 자녀의 호구부 및 거민신분증 :: Suspicious basic/common wording needs manual source review
+- F-2 / statusChange / f-2-permanent-resident-family-status-change [basic] (미성년 자녀) 가족관계 입증서류(출생증명서, 결혼증명서, 호구부 등) :: Suspicious basic/common wording needs manual source review
+- F-5 / extension / parent [basic] 위 항목은 영주증 재발급 등 절차 기준으로 자동 추출되었으며, 세부 사안은 공식 확인이 필요합니다. :: Suspicious basic/common wording needs manual source review
+- F-6 / statusChange / f-6-2-child-rearing-status-change [basic] 자녀가 국민인 경우 자녀 명의의 기본증명서·가족관계증명서 :: Suspicious basic/common wording needs manual source review
+- F-6 / statusChange / f-6-2-child-rearing-status-change [basic] 자녀양육 입증서류(양육권 관련 판결문, 자녀가 등재된 주민등록등본, 자녀의 5촌 이내 한국인 친척이나 주거지 통·반장의 확인서 등) :: Suspicious basic/common wording needs manual source review
+- G-1 / statusChange / g-1-3-litigation-status-change [basic] 소장 사본, 소송제기 증명원, 법률구조결정서 사본, 기타 청구권의 존재를 확인할 수 있는 서류 :: Suspicious basic/common wording needs manual source review
+- G-1 / extension / parent [basic] 세부약호별(산업재해·질병치료·소송·임금체불·난민신청 관련 등) 추가 제출서류 및 허가기간은 사안마다 달라 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인 (G-1은 세부약호별로 요건이 상이) :: Suspicious basic/common wording needs manual source review
+- K-STAR / extension / parent [basic] 결핵진단서(해당자) :: Suspicious basic/common wording needs manual source review
+- REGION-S / visaIssuance / parent [basic] 개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준) :: Suspicious basic/common wording needs manual source review
+
+Scopes with no rendered documents
+- B-1 / registration / parent
+- B-2 / registration / parent
+- C-4 / extension / parent
+- C-4 / registration / parent
+- D-1 / registration / parent
+- D-3 / registration / parent
+- D-4 / statusChange / parent
+- D-4 / registration / parent
+- D-7 / registration / parent
+- D-8 / statusChange / parent
+- D-9 / statusChange / parent
+- D-9 / registration / parent
+- D-10 / statusChange / parent
+- D-10 / registration / parent
+- E-1 / statusChange / parent
+- E-1 / registration / parent
+- E-2 / statusChange / parent
+- E-2 / registration / parent
+- E-2 / workplaceChange / parent
+- E-3 / statusChange / parent
+- E-3 / registration / parent
+- E-3 / workplaceChange / parent
+- E-4 / statusChange / parent
+- E-4 / registration / parent
+- E-4 / workplaceChange / parent
+- E-5 / statusChange / parent
+- E-5 / registration / parent
+- E-5 / workplaceChange / parent
+- E-6 / statusChange / parent
+- E-6 / registration / parent
+- E-6 / activitiesOutsideStatus / parent
+- E-6 / workplaceChange / parent
+- E-7 / registration / parent
+- E-7 / workplaceChange / parent
+- E-9 / registration / parent
+- E-9 / workplaceChange / parent
+- F-1 / statusChange / parent
+- F-1 / statusGrant / parent
+- F-1 / registration / parent
+- F-2 / statusChange / parent
+- F-2 / registration / parent
+- F-3 / statusChange / parent
+- F-3 / statusGrant / parent
+- F-3 / registration / parent
+- F-3 / activitiesOutsideStatus / parent
+- F-4 / statusChange / parent
+- F-4 / registration / parent
+- F-5 / registration / parent
+- F-6 / statusChange / parent
+- F-6 / statusGrant / parent
+- F-6 / reentry / parent
+- G-1 / statusChange / parent
+- G-1 / registration / parent
+- H-2 / visaIssuance / parent
+- H-2 / registration / parent
+- H-2 / workplaceChange / parent
+- A-1 / extension / parent
+- A-2 / extension / parent
+- C-1 / registration / parent
+- D-5 / registration / parent
+- D-6 / registration / parent
+- K-STAR / reentry / parent
+- YOUTH-STAY / visaIssuance / parent
+- YOUTH-STAY / statusChange / parent
+
+PASS: no unresolved high-confidence rendered basic/common taxonomy violations.
