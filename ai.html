@@ -7,6 +7,22 @@
     <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
     <link rel="icon" href="assets/brand/paradiso-favicon-o.png?v=2" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+    <!-- Editorial interface theme parity with index.html. Reads the SAME
+         persistence key (paradiso:editorial-theme) and exposes the choice as
+         data-editorial-theme so the chat console can restyle for Kitsch
+         (archive_diary) while the civic default keeps its dark console. -->
+    <script>
+    (function () {
+        var KEY = 'paradiso:editorial-theme';
+        var ALLOWED = ['civic_editorial', 'archive_diary'];
+        var theme = 'civic_editorial';
+        try {
+            var stored = localStorage.getItem(KEY);
+            if (stored && ALLOWED.indexOf(stored) !== -1) theme = stored;
+        } catch (e) {}
+        document.documentElement.setAttribute('data-editorial-theme', theme);
+    })();
+    </script>
     <style>
         /* paradiso-design-tokens — additive, prefixed, no overrides */
         :root {
@@ -995,6 +1011,15 @@
             color: #fda4af;
         }
         .source-list .source-row.state-failed::before { content: "FAILED"; }
+        /* Explicit no-official-grounding warning: serious, high-contrast, and
+           not color-only (badge text + role=alert carry the semantics). */
+        .source-list .source-row.source-unavailable-warning {
+            border: 1.5px solid rgba(255,107,91,0.8);
+            background: rgba(255,107,91,0.14);
+            color: #ffd9d3;
+            font-weight: 700;
+        }
+        .source-list .source-row.source-unavailable-warning::before { content: "NO SOURCE"; }
         /* Related status to verify row — distinct from any source-grounding row. */
         .source-list .source-row.state-related {
             border-color: rgba(122,167,255,0.5);
@@ -1104,6 +1129,95 @@ select:focus-visible {
   .context-pill, .grounding-badge, .pa-state-chip { max-width: 100%; white-space: normal; }
 }
 
+
+        /* Ambient motion respects prefers-reduced-motion (all themes). */
+        @media (prefers-reduced-motion: reduce) {
+            body::before, body::after { animation: none; }
+            .status-dot { animation: none; }
+        }
+
+        /* ════════════════════════════════════════════════════════════════
+           PARADISO_KITSCH_AI_CONSOLE_20260611 (archive_diary parity)
+           Kitsch Editorial palette for the AI console: cloud/cream paper,
+           ink text, blue action, restrained pink only on the Waymaker title.
+           Civic default (dark console) is untouched. Legal/disclaimer and the
+           source/verification panel stay serious: palette-only adjustments.
+           ════════════════════════════════════════════════════════════════ */
+        html[data-editorial-theme="archive_diary"] {
+            --bg0: #F4EEDF; --bg1: #FBF6EC; --bg2: #F0E7D5;
+            --bd: #C8B89A; --bd2: #D8CBB0;
+            --t1: #2A241C; --t2: #574D3E; --t3: #897C66;
+            --ac: #2E5C9E; --ac2: #234A82; --acL: #E7EDF6;
+            --acG: rgba(46,92,158,0.14);
+            --cy: #B5654A;
+            --error: #B14A3B; --warning: #B07235;
+            --sh-modal: 0 12px 48px rgba(42,36,28,0.25);
+        }
+        html[data-editorial-theme="archive_diary"] body::before,
+        html[data-editorial-theme="archive_diary"] body::after { display: none; }
+        html[data-editorial-theme="archive_diary"] body {
+            background:
+                linear-gradient(0deg, rgba(38,34,27,0.035) 1px, transparent 1px) 0 0 / 100% 28px,
+                linear-gradient(180deg, #FBF7EE 0%, #F4EEDF 100%);
+        }
+        html[data-editorial-theme="archive_diary"] .chat-header,
+        html[data-editorial-theme="archive_diary"] .chat-input-area {
+            background: rgba(251,246,236,0.92);
+        }
+        html[data-editorial-theme="archive_diary"] .ai-header-logo {
+            /* white brush wordmark reads as ink on Kitsch paper */
+            filter: invert(0.85) sepia(0.18) saturate(0.6) brightness(0.9);
+        }
+        html[data-editorial-theme="archive_diary"] .msg-row.ai .msg-bubble,
+        html[data-editorial-theme="archive_diary"] .answer-card,
+        html[data-editorial-theme="archive_diary"] .msg-row.ai .answer-card {
+            background: #FFFFFF;
+            border: 1.5px solid #26221B;
+            box-shadow: 3px 3px 0 rgba(38,34,27,0.75);
+            color: var(--t1);
+        }
+        html[data-editorial-theme="archive_diary"] .msg-row.user .msg-bubble {
+            background: var(--acL);
+            border: 1.5px solid var(--ac);
+            color: var(--t1);
+        }
+        html[data-editorial-theme="archive_diary"] .answer-body strong,
+        html[data-editorial-theme="archive_diary"] .msg-bubble strong { color: var(--ac2); }
+        html[data-editorial-theme="archive_diary"] .answer-kicker { color: #D8527C; }
+        html[data-editorial-theme="archive_diary"] .ai-title-main { color: var(--t1); }
+        html[data-editorial-theme="archive_diary"] .send-btn { background: var(--ac); color: #fff; border-radius: 999px; }
+        html[data-editorial-theme="archive_diary"] .send-btn:hover:not(:disabled) { background: var(--ac2); }
+        html[data-editorial-theme="archive_diary"] .ai-textarea { background: #FFFFFF; border: 1.5px solid #26221B; color: var(--t1); }
+        html[data-editorial-theme="archive_diary"] .ai-textarea:focus { border-color: var(--ac); }
+        html[data-editorial-theme="archive_diary"] .ai-welcome-chip {
+            background: #DCE9DD; color: var(--t1); border: 1px dashed #26221B; border-radius: 4px;
+        }
+        html[data-editorial-theme="archive_diary"] .ai-welcome-chip:nth-child(even) { background: #F8EDC2; }
+        html[data-editorial-theme="archive_diary"] .ai-welcome-chip:hover { background: #FFFFFF; border-style: solid; color: var(--ac2); }
+        html[data-editorial-theme="archive_diary"] .back-btn { color: var(--t2); border-color: #26221B; border-radius: 999px; }
+        html[data-editorial-theme="archive_diary"] .back-btn:hover { background: #FFFFFF; color: var(--ac2); border-color: var(--ac); }
+        html[data-editorial-theme="archive_diary"] .quota-badge { background: #FFFFFF; border: 1px solid #26221B; color: var(--t2); }
+        /* Serious surfaces: palette-only, keep contrast and weight. */
+        html[data-editorial-theme="archive_diary"] .source-panel {
+            background: #F4EFE2; border-color: var(--ac);
+        }
+        html[data-editorial-theme="archive_diary"] .source-title { color: var(--ac2); }
+        html[data-editorial-theme="archive_diary"] .source-list { color: var(--t2); }
+        html[data-editorial-theme="archive_diary"] .source-list .source-row strong { color: var(--t1); }
+        html[data-editorial-theme="archive_diary"] .source-list .source-row.state-failed,
+        html[data-editorial-theme="archive_diary"] .source-list .source-row.source-unavailable-warning {
+            background: rgba(177,74,59,0.12); border-color: rgba(177,74,59,0.8); color: #7C2D21;
+        }
+        html[data-editorial-theme="archive_diary"] .reference-disclaimer,
+        html[data-editorial-theme="archive_diary"] .msg-disc { color: var(--t2); }
+        html[data-editorial-theme="archive_diary"] .grounding-badge { background: #FFFFFF; border-color: #26221B; color: var(--t2); }
+        html[data-editorial-theme="archive_diary"] .grounding-badge.grounded { border-color: var(--ac); color: var(--ac2); background: var(--acL); }
+        html[data-editorial-theme="archive_diary"] .modal-box { background: #FBF6EC; border: 1.5px solid #26221B; }
+        html[data-editorial-theme="archive_diary"] .modal-title { color: var(--ac2); }
+        html[data-editorial-theme="archive_diary"] .btn-agree { background: var(--ac); border-color: var(--ac); color: #fff; }
+        html[data-editorial-theme="archive_diary"] .answer-action,
+        html[data-editorial-theme="archive_diary"] .bdg { background: #FFFFFF; }
+        /* ─── end PARADISO_KITSCH_AI_CONSOLE_20260611 ─── */
 </style>
 </head>
 <body>
@@ -2176,6 +2290,24 @@ select:focus-visible {
             // document checklist). Shown only when real law evidence exists; the
             // adapter sanitizes any OC/key out of source URLs before this point.
             const lawSources = Array.isArray(safe.law_sources) ? safe.law_sources.filter((s) => s && s.law_name) : [];
+
+            // PARADISO_SOURCE_UNAVAILABLE_GUARD_20260611: when neither manual
+            // grounding nor law/public grounding reached this answer, say so
+            // explicitly and visibly. The answer must never read as officially
+            // grounded when retrieval failed or returned empty.
+            const officialGroundingPresent = Boolean(safe.grounding_used) || lawUsed
+                || manualSources.length > 0 || publicLabels.length > 0 || hasPublicData || lawSources.length > 0;
+            if (!officialGroundingPresent) {
+                const warnHead = tt(lang, { ko: '공식 근거 미확인', en: 'Official grounding unavailable', zh: '未确认官方依据', zhHant: '未確認官方依據' });
+                const warnBody = tt(lang, {
+                    ko: '공식 근거를 확인하지 못했습니다. 하이코리아/1345 또는 관할 출입국기관에서 재확인하세요.',
+                    en: 'Official source grounding was not available. Please verify with HiKorea, 1345, or the competent immigration office.',
+                    zh: '未能确认官方依据。请通过 HiKorea／1345 或主管出入境机关再次确认。',
+                    zhHant: '未能確認官方依據。請透過 HiKorea／1345 或主管出入境機關再次確認。'
+                });
+                rows.unshift(`<div class="source-row state-failed source-unavailable-warning" role="alert"><strong>${escapeHtml(warnHead)}</strong>: ${escapeHtml(warnBody)}</div>`);
+            }
+
             if (lawSources.length) {
                 const head = tt(lang, { ko: '보조 법령 근거', en: 'Supporting legal source', zh: '补充法令依据', zhHant: '補充法令依據' });
                 const names = tt(lang, { ko: '보조 법령 근거를 조회했습니다.', en: 'Supporting legal source retrieved', zh: '已获取补充性法令依据。', zhHant: '已取得補充性法令依據。' }) + ': ' + lawSources.slice(0, 3).map((s) => escapeHtml(String(s.law_name))).join(' · ');
@@ -2675,6 +2807,49 @@ select:focus-visible {
             }
         });
     /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
+    </script>
+    <script>
+    /* ── Waymaker by Paradiso — Kitsch-only DISPLAY rename (parity with
+       index.html). Swaps visible "Paradiso AI"/"Paradiso.ai" text to
+       "Waymaker by Paradiso" while archive_diary is active. Display-only:
+       no hrefs, API names, storage keys or JS identifiers are changed. New
+       chat messages are covered by an idempotent observer on #chatHistory. */
+    (function () {
+        var BRAND_RE = /Paradiso\.ai|Paradiso\s+AI/g;
+        var NAME = 'Waymaker by Paradiso';
+        function kitschActive() {
+            return document.documentElement.getAttribute('data-editorial-theme') === 'archive_diary';
+        }
+        function swapTextNodes(root) {
+            if (!root) return;
+            var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+            var node;
+            while ((node = walker.nextNode())) {
+                BRAND_RE.lastIndex = 0;
+                if (BRAND_RE.test(node.nodeValue)) {
+                    BRAND_RE.lastIndex = 0;
+                    node.nodeValue = node.nodeValue.replace(BRAND_RE, NAME);
+                }
+            }
+        }
+        function apply() {
+            if (!kitschActive()) return;
+            BRAND_RE.lastIndex = 0;
+            document.title = document.title.replace(BRAND_RE, NAME);
+            swapTextNodes(document.querySelector('.chat-header'));
+            swapTextNodes(document.getElementById('chatHistory'));
+        }
+        function boot() {
+            apply();
+            var history = document.getElementById('chatHistory');
+            if (history && kitschActive()) {
+                new MutationObserver(function () { apply(); })
+                    .observe(history, { childList: true, subtree: true });
+            }
+        }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+        else boot();
+    })();
     </script>
 </body>
 </html>
