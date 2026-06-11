@@ -13446,7 +13446,10 @@ function canonicalizeSourceConfirmedDocText(text, procedureKey, statusCode) {
     const value = String(text || '').replace(/^\s*[①-⑳]\s*/g, '').trim();
     if (!value || isDocPlaceholder(value)) return '';
     if (procedureKey !== 'visaIssuance') {
-        const isGenericForm = value === '신청서' || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value);
+        const isGenericForm = value === '신청서' || value === '통합신청서'
+            || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value)
+            || /^통합신청서\s*\(별지\s*제?34호\s*서식\)$/.test(value)
+            || /^재외동포\s+통합신청서\s*\(별지\s*제1호서식\)$/.test(value);
         if (isGenericForm) {
             if (statusCode === 'F-4' && F4_OVERSEAS_KOREANS_FORM_PROCEDURES.has(procedureKey)) {
                 return tx('f4ApplicationForm');
@@ -16069,7 +16072,7 @@ const BOOTSTRAP_KO_FALLBACK = {
     landingHints: ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'],
     quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
     aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
-    f4ApplicationForm: '재외동포 통합신청서(별지 제1호서식)'
+    f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)'
 };
 let I18N_MANIFEST = { defaultLocale: 'ko', canonicalLocale: 'ko', supportedLocales: ['ko', 'en', 'zh-CN'], localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' }, pendingLocales: [] };
 
@@ -18248,8 +18251,11 @@ function showVisaDocForAction(visaCode) {
 
     // F-4: route through 재외동포법 시행규칙 별지 제1호서식 for stay procedures
     if (statusCode === 'F-4' && procedureKey && F4_FORM_PROCEDURE_KEYS.has(procedureKey)) {
-      if (/^신청서$/.test(text) || /^통합신청서$/.test(text) || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(text)) {
-        return typeof tx === 'function' ? tx('f4ApplicationForm') : '재외동포 통합신청서(별지 제1호서식)';
+      if (/^신청서$/.test(text) || /^통합신청서$/.test(text)
+          || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(text)
+          || /^통합신청서\s*\(별지\s*제?34호\s*서식\)$/.test(text)
+          || /^재외동포\s+통합신청서\s*\(별지\s*제1호서식\)$/.test(text)) {
+        return typeof tx === 'function' ? tx('f4ApplicationForm') : '재외동포(F-4) 통합신청서(별지 제1호서식)';
       }
     }
 
