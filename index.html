@@ -10719,6 +10719,11 @@ body.searched .hero-container::before {
   background: var(--k-blue); color: #fff;
   border: 2px solid var(--k-ink); border-radius: 999px;
 }
+/* Search-term <mark class="h"> inside the blue code capsule: base mark colour
+   is var(--ac) (= the same kitsch blue), which would render blue-on-blue and
+   vanish. Neutralise the highlight inside .bc only — it inherits the capsule
+   text colour in both light and dark. */
+:root[data-theme="archive_diary"] .bc mark.h { background: transparent; color: inherit; padding: 0; border-radius: 0; }
 /* Status / required badges → pill labels (blue family) */
 :root[data-theme="archive_diary"] .badge-req,
 :root[data-theme="archive_diary"] .bd { border: 2px solid var(--k-ink); border-radius: 999px; font-weight: 700; }
