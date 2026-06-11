@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Paradiso AI — 비자·체류 정보 AI 도우미</title>
+    <title>Waymaker by Paradiso — 비자·체류 정보 AI 도우미</title>
     <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
     <link rel="icon" href="assets/brand/paradiso-favicon-o.png?v=2" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -1233,7 +1233,7 @@ select:focus-visible {
             <img class="ai-header-logo" src="assets/brand/paradiso-wordmark-brush-white.png" alt="Paradiso" height="18" loading="eager" decoding="async">
             <div class="ai-title">
                 <div class="ai-title-row">
-                    <h1 class="ai-title-main">Paradiso AI — 비자·체류 정보 AI 도우미</h1>
+                    <h1 class="ai-title-main">Waymaker by Paradiso — 비자·체류 정보 AI 도우미</h1>
                     <span class="ai-ref-chip" aria-label="참고용 안내">참고용</span>
                 </div>
                 <p class="ai-title-sub">공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345</p>
@@ -1253,7 +1253,7 @@ select:focus-visible {
         <!-- Initial Message -->
         <div class="msg-row ai" id="welcomeMessage">
             <div class="msg-bubble">
-                안녕하세요. <strong>Paradiso AI</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>
+                안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>
                 국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.<br><br>
                 답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.
                 <div class="ai-welcome-chips" role="group" aria-label="예시 질문">
@@ -1281,7 +1281,7 @@ select:focus-visible {
     </footer>
 
     <!--
-      Paradiso.ai structured answer card shell — HTML/CSS preparation only.
+      Waymaker by Paradiso structured answer card shell — HTML/CSS preparation only.
       This <template> defines the slot structure described in
       docs/ai/ANSWER_QUALITY_CONTRACT.md §3. It is NOT yet rendered
       by appendAiAnswer(); a future PR is required to wire it up.
@@ -1822,7 +1822,7 @@ select:focus-visible {
             row.className = `msg-row ${typeClass}`;
             
             const timeStr = formatTime();
-            const senderName = typeClass === 'user' ? '사용자' : (typeClass === 'sys-err' ? '시스템 오류' : 'Paradiso AI');
+            const senderName = typeClass === 'user' ? '사용자' : (typeClass === 'sys-err' ? '시스템 오류' : 'Waymaker by Paradiso');
 
             row.innerHTML = `
                 <div class="msg-bubble">${htmlContent}</div>
@@ -2492,7 +2492,7 @@ select:focus-visible {
                 <article class="msg-bubble answer-card">
                     <header class="answer-head">
                         <div>
-                            <span class="answer-kicker">${t(lang, 'Paradiso AI 안내', 'Paradiso AI guidance')}</span>
+                            <span class="answer-kicker">${t(lang, 'Waymaker by Paradiso 안내', 'Waymaker by Paradiso guidance')}</span>
                             <span class="answer-model">${escapeHtml(modelLabel)}</span>
                         </div>
                         <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
@@ -2506,7 +2506,7 @@ select:focus-visible {
                     ${buildAnswerActions(copyId, Boolean(sourceCopy), lang)}
                     ${trailingDisc}
                 </article>
-                <div class="msg-time">Paradiso AI · ${formatTime()}</div>
+                <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
             `;
             hist.appendChild(row);
             rememberTurn('assistant', answer);
@@ -2807,49 +2807,6 @@ select:focus-visible {
             }
         });
     /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
-    </script>
-    <script>
-    /* ── Waymaker by Paradiso — Kitsch-only DISPLAY rename (parity with
-       index.html). Swaps visible "Paradiso AI"/"Paradiso.ai" text to
-       "Waymaker by Paradiso" while archive_diary is active. Display-only:
-       no hrefs, API names, storage keys or JS identifiers are changed. New
-       chat messages are covered by an idempotent observer on #chatHistory. */
-    (function () {
-        var BRAND_RE = /Paradiso\.ai|Paradiso\s+AI/g;
-        var NAME = 'Waymaker by Paradiso';
-        function kitschActive() {
-            return document.documentElement.getAttribute('data-editorial-theme') === 'archive_diary';
-        }
-        function swapTextNodes(root) {
-            if (!root) return;
-            var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
-            var node;
-            while ((node = walker.nextNode())) {
-                BRAND_RE.lastIndex = 0;
-                if (BRAND_RE.test(node.nodeValue)) {
-                    BRAND_RE.lastIndex = 0;
-                    node.nodeValue = node.nodeValue.replace(BRAND_RE, NAME);
-                }
-            }
-        }
-        function apply() {
-            if (!kitschActive()) return;
-            BRAND_RE.lastIndex = 0;
-            document.title = document.title.replace(BRAND_RE, NAME);
-            swapTextNodes(document.querySelector('.chat-header'));
-            swapTextNodes(document.getElementById('chatHistory'));
-        }
-        function boot() {
-            apply();
-            var history = document.getElementById('chatHistory');
-            if (history && kitschActive()) {
-                new MutationObserver(function () { apply(); })
-                    .observe(history, { childList: true, subtree: true });
-            }
-        }
-        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-        else boot();
-    })();
     </script>
 </body>
 </html>
