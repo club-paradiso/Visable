@@ -13026,7 +13026,8 @@ async function submitAiAnalysis(actionType, btnEl) {
 function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // Defense-in-depth: never emit placeholder/diagnostic stand-ins as checklist
     // rows even if an upstream path bypassed dedupeDocs().
-    const cleanKeys = (docKeys || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
+    const dedupedSections = dedupeDocumentSectionsForDisplay([{ key: 'flat', docs: docKeys || [] }]);
+    const cleanKeys = (dedupedSections[0]?.docs || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
     if (!cleanKeys.length) return '<div class="text-desc" style="color:var(--t3);">요구되는 추가 서류가 없습니다.</div>';
     // Explanatory prose that was authored inside a document array is relocated
     // here (rendered as a note) instead of being shown as a fake checklist tile.
@@ -13749,24 +13750,154 @@ function paradisoDocFamilyProbe(resolvedLabel) {
     return probe;
 }
 
-function paradisoCanonicalDocKey20260609(doc) {
-    const resolved = paradisoResolveDocDisplayLabel(doc);
+function getDocumentRequirementLabel(doc) {
+    if (doc && typeof doc === 'object') {
+        return paradisoResolveDocDisplayLabel(doc.name || doc.label || doc.title || doc.textKo || doc.text || doc.description || '');
+    }
+    return paradisoResolveDocDisplayLabel(doc);
+}
+
+function copyDocumentRequirementForDisplay(doc) {
+    if (doc && typeof doc === 'object') {
+        if (Array.isArray(doc)) return doc.slice();
+        return { ...doc };
+    }
+    return doc;
+}
+
+function setDocumentRequirementLabel(doc, label) {
+    if (!(doc && typeof doc === 'object') || Array.isArray(doc)) return label;
+    const copy = { ...doc };
+    if (Object.prototype.hasOwnProperty.call(copy, 'name')) copy.name = label;
+    else if (Object.prototype.hasOwnProperty.call(copy, 'label')) copy.label = label;
+    else if (Object.prototype.hasOwnProperty.call(copy, 'title')) copy.title = label;
+    else if (Object.prototype.hasOwnProperty.call(copy, 'textKo')) copy.textKo = label;
+    else if (Object.prototype.hasOwnProperty.call(copy, 'text')) copy.text = label;
+    else copy.name = label;
+    return copy;
+}
+
+const DOCUMENT_REQUIREMENT_DISPLAY_FAMILY_RULES = [
+    { family: '신청서', re: /^(통합신청서|신청서)/ },
+    { family: '여권', re: /^여권/ },
+    { family: '수수료', re: /^(수수료|정부수입인지|수입인지|인지대|인지)/ },
+    { family: '외국인등록증', re: /^(외국인등록증|등록증|거소증)/ },
+    { family: '체류지입증서류', re: /^(체류지입증서류|임대차계약서|숙소제공확인서|거주숙소제공확인서|공공요금납부영수증|공과금|기숙사비영수증|기숙사거주확인)/ },
+    { family: '재정입증서류', re: /^(재정입증서류|재정능력입증서류|잔고증명서?|은행잔고증명서?|소득증명서?|통장)/ },
+    { family: '학업수행입증서류', re: /^(학업정상수행입증서류|학업을정상적으로수행하고있음을입증하는서류|재학증명서|성적증명서|출석확인서)/ },
+    { family: '수료증명서·지도교수확인서', re: /^(수료증명서|지도교수|유학담당자)/ }
+];
+
+function normalizeDocumentRequirementKey(label) {
+    const resolved = getDocumentRequirementLabel(label);
     if (!resolved || isDocPlaceholder(resolved)) return '';
-    const probe = paradisoDocFamilyProbe(resolved);
+    const split = paradisoSplitDocItem(resolved);
+    const displayLabel = split.kind === 'doc' && split.label ? split.label : resolved;
+    const probe = paradisoDocFamilyProbe(displayLabel);
     if (!probe) return '';
-    // "수료증명서 + 지도교수/유학담당자 확인서" pairs are one official line.
-    if (/수료증명서/.test(probe) && /(지도교수|유학담당자)/.test(probe)) return '수료증명서·지도교수확인서';
+    if (/(수수료|정부수입인지|수입인지|인지대|인지)/.test(probe)) return '수수료';
+    if (/졸업증명서/.test(probe) && !/(학업정상|학업을정상적|출석|성적)/.test(probe)) return probe;
+    for (const rule of DOCUMENT_REQUIREMENT_DISPLAY_FAMILY_RULES) {
+        if (rule.re.test(probe)) return rule.family;
+    }
+    // Keep the earlier full-consumption guards for families where over-collapsing
+    // would hide a distinct requirement.
     for (const rule of PARADISO_DOC_FAMILY_RULES) {
         const m = probe.match(rule.head);
         if (!m) continue;
         const rest = probe.slice(m[0].length);
         if (rule.allow.test(rest)) return rule.family;
-        // "A 또는 B" alternatives of the same requirement collapse to the
-        // family of the first alternative ONLY when B reads as a document —
-        // the richer alternative wording then wins the display merge.
         if (/^또는/.test(rest) && PARADISO_DOC_PART_TAIL_RE.test(rest)) return rule.family;
     }
     return probe;
+}
+
+function getDocumentRequirementDisplayKey(doc) {
+    return normalizeDocumentRequirementKey(getDocumentRequirementLabel(doc));
+}
+
+function scoreDocumentRequirementSpecificity(label) {
+    const text = getDocumentRequirementLabel(label);
+    if (!text) return 0;
+    let score = Math.min(text.length, 80);
+    if (/통합신청서|별지\s*제?\d+호/.test(text)) score += 90;
+    if (/체류지\s*입증|재정(능력|입증)|학업.*입증|정상적으로\s*수행/.test(text)) score += 90;
+    if (/외국인등록증.*거소증|원본\s*및\s*사본|인적사항면/.test(text)) score += 55;
+    if (/정부수입인지|수입인지/.test(text)) score += 45;
+    if (/수료증명서/.test(text) && /(지도교수|유학담당자)/.test(text)) score += 70;
+    if (/[()（）]/.test(text)) score += 18;
+    if (/^신청서$|^여권$|^수수료$|^거소증$/.test(text.trim())) score -= 30;
+    return score;
+}
+
+function mergeUniqueDocumentArray(existingValue, nextValue) {
+    const out = [];
+    [existingValue, nextValue].forEach(value => {
+        (Array.isArray(value) ? value : (value ? [value] : [])).forEach(item => {
+            const key = item && typeof item === 'object' ? JSON.stringify(item) : String(item);
+            if (!out.some(prev => (prev && typeof prev === 'object' ? JSON.stringify(prev) : String(prev)) === key)) out.push(item);
+        });
+    });
+    return out;
+}
+
+function mergeDocumentRequirementForDisplay(existingDoc, nextDoc) {
+    const existingLabel = getDocumentRequirementLabel(existingDoc);
+    const nextLabel = getDocumentRequirementLabel(nextDoc);
+    const chooseNext = scoreDocumentRequirementSpecificity(nextLabel) > scoreDocumentRequirementSpecificity(existingLabel);
+    const preferredDoc = copyDocumentRequirementForDisplay(chooseNext ? nextDoc : existingDoc);
+    const fallbackDoc = chooseNext ? existingDoc : nextDoc;
+    const preferredLabel = chooseNext ? nextLabel : existingLabel;
+    let merged = setDocumentRequirementLabel(preferredDoc, preferredLabel);
+    if (merged && typeof merged === 'object' && !Array.isArray(merged)) {
+        const other = fallbackDoc && typeof fallbackDoc === 'object' && !Array.isArray(fallbackDoc) ? fallbackDoc : {};
+        ['sources', 'sourceRefs', 'manualRefs', 'refs', 'metadata'].forEach(field => {
+            if (!Array.isArray(merged[field]) && !Array.isArray(other[field])) return;
+            const combined = mergeUniqueDocumentArray(merged[field], other[field]);
+            if (combined.length) merged[field] = combined;
+        });
+        ['note', 'description'].forEach(field => {
+            const bits = [merged[field], other[field]].map(v => String(v || '').trim()).filter(Boolean);
+            merged[field] = [...new Set(bits)].join(' / ');
+        });
+    }
+    return merged;
+}
+
+function getDocumentSectionItemsField(section) {
+    if (Array.isArray(section?.docs)) return 'docs';
+    if (Array.isArray(section?.items)) return 'items';
+    if (Array.isArray(section?.documents)) return 'documents';
+    return 'docs';
+}
+
+function dedupeDocumentSectionsForDisplay(sections) {
+    // Display-layer dedupe only. Source records from visa_data.json, API payloads,
+    // and doc_master.json are copied and never mutated here.
+    const seen = new Map();
+    const output = [];
+    (sections || []).forEach(section => {
+        const field = getDocumentSectionItemsField(section);
+        const docs = Array.isArray(section?.[field]) ? section[field] : [];
+        const outSection = { ...(section || {}), [field]: [] };
+        docs.forEach(doc => {
+            const key = getDocumentRequirementDisplayKey(doc);
+            if (!key) return;
+            const prior = seen.get(key);
+            if (!prior) {
+                seen.set(key, { section: outSection, field, index: outSection[field].length });
+                outSection[field].push(copyDocumentRequirementForDisplay(doc));
+                return;
+            }
+            prior.section[prior.field][prior.index] = mergeDocumentRequirementForDisplay(prior.section[prior.field][prior.index], doc);
+        });
+        if (outSection[field].length) output.push(outSection);
+    });
+    return output;
+}
+
+function paradisoCanonicalDocKey20260609(doc) {
+    return normalizeDocumentRequirementKey(doc);
 }
 
 /* Whether a kept label is a "bare generic" (exactly its family word, no
@@ -13811,15 +13942,7 @@ function dedupeDocGroupsAcrossCategories(groups) {
             }
             const priorArr = prior.groupKey === groupKey ? kept : groups[prior.groupKey];
             const priorDoc = priorArr[prior.index];
-            const priorLabel = paradisoResolveDocDisplayLabel(priorDoc);
-            const nextLabel = paradisoResolveDocDisplayLabel(doc);
-            if (
-                paradisoIsBareGenericDocLabel(priorLabel) &&
-                nextLabel.length > priorLabel.length &&
-                !(/또는/.test(nextLabel) && !/또는/.test(priorLabel))
-            ) {
-                priorArr[prior.index] = doc; // upgrade label in place
-            }
+            priorArr[prior.index] = mergeDocumentRequirementForDisplay(priorDoc, doc);
         });
         groups[groupKey] = kept;
     });
@@ -13842,14 +13965,20 @@ function paradisoIsDiscretionaryDocText(label) {
 
 function paradisoBuildDocDisplayGroups(groups) {
     const basic = [], situational = [], discretionary = [];
+    const sections = dedupeDocumentSectionsForDisplay([
+        { key: 'commonDocs', docs: groups?.commonDocs || [] },
+        { key: 'requiredDocs', docs: groups?.requiredDocs || [] },
+        { key: 'additionalDocs', docs: groups?.additionalDocs || [] },
+        { key: 'conditionalDocs', docs: groups?.conditionalDocs || [] }
+    ]);
     const route = (arr, target) => (arr || []).forEach(doc => {
         if (isDocPlaceholder(doc)) return;
         (paradisoIsDiscretionaryDocText(doc) ? discretionary : target).push(doc);
     });
-    route(groups && groups.commonDocs, basic);
-    route(groups && groups.requiredDocs, basic);
-    route(groups && groups.additionalDocs, situational);
-    route(groups && groups.conditionalDocs, situational);
+    sections.forEach(section => {
+        if (section.key === 'commonDocs' || section.key === 'requiredDocs') route(section.docs, basic);
+        else route(section.docs, situational);
+    });
     return { basic, situational, discretionary };
 }
 
@@ -13863,7 +13992,7 @@ function paradisoMergeDocumentTabItemsForDisplay(items) {
         if (!item) return;
         const name = String(item.name || '').trim();
         if (!name) { kept.push(item); return; }
-        const key = paradisoCanonicalDocKey20260609(name);
+        const key = getDocumentRequirementDisplayKey(item);
         if (!key) { kept.push(item); return; }
         const prior = seen.get(key);
         if (!prior) {
@@ -13872,8 +14001,9 @@ function paradisoMergeDocumentTabItemsForDisplay(items) {
             kept.push(copy);
             return;
         }
-        const extra = [name, String(item.note || '').trim()].filter(Boolean).join(' — ');
-        prior.note = [String(prior.note || '').trim(), extra].filter(Boolean).join(' / ');
+        const merged = mergeDocumentRequirementForDisplay(prior, item);
+        Object.keys(prior).forEach(k => delete prior[k]);
+        Object.assign(prior, merged);
     });
     return kept;
 }
@@ -13970,7 +14100,13 @@ function hasAnyDocs(groups) {
    renderDocTags() relocates prose-classified items into notes, so counting raw
    array lengths overstates N whenever a document array still holds prose. */
 function countRenderableDocs(groups) {
-    return flattenDocGroups(groups).filter(key => {
+    const dedupedSections = dedupeDocumentSectionsForDisplay([
+        { key: 'commonDocs', docs: groups?.commonDocs || [] },
+        { key: 'requiredDocs', docs: groups?.requiredDocs || [] },
+        { key: 'additionalDocs', docs: groups?.additionalDocs || [] },
+        { key: 'conditionalDocs', docs: groups?.conditionalDocs || [] }
+    ]);
+    return dedupedSections.flatMap(section => section.docs || []).filter(key => {
         const isUnresolvedId = typeof key === 'string' && key.startsWith('doc_') && !DOC_DICT[key];
         if (isUnresolvedId) return true;
         // Discretionary catch-alls render as a caution note, not as tiles —
