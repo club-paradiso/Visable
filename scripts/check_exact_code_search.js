@@ -114,6 +114,16 @@ check('14. ?q= path removes landing class and sets searched',
     check('17. all-status audit still runs', ok);
 }
 
+/* 18. Exact-code result filtering uses current numeric ranks */
+check('18. renderResults filters exact top-level matches with numeric rank >= 10000',
+    HTML.includes('v._exactRank >= 10000'));
+
+check('19. renderResults filters exact subcode matches with numeric rank >= 5000',
+    HTML.includes('v._exactRank >= 5000') && HTML.includes('v._exactRank < 10000'));
+
+check('20. renderResults no longer checks stale exact ranks 6 and 5',
+    !HTML.includes('v._exactRank === 6') && !HTML.includes('v._exactRank === 5'));
+
 /* ---- report ---- */
 console.log('Exact-code search accessibility and QA hook checks:');
 for (const n of passed) console.log('  PASS ' + n);

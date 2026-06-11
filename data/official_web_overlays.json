@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-12",
+  "allowedDomains": [
+    "visa.go.kr",
+    "hikorea.go.kr",
+    "mofa.go.kr",
+    "overseas.mofa.go.kr",
+    "law.go.kr"
+  ],
+  "policy": {
+    "manualRecordOverrideAllowed": false,
+    "confirmedOnlyAfterManualReview": true,
+    "ambiguousParsingAction": "write_to_audit_only",
+    "notesKo": "공식 웹 오버레이는 국가·공관별 차이만 보완하며 전국 단위 매뉴얼 기록을 덮어쓰지 않습니다."
+  },
+  "seedManifest": [
+    {
+      "country": "United States",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "China",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Vietnam",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Philippines",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Indonesia",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Mongolia",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Uzbekistan",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Thailand",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Japan",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Singapore",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    },
+    {
+      "country": "Hong Kong",
+      "officialDomains": [
+        "overseas.mofa.go.kr",
+        "mofa.go.kr",
+        "visa.go.kr"
+      ],
+      "status": "seed_only"
+    }
+  ],
+  "records": [],
+  "ambiguousParsingAudit": []
+}
