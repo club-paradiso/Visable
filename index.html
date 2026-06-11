@@ -11678,9 +11678,7 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
         <span class="k-obj k-blob"></span>
     </div>
     <div class="k-masthead" aria-hidden="true">
-        <span class="k-mh-issue">VOL.25</span>
-        <span class="k-mh-dot">●</span>
-        <span class="k-mh-date">2026 · SEOUL／JEJU</span>
+        <span id="k-masthead-meta" class="k-mh-meta">VOL.25 ● 2026 · SEOUL／JEJU</span>
         <span class="k-mh-barcode"></span>
     </div>
     <div class="header-inner">
@@ -18057,6 +18055,32 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     initScrollReveal();
+
+    // Kitsch masthead: live date + IP-resolved city (archive_diary only)
+    if (document.documentElement.dataset.theme === 'archive_diary') {
+        const _kd = new Date();
+        const _kMonths = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+        const _kDateStr = `${_kMonths[_kd.getMonth()]} ${_kd.getDate()} ${_kd.getFullYear()}`;
+        (async function resolveKitschCity() {
+            const _kTimeout = (ms) => new Promise((_, r) => setTimeout(() => r('timeout'), ms));
+            let city = '';
+            try {
+                const r = await Promise.race([fetch('https://ipapi.co/json/'), _kTimeout(3000)]);
+                const d = await r.json();
+                if (d.city) city = d.city.toUpperCase();
+            } catch (_) {}
+            if (!city) {
+                try {
+                    const r = await Promise.race([fetch('https://ip-api.com/json/?fields=city'), _kTimeout(3000)]);
+                    const d = await r.json();
+                    if (d.city) city = d.city.toUpperCase();
+                } catch (_) {}
+            }
+            if (!city) city = 'JEJU';
+            const el = document.getElementById('k-masthead-meta');
+            if (el) el.textContent = `PARADISO · ${_kDateStr} · ${city}`;
+        })();
+    }
 
 });
 
