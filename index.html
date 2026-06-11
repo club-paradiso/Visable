@@ -11569,7 +11569,7 @@ const DOC_DICT = {
     "doc_passport_change": "등록사항 변경 신고서 (통합신청서), 신여권 원본 및 사본, 기존 외국인등록증", "doc_arc_reissue": "외국인등록증 재발급 신청서 (통합신청서), 여권, 사유 소명 서류(경찰서 분실신고증 등), 사진 1매",
     "doc_credit_report": "신용정보조회서 또는 신용상태 입증서류", "doc_income_tax": "소득세 납세사실증명서 또는 소득세 신고내역", "doc_resident_reg": "주민등록등본(해당 시)", "doc_tax_cert": "국세·지방세 납세증명서", "doc_kiip_cert": "사회통합프로그램(KIIP) 이수증/합격증명서", "doc_property_proof": "재산세 과세증명 또는 부동산 보유 입증서류", "doc_employment_proof": "재직증명서 또는 근무사실 입증서류", "doc_emp_certificate": "재직증명서", "doc_employment_insurance_list": "고용보험 가입자 명부", "doc_point_table": "점수제 자기평가표 및 증빙서류", "doc_reason_proof": "신청 사유 입증서류", "doc_job_search_plan": "구직활동계획서", "doc_internship_plan": "인턴십(연수) 계획서", "doc_cvi": "사증발급인정서(Certificate for Visa Issuance)",
     // PR D batch 2: stable machine IDs migrated from former Korean-string doc IDs; labels preserved verbatim so rendering is unchanged.
-    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매",
+    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류*", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매",
     // 2026-06-08 manual coverage corrections: keep DOC_DICT in sync with doc_master.json
     // so newly referenced doc ids resolve to Korean labels instead of leaking raw ids.
     "doc_local_recommendation": "지자체 추천서", "doc_personal_statement": "신상기술서", "doc_top_tier_degree": "최우수인재 대학 학위 증명",
@@ -13639,8 +13639,9 @@ function paradisoSplitDocItem(value) {
         const noteParts = [];
         if (inner) noteParts.push(inner);
         if (after) noteParts.push(paradisoStripLeadingDocMarks(after));
-        const note = noteParts.filter(Boolean).join(' / ');
-        const label = before ? (before + ', 체류지 입증서류') : '체류지 입증서류';
+        const rawNote = noteParts.filter(Boolean).join(' / ');
+        const note = /^예:/.test(rawNote) ? '*' + rawNote : rawNote;
+        const label = before ? (before + ', 체류지 입증서류*') : '체류지 입증서류*';
         if (!before || !PARADISO_DOC_SENTENCE_END_RE.test(before)) return { label, note, kind: 'doc' };
     }
 
@@ -14234,11 +14235,12 @@ function isLongManualText(value, threshold = MANUAL_LONG_TEXT_THRESHOLD) {
 function renderManualDetailBlock(raw, keywords, threshold = MANUAL_LONG_TEXT_THRESHOLD) {
     const cleaned = stripManualArtifacts(raw);
     if (!cleaned) return '';
-    if (!isLongManualText(cleaned, threshold)) return hl(cleaned, keywords).replace(/\n/g, '<br>');
+    const formatted = cleaned.replace(/([^\n])\s*※/g, '$1\n※');
+    if (!isLongManualText(cleaned, threshold)) return hl(formatted, keywords).replace(/\n/g, '<br>');
     return `<span class="manual-preview">${hl(makeManualPreview(cleaned), keywords)}</span>
         <details class="manual-detail-block">
             <summary>${escapeHtml(tx('manualDetailToggle') || '상세 보기')}</summary>
-            <div class="manual-detail-body">${hl(cleaned, keywords).replace(/\n/g, '<br>')}</div>
+            <div class="manual-detail-body">${hl(formatted, keywords).replace(/\n/g, '<br>')}</div>
         </details>`;
 }
 
@@ -18235,7 +18237,8 @@ function showVisaDocForAction(visaCode) {
     [/^수수료$/, "수수료(절차별 금액 아래 수수료 안내 확인)"],
     [/^혼인관계증명서$/, "혼인관계증명서(상세)"],
     [/^기본증명서$/, "기본증명서(상세)"],
-    [/^가족관계증명서$/, "가족관계증명서(상세)"]
+    [/^가족관계증명서$/, "가족관계증명서(상세)"],
+    [/^체류지\s+입증서류$/, "체류지 입증서류*"]
   ];
 
   function clean(value) {
@@ -18297,7 +18300,8 @@ function showVisaDocForAction(visaCode) {
       const text = clean(el.textContent);
       if (!text || text.length > 90) continue;
 
-      const procedureKey = el.closest('[data-procedure-panel]')?.dataset?.procedurePanel || '';
+      const procedureKey = el.closest('[data-procedure-panel]')?.dataset?.procedurePanel
+          || el.closest('[data-docs-panel]')?.dataset?.docsPanel || '';
       const normalized = normalizeTerm(text, statusCode, procedureKey);
       if (normalized && normalized !== text) {
         el.textContent = normalized;
