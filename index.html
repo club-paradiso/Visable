@@ -28,6 +28,10 @@
     <link rel="icon" type="image/png" href="assets/brand/paradiso-favicon-o.png?v=2">
     <link rel="apple-touch-icon" href="assets/brand/paradiso-favicon-o.png?v=2">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+    <!-- Kitsch (archive_diary) display fonts: Unbounded / Pixelify Sans / Space Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..900&family=Pixelify+Sans:wght@400..700&family=Space+Mono:wght@400;700&display=swap">
     <style>
 /* === PART 2 GAP ANALYSIS — Figma Make file N695iXnoavEOSHITttdCCu ===
    Source: https://www.figma.com/make/N695iXnoavEOSHITttdCCu/Paradiso-후보
@@ -198,57 +202,84 @@
    tokens so the shipped default look is preserved exactly. */
 :root[data-theme="civic_editorial"] { --paradiso-theme: "civic_editorial"; }
 
-/* archive_diary — warm civic-paperwork palette (light/paper oriented). */
+
+/* ════════════════════════════════════════════════════════════════════════
+   DESIGN 02 · KITSCH EDITORIAL  (shipped in the archive_diary theme slot)
+   Korean Y2K editorial-pop palette: cloud + white surfaces, ink text,
+   cyber-blue / lime / pink / violet / butter poster accents.
+   Internal theme id stays "archive_diary" to preserve persistence & JS.
+   ════════════════════════════════════════════════════════════════════════ */
 :root[data-theme="archive_diary"] {
   --paradiso-theme: "archive_diary";
 
-  /* Foundational surfaces / ink / borders (warm cream paper, brown-black ink) */
-  --bg0: #EFE7D6;  --bg1: #FBF6EC;  --bg2: #F0E7D5;  --bg3: #E6DAC2;
-  --bgI: #FBF6EC;  --bd: #C8B89A;   --bd2: #D8CBB0;  --bd3: #BCAA88;
-  --t1: #2A241C;   --t2: #574D3E;   --t3: #897C66;
+  /* ── Kitsch (BOLD Y2K editorial-pop) palette helpers ───────────────────── */
+  --k-cream: #FFF7E8;  --k-cloud: #EAF1FF;  --k-white: #FFFFFF;
+  --k-sky: #6EC6FF;    --k-blue: #2F5EFC;   --k-blue-deep: #1B36C9; --k-blue-ink: #11227A;
+  --k-lime: #C2FF44;   --k-lime-deep: #93D400;
+  --k-pink: #FF8ED1;   --k-pink-deep: #F451B0;
+  --k-violet: #8A74FF; --k-violet-deep: #6A50F0;
+  --k-butter: #FFE45E;
+  --k-ink: #141414;
+  /* Poster offset shadows (hard, Y2K print look) */
+  --k-pop-1: 3px 3px 0 var(--k-ink);
+  --k-pop-2: 5px 5px 0 var(--k-ink);
+  --k-pop-3: 8px 8px 0 var(--k-ink);
+  --k-soft: 0 14px 34px rgba(20,20,40,0.12);
 
-  /* Links / active states — restrained archival blue */
-  --ac: #3C5E80;   --ac2: #2F4C68;
-  --acG: rgba(60,94,128,0.10); --acL: #E4EBF2;
+  /* Foundational surfaces / ink / borders */
+  --bg0: #EEF3FF;  --bg1: #FFFFFF;  --bg2: #F4F7FF;  --bg3: #E6EDFF;
+  --bgI: #FFFFFF;  --bd: #C2D2EE;   --bd2: #DCE5F8;  --bd3: #AEC2E6;
+  --t1: #141414;   --t2: #353A45;   --t3: #6B7280;
 
-  /* Secondary accent (muted terracotta) + soft-yellow highlight */
-  --cy: #B5654A;   --cyL: #F3E2D7;
-  --hlB: #F7EAB8;  --hlT: #6E5410;
+  /* Links / active states — cyber blue */
+  --ac: #2F5EFC;   --ac2: #1B36C9;
+  --acG: rgba(47,94,252,0.12); --acL: #E3EAFF;
 
-  /* Verified / official source = muted green; cautions = muted red */
-  --cSt: #4E7A5C;  --cNh: #4E7A5C;  --cIn: #4E7A5C;  --cFq: #B14A3B;
-  --cWk: #B07235;
+  /* Secondary accent (violet) + lime highlight */
+  --cy: #8A74FF;   --cyL: #ECE7FF;
+  --hlB: #C2FF44;  --hlT: #1B2B00;
+
+  /* Verified / source = readable green; info = blue; cautions = red */
+  --cSt: #1F8A5B;  --cNh: #1F8A5B;  --cIn: #2F5EFC;  --cFq: #E03B57;
+  --cWk: #EF8A2C;
 
   /* Semantic colour tokens */
-  --color-primary: #4E7A5C;       --color-primary-ink: #335240;  --color-primary-soft: #A9C7B3;
-  --color-accent: #3C5E80;        --color-accent-deep: #2F4C68;  --color-accent-soft: #B9CBDD;
-  --color-surface: #EFE7D6;       --color-surface-2: #E6DAC2;
-  --color-text: #2A241C;          --color-text-muted: #574D3E;   --color-border: #C8B89A;
-  --color-success: #4E7A5C;       --color-warning: #B07235;      --color-error: #B14A3B;
+  --color-primary: #2F5EFC;       --color-primary-ink: #1B36C9;  --color-primary-soft: #BFD9FF;
+  --color-accent: #FF8ED1;        --color-accent-deep: #F451B0;  --color-accent-soft: #FFD9F0;
+  --color-surface: #EEF3FF;       --color-surface-2: #E6EDFF;
+  --color-text: #141414;          --color-text-muted: #353A45;   --color-border: #C2D2EE;
+  --color-success: #1F8A5B;       --color-warning: #EF8A2C;      --color-error: #E03B57;
 
-  /* Searched / result-page paper surfaces (these are hardcoded elsewhere) */
-  --result-page-bg: #EFE7D6;
-  --p-paper-surface: #F4ECDB;     --p-paper-surface-2: #EDE3CF;
+  /* Searched / result-page surfaces */
+  --result-page-bg: #EEF3FF;
+  --p-paper-surface: #FFFFFF;     --p-paper-surface-2: #EEF3FF;
 
-  /* UI utility tokens (borders / focus) — keep focus on restrained blue */
-  --ui-primary: #4E7A5C;   --ui-primary-deep: #335240;
-  --ui-surface: #FBF6EC;   --ui-surface-2: #F4ECDB;  --ui-border: #C8B89A;
-  --ui-text: #2A241C;      --ui-text-muted: #574D3E; --ui-focus: #3C5E80;
+  /* UI utility tokens */
+  --ui-primary: #2F5EFC;   --ui-primary-deep: #1B36C9;
+  --ui-surface: #FFFFFF;   --ui-surface-2: #EEF3FF;  --ui-border: #C2D2EE;
+  --ui-text: #141414;      --ui-text-muted: #353A45; --ui-focus: #2F5EFC;
 
-  /* Restrained civic action buttons — calmer green, no flashy glow */
-  --color-primary-green: #3F7A5C;
-  --color-primary-green-hover: #356A4F;
-  --color-primary-green-deep: #2A5A41;
-  --shadow-cta: 0 2px 8px rgba(63,122,92,0.22);
-  --shadow-cta-hover: 0 4px 14px rgba(63,122,92,0.30);
-  --p-emerald: #3F7A5C;          --p-emerald-deep: #2A5A41;
-  --p-emerald-glow: 0 2px 8px rgba(63,122,92,0.22);
-  --p-emerald-glow-hover: 0 4px 14px rgba(63,122,92,0.30);
+  /* Primary action buttons — cyber blue with hard poster offset */
+  --color-primary-green: #2F5EFC;
+  --color-primary-green-hover: #1B36C9;
+  --color-primary-green-deep: #11227A;
+  --shadow-cta: 4px 4px 0 #141414;
+  --shadow-cta-hover: 6px 6px 0 #141414;
+  --p-emerald: #2F5EFC;          --p-emerald-deep: #1B36C9;
+  --p-emerald-glow: 4px 4px 0 #141414;
+  --p-emerald-glow-hover: 6px 6px 0 #141414;
 
-  /* Paper-line palette used by hero/footer paper textures */
-  --p-paper: #EFE7D6; --p-paper-2: #E6DAC2; --p-paper-3: #DCCFB4;
-  --p-line: #C8B89A;  --p-line-2: #D8CBB0;
-  --p-ink: #2A241C;   --p-ink-2: #3E372C;  --p-ink-3: #574D3E; --p-ink-mute: #897C66;
+  /* Paper surfaces / lines */
+  --p-paper: #EEF3FF; --p-paper-2: #E6EDFF; --p-paper-3: #D8E2F5;
+  --p-line: #C2D2EE;  --p-line-2: #DCE5F8;
+  --p-ink: #141414;   --p-ink-2: #353A45;  --p-ink-3: #4A5560; --p-ink-mute: #6B7280;
+
+  /* Shadows */
+  --sh1: 0 1px 2px rgba(20,20,40,0.06);
+  --sh2: 0 10px 28px rgba(20,20,40,0.10);
+  --shG: 0 0 0 3px rgba(47,94,252,0.26);
+  --shD: 0 16px 38px rgba(20,20,40,0.14);
+  --shadow-card: 5px 5px 0 #141414;
 }
 
 /* Accessibility: SR-ONLY & Focus */
@@ -10281,254 +10312,1295 @@ body.searched .hero-container::before {
     }
 }
 
-/* ════════════════════════════════════════════════════════════════════
-   PARADISO_KITSCH_EDITORIAL_THEME_20260611 (archive_diary slot)
-   "Paradiso Kitsch is a beloved administrative scrapbook."
-   Implements the existing archive_diary theme slot as the Kitsch Editorial
-   theme — abstract Korean Y2K editorial-pop on paperwork artifacts:
-   cloud/cream paper, ink outlines, BLUE as the action colour, one restrained
-   PINK accent reserved for the Waymaker/AI moment, BUTTER yellow only for
-   caution/review semantics. Expressive on landing/search/action surfaces;
-   deliberately RESTRAINED on legal/source/warning surfaces (palette only —
-   no decoration, no shrunken disclaimers). No new theme id; persistence via
-   the existing paradiso:editorial-theme key is untouched. No copyrighted
-   imitation; no infinite animations. Placed at the end of the stylesheet so
-   equal-specificity overrides win without new !important (the few used below
-   neutralise legacy !important rules and are flagged inline).
-   ════════════════════════════════════════════════════════════════════ */
-:root[data-theme="archive_diary"] {
-  /* Kitsch foundations: cloud paper + ink + blue action + pink/butter accents */
-  --kit-paper:   #FAF6EC;
-  --kit-paper-2: #F2ECDD;
-  --kit-cloud:   #FFFFFF;
-  --kit-ink:     #26221B;
-  --kit-blue:    #2E5C9E;
-  --kit-blue-deep: #234A82;
-  --kit-pink:    #D8527C;
-  --kit-butter:  #F2D272;
-  --kit-mint:    #DCE9DD;
-  --bg0: #F4EEDF;  --bg1: var(--kit-paper);  --bg2: var(--kit-paper-2);
-  --ac: var(--kit-blue);  --ac2: var(--kit-blue-deep);
-  --acG: rgba(46,92,158,0.12); --acL: #E7EDF6;
-  --color-accent: var(--kit-blue); --color-accent-deep: var(--kit-blue-deep);
-  --hlB: #F8EDC2; --hlT: #6E5410;
+/* ════════════════════════════════════════════════════════════════════════
+   PARADISO KITSCH LAYER · DESIGN 02 (B prototype --k- system, archive_diary slot)
+   Ported from the Claude Design bundle. Appended last so it wins on source
+   order. Pure visual layer — no DOM/JS, legal, source-warning or search
+   behaviour is touched. Editorial (civic_editorial) is unaffected.
+   ════════════════════════════════════════════════════════════════════════ */
+:root {
+  --k-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --k-display: "Unbounded", "Pretendard", system-ui, sans-serif;
+  --k-pixel: "Pixelify Sans", "Pretendard", ui-monospace, monospace;
+  --k-spring: cubic-bezier(0.34, 1.56, 0.64, 1); /* Kitsch bouncy easing */
+  --k-blue-1: #EAF1FE; --k-blue-2: #CFE0FC; --k-blue-3: #9FC0F8;
 }
 
-/* Landing paper: calm cloud-grid sheet (static; neutralises the legacy
-   gradient that carries !important, hence the single !important here). */
-:root[data-theme="archive_diary"] body:not(.searched) {
+/* ════════════════════════════ DESIGN 02 · KITSCH EDITORIAL ═══════════════ */
+/* Editorial-pop hero: cream board, blue light wash + ONE pink bloom (vivid
+   accents deliberately limited — blue is the base personality colour) */
+:root[data-theme="archive_diary"] body:not(.searched) .hero-container::before {
   background:
-    linear-gradient(0deg, color-mix(in srgb, var(--kit-ink) 3%, transparent) 1px, transparent 1px) 0 0 / 100% 28px,
-    linear-gradient(180deg, #FBF7EE 0%, #F4EEDF 60%, #FBF6EC 100%) !important;
+    radial-gradient(62% 52% at 14% 6%, rgba(47,94,252,0.16) 0%, transparent 62%),
+    radial-gradient(55% 48% at 90% 8%, rgba(255,142,209,0.30) 0%, transparent 62%),
+    radial-gradient(70% 60% at 80% 100%, rgba(47,94,252,0.10) 0%, transparent 66%),
+    linear-gradient(175deg, #FFFDF4 0%, #F6F4EA 55%, #EFF3FF 100%) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  mix-blend-mode: normal !important;
+  filter: none !important;
+  opacity: 1 !important;
 }
-:root[data-theme="archive_diary"] body::before { display: none; }
-:root[data-theme="archive_diary"] body:not(.searched) .hero-container::before,
+/* Halftone dot texture sweeping a corner of the board */
 :root[data-theme="archive_diary"] body:not(.searched) .hero-container::after {
-  background: none !important; /* hide photo wash: Kitsch hero is pure paper */
+  content: "";
+  position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(rgba(20,20,20,0.16) 1.4px, transparent 1.5px) 0 0 / 13px 13px;
+  -webkit-mask-image: linear-gradient(305deg, #000 0%, transparent 36%);
+  mask-image: linear-gradient(305deg, #000 0%, transparent 36%);
+  opacity: 0.5 !important;
+}
+/* keep hero copy above the decorative layers */
+:root[data-theme="archive_diary"] .header-inner { position: relative; z-index: 2; }
+
+/* ── Zine masthead strip (Kitsch landing only, decorative) ─────────────── */
+.k-masthead { display: none; }
+:root[data-theme="archive_diary"] body:not(.searched) .k-masthead {
+  display: flex; align-items: center; gap: 0.7rem; justify-content: center;
+  position: relative; z-index: 2; margin: 0 auto 0.4rem; padding: 0.3rem 0.9rem;
+  font-family: var(--k-pixel); font-size: 0.72rem; letter-spacing: 0.12em; color: var(--k-ink);
+  border-top: 2px solid var(--k-ink); border-bottom: 2px solid var(--k-ink); max-width: max-content;
+}
+:root[data-theme="archive_diary"] .k-mh-issue { font-family: var(--k-display); font-weight: 800; }
+:root[data-theme="archive_diary"] .k-mh-dot { color: var(--k-blue); font-size: 0.5rem; }
+:root[data-theme="archive_diary"] .k-mh-barcode {
+  width: 56px; height: 16px;
+  background: repeating-linear-gradient(90deg, var(--k-ink) 0 2px, transparent 2px 4px, var(--k-ink) 4px 5px, transparent 5px 8px);
 }
 
-/* Hero copy — memo-slip card with an index tab */
-:root[data-theme="archive_diary"] body:not(.searched) .p-hero-copy {
+/* ── Scrolling marquee tape (Kitsch landing only, decorative) ──────────── */
+.k-marquee { display: none; }
+:root[data-theme="archive_diary"] body:not(.searched) .k-marquee {
+  display: block; position: relative; z-index: 2; overflow: hidden; width: 100%;
+  transform: rotate(-1.2deg); margin: 0.6rem 0 0.2rem;
+  border-radius: 999px;
+  background: var(--k-blue); border: 2px solid var(--k-ink); box-shadow: var(--k-pop-1);
+}
+:root[data-theme="archive_diary"] .k-marquee-track {
+  display: inline-flex; white-space: nowrap; padding: 0.42rem 0;
+  font-family: var(--k-display); font-weight: 800; font-size: 0.95rem; letter-spacing: 0.02em; color: #fff;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] .k-marquee-track { animation: kmarquee 18s linear infinite; }
+}
+@keyframes kmarquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── Floating Y2K objects (original, aria-hidden; Kitsch landing only) ───── */
+.k-decor { display: none; }
+:root[data-theme="archive_diary"] body:not(.searched) .k-decor {
+  display: block; position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .k-obj { position: absolute; }
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] body:not(.searched) .k-obj { animation: kbob 7s ease-in-out infinite alternate; }
+  :root[data-theme="archive_diary"] body:not(.searched) .k-obj:nth-child(even) { animation-duration: 9s; animation-delay: -2s; }
+}
+@keyframes kbob { from { transform: translateY(-6px) var(--kr,rotate(0deg)); } to { transform: translateY(8px) var(--kr,rotate(0deg)); } }
+/* dreamy soft blob — the single pink moment on the landing board */
+:root[data-theme="archive_diary"] .k-blob {
+  top: -12%; right: -8%; width: 44vw; height: 44vw; border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, rgba(255,142,209,0.5), rgba(47,94,252,0.18) 58%, rgba(47,94,252,0) 75%);
+  filter: blur(8px); animation: none !important;
+}
+/* blue sunburst */
+:root[data-theme="archive_diary"] .k-starburst {
+  top: 15%; left: 3.5%; width: 88px; height: 88px; border-radius: 50%;
+  background: repeating-conic-gradient(var(--k-blue-3) 0deg 11deg, transparent 11deg 22deg);
+  -webkit-mask: radial-gradient(circle, transparent 16px, #000 17px); mask: radial-gradient(circle, transparent 16px, #000 17px);
+  --kr: rotate(0deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] body:not(.searched) .k-starburst { animation: kspin 26s linear infinite; }
+}
+@keyframes kspin { to { transform: rotate(360deg); } }
+/* memo tab — pale blue note */
+:root[data-theme="archive_diary"] .k-memo {
+  top: 19%; right: 7%; width: 78px; height: 78px; padding-top: 16px;
+  background: var(--k-blue-1); border: 2px solid var(--k-ink); border-radius: 12px;
+  box-shadow: var(--k-pop-1); font-family: var(--k-pixel); font-size: 11px; line-height: 1.3;
+  color: var(--k-ink); text-align: center; --kr: rotate(7deg); transform: rotate(7deg);
+}
+:root[data-theme="archive_diary"] .k-memo::before { content:""; position:absolute; top:-7px; left:50%; transform:translateX(-50%); width:34px; height:12px; background: rgba(255,255,255,0.5); border:2px solid var(--k-ink); border-radius:3px; }
+/* transit / pass card */
+:root[data-theme="archive_diary"] .k-card {
+  bottom: 17%; left: 5%; width: 104px; height: 66px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--k-blue-3), var(--k-blue)); border: 2px solid var(--k-ink);
+  box-shadow: var(--k-pop-1); display:flex; align-items:flex-end; justify-content:flex-start;
+  padding: 8px; color: #fff; font-family: var(--k-display); font-weight: 700; font-size: 12px; letter-spacing:0.05em;
+  --kr: rotate(-8deg); transform: rotate(-8deg);
+}
+:root[data-theme="archive_diary"] .k-card::before { content:""; position:absolute; top:10px; right:10px; width:20px; height:14px; background: var(--k-blue-1); border:1.5px solid var(--k-ink); border-radius:4px; }
+/* calendar square */
+:root[data-theme="archive_diary"] .k-cal {
+  top: 42%; right: 4.5%; width: 62px; height: 64px; border-radius: 14px; background: #fff;
+  border: 2px solid var(--k-ink); box-shadow: var(--k-pop-1); overflow:hidden;
+  display:flex; flex-direction:column; align-items:center; justify-content:center; --kr: rotate(5deg); transform: rotate(5deg);
+}
+:root[data-theme="archive_diary"] .k-cal::before { content:""; position:absolute; top:0; left:0; right:0; height:15px; background: var(--k-blue); border-bottom:2px solid var(--k-ink); }
+:root[data-theme="archive_diary"] .k-cal b { font-family: var(--k-display); font-weight: 800; font-size: 24px; color: var(--k-ink); margin-top:8px; line-height:1; }
+:root[data-theme="archive_diary"] .k-cal i { font-family: var(--k-display); font-weight: 600; font-style: normal; font-size: 9px; color: var(--k-ink); }
+/* receipt strip */
+:root[data-theme="archive_diary"] .k-receipt {
+  bottom: 11%; right: 11%; width: 58px; height: 84px; background:
+    repeating-linear-gradient(0deg, transparent 0 12px, rgba(20,20,20,0.12) 12px 13px) #fff;
+  border: 2px solid var(--k-ink); box-shadow: var(--k-pop-1); --kr: rotate(4deg); transform: rotate(4deg);
+}
+/* paperclip-ish ring */
+:root[data-theme="archive_diary"] .k-clip {
+  top: 9%; left: 31%; width: 26px; height: 46px; border: 3px solid var(--k-blue);
+  border-radius: 14px; --kr: rotate(24deg); transform: rotate(24deg);
+}
+/* passport entry stamp — faded blue ink, pressed beside the main logo tag */
+.k-stamp { display: none; }
+:root[data-theme="archive_diary"] body:not(.searched) .logo-area { position: relative; }
+:root[data-theme="archive_diary"] body:not(.searched) .logo-area .k-stamp {
+  display: block; position: absolute;
+  left: calc(100% + 14px); top: -36px;
+  width: 118px; height: 118px;
+  color: var(--k-blue);
+  opacity: 0.62;
+  mix-blend-mode: multiply;
+  transform: rotate(12deg);
+  pointer-events: none;
+  animation: none;
+  -webkit-mask-image: radial-gradient(circle at 36% 62%, #000 48%, rgba(0,0,0,0.55) 76%, rgba(0,0,0,0.88) 100%);
+  mask-image: radial-gradient(circle at 36% 62%, #000 48%, rgba(0,0,0,0.55) 76%, rgba(0,0,0,0.88) 100%);
+}
+:root[data-theme="archive_diary"] .k-stamp svg { width: 100%; height: 100%; display: block; }
+:root[data-theme="archive_diary"] .k-stamp text { font-family: var(--k-mono); fill: currentColor; }
+:root[data-theme="archive_diary"] .k-stamp .k-stamp-arc { font-size: 11px; font-weight: 700; letter-spacing: 2.6px; }
+:root[data-theme="archive_diary"] .k-stamp .k-stamp-entry { font-size: 15px; font-weight: 700; letter-spacing: 5px; }
+:root[data-theme="archive_diary"] .k-stamp .k-stamp-date { font-size: 12.5px; font-weight: 700; letter-spacing: 1.5px; }
+:root[data-theme="archive_diary"] .k-stamp .k-stamp-sub { font-size: 9px; letter-spacing: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  /* fill-mode none on purpose: in engines whose animation timelines never
+     advance, the base opacity keeps the stamp visible (same philosophy as
+     the k-io watchdog). Healthy browsers still get the stamp-press pop. */
+  :root[data-theme="archive_diary"] body:not(.searched) .logo-area .k-stamp { animation: kstampin 0.5s var(--k-spring) 0.1s; }
+}
+@keyframes kstampin {
+  from { transform: rotate(12deg) scale(1.6); opacity: 0; }
+  60%  { transform: rotate(12deg) scale(0.96); opacity: 0.7; }
+  to   { transform: rotate(12deg) scale(1); opacity: 0.62; }
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .logo-area .k-stamp { color: #7FA6FF; mix-blend-mode: screen; opacity: 0.5; }
+@media (max-width: 900px) {
+  :root[data-theme="archive_diary"] body:not(.searched) .k-starburst,
+  :root[data-theme="archive_diary"] body:not(.searched) .k-memo,
+  :root[data-theme="archive_diary"] body:not(.searched) .k-card,
+  :root[data-theme="archive_diary"] body:not(.searched) .k-cal,
+  :root[data-theme="archive_diary"] body:not(.searched) .k-receipt,
+  :root[data-theme="archive_diary"] body:not(.searched) .logo-area .k-stamp,
+  :root[data-theme="archive_diary"] body:not(.searched) .k-clip { display: none; }
+}
+
+/* Generous hero rhythm */
+/* ══════════════════════════════════════════════════════════════════════
+   KITSCH · ACTION-FIRST LANDING (safe full realignment)
+   Re-rank the landing so the user's first action — SEARCH — is the
+   unmistakable hero. Headline decluttered to a punchy kicker; the other
+   entry points demoted to a tidy secondary band. All entries preserved;
+   CSS-only; scoped to Kitsch landing. Searched + Civic untouched.
+   ══════════════════════════════════════════════════════════════════════ */
+:root[data-theme="archive_diary"] body:not(.searched) .hero-container { padding: 3.25rem clamp(1.25rem, 5vw, 3rem) 3.5rem !important; align-items: center !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .header-inner {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  grid-template-areas:
+    "logo"
+    "copy"
+    "gate"
+    "marq"
+    "hints"
+    "ai" !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  text-align: left !important;
+  max-width: min(900px, 94vw) !important;
+  gap: 1.25rem !important;
+  margin: 0 auto;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .logo-area { grid-area: logo; justify-self: start; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-hero-copy { grid-area: copy; text-align: left !important; max-width: none !important; gap: 0.5rem !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gateway { grid-area: gate; align-self: stretch; }
+:root[data-theme="archive_diary"] body:not(.searched) .k-marquee { grid-area: marq; }
+:root[data-theme="archive_diary"] body:not(.searched) .search-wrap { grid-column: 1 / -1 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .landing-hints-section { grid-area: hints; align-items: flex-start !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .hero-ai-secondary { grid-area: ai; }
+:root[data-theme="archive_diary"] body:not(.searched) .landing-hints { justify-content: flex-start !important; gap: 0.6rem; margin-top: 0.4rem; }
+:root[data-theme="archive_diary"] .p-hero-proof { gap: 0.5rem; flex-wrap: wrap; }
+
+/* Headline → punchy kicker (decluttered; gives the spotlight to search) */
+:root[data-theme="archive_diary"] body:not(.searched) .p-hero-title {
+  font-family: var(--k-display) !important;
+  font-size: clamp(2rem, 4vw, 3.1rem) !important;
+  line-height: 1.0 !important; letter-spacing: -0.03em !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-hero-line { display: block; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-hero-sub { font-size: clamp(0.95rem, 1.4vw, 1.08rem) !important; max-width: 46ch; }
+
+/* ── Gateway re-ranked: SEARCH is the hero, everything else secondary ───── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-gateway { display: flex !important; flex-direction: column; gap: 0.85rem !important; max-width: none !important; width: 100%; }
+
+/* Primary action — oversized search bar with an attention cue */
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-search {
+  min-height: 104px !important;
+  padding: clamp(1.4rem, 2.6vw, 1.9rem) clamp(1.3rem, 2.4vw, 1.8rem) !important;
+  border-width: 3px !important;
+  box-shadow: 8px 8px 0 var(--k-blue) !important;
   position: relative;
-  background: var(--kit-cloud);
-  border: 1.5px solid var(--kit-ink);
-  border-radius: 14px;
-  box-shadow: 4px 4px 0 color-mix(in srgb, var(--kit-ink) 82%, transparent);
-  padding: 1.4rem 1.5rem 1.5rem;
 }
-:root[data-theme="archive_diary"] body:not(.searched) .p-hero-copy::before {
-  content: "PARADISO · 보관철";
-  position: absolute; top: -0.95rem; left: 1rem;
-  padding: 0.18rem 0.7rem;
-  background: var(--kit-butter);
-  color: var(--kit-ink);
-  border: 1.5px solid var(--kit-ink);
-  border-radius: 8px 8px 0 0;
-  font-size: 0.66rem; font-weight: 900; letter-spacing: 0.08em;
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] body:not(.searched) .p-gw-search { animation: kpulse 2.4s ease-in-out infinite; }
 }
-:root[data-theme="archive_diary"] body:not(.searched) .p-hero-eyebrow { color: var(--kit-blue); }
-:root[data-theme="archive_diary"] body:not(.searched) .p-hero-title,
-:root[data-theme="archive_diary"] body:not(.searched) .p-hero-sub { color: var(--kit-ink); }
-:root[data-theme="archive_diary"] body:not(.searched) .p-proof-chip {
-  background: var(--kit-cloud); color: var(--kit-ink);
-  border: 1px solid var(--kit-ink); border-radius: 999px;
+@keyframes kpulse {
+  0%, 100% { box-shadow: 8px 8px 0 var(--k-blue); }
+  50% { box-shadow: 8px 8px 0 var(--k-blue-3); }
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-search-title { font-size: clamp(1.3rem, 2.4vw, 1.7rem) !important; font-weight: 800 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-search-sub { font-size: clamp(0.9rem, 1.4vw, 1.02rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-search-icon { transform: scale(1.25); }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-search-kbd { font-size: 1.05rem; padding: 0.35rem 0.7rem; }
+
+/* Secondary band — the remaining entries, decluttered into tidy small tiles */
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-primary { display: grid !important; grid-template-columns: repeat(3, 1fr); gap: 0.7rem !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-utility { display: grid !important; grid-template-columns: repeat(2, 1fr); gap: 0.7rem !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-card,
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-util {
+  min-height: 0 !important; padding: 0.9rem 1rem !important;
+  box-shadow: 3px 3px 0 rgba(20,20,40,0.16) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-card-sub { opacity: 0.92; }
+/* the secondary band sits visually lighter than the hero search */
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-primary,
+:root[data-theme="archive_diary"] body:not(.searched) .p-gw-utility { opacity: 0.98; }
+
+/* Tablet & down → search stays first & dominant, tiles wrap calmly */
+@media (max-width: 720px) {
+  :root[data-theme="archive_diary"] body:not(.searched) .p-gw-primary { grid-template-columns: 1fr; }
+  :root[data-theme="archive_diary"] body:not(.searched) .p-gw-utility { grid-template-columns: 1fr 1fr; }
+  :root[data-theme="archive_diary"] body:not(.searched) .p-hero-title { font-size: clamp(1.8rem, 7vw, 2.4rem) !important; }
 }
 
-/* Search — sticker bar: ink outline, paper face, blue go button */
+:root[data-theme="archive_diary"] .landing-hints { gap: 0.6rem; margin-top: 1.4rem; }
+
+/* Wordmark → bold ink poster tag with cyber offset (slight tilt) */
+:root[data-theme="archive_diary"] body:not(.searched) .logo-area {
+  background: var(--k-ink);
+  border: 3px solid var(--k-ink);
+  border-radius: 16px;
+  padding: 0.65rem 1.25rem !important;
+  box-shadow: var(--k-pop-2-blue, 6px 6px 0 var(--k-blue));
+  transform: rotate(-2deg);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .brand-wordmark-img { filter: none !important; }
+
+/* Hero copy — pixel eyebrow (1 of 2 pixel spots), giant display title, blue-tint highlighter */
+:root[data-theme="archive_diary"] .p-hero-eyebrow {
+  font-family: var(--k-pixel) !important; color: var(--k-blue-deep);
+  letter-spacing: 0.08em; font-weight: 700; font-size: 0.86rem;
+}
+:root[data-theme="archive_diary"] .p-hero-title { color: var(--k-ink); font-weight: 900; letter-spacing: -0.025em; }
+:root[data-theme="archive_diary"] .p-hero-title em {
+  color: var(--k-ink); font-style: normal; font-weight: 900;
+  background: linear-gradient(transparent 56%, var(--k-blue-2) 56% 94%, transparent 94%);
+  padding: 0 0.1em; box-decoration-break: clone; -webkit-box-decoration-break: clone;
+}
+:root[data-theme="archive_diary"] .p-hero-sub { color: #2A3340; font-weight: 500; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-hero-copy { margin-top: 0.4rem; }
+
+/* Proof chips → clean speech-bubble pills (blue family only) */
+:root[data-theme="archive_diary"] .p-proof-chip {
+  font-family: var(--ff) !important; font-weight: 700;
+  background: var(--k-white);
+  color: var(--k-ink) !important;
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 999px;
+  text-transform: none; letter-spacing: 0;
+  box-shadow: var(--k-pop-1);
+  transition: transform 0.35s var(--k-spring), box-shadow 0.35s var(--k-spring);
+}
+:root[data-theme="archive_diary"] .p-proof-chip:nth-child(1) { background: var(--k-blue-1); transform: rotate(-2deg); }
+:root[data-theme="archive_diary"] .p-proof-chip:nth-child(2) { background: var(--k-white); }
+:root[data-theme="archive_diary"] .p-proof-chip:nth-child(3) { background: var(--k-blue-2); transform: rotate(1.5deg); }
+:root[data-theme="archive_diary"] .p-proof-chip:hover { transform: translateY(-3px) scale(1.04) rotate(0deg); box-shadow: var(--k-pop-2); }
+
+/* Search module = the marquee capsule — full pill, blue offset, springy focus */
 :root[data-theme="archive_diary"] .sbar {
-  background: var(--kit-cloud);
-  border: 1.5px solid var(--kit-ink);
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--kit-ink) 80%, transparent);
+  background: var(--k-white) !important;
+  border: 2.5px solid var(--k-ink) !important;
+  border-radius: 999px !important;
+  box-shadow: 6px 6px 0 var(--k-blue) !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  transition: transform 0.4s var(--k-spring), box-shadow 0.4s var(--k-spring) !important;
 }
 :root[data-theme="archive_diary"] .sbar:focus-within {
-  border-color: var(--kit-blue);
-  box-shadow: 3px 3px 0 var(--kit-blue);
+  border-color: var(--k-ink) !important;
+  box-shadow: 8px 8px 0 var(--k-blue-3) !important;
+  transform: translate(-2px,-2px) scale(1.005);
 }
-:root[data-theme="archive_diary"] .sbar-go { background: var(--kit-blue); color: #fff; }
-:root[data-theme="archive_diary"] .sbar-go:hover { background: var(--kit-blue-deep); }
+:root[data-theme="archive_diary"] .sbar input { color: var(--k-ink); }
+:root[data-theme="archive_diary"] .sbar input::placeholder { color: var(--t3); }
+:root[data-theme="archive_diary"] .sbar-icon { color: var(--k-ink); }
+:root[data-theme="archive_diary"] .sbar-go { color: var(--k-ink); }
+:root[data-theme="archive_diary"] .sbar-go:hover { color: var(--k-blue); }
 
-/* Quick chips — washi-tape labels (finite hover lift only) */
-:root[data-theme="archive_diary"] .p-cmd-chips button,
-:root[data-theme="archive_diary"] .landing-hints .lh {
-  background: var(--kit-mint);
-  border: 1px dashed var(--kit-ink);
-  border-radius: 4px;
-  color: var(--kit-ink);
-  font-weight: 800;
-}
-:root[data-theme="archive_diary"] .p-cmd-chips button:nth-child(even),
-:root[data-theme="archive_diary"] .landing-hints .lh:nth-child(even) { background: #F8EDC2; }
-:root[data-theme="archive_diary"] .p-cmd-chips button:hover,
-:root[data-theme="archive_diary"] .landing-hints .lh:hover {
-  transform: translateY(-2px);
-  background: var(--kit-cloud);
-  border-style: solid;
-}
-
-/* Gateway — file-folder cards; pink is reserved for the Waymaker/AI card */
+/* Gateway tiles → poster panels, ink stroke, hard offset (varied accents) */
+:root[data-theme="archive_diary"] .p-gateway { gap: clamp(0.9rem, 2vw, 1.4rem) !important; }
+:root[data-theme="archive_diary"] .p-gw-primary,
+:root[data-theme="archive_diary"] .p-gw-utility { gap: clamp(0.85rem, 1.8vw, 1.25rem) !important; }
 :root[data-theme="archive_diary"] .p-gw-search,
 :root[data-theme="archive_diary"] .p-gw-card,
 :root[data-theme="archive_diary"] .p-gw-util {
-  background: var(--kit-cloud);
-  border: 1.5px solid var(--kit-ink);
-  border-radius: 12px;
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--kit-ink) 78%, transparent);
-  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  background: var(--k-white) !important;
+  border: 2px solid var(--k-ink) !important;
+  box-shadow: var(--k-pop-1) !important;
+  color: var(--k-ink) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring) !important;
 }
-:root[data-theme="archive_diary"] .p-gw-search:hover,
+:root[data-theme="archive_diary"] .p-gw-search { border-radius: 999px !important; padding: clamp(1.1rem,2.4vw,1.6rem) clamp(1.4rem,2.6vw,2rem) !important; box-shadow: 6px 6px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] .p-gw-card { border-radius: 26px !important; padding: clamp(1.1rem,2.2vw,1.55rem) !important; }
+:root[data-theme="archive_diary"] .p-gw-card:nth-child(1) { box-shadow: 4px 4px 0 var(--k-blue-2) !important; }
+:root[data-theme="archive_diary"] .p-gw-util { border-radius: 999px !important; }
 :root[data-theme="archive_diary"] .p-gw-card:hover,
-:root[data-theme="archive_diary"] .p-gw-util:hover {
-  transform: translate(-1px, -2px);
-  box-shadow: 5px 5px 0 color-mix(in srgb, var(--kit-ink) 78%, transparent);
-}
-:root[data-theme="archive_diary"] .p-gw-card { position: relative; overflow: visible; }
-:root[data-theme="archive_diary"] .p-gw-card::before {
-  content: ""; position: absolute; top: -9px; left: 14px;
-  width: 52px; height: 10px;
-  background: var(--kit-paper-2);
-  border: 1.5px solid var(--kit-ink); border-bottom: none;
-  border-radius: 6px 6px 0 0;
-}
-:root[data-theme="archive_diary"] .p-gw-card-ai::before { background: var(--kit-pink); }
-:root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-icon { color: var(--kit-pink); }
-:root[data-theme="archive_diary"] .p-gw-card-label { color: var(--kit-ink); }
+:root[data-theme="archive_diary"] .p-gw-util:hover,
+:root[data-theme="archive_diary"] .p-gw-search:hover { transform: translate(-2px,-3px) scale(1.015); box-shadow: 8px 9px 0 var(--k-blue-3) !important; }
+:root[data-theme="archive_diary"] .p-gw-search-title,
+:root[data-theme="archive_diary"] .p-gw-card-label,
+:root[data-theme="archive_diary"] .p-gw-util-label { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] .p-gw-search-sub,
+:root[data-theme="archive_diary"] .p-gw-card-sub { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] .p-gw-search-kbd { font-family: var(--k-display); font-weight: 700; background: var(--k-blue-1); color: var(--k-blue-deep); border: 2px solid var(--k-ink); border-radius: 10px; }
+:root[data-theme="archive_diary"] .p-gw-card-icon,
+:root[data-theme="archive_diary"] .p-gw-util-icon { color: var(--k-blue) !important; }
+/* AI gateway card → bold blue block (the strongest blue statement) */
+:root[data-theme="archive_diary"] .p-gw-card-ai { background: linear-gradient(135deg, var(--k-blue), var(--k-blue-deep)) !important; box-shadow: 4px 4px 0 var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-label,
+:root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-sub,
+:root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-icon { color: #fff !important; }
 
-/* Stat / coverage cards — receipt strips with a barcode-like divider */
-:root[data-theme="archive_diary"] .stat-card {
-  background: var(--kit-cloud);
-  border: 1px solid var(--kit-ink);
-  border-radius: 8px 8px 4px 4px;
-  position: relative;
-  padding-bottom: 1.45rem;
+/* Visa-track entry cards → poster panels */
+:root[data-theme="archive_diary"] .visa-track-card {
+  background: var(--k-white); border: 2px solid var(--k-ink);
+  border-radius: 26px; box-shadow: var(--k-pop-1);
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring);
 }
-:root[data-theme="archive_diary"] .stat-card:not(:last-child) { border-right: 1px solid var(--kit-ink); }
-:root[data-theme="archive_diary"] .stat-card::after {
-  content: ""; position: absolute; left: 10%; right: 10%; bottom: 0.55rem; height: 9px;
-  background: repeating-linear-gradient(90deg, var(--kit-ink) 0 2px, transparent 2px 5px, var(--kit-ink) 5px 6px, transparent 6px 11px);
-  opacity: 0.55;
-}
+:root[data-theme="archive_diary"] .visa-track-card:hover { transform: translate(-2px,-3px) scale(1.01); box-shadow: 7px 7px 0 var(--k-blue-3); }
 
-/* Result cards — archive folder sheets; subtle index edge on the header */
+/* Keyword chips → bouncy speech-bubble pills (body face, not pixel) */
+:root[data-theme="archive_diary"] .lh,
+:root[data-theme="archive_diary"] .p-cmd-chip {
+  font-family: var(--ff) !important; font-weight: 700;
+  background: var(--k-white) !important;
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important;
+  color: var(--k-ink) !important;
+  box-shadow: var(--k-pop-1);
+  transition: transform 0.35s var(--k-spring), box-shadow 0.35s var(--k-spring), background 0.2s ease !important;
+}
+:root[data-theme="archive_diary"] .lh:hover,
+:root[data-theme="archive_diary"] .p-cmd-chip:hover,
+:root[data-theme="archive_diary"] .p-cmd-chip:focus-visible { background: var(--k-blue) !important; color: #fff !important; transform: translateY(-3px) scale(1.05); box-shadow: var(--k-pop-2); }
+
+/* Mode/control chips */
+:root[data-theme="archive_diary"] .cb { border: 2px solid var(--k-ink); border-radius: 999px; font-weight: 800; }
+:root[data-theme="archive_diary"] .cb.on { background: var(--k-blue); border-color: var(--k-ink); color: #fff; box-shadow: var(--k-pop-1); }
+
+/* Result cards → poster tiles, sticker code tab */
 :root[data-theme="archive_diary"] .vc {
-  background: var(--kit-cloud);
-  border: 1.5px solid color-mix(in srgb, var(--kit-ink) 80%, transparent);
-  border-radius: 12px;
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--kit-ink) 16%, transparent);
+  background: var(--k-white); border: 2px solid var(--k-ink);
+  border-radius: 16px; box-shadow: var(--k-pop-1);
 }
-:root[data-theme="archive_diary"] .vc:hover {
-  box-shadow: 4px 5px 0 color-mix(in srgb, var(--kit-ink) 22%, transparent);
+:root[data-theme="archive_diary"] .vc:hover { box-shadow: 6px 6px 0 var(--k-blue-3); transform: translate(-1px,-1px); }
+:root[data-theme="archive_diary"] .vc-h { border-radius: 16px 16px 0 0; }
+:root[data-theme="archive_diary"] .bc {
+  font-family: var(--k-display) !important; font-weight: 800;
+  background: var(--k-blue); color: #fff;
+  border: 2px solid var(--k-ink); border-radius: 999px;
 }
-:root[data-theme="archive_diary"] .vc-h { border-left: 6px solid var(--kit-blue); }
+/* Status / required badges → pill labels (blue family) */
+:root[data-theme="archive_diary"] .badge-req,
+:root[data-theme="archive_diary"] .bd { border: 2px solid var(--k-ink); border-radius: 999px; font-weight: 700; }
+:root[data-theme="archive_diary"] .bd { background: var(--k-blue-1); color: var(--k-blue-deep); }
+:root[data-theme="archive_diary"] .badge-req { background: var(--k-blue-2); color: var(--k-ink); }
 
-/* Document checklist — memo-slip groups with index-tab titles */
-:root[data-theme="archive_diary"] .doc-group {
-  background: var(--kit-cloud);
-  border: 1px solid color-mix(in srgb, var(--kit-ink) 60%, transparent);
-  border-left-width: 5px;
+/* Document checklist → bubble rows */
+:root[data-theme="archive_diary"] .doc-chk-item { background: var(--k-white); border: 1.5px solid var(--k-ink); border-radius: 999px; transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring); }
+:root[data-theme="archive_diary"] .doc-chk-item:hover { transform: translateY(-2px); box-shadow: var(--k-pop-1); }
+
+/* Primary / secondary buttons → ink stroke + hard offset */
+:root[data-theme="archive_diary"] .btn-primary {
+  background: var(--k-blue); color: #fff;
+  border: 2px solid var(--k-ink); border-radius: 999px;
+  box-shadow: var(--k-pop-1);
+  transition: transform 0.35s var(--k-spring), box-shadow 0.35s var(--k-spring), background 0.2s ease;
 }
-:root[data-theme="archive_diary"] .doc-group.group-basic { border-left-color: var(--kit-blue); }
-:root[data-theme="archive_diary"] .doc-group.group-situational { border-left-color: var(--kit-butter); }
-:root[data-theme="archive_diary"] .doc-group-title {
-  display: inline-flex;
-  padding: 0.16rem 0.55rem;
-  background: var(--kit-paper-2);
-  border: 1px solid color-mix(in srgb, var(--kit-ink) 55%, transparent);
-  border-radius: 6px;
+:root[data-theme="archive_diary"] .btn-primary:hover { transform: translate(-2px,-3px) scale(1.02); box-shadow: var(--k-pop-2); background: var(--k-blue-deep); }
+:root[data-theme="archive_diary"] .btn-secondary {
+  background: var(--k-blue-1); color: var(--k-blue-deep);
+  border: 2px solid var(--k-ink); border-radius: 999px;
+  transition: transform 0.35s var(--k-spring), box-shadow 0.35s var(--k-spring);
 }
-:root[data-theme="archive_diary"] .doc-chk-item {
-  background: var(--kit-paper);
-  border: 1px solid color-mix(in srgb, var(--kit-ink) 38%, transparent);
+:root[data-theme="archive_diary"] .btn-secondary:hover { transform: translate(-2px,-3px) scale(1.02); box-shadow: var(--k-pop-1); }
+
+/* Top control pills → full pills, springy */
+:root[data-theme="archive_diary"] .top-ctrls .city-btn,
+:root[data-theme="archive_diary"] .top-ctrls .theme-btn,
+:root[data-theme="archive_diary"] .top-ctrls .language-btn {
+  border: 2px solid var(--k-ink); border-radius: 999px !important; background: var(--k-white);
+  box-shadow: var(--k-pop-1); font-weight: 700;
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring), background 0.2s ease;
 }
-:root[data-theme="archive_diary"] .doc-group.doc-discretionary-note {
-  background: #FBF3D9; /* butter = caution semantics only */
-  border-left-color: #C9A227;
+:root[data-theme="archive_diary"] .top-ctrls .city-btn:hover,
+:root[data-theme="archive_diary"] .top-ctrls .theme-btn:hover,
+:root[data-theme="archive_diary"] .top-ctrls .language-btn:hover { transform: translateY(-2px) scale(1.04); box-shadow: var(--k-pop-2); background: var(--k-blue-1); }
+/* Dropdown menus (city / language) → rounded poster sheets */
+:root[data-theme="archive_diary"] .city-menu {
+  background: var(--k-white) !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 22px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important; overflow: hidden;
+}
+:root[data-theme="archive_diary"] .city-search-input {
+  background: var(--k-blue-1) !important; border: 1.5px solid var(--k-ink) !important;
+  border-radius: 999px !important; color: var(--k-ink) !important;
+}
+:root[data-theme="archive_diary"] .city-search-input:focus { border-color: var(--k-blue) !important; box-shadow: 0 0 0 3px rgba(47,94,252,0.18); }
+
+/* Searched-state wordmark capsule → ink pill + blue offset */
+:root[data-theme="archive_diary"] body.searched .logo-area {
+  background: var(--k-ink) !important;
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important;
+  box-shadow: 3px 3px 0 var(--k-blue) !important;
 }
 
-/* AI FAB — paper pill, ink border, BLUE spark (not pink), ≥44px target */
-:root[data-theme="archive_diary"] .ai-fab {
-  background: var(--kit-cloud);
-  color: var(--kit-ink);
-  border: 1.5px solid var(--kit-ink);
-  border-radius: 999px;
-  min-height: 44px;
-  box-shadow: 3px 3px 0 color-mix(in srgb, var(--kit-ink) 80%, transparent);
-}
-:root[data-theme="archive_diary"] .ai-fab:hover {
-  background: var(--kit-paper);
-  color: var(--kit-blue-deep);
-}
-:root[data-theme="archive_diary"] .ai-fab .fab-spark { color: var(--kit-blue); }
-:root[data-theme="archive_diary"] .ai-fab strong { color: var(--kit-pink); }
+/* Footer → poster strip with a tape accent */
+:root[data-theme="archive_diary"] .ft { border-top: 2px solid var(--k-ink); position: relative; }
+:root[data-theme="archive_diary"] .ft-logo { font-family: var(--k-display); font-weight: 800; color: var(--k-ink); }
 
-/* Footer CTA — receipt edge divider */
-:root[data-theme="archive_diary"] .figma-footer-cta {
-  border-top: 1.5px solid var(--kit-ink);
+/* Section kicker → bold display label */
+:root[data-theme="archive_diary"] .brand-hero-kicker { font-family: var(--k-display); font-weight: 700; color: var(--k-blue); letter-spacing: 0.04em; }
+
+/* ═══════════ Kitsch landing extension — diary spread + analog texture ═════ */
+/* Film-grain overlay (analog editorial feel) — Kitsch only */
+.k-grain { display: none; }
+:root[data-theme="archive_diary"] .k-grain {
+  display: block; position: fixed; inset: 0; z-index: 60; pointer-events: none;
+  opacity: 0.32; mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] .k-grain { animation: kgrain 1.1s steps(2) infinite; }
+}
+@keyframes kgrain { 0%{transform:translate(0,0);} 50%{transform:translate(-2%, 1%);} 100%{transform:translate(1%,-1.5%);} }
+
+/* Coverage section → dreamy diary spread (kills the dark photo).
+   Must out-specify `#brandHero.figma-brand-bridge { ... !important }` (id-level). */
+:root[data-theme="archive_diary"] body:not(.searched) #brandHero,
+:root[data-theme="archive_diary"] body:not(.searched) #brandHero.figma-brand-bridge {
+  background: linear-gradient(180deg, #EAF1FF 0%, #F4F2EC 48%, #FFF6E9 100%) !important;
+  background-image:
+    radial-gradient(50% 40% at 12% 6%, rgba(47,94,252,0.14), transparent 60%),
+    radial-gradient(46% 38% at 90% 4%, rgba(47,94,252,0.08), transparent 62%),
+    linear-gradient(180deg, #EAF1FF 0%, #F4F2EC 48%, #FFF6E9 100%) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) #brandHero.figma-brand-bridge::before { opacity: 0.25 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-headline,
+:root[data-theme="archive_diary"] .brand-hero-headline {
+  color: var(--k-ink) !important; text-shadow: none !important; font-weight: 900; letter-spacing: -0.03em;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-subtitle,
+:root[data-theme="archive_diary"] .brand-hero-subtitle {
+  color: var(--t2) !important; text-shadow: none !important; text-transform: none; letter-spacing: 0; font-weight: 600;
+}
+
+/* Stat cards → scrapbook tiles with colored top tab + washi tape */
+:root[data-theme="archive_diary"] .brand-hero-stats,
+:root[data-theme="archive_diary"] .brand-hero-stats.figma-stat-grid {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  gap: clamp(0.7rem, 1.6vw, 1.1rem) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-stats .stat-card,
+:root[data-theme="archive_diary"] .stat-card {
+  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%) !important;
+  border: 2px solid var(--k-ink) !important; border-top-width: 6px !important;
+  border-radius: 22px !important; box-shadow: var(--k-pop-1) !important; padding: 2.1rem 1.3rem !important;
+  position: relative; overflow: visible;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring) !important;
+}
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card:nth-child(1) { border-top-color: var(--k-blue) !important; }
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card:nth-child(2) { border-top-color: var(--k-blue-3) !important; }
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card:nth-child(3) { border-top-color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card:nth-child(4) { border-top-color: var(--k-blue-2) !important; }
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card::after {
+  content: ""; position: absolute; top: -9px; left: 50%; transform: translateX(-50%) rotate(-3deg);
+  width: 44px; height: 15px; background: rgba(207,224,252,0.92); border: 1.5px solid var(--k-ink); border-radius: 3px;
+}
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card:hover { transform: translateY(-6px) rotate(-1deg) scale(1.02); box-shadow: var(--k-pop-2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-stats .stat-num,
+:root[data-theme="archive_diary"] .stat-num {
+  font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important; text-shadow: none !important;
+}
+:root[data-theme="archive_diary"] .stat-label { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .stat-label span[lang="en"] { color: var(--t3) !important; font-family: var(--ff); font-weight: 600; }
+:root[data-theme="archive_diary"] .stat-icon { background: #fff !important; border: 2px solid var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .stat-code-chip { background: var(--k-blue-1) !important; border: 1.5px solid var(--k-ink) !important; color: var(--k-blue-deep) !important; font-family: var(--ff); font-weight: 700; border-radius: 999px; }
+
+/* Coverage CTA buttons → bold poster */
+:root[data-theme="archive_diary"] .brand-hero .btn-primary { background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important; box-shadow: var(--k-pop-1) !important; }
+:root[data-theme="archive_diary"] .brand-hero .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: var(--k-pop-2) !important; }
+:root[data-theme="archive_diary"] .brand-hero .btn-secondary { background: var(--k-blue-1) !important; color: var(--k-blue-deep) !important; border: 2px solid var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .brand-hero .btn-secondary:hover { transform: translate(-2px,-2px); box-shadow: var(--k-pop-1) !important; }
+
+/* Footer CTA hero → blue-family poster card */
+:root[data-theme="archive_diary"] body:not(.searched) .figma-footer-hero,
+:root[data-theme="archive_diary"] body:not(.searched) .footer-hero-img {
+  background-color: #EAF1FF !important;
+  background-image:
+    radial-gradient(50% 60% at 18% 0%, rgba(47,94,252,0.22), transparent 60%),
+    radial-gradient(55% 65% at 88% 100%, rgba(27,54,201,0.18), transparent 62%),
+    linear-gradient(135deg, #EAF1FF, #DFE9FD 60%, #F6F4EA) !important;
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 32px !important;
+}
+:root[data-theme="archive_diary"] .figma-footer-hero-overlay { background: none !important; }
+:root[data-theme="archive_diary"] .figma-footer-hero-title,
+:root[data-theme="archive_diary"] .footer-hero-title { color: var(--k-ink) !important; font-family: var(--k-display); text-shadow: none !important; }
+:root[data-theme="archive_diary"] .figma-footer-hero-eyebrow,
+:root[data-theme="archive_diary"] .footer-hero-eyebrow { color: var(--k-blue-deep) !important; font-family: var(--k-display); font-weight: 700; text-shadow: none !important; }
+:root[data-theme="archive_diary"] .footer-chip,
+:root[data-theme="archive_diary"] .figma-footer-chips .footer-chip {
+  background: #fff !important; color: var(--k-ink) !important; border: 2px solid var(--k-ink) !important;
+  font-family: var(--ff); font-weight: 700; box-shadow: var(--k-pop-1); border-radius: 999px !important;
+}
+:root[data-theme="archive_diary"] .figma-footer-actions .figma-footer-btn,
+:root[data-theme="archive_diary"] .figma-footer-actions .btn-primary { background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important; box-shadow: var(--k-pop-1); }
+:root[data-theme="archive_diary"] .figma-footer-actions .figma-footer-btn-secondary,
+:root[data-theme="archive_diary"] .figma-footer-actions .btn-secondary { background: var(--k-blue-1) !important; color: var(--k-blue-deep) !important; border: 2px solid var(--k-ink) !important; }
+
+/* Playful sticker micro-interaction on hover */
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] .p-proof-chip:hover,
+  :root[data-theme="archive_diary"] .lh:hover { animation: kwiggle 0.4s ease; }
+}
+@keyframes kwiggle { 0%,100%{ transform: translateY(-2px) rotate(0deg);} 30%{ transform: translateY(-2px) rotate(-3deg);} 65%{ transform: translateY(-2px) rotate(2deg);} }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KITSCH · POST-SEARCH RESULTS UI  (NewJeans-like, fully distinct from Civic)
+   Scoped to Kitsch + searched state only. Pure visual layer — search logic,
+   data, next-step/document structure, source grounding & uncertainty/legal
+   notices are all preserved (and kept high-contrast / legible).
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Result page surface → bright cream poster board with faint dotted grid */
+:root[data-theme="archive_diary"] body.searched {
+  background: #FFF7E8 !important;
+}
+:root[data-theme="archive_diary"] body.searched #starCanvas {
   background:
-    repeating-linear-gradient(90deg, var(--kit-ink) 0 2px, transparent 2px 6px) top / 100% 2px no-repeat,
-    var(--kit-paper);
+    radial-gradient(rgba(20,20,40,0.05) 1.3px, transparent 1.4px) 0 0 / 22px 22px,
+    #FFF7E8 !important;
+  opacity: 1 !important;
+}
+/* Sticky search header → ink-ruled poster bar */
+:root[data-theme="archive_diary"] body.searched .hero-container {
+  background: rgba(255,247,232,0.92) !important;
+  border-bottom: 2px solid var(--k-ink) !important;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+}
+:root[data-theme="archive_diary"] body.searched .smeta { font-family: var(--ff); font-weight: 700; color: var(--k-ink); letter-spacing: 0.01em; }
+:root[data-theme="archive_diary"] body.searched #rc,
+:root[data-theme="archive_diary"] body.searched #rh { color: var(--k-ink); }
+
+/* Result list rhythm */
+:root[data-theme="archive_diary"] body.searched .rlist { gap: 1.15rem !important; }
+
+/* Result card → bold poster bubble (blue lightness variation, no multicolor) */
+:root[data-theme="archive_diary"] .vc.manual-result {
+  background: #fff !important;
+  border: 2.5px solid var(--k-ink) !important;
+  border-radius: 26px !important;
+  box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+  overflow: clip;
+  transition: transform 0.4s var(--k-spring), box-shadow 0.4s var(--k-spring) !important;
+}
+:root[data-theme="archive_diary"] .vc.manual-result:nth-child(3n+2) { box-shadow: 6px 6px 0 var(--k-blue-3) !important; }
+:root[data-theme="archive_diary"] .vc.manual-result:nth-child(3n) { box-shadow: 6px 6px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] .vc.manual-result:hover { transform: translate(-2px,-3px) scale(1.004); box-shadow: 9px 9px 0 var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .manual-result .vc-h { border-bottom: 2px dashed var(--k-ink); padding: 1.1rem 1.25rem 0.95rem; }
+/* Visa code → blue capsule badge, status name in display face */
+:root[data-theme="archive_diary"] .manual-result .bc {
+  font-family: var(--k-display) !important; font-weight: 800 !important;
+  background: var(--k-blue) !important; color: #fff !important;
+  border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+  box-shadow: 2px 2px 0 var(--k-ink);
+}
+:root[data-theme="archive_diary"] .manual-result .manual-name-ko,
+:root[data-theme="archive_diary"] .manual-result .vt { font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .manual-result .manual-name-en { font-family: var(--ff); font-weight: 600; color: var(--k-blue-deep) !important; }
+
+/* Section zones → labeled poster sub-panels */
+:root[data-theme="archive_diary"] .manual-result .manual-section {
+  background: #FFFDF7 !important;
+  border: 1.5px solid var(--k-ink) !important;
+  border-radius: 18px !important;
+}
+:root[data-theme="archive_diary"] .manual-result .manual-section-title {
+  font-family: var(--k-display) !important; text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.74rem !important;
+  color: var(--k-ink) !important; display: inline-flex; align-items: center; gap: 0.4rem;
+}
+:root[data-theme="archive_diary"] .manual-result .manual-section-title::before {
+  content: ""; width: 9px; height: 9px; background: var(--k-blue); border: 1.5px solid var(--k-ink); border-radius: 50%;
 }
 
-/* Legal / source / warning surfaces — RESTRAINED: palette only, no artifacts,
-   no decoration, full readability. (Deliberately no Kitsch styling here.) */
-:root[data-theme="archive_diary"] .vc-caution,
-:root[data-theme="archive_diary"] .subcode-warning,
-:root[data-theme="archive_diary"] .reference-disclaimer,
-:root[data-theme="archive_diary"] .docs-missing-notice,
-:root[data-theme="archive_diary"] .p-cmd-disclaimer {
-  border-radius: 8px;
-  font-weight: 600;
+/* Next-action panel → the loud primary CTA callout — the ONE pink moment of
+   the results view (every other accent stays in the blue family) */
+:root[data-theme="archive_diary"] .next-action-panel {
+  background: linear-gradient(180deg, #EAF1FE, #FFE9F5) !important;
+  border: 2.5px solid var(--k-ink) !important;
+  border-radius: 22px !important;
+  box-shadow: 4px 4px 0 var(--k-ink) !important;
+}
+:root[data-theme="archive_diary"] .next-action-title { font-family: var(--k-display) !important; color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .next-action-kicker { font-family: var(--ff); font-weight: 800; color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .next-action-btn {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 16px !important;
+  box-shadow: 2px 2px 0 var(--k-ink) !important; color: var(--k-ink) !important;
+  transition: transform 0.35s var(--k-spring), box-shadow 0.35s var(--k-spring), background 0.2s ease !important;
+}
+:root[data-theme="archive_diary"] .next-action-btn strong { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .next-action-btn:hover { transform: translate(-1px,-2px) scale(1.01); box-shadow: 4px 4px 0 var(--k-ink) !important; background: var(--k-blue-1) !important; }
+:root[data-theme="archive_diary"] .next-action-btn.primary {
+  background: var(--k-blue) !important; border-color: var(--k-ink) !important; box-shadow: 3px 3px 0 var(--k-ink) !important;
+}
+:root[data-theme="archive_diary"] .next-action-btn.primary:hover { background: var(--k-blue-deep) !important; transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .next-action-btn.primary strong,
+:root[data-theme="archive_diary"] .next-action-btn.primary small,
+:root[data-theme="archive_diary"] .next-action-btn.primary .next-action-kicker { color: #fff !important; }
+
+/* Procedure tabs → sticker segmented control */
+:root[data-theme="archive_diary"] .manual-result .procedure-tabs {
+  background: #FFFDF7 !important; border: 2px solid var(--k-ink); border-radius: 999px; padding: 0.4rem;
+}
+:root[data-theme="archive_diary"] .manual-result .procedure-tabs .procedure-tab {
+  font-family: var(--ff); font-weight: 700; border: 1.5px solid transparent !important; border-radius: 999px !important; color: var(--k-ink) !important; background: transparent !important;
+  transition: transform 0.3s var(--k-spring), background 0.2s ease, color 0.2s ease !important;
+}
+:root[data-theme="archive_diary"] .manual-result .procedure-tab.active,
+:root[data-theme="archive_diary"] .manual-result .procedure-tabs .procedure-tab.active {
+  background: var(--k-blue) !important; border-color: var(--k-ink) !important; color: #fff !important; box-shadow: 2px 2px 0 var(--k-ink);
+}
+:root[data-theme="archive_diary"] .procedure-summary { color: var(--k-ink) !important; }
+
+/* Document groups → poster cards with bold colored left bar */
+:root[data-theme="archive_diary"] .doc-group {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-left-width: 7px !important;
+  border-radius: 18px !important; box-shadow: 3px 3px 0 rgba(20,20,40,0.12) !important;
+}
+:root[data-theme="archive_diary"] .doc-group:nth-child(4n+1) { border-left-color: var(--k-blue) !important; }
+:root[data-theme="archive_diary"] .doc-group:nth-child(4n+2) { border-left-color: var(--k-blue-3) !important; }
+:root[data-theme="archive_diary"] .doc-group:nth-child(4n+3) { border-left-color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .doc-group:nth-child(4n) { border-left-color: var(--k-blue-2) !important; }
+:root[data-theme="archive_diary"] .docs-list-row { background: #FFFDF7 !important; border: 1.5px solid var(--k-ink) !important; border-radius: 14px !important; }
+:root[data-theme="archive_diary"] .docs-list-row::before { background: var(--k-blue-1) !important; color: var(--k-blue-deep) !important; border: 1.5px solid var(--k-ink); }
+:root[data-theme="archive_diary"] .docs-list-name { color: var(--k-ink) !important; font-weight: 800; }
+
+/* Subcode cards → sticker tiles */
+:root[data-theme="archive_diary"] .manual-subcode-card { background: #fff !important; border: 1.5px solid var(--k-ink) !important; border-radius: 10px !important; }
+:root[data-theme="archive_diary"] .manual-subcode-card.match { box-shadow: inset 4px 0 0 var(--k-blue), 2px 2px 0 var(--k-ink) !important; }
+
+/* Uncertainty / review-needed notices → bold but HIGH-CONTRAST pills (semantic
+   amber kept for warning — not decorative; never weakened) */
+:root[data-theme="archive_diary"] .manual-badge {
+  font-family: var(--ff); border: 2px solid var(--k-ink) !important; border-radius: 999px !important; font-weight: 800;
+}
+:root[data-theme="archive_diary"] .manual-badge.review-needed { background: var(--k-butter) !important; color: #5A3A00 !important; }
+:root[data-theme="archive_diary"] .manual-badge.review-ok { background: #D8FBE6 !important; color: #0C3D2A !important; }
+
+/* Source-evidence / grounding panel → clearly framed, legible (source stays prominent) */
+:root[data-theme="archive_diary"] .source-evidence-panel {
+  background: #EAF1FF !important; border: 2px solid var(--k-ink) !important; border-radius: 16px !important;
+}
+:root[data-theme="archive_diary"] .source-evidence-panel > summary { font-family: var(--ff); font-weight: 800; color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .procedure-source-badge { border: 1.5px solid var(--k-ink) !important; border-radius: 999px !important; font-family: var(--ff); font-weight: 700; }
+:root[data-theme="archive_diary"] .procedure-source-badge.confirmed { background: #EAF1FF !important; color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] .procedure-source-ref { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .manual-detail-block { border: 1.5px solid var(--k-ink) !important; border-radius: 14px !important; }
+:root[data-theme="archive_diary"] .manual-detail-block > summary { font-family: var(--ff); font-weight: 800; color: var(--k-ink) !important; }
+
+/* Result-page reference disclaimer (legal) → clearly visible card, never muted */
+:root[data-theme="archive_diary"] body.searched .reference-disclaimer {
+  color: var(--k-ink) !important; border-top: 2px dashed var(--k-ink) !important; font-weight: 600;
 }
 
-/* Dark brightness mode keeps body-level dark tokens for content; limit Kitsch
-   paper faces to light mode so text contrast never regresses. */
-:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) {
-  background: var(--bg0) !important; /* neutralise the light paper grid */
+/* ══════════════════════════════════════════════════════════════════════════
+   KITSCH · BELOW-ANCHOR FULL REDESIGN  (#brandHero → footer, landing only)
+   Blue-unified pill/bubble personality + spring interactions for every
+   section below "복잡한 체류자격을 한 눈에 확인해보세요".
+   Hero & above untouched. UX flows, data hooks, legal notices preserved.
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Section shell: cream board, generous rhythm, bubble dividers */
+:root[data-theme="archive_diary"] body:not(.searched) .landing-scroll { background: transparent; }
+:root[data-theme="archive_diary"] body:not(.searched) .section-divider {
+  border: 0 !important; background: transparent !important; height: 3.4rem !important; position: relative;
 }
-:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-copy,
+:root[data-theme="archive_diary"] body:not(.searched) .section-divider::before {
+  content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: min(420px, 60vw); height: 0; border-top: 2px dashed color-mix(in srgb, var(--k-ink) 35%, transparent);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .section-divider::after {
+  content: ""; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: 14px; height: 14px; border-radius: 999px; background: var(--k-blue); border: 2px solid var(--k-ink);
+}
+/* Kickers & titles → Unbounded display, ink + blue */
+:root[data-theme="archive_diary"] body:not(.searched) .p-kicker {
+  font-family: var(--k-display) !important; font-weight: 700 !important; color: var(--k-blue) !important;
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-section-title {
+  font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important;
+  letter-spacing: -0.025em; line-height: 1.16;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-section-copy { color: var(--t2) !important; font-weight: 500; }
+
+/* ── Feature section → white bubble checklist, blue check pills ─────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .feature-headline {
+  font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important; letter-spacing: -0.025em;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .feature-subtitle { color: var(--k-blue-deep) !important; font-weight: 700; }
+:root[data-theme="archive_diary"] body:not(.searched) .feature-body { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .feature-checklist,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-feature-checklist {
+  background: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 30px 30px 30px 8px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .check-list li { border-bottom: 1.5px dashed color-mix(in srgb, var(--k-ink) 22%, transparent); }
+:root[data-theme="archive_diary"] body:not(.searched) .check-list li:last-child { border-bottom: 0; }
+:root[data-theme="archive_diary"] body:not(.searched) .check-icon {
+  background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important; font-weight: 800;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .check-list strong { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .check-list span[lang="en"] { color: var(--t3) !important; }
+
+/* ── Manual / source guidance cards → bubbles with icon pills ────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-card {
+  background: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 26px 26px 26px 8px !important; box-shadow: 4px 4px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-card:hover { transform: translateY(-5px) rotate(-0.6deg); box-shadow: 7px 7px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-icon {
+  background: var(--k-blue-1) !important; border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-body h3 { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-body p { color: var(--t2) !important; }
+/* legal note stays prominent */
+:root[data-theme="archive_diary"] body:not(.searched) .p-manual-note,
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-note {
+  color: var(--k-ink) !important; font-weight: 600;
+  border-top: 2px dashed color-mix(in srgb, var(--k-ink) 40%, transparent); padding-top: 0.9rem;
+}
+
+/* ── Pathway cards (체류자격 카드) → speech-bubble tiles, tilt + press ───── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-card {
+  background: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 26px 26px 8px 26px !important; box-shadow: 4px 4px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring), background 0.2s ease;
+  cursor: pointer;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-card:hover {
+  transform: translateY(-6px) rotate(-1deg) scale(1.015); box-shadow: 8px 8px 0 var(--k-blue) !important; background: #FFFDF7 !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-card:active { transform: translateY(-1px) scale(0.985); box-shadow: 2px 2px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-card:focus-visible { outline: 3px solid var(--k-blue); outline-offset: 3px; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-index {
+  font-family: var(--k-pixel) !important; color: var(--k-blue) !important; font-size: 1.05rem;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-title { font-family: var(--k-display) !important; font-weight: 700 !important; color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-title span { color: var(--t3) !important; font-family: var(--ff); font-weight: 600; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-desc { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-code {
+  background: var(--k-blue-1) !important; color: var(--k-blue-deep) !important;
+  border: 1.5px solid var(--k-ink) !important; border-radius: 999px !important; font-weight: 700;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-pathway-card:hover .p-code { background: var(--k-blue) !important; color: #fff !important; }
+
+/* ── How-it-works → numbered pill steps ──────────────────────────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-how-step {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 24px !important;
+  box-shadow: 4px 4px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-how-step:hover { transform: translateY(-4px) rotate(0.6deg); box-shadow: 6px 6px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-step-num {
+  font-family: var(--k-display) !important; background: var(--k-blue) !important; color: #fff !important;
+  border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+  min-width: 2.4em; text-align: center; padding: 0.18em 0.55em; display: inline-block;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-how-step h3 { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-how-step p { color: var(--t2) !important; }
+
+/* ── Source panel → blue-wash bubble; cards = white pills (legal prominent) ─ */
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-panel {
+  background: linear-gradient(165deg, var(--k-blue-1), #fff 70%) !important;
+  border: 2px solid var(--k-ink) !important; border-radius: 34px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-card {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 22px !important;
+  box-shadow: 3px 3px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-card:hover { transform: translateY(-4px); box-shadow: 5px 5px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-card h3 { color: var(--k-blue-deep) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-source-card p { color: var(--t2) !important; }
+
+/* ── Tools → bubble tiles with LIVE/PLANNED capsules ─────────────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-tool-card {
+  background: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 26px 26px 26px 8px !important; box-shadow: 4px 4px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring), background 0.2s ease;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-tool-card:hover { transform: translateY(-5px) rotate(-0.8deg); box-shadow: 7px 7px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-tool-card:active { transform: translateY(-1px) scale(0.985); }
+:root[data-theme="archive_diary"] body:not(.searched) .p-status {
+  font-family: var(--k-pixel) !important; background: var(--k-blue) !important; color: #fff !important;
+  border: 1.5px solid var(--k-ink) !important; border-radius: 999px !important; letter-spacing: 0.06em;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-status.planned { background: #fff !important; color: var(--k-blue-deep) !important; border-style: dashed !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-tool-card h3 { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-tool-card p { color: var(--t2) !important; }
+
+/* ── Agent / Med finders → pill filters, bubble list rows ────────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .jeju-region-pill,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__chip {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+  color: var(--k-ink) !important; font-weight: 700 !important; box-shadow: 2px 2px 0 var(--k-blue-2);
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring), background 0.2s ease, color 0.2s ease;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .jeju-region-pill:hover,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__chip:hover { transform: translateY(-2px) scale(1.05); box-shadow: 3px 3px 0 var(--k-blue); }
+:root[data-theme="archive_diary"] body:not(.searched) .jeju-region-pill.jeju-pill-active,
+:root[data-theme="archive_diary"] body:not(.searched) .jeju-region-pill[aria-pressed="true"],
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__chip[aria-pressed="true"] {
+  background: var(--k-blue) !important; color: #fff !important; border-color: var(--k-ink) !important; box-shadow: 3px 3px 0 var(--k-ink);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__controls select,
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__controls input,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__controls input {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+  color: var(--k-ink) !important; font-weight: 600;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__controls input:focus,
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__controls select:focus,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__controls input:focus {
+  border-color: var(--k-blue) !important; box-shadow: 0 0 0 3px rgba(47,94,252,0.2) !important; outline: none;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__list > li,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__list > li {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 20px !important;
+  box-shadow: 3px 3px 0 var(--k-blue-2) !important;
+  transition: transform 0.34s var(--k-spring), box-shadow 0.34s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__list > li:hover,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__list > li:hover { transform: translateY(-3px); box-shadow: 5px 5px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__show-more,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__show-more {
+  background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important; font-weight: 800; box-shadow: 3px 3px 0 var(--k-ink);
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__show-more:hover,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__show-more:hover { transform: translate(-1px,-2px); box-shadow: 5px 5px 0 var(--k-ink); }
+/* finder disclaimers/source notes stay high-contrast */
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__disclaimer,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__source,
+:root[data-theme="archive_diary"] body:not(.searched) .p-med-finder__disclaimer { color: var(--k-ink) !important; font-weight: 600; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-agent-finder__official-link { color: var(--k-blue-deep) !important; font-weight: 800; text-decoration: underline; }
+
+/* ── Reminder → bubble form panel, pill fields, blue submit ──────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-form {
+  background: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 30px 30px 8px 30px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-field label { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-field select,
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-field input {
+  background: var(--k-blue-1) !important; border: 2px solid var(--k-ink) !important; border-radius: 999px !important;
+  color: var(--k-ink) !important; font-weight: 600;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-field select:focus,
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-field input:focus { border-color: var(--k-blue) !important; box-shadow: 0 0 0 3px rgba(47,94,252,0.2) !important; outline: none; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-submit {
+  background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important; font-weight: 800; box-shadow: 3px 3px 0 var(--k-ink) !important;
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-submit:hover { transform: translate(-1px,-2px) scale(1.02); box-shadow: 5px 5px 0 var(--k-ink) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-items > li {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 20px !important; box-shadow: 3px 3px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-success {
+  background: var(--k-blue-1) !important; border: 2px solid var(--k-ink) !important; border-radius: 999px !important; color: var(--k-ink) !important; font-weight: 700;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-empty { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-reminder-foot { color: var(--k-ink) !important; font-weight: 600; }
+
+/* ── About / 플랫폼 소개 → bubble panels, roadmap pills ───────────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .about-title {
+  font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important; letter-spacing: -0.025em;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .about-brand,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-anagram-section {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 32px !important;
+  box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-right h3 { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .philosophy-list li { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .philosophy-list strong { color: var(--k-blue-deep) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .about-intro,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-start-section {
+  background: linear-gradient(165deg, var(--k-blue-1), #fff 65%) !important;
+  border: 2px solid var(--k-ink) !important; border-radius: 32px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .figma-start-img { border: 2px solid var(--k-ink) !important; border-radius: 24px !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .intro-text h3,
+:root[data-theme="archive_diary"] body:not(.searched) .about-hobbies h3 { color: var(--k-ink) !important; font-family: var(--k-display) !important; font-weight: 800 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .intro-text p,
+:root[data-theme="archive_diary"] body:not(.searched) .about-hobbies > p { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .hobby-card,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-value-card {
+  border: 2px solid var(--k-ink) !important; border-radius: 26px !important; box-shadow: 4px 4px 0 var(--k-blue-2) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .hobby-card:hover { transform: translateY(-5px) rotate(-0.8deg); box-shadow: 7px 7px 0 var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .hobby-card .hobby-title { font-family: var(--k-display) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .about-experience,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-roadmap-section {
+  background: #fff !important; border: 2px solid var(--k-ink) !important; border-radius: 32px !important; box-shadow: 6px 6px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .exp-heading { color: var(--k-ink) !important; font-family: var(--k-display) !important; font-weight: 800 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .figma-roadmap-note { color: var(--k-ink) !important; font-weight: 600; }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-row {
+  border: 1.5px solid color-mix(in srgb, var(--k-ink) 30%, transparent); border-radius: 999px;
+  padding: 0.65rem 1rem; transition: transform 0.34s var(--k-spring), border-color 0.2s ease, background 0.2s ease;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .exp-row:hover { transform: translateX(4px); border-color: var(--k-ink); background: var(--k-blue-1); }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-dot { background: var(--k-blue) !important; border: 2px solid var(--k-ink) !important; border-radius: 999px; }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-company { color: var(--k-ink) !important; font-weight: 800; }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-detail { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-year {
+  background: var(--k-blue-1) !important; color: var(--k-blue-deep) !important;
+  border: 1.5px solid var(--k-ink) !important; border-radius: 999px !important; font-weight: 800; padding: 0.2em 0.7em;
+}
+
+/* ── Final CTA + legal footer ────────────────────────────────────────────── */
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta {
+  background: linear-gradient(170deg, var(--k-blue-1), #fff 75%) !important;
+  border: 2px solid var(--k-ink) !important; border-radius: 36px !important; box-shadow: 7px 7px 0 var(--k-blue-2) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta h2 {
+  font-family: var(--k-display) !important; font-weight: 800 !important; color: var(--k-ink) !important; letter-spacing: -0.025em;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta > p { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-cta-btn {
+  border: 2px solid var(--k-ink) !important; border-radius: 999px !important; font-weight: 800 !important;
+  background: #fff !important; color: var(--k-ink) !important; box-shadow: 3px 3px 0 var(--k-blue-2) !important;
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring), background 0.2s ease;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-cta-btn.primary { background: var(--k-blue) !important; color: #fff !important; box-shadow: 3px 3px 0 var(--k-ink) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-cta-btn:hover { transform: translate(-1px,-3px) scale(1.03); box-shadow: 5px 5px 0 var(--k-ink) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta-note { color: var(--k-ink) !important; font-weight: 700; }
+/* brand-hero / feature / footer CTAs → pills (scoped below anchor) */
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero .btn-primary,
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero .btn-secondary,
+:root[data-theme="archive_diary"] body:not(.searched) .brand-feature .btn-primary,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-footer-actions .btn-primary,
+:root[data-theme="archive_diary"] body:not(.searched) .figma-footer-actions .btn-secondary {
+  border-radius: 999px !important;
+  transition: transform 0.32s var(--k-spring), box-shadow 0.32s var(--k-spring), background 0.2s ease;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .ft { background: #fff; color: var(--k-ink); font-weight: 600; }
+
+/* ── Scroll-entry spring pop (visual only; safe without JS) ──────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  html.k-io:root[data-theme="archive_diary"] body:not(.searched) .k-pop-watch {
+    opacity: 0; transform: translateY(22px) scale(0.96);
+  }
+  html.k-io:root[data-theme="archive_diary"] body:not(.searched) .k-pop-watch.k-in {
+    opacity: 1; transform: translateY(0) scale(1);
+    transition: opacity 0.45s ease, transform 0.6s var(--k-spring);
+  }
+  /* existing data-reveal system rides the spring in Kitsch */
+  :root[data-theme="archive_diary"] body:not(.searched) [data-reveal] {
+    transition-timing-function: var(--k-spring) !important;
+  }
+}
+:root[data-theme="archive_diary"] .modal-overlay { background: rgba(20,20,20,0.45); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+:root[data-theme="archive_diary"] .modal-box {
+  background: var(--k-white) !important;
+  border: 2.5px solid var(--k-ink) !important;
+  border-radius: 28px !important;
+  box-shadow: 8px 8px 0 var(--k-blue) !important;
+}
+@media (prefers-reduced-motion: no-preference) {
+  :root[data-theme="archive_diary"] .modal-overlay.show .modal-box,
+  :root[data-theme="archive_diary"] .modal-overlay[style*="flex"] .modal-box { animation: kmodal 0.45s var(--k-spring); }
+}
+@keyframes kmodal { from { transform: translateY(14px) scale(0.96); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+:root[data-theme="archive_diary"] .modal-header { border-bottom: 2px dashed var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .modal-title { font-family: var(--k-display) !important; font-weight: 800; color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .modal-close {
+  background: var(--k-white) !important; border: 2px solid var(--k-ink) !important;
+  border-radius: 999px !important; color: var(--k-ink) !important; box-shadow: 2px 2px 0 var(--k-ink);
+  transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring), background 0.2s ease;
+}
+:root[data-theme="archive_diary"] .modal-close:hover { transform: rotate(90deg) scale(1.08); background: var(--k-blue-1) !important; }
+/* Toast → ink bubble with blue offset */
+:root[data-theme="archive_diary"] .toast {
+  background: var(--k-ink) !important; color: #fff !important;
+  border: 2px solid var(--k-ink); border-radius: 999px !important;
+  box-shadow: 4px 4px 0 var(--k-blue) !important; font-weight: 700;
+}
+:root[data-theme="archive_diary"] .toast-warning { border-left: none !important; box-shadow: 4px 4px 0 var(--cWk) !important; }
+/* Finder empty / error states → friendly speech bubbles (legibility kept) */
+:root[data-theme="archive_diary"] .p-agent-finder__empty,
+:root[data-theme="archive_diary"] .p-med-finder__empty {
+  background: var(--k-blue-1); border: 2px dashed var(--k-ink); border-radius: 22px;
+  padding: 1rem 1.2rem; color: var(--k-ink); font-weight: 600;
+}
+:root[data-theme="archive_diary"] .p-agent-finder__error,
+:root[data-theme="archive_diary"] .p-med-finder__error {
+  border: 2px solid var(--k-ink) !important; border-radius: 22px !important;
+}
+
+/* ── Kitsch · DARK brightness — soft ink-blue console, single blue accent ── */
+:root[data-theme="archive_diary"] body[data-theme="dark"] {
+  --bg0: #0E1424; --bg1: #18203A; --bg2: #1E2746; --bg3: #273255;
+  --bgI: #18203A; --bd: #2C3756; --bd2: #232D49; --bd3: #38456A;
+  --t1: #EEF2FF; --t2: #BAC5E4; --t3: #8590B4;
+  --ac: #7FA6FF; --ac2: #A6C2FF;
+  --acG: rgba(127,166,255,0.16); --acL: #1B2541;
+  --color-primary: #7FA6FF; --color-primary-ink: #A6C2FF;
+  --k-line: #2C3756; --k-white: #18203A; --k-blue-1: #233459; --k-blue-2: #2C3756; --k-blue-3: #38456A;
+  --shadow-cta: 0 8px 20px rgba(0,0,0,0.4); --shadow-cta-hover: 0 12px 28px rgba(0,0,0,0.5);
+  --k-shadow-1: 0 1px 2px rgba(0,0,0,0.3); --k-shadow-2: 0 10px 28px rgba(0,0,0,0.4); --k-shadow-3: 0 18px 44px rgba(0,0,0,0.5);
+}
+/* Dark page base (body is transparent + starCanvas hidden on landing → guard any white gaps) */
+:root[data-theme="archive_diary"] body[data-theme="dark"],
+html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { background: #0E1424 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] #starCanvas { background: #0E1424 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .brand-hero,
+:root[data-theme="archive_diary"] body[data-theme="dark"] #brandHero,
+:root[data-theme="archive_diary"] body[data-theme="dark"] #brandHero.figma-brand-bridge {
+  background: linear-gradient(180deg, #0E1424 0%, #141B30 55%, #11182E 100%) !important;
+  background-image:
+    radial-gradient(50% 40% at 12% 6%, rgba(127,166,255,0.18), transparent 60%),
+    radial-gradient(46% 38% at 90% 4%, rgba(138,116,255,0.16), transparent 62%),
+    linear-gradient(180deg, #0E1424 0%, #141B30 55%, #11182E 100%) !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"] #brandHero .brand-hero-headline,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .stat-num { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .stat-card { background: #18203A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .stat-icon,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .stat-code-chip { background: #1E2746 !important; color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .figma-footer-hero,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .footer-hero-img {
+  background-color: #141B30 !important;
+  background-image:
+    radial-gradient(50% 60% at 18% 0%, rgba(138,116,255,0.22), transparent 60%),
+    radial-gradient(55% 65% at 88% 100%, rgba(127,166,255,0.22), transparent 62%),
+    linear-gradient(135deg, #0E1424, #141B30 60%, #11182E) !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"] .footer-chip { background: #1E2746 !important; color: #EEF2FF !important; }
 :root[data-theme="archive_diary"] body[data-theme="dark"] .sbar,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .vc,
 :root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-search,
 :root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-util,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .stat-card,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .vc,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-group,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-chk-item,
-:root[data-theme="archive_diary"] body[data-theme="dark"] .ai-fab {
-  background: var(--bg2);
-  color: var(--t1);
-  border-color: var(--bd3);
-  box-shadow: none;
+:root[data-theme="archive_diary"] body[data-theme="dark"] .visa-track-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-chk-item {
+  background: #18203A !important; border-color: #2C3756 !important; color: var(--t1) !important;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.4) !important;
 }
-:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-copy::before { background: var(--bg2); color: var(--t1); border-color: var(--bd3); }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-util { background: #18203A !important; border-color: #2C3756 !important; color: var(--t1) !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card-ai { background: linear-gradient(155deg, #1E2746 0%, #233459 100%) !important; border-color: #38456A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card-ai .p-gw-card-label { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-gw-card-ai .p-gw-card-sub { color: #BAC5E4 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .lh,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-cmd-chip { background: #1E2746 !important; border-color: #2C3756 !important; color: var(--t1) !important; box-shadow: none; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-proof-chip { background: #1E2746; border-color: #2C3756 !important; color: var(--t2) !important; box-shadow: none; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-proof-chip:nth-child(3) { background: rgba(240,108,176,0.16); color: #F6A8D2 !important; border-color: transparent !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .bc { background: #233459; color: #A6C2FF; border-color: #2C3756; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .bd { background: rgba(31,138,91,0.18); color: #7FD3A6; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .badge-req { background: #233459; color: #A6C2FF; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-title { color: #EEF2FF; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-title em { color: #7FA6FF; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-eyebrow { color: #7FA6FF; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .p-hero-sub { color: var(--t2); }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .btn-primary { background: #3B6FE0; border-color: #3B6FE0; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .btn-secondary { background: #18203A; color: #A6C2FF; border-color: #2C3756; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .logo-area { background: #0B1224; box-shadow: 0 10px 28px rgba(0,0,0,0.45); }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .hero-container::before {
+  background:
+    radial-gradient(118% 92% at 82% -12%, #1A2547 0%, rgba(26,37,71,0) 55%),
+    linear-gradient(180deg, #0E1424 0%, #11182E 100%) !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .hero-container::after {
+  background: radial-gradient(46% 42% at 86% 82%, rgba(127,166,255,0.14), transparent 70%) !important;
+}
 
-@media (prefers-reduced-motion: reduce) {
-  :root[data-theme="archive_diary"] .p-gw-card:hover,
-  :root[data-theme="archive_diary"] .p-gw-search:hover,
-  :root[data-theme="archive_diary"] .p-gw-util:hover,
-  :root[data-theme="archive_diary"] .p-cmd-chips button:hover,
-  :root[data-theme="archive_diary"] .landing-hints .lh:hover { transform: none; }
+/* Kitsch · DARK — post-search results coherence (ink-blue poster on deep ink) */
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched { background: #0E1424 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched #starCanvas {
+  background: radial-gradient(rgba(146,181,255,0.06) 1.3px, transparent 1.4px) 0 0 / 22px 22px, #0E1424 !important; opacity: 1 !important;
 }
-/* ─── end PARADISO_KITSCH_EDITORIAL_THEME_20260611 ─── */
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched .hero-container { background: rgba(14,20,36,0.92) !important; border-bottom-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .vc.manual-result { background: #141B30 !important; border-color: #44558A !important; box-shadow: 6px 6px 0 #233459 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .vc-h { border-bottom-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .manual-name-ko,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .vt { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .manual-section { background: #1B2440 !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .manual-section-title { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-panel { background: linear-gradient(180deg,#1E2746,#233459) !important; border-color: #44558A !important; box-shadow: 4px 4px 0 #0B1020 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-title { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-btn { background: #1B2440 !important; border-color: #44558A !important; color: #EEF2FF !important; box-shadow: 2px 2px 0 #0B1020 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-btn strong { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-btn.primary { background: #3B6FE0 !important; border-color: #0B1020 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-group { background: #141B30 !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .docs-list-row { background: #1B2440 !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .docs-list-name { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .source-evidence-panel { background: rgba(127,166,255,0.10) !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-badge.review-needed { background: rgba(255,228,94,0.18) !important; color: #FFE9A8 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-badge.review-ok { background: rgba(31,138,91,0.2) !important; color: #9FE9C2 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .procedure-tabs { background: #1B2440 !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] body.searched .reference-disclaimer,
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched .reference-disclaimer { color: #C5CEEC !important; border-top-color: #44558A !important; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   KITSCH · BREATHING PASS (below anchor) — 절제·여백·향수
+   Density one notch down, analog warmth on card surfaces, generous type
+   rhythm, and exactly two iridescent accents. Values-only refinement on the
+   existing layer; structure, hooks, legal notices untouched.
+   ══════════════════════════════════════════════════════════════════════════ */
+/* Bold whitespace: slower section rhythm, taller dividers */
+:root[data-theme="archive_diary"] body:not(.searched) .p-section { padding-top: clamp(4.5rem, 9vw, 7.5rem) !important; padding-bottom: clamp(4.5rem, 9vw, 7.5rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-section-head { margin-bottom: clamp(2.2rem, 5vw, 3.4rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) #brandHero,
+:root[data-theme="archive_diary"] body:not(.searched) #brandHero.figma-brand-bridge { padding-top: clamp(5rem, 10vw, 8rem) !important; padding-bottom: clamp(5rem, 10vw, 8rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .brand-feature { padding-top: clamp(4.2rem, 8vw, 6.5rem) !important; padding-bottom: clamp(4.2rem, 8vw, 6.5rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .section-divider { height: 5.5rem !important; }
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-manual-grid, .p-pathway-grid, .p-how-grid, .p-source-grid, .p-tool-grid, .figma-values-grid) { gap: clamp(1.2rem, 2.6vw, 2rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-manual-card, .p-pathway-card, .p-how-step, .p-source-card, .p-tool-card) { padding: clamp(1.5rem, 2.8vw, 2.1rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .stat-card { padding: 2.1rem 1.3rem !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .exp-row { padding: 0.85rem 1.25rem; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta { padding: clamp(3.5rem, 7vw, 5.5rem) clamp(1.5rem, 4vw, 3.5rem) !important; }
+
+/* Breathing type: bigger display, relaxed tracking, taller line rhythm */
+:root[data-theme="archive_diary"] body:not(.searched) .p-section-title {
+  font-size: clamp(1.85rem, 3.4vw, 2.9rem) !important; line-height: 1.22 !important; letter-spacing: -0.008em !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-kicker { letter-spacing: 0.2em !important; margin-bottom: 0.9rem; font-size: 0.82rem; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-section-copy { line-height: 1.85 !important; max-width: 52ch; }
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-headline { line-height: 1.18 !important; letter-spacing: -0.012em !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .brand-hero-subtitle { line-height: 1.8 !important; max-width: 46ch; }
+:root[data-theme="archive_diary"] body:not(.searched) :is(.feature-headline, .about-title, .p-footer-cta h2) { line-height: 1.2 !important; letter-spacing: -0.01em !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .about-title { font-size: clamp(1.9rem, 3.6vw, 3rem) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-pathway-desc, .p-how-step p, .p-tool-card p, .p-manual-body p, .p-source-card p, .feature-body, .intro-text p) { line-height: 1.8 !important; }
+:root[data-theme="archive_diary"] body:not(.searched) .stat-num { letter-spacing: 0.02em !important; }
+
+/* Analog warmth: faded warm-white card surfaces with a soft top sheen */
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-manual-card, .p-pathway-card, .p-how-step, .p-source-card, .p-tool-card, .feature-checklist, .figma-feature-checklist, .p-reminder-form, .about-brand, .figma-anagram-section, .about-experience, .figma-roadmap-section, .stat-card, .hobby-card) {
+  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-agent-finder__list > li, .p-med-finder__list > li, .p-reminder-items > li) { background: linear-gradient(173deg, #FFFEFA, #FFFAF0) !important; }
+/* slightly faded offsets — keeps the pop, loses the harshness */
+:root[data-theme="archive_diary"] body:not(.searched) :is(.p-manual-card, .p-pathway-card, .p-how-step, .p-tool-card) { box-shadow: 4px 4px 0 color-mix(in srgb, var(--k-blue-2) 78%, #FFF7E8) !important; }
+/* finer film grain (미세하게) */
+:root[data-theme="archive_diary"] .k-grain { opacity: 0.2; }
+
+/* Iridescent accent №1 — stat-card washi tape gets a faint holo sheen */
+:root[data-theme="archive_diary"] .brand-hero-stats .stat-card::after {
+  background: linear-gradient(100deg, #CFE0FC 0%, #F6E3F4 32%, #E3F4EC 58%, #CFE0FC 85%) !important;
+  opacity: 0.92;
+}
+/* Iridescent accent №2 — soft holo light sweep across the final CTA panel */
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta { position: relative; overflow: clip; }
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
+  background: linear-gradient(115deg, transparent 32%, rgba(207,224,252,0.35) 45%, rgba(246,227,244,0.28) 53%, rgba(227,244,236,0.28) 60%, transparent 72%);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .p-footer-cta > * { position: relative; z-index: 1; }
+
+/* ── Kitsch · Diaspora→Paradiso anagram — scatter→arrival, spring rhythm ── */
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-label {
+  font-family: var(--k-mono); letter-spacing: 0.34em; color: var(--t3); font-weight: 700;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-letter {
+  font-family: var(--k-display) !important;
+  transition: color 0.3s ease, transform 0.55s var(--k-spring), filter 0.3s ease, opacity 0.3s ease;
+}
+/* scattered origin (DIASPORA) = quiet ink; arrival (PARADISO) = blue */
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-letter.anagram-top { color: color-mix(in srgb, var(--k-ink) 72%, var(--k-cream)); }
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-letter.anagram-top.active {
+  color: var(--k-blue); filter: none; text-shadow: none;
+  transform: translateY(-7px) rotate(-5deg) scale(1.12);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-letter.anagram-bot { color: var(--k-blue-deep); }
+:root[data-theme="archive_diary"] body:not(.searched) .anagram-letter.anagram-bot.active {
+  color: var(--k-blue); filter: none; text-shadow: none;
+  transform: translateY(7px) rotate(4deg) scale(1.12);
+}
+/* path arrows ride the single blue ink, quieter when dimmed */
+:root[data-theme="archive_diary"] body:not(.searched) #anagram-svg path { stroke: var(--k-blue) !important; }
+:root[data-theme="archive_diary"] body:not(.searched) #anagram-svg marker path { fill: var(--k-blue) !important; stroke: none !important; }
+
+/* ── Kitsch · global micro-polish ────────────────────────────────────────── */
+:root[data-theme="archive_diary"] ::selection { background: var(--k-blue); color: #fff; }
+:root[data-theme="archive_diary"] :is(a, button, [role="button"], input, select, textarea):focus-visible {
+  outline: 3px solid var(--k-blue) !important; outline-offset: 2px;
+}
+
+/* Kitsch · DARK — below-anchor sections coherence */
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .stat-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .hobby-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-source-card {
+  background: #141B30 !important; border-color: #44558A !important; color: #EEF2FF !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-footer-cta::before { opacity: 0.25; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-manual-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-pathway-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-how-step,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-source-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-tool-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .feature-checklist,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-agent-finder__list > li,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-med-finder__list > li,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-reminder-form,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-reminder-items > li,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .about-brand,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .about-intro,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .about-experience,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .ft {
+  background: #141B30 !important; border-color: #44558A !important; color: #EEF2FF !important;
+  box-shadow: 4px 4px 0 #0B1020 !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-source-panel,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .p-footer-cta { background: linear-gradient(165deg,#1B2541,#141B30 70%) !important; border-color: #44558A !important; box-shadow: 6px 6px 0 #0B1020 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.p-section-title, .p-how-step h3, .p-tool-card h3, .p-manual-body h3, .p-pathway-title, .feature-headline, .about-title, .intro-text h3, .about-hobbies h3, .exp-heading, .exp-company, .p-footer-cta h2, .anagram-right h3, .check-list strong) { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.p-section-copy, .p-pathway-desc, .p-how-step p, .p-tool-card p, .p-manual-body p, .p-source-card p, .feature-body, .intro-text p, .exp-detail, .philosophy-list li, .p-footer-cta > p) { color: #BAC5E4 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.p-manual-note, .p-source-note, .p-agent-finder__disclaimer, .p-med-finder__source, .p-med-finder__disclaimer, .p-footer-cta-note, .figma-roadmap-note, .p-reminder-foot) { color: #C5CEEC !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.jeju-region-pill, .p-med-finder__chip, .p-agent-finder__controls select, .p-agent-finder__controls input, .p-med-finder__controls input, .p-reminder-field select, .p-reminder-field input, .p-cta-btn, .exp-year) {
+  background: #1B2440 !important; border-color: #44558A !important; color: #EEF2FF !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.jeju-region-pill.jeju-pill-active, .jeju-region-pill[aria-pressed="true"], .p-med-finder__chip[aria-pressed="true"], .p-cta-btn.primary) { background: #3B6FE0 !important; color: #fff !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.p-code, .p-manual-icon, .stat-code-chip) { background: #233459 !important; border-color: #44558A !important; color: #A6C2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .section-divider::before { border-top-color: rgba(146,181,255,0.3); }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) #brandHero,
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) #brandHero.figma-brand-bridge {
+  background: linear-gradient(180deg, #0E1424 0%, #11182E 100%) !important;
+  background-image: radial-gradient(50% 40% at 12% 6%, rgba(110,155,255,0.10), transparent 60%), linear-gradient(180deg, #0E1424 0%, #11182E 100%) !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.brand-hero-headline, .brand-hero-subtitle) { color: #EEF2FF !important; }
+/* ─── end PARADISO KITSCH LAYER (B --k- system) ─── */
 
 </style>
 <!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
@@ -10536,6 +11608,7 @@ body.searched .hero-container::before {
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
 <body class="landing" data-theme="light">
+<div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 
 <!-- Deadline reminder banner: shown when a saved date is within 30 days -->
@@ -10578,8 +11651,35 @@ body.searched .hero-container::before {
 </header>
 
 <header class="hero-container" id="hero">
+    <div class="k-decor" aria-hidden="true">
+        <span class="k-obj k-starburst"></span>
+        <span class="k-obj k-memo">VISA<br>MEMO</span>
+        <span class="k-obj k-receipt"></span>
+        <span class="k-obj k-card">PASS</span>
+        <span class="k-obj k-cal"><b>10</b><i>JUN</i></span>
+        <span class="k-obj k-clip"></span>
+        <span class="k-obj k-blob"></span>
+    </div>
+    <div class="k-masthead" aria-hidden="true">
+        <span class="k-mh-issue">VOL.25</span>
+        <span class="k-mh-dot">●</span>
+        <span class="k-mh-date">2026 · SEOUL／JEJU</span>
+        <span class="k-mh-barcode"></span>
+    </div>
     <div class="header-inner">
         <div class="logo-area" tabindex="0" role="button" aria-label="메인 화면으로 초기화" data-action="reset-to-landing">
+            <span class="k-stamp" aria-hidden="true">
+            <svg viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+                <defs><path id="kStampArc" d="M80,80 m-57,0 a57,57 0 1,1 114,0 a57,57 0 1,1 -114,0"></path></defs>
+                <circle cx="80" cy="80" r="75" fill="none" stroke="currentColor" stroke-width="3.2"></circle>
+                <circle cx="80" cy="80" r="66" fill="none" stroke="currentColor" stroke-width="1.4"></circle>
+                <text class="k-stamp-arc"><textPath href="#kStampArc" startOffset="0">PARADISO · REPUBLIC OF KOREA · RESIDENCE GUIDE ·</textPath></text>
+                <text class="k-stamp-entry" x="80" y="68" text-anchor="middle">ENTRY</text>
+                <line x1="40" y1="78" x2="120" y2="78" stroke="currentColor" stroke-width="1.4"></line>
+                <text class="k-stamp-date" x="80" y="97" text-anchor="middle">10 JUN 2026</text>
+                <text class="k-stamp-sub" x="80" y="115" text-anchor="middle">ADMITTED</text>
+            </svg>
+            </span>
             <img class="brand-wordmark-img" src="assets/brand/paradiso-wordmark-brush-white.png" alt="Paradiso" decoding="async" loading="eager" />
                         <!-- pages-refresh: 2026-05-20-bugfix-wordmark-counts -->
             <!-- Wordmark text removed: the brush image (.brand-wordmark-img) is the canonical wordmark in both landing and searched states. -->
@@ -10600,6 +11700,14 @@ body.searched .hero-container::before {
                 <span class="p-proof-chip">최종 확인은 공식 출처</span>
             </div>
         </section>
+
+        <!-- Kitsch-only zine marquee tape (decorative) -->
+        <div class="k-marquee" aria-hidden="true">
+            <div class="k-marquee-track">
+                <span>PARADISO ZINE ✦ 비자·체류 가이드 ✦ KOREA RESIDENCE ✦ NEW ISSUE ✦ 출처 확인 ✦ </span>
+                <span>PARADISO ZINE ✦ 비자·체류 가이드 ✦ KOREA RESIDENCE ✦ NEW ISSUE ✦ 출처 확인 ✦ </span>
+            </div>
+        </div>
 
         <!-- Home gateway — calm civic-tech entry grid. JS hooks reuse existing data-action handlers. -->
         <section class="p-gateway" aria-label="주요 기능 바로가기">
@@ -16468,7 +17576,7 @@ const EDITORIAL_THEME_STORAGE_KEY = 'paradiso:editorial-theme';
 const EDITORIAL_THEMES = ['civic_editorial', 'archive_diary'];
 const EDITORIAL_THEME_LABELS = {
     civic_editorial: { ko: '시빅', en: 'Civic', ja: 'シビック', zh: '公务', vi: 'Công vụ' },
-    archive_diary:   { ko: '아카이브', en: 'Archive', ja: 'アーカイブ', zh: '档案', vi: 'Lưu trữ' }
+    archive_diary:   { ko: '키치', en: 'Kitsch', ja: 'キッチュ', zh: '基奇', vi: 'Kitsch' }
 };
 const EDITORIAL_THEME_ARIA = { ko: '인터페이스 테마 변경', en: 'Change interface theme', ja: 'インターフェーステーマ', zh: '更换界面主题', vi: 'Đổi giao diện' };
 

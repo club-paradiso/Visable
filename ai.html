@@ -1144,25 +1144,25 @@ select:focus-visible {
            source/verification panel stay serious: palette-only adjustments.
            ════════════════════════════════════════════════════════════════ */
         html[data-editorial-theme="archive_diary"] {
-            --bg0: #F4EEDF; --bg1: #FBF6EC; --bg2: #F0E7D5;
-            --bd: #C8B89A; --bd2: #D8CBB0;
-            --t1: #2A241C; --t2: #574D3E; --t3: #897C66;
-            --ac: #2E5C9E; --ac2: #234A82; --acL: #E7EDF6;
-            --acG: rgba(46,92,158,0.14);
-            --cy: #B5654A;
-            --error: #B14A3B; --warning: #B07235;
-            --sh-modal: 0 12px 48px rgba(42,36,28,0.25);
+            --bg0: #EEF3FF; --bg1: #FFFFFF; --bg2: #F4F7FF;
+            --bd: #141414; --bd2: #C2D2EE;
+            --t1: #141414; --t2: #353A45; --t3: #6B7280;
+            --ac: #2F5EFC; --ac2: #1B36C9; --acL: #E3EAFF;
+            --acG: rgba(47,94,252,0.16);
+            --cy: #8A74FF;
+            --error: #E03B57; --warning: #EF8A2C;
+            --sh-modal: 0 12px 48px rgba(20,20,40,0.25);
         }
         html[data-editorial-theme="archive_diary"] body::before,
         html[data-editorial-theme="archive_diary"] body::after { display: none; }
         html[data-editorial-theme="archive_diary"] body {
             background:
-                linear-gradient(0deg, rgba(38,34,27,0.035) 1px, transparent 1px) 0 0 / 100% 28px,
-                linear-gradient(180deg, #FBF7EE 0%, #F4EEDF 100%);
+                linear-gradient(0deg, rgba(20,20,20,0.035) 1px, transparent 1px) 0 0 / 100% 28px,
+                linear-gradient(180deg, #F4F7FF 0%, #EEF3FF 100%);
         }
         html[data-editorial-theme="archive_diary"] .chat-header,
         html[data-editorial-theme="archive_diary"] .chat-input-area {
-            background: rgba(251,246,236,0.92);
+            background: rgba(255,255,255,0.92);
         }
         html[data-editorial-theme="archive_diary"] .ai-header-logo {
             /* white brush wordmark reads as ink on Kitsch paper */
@@ -1172,8 +1172,8 @@ select:focus-visible {
         html[data-editorial-theme="archive_diary"] .answer-card,
         html[data-editorial-theme="archive_diary"] .msg-row.ai .answer-card {
             background: #FFFFFF;
-            border: 1.5px solid #26221B;
-            box-shadow: 3px 3px 0 rgba(38,34,27,0.75);
+            border: 1.5px solid #141414;
+            box-shadow: 3px 3px 0 rgba(20,20,20,0.75);
             color: var(--t1);
         }
         html[data-editorial-theme="archive_diary"] .msg-row.user .msg-bubble {
@@ -1183,23 +1183,23 @@ select:focus-visible {
         }
         html[data-editorial-theme="archive_diary"] .answer-body strong,
         html[data-editorial-theme="archive_diary"] .msg-bubble strong { color: var(--ac2); }
-        html[data-editorial-theme="archive_diary"] .answer-kicker { color: #D8527C; }
+        html[data-editorial-theme="archive_diary"] .answer-kicker { color: #F451B0; }
         html[data-editorial-theme="archive_diary"] .ai-title-main { color: var(--t1); }
         html[data-editorial-theme="archive_diary"] .send-btn { background: var(--ac); color: #fff; border-radius: 999px; }
         html[data-editorial-theme="archive_diary"] .send-btn:hover:not(:disabled) { background: var(--ac2); }
-        html[data-editorial-theme="archive_diary"] .ai-textarea { background: #FFFFFF; border: 1.5px solid #26221B; color: var(--t1); }
+        html[data-editorial-theme="archive_diary"] .ai-textarea { background: #FFFFFF; border: 1.5px solid #141414; color: var(--t1); }
         html[data-editorial-theme="archive_diary"] .ai-textarea:focus { border-color: var(--ac); }
         html[data-editorial-theme="archive_diary"] .ai-welcome-chip {
-            background: #DCE9DD; color: var(--t1); border: 1px dashed #26221B; border-radius: 4px;
+            background: #EAF1FE; color: var(--t1); border: 1px dashed #141414; border-radius: 4px;
         }
-        html[data-editorial-theme="archive_diary"] .ai-welcome-chip:nth-child(even) { background: #F8EDC2; }
+        html[data-editorial-theme="archive_diary"] .ai-welcome-chip:nth-child(even) { background: #FFF6DE; }
         html[data-editorial-theme="archive_diary"] .ai-welcome-chip:hover { background: #FFFFFF; border-style: solid; color: var(--ac2); }
-        html[data-editorial-theme="archive_diary"] .back-btn { color: var(--t2); border-color: #26221B; border-radius: 999px; }
+        html[data-editorial-theme="archive_diary"] .back-btn { color: var(--t2); border-color: #141414; border-radius: 999px; }
         html[data-editorial-theme="archive_diary"] .back-btn:hover { background: #FFFFFF; color: var(--ac2); border-color: var(--ac); }
-        html[data-editorial-theme="archive_diary"] .quota-badge { background: #FFFFFF; border: 1px solid #26221B; color: var(--t2); }
+        html[data-editorial-theme="archive_diary"] .quota-badge { background: #FFFFFF; border: 1px solid #141414; color: var(--t2); }
         /* Serious surfaces: palette-only, keep contrast and weight. */
         html[data-editorial-theme="archive_diary"] .source-panel {
-            background: #F4EFE2; border-color: var(--ac);
+            background: #EAF1FF; border-color: var(--ac);
         }
         html[data-editorial-theme="archive_diary"] .source-title { color: var(--ac2); }
         html[data-editorial-theme="archive_diary"] .source-list { color: var(--t2); }
@@ -1210,9 +1210,9 @@ select:focus-visible {
         }
         html[data-editorial-theme="archive_diary"] .reference-disclaimer,
         html[data-editorial-theme="archive_diary"] .msg-disc { color: var(--t2); }
-        html[data-editorial-theme="archive_diary"] .grounding-badge { background: #FFFFFF; border-color: #26221B; color: var(--t2); }
+        html[data-editorial-theme="archive_diary"] .grounding-badge { background: #FFFFFF; border-color: #141414; color: var(--t2); }
         html[data-editorial-theme="archive_diary"] .grounding-badge.grounded { border-color: var(--ac); color: var(--ac2); background: var(--acL); }
-        html[data-editorial-theme="archive_diary"] .modal-box { background: #FBF6EC; border: 1.5px solid #26221B; }
+        html[data-editorial-theme="archive_diary"] .modal-box { background: #FFFFFF; border: 1.5px solid #141414; }
         html[data-editorial-theme="archive_diary"] .modal-title { color: var(--ac2); }
         html[data-editorial-theme="archive_diary"] .btn-agree { background: var(--ac); border-color: var(--ac); color: #fff; }
         html[data-editorial-theme="archive_diary"] .answer-action,
