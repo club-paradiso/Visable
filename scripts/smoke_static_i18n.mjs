@@ -32,6 +32,15 @@ assert(tx('en', 'dataReady', { count: 39, source: 'static' }).includes('39'), 'i
 assert(tx('missing-locale', 'qPlaceholder') === tx('ko', 'qPlaceholder'), 'missing locale should fall back to ko');
 
 const html = fs.readFileSync(path.join(repoRoot, 'index.html'), 'utf8');
+assert(html.includes('BOOTSTRAP_KO_FALLBACK'), 'index.html should include a built-in bootstrap fallback for failed i18n fetches');
+assert(html.includes('hasFullKoI18nPack()'), 'index.html should guard full language binding when packs fail to load');
+assert(!html.includes('UI_TRANSLATIONS.ko.landingHints[idx]'), 'landing hints must not assume ko landingHints exists during fallback');
+assert(!html.includes('UI_TRANSLATIONS.ko.quickFilters[idx]'), 'quick filters must not assume ko quickFilters exists during fallback');
+
+const hardcodedCheck = fs.readFileSync(path.join(repoRoot, 'scripts/check_index_hardcoded_text.mjs'), 'utf8');
+assert(hardcodedCheck.includes('blockEnd <= i18nStart'), 'hardcoded-text scanner must not skip a script just because it starts before the i18n runtime');
+assert(hardcodedCheck.includes('scanStringLiterals'), 'hardcoded-text scanner should parse JS literals without broad template-regex spans');
+
 const scripts = [...html.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/gi)].map((match) => match[1]);
 for (const script of scripts) new Function(script);
 
