@@ -477,9 +477,15 @@ class OfficialSourceFamilyAdapterTests(unittest.TestCase):
     """retrieve_official_source_family distinguishes every status; unsupported /
     not_configured families never collapse into bad_response."""
 
-    def test_unsupported_source_family_is_unsupported_not_bad_response(self):
+    def test_precedent_source_family_list_search_is_available_not_direct(self):
         cfg = _audit_oc_cfg()
         result = lt.retrieve_official_source_family("precedent", "출입국 판례", config=cfg, transport=_RecordingTransport(law_search_body()))
+        self.assertIn(result["status"], {lt.SOURCE_STATUS_RESULTS_FOUND, lt.SOURCE_STATUS_NO_RESULTS})
+        self.assertNotEqual(result["status"], lt.SOURCE_STATUS_BAD_RESPONSE)
+
+    def test_unconfirmed_precedent_family_is_unsupported_not_bad_response(self):
+        cfg = _audit_oc_cfg()
+        result = lt.retrieve_official_source_family("administrative_appeal", "출입국 행정심판", config=cfg, transport=_RecordingTransport(law_search_body()))
         self.assertEqual(result["status"], lt.SOURCE_STATUS_UNSUPPORTED)
         self.assertNotEqual(result["status"], lt.SOURCE_STATUS_BAD_RESPONSE)
 
@@ -492,6 +498,12 @@ class OfficialSourceFamilyAdapterTests(unittest.TestCase):
         cfg = GroundingConfig(mode="audit")  # no OC/key
         result = lt.retrieve_official_source_family("statute", "출입국관리법", config=cfg)
         self.assertEqual(result["status"], lt.SOURCE_STATUS_NOT_CONFIGURED)
+
+    def test_missing_credentials_precedent_is_not_configured_not_secret_leak(self):
+        cfg = GroundingConfig(mode="audit")  # no OC/key
+        result = lt.retrieve_official_source_family("precedent", "출입국 판례", config=cfg)
+        self.assertEqual(result["status"], lt.SOURCE_STATUS_NOT_CONFIGURED)
+        self.assertNotIn("OC=", json.dumps(result, ensure_ascii=False))
 
     def test_empty_results_family_is_no_results_not_bad_response(self):
         cfg = _audit_oc_cfg()
@@ -882,7 +894,7 @@ class OfficialSourceFamilyStatusTests(unittest.TestCase):
         return GroundingConfig(mode="audit", law_api_oc="secret-oc")
 
     def test_unsupported_source_family_not_bad_response(self):
-        result = lt.retrieve_official_source_family("precedent", "출입국", config=self.cfg())
+        result = lt.retrieve_official_source_family("administrative_appeal", "출입국", config=self.cfg())
         self.assertEqual(result["status"], "unsupported")
         self.assertNotEqual(result["status"], "bad_response")
 

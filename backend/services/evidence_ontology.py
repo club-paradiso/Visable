@@ -351,7 +351,7 @@ SOURCE_FAMILY_ROUTING: Dict[str, Tuple[str, ...]] = {
     "employment_restriction": _ACTIVITY_AUTHORITY_ROUTE,
     "study_on_non_study_status": _ACTIVITY_AUTHORITY_ROUTE,
     "work_on_non_work_status": _ACTIVITY_AUTHORITY_ROUTE,
-    "status_change": ("manual", "statute", "enforcement_decree", "legal_interpretation", "administrative_appeal"),
+    "status_change": ("manual", "statute", "enforcement_decree", "enforcement_rule"),
     "reporting_duty": _REGISTRATION_ROUTE,
     "workplace_change_addition": _REGISTRATION_ROUTE,
     "registration_or_residence_report": _REGISTRATION_ROUTE,
@@ -361,7 +361,7 @@ SOURCE_FAMILY_ROUTING: Dict[str, Tuple[str, ...]] = {
     # add administrative-appeal and court-precedent (analogical) sources.
     "overstay_or_risk": ("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal", "precedent"),
     # Refugee/humanitarian procedural disputes can hinge on appeal/precedent.
-    "nationality_or_refugee_context": ("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "administrative_appeal", "precedent", "manual"),
+    "nationality_or_refugee_context": ("statute", "enforcement_decree", "enforcement_rule", "manual"),
     "post_status_change_residual_duty": ("manual", "statute", "enforcement_rule", "administrative_rule", "legal_interpretation"),
     "reentry": _PROCEDURE_ROUTE,
     "extension": _PROCEDURE_ROUTE,

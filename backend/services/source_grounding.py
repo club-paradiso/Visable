@@ -148,7 +148,7 @@ def _snippet(text: str, *, citation: str = "", article: str = "", section: str =
 
 
 def _family_from_source(source: Dict[str, Any], fallback: str = "") -> str:
-    raw = str(source.get("source_family") or source.get("source_type") or source.get("target") or fallback or "").lower()
+    raw = str(source.get("sourceFamily") or source.get("source_family") or source.get("source_type") or source.get("target") or fallback or "").lower()
     if raw in {"law", "statute"}:
         return "statute"
     if raw in {"admin_rule", "admrul"}:
@@ -359,8 +359,8 @@ def normalize_law_source_attempts(
                     url=_source_url(item),
                     version_date=str(item.get("decision_date") or item.get("enforcement_date") or item.get("promulgation_date") or ""),
                     snippets=[{
-                        "text": item.get("summary") or item.get("definition") or item.get("text") or title,
-                        "citation": item.get("reference") or "",
+                        "text": item.get("summary") or item.get("definition") or item.get("text") or item.get("holdingSummary") or item.get("holding_summary") or item.get("snippet") or title,
+                        "citation": item.get("reference") or item.get("case_number") or item.get("decision_number") or "",
                         "article": item.get("article") or "",
                         "sourceName": title,
                         "url": _source_url(item),
