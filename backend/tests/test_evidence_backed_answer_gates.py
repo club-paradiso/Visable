@@ -256,6 +256,23 @@ class _AskHarness(unittest.TestCase):
 
 
 class DeterministicRepairIntegrationTests(_AskHarness):
+    def test_fabricated_case_citation_is_repaired_out_of_live_answer(self):
+        fabricated = (
+            "대법원 2099두99999 판결에 따르면 체류 연장 불허 처분은 반드시 취소됩니다. "
+            "따라서 바로 인용될 가능성이 높습니다."
+        )
+        b = self._ask(
+            "체류 연장 불허 처분을 받았는데 행정심판으로 다툴 수 있나요?",
+            visa_code="D-2",
+            model_answer=fabricated,
+        )
+        self.assertNotIn("2099두99999", b["answer"])
+        self.assertIn(b["case_decision_citation_verification_status"], {"verified", "no_citations", "failed"})
+        self.assertTrue(
+            b["case_decision_citation_repaired"] or b["case_decision_citation_rejected"],
+            b,
+        )
+
     def test_weak_h1_registration_answer_is_repaired(self):
         b = self._ask("H-1 외국인등록은 언제 해야 하나요?", visa_code="H-1")
         # Provider/model untouched; this is a quality repair, not an outage.

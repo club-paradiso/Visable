@@ -125,7 +125,30 @@ def test_official_source_family_plans_for_required_scenarios() -> None:
         plan = build_generalized_source_plan(question, facts, issues)
         planned = set(plan["source_families_planned"])
         assert expected <= planned
-        assert plan["source_family_statuses"].get("precedent", "not_attempted") in {"not_attempted", "unsupported"}
+        assert "precedent" not in planned
+
+
+def test_refusal_remedy_question_plans_case_law_families() -> None:
+    question = "체류 연장 불허 처분을 받았는데 행정심판이나 소송으로 다툴 수 있나요?"
+    facts = extract_immigration_facts(question, visa_code="D-2")
+    issues = classify_legal_issue_types(question, facts)
+    plan = build_generalized_source_plan(question, facts, issues)
+    planned = set(plan["source_families_planned"])
+    assert "denial_revocation_or_remedy" in issues
+    assert {"precedent", "administrative_appeal"} <= planned
+
+
+def test_routine_extension_or_route_question_does_not_plan_precedent() -> None:
+    for question, visa in [
+        ("D-2 체류기간 연장 서류가 뭐예요?", "D-2"),
+        ("F-4로 변경하는 일반 경로를 알려주세요.", "F-4"),
+        ("E-7 ordinary work permission route explanation please", "E-7"),
+    ]:
+        facts = extract_immigration_facts(question, visa_code=visa)
+        issues = classify_legal_issue_types(question, facts)
+        plan = build_generalized_source_plan(question, facts, issues)
+        assert "precedent" not in set(plan["source_families_planned"])
+        assert "administrative_appeal" not in set(plan["source_families_planned"])
 
 
 def test_h1_foreigner_registration_classification_is_not_school_enrollment() -> None:
