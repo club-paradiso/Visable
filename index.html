@@ -18043,28 +18043,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // --- Random country passport stamp (archive_diary only) ---
         (async () => {
-            const FALLBACK_COUNTRIES = [
-                {name:{common:'Korea'},cca2:'KR',flag:'🇰🇷'},
-                {name:{common:'Vietnam'},cca2:'VN',flag:'🇻🇳'},
-                {name:{common:'China'},cca2:'CN',flag:'🇨🇳'},
-                {name:{common:'USA'},cca2:'US',flag:'🇺🇸'},
-                {name:{common:'Japan'},cca2:'JP',flag:'🇯🇵'},
-                {name:{common:'Philippines'},cca2:'PH',flag:'🇵🇭'},
-                {name:{common:'Thailand'},cca2:'TH',flag:'🇹🇭'},
-                {name:{common:'Nepal'},cca2:'NP',flag:'🇳🇵'},
-                {name:{common:'Indonesia'},cca2:'ID',flag:'🇮🇩'},
-                {name:{common:'Mongolia'},cca2:'MN',flag:'🇲🇳'},
-                {name:{common:'Uzbekistan'},cca2:'UZ',flag:'🇺🇿'},
-                {name:{common:'Kazakhstan'},cca2:'KZ',flag:'🇰🇿'},
-                {name:{common:'Russia'},cca2:'RU',flag:'🇷🇺'},
-                {name:{common:'Germany'},cca2:'DE',flag:'🇩🇪'},
-                {name:{common:'United Kingdom'},cca2:'GB',flag:'🇬🇧'},
-                {name:{common:'France'},cca2:'FR',flag:'🇫🇷'},
-                {name:{common:'Bangladesh'},cca2:'BD',flag:'🇧🇩'},
-                {name:{common:'Myanmar'},cca2:'MM',flag:'🇲🇲'},
-                {name:{common:'Cambodia'},cca2:'KH',flag:'🇰🇭'},
-                {name:{common:'Sri Lanka'},cca2:'LK',flag:'🇱🇰'},
-            ];
+            const _ksTimeout = (ms) => new Promise((_, r) => setTimeout(() => r('timeout'), ms));
+            const flagFromCca2 = (cca2) => [...cca2.toUpperCase()]
+                .map((c) => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join('');
             function countryInkColor(cca2) {
                 let h = 0;
                 for (const c of cca2) h = (h * 31 + c.charCodeAt(0)) % 360;
@@ -18073,23 +18054,67 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
             function buildCountryStamp(country, day, month, year) {
                 const ink = countryInkColor(country.cca2);
-                const name = country.name.common.length > 12
-                    ? country.name.common.slice(0, 11) + '.'
-                    : country.name.common.toUpperCase();
-                return `<svg id="k-stamp-country" viewBox="0 0 160 160" width="140" height="140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="80" cy="80" r="72" fill="none" stroke="${ink}" stroke-width="3"/><circle cx="80" cy="80" r="60" fill="none" stroke="${ink}" stroke-width="1.5" stroke-dasharray="4 2"/><text x="80" y="72" text-anchor="middle" font-size="28">${country.flag}</text><text x="80" y="95" text-anchor="middle" font-size="10" letter-spacing="2" fill="${ink}" font-family="'Space Mono', monospace" font-weight="700">${name}</text><text x="80" y="113" text-anchor="middle" font-size="9" letter-spacing="1" fill="${ink}" font-family="'Space Mono', monospace">${day} ${month} ${year}</text><text x="80" y="128" text-anchor="middle" font-size="8" letter-spacing="3" fill="${ink}" opacity="0.7" font-family="'Space Mono', monospace">PARADISO</text></svg>`;
+                const rawName = country.name.common.toUpperCase();
+                const name = rawName.length > 14 ? rawName.slice(0, 13) + '.' : rawName;
+                const nameSize = name.length > 10 ? 9 : 11;
+                const serial = `NO.${(country.cca2.charCodeAt(0) * 97 + country.cca2.charCodeAt(1) * 13) % 9000 + 1000}`;
+                let ticks = '';
+                for (let a = 0; a < 360; a += 15) {
+                    const rad = a * Math.PI / 180;
+                    const x1 = 80 + 66 * Math.cos(rad), y1 = 80 + 66 * Math.sin(rad);
+                    const x2 = 80 + 71 * Math.cos(rad), y2 = 80 + 71 * Math.sin(rad);
+                    ticks += `<line x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${x2.toFixed(1)}" y2="${y2.toFixed(1)}" stroke="${ink}" stroke-width="1.6"/>`;
+                }
+                return `<svg id="k-stamp-country" viewBox="0 0 160 160" width="140" height="140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+<defs>
+<path id="kcs-arc-top" d="M 80,80 m -52,0 a 52,52 0 1,1 104,0" fill="none"/>
+<path id="kcs-arc-bot" d="M 80,80 m -52,0 a 52,52 0 1,0 104,0" fill="none"/>
+<mask id="kcs-grunge"><rect width="160" height="160" fill="#fff"/><circle cx="46" cy="38" r="9" fill="#000" opacity="0.35"/><circle cx="122" cy="104" r="11" fill="#000" opacity="0.3"/><circle cx="98" cy="30" r="5" fill="#000" opacity="0.4"/><circle cx="34" cy="112" r="7" fill="#000" opacity="0.3"/><circle cx="128" cy="58" r="4" fill="#000" opacity="0.45"/></mask>
+</defs>
+<g mask="url(#kcs-grunge)">
+<circle cx="80" cy="80" r="74" fill="none" stroke="${ink}" stroke-width="2"/>
+<circle cx="80" cy="80" r="70" fill="none" stroke="${ink}" stroke-width="3.4"/>
+${ticks}
+<circle cx="80" cy="80" r="62" fill="none" stroke="${ink}" stroke-width="1.2" stroke-dasharray="3 2.4"/>
+<text font-size="7.5" letter-spacing="2.6" fill="${ink}" font-family="'Space Mono', monospace" font-weight="700"><textPath href="#kcs-arc-top" startOffset="50%" text-anchor="middle">★ IMMIGRATION ★ ADMITTED ★</textPath></text>
+<text font-size="7" letter-spacing="2.2" fill="${ink}" opacity="0.85" font-family="'Space Mono', monospace"><textPath href="#kcs-arc-bot" startOffset="50%" text-anchor="middle">PARADISO · ${serial}</textPath></text>
+<text x="80" y="70" text-anchor="middle" font-size="26">${country.flag}</text>
+<text x="80" y="92" text-anchor="middle" font-size="${nameSize}" letter-spacing="1.6" fill="${ink}" font-family="'Space Mono', monospace" font-weight="700">${name}</text>
+<line x1="48" y1="99" x2="112" y2="99" stroke="${ink}" stroke-width="1" opacity="0.6"/>
+<text x="80" y="112" text-anchor="middle" font-size="9" letter-spacing="1.4" fill="${ink}" font-family="'Space Mono', monospace" font-weight="700">${day} ${month} ${year}</text>
+<text x="80" y="124" text-anchor="middle" font-size="7" letter-spacing="3" fill="${ink}" opacity="0.7" font-family="'Space Mono', monospace">— ENTRY —</text>
+</g>
+</svg>`;
             }
-            let countries;
+            let countries = null;
             try {
                 const res = await Promise.race([
                     fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flag'),
-                    new Promise((_, r) => setTimeout(() => r('timeout'), 4000))
+                    _ksTimeout(4000)
                 ]);
-                countries = await res.json();
-            } catch (_) {
-                countries = FALLBACK_COUNTRIES;
+                const d = await res.json();
+                if (Array.isArray(d) && d.length) countries = d;
+            } catch (_) {}
+            if (!countries) {
+                try {
+                    const res = await Promise.race([
+                        fetch('https://flagcdn.com/en/codes.json'),
+                        _ksTimeout(4000)
+                    ]);
+                    const d = await res.json();
+                    const list = Object.entries(d)
+                        .filter(([code]) => /^[a-z]{2}$/.test(code))
+                        .map(([code, label]) => ({
+                            name: { common: label },
+                            cca2: code.toUpperCase(),
+                            flag: flagFromCca2(code)
+                        }));
+                    if (list.length) countries = list;
+                } catch (_) {}
             }
-            if (!Array.isArray(countries) || !countries.length) countries = FALLBACK_COUNTRIES;
+            if (!countries || !countries.length) return;
             const country = countries[Math.floor(Math.random() * countries.length)];
+            if (!country.flag) country.flag = flagFromCca2(country.cca2);
             const searchWrapper = document.querySelector('.k-gw-search, .p-gw-search, [class*="gw-search"]');
             if (!searchWrapper) return;
             searchWrapper.style.position = 'relative';
@@ -18097,7 +18122,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (!document.getElementById('k-stamp-country-style')) {
                 const style = document.createElement('style');
                 style.id = 'k-stamp-country-style';
-                style.textContent = ':root[data-theme="archive_diary"] #k-stamp-country{position:absolute;bottom:-60px;right:-50px;transform:rotate(18deg);opacity:0.82;pointer-events:none;z-index:2;}';
+                style.textContent = ':root[data-theme="archive_diary"] #k-stamp-country{position:absolute;bottom:-60px;right:-50px;transform:rotate(18deg);opacity:0.85;pointer-events:none;z-index:2;filter:drop-shadow(0 1px 0 rgba(0,0,0,0.06));}';
                 document.head.appendChild(style);
             }
         })();
