@@ -11546,7 +11546,7 @@ function showToast(message, type = 'warning') {
 const COMMON_NEW = ['doc_app_form', 'doc_passport_org', 'doc_passport_copy', 'doc_photo', 'doc_id', 'doc_fee_new', 'doc_arc_fee'];
 const COMMON_EXT = ['doc_app_form', 'doc_passport_org', 'doc_passport_copy', 'doc_id', 'doc_fee_ext'];
 const DOC_DICT = {
-    "doc_app_form": "통합신청서 (별지 제34호 서식)", "doc_passport": "여권 원본 및 인적사항면 사본", "doc_passport_org": "여권 원본 (대조용 필수지참)",
+    "doc_app_form": "통합신청서 (별지 제34호 서식)", "doc_passport": "여권 원본 및 사본", "doc_passport_org": "여권 원본 (대조용 필수지참)",
     "doc_passport_copy": "여권 인적사항면 사본", "doc_id": "외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함)", "doc_photo": "표준규격사진 1매 (3.5x4.5cm, 최근 6개월)",
     "doc_fee": "수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)", "doc_fee_new": "신규/체류자격 부여 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)", "doc_fee_ext": "체류기간 연장 수수료 (정부수입인지, 기본 60,000원)",
     "doc_arc_fee": "외국인등록증 발급 및 재발급 수수료 35,000원",
@@ -11569,7 +11569,7 @@ const DOC_DICT = {
     "doc_passport_change": "등록사항 변경 신고서 (통합신청서), 신여권 원본 및 사본, 기존 외국인등록증", "doc_arc_reissue": "외국인등록증 재발급 신청서 (통합신청서), 여권, 사유 소명 서류(경찰서 분실신고증 등), 사진 1매",
     "doc_credit_report": "신용정보조회서 또는 신용상태 입증서류", "doc_income_tax": "소득세 납세사실증명서 또는 소득세 신고내역", "doc_resident_reg": "주민등록등본(해당 시)", "doc_tax_cert": "국세·지방세 납세증명서", "doc_kiip_cert": "사회통합프로그램(KIIP) 이수증/합격증명서", "doc_property_proof": "재산세 과세증명 또는 부동산 보유 입증서류", "doc_employment_proof": "재직증명서 또는 근무사실 입증서류", "doc_emp_certificate": "재직증명서", "doc_employment_insurance_list": "고용보험 가입자 명부", "doc_point_table": "점수제 자기평가표 및 증빙서류", "doc_reason_proof": "신청 사유 입증서류", "doc_job_search_plan": "구직활동계획서", "doc_internship_plan": "인턴십(연수) 계획서", "doc_cvi": "사증발급인정서(Certificate for Visa Issuance)",
     // PR D batch 2: stable machine IDs migrated from former Korean-string doc IDs; labels preserved verbatim so rendering is unchanged.
-    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류*", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매",
+    "doc_case_specific_evidence": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)", "doc_change_reason_evidence": "변경 사유 입증서류(활동계획서·초청서·고용계약서 등 해당 자격별)", "doc_visa_application_form": "사증발급신청서(별지 제17호 서식)", "doc_photo_one_optional": "사진 1매(해당 시)", "doc_fee_generic": "수수료", "doc_passport_generic": "여권 원본 및 사본", "doc_passport_and_arc": "여권 및 외국인등록증", "doc_status_specific_attachments": "체류자격별 개별 첨부서류(매뉴얼 해당 자격 항목 참조)", "doc_residence_proof_generic": "체류지 입증서류*", "doc_unified_application_form": "통합신청서", "doc_unified_application_form_change": "통합신청서(체류자격변경허가 신청 포함)", "doc_standard_photo_one": "표준규격사진 1매",
     // 2026-06-08 manual coverage corrections: keep DOC_DICT in sync with doc_master.json
     // so newly referenced doc ids resolve to Korean labels instead of leaking raw ids.
     "doc_local_recommendation": "지자체 추천서", "doc_personal_statement": "신상기술서", "doc_top_tier_degree": "최우수인재 대학 학위 증명",
@@ -13956,7 +13956,7 @@ function paradisoCanonicalDocKey20260609(doc) {
 
 /* Whether a kept label is a "bare generic" (exactly its family word, no
    parenthetical detail) — only such labels may be upgraded in place to a more
-   specific same-family wording (e.g. "여권" → "여권 원본 및 인적사항면 사본"). */
+   specific same-family wording (e.g. "여권" → "여권 원본 및 사본"). */
 function paradisoIsBareGenericDocLabel(label) {
     const resolved = paradisoResolveDocDisplayLabel(label);
     if (/[(（]/.test(resolved)) return false;
@@ -18232,7 +18232,8 @@ function showVisaDocForAction(visaCode) {
     [/^통합신청서$/, "통합신청서 (신고서) [별지 제34호서식]"],
     [/^신청서\s*\(?별지\s*제?34호\s*서식\)?$/, "통합신청서 (신고서) [별지 제34호서식]"],
     [/^통합신청서\s*\(별지\s*제?34호\s*서식\)$/, "통합신청서 (신고서) [별지 제34호서식]"],
-    [/^여권$/, "여권 원본 및 인적사항면 사본"],
+    [/^여권$/, "여권 원본 및 사본"],
+    [/^여권 원본 및 인적사항면 사본$/, "여권 원본 및 사본"],
     [/^표준규격사진\s*1매$/, "표준규격사진 1매(3.5×4.5cm, 최근 6개월)"],
     [/^수수료$/, "수수료(절차별 금액 아래 수수료 안내 확인)"],
     [/^혼인관계증명서$/, "혼인관계증명서(상세)"],
