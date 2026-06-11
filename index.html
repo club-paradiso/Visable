@@ -18061,6 +18061,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         const _kd = new Date();
         const _kMonths = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
         const _kDateStr = `${_kMonths[_kd.getMonth()]} ${_kd.getDate()} ${_kd.getFullYear()}`;
+        const _kStampEl = document.querySelector('.k-stamp-date');
+        if (_kStampEl) _kStampEl.textContent = `${_kd.getDate()} ${_kMonths[_kd.getMonth()]} ${_kd.getFullYear()}`;
+        const _kCalEl = document.querySelector('.k-obj.k-cal');
+        if (_kCalEl) {
+            const _kCalB = _kCalEl.querySelector('b');
+            const _kCalI = _kCalEl.querySelector('i');
+            if (_kCalB) _kCalB.textContent = _kd.getDate();
+            if (_kCalI) _kCalI.textContent = _kMonths[_kd.getMonth()];
+        }
         (async function resolveKitschCity() {
             const _kTimeout = (ms) => new Promise((_, r) => setTimeout(() => r('timeout'), ms));
             let city = '';
