@@ -18040,6 +18040,67 @@ document.addEventListener('DOMContentLoaded', async () => {
             const el = document.getElementById('k-masthead-meta');
             if (el) el.textContent = `PARADISO · ${_kDateStr} · ${city}`;
         })();
+
+        // --- Random country passport stamp (archive_diary only) ---
+        (async () => {
+            const FALLBACK_COUNTRIES = [
+                {name:{common:'Korea'},cca2:'KR',flag:'🇰🇷'},
+                {name:{common:'Vietnam'},cca2:'VN',flag:'🇻🇳'},
+                {name:{common:'China'},cca2:'CN',flag:'🇨🇳'},
+                {name:{common:'USA'},cca2:'US',flag:'🇺🇸'},
+                {name:{common:'Japan'},cca2:'JP',flag:'🇯🇵'},
+                {name:{common:'Philippines'},cca2:'PH',flag:'🇵🇭'},
+                {name:{common:'Thailand'},cca2:'TH',flag:'🇹🇭'},
+                {name:{common:'Nepal'},cca2:'NP',flag:'🇳🇵'},
+                {name:{common:'Indonesia'},cca2:'ID',flag:'🇮🇩'},
+                {name:{common:'Mongolia'},cca2:'MN',flag:'🇲🇳'},
+                {name:{common:'Uzbekistan'},cca2:'UZ',flag:'🇺🇿'},
+                {name:{common:'Kazakhstan'},cca2:'KZ',flag:'🇰🇿'},
+                {name:{common:'Russia'},cca2:'RU',flag:'🇷🇺'},
+                {name:{common:'Germany'},cca2:'DE',flag:'🇩🇪'},
+                {name:{common:'United Kingdom'},cca2:'GB',flag:'🇬🇧'},
+                {name:{common:'France'},cca2:'FR',flag:'🇫🇷'},
+                {name:{common:'Bangladesh'},cca2:'BD',flag:'🇧🇩'},
+                {name:{common:'Myanmar'},cca2:'MM',flag:'🇲🇲'},
+                {name:{common:'Cambodia'},cca2:'KH',flag:'🇰🇭'},
+                {name:{common:'Sri Lanka'},cca2:'LK',flag:'🇱🇰'},
+            ];
+            function countryInkColor(cca2) {
+                let h = 0;
+                for (const c of cca2) h = (h * 31 + c.charCodeAt(0)) % 360;
+                h = 180 + (h % 160);
+                return `hsl(${h}, 65%, 28%)`;
+            }
+            function buildCountryStamp(country, day, month, year) {
+                const ink = countryInkColor(country.cca2);
+                const name = country.name.common.length > 12
+                    ? country.name.common.slice(0, 11) + '.'
+                    : country.name.common.toUpperCase();
+                return `<svg id="k-stamp-country" viewBox="0 0 160 160" width="140" height="140" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="80" cy="80" r="72" fill="none" stroke="${ink}" stroke-width="3"/><circle cx="80" cy="80" r="60" fill="none" stroke="${ink}" stroke-width="1.5" stroke-dasharray="4 2"/><text x="80" y="72" text-anchor="middle" font-size="28">${country.flag}</text><text x="80" y="95" text-anchor="middle" font-size="10" letter-spacing="2" fill="${ink}" font-family="'Space Mono', monospace" font-weight="700">${name}</text><text x="80" y="113" text-anchor="middle" font-size="9" letter-spacing="1" fill="${ink}" font-family="'Space Mono', monospace">${day} ${month} ${year}</text><text x="80" y="128" text-anchor="middle" font-size="8" letter-spacing="3" fill="${ink}" opacity="0.7" font-family="'Space Mono', monospace">PARADISO</text></svg>`;
+            }
+            let countries;
+            try {
+                const res = await Promise.race([
+                    fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flag'),
+                    new Promise((_, r) => setTimeout(() => r('timeout'), 4000))
+                ]);
+                countries = await res.json();
+            } catch (_) {
+                countries = FALLBACK_COUNTRIES;
+            }
+            if (!Array.isArray(countries) || !countries.length) countries = FALLBACK_COUNTRIES;
+            const country = countries[Math.floor(Math.random() * countries.length)];
+            const searchWrapper = document.querySelector('.k-gw-search, .p-gw-search, [class*="gw-search"]');
+            if (!searchWrapper) return;
+            searchWrapper.style.position = 'relative';
+            searchWrapper.insertAdjacentHTML('beforeend', buildCountryStamp(country, _kd.getDate(), _kMonths[_kd.getMonth()], _kd.getFullYear()));
+            if (!document.getElementById('k-stamp-country-style')) {
+                const style = document.createElement('style');
+                style.id = 'k-stamp-country-style';
+                style.textContent = ':root[data-theme="archive_diary"] #k-stamp-country{position:absolute;bottom:-60px;right:-50px;transform:rotate(18deg);opacity:0.82;pointer-events:none;z-index:2;}';
+                document.head.appendChild(style);
+            }
+        })();
     }
 
 });
