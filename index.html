@@ -10585,14 +10585,30 @@ body.searched .hero-container::before {
 
 :root[data-theme="archive_diary"] .landing-hints { gap: 0.6rem; margin-top: 1.4rem; }
 
-/* Wordmark → bold ink poster tag with cyber offset (slight tilt) */
+/* Wordmark → NewJeans-style powder-blue jelly sticker: glossy cloud highlight
+   over a sky→blue wash, hand-cut bubble radius, pink pop shadow and a tiny
+   star badge. White brush wordmark reads crisply on the mid-blue. */
 :root[data-theme="archive_diary"] body:not(.searched) .logo-area {
-  background: var(--k-ink);
+  background:
+    radial-gradient(130% 95% at 16% -4%, rgba(255,255,255,0.58) 0%, rgba(255,255,255,0.10) 42%, transparent 58%),
+    linear-gradient(135deg, var(--k-sky) 0%, var(--k-blue) 82%);
   border: 3px solid var(--k-ink);
-  border-radius: 16px;
-  padding: 0.65rem 1.25rem !important;
-  box-shadow: var(--k-pop-2-blue, 6px 6px 0 var(--k-blue));
+  border-radius: 26px 32px 28px 22px / 32px 22px 34px 26px;
+  padding: 0.7rem 1.4rem !important;
+  box-shadow: 6px 6px 0 var(--k-pink, #FF8ED1);
   transform: rotate(-2deg);
+}
+:root[data-theme="archive_diary"] body:not(.searched) .logo-area::after {
+  content: "★";
+  position: absolute; top: -15px; right: -13px;
+  width: 32px; height: 32px;
+  display: grid; place-items: center;
+  background: var(--k-pink, #FF8ED1); color: var(--k-white, #FFFFFF);
+  border: 2.5px solid var(--k-ink);
+  border-radius: 50%;
+  font-size: 15px; line-height: 1;
+  transform: rotate(14deg);
+  pointer-events: none;
 }
 :root[data-theme="archive_diary"] body:not(.searched) .brand-wordmark-img { filter: none !important; }
 
