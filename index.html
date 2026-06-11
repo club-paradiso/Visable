@@ -1568,6 +1568,32 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-more[open] .more-open { display: none; }
 .manual-subcode-more[open] .more-close { display: inline; }
 .manual-subcode-more .manual-subcode-grid { margin-top: 0.45rem; }
+
+/* ── Subcode preview chips + expand/collapse group (broad parent searches) ── */
+.subcode-group-summary { font-size: 0.86rem; color: var(--t2); margin: 0.15rem 0 0.5rem; word-break: keep-all; line-height: 1.6; }
+.subcode-group-hint { font-size: 0.74rem; color: var(--t3); margin: 0.5rem 0 0; word-break: keep-all; }
+.subcode-preview-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.55rem; }
+.subcode-preview-chip { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.3rem 0.75rem; font: inherit; font-size: 0.8rem; color: var(--t1); background: var(--bgI); border: 1.5px solid var(--bd); border-radius: 999px; cursor: pointer; max-width: 100%; }
+.subcode-preview-chip:hover { border-color: var(--ac); background: var(--acG); }
+.subcode-preview-chip:focus-visible { outline: 3px solid var(--ac); outline-offset: 1px; }
+.subcode-preview-code { font-weight: 900; color: var(--ac); white-space: nowrap; }
+.subcode-preview-name { word-break: keep-all; text-align: left; }
+.subcode-expand-wrap { margin-top: 0.2rem; }
+.subcode-expand-btn { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.45rem 0.95rem; font: inherit; font-size: 0.8rem; font-weight: 900; color: var(--ac); background: transparent; border: 1.5px solid var(--ac); border-radius: 10px; cursor: pointer; }
+.subcode-expand-btn:hover { background: var(--acG); }
+.subcode-expand-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+.subcode-expand-btn .subcode-expand-hide { display: none; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-show { display: none; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-hide { display: inline; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-caret { transform: rotate(180deg); }
+.subcode-expand-caret { transition: transform 0.18s ease; }
+@media (prefers-reduced-motion: reduce) { .subcode-expand-caret { transition: none; } }
+.subcode-expand-body { margin-top: 0.55rem; display: grid; gap: 0.5rem; }
+.subcode-expand-body[hidden] { display: none; }
+@media (max-width: 480px) {
+  .subcode-preview-chip { font-size: 0.76rem; padding: 0.3rem 0.6rem; }
+  .subcode-expand-btn { width: 100%; justify-content: center; }
+}
 .procedure-tabs { display: flex; flex-wrap: wrap; gap: 0.42rem; overflow-x: auto; padding: 0.12rem 0 0.25rem; scrollbar-width: thin; }
 .procedure-tab { flex: 0 0 auto; min-height: 36px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 999px; padding: 0 0.78rem; font: inherit; font-size: 0.76rem; font-weight: 850; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
 .procedure-tab:hover:not(:disabled) { border-color: var(--ac); color: var(--ac); background: var(--acL); }
@@ -11275,6 +11301,11 @@ body.searched .hero-container::before {
     <div class="qf" id="qf" aria-label="자주 찾는 검색어 모음"></div>
     <section class="rlist-compact" id="rlistCompact" aria-label="요약 결과" hidden></section>
     <div class="rlist" id="rlist" aria-live="polite"></div>
+    <!-- External guided tools (data + logic live in assets/js + data/, NOT in this file).
+         Hidden until a relevant search (B-1/B-2/C-3/K-ETA/제주 → short-stay checker,
+         F-4/재외동포/거소증/FBI → F-4 route guide) makes them useful. -->
+    <section id="shortStayChecker" class="short-stay-checker" aria-labelledby="shortStayCheckerTitle" hidden></section>
+    <section id="f4RouteGuide" class="f4-route-guide" aria-labelledby="f4RouteGuideTitle" hidden></section>
 </main>
 
 <!-- Modals -->
@@ -15012,9 +15043,59 @@ function subcodeSourceChip(s) {
     return `<span class="subcode-chip chip-review">${escapeHtml(tx('sourceChipReview'))}</span>`;
 }
 
-function renderSubcodes(v, keywords, matchingSubcodes) {
+/* ---- Generic parent/subcode grouping helpers (search-result density) -------
+   Broad parent-code searches (C-3, B-2, F-2, F-6, D-2, D-10, E-7, G-1, F-4 …)
+   must not flood the card with every subcode as a full card. These helpers are
+   data-driven and generic — nothing is hardcoded per status. */
+function getParentVisaCode(code) {
+    const norm = String(code || '').trim().toUpperCase();
+    const m = /^([A-Z]+-\d+)(?:-.+)?$/.exec(norm);
+    return m ? m[1] : norm;
+}
+function isSubcodeOf(parentCode, childCode) {
+    const p = normalizeVisaCode(parentCode), c = normalizeVisaCode(childCode);
+    return !!p && !!c && p !== c && normalizeVisaCode(getParentVisaCode(childCode)) === p;
+}
+function groupSearchResultsByParent(results) {
+    const groups = new Map();
+    (results || []).forEach(r => {
+        const parent = getParentVisaCode(r && r.code);
+        if (!groups.has(parent)) groups.set(parent, []);
+        groups.get(parent).push(r);
+    });
+    return groups;
+}
+function shouldAutoExpandSubcodeGroup(query, group) {
+    const qNorm = normalizeVisaCode(query);
+    if (!qNorm) return false;
+    return (group || []).some(s => normalizeVisaCode(s && s.code) === qNorm);
+}
+function renderSubcodePreview(group, query) {
+    const active = (group || []).filter(s => !s.status || s.status === 'active');
+    const preview = (active.length ? active : group).slice(0, 4);
+    if (!preview.length) return '';
+    const chips = preview.map(s =>
+        `<button type="button" class="subcode-preview-chip" role="listitem" data-action="search-hint" data-query="${escapeHtml(s.code)}"><span class="subcode-preview-code">${hl(s.code, query ? [query] : [])}</span><span class="subcode-preview-name">${escapeHtml(getLocalizedSubcodeName(s))}</span></button>`
+    ).join('');
+    return `<div class="subcode-preview-chips" role="list" aria-label="${escapeHtml(tx('subcodePreviewAria'))}">${chips}</div>`;
+}
+function renderExpandableSubcodeGroup(v, group, innerHtml, query) {
+    const groupId = `subgroup-${normalizeVisaCode(v.code)}`;
+    const expanded = shouldAutoExpandSubcodeGroup(query, group);
+    return `<div class="subcode-expand-wrap">
+        <button type="button" class="subcode-expand-btn" data-action="toggle-subcode-group" aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="${groupId}">
+            <span class="subcode-expand-show">${escapeHtml(tx('subcodeGroupShowCount', { count: group.length }))}</span>
+            <span class="subcode-expand-hide">${escapeHtml(tx('subcodeGroupHide'))}</span>
+            <span class="subcode-expand-caret" aria-hidden="true">▾</span>
+        </button>
+        <div id="${groupId}" class="subcode-expand-body" ${expanded ? '' : 'hidden'}>${innerHtml}</div>
+    </div>`;
+}
+
+function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
+    opts = opts || {};
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
     const visaCode = v.code || '';
     const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
@@ -15031,9 +15112,35 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         </div>`;
     };
 
-    // Matched subcodes are lifted into their own labeled group up top
-    // (original code order preserved); the rest keep the category grouping
-    // and collapse behavior below. No matches → identical to before.
+    // Category-grouped HTML for an arbitrary subset (group order follows first
+    // appearance in the FULL list so lifting cards out never reshuffles it).
+    const buildGroupedHtml = (list) => {
+        const gm = new Map();
+        subs.forEach(s => { const g = s.group || '기타'; if (!gm.has(g)) gm.set(g, []); });
+        list.forEach(s => gm.get(s.group || '기타').push(s));
+        const hasG = list.some(s => s.group);
+        return [...gm.keys()].filter(g => gm.get(g).length).map(g => {
+            const cards = gm.get(g).map(renderCard).join('');
+            const groupTitle = hasG ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
+            return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
+        }).join('');
+    };
+
+    const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
+
+    // A) Broad parent-code query (e.g. "C-3" on the C-3 card): parent-first.
+    //    Compact one-line summary + 3–4 preview chips + a keyboard-accessible
+    //    expand/collapse group instead of a wall of full subcode cards.
+    if (opts.broadParentQuery && subs.length > 5) {
+        const activeSubs = subs.filter(s => !s.status || s.status === 'active');
+        const names = activeSubs.slice(0, 4).map(s => getLocalizedSubcodeName(s)).filter(Boolean).join(', ');
+        const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: subs.length, names }))}</p>`;
+        const hint = `<p class="subcode-group-hint">${escapeHtml(tx('subcodeGroupHint', { example: (activeSubs[0] && activeSubs[0].code) || `${visaCode}-1` }))}</p>`;
+        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;
+    }
+
+    // B) Matched subcodes are lifted into their own labeled group up top
+    //    (original code order preserved). Exact subcode searches stay prominent.
     const matched = subs.filter(s => matchSet.has(s.code));
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
@@ -15042,31 +15149,27 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
     }
 
-    // Group remaining subcodes by category. Group order follows first
-    // appearance in the FULL list so lifting matched cards out never
-    // reshuffles the category sequence; empty groups are dropped.
+    // Short remainder → flat grid (no awkward collapse).
+    if (rest.length <= 4) {
+        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${buildGroupedHtml(rest)}</div>`;
+    }
+    // Long remainder → collapse the full list behind the accessible toggle so
+    // neither exact-subcode nor keyword searches drown in full cards.
+    if (matched.length || rest.every(s => !s.group)) {
+        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)}</div>`;
+    }
+    // Keyword search, no specific match, multiple category groups → legacy
+    // behavior: first category group open, remaining groups behind "더 보기".
     const groupMap = new Map();
-    subs.forEach(s => {
-        const g = s.group || '기타';
-        if (!groupMap.has(g)) groupMap.set(g, []);
-    });
+    subs.forEach(s => { const g = s.group || '기타'; if (!groupMap.has(g)) groupMap.set(g, []); });
     rest.forEach(s => groupMap.get(s.group || '기타').push(s));
     const groups = [...groupMap.keys()].filter(g => groupMap.get(g).length);
     const hasGroups = rest.some(s => s.group);
     const renderGroup = (g) => {
         const cards = groupMap.get(g).map(renderCard).join('');
-        const title = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
-        return `<div class="manual-subcode-group">${title}<div class="manual-subcode-grid">${cards}</div></div>`;
+        const groupTitle = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
+        return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
     };
-
-    const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
-    // Single group or short list → render flat (no awkward collapse).
-    if (groups.length <= 1 || rest.length <= 4) {
-        return `<div class="manual-section">${title}${matchedHtml}${groups.map(renderGroup).join('')}</div>`;
-    }
-    // Many groups → show the first group, collapse the rest behind a full-width
-    // "더 보기 / 접기" toggle. (Matched subcodes never sit in the collapsed
-    // groups — they are lifted into the matched section above.)
     const firstGroup = renderGroup(groups[0]);
     const restGroups = groups.slice(1);
     const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
@@ -15074,7 +15177,7 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
             <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
             <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
         </details>`;
-    return `<div class="manual-section">${title}${matchedHtml}${firstGroup}${moreHtml}</div>`;
+    return `<div class="manual-section" data-subcode-section>${title}${firstGroup}${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
@@ -15711,6 +15814,7 @@ function resetToLanding(){
     const stb = document.getElementById('searchToggleBtn');
     closeDirectSearchMode();
     if (stb) stb.style.display = '';
+    document.dispatchEvent(new CustomEvent('paradiso:landing-reset'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     resetReveal();
     debugSearchState('resetToLanding:end');
@@ -15794,6 +15898,7 @@ function renderResults(query){
         box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
         rc.textContent=tx('resultCount', { count: 0 });
         renderCompactResults([], kw);
+        document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
         return;
     }
     renderCompactResults(filtered, kw);
@@ -15802,7 +15907,12 @@ function renderResults(query){
         const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.dataset.testid = 'visa-result-card'; c.dataset.visaCode = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
         const isVisaCode = !['faq', 'scn', 'nhis'].includes(v.cat), subs=getVisaSubcodes(v), hs=subs.length>0;
         if (subs.length) c.dataset.visaSubcode = subs.map(s => s.code).filter(Boolean).join(' ');
-        let ms=[]; if(hs&&kw.length) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
+        // Broad parent-code query (e.g. "C-3" on the C-3 card): substring matching
+        // would mark EVERY subcode as "내 상황과 관련" and flood the card with full
+        // subcode cards. Treat it as a parent overview instead — renderSubcodes
+        // gets a compact preview + expand/collapse group via opts.
+        const broadParentQuery = queryIsCodeLike && normalizeVisaCode(primaryCodeQuery) === normalizeVisaCode(v.code);
+        let ms=[]; if(hs&&kw.length&&!broadParentQuery) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
         if(kw.length&&(v._score>=50||ms.length)) c.classList.add('open');
         const periodHtml = v.period ? `<span class="manual-badge">${hl(v.period,kw)}</span>` : '';
         const dataHtml = v.dataBadge ? `<span class="manual-badge">${escapeHtml(v.dataBadge)}</span>` : '';
@@ -15830,7 +15940,8 @@ function renderResults(query){
                 <div class="manual-layout">
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
-                    ${renderSubcodes(v, kw, ms)}
+                    <div class="external-guide-slot" data-guide-slot="${escapeHtml(v.code || '')}"></div>
+                    ${renderSubcodes(v, kw, ms, { broadParentQuery, queryCode: primaryCodeQuery })}
                     ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
                     ${renderDocumentTabs(v)}
@@ -15849,6 +15960,8 @@ function renderResults(query){
     const catMap = {short:catLabels[0]||'단기',study:catLabels[1]||'유학/연수',work:catLabels[2]||'취업',invest:catLabels[3]||'투자',family:catLabels[4]||'가족/이민',other:catLabels[5]||'기타',diplo:catLabels[6]||'외교',nhis:catLabels[7]||'건강보험',faq:catLabels[8]||'안내',scn:catLabels[9]||'시나리오'};
     const topCats=[...new Set(filtered.slice(0,3).map(v=>catMap[v.cat]||v.cat))];
     document.getElementById('rh').textContent=tx('sortMeta', { mode: modeStr, categories: topCats.join(', ') });
+    // Notify external deferred modules (short-stay checker, F-4 route guide).
+    document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: filtered.map(v => v.code || '') } }));
 }
 
 let dt;
@@ -16026,7 +16139,7 @@ const UI_TRANSLATIONS = {
         aiSelectedScenarioLabel: '선택한 시나리오 기준', aiScenarioGroundingLabel: '시나리오별 서류 근거', aiScenarioCandidateStatus: '매뉴얼 기반 후보 · 최종 확인 필요', aiScenarioMatchNote: '세부 자격·사유가 맞는 경우에만 참고하세요.', aiScenarioMoreCount: '외 {count}건', aiAdvisoryLabel: '일반 안내', aiAdvisoryText: '확인된 개별 출처가 연결되지 않은 일반 참고 안내입니다.', aiTechnicalDetails: '개발자 진단 정보 보기', aiSourceDisclosure: '본 답변은 공개 자료에 기반한 참고 안내입니다. 최종 판단은 1345 · HiKorea · 관할 출입국·외국인청에 확인하세요.',
         aiLawStatusDisabled: '기능 꺼짐', aiLawStatusSourcePresent: '출처 있음', aiLawStatusUnverified: '미검증', aiLawStatusSourceLinked: '출처 연결됨 · 미검증', aiLawStatusFailed: '검증 실패', aiLawStatusNeedsReview: '확인 필요', aiLawStatusNotWired: '인용 검증 미연결', aiLawWarningDisabled: '법령 검증 기능이 꺼져 있음', aiLawWarningMissingKey: '법령 API 키 미설정', aiLawWarningSourceUnavailable: '법령 출처 확인 불가', aiLawWarningTimeout: '법령 조회 시간 초과', aiLawWarningBadResponse: '지원되지 않는 법령 응답', aiLawWarningOfficialError: '공식 법령 서비스 오류', aiLawWarningNoResults: '직접 법령 결과 없음', aiLawWarningNotWired: '인용 검증 미연결',
         aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
-        manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
+        manualNeedsReview: '매뉴얼 확인 필요', docReviewFallback: '이 절차의 제출서류는 아직 구조화된 목록으로 확인되지 않았습니다. 공식 매뉴얼·HiKorea·관할 출입국관서 확인이 필요합니다.', eligibilityLabel: '대상/요건', notesLabel: '유의사항', procedureSectionTitle: '절차별 안내', subcodesTitle: '세부코드', subcodeGroupSummary: '세부유형 {count}개: {names} 등으로 나뉩니다.', subcodeGroupShowCount: '세부유형 {count}개 보기', subcodeGroupHide: '세부유형 숨기기', subcodeGroupHint: '정확한 세부코드를 알고 있다면 {example}처럼 검색할 수 있습니다.', subcodePreviewAria: '주요 세부유형 미리보기', commonWarningsTitle: '공통 매뉴얼 유의사항', sourceManualFallback: '출처 매뉴얼', pageNeedsReview: '페이지 확인 필요', confidenceLabel: '신뢰도', confidenceNeedsReview: '매뉴얼 확인 필요', sourceStatusTitle: '출처 및 검증 상태', sourceReviewDone: '대표 데이터 검토 완료', sourceReviewPending: '대표 데이터이며 전체 수작업 검증 전입니다.', sourceLegalNote: '본 서비스는 안내용이며 실제 허가 여부는 심사에 의해 결정됩니다.', manualActionLabels: ['사증/신규 서류', '연장 서류', '변경 서류', 'Paradiso AI 상황 분석'], resultEmptyTitle: '궤도를 이탈했습니다', resultEmptyDesc: "'{query}'에 해당하는 정보가 없습니다.<br>키워드를 줄이거나 OR 모드로 전환해 보세요.", resultCount: '{count}건', resultCountWithSub: '{count}건 (세부 {subcount}건)', sortMeta: '관련도 정렬 · {mode} · {categories}', dataDateLabel: '데이터 기준', searchedCategoryLabels: ['단기', '유학/연수', '취업', '투자', '가족/이민', '기타', '외교', '건강보험', '안내', '시나리오'],
         sourceStructuredData: '구조화 데이터 기준', sourceVisaManual: '사증발급 절차 분류', sourceStayManual: '국내 체류 절차 분류', sourceUnverified: '출처 확인 필요', sourceManualConfirmed: '공식 매뉴얼 확인됨', sourceManualPending: '매뉴얼 검토 필요', sourceNeedLinking: '출처 확인 필요', sourceProvisional: '준용/임시 안내', sourceEvidenceTitle: '출처 및 근거', sourceVerifiedNote: '표시된 항목은 현재 구조화 데이터 기준으로 공식 매뉴얼 출처가 확인된 항목입니다. 관할 출입국관서에서 추가 서류를 요구할 수 있습니다.', sourcePendingReviewNote: '이 항목은 아직 공식 매뉴얼 대조가 완료되지 않았습니다. 신청 전 HiKorea 또는 관할 출입국·외국인관서에서 확인하세요.', sourceNeedLinkingNote: '페이지 또는 출처 단서가 있으나, 항목별 공식 근거 연결은 아직 정리 중입니다.', sourceUnverifiedNote: 'Paradiso 내부 구조화 데이터에 정리된 안내입니다. 공식 결정이나 법률 자문이 아닙니다.', sourceProvisionalNote: '다른 절차 또는 유사 체류자격의 기준을 참고한 임시 안내일 수 있습니다. 실제 신청 전 공식 매뉴얼과 관할 기관 확인이 필요합니다.', cautionText: '심사 과정에서 제출서류는 가감될 수 있으며, 최종 허가 여부는 관할 출입국·외국인청의 심사에 따릅니다.', procedureExpansionNote: '절차별 제출서류 안내는 매뉴얼 기반 검증이 확장되는 중입니다.', actionCopyResult: '결과 복사', copySuccess: '복사되었습니다.', actionAskAi: 'Paradiso AI에 물어보기', documentCountLabel: '제출서류 {count}건', manualDetailToggle: '상세 보기',
         /* STEP 0-A: HiKorea 회원가입 준비 */
         step0aTitle: 'STEP 0-A · HiKorea 회원가입 준비',
@@ -16206,7 +16319,7 @@ const UI_TRANSLATIONS = {
         aiSelectedScenarioLabel: 'Based on selected scenario', aiScenarioGroundingLabel: 'Scenario-specific document source', aiScenarioCandidateStatus: 'Manual-based candidate · final confirmation needed', aiScenarioMatchNote: 'Use this only if the sub-status/reason matches your situation.', aiScenarioMoreCount: '{count} more', aiAdvisoryLabel: 'General guidance', aiAdvisoryText: 'General reference guidance without a linked item-level source.', aiTechnicalDetails: 'View technical details', aiSourceDisclosure: 'This answer is reference guidance based on public sources. Confirm final decisions with 1345, HiKorea, or the competent immigration office.',
         aiLawStatusDisabled: 'Disabled', aiLawStatusSourcePresent: 'Source present', aiLawStatusUnverified: 'Unverified', aiLawStatusSourceLinked: 'Source linked · unverified', aiLawStatusFailed: 'Verification failed', aiLawStatusNeedsReview: 'Needs review', aiLawStatusNotWired: 'Citation verification not connected', aiLawWarningDisabled: 'Legal verification is disabled', aiLawWarningMissingKey: 'Legal API key is not configured', aiLawWarningSourceUnavailable: 'Legal source unavailable', aiLawWarningTimeout: 'Legal source lookup timed out', aiLawWarningBadResponse: 'Unsupported legal-source response', aiLawWarningOfficialError: 'Official legal-source service error', aiLawWarningNoResults: 'No direct law result', aiLawWarningNotWired: 'Citation verification not connected',
         aiSourceBadgeLabels: ['Verified', 'Source present', 'Partial', 'Needs review', 'Reference', 'Unverified', 'Link only', 'Disabled', 'Not connected', 'Verification failed', 'Related status'],
-        manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
+        manualNeedsReview: 'Manual review needed', docReviewFallback: 'A structured document checklist for this procedure has not been verified yet. Check the official manual, HiKorea, or the competent immigration office.', eligibilityLabel: 'Eligibility / requirements', notesLabel: 'Notes', procedureSectionTitle: 'Procedures', subcodesTitle: 'Subcodes', subcodeGroupSummary: '{count} subtypes: {names}, etc.', subcodeGroupShowCount: 'Show {count} subtypes', subcodeGroupHide: 'Hide subtypes', subcodeGroupHint: 'If you know the exact subtype code, search like {example}.', subcodePreviewAria: 'Subtype preview', commonWarningsTitle: 'Common manual notes', sourceManualFallback: 'Source manual', pageNeedsReview: 'Page review needed', confidenceLabel: 'Confidence', confidenceNeedsReview: 'Manual review needed', sourceStatusTitle: 'Source and verification status', sourceReviewDone: 'Representative data reviewed', sourceReviewPending: 'Representative data; full manual verification is still pending.', sourceLegalNote: 'This service is for guidance only. Actual approval depends on official review.', manualActionLabels: ['Visa / new-application documents', 'Extension documents', 'Change documents', 'Paradiso AI situation analysis'], resultEmptyTitle: 'No matching orbit', resultEmptyDesc: "No information matches '{query}'.<br>Try fewer keywords or switch to OR mode.", resultCount: '{count} results', resultCountWithSub: '{count} results ({subcount} subcodes)', sortMeta: 'Sorted by relevance · {mode} · {categories}', dataDateLabel: 'Data date', searchedCategoryLabels: ['Short stay', 'Study / training', 'Work', 'Investment', 'Family / immigration', 'Other', 'Diplomatic', 'Health insurance', 'Guide', 'Scenario'],
         sourceStructuredData: 'Structured-data guidance', sourceVisaManual: 'Visa issuance procedure classification', sourceStayManual: 'Domestic stay procedure classification', sourceUnverified: 'Source check needed', sourceManualConfirmed: 'Manual-backed', sourceManualPending: 'Manual review needed', sourceNeedLinking: 'Source linkage needed', sourceProvisional: 'Provisional guidance', sourceEvidenceTitle: 'Source & Evidence', sourceVerifiedNote: 'This item is shown from structured data with an identified official manual source. Additional documents may still be requested by the competent office.', sourcePendingReviewNote: 'Official manual cross-check for this item is still pending. Confirm with HiKorea or the competent immigration office before filing.', sourceNeedLinkingNote: 'A page/source clue exists, but per-item official source linkage is still being organized.', sourceUnverifiedNote: 'This is guidance organized from Paradiso’s internal structured catalog. It is not an official decision or legal advice.', sourceProvisionalNote: 'This may be provisional guidance referencing a similar status or procedure. Confirm against official manuals and the competent office before filing.', cautionText: 'Required documents may be added or reduced during review, and final approval depends on immigration office examination.', procedureExpansionNote: 'Procedure-specific document guidance is being expanded through manual-based verification.', actionCopyResult: 'Copy result', copySuccess: 'Copied.', actionAskAi: 'Ask Paradiso AI', documentCountLabel: '{count} documents', manualDetailToggle: 'View details',
         step0aTitle: 'STEP 0-A · HiKorea Account Setup Preparation',
         step0aSecATitle: 'Prepare an email account', step0aSecABody: 'You need an email address to register on HiKorea.',
@@ -17608,6 +17721,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 'select-f4-route': () => selectF4Route(actionBtn),
                 'show-all-f4-routes': () => resetF4Route(actionBtn),
+                'toggle-subcode-group': () => {
+                    const body = document.getElementById(actionBtn.getAttribute('aria-controls'));
+                    if (!body) return;
+                    const expand = actionBtn.getAttribute('aria-expanded') !== 'true';
+                    actionBtn.setAttribute('aria-expanded', String(expand));
+                    body.hidden = !expand;
+                },
                 'compute-deadlines': () => computeDeadlines(actionBtn),
                 'deadline-download-ics': () => downloadDeadlineIcs({ title: actionBtn.dataset.deadlineTitle, date: actionBtn.dataset.deadlineDate, note: actionBtn.dataset.deadlineNote }),
                 'select-procedure-variant': () => selectProcedureVariant(actionBtn),
@@ -19187,6 +19307,11 @@ function showVisaDocForAction(visaCode) {
   }
 })();
 </script>
+
+<!-- Guided tools: country data + route data stay in external JSON (data/short-stay/,
+     data/f4/) and load lazily — index.html never embeds country lists. -->
+<script defer src="assets/js/short-stay-checker.js"></script>
+<script defer src="assets/js/f4-route-guide.js"></script>
 
 </body>
 </html>

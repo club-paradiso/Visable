@@ -1,0 +1,85 @@
+
+== Schema shape
+  PASS  schemaVersion === 1
+  PASS  lastUpdated is YYYY-MM-DD
+  PASS  generatedAt present
+  PASS  sourceStatus is a known value
+  PASS  countries map present
+  PASS  aliases map present
+  PASS  rules.b1VisaWaiverAgreement present
+  PASS  rules.b21GeneralVisaFreeKeta present
+  PASS  rules.b22JejuVisaFree present
+  PASS  rules.c3Fallback present
+
+== Country records
+  PASS  country count 198 >= 150
+  PASS  every country has Korean + English aliases
+  PASS  every K-ETA-eligible country has an allowed stay
+  PASS  Jeju entry-denied countries are never also marked Jeju-allowed/permit-track
+  PASS  expansion-permit countries are never treated as free mainland movement
+
+== Vietnam classification (explicit)
+  PASS  Vietnam (VN) record exists
+  PASS  VN: B-1 ordinary NOT eligible
+  PASS  VN: B-2-1 general visa-free NOT listed
+  PASS  VN: NOT in Jeju entry-denied list
+  PASS  VN: stay-area expansion permit required
+  PASS  VN: expansion permit scope = ordinary passports
+  PASS  VN: K-ETA not eligible
+
+== C-3 fallback
+  PASS  tourism → C-3-9
+  PASS  group tourism → C-3-2
+  PASS  business → C-3-4
+  PASS  medical → C-3-3
+  PASS  transit → C-3-10
+  PASS  overseas Korean → C-3-8
+  PASS  work/profit → no B/C path, C-4 warning
+
+== Sources
+  PASS  required source id present: law_immigration_enforcement_decree_table_1
+  PASS  required source id present: visa_manual_2026_05_b1_b2_c3
+  PASS  required source id present: stay_manual_2026_05_b1_b2_extension_change
+  PASS  required source id present: k_eta_eligible_countries
+  PASS  required source id present: moj_jeju_notice_2022_189
+  PASS  required source id present: mofa_jeju_notice_copy_2023_09_18
+  PASS  every source has a sourceDate/effectiveDate
+  PASS  stale-source warning copy exists when sourceStatus is not verified
+
+== index.html stays lightweight (no embedded country lists)
+  PASS  no Jeju/expansion list countries embedded in index.html
+  PASS  index.html loads the deferred checker script
+  PASS  index.html has the checker mount section
+  PASS  checker JS fetches external rules.json
+
+== Forbidden / required wording
+  PASS  no weak wording in rules.json
+  PASS  no weak wording in checker JS
+  PASS  no weak wording in sources.json
+  PASS  no entry-guarantee wording in rules.json
+  PASS  no entry-guarantee wording in checker JS
+  PASS  no entry-guarantee wording in sources.json
+  PASS  K-ETA explicitly described as NOT a visa
+  PASS  K-ETA never called a visa
+  PASS  final-entry-decision warning present
+  PASS  airline boarding warning present
+  PASS  Jeju vs general separation warning present
+  PASS  empty-country prompt present
+  PASS  unknown-country prompt present
+
+== Engine scenarios (deterministic)
+  PASS  engine API exported for tests
+  PASS  VN jeju_only → Jeju B-2-2 check path
+  PASS  VN jeju_only → deterministic not-in-denial wording
+  PASS  VN mainland → C-3-9 visa_required
+  PASS  VN mainland → deterministic not-listed wording
+  PASS  VN jeju→mainland → expansion-permit path
+  PASS  VN jeju→mainland → permit warning wording
+  PASS  JP mainland → B-2-1 likely_available
+  PASS  JP result carries final-decision warning
+  PASS  NP jeju_only → denied, deterministic wording
+  PASS  work/profit → C-4/official-check path
+  PASS  non-ordinary passport → needs_official_check
+
+66 checks, 0 failures
+check_short_stay_rules: ALL PASS

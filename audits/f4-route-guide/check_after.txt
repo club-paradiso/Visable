@@ -1,0 +1,60 @@
+
+== Structure
+  PASS  routes.json schemaVersion === 1
+  PASS  routes array (6) >= 6
+  PASS  5-step timeline present
+  PASS  sourceStatus valid
+  PASS  lastUpdated present
+  PASS  required route exists: former_korean_national
+  PASS  required route exists: descendant_parent_grandparent
+  PASS  required route exists: possible_dual_national
+  PASS  required route exists: domestic_residence_report_after_entry
+  PASS  required route exists: us_consular_application
+  PASS  required route exists: fbi_apostille_preparation
+
+== Source refs
+  PASS  every route/timeline sourceRef resolves in sources.json
+  PASS  every F-4 source has a sourceDate
+  PASS  official manual sources present
+
+== Safety-critical wording
+  PASS  current-Korean-national warning present
+  PASS  never says F-4 is available to current Korean nationals
+  PASS  states residence report is domestic-only
+  PASS  never implies 거소증 can be issued overseas
+  PASS  90-day residence-report requirement visible (≥2 mentions)
+  PASS  explicit "within 90 days of entry" wording
+  PASS  visa vs residence-report separation warning present
+  PASS  military-service warning present
+  PASS  2018-05-01 nationality-loss male restriction present
+
+== FBI / apostille
+  PASS  FBI/apostille preparation route exists
+  PASS  FBI Identity History Summary named
+  PASS  U.S. Department of State apostille named
+  PASS  criminal record 6-month validity present
+  PASS  start-early warning present
+
+== Fee labels (no generic 수수료)
+  PASS  every 수수료 mention is procedure-specific
+  PASS  US fee uses the required qualified wording
+  PASS  no standalone "수수료" item in F-4 data
+
+== UI integration
+  PASS  guide JS fetches external routes.json
+  PASS  index.html loads the deferred guide script
+  PASS  index.html has the guide mount section
+  PASS  freshness badge wired in guide JS
+  PASS  guide opens with the life-situation question
+  PASS  guide does not reuse the old route-name question
+  PASS  n/a
+  PASS  no-guarantee wording present
+  PASS  no weak wording in F-4 data/JS
+
+== Keyword cards
+  PASS  FBI keyword card → FBI route
+  PASS  거소증 keyword card → residence route
+  PASS  국적/병역 keyword card → nationality route
+
+43 checks, 0 failures
+check_f4_route_guide: ALL PASS

@@ -1,0 +1,872 @@
+/* ============================================================================
+ * Paradiso — 국적별 단기입국 경로 확인 (Short-stay entry checker)
+ * ----------------------------------------------------------------------------
+ * Answers, in plain language, whether a nationality can enter Korea without a
+ * visa (B-1 agreement / B-2-1 general visa-free + K-ETA), whether Jeju-only
+ * B-2-2 entry is a separate possibility, and which C-3 subtype applies when a
+ * visa is required.
+ *
+ * Data: fetched lazily from data/short-stay/rules.json (NEVER embedded in
+ * index.html). Source metadata: data/short-stay/sources.json.
+ *
+ * Safety contract (do not weaken):
+ *  - K-ETA is described as travel authorization, never as a visa.
+ *  - Entry is never described as guaranteed; the immigration officer decides.
+ *  - General visa-free (B-2-1/K-ETA) is kept separate from Jeju B-2-2.
+ *  - "Not in a denial list" is never converted into "guaranteed eligible".
+ *  - Deterministic list results use deterministic wording (no "~로 보입니다").
+ *  - Source date + freshness status are always displayed.
+ * ========================================================================== */
+(function () {
+  'use strict';
+
+  var RULES_URL = 'data/short-stay/rules.json';
+
+  /* ---------------------------------------------------------------- strings */
+  var STR = {
+    title: '국적별 단기입국 경로 확인',
+    titleEn: 'Short-stay entry checker',
+    subtitle: '국적·여권·방문지역·목적을 기준으로 무사증, 제주 무사증, C-3 사증 가능성을 확인합니다.',
+    eyebrow: 'Short-stay entry',
+    countryLabel: '1. 국적 (여권 발행국)',
+    countryPlaceholder: '예: 베트남, Vietnam, 일본, United States',
+    countryHelper: '국가명을 입력하면 후보를 보여드립니다.',
+    countryMissing: '국적을 먼저 입력해 주세요.',
+    countryNotFound: '국가명을 찾지 못했습니다. 영문명 또는 한국어 국가명으로 다시 입력해 주세요.',
+    passportLabel: '2. 여권 종류',
+    purposeLabel: '3. 방문 목적',
+    destinationLabel: '4. 방문 지역',
+    stayLabel: '5. 예정 체류일수',
+    stayHelper: '며칠 정도 머무를 예정인가요?',
+    ageLabel: '나이대 (선택)',
+    submit: '경로 확인하기',
+    reset: '다시 입력',
+    loading: '공식 목록 데이터를 불러오는 중입니다…',
+    fetchFail: '국가별 목록 데이터를 불러오지 못했습니다. 이 상태에서는 무사증 가능 여부를 안내할 수 없습니다. K-ETA 공식 누리집, 비자포털 또는 관할 재외공관에서 직접 확인해 주세요.',
+    resultPath: '추천 경로',
+    resultWhy: '왜 이 경로인가요?',
+    resultNext: '다음에 해야 할 일',
+    resultWarn: '주의할 점',
+    resultOfficial: '공식 확인',
+    resultAlt: '다른 가능성',
+    sourceBadgeVerified: '공식 기준 확인됨',
+    sourceBadgeNeedsRefresh: '공식 최신성 확인 필요',
+    sourceBadgePartial: '일부 자료 기준',
+    sourceDatePrefix: '출처 기준일'
+  };
+
+  var PASSPORT_OPTIONS = [
+    { value: 'ordinary', label: '일반여권' },
+    { value: 'diplomatic', label: '외교여권' },
+    { value: 'official', label: '관용/공무여권' },
+    { value: 'special', label: '특별/서비스여권' },
+    { value: 'unknown', label: '잘 모르겠음' }
+  ];
+  var PURPOSE_OPTIONS = [
+    { value: 'tourism', label: '관광' },
+    { value: 'family_visit', label: '가족·지인 방문' },
+    { value: 'transit', label: '환승' },
+    { value: 'business', label: '출장·상담·계약' },
+    { value: 'medical', label: '의료관광' },
+    { value: 'event', label: '행사·회의' },
+    { value: 'overseas_korean', label: '동포 방문' },
+    { value: 'work_or_profit', label: '취업·영리활동' },
+    { value: 'unknown', label: '잘 모르겠음' }
+  ];
+  var DESTINATION_OPTIONS = [
+    { value: 'mainland', label: '한국 본토' },
+    { value: 'jeju_only', label: '제주만 방문' },
+    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망' },
+    { value: 'transit_only', label: '공항 환승만' },
+    { value: 'unknown', label: '잘 모르겠음' }
+  ];
+  var AGE_OPTIONS = [
+    { value: 'unknown', label: '선택 안 함' },
+    { value: '17_or_younger', label: '만 17세 이하' },
+    { value: '18_to_64', label: '만 18~64세' },
+    { value: '65_or_older', label: '만 65세 이상' }
+  ];
+
+  /* ------------------------------------------------------------ pure utils */
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (ch) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+    });
+  }
+  function normalizeCountryInput(input) {
+    return String(input == null ? '' : input).toLowerCase().normalize('NFC')
+      .replace(/[\s\-–—'’.()]/g, '');
+  }
+  /* 은/는 particle for natural Korean (final consonant check). */
+  function topicParticle(word) {
+    var s = String(word || '');
+    var last = s.charCodeAt(s.length - 1);
+    if (last >= 0xAC00 && last <= 0xD7A3) return ((last - 0xAC00) % 28) !== 0 ? '은' : '는';
+    return '은(는)';
+  }
+  function withParticle(word) { return word + topicParticle(word); }
+
+  function resolveCountryAlias(input, rules) {
+    var norm = normalizeCountryInput(input);
+    if (!norm || !rules) return { country: null, suggestions: [] };
+    var iso = rules.aliases[norm];
+    if (iso && rules.countries[iso]) return { country: rules.countries[iso], suggestions: [] };
+    /* prefix / substring suggestions over alias keys */
+    var seen = {};
+    var suggestions = [];
+    var keys = Object.keys(rules.aliases);
+    for (var pass = 0; pass < 2 && suggestions.length < 7; pass++) {
+      for (var i = 0; i < keys.length && suggestions.length < 7; i++) {
+        var k = keys[i];
+        var hit = pass === 0 ? k.indexOf(norm) === 0 : k.indexOf(norm) > 0;
+        if (!hit) continue;
+        var iso2 = rules.aliases[k];
+        if (seen[iso2]) continue;
+        seen[iso2] = true;
+        var c = rules.countries[iso2];
+        if (c) suggestions.push(c);
+      }
+    }
+    return { country: null, suggestions: suggestions };
+  }
+
+  function parseStayDays(stay) {
+    if (!stay) return null;
+    var m = /(\d+)\s*일/.exec(stay);
+    if (m) return parseInt(m[1], 10);
+    m = /(\d+)\s*개월/.exec(stay);
+    if (m) return parseInt(m[1], 10) * 30;
+    return null;
+  }
+
+  /* ------------------------------------------------- deterministic wording */
+  function phraseB21NotListed(c) {
+    return '현재 반영된 공식 K-ETA 대상국 목록 기준으로, ' + c.nameKo +
+      ' 일반여권은 일반 무사증/B-2-1·K-ETA 대상국으로 등재되어 있지 않습니다.';
+  }
+  function phraseB21Listed(c) {
+    return '현재 반영된 공식 K-ETA 대상국 목록 기준으로, ' + withParticle(c.nameKo) +
+      ' 일반 무사증/B-2-1·K-ETA 대상국으로 등재되어 있습니다(허용 체류 ' + c.b21.stay + ').';
+  }
+  function phraseB1Listed(c) {
+    return '현재 반영된 사증면제협정 목록 기준으로, ' + c.nameKo +
+      ' 일반여권은 사증면제협정(B-1) 대상국으로 등재되어 있습니다(협정상 체류 ' + c.b1.stay +
+      (c.b1.stayNote ? ' · ' + c.b1.stayNote : '') + ').';
+  }
+  function phraseB1Suspended(c) {
+    return '현재 반영된 사증면제협정 목록 기준으로, ' + c.nameKo +
+      ' 일반여권은 협정 적용이 일시정지 상태로 등재되어 있습니다(' + (c.b1.suspensionNote || '일시정지') + ').';
+  }
+  function phraseJejuNotDenied(c) {
+    return '현재 반영된 제주 무사증 고시 기준으로, ' + withParticle(c.nameKo) +
+      ' 제주 무사증 입국불허 국가 목록에는 포함되어 있지 않습니다.';
+  }
+  function phraseJejuDenied(c) {
+    return '현재 반영된 제주 무사증 고시 기준으로, ' + withParticle(c.nameKo) +
+      ' 제주 무사증 입국불허 국가 목록에 포함되어 있습니다.';
+  }
+  function phraseExpansionPermit(c, passportType) {
+    var scope = c.b22Jeju.passportScope;
+    var scopeLabel = scope === 'ordinary' ? ' 일반여권' : (scope === 'official_ordinary' ? ' 관용·일반여권' : '');
+    return '다만 ' + c.nameKo + scopeLabel +
+      '은 체류지역 확대허가 확인 대상에 포함되어 있으므로, 제주에서 본토로 이동하려는 경우 별도 허가·제한을 확인해야 합니다.';
+  }
+
+  var WARN_FINAL_DECISION = '최종 입국 여부는 입국심사관이 결정합니다. 어떤 경로도 입국을 보장하지 않습니다.';
+  var WARN_AIRLINE = '항공사 탑승 가능 여부, 입국 경로, 최신 고시·목록을 출발 전에 반드시 확인하세요.';
+  var WARN_KETA_NOT_VISA = 'K-ETA는 사증(비자)이 아닌 전자여행허가이며, K-ETA 승인 또는 무사증 대상 여부가 입국을 보장하지는 않습니다.';
+  var WARN_JEJU_SEPARATE = '제주 무사증은 일반 무사증/B-2-1·K-ETA와 별도 제도입니다.';
+  var WARN_NO_EXTENSION = 'B-1·B-2로 입국한 경우 원칙적으로 체류기간 연장·체류자격 변경이 허용되지 않습니다. 허용 기간을 초과해 머무르려면 사증을 받아 입국해야 합니다.';
+  var WARN_CONSULATE_VARIES = '재외공관별 제출서류와 심사 기준은 다를 수 있습니다. 항공권 구매 전 관할 재외공관 또는 비자포털에서 확인하세요.';
+
+  /* -------------------------------------------------------------- the engine */
+  function getShortStayEntryOptions(input, rules) {
+    var c = input.country;
+    var passport = input.passportType || 'unknown';
+    var purpose = input.purpose || 'unknown';
+    var destination = input.destination || 'unknown';
+    var stayDays = input.stayDays || null;
+    var ageGroup = input.ageGroup || 'unknown';
+
+    var r = {
+      country: c,
+      passportType: passport,
+      purpose: purpose,
+      destination: destination,
+      stayDays: stayDays,
+      primary: null,            /* { path, status, explanation[] } */
+      alternatives: [],         /* [{ path, note }] */
+      steps: [],
+      warnings: [],
+      officialLinks: defaultOfficialLinks(),
+      sourceRefs: (c && c.sourceRefs) || [],
+      sourceStatus: rules.sourceStatus,
+      sourceDate: rules.lastUpdated,
+      showKeta: false,
+      provisional: false
+    };
+
+    var c3map = rules.rules.c3Fallback.purposeMap;
+    var visaFreeB1 = !!(c.b1 && c.b1.ordinaryEligible);
+    var visaFreeB21 = !!(c.b21 && c.b21.listed);
+    var visaFree = visaFreeB1 || visaFreeB21;
+    var ordinaryLike = passport === 'ordinary' || passport === 'unknown';
+
+    if (passport === 'unknown') {
+      r.warnings.push('여권 종류를 모르는 경우 일반여권 기준으로 안내합니다. 외교·관용·특별여권은 적용 범위가 다를 수 있습니다.');
+    }
+
+    /* --- non-ordinary passports: stored data is partial → official check --- */
+    if (!ordinaryLike) {
+      var dipl = c.b1 && c.b1.diplomaticOfficialOnly;
+      r.primary = {
+        path: '관할 재외공관 공식 확인',
+        status: 'needs_official_check',
+        explanation: [
+          '외교·관용·특별여권의 사증면제 적용 범위는 협정별로 달라, 현재 저장된 자료에는 일부 국가만 반영되어 있습니다.'
+        ].concat(dipl ? ['마지막으로 반영된 공식 목록 기준으로는 ' + c.nameKo + ' ' + c.b1.diplomaticOfficialScope +
+          ' 여권에 대해 사증면제협정(B-1)이 적용되는 것으로 기록되어 있습니다(체류 ' + c.b1.diplomaticOfficialStay + '). 최신 공식 확인이 필요합니다.'] : [])
+      };
+      r.steps = [
+        '관할 재외공관 또는 소속 기관을 통해 해당 여권 종류의 사증면제 적용 여부를 확인하세요.',
+        '적용되지 않으면 목적에 맞는 사증(C-3 계열 등)을 신청하세요.'
+      ];
+      r.warnings.push(WARN_FINAL_DECISION);
+      return finalizeResult(r, rules);
+    }
+
+    /* --- profit-making work: never a B/C tourism answer --------------------- */
+    if (purpose === 'work_or_profit') {
+      r.primary = {
+        path: '단기취업(C-4) 또는 취업 자격(D/E 계열) 공식 확인',
+        status: 'needs_official_check',
+        explanation: [
+          '보수를 받는 활동·영리활동은 무사증(B-1·B-2)이나 단기방문(C-3)의 활동범위가 아닙니다.',
+          '단기 보수 활동은 단기취업(C-4), 계속 취업은 D/E 계열 등 별도 체류자격이 필요할 수 있습니다.'
+        ]
+      };
+      r.steps = [
+        '활동 내용·기간·보수 여부를 정리하세요.',
+        '관할 재외공관 또는 비자포털에서 해당 활동에 맞는 자격(C-4, E 계열 등)을 확인하세요.'
+      ];
+      r.warnings.push('무사증·관광 목적 입국 후 보수 활동을 하면 출입국관리법 위반이 될 수 있습니다.');
+      r.warnings.push(WARN_FINAL_DECISION);
+      return finalizeResult(r, rules);
+    }
+
+    /* --- pure transit -------------------------------------------------------- */
+    if (destination === 'transit_only' || (purpose === 'transit' && destination === 'unknown')) {
+      r.primary = {
+        path: '환승 절차(순수환승 C-3-10 안내)',
+        status: 'needs_official_check',
+        explanation: [
+          '입국심사를 거치지 않는 공항 환승은 별도 입국 경로가 필요하지 않은 경우가 많지만, 국적·노선에 따라 환승 사증 또는 순수환승(C-3-10)이 필요할 수 있습니다.',
+          '순수환승(C-3-10)은 제3국행 연결편 환승을 위한 것으로, 일반적인 입국 목적에는 적합하지 않습니다.'
+        ]
+      };
+      r.steps = [
+        '이용 항공사에 환승 가능 여부와 환승구역 통과 조건을 확인하세요.',
+        '입국(공항 밖 이동)이 필요하면 관광·방문 경로를 별도로 확인하세요.'
+      ];
+      r.warnings.push(WARN_AIRLINE);
+      r.warnings.push(WARN_FINAL_DECISION);
+      return finalizeResult(r, rules);
+    }
+
+    /* --- overseas Korean ------------------------------------------------------ */
+    if (purpose === 'overseas_korean') {
+      r.primary = {
+        path: '동포방문(C-3-8) 또는 재외동포(F-4) 경로 확인',
+        status: 'needs_official_check',
+        explanation: [
+          '외국국적동포는 동포방문(C-3-8, 5년 유효 복수사증·90일) 또는 재외동포(F-4) 경로를 검토할 수 있습니다.',
+          '단기 일반 무사증 입국이 가능한 국적이라도, 동포 자격 확인과 활동 범위는 별도 절차입니다.'
+        ].concat(visaFree ? [visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)] : [])
+      };
+      r.steps = [
+        '본인·부모·조부모의 한국 국적 이력 등 동포 해당 여부를 확인하세요.',
+        '단순 방문이면 C-3-8, 장기 체류·취업 계획이 있으면 F-4 경로를 검토하세요(이 페이지의 "F-4 재외동포 경로 찾기" 참고).',
+        '관할 재외공관에서 제출서류를 확인하세요.'
+      ];
+      r.warnings.push('단기방문(C-3) 자격으로는 취업활동이 허용되지 않습니다.');
+      r.warnings.push(WARN_FINAL_DECISION);
+      r.showKeta = visaFree;
+      return finalizeResult(r, rules);
+    }
+
+    /* --- Jeju destinations ----------------------------------------------------- */
+    var jeju = c.b22Jeju || {};
+    if (destination === 'jeju_only' || destination === 'jeju_then_mainland') {
+      if (jeju.jejuEntryDenied) {
+        r.primary = {
+          path: c3PathLabel(c3map, purpose) + ' 신청 또는 공식 확인',
+          status: 'visa_required',
+          explanation: [
+            phraseJejuDenied(c),
+            jeju.conflictNote ? '참고: ' + jeju.conflictNote : null,
+            '따라서 제주 방문도 사증 경로로 준비해야 합니다.'
+          ].filter(Boolean)
+        };
+        r.steps = c3Steps(purpose);
+        r.warnings.push(WARN_JEJU_SEPARATE, WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
+        addAlternative(r, '일반 무사증/B-2-1·K-ETA', visaFree ? '대상국으로 등재되어 있어 본토 입국 경로로 검토할 수 있습니다.' : phraseB21NotListed(c));
+        return finalizeResult(r, rules);
+      }
+
+      var jejuExplain = [phraseJejuNotDenied(c)];
+      if (destination === 'jeju_only') {
+        jejuExplain.push('따라서 제주만 방문하는 경우 제주 무사증(B-2-2) 경로를 확인할 수 있습니다(체류 ' + (jeju.jejuStayDays || 30) + '일, 제주 직항 등 입국 경로 조건 적용).');
+        r.primary = {
+          path: '제주 무사증(B-2-2) 경로 확인',
+          status: visaFree ? 'likely_available' : 'needs_official_check',
+          explanation: jejuExplain
+        };
+        r.steps = [
+          '제주 직항 등 제주 무사증 인정 입국 경로(항공편·선편)를 확인하세요.',
+          '이용 항공사에 탑승 가능 여부를 확인하세요.',
+          '최신 법무부 고시와 입국 요건을 출발 전에 다시 확인하세요.'
+        ];
+        if (visaFree) {
+          addAlternative(r, visaFreeB21 ? '일반 무사증/B-2-1·K-ETA' : '사증면제협정(B-1)',
+            (visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)) + ' 일반 무사증 경로로 입국하면 제주 외 지역 이동 제한이 없습니다.');
+          r.showKeta = true;
+        } else {
+          addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
+        }
+      } else { /* jeju_then_mainland */
+        if (jeju.stayAreaExpansionPermitRequired) {
+          jejuExplain.push(phraseExpansionPermit(c, passport));
+          jejuExplain.push('제주 무사증은 본토 이동을 자동으로 허용하지 않으므로, 제주에서 본토로 이동하려는 경우 별도 허가·제한을 확인해야 합니다.');
+          r.primary = {
+            path: '제주 무사증 + 체류지역 확대허가 확인',
+            status: 'needs_official_check',
+            explanation: jejuExplain
+          };
+        } else {
+          jejuExplain.push('다만 제주 무사증(B-2-2)은 제주 한정 제도로, 본토 이동이 자동으로 허용되지 않습니다. 본토 이동 계획이 있다면 출국 전 공식 확인이 필요합니다.');
+          r.primary = {
+            path: visaFree ? '일반 무사증/B-2-1·K-ETA 경로 우선 검토' : '제주 무사증 + 본토 이동 가능 여부 공식 확인',
+            status: visaFree ? 'likely_available' : 'needs_official_check',
+            explanation: visaFree
+              ? [(visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)), '일반 무사증 경로로 입국하면 제주·본토 구분 없이 체류할 수 있어 더 단순합니다.'].concat(jejuExplain)
+              : jejuExplain
+          };
+        }
+        r.steps = [
+          '본토 이동 계획이 있다면 출국 전에 체류지역 확대허가 등 허용 여부를 공식 확인하세요.',
+          visaFree ? '일반 무사증/K-ETA 경로가 가능하므로 처음부터 일반 경로 입국을 우선 검토하세요.' : '확실하지 않으면 처음부터 일반관광 사증(C-3-9)을 신청하는 것이 안전합니다.',
+          '항공사 탑승 가능 여부와 최신 고시를 확인하세요.'
+        ].filter(Boolean);
+        if (visaFree) {
+          r.showKeta = true;
+          addAlternative(r, '제주 무사증(B-2-2)', '제주만 방문으로 일정을 한정하는 경우의 별도 경로입니다.');
+        } else {
+          addAlternative(r, '일반관광 사증(C-3-9)', phraseB21NotListed(c) + ' 본토 일정이 확실하면 사증 신청이 안전합니다.');
+        }
+      }
+      r.warnings.push(WARN_JEJU_SEPARATE, WARN_AIRLINE, WARN_FINAL_DECISION);
+      if (stayDays && stayDays > (jeju.jejuStayDays || 30) && destination === 'jeju_only') {
+        r.warnings.push('예정 체류일수(' + stayDays + '일)가 제주 무사증 허용 기간(' + (jeju.jejuStayDays || 30) + '일)을 초과합니다. 사증 경로를 확인하세요.');
+      }
+      return finalizeResult(r, rules);
+    }
+
+    /* --- mainland (or unknown destination) ------------------------------------- */
+    var purposeForC3 = (purpose === 'unknown') ? 'tourism' : purpose;
+    if (purpose === 'unknown') {
+      r.provisional = true;
+      r.warnings.push('방문 목적을 알 수 없어 관광 기준의 잠정 안내입니다. 목적을 선택하면 더 정확한 경로를 안내합니다.');
+    }
+
+    if (visaFree) {
+      var phrase = visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c);
+      var allowed = parseStayDays(visaFreeB21 ? c.b21.stay : c.b1.stay);
+      var label = visaFreeB21 ? '일반 무사증(B-2-1) + K-ETA 확인' : '사증면제협정(B-1) 무사증 입국 + K-ETA 확인';
+      var explain = [phrase];
+      if (purpose === 'business') {
+        explain.push('출장(회의·상담·계약 등 비영리 상용 활동)은 일반적으로 단기 방문 범위에서 검토되지만, 협정·제도별 활동범위 제한이 있을 수 있습니다.');
+      }
+      if (purpose === 'medical') {
+        explain.push('의료관광 일정·기관에 따라 의료관광(C-3-3) 사증이 더 적합할 수 있습니다.');
+      }
+      r.primary = { path: label, status: 'likely_available', explanation: explain };
+      r.showKeta = true;
+      r.steps = [
+        ketaStepText(c, rules, ageGroup),
+        '여권 유효기간과 왕복 항공권 등 기본 요건을 확인하세요.',
+        '입국심사 시 방문 목적을 명확히 설명할 수 있도록 준비하세요.'
+      ];
+      if (visaFreeB1) r.warnings.push('사증면제협정은 협정상 활동범위·기간 제한이 있을 수 있습니다. 협정 기간(' + c.b1.stay + ')을 초과하거나 영리활동을 하려면 사증이 필요합니다.');
+      r.warnings.push(WARN_KETA_NOT_VISA, WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION);
+      if (allowed && stayDays && stayDays > allowed) {
+        r.primary.status = 'visa_required';
+        r.primary.path = c3PathLabel(c3map, purposeForC3) + ' 신청 (무사증 허용기간 초과)';
+        r.primary.explanation.push('예정 체류일수(' + stayDays + '일)가 무사증 허용 기간(' + (visaFreeB21 ? c.b21.stay : c.b1.stay) + ')을 초과하므로 사증을 발급받아 입국해야 합니다.');
+        r.steps = c3Steps(purposeForC3);
+        r.showKeta = false;
+      }
+      addAlternative(r, c3PathLabel(c3map, purposeForC3), '무사증 요건이 맞지 않거나 장기 일정이면 사증 경로를 이용하세요.');
+      if (!jeju.jejuEntryDenied) addAlternative(r, '제주 무사증(B-2-2)', '제주만 방문하는 별도 제도도 있습니다(일반 무사증과 다른 제도).');
+      return finalizeResult(r, rules);
+    }
+
+    /* visa required for mainland */
+    var deniedNote = c.b1 && c.b1.suspended ? phraseB1Suspended(c) : null;
+    var c3 = c3map[purposeForC3] || c3map.tourism;
+    r.primary = {
+      path: c3.code ? (c3.nameKo + ' 사증(' + c3.code + ') 신청' ) : '공식 확인 필요',
+      status: 'visa_required',
+      explanation: [
+        phraseB21NotListed(c),
+        deniedNote,
+        purposeForC3 === 'tourism'
+          ? '한국 본토 관광은 일반관광 사증(C-3-9)을 재외공관 또는 비자포털에서 신청해야 합니다.'
+          : (c3.note + ' — 재외공관 또는 비자포털에서 신청해야 합니다.')
+      ].filter(Boolean)
+    };
+    r.steps = c3Steps(purposeForC3);
+    r.warnings.push(WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
+    if (purposeForC3 === 'tourism') {
+      addAlternative(r, '단체관광(C-3-2)', '지정 여행사를 통한 단체관광·보증된 개별관광이라면 별도 경로가 있습니다.');
+    }
+    if (!jeju.jejuEntryDenied) {
+      addAlternative(r, '제주 무사증(B-2-2)', phraseJejuNotDenied(c) + ' 제주만 방문하는 경우의 별도 제도입니다(본토 이동 자동 불가).');
+    } else {
+      addAlternative(r, '제주 무사증(B-2-2)', phraseJejuDenied(c));
+    }
+    return finalizeResult(r, rules);
+  }
+
+  function c3PathLabel(c3map, purpose) {
+    var c3 = c3map[purpose] || c3map.tourism;
+    return c3.code ? c3.nameKo + ' 사증(' + c3.code + ')' : '공식 확인';
+  }
+  function c3Steps(purpose) {
+    var base = [
+      '관할 재외공관(대사관·총영사관)과 비자포털에서 해당 사증의 제출서류를 확인하세요.',
+      '서류를 준비해 재외공관 또는 비자포털(온라인 가능 시)로 신청하세요.',
+      '심사 기간을 고려해 항공권 구매 전에 신청하세요.'
+    ];
+    if (purpose === 'group_tourism') base.unshift('법무부 지정 여행사를 통해서만 신청할 수 있습니다.');
+    if (purpose === 'medical') base.unshift('법무부 지정 의료기관의 초청·예약을 먼저 확인하세요.');
+    return base;
+  }
+  function ketaStepText(c, rules, ageGroup) {
+    var keta = rules.rules.b21GeneralVisaFreeKeta.ketaProgram;
+    var tmp = c.keta && c.keta.temporaryExemption;
+    var t = 'K-ETA 공식 누리집에서 전자여행허가를 신청하세요(수수료 ' + Number(keta.feeKRW).toLocaleString('ko-KR') + '원).';
+    if (tmp) {
+      t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
+    } else if (ageGroup === '17_or_younger' || ageGroup === '65_or_older') {
+      t += ' 저장된 자료 기준으로 만 17세 이하·만 65세 이상은 K-ETA 신청 면제 대상이지만, 공식 누리집에서 최신 기준을 확인하세요.';
+    }
+    return t;
+  }
+  function addAlternative(r, path, note) { r.alternatives.push({ path: path, note: note }); }
+  function defaultOfficialLinks() {
+    return [
+      { label: 'K-ETA 확인하기', url: 'https://www.k-eta.go.kr' },
+      { label: '비자포털 확인하기', url: 'https://www.visa.go.kr' },
+      { label: 'HiKorea', url: 'https://www.hikorea.go.kr' },
+      { label: '1345 확인 권장', url: 'tel:1345' },
+      { label: '재외공관 확인하기', url: 'https://www.mofa.go.kr' }
+    ];
+  }
+  function finalizeResult(r, rules) {
+    if (r.showKeta) {
+      if (r.warnings.indexOf(WARN_KETA_NOT_VISA) === -1) r.warnings.push(WARN_KETA_NOT_VISA);
+    }
+    if (rules.sourceStatus !== 'verified') {
+      r.warnings.push('현재 저장된 자료 기준입니다. 공식 목록이 업데이트되었을 수 있으므로 출발 전 공식 누리집에서 확인하세요.');
+    }
+    r.alternatives = rankShortStayOptions(r.alternatives);
+    return r;
+  }
+  function rankShortStayOptions(options) {
+    /* stable, light ranking: keep insertion order but cap at 3 */
+    return (options || []).slice(0, 3);
+  }
+  function getShortStayProcedureSteps(result) { return result && result.steps ? result.steps : []; }
+  function formatShortStayWarnings(result) {
+    var seen = {};
+    return (result && result.warnings ? result.warnings : []).filter(function (w) {
+      if (seen[w]) return false; seen[w] = true; return true;
+    });
+  }
+
+  /* ----------------------------------------------------------------- badge */
+  function renderSourceFreshnessBadge(sourceStatus, sourceDate) {
+    var cls = sourceStatus === 'verified' ? 'ok' : (sourceStatus === 'partial' ? 'partial' : 'refresh');
+    var label = sourceStatus === 'verified' ? STR.sourceBadgeVerified
+      : sourceStatus === 'partial' ? STR.sourceBadgePartial : STR.sourceBadgeNeedsRefresh;
+    return '<span class="ssc-badge ssc-badge-' + cls + '">' + esc(label) + '</span>' +
+      (sourceDate ? '<span class="ssc-badge ssc-badge-date">' + esc(STR.sourceDatePrefix + ': ' + sourceDate) + '</span>' : '');
+  }
+
+  /* expose pure API for validation scripts / tests */
+  var api = {
+    STR: STR,
+    normalizeCountryInput: normalizeCountryInput,
+    resolveCountryAlias: resolveCountryAlias,
+    getShortStayEntryOptions: getShortStayEntryOptions,
+    rankShortStayOptions: rankShortStayOptions,
+    getShortStayProcedureSteps: getShortStayProcedureSteps,
+    formatShortStayWarnings: formatShortStayWarnings,
+    renderSourceFreshnessBadge: renderSourceFreshnessBadge,
+    topicParticle: topicParticle,
+    parseStayDays: parseStayDays
+  };
+  if (typeof globalThis !== 'undefined') globalThis.ParadisoShortStay = api;
+
+  /* ====================== DOM layer (browser only) ======================== */
+  if (typeof document === 'undefined') return;
+
+  var state = { rules: null, loadPromise: null, loadError: false, formRendered: false };
+
+  function loadShortStayRules() {
+    if (state.rules) return Promise.resolve(state.rules);
+    if (state.loadPromise) return state.loadPromise;
+    state.loadPromise = fetch(RULES_URL, { cache: 'no-cache' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('HTTP ' + res.status);
+        return res.json();
+      })
+      .then(function (json) {
+        if (!json || json.schemaVersion !== 1 || !json.countries || !json.aliases) {
+          throw new Error('unexpected rules schema');
+        }
+        state.rules = json;
+        state.loadError = false;
+        return json;
+      })
+      .catch(function (err) {
+        state.loadError = true;
+        state.loadPromise = null;
+        throw err;
+      });
+    return state.loadPromise;
+  }
+  api.loadShortStayRules = loadShortStayRules;
+
+  function injectStyles() {
+    if (document.getElementById('shortStayCheckerStyles')) return;
+    var css = '' +
+'.short-stay-checker{margin:1.25rem 0;}' +
+'.ssc-card{background:var(--bg1,#fff);border:1px solid var(--bd,#d1c6b4);border-radius:var(--radius-lg,16px);box-shadow:var(--sh1,0 1px 2px rgba(0,0,0,.05));padding:1.1rem 1.15rem;}' +
+'.ssc-eyebrow{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ac,#2f5e67);font-weight:800;margin:0 0 .3rem;}' +
+'.ssc-title{font-size:1.15rem;font-weight:800;color:var(--t1,#202221);margin:0 0 .25rem;}' +
+'.ssc-sub{font-size:.85rem;color:var(--t2,#4f5552);margin:0 0 .7rem;word-break:keep-all;}' +
+'.ssc-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}' +
+'.ssc-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;border:1px solid var(--bd,#d1c6b4);color:var(--t2,#4f5552);background:var(--bg2,#f1ece2);}' +
+'.ssc-badge-refresh{border-color:var(--cWk,#E68A3A);color:var(--cWk,#a85f1c);background:transparent;}' +
+'.ssc-badge-ok{border-color:var(--cSt,#0EA37B);color:var(--cSt,#0a7a5c);background:transparent;}' +
+'.ssc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem .8rem;margin-bottom:.8rem;}' +
+'.ssc-field{display:flex;flex-direction:column;gap:.3rem;position:relative;}' +
+'.ssc-field>span{font-size:.78rem;font-weight:700;color:var(--t2,#4f5552);}' +
+'.ssc-field input,.ssc-field select{font:inherit;font-size:.9rem;padding:.55rem .6rem;border:1px solid var(--bd,#d1c6b4);border-radius:8px;background:var(--bgI,#fff);color:var(--t1,#202221);min-height:44px;}' +
+'.ssc-field input:focus-visible,.ssc-field select:focus-visible,.ssc-btn:focus-visible,.ssc-sug button:focus-visible{outline:3px solid var(--ac,#2f5e67);outline-offset:1px;}' +
+'.ssc-helper{font-size:.72rem;color:var(--t3,#757a76);}' +
+'.ssc-sug{position:absolute;z-index:30;top:100%;left:0;right:0;background:var(--bg1,#fff);border:1px solid var(--bd,#d1c6b4);border-radius:8px;box-shadow:var(--sh2,0 8px 20px rgba(0,0,0,.1));max-height:220px;overflow:auto;margin-top:2px;}' +
+'.ssc-sug button{display:block;width:100%;text-align:left;background:none;border:0;padding:.5rem .6rem;font:inherit;font-size:.85rem;color:var(--t1,#202221);cursor:pointer;min-height:40px;}' +
+'.ssc-sug button:hover{background:var(--bg2,#f1ece2);}' +
+'.ssc-actions{display:flex;gap:.5rem;flex-wrap:wrap;}' +
+'.ssc-btn{font:inherit;font-weight:800;font-size:.9rem;border-radius:10px;padding:.6rem 1.1rem;cursor:pointer;min-height:44px;border:1px solid var(--ac,#2f5e67);}' +
+'.ssc-btn-primary{background:var(--ac,#2f5e67);color:#fff;}' +
+'.ssc-btn-ghost{background:transparent;color:var(--ac,#2f5e67);}' +
+'.ssc-result{margin-top:1rem;border-top:2px solid var(--bd2,#ddd3c3);padding-top:1rem;}' +
+'.ssc-status{display:inline-block;font-size:.75rem;font-weight:800;padding:.2rem .6rem;border-radius:999px;margin-left:.4rem;vertical-align:middle;}' +
+'.ssc-status-likely{background:var(--acG,rgba(47,94,103,.1));color:var(--ac,#2f5e67);border:1px solid var(--ac,#2f5e67);}' +
+'.ssc-status-visa{background:var(--cyL,#FFE2DB);color:var(--hlT,#8A3426);border:1px solid var(--cy,#FF6B5B);}' +
+'.ssc-status-check{background:transparent;color:var(--cWk,#a85f1c);border:1px solid var(--cWk,#E68A3A);}' +
+'.ssc-result h4{font-size:.85rem;font-weight:800;color:var(--t2,#4f5552);margin:1rem 0 .35rem;}' +
+'.ssc-result h3{font-size:1.05rem;font-weight:800;color:var(--t1,#202221);margin:.1rem 0 .2rem;word-break:keep-all;}' +
+'.ssc-result p,.ssc-result li{font-size:.88rem;line-height:1.65;color:var(--t1,#202221);word-break:keep-all;}' +
+'.ssc-result ul,.ssc-result ol{margin:.2rem 0 .2rem;padding-left:1.2rem;}' +
+'.ssc-warn{background:var(--cyL,#FFE2DB);border:1px solid var(--cy,#FF6B5B);border-radius:10px;padding:.7rem .8rem;margin-top:.4rem;}' +
+'.ssc-warn li{color:var(--hlT,#8A3426);}' +
+'.ssc-links{display:flex;flex-wrap:wrap;gap:.45rem;margin-top:.4rem;}' +
+'.ssc-links a{display:inline-flex;align-items:center;min-height:40px;padding:.35rem .8rem;border:1px solid var(--ac,#2f5e67);border-radius:999px;font-size:.82rem;font-weight:700;color:var(--ac,#2f5e67);text-decoration:none;background:transparent;}' +
+'.ssc-links a:hover{background:var(--acG,rgba(47,94,103,.1));}' +
+'.ssc-alt{border:1px dashed var(--bd,#d1c6b4);border-radius:10px;padding:.55rem .7rem;margin-top:.35rem;}' +
+'.ssc-alt strong{font-size:.85rem;}' +
+'.ssc-error{background:var(--cyL,#FFE2DB);border:1px solid var(--cy,#FF6B5B);border-radius:10px;padding:.8rem;font-size:.88rem;color:var(--hlT,#8A3426);word-break:keep-all;}' +
+'.ssc-details{margin-top:.6rem;}' +
+'.ssc-details summary{cursor:pointer;font-size:.8rem;font-weight:700;color:var(--t2,#4f5552);min-height:32px;}' +
+'.ssc-srcline{font-size:.74rem;color:var(--t3,#757a76);margin-top:.55rem;}' +
+'@media (max-width:480px){.ssc-grid{grid-template-columns:1fr;}.ssc-card{padding:.9rem .8rem;}}' +
+'@media (prefers-reduced-motion: no-preference){.ssc-result{animation:sscFade .25s ease-out;}@keyframes sscFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}}';
+    var style = document.createElement('style');
+    style.id = 'shortStayCheckerStyles';
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function optionHtml(opts, selected) {
+    return opts.map(function (o) {
+      return '<option value="' + esc(o.value) + '"' + (o.value === selected ? ' selected' : '') + '>' + esc(o.label) + '</option>';
+    }).join('');
+  }
+
+  function renderShortStayChecker(container) {
+    injectStyles();
+    container.innerHTML =
+      '<div class="ssc-card">' +
+        '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
+        '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>' +
+        '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
+        '<div class="ssc-badges" data-ssc-badges></div>' +
+        '<form data-ssc-form novalidate>' +
+          '<div class="ssc-grid">' +
+            '<label class="ssc-field" style="grid-column:1/-1;">' +
+              '<span>' + esc(STR.countryLabel) + '</span>' +
+              '<input type="text" name="country" autocomplete="off" spellcheck="false" placeholder="' + esc(STR.countryPlaceholder) + '" aria-describedby="sscCountryHelp" role="combobox" aria-expanded="false" aria-autocomplete="list">' +
+              '<span class="ssc-helper" id="sscCountryHelp">' + esc(STR.countryHelper) + '</span>' +
+              '<div class="ssc-sug" data-ssc-sug role="listbox" aria-label="국가 후보" hidden></div>' +
+            '</label>' +
+            '<label class="ssc-field"><span>' + esc(STR.passportLabel) + '</span><select name="passport">' + optionHtml(PASSPORT_OPTIONS, 'ordinary') + '</select></label>' +
+            '<label class="ssc-field"><span>' + esc(STR.purposeLabel) + '</span><select name="purpose">' + optionHtml(PURPOSE_OPTIONS, 'tourism') + '</select></label>' +
+            '<label class="ssc-field"><span>' + esc(STR.destinationLabel) + '</span><select name="destination">' + optionHtml(DESTINATION_OPTIONS, 'mainland') + '</select></label>' +
+            '<label class="ssc-field"><span>' + esc(STR.stayLabel) + '</span><input type="number" name="stayDays" min="1" max="365" inputmode="numeric" aria-describedby="sscStayHelp"><span class="ssc-helper" id="sscStayHelp">' + esc(STR.stayHelper) + '</span></label>' +
+            '<label class="ssc-field"><span>' + esc(STR.ageLabel) + '</span><select name="age">' + optionHtml(AGE_OPTIONS, 'unknown') + '</select></label>' +
+          '</div>' +
+          '<div class="ssc-actions">' +
+            '<button type="submit" class="ssc-btn ssc-btn-primary">' + esc(STR.submit) + '</button>' +
+            '<button type="reset" class="ssc-btn ssc-btn-ghost">' + esc(STR.reset) + '</button>' +
+          '</div>' +
+        '</form>' +
+        '<div class="ssc-result" data-ssc-result role="status" aria-live="polite" hidden></div>' +
+      '</div>';
+    bindForm(container);
+    refreshBadges(container);
+  }
+
+  function refreshBadges(container) {
+    var host = container.querySelector('[data-ssc-badges]');
+    if (!host) return;
+    if (state.rules) {
+      host.innerHTML = renderSourceFreshnessBadge(state.rules.sourceStatus, state.rules.lastUpdated);
+    } else if (state.loadError) {
+      host.innerHTML = renderSourceFreshnessBadge('needs_refresh', null);
+    } else {
+      host.innerHTML = '<span class="ssc-badge">' + esc(STR.loading) + '</span>';
+    }
+  }
+
+  function statusBadge(status) {
+    if (status === 'likely_available') return '<span class="ssc-status ssc-status-likely">확인 가능 경로</span>';
+    if (status === 'visa_required') return '<span class="ssc-status ssc-status-visa">사증 필요</span>';
+    if (status === 'not_available') return '<span class="ssc-status ssc-status-visa">불가</span>';
+    return '<span class="ssc-status ssc-status-check">공식 확인 필요</span>';
+  }
+
+  function renderShortStayResult(result) {
+    var alt = result.alternatives.map(function (a) {
+      return '<div class="ssc-alt"><strong>' + esc(a.path) + '</strong><p>' + esc(a.note) + '</p></div>';
+    }).join('');
+    var srcRefs = (result.sourceRefs || []).join(', ');
+    return '' +
+      '<h4>' + esc(STR.resultPath) + '</h4>' +
+      '<h3>' + esc(result.primary.path) + statusBadge(result.primary.status) + '</h3>' +
+      '<h4>' + esc(STR.resultWhy) + '</h4>' +
+      result.primary.explanation.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
+      '<h4>' + esc(STR.resultNext) + '</h4>' +
+      '<ol>' + getShortStayProcedureSteps(result).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>' +
+      '<h4>' + esc(STR.resultWarn) + '</h4>' +
+      '<div class="ssc-warn"><ul>' + formatShortStayWarnings(result).map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></div>' +
+      '<h4>' + esc(STR.resultOfficial) + '</h4>' +
+      '<div class="ssc-links">' + result.officialLinks.map(function (l) {
+        var external = l.url.indexOf('http') === 0;
+        return '<a href="' + esc(l.url) + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + esc(l.label) + '</a>';
+      }).join('') + '</div>' +
+      (alt ? '<h4>' + esc(STR.resultAlt) + '</h4>' + alt : '') +
+      '<details class="ssc-details"><summary>출처·자료 기준 자세히</summary>' +
+        '<p class="ssc-srcline">' + renderSourceFreshnessBadge(result.sourceStatus, result.sourceDate) + '</p>' +
+        '<p class="ssc-srcline">출처 ID: ' + esc(srcRefs || '—') + ' · 자세한 출처 메타데이터: data/short-stay/sources.json</p>' +
+        '<p class="ssc-srcline">이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.</p>' +
+      '</details>';
+  }
+
+  function bindForm(container) {
+    var form = container.querySelector('[data-ssc-form]');
+    var resultHost = container.querySelector('[data-ssc-result]');
+    var countryInput = form.querySelector('input[name="country"]');
+    var sugHost = form.querySelector('[data-ssc-sug]');
+
+    function hideSug() { sugHost.hidden = true; sugHost.innerHTML = ''; countryInput.setAttribute('aria-expanded', 'false'); }
+
+    countryInput.addEventListener('input', function () {
+      ensureRules().then(function (rules) {
+        var v = countryInput.value.trim();
+        if (!v) { hideSug(); return; }
+        var res = resolveCountryAlias(v, rules);
+        var list = res.country ? [] : res.suggestions;
+        if (!list.length) { hideSug(); return; }
+        sugHost.innerHTML = list.map(function (c) {
+          return '<button type="button" role="option" data-iso="' + esc(c.iso2) + '">' + esc(c.nameKo) + ' · ' + esc(c.nameEn) + '</button>';
+        }).join('');
+        sugHost.hidden = false;
+        countryInput.setAttribute('aria-expanded', 'true');
+      }).catch(function () { hideSug(); });
+    });
+    countryInput.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown' && !sugHost.hidden) {
+        var first = sugHost.querySelector('button');
+        if (first) { e.preventDefault(); first.focus(); }
+      }
+    });
+    sugHost.addEventListener('keydown', function (e) {
+      var items = Array.prototype.slice.call(sugHost.querySelectorAll('button'));
+      var idx = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown' && idx < items.length - 1) { e.preventDefault(); items[idx + 1].focus(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); (idx <= 0 ? countryInput : items[idx - 1]).focus(); }
+      if (e.key === 'Escape') { hideSug(); countryInput.focus(); }
+    });
+    sugHost.addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-iso]');
+      if (!btn) return;
+      var rules = state.rules;
+      var c = rules && rules.countries[btn.dataset.iso];
+      if (c) countryInput.value = c.nameKo;
+      hideSug();
+      countryInput.focus();
+    });
+    document.addEventListener('click', function (e) {
+      if (!sugHost.hidden && !form.contains(e.target)) hideSug();
+    });
+
+    form.addEventListener('reset', function () {
+      resultHost.hidden = true; resultHost.innerHTML = ''; hideSug();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      hideSug();
+      var raw = countryInput.value.trim();
+      if (!raw) {
+        resultHost.innerHTML = '<div class="ssc-error">' + esc(STR.countryMissing) + '</div>';
+        resultHost.hidden = false;
+        countryInput.focus();
+        return;
+      }
+      resultHost.innerHTML = '<p class="ssc-srcline">' + esc(STR.loading) + '</p>';
+      resultHost.hidden = false;
+      ensureRules().then(function (rules) {
+        var res = resolveCountryAlias(raw, rules);
+        if (!res.country) {
+          var sug = res.suggestions.map(function (c) { return c.nameKo + '(' + c.nameEn + ')'; }).join(', ');
+          resultHost.innerHTML = '<div class="ssc-error">' + esc(STR.countryNotFound) +
+            (sug ? '<br>비슷한 국가: ' + esc(sug) : '') +
+            '<br>현재 반영된 목록 데이터에 없는 국가라면, 일반적으로 사증(C-3 등) 신청 또는 재외공관·1345 공식 확인이 필요합니다.</div>';
+          return;
+        }
+        var stayVal = parseInt(form.querySelector('input[name="stayDays"]').value, 10);
+        var result = getShortStayEntryOptions({
+          country: res.country,
+          passportType: form.querySelector('select[name="passport"]').value,
+          purpose: form.querySelector('select[name="purpose"]').value,
+          destination: form.querySelector('select[name="destination"]').value,
+          stayDays: isNaN(stayVal) ? null : stayVal,
+          ageGroup: form.querySelector('select[name="age"]').value
+        }, rules);
+        resultHost.innerHTML = renderShortStayResult(result);
+      }).catch(function () {
+        resultHost.innerHTML = '<div class="ssc-error">' + esc(STR.fetchFail) + '</div>' +
+          '<div class="ssc-links" style="margin-top:.5rem;">' + defaultOfficialLinks().map(function (l) {
+            var external = l.url.indexOf('http') === 0;
+            return '<a href="' + esc(l.url) + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + esc(l.label) + '</a>';
+          }).join('') + '</div>';
+      });
+    });
+  }
+
+  function ensureRules() {
+    var section = document.getElementById('shortStayChecker');
+    return loadShortStayRules().then(function (rules) {
+      if (section) refreshBadges(section);
+      return rules;
+    }).catch(function (err) {
+      if (section) refreshBadges(section);
+      throw err;
+    });
+  }
+
+  /* ------------------------------------------------ search-result integration */
+  var SHORT_STAY_CODE = /^(b-?1|b-?2(-?[12])?|c-?3(-?\d{1,2})?|k-?eta)$/i;
+  var SHORT_STAY_KEYWORDS = ['무사증', '무비자', '제주', 'k-eta', 'keta', '케이이티에이', '전자여행허가', '단기방문', '관광통과', '사증면제', '비자면제', '협정국', '단기 입국', '관광비자', '관광 비자'];
+
+  function queryIsShortStayRelevant(detail) {
+    var q = String((detail && detail.query) || '').toLowerCase();
+    var qNorm = q.replace(/\s+/g, '');
+    if (!q) return false;
+    var tokens = q.split(/\s+/);
+    for (var i = 0; i < tokens.length; i++) {
+      if (SHORT_STAY_CODE.test(tokens[i])) return true;
+    }
+    for (var j = 0; j < SHORT_STAY_KEYWORDS.length; j++) {
+      var kw = SHORT_STAY_KEYWORDS[j].replace(/\s+/g, '');
+      if (qNorm.indexOf(kw) !== -1) return true;
+    }
+    var codes = (detail && detail.codes) || [];
+    return codes.indexOf('B-1') === 0 || codes.indexOf('B-2') === 0 || codes.indexOf('C-3') === 0;
+  }
+
+  function mountIfNeeded() {
+    var section = document.getElementById('shortStayChecker');
+    if (!section) return null;
+    if (!state.formRendered) {
+      renderShortStayChecker(section);
+      state.formRendered = true;
+      /* lazy data: load when the section first becomes visible */
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { ensureRules().catch(function () {}); io.disconnect(); }
+          });
+        }, { rootMargin: '200px' });
+        io.observe(section);
+      } else {
+        ensureRules().catch(function () {});
+      }
+    }
+    return section;
+  }
+
+  function injectCardCta(detail) {
+    var codes = ['B-1', 'B-2', 'C-3'];
+    for (var i = 0; i < codes.length; i++) {
+      var slot = document.querySelector('.external-guide-slot[data-guide-slot="' + codes[i] + '"]');
+      if (!slot || slot.querySelector('.ssc-cta')) continue;
+      var cta = document.createElement('button');
+      cta.type = 'button';
+      cta.className = 'ssc-btn ssc-btn-ghost ssc-cta';
+      cta.style.cssText = 'margin:.5rem 0;width:100%;text-align:left;';
+      cta.textContent = '🧭 ' + STR.title + ' — 내 국적으로 무사증·제주·C-3 가능성 확인하기';
+      cta.addEventListener('click', function () {
+        var section = mountIfNeeded();
+        if (!section) return;
+        section.hidden = false;
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        var input = section.querySelector('input[name="country"]');
+        if (input) setTimeout(function () { input.focus(); }, 350);
+      });
+      slot.appendChild(cta);
+    }
+  }
+
+  document.addEventListener('paradiso:results-rendered', function (e) {
+    var section = document.getElementById('shortStayChecker');
+    if (!section) return;
+    var relevant = queryIsShortStayRelevant(e.detail || {});
+    if (relevant) {
+      mountIfNeeded();
+      section.hidden = false;
+    } else {
+      section.hidden = true;
+    }
+    injectCardCta(e.detail || {});
+  });
+  document.addEventListener('paradiso:landing-reset', function () {
+    var section = document.getElementById('shortStayChecker');
+    if (section) section.hidden = true;
+  });
+})();
