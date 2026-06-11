@@ -146,12 +146,13 @@ echo "[7/12] Validating Paradiso coverage matrix..."
 python3 scripts/validate_coverage_matrix.py > /dev/null
 
 echo "[8/14] Running git diff --check..."
-git diff --check -- index.html ai.html visa_data.json doc_master.json scripts/check_repo.sh scripts/check_source_manuals.py scripts/check_visa_text_corruption.py scripts/check_i18n.js scripts/smoke_ai_payload.js docs/data docs/design docs/source-manuals docs/i18n docs/backend
+git diff --check -- index.html ai.html visa_data.json doc_master.json data/i18n scripts/check_repo.sh scripts/check_source_manuals.py scripts/check_visa_text_corruption.py scripts/check_i18n.js scripts/check_i18n_coverage.mjs scripts/check_index_hardcoded_text.mjs scripts/smoke_static_i18n.mjs scripts/smoke_ai_payload.js docs/data docs/design docs/source-manuals docs/i18n docs/backend
 
 echo "[9/14] Validating EN/KO UI translations..."
 if [[ -f scripts/check_i18n.js ]]; then
   if command -v node >/dev/null 2>&1; then
     node scripts/check_i18n.js
+    node scripts/smoke_static_i18n.mjs
   else
     echo "ERROR: Node.js is required to run scripts/check_i18n.js but was not found on PATH." >&2
     echo "       Install Node.js (>=14) or run via your existing Node toolchain." >&2
