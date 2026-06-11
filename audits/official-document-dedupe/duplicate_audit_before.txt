@@ -1,0 +1,222 @@
+Paradiso duplicate audit (before) — 2026-06-11T00:14:09.869Z
+mode=before resolveIdsBeforeKeying=false
+top-level codes scanned: 42
+duplicate families found: 72 across 14 codes
+
+[D-2] 절차탭:체류자격 변경 :: family=신청서 :: classification=UNRESOLVED
+    - 신청서  [procedures.statusChange.requiredDocs.commonDocs]
+    - 통합신청서 (별지 제34호 서식)  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=여권 :: classification=UNRESOLVED
+    - 여권 및 사본 1부  [procedures.statusChange.requiredDocs.commonDocs]
+    - 여권 원본 및 인적사항면 사본  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=표준규격사진 :: classification=UNRESOLVED
+    - 표준규격사진 1매  [procedures.statusChange.requiredDocs.commonDocs]
+    - 표준규격사진 1매 (3.5x4.5cm, 최근 6개월)  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [procedures.statusChange.requiredDocs.commonDocs]
+    - 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=사업자등록증 :: classification=UNRESOLVED
+    - 교육기관 사업자등록증 또는 고유번호증 사본  [procedures.statusChange.requiredDocs.requiredDocs]
+    - 사업자등록증 사본  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=표준입학허가서 :: classification=UNRESOLVED
+    - 표준입학허가서  [procedures.statusChange.requiredDocs.requiredDocs]
+    - 표준입학허가서 또는 재학/수료증명서  [changeReqDocs]
+[D-2] 절차탭:체류자격 변경 :: family=재정입증서류 :: classification=UNRESOLVED
+    - 재정능력 입증서류  [procedures.statusChange.requiredDocs.requiredDocs]
+    - 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)  [changeReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=신청서 :: classification=UNRESOLVED
+    - 신청서  [procedures.extension.requiredDocs.commonDocs]
+    - 통합신청서 (별지 제34호 서식)  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=여권 :: classification=UNRESOLVED
+    - 여권  [procedures.extension.requiredDocs.commonDocs]
+    - 여권 원본 및 인적사항면 사본  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증  [procedures.extension.requiredDocs.commonDocs]
+    - 외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함)  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [procedures.extension.requiredDocs.commonDocs]
+    - 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=학업수행입증서류 :: classification=UNRESOLVED
+    - 학업을 정상적으로 수행하고 있음을 입증하는 서류  [procedures.extension.requiredDocs.requiredDocs]
+    - 출석확인서 (출석률 명시)  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=재정입증서류 :: classification=UNRESOLVED
+    - 재정능력 입증서류  [procedures.extension.requiredDocs.requiredDocs]
+    - 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)  [extensionReqDocs]
+[D-2] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[D-4] 절차탭:체류기간 연장 :: family=학업수행입증서류 :: classification=UNRESOLVED
+    - 학업을 정상적으로 수행하고 있음을 입증하는 서류  [procedures.extension.requiredDocs.requiredDocs]
+    - 출석확인서 (출석률 명시)  [extensionReqDocs]
+[D-4] 절차탭:체류기간 연장 :: family=재정입증서류 :: classification=UNRESOLVED
+    - 재정능력 입증서류(국내 본인계좌 예치금만 인정)  [procedures.extension.requiredDocs.requiredDocs]
+    - 은행 잔고증명서 (최근 30일 이내 발급본)  [extensionReqDocs]
+[D-4] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[D-4] 세부코드:D-4-2K :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본 (대조용 필수지참)
+    - 여권 인적사항면 사본
+[D-4-1] 절차탭:사증발급 :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본 (대조용 필수지참)  [initialReqDocs]
+    - 여권 인적사항면 사본  [initialReqDocs]
+[D-4-1] 절차탭:체류기간 연장 :: family=학업수행입증서류 :: classification=UNRESOLVED
+    - 학업을 정상적으로 수행하고 있음을 입증하는 서류(성적증명서, 출석확인서 등)  [procedures.extension.requiredDocs.requiredDocs]
+    - 출석확인서 (출석률 명시)  [extensionReqDocs]
+[D-4-1] 절차탭:체류기간 연장 :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본 (대조용 필수지참)  [extensionReqDocs]
+    - 여권 인적사항면 사본  [extensionReqDocs]
+[D-4-1] 구비서류탭:documents_initial :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본
+    - 여권 인적사항면 사본
+[D-4-1] 구비서류탭:documents_extension :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본
+    - 여권 인적사항면 사본
+[D-9] 세부코드:D-9-5 :: family=재정입증서류 :: classification=UNRESOLVED
+    - 재정능력 입증서류 (잔고증명, 소득증명 등 총괄)
+    - 은행 잔고증명서 (최근 30일 이내 발급본)
+[D-10] 절차탭:체류기간 연장 :: family=구직활동계획서 :: classification=UNRESOLVED
+    - 구직활동계획서  [procedures.extension.requiredDocs.requiredDocs]
+    - 구직활동 계획서(붙임6)  [procedures.extension.requiredDocs.requiredDocs]
+    - 구직활동계획서  [extensionReqDocs]
+[D-10] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[D-10] 시나리오:체류기간 연장/d-10-1-points-extension :: family=신청서 :: classification=UNRESOLVED
+    - 신청서  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-1-points-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-1-points-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-1-points-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-2-tech-startup-extension :: family=신청서 :: classification=UNRESOLVED
+    - 신청서  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-2-tech-startup-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-2-tech-startup-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-2-tech-startup-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-3-high-tech-intern-extension :: family=신청서 :: classification=UNRESOLVED
+    - 신청서  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-3-high-tech-intern-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-3-high-tech-intern-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-10] 시나리오:체류기간 연장/d-10-3-high-tech-intern-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증 사본  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[E-1] 절차탭:체류기간 연장 :: family=신청서 :: classification=UNRESOLVED
+    - 통합신청서(별지 제34호 서식)  [procedures.extension.requiredDocs.requiredDocs]
+    - 통합신청서 (별지 제34호 서식)  [extensionReqDocs]
+[E-1] 절차탭:체류기간 연장 :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본 및 인적사항면 사본  [procedures.extension.requiredDocs.requiredDocs]
+    - 여권 원본 및 인적사항면 사본  [extensionReqDocs]
+[E-1] 절차탭:체류기간 연장 :: family=수수료 :: classification=UNRESOLVED
+    - 수수료(절차별 정부수입인지/카드 발급 수수료 확인)  [procedures.extension.requiredDocs.requiredDocs]
+    - 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)  [extensionReqDocs]
+[E-1] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[E-4] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[E-5] 절차탭:체류기간 연장 :: family=신청서 :: classification=UNRESOLVED
+    - 통합신청서(별지 제34호 서식)  [procedures.extension.requiredDocs.requiredDocs]
+    - 통합신청서 (별지 제34호 서식)  [extensionReqDocs]
+[E-5] 절차탭:체류기간 연장 :: family=여권 :: classification=UNRESOLVED
+    - 여권 원본 및 인적사항면 사본  [procedures.extension.requiredDocs.requiredDocs]
+    - 여권 원본 및 인적사항면 사본  [extensionReqDocs]
+[E-5] 절차탭:체류기간 연장 :: family=수수료 :: classification=UNRESOLVED
+    - 수수료(절차별 정부수입인지/카드 발급 수수료 확인)  [procedures.extension.requiredDocs.requiredDocs]
+    - 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)  [extensionReqDocs]
+[E-5] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[E-6] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[E-7] 절차탭:체류기간 연장 :: family=사업자등록증 :: classification=UNRESOLVED
+    - 사업자등록증 사본 또는 법인등기부등본  [procedures.extension.requiredDocs.requiredDocs]
+    - 사업자등록증 사본  [extensionReqDocs]
+[E-7] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[F-4] 시나리오:체류기간 연장/f-4-overseas-korean-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-4] 시나리오:체류기간 연장/f-4-overseas-korean-extension :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [variant.requiredDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 절차탭:체류기간 연장 :: family=혼인관계증명서 :: classification=UNRESOLVED
+    - 혼인관계증명서(상세)  [procedures.extension.requiredDocs.requiredDocs]
+    - 혼인관계증명서 (상세)  [extensionReqDocs]
+[F-6] 절차탭:체류기간 연장 :: family=주민등록등본 :: classification=UNRESOLVED
+    - 주민등록등본  [procedures.extension.requiredDocs.requiredDocs]
+    - 주민등록등본(해당 시)  [extensionReqDocs]
+[F-6] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[F-6] 시나리오:체류기간 연장/f-6-1-marriage-maintenance-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-marriage-maintenance-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-marriage-maintenance-extension :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [variant.requiredDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-separated-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-separated-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-separated-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-separated-extension :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [variant.requiredDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-divorce-lawsuit-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-divorce-lawsuit-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-divorce-lawsuit-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-divorce-lawsuit-extension :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [variant.requiredDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-spouse-missing-extension :: family=여권 :: classification=UNRESOLVED
+    - 여권  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-spouse-missing-extension :: family=외국인등록증 :: classification=UNRESOLVED
+    - 외국인등록증  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-spouse-missing-extension :: family=수수료 :: classification=UNRESOLVED
+    - 수수료  [variant.commonDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[F-6] 시나리오:체류기간 연장/f-6-1-spouse-missing-extension :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류  [variant.requiredDocs]
+    - (부모 절차 패널에 동일 항목 노출)  [parent-panel]
+[D-5] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]
+[D-6] 절차탭:체류기간 연장 :: family=체류지입증서류 :: classification=UNRESOLVED
+    - 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)  [procedures.extension.requiredDocs.requiredDocs]
+    - 체류지 입증서류 (임대차계약서, 숙소제공확인서, 공공요금 영수증 등)  [extensionReqDocs]

@@ -1,0 +1,1068 @@
+backend/services/precedent_sources.py:1:"""Law Open Data precedent-family source adapter scaffold.
+backend/services/precedent_sources.py:3:This module scaffolds the *precedent-related* official source families that the
+backend/services/precedent_sources.py:4:existing law tooling (``law_tools``) does not yet retrieve:
+backend/services/precedent_sources.py:6:* ``precedent``               — 판례 (court precedent)
+backend/services/precedent_sources.py:7:* ``administrative_appeal``   — 행정심판례 (administrative appeal decisions)
+backend/services/precedent_sources.py:8:* ``legal_interpretation``    — 법령해석례 (legal interpretation cases)
+backend/services/precedent_sources.py:12:``docs/data/LAW_OPEN_DATA_PRECEDENT_SOURCE_SCAFFOLD_2026_06.md``):
+backend/services/precedent_sources.py:16:  list-search scaffold for ``precedent`` using the documented
+backend/services/precedent_sources.py:18:* The two-step precedent design is explicit: list search yields candidate
+backend/services/precedent_sources.py:22:  as a full-text citation.
+backend/services/precedent_sources.py:23:* Only ``precedent`` has a confirmed list-search target (``prec``). The other
+backend/services/precedent_sources.py:35:  real ``LAW_API_OC``.
+backend/services/precedent_sources.py:36:* When ``LAW_API_OC`` is absent the adapter returns a public-safe
+backend/services/precedent_sources.py:45:from .grounding_config import GroundingConfig, load_grounding_config
+backend/services/precedent_sources.py:48:    is_citation_grade_capable,
+backend/services/precedent_sources.py:53:PRECEDENT_SOURCES_VERSION = "2026-06-law-open-data-precedent-scaffold-v1"
+backend/services/precedent_sources.py:55:# Confirmed list-search target for court precedent (판례) on lawSearch.do.
+backend/services/precedent_sources.py:58:PRECEDENT_LIST_TARGET = "prec"
+backend/services/precedent_sources.py:63:    "precedent": PRECEDENT_LIST_TARGET,
+backend/services/precedent_sources.py:74:_PRECEDENT_FAMILIES = frozenset(SOURCE_FAMILY_LIST_TARGETS)
+backend/services/precedent_sources.py:95:    Used for the holding text so that a precedent body's 판시사항 (the issue)
+backend/services/precedent_sources.py:125:    "판례일련번호", "헌재결정례일련번호", "행정심판례일련번호", "법령해석례일련번호",
+backend/services/precedent_sources.py:138:    "판례내용", "재결내용", "결정내용", "이유", "질의요지", "본문",
+backend/services/precedent_sources.py:141:_URL_KEYS = ("판례상세링크", "상세링크", "url", "link")
+backend/services/precedent_sources.py:158:    A citation needs a stable identifier AND an issuing authority. For
+backend/services/precedent_sources.py:160:    serial strengthens it; for precedent / appeal / constitutional families a
+backend/services/precedent_sources.py:176:def _derive_citation_grade(
+backend/services/precedent_sources.py:187:    """Citation grade per the precedent-family rules.
+backend/services/precedent_sources.py:189:    * Unidentified text is NEVER citation-grade (→ background).
+backend/services/precedent_sources.py:196:    if not is_citation_grade_capable(family):
+backend/services/precedent_sources.py:242:    """Construct one normalized precedent-family evidence item.
+backend/services/precedent_sources.py:247:    grade = _derive_citation_grade(
+backend/services/precedent_sources.py:264:        "citationGrade": grade,
+backend/services/precedent_sources.py:280:        "retrievedAt": _now_iso(),
+backend/services/precedent_sources.py:331:def normalize_precedent_list_item(obj: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+backend/services/precedent_sources.py:332:    return _normalize_family_item(obj, source_family="precedent", result_kind="list_result")
+backend/services/precedent_sources.py:335:def normalize_precedent_body_item(obj: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+backend/services/precedent_sources.py:336:    return _normalize_family_item(obj, source_family="precedent", result_kind="body_result")
+backend/services/precedent_sources.py:425:        "retrievedAt": _now_iso(),
+backend/services/precedent_sources.py:426:        "version": PRECEDENT_SOURCES_VERSION,
+backend/services/precedent_sources.py:440:    """Normalize a raw precedent-family response body into an evidence envelope.
+backend/services/precedent_sources.py:444:    is the single entry point used by both the live ``search_precedents``
+backend/services/precedent_sources.py:448:    if fam not in _PRECEDENT_FAMILIES:
+backend/services/precedent_sources.py:459:            target=target, sanitized_url=sanitized_url, error_type=lt.LAW_API_HTTP_ERROR,
+backend/services/precedent_sources.py:465:        transient = error in {lt.LAW_API_OFFICIAL_ERROR, lt.LAW_API_PARSE_ERROR}
+backend/services/precedent_sources.py:467:            lt.LAW_API_NO_RESULTS: "no_results",
+backend/services/precedent_sources.py:468:            lt.LAW_API_BAD_RESPONSE: "bad_response",
+backend/services/precedent_sources.py:469:            lt.LAW_API_PARSE_ERROR: "parse_error",
+backend/services/precedent_sources.py:470:            lt.LAW_API_OFFICIAL_ERROR: "official_error",
+backend/services/precedent_sources.py:511:def normalize_precedent_list_response(body: str, **kwargs: Any) -> Dict[str, Any]:
+backend/services/precedent_sources.py:512:    return normalize_source_family_response("precedent", body, result_kind="list_result", **kwargs)
+backend/services/precedent_sources.py:515:def normalize_precedent_body_response(body: str, **kwargs: Any) -> Dict[str, Any]:
+backend/services/precedent_sources.py:516:    return normalize_source_family_response("precedent", body, result_kind="body_result", **kwargs)
+backend/services/precedent_sources.py:520:# Live list-search scaffold (precedent only — target=prec)
+backend/services/precedent_sources.py:522:def search_precedents(
+backend/services/precedent_sources.py:529:    """Scaffold list search for court precedent (판례) via ``target=prec``.
+backend/services/precedent_sources.py:533:    deliberately NOT invoked by ``law_tools.retrieve_official_source_family``
+backend/services/precedent_sources.py:534:    (precedent stays ``unsupported`` there) so this PR never auto-fires an
+backend/services/precedent_sources.py:539:    fully mockable and safe without ``LAW_API_OC``.
+backend/services/precedent_sources.py:541:    fam = "precedent"
+backend/services/precedent_sources.py:542:    cfg = config or load_grounding_config()
+backend/services/precedent_sources.py:549:            error_type=lt.LAW_API_NOT_CONFIGURED,
+backend/services/precedent_sources.py:554:            result_kind="list_result", query=q, items=[], error_type=lt.LAW_API_NO_RESULTS,
+backend/services/precedent_sources.py:557:    params = {"target": PRECEDENT_LIST_TARGET, "type": "JSON", "query": q, "display": str(capped)}
+backend/services/precedent_sources.py:568:            error_type=lt.LAW_API_BAD_RESPONSE,
+backend/services/precedent_sources.py:572:            "timeout": ("timeout", lt.LAW_API_TIMEOUT),
+backend/services/precedent_sources.py:573:            "http_error": ("http_error", lt.LAW_API_HTTP_ERROR),
+backend/services/precedent_sources.py:574:            "network": ("bad_response", lt.LAW_API_BAD_RESPONSE),
+backend/services/precedent_sources.py:576:        status, error_type = mapping.get(response.error_type, ("bad_response", lt.LAW_API_BAD_RESPONSE))
+backend/services/precedent_sources.py:586:        target=PRECEDENT_LIST_TARGET,
+backend/services/law_grounding.py:6:from .citation_verifier import build_law_evidence_citation_verification, verify_citations
+backend/services/law_grounding.py:7:from .grounding_config import load_grounding_config
+backend/services/law_grounding.py:12:    ("근거 법령", re.compile(r"근거\s*법령", re.IGNORECASE)),
+backend/services/law_grounding.py:24:    # they only justify attempting official law grounding before responding.
+backend/services/law_grounding.py:34:    # law/manual question — so attempt official grounding before answering.
+backend/services/law_grounding.py:44:    # sojourn status is squarely a law/manual question, so attempt grounding.
+backend/services/law_grounding.py:84:# should attempt official grounding. Lookarounds handle trailing Korean particles.
+backend/services/law_grounding.py:92:    "근거 법령",
+backend/services/law_grounding.py:131:def should_attempt_law_grounding(question: str) -> Dict[str, Any]:
+backend/services/law_grounding.py:138:    # "C-3로 ... 가능한가요?") — attempt grounding even without statutory wording.
+backend/services/law_grounding.py:213:def build_law_grounding_context(question: str) -> Dict[str, Any]:
+backend/services/law_grounding.py:214:    intent = should_attempt_law_grounding(question)
+backend/services/law_grounding.py:220:            "law_grounding_used": False,
+backend/services/law_grounding.py:221:            "law_grounding": [],
+backend/services/law_grounding.py:222:            "citation_verification": {"status": "extracted_only", "citations": [], "warnings": []},
+backend/services/law_grounding.py:223:            "grounding_sources": [],
+backend/services/law_grounding.py:224:            "grounding_warnings": [],
+backend/services/law_grounding.py:228:    config = load_grounding_config()
+backend/services/law_grounding.py:234:            "law_grounding_used": False,
+backend/services/law_grounding.py:235:            "law_grounding": [],
+backend/services/law_grounding.py:236:            "citation_verification": {"status": "extracted_only", "citations": [], "warnings": []},
+backend/services/law_grounding.py:237:            "grounding_sources": [],
+backend/services/law_grounding.py:238:            "grounding_warnings": ["LAW_GROUNDING_DISABLED", *config.warnings],
+backend/services/law_grounding.py:249:            citation_verification = build_law_evidence_citation_verification(
+backend/services/law_grounding.py:253:            citation_verification = build_law_evidence_citation_verification(
+backend/services/law_grounding.py:262:            "law_grounding_used": False,
+backend/services/law_grounding.py:263:            "law_grounding": [],
+backend/services/law_grounding.py:264:            "citation_verification": {"status": "error", "citations": [], "warnings": ["SOURCE_UNAVAILABLE"]},
+backend/services/law_grounding.py:265:            "grounding_sources": [],
+backend/services/law_grounding.py:266:            "grounding_warnings": ["SOURCE_UNAVAILABLE"],
+backend/services/law_grounding.py:275:            # Typed, non-secret marker (e.g. LAW_API_NO_RESULTS). Never the OC.
+backend/services/law_grounding.py:277:    warnings = [*tool_warnings, *citation_verification.get("warnings", []), *config.warnings]
+backend/services/law_grounding.py:282:        "law_grounding_used": used,
+backend/services/law_grounding.py:283:        "law_grounding": law_result.get("results", []) if used else [],
+backend/services/law_grounding.py:284:        "citation_verification": citation_verification,
+backend/services/law_grounding.py:285:        "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query, "error_type": law_result.get("error_type", ""), "parser_status": law_result.get("parser_status", ""), "response_shape_hint": law_result.get("response_shape_hint", ""), "source_url": law_result.get("source_url", "")}],
+backend/services/law_grounding.py:290:        "grounding_warnings": list(dict.fromkeys(warnings)),
+backend/services/law_grounding.py:297:def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
+backend/services/law_grounding.py:298:    """Non-secret readiness report for law grounding.
+backend/services/law_grounding.py:306:    config = load_grounding_config()
+backend/services/law_grounding.py:308:    intent = should_attempt_law_grounding(sample)
+backend/services/law_grounding.py:313:    # present (the preferred LAW_API_OC, or the legacy LAW_API_KEY fallback).
+backend/services/law_grounding.py:334:            warnings.append("LAW_API_KEY_MISSING")
+backend/services/law_grounding.py:336:            warnings.append("LAW_API_ENDPOINT_MISSING")
+backend/services/answer_quality.py:4:once the grounding pipeline has decided *what* sources are available. It is
+backend/services/answer_quality.py:16:  question) look like direct source grounding.
+backend/services/answer_quality.py:128:            "- 한국어로 자연스럽게 답하십시오. 공식 행정·법령 용어는 한국어 원문을 유지하고,"
+backend/services/answer_quality.py:255:    """Return comparison statuses worth verifying — NOT source grounding.
+backend/services/answer_quality.py:268:    # grounding (if any) covers it; related comparison statuses are only useful
+backend/services/answer_quality.py:366:    manual_grounding_present: bool,
+backend/services/answer_quality.py:369:    law_grounding_used: bool,
+backend/services/answer_quality.py:370:    law_grounding_status: str,
+backend/services/answer_quality.py:375:    """Fold grounding state + user intent into the answer-quality contract.
+backend/services/answer_quality.py:384:    if manual_grounding_present or structured_requirements_present:
+backend/services/answer_quality.py:386:    elif law_grounding_used:
+backend/services/answer_quality.py:390:        # is weaker than confirmed manual grounding.
+backend/services/answer_quality.py:396:    elif law_intent or (law_grounding_status in {"unavailable", "disabled"}):
+backend/services/answer_quality.py:453:        "Source state: verified manual/law grounding is unavailable for this"
+backend/services/answer_quality.py:586:    # key-dividing-line slots without inventing rules or citations.
+backend/services/model_policy.py:76:    final_model = _env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
+backend/services/model_policy.py:78:        [final_model, *_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
+backend/services/model_policy.py:96:            "Random OpenRouter routing such as openrouter/auto or openrouter/free is not allowed.",
+backend/services/__init__.py:1:"""Backend service scaffolds for law/public-data grounding."""
+backend/services/__init__.py:3:from .grounding_config import GroundingConfig, load_grounding_config
+backend/services/__init__.py:4:from .law_grounding import build_law_grounding_context
+backend/services/__init__.py:14:from .precedent_sources import (
+backend/services/__init__.py:15:    PRECEDENT_LIST_TARGET,
+backend/services/__init__.py:17:    search_precedents,
+backend/services/__init__.py:22:    "load_grounding_config",
+backend/services/__init__.py:23:    "build_law_grounding_context",
+backend/services/__init__.py:31:    "PRECEDENT_LIST_TARGET",
+backend/services/__init__.py:32:    "search_precedents",
+backend/services/law_tools.py:9:* **korean-law-mcp principle** — law retrieval is a backend *tool/verifier*
+backend/services/law_tools.py:11:  never invents API calls or law citations.
+backend/services/law_tools.py:13:  question → intent/status detection → tool plan → retrieval → normalization →
+backend/services/law_tools.py:25:  network, OpenRouter, Railway, HiKorea, or data.go.kr access.
+backend/services/law_tools.py:26:* Failures are typed (``LAW_API_*``) and never raise out of the tool layer;
+backend/services/law_tools.py:40:from .grounding_config import GroundingConfig, load_grounding_config
+backend/services/law_tools.py:41:from .law_grounding import should_attempt_law_grounding
+backend/services/law_tools.py:42:from .citation_verifier import build_law_evidence_citation_verification
+backend/services/law_tools.py:63:from .source_grounding import (
+backend/services/law_tools.py:64:    build_official_grounding_context,
+backend/services/law_tools.py:65:    classify_query_for_grounding,
+backend/services/law_tools.py:70:    render_grounding_context_for_prompt,
+backend/services/law_tools.py:78:LAW_API_NOT_CONFIGURED = "law_api_not_configured"
+backend/services/law_tools.py:79:LAW_API_HTTP_ERROR = "law_api_http_error"
+backend/services/law_tools.py:80:LAW_API_TIMEOUT = "law_api_timeout"
+backend/services/law_tools.py:81:LAW_API_BAD_RESPONSE = "law_api_bad_response"
+backend/services/law_tools.py:82:LAW_API_NO_RESULTS = "law_api_no_results"
+backend/services/law_tools.py:83:LAW_API_PARSE_ERROR = "law_api_parse_error"
+backend/services/law_tools.py:84:LAW_API_OFFICIAL_ERROR = "law_api_official_error"
+backend/services/law_tools.py:97:    LAW_API_NOT_CONFIGURED: SOURCE_STATUS_NOT_CONFIGURED,
+backend/services/law_tools.py:98:    LAW_API_HTTP_ERROR: SOURCE_STATUS_HTTP_ERROR,
+backend/services/law_tools.py:99:    LAW_API_TIMEOUT: SOURCE_STATUS_TIMEOUT,
+backend/services/law_tools.py:100:    LAW_API_BAD_RESPONSE: SOURCE_STATUS_BAD_RESPONSE,
+backend/services/law_tools.py:101:    LAW_API_NO_RESULTS: SOURCE_STATUS_NO_RESULTS,
+backend/services/law_tools.py:102:    LAW_API_PARSE_ERROR: SOURCE_STATUS_PARSE_ERROR,
+backend/services/law_tools.py:103:    LAW_API_OFFICIAL_ERROR: SOURCE_STATUS_OFFICIAL_ERROR,
+backend/services/law_tools.py:108:# only the OC value is a secret. A deployment that sets LAW_API_BASE_URL can
+backend/services/law_tools.py:133:    (``timeout`` / ``http_error`` / ``network``), mapped to ``LAW_API_*`` by the
+backend/services/law_tools.py:194:        (load_grounding_config().law_api_oc or "").strip(),
+backend/services/law_tools.py:195:        (load_grounding_config().law_api_key or "").strip(),
+backend/services/law_tools.py:245:    retrieval_status: str = ""
+backend/services/law_tools.py:278:        term = _first(obj, "법령용어명", "용어명", "법령용어", "term", "termName")
+backend/services/law_tools.py:281:        definition = _first(obj, "법령용어정의", "용어설명", "정의", "definition") or ""
+backend/services/law_tools.py:293:            "retrieval_status": "ok",
+backend/services/law_tools.py:317:            "retrieval_status": "ok",
+backend/services/law_tools.py:321:    name = _first(obj, "법령명한글", "법령명", "법령명_한글", "lawName")
+backend/services/law_tools.py:322:    serial = _first(obj, "법령일련번호", "MST", "mst")
+backend/services/law_tools.py:323:    law_id = _first(obj, "법령ID", "lawId", "ID")
+backend/services/law_tools.py:326:    law_division = _first(obj, "법령구분명", "법종구분명") or ""
+backend/services/law_tools.py:332:    title = name or "(법령)"
+backend/services/law_tools.py:349:        "retrieval_status": "ok",
+backend/services/law_tools.py:423:    for secret in (load_grounding_config().law_api_oc, load_grounding_config().law_api_key):
+backend/services/law_tools.py:426:    text = re.sub(r"(?i)(OC|LAW_API_OC|LAW_API_KEY|apikey|api_key|servicekey)=([^&\s]+)", r"\1=[REDACTED]", text)
+backend/services/law_tools.py:521:        return None, LAW_API_NO_RESULTS, "empty", shape
+backend/services/law_tools.py:523:        return None, LAW_API_BAD_RESPONSE, "unsupported_html", shape
+backend/services/law_tools.py:528:            return None, LAW_API_PARSE_ERROR, "json_parse_error", shape
+backend/services/law_tools.py:530:            return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
+backend/services/law_tools.py:537:            return None, LAW_API_PARSE_ERROR, "xml_parse_error", shape
+backend/services/law_tools.py:539:            return payload, LAW_API_OFFICIAL_ERROR, "official_error", shape
+backend/services/law_tools.py:541:    return None, LAW_API_BAD_RESPONSE, "unsupported_text", shape
+backend/services/law_tools.py:548:        error = LAW_API_NO_RESULTS
+backend/services/law_tools.py:591:        "retrieved_at": _now_iso(),
+backend/services/law_tools.py:610:        return _tool_error(tool, query=query, target=target, error_type=LAW_API_NOT_CONFIGURED, failure_reason="not_configured")
+backend/services/law_tools.py:619:                           error_type=LAW_API_BAD_RESPONSE, source_url=sanitized, failure_reason="transport_exception")
+backend/services/law_tools.py:623:            "timeout": LAW_API_TIMEOUT,
+backend/services/law_tools.py:624:            "http_error": LAW_API_HTTP_ERROR,
+backend/services/law_tools.py:625:            "network": LAW_API_BAD_RESPONSE,
+backend/services/law_tools.py:627:        error_type = mapping.get(response.error_type, LAW_API_BAD_RESPONSE)
+backend/services/law_tools.py:632:        return _tool_error(tool, query=query, target=target, error_type=LAW_API_HTTP_ERROR,
+backend/services/law_tools.py:643:            failure_reason="official_api_error" if parse_error == LAW_API_OFFICIAL_ERROR else parsed.get("parser_status", ""),
+backend/services/law_tools.py:668:        "retrieved_at": _now_iso(),
+backend/services/law_tools.py:702:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:705:        return _tool_error("search_laws", query="", target=target, error_type=LAW_API_NO_RESULTS)
+backend/services/law_tools.py:735:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:738:                           error_type=LAW_API_NOT_CONFIGURED)
+backend/services/law_tools.py:752:                           error_type=LAW_API_NO_RESULTS)
+backend/services/law_tools.py:821:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:825:                           error_type=LAW_API_NO_RESULTS)
+backend/services/law_tools.py:847:    """Search legal terms (법령용어). Returns normalized term results where the
+backend/services/law_tools.py:849:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:853:                           error_type=LAW_API_NO_RESULTS)
+backend/services/law_tools.py:886:    return _ERROR_TO_SOURCE_STATUS.get(result.get("error_type") or LAW_API_NO_RESULTS, SOURCE_STATUS_BAD_RESPONSE)
+backend/services/law_tools.py:892:        "legal_interpretation", "precedent", "administrative_appeal", "constitutional_decision", "manual",
+backend/services/law_tools.py:905:        "retrieval_status": "ok" if status == SOURCE_STATUS_RESULTS_FOUND else status,
+backend/services/law_tools.py:935:def retrieve_official_source_family(
+backend/services/law_tools.py:946:    collapsed into LAW_API_BAD_RESPONSE. Returned items are normalized evidence
+backend/services/law_tools.py:955:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:957:        return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_NOT_CONFIGURED, query=q, error_type=LAW_API_NOT_CONFIGURED, safe_error_message="not_configured"))
+backend/services/law_tools.py:959:        return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_NO_RESULTS, query=q, error_type=LAW_API_NO_RESULTS, safe_error_message="empty_query"))
+backend/services/law_tools.py:969:def retrieve_planned_official_sources(
+backend/services/law_tools.py:986:        result = retrieve_official_source_family(family, query, limit=limit_per_family, config=config, transport=transport)
+backend/services/law_tools.py:1205:    if should_attempt_law_grounding(question).get("should_attempt"):
+backend/services/law_tools.py:1415:    "precedent",
+backend/services/law_tools.py:1448:            add("precedent")
+backend/services/law_tools.py:1465:    law_grounding_status: str = "not_attempted",
+backend/services/law_tools.py:1506:            statuses[family] = "no_results" if law_grounding_status != "unavailable" else "unavailable"
+backend/services/law_tools.py:1674:    of backend ``grounding_sources`` (all treated as direct). Never fabricates.
+backend/services/law_tools.py:1706:    retrieve: Optional[bool] = None,
+backend/services/law_tools.py:1708:    """Combine intent → plan → retrieval → normalization → source confidence.
+backend/services/law_tools.py:1715:    cfg = config or load_grounding_config()
+backend/services/law_tools.py:1717:    intent = should_attempt_law_grounding(text)
+backend/services/law_tools.py:1762:    law_grounding_error = ""
+backend/services/law_tools.py:1763:    law_grounding_warnings: List[str] = []
+backend/services/law_tools.py:1765:    source_family_retrieval: Dict[str, Any] = {
+backend/services/law_tools.py:1779:        context_used_hint = bool(law_context.get("law_grounding_used"))
+backend/services/law_tools.py:1780:        for candidate in (law_context.get("law_grounding") or []):
+backend/services/law_tools.py:1785:        law_grounding_warnings = list(law_context.get("grounding_warnings") or [])
+backend/services/law_tools.py:1786:        law_grounding_error = law_context.get("error_type", "") or law_context.get("law_grounding_error", "") or ""
+backend/services/law_tools.py:1790:        # instead of collapsing everything into one dominant LAW_API_BAD_RESPONSE.
+backend/services/law_tools.py:1794:                else _ERROR_TO_SOURCE_STATUS.get(law_grounding_error or LAW_API_NO_RESULTS, SOURCE_STATUS_NO_RESULTS)
+backend/services/law_tools.py:1796:            source_family_retrieval["source_family_statuses"] = {"statute": ctx_status}
+backend/services/law_tools.py:1797:            source_family_retrieval["parser_statuses"] = {"statute": law_context.get("parser_status", "")}
+backend/services/law_tools.py:1798:            source_family_retrieval["response_shape_hints"] = {"statute": law_context.get("response_shape_hint", "")}
+backend/services/law_tools.py:1799:            source_family_retrieval["law_error_types"] = {"statute": law_grounding_error or ""}
+backend/services/law_tools.py:1800:            source_family_retrieval["source_family_result_counts"] = {"statute": len(law_sources)}
+backend/services/law_tools.py:1802:        should_retrieve = retrieve if retrieve is not None else (
+backend/services/law_tools.py:1805:        if should_retrieve:
+backend/services/law_tools.py:1808:                law_grounding_error = LAW_API_NOT_CONFIGURED
+backend/services/law_tools.py:1809:                law_grounding_warnings.append("SOURCE_UNAVAILABLE")
+backend/services/law_tools.py:1811:                source_family_retrieval = retrieve_planned_official_sources(
+backend/services/law_tools.py:1816:                law_sources.extend(source_family_retrieval.get("normalized_evidence") or [])
+backend/services/law_tools.py:1818:                    r.get("query", "") for r in source_family_retrieval.get("source_family_results", []) if r.get("query")
+backend/services/law_tools.py:1820:                for result in source_family_retrieval.get("source_family_results", []):
+backend/services/law_tools.py:1821:                    if result.get("error_type") and not law_grounding_error:
+backend/services/law_tools.py:1822:                        law_grounding_error = result.get("error_type")
+backend/services/law_tools.py:1825:                if not law_sources and not law_grounding_error:
+backend/services/law_tools.py:1826:                    law_grounding_error = LAW_API_NO_RESULTS
+backend/services/law_tools.py:1828:    law_grounding_used = bool(law_sources) or context_used_hint
+backend/services/law_tools.py:1832:        law_grounding_status = "not_attempted"
+backend/services/law_tools.py:1834:        law_grounding_status = "disabled"
+backend/services/law_tools.py:1835:        if "LAW_GROUNDING_DISABLED" not in law_grounding_warnings:
+backend/services/law_tools.py:1836:            law_grounding_warnings.append("LAW_GROUNDING_DISABLED")
+backend/services/law_tools.py:1837:    elif law_grounding_used:
+backend/services/law_tools.py:1838:        law_grounding_status = "used"
+backend/services/law_tools.py:1840:        law_grounding_status = "unavailable"
+backend/services/law_tools.py:1842:        law_grounding_status = "not_attempted"
+backend/services/law_tools.py:1844:    manual_grounding_status = "present" if (manual_present or structured_present) else "absent"
+backend/services/law_tools.py:1858:            manual_grounding_present=manual_present,
+backend/services/law_tools.py:1861:            law_grounding_used=law_grounding_used,
+backend/services/law_tools.py:1862:            law_grounding_status=law_grounding_status,
+backend/services/law_tools.py:1879:        law_grounding_status=law_grounding_status,
+backend/services/law_tools.py:1882:    if source_family_retrieval.get("source_family_statuses"):
+backend/services/law_tools.py:1884:        merged_statuses.update(source_family_retrieval.get("source_family_statuses") or {})
+backend/services/law_tools.py:1889:            *source_family_retrieval.get("source_family_statuses", {}).keys(),
+backend/services/law_tools.py:1906:        law_grounding_status=law_grounding_status,
+backend/services/law_tools.py:1954:        "law_grounding_status": law_grounding_status,
+backend/services/law_tools.py:1955:        "law_grounding_error": law_grounding_error,
+backend/services/law_tools.py:1956:        "law_grounding_warnings": list(dict.fromkeys(law_grounding_warnings)),
+backend/services/law_tools.py:1957:        "manual_grounding_status": manual_grounding_status,
+backend/services/law_tools.py:1966:        "source_family_results": source_family_retrieval.get("source_family_results", []),
+backend/services/law_tools.py:1970:        "source_family_result_counts": source_family_retrieval.get("source_family_result_counts", {}),
+backend/services/law_tools.py:1971:        "response_shape_hint_by_family": source_family_retrieval.get("response_shape_hints", {}),
+backend/services/law_tools.py:1972:        "parser_status_by_family": source_family_retrieval.get("parser_statuses", {}),
+backend/services/law_tools.py:1973:        "law_error_type_by_family": source_family_retrieval.get("law_error_types", {}),
+backend/services/law_tools.py:1974:        "sanitized_source_urls": source_family_retrieval.get("sanitized_source_urls", []),
+backend/services/law_tools.py:1986:        # Public structured evidence items (compact grounding schema: source_id,
+backend/services/law_tools.py:1990:        "grounding_items": legal_analysis.get("grounding_items", []),
+backend/services/law_tools.py:2014:    query_classification = classify_query_for_grounding(
+backend/services/law_tools.py:2019:    official_grounding_context = build_official_grounding_context(
+backend/services/law_tools.py:2027:    pack["official_grounding_context"] = official_grounding_context
+backend/services/law_tools.py:2028:    pack["grounding_context_prompt"] = render_grounding_context_for_prompt(official_grounding_context)
+backend/services/law_tools.py:2036:    pack["citation_verification"] = build_law_evidence_citation_verification(
+backend/services/law_tools.py:2039:        law_error_type=law_grounding_error,
+backend/services/law_tools.py:2073:        f"Source state: manual={pack.get('manual_grounding_status')}, "
+backend/services/law_tools.py:2074:        f"law={pack.get('law_grounding_status')}, "
+backend/services/law_tools.py:2078:    if pack.get("grounding_context_prompt"):
+backend/services/law_tools.py:2079:        lines.append("Generalized source-grounding context:")
+backend/services/law_tools.py:2080:        lines.append(pack.get("grounding_context_prompt"))
+backend/services/answer_shape.py:4:``docs/data/EVIDENCE_BACKED_ANSWER_SYNTHESIS_GATES_2026_05.md``. The retrieval /
+backend/services/answer_shape.py:568:        or meta.get("manual_grounding_status") in {"present", "manual_grounding_available"}
+backend/services/legal_analysis.py:46:    # only issues that route court precedent / constitutional-decision sources.
+backend/services/legal_analysis.py:66:    "administrative_rule", "legal_interpretation", "precedent",
+backend/services/legal_analysis.py:495:    # These are the only issues that pull court-precedent / constitutional
+backend/services/legal_analysis.py:518:        "법령해석", "유권해석", "해석상", "해석이", "재량", "재량권", "모호",
+backend/services/legal_analysis.py:538:    law_grounding_status: str = "not_attempted",
+backend/services/legal_analysis.py:577:            "legal_interpretation": "법령해석 체류자격 활동범위 체류자격외활동",
+backend/services/legal_analysis.py:579:            "precedent": "판례 출입국관리 체류자격",
+backend/services/legal_analysis.py:581:            "legal_term": "법령용어 체류자격 체류자격외활동",
+backend/services/legal_analysis.py:612:            statuses[family] = "unavailable" if law_grounding_status == "unavailable" else "no_results"
+backend/services/legal_analysis.py:671:    if source_type in {"law_term", "legal_term", "lstrm"} or "법령용어" in text:
+backend/services/legal_analysis.py:689:    adjudicative = source_type in {"administrative_appeal", "precedent", "constitutional_decision"}
+backend/services/legal_analysis.py:803:        return "Prepare extracted facts and concrete official questions first; source retrieval limits do not turn the answer into a failure-only response."
+backend/services/legal_analysis.py:873:    law_grounding_status: str = "",
+backend/services/legal_analysis.py:896:    # Public structured evidence items (the compact grounding schema the answer
+backend/services/legal_analysis.py:899:    from .evidence_ontology import to_grounding_item as _to_grounding_item
+backend/services/legal_analysis.py:901:    grounding_items = [
+backend/services/legal_analysis.py:902:        _to_grounding_item(row["item"], relevance=row["relevance"], relevance_reason=_relevance_reason(row["relevance"]))
+backend/services/legal_analysis.py:921:    elif law_grounding_status in {"unavailable", "disabled"}:
+backend/services/legal_analysis.py:927:        source_type_plan = build_generalized_source_plan(question, facts, issues, law_sources=laws, law_grounding_status=law_grounding_status)
+backend/services/legal_analysis.py:973:        "grounding_items": grounding_items,
+backend/services/korean_law_client.py:6:from .grounding_config import GroundingConfig
+backend/services/korean_law_client.py:23:    """Audit-mode HTTP client for Korean law grounding (conservative scope)."""
+backend/services/korean_law_client.py:36:            "retrieved_at": _now_iso(),
+backend/services/korean_law_client.py:46:            # No credential at all (neither the preferred LAW_API_OC nor the
+backend/services/korean_law_client.py:47:            # legacy LAW_API_KEY fallback). Keep the historical warning marker.
+backend/services/korean_law_client.py:48:            return self._result(status="unavailable", query=q, warnings=["LAW_API_KEY_MISSING"])
+backend/services/korean_law_client.py:65:            return self._result(status="error", query=query, warnings=["LAW_API_TIMEOUT"])
+backend/services/korean_law_client.py:70:            return self._result(status="error", query=query, warnings=["LAW_API_HTTP_ERROR"])
+backend/services/korean_law_client.py:75:            return self._result(status="error", query=query, warnings=["LAW_API_PARSE_ERROR"])
+backend/services/korean_law_client.py:86:            return self._result(status="error", query=query, warnings=["LAW_API_PARSE_ERROR"])
+backend/services/citation_verifier.py:15:    citations: List[Dict[str, str]] = field(default_factory=list)
+backend/services/citation_verifier.py:22:def extract_korean_legal_citations(text: str) -> Dict[str, Any]:
+backend/services/citation_verifier.py:23:    citations: List[Dict[str, str]] = []
+backend/services/citation_verifier.py:25:        citations.append(
+backend/services/citation_verifier.py:34:        citations=citations,
+backend/services/citation_verifier.py:39:def verify_citations(text: str, law_client: Optional[Any] = None) -> Dict[str, Any]:
+backend/services/citation_verifier.py:40:    extracted = extract_korean_legal_citations(text)
+backend/services/citation_verifier.py:41:    items = extracted.get("citations", [])
+backend/services/citation_verifier.py:56:            "citations": normalized,
+backend/services/citation_verifier.py:63:        return {"status": "disabled", "citations": normalized, "warnings": ["LAW_GROUNDING_DISABLED"]}
+backend/services/citation_verifier.py:101:    return {"status": status, "citations": normalized, "warnings": dedup_warnings}
+backend/services/citation_verifier.py:103:def build_law_evidence_citation_verification(
+backend/services/citation_verifier.py:110:    """Build user-facing citation verification from normalized law evidence.
+backend/services/citation_verifier.py:113:    Open Law API evidence into the citation metadata so the UI can distinguish
+backend/services/citation_verifier.py:117:    citations: List[Dict[str, Any]] = []
+backend/services/citation_verifier.py:125:        citations.append({
+backend/services/citation_verifier.py:130:            "retrieval_status": source.get("retrieval_status") or "ok",
+backend/services/citation_verifier.py:132:            "verification_status": "verified_law_evidence" if source.get("retrieval_status") == "ok" else "law_evidence_present_unverified",
+backend/services/citation_verifier.py:134:    if citations:
+backend/services/citation_verifier.py:135:        status = "verified_law_evidence" if any(c["verification_status"] == "verified_law_evidence" for c in citations) else "law_evidence_present_unverified"
+backend/services/citation_verifier.py:136:        return {"status": status, "citations": citations, "warnings": []}
+backend/services/citation_verifier.py:138:        return {"status": "law_api_unavailable", "citations": [], "warnings": ["SOURCE_UNAVAILABLE", law_error_type.upper()]}
+backend/services/citation_verifier.py:143:        return {"status": "law_evidence_unavailable", "citations": [], "warnings": list(dict.fromkeys(warnings))}
+backend/services/citation_verifier.py:144:    return {"status": "citation_verification_not_applicable", "citations": [], "warnings": []}
+backend/services/citation_verifier.py:148:# Case / decision citation verification (precedent-family scaffold)
+backend/services/citation_verifier.py:150:# Statute citations (XX법 제N조) are handled above. This layer verifies
+backend/services/citation_verifier.py:151:# *adjudicative* citations — court precedent (판례), administrative-appeal
+backend/services/citation_verifier.py:153:# interpretation cases (법령해석례) — against the normalized precedent-family
+backend/services/citation_verifier.py:154:# evidence items produced by ``precedent_sources``. The contract is strict:
+backend/services/citation_verifier.py:157:#     (an invented citation), it is never silently accepted.
+backend/services/citation_verifier.py:159:#     (the answer must instead say the direct evidence was not retrieved).
+backend/services/citation_verifier.py:178:# Generic decision / agenda numbers (행정심판 재결, 법령해석 안건번호 등): only
+backend/services/citation_verifier.py:180:# so unrelated hyphenated numbers (page 12-34) are not treated as citations.
+backend/services/citation_verifier.py:184:    "판례", "판결", "대법원", "판시", "헌재", "헌법재판소", "위헌", "헌법소원",
+backend/services/citation_verifier.py:185:    "행정심판", "재결", "행정심판위원회", "법령해석", "유권해석", "결정례",
+backend/services/citation_verifier.py:191:    "precedent": re.compile(
+backend/services/citation_verifier.py:192:        r"확립된\s*판례|판례에\s*따르면|판례상|대법원[^.\n]{0,30}(?:판시|판결|선고)"
+backend/services/citation_verifier.py:193:        r"|판시한\s*바|the court held|binding precedent"
+backend/services/citation_verifier.py:204:        r"법령해석례에\s*따르면|법제처[^.\n]{0,20}해석[^.\n]{0,20}(?:따르면|의하면)"
+backend/services/citation_verifier.py:211:    r"확립된\s*판례|판례상\s*확립|구속력|기속력|확정\s*판결|반드시\s*취소"
+backend/services/citation_verifier.py:212:    r"|binding\s*precedent|the\s*court\s*held"
+backend/services/citation_verifier.py:229:    """Index normalized precedent-family evidence items for matching."""
+backend/services/citation_verifier.py:255:def extract_case_decision_citations(text: str) -> Dict[str, Any]:
+backend/services/citation_verifier.py:256:    """Extract adjudicative citation signals from answer text (no verification).
+backend/services/citation_verifier.py:289:def verify_case_decision_citations(
+backend/services/citation_verifier.py:293:    """Verify adjudicative (case/decision) citations against evidence items.
+backend/services/citation_verifier.py:295:    ``evidence_items`` are normalized precedent-family items (see
+backend/services/citation_verifier.py:296:    ``precedent_sources.build_source_family_evidence_item``). When it is
+backend/services/citation_verifier.py:299:    citations are verified and invented ones fail.
+backend/services/citation_verifier.py:301:    extracted = extract_case_decision_citations(text)
+backend/services/citation_verifier.py:304:        "citations": [],
+backend/services/citation_verifier.py:313:        base["status"] = "extracted_only" if not no_signal else "no_citations"
+backend/services/citation_verifier.py:316:        base["status"] = "no_citations"
+backend/services/citation_verifier.py:324:    citations: List[Dict[str, Any]] = []
+backend/services/citation_verifier.py:329:            if str(it.get("citationGrade") or "") != "unavailable"
+backend/services/citation_verifier.py:338:                citations.append({
+backend/services/citation_verifier.py:344:            grade = str(item.get("citationGrade") or "")
+backend/services/citation_verifier.py:346:            citations.append({
+backend/services/citation_verifier.py:360:            citations.append({
+backend/services/citation_verifier.py:363:                "notes": "adjudicative authority claimed without retrieved evidence",
+backend/services/citation_verifier.py:366:        best_grade = "direct" if any(str(i.get("citationGrade")) == "direct" for i in fam_items) else "contextual"
+backend/services/citation_verifier.py:368:        citations.append({
+backend/services/citation_verifier.py:391:    failed = [c for c in citations if c["verification_status"] in _FAILING_STATUSES]
+backend/services/citation_verifier.py:394:    if any(c["verification_status"] == "unverified_fabricated" for c in citations):
+backend/services/citation_verifier.py:396:    if any(c["verification_status"] == "unsupported_authority_claim" for c in citations):
+backend/services/citation_verifier.py:398:    if any(c["verification_status"] == "overclaimed_contextual" for c in citations):
+backend/services/citation_verifier.py:405:        "citations": citations,
+backend/services/public_data_client.py:6:from .grounding_config import GroundingConfig
+backend/services/public_data_client.py:23:    """Audit-mode HTTP client for public-data grounding (conservative scope)."""
+backend/services/public_data_client.py:36:            "retrieved_at": _now_iso(),
+backend/services/public_data_client.py:46:            return self._result(status="unavailable", query=q, warnings=["PUBLIC_DATA_API_KEY_MISSING"])
+backend/services/evidence_ontology.py:1:"""Generalized official-evidence retrieval ontology for Paradiso.
+backend/services/evidence_ontology.py:4:official-evidence retrieval pipeline. It exists so the system reasons over
+backend/services/evidence_ontology.py:22:      → official source retrieval           (law_tools.retrieve_planned_official_sources)
+backend/services/evidence_ontology.py:30:  * Korean official terms are preferred for Korean-source retrieval.
+backend/services/evidence_ontology.py:46:ONTOLOGY_VERSION = "2026-05-generalized-official-evidence-retrieval-v1"
+backend/services/evidence_ontology.py:127:# route precedent-family / constitutional-decision sources. They are detected
+backend/services/evidence_ontology.py:143:# Source families. ``wired`` means an adapter actually retrieves them today.
+backend/services/evidence_ontology.py:147:    "administrative_appeal", "precedent", "constitutional_decision",
+backend/services/evidence_ontology.py:158:# Evidence goals — the *intended* role of a planned query / retrieved item.
+backend/services/evidence_ontology.py:164:# Part B2 — authority hierarchy + public grounding-item schema
+backend/services/evidence_ontology.py:167:# projects internal retrieval fields onto the compact, public structured
+backend/services/evidence_ontology.py:176:#   5  Case law, administrative adjudication, precedent-like materials
+backend/services/evidence_ontology.py:185:    5: "case law / administrative adjudication / precedent",
+backend/services/evidence_ontology.py:201:    "precedent": 5, "constitutional_decision": 5, "case_law": 5,
+backend/services/evidence_ontology.py:217:    "precedent": "case_law", "constitutional_decision": "case_law",
+backend/services/evidence_ontology.py:261:def to_grounding_item(
+backend/services/evidence_ontology.py:270:    The output is the compact, secret-free grounding item the answer prompt and
+backend/services/evidence_ontology.py:328:# precedent / constitutional-decision families. They lead with the controlling
+backend/services/evidence_ontology.py:330:# sources (administrative appeal decisions, court precedent, constitutional
+backend/services/evidence_ontology.py:335:    "administrative_appeal", "precedent", "legal_interpretation",
+backend/services/evidence_ontology.py:339:    "precedent", "legal_interpretation",
+backend/services/evidence_ontology.py:343:    "legal_interpretation", "administrative_appeal", "precedent",
+backend/services/evidence_ontology.py:361:    # add administrative-appeal and court-precedent (analogical) sources.
+backend/services/evidence_ontology.py:362:    "overstay_or_risk": ("statute", "enforcement_decree", "enforcement_rule", "administrative_appeal", "precedent"),
+backend/services/evidence_ontology.py:363:    # Refugee/humanitarian procedural disputes can hinge on appeal/precedent.
+backend/services/evidence_ontology.py:364:    "nationality_or_refugee_context": ("statute", "enforcement_decree", "enforcement_rule", "legal_interpretation", "administrative_appeal", "precedent", "manual"),
+backend/services/evidence_ontology.py:426:    "legal_interpretation": "법령해석",
+backend/services/evidence_ontology.py:428:    "precedent": "판례",
+backend/services/evidence_ontology.py:430:    "legal_term": "법령용어",
+backend/services/evidence_ontology.py:441:    "precedent": "court precedent",
+backend/services/evidence_ontology.py:452:# a richer, public-safe definition per family for the precedent-family scaffold:
+backend/services/evidence_ontology.py:453:# stable id, KO/EN public labels, citation-grade capability, a baseline live
+backend/services/evidence_ontology.py:460:# Families whose retrieval interface is scaffolded — normalizers, routing, and
+backend/services/evidence_ontology.py:461:# (for precedent) a target=prec list-search builder + optional shape-capture
+backend/services/evidence_ontology.py:462:# hook — but which are NOT yet verified live citation-grade adapters. In this
+backend/services/evidence_ontology.py:463:# scaffold PR they never auto-fire a live call in the production retrieval
+backend/services/evidence_ontology.py:466:    "legal_interpretation", "administrative_appeal", "precedent",
+backend/services/evidence_ontology.py:470:# Families that, when fully wired, can anchor a *direct* citation: a statute /
+backend/services/evidence_ontology.py:473:# an aggregator. Capability here means "may produce citation-grade evidence",
+backend/services/evidence_ontology.py:478:    "precedent", "constitutional_decision",
+backend/services/evidence_ontology.py:481:# The four adjudicative precedent-family sources (case law / decisions /
+backend/services/evidence_ontology.py:482:# interpretations). Court precedent + administrative appeal + constitutional
+backend/services/evidence_ontology.py:484:# reading. Used for public-safe labelling and citation grading.
+backend/services/evidence_ontology.py:486:    "precedent", "administrative_appeal", "constitutional_decision",
+backend/services/evidence_ontology.py:490:# Public-safe "direct grounding not available" wording per family. These never
+backend/services/evidence_ontology.py:493:    "precedent": "판례 직접 근거는 아직 연결되지 않았습니다.",
+backend/services/evidence_ontology.py:494:    "administrative_appeal": "행정심판례 직접 근거는 현재 사용할 수 없습니다.",
+backend/services/evidence_ontology.py:495:    "legal_interpretation": "법령해석례 직접 근거는 현재 사용할 수 없습니다.",
+backend/services/evidence_ontology.py:499:    "precedent": "Direct court-precedent grounding is not connected yet.",
+backend/services/evidence_ontology.py:500:    "administrative_appeal": "Direct administrative-appeal grounding is currently unavailable.",
+backend/services/evidence_ontology.py:501:    "legal_interpretation": "Direct legal-interpretation grounding is currently unavailable.",
+backend/services/evidence_ontology.py:502:    "constitutional_decision": "Direct constitutional-decision grounding is currently unavailable.",
+backend/services/evidence_ontology.py:513:    ``not_configured`` (LAW_API_OC missing) and ``temporarily_unavailable``
+backend/services/evidence_ontology.py:514:    (API error) states are layered on at retrieval time, not here.
+backend/services/evidence_ontology.py:524:def is_citation_grade_capable(family: str) -> bool:
+backend/services/evidence_ontology.py:525:    """Whether a family can (when wired) anchor a direct citation."""
+backend/services/evidence_ontology.py:530:    """Public-safe 'direct grounding unavailable' label for a family.
+backend/services/evidence_ontology.py:538:            fam, "Direct grounding for this source is currently unavailable."
+backend/services/evidence_ontology.py:554:        "citationGradeCapable": is_citation_grade_capable(fam),
+backend/services/evidence_ontology.py:588:    "discretionary_or_ambiguous_interpretation": "재량 법령해석 유권해석",
+backend/services/evidence_ontology.py:631:    "discretionary_or_ambiguous_interpretation": "법령해석 요청",
+backend/services/evidence_ontology.py:638:    {"administrative_appeal", "precedent", "constitutional_decision"}
+backend/services/evidence_ontology.py:722:    No network calls. Korean official terms lead for Korean-source retrieval.
+backend/services/evidence_ontology.py:882:    {"id": "legal_term_lookup", "question": "체류자격외활동의 법령상 정의는 무엇인가요?"},
+backend/services/source_grounding.py:1:"""Generalized source-grounding helpers for Paradiso AI.
+backend/services/source_grounding.py:8:* public-safe projections and LLM grounding context that hide raw diagnostics.
+backend/services/source_grounding.py:29:NORMALIZATION_VERSION = "2026-06-generalized-source-grounding-v1"
+backend/services/source_grounding.py:33:    "law_available": "실시간 법령 확인됨",
+backend/services/source_grounding.py:34:    "law_temporarily_unavailable": "실시간 법령 일시 확인 불가",
+backend/services/source_grounding.py:131:def _snippet(text: str, *, citation: str = "", article: str = "", section: str = "",
+backend/services/source_grounding.py:138:        ("citation", citation),
+backend/services/source_grounding.py:177:def classify_query_for_grounding(
+backend/services/source_grounding.py:244:    retrieved_at: str = "",
+backend/services/source_grounding.py:253:                citation=str(item.get("citation") or item.get("reference") or ""),
+backend/services/source_grounding.py:276:        "retrievedAt": retrieved_at or _now_iso(),
+backend/services/source_grounding.py:363:                        "citation": item.get("reference") or "",
+backend/services/source_grounding.py:395:    retrieved_at: str = "",
+backend/services/source_grounding.py:401:            title=title, source_name=source_name, url=url, retrieved_at=retrieved_at,
+backend/services/source_grounding.py:408:            title=title, source_name=source_name, url=url, retrieved_at=retrieved_at,
+backend/services/source_grounding.py:414:            title=title, source_name=source_name, url=url, retrieved_at=retrieved_at,
+backend/services/source_grounding.py:422:                title=title, source_name=source_name, url=url, retrieved_at=retrieved_at,
+backend/services/source_grounding.py:432:            retrieved_at=retrieved_at,
+backend/services/source_grounding.py:441:                title=title, source_name=source_name, url=url, retrieved_at=retrieved_at,
+backend/services/source_grounding.py:450:            retrieved_at=retrieved_at,
+backend/services/source_grounding.py:460:        retrieved_at=retrieved_at,
+backend/services/source_grounding.py:467:        for key in ("title", "law_name", "법령명한글", "법령명", "term", "법령용어명"):
+backend/services/source_grounding.py:491:                or node.get("조문내용") or node.get("내용") or node.get("법령용어정의")
+backend/services/source_grounding.py:497:                    "citation": node.get("reference") or node.get("법령ID") or node.get("MST") or "",
+backend/services/source_grounding.py:532:def build_official_grounding_context(
+backend/services/source_grounding.py:553:        "groundingContextVersion": NORMALIZATION_VERSION,
+backend/services/source_grounding.py:574:            "Do not invent requirements not supported by retrieved sources.",
+backend/services/source_grounding.py:583:def render_grounding_context_for_prompt(context: Dict[str, Any]) -> str:
+backend/services/grounding_config.py:15:    # LAW_API_KEY is the legacy / backward-compatibility credential. It is kept
+backend/services/grounding_config.py:16:    # only as a fallback. Prefer LAW_API_OC for the Open Law API ``OC`` value.
+backend/services/grounding_config.py:18:    # LAW_API_OC is the preferred, explicit Open Law API authentication
+backend/services/grounding_config.py:34:    # Credential resolution (LAW_API_OC preferred, LAW_API_KEY fallback)
+backend/services/grounding_config.py:40:        Precedence: the explicit ``LAW_API_OC`` wins; otherwise the legacy
+backend/services/grounding_config.py:41:        ``LAW_API_KEY`` is used for backward compatibility. This value is a
+backend/services/grounding_config.py:51:            return "LAW_API_OC"
+backend/services/grounding_config.py:53:            return "LAW_API_KEY"
+backend/services/grounding_config.py:63:        """True when the preferred explicit ``LAW_API_OC`` is set (non-secret)."""
+backend/services/grounding_config.py:68:        """True when the legacy ``LAW_API_KEY`` fallback is set (non-secret)."""
+backend/services/grounding_config.py:92:def load_grounding_config() -> GroundingConfig:
+backend/services/grounding_config.py:99:    law_api_oc = (os.environ.get("LAW_API_OC") or "").strip()
+backend/services/grounding_config.py:100:    law_api_key = (os.environ.get("LAW_API_KEY") or "").strip()
+backend/services/grounding_config.py:102:    # Non-secret advisory: the deployment is relying on the legacy LAW_API_KEY
+backend/services/grounding_config.py:103:    # fallback only. Recommend the explicit LAW_API_OC. This marker never
+backend/services/grounding_config.py:106:        warnings.append("LAW_API_OC_RECOMMENDED")
+backend/services/grounding_config.py:109:        public_data_api_key=(os.environ.get("PUBLIC_DATA_API_KEY") or "").strip(),
+backend/services/grounding_config.py:115:        law_api_base_url=(os.environ.get("LAW_API_BASE_URL") or "").strip(),
+backend/services/grounding_config.py:116:        law_api_search_path=(os.environ.get("LAW_API_SEARCH_PATH") or "").strip(),
+backend/services/grounding_config.py:117:        law_api_article_path=(os.environ.get("LAW_API_ARTICLE_PATH") or "").strip(),
+backend/README.md:11:| GET    | `/health`               | Liveness probe; reports configured providers, the resolved LLM provider/model (no secrets), and `law_grounding_mode`. |
+backend/README.md:13:| POST   | `/api/ask`              | Chatbot endpoint. Routes to OpenRouter or Groq if configured. |
+backend/README.md:15:| POST   | `/api/debug/law-grounding` | Debug-only inspection of law grounding/citation verification (now also embeds a `preflight` block). |
+backend/README.md:16:| GET    | `/api/debug/law-grounding/preflight` | Operator-safe readiness preflight: resolved mode, key/endpoint configured (booleans), sample trigger + query, warning markers. No secrets, no external call. |
+backend/README.md:22:> users — who opens the Railway URL directly sees where to go next.
+backend/README.md:46:curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+backend/README.md:52:either `OPENROUTER_API_KEY` or `GROQ_API_KEY`.
+backend/README.md:122:| `OPENROUTER_API_KEY`    | optional* | Enables `/api/ask` via OpenRouter.                       |
+backend/README.md:123:| `OPENROUTER_MODEL`      | optional  | Defaults to `nvidia/nemotron-3-ultra-550b-a55b:free` (code default + `.env.example` pin). Override per-deploy if the catalog changes. Always tried first for core Paradiso final answers. |
+backend/README.md:124:| `OPENROUTER_MODEL_CANDIDATES` | optional | Comma-separated, ordered OpenRouter fallback list. On a **retryable** primary failure (429 rate limit / 503 "no healthy upstream"), Paradiso retries the next non-cooling candidate. Unset → built-in policy list (Nemotron 3 Ultra → Nemotron 3 Super → gpt-oss-120b → Gemma 4 31B). Random routing (`openrouter/auto`, `openrouter/free`) is warned/rejected by policy metadata. `/health` lists the resolved candidates. |
+backend/README.md:130:| `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
+backend/README.md:131:| `GROQ_API_KEY`          | optional* | Enables `/api/ask` via Groq **only if** OpenRouter is not set and `ALLOW_GROQ_FALLBACK` is true (or, with that flag, as a last-resort provider-family fallback after all OpenRouter candidates fail). |
+backend/README.md:133:| `ALLOW_GROQ_FALLBACK`   | optional  | **Defaults to `false`** (strict OpenRouter-first posture). When `false` and OpenRouter is unset, `/api/ask` returns a safe 503 instead of silently answering via Groq. Set `true` only to opt a Groq-only deployment back in. `/health` reports the resolved value and adds `llm.warnings:["GROQ_FALLBACK_ENABLED"]` when fallback is enabled. |
+backend/README.md:136:| `OLLAMA_MODEL`         | optional  | Defaults to `qwen3:8b`. Used only when `ENABLE_OLLAMA_FALLBACK=true` and all OpenRouter candidates fail. |
+backend/README.md:138:| `SITE_URL`              | optional  | Sent as `HTTP-Referer` to OpenRouter; set to your frontend origin. |
+backend/README.md:139:| `SITE_TITLE`            | optional  | Sent as `X-Title` to OpenRouter. Defaults to `Paradiso`. |
+backend/README.md:141:| `LAW_API_OC`            | optional  | **Preferred** Open Law API auth identifier (the `OC` query param for open.law.go.kr). Backend-only; never exposed in `/health`, debug, logs, or sanitized URLs. With `LAW_GROUNDING_MODE=audit` it activates the internal law tool layer. |
+backend/README.md:142:| `LAW_API_KEY`           | optional  | **Backward-compatibility fallback only.** Used as the OC value when `LAW_API_OC` is unset. If only this is set, `/health` adds `law_api.law_api_credential_source:"LAW_API_KEY"` and a non-secret `LAW_API_OC_RECOMMENDED` warning is surfaced. Do not overwrite an existing Railway value — add `LAW_API_OC` alongside it. |
+backend/README.md:149:\* At least one of `OPENROUTER_API_KEY` or `GROQ_API_KEY` is required
+backend/README.md:154:## Deploying to Railway
+backend/README.md:156:> **Status:** the files in this directory **prepare** Railway
+backend/README.md:160:1. Sign in to Railway and choose **New Project → Deploy from GitHub
+backend/README.md:165:4. Railway will detect `requirements.txt` and `Procfile` automatically.
+backend/README.md:173:   LLM provider key (`OPENROUTER_API_KEY` or `GROQ_API_KEY`):
+backend/README.md:176:   OPENROUTER_API_KEY=...        # or GROQ_API_KEY=...
+backend/README.md:179:   # Korean Open Law API grounding (preferred OC + audit mode):
+backend/README.md:180:   LAW_API_OC=paradiso
+backend/README.md:182:   # Keep the EXISTING Railway LAW_API_KEY unchanged (backward-compat fallback);
+backend/README.md:183:   # do NOT overwrite it — just add LAW_API_OC above.
+backend/README.md:184:   # LAW_API_KEY=<existing value, unchanged>
+backend/README.md:196:7. The service exposes `/health` and Railway uses it as the health
+backend/README.md:199:   Railway public URL — see _Verification_ below.
+backend/README.md:201:### Visa data file path on Railway
+backend/README.md:207:1. `VISA_DATA_PATH` env var (absolute path, e.g. a Railway volume mount).
+backend/README.md:253:### Narrow manual grounding (체류기간 연장허가)
+backend/README.md:255:`/api/ask` ships a small set of deterministic grounding paths for
+backend/README.md:266:See `docs/manual_grounding_expansion_plan.md` for the verification
+backend/README.md:283:  `docs/manual_grounding_expansion_plan.md` § "Schema 1.2" for the
+backend/README.md:287:  `backend/data/manual_grounding/stay_manual_grounding_2026_05.json`,
+backend/README.md:291:- The response carries grounding metadata on the top-level
+backend/README.md:299:    "grounding_used": true,
+backend/README.md:300:    "grounding_sources": [
+backend/README.md:326:  path with `grounding_used: false`. No law API, no manual chunking,
+backend/README.md:332:With strict OpenRouter-first (the default), `groq_fallback_allowed` is
+backend/README.md:341:### Law-grounding answer metadata
+backend/README.md:343:`/api/ask` returns law-grounding state on every answer so the frontend
+backend/README.md:346:- `law_grounding_status` — one of `not_attempted` (no legal intent in the
+backend/README.md:349:- `law_grounding_intent_reasons` — which intent signals fired (e.g.
+backend/README.md:364:endpoints). It prefers `LAW_API_OC` (falling back to `LAW_API_KEY`), builds the
+backend/README.md:370:value. See `docs/data/LAW_API_OC_EVIDENCE_TOOL_LAYER_2026_05.md`.
+backend/README.md:379:3. `DEFAULT_API_BASE` constant (currently the legacy Railway URL).
+backend/README.md:396:- [ ] Rotate keys regularly; store them only in Railway, not in git.
+backend/README.md:398:### Law-grounding readiness preflight
+backend/README.md:400:`GET /api/debug/law-grounding/preflight` is an operator-safe readiness probe.
+backend/README.md:404:sample question would trigger grounding, the statutory query that would be
+backend/README.md:406:`LAW_API_KEY_MISSING`, `LAW_API_ENDPOINT_MISSING`). Useful even with grounding
+backend/README.md:410:curl -s "http://localhost:8000/api/debug/law-grounding/preflight" | jq
+backend/README.md:413:To enable live grounding in a controlled environment, set
+backend/README.md:414:`LAW_GROUNDING_MODE=audit` (or `enabled`), `LAW_API_KEY`, `LAW_API_BASE_URL`, and
+backend/README.md:415:`LAW_API_SEARCH_PATH` (optionally `LAW_API_ARTICLE_PATH`). Keep
+backend/README.md:419:### Debug-only law grounding endpoint
+backend/README.md:421:`POST /api/debug/law-grounding` is for development inspection only. It is not a
+backend/README.md:428:curl -s -X POST http://localhost:8000/api/debug/law-grounding \
+backend/README.md:437:  "law_grounding_used": false,
+backend/README.md:438:  "law_grounding": [],
+backend/README.md:439:  "citation_verification": {
+backend/README.md:441:    "citations": [
+backend/README.md:450:  "grounding_warnings": ["LAW_GROUNDING_DISABLED"]
+backend/README.md:458:- Optional helper script: `scripts/smoke_law_grounding.sh` (`BACKEND_URL` defaults to `http://localhost:8000`).
+backend/structured_requirements.py:4:(`backend/data/manual_grounding/structured_requirements_2026_06_01.json`) to
+backend/structured_requirements.py:29:    _HERE, "data", "manual_grounding", "structured_requirements_2026_06_01.json"
+backend/paradiso_backend.py:31:from services.law_grounding import (
+backend/paradiso_backend.py:32:    build_law_grounding_context,
+backend/paradiso_backend.py:34:    law_grounding_preflight,
+backend/paradiso_backend.py:35:    should_attempt_law_grounding,
+backend/paradiso_backend.py:37:from services.grounding_config import load_grounding_config
+backend/paradiso_backend.py:98:OPENROUTER_API_KEY: Optional[str] = os.environ.get("OPENROUTER_API_KEY")
+backend/paradiso_backend.py:99:GROQ_API_KEY: Optional[str] = os.environ.get("GROQ_API_KEY")
+backend/paradiso_backend.py:100:LAW_API_KEY: Optional[str] = os.environ.get("LAW_API_KEY")
+backend/paradiso_backend.py:105:# Pin Paradiso AI to a deterministic OpenRouter model rather than the
+backend/paradiso_backend.py:116:# Override per-deploy with OPENROUTER_MODEL and OPENROUTER_MODEL_CANDIDATES if
+backend/paradiso_backend.py:117:# the OpenRouter catalog changes. Random routing is still forbidden.
+backend/paradiso_backend.py:118:_DEFAULT_OPENROUTER_MODEL: str = DEFAULT_FINAL_ANSWER_MODEL
+backend/paradiso_backend.py:119:OPENROUTER_MODEL: str = (
+backend/paradiso_backend.py:120:    os.environ.get("OPENROUTER_MODEL", "").strip() or _DEFAULT_OPENROUTER_MODEL
+backend/paradiso_backend.py:123:# Explicit, predictable OpenRouter fallback candidates. When the primary model
+backend/paradiso_backend.py:125:# upstream"), Paradiso retries the NEXT OpenRouter candidate rather than
+backend/paradiso_backend.py:129:_DEFAULT_OPENROUTER_MODEL_CANDIDATES: List[str] = list(DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)
+backend/paradiso_backend.py:148:    """Ordered, de-duplicated OpenRouter candidate list (primary model first).
+backend/paradiso_backend.py:150:    OPENROUTER_MODEL is always attempted first. OPENROUTER_MODEL_CANDIDATES
+backend/paradiso_backend.py:154:    raw = (os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip()
+backend/paradiso_backend.py:158:        else list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES)
+backend/paradiso_backend.py:161:    return _dedupe_preserve_order([OPENROUTER_MODEL, *configured])
+backend/paradiso_backend.py:164:OPENROUTER_MODEL_CANDIDATES: List[str] = _resolve_openrouter_candidates()
+backend/paradiso_backend.py:184:OPENROUTER_MODEL_COOLDOWN_SECONDS: float = _env_float("OPENROUTER_MODEL_COOLDOWN_SECONDS", 300.0)
+backend/paradiso_backend.py:186:_OPENROUTER_MODEL_COOLDOWNS: Dict[str, float] = {}
+backend/paradiso_backend.py:212:# Whether Groq may be used as a fallback when OpenRouter is not configured.
+backend/paradiso_backend.py:213:# Production intent is strict OpenRouter-first, so the default is now FALSE:
+backend/paradiso_backend.py:214:# Groq is only ever reached when OPENROUTER_API_KEY is unset AND the operator
+backend/paradiso_backend.py:217:# answering via a different provider/model when OpenRouter is expected.
+backend/paradiso_backend.py:221:# that configure OPENROUTER_API_KEY (the intended production setup, including
+backend/paradiso_backend.py:222:# Railway) are unaffected because OpenRouter always takes precedence.
+backend/paradiso_backend.py:234:# the bare Railway URL on a phone is not greeted by a raw 404 detail
+backend/paradiso_backend.py:251:    """Log the active provider/model and law-grounding mode at startup.
+backend/paradiso_backend.py:259:        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s law_grounding_mode=%s",
+backend/paradiso_backend.py:314:    grounding_used: bool = False
+backend/paradiso_backend.py:315:    grounding_sources: List[Dict[str, Any]] = Field(default_factory=list)
+backend/paradiso_backend.py:322:    law_grounding_used: bool = False
+backend/paradiso_backend.py:323:    law_grounding_attempted: bool = False
+backend/paradiso_backend.py:325:    #   "not_attempted" — the question did not trigger law-grounding intent.
+backend/paradiso_backend.py:327:    #   "unavailable"   — intent matched, grounding attempted, but no usable result.
+backend/paradiso_backend.py:328:    #   "used"          — intent matched and law grounding contributed context.
+backend/paradiso_backend.py:329:    law_grounding_status: str = "not_attempted"
+backend/paradiso_backend.py:330:    law_grounding_intent_reasons: List[str] = Field(default_factory=list)
+backend/paradiso_backend.py:332:    law_grounding_warnings: List[str] = Field(default_factory=list)
+backend/paradiso_backend.py:333:    citation_verification: Optional[Dict[str, Any]] = None
+backend/paradiso_backend.py:335:    #   manual_grounding_status: "present" when deterministic manual / source-
+backend/paradiso_backend.py:337:    #     "absent" when no manual document grounding was found.
+backend/paradiso_backend.py:338:    #   manual_to_law_fallback_used: True when manual document grounding was
+backend/paradiso_backend.py:340:    #     leaned on law-grounding (statute/enforcement-decree) context instead.
+backend/paradiso_backend.py:343:    manual_grounding_status: str = "absent"
+backend/paradiso_backend.py:347:    # from the grounding state above so the frontend can render honest
+backend/paradiso_backend.py:382:    official_grounding_context: Dict[str, Any] = Field(default_factory=dict)
+backend/paradiso_backend.py:405:    # wired families. See evidence_ontology.py / the generalized-retrieval doc.
+backend/paradiso_backend.py:423:    direct_citation_available: bool = False
+backend/paradiso_backend.py:426:    citation_verification_status: str = ""
+backend/paradiso_backend.py:427:    manual_grounding_status_detail: str = ""
+backend/paradiso_backend.py:446:    law_grounding_error: str = ""
+backend/paradiso_backend.py:447:    # OpenRouter model-candidate fallback transparency (non-secret). When the
+backend/paradiso_backend.py:449:    # next explicit OpenRouter candidate rather than switching providers.
+backend/paradiso_backend.py:480:SOURCE_PANEL_MANUAL_GROUNDING_AVAILABLE = "manual_grounding_available"
+backend/paradiso_backend.py:481:SOURCE_PANEL_LAW_GROUNDING_AVAILABLE = "law_grounding_available"
+backend/paradiso_backend.py:491:    "LAW_API_BAD_RESPONSE",
+backend/paradiso_backend.py:492:    "LAW_API_PARSE_ERROR",
+backend/paradiso_backend.py:493:    "LAW_API_TIMEOUT",
+backend/paradiso_backend.py:494:    "LAW_API_OFFICIAL_ERROR",
+backend/paradiso_backend.py:495:    "LAW_API_NOT_CONFIGURED",
+backend/paradiso_backend.py:496:    "LAW_API_KEY_MISSING",
+backend/paradiso_backend.py:503:    if legal_analysis_exists and law_lookup_error_type in {"LAW_API_BAD_RESPONSE", "LAW_API_PARSE_ERROR", "SOURCE_UNAVAILABLE"}:
+backend/paradiso_backend.py:514:        return "manual_grounding_available"
+backend/paradiso_backend.py:516:        return "law_grounding_available"
+backend/paradiso_backend.py:521:def _derive_law_lookup_error_type(pack: Optional[Dict[str, Any]], citation_verification: Optional[Dict[str, Any]], law_grounding_warnings: Optional[List[str]], law_grounding_error: str = "") -> str:
+backend/paradiso_backend.py:523:    if law_grounding_error:
+backend/paradiso_backend.py:524:        candidates.append(law_grounding_error)
+backend/paradiso_backend.py:526:        candidates.extend([pack.get("law_grounding_error"), pack.get("error_type"), pack.get("law_lookup_error_type")])
+backend/paradiso_backend.py:527:        candidates.extend(pack.get("law_grounding_warnings") or [])
+backend/paradiso_backend.py:528:    candidates.extend(law_grounding_warnings or [])
+backend/paradiso_backend.py:529:    if citation_verification:
+backend/paradiso_backend.py:530:        candidates.extend([citation_verification.get("status"), citation_verification.get("error_type")])
+backend/paradiso_backend.py:531:        candidates.extend(citation_verification.get("warnings") or [])
+backend/paradiso_backend.py:533:    for preferred in ("LAW_API_BAD_RESPONSE", "LAW_API_PARSE_ERROR", "LAW_API_TIMEOUT", "LAW_API_OFFICIAL_ERROR", "SOURCE_UNAVAILABLE"):
+backend/paradiso_backend.py:542:def _derive_answer_certainty_level(*, direct_evidence_count: int, related_evidence_count: int, analogical_evidence_count: int, legal_analysis_exists: bool, citation_status: str, law_lookup_failed: bool) -> str:
+backend/paradiso_backend.py:544:    verified = str(citation_status or "").lower() == "verified"
+backend/paradiso_backend.py:561:    return bool(err in {"LAW_API_BAD_RESPONSE", "SOURCE_UNAVAILABLE", "BAD_RESPONSE", "SOURCE_UNAVAILABLE"})
+backend/paradiso_backend.py:604:    citation_verification: Optional[Dict[str, Any]],
+backend/paradiso_backend.py:605:    law_grounding_used: bool,
+backend/paradiso_backend.py:606:    law_grounding_attempted: bool,
+backend/paradiso_backend.py:607:    law_grounding_status: str,
+backend/paradiso_backend.py:608:    law_grounding_warnings: Optional[List[str]],
+backend/paradiso_backend.py:609:    manual_grounding_status: str,
+backend/paradiso_backend.py:620:    law_lookup_error_type = _derive_law_lookup_error_type(pack, citation_verification, law_grounding_warnings, pack.get("law_grounding_error", ""))
+backend/paradiso_backend.py:621:    citation_status = str((citation_verification or {}).get("status") or "")
+backend/paradiso_backend.py:623:    law_lookup_failed = bool(law_lookup_error_type) or law_grounding_status in {"unavailable", "disabled"} or (law_grounding_attempted and not law_grounding_used)
+backend/paradiso_backend.py:624:    direct_citation_available = citation_status == "verified"
+backend/paradiso_backend.py:625:    direct_authority_available = direct_count > 0 and direct_citation_available
+backend/paradiso_backend.py:626:    manual_available = manual_grounding_status in {"manual_grounding_available", "present"}
+backend/paradiso_backend.py:634:        citation_status=citation_status,
+backend/paradiso_backend.py:654:    elif law_grounding_attempted and has_lookup_issue:
+backend/paradiso_backend.py:669:        "direct_citation_available": direct_citation_available,
+backend/paradiso_backend.py:672:        "citation_verification_status": citation_status,
+backend/paradiso_backend.py:673:        "manual_grounding_status_detail": manual_grounding_status,
+backend/paradiso_backend.py:699:    # LAW_API_OC, or the legacy LAW_API_KEY fallback) read live, so the flag is
+backend/paradiso_backend.py:700:    # accurate when only LAW_API_OC is set. The value itself is never exposed.
+backend/paradiso_backend.py:702:        law_api_configured = load_grounding_config().law_api_configured
+backend/paradiso_backend.py:704:        law_api_configured = bool(LAW_API_KEY)
+backend/paradiso_backend.py:706:        "openrouter": bool(OPENROUTER_API_KEY),
+backend/paradiso_backend.py:707:        "groq": bool(GROQ_API_KEY),
+backend/paradiso_backend.py:718:    Strict OpenRouter-first is the intended production posture. These markers
+backend/paradiso_backend.py:735:      1. OpenRouter, whenever OPENROUTER_API_KEY is set (model = OPENROUTER_MODEL).
+backend/paradiso_backend.py:736:      2. Groq, only if OpenRouter is unset, Groq key is present, AND
+backend/paradiso_backend.py:740:      3. Otherwise no provider is configured (strict OpenRouter-first intent).
+backend/paradiso_backend.py:748:    if OPENROUTER_API_KEY:
+backend/paradiso_backend.py:751:            "model": OPENROUTER_MODEL,
+backend/paradiso_backend.py:758:    if GROQ_API_KEY and ALLOW_GROQ_FALLBACK:
+backend/paradiso_backend.py:808:    if not OPENROUTER_API_KEY:
+backend/paradiso_backend.py:813:                "message": "OPENROUTER_API_KEY is not set on the server.",
+backend/paradiso_backend.py:823:        "model": model or OPENROUTER_MODEL,
+backend/paradiso_backend.py:827:        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+backend/paradiso_backend.py:857:                "message": f"Unexpected OpenRouter payload: {exc}",
+backend/paradiso_backend.py:863:    if not GROQ_API_KEY:
+backend/paradiso_backend.py:868:                "message": "GROQ_API_KEY is not set on the server.",
+backend/paradiso_backend.py:882:        "Authorization": f"Bearer {GROQ_API_KEY}",
+backend/paradiso_backend.py:914:# OpenRouter provider-error classification + candidate fallback
+backend/paradiso_backend.py:917:# Retryable classes trigger the NEXT OpenRouter candidate; non-retryable classes
+backend/paradiso_backend.py:929:    """Map an OpenRouter failure to ``(error_type, retryable)`` — no secrets.
+backend/paradiso_backend.py:1012:    return OPENROUTER_MODEL_COOLDOWN_SECONDS > 0
+backend/paradiso_backend.py:1020:        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
+backend/paradiso_backend.py:1021:        if ts - failed_at >= OPENROUTER_MODEL_COOLDOWN_SECONDS
+backend/paradiso_backend.py:1024:        _OPENROUTER_MODEL_COOLDOWNS.pop(model, None)
+backend/paradiso_backend.py:1026:        model for model, failed_at in _OPENROUTER_MODEL_COOLDOWNS.items()
+backend/paradiso_backend.py:1027:        if ts - failed_at < OPENROUTER_MODEL_COOLDOWN_SECONDS
+backend/paradiso_backend.py:1034:    _OPENROUTER_MODEL_COOLDOWNS[model] = _now() if now is None else now
+backend/paradiso_backend.py:1038:    _OPENROUTER_MODEL_COOLDOWNS.clear()
+backend/paradiso_backend.py:1044:        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+backend/paradiso_backend.py:1052:    This helper is only called when ENABLE_OLLAMA_FALLBACK=true and OpenRouter
+backend/paradiso_backend.py:1834:    """Try OpenRouter candidates in order, skipping models in short cooldown.
+backend/paradiso_backend.py:1843:        candidates = _dedupe_preserve_order([requested_model, *OPENROUTER_MODEL_CANDIDATES])
+backend/paradiso_backend.py:1845:        candidates = list(OPENROUTER_MODEL_CANDIDATES) or [OPENROUTER_MODEL]
+backend/paradiso_backend.py:1855:            "primary_model": candidates[0] if candidates else OPENROUTER_MODEL,
+backend/paradiso_backend.py:1861:            "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+backend/paradiso_backend.py:1904:            "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+backend/paradiso_backend.py:1923:        "model_cooldown_seconds": OPENROUTER_MODEL_COOLDOWN_SECONDS,
+backend/paradiso_backend.py:1978:    1. `VISA_DATA_PATH` env var (absolute path, for explicit Railway
+backend/paradiso_backend.py:2117:# Manual grounding (narrow, deterministic)
+backend/paradiso_backend.py:2122:# entry in the stay_manual_grounding_2026_05.json fixture. Currently grounded:
+backend/paradiso_backend.py:2129:_STAY_MANUAL_GROUNDING_FILE = "stay_manual_grounding_2026_05.json"
+backend/paradiso_backend.py:2133:def _stay_manual_grounding_path() -> str:
+backend/paradiso_backend.py:2135:    return os.path.join(here, "data", "manual_grounding", _STAY_MANUAL_GROUNDING_FILE)
+backend/paradiso_backend.py:2138:def _load_stay_manual_grounding() -> Optional[Dict[str, Any]]:
+backend/paradiso_backend.py:2139:    """Load the stay manual grounding fixture once per process."""
+backend/paradiso_backend.py:2143:    path = _stay_manual_grounding_path()
+backend/paradiso_backend.py:2145:        logger.info("stay manual grounding fixture missing at %s", path)
+backend/paradiso_backend.py:2156:def _reset_grounding_cache_for_tests() -> None:
+backend/paradiso_backend.py:2277:# Visa codes for which a deterministic grounding entry exists. Used to
+backend/paradiso_backend.py:2279:# that has no backing grounding entry.
+backend/paradiso_backend.py:2313:    even for statuses without deterministic manual grounding (for example H-1
+backend/paradiso_backend.py:2314:    activity-scope questions). Manual grounding remains a separate decision.
+backend/paradiso_backend.py:2330:    # manual grounding fixture. The negative lookahead avoids claiming D-4 for
+backend/paradiso_backend.py:2459:def _select_grounding(
+backend/paradiso_backend.py:2464:    """Return the grounding record for the request, or None.
+backend/paradiso_backend.py:2487:    bundle = _load_stay_manual_grounding()
+backend/paradiso_backend.py:2490:    entries = bundle.get("groundings", []) or []
+backend/paradiso_backend.py:2527:    The grounding content (제출서류, 출처) is Korea-specific regardless of
+backend/paradiso_backend.py:2540:    grounding: Dict[str, Any],
+backend/paradiso_backend.py:2550:    request `lang` field — Korea-specific grounding is preserved regardless.
+backend/paradiso_backend.py:2552:    docs = grounding.get("required_documents", []) or []
+backend/paradiso_backend.py:2553:    caveats = grounding.get("caveats", []) or []
+backend/paradiso_backend.py:2554:    excerpt = grounding.get("source_excerpt", "") or ""
+backend/paradiso_backend.py:2564:    page_range = grounding.get("page_range")
+backend/paradiso_backend.py:2571:    section_label = grounding.get("section") or grounding.get("visa_code", "")
+backend/paradiso_backend.py:2572:    procedure_label = grounding.get("procedure_type", "체류기간 연장허가")
+backend/paradiso_backend.py:2597:def _grounding_source_summary(grounding: Dict[str, Any], bundle: Dict[str, Any]) -> Dict[str, Any]:
+backend/paradiso_backend.py:2598:    """Public-facing grounding metadata returned to the client.
+backend/paradiso_backend.py:2609:        "visa_code": grounding.get("visa_code"),
+backend/paradiso_backend.py:2610:        "procedure_type": grounding.get("procedure_type"),
+backend/paradiso_backend.py:2611:        "section": grounding.get("section"),
+backend/paradiso_backend.py:2612:        "page_range": grounding.get("page_range"),
+backend/paradiso_backend.py:2613:        "source_verification_status": grounding.get("source_verification_status"),
+backend/paradiso_backend.py:2614:        "source_confidence": grounding.get("source_confidence"),
+backend/paradiso_backend.py:2615:        "verification_note": grounding.get("verification_note"),
+backend/paradiso_backend.py:2626:    grounding fixture matches the request. The block is marked as a local
+backend/paradiso_backend.py:2927:    grounding and HIGH / STRUCTURED_EVIDENCE_READY structured requirements.
+backend/paradiso_backend.py:3003:        " missing documents, deadlines, fees, or legal citations."
+backend/paradiso_backend.py:3022:    This block SUPPLEMENTS existing manual grounding; it must not override
+backend/paradiso_backend.py:3078:        " manual grounding, warnings, disclaimers, and page references above."
+backend/paradiso_backend.py:3103:      or legal citations,
+backend/paradiso_backend.py:3110:    외국인체류 안내매뉴얼 — there is no verified grounding here.
+backend/paradiso_backend.py:3133:            "- 검증된 매뉴얼 발췌 없이 특정 제출서류 목록, 법령 조문 번호, 유예 기간(예: '30일') 등을"
+backend/paradiso_backend.py:3162:        " 수수료/비용, 양식/서식 번호, 법령 조문 번호, 자격요건, 절차상 보장·결과 보장.\n"
+backend/paradiso_backend.py:3197:    Railway URL directly. Returns a small JSON descriptor instead.
+backend/paradiso_backend.py:3213:    candidates = OPENROUTER_MODEL_CANDIDATES
+backend/paradiso_backend.py:3217:    # Non-secret Open Law API posture. NEVER exposes LAW_API_OC / LAW_API_KEY
+backend/paradiso_backend.py:3219:    # credential. Computed live so LAW_API_OC-only deployments report correctly.
+backend/paradiso_backend.py:3221:        law_cfg = load_grounding_config()
+backend/paradiso_backend.py:3230:            "law_api_configured": bool(LAW_API_KEY),
+backend/paradiso_backend.py:3232:            "law_api_key_fallback_configured": bool(LAW_API_KEY),
+backend/paradiso_backend.py:3233:            "law_api_credential_source": "LAW_API_KEY" if LAW_API_KEY else "",
+backend/paradiso_backend.py:3243:        # at a glance whether strict OpenRouter-first is in effect.
+backend/paradiso_backend.py:3250:            # OpenRouter candidate fallback posture (non-secret).
+backend/paradiso_backend.py:3251:            "primary_model": OPENROUTER_MODEL,
+backend/paradiso_backend.py:3261:        "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
+backend/paradiso_backend.py:3435:    grounding = _select_grounding(
+backend/paradiso_backend.py:3438:    grounding_sources: List[Dict[str, Any]] = []
+backend/paradiso_backend.py:3459:    if grounding is not None:
+backend/paradiso_backend.py:3460:        bundle = _load_stay_manual_grounding() or {}
+backend/paradiso_backend.py:3461:        final_prompt = _build_grounded_prompt(prompt, grounding, bundle, lang=req.lang)
+backend/paradiso_backend.py:3462:        grounding_sources = [_grounding_source_summary(grounding, bundle)]
+backend/paradiso_backend.py:3464:            # Manual grounding above remains primary; the local catalog block
+backend/paradiso_backend.py:3469:                "The manual grounding above remains the primary source."
+backend/paradiso_backend.py:3487:        # deterministic grounding and HIGH / STRUCTURED_EVIDENCE_READY
+backend/paradiso_backend.py:3488:        # structured requirements, and never flips grounding_used.
+backend/paradiso_backend.py:3493:        # the grounding/disclaimers above; never overrides them.
+backend/paradiso_backend.py:3496:    # Law grounding metadata. Intent is computed for EVERY question so the
+backend/paradiso_backend.py:3501:    law_grounding_used = False
+backend/paradiso_backend.py:3502:    law_grounding_attempted = False
+backend/paradiso_backend.py:3503:    law_grounding_status = "not_attempted"
+backend/paradiso_backend.py:3504:    law_grounding_intent_reasons: List[str] = []
+backend/paradiso_backend.py:3506:    law_grounding_warnings: List[str] = []
+backend/paradiso_backend.py:3507:    citation_verification: Optional[Dict[str, Any]] = None
+backend/paradiso_backend.py:3510:    intent = should_attempt_law_grounding(prompt)
+backend/paradiso_backend.py:3512:        law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
+backend/paradiso_backend.py:3514:            law_context = build_law_grounding_context(prompt)
+backend/paradiso_backend.py:3515:            law_grounding_attempted = bool(law_context.get("attempted"))
+backend/paradiso_backend.py:3516:            law_grounding_used = bool(law_context.get("law_grounding_used"))
+backend/paradiso_backend.py:3517:            law_grounding_warnings = law_context.get("grounding_warnings", []) or []
+backend/paradiso_backend.py:3518:            citation_verification = law_context.get("citation_verification")
+backend/paradiso_backend.py:3520:            law_grounding_status = "used" if law_grounding_used else "unavailable"
+backend/paradiso_backend.py:3524:            # Intent detected but grounding is disabled: surface the state and
+backend/paradiso_backend.py:3526:            law_grounding_status = "disabled"
+backend/paradiso_backend.py:3527:            law_search_query = build_law_search_query(prompt, law_grounding_intent_reasons)
+backend/paradiso_backend.py:3528:            law_grounding_warnings = ["LAW_GROUNDING_DISABLED"]
+backend/paradiso_backend.py:3531:    # confirmed structured requirements grounding was found for a legal or
+backend/paradiso_backend.py:3534:    # grounding for legal CONTEXT instead of generic-only guidance. This never
+backend/paradiso_backend.py:3537:    manual_present = (grounding is not None) or bool(structured_block)
+backend/paradiso_backend.py:3538:    manual_grounding_status = "present" if manual_present else "absent"
+backend/paradiso_backend.py:3544:            manual_to_law_fallback_reason = "manual_grounding_absent_law_intent"
+backend/paradiso_backend.py:3560:            # Fallback was warranted but law grounding is disabled by config.
+backend/paradiso_backend.py:3562:            manual_to_law_fallback_reason = "manual_grounding_absent_law_intent_grounding_disabled"
+backend/paradiso_backend.py:3564:    # General answer-quality contract. Folds the grounding state above + the
+backend/paradiso_backend.py:3573:        manual_grounding_present=(grounding is not None),
+backend/paradiso_backend.py:3576:        law_grounding_used=law_grounding_used,
+backend/paradiso_backend.py:3577:        law_grounding_status=law_grounding_status,
+backend/paradiso_backend.py:3591:            manual_evidence={"direct": grounding_sources, "related": []},
+backend/paradiso_backend.py:3592:            manual_present=(grounding is not None),
+backend/paradiso_backend.py:3601:    if law_evidence_pack and law_evidence_pack.get("citation_verification"):
+backend/paradiso_backend.py:3602:        citation_verification = law_evidence_pack.get("citation_verification")
+backend/paradiso_backend.py:3604:    # Shared, non-secret grounding/law metadata reused across prompt and response paths.
+backend/paradiso_backend.py:3607:        citation_verification=citation_verification,
+backend/paradiso_backend.py:3608:        law_grounding_used=law_grounding_used,
+backend/paradiso_backend.py:3609:        law_grounding_attempted=law_grounding_attempted,
+backend/paradiso_backend.py:3610:        law_grounding_status=law_grounding_status,
+backend/paradiso_backend.py:3611:        law_grounding_warnings=law_grounding_warnings,
+backend/paradiso_backend.py:3612:        manual_grounding_status=manual_grounding_status,
+backend/paradiso_backend.py:3646:        if law_evidence_pack.get("grounding_context_prompt"):
+backend/paradiso_backend.py:3648:                "\n\n[Generalized official-source grounding context]\n"
+backend/paradiso_backend.py:3649:                + law_evidence_pack.get("grounding_context_prompt", "")
+backend/paradiso_backend.py:3668:                f"citation_verification_status: {source_panel_meta.get('citation_verification_status')}\n"
+backend/paradiso_backend.py:3669:                f"manual_grounding_status: {manual_grounding_status}\n"
+backend/paradiso_backend.py:3717:        grounding_used=bool(grounding),
+backend/paradiso_backend.py:3718:        grounding_sources=grounding_sources,
+backend/paradiso_backend.py:3725:        law_grounding_used=law_grounding_used,
+backend/paradiso_backend.py:3726:        law_grounding_attempted=law_grounding_attempted,
+backend/paradiso_backend.py:3727:        law_grounding_status=law_grounding_status,
+backend/paradiso_backend.py:3728:        law_grounding_intent_reasons=law_grounding_intent_reasons,
+backend/paradiso_backend.py:3730:        law_grounding_warnings=law_grounding_warnings,
+backend/paradiso_backend.py:3731:        citation_verification=citation_verification,
+backend/paradiso_backend.py:3732:        manual_grounding_status=manual_grounding_status,
+backend/paradiso_backend.py:3761:        official_grounding_context=(law_evidence_pack or {}).get("official_grounding_context", {}),
+backend/paradiso_backend.py:3781:        source_state=(law_evidence_pack or {}).get("analysis_mode", "") or law_grounding_status,
+backend/paradiso_backend.py:3784:        law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
+backend/paradiso_backend.py:3787:        source_panel_status=((law_evidence_pack or {}).get("citation_verification") or {}).get("status", ""),
+backend/paradiso_backend.py:3810:            model_cooldown_seconds=result.get("model_cooldown_seconds", OPENROUTER_MODEL_COOLDOWN_SECONDS),
+backend/paradiso_backend.py:3834:                model=result["final_model"] or OPENROUTER_MODEL,
+backend/paradiso_backend.py:3859:        # All retryable OpenRouter candidates failed.
+backend/paradiso_backend.py:3861:        # (strict OpenRouter-first is the default — no silent provider switch).
+backend/paradiso_backend.py:3862:        if ALLOW_GROQ_FALLBACK and GROQ_API_KEY:
+backend/paradiso_backend.py:3879:        # reached unless the operator explicitly enables it and OpenRouter failed.
+backend/paradiso_backend.py:3944:                "No LLM provider is configured. Set OPENROUTER_API_KEY or "
+backend/paradiso_backend.py:3945:                "GROQ_API_KEY in the backend environment."
+backend/paradiso_backend.py:3959:@app.get("/api/debug/law-grounding/preflight")
+backend/paradiso_backend.py:3960:async def debug_law_grounding_preflight(question: Optional[str] = None) -> Dict[str, Any]:
+backend/paradiso_backend.py:3961:    """Operator-safe law-grounding readiness preflight (no external call, no secrets).
+backend/paradiso_backend.py:3964:    (booleans only), whether a sample question would trigger grounding, the
+backend/paradiso_backend.py:3966:    (LAW_GROUNDING_DISABLED / LAW_GROUNDING_AUDIT_ONLY / LAW_API_KEY_MISSING /
+backend/paradiso_backend.py:3967:    LAW_API_ENDPOINT_MISSING). Useful even when external calls are disabled.
+backend/paradiso_backend.py:3969:    return law_grounding_preflight(question or "")
+backend/paradiso_backend.py:3972:@app.post("/api/debug/law-grounding")
+backend/paradiso_backend.py:3973:async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
+backend/paradiso_backend.py:3977:    is supplied, also returns the (mode-gated, non-crashing) grounding context.
+backend/paradiso_backend.py:3982:        # no-question readiness probe should use GET /api/debug/law-grounding/preflight.
+backend/paradiso_backend.py:3987:                "message": "Provide a non-empty 'question' or 'text', or use GET /api/debug/law-grounding/preflight.",
+backend/paradiso_backend.py:3990:    logger.info("debug-law-grounding request received (text_length=%d)", len(prompt))
+backend/paradiso_backend.py:3991:    context = build_law_grounding_context(prompt)
+backend/paradiso_backend.py:3992:    context["preflight"] = law_grounding_preflight(prompt)
+backend/paradiso_backend.py:4011:    cfg = load_grounding_config()
+backend/paradiso_backend.py:4019:        "law_grounding_mode": cfg.mode,
+backend/paradiso_backend.py:4032:        "error_type": (pack or {}).get("law_grounding_error", "") or context.get("error_type", ""),
+backend/paradiso_backend.py:4037:        "citation_verification_status": ((pack or {}).get("citation_verification") or context.get("citation_verification") or {}).get("status", ""),
+backend/paradiso_backend.py:4038:        "law_grounding_status": (pack or {}).get("law_grounding_status"),
+backend/paradiso_backend.py:4041:        "law_grounding_error": (pack or {}).get("law_grounding_error", ""),
+backend/paradiso_backend.py:4068:        "source_state": (pack or {}).get("analysis_mode") or (pack or {}).get("law_grounding_status"),
+backend/data/manual_grounding/candidates/README.md:1:# Manual grounding — candidates (draft only)
+backend/data/manual_grounding/candidates/README.md:4:> **Nothing in this directory is active grounding.**
+backend/data/manual_grounding/candidates/README.md:7:This directory holds **draft** manual-grounding candidates — proposed
+backend/data/manual_grounding/candidates/README.md:10:`backend/data/manual_grounding/stay_manual_grounding_2026_05.json`.
+backend/data/manual_grounding/candidates/README.md:13:anything from this directory. `_load_stay_manual_grounding()` reads
+backend/data/manual_grounding/candidates/README.md:14:exactly one file: `stay_manual_grounding_2026_05.json`. Candidates here
+backend/data/manual_grounding/candidates/README.md:20:backend/data/manual_grounding/candidates/
+backend/data/manual_grounding/candidates/README.md:23:    ├── candidate.json                           ← the proposed grounding entry
+backend/data/manual_grounding/candidates/README.md:25:    ├── law_excerpt.json     (optional)          ← verbatim 법령 조문, machine-fetched
+backend/data/manual_grounding/candidates/README.md:35:in [`docs/manual_grounding_expansion_plan.md`](../../../../docs/manual_grounding_expansion_plan.md)
+backend/data/manual_grounding/candidates/README.md:73:The validator (`scripts/validate_manual_grounding_candidate.py`)
+backend/data/manual_grounding/candidates/README.md:82:`scripts/promote_grounding_candidate.py`. It is **dry-run by default**.
+backend/data/manual_grounding/candidates/README.md:96:- Not retrieval data. Paradiso does not run RAG, embeddings, or vector
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:3:> **Candidate status:** `draft`. **Not active grounding.** Nothing in this
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:98:## 5. Why this candidate is **candidate-only** (not active grounding)
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:102:  in `_select_grounding()` (backend/paradiso_backend.py:713). Even if
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:109:  비-F-6-3(가사정리). A single grounding entry cannot safely answer
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:120:(`stay_manual_grounding_2026_05.json`):
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:138:   `_select_grounding()` accordingly, or (b) split the candidate so
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:163:  fallback-quality PRs explicitly prohibit law-API retrieval reachable
+backend/data/manual_grounding/candidates/f6_divorce_status_change/REVIEW.md:189:`scripts/promote_grounding_candidate.py` will refuse to promote this
+backend/.env.example:7:# In Railway, configure these as Project Variables (do not check them into git).
+backend/.env.example:10:OPENROUTER_API_KEY=
+backend/.env.example:11:# Pin Paradiso AI to a deterministic OpenRouter model instead of openrouter/auto.
+backend/.env.example:12:# This value is ALSO the backend code default (see _DEFAULT_OPENROUTER_MODEL in
+backend/.env.example:14:# Verify the model remains available in the OpenRouter model catalog before deploy.
+backend/.env.example:15:OPENROUTER_MODEL=nvidia/nemotron-3-ultra-550b-a55b:free
+backend/.env.example:17:# Explicit, predictable OpenRouter fallback candidates (comma-separated, ordered).
+backend/.env.example:22:# built-in policy list below (OPENROUTER_MODEL is always tried first).
+backend/.env.example:23:OPENROUTER_MODEL_CANDIDATES=nvidia/nemotron-3-ultra-550b-a55b:free,nvidia/nemotron-3-super-120b-a12b:free,openai/gpt-oss-120b:free,google/gemma-4-31b-it:free
+backend/.env.example:38:OPENROUTER_MODEL_COOLDOWN_SECONDS=300
+backend/.env.example:41:# silently answer with a different provider/model when OpenRouter is expected.
+backend/.env.example:42:GROQ_API_KEY=
+backend/.env.example:45:# Whether Groq may answer when OpenRouter is NOT configured.
+backend/.env.example:46:# The code default is now FALSE (strict OpenRouter-first): if OpenRouter is
+backend/.env.example:51:# Recommended Railway value: false (or simply leave it unset to inherit the
+backend/.env.example:53:# deployment to answer when OpenRouter is not configured.
+backend/.env.example:64:# LAW_API_OC is the PREFERRED, explicit Open Law API authentication identifier
+backend/.env.example:68:LAW_API_OC=paradiso
+backend/.env.example:69:# LAW_API_KEY is kept ONLY as a backward-compatibility fallback. If LAW_API_OC is
+backend/.env.example:70:# set it takes precedence; if only LAW_API_KEY is set, it is used and a non-secret
+backend/.env.example:71:# LAW_API_OC_RECOMMENDED warning is surfaced. Do NOT overwrite an existing
+backend/.env.example:72:# Railway LAW_API_KEY — add LAW_API_OC alongside it.
+backend/.env.example:73:LAW_API_KEY=
+backend/.env.example:74:PUBLIC_DATA_API_KEY=
+backend/.env.example:79:# Law grounding mode: disabled (no external calls) | audit (context-only) |
+backend/.env.example:80:# enabled. With LAW_API_OC set, audit mode lets the internal law tool layer call
+backend/.env.example:82:# final adjudication). Railway posture: LAW_GROUNDING_MODE=audit.
+backend/.env.example:90:LAW_API_BASE_URL=
+backend/.env.example:91:LAW_API_SEARCH_PATH=
+backend/.env.example:92:LAW_API_ARTICLE_PATH=
+backend/.env.example:102:# Public-facing site URL (used as HTTP-Referer for OpenRouter calls and
+ai.html:7:    <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
+ai.html:191:        .grounding-badge { display: inline-flex; align-items: center; min-height: 30px; padding: 0.32rem 0.65rem; border-radius: 999px; border: 1px solid var(--bd); color: var(--t2); background: rgba(24,75,64,0.75); font-size: 0.74rem; font-weight: 800; white-space: nowrap; }
+ai.html:192:        .grounding-badge.grounded { border-color: rgba(52,212,168,0.65); color: var(--ac); background: rgba(52,212,168,0.11); }
+ai.html:313:            .grounding-badge { white-space: normal; }
+ai.html:478:        .grounding-badge {
+ai.html:484:        .grounding-badge.grounded {
+ai.html:1014:        /* Explicit no-official-grounding warning: serious, high-contrast, and
+ai.html:1023:        /* Related status to verify row — distinct from any source-grounding row. */
+ai.html:1030:        /* Answer-basis row — quiet identity line, calmer than the law-citation row. */
+ai.html:1119:.grounding-badge, .context-pill, .pa-state-chip { font-weight: 600; }
+ai.html:1129:  .context-pill, .grounding-badge, .pa-state-chip { max-width: 100%; white-space: normal; }
+ai.html:1213:        html[data-editorial-theme="archive_diary"] .grounding-badge { background: #FFFFFF; border-color: #26221B; color: var(--t2); }
+ai.html:1214:        html[data-editorial-theme="archive_diary"] .grounding-badge.grounded { border-color: var(--ac); color: var(--ac2); background: var(--acL); }
+ai.html:1239:                <p class="ai-title-sub">공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345</p>
+ai.html:1256:                안녕하세요. <strong>Paradiso AI</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>
+ai.html:1269:    <p id="referenceDisclaimer" class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
+ai.html:1423:            const grounded = Boolean(result && result.grounding_used);
+ai.html:1434:                '※ This is general reference guidance without confirmed official manual grounding. Confirm specific deadlines, requirements, and eligibility with 1345, HiKorea, or the competent immigration office.'
+ai.html:1852:            if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
+ai.html:1867:            // Related comparison statuses to verify — NOT direct source grounding.
+ai.html:1878:            const grounded = Boolean(meta.grounding_used);
+ai.html:1939:            ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
+ai.html:1956:            if (provider === 'openrouter' && resolved) label = `OpenRouter · ${resolved}`;
+ai.html:2035:                LAW_GROUNDING_DISABLED: t(lang, '법령 검증 기능이 꺼져 있음', 'Legal verification is disabled'),
+ai.html:2036:                LAW_API_KEY_MISSING: t(lang, '법령 API 키 미설정', 'Law API key is not configured'),
+ai.html:2037:                SOURCE_UNAVAILABLE: t(lang, '직접 법령 인용 제한', 'Direct legal citation limited'),
+ai.html:2038:                LAW_API_TIMEOUT: t(lang, '법령 조회 시간 초과', 'Law lookup timed out'),
+ai.html:2045:            const attempted = Boolean(metadata && metadata.law_grounding_attempted);
+ai.html:2046:            const used = Boolean(metadata && metadata.law_grounding_used);
+ai.html:2047:            const verification = metadata && metadata.citation_verification ? metadata.citation_verification : null;
+ai.html:2055:        // Less alarming than the legal-citation row; communicates how strongly
+ai.html:2102:                law_grounding_warnings: asArray(m.law_grounding_warnings),
+ai.html:2104:                law_grounding_error: asString(m.law_grounding_error),
+ai.html:2109:                grounding_sources: asArray(m.grounding_sources),
+ai.html:2117:                official_grounding_context: asObject(m.official_grounding_context),
+ai.html:2120:                citation_verification: (m.citation_verification && typeof m.citation_verification === 'object') ? m.citation_verification : null,
+ai.html:2121:                public_data_grounding: (m.public_data_grounding === undefined ? null : m.public_data_grounding),
+ai.html:2133:            const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
+ai.html:2134:            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
+ai.html:2135:            const hasBadLawResponse = warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE';
+ai.html:2140:                return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '직접 법령 인용은 제한되지만, 답변은 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
+ai.html:2152:            const warnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
+ai.html:2153:            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
+ai.html:2162:            if (hasLegalAnalysis && (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || warnings.indexOf('SOURCE_UNAVAILABLE') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE')) {
+ai.html:2173:            if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
+ai.html:2174:                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Paradiso is using limited guidance.', zh: '法律来源查询超时。Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Paradiso 將使用有限指引。' }) };
+ai.html:2176:            if (warnings.indexOf('LAW_API_OFFICIAL_ERROR') !== -1 || errorType === 'LAW_API_OFFICIAL_ERROR') {
+ai.html:2177:                return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Paradiso is using limited guidance.', zh: '官方法律来源服务返回错误。Paradiso 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Paradiso 將使用有限指引。' }) };
+ai.html:2179:            if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') {
+ai.html:2182:            if (warnings.indexOf('LAW_API_NOT_CONFIGURED') !== -1 || warnings.indexOf('LAW_API_KEY_MISSING') !== -1 || errorType === 'LAW_API_NOT_CONFIGURED') {
+ai.html:2196:            const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
+ai.html:2197:            const manualSources = Array.isArray(safe.grounding_sources)
+ai.html:2198:                ? safe.grounding_sources.filter((src) => src && (sourceValue(src, 'source_title') || sourceValue(src, 'source_file') || sourceValue(src, 'source_date')))
+ai.html:2200:            const lawAttempted = Boolean(safe.law_grounding_attempted);
+ai.html:2201:            const lawUsed = Boolean(safe.law_grounding_used);
+ai.html:2202:            const lawWarnings = Array.isArray(safe.law_grounding_warnings) ? safe.law_grounding_warnings : [];
+ai.html:2203:            const hasCitation = Boolean(safe.citation_verification);
+ai.html:2204:            const citationStatus = safe.citation_verification && safe.citation_verification.status ? String(safe.citation_verification.status) : '';
+ai.html:2205:            const publicData = safe.public_data_grounding;
+ai.html:2242:            // never as direct source grounding (Part A / Part F).
+ai.html:2258:                else if (citationStatus === 'extracted_only') stateClass = 'state-extracted-only';
+ai.html:2259:                else if (citationStatus === 'source_linked_unverified') stateClass = 'state-source-linked-unverified';
+ai.html:2260:                else if (citationStatus === 'failed_verification') stateClass = 'state-failed';
+ai.html:2261:                else if (citationStatus === 'not_wired' || (lawWarnings.indexOf && lawWarnings.indexOf('CITATION_VERIFICATION_NOT_WIRED') !== -1)) stateClass = 'state-not-wired';
+ai.html:2263:                // When the supporting law source could not be retrieved and the
+ai.html:2266:                // "Legal citation verification: Needs review" (Part C). Raw codes
+ai.html:2269:                    citationStatus === '' || citationStatus === 'not_wired'
+ai.html:2281:                    rows.push(`<div class="source-row ${stateClass}"><strong>${t(lang, '법령 인용 검증', 'Legal citation verification')}</strong>: ${label}${extra}</div>`);
+ai.html:2295:            // grounding nor law/public grounding reached this answer, say so
+ai.html:2297:            // grounded when retrieval failed or returned empty.
+ai.html:2298:            const officialGroundingPresent = Boolean(safe.grounding_used) || lawUsed
+ai.html:2301:                const warnHead = tt(lang, { ko: '공식 근거 미확인', en: 'Official grounding unavailable', zh: '未确认官方依据', zhHant: '未確認官方依據' });
+ai.html:2304:                    en: 'Official source grounding was not available. Please verify with HiKorea, 1345, or the competent immigration office.',
+ai.html:2312:                const head = tt(lang, { ko: '보조 법령 근거', en: 'Supporting legal source', zh: '补充法令依据', zhHant: '補充法令依據' });
+ai.html:2313:                const names = tt(lang, { ko: '보조 법령 근거를 조회했습니다.', en: 'Supporting legal source retrieved', zh: '已获取补充性法令依据。', zhHant: '已取得補充性法令依據。' }) + ': ' + lawSources.slice(0, 3).map((s) => escapeHtml(String(s.law_name))).join(' · ');
+ai.html:2315:                    ko: '맥락 참고용 법령입니다. 필요 서류·최종 판단은 1345/하이코리아/관할 출입국 확인이 필요합니다.',
+ai.html:2328:            // LAW_API_BAD_RESPONSE. Only call it a parser failure when a
+ai.html:2335:            let parserFailed = PARSE_FAIL.indexOf(topParser) !== -1 || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'LAW_API_BAD_RESPONSE';
+ai.html:2345:                    tt(lang, { ko: '실시간 법령 조회 응답을 파싱하지 못했습니다.', en: 'The live legal lookup response could not be parsed.', zh: '无法解析实时法令查询响应。', zhHant: '無法解析即時法令查詢回應。' }),
+ai.html:2346:                    tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }),
+ai.html:2349:                    tt(lang, { ko: '실시간 법령 조회에서 직접 인용 가능한 결과를 찾지 못했습니다(파서 오류 아님).', en: 'The live legal lookup returned no directly citable result (not a parser failure).', zh: '实时法令查询未返回可直接引用的结果（非解析失败）。', zhHant: '即時法令查詢未返回可直接引用的結果（非解析失敗）。' }),
+ai.html:2350:                    tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }),
+ai.html:2352:            const familyBlock = familyLines.length ? [''].concat([tt(lang, { ko: '법령군별 상태:', en: 'Per-family status:', zh: '各法令类别状态：', zhHant: '各法令類別狀態：' })]).concat(familyLines) : [];
+ai.html:2355:            // statute:/enforcement_decree: family dumps, LAW_API_* warnings) must
+ai.html:2423:            if (result && result.grounding_used) return '';
+ai.html:2427:                'This may be a general AI answer outside the currently verified official-manual grounding. Confirm final decisions with 1345, HiKorea, or the competent immigration office.'
+ai.html:2476:            const sourceCopy = sourceTextForCopy(result.grounding_sources);
+ai.html:2478:            const grounded = Boolean(result.grounding_used);
+ai.html:2487:            const groundingNoteHtml = (hasPanel || answerBasisCommunicatesLimit(result)) ? '' : buildGroundingNote(result, lang);
+ai.html:2498:                        <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
+ai.html:2505:                    ${groundingNoteHtml}
+ai.html:2555:                grounding_used: Boolean(detail.grounding_used || payload.grounding_used),
+ai.html:2556:                grounding_sources: detail.grounding_sources || payload.grounding_sources || [],
+ai.html:2559:                law_grounding_used: Boolean(detail.law_grounding_used || payload.law_grounding_used),
+ai.html:2560:                law_grounding_attempted: Boolean(detail.law_grounding_attempted || payload.law_grounding_attempted),
+ai.html:2561:                law_grounding_warnings: detail.law_grounding_warnings || payload.law_grounding_warnings || [],
+ai.html:2562:                citation_verification: detail.citation_verification || payload.citation_verification || null,
+ai.html:2592:            const grounding = extractGroundingFromErrorPayload(payload || {});
+ai.html:2629:                    ${buildContextRow(grounding, lang)}
+ai.html:2630:                    ${fallbackAnswer ? buildDegradedStateBanner(grounding, lang) : ''}
+ai.html:2632:                    ${renderGroundingSourcePanel(grounding, lang)}
+ai.html:2635:                    <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
+ai.html:2692:            setStatus('법령 분석 및 데이터 맵핑 중...');
+ai.html:2809:    /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
+scripts/smoke_law_grounding.sh:3:# scripts/smoke_law_grounding.sh
+scripts/smoke_law_grounding.sh:5:# Opt-in law-grounding smoke. Safe in the disabled-by-default mode and also
+scripts/smoke_law_grounding.sh:11:#   BACKEND_URL=http://127.0.0.1:8000 bash scripts/smoke_law_grounding.sh
+scripts/smoke_law_grounding.sh:12:#   bash scripts/smoke_law_grounding.sh --help
+scripts/smoke_law_grounding.sh:19:smoke_law_grounding.sh — opt-in law-grounding smoke (no secrets printed)
+scripts/smoke_law_grounding.sh:25:  1. GET  /health                         — backend + resolved law_grounding_mode
+scripts/smoke_law_grounding.sh:26:  2. GET  /api/debug/law-grounding/preflight — non-secret readiness report
+scripts/smoke_law_grounding.sh:27:  3. POST /api/debug/law-grounding         — per-sample intent + query, for:
+scripts/smoke_law_grounding.sh:113:echo "Running law-grounding smoke checks against: $BACKEND_URL"
+scripts/smoke_law_grounding.sh:118:echo "Resolved law_grounding_mode: $(field "$LAST_BODY" law_grounding_mode || echo unknown)"
+scripts/smoke_law_grounding.sh:121:call GET /api/debug/law-grounding/preflight
+scripts/smoke_law_grounding.sh:133:# Sample questions that SHOULD trigger law-grounding intent.
+scripts/smoke_law_grounding.sh:142:  call POST /api/debug/law-grounding "{\"question\":$(printf '%s' "$q" | python3 -c 'import json,sys;print(json.dumps(sys.stdin.read()))')}"
+scripts/smoke_law_grounding.sh:144:  echo "  -> question_type=$(field "$LAST_BODY" question_type), law_grounding_status=$(field "$LAST_BODY" law_grounding_status), source_confidence_level=$(field "$LAST_BODY" source_confidence_level), normalized_evidence_count=$(field "$LAST_BODY" normalized_evidence_count)"
+scripts/smoke_law_grounding.sh:149:echo "  -> law_grounding_status=$(field "$LAST_BODY" law_grounding_status)"
+scripts/probe_korean_law_open_api_2026_05.py:37:    "LAW_API_OC",
+scripts/probe_korean_law_open_api_2026_05.py:38:    "LAW_API_KEY",
+scripts/probe_korean_law_open_api_2026_05.py:39:    "KOREAN_LAW_API_OC",
+scripts/probe_korean_law_open_api_2026_05.py:40:    "OPEN_LAW_API_OC",
+scripts/probe_korean_law_open_api_2026_05.py:140:                obj.get("법령명한글")
+scripts/probe_korean_law_open_api_2026_05.py:141:                or obj.get("법령명")
+scripts/probe_korean_law_open_api_2026_05.py:142:                or obj.get("법령명_한글")
+scripts/probe_korean_law_open_api_2026_05.py:145:            mst = obj.get("법령일련번호") or obj.get("MST") or obj.get("mst")
+scripts/probe_korean_law_open_api_2026_05.py:146:            law_id = obj.get("법령ID") or obj.get("lawId")
+scripts/probe_korean_law_open_api_2026_05.py:199:            "name": "국가법령정보 공동활용 LAW OPEN DATA",
+scripts/probe_korean_law_open_api_2026_05.py:217:        result["message"] = "Set LAW_API_OC or LAW_API_KEY in Codespaces secrets/env before live probing."
