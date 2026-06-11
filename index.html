@@ -11326,15 +11326,11 @@ body.searched .hero-container::before {
 }
 :root[data-theme="archive_diary"] body:not(.searched) .ft { background: #fff; color: var(--k-ink); font-weight: 600; }
 
-/* ── Scroll-entry spring pop (visual only; safe without JS) ──────────────── */
+/* ── Scroll-entry spring easing ──────────────────────────────────────────
+   (The bundle's IntersectionObserver scroll-pop layer was not ported
+   — its driver JS is out of scope — so only the working data-reveal easing
+   override is kept.) */
 @media (prefers-reduced-motion: no-preference) {
-  html.k-io:root[data-theme="archive_diary"] body:not(.searched) .k-pop-watch {
-    opacity: 0; transform: translateY(22px) scale(0.96);
-  }
-  html.k-io:root[data-theme="archive_diary"] body:not(.searched) .k-pop-watch.k-in {
-    opacity: 1; transform: translateY(0) scale(1);
-    transition: opacity 0.45s ease, transform 0.6s var(--k-spring);
-  }
   /* existing data-reveal system rides the spring in Kitsch */
   :root[data-theme="archive_diary"] body:not(.searched) [data-reveal] {
     transition-timing-function: var(--k-spring) !important;
