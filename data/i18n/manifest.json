@@ -1,0 +1,38 @@
+{
+  "defaultLocale": "ko",
+  "canonicalLocale": "ko",
+  "supportedLocales": [
+    "ko",
+    "en",
+    "zh-CN"
+  ],
+  "localeAliases": {
+    "zh": "zh-CN",
+    "zhHant": "zh-CN"
+  },
+  "pendingLocales": [
+    "ja",
+    "af",
+    "fr",
+    "id",
+    "it",
+    "hi",
+    "ne",
+    "es",
+    "esLatam",
+    "th",
+    "tl",
+    "vi",
+    "km",
+    "ar",
+    "mn",
+    "fa",
+    "ru"
+  ],
+  "files": {
+    "ko": "ko.json",
+    "en": "en.json",
+    "zh-CN": "zh-CN.json"
+  },
+  "notes": "PR A supports ko, en, and zh-CN first. Older locale codes remain selectable as pending/partial and fall back to Korean until validated packs are added."
+}
