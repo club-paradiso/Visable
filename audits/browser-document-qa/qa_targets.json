@@ -1,0 +1,4083 @@
+{
+  "generatedAt": "2026-06-11T05:12:53.245Z",
+  "topLevelCount": 42,
+  "targetCount": 422,
+  "targets": [
+    {
+      "kind": "topLevel",
+      "code": "B-1",
+      "parentCode": "B-1",
+      "title": "사증면제협정",
+      "category": "short",
+      "query": "B-1",
+      "path": "record:B-1"
+    },
+    {
+      "kind": "subcode",
+      "code": "B-1-1",
+      "parentCode": "B-1",
+      "title": "B-1 일반여권 유효 67개국",
+      "category": "short",
+      "query": "B-1-1",
+      "path": "record:B-1.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "B-1-2",
+      "parentCode": "B-1",
+      "title": "B-1 일시정지 3개국",
+      "category": "short",
+      "query": "B-1-2",
+      "path": "record:B-1.subcodes[1]"
+    },
+    {
+      "kind": "procedure",
+      "code": "B-1:extension",
+      "parentCode": "B-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "short",
+      "query": "B-1",
+      "path": "record:B-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "B-1:registration",
+      "parentCode": "B-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "short",
+      "query": "B-1",
+      "path": "record:B-1.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "B-2",
+      "parentCode": "B-2",
+      "title": "관광통과·무사증",
+      "category": "short",
+      "query": "B-2",
+      "path": "record:B-2"
+    },
+    {
+      "kind": "subcode",
+      "code": "B-2-1",
+      "parentCode": "B-2",
+      "title": "일반 무사증 (45개국·지역)",
+      "category": "short",
+      "query": "B-2-1",
+      "path": "record:B-2.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "B-2-2",
+      "parentCode": "B-2",
+      "title": "제주 무사증 입국",
+      "category": "short",
+      "query": "B-2-2",
+      "path": "record:B-2.subcodes[1]"
+    },
+    {
+      "kind": "procedure",
+      "code": "B-2:extension",
+      "parentCode": "B-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "short",
+      "query": "B-2",
+      "path": "record:B-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "B-2:registration",
+      "parentCode": "B-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "short",
+      "query": "B-2",
+      "path": "record:B-2.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "C-3",
+      "parentCode": "C-3",
+      "title": "단기방문",
+      "category": "short",
+      "query": "C-3",
+      "path": "record:C-3"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-1",
+      "parentCode": "C-3",
+      "title": "단기일반(친족)",
+      "category": "short",
+      "query": "C-3-1",
+      "path": "record:C-3.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-2",
+      "parentCode": "C-3",
+      "title": "단체관광",
+      "category": "short",
+      "query": "C-3-2",
+      "path": "record:C-3.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-3",
+      "parentCode": "C-3",
+      "title": "의료관광",
+      "category": "short",
+      "query": "C-3-3",
+      "path": "record:C-3.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-4",
+      "parentCode": "C-3",
+      "title": "일반상용",
+      "category": "short",
+      "query": "C-3-4",
+      "path": "record:C-3.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-5",
+      "parentCode": "C-3",
+      "title": "협정단기상용",
+      "category": "short",
+      "query": "C-3-5",
+      "path": "record:C-3.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-6",
+      "parentCode": "C-3",
+      "title": "단기상용",
+      "category": "short",
+      "query": "C-3-6",
+      "path": "record:C-3.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-8",
+      "parentCode": "C-3",
+      "title": "동포방문",
+      "category": "short",
+      "query": "C-3-8",
+      "path": "record:C-3.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-9",
+      "parentCode": "C-3",
+      "title": "일반관광",
+      "category": "short",
+      "query": "C-3-9",
+      "path": "record:C-3.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-10",
+      "parentCode": "C-3",
+      "title": "순수환승",
+      "category": "short",
+      "query": "C-3-10",
+      "path": "record:C-3.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-7",
+      "parentCode": "C-3",
+      "title": "도착관광",
+      "category": "short",
+      "query": "C-3-7",
+      "path": "record:C-3.subcodes[9]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-3-11",
+      "parentCode": "C-3",
+      "title": "교대선원 (폐지)",
+      "category": "short",
+      "query": "C-3-11",
+      "path": "record:C-3.subcodes[10]"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-3:visaIssuance",
+      "parentCode": "C-3",
+      "procedureKey": "visaIssuance",
+      "title": "사증발급",
+      "category": "short",
+      "query": "C-3",
+      "path": "record:C-3.procedures.visaIssuance"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-3:extension",
+      "parentCode": "C-3",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "short",
+      "query": "C-3",
+      "path": "record:C-3.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-3:registration",
+      "parentCode": "C-3",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "short",
+      "query": "C-3",
+      "path": "record:C-3.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "C-4",
+      "parentCode": "C-4",
+      "title": "단기취업",
+      "category": "short",
+      "query": "C-4",
+      "path": "record:C-4"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-4-1",
+      "parentCode": "C-4",
+      "title": "계절근로 단기취업 — MOU 체결 외국지자체, 농업 (2025년 발급중단)",
+      "category": "short",
+      "query": "C-4-1",
+      "path": "record:C-4.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-4-2",
+      "parentCode": "C-4",
+      "title": "계절근로 단기취업 — 결혼이민자 추천 친척, 농업 (2025년 발급중단)",
+      "category": "short",
+      "query": "C-4-2",
+      "path": "record:C-4.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-4-3",
+      "parentCode": "C-4",
+      "title": "계절근로 단기취업 — MOU 체결 외국지자체, 어업 (2025년 발급중단)",
+      "category": "short",
+      "query": "C-4-3",
+      "path": "record:C-4.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-4-4",
+      "parentCode": "C-4",
+      "title": "계절근로 단기취업 — 결혼이민자 추천 친척, 어업 (2025년 발급중단)",
+      "category": "short",
+      "query": "C-4-4",
+      "path": "record:C-4.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "C-4-5",
+      "parentCode": "C-4",
+      "title": "계절근로 외 단기취업",
+      "category": "short",
+      "query": "C-4-5",
+      "path": "record:C-4.subcodes[4]"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-4:extension",
+      "parentCode": "C-4",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "short",
+      "query": "C-4",
+      "path": "record:C-4.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-4:registration",
+      "parentCode": "C-4",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "short",
+      "query": "C-4",
+      "path": "record:C-4.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-1",
+      "parentCode": "D-1",
+      "title": "문화예술",
+      "category": "study",
+      "query": "D-1",
+      "path": "record:D-1"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-1-00",
+      "parentCode": "D-1",
+      "title": "문화예술연수",
+      "category": "study",
+      "query": "D-1-00",
+      "path": "record:D-1.subcodes[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-1:extension",
+      "parentCode": "D-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-1",
+      "path": "record:D-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-1:registration",
+      "parentCode": "D-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "study",
+      "query": "D-1",
+      "path": "record:D-1.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-1:reentry",
+      "parentCode": "D-1",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "study",
+      "query": "D-1",
+      "path": "record:D-1.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-2",
+      "parentCode": "D-2",
+      "title": "유학",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-1",
+      "parentCode": "D-2",
+      "title": "전문학사과정",
+      "category": "study",
+      "query": "D-2-1",
+      "path": "record:D-2.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-2",
+      "parentCode": "D-2",
+      "title": "학사과정",
+      "category": "study",
+      "query": "D-2-2",
+      "path": "record:D-2.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-3",
+      "parentCode": "D-2",
+      "title": "석사과정",
+      "category": "study",
+      "query": "D-2-3",
+      "path": "record:D-2.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-4",
+      "parentCode": "D-2",
+      "title": "박사과정",
+      "category": "study",
+      "query": "D-2-4",
+      "path": "record:D-2.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-5",
+      "parentCode": "D-2",
+      "title": "연구과정",
+      "category": "study",
+      "query": "D-2-5",
+      "path": "record:D-2.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-6",
+      "parentCode": "D-2",
+      "title": "교환학생",
+      "category": "study",
+      "query": "D-2-6",
+      "path": "record:D-2.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-7",
+      "parentCode": "D-2",
+      "title": "일-학습연계 유학",
+      "category": "study",
+      "query": "D-2-7",
+      "path": "record:D-2.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-2-8",
+      "parentCode": "D-2",
+      "title": "방문학생",
+      "category": "study",
+      "query": "D-2-8",
+      "path": "record:D-2.subcodes[7]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:statusChange",
+      "parentCode": "D-2",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.statusChange"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:extension",
+      "parentCode": "D-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:registration",
+      "parentCode": "D-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:partTimeWork",
+      "parentCode": "D-2",
+      "procedureKey": "partTimeWork",
+      "title": "시간제취업",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.partTimeWork"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:reentry",
+      "parentCode": "D-2",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-2:schoolChange",
+      "parentCode": "D-2",
+      "procedureKey": "schoolChange",
+      "title": "학교변경",
+      "category": "study",
+      "query": "D-2",
+      "path": "record:D-2.procedures.schoolChange"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-3",
+      "parentCode": "D-3",
+      "title": "기술연수",
+      "category": "study",
+      "query": "D-3",
+      "path": "record:D-3"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-3-11",
+      "parentCode": "D-3",
+      "title": "해외직접기술연수",
+      "category": "study",
+      "query": "D-3-11",
+      "path": "record:D-3.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-3-12",
+      "parentCode": "D-3",
+      "title": "기술수출연수",
+      "category": "study",
+      "query": "D-3-12",
+      "path": "record:D-3.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-3-13",
+      "parentCode": "D-3",
+      "title": "플랜트수출연수",
+      "category": "study",
+      "query": "D-3-13",
+      "path": "record:D-3.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-3-1",
+      "parentCode": "D-3",
+      "title": "구 D-3-1 자격 등록자 (해외투자/기술수출/산업설비, 레거시)",
+      "category": "study",
+      "query": "D-3-1",
+      "path": "record:D-3.subcodes[3]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-3:extension",
+      "parentCode": "D-3",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-3",
+      "path": "record:D-3.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-3:registration",
+      "parentCode": "D-3",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "study",
+      "query": "D-3",
+      "path": "record:D-3.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-4",
+      "parentCode": "D-4",
+      "title": "일반연수",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-1",
+      "parentCode": "D-4",
+      "title": "대학부설어학원",
+      "category": "study",
+      "query": "D-4-1",
+      "path": "record:D-4.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-2",
+      "parentCode": "D-4",
+      "title": "기타기관연수",
+      "category": "study",
+      "query": "D-4-2",
+      "path": "record:D-4.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-2K",
+      "parentCode": "D-4",
+      "title": "기업 맞춤형 인턴십(K-Trainee)",
+      "category": "study",
+      "query": "D-4-2K",
+      "path": "record:D-4.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-3",
+      "parentCode": "D-4",
+      "title": "초중고생연수",
+      "category": "study",
+      "query": "D-4-3",
+      "path": "record:D-4.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-5",
+      "parentCode": "D-4",
+      "title": "한식조리연수",
+      "category": "study",
+      "query": "D-4-5",
+      "path": "record:D-4.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-6",
+      "parentCode": "D-4",
+      "title": "사설기관연수",
+      "category": "study",
+      "query": "D-4-6",
+      "path": "record:D-4.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-4-7",
+      "parentCode": "D-4",
+      "title": "외국어연수",
+      "category": "study",
+      "query": "D-4-7",
+      "path": "record:D-4.subcodes[6]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4:extension",
+      "parentCode": "D-4",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4:registration",
+      "parentCode": "D-4",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4:reentry",
+      "parentCode": "D-4",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4:statusChange",
+      "parentCode": "D-4",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-4:statusChange:d-4-1-7-language-training-status-change",
+      "parentCode": "D-4",
+      "procedureKey": "statusChange",
+      "variantId": "d-4-1-7-language-training-status-change",
+      "title": "어학연수(D-4-1·D-4-7) 체류자격 변경허가",
+      "category": "study",
+      "query": "D-4",
+      "path": "record:D-4.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-4-2",
+      "parentCode": "D-4",
+      "procedureKey": "statusChange",
+      "variantId": "d-4-2-graduate-training-status-change",
+      "title": "졸업생 일반연수(D-4-2) 체류자격 변경허가",
+      "category": "study",
+      "query": "D-4-2",
+      "path": "record:D-4.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-4-3",
+      "parentCode": "D-4",
+      "procedureKey": "statusChange",
+      "variantId": "d-4-3-school-student-status-change",
+      "title": "고등학교 이하 외국인유학생(D-4-3) 체류자격 변경허가",
+      "category": "study",
+      "query": "D-4-3",
+      "path": "record:D-4.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-4-1",
+      "parentCode": "D-4-1",
+      "title": "한국어연수 (대학부설어학원)",
+      "category": "study",
+      "query": "D-4-1",
+      "path": "record:D-4-1"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4-1:extension",
+      "parentCode": "D-4-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-4-1",
+      "path": "record:D-4-1.procedures.extension"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-7",
+      "parentCode": "D-7",
+      "title": "주재",
+      "category": "work",
+      "query": "D-7",
+      "path": "record:D-7"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-7-1",
+      "parentCode": "D-7",
+      "title": "외국기업 주재",
+      "category": "work",
+      "query": "D-7-1",
+      "path": "record:D-7.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-7-2",
+      "parentCode": "D-7",
+      "title": "내국기업 주재",
+      "category": "work",
+      "query": "D-7-2",
+      "path": "record:D-7.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-7-91",
+      "parentCode": "D-7",
+      "title": "FTA전근",
+      "category": "work",
+      "query": "D-7-91",
+      "path": "record:D-7.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-7-92",
+      "parentCode": "D-7",
+      "title": "FTA계약",
+      "category": "work",
+      "query": "D-7-92",
+      "path": "record:D-7.subcodes[3]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-7:extension",
+      "parentCode": "D-7",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "D-7",
+      "path": "record:D-7.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-7:registration",
+      "parentCode": "D-7",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "D-7",
+      "path": "record:D-7.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-7:reentry",
+      "parentCode": "D-7",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "D-7",
+      "path": "record:D-7.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-8",
+      "parentCode": "D-8",
+      "title": "기업투자",
+      "category": "invest",
+      "query": "D-8",
+      "path": "record:D-8"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-1",
+      "parentCode": "D-8",
+      "title": "법인에 투자",
+      "category": "invest",
+      "query": "D-8-1",
+      "path": "record:D-8.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-2",
+      "parentCode": "D-8",
+      "title": "벤처기업",
+      "category": "invest",
+      "query": "D-8-2",
+      "path": "record:D-8.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-3",
+      "parentCode": "D-8",
+      "title": "개인기업투자",
+      "category": "invest",
+      "query": "D-8-3",
+      "path": "record:D-8.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-4",
+      "parentCode": "D-8",
+      "title": "기술창업",
+      "category": "invest",
+      "query": "D-8-4",
+      "path": "record:D-8.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-91",
+      "parentCode": "D-8",
+      "title": "FTA전근",
+      "category": "invest",
+      "query": "D-8-91",
+      "path": "record:D-8.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-8-4S",
+      "parentCode": "D-8",
+      "title": "스타트업 코리아 특별비자 (기술창업 특례)",
+      "category": "invest",
+      "query": "D-8-4S",
+      "path": "record:D-8.subcodes[5]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-8:extension",
+      "parentCode": "D-8",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "invest",
+      "query": "D-8",
+      "path": "record:D-8.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-8:registration",
+      "parentCode": "D-8",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "invest",
+      "query": "D-8",
+      "path": "record:D-8.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-8:reentry",
+      "parentCode": "D-8",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "invest",
+      "query": "D-8",
+      "path": "record:D-8.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-8:statusChange",
+      "parentCode": "D-8",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "invest",
+      "query": "D-8",
+      "path": "record:D-8.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-8-1",
+      "parentCode": "D-8",
+      "procedureKey": "statusChange",
+      "variantId": "d-8-1-corporate-investment-status-change",
+      "title": "법인 투자(D-8-1) 체류자격 변경허가",
+      "category": "invest",
+      "query": "D-8-1",
+      "path": "record:D-8.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-8-2",
+      "parentCode": "D-8",
+      "procedureKey": "statusChange",
+      "variantId": "d-8-2-venture-investment-status-change",
+      "title": "벤처 투자(D-8-2) 체류자격 변경허가",
+      "category": "invest",
+      "query": "D-8-2",
+      "path": "record:D-8.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-8-3",
+      "parentCode": "D-8",
+      "procedureKey": "statusChange",
+      "variantId": "d-8-3-individual-enterprise-status-change",
+      "title": "개인기업 투자(D-8-3) 체류자격 변경허가",
+      "category": "invest",
+      "query": "D-8-3",
+      "path": "record:D-8.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-8-4",
+      "parentCode": "D-8",
+      "procedureKey": "statusChange",
+      "variantId": "d-8-4-tech-startup-status-change",
+      "title": "기술창업(D-8-4) 체류자격 변경허가",
+      "category": "invest",
+      "query": "D-8-4",
+      "path": "record:D-8.procedures.statusChange.variants[3]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-9",
+      "parentCode": "D-9",
+      "title": "무역경영",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-9-1",
+      "parentCode": "D-9",
+      "title": "무역고유거래",
+      "category": "work",
+      "query": "D-9-1",
+      "path": "record:D-9.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-9-2",
+      "parentCode": "D-9",
+      "title": "수출설비",
+      "category": "work",
+      "query": "D-9-2",
+      "path": "record:D-9.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-9-3",
+      "parentCode": "D-9",
+      "title": "선박설비",
+      "category": "work",
+      "query": "D-9-3",
+      "path": "record:D-9.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-9-4",
+      "parentCode": "D-9",
+      "title": "경영영리사업",
+      "category": "work",
+      "query": "D-9-4",
+      "path": "record:D-9.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-9-5",
+      "parentCode": "D-9",
+      "title": "유학생 무역경영자",
+      "category": "work",
+      "query": "D-9-5",
+      "path": "record:D-9.subcodes[4]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-9:extension",
+      "parentCode": "D-9",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-9:registration",
+      "parentCode": "D-9",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-9:statusChange",
+      "parentCode": "D-9",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-9-1",
+      "parentCode": "D-9",
+      "procedureKey": "statusChange",
+      "variantId": "d-9-1-status-change",
+      "title": "무역업(D-9-1) 체류자격 변경허가",
+      "category": "work",
+      "query": "D-9-1",
+      "path": "record:D-9.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-9",
+      "parentCode": "D-9",
+      "procedureKey": "statusChange",
+      "variantId": "d-9-equipment-specialist-status-change",
+      "title": "산업설비·선박건조 필수전문인력(D-9) 체류자격 변경허가",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-9",
+      "parentCode": "D-9",
+      "procedureKey": "statusChange",
+      "variantId": "d-9-foreign-sole-proprietor-status-change",
+      "title": "외국인 개인사업자(D-9) 체류자격 변경허가",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-9:reentry",
+      "parentCode": "D-9",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "D-9",
+      "path": "record:D-9.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-10",
+      "parentCode": "D-10",
+      "title": "구직",
+      "category": "work",
+      "query": "D-10",
+      "path": "record:D-10"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-10-1",
+      "parentCode": "D-10",
+      "title": "구직활동",
+      "category": "work",
+      "query": "D-10-1",
+      "path": "record:D-10.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-10-2",
+      "parentCode": "D-10",
+      "title": "기술창업활동",
+      "category": "work",
+      "query": "D-10-2",
+      "path": "record:D-10.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-10-3",
+      "parentCode": "D-10",
+      "title": "첨단기술인턴",
+      "category": "work",
+      "query": "D-10-3",
+      "path": "record:D-10.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "D-10-T",
+      "parentCode": "D-10",
+      "title": "최우수인재 구직",
+      "category": "work",
+      "query": "D-10-T",
+      "path": "record:D-10.subcodes[3]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-10:extension",
+      "parentCode": "D-10",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "D-10",
+      "path": "record:D-10.procedures.extension"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-1",
+      "parentCode": "D-10",
+      "procedureKey": "extension",
+      "variantId": "d-10-1-points-extension",
+      "title": "D-10-1 점수제 구직 체류기간 연장",
+      "category": "work",
+      "query": "D-10-1",
+      "path": "record:D-10.procedures.extension.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-2",
+      "parentCode": "D-10",
+      "procedureKey": "extension",
+      "variantId": "d-10-2-tech-startup-extension",
+      "title": "D-10-2 기술창업준비 체류기간 연장",
+      "category": "work",
+      "query": "D-10-2",
+      "path": "record:D-10.procedures.extension.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-3",
+      "parentCode": "D-10",
+      "procedureKey": "extension",
+      "variantId": "d-10-3-high-tech-intern-extension",
+      "title": "D-10-3 첨단기술 인턴 체류기간 연장",
+      "category": "work",
+      "query": "D-10-3",
+      "path": "record:D-10.procedures.extension.variants[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-10:registration",
+      "parentCode": "D-10",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "D-10",
+      "path": "record:D-10.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-10:statusChange",
+      "parentCode": "D-10",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "D-10",
+      "path": "record:D-10.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-1",
+      "parentCode": "D-10",
+      "procedureKey": "statusChange",
+      "variantId": "d-10-1-points-status-change",
+      "title": "D-10-1 점수제 구직 체류자격 변경",
+      "category": "work",
+      "query": "D-10-1",
+      "path": "record:D-10.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-1",
+      "parentCode": "D-10",
+      "procedureKey": "statusChange",
+      "variantId": "d-10-1-first-graduate-status-change",
+      "title": "D-10-1 국내 졸업 후 최초 구직 체류자격 변경",
+      "category": "work",
+      "query": "D-10-1",
+      "path": "record:D-10.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-2",
+      "parentCode": "D-10",
+      "procedureKey": "statusChange",
+      "variantId": "d-10-2-tech-startup-status-change",
+      "title": "D-10-2 기술창업준비 체류자격 변경",
+      "category": "work",
+      "query": "D-10-2",
+      "path": "record:D-10.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "D-10-3",
+      "parentCode": "D-10",
+      "procedureKey": "statusChange",
+      "variantId": "d-10-3-high-tech-intern-status-change",
+      "title": "D-10-3 첨단기술 인턴 체류자격 변경",
+      "category": "work",
+      "query": "D-10-3",
+      "path": "record:D-10.procedures.statusChange.variants[3]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-1",
+      "parentCode": "E-1",
+      "title": "교수",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-1:extension",
+      "parentCode": "E-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-1:registration",
+      "parentCode": "E-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-1:statusChange",
+      "parentCode": "E-1",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-1",
+      "parentCode": "E-1",
+      "procedureKey": "statusChange",
+      "variantId": "e-1-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 교수(E-1) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-1:statusChange:e-1-professional-spouse-status-change",
+      "parentCode": "E-1",
+      "procedureKey": "statusChange",
+      "variantId": "e-1-professional-spouse-status-change",
+      "title": "전문외국인력 배우자(F-3)의 교수(E-1) 등 전문직 체류자격 변경허가",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-1",
+      "parentCode": "E-1",
+      "procedureKey": "statusChange",
+      "variantId": "e-1-science-graduate-status-change",
+      "title": "이공계 졸업 유학생(석사 이상)의 교수(E-1) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-1",
+      "path": "record:E-1.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-2",
+      "parentCode": "E-2",
+      "title": "회화지도",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-2-1",
+      "parentCode": "E-2",
+      "title": "일반회화강사",
+      "category": "work",
+      "query": "E-2-1",
+      "path": "record:E-2.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-2-2",
+      "parentCode": "E-2",
+      "title": "학교보조교사",
+      "category": "work",
+      "query": "E-2-2",
+      "path": "record:E-2.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-2-91",
+      "parentCode": "E-2",
+      "title": "FTA영어",
+      "category": "work",
+      "query": "E-2-91",
+      "path": "record:E-2.subcodes[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-2:extension",
+      "parentCode": "E-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-2:registration",
+      "parentCode": "E-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-2:reentry",
+      "parentCode": "E-2",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-2:workplaceChange",
+      "parentCode": "E-2",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-2",
+      "parentCode": "E-2",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-2-registered-workplace-change",
+      "title": "회화지도(E-2) 등록외국인 근무처 변경·추가 신고",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-2:statusChange",
+      "parentCode": "E-2",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-2",
+      "parentCode": "E-2",
+      "procedureKey": "statusChange",
+      "variantId": "e-2-registered-status-change",
+      "title": "회화지도(E-2) 요건 등록외국인 체류자격 변경허가",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-2",
+      "parentCode": "E-2",
+      "procedureKey": "statusChange",
+      "variantId": "e-2-education-office-instructor-status-change",
+      "title": "교육부(시·도교육감) 초청 영어강사 회화지도(E-2) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-2",
+      "parentCode": "E-2",
+      "procedureKey": "statusChange",
+      "variantId": "e-2-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 회화지도(E-2) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-2",
+      "path": "record:E-2.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-3",
+      "parentCode": "E-3",
+      "title": "연구",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-3:extension",
+      "parentCode": "E-3",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-3:registration",
+      "parentCode": "E-3",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-3:reentry",
+      "parentCode": "E-3",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-3:workplaceChange",
+      "parentCode": "E-3",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-3",
+      "parentCode": "E-3",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-3-registered-workplace-change",
+      "title": "연구(E-3) 등록외국인 근무처 변경·추가 신고",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-3:statusChange",
+      "parentCode": "E-3",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-3",
+      "parentCode": "E-3",
+      "procedureKey": "statusChange",
+      "variantId": "e-3-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 연구(E-3) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-3:statusChange:e-3-a3-sofa-status-change",
+      "parentCode": "E-3",
+      "procedureKey": "statusChange",
+      "variantId": "e-3-a3-sofa-status-change",
+      "title": "협정(A-3) 자격자의 연구(E-3) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-3",
+      "path": "record:E-3.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-4",
+      "parentCode": "E-4",
+      "title": "기술지도",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-4:extension",
+      "parentCode": "E-4",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-4:registration",
+      "parentCode": "E-4",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-4:reentry",
+      "parentCode": "E-4",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-4:workplaceChange",
+      "parentCode": "E-4",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-4",
+      "parentCode": "E-4",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-4-registered-workplace-change",
+      "title": "기술지도(E-4) 등록외국인 근무처 변경·추가 신고",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-4:statusChange",
+      "parentCode": "E-4",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-4",
+      "parentCode": "E-4",
+      "procedureKey": "statusChange",
+      "variantId": "e-4-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 기술지도(E-4) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-4",
+      "path": "record:E-4.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-5",
+      "parentCode": "E-5",
+      "title": "전문직업",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-5:extension",
+      "parentCode": "E-5",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-5:registration",
+      "parentCode": "E-5",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-5:reentry",
+      "parentCode": "E-5",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-5:workplaceChange",
+      "parentCode": "E-5",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-5",
+      "parentCode": "E-5",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-5-registered-workplace-change",
+      "title": "전문직업(E-5) 등록외국인 근무처 변경·추가 신고",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-5:statusChange",
+      "parentCode": "E-5",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-5",
+      "parentCode": "E-5",
+      "procedureKey": "statusChange",
+      "variantId": "e-5-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 전문직업(E-5) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-5",
+      "path": "record:E-5.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-6",
+      "parentCode": "E-6",
+      "title": "예술흥행",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-6-1",
+      "parentCode": "E-6",
+      "title": "예술연예",
+      "category": "work",
+      "query": "E-6-1",
+      "path": "record:E-6.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-6-2",
+      "parentCode": "E-6",
+      "title": "호텔유흥",
+      "category": "work",
+      "query": "E-6-2",
+      "path": "record:E-6.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-6-3",
+      "parentCode": "E-6",
+      "title": "운동",
+      "category": "work",
+      "query": "E-6-3",
+      "path": "record:E-6.subcodes[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:extension",
+      "parentCode": "E-6",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:registration",
+      "parentCode": "E-6",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:reentry",
+      "parentCode": "E-6",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:activitiesOutsideStatus",
+      "parentCode": "E-6",
+      "procedureKey": "activitiesOutsideStatus",
+      "title": "자격외활동",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.activitiesOutsideStatus"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-6:activitiesOutsideStatus:e-6-broadcast-film-model-activities-outside-status",
+      "parentCode": "E-6",
+      "procedureKey": "activitiesOutsideStatus",
+      "variantId": "e-6-broadcast-film-model-activities-outside-status",
+      "title": "방송·영화·모델 활동 체류자격외활동허가",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.activitiesOutsideStatus.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:workplaceChange",
+      "parentCode": "E-6",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-6:workplaceChange:e-6-1-3-workplace-change",
+      "parentCode": "E-6",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-6-1-3-workplace-change",
+      "title": "예술흥행(E-6-1·E-6-3) 근무처 변경·추가 신고",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-6-2",
+      "parentCode": "E-6",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-6-2-employer-workplace-change",
+      "title": "호텔 등 관광유흥업소 예술흥행(E-6-2) 고용주 변경·추가허가",
+      "category": "work",
+      "query": "E-6-2",
+      "path": "record:E-6.procedures.workplaceChange.variants[1]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-6:statusChange",
+      "parentCode": "E-6",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-6:statusChange:e-6-d2-d10-status-change",
+      "parentCode": "E-6",
+      "procedureKey": "statusChange",
+      "variantId": "e-6-d2-d10-status-change",
+      "title": "유학(D-2)·구직(D-10) → 예술흥행(E-6) 체류자격 변경허가",
+      "category": "work",
+      "query": "E-6",
+      "path": "record:E-6.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-7",
+      "parentCode": "E-7",
+      "title": "특정활동",
+      "category": "work",
+      "query": "E-7",
+      "path": "record:E-7"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-1",
+      "parentCode": "E-7",
+      "title": "전문인력(67개 직종)",
+      "category": "work",
+      "query": "E-7-1",
+      "path": "record:E-7.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-2",
+      "parentCode": "E-7",
+      "title": "준전문인력(10개 직종)",
+      "category": "work",
+      "query": "E-7-2",
+      "path": "record:E-7.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-3",
+      "parentCode": "E-7",
+      "title": "일반기능인력(14개 직종)",
+      "category": "work",
+      "query": "E-7-3",
+      "path": "record:E-7.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-4",
+      "parentCode": "E-7",
+      "title": "숙련기능인력(K-point E74, 점수제)",
+      "category": "work",
+      "query": "E-7-4",
+      "path": "record:E-7.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-S",
+      "parentCode": "E-7",
+      "title": "네거티브 방식 전문인력",
+      "category": "work",
+      "query": "E-7-S",
+      "path": "record:E-7.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-Y",
+      "parentCode": "E-7",
+      "title": "국내성장인력",
+      "category": "work",
+      "query": "E-7-Y",
+      "path": "record:E-7.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-T",
+      "parentCode": "E-7",
+      "title": "최우수인재 특정활동",
+      "category": "work",
+      "query": "E-7-T",
+      "path": "record:E-7.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-91",
+      "parentCode": "E-7",
+      "title": "FTA독립전문가",
+      "category": "work",
+      "query": "E-7-91",
+      "path": "record:E-7.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-S1",
+      "parentCode": "E-7",
+      "title": "네거티브 방식 전문인력 — 고소득자",
+      "category": "work",
+      "query": "E-7-S1",
+      "path": "record:E-7.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-S2",
+      "parentCode": "E-7",
+      "title": "네거티브 방식 전문인력 — 첨단산업분야 종사(예정)자",
+      "category": "work",
+      "query": "E-7-S2",
+      "path": "record:E-7.subcodes[9]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-4R",
+      "parentCode": "E-7",
+      "title": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "category": "work",
+      "query": "E-7-4R",
+      "path": "record:E-7.subcodes[10]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-7:extension",
+      "parentCode": "E-7",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-7",
+      "path": "record:E-7.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-7:registration",
+      "parentCode": "E-7",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-7",
+      "path": "record:E-7.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-7:workplaceChange",
+      "parentCode": "E-7",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-7",
+      "path": "record:E-7.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-7",
+      "parentCode": "E-7",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-7-registered-workplace-change",
+      "title": "특정활동(E-7) 등록외국인 근무처 변경·추가 사후신고",
+      "category": "work",
+      "query": "E-7",
+      "path": "record:E-7.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-8",
+      "parentCode": "E-8",
+      "title": "계절근로",
+      "category": "work",
+      "query": "E-8",
+      "path": "record:E-8"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-1",
+      "parentCode": "E-8",
+      "title": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 농업",
+      "category": "work",
+      "query": "E-8-1",
+      "path": "record:E-8.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-2",
+      "parentCode": "E-8",
+      "title": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 농업",
+      "category": "work",
+      "query": "E-8-2",
+      "path": "record:E-8.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-3",
+      "parentCode": "E-8",
+      "title": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 어업",
+      "category": "work",
+      "query": "E-8-3",
+      "path": "record:E-8.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-4",
+      "parentCode": "E-8",
+      "title": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 어업",
+      "category": "work",
+      "query": "E-8-4",
+      "path": "record:E-8.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-5",
+      "parentCode": "E-8",
+      "title": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 농업",
+      "category": "work",
+      "query": "E-8-5",
+      "path": "record:E-8.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-6",
+      "parentCode": "E-8",
+      "title": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 어업",
+      "category": "work",
+      "query": "E-8-6",
+      "path": "record:E-8.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-7",
+      "parentCode": "E-8",
+      "title": "계절근로 — 유학생(D-2)의 부모, 농업",
+      "category": "work",
+      "query": "E-8-7",
+      "path": "record:E-8.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-8",
+      "parentCode": "E-8",
+      "title": "계절근로 — 유학생(D-2)의 부모, 어업",
+      "category": "work",
+      "query": "E-8-8",
+      "path": "record:E-8.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-8-99",
+      "parentCode": "E-8",
+      "title": "계절근로 — 언어소통 도우미 등 기타 보조 인력",
+      "category": "work",
+      "query": "E-8-99",
+      "path": "record:E-8.subcodes[8]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-8:extension",
+      "parentCode": "E-8",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-8",
+      "path": "record:E-8.procedures.extension"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-9",
+      "parentCode": "E-9",
+      "title": "비전문취업",
+      "category": "work",
+      "query": "E-9",
+      "path": "record:E-9"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-1",
+      "parentCode": "E-9",
+      "title": "제조업",
+      "category": "work",
+      "query": "E-9-1",
+      "path": "record:E-9.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-2",
+      "parentCode": "E-9",
+      "title": "건설업",
+      "category": "work",
+      "query": "E-9-2",
+      "path": "record:E-9.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-3",
+      "parentCode": "E-9",
+      "title": "농업",
+      "category": "work",
+      "query": "E-9-3",
+      "path": "record:E-9.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-4",
+      "parentCode": "E-9",
+      "title": "어업",
+      "category": "work",
+      "query": "E-9-4",
+      "path": "record:E-9.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-5",
+      "parentCode": "E-9",
+      "title": "서비스업",
+      "category": "work",
+      "query": "E-9-5",
+      "path": "record:E-9.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-9",
+      "parentCode": "E-9",
+      "title": "임업",
+      "category": "work",
+      "query": "E-9-9",
+      "path": "record:E-9.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-10",
+      "parentCode": "E-9",
+      "title": "광업",
+      "category": "work",
+      "query": "E-9-10",
+      "path": "record:E-9.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-R",
+      "parentCode": "E-9",
+      "title": "외국인등록 제출서류",
+      "category": "work",
+      "query": "E-9-R",
+      "path": "record:E-9.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-9-JS",
+      "parentCode": "E-9",
+      "title": "구직신청자 특례",
+      "category": "work",
+      "query": "E-9-JS",
+      "path": "record:E-9.subcodes[8]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-9:extension",
+      "parentCode": "E-9",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-9",
+      "path": "record:E-9.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-9:registration",
+      "parentCode": "E-9",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-9",
+      "path": "record:E-9.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-9:workplaceChange",
+      "parentCode": "E-9",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "work",
+      "query": "E-9",
+      "path": "record:E-9.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-9-3",
+      "parentCode": "E-9",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-9-3-agriculture-workplace-addition",
+      "title": "비전문취업(E-9-3) 농업분야 근무처 추가",
+      "category": "work",
+      "query": "E-9-3",
+      "path": "record:E-9.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "E-9",
+      "parentCode": "E-9",
+      "procedureKey": "workplaceChange",
+      "variantId": "e-9-standard-workplace-change",
+      "title": "비전문취업(E-9) 일반 사업장 변경허가",
+      "category": "work",
+      "query": "E-9",
+      "path": "record:E-9.procedures.workplaceChange.variants[1]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "E-10",
+      "parentCode": "E-10",
+      "title": "선원취업",
+      "category": "work",
+      "query": "E-10",
+      "path": "record:E-10"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-10-1",
+      "parentCode": "E-10",
+      "title": "내항선원",
+      "category": "work",
+      "query": "E-10-1",
+      "path": "record:E-10.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-10-2",
+      "parentCode": "E-10",
+      "title": "어선원",
+      "category": "work",
+      "query": "E-10-2",
+      "path": "record:E-10.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-10-3",
+      "parentCode": "E-10",
+      "title": "순항선원",
+      "category": "work",
+      "query": "E-10-3",
+      "path": "record:E-10.subcodes[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-10:extension",
+      "parentCode": "E-10",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "work",
+      "query": "E-10",
+      "path": "record:E-10.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "E-10:registration",
+      "parentCode": "E-10",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "work",
+      "query": "E-10",
+      "path": "record:E-10.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-1",
+      "parentCode": "F-1",
+      "title": "방문동거",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-3",
+      "parentCode": "F-1",
+      "title": "외교동거",
+      "category": "family",
+      "query": "F-1-3",
+      "path": "record:F-1.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-5",
+      "parentCode": "F-1",
+      "title": "결혼이민자 부모·가족",
+      "category": "family",
+      "query": "F-1-5",
+      "path": "record:F-1.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-9",
+      "parentCode": "F-1",
+      "title": "동포배우자 등",
+      "category": "family",
+      "query": "F-1-9",
+      "path": "record:F-1.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-13",
+      "parentCode": "F-1",
+      "title": "유학생부모",
+      "category": "family",
+      "query": "F-1-13",
+      "path": "record:F-1.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-21",
+      "parentCode": "F-1",
+      "title": "외교가사보조",
+      "category": "family",
+      "query": "F-1-21",
+      "path": "record:F-1.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-22",
+      "parentCode": "F-1",
+      "title": "고액가사보조",
+      "category": "family",
+      "query": "F-1-22",
+      "path": "record:F-1.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-23",
+      "parentCode": "F-1",
+      "title": "첨단가사보조",
+      "category": "family",
+      "query": "F-1-23",
+      "path": "record:F-1.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-24",
+      "parentCode": "F-1",
+      "title": "전문가사보조",
+      "category": "family",
+      "query": "F-1-24",
+      "path": "record:F-1.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-D",
+      "parentCode": "F-1",
+      "title": "디지털노마드(워케이션) 비자",
+      "category": "family",
+      "query": "F-1-D",
+      "path": "record:F-1.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-16",
+      "parentCode": "F-1",
+      "title": "난민인정자의 배우자 및 미성년 자녀 (방문동거)",
+      "category": "family",
+      "query": "F-1-16",
+      "path": "record:F-1.subcodes[9]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-1-52",
+      "parentCode": "F-1",
+      "title": "결혼이민자의 전혼관계 출생 미성년 자녀 (방문동거)",
+      "category": "family",
+      "query": "F-1-52",
+      "path": "record:F-1.subcodes[10]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-1:statusChange",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1-13",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "variantId": "f-1-13-status-change",
+      "title": "방문동거(F-1-13) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-1-13",
+      "path": "record:F-1.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1-6",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "variantId": "f-1-6-marriage-cleanup-status-change",
+      "title": "혼인단절 결혼이민자 가사정리(F-1-6) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-1-6",
+      "path": "record:F-1.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "variantId": "f-1-nationality-procedure-status-change",
+      "title": "국적취득절차 진행자 방문동거(F-1) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1-16",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "variantId": "f-1-16-refugee-family-status-change",
+      "title": "난민인정자 가족(F-1-16) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-1-16",
+      "path": "record:F-1.procedures.statusChange.variants[3]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1-52",
+      "parentCode": "F-1",
+      "procedureKey": "statusChange",
+      "variantId": "f-1-52-prior-marriage-child-status-change",
+      "title": "결혼이민자 전혼관계 출생 미성년 자녀(F-1-52) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-1-52",
+      "path": "record:F-1.procedures.statusChange.variants[4]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-1:extension",
+      "parentCode": "F-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-1:registration",
+      "parentCode": "F-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-1:statusGrant",
+      "parentCode": "F-1",
+      "procedureKey": "statusGrant",
+      "title": "체류자격 부여",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.statusGrant"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1:statusGrant:f-1-employment-parent-born-child-status-grant",
+      "parentCode": "F-1",
+      "procedureKey": "statusGrant",
+      "variantId": "f-1-employment-parent-born-child-status-grant",
+      "title": "취업계열 체류자격자 등의 국내출생 자녀 체류자격 부여",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.statusGrant.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-1:statusGrant:f-1-refugee-born-child-status-grant",
+      "parentCode": "F-1",
+      "procedureKey": "statusGrant",
+      "variantId": "f-1-refugee-born-child-status-grant",
+      "title": "난민인정자의 국내출생 미성년 자녀 체류자격 부여",
+      "category": "family",
+      "query": "F-1",
+      "path": "record:F-1.procedures.statusGrant.variants[1]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-2",
+      "parentCode": "F-2",
+      "title": "거주",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-2",
+      "parentCode": "F-2",
+      "title": "국민자녀",
+      "category": "family",
+      "query": "F-2-2",
+      "path": "record:F-2.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-3",
+      "parentCode": "F-2",
+      "title": "영주자가족",
+      "category": "family",
+      "query": "F-2-3",
+      "path": "record:F-2.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-7",
+      "parentCode": "F-2",
+      "title": "점수제 거주",
+      "category": "family",
+      "query": "F-2-7",
+      "path": "record:F-2.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-99",
+      "parentCode": "F-2",
+      "title": "기타 거주",
+      "category": "family",
+      "query": "F-2-99",
+      "path": "record:F-2.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-T",
+      "parentCode": "F-2",
+      "title": "최우수인재 거주",
+      "category": "family",
+      "query": "F-2-T",
+      "path": "record:F-2.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-7S",
+      "parentCode": "F-2",
+      "title": "K-STAR 거주 (과학기술 우수인재)",
+      "category": "family",
+      "query": "F-2-7S",
+      "path": "record:F-2.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-71",
+      "parentCode": "F-2",
+      "title": "K-STAR 거주자의 동반가족",
+      "category": "family",
+      "query": "F-2-71",
+      "path": "record:F-2.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-R",
+      "parentCode": "F-2",
+      "title": "지역특화형 우수인재 (지역우수인재)",
+      "category": "family",
+      "query": "F-2-R",
+      "path": "record:F-2.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-8",
+      "parentCode": "F-2",
+      "title": "관광·휴양시설 투자 거주",
+      "category": "family",
+      "query": "F-2-8",
+      "path": "record:F-2.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-81",
+      "parentCode": "F-2",
+      "title": "관광·휴양시설 투자자의 배우자·자녀 거주",
+      "category": "family",
+      "query": "F-2-81",
+      "path": "record:F-2.subcodes[9]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-2:extension",
+      "parentCode": "F-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-2:registration",
+      "parentCode": "F-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-2:statusChange",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2-2",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-2-national-minor-child-status-change",
+      "title": "국민의 미성년 외국인자녀(F-2-2) 거주 체류자격 변경허가",
+      "category": "family",
+      "query": "F-2-2",
+      "path": "record:F-2.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2:statusChange:f-2-permanent-resident-family-status-change",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-permanent-resident-family-status-change",
+      "title": "영주(F-5) 소지자의 배우자·미성년 자녀 거주 체류자격 변경허가",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2-7",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-7-point-based-talent-status-change",
+      "title": "F-2-7 점수제 우수인재 체류자격 변경",
+      "category": "family",
+      "query": "F-2-7",
+      "path": "record:F-2.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2-7S",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-7s-potential-talent-status-change",
+      "title": "F-2-7S 잠재적 우수인재 체류자격 변경",
+      "category": "family",
+      "query": "F-2-7S",
+      "path": "record:F-2.procedures.statusChange.variants[3]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2-8",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-8-tourism-investment-status-change",
+      "title": "F-2-8 관광·휴양시설 투자 거주자격 변경",
+      "category": "family",
+      "query": "F-2-8",
+      "path": "record:F-2.procedures.statusChange.variants[4]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-2:statusChange:f-2-12-13-14-public-interest-investment-status-change",
+      "parentCode": "F-2",
+      "procedureKey": "statusChange",
+      "variantId": "f-2-12-13-14-public-interest-investment-status-change",
+      "title": "F-2-12·13·14 공익사업 투자 거주자격 변경",
+      "category": "family",
+      "query": "F-2",
+      "path": "record:F-2.procedures.statusChange.variants[5]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-3",
+      "parentCode": "F-3",
+      "title": "동반",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-1",
+      "parentCode": "F-3",
+      "title": "동반 기본",
+      "category": "family",
+      "query": "F-3-1",
+      "path": "record:F-3.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-2",
+      "parentCode": "F-3",
+      "title": "소득요건(25.7.1 개편)",
+      "category": "family",
+      "query": "F-3-2",
+      "path": "record:F-3.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-3",
+      "parentCode": "F-3",
+      "title": "소득요건 면제",
+      "category": "family",
+      "query": "F-3-3",
+      "path": "record:F-3.subcodes[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:extension",
+      "parentCode": "F-3",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:registration",
+      "parentCode": "F-3",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:reentry",
+      "parentCode": "F-3",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.reentry"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:activitiesOutsideStatus",
+      "parentCode": "F-3",
+      "procedureKey": "activitiesOutsideStatus",
+      "title": "자격외활동",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.activitiesOutsideStatus"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-3:activitiesOutsideStatus:f-3-language-proofreader-activities-outside-status",
+      "parentCode": "F-3",
+      "procedureKey": "activitiesOutsideStatus",
+      "variantId": "f-3-language-proofreader-activities-outside-status",
+      "title": "동반(F-3) 외국어교열요원(E-7) 체류자격외활동허가",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.activitiesOutsideStatus.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-3:activitiesOutsideStatus:f-3-instructor-teacher-activities-outside-status",
+      "parentCode": "F-3",
+      "procedureKey": "activitiesOutsideStatus",
+      "variantId": "f-3-instructor-teacher-activities-outside-status",
+      "title": "동반(F-3) 외국어회화강사(E-2)·외국인학교교사(E-7) 체류자격외활동허가",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.activitiesOutsideStatus.variants[1]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:statusChange",
+      "parentCode": "F-3",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-3",
+      "parentCode": "F-3",
+      "procedureKey": "statusChange",
+      "variantId": "f-3-humanitarian-status-change",
+      "title": "인도적 고려 동반(F-3) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-3:statusGrant",
+      "parentCode": "F-3",
+      "procedureKey": "statusGrant",
+      "title": "체류자격 부여",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.statusGrant"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-3:statusGrant:f-3-born-child-status-grant",
+      "parentCode": "F-3",
+      "procedureKey": "statusGrant",
+      "variantId": "f-3-born-child-status-grant",
+      "title": "동반(F-3) 국내출생 자녀 체류자격 부여",
+      "category": "family",
+      "query": "F-3",
+      "path": "record:F-3.procedures.statusGrant.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-4",
+      "parentCode": "F-4",
+      "title": "재외동포",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-11",
+      "parentCode": "F-4",
+      "title": "재외동포 본인",
+      "category": "family",
+      "query": "F-4-11",
+      "path": "record:F-4.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-12",
+      "parentCode": "F-4",
+      "title": "직계비속",
+      "category": "family",
+      "query": "F-4-12",
+      "path": "record:F-4.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-13",
+      "parentCode": "F-4",
+      "title": "D·E계열 6개월↑",
+      "category": "family",
+      "query": "F-4-13",
+      "path": "record:F-4.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-14",
+      "parentCode": "F-4",
+      "title": "대학 졸업자",
+      "category": "family",
+      "query": "F-4-14",
+      "path": "record:F-4.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-15",
+      "parentCode": "F-4",
+      "title": "OECD영주자",
+      "category": "family",
+      "query": "F-4-15",
+      "path": "record:F-4.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-16",
+      "parentCode": "F-4",
+      "title": "법인대표 등",
+      "category": "family",
+      "query": "F-4-16",
+      "path": "record:F-4.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-17",
+      "parentCode": "F-4",
+      "title": "10만불 기업가",
+      "category": "family",
+      "query": "F-4-17",
+      "path": "record:F-4.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-18",
+      "parentCode": "F-4",
+      "title": "다국적기업 종사자",
+      "category": "family",
+      "query": "F-4-18",
+      "path": "record:F-4.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-19",
+      "parentCode": "F-4",
+      "title": "동포단체대표",
+      "category": "family",
+      "query": "F-4-19",
+      "path": "record:F-4.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-20",
+      "parentCode": "F-4",
+      "title": "공무원 등",
+      "category": "family",
+      "query": "F-4-20",
+      "path": "record:F-4.subcodes[9]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-21",
+      "parentCode": "F-4",
+      "title": "교원",
+      "category": "family",
+      "query": "F-4-21",
+      "path": "record:F-4.subcodes[10]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-25",
+      "parentCode": "F-4",
+      "title": "60세 이상자",
+      "category": "family",
+      "query": "F-4-25",
+      "path": "record:F-4.subcodes[11]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-30",
+      "parentCode": "F-4",
+      "title": "국내 초·중·고 재학 동포 자녀",
+      "category": "family",
+      "query": "F-4-30",
+      "path": "record:F-4.subcodes[12]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-4:extension",
+      "parentCode": "F-4",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.extension"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-4",
+      "parentCode": "F-4",
+      "procedureKey": "extension",
+      "variantId": "f-4-overseas-korean-extension",
+      "title": "F-4 재외동포 체류기간 연장",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.extension.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-4:registration",
+      "parentCode": "F-4",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.registration"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-4",
+      "parentCode": "F-4",
+      "procedureKey": "registration",
+      "variantId": "f-4-domestic-residence-report",
+      "title": "F-4 국내거소신고",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.registration.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-4:statusChange",
+      "parentCode": "F-4",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-4",
+      "parentCode": "F-4",
+      "procedureKey": "statusChange",
+      "variantId": "f-4-overseas-korean-status-change",
+      "title": "F-4 재외동포 국내 체류자격 변경",
+      "category": "family",
+      "query": "F-4",
+      "path": "record:F-4.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-5",
+      "parentCode": "F-5",
+      "title": "영주",
+      "category": "family",
+      "query": "F-5",
+      "path": "record:F-5"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-3",
+      "parentCode": "F-5",
+      "title": "결혼이민 영주",
+      "category": "family",
+      "query": "F-5-3",
+      "path": "record:F-5.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-5",
+      "parentCode": "F-5",
+      "title": "고액투자 영주",
+      "category": "family",
+      "query": "F-5-5",
+      "path": "record:F-5.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-11",
+      "parentCode": "F-5",
+      "title": "특정능력 영주",
+      "category": "family",
+      "query": "F-5-11",
+      "path": "record:F-5.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-16",
+      "parentCode": "F-5",
+      "title": "점수제 영주",
+      "category": "family",
+      "query": "F-5-16",
+      "path": "record:F-5.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-T",
+      "parentCode": "F-5",
+      "title": "최우수인재 영주",
+      "category": "family",
+      "query": "F-5-T",
+      "path": "record:F-5.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-S1",
+      "parentCode": "F-5",
+      "title": "K-STAR 영주 (과학기술 우수인재)",
+      "category": "family",
+      "query": "F-5-S1",
+      "path": "record:F-5.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-S2",
+      "parentCode": "F-5",
+      "title": "K-STAR 영주자의 동반가족",
+      "category": "family",
+      "query": "F-5-S2",
+      "path": "record:F-5.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-6R",
+      "parentCode": "F-5",
+      "title": "지역특화형 재외동포영주 (지역동포영주)",
+      "category": "family",
+      "query": "F-5-6R",
+      "path": "record:F-5.subcodes[7]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-5:extension",
+      "parentCode": "F-5",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-5",
+      "path": "record:F-5.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-5:registration",
+      "parentCode": "F-5",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-5",
+      "path": "record:F-5.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "F-6",
+      "parentCode": "F-6",
+      "title": "결혼이민",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-6-1",
+      "parentCode": "F-6",
+      "title": "국민배우자",
+      "category": "family",
+      "query": "F-6-1",
+      "path": "record:F-6.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-6-2",
+      "parentCode": "F-6",
+      "title": "자녀양육자",
+      "category": "family",
+      "query": "F-6-2",
+      "path": "record:F-6.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-6-3",
+      "parentCode": "F-6",
+      "title": "혼인단절자(배우자 사망)",
+      "category": "family",
+      "query": "F-6-3",
+      "path": "record:F-6.subcodes[2]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:visaIssuance",
+      "parentCode": "F-6",
+      "procedureKey": "visaIssuance",
+      "title": "사증발급",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.visaIssuance"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:extension",
+      "parentCode": "F-6",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.extension"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-1",
+      "parentCode": "F-6",
+      "procedureKey": "extension",
+      "variantId": "f-6-1-marriage-maintenance-extension",
+      "title": "F-6-1 혼인관계 유지 중 체류기간 연장",
+      "category": "family",
+      "query": "F-6-1",
+      "path": "record:F-6.procedures.extension.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-1",
+      "parentCode": "F-6",
+      "procedureKey": "extension",
+      "variantId": "f-6-1-separated-extension",
+      "title": "F-6-1 별거 중 체류기간 연장",
+      "category": "family",
+      "query": "F-6-1",
+      "path": "record:F-6.procedures.extension.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-1",
+      "parentCode": "F-6",
+      "procedureKey": "extension",
+      "variantId": "f-6-1-divorce-lawsuit-extension",
+      "title": "F-6-1 이혼소송 중 체류기간 연장",
+      "category": "family",
+      "query": "F-6-1",
+      "path": "record:F-6.procedures.extension.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-1",
+      "parentCode": "F-6",
+      "procedureKey": "extension",
+      "variantId": "f-6-1-spouse-missing-extension",
+      "title": "F-6-1 배우자 실종 중 체류기간 연장",
+      "category": "family",
+      "query": "F-6-1",
+      "path": "record:F-6.procedures.extension.variants[3]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:statusChange",
+      "parentCode": "F-6",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-2",
+      "parentCode": "F-6",
+      "procedureKey": "statusChange",
+      "variantId": "f-6-2-child-rearing-status-change",
+      "title": "자녀양육자(F-6-2) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-6-2",
+      "path": "record:F-6.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "F-6-3",
+      "parentCode": "F-6",
+      "procedureKey": "statusChange",
+      "variantId": "f-6-3-marriage-terminated-status-change",
+      "title": "혼인단절자(F-6-3) 체류자격 변경허가",
+      "category": "family",
+      "query": "F-6-3",
+      "path": "record:F-6.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:statusGrant",
+      "parentCode": "F-6",
+      "procedureKey": "statusGrant",
+      "title": "체류자격 부여",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.statusGrant"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:registration",
+      "parentCode": "F-6",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "F-6:reentry",
+      "parentCode": "F-6",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "family",
+      "query": "F-6",
+      "path": "record:F-6.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "G-1",
+      "parentCode": "G-1",
+      "title": "기타(난민등)",
+      "category": "other",
+      "query": "G-1",
+      "path": "record:G-1"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-1",
+      "parentCode": "G-1",
+      "title": "산업재해 청구 및 치료 중인 사람과 그 가족",
+      "category": "other",
+      "query": "G-1-1",
+      "path": "record:G-1.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-5",
+      "parentCode": "G-1",
+      "title": "난민신청자",
+      "category": "other",
+      "query": "G-1-5",
+      "path": "record:G-1.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-6",
+      "parentCode": "G-1",
+      "title": "난민불인정자 중 인도적 체류허가자",
+      "category": "other",
+      "query": "G-1-6",
+      "path": "record:G-1.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-10",
+      "parentCode": "G-1",
+      "title": "외국인환자 (입국 후 장기치료가 필요한 환자와 그 가족)",
+      "category": "other",
+      "query": "G-1-10",
+      "path": "record:G-1.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-11",
+      "parentCode": "G-1",
+      "title": "성폭력피해자 등 인도적 고려가 필요한 사람",
+      "category": "other",
+      "query": "G-1-11",
+      "path": "record:G-1.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-12",
+      "parentCode": "G-1",
+      "title": "인도적 체류허가자의 가족",
+      "category": "other",
+      "query": "G-1-12",
+      "path": "record:G-1.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-2",
+      "parentCode": "G-1",
+      "title": "질병·사고로 치료 중인 사람과 그 가족",
+      "category": "other",
+      "query": "G-1-2",
+      "path": "record:G-1.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-3",
+      "parentCode": "G-1",
+      "title": "각종 소송 진행 중인 사람",
+      "category": "other",
+      "query": "G-1-3",
+      "path": "record:G-1.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-4",
+      "parentCode": "G-1",
+      "title": "임금체불로 노동관서에서 중재 중인 사람",
+      "category": "other",
+      "query": "G-1-4",
+      "path": "record:G-1.subcodes[8]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-7",
+      "parentCode": "G-1",
+      "title": "사고 등으로 사망한 사람의 가족",
+      "category": "other",
+      "query": "G-1-7",
+      "path": "record:G-1.subcodes[9]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-8",
+      "parentCode": "G-1",
+      "title": "장기체류 아동",
+      "category": "other",
+      "query": "G-1-8",
+      "path": "record:G-1.subcodes[10]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-9",
+      "parentCode": "G-1",
+      "title": "임신·출산 등 인도적 배려가 불가피한 사람",
+      "category": "other",
+      "query": "G-1-9",
+      "path": "record:G-1.subcodes[11]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-13",
+      "parentCode": "G-1",
+      "title": "장기체류 아동 (장기체류 아동 체계)",
+      "category": "other",
+      "query": "G-1-13",
+      "path": "record:G-1.subcodes[12]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-14",
+      "parentCode": "G-1",
+      "title": "장기체류 아동 (장기체류 아동 체계)",
+      "category": "other",
+      "query": "G-1-14",
+      "path": "record:G-1.subcodes[13]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-99",
+      "parentCode": "G-1",
+      "title": "기타 사유에 해당되는 사람",
+      "category": "other",
+      "query": "G-1-99",
+      "path": "record:G-1.subcodes[14]"
+    },
+    {
+      "kind": "subcode",
+      "code": "G-1-19",
+      "parentCode": "G-1",
+      "title": "기타(G-1) 계절근로 참여자 (재입국 추천 연계 표기)",
+      "category": "other",
+      "query": "G-1-19",
+      "path": "record:G-1.subcodes[15]"
+    },
+    {
+      "kind": "procedure",
+      "code": "G-1:extension",
+      "parentCode": "G-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "G-1",
+      "path": "record:G-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "G-1:registration",
+      "parentCode": "G-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "G-1",
+      "path": "record:G-1.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "G-1:statusChange",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "other",
+      "query": "G-1",
+      "path": "record:G-1.procedures.statusChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-1",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-1-industrial-accident-status-change",
+      "title": "산업재해 청구·치료자(G-1-1) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-1",
+      "path": "record:G-1.procedures.statusChange.variants[0]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-2",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-2-illness-treatment-status-change",
+      "title": "질병·사고 치료자(G-1-2) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-2",
+      "path": "record:G-1.procedures.statusChange.variants[1]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-3",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-3-litigation-status-change",
+      "title": "각종 소송 진행자(G-1-3) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-3",
+      "path": "record:G-1.procedures.statusChange.variants[2]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-4",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-4-wage-claim-status-change",
+      "title": "임금체불 중재자(G-1-4) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-4",
+      "path": "record:G-1.procedures.statusChange.variants[3]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1:statusChange:g-1-5-6-refugee-humanitarian-status-change",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-5-6-refugee-humanitarian-status-change",
+      "title": "난민신청자(G-1-5)·인도적체류허가자(G-1-6) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1",
+      "path": "record:G-1.procedures.statusChange.variants[4]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-9",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-9-pregnancy-status-change",
+      "title": "임신·출산 인도적 배려자(G-1-9) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-9",
+      "path": "record:G-1.procedures.statusChange.variants[5]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-10",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-10-medical-patient-status-change",
+      "title": "외국인환자(G-1-10) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-10",
+      "path": "record:G-1.procedures.statusChange.variants[6]"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "G-1-11",
+      "parentCode": "G-1",
+      "procedureKey": "statusChange",
+      "variantId": "g-1-11-rights-protection-status-change",
+      "title": "성폭력피해자 등 인도적 고려 대상자(G-1-11) 체류자격 변경허가",
+      "category": "other",
+      "query": "G-1-11",
+      "path": "record:G-1.procedures.statusChange.variants[7]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "H-1",
+      "parentCode": "H-1",
+      "title": "관광취업",
+      "category": "other",
+      "query": "H-1",
+      "path": "record:H-1"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-1:extension",
+      "parentCode": "H-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "H-1",
+      "path": "record:H-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-1:registration",
+      "parentCode": "H-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "H-1",
+      "path": "record:H-1.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-1:reentry",
+      "parentCode": "H-1",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "other",
+      "query": "H-1",
+      "path": "record:H-1.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "H-2",
+      "parentCode": "H-2",
+      "title": "방문취업 (신규발급 중단)",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2"
+    },
+    {
+      "kind": "subcode",
+      "code": "H-2-7",
+      "parentCode": "H-2",
+      "title": "만기출국 후 재입국한 사람",
+      "category": "other",
+      "query": "H-2-7",
+      "path": "record:H-2.subcodes[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-2:extension",
+      "parentCode": "H-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-2:registration",
+      "parentCode": "H-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2.procedures.registration"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "H-2",
+      "parentCode": "H-2",
+      "procedureKey": "registration",
+      "variantId": "h-2-existing-holder-registration",
+      "title": "H-2 기존 체류자 외국인등록",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2.procedures.registration.variants[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "H-2:workplaceChange",
+      "parentCode": "H-2",
+      "procedureKey": "workplaceChange",
+      "title": "근무처 변경·추가",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2.procedures.workplaceChange"
+    },
+    {
+      "kind": "procedureVariant",
+      "code": "H-2",
+      "parentCode": "H-2",
+      "procedureKey": "workplaceChange",
+      "variantId": "h-2-employment-start-workplace-change-report",
+      "title": "H-2 취업개시·근무처 변경 신고",
+      "category": "other",
+      "query": "H-2",
+      "path": "record:H-2.procedures.workplaceChange.variants[0]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "A-1",
+      "parentCode": "A-1",
+      "title": "외교",
+      "category": "diplo",
+      "query": "A-1",
+      "path": "record:A-1"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-1:extension",
+      "parentCode": "A-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "diplo",
+      "query": "A-1",
+      "path": "record:A-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-1:registration",
+      "parentCode": "A-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "diplo",
+      "query": "A-1",
+      "path": "record:A-1.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "A-2",
+      "parentCode": "A-2",
+      "title": "공무",
+      "category": "diplo",
+      "query": "A-2",
+      "path": "record:A-2"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-2:extension",
+      "parentCode": "A-2",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "diplo",
+      "query": "A-2",
+      "path": "record:A-2.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-2:registration",
+      "parentCode": "A-2",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "diplo",
+      "query": "A-2",
+      "path": "record:A-2.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "A-3",
+      "parentCode": "A-3",
+      "title": "협정",
+      "category": "diplo",
+      "query": "A-3",
+      "path": "record:A-3"
+    },
+    {
+      "kind": "subcode",
+      "code": "A-3-99",
+      "parentCode": "A-3",
+      "title": "Fulbright 협정대상자",
+      "category": "diplo",
+      "query": "A-3-99",
+      "path": "record:A-3.subcodes[0]"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-3:extension",
+      "parentCode": "A-3",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "diplo",
+      "query": "A-3",
+      "path": "record:A-3.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "A-3:registration",
+      "parentCode": "A-3",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "diplo",
+      "query": "A-3",
+      "path": "record:A-3.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "C-1",
+      "parentCode": "C-1",
+      "title": "일시취재",
+      "category": "other",
+      "query": "C-1",
+      "path": "record:C-1"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-1:extension",
+      "parentCode": "C-1",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "C-1",
+      "path": "record:C-1.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "C-1:registration",
+      "parentCode": "C-1",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "C-1",
+      "path": "record:C-1.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-5",
+      "parentCode": "D-5",
+      "title": "취재",
+      "category": "other",
+      "query": "D-5",
+      "path": "record:D-5"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-5:extension",
+      "parentCode": "D-5",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "D-5",
+      "path": "record:D-5.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-5:registration",
+      "parentCode": "D-5",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "D-5",
+      "path": "record:D-5.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-6",
+      "parentCode": "D-6",
+      "title": "종교",
+      "category": "other",
+      "query": "D-6",
+      "path": "record:D-6"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-6:extension",
+      "parentCode": "D-6",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "other",
+      "query": "D-6",
+      "path": "record:D-6.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-6:registration",
+      "parentCode": "D-6",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "other",
+      "query": "D-6",
+      "path": "record:D-6.procedures.registration"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-6:reentry",
+      "parentCode": "D-6",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "other",
+      "query": "D-6",
+      "path": "record:D-6.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "D-4-2K",
+      "parentCode": "D-4-2K",
+      "title": "기업맞춤형인턴십(K-Trainee)",
+      "category": "study",
+      "query": "D-4-2K",
+      "path": "record:D-4-2K"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4-2K:extension",
+      "parentCode": "D-4-2K",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "study",
+      "query": "D-4-2K",
+      "path": "record:D-4-2K.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "D-4-2K:registration",
+      "parentCode": "D-4-2K",
+      "procedureKey": "registration",
+      "title": "외국인등록",
+      "category": "study",
+      "query": "D-4-2K",
+      "path": "record:D-4-2K.procedures.registration"
+    },
+    {
+      "kind": "topLevel",
+      "code": "K-STAR",
+      "parentCode": "K-STAR",
+      "title": "K-STAR 비자트랙",
+      "category": "etc",
+      "query": "K-STAR",
+      "path": "record:K-STAR"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-7S",
+      "parentCode": "K-STAR",
+      "title": "K-STAR 거주 (2단계)",
+      "category": "etc",
+      "query": "F-2-7S",
+      "path": "record:K-STAR.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-S1",
+      "parentCode": "K-STAR",
+      "title": "K-STAR 영주 (3단계)",
+      "category": "etc",
+      "query": "F-5-S1",
+      "path": "record:K-STAR.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-71",
+      "parentCode": "K-STAR",
+      "title": "K-STAR 거주자의 동반가족",
+      "category": "etc",
+      "query": "F-2-71",
+      "path": "record:K-STAR.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-S2",
+      "parentCode": "K-STAR",
+      "title": "K-STAR 영주자의 동반가족",
+      "category": "etc",
+      "query": "F-5-S2",
+      "path": "record:K-STAR.subcodes[3]"
+    },
+    {
+      "kind": "procedure",
+      "code": "K-STAR:visaIssuance",
+      "parentCode": "K-STAR",
+      "procedureKey": "visaIssuance",
+      "title": "사증발급",
+      "category": "etc",
+      "query": "K-STAR",
+      "path": "record:K-STAR.procedures.visaIssuance"
+    },
+    {
+      "kind": "procedure",
+      "code": "K-STAR:extension",
+      "parentCode": "K-STAR",
+      "procedureKey": "extension",
+      "title": "체류기간 연장",
+      "category": "etc",
+      "query": "K-STAR",
+      "path": "record:K-STAR.procedures.extension"
+    },
+    {
+      "kind": "procedure",
+      "code": "K-STAR:statusChange",
+      "parentCode": "K-STAR",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "etc",
+      "query": "K-STAR",
+      "path": "record:K-STAR.procedures.statusChange"
+    },
+    {
+      "kind": "procedure",
+      "code": "K-STAR:reentry",
+      "parentCode": "K-STAR",
+      "procedureKey": "reentry",
+      "title": "재입국",
+      "category": "etc",
+      "query": "K-STAR",
+      "path": "record:K-STAR.procedures.reentry"
+    },
+    {
+      "kind": "topLevel",
+      "code": "REGION-S",
+      "parentCode": "REGION-S",
+      "title": "지역특화·광역형 비자 시범사업",
+      "category": "etc",
+      "query": "REGION-S",
+      "path": "record:REGION-S"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-2-R",
+      "parentCode": "REGION-S",
+      "title": "지역특화형 우수인재 (지역우수인재)",
+      "category": "etc",
+      "query": "F-2-R",
+      "path": "record:REGION-S.subcodes[0]"
+    },
+    {
+      "kind": "subcode",
+      "code": "E-7-4R",
+      "parentCode": "REGION-S",
+      "title": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "category": "etc",
+      "query": "E-7-4R",
+      "path": "record:REGION-S.subcodes[1]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-3R",
+      "parentCode": "REGION-S",
+      "title": "지역숙련인력가족 (지역특화 숙련기능인력 동반가족)",
+      "category": "etc",
+      "query": "F-3-3R",
+      "path": "record:REGION-S.subcodes[2]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-4-R",
+      "parentCode": "REGION-S",
+      "title": "지역특화형 재외동포 (지역재외동포)",
+      "category": "etc",
+      "query": "F-4-R",
+      "path": "record:REGION-S.subcodes[3]"
+    },
+    {
+      "kind": "subcode",
+      "code": "REGIONAL-D-2",
+      "parentCode": "REGION-S",
+      "title": "광역형 비자 유학생 (시범사업)",
+      "category": "etc",
+      "query": "REGIONAL-D-2",
+      "path": "record:REGION-S.subcodes[4]"
+    },
+    {
+      "kind": "subcode",
+      "code": "REGIONAL-E-7",
+      "parentCode": "REGION-S",
+      "title": "광역형 비자 특정활동 (시범사업)",
+      "category": "etc",
+      "query": "REGIONAL-E-7",
+      "path": "record:REGION-S.subcodes[5]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-1R",
+      "parentCode": "REGION-S",
+      "title": "지역인재가족 (지역특화 우수인재 동반가족)",
+      "category": "etc",
+      "query": "F-3-1R",
+      "path": "record:REGION-S.subcodes[6]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-3-2R",
+      "parentCode": "REGION-S",
+      "title": "지역동포가족 (지역특화 재외동포 동반가족)",
+      "category": "etc",
+      "query": "F-3-2R",
+      "path": "record:REGION-S.subcodes[7]"
+    },
+    {
+      "kind": "subcode",
+      "code": "F-5-6R",
+      "parentCode": "REGION-S",
+      "title": "지역특화형 재외동포영주 (지역동포영주)",
+      "category": "etc",
+      "query": "F-5-6R",
+      "path": "record:REGION-S.subcodes[8]"
+    },
+    {
+      "kind": "topLevel",
+      "code": "YOUTH-STAY",
+      "parentCode": "YOUTH-STAY",
+      "title": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "category": "etc",
+      "query": "YOUTH-STAY",
+      "path": "record:YOUTH-STAY"
+    },
+    {
+      "kind": "procedure",
+      "code": "YOUTH-STAY:statusChange",
+      "parentCode": "YOUTH-STAY",
+      "procedureKey": "statusChange",
+      "title": "체류자격 변경",
+      "category": "etc",
+      "query": "YOUTH-STAY",
+      "path": "record:YOUTH-STAY.procedures.statusChange"
+    }
+  ]
+}

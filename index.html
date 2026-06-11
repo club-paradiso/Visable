@@ -13480,7 +13480,13 @@ function getProcedure(v, cfg) {
     const explicitAvailable = hasExplicitAvailability && raw.available === true;
     const available = explicitUnavailable ? false : (explicitAvailable || legacyAvailable);
     const rawDocs = normalizeDocGroups(raw?.requiredDocs, raw || {});
-    const docs = mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
+    const hasProcedureScopedDocs = hasAnyDocs(structuredDocs) || hasAnyDocs(rawDocs);
+    // Procedure-scoped data is the display authority. Legacy top-level arrays
+    // are a fallback only; merging them into explicit procedure docs can pool
+    // scenario/status-specific requirements into the basic/common section.
+    const docs = hasProcedureScopedDocs
+        ? mergeDocGroups(structuredDocs, rawDocs)
+        : mergeDocGroups(legacyDocs);
     return {
         key: cfg.key,
         label: txAt('procedureLabels', cfg.labelIndex, cfg.label),
@@ -13957,7 +13963,7 @@ function dedupeDocGroupsAcrossCategories(groups) {
      상황별 추가서류    ← additionalDocs + conditionalDocs
      심사 중 추가 요청 가능 ← discretionary catch-all wording, shown as a
                             caution note rather than checklist tiles. */
-const PARADISO_DOC_DISCRETIONARY_RE = /(기타\s*심사에\s*필요(하다고)?\s*(인정)?(하는|되는)?\s*서류|심사\s*과정에서\s*추가\s*서류|추가\s*서류\s*제출을\s*요구할?\s*수|서류(는|를)?\s*[^,，]{0,10}가감될\s*수|출입국[·\s]*외국인(청|관서|사무소)?(\(.*?\))?장?이?\s*[^,，]{0,20}인정하는\s*서류)/;
+const PARADISO_DOC_DISCRETIONARY_RE = /((기타|그\s*밖에)\s*심사에\s*필요(하다고|한)?\s*(인정)?(하는|되는)?\s*(서류|자료)|심사\s*과정에서\s*추가\s*서류|추가\s*서류\s*제출을\s*요구할?\s*수|서류(는|를)?\s*[^,，]{0,10}가감될\s*수|출입국[·\s]*외국인(청|관서|사무소)?(\(.*?\))?장?이?\s*[^,，]{0,20}인정하는\s*서류)/;
 
 function paradisoIsDiscretionaryDocText(label) {
     return PARADISO_DOC_DISCRETIONARY_RE.test(paradisoResolveDocDisplayLabel(label));
