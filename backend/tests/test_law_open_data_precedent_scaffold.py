@@ -205,11 +205,13 @@ class TargetScaffoldTests(unittest.TestCase):
         for fam in ("administrative_appeal", "legal_interpretation", "constitutional_decision"):
             self.assertIsNone(cap.FAMILY_TARGETS[fam])
 
-    def test_retrieve_official_source_family_keeps_precedent_unsupported(self):
-        # The scaffold must NOT silently fire a live precedent call inside the
-        # production fan-out; precedent stays unsupported in law_tools.
+    def test_retrieve_official_source_family_uses_confirmed_precedent_list_target(self):
+        # Only the confirmed list endpoint is live-wired. List results remain
+        # contextual and cannot be treated as holdings/body authority.
         res = lt.retrieve_official_source_family("precedent", "판례", config=_audit_oc_cfg(), transport=_transport(fixture("precedent_list.json")))
-        self.assertEqual(res["status"], lt.SOURCE_STATUS_UNSUPPORTED)
+        self.assertEqual(res["status"], lt.SOURCE_STATUS_RESULTS_FOUND)
+        self.assertEqual(res["normalized_items"][0]["result_kind"], "list_result")
+        self.assertEqual(res["normalized_items"][0]["citation_grade"], "contextual")
 
 
 # ---------------------------------------------------------------------------

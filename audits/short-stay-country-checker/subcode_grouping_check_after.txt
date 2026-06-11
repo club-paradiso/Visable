@@ -1,0 +1,74 @@
+
+== Parent/subcode relationships in visa_data.json
+  PASS  top-level record exists: C-3
+  PASS  C-3 has subcodes (11)
+  PASS  top-level record exists: B-2
+  PASS  B-2 has subcodes (2)
+  PASS  top-level record exists: F-2
+  PASS  F-2 has subcodes (10)
+  PASS  top-level record exists: F-6
+  PASS  F-6 has subcodes (3)
+  PASS  top-level record exists: D-2
+  PASS  D-2 has subcodes (8)
+  PASS  top-level record exists: D-10
+  PASS  D-10 has subcodes (4)
+  PASS  top-level record exists: E-7
+  PASS  E-7 has subcodes (11)
+  PASS  top-level record exists: G-1
+  PASS  G-1 has subcodes (16)
+  PASS  top-level record exists: F-4
+  PASS  F-4 has subcodes (13)
+
+== Static UI checks (index.html)
+  PASS  helper exists: getParentVisaCode
+  PASS  helper exists: isSubcodeOf
+  PASS  helper exists: groupSearchResultsByParent
+  PASS  helper exists: shouldAutoExpandSubcodeGroup
+  PASS  helper exists: renderSubcodePreview
+  PASS  helper exists: renderExpandableSubcodeGroup
+  PASS  renderResults wires broad-parent detection
+  PASS  expand/collapse uses delegated action
+  PASS  toggle handler registered
+  PASS  aria-expanded + aria-controls wired
+  PASS  expand copy 세부유형 …보기 present
+  PASS  collapse copy 세부유형 숨기기 present
+  PASS  exact-code hint copy present
+  PASS  visible focus style for toggle
+  PASS  preview chips present
+
+== Behavioral render checks (real functions from index.html)
+  PASS  getParentVisaCode(C-3-9) === C-3
+  PASS  getParentVisaCode(G-1-5) === G-1 (never a top-level family)
+  PASS  getParentVisaCode(D-10-T) === D-10
+  PASS  isSubcodeOf(C-3, C-3-9)
+  PASS  isSubcodeOf(C-3, C-3) is false
+  PASS  isSubcodeOf(B-2, C-3-9) is false
+  PASS  groupSearchResultsByParent groups by family
+  PASS  C-3 broad search: 0 full subcode cards rendered open (was 11)
+  PASS  C-3 broad search: collapsed expandable group present
+  PASS  C-3 broad search: 4 preview chips (3–5 target)
+  PASS  B-2 broad search: small family renders compact (2 cards ≤ 5)
+  PASS  F-2 broad search: 0 full subcode cards rendered open (was 10)
+  PASS  F-2 broad search: collapsed expandable group present
+  PASS  F-2 broad search: 4 preview chips (3–5 target)
+  PASS  F-6 broad search: small family renders compact (3 cards ≤ 5)
+  PASS  D-2 broad search: 0 full subcode cards rendered open (was 8)
+  PASS  D-2 broad search: collapsed expandable group present
+  PASS  D-2 broad search: 4 preview chips (3–5 target)
+  PASS  D-10 broad search: small family renders compact (4 cards ≤ 5)
+  PASS  E-7 broad search: 0 full subcode cards rendered open (was 11)
+  PASS  E-7 broad search: collapsed expandable group present
+  PASS  E-7 broad search: 4 preview chips (3–5 target)
+  PASS  G-1 broad search: 0 full subcode cards rendered open (was 16)
+  PASS  G-1 broad search: collapsed expandable group present
+  PASS  G-1 broad search: 4 preview chips (3–5 target)
+  PASS  F-4 broad search: 0 full subcode cards rendered open (was 13)
+  PASS  F-4 broad search: collapsed expandable group present
+  PASS  F-4 broad search: 4 preview chips (3–5 target)
+  PASS  exact C-3-9 search: matched subcode lifted above the collapsed group
+  PASS  exact C-3-9 search: only the matched card is open (1 visible)
+  PASS  shouldAutoExpandSubcodeGroup finds exact match
+  PASS  shouldAutoExpandSubcodeGroup ignores parent query
+
+65 checks, 0 failures
+check_subcode_grouping: ALL PASS

@@ -1,0 +1,18 @@
+{
+  "fixtureId": "c3_fallback",
+  "sourceId": "visa_manual_2026_05_b1_b2_c3",
+  "sourceTitle": "2026.5 사증발급 안내매뉴얼 — 단기방문(C-3) 및 세부약호",
+  "sourceDate": "2026-05-21",
+  "notes": "무사증 경로가 없는 경우의 목적별 C-3 안내 매핑. C-3는 90일 이내 단기방문이며 영리·취업활동 불가.",
+  "purposeMap": {
+    "tourism": { "code": "C-3-9", "nameKo": "일반관광", "note": "개별 일반관광은 일반관광(C-3-9) 사증" },
+    "group_tourism": { "code": "C-3-2", "nameKo": "단체관광", "note": "지정 여행사를 통한 단체관광·보증된 개별관광" },
+    "medical": { "code": "C-3-3", "nameKo": "의료관광", "note": "법무부 지정 의료기관 초청 등 의료관광" },
+    "business": { "code": "C-3-4", "nameKo": "일반상용", "note": "시장조사·업무연락·상담·계약 등 비영리 단기상용" },
+    "transit": { "code": "C-3-10", "nameKo": "순수환승", "note": "제3국행 연결편 환승 — 일반적인 입국 목적에는 부적합" },
+    "family_visit": { "code": "C-3-1", "nameKo": "단기일반(친족)", "note": "친족 방문 등 단기일반" },
+    "event": { "code": "C-3-1", "nameKo": "단기일반", "note": "행사·회의 참석 등 단기일반(주최측 초청 성격에 따라 다를 수 있음)" },
+    "overseas_korean": { "code": "C-3-8", "nameKo": "동포방문", "note": "외국국적동포는 동포방문(C-3-8) 또는 재외동포(F-4) 경로 검토" },
+    "work_or_profit": { "code": null, "nameKo": "해당 없음", "note": "보수를 받는 활동·영리활동은 B/C 단기체류 대상이 아님 — 단기취업(C-4) 또는 D/E 계열 등 별도 자격의 공식 확인 필요" }
+  }
+}

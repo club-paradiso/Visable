@@ -1,0 +1,501 @@
+# Rendered document duplicate check
+visa_data records: 42
+document scopes discovered: 500
+records with no document arrays: 1
+- NO_DOC_ARRAY: YOUTH-STAY 국내 성장 기반 외국인 청소년 취업·정주 체류제도
+
+resolved duplicate display families before render dedupe: 66
+- RESOLVED: B-1 사증면제협정
+  여권: newReqDocs:여권 | initialReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본
+- RESOLVED: B-2 관광통과·무사증
+  여권: newReqDocs:여권 | initialReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본
+  항공권일정표: newReqDocs:항공권·일정표 | initialReqDocs:항공권·일정표
+- RESOLVED: C-3 단기방문
+  신청서: newReqDocs:통합신청서 | extReqDocs:통합신청서 | initialReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_initial:통합신청서(별지 제34호 서식) | documents_extension:통합신청서(별지 제34호 서식)
+  여권: newReqDocs:여권 | extReqDocs:여권 | initialReqDocs:여권 | extensionReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본 | documents_extension:여권 원본 및 인적사항면 사본
+  표준규격사진: newReqDocs:증명사진 | initialReqDocs:증명사진 | documents_initial:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | extReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류
+  항공권일정표: newReqDocs:항공권·일정표 | initialReqDocs:항공권·일정표
+  숙소입증서류: newReqDocs:숙소 입증서류 | initialReqDocs:숙소 입증서류
+  일정표: newReqDocs:일정표 | initialReqDocs:일정표
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  기타체류목적입증서류: documents_initial:기타 체류목적 입증서류 | documents_extension:기타 체류목적 입증서류
+- RESOLVED: C-4 단기취업
+  신청서: newReqDocs:통합신청서 | initialReqDocs:통합신청서 | documents_initial:통합신청서(별지 제34호 서식)
+  여권: newReqDocs:여권 | initialReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본
+  표준규격사진: newReqDocs:증명사진 | initialReqDocs:증명사진 | documents_initial:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  고용계약서: newReqDocs:고용계약서 | initialReqDocs:고용계약서
+  자격증전문성입증서류: newReqDocs:자격증·전문성 입증서류 | initialReqDocs:자격증·전문성 입증서류
+- RESOLVED: D-1 문화예술
+  초청장: newReqDocs:초청장 | initialReqDocs:초청장 | documents_initial:초청장
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  경력증명서: newReqDocs:경력증명서 | initialReqDocs:경력증명서
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  연수계약서연수계획서: extReqDocs:연수계약서·연수계획서 | extensionReqDocs:연수계약서·연수계획서
+- RESOLVED: D-2 유학
+  재학입학입증서류: newReqDocs:재학·입학 입증서류 | initialReqDocs:재학·입학 입증서류 | changeReqDocs:재학·입학 입증서류
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | changeReqDocs:사업자등록증 | documents_initial:교육기관 사업자등록증 또는 고유번호증 사본
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서 | changeReqDocs:학위증명서
+  재정입증서류: newReqDocs:재정입증서류 | extReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | extensionReqDocs:재정입증서류 | changeReqDocs:재정입증서류 | documents_initial:재정능력 입증서류 | documents_extension:재정능력 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | changeReqDocs:통합신청서 | documents_registration:통합신청서(별지 제34호 서식) | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | changeReqDocs:여권 | documents_registration:여권 원본 및 사본 1부 | documents_extension:여권
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | changeReqDocs:수수료 납부증빙 | documents_registration:외국인등록증 발급 수수료 | documents_extension:수수료
+  학업수행입증서류: extReqDocs:출석확인서 | extensionReqDocs:출석확인서 | documents_registration:재학증명서 또는 연구생증명서
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_registration:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준규격사진: changeReqDocs:증명사진 | documents_registration:표준규격사진 1매
+- RESOLVED: D-3 기술연수
+  초청장: newReqDocs:초청장 | initialReqDocs:초청장 | documents_initial:초청장
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  연수계약서연수계획서: extReqDocs:연수계약서·연수계획서 | extensionReqDocs:연수계약서·연수계획서
+- RESOLVED: D-4 일반연수
+  재학입학입증서류: newReqDocs:재학·입학 입증서류 | extReqDocs:재학·입학 입증서류 | initialReqDocs:재학·입학 입증서류 | extensionReqDocs:재학·입학 입증서류
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  재정입증서류: newReqDocs:재정입증서류 | extReqDocs:잔고증명서 | initialReqDocs:재정입증서류 | extensionReqDocs:잔고증명서 | documents_initial:재정능력 입증서류 | documents_extension:은행 잔고증명서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  표준규격사진: extReqDocs:증명사진 | extensionReqDocs:증명사진 | documents_extension:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  학업수행입증서류: extReqDocs:출석확인서 | extensionReqDocs:출석확인서 | documents_extension:출석확인서
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준입학허가서또는재학/수료증명서: documents_initial:표준입학허가서 또는 재학/수료증명서 | documents_extension:표준입학허가서 또는 재학/수료증명서
+- RESOLVED: D-4 일반연수.subCodes[2]
+  여권: addReqDocs:여권 원본 | addReqDocs:여권 사본
+- RESOLVED: D-4 일반연수.procedures.extension
+  학업수행입증서류: requiredDocs:재학증명서, 교환학생 연장증명서, 연구생 증명서 등 | requiredDocs:학업을 정상적으로 수행하고 있음을 입증하는 서류 | requiredDocs:성적증명서, 출석확인서 등
+  체류지입증서류: requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족 | requiredDocs:체류지 입증서류
+- RESOLVED: D-4 일반연수.procedures.extension.requiredDocs
+  학업수행입증서류: requiredDocs:재학증명서, 교환학생 연장증명서, 연구생 증명서 등 | requiredDocs:학업을 정상적으로 수행하고 있음을 입증하는 서류 | requiredDocs:성적증명서, 출석확인서 등
+  체류지입증서류: requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족 | requiredDocs:체류지 입증서류
+- RESOLVED: D-4-1 한국어연수 (대학부설어학원)
+  신청서: newReqDocs:통합신청서 | extReqDocs:통합신청서 | initialReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_initial:통합신청서(별지 제34호 서식) | documents_extension:통합신청서(별지 제34호 서식)
+  여권: newReqDocs:여권 원본 | newReqDocs:여권 사본 | extReqDocs:여권 원본 | extReqDocs:여권 사본 | initialReqDocs:여권 원본 | initialReqDocs:여권 사본 | extensionReqDocs:여권 원본 | extensionReqDocs:여권 사본 | documents_initial:여권 원본 | documents_initial:여권 인적사항면 사본 | documents_extension:여권 원본 | documents_extension:여권 인적사항면 사본
+  표준규격사진: newReqDocs:증명사진 | initialReqDocs:증명사진 | documents_initial:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  외국인등록증: newReqDocs:외국인등록증 | extReqDocs:외국인등록증 | initialReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_initial:외국인등록증 원본 및 사본(거소증 해당자 포함) | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: newReqDocs:신규/체류자격 부여 수수료 | extReqDocs:체류기간 연장 수수료 | initialReqDocs:신규/체류자격 부여 수수료 | extensionReqDocs:체류기간 연장 수수료 | documents_initial:신규/체류자격 부여 수수료 | documents_extension:체류기간 연장 수수료
+  재학입학입증서류: newReqDocs:재학·입학 입증서류 | initialReqDocs:재학·입학 입증서류
+  학업수행입증서류: newReqDocs:출석확인서 | extReqDocs:출석확인서 | initialReqDocs:출석확인서 | extensionReqDocs:출석확인서 | documents_initial:출석확인서 | documents_extension:출석확인서
+- RESOLVED: D-7 주재
+  파견명령서: newReqDocs:파견명령서 | extReqDocs:파견명령서 | initialReqDocs:파견명령서 | extensionReqDocs:파견명령서 | documents_initial:파견명령서 | documents_extension:파견명령서
+  법인등기사항증명서: newReqDocs:법인등기사항증명서 | initialReqDocs:법인등기사항증명서
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  고용계약서: newReqDocs:고용계약서 | initialReqDocs:고용계약서
+  세무관련서류: newReqDocs:세무 관련 서류 | extReqDocs:세무 관련 서류 | initialReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  표준규격사진: extReqDocs:증명사진 | extensionReqDocs:증명사진 | documents_extension:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  사업자등록증: extReqDocs:사업자등록증 | extensionReqDocs:사업자등록증 | documents_extension:사업자등록증 사본
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+  납세증명서: documents_initial:납세증명서 | documents_extension:납세증명서
+- RESOLVED: D-7 주재.procedures.extension
+  체류지입증서류: requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족 | requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족
+  배우자: requiredDocs:배우자 | requiredDocs:배우자
+  지인: requiredDocs:지인 | requiredDocs:지인
+  고용주등타인이제공하는주소지에거주하거나신청자명의의임대차계약서: requiredDocs:고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서 | requiredDocs:고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서
+- RESOLVED: D-7 주재.procedures.extension.requiredDocs
+  체류지입증서류: requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족 | requiredDocs:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족
+  배우자: requiredDocs:배우자 | requiredDocs:배우자
+  지인: requiredDocs:지인 | requiredDocs:지인
+  고용주등타인이제공하는주소지에거주하거나신청자명의의임대차계약서: requiredDocs:고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서 | requiredDocs:고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서
+- RESOLVED: D-8 기업투자
+  법인등기사항증명서: newReqDocs:법인등기사항증명서 | extReqDocs:법인등기사항증명서 | initialReqDocs:법인등기사항증명서 | extensionReqDocs:법인등기사항증명서
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  투자입증서류: newReqDocs:투자 입증서류 | extReqDocs:투자 입증서류 | initialReqDocs:투자 입증서류 | extensionReqDocs:투자 입증서류
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  세무관련서류: extReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  부가가치세과세표준증명: extReqDocs:부가가치세 과세표준증명 | extensionReqDocs:부가가치세 과세표준증명 | documents_extension:부가가치세 과세표준증명
+  법인등기사항전부증명서: documents_initial:법인등기사항전부증명서 | documents_extension:법인등기사항전부증명서
+  외국인투자기업등록증및투자금도입입증서류: documents_initial:외국인투자기업등록증 사본 및 투자금 도입 입증서류 | documents_extension:외국인투자기업등록증 사본 및 투자금 도입 입증서류
+- RESOLVED: D-9 무역경영
+  사업자등록증: newReqDocs:사업자등록증 | extReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | extensionReqDocs:사업자등록증 | documents_initial:사업자등록증 사본 | documents_extension:사업자등록증 사본
+  세무관련서류: newReqDocs:세무 관련 서류 | extReqDocs:세무 관련 서류 | initialReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  부가가치세과세표준증명: extReqDocs:부가가치세 과세표준증명 | extensionReqDocs:부가가치세 과세표준증명 | documents_extension:부가가치세 과세표준증명
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  납세증명서: documents_initial:납세증명서 | documents_extension:납세증명서
+- RESOLVED: D-9 무역경영.subCodes[4]
+  재정입증서류: addReqDocs:재정입증서류 | addReqDocs:잔고증명서
+- RESOLVED: D-9 무역경영.procedures.extension
+  수수료: requiredDocs:통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 등 | requiredDocs:통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료
+- RESOLVED: D-9 무역경영.procedures.extension.requiredDocs
+  수수료: requiredDocs:통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 등 | requiredDocs:통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료
+- RESOLVED: D-10 구직
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  경력증명서: newReqDocs:경력증명서 | initialReqDocs:경력증명서
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  재정입증서류: newReqDocs:재정입증서류 | extReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | extensionReqDocs:재정입증서류 | documents_initial:재정능력 입증서류 | documents_extension:재정능력 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류목적소명서류: extReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  구직활동계획서: extReqDocs:구직활동 계획서 | extensionReqDocs:구직활동 계획서 | documents_extension:구직활동계획서
+  점수산정자료: extReqDocs:점수 산정 자료 | extensionReqDocs:점수 산정 자료
+  결핵진단서: extReqDocs:결핵진단서 | extensionReqDocs:결핵진단서 | documents_extension:결핵진단서
+- RESOLVED: D-10 구직.procedures.extension
+  구직활동계획서: requiredDocs:구직활동계획서 | requiredDocs:구직활동 계획서 | requiredDocs:구직활동 계획서(붙임6)
+  체류지입증서류: requiredDocs:체류지 입증서류 | requiredDocs:체류지 입증서류 ii) 국내 성장 기반 외국인 청소년 | requiredDocs:체류지 입증서류 iii) 유망인재 | requiredDocs:체류지 입증서류 iv) 요양보호사 전문연수 과정 수료자
+- RESOLVED: D-10 구직.procedures.extension.requiredDocs
+  구직활동계획서: requiredDocs:구직활동계획서 | requiredDocs:구직활동 계획서 | requiredDocs:구직활동 계획서(붙임6)
+  체류지입증서류: requiredDocs:체류지 입증서류 | requiredDocs:체류지 입증서류 ii) 국내 성장 기반 외국인 청소년 | requiredDocs:체류지 입증서류 iii) 유망인재 | requiredDocs:체류지 입증서류 iv) 요양보호사 전문연수 과정 수료자
+- RESOLVED: E-1 교수
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  세무관련서류: extReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+- RESOLVED: E-2 회화지도
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  범죄경력증명서: newReqDocs:범죄경력증명서 | initialReqDocs:범죄경력증명서
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  경력증명서: extReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  세무관련서류: extReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+- RESOLVED: E-2 회화지도.procedures.statusChange.variants[1]
+  시: requiredDocs:시 | conditionalDocs:시
+- RESOLVED: E-2 회화지도.procedures.statusChange.variants[1].requiredDocs
+  시: requiredDocs:시 | conditionalDocs:시
+- RESOLVED: E-3 연구
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  세무관련서류: extReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+- RESOLVED: E-4 기술지도
+  자격증전문성입증서류: newReqDocs:자격증·전문성 입증서류 | initialReqDocs:자격증·전문성 입증서류
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+- RESOLVED: E-5 전문직업
+  자격증전문성입증서류: newReqDocs:자격증·전문성 입증서류 | extReqDocs:자격증·전문성 입증서류 | initialReqDocs:자격증·전문성 입증서류 | extensionReqDocs:자격증·전문성 입증서류
+  고용계약서: newReqDocs:고용계약서 | initialReqDocs:고용계약서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  경력증명서: extReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  해당분야전문성입증서류: documents_initial:해당 분야 전문성 입증서류 | documents_extension:해당 분야 전문성 입증서류
+- RESOLVED: E-6 예술흥행
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+- RESOLVED: E-7 특정활동
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  학위증명서: newReqDocs:학위증명서 | initialReqDocs:학위증명서
+  경력증명서: newReqDocs:경력증명서 | initialReqDocs:경력증명서
+  고용추천서: newReqDocs:고용추천서 | initialReqDocs:고용추천서
+  소득입증서류: newReqDocs:소득입증서류 | extReqDocs:소득입증서류 | initialReqDocs:소득입증서류 | extensionReqDocs:소득입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  사업자등록증: extReqDocs:사업자등록증 | extensionReqDocs:사업자등록증 | documents_extension:사업자등록증 사본
+  법인등기사항증명서: extReqDocs:법인등기사항증명서 | extensionReqDocs:법인등기사항증명서
+  신원보증서: extReqDocs:신원보증서 | extensionReqDocs:신원보증서 | documents_extension:신원보증서
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  세무관련서류: extReqDocs:세무 관련 서류 | extensionReqDocs:세무 관련 서류
+  사유입증서류: extReqDocs:사유 입증서류 | extensionReqDocs:사유 입증서류
+  납세증명서: extReqDocs:납세증명서 | extensionReqDocs:납세증명서 | documents_extension:납세증명서
+  고용보험4대보험가입자명부: extReqDocs:고용보험·4대보험 가입자 명부 | extensionReqDocs:고용보험·4대보험 가입자 명부
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+  소득금액증명원등소득입증서류: documents_initial:소득금액증명원 등 소득입증서류 | documents_extension:소득금액증명원 등 소득입증서류
+- RESOLVED: E-8 계절근로
+  고용허가서: newReqDocs:고용허가서(EPS) | extReqDocs:고용허가서(EPS) | initialReqDocs:고용허가서(EPS) | extensionReqDocs:고용허가서(EPS) | documents_initial:고용허가서 사본 | documents_extension:고용허가서 사본
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  결핵진단서: newReqDocs:결핵진단서 | initialReqDocs:결핵진단서 | documents_initial:결핵진단서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+- RESOLVED: E-9 비전문취업
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  사업자등록증: newReqDocs:사업자등록증 | extReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | extensionReqDocs:사업자등록증 | documents_initial:사업자등록증 사본 | documents_extension:사업자등록증 사본
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  재학입학입증서류: newReqDocs:재학·입학 입증서류 | initialReqDocs:재학·입학 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  고용허가서: extReqDocs:고용허가서(EPS) | extensionReqDocs:고용허가서(EPS) | documents_extension:고용허가서 사본
+  체류목적소명서류: extReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+- RESOLVED: E-9 비전문취업.subCodes[7]
+  수수료: addReq:1 통합신청서(별지 제34호 서식), 여권 원본, 표준규격사진 1매, 수수료 2 사업자등록증 사본 3 사업장 변경 시: 고용허가서 | addReqDocs:수수료 납부증빙
+- RESOLVED: E-10 선원취업
+  고용계약서: newReqDocs:고용계약서 | extReqDocs:고용계약서 | initialReqDocs:고용계약서 | extensionReqDocs:고용계약서
+  자격증전문성입증서류: newReqDocs:자격증·전문성 입증서류 | initialReqDocs:자격증·전문성 입증서류
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  경력증명서: extReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  신원보증서: extReqDocs:신원보증서 | extensionReqDocs:신원보증서 | documents_extension:신원보증서
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준근로계약서또는고용계약서/: documents_initial:표준근로계약서 또는 고용계약서 원본/사본 | documents_extension:표준근로계약서 또는 고용계약서 원본/사본
+- RESOLVED: F-1 방문동거
+  여권: newReqDocs:여권 | extReqDocs:여권 | initialReqDocs:여권 | extensionReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: newReqDocs:외국인등록증 | extReqDocs:외국인등록증 | initialReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_initial:외국인등록증 원본 및 사본(거소증 해당자 포함) | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  가족관계입증서류: newReqDocs:가족관계증명서 | extReqDocs:가족관계증명서 | initialReqDocs:가족관계증명서 | extensionReqDocs:가족관계증명서 | documents_initial:가족관계증명서(상세) | documents_extension:가족관계증명서(상세)
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  혼인관계증명서: extReqDocs:혼인관계증명서 | extensionReqDocs:혼인관계증명서 | documents_extension:혼인관계증명서(상세)
+  기본증명서: extReqDocs:기본증명서 | extensionReqDocs:기본증명서 | documents_extension:기본증명서(상세)
+  소득입증서류: extReqDocs:소득입증서류 | extensionReqDocs:소득입증서류
+- RESOLVED: F-2 거주
+  가족관계입증서류: newReqDocs:가족관계증명서 | initialReqDocs:가족관계증명서 | documents_initial:가족관계증명서(상세)
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  투자입증서류: newReqDocs:투자 입증서류 | initialReqDocs:투자 입증서류
+  한국어능력증명: newReqDocs:한국어능력증명 | initialReqDocs:한국어능력증명
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류목적소명서류: extReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  점수산정자료: extReqDocs:점수 산정 자료 | extensionReqDocs:점수 산정 자료
+  납세증명서: extReqDocs:납세증명서 | extensionReqDocs:납세증명서
+- RESOLVED: F-2 거주.subCodes[6]
+  가족관계입증서류: addReq:가족관계 입증서류 등 (매뉴얼 확인). | addReqDocs:가족관계증명서
+- RESOLVED: F-2 거주.procedures.statusChange.variants[0]
+  수수료: commonDocs:통합신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료 | conditionalDocs:기존 방문동거(F-1-1) 자격의 국민의 미성년 외국인자녀는 확인 즉시 수수료 없이 거주(F-2-2)로 변경
+- RESOLVED: F-2 거주.procedures.statusChange.variants[0].requiredDocs
+  수수료: commonDocs:통합신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료 | conditionalDocs:기존 방문동거(F-1-1) 자격의 국민의 미성년 외국인자녀는 확인 즉시 수수료 없이 거주(F-2-2)로 변경
+- RESOLVED: F-3 동반
+  여권: newReqDocs:여권 | extReqDocs:여권 | initialReqDocs:여권 | extensionReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: newReqDocs:외국인등록증 | extReqDocs:외국인등록증 | initialReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_initial:외국인등록증 원본 및 사본(거소증 해당자 포함) | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  가족관계입증서류: newReqDocs:가족관계증명서 | extReqDocs:가족관계증명서 | initialReqDocs:가족관계증명서 | extensionReqDocs:가족관계증명서 | documents_initial:가족관계증명서(상세) | documents_extension:가족관계증명서(상세)
+  소득입증서류: newReqDocs:소득입증서류 | initialReqDocs:소득입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+- RESOLVED: F-4 재외동포
+  한국어능력증명: newReqDocs:한국어능력증명 | initialReqDocs:한국어능력증명
+  범죄경력증명서: newReqDocs:범죄경력증명서 | initialReqDocs:범죄경력증명서
+  재외동포자격입증서류: newReqDocs:재외동포(F-4) 자격 입증서류 | initialReqDocs:재외동포(F-4) 자격 입증서류
+  사회통합프로그램확인서: newReqDocs:사회통합프로그램 확인서 | initialReqDocs:사회통합프로그램 확인서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+- RESOLVED: F-5 영주
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류
+  범죄경력증명서: newReqDocs:범죄경력증명서 | initialReqDocs:범죄경력증명서
+  소득입증서류: newReqDocs:소득입증서류 | initialReqDocs:소득입증서류
+  사회통합프로그램확인서: newReqDocs:사회통합프로그램 확인서 | initialReqDocs:사회통합프로그램 확인서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  납세증명서: extReqDocs:납세증명서 | extensionReqDocs:납세증명서
+  사회통합프로그램이수증: extReqDocs:사회통합프로그램 이수증 | extensionReqDocs:사회통합프로그램 이수증
+  자산입증서류: extReqDocs:자산 입증서류 | extensionReqDocs:자산 입증서류
+  재직입증서류: extReqDocs:재직 입증서류 | extensionReqDocs:재직 입증서류
+  신원보증서: extReqDocs:신원보증서 | extensionReqDocs:신원보증서 | documents_extension:신원보증서
+- RESOLVED: F-5 영주.subCodes[6]
+  가족관계입증서류: addReq:가족관계 입증서류 등 (매뉴얼 확인). | addReqDocs:가족관계증명서
+- RESOLVED: F-6 결혼이민
+  기본증명서: newReqDocs:기본증명서 | extReqDocs:기본증명서 | initialReqDocs:기본증명서 | extensionReqDocs:기본증명서 | documents_initial:기본증명서(상세) | documents_extension:기본증명서(상세)
+  가족관계입증서류: newReqDocs:가족관계증명서 | extReqDocs:가족관계증명서 | initialReqDocs:가족관계증명서 | extensionReqDocs:가족관계증명서 | documents_initial:가족관계증명서(상세) | documents_extension:가족관계증명서(상세)
+  혼인관계증명서: newReqDocs:혼인관계증명서 | extReqDocs:혼인관계증명서 | initialReqDocs:혼인관계증명서 | extensionReqDocs:혼인관계증명서 | documents_initial:혼인관계증명서(상세) | documents_extension:혼인관계증명서(상세)
+  소득입증서류: newReqDocs:소득입증서류 | extReqDocs:소득입증서류 | initialReqDocs:소득입증서류 | extensionReqDocs:소득입증서류
+  체류지입증서류: newReqDocs:체류지 입증서류 | extReqDocs:체류지 입증서류 | initialReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_initial:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  초청장: newReqDocs:초청장 | initialReqDocs:초청장 | documents_initial:초청장
+  범죄경력증명서: newReqDocs:범죄경력증명서 | initialReqDocs:범죄경력증명서
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  한국어능력증명: newReqDocs:한국어능력증명 | initialReqDocs:한국어능력증명
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  표준규격사진: extReqDocs:증명사진 | extensionReqDocs:증명사진 | documents_extension:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  신원보증서: extReqDocs:신원보증서 | extensionReqDocs:신원보증서 | documents_extension:신원보증서
+  외국인직업신고서: extReqDocs:외국인 직업 신고서 | extensionReqDocs:외국인 직업 신고서
+  신용조사서: extReqDocs:신용조사서 | extensionReqDocs:신용조사서
+  소득금액증명원: extReqDocs:소득금액증명원 | extensionReqDocs:소득금액증명원
+  주민등록등본: extReqDocs:주민등록등본 | extensionReqDocs:주민등록등본 | documents_extension:주민등록등본
+  소득금액증명원등소득입증서류: documents_initial:소득금액증명원 등 소득입증서류 | documents_extension:소득금액증명원 등 소득입증서류
+- RESOLVED: F-6 결혼이민.subCodes[1]
+  수수료: addReq:1 통합신청서(별지 제34호 서식), 여권, 수수료 2 자녀 명의 기본증명서 | addReqDocs:수수료 납부증빙
+  가족관계입증서류: addReq:가족관계증명서(자녀가 국민인 경우) 3 자녀 양육 계속 입증서류(학비 영수증, 자녀 병원비 영수증 등) 4 외국인 직업 신고서 5 체류지 입증서류. | addReqDocs:가족관계증명서
+- RESOLVED: F-6 결혼이민.subCodes[2]
+  수수료: addReq:1 통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 2 배우자 사망 입증서류(사망진단서, 사망 기재 기본증명서 등) 3 가족관계 입증서류(혼인관계증명서(상세) 등) 4 자녀 명의 가족관계증명서(자녀 있을 경우) 5 외국인 직업 신고서 6 체류지 입증서류. | addReqDocs:수수료 납부증빙
+- RESOLVED: F-6 결혼이민.subcodes[1]
+  수수료: addReq:1 통합신청서(별지 제34호 서식), 여권, 수수료 2 자녀 명의 기본증명서 | addReqDocs:수수료 납부증빙
+  가족관계입증서류: addReq:가족관계증명서(자녀가 국민인 경우) 3 자녀 양육 계속 입증서류(학비 영수증, 자녀 병원비 영수증 등) 4 외국인 직업 신고서 5 체류지 입증서류. | addReqDocs:가족관계증명서
+- RESOLVED: F-6 결혼이민.subcodes[2]
+  수수료: addReq:1 통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 2 배우자 사망 입증서류(사망진단서, 사망 기재 기본증명서 등) 3 가족관계 입증서류(혼인관계증명서(상세) 등) 4 자녀 명의 가족관계증명서(자녀 있을 경우) 5 외국인 직업 신고서 6 체류지 입증서류. | addReqDocs:수수료 납부증빙
+- RESOLVED: F-6 결혼이민.procedures.statusChange.variants[0]
+  가족관계입증서류: requiredDocs:가족관계증명서 | requiredDocs:가족(친자)관계 입증서류(출생증명서, 유전자검사 확인 서류 등)
+- RESOLVED: F-6 결혼이민.procedures.statusChange.variants[0].requiredDocs
+  가족관계입증서류: requiredDocs:가족관계증명서 | requiredDocs:가족(친자)관계 입증서류(출생증명서, 유전자검사 확인 서류 등)
+- RESOLVED: G-1 기타(난민등)
+  난민관련입증서류: newReqDocs:난민 관련 입증서류 | initialReqDocs:난민 관련 입증서류
+  건강진단서채용신체검사서: newReqDocs:건강진단서·채용신체검사서 | initialReqDocs:건강진단서·채용신체검사서
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  재정입증서류: newReqDocs:재정입증서류 | initialReqDocs:재정입증서류 | documents_initial:재정능력 입증서류
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  체류목적소명서류: extReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+- RESOLVED: H-1 관광취업
+  항공권일정표: newReqDocs:항공권·일정표 | initialReqDocs:항공권·일정표
+  재정입증서류: newReqDocs:잔고증명서 | initialReqDocs:잔고증명서 | documents_initial:은행 잔고증명서
+  건강진단서: newReqDocs:건강진단서 | initialReqDocs:건강진단서
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+- RESOLVED: H-2 방문취업 (신규발급 중단)
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  표준규격사진: extReqDocs:증명사진 | extensionReqDocs:증명사진 | documents_extension:표준규격사진 1매(3.5×4.5cm, 최근 6개월)
+  재외동포자격입증서류: extReqDocs:재외동포(F-4) 자격 입증서류 | extensionReqDocs:재외동포(F-4) 자격 입증서류
+  한국어능력증명: extReqDocs:한국어능력증명 | extensionReqDocs:한국어능력증명
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  사회통합프로그램확인서: extReqDocs:사회통합프로그램 확인서 | extensionReqDocs:사회통합프로그램 확인서
+- RESOLVED: A-1 외교
+  파견명령서: newReqDocs:파견명령서 | initialReqDocs:파견명령서 | documents_initial:파견명령서
+  여권: newReqDocs:여권 | initialReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본
+- RESOLVED: A-2 공무
+  파견명령서: newReqDocs:파견명령서 | initialReqDocs:파견명령서 | documents_initial:파견명령서
+  여권: newReqDocs:여권 | initialReqDocs:여권 | documents_initial:여권 원본 및 인적사항면 사본
+- RESOLVED: A-3 협정
+  파견명령서: newReqDocs:파견명령서 | initialReqDocs:파견명령서 | documents_initial:파견명령서
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류
+- RESOLVED: C-1 일시취재
+  경력증명서: newReqDocs:경력증명서 | initialReqDocs:경력증명서
+  외국인등록증: newReqDocs:외국인등록증 | initialReqDocs:외국인등록증 | documents_initial:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+- RESOLVED: D-5 취재
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  파견명령서: newReqDocs:파견명령서 | initialReqDocs:파견명령서 | documents_initial:파견명령서
+  활동계획서: newReqDocs:활동계획서 | initialReqDocs:활동계획서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+- RESOLVED: D-6 종교
+  사업자등록증: newReqDocs:사업자등록증 | initialReqDocs:사업자등록증 | documents_initial:사업자등록증 사본
+  파견명령서: newReqDocs:파견명령서 | initialReqDocs:파견명령서 | documents_initial:파견명령서
+  경력증명서: newReqDocs:경력증명서 | extReqDocs:경력증명서 | initialReqDocs:경력증명서 | extensionReqDocs:경력증명서
+  신청서: extReqDocs:통합신청서 | extensionReqDocs:통합신청서 | documents_extension:통합신청서(별지 제34호 서식)
+  여권: extReqDocs:여권 | extensionReqDocs:여권 | documents_extension:여권 원본 및 인적사항면 사본
+  외국인등록증: extReqDocs:외국인등록증 | extensionReqDocs:외국인등록증 | documents_extension:외국인등록증 원본 및 사본(거소증 해당자 포함)
+  수수료: extReqDocs:수수료 납부증빙 | extensionReqDocs:수수료 납부증빙 | documents_extension:수수료(절차별 정부수입인지/카드 발급 수수료 확인)
+  체류지입증서류: extReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류 | documents_extension:체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  해외및국내경력증명서: documents_initial:해외 및 국내 경력증명서 | documents_extension:해외 및 국내 경력증명서
+- RESOLVED: D-4-2K 기업맞춤형인턴십(K-Trainee)
+  인턴십계획서: newReqDocs:인턴십 계획서 | extReqDocs:인턴십 계획서 | initialReqDocs:인턴십 계획서 | extensionReqDocs:인턴십 계획서 | documents_initial:인턴십(연수) 계획서 | documents_extension:인턴십(연수) 계획서
+  재직증명서: newReqDocs:재직증명서 | extReqDocs:재직증명서 | initialReqDocs:재직증명서 | extensionReqDocs:재직증명서 | documents_initial:재직증명서 | documents_extension:재직증명서
+  초청장: newReqDocs:초청장 | initialReqDocs:초청장 | documents_initial:초청장
+  사증발급인정서: newReqDocs:사증발급인정서 | initialReqDocs:사증발급인정서 | documents_initial:사증발급인정서
+- RESOLVED: K-STAR K-STAR 비자트랙
+  체류목적소명서류: newReqDocs:체류목적 소명서류 | extReqDocs:체류목적 소명서류 | initialReqDocs:체류목적 소명서류 | extensionReqDocs:체류목적 소명서류 | changeReqDocs:체류목적 소명서류
+  고용추천서: newReqDocs:고용추천서 | initialReqDocs:고용추천서
+  소득입증서류: extReqDocs:소득입증서류 | extensionReqDocs:소득입증서류
+  기타체류목적입증서류: documents_initial:기타 체류목적 입증서류 | documents_extension:기타 체류목적 입증서류
+- RESOLVED: K-STAR K-STAR 비자트랙.procedures.extension
+  석: requiredDocs:석 | requiredDocs:석
+- RESOLVED: K-STAR K-STAR 비자트랙.procedures.extension.requiredDocs
+  석: requiredDocs:석 | requiredDocs:석
+- RESOLVED: REGION-S 지역특화·광역형 비자 시범사업
+  지자체추천서: newReqDocs:지자체 추천서 | extReqDocs:지자체 추천서 | initialReqDocs:지자체 추천서 | extensionReqDocs:지자체 추천서 | changeReqDocs:지자체 추천서
+  체류지입증서류: newReqDocs:체류지 입증서류 | extReqDocs:체류지 입증서류 | initialReqDocs:체류지 입증서류 | extensionReqDocs:체류지 입증서류
+  개별사안별증빙서류: newReqDocs:개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준) | extReqDocs:개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준) | extensionReqDocs:개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)
+
+D-2 proof case:
+- D-2 resolved scope: D-2 유학
+  재학입학입증서류: 재학·입학 입증서류 | 재학·입학 입증서류 | 재학·입학 입증서류
+  사업자등록증: 사업자등록증 | 사업자등록증 | 사업자등록증 | 교육기관 사업자등록증 또는 고유번호증 사본
+  학위증명서: 학위증명서 | 학위증명서 | 학위증명서
+  재정입증서류: 재정입증서류 | 재정입증서류 | 재정입증서류 | 재정입증서류 | 재정입증서류 | 재정능력 입증서류 | 재정능력 입증서류
+  신청서: 통합신청서 | 통합신청서 | 통합신청서 | 통합신청서(별지 제34호 서식) | 통합신청서(별지 제34호 서식)
+  여권: 여권 | 여권 | 여권 | 여권 원본 및 사본 1부 | 여권
+  외국인등록증: 외국인등록증 | 외국인등록증 | 외국인등록증
+  수수료: 수수료 납부증빙 | 수수료 납부증빙 | 수수료 납부증빙 | 외국인등록증 발급 수수료 | 수수료
+  학업수행입증서류: 출석확인서 | 출석확인서 | 재학증명서 또는 연구생증명서
+  체류지입증서류: 체류지 입증서류 | 체류지 입증서류 | 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) | 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  표준규격사진: 증명사진 | 표준규격사진 1매
+  AFTER D-2 유학 newReqDocs: 재학·입학 입증서류 | 교육기관 사업자등록증 또는 고유번호증 사본 | 학위증명서 | 재정능력 입증서류
+  AFTER D-2 유학 extReqDocs: 통합신청서(별지 제34호 서식) | 여권 원본 및 사본 1부 | 외국인등록증 | 외국인등록증 발급 수수료 | 재학증명서 또는 연구생증명서 | 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)
+  AFTER D-2 유학 changeReqDocs: 표준규격사진 1매 | 가족관계증명서
+  AFTER D-2 유학 documents_initial: 표준입학허가서 | 학력요건 입증서류 | 체류민원 기준 주의
+  AFTER D-2 유학 documents_extension: 수료증명서, 지도교수 및 유학담당자 확인서 | 정상 학업 수행 입증서류
+  AFTER D-2 유학.subCodes[0] addReq: 전문학사 정규 학위과정에서 교육을 받으려는 사람.
+  AFTER D-2 유학.subCodes[0] addReqDocs: 재학·입학 입증서류 | 사업자등록증 | 학위증명서 | 재정입증서류
+  AFTER D-2 유학.subCodes[1] addReq: 학사 정규 학위과정에서 교육을 받으려는 사람.
+  AFTER D-2 유학.subCodes[1] addReqDocs: 재학·입학 입증서류 | 사업자등록증 | 학위증명서 | 재정입증서류
+  AFTER D-2 유학.subCodes[2] addReq: 석사 정규 학위과정에서 교육을 받으려는 사람.
+  AFTER D-2 유학.subCodes[2] addReqDocs: 재학·입학 입증서류 | 사업자등록증 | 학위증명서 | 재정입증서류
+  AFTER D-2 유학.subCodes[3] addReq: 박사 정규 학위과정에서 교육을 받으려는 사람.
+
+unresolved duplicate display families after render dedupe: 0

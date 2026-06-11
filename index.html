@@ -1568,6 +1568,32 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-more[open] .more-open { display: none; }
 .manual-subcode-more[open] .more-close { display: inline; }
 .manual-subcode-more .manual-subcode-grid { margin-top: 0.45rem; }
+
+/* ── Subcode preview chips + expand/collapse group (broad parent searches) ── */
+.subcode-group-summary { font-size: 0.86rem; color: var(--t2); margin: 0.15rem 0 0.5rem; word-break: keep-all; line-height: 1.6; }
+.subcode-group-hint { font-size: 0.74rem; color: var(--t3); margin: 0.5rem 0 0; word-break: keep-all; }
+.subcode-preview-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0 0 0.55rem; }
+.subcode-preview-chip { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.3rem 0.75rem; font: inherit; font-size: 0.8rem; color: var(--t1); background: var(--bgI); border: 1.5px solid var(--bd); border-radius: 999px; cursor: pointer; max-width: 100%; }
+.subcode-preview-chip:hover { border-color: var(--ac); background: var(--acG); }
+.subcode-preview-chip:focus-visible { outline: 3px solid var(--ac); outline-offset: 1px; }
+.subcode-preview-code { font-weight: 900; color: var(--ac); white-space: nowrap; }
+.subcode-preview-name { word-break: keep-all; text-align: left; }
+.subcode-expand-wrap { margin-top: 0.2rem; }
+.subcode-expand-btn { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.45rem 0.95rem; font: inherit; font-size: 0.8rem; font-weight: 900; color: var(--ac); background: transparent; border: 1.5px solid var(--ac); border-radius: 10px; cursor: pointer; }
+.subcode-expand-btn:hover { background: var(--acG); }
+.subcode-expand-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+.subcode-expand-btn .subcode-expand-hide { display: none; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-show { display: none; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-hide { display: inline; }
+.subcode-expand-btn[aria-expanded="true"] .subcode-expand-caret { transform: rotate(180deg); }
+.subcode-expand-caret { transition: transform 0.18s ease; }
+@media (prefers-reduced-motion: reduce) { .subcode-expand-caret { transition: none; } }
+.subcode-expand-body { margin-top: 0.55rem; display: grid; gap: 0.5rem; }
+.subcode-expand-body[hidden] { display: none; }
+@media (max-width: 480px) {
+  .subcode-preview-chip { font-size: 0.76rem; padding: 0.3rem 0.6rem; }
+  .subcode-expand-btn { width: 100%; justify-content: center; }
+}
 .procedure-tabs { display: flex; flex-wrap: wrap; gap: 0.42rem; overflow-x: auto; padding: 0.12rem 0 0.25rem; scrollbar-width: thin; }
 .procedure-tab { flex: 0 0 auto; min-height: 36px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 999px; padding: 0 0.78rem; font: inherit; font-size: 0.76rem; font-weight: 850; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
 .procedure-tab:hover:not(:disabled) { border-color: var(--ac); color: var(--ac); background: var(--acL); }
@@ -11275,6 +11301,11 @@ body.searched .hero-container::before {
     <div class="qf" id="qf" aria-label="자주 찾는 검색어 모음"></div>
     <section class="rlist-compact" id="rlistCompact" aria-label="요약 결과" hidden></section>
     <div class="rlist" id="rlist" aria-live="polite"></div>
+    <!-- External guided tools (data + logic live in assets/js + data/, NOT in this file).
+         Hidden until a relevant search (B-1/B-2/C-3/K-ETA/제주 → short-stay checker,
+         F-4/재외동포/거소증/FBI → F-4 route guide) makes them useful. -->
+    <section id="shortStayChecker" class="short-stay-checker" aria-labelledby="shortStayCheckerTitle" hidden></section>
+    <section id="f4RouteGuide" class="f4-route-guide" aria-labelledby="f4RouteGuideTitle" hidden></section>
 </main>
 
 <!-- Modals -->
@@ -13480,7 +13511,13 @@ function getProcedure(v, cfg) {
     const explicitAvailable = hasExplicitAvailability && raw.available === true;
     const available = explicitUnavailable ? false : (explicitAvailable || legacyAvailable);
     const rawDocs = normalizeDocGroups(raw?.requiredDocs, raw || {});
-    const docs = mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
+    const hasProcedureScopedDocs = hasAnyDocs(structuredDocs) || hasAnyDocs(rawDocs);
+    // Procedure-scoped data is the display authority. Legacy top-level arrays
+    // are a fallback only; merging them into explicit procedure docs can pool
+    // scenario/status-specific requirements into the basic/common section.
+    const docs = hasProcedureScopedDocs
+        ? mergeDocGroups(structuredDocs, rawDocs)
+        : mergeDocGroups(legacyDocs);
     return {
         key: cfg.key,
         label: txAt('procedureLabels', cfg.labelIndex, cfg.label),
@@ -13957,7 +13994,7 @@ function dedupeDocGroupsAcrossCategories(groups) {
      상황별 추가서류    ← additionalDocs + conditionalDocs
      심사 중 추가 요청 가능 ← discretionary catch-all wording, shown as a
                             caution note rather than checklist tiles. */
-const PARADISO_DOC_DISCRETIONARY_RE = /(기타\s*심사에\s*필요(하다고)?\s*(인정)?(하는|되는)?\s*서류|심사\s*과정에서\s*추가\s*서류|추가\s*서류\s*제출을\s*요구할?\s*수|서류(는|를)?\s*[^,，]{0,10}가감될\s*수|출입국[·\s]*외국인(청|관서|사무소)?(\(.*?\))?장?이?\s*[^,，]{0,20}인정하는\s*서류)/;
+const PARADISO_DOC_DISCRETIONARY_RE = /((기타|그\s*밖에)\s*심사에\s*필요(하다고|한)?\s*(인정)?(하는|되는)?\s*(서류|자료)|심사\s*과정에서\s*추가\s*서류|추가\s*서류\s*제출을\s*요구할?\s*수|서류(는|를)?\s*[^,，]{0,10}가감될\s*수|출입국[·\s]*외국인(청|관서|사무소)?(\(.*?\))?장?이?\s*[^,，]{0,20}인정하는\s*서류)/;
 
 function paradisoIsDiscretionaryDocText(label) {
     return PARADISO_DOC_DISCRETIONARY_RE.test(paradisoResolveDocDisplayLabel(label));
@@ -15006,9 +15043,59 @@ function subcodeSourceChip(s) {
     return `<span class="subcode-chip chip-review">${escapeHtml(tx('sourceChipReview'))}</span>`;
 }
 
-function renderSubcodes(v, keywords, matchingSubcodes) {
+/* ---- Generic parent/subcode grouping helpers (search-result density) -------
+   Broad parent-code searches (C-3, B-2, F-2, F-6, D-2, D-10, E-7, G-1, F-4 …)
+   must not flood the card with every subcode as a full card. These helpers are
+   data-driven and generic — nothing is hardcoded per status. */
+function getParentVisaCode(code) {
+    const norm = String(code || '').trim().toUpperCase();
+    const m = /^([A-Z]+-\d+)(?:-.+)?$/.exec(norm);
+    return m ? m[1] : norm;
+}
+function isSubcodeOf(parentCode, childCode) {
+    const p = normalizeVisaCode(parentCode), c = normalizeVisaCode(childCode);
+    return !!p && !!c && p !== c && normalizeVisaCode(getParentVisaCode(childCode)) === p;
+}
+function groupSearchResultsByParent(results) {
+    const groups = new Map();
+    (results || []).forEach(r => {
+        const parent = getParentVisaCode(r && r.code);
+        if (!groups.has(parent)) groups.set(parent, []);
+        groups.get(parent).push(r);
+    });
+    return groups;
+}
+function shouldAutoExpandSubcodeGroup(query, group) {
+    const qNorm = normalizeVisaCode(query);
+    if (!qNorm) return false;
+    return (group || []).some(s => normalizeVisaCode(s && s.code) === qNorm);
+}
+function renderSubcodePreview(group, query) {
+    const active = (group || []).filter(s => !s.status || s.status === 'active');
+    const preview = (active.length ? active : group).slice(0, 4);
+    if (!preview.length) return '';
+    const chips = preview.map(s =>
+        `<button type="button" class="subcode-preview-chip" role="listitem" data-action="search-hint" data-query="${escapeHtml(s.code)}"><span class="subcode-preview-code">${hl(s.code, query ? [query] : [])}</span><span class="subcode-preview-name">${escapeHtml(getLocalizedSubcodeName(s))}</span></button>`
+    ).join('');
+    return `<div class="subcode-preview-chips" role="list" aria-label="${escapeHtml(tx('subcodePreviewAria'))}">${chips}</div>`;
+}
+function renderExpandableSubcodeGroup(v, group, innerHtml, query) {
+    const groupId = `subgroup-${normalizeVisaCode(v.code)}`;
+    const expanded = shouldAutoExpandSubcodeGroup(query, group);
+    return `<div class="subcode-expand-wrap">
+        <button type="button" class="subcode-expand-btn" data-action="toggle-subcode-group" aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="${groupId}">
+            <span class="subcode-expand-show">${escapeHtml(tx('subcodeGroupShowCount', { count: group.length }))}</span>
+            <span class="subcode-expand-hide">${escapeHtml(tx('subcodeGroupHide'))}</span>
+            <span class="subcode-expand-caret" aria-hidden="true">▾</span>
+        </button>
+        <div id="${groupId}" class="subcode-expand-body" ${expanded ? '' : 'hidden'}>${innerHtml}</div>
+    </div>`;
+}
+
+function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
+    opts = opts || {};
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
     const visaCode = v.code || '';
     const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
@@ -15025,9 +15112,35 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         </div>`;
     };
 
-    // Matched subcodes are lifted into their own labeled group up top
-    // (original code order preserved); the rest keep the category grouping
-    // and collapse behavior below. No matches → identical to before.
+    // Category-grouped HTML for an arbitrary subset (group order follows first
+    // appearance in the FULL list so lifting cards out never reshuffles it).
+    const buildGroupedHtml = (list) => {
+        const gm = new Map();
+        subs.forEach(s => { const g = s.group || '기타'; if (!gm.has(g)) gm.set(g, []); });
+        list.forEach(s => gm.get(s.group || '기타').push(s));
+        const hasG = list.some(s => s.group);
+        return [...gm.keys()].filter(g => gm.get(g).length).map(g => {
+            const cards = gm.get(g).map(renderCard).join('');
+            const groupTitle = hasG ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
+            return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
+        }).join('');
+    };
+
+    const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
+
+    // A) Broad parent-code query (e.g. "C-3" on the C-3 card): parent-first.
+    //    Compact one-line summary + 3–4 preview chips + a keyboard-accessible
+    //    expand/collapse group instead of a wall of full subcode cards.
+    if (opts.broadParentQuery && subs.length > 5) {
+        const activeSubs = subs.filter(s => !s.status || s.status === 'active');
+        const names = activeSubs.slice(0, 4).map(s => getLocalizedSubcodeName(s)).filter(Boolean).join(', ');
+        const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: subs.length, names }))}</p>`;
+        const hint = `<p class="subcode-group-hint">${escapeHtml(tx('subcodeGroupHint', { example: (activeSubs[0] && activeSubs[0].code) || `${visaCode}-1` }))}</p>`;
+        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;
+    }
+
+    // B) Matched subcodes are lifted into their own labeled group up top
+    //    (original code order preserved). Exact subcode searches stay prominent.
     const matched = subs.filter(s => matchSet.has(s.code));
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
@@ -15036,31 +15149,27 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
         if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
     }
 
-    // Group remaining subcodes by category. Group order follows first
-    // appearance in the FULL list so lifting matched cards out never
-    // reshuffles the category sequence; empty groups are dropped.
+    // Short remainder → flat grid (no awkward collapse).
+    if (rest.length <= 4) {
+        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${buildGroupedHtml(rest)}</div>`;
+    }
+    // Long remainder → collapse the full list behind the accessible toggle so
+    // neither exact-subcode nor keyword searches drown in full cards.
+    if (matched.length || rest.every(s => !s.group)) {
+        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)}</div>`;
+    }
+    // Keyword search, no specific match, multiple category groups → legacy
+    // behavior: first category group open, remaining groups behind "더 보기".
     const groupMap = new Map();
-    subs.forEach(s => {
-        const g = s.group || '기타';
-        if (!groupMap.has(g)) groupMap.set(g, []);
-    });
+    subs.forEach(s => { const g = s.group || '기타'; if (!groupMap.has(g)) groupMap.set(g, []); });
     rest.forEach(s => groupMap.get(s.group || '기타').push(s));
     const groups = [...groupMap.keys()].filter(g => groupMap.get(g).length);
     const hasGroups = rest.some(s => s.group);
     const renderGroup = (g) => {
         const cards = groupMap.get(g).map(renderCard).join('');
-        const title = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
-        return `<div class="manual-subcode-group">${title}<div class="manual-subcode-grid">${cards}</div></div>`;
+        const groupTitle = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
+        return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
     };
-
-    const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
-    // Single group or short list → render flat (no awkward collapse).
-    if (groups.length <= 1 || rest.length <= 4) {
-        return `<div class="manual-section">${title}${matchedHtml}${groups.map(renderGroup).join('')}</div>`;
-    }
-    // Many groups → show the first group, collapse the rest behind a full-width
-    // "더 보기 / 접기" toggle. (Matched subcodes never sit in the collapsed
-    // groups — they are lifted into the matched section above.)
     const firstGroup = renderGroup(groups[0]);
     const restGroups = groups.slice(1);
     const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
@@ -15068,7 +15177,7 @@ function renderSubcodes(v, keywords, matchingSubcodes) {
             <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
             <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
         </details>`;
-    return `<div class="manual-section">${title}${matchedHtml}${firstGroup}${moreHtml}</div>`;
+    return `<div class="manual-section" data-subcode-section>${title}${firstGroup}${moreHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
@@ -15705,6 +15814,7 @@ function resetToLanding(){
     const stb = document.getElementById('searchToggleBtn');
     closeDirectSearchMode();
     if (stb) stb.style.display = '';
+    document.dispatchEvent(new CustomEvent('paradiso:landing-reset'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
     resetReveal();
     debugSearchState('resetToLanding:end');
@@ -15788,6 +15898,7 @@ function renderResults(query){
         box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
         rc.textContent=tx('resultCount', { count: 0 });
         renderCompactResults([], kw);
+        document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
         return;
     }
     renderCompactResults(filtered, kw);
@@ -15796,7 +15907,12 @@ function renderResults(query){
         const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.dataset.testid = 'visa-result-card'; c.dataset.visaCode = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
         const isVisaCode = !['faq', 'scn', 'nhis'].includes(v.cat), subs=getVisaSubcodes(v), hs=subs.length>0;
         if (subs.length) c.dataset.visaSubcode = subs.map(s => s.code).filter(Boolean).join(' ');
-        let ms=[]; if(hs&&kw.length) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
+        // Broad parent-code query (e.g. "C-3" on the C-3 card): substring matching
+        // would mark EVERY subcode as "내 상황과 관련" and flood the card with full
+        // subcode cards. Treat it as a parent overview instead — renderSubcodes
+        // gets a compact preview + expand/collapse group via opts.
+        const broadParentQuery = queryIsCodeLike && normalizeVisaCode(primaryCodeQuery) === normalizeVisaCode(v.code);
+        let ms=[]; if(hs&&kw.length&&!broadParentQuery) ms=getMatchingSubcodes(v, kw.map(k=>k.toLowerCase()));
         if(kw.length&&(v._score>=50||ms.length)) c.classList.add('open');
         const periodHtml = v.period ? `<span class="manual-badge">${hl(v.period,kw)}</span>` : '';
         const dataHtml = v.dataBadge ? `<span class="manual-badge">${escapeHtml(v.dataBadge)}</span>` : '';
@@ -15824,7 +15940,8 @@ function renderResults(query){
                 <div class="manual-layout">
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
-                    ${renderSubcodes(v, kw, ms)}
+                    <div class="external-guide-slot" data-guide-slot="${escapeHtml(v.code || '')}"></div>
+                    ${renderSubcodes(v, kw, ms, { broadParentQuery, queryCode: primaryCodeQuery })}
                     ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
                     ${renderDocumentTabs(v)}
@@ -15843,6 +15960,8 @@ function renderResults(query){
     const catMap = {short:catLabels[0]||'단기',study:catLabels[1]||'유학/연수',work:catLabels[2]||'취업',invest:catLabels[3]||'투자',family:catLabels[4]||'가족/이민',other:catLabels[5]||'기타',diplo:catLabels[6]||'외교',nhis:catLabels[7]||'건강보험',faq:catLabels[8]||'안내',scn:catLabels[9]||'시나리오'};
     const topCats=[...new Set(filtered.slice(0,3).map(v=>catMap[v.cat]||v.cat))];
     document.getElementById('rh').textContent=tx('sortMeta', { mode: modeStr, categories: topCats.join(', ') });
+    // Notify external deferred modules (short-stay checker, F-4 route guide).
+    document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: filtered.map(v => v.code || '') } }));
 }
 
 let dt;
@@ -16609,6 +16728,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 'select-f4-route': () => selectF4Route(actionBtn),
                 'show-all-f4-routes': () => resetF4Route(actionBtn),
+                'toggle-subcode-group': () => {
+                    const body = document.getElementById(actionBtn.getAttribute('aria-controls'));
+                    if (!body) return;
+                    const expand = actionBtn.getAttribute('aria-expanded') !== 'true';
+                    actionBtn.setAttribute('aria-expanded', String(expand));
+                    body.hidden = !expand;
+                },
                 'compute-deadlines': () => computeDeadlines(actionBtn),
                 'deadline-download-ics': () => downloadDeadlineIcs({ title: actionBtn.dataset.deadlineTitle, date: actionBtn.dataset.deadlineDate, note: actionBtn.dataset.deadlineNote }),
                 'select-procedure-variant': () => selectProcedureVariant(actionBtn),
@@ -18188,6 +18314,11 @@ function showVisaDocForAction(visaCode) {
   }
 })();
 </script>
+
+<!-- Guided tools: country data + route data stay in external JSON (data/short-stay/,
+     data/f4/) and load lazily — index.html never embeds country lists. -->
+<script defer src="assets/js/short-stay-checker.js"></script>
+<script defer src="assets/js/f4-route-guide.js"></script>
 
 </body>
 </html>

@@ -39,7 +39,10 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .grounding_config import GroundingConfig, load_grounding_config
 from .law_grounding import should_attempt_law_grounding
-from .citation_verifier import build_law_evidence_citation_verification
+from .citation_verifier import (
+    build_law_evidence_citation_verification,
+    verify_case_decision_citations,
+)
 from .answer_quality import (
     classify_answer_quality,
     classify_question_type,
@@ -878,6 +881,9 @@ _TARGET_BY_SOURCE_FAMILY = {
     "legal_term": "lstrm",
 }
 _WIRED_SOURCE_FAMILIES = set(_TARGET_BY_SOURCE_FAMILY)
+_PRECEDENT_RELATED_FAMILIES = {
+    "precedent", "administrative_appeal", "legal_interpretation", "constitutional_decision",
+}
 
 
 def _adapter_status_from_tool_result(result: Dict[str, Any]) -> str:
@@ -932,6 +938,52 @@ def _official_result_from_tool(source_family: str, query: str, tool_result: Dict
     ))
 
 
+def _official_result_from_precedent_envelope(source_family: str, query: str, envelope: Dict[str, Any]) -> Dict[str, Any]:
+    """Bridge precedent_sources envelopes into the OfficialSourceResult shape."""
+    status = str(envelope.get("status") or SOURCE_STATUS_UNSUPPORTED)
+    if status == "scaffold_only":
+        status = SOURCE_STATUS_UNSUPPORTED
+    items: List[Dict[str, Any]] = []
+    for item in envelope.get("items") or []:
+        if not isinstance(item, dict) or item.get("resultKind") == "unavailable":
+            continue
+        grade = str(item.get("citationGrade") or "")
+        items.append({
+            "source_type": source_family,
+            "title": str(item.get("title") or item.get("sourceName") or "")[:180],
+            "case_name": str(item.get("title") or "")[:180],
+            "case_number": str(item.get("caseNumber") or "")[:80],
+            "decision_number": str(item.get("decisionNumber") or "")[:80],
+            "decision_date": str(item.get("decisionDate") or "")[:40],
+            "court_or_agency": str(item.get("courtOrAgency") or "")[:120],
+            "summary": str(item.get("holdingSummary") or item.get("snippet") or "")[:700],
+            "query": query,
+            "source_url": _sanitize_url(item.get("url") or ""),
+            "retrieval_status": "ok" if status == SOURCE_STATUS_RESULTS_FOUND else status,
+            "relevance": "direct" if grade == "direct" else ("analogical" if grade in {"contextual", "background"} else "background"),
+            "result_kind": item.get("resultKind") or "",
+            "citation_grade": grade,
+        })
+    out = asdict(OfficialSourceResult(
+        source_family=source_family,
+        status=status,
+        query=query,
+        normalized_items=items,
+        response_shape_hint=str(envelope.get("responseShapeHint") or ""),
+        parser_status=str(envelope.get("parserStatus") or ""),
+        sanitized_source_url=str(envelope.get("sanitizedSourceUrl") or ""),
+        error_type=str(envelope.get("errorType") or ""),
+        safe_error_message="",
+    ))
+    out["precedent_evidence_items"] = [
+        item for item in (envelope.get("items") or [])
+        if isinstance(item, dict)
+    ]
+    out["public_status"] = envelope.get("publicStatus") or ""
+    out["live_adapter_status"] = envelope.get("liveAdapterStatus") or ""
+    return out
+
+
 def retrieve_official_source_family(
     source_family: str,
     query: str,
@@ -950,6 +1002,22 @@ def retrieve_official_source_family(
     q = (query or "").strip()
     if family not in SOURCE_FAMILIES:
         return asdict(OfficialSourceResult(source_family=family or "unknown", status=SOURCE_STATUS_UNSUPPORTED, query=q, safe_error_message="unsupported_source_family"))
+    if family in _PRECEDENT_RELATED_FAMILIES:
+        from . import precedent_sources
+        if family == "precedent":
+            envelope = precedent_sources.search_precedents(q, limit=limit, config=config, transport=transport)
+            return _official_result_from_precedent_envelope(family, q, envelope)
+        envelope = precedent_sources.normalize_source_family_response(
+            family,
+            "",
+            result_kind="unavailable",
+            query=q,
+            target=precedent_sources.SOURCE_FAMILY_LIST_TARGETS.get(family),
+        )
+        envelope["status"] = SOURCE_STATUS_UNSUPPORTED
+        envelope["publicStatus"] = "unavailable"
+        envelope["errorType"] = ""
+        return _official_result_from_precedent_envelope(family, q, envelope)
     if family not in _WIRED_SOURCE_FAMILIES:
         return asdict(OfficialSourceResult(source_family=family, status=SOURCE_STATUS_UNSUPPORTED, query=q, safe_error_message="planned_not_wired"))
     cfg = config or load_grounding_config()
@@ -978,6 +1046,7 @@ def retrieve_planned_official_sources(
     queries = list(source_plan.get("queries") or [])
     results: List[Dict[str, Any]] = []
     normalized: List[Dict[str, Any]] = []
+    precedent_evidence_items: List[Dict[str, Any]] = []
     attempts = 0
     for idx, family in enumerate(families):
         if family == "manual":
@@ -987,12 +1056,14 @@ def retrieve_planned_official_sources(
         results.append(result)
         attempts += 1
         normalized.extend(result.get("normalized_items") or [])
+        precedent_evidence_items.extend(result.get("precedent_evidence_items") or [])
         if attempts >= max(1, min(max_attempts, _HARD_MAX_QUERIES)):
             break
     statuses = {r["source_family"]: r["status"] for r in results}
     return {
         "source_family_results": results,
         "normalized_evidence": normalized,
+        "precedent_evidence_items": precedent_evidence_items,
         "source_family_statuses": statuses,
         "source_family_result_counts": {r["source_family"]: len(r.get("normalized_items") or []) for r in results},
         "response_shape_hints": {r["source_family"]: r.get("response_shape_hint", "") for r in results},
@@ -1948,6 +2019,7 @@ def build_law_evidence_pack(
         "direct_manual_sources": direct_manual_sources,
         "related_manual_sources": related_manual_sources,
         "law_sources": law_sources,
+        "precedent_evidence_items": source_family_retrieval.get("precedent_evidence_items", []),
         "planned_law_queries": planned_queries,
         "law_queries_attempted": law_queries_attempted,
         "law_api_attempted": law_api_attempted,
@@ -2038,6 +2110,10 @@ def build_law_evidence_pack(
         query=(law_queries_attempted[0] if law_queries_attempted else ""),
         law_error_type=law_grounding_error,
         law_api_attempted=law_api_attempted,
+    )
+    pack["case_decision_citation_verification"] = verify_case_decision_citations(
+        "",
+        evidence_items=pack.get("precedent_evidence_items") or [],
     )
     pack["evidence_summary"] = build_evidence_summary(pack)
     return pack

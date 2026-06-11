@@ -36,6 +36,7 @@ from services.law_grounding import (
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack
+from services.citation_verifier import verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
@@ -331,6 +332,8 @@ class AskResponse(BaseModel):
     law_search_query: str = ""
     law_grounding_warnings: List[str] = Field(default_factory=list)
     citation_verification: Optional[Dict[str, Any]] = None
+    case_decision_citation_verification: Optional[Dict[str, Any]] = None
+    case_decision_citation_verification_status: str = ""
     # Manual-to-law fallback transparency. Coarse, non-secret signals only.
     #   manual_grounding_status: "present" when deterministic manual / source-
     #     confirmed structured requirements were available for this question;
@@ -371,6 +374,7 @@ class AskResponse(BaseModel):
     law_evidence_pack: Optional[Dict[str, Any]] = None
     planned_law_queries: List[str] = Field(default_factory=list)
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
+    precedent_evidence_items: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
     legal_analysis: Optional[Dict[str, Any]] = None
     legal_analysis_exists: bool = False
@@ -441,6 +445,8 @@ class AskResponse(BaseModel):
     final_model_quality_warning: bool = False
     answer_shape_failed_by_model: bool = False
     model_answer_repaired_by_deterministic_synthesis: bool = False
+    case_decision_citation_repaired: bool = False
+    case_decision_citation_rejected: bool = False
     direct_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     related_manual_sources: List[Dict[str, Any]] = Field(default_factory=list)
     law_grounding_error: str = ""
@@ -597,6 +603,20 @@ def _confidence_gate_answer_text(answer: str, meta: Dict[str, Any]) -> str:
         if risky in out:
             out = out.replace(risky, soft)
     return out
+
+
+def _case_law_uncertainty_answer(*, lang: Optional[str] = None) -> str:
+    if str(lang or "").lower().startswith("en"):
+        return (
+            "I cannot verify a specific case-law or decision citation from the retrieved official evidence for this question. "
+            "Use this as general preparation guidance only, and confirm the remedy, deadline, and filing path with HiKorea, 1345, "
+            "the competent immigration office, or a qualified professional before relying on it."
+        )
+    return (
+        "이 질문에 대해 특정 판례·재결·결정 번호나 판시 내용을 확인할 수 있는 공식 근거가 확보되지 않았습니다. "
+        "따라서 판례 인용 없이 일반 준비 안내로만 보아야 하며, 구제절차·기한·제출 경로는 HiKorea, 1345, "
+        "관할 출입국·외국인관서 또는 자격 있는 전문가에게 확인하세요."
+    )
 
 def _derive_source_panel_metadata(
     *,
@@ -1804,6 +1824,20 @@ def _apply_answer_shape_gate(
         if isinstance(response_meta.get("legal_analysis"), dict)
         else None
     )
+    law_pack = response_meta.get("law_evidence_pack") if isinstance(response_meta.get("law_evidence_pack"), dict) else {}
+    precedent_items = law_pack.get("precedent_evidence_items") or []
+    try:
+        original_case_check = verify_case_decision_citations(answer, evidence_items=precedent_items)
+    except Exception:  # pragma: no cover - verifier must never break /api/ask
+        original_case_check = {
+            "status": "error",
+            "warnings": ["CASE_DECISION_VERIFIER_ERROR"],
+            "citations": [],
+            "quotes": [],
+        }
+    gate_meta["case_decision_citation_verification"] = original_case_check
+    gate_meta["case_decision_citation_verification_status"] = original_case_check.get("status", "")
+
     if (not gate["passed"]) and gate["repair_strategy"] == "deterministic_synthesis" and legal_analysis:
         repaired = build_legal_analysis_fallback_answer(
             prompt=prompt,
@@ -1822,7 +1856,50 @@ def _apply_answer_shape_gate(
             missing_answer_slots=regate["missing_slots"],
             copy_safe_answer=repaired,
         )
-        return repaired, gate_meta
+
+    answer = gate_meta.get("copy_safe_answer") or answer
+
+    # Case / decision citations need a stricter verifier than statute citations.
+    # Fabricated case numbers, unsupported authority claims, or direct holdings
+    # backed only by list/contextual evidence must not be shown to users.
+    try:
+        case_check = verify_case_decision_citations(answer, evidence_items=precedent_items)
+    except Exception:  # pragma: no cover - verifier must never break /api/ask
+        case_check = {"status": "error", "warnings": ["CASE_DECISION_VERIFIER_ERROR"], "citations": [], "quotes": []}
+    gate_meta["case_decision_citation_verification"] = case_check
+    gate_meta["case_decision_citation_verification_status"] = case_check.get("status", "")
+    if original_case_check.get("status") == "failed" and case_check.get("status") != "failed":
+        gate_meta["case_decision_citation_repaired"] = True
+    if case_check.get("status") == "failed":
+        if legal_analysis:
+            repaired = build_legal_analysis_fallback_answer(
+                prompt=prompt,
+                lang=lang,
+                base_meta=response_meta,
+                legal_analysis=legal_analysis,
+                intro_mode="quality_repair",
+            )
+            repaired = _confidence_gate_answer_text(repaired, response_meta)
+            try:
+                repair_check = verify_case_decision_citations(repaired, evidence_items=precedent_items)
+            except Exception:  # pragma: no cover
+                repair_check = {"status": "error", "warnings": ["CASE_DECISION_VERIFIER_ERROR"]}
+            if repair_check.get("status") != "failed":
+                gate_meta.update(
+                    model_answer_repaired_by_deterministic_synthesis=True,
+                    case_decision_citation_repaired=True,
+                    case_decision_citation_verification=repair_check,
+                    case_decision_citation_verification_status=repair_check.get("status", ""),
+                    copy_safe_answer=repaired,
+                )
+                return repaired, gate_meta
+        safe = _case_law_uncertainty_answer(lang=lang)
+        gate_meta.update(
+            answer_shape_failed_by_model=True,
+            case_decision_citation_rejected=True,
+            copy_safe_answer=safe,
+        )
+        return safe, gate_meta
 
     gate_meta["copy_safe_answer"] = answer
     return answer, gate_meta
@@ -3751,6 +3828,7 @@ async def ask(req: AskRequest) -> AskResponse:
         law_evidence_pack=law_evidence_pack,
         planned_law_queries=(law_evidence_pack or {}).get("planned_law_queries", []),
         law_sources=(law_evidence_pack or {}).get("law_sources", []),
+        precedent_evidence_items=(law_evidence_pack or {}).get("precedent_evidence_items", []),
         law_evidence_count=(law_evidence_pack or {}).get("law_evidence_count", 0),
         legal_analysis=(law_evidence_pack or {}).get("legal_analysis"),
         immigration_facts=(law_evidence_pack or {}).get("immigration_facts", {}),
