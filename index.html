@@ -13436,19 +13436,32 @@ function getSourceConfirmedEntriesForProcedure(v, procedureKey) {
     return entries.filter(entry => procedureKeyForSourceConfirmedType(entry?.procedureType) === procedureKey);
 }
 
-function canonicalizeSourceConfirmedDocText(text, procedureKey) {
+// F-4 procedures that use 재외동포 통합신청서(별지 제1호서식) per
+// 재외동포의 출입국과 법적지위에 관한 법률 시행규칙
+const F4_OVERSEAS_KOREANS_FORM_PROCEDURES = new Set([
+    'statusChange', 'registration', 'activitiesOutsideStatus', 'extension'
+]);
+
+function canonicalizeSourceConfirmedDocText(text, procedureKey, statusCode) {
     const value = String(text || '').replace(/^\s*[①-⑳]\s*/g, '').trim();
     if (!value || isDocPlaceholder(value)) return '';
-    if (procedureKey !== 'visaIssuance' && value === '신청서') return '통합신청서(별지 제34호 서식)';
-    if (procedureKey !== 'visaIssuance' && /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value)) return '통합신청서(별지 제34호 서식)';
+    if (procedureKey !== 'visaIssuance') {
+        const isGenericForm = value === '신청서' || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(value);
+        if (isGenericForm) {
+            if (statusCode === 'F-4' && F4_OVERSEAS_KOREANS_FORM_PROCEDURES.has(procedureKey)) {
+                return tx('f4ApplicationForm');
+            }
+            return '통합신청서(별지 제34호 서식)';
+        }
+    }
     return value;
 }
 
-function groupSourceConfirmedDocuments(entries, procedureKey) {
+function groupSourceConfirmedDocuments(entries, procedureKey, statusCode) {
     const groups = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
     (entries || []).forEach(entry => {
         (entry.documents || []).forEach(doc => {
-            const text = canonicalizeSourceConfirmedDocText(doc?.textKo || doc?.text || doc?.name, procedureKey);
+            const text = canonicalizeSourceConfirmedDocText(doc?.textKo || doc?.text || doc?.name, procedureKey, statusCode);
             if (!text) return;
             const requiredness = String(doc?.requiredness || '').toLowerCase();
             if (/common|basic|공통|기본/.test(requiredness)) groups.commonDocs.push(text);
@@ -13497,7 +13510,7 @@ function mergeManualRefs(...refLists) {
 function getProcedure(v, cfg) {
     const raw = v.procedures && v.procedures[cfg.key] ? v.procedures[cfg.key] : null;
     const structuredEntries = getSourceConfirmedEntriesForProcedure(v, cfg.key);
-    const structuredDocs = groupSourceConfirmedDocuments(structuredEntries, cfg.key);
+    const structuredDocs = groupSourceConfirmedDocuments(structuredEntries, cfg.key, v.code);
     const structuredRefs = sourceConfirmedManualRefs(structuredEntries);
     const legacyDocs = normalizeDocGroups(null, v, {
         commonDocs: ['commonDocs'],
@@ -16055,7 +16068,8 @@ const BOOTSTRAP_KO_FALLBACK = {
     visaDataLoadError: '비자 데이터를 불러오지 못했습니다.',
     landingHints: ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'],
     quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
-    aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격']
+    aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
+    f4ApplicationForm: '재외동포 통합신청서(별지 제1호서식)'
 };
 let I18N_MANIFEST = { defaultLocale: 'ko', canonicalLocale: 'ko', supportedLocales: ['ko', 'en', 'zh-CN'], localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' }, pendingLocales: [] };
 
@@ -18224,8 +18238,21 @@ function showVisaDocForAction(visaCode) {
     return String(value || "").replace(/\s+/g, " ").trim();
   }
 
-  function normalizeTerm(value) {
+  // Procedures that use 재외동포 통합신청서(별지 제1호서식) for F-4
+  const F4_FORM_PROCEDURE_KEYS = new Set([
+    'statusChange', 'registration', 'activitiesOutsideStatus', 'extension'
+  ]);
+
+  function normalizeTerm(value, statusCode, procedureKey) {
     let text = clean(value);
+
+    // F-4: route through 재외동포법 시행규칙 별지 제1호서식 for stay procedures
+    if (statusCode === 'F-4' && procedureKey && F4_FORM_PROCEDURE_KEYS.has(procedureKey)) {
+      if (/^신청서$/.test(text) || /^통합신청서$/.test(text) || /^신청서\s*\(?별지\s*제?34호\s*서식\)?$/.test(text)) {
+        return typeof tx === 'function' ? tx('f4ApplicationForm') : '재외동포 통합신청서(별지 제1호서식)';
+      }
+    }
+
     for (const pair of TERM_REPLACEMENTS) {
       if (pair[0].test(text)) return pair[1];
     }
@@ -18256,13 +18283,15 @@ function showVisaDocForAction(visaCode) {
   }
 
   function normalizeVisibleDocTerms(card) {
+    const statusCode = card.dataset.visaCode || card.dataset.code || '';
     const candidates = Array.from(card.querySelectorAll(".doc-item, .doc-card, .docs-list li, .manual-doc-item, .doc-group li, .doc-group-card"));
     for (const el of candidates) {
       if (el.dataset.paradisoDocTermNormalized === "1") continue;
       const text = clean(el.textContent);
       if (!text || text.length > 90) continue;
 
-      const normalized = normalizeTerm(text);
+      const procedureKey = el.closest('[data-procedure-panel]')?.dataset?.procedurePanel || '';
+      const normalized = normalizeTerm(text, statusCode, procedureKey);
       if (normalized && normalized !== text) {
         el.textContent = normalized;
         el.dataset.paradisoDocTermNormalized = "1";
