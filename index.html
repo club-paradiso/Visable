@@ -517,6 +517,25 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 .doc-checklist-notes li { font-size: 0.76rem; color: var(--t2); line-height: 1.5; word-break: keep-all; padding-left: 14px; position: relative; }
 .doc-checklist-notes li::before { content: '※'; position: absolute; left: 0; color: var(--t3); }
 .doc-chk-item { display: flex; align-items: flex-start; gap: 10px; background: var(--bg1); border: 1px solid var(--bd); padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 700; color: var(--t1); box-shadow: 0 1px 2px rgba(0,0,0,0.02); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+/* Document preparation guide drawer (data/doc_guide.json) — BASE + Editorial(default tokens) */
+.doc-guide-toggle { margin-left: auto; flex: 0 0 auto; align-self: center; border: 1px solid var(--bd2, #ddd); background: var(--bg2, #f6f6f6); color: var(--ac, #2f5e67); border-radius: 999px; padding: 2px 10px; font: inherit; font-size: 0.7rem; font-weight: 800; cursor: pointer; line-height: 1.4; white-space: nowrap; transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease; }
+.doc-guide-toggle:hover, .doc-guide-toggle:focus-visible { border-color: var(--ac, #2f5e67); background: var(--acL, #e9eef0); }
+.doc-guide-toggle.is-open { background: var(--ac, #2f5e67); color: var(--bg1, #fff); border-color: var(--ac, #2f5e67); }
+.doc-guide-drawer { grid-column: 1 / -1; border: 1px solid var(--bd2, #ddd); border-left: 3px solid var(--ac, #2f5e67); background: var(--bg2, #f7f5ef); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; font-size: 0.78rem; color: var(--t2, #444); line-height: 1.6; word-break: keep-all; overflow-wrap: anywhere; }
+.doc-guide-spec { margin: 0; color: var(--t1, #222); font-weight: 700; }
+.doc-guide-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.doc-guide-chip { display: inline-flex; align-items: flex-start; gap: 5px; border-radius: 999px; padding: 3px 10px; font-size: 0.72rem; font-weight: 700; border: 1px solid transparent; }
+.doc-guide-chip b { font-weight: 900; }
+.doc-guide-chip--ok { background: color-mix(in srgb, var(--color-success, #1F8A5B) 10%, var(--bg1, #fff)); border-color: color-mix(in srgb, var(--color-success, #1F8A5B) 40%, var(--bd, #ccc)); color: var(--color-success, #1F8A5B); }
+.doc-guide-chip--no { background: color-mix(in srgb, var(--color-error, #E03B57) 8%, var(--bg1, #fff)); border-color: color-mix(in srgb, var(--color-error, #E03B57) 36%, var(--bd, #ccc)); color: var(--color-error, #E03B57); }
+.doc-guide-tip { margin: 0; color: var(--t1, #222); }
+.doc-guide-conditional { margin: 0; color: var(--t2, #444); }
+.doc-guide-figure { margin: 2px 0 0; }
+.doc-guide-figure img { max-width: min(320px, 100%); border: 1px solid var(--bd, #ccc); border-radius: 6px; display: block; }
+.doc-guide-figure figcaption { font-size: 0.68rem; color: var(--t3, #777); margin-top: 4px; }
+.doc-guide-source { margin: 0; font-size: 0.7rem; color: var(--t3, #777); border-top: 1px dashed var(--bd2, #ddd); padding-top: 6px; }
+[data-theme="dark"] .doc-guide-drawer { background: var(--bg2); border-color: var(--bd3); }
+[data-theme="dark"] .doc-guide-toggle { background: var(--bg2); border-color: var(--bd3); }
 .doc-chk-item svg { width: 18px; height: 18px; color: var(--ac); flex-shrink: 0; margin-top: 2px; }
 .doc-chk-item.critical { border-color: var(--color-error); background: #fef2f2; color: #991b1b; }
 .doc-chk-item.critical svg { color: var(--color-error); }
@@ -10834,6 +10853,15 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .doc-chk-item { background: var(--k-white); border: 1.5px solid var(--k-ink); border-radius: 999px; transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring); }
 :root[data-theme="archive_diary"] .doc-chk-item:hover { transform: translateY(-2px); box-shadow: var(--k-pop-1); }
 
+/* Doc guide drawer — Kitsch: single blue point, ink stroke, Space Mono meta, spring easing.
+   Green/red stay reserved for ok/no status chips only. */
+:root[data-theme="archive_diary"] .doc-guide-toggle { border: 1.5px solid var(--k-ink); background: var(--k-white); color: var(--k-blue); transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring), background 0.2s ease, color 0.2s ease; }
+:root[data-theme="archive_diary"] .doc-guide-toggle:hover, :root[data-theme="archive_diary"] .doc-guide-toggle:focus-visible { transform: translateY(-1px); box-shadow: var(--k-pop-1); background: var(--k-white); }
+:root[data-theme="archive_diary"] .doc-guide-toggle.is-open { background: var(--k-blue); color: #fff; border-color: var(--k-ink); }
+:root[data-theme="archive_diary"] .doc-guide-drawer { background: var(--k-white); border: 1.5px solid var(--k-ink); border-left: 4px solid var(--k-blue); border-radius: 14px; box-shadow: var(--k-pop-1); }
+:root[data-theme="archive_diary"] .doc-guide-chip { border-width: 1.5px; }
+:root[data-theme="archive_diary"] .doc-guide-source, :root[data-theme="archive_diary"] .doc-guide-figure figcaption { font-family: 'Space Mono', monospace; }
+
 /* Primary / secondary buttons → ink stroke + hard offset */
 :root[data-theme="archive_diary"] .btn-primary {
   background: var(--k-blue); color: #fff;
@@ -14269,6 +14297,52 @@ async function submitAiAnalysis(actionType, btnEl) {
 }
 
 // --- Render Doc Checklists ---
+// ── Document preparation guide (data/doc_guide.json) ────────────────────────
+// Checklist enrichment only: when the guide file is missing or fails to load,
+// docGuideData stays null and checklists render exactly as before.
+let docGuideData = null;
+async function loadDocGuide() {
+    try {
+        const res = await fetch('./data/doc_guide.json', { cache: 'no-store' });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (json && typeof json === 'object' && !Array.isArray(json)) docGuideData = json;
+    } catch (e) { /* optional enhancement — checklist must keep working without it */ }
+}
+
+function buildDocGuideDrawer(docId) {
+    const g = docGuideData && docGuideData[docId];
+    if (!g) return '';
+    const en = currentLanguage === 'en';
+    const chip = (txt, cls, mark) => `<span class="doc-guide-chip ${cls}"><b aria-hidden="true">${mark}</b>${escapeHtml(txt)}</span>`;
+    const accepts = Array.isArray(g.accept) ? g.accept.map(a => chip(a, 'doc-guide-chip--ok', '✓')).join('') : '';
+    const rejects = Array.isArray(g.reject) ? g.reject.map(r => chip(r, 'doc-guide-chip--no', '✗')).join('') : '';
+    const img = g.image_url
+        ? `<figure class="doc-guide-figure"><img src="${escapeHtml(g.image_url)}" alt="${escapeHtml((en ? 'Official form example' : '공식 서식 예시'))}" loading="lazy"><figcaption>${escapeHtml(en ? 'Official statutory form (Enforcement Rule annex)' : '출입국관리법 시행규칙 별지 서식 (진본)')}</figcaption></figure>`
+        : '';
+    // Source line renders unconditionally — a guide without provenance must
+    // surface as "needs verification" rather than silently looking authoritative.
+    const sourceText = g.source || (en ? 'Source pending manual verification' : '출처 확인 필요 (사람 검수 대상)');
+    return `<div class="doc-guide-drawer" data-doc-guide="${escapeHtml(docId)}" hidden>
+        ${g.spec ? `<p class="doc-guide-spec">${escapeHtml(g.spec)}</p>` : ''}
+        ${(accepts || rejects) ? `<div class="doc-guide-chips">${accepts}${rejects}</div>` : ''}
+        ${g.tip ? `<p class="doc-guide-tip">💡 ${escapeHtml(g.tip)}</p>` : ''}
+        ${g.conditional ? `<p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>` : ''}
+        ${img}
+        <p class="doc-guide-source">${escapeHtml(en ? 'Source: ' : '출처: ')}${escapeHtml(sourceText)}</p>
+    </div>`;
+}
+
+function toggleDocGuide(btn) {
+    const tile = btn.closest('.doc-chk-item');
+    const drawer = tile && tile.nextElementSibling;
+    if (!drawer || !drawer.classList.contains('doc-guide-drawer')) return;
+    const open = drawer.hidden;
+    drawer.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.classList.toggle('is-open', open);
+}
+
 function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // Defense-in-depth: never emit placeholder/diagnostic stand-ins as checklist
     // rows even if an upstream path bypassed dedupeDocs().
@@ -14311,7 +14385,10 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         // one grid cell — flag them so CSS can let them span the full row.
         const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
-        return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span></div>`;
+        const guideAvailable = !isUnresolvedId && docGuideData && docGuideData[key];
+        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" onclick="toggleDocGuide(this)" aria-expanded="false">${currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
+        const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key) : '';
+        return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
     const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docUxGroupLabels', 1, '상황별 추가서류'))}</div>` : '';
     // De-duplicate relocated notes (canonicalized) and render them under the
@@ -14407,16 +14484,17 @@ function getProcedureFeeInfo(v, procedureKey) {
     const base = DEFAULT_PROCEDURE_FEES[procedureKey];
     if (!base) return null;
     const fee = { ...base, commonReference: true, notes: [...(base.notes || [])] };
-    if (procedureKey === 'statusChange') {
-        if (v.code === 'F-5') {
-            fee.revenueStamp = 200000;
-            fee.notes = ['영주(F-5) 자격 변경허가 정부수입인지 200,000원'];
-            fee.commonReference = false;
-        } else if (v.code === 'F-6') {
-            fee.revenueStamp = 40000;
-            fee.notes = ['결혼이민(F-6) 자격 변경허가 정부수입인지 40,000원'];
-            fee.commonReference = false;
-        }
+    if (procedureKey === 'statusChange' && v.code === 'F-5') {
+        fee.revenueStamp = 200000;
+        fee.notes = ['영주(F-5) 자격 변경허가 정부수입인지 200,000원'];
+        fee.commonReference = false;
+    }
+    // 출입국관리법 시행규칙 제72조: 결혼이민(F-6) 4만원 예외는 제4호 '체류자격 부여'에만 있음.
+    // 변경허가는 제5호(10만원, 예외는 영주 F-5뿐)이므로 F-6 예외를 부여(statusGrant)로 정정.
+    if (procedureKey === 'statusGrant' && v.code === 'F-6') {
+        fee.revenueStamp = 40000;
+        fee.notes = ['결혼이민(F-6) 체류자격 부여 정부수입인지 40,000원 (시행규칙 제72조제4호)'];
+        fee.commonReference = false;
     }
     if (procedureKey === 'extension' && v.code === 'F-6') {
         fee.revenueStamp = 30000;
@@ -18182,6 +18260,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadI18nTranslations();
     renderLanguageMenu();
     applyLanguage(getInitialLanguage(), { silent: true });
+    loadDocGuide();
     loadVisaData();
     if(qEl) {
         qEl.addEventListener('input', handleInput);
@@ -18907,7 +18986,7 @@ function selectInKoreaAction(actionType) {
     },
     workplace: {
       title: '🏢 근무처 변경·추가',
-      desc:   '취업 자격 소지자가 근무처를 변경할 경우 15일 이내에 신고해야 합니다.',
+      desc:   '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
                  ⚠️ <strong>주의:</strong> 근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.
                </div>
