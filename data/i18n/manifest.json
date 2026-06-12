@@ -1,11 +1,18 @@
 {
   "defaultLocale": "ko",
   "canonicalLocale": "ko",
+  "fallbackLocale": "ko",
   "supportedLocales": [
     "ko",
     "en",
     "zh-CN"
   ],
+  "localeLabels": {
+    "ko": "한국어",
+    "en": "English",
+    "zh-CN": "简体中文"
+  },
+  "policy": "Korean is canonical. English and Simplified Chinese are active display languages. Official legal, immigration, agency, and document terms must be resolved through data/i18n/official-terms.json when available; unverified official names render Korean.",
   "localeAliases": {
     "zh": "zh-CN",
     "zhHant": "zh-CN"

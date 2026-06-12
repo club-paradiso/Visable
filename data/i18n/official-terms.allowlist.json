@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "notes": "Allowlist consumed by scripts/sync_official_terms.py. Only terms listed here are eligible for build-time law.go.kr lookups; the sync never adds terms outside this list and never overwrites curated glossary entries.",
+  "laws": [
+    { "termId": "immigration_act", "ko": "출입국관리법" },
+    { "termId": "immigration_act_enforcement_decree", "ko": "출입국관리법 시행령" },
+    { "termId": "immigration_act_enforcement_rules", "ko": "출입국관리법 시행규칙" }
+  ]
+}

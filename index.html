@@ -14206,6 +14206,12 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
                 if (split.note) relocatedNotes.push(split.note);
             }
         }
+        // Non-Korean locales: append a glossary-verified translation after the
+        // canonical Korean name (data/i18n/official-terms.json). Unverified
+        // terms keep Korean-only rendering — official names are never invented.
+        if (!isUnresolvedId && typeof key === 'string' && key.startsWith('doc_') && typeof annotateOfficialDocLabel === 'function') {
+            officialName = annotateOfficialDocLabel(key, officialName);
+        }
         const debugAttr = isUnresolvedId ? ` data-doc-id="${escapeHtml(key)}"` : '';
         const isCritical = ['doc_health', 'doc_crim', 'doc_tb'].includes(key);
         const criticalClass = isCritical ? ' critical' : '';
@@ -17197,7 +17203,10 @@ const BOOTSTRAP_KO_FALLBACK = {
     landingHints: ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'],
     quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
     aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
-    f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)'
+    f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)',
+    editorialThemeCivic: '시빅',
+    editorialThemeKitsch: '키치',
+    editorialThemeAria: '인터페이스 테마 변경'
 };
 let I18N_MANIFEST = { defaultLocale: 'ko', canonicalLocale: 'ko', supportedLocales: ['ko', 'en', 'zh-CN'], localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' }, pendingLocales: [] };
 
@@ -17231,7 +17240,57 @@ async function loadI18nTranslations() {
         }
     }));
     if (!UI_TRANSLATIONS.ko) UI_TRANSLATIONS.ko = BOOTSTRAP_KO_FALLBACK;
+    try {
+        const glossary = await fetchJson(OFFICIAL_TERMS_PATH);
+        OFFICIAL_TERMS = (glossary && glossary.terms) || {};
+    } catch (err) {
+        console.warn('[i18n] glossary unavailable; labels fall back to Korean canonical text', err);
+        OFFICIAL_TERMS = {};
+    }
+    indexOfficialTerms();
     return loaded.some(Boolean);
+}
+
+/* Official terminology glossary (data/i18n/official-terms.json).
+   Korean stays canonical everywhere; a glossary translation is appended to a
+   label only when its confidence level is reviewable-safe. Unverified or
+   missing entries keep today's Korean-only rendering. */
+const OFFICIAL_TERMS_PATH = './data/i18n/official-terms.json';
+const OFFICIAL_TERM_DISPLAY_CONFIDENCE = ['canonical', 'official', 'manual-derived', 'curated'];
+let OFFICIAL_TERMS = {};
+let OFFICIAL_DOC_TERM_INDEX = {};
+
+function indexOfficialTerms() {
+    OFFICIAL_DOC_TERM_INDEX = {};
+    Object.keys(OFFICIAL_TERMS).forEach((termId) => {
+        const entry = OFFICIAL_TERMS[termId];
+        const docIds = entry && Array.isArray(entry.docIds) ? entry.docIds : [];
+        docIds.forEach((docId) => {
+            if (docId && !OFFICIAL_DOC_TERM_INDEX[docId]) OFFICIAL_DOC_TERM_INDEX[docId] = termId;
+        });
+    });
+}
+
+function officialTermTranslation(termId, locale = currentLanguage) {
+    const entry = OFFICIAL_TERMS[termId];
+    if (!entry) return null;
+    const code = normalizeLocaleCode(locale);
+    if (code === 'ko') return null;
+    const value = entry[code];
+    if (typeof value !== 'string' || !value.trim()) return null;
+    const confidence = entry.confidence && entry.confidence[code];
+    if (!OFFICIAL_TERM_DISPLAY_CONFIDENCE.includes(confidence)) return null;
+    return value.trim();
+}
+
+function annotateOfficialDocLabel(docId, koreanLabel) {
+    const termId = OFFICIAL_DOC_TERM_INDEX[docId];
+    if (!termId) return koreanLabel;
+    const translation = officialTermTranslation(termId);
+    if (!translation) return koreanLabel;
+    const label = String(koreanLabel);
+    if (label.toLowerCase().includes(translation.toLowerCase())) return label;
+    return label + ' (' + translation + ')';
 }
 
 function hasFullKoI18nPack() {
@@ -17243,10 +17302,24 @@ function hasFullKoI18nPack() {
     );
 }
 
+const I18N_DEV_WARNINGS = (() => {
+    try {
+        return location.hostname === 'localhost' || location.hostname === '127.0.0.1' || localStorage.getItem('paradiso:i18n-debug') === '1';
+    } catch (e) { return false; }
+})();
+const I18N_WARNED_MISSING_KEYS = new Set();
+
 function tx(key, vars = {}) {
     const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK;
     const pack = UI_TRANSLATIONS[normalizeLocaleCode(currentLanguage)] || koPack;
-    let value = pack[key] ?? koPack[key] ?? key;
+    let value = pack[key] ?? koPack[key];
+    if (value === undefined) {
+        if (I18N_DEV_WARNINGS && !I18N_WARNED_MISSING_KEYS.has(key)) {
+            I18N_WARNED_MISSING_KEYS.add(key);
+            console.warn('[i18n] missing key: ' + key);
+        }
+        value = key;
+    }
     if (typeof value !== 'string') return value;
     Object.entries(vars).forEach(([k, v]) => { value = value.replaceAll(`{${k}}`, v); });
     return value;
@@ -17591,11 +17664,8 @@ function toggleTheme(){
    light/dark brightness toggle. Persisted in localStorage; default civic. */
 const EDITORIAL_THEME_STORAGE_KEY = 'paradiso:editorial-theme';
 const EDITORIAL_THEMES = ['civic_editorial', 'archive_diary'];
-const EDITORIAL_THEME_LABELS = {
-    civic_editorial: { ko: '시빅', en: 'Civic', ja: 'シビック', zh: '公务', vi: 'Công vụ' },
-    archive_diary:   { ko: '키치', en: 'Kitsch', ja: 'キッチュ', zh: '基奇', vi: 'Kitsch' }
-};
-const EDITORIAL_THEME_ARIA = { ko: '인터페이스 테마 변경', en: 'Change interface theme', ja: 'インターフェーステーマ', zh: '更换界面主题', vi: 'Đổi giao diện' };
+// Theme toggle labels live in the locale packs (editorialThemeCivic /
+// editorialThemeKitsch / editorialThemeAria) — no inline dictionaries here.
 
 function getStoredEditorialTheme() {
     try {
@@ -17609,15 +17679,11 @@ function currentEditorialTheme() {
     return EDITORIAL_THEMES.includes(t) ? t : 'civic_editorial';
 }
 
-function localizedEditorialLabel(map) {
-    return (map && (map[currentLanguage] || map.en)) || '';
-}
-
 function updateEditorialThemeLabel() {
     const theme = currentEditorialTheme();
     const textEl = document.querySelector('.editorial-theme-btn-text');
-    if (textEl) textEl.textContent = localizedEditorialLabel(EDITORIAL_THEME_LABELS[theme]);
-    const aria = localizedEditorialLabel(EDITORIAL_THEME_ARIA);
+    if (textEl) textEl.textContent = tx(theme === 'archive_diary' ? 'editorialThemeKitsch' : 'editorialThemeCivic');
+    const aria = tx('editorialThemeAria');
     setAttr('#editorialThemeBtn', 'aria-label', aria);
     setAttr('#editorialThemeBtn', 'title', aria);
 }

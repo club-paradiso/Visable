@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "1.0",
+  "policy": "Korean is canonical. Translations are display aids only. Never fabricate official English or Chinese names: a translation is shown only when its confidence is canonical/official/manual-derived/curated. Entries marked needs-verification or fallback are stored for review but render Korean. Visa/status codes (D-2, F-4, E-7, G-1, G-1-5, ...) are never translated.",
+  "confidenceValues": ["canonical", "official", "manual-derived", "curated", "fallback", "needs-verification"],
+  "sourceTypes": ["law-api", "english-law", "manual-derived", "hikorea", "visa-portal", "mofa", "curated", "unknown"],
+  "terms": {
+    "integrated_application_form_34": {
+      "ko": "통합신청서(별지 제34호 서식)",
+      "en": "Application Form (Report Form) — Annex Form No. 34",
+      "zh-CN": null,
+      "sourceType": "manual-derived",
+      "source": "stay_manual_260601",
+      "confidence": { "ko": "canonical", "en": "manual-derived", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": ["doc_app_form", "doc_unified_application_form", "doc_unified_application_form_change"],
+      "notes": "English follows the bilingual heading printed on the official 별지 제34호 form (APPLICATION FORM (REPORT FORM)). Do not invent a Chinese official translation without a verified source."
+    },
+    "foreign_resident_registration_card": {
+      "ko": "외국인등록증",
+      "en": "Residence Card",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "card_face_bilingual_title",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "The card itself prints '외국인등록증 RESIDENCE CARD'. Older materials use 'Alien Registration Card (ARC)'. Needs one-time confirmation against current HiKorea English pages; no verified Chinese official name recorded."
+    },
+    "extension_of_stay_permit": {
+      "ko": "체류기간 연장허가",
+      "en": "Permission to Extend Period of Stay",
+      "zh-CN": "延长滞留期限许可",
+      "sourceType": "curated",
+      "source": "data/ops/translation_glossary.template.json TERM-004",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "zh-CN value is a glossary candidate carried over from the repo template, which flags it as requiring native/legal QA — stored but not displayed. Must preserve permission/approval meaning (never 'automatic extension')."
+    },
+    "change_of_status_permit": {
+      "ko": "체류자격 변경허가",
+      "en": "Permission to Change Status of Stay",
+      "zh-CN": "变更滞留资格许可",
+      "sourceType": "curated",
+      "source": "data/ops/translation_glossary.template.json TERM-005",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "zh-CN value is a template candidate pending native/legal QA — stored but not displayed. Approval is discretionary; never render as guaranteed conversion."
+    },
+    "activities_outside_status_permit": {
+      "ko": "체류자격외 활동허가",
+      "en": "Permission to Engage in Activities Outside the Status of Stay",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "stay_manual_260601",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Descriptive English rendering of the stay-manual term; not presented as a statutory English title. No verified Chinese name recorded."
+    },
+    "proof_of_place_of_stay": {
+      "ko": "체류지 입증서류",
+      "en": "Proof of place of stay (residence)",
+      "zh-CN": null,
+      "sourceType": "manual-derived",
+      "source": "stay_manual_260601",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": ["doc_residence_proof_generic"],
+      "notes": "Descriptive English only. The decorated DOC_DICT label doc_address ('체류지 입증서류 (임대차계약서, …)') is intentionally not linked to avoid annotating only part of a composite label."
+    },
+    "accommodation_provision_confirmation": {
+      "ko": "거주숙소제공확인서",
+      "en": null,
+      "zh-CN": null,
+      "sourceType": "manual-derived",
+      "source": "stay_manual_260601",
+      "confidence": { "ko": "canonical", "en": "needs-verification", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Specific official form name — do not machine-translate. Renders Korean until an official/manual-derived English title is verified."
+    },
+    "standard_admission_letter": {
+      "ko": "표준입학허가서",
+      "en": "Standard Admission Letter",
+      "zh-CN": null,
+      "sourceType": "manual-derived",
+      "source": "stay_manual_260601",
+      "confidence": { "ko": "canonical", "en": "needs-verification", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "English candidate widely used by Korean universities, but not yet verified against an official bilingual source — stored, renders Korean."
+    },
+    "certificate_for_confirmation_of_visa_issuance": {
+      "ko": "사증발급인정서",
+      "en": "Certificate for Confirmation of Visa Issuance",
+      "zh-CN": "签证签发确认书",
+      "sourceType": "manual-derived",
+      "source": "visa_manual_260521; data/i18n procedureLabels[1]",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Both translations already shipped in the reviewed locale packs (procedureLabels). doc_cvi is not linked because its DOC_DICT label already embeds an English gloss."
+    },
+    "visa": {
+      "ko": "사증",
+      "en": "Visa",
+      "zh-CN": "签证",
+      "sourceType": "curated",
+      "source": "data/i18n locale packs",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Common safe vocabulary; already used throughout the reviewed en/zh-CN packs."
+    },
+    "status_of_stay": {
+      "ko": "체류자격",
+      "en": "Status of stay",
+      "zh-CN": "滞留资格",
+      "sourceType": "curated",
+      "source": "data/ops/translation_glossary.template.json TERM-001",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "zh-CN value is a template candidate pending native/legal QA — stored but not displayed. Forbidden renderings: 'tourist visa', 'citizenship status', 'guaranteed visa'."
+    },
+    "passport": {
+      "ko": "여권",
+      "en": "Passport",
+      "zh-CN": "护照",
+      "sourceType": "curated",
+      "source": "data/i18n locale packs",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Common safe vocabulary. Composite DOC_DICT passport labels (원본/사본 variants) are intentionally not linked."
+    },
+    "fee": {
+      "ko": "수수료",
+      "en": "Fee",
+      "zh-CN": "手续费",
+      "sourceType": "curated",
+      "source": "data/i18n locale packs",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": ["doc_fee_generic"],
+      "notes": "Common safe vocabulary; linked only to the bare 수수료 label, not the decorated fee labels with amounts."
+    },
+    "hikorea": {
+      "ko": "하이코리아(HiKorea)",
+      "en": "HiKorea",
+      "zh-CN": "HiKorea",
+      "sourceType": "hikorea",
+      "source": "https://www.hikorea.go.kr",
+      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "official" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Official service brand name; kept as the Latin brand in all locales."
+    },
+    "korea_visa_portal": {
+      "ko": "비자포털(Korea Visa Portal)",
+      "en": "Korea Visa Portal",
+      "zh-CN": null,
+      "sourceType": "visa-portal",
+      "source": "https://www.visa.go.kr",
+      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "English name is the portal's own branding. Chinese site naming not verified — renders Korean."
+    },
+    "immigration_office": {
+      "ko": "출입국·외국인관서",
+      "en": "Immigration office (immigration and foreigner office)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "data/i18n locale packs ('competent immigration office')",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Descriptive English consistent with the reviewed en pack. No verified Chinese administrative name recorded."
+    },
+    "ministry_of_justice": {
+      "ko": "법무부",
+      "en": "Ministry of Justice (MOJ)",
+      "zh-CN": "法务部",
+      "sourceType": "curated",
+      "source": "moj.go.kr branding; data/i18n zh-CN pack (法务部指定医疗机构)",
+      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Both names already used in the reviewed locale packs."
+    },
+    "korean_mission_abroad": {
+      "ko": "재외공관",
+      "en": "Korean diplomatic mission abroad",
+      "zh-CN": "驻外使领馆",
+      "sourceType": "mofa",
+      "source": "data/i18n locale packs (preTrackTitle/preTrackDesc)",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Both translations already shipped in the reviewed locale packs."
+    },
+    "immigration_act": {
+      "ko": "출입국관리법",
+      "en": "Immigration Act",
+      "zh-CN": null,
+      "sourceType": "english-law",
+      "source": "data/i18n en pack (sourceCardTitles); pending law.go.kr elaw verification via scripts/sync_official_terms.py",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "English title matches the MOLEG English-statute convention; confirm via the law-API sync when credentials are available. Statutes have no official Chinese translation — renders Korean."
+    },
+    "immigration_act_enforcement_decree": {
+      "ko": "출입국관리법 시행령",
+      "en": "Enforcement Decree of the Immigration Act",
+      "zh-CN": null,
+      "sourceType": "english-law",
+      "source": "MOLEG English-statute naming convention; pending law.go.kr elaw verification",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Convention-based English title; confirm via the law-API sync. No official Chinese translation — renders Korean."
+    },
+    "immigration_act_enforcement_rules": {
+      "ko": "출입국관리법 시행규칙",
+      "en": "Enforcement Rules of the Immigration Act",
+      "zh-CN": null,
+      "sourceType": "english-law",
+      "source": "MOLEG English-statute naming convention; pending law.go.kr elaw verification",
+      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Convention-based English title; confirm via the law-API sync. No official Chinese translation — renders Korean."
+    }
+  }
+}
