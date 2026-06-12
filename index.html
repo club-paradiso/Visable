@@ -16520,21 +16520,14 @@ function renderSourceReferences(v) {
     return `<div class="manual-source-box"><div class="manual-source-title">${escapeHtml(tx('sourceTitleResult'))}</div><ul>${refItems}</ul><div style="margin-top:0.55rem;">${escapeHtml(reviewText)} ${escapeHtml(tx('sourceLegalNote'))}</div></div>`;
 }
 
-/* TODO: 번역 검수 후 실제 텍스트로 교체 */
-const GUIDE_I18N = {
-    ko: { title: 'HiKorea 예약 도우미', start: '예약 가이드 시작', hotline: '혼자 하기 어려우시면 ☎ 1345 로 전화하세요 (평일 9시 – 18시)' },
-    en: { title: 'HiKorea Booking Assistant', start: 'Start Booking Guide', hotline: 'If you need help, call ☎ 1345 (weekdays 9 AM – 6 PM)' },
-    zh: { title: 'HiKorea 预约助手', start: '开始预约指南', hotline: '如需帮助，请拨打 ☎ 1345（工作日上午9时–下午6时）' },
-    vi: { title: 'Trợ lý Đặt lịch HiKorea', start: 'Bắt đầu hướng dẫn đặt lịch', hotline: 'Nếu cần giúp đỡ, gọi ☎ 1345 (thứ Hai–Sáu, 9 giờ–18 giờ)' }
-};
-/* BLOCKED: full runtime i18n binding requires separate PR */
 const hikoreaGuideState = { lang: 'ko', step: -1, visaCode: '', taskType: 'DATA_MISSING', expDate: '', emailOk: false, pwOk: false, expOk: false, savedOk: false };
-function hikoreaHotlineStrip() {
-    return `<div class="hikorea-strip">${GUIDE_I18N[hikoreaGuideState.lang]?.hotline || GUIDE_I18N.ko.hotline} <a href="tel:1345">1345</a></div>`;
+function hikoreaHotlineStrip(hotlineText) {
+    return `<div class="hikorea-strip">${escapeHtml(hotlineText)} <a href="tel:1345">1345</a></div>`;
 }
 function openHikoreaGuide(vcode) {
     const v = VISA_DATA.find(x => x.code === vcode) || {};
-    if (['ko', 'en', 'zh', 'vi'].includes(currentLanguage)) hikoreaGuideState.lang = currentLanguage;
+    const normLang = normalizeLocaleCode(currentLanguage);
+    if (['ko', 'en', 'zh-CN'].includes(normLang)) hikoreaGuideState.lang = normLang;
     hikoreaGuideState.step = -1; hikoreaGuideState.visaCode = vcode || ''; hikoreaGuideState.taskType = v.hikorea_task_type || 'DATA_MISSING';
     hikoreaGuideState.expDate = ''; hikoreaGuideState.emailOk = false; hikoreaGuideState.pwOk = false; hikoreaGuideState.expOk = false; hikoreaGuideState.savedOk = false;
     renderHikoreaGuide(); openModal('hikoreaGuideOverlay');
@@ -16566,8 +16559,8 @@ function generateHikoreaPassword() {
 }
 function renderHikoreaGuide() {
     const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
-    const langBtns = [['ko','한국어'],['en','English'],['zh','中文'],['vi','Tiếng Việt']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
-    const gtx = (key) => { const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK; const p = UI_TRANSLATIONS[hikoreaGuideState.lang] || koPack; const v = p[key] ?? koPack[key] ?? key; return v; };
+    const langBtns = [['ko','한국어'],['en','English'],['zh-CN','中文']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
+    const gtx = (key) => { const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK; const p = UI_TRANSLATIONS[normalizeLocaleCode(hikoreaGuideState.lang)] || koPack; const v = p[key] ?? koPack[key] ?? key; return v; };
     const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
     const titleEl = document.getElementById('hikoreaGuideTitle');
     const subEl = document.getElementById('hikoreaGuideSub');
@@ -16596,7 +16589,7 @@ function renderHikoreaGuide() {
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> 이메일 계정이 있으신가요?</label><div class="hikorea-strip">구글 계정(Gmail)을 먼저 만드세요 · <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>가족·지인 이메일을 임시로 사용할 수도 있습니다.</div></div>
         <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> 비밀번호 준비 확인</label><div class="hikorea-check-grid"><div>✓ 10자리 이상</div><div>✓ 영문 포함 (예: abc)</div><div>✓ 숫자 포함 (예: 123)</div><div>✓ 특수문자 포함 (예: ! @ # $)</div></div></div>
         <div class="hikorea-step-box"><label for="hkExpDate">체류기간 만료일 확인</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">만료일을 입력하세요.</div></div>
-        ${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${GUIDE_I18N[hikoreaGuideState.lang]?.start || GUIDE_I18N.ko.start}</button></div>`;
+        ${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${escapeHtml(gtx('hkStart'))}</button></div>`;
         return;
     }
     const step0aHtml = '<div class="step0a-section">'
@@ -16635,7 +16628,7 @@ function renderHikoreaGuide() {
     /*5*/`<ul><li>원하는 날짜와 시간을 선택하세요</li><li>체류기간 만료일 이전 날짜로 예약하세요</li><li>입력한 만료일: ${escapeHtml(hikoreaGuideState.expDate || '미입력')}</li><li>예약은 내일부터 가능합니다.</li></ul><div class="guide-screenshot" data-step="5">[스크린샷 준비 중]</div>`,
     /*6*/`<ul><li>예약번호를 메모하거나 화면을 캡처하세요</li><li>예약 확인증을 출력하거나 PDF로 저장하세요</li><li>방문 당일 예약 시간 10분 전에 도착하세요</li></ul><label><input id="hkSavedOk" type="checkbox"> 예약 확인증을 저장했습니다</label><div class="guide-screenshot" data-step="6">[스크린샷 준비 중]</div>`
     ][hikoreaGuideState.step] || '';
-    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/6</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip()}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
+    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/6</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
 }
 
 function renderManualActions(v, isVisaCode) {
