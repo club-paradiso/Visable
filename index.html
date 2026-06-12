@@ -11128,19 +11128,26 @@ body.searched .hero-container::before {
    data, next-step/document structure, source grounding & uncertainty/legal
    notices are all preserved (and kept high-contrast / legible).
    ══════════════════════════════════════════════════════════════════════════ */
-/* Result page surface → bright cream poster board with faint dotted grid */
+/* Result page surface — PR-K2 #5 (B안 승인): continue the landing board's
+   editorial wash (cream → cloud linear + two blue washes + one pink bloom,
+   same literals as the landing .hero-container::before recipe) under the
+   existing ink dot grid. Static layers only — no animation, no new colours.
+   Kitsch dark keeps its own deep-ink surface further down this sheet. */
 :root[data-theme="archive_diary"] body.searched {
-  background: #FFF7E8 !important;
+  background: #FFFDF4 !important;
 }
 :root[data-theme="archive_diary"] body.searched #starCanvas {
   background:
     radial-gradient(rgba(20,20,40,0.05) 1.3px, transparent 1.4px) 0 0 / 22px 22px,
-    #FFF7E8 !important;
+    radial-gradient(62% 52% at 14% 6%, rgba(47,94,252,0.16) 0%, transparent 62%),
+    radial-gradient(55% 48% at 90% 8%, rgba(255,142,209,0.30) 0%, transparent 62%),
+    radial-gradient(70% 60% at 80% 100%, rgba(47,94,252,0.10) 0%, transparent 66%),
+    linear-gradient(175deg, #FFFDF4 0%, #F6F4EA 55%, #EFF3FF 100%) !important;
   opacity: 1 !important;
 }
 /* Sticky search header → ink-ruled poster bar */
 :root[data-theme="archive_diary"] body.searched .hero-container {
-  background: rgba(255,247,232,0.92) !important;
+  background: color-mix(in srgb, #FFFDF4 92%, transparent) !important;
   border-bottom: 2px solid var(--k-ink) !important;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
