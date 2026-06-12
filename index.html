@@ -10699,11 +10699,16 @@ body.searched .hero-container::before {
   box-shadow: 8px 8px 0 var(--k-blue-3) !important;
   transform: translate(-2px,-2px) scale(1.005);
 }
-:root[data-theme="archive_diary"] .sbar input { color: var(--k-ink); }
-:root[data-theme="archive_diary"] .sbar input::placeholder { color: var(--t3); }
+:root[data-theme="archive_diary"] .sbar input { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .sbar input::placeholder { color: var(--t3) !important; }
 :root[data-theme="archive_diary"] .sbar-icon { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go:hover { color: var(--k-blue); }
+/* Visa-track card text → ink on white card */
+:root[data-theme="archive_diary"] .visa-track-title { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .visa-track-desc { color: var(--t2) !important; }
+/* Landing hints title → dark on light background */
+:root[data-theme="archive_diary"] .landing-hints-title { color: var(--t3) !important; }
 
 /* Hero action buttons + AI link → ink on light background (not glass) */
 :root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn {
@@ -10884,7 +10889,7 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .ft-logo { font-family: var(--k-display); font-weight: 800; color: var(--k-ink); }
 
 /* Section kicker → bold display label */
-:root[data-theme="archive_diary"] .brand-hero-kicker { font-family: var(--k-display); font-weight: 700; color: var(--k-blue); letter-spacing: 0.04em; }
+:root[data-theme="archive_diary"] .brand-hero-kicker { font-family: var(--k-display); font-weight: 700; color: var(--k-blue) !important; letter-spacing: 0.04em; text-shadow: none !important; }
 
 /* ═══════════ Kitsch landing extension — diary spread + analog texture ═════ */
 /* Film-grain overlay (analog editorial feel) — Kitsch only */
