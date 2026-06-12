@@ -12013,29 +12013,29 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
         <div class="brand-hero-stats figma-stat-grid" aria-label="비자 카테고리 통계" data-stagger>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">💼</div>
-                <div class="stat-num" id="stat-work" data-count="14">0</div>
+                <div class="stat-num" id="stat-work" data-count="19">0</div>
                 <div class="stat-label">취업·전문직<br><span lang="en">Employment</span></div>
                 <div class="stat-codes" aria-hidden="true">
-                    <span class="stat-code-chip">D-7</span>
                     <span class="stat-code-chip">D-8</span>
                     <span class="stat-code-chip">E-7</span>
                     <span class="stat-code-chip">E-9</span>
+                    <span class="stat-code-chip">H-2</span>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">🎓</div>
-                <div class="stat-num" id="stat-study" data-count="8">0</div>
+                <div class="stat-num" id="stat-study" data-count="6">0</div>
                 <div class="stat-label">유학·연수<br><span lang="en">Study</span></div>
                 <div class="stat-codes" aria-hidden="true">
+                    <span class="stat-code-chip">D-1</span>
                     <span class="stat-code-chip">D-2</span>
                     <span class="stat-code-chip">D-4</span>
-
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">🏠</div>
-                <div class="stat-num" id="stat-residence" data-count="7">0</div>
-                <div class="stat-label">거주·동포<br><span lang="en">Residence</span></div>
+                <div class="stat-num" id="stat-residence" data-count="6">0</div>
+                <div class="stat-label">거주·가족·동포<br><span lang="en">Residence &amp; Family</span></div>
                 <div class="stat-codes" aria-hidden="true">
                     <span class="stat-code-chip">F-2</span>
                     <span class="stat-code-chip">F-4</span>
@@ -12045,12 +12045,13 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">✈️</div>
-                <div class="stat-num" id="stat-visit" data-count="10">0</div>
-                <div class="stat-label">방문·가족<br><span lang="en">Visit & Family</span></div>
+                <div class="stat-num" id="stat-visit" data-count="8">0</div>
+                <div class="stat-label">방문·외교·기타<br><span lang="en">Visit &amp; Other</span></div>
                 <div class="stat-codes" aria-hidden="true">
+                    <span class="stat-code-chip">A-2</span>
                     <span class="stat-code-chip">B-2</span>
                     <span class="stat-code-chip">C-3</span>
-                    <span class="stat-code-chip">H-2</span>
+                    <span class="stat-code-chip">G-1</span>
                 </div>
             </div>
         </div>
@@ -18222,20 +18223,31 @@ function setSearchEnabled(enabled) {
 }
 
 
+// Coverage-hero purpose bucket for one status record. Presentation-layer
+// classification only — the canonical `cat` field in visa_data.json is never
+// mutated. The four buckets are mutually exclusive and together cover the 39
+// formal 체류자격; the three pilot programs (cat 'etc') and helper records are
+// intentionally excluded so the card totals match the canonical 39.
+function coverageBucket(v) {
+    const code = v && v.code, cat = v && v.cat;
+    if (!code || !cat) return null;
+    if (['etc', 'faq', 'scn', 'nhis'].includes(cat)) return null;
+    if (cat === 'study') return 'stat-study';
+    if (cat === 'family') return 'stat-residence';
+    if (cat === 'work' || cat === 'invest') return 'stat-work';
+    // 'other'/'short' members whose activity is employment in nature are grouped
+    // with 취업·전문직: 취재(D-5)·종교(D-6)·관광취업(H-1)·방문취업(H-2)·단기취업(C-4).
+    if (['D-5', 'D-6', 'H-1', 'H-2', 'C-4'].includes(code)) return 'stat-work';
+    // Remaining short-stay, diplomatic (A-1~A-3) and misc/humanitarian (G-1) →
+    // 방문·외교·기타.
+    return 'stat-visit';
+}
 function updateCategoryCounts() {
     if (!Array.isArray(VISA_DATA) || !VISA_DATA.length) return;
-    const CAT_MAP = {
-        'stat-work':      new Set(['work', 'invest']),
-        'stat-study':     new Set(['study']),
-        'stat-residence': new Set(['family']),
-        'stat-visit':     new Set(['short', 'other', 'diplo', 'etc']),
-    };
     const buckets = { 'stat-work': new Set(), 'stat-study': new Set(), 'stat-residence': new Set(), 'stat-visit': new Set() };
     VISA_DATA.forEach(v => {
-        const cat = v && v.cat;
-        const code = v && v.code;
-        if (!cat || !code) return;
-        Object.keys(CAT_MAP).forEach(id => { if (CAT_MAP[id].has(cat)) buckets[id].add(code); });
+        const id = coverageBucket(v);
+        if (id && buckets[id]) buckets[id].add(v.code);
     });
     Object.keys(buckets).forEach(id => {
         const el = document.getElementById(id);
