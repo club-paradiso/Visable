@@ -16829,8 +16829,8 @@ function renderSubcodePreview(group, query) {
     ).join('');
     return `<div class="subcode-preview-chips" role="list" aria-label="${escapeHtml(tx('subcodePreviewAria'))}">${chips}</div>`;
 }
-function renderExpandableSubcodeGroup(v, group, innerHtml, query) {
-    const groupId = `subgroup-${normalizeVisaCode(v.code)}`;
+function renderExpandableSubcodeGroup(v, group, innerHtml, query, idSuffix) {
+    const groupId = `subgroup-${normalizeVisaCode(v.code)}${idSuffix ? `-${idSuffix}` : ''}`;
     const expanded = shouldAutoExpandSubcodeGroup(query, group);
     return `<div class="subcode-expand-wrap">
         <button type="button" class="subcode-expand-btn" data-action="toggle-subcode-group" aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="${groupId}">
@@ -16890,44 +16890,21 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     }
 
     // B) Matched subcodes are lifted into their own labeled group up top
-    //    (original code order preserved). Exact subcode searches stay prominent.
+    //    (original code order preserved). PR-K1 #8: the matched group and the
+    //    remainder both default to the accessible collapse toggle so keyword
+    //    searches never open with walls of full subcode cards. Exact subcode
+    //    searches stay prominent via shouldAutoExpandSubcodeGroup().
     const matched = subs.filter(s => matchSet.has(s.code));
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
     if (matched.length) {
-        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div><div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div></div>`;
+        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
         if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
     }
-
-    // Short remainder → flat grid (no awkward collapse).
-    if (rest.length <= 4) {
-        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${buildGroupedHtml(rest)}</div>`;
-    }
-    // Long remainder → collapse the full list behind the accessible toggle so
-    // neither exact-subcode nor keyword searches drown in full cards.
-    if (matched.length || rest.every(s => !s.group)) {
-        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)}</div>`;
-    }
-    // Keyword search, no specific match, multiple category groups → legacy
-    // behavior: first category group open, remaining groups behind "더 보기".
-    const groupMap = new Map();
-    subs.forEach(s => { const g = s.group || '기타'; if (!groupMap.has(g)) groupMap.set(g, []); });
-    rest.forEach(s => groupMap.get(s.group || '기타').push(s));
-    const groups = [...groupMap.keys()].filter(g => groupMap.get(g).length);
-    const hasGroups = rest.some(s => s.group);
-    const renderGroup = (g) => {
-        const cards = groupMap.get(g).map(renderCard).join('');
-        const groupTitle = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
-        return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
-    };
-    const firstGroup = renderGroup(groups[0]);
-    const restGroups = groups.slice(1);
-    const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
-    const moreHtml = `<details class="manual-subcode-more">
-            <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
-            <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
-        </details>`;
-    return `<div class="manual-section" data-subcode-section>${title}${firstGroup}${moreHtml}</div>`;
+    const restHtml = rest.length
+        ? renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)
+        : '';
+    return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
