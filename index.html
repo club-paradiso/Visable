@@ -12299,7 +12299,7 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
                 <h3>1345 통화 스크립트</h3>
                 <p>상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.</p>
             </a>
-            <!-- form-helper: index 5 — not in toolTitles/toolDescs i18n arrays (length 5); text is static Korean intentionally -->
+            <!-- form-helper: index 5 in toolTitles/toolDescs i18n arrays -->
             <a class="p-tool-card" href="form-helper.html">
                 <span class="p-status">LIVE</span>
                 <h3>통합신청서 작성 도우미</h3>
@@ -16704,6 +16704,19 @@ function renderSourceReferences(v) {
 }
 
 const hikoreaGuideState = { lang: 'ko', step: -1, visaCode: '', taskType: 'DATA_MISSING', expDate: '', emailOk: false, pwOk: false, expOk: false, savedOk: false };
+function hikoreaGtx(key) {
+    const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK;
+    const p = UI_TRANSLATIONS[normalizeLocaleCode(hikoreaGuideState.lang)] || koPack;
+    return p[key] ?? koPack[key] ?? key;
+}
+/* Maps a hikorea_task_type data value (stored in Korean in visa_data) to its
+   localized display label; the underlying data value itself is never changed. */
+const HIKOREA_TASK_INDEX = { '체류기간 연장허가': 0, '체류자격 변경': 1, '외국인등록': 2 };
+function hikoreaTaskLabel(taskType) {
+    const idx = HIKOREA_TASK_INDEX[taskType];
+    const arr = hikoreaGtx('hkTaskBtnTitles');
+    return (idx !== undefined && Array.isArray(arr) && arr[idx]) ? arr[idx] : taskType;
+}
 function hikoreaHotlineStrip(hotlineText) {
     return `<div class="hikorea-strip">${escapeHtml(hotlineText)} <a href="tel:1345">1345</a></div>`;
 }
@@ -16743,7 +16756,7 @@ function generateHikoreaPassword() {
 function renderHikoreaGuide() {
     const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
     const langBtns = [['ko','한국어'],['en','English'],['zh-CN','中文']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
-    const gtx = (key) => { const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK; const p = UI_TRANSLATIONS[normalizeLocaleCode(hikoreaGuideState.lang)] || koPack; const v = p[key] ?? koPack[key] ?? key; return v; };
+    const gtx = hikoreaGtx;
     const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
     const titleEl = document.getElementById('hikoreaGuideTitle');
     const subEl = document.getElementById('hikoreaGuideSub');
@@ -16759,20 +16772,20 @@ function renderHikoreaGuide() {
         { key: 'hkPhase5', steps: [7] }
     ];
     const cur = hikoreaGuideState.step;
-    const stepperHtml = '<ol class="hikorea-stepper" aria-label="단계 진행">' + phases.map((p, idx) => {
+    const stepperHtml = '<ol class="hikorea-stepper" aria-label="' + escapeHtml(gtx('hkStepperAria')) + '">' + phases.map((p, idx) => {
         const isCurrent = p.steps.includes(cur);
         const isDone = !isCurrent && cur > Math.max(...p.steps);
         return '<li class="hikorea-stepper-pill' + (isCurrent ? ' is-current' : '') + (isDone ? ' is-done' : '') + '"' + (isCurrent ? ' aria-current="step"' : '') + '><span class="pill-index">' + (idx + 1) + '</span>' + escapeHtml(gtx(p.key)) + '</li>';
     }).join('') + '</ol>';
     const ctaRow = '<div class="hikorea-cta-row"><a class="hikorea-cta-primary" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + escapeHtml(gtx('hkPrimaryCta')) + '</a><a class="hikorea-cta-secondary" href="tel:1345">' + escapeHtml(gtx('hkSecondaryCta')) + '</a></div>';
-    const disclaimerPanel = '<div class="hikorea-disclaimer-panel" aria-label="안내사항"><ul>' + ['hkDisc1', 'hkDisc2', 'hkDisc3', 'hkDisc4'].map(k => '<li>' + escapeHtml(gtx(k)) + '</li>').join('') + '</ul></div>';
+    const disclaimerPanel = '<div class="hikorea-disclaimer-panel" aria-label="' + escapeHtml(gtx('hkDisclaimerAria')) + '"><ul>' + ['hkDisc1', 'hkDisc2', 'hkDisc3', 'hkDisc4'].map(k => '<li>' + escapeHtml(gtx(k)) + '</li>').join('') + '</ul></div>';
     if (hikoreaGuideState.step < 0) {
-        b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">사전 확인</div>
+        b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">${escapeHtml(gtx('hkProgressPrecheck'))}</div>
         <div class="hikorea-precheck-caution" role="note">${escapeHtml(gtx('hkPreCheckCaution'))}</div>
-        <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> 이메일 계정이 있으신가요?</label><div class="hikorea-strip">구글 계정(Gmail)을 먼저 만드세요 · <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>가족·지인 이메일을 임시로 사용할 수도 있습니다.</div></div>
-        <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> 비밀번호 준비 확인</label><div class="hikorea-check-grid"><div>✓ 10자리 이상</div><div>✓ 영문 포함 (예: abc)</div><div>✓ 숫자 포함 (예: 123)</div><div>✓ 특수문자 포함 (예: ! @ # $)</div></div></div>
-        <div class="hikorea-step-box"><label for="hkExpDate">체류기간 만료일 확인</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">만료일을 입력하세요.</div></div>
-        ${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">닫기</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${escapeHtml(gtx('hkStart'))}</button></div>`;
+        <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> ${escapeHtml(gtx('hkPreEmailQ'))}</label><div class="hikorea-strip">${escapeHtml(gtx('hkPreEmailHint1'))} <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>${escapeHtml(gtx('hkPreEmailHint2'))}</div></div>
+        <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> ${escapeHtml(gtx('hkPrePwQ'))}</label><div class="hikorea-check-grid">${gtxArr('hkPwChecklist').map(r => '<div>' + escapeHtml(r) + '</div>').join('')}</div></div>
+        <div class="hikorea-step-box"><label for="hkExpDate">${escapeHtml(gtx('hkPreExpLabel'))}</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">${escapeHtml(gtx('hkExpMsgEmpty'))}</div></div>
+        ${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">${escapeHtml(gtx('hkClose'))}</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${escapeHtml(gtx('hkStart'))}</button></div>`;
         return;
     }
     const step0aHtml = '<div class="step0a-section">'
@@ -16800,18 +16813,24 @@ function renderHikoreaGuide() {
         + '<div class="step0a-block"><p class="step0a-block-title">E · ' + escapeHtml(gtx('step0aSecETitle')) + '</p>'
         + '<p class="step0a-body"><a href="tel:1345" style="color:var(--ac);font-weight:700">' + escapeHtml(gtx('step0aHelpLine')) + '</a></p></div>'
         + '</div>';
+    /* Pack-sourced strings: list items may carry <br> (trusted repo content);
+       dynamic values (visa code, dates, task type) stay escaped. */
+    const li = (s) => '<li>' + s + '</li>';
+    const screenshot = (n) => `<div class="guide-screenshot" data-step="${n}">${escapeHtml(gtx('hkScreenshotPending'))}</div>`;
+    const taskBtn = (idx, task) => `<button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="${task}"><strong>${escapeHtml(txAtArr(gtxArr('hkTaskBtnTitles'), idx))}</strong><small>${escapeHtml(txAtArr(gtxArr('hkTaskBtnDescs'), idx))}</small></button>`;
+    function txAtArr(arr, idx) { return arr[idx] !== undefined ? arr[idx] : ''; }
     const stepContent = [
-    /*0*/`<ul><li>⚠️ 예약은 내일부터 가능합니다. 오늘 당일 예약은 불가합니다.</li><li>⚠️ 예약 시간에서 5분이 지나면 예약이 무효 처리될 수 있습니다.</li><li>⚠️ 방문예약 당일에는 취소가 불가능합니다.</li><li>⚠️ 예약 확인증을 출력하거나 스마트폰 화면에 저장하세요.<br>(출력물 또는 스마트폰 화면 모두 현장에서 사용할 수 있도록 준비하세요.)</li></ul>`,
+    /*0*/`<ul>${gtxArr('hkStep0Items').map(li).join('')}</ul>`,
     /*0-A*/step0aHtml,
-    /*1*/`<ul><li>www.hikorea.go.kr 에 접속하세요</li><li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea 바로가기</a></li><li>회원 아이디와 비밀번호로 로그인하세요</li><li>처음 가입 후 이메일 수신함을 열어 '인증하기' 버튼을 누르세요</li></ul>`,
-    /*2*/`<ul><li>로그인 후 메인 화면에서 '방문예약' 버튼을 누르세요</li></ul><div class="guide-screenshot" data-step="2">[스크린샷 준비 중]</div>`,
+    /*1*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 0)))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikorea'))}</a></li>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 1)))}${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 2)))}</ul>`,
+    /*2*/`<ul>${li(escapeHtml(gtx('hkStep2Item')))}</ul>${screenshot(2)}`,
     /* TODO: 기관별 방문예약 딥링크 미확보 — 관할기관별 동적 연결은 후속 작업. 아래 링크는 HiKorea 메인으로 이동함 */
-    /*3*/`<ul><li>기관 선택 화면에서 본인의 거주지(체류지)를 관할하는 출입국·외국인청(사무소)을 선택하세요</li><li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea 메인 페이지 바로가기</a></li></ul><div class="guide-screenshot" data-step="3">[스크린샷 준비 중]</div>`,
-    /*4*/`<ul><li>현재 비자 코드: ${escapeHtml(hikoreaGuideState.visaCode || '미확인')}</li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `<li>선택된 업무: <strong>${escapeHtml(hikoreaGuideState.taskType)}</strong> <button type="button" class="hikorea-task-change" data-action="hikorea-clear-task">다시 선택</button></li>` : ''}<li>체류기간 연장허가: 현재 비자를 같은 종류로 연장</li><li>체류자격 변경: 다른 종류의 비자로 변경</li><li>외국인등록: 처음 한국에 등록하는 경우</li></ul>${hikoreaGuideState.taskType === 'DATA_MISSING' ? `<div class="hikorea-task-picker" role="group" aria-label="업무 유형 선택"><p class="hikorea-task-picker-hint">이 비자 코드는 추천 업무 정보가 아직 등록되어 있지 않습니다. 본인 상황에 맞는 업무를 선택해 주세요. 확실하지 않다면 ☎ <a href="tel:1345">1345</a>로 확인하세요.</p><div class="hikorea-task-buttons"><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="체류기간 연장허가"><strong>체류기간 연장허가</strong><small>현재 비자를 그대로 연장</small></button><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="체류자격 변경"><strong>체류자격 변경</strong><small>다른 비자로 변경</small></button><button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="외국인등록"><strong>외국인등록</strong><small>처음 등록하는 경우</small></button></div></div>` : ''}<div class="guide-screenshot" data-step="4">[스크린샷 준비 중]</div>`,
-    /*5*/`<ul><li>원하는 날짜와 시간을 선택하세요</li><li>체류기간 만료일 이전 날짜로 예약하세요</li><li>입력한 만료일: ${escapeHtml(hikoreaGuideState.expDate || '미입력')}</li><li>예약은 내일부터 가능합니다.</li></ul><div class="guide-screenshot" data-step="5">[스크린샷 준비 중]</div>`,
-    /*6*/`<ul><li>예약번호를 메모하거나 화면을 캡처하세요</li><li>예약 확인증을 출력하거나 PDF로 저장하세요</li><li>방문 당일 예약 시간 10분 전에 도착하세요</li></ul><label><input id="hkSavedOk" type="checkbox"> 예약 확인증을 저장했습니다</label><div class="guide-screenshot" data-step="6">[스크린샷 준비 중]</div>`
+    /*3*/`<ul>${li(escapeHtml(gtx('hkStep3Item')))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikoreaMain'))}</a></li></ul>${screenshot(3)}`,
+    /*4*/`<ul><li>${escapeHtml(gtx('hkCurrentVisaCode'))} ${escapeHtml(hikoreaGuideState.visaCode || gtx('hkUnknown'))}</li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `<li>${escapeHtml(gtx('hkSelectedTask'))} <strong>${escapeHtml(hikoreaTaskLabel(hikoreaGuideState.taskType))}</strong> <button type="button" class="hikorea-task-change" data-action="hikorea-clear-task">${escapeHtml(gtx('hkReselect'))}</button></li>` : ''}${gtxArr('hkTaskBullets').map(t => li(escapeHtml(t))).join('')}</ul>${hikoreaGuideState.taskType === 'DATA_MISSING' ? `<div class="hikorea-task-picker" role="group" aria-label="${escapeHtml(gtx('hkTaskPickerAria'))}"><p class="hikorea-task-picker-hint">${gtx('hkTaskPickerHint')}</p><div class="hikorea-task-buttons">${taskBtn(0, '체류기간 연장허가')}${taskBtn(1, '체류자격 변경')}${taskBtn(2, '외국인등록')}</div></div>` : ''}${screenshot(4)}`,
+    /*5*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 0)))}${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 1)))}<li>${escapeHtml(gtx('hkEnteredExp'))} ${escapeHtml(hikoreaGuideState.expDate || gtx('hkNotEntered'))}</li>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 2)))}</ul>${screenshot(5)}`,
+    /*6*/`<ul>${gtxArr('hkStep6Items').map(t => li(escapeHtml(t))).join('')}</ul><label><input id="hkSavedOk" type="checkbox"> ${escapeHtml(gtx('hkSavedLabel'))}</label>${screenshot(6)}`
     ][hikoreaGuideState.step] || '';
-    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">STEP ${hikoreaStepLabel(hikoreaGuideState.step)}/6</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>이전</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>다음</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>예약 완료 ✓</button></div>`;
+    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">${escapeHtml(gtx('hkProgressStep').replace('{step}', hikoreaStepLabel(hikoreaGuideState.step)))}</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>${escapeHtml(gtx('hkPrevBtn'))}</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>${escapeHtml(gtx('hkNextBtn'))}</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>${escapeHtml(gtx('hkCompleteBtn'))}</button></div>`;
 }
 
 function renderManualActions(v, isVisaCode) {
@@ -17347,7 +17366,7 @@ function executeSearch() {
     if (!dataReady) return;
     document.getElementById('auto-list').classList.remove('active');
     const query = qEl.value.trim(); if (!query) return;
-    if(/scn/i.test(query)) showToast("⚠ [경고] 해당 시나리오 검색 결과는 실무자 사전 안내 및 단순 참고용입니다.", "warning");
+    if(/scn/i.test(query)) showToast(tx('scenarioToastWarning'), "warning");
 
     if (document.body.classList.contains('landing')) {
         try {
@@ -18097,6 +18116,8 @@ function applyLanguage(code, options = {}) {
     setText('.p-footer-cta > p', tx('footerCtaCopy'));
     setIndexedText('.p-footer-actions .p-cta-btn', txArray('footerCtaButtons'));
     setText('.p-footer-cta-note', tx('footerCtaNote'));
+    setText('.p-reminder-banner__cta', tx('reminderBannerCta'));
+    setAttr('#reminderBannerClose', 'aria-label', tx('reminderBannerCloseAria'));
     setAttr('#qf', 'aria-label', tx('quickFiltersAria'));
     setHtml('.ft', `<span class="ft-logo">Paradiso</span> ${tx('footerLegal')}`);
     setAttr('.modal-close', 'aria-label', tx('closeModal'));
@@ -18572,14 +18593,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const today = new Date(); today.setHours(0,0,0,0);
             if (!d || Number.isNaN(d.getTime())) {
                 hikoreaGuideState.expOk = false;
-                if (msg) { msg.className = 'hikorea-strip'; msg.textContent = '만료일을 입력하세요.'; }
+                if (msg) { msg.className = 'hikorea-strip'; msg.textContent = hikoreaGtx('hkExpMsgEmpty'); }
             } else {
                 const diff = Math.floor((d - today) / 86400000);
                 hikoreaGuideState.expOk = true;
                 if (msg) {
-                    if (diff <= 0) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = '체류기간이 만료되었습니다. 즉시 1345로 전화하세요.'; }
-                    else if (diff <= 14) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = '체류기간 만료가 임박했습니다. 지금 바로 예약하세요.'; }
-                    else { msg.className = 'hikorea-strip'; msg.textContent = `체류기간 만료일까지 ${diff}일 남았습니다.`; }
+                    if (diff <= 0) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = hikoreaGtx('hkExpExpired'); }
+                    else if (diff <= 14) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = hikoreaGtx('hkExpImminent'); }
+                    else { msg.className = 'hikorea-strip'; msg.textContent = hikoreaGtx('hkExpDaysLeft').replace('{days}', diff); }
                 }
             }
         }
@@ -19145,7 +19166,7 @@ function showVisaDocForAction(visaCode) {
     openDocModal(visaCode, docMode);
   } else {
     // change / workplace: 서류 모달 직접 지원 없음 → AI 분석으로 안내
-    showToast('자격변경·근무처변경은 AI 분석을 통해 맞춤 서류를 확인하세요.', 'warning');
+    showToast(tx('aiDocsToast'), 'warning');
     openAiModal(visaCode);
   }
 }
@@ -19562,11 +19583,25 @@ function showVisaDocForAction(visaCode) {
   'use strict';
   var STORAGE_KEY = 'paradisoReminders';
   var DISMISS_KEY = 'paradisoReminderBannerDismiss';
+  /* Korean fallbacks keep first paint sane if this runs before i18n packs load;
+     the paradiso-language-applied listener re-renders with pack text after. */
   var TYPE_LABELS = {
     visa: '체류기간 만료일',
     arc: '외국인등록증 갱신일',
     appointment: '방문 예약 날짜'
   };
+  var TYPE_INDEX = { visa: 0, arc: 1, appointment: 2 };
+  function rtx(key, fallback) {
+    try { var v = tx(key); return v === key ? fallback : v; } catch (e) { return fallback; }
+  }
+  function typeLabel(type) {
+    var idx = TYPE_INDEX[type];
+    try {
+      var arr = tx('reminderTypeLabels');
+      if (idx !== undefined && Array.isArray(arr) && arr[idx]) return arr[idx];
+    } catch (e) {}
+    return TYPE_LABELS[type] || rtx('reminderTypeShort', '기한');
+  }
 
   var form = document.getElementById('reminderForm');
   if (!form) return;
@@ -19599,9 +19634,14 @@ function showVisaDocForAction(visaCode) {
     var target = new Date(isoDate + 'T00:00:00');
     return Math.round((target - today) / 86400000);
   }
-  function formatKoreanDate(isoDate) {
+  function formatReminderDate(isoDate) {
     var d = new Date(isoDate + 'T00:00:00');
-    return d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+    try {
+      var langOpt = (typeof getLanguageOption === 'function') ? getLanguageOption() : null;
+      return d.toLocaleDateString(langOpt ? langOpt.html : 'ko', { year: 'numeric', month: 'long', day: 'numeric' });
+    } catch (e) {
+      return d.getFullYear() + '년 ' + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+    }
   }
   function ddayLabel(n) {
     if (n === 0) return 'D-DAY';
@@ -19621,7 +19661,7 @@ function showVisaDocForAction(visaCode) {
     nextDay.setDate(nextDay.getDate() + 1);
     var dEnd = nextDay.toISOString().slice(0, 10).replace(/-/g, '');
     var stamp = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
-    var summary = (TYPE_LABELS[item.type] || '기한 알림') + (item.memo ? ' - ' + item.memo : '');
+    var summary = (typeLabel(item.type) || rtx('reminderFallbackLabel', '기한 알림')) + (item.memo ? ' - ' + item.memo : '');
     summary = summary.replace(/([,;\\])/g, '\\$1');
     var lines = [
       'BEGIN:VCALENDAR',
@@ -19635,16 +19675,16 @@ function showVisaDocForAction(visaCode) {
       'DTSTART;VALUE=DATE:' + d,
       'DTEND;VALUE=DATE:' + dEnd,
       'SUMMARY:' + summary,
-      'DESCRIPTION:Paradiso 기한 알림',
+      'DESCRIPTION:' + rtx('reminderCalendarDesc', 'Paradiso 기한 알림'),
       'BEGIN:VALARM',
       'TRIGGER:-P7D',
       'ACTION:DISPLAY',
-      'DESCRIPTION:' + summary + ' (7일 전)',
+      'DESCRIPTION:' + summary + ' ' + rtx('reminderBefore7', '(7일 전)'),
       'END:VALARM',
       'BEGIN:VALARM',
       'TRIGGER:-P1D',
       'ACTION:DISPLAY',
-      'DESCRIPTION:' + summary + ' (1일 전)',
+      'DESCRIPTION:' + summary + ' ' + rtx('reminderBefore1', '(1일 전)'),
       'END:VALARM',
       'END:VEVENT',
       'END:VCALENDAR'
@@ -19667,11 +19707,11 @@ function showVisaDocForAction(visaCode) {
     var nextDay = new Date(item.date + 'T00:00:00');
     nextDay.setDate(nextDay.getDate() + 1);
     var dEnd = nextDay.toISOString().slice(0, 10).replace(/-/g, '');
-    var title = (TYPE_LABELS[item.type] || '기한 알림') + (item.memo ? ' - ' + item.memo : '');
+    var title = (typeLabel(item.type) || rtx('reminderFallbackLabel', '기한 알림')) + (item.memo ? ' - ' + item.memo : '');
     return 'https://calendar.google.com/calendar/render?action=TEMPLATE'
       + '&text=' + encodeURIComponent(title)
       + '&dates=' + d + '/' + dEnd
-      + '&details=' + encodeURIComponent('Paradiso 기한 알림');
+      + '&details=' + encodeURIComponent(rtx('reminderCalendarDesc', 'Paradiso 기한 알림'));
   }
 
   function render() {
@@ -19693,7 +19733,7 @@ function showVisaDocForAction(visaCode) {
         head.className = 'p-reminder-item__head';
         var typeSpan = document.createElement('span');
         typeSpan.className = 'p-reminder-item__type';
-        typeSpan.textContent = TYPE_LABELS[item.type] || '기한';
+        typeSpan.textContent = typeLabel(item.type);
         head.appendChild(typeSpan);
         if (item.memo) {
           var memoSpan = document.createElement('span');
@@ -19704,7 +19744,7 @@ function showVisaDocForAction(visaCode) {
         info.appendChild(head);
         var dateP = document.createElement('div');
         dateP.className = 'p-reminder-item__date';
-        dateP.textContent = formatKoreanDate(item.date);
+        dateP.textContent = formatReminderDate(item.date);
         info.appendChild(dateP);
         li.appendChild(info);
 
@@ -19720,7 +19760,7 @@ function showVisaDocForAction(visaCode) {
         var icsBtn = document.createElement('button');
         icsBtn.type = 'button';
         icsBtn.className = 'p-reminder-item__btn p-reminder-item__btn--primary';
-        icsBtn.textContent = '내 캘린더에 저장';
+        icsBtn.textContent = rtx('reminderIcsBtn', '내 캘린더에 저장');
         icsBtn.addEventListener('click', function () { downloadIcs(item); });
         actions.appendChild(icsBtn);
 
@@ -19729,15 +19769,15 @@ function showVisaDocForAction(visaCode) {
         gBtn.href = googleCalUrl(item);
         gBtn.target = '_blank';
         gBtn.rel = 'noopener';
-        gBtn.textContent = 'Google 캘린더에 추가';
+        gBtn.textContent = rtx('reminderGcalBtn', 'Google 캘린더에 추가');
         actions.appendChild(gBtn);
 
         var delBtn = document.createElement('button');
         delBtn.type = 'button';
         delBtn.className = 'p-reminder-item__btn p-reminder-item__btn--danger';
-        delBtn.textContent = '삭제';
+        delBtn.textContent = rtx('reminderDeleteBtn', '삭제');
         delBtn.addEventListener('click', function () {
-          if (!confirm('이 기한을 삭제하시겠습니까?')) return;
+          if (!confirm(rtx('reminderDeleteConfirm', '이 기한을 삭제하시겠습니까?'))) return;
           save(load().filter(function (it) { return it.id !== item.id; }));
           render();
           showBanner();
@@ -19761,9 +19801,9 @@ function showVisaDocForAction(visaCode) {
       .sort(function (a, b) { return a.n - b.n; });
     if (items.length === 0) { banner.hidden = true; return; }
     var first = items[0];
-    var label = TYPE_LABELS[first.it.type] || '기한';
+    var label = typeLabel(first.it.type);
     var memo = first.it.memo ? ' (' + first.it.memo + ')' : '';
-    var dleft = first.n === 0 ? '오늘입니다' : first.n + '일 남았습니다';
+    var dleft = first.n === 0 ? rtx('reminderBannerToday', '오늘입니다') : rtx('reminderBannerDaysLeft', '{days}일 남았습니다').replace('{days}', first.n);
     bannerText.textContent = label + memo + ' — ' + dleft + '.';
     banner.hidden = false;
   }
@@ -19782,8 +19822,8 @@ function showVisaDocForAction(visaCode) {
     var type = typeEl.value;
     var date = dateEl.value;
     var memo = (memoEl.value || '').trim();
-    if (!type) { errorEl.textContent = '기한 종류를 선택해 주세요.'; errorEl.hidden = false; typeEl.focus(); return; }
-    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { errorEl.textContent = '날짜를 입력해 주세요.'; errorEl.hidden = false; dateEl.focus(); return; }
+    if (!type) { errorEl.textContent = rtx('reminderErrType', '기한 종류를 선택해 주세요.'); errorEl.hidden = false; typeEl.focus(); return; }
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { errorEl.textContent = rtx('reminderErrDate', '날짜를 입력해 주세요.'); errorEl.hidden = false; dateEl.focus(); return; }
     var items = load();
     items.push({ id: uid(), type: type, date: date, memo: memo, createdAt: Date.now() });
     save(items);
@@ -19793,6 +19833,7 @@ function showVisaDocForAction(visaCode) {
     setTimeout(function () { successEl.hidden = true; }, 3500);
   });
 
+  window.addEventListener('paradiso-language-applied', render);
   render();
 })();
 </script>
