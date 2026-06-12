@@ -714,8 +714,8 @@ body.searched .brand-hero, body.searched .brand-feature, body.searched .about-me
 .brand-hero-buttons .btn-primary,.brand-hero-buttons .btn-secondary { width: auto; }
 .btn-en { font-size: 0.75rem; font-weight: 500; opacity: 0.7; letter-spacing: 0.05em; margin-left: 0.3rem; }
 .brand-hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; width: calc(100% - 4rem); max-width: 960px; margin: 0 auto; background: rgba(255,255,255,0.97); border: none; border-radius: 24px; padding: 2.5rem 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.14), 0 4px 16px rgba(0,0,0,0.08); transform: translateY(50%); position: relative; z-index: 10; }
-.stat-card { background: transparent; border: none; border-radius: 0; padding: 1.5rem 1rem; box-shadow: none; transition: transform 0.3s, box-shadow 0.3s; } .stat-card:not(:last-child) { border-right: 1px solid #e8e8e8; }
-.stat-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); border-color: color-mix(in srgb, var(--ac) 40%, var(--bd2)); }
+.stat-card { background: transparent; border: none; border-radius: 0; padding: 1.5rem 1rem; box-shadow: none; transition: transform 0.3s, box-shadow 0.3s, background 0.3s, border-radius 0.3s; } .stat-card:not(:last-child) { border-right: 1px solid #e8e8e8; }
+.stat-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); border-color: color-mix(in srgb, var(--ac) 40%, var(--bd2)); background: var(--bg1, #fff); border-radius: 14px; }
 .stat-num { font-family: var(--ff-display); font-size: 3rem; font-weight: 800; color: var(--color-accent); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
 .stat-label { font-size: 0.85rem; color: #444; line-height: 1.3; font-weight: 600; }
 .stat-label span[lang="en"] { display: block; font-size: 0.75rem; color: var(--t3); font-weight: 500; margin-top: 0.3rem; }
@@ -1029,10 +1029,13 @@ body:not(.searched) .sbar-go { border-radius: 9999px; }
 
 /* ── Hero stat cards: icons + visa code chips (additive) ── */
 .stat-card { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; text-align: center; }
-.stat-icon { font-size: 1.4rem; line-height: 1; width: 2.4rem; height: 2.4rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: color-mix(in srgb, var(--color-accent-soft) 55%, #fff); margin-bottom: 0.1rem; }
+.stat-icon { font-size: 1.4rem; line-height: 1; width: 2.4rem; height: 2.4rem; display: inline-flex; align-items: center; justify-content: center; border-radius: 12px; background: color-mix(in srgb, var(--color-accent-soft) 55%, #fff); margin-bottom: 0.1rem; transition: background 0.25s ease, box-shadow 0.25s ease; }
+.stat-card:hover .stat-icon { background: color-mix(in srgb, var(--acL, #e1eaec) 70%, #fff); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ac) 30%, transparent); }
 .stat-codes { display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: center; margin-top: 0.5rem; }
-.stat-code-chip { display: inline-block; padding: 0.16rem 0.5rem; border-radius: 999px; background: #f3f4f6; border: 1px solid #e5e7eb; font-size: 0.7rem; font-weight: 700; color: #555; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.stat-code-chip { display: inline-block; padding: 0.16rem 0.5rem; border-radius: 999px; background: var(--bg2, #f3f4f6); border: 1px solid var(--bd2, #e5e7eb); font-size: 0.7rem; font-weight: 700; color: var(--t2, #555); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; transition: border-color 0.25s ease, color 0.25s ease, background 0.25s ease; }
+.stat-card:hover .stat-code-chip { border-color: color-mix(in srgb, var(--ac) 38%, var(--bd2, #e5e7eb)); color: var(--ac); background: color-mix(in srgb, var(--acL, #e1eaec) 45%, var(--bg1, #fff)); }
 [data-theme="dark"] .stat-code-chip { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.18); color: #e5e7eb; }
+[data-theme="dark"] .stat-card:hover .stat-code-chip { color: var(--ac); background: rgba(255,255,255,0.06); }
 
 /* ── Hobby cards: icon + title + description ── */
 .hobby-card { aspect-ratio: auto; min-height: 220px; align-items: stretch; }
@@ -11023,7 +11026,10 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .stat-label { color: var(--k-ink) !important; }
 :root[data-theme="archive_diary"] .stat-label span[lang="en"] { color: var(--t3) !important; font-family: var(--ff); font-weight: 600; }
 :root[data-theme="archive_diary"] .stat-icon { background: #fff !important; border: 2px solid var(--k-ink) !important; }
-:root[data-theme="archive_diary"] .stat-code-chip { background: var(--k-blue-1) !important; border: 1.5px solid var(--k-ink) !important; color: var(--k-blue-deep) !important; font-family: var(--ff); font-weight: 700; border-radius: 999px; }
+:root[data-theme="archive_diary"] .stat-code-chip { background: var(--k-blue-1) !important; border: 1.5px solid var(--k-ink) !important; color: var(--k-blue-deep) !important; font-family: var(--ff); font-weight: 700; border-radius: 999px; transition: background 0.25s ease, color 0.25s ease, transform 0.32s var(--k-spring); }
+:root[data-theme="archive_diary"] .stat-card:hover .stat-code-chip { background: var(--k-butter) !important; color: var(--k-ink) !important; transform: translateY(-1px); }
+:root[data-theme="archive_diary"] .stat-icon { transition: background 0.25s ease, box-shadow 0.32s var(--k-spring); }
+:root[data-theme="archive_diary"] .stat-card:hover .stat-icon { background: var(--k-butter) !important; box-shadow: 2px 2px 0 var(--k-ink); }
 
 /* Coverage CTA buttons → bold poster */
 :root[data-theme="archive_diary"] .brand-hero .btn-primary { background: var(--k-blue) !important; color: #fff !important; border: 2px solid var(--k-ink) !important; box-shadow: var(--k-pop-1) !important; }
@@ -12013,29 +12019,29 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
         <div class="brand-hero-stats figma-stat-grid" aria-label="비자 카테고리 통계" data-stagger>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">💼</div>
-                <div class="stat-num" id="stat-work" data-count="14">0</div>
+                <div class="stat-num" id="stat-work" data-count="19">0</div>
                 <div class="stat-label">취업·전문직<br><span lang="en">Employment</span></div>
                 <div class="stat-codes" aria-hidden="true">
-                    <span class="stat-code-chip">D-7</span>
                     <span class="stat-code-chip">D-8</span>
                     <span class="stat-code-chip">E-7</span>
                     <span class="stat-code-chip">E-9</span>
+                    <span class="stat-code-chip">H-2</span>
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">🎓</div>
-                <div class="stat-num" id="stat-study" data-count="8">0</div>
+                <div class="stat-num" id="stat-study" data-count="6">0</div>
                 <div class="stat-label">유학·연수<br><span lang="en">Study</span></div>
                 <div class="stat-codes" aria-hidden="true">
+                    <span class="stat-code-chip">D-1</span>
                     <span class="stat-code-chip">D-2</span>
                     <span class="stat-code-chip">D-4</span>
-
                 </div>
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">🏠</div>
-                <div class="stat-num" id="stat-residence" data-count="7">0</div>
-                <div class="stat-label">거주·동포<br><span lang="en">Residence</span></div>
+                <div class="stat-num" id="stat-residence" data-count="6">0</div>
+                <div class="stat-label">거주·가족·동포<br><span lang="en">Residence &amp; Family</span></div>
                 <div class="stat-codes" aria-hidden="true">
                     <span class="stat-code-chip">F-2</span>
                     <span class="stat-code-chip">F-4</span>
@@ -12045,12 +12051,13 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
             </div>
             <div class="stat-card">
                 <div class="stat-icon" aria-hidden="true">✈️</div>
-                <div class="stat-num" id="stat-visit" data-count="10">0</div>
-                <div class="stat-label">방문·가족<br><span lang="en">Visit & Family</span></div>
+                <div class="stat-num" id="stat-visit" data-count="8">0</div>
+                <div class="stat-label">방문·외교·기타<br><span lang="en">Visit &amp; Other</span></div>
                 <div class="stat-codes" aria-hidden="true">
+                    <span class="stat-code-chip">A-2</span>
                     <span class="stat-code-chip">B-2</span>
                     <span class="stat-code-chip">C-3</span>
-                    <span class="stat-code-chip">H-2</span>
+                    <span class="stat-code-chip">G-1</span>
                 </div>
             </div>
         </div>
@@ -18222,20 +18229,31 @@ function setSearchEnabled(enabled) {
 }
 
 
+// Coverage-hero purpose bucket for one status record. Presentation-layer
+// classification only — the canonical `cat` field in visa_data.json is never
+// mutated. The four buckets are mutually exclusive and together cover the 39
+// formal 체류자격; the three pilot programs (cat 'etc') and helper records are
+// intentionally excluded so the card totals match the canonical 39.
+function coverageBucket(v) {
+    const code = v && v.code, cat = v && v.cat;
+    if (!code || !cat) return null;
+    if (['etc', 'faq', 'scn', 'nhis'].includes(cat)) return null;
+    if (cat === 'study') return 'stat-study';
+    if (cat === 'family') return 'stat-residence';
+    if (cat === 'work' || cat === 'invest') return 'stat-work';
+    // 'other'/'short' members whose activity is employment in nature are grouped
+    // with 취업·전문직: 취재(D-5)·종교(D-6)·관광취업(H-1)·방문취업(H-2)·단기취업(C-4).
+    if (['D-5', 'D-6', 'H-1', 'H-2', 'C-4'].includes(code)) return 'stat-work';
+    // Remaining short-stay, diplomatic (A-1~A-3) and misc/humanitarian (G-1) →
+    // 방문·외교·기타.
+    return 'stat-visit';
+}
 function updateCategoryCounts() {
     if (!Array.isArray(VISA_DATA) || !VISA_DATA.length) return;
-    const CAT_MAP = {
-        'stat-work':      new Set(['work', 'invest']),
-        'stat-study':     new Set(['study']),
-        'stat-residence': new Set(['family']),
-        'stat-visit':     new Set(['short', 'other', 'diplo', 'etc']),
-    };
     const buckets = { 'stat-work': new Set(), 'stat-study': new Set(), 'stat-residence': new Set(), 'stat-visit': new Set() };
     VISA_DATA.forEach(v => {
-        const cat = v && v.cat;
-        const code = v && v.code;
-        if (!cat || !code) return;
-        Object.keys(CAT_MAP).forEach(id => { if (CAT_MAP[id].has(cat)) buckets[id].add(code); });
+        const id = coverageBucket(v);
+        if (id && buckets[id]) buckets[id].add(v.code);
     });
     Object.keys(buckets).forEach(id => {
         const el = document.getElementById(id);
