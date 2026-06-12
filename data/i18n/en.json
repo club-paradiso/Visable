@@ -68,8 +68,8 @@
   "brandHeroStats": [
     "Work &amp; professionals<br><span lang=\"en\">Employment</span>",
     "Study &amp; training<br><span lang=\"en\">Study</span>",
-    "Residence &amp; diaspora<br><span lang=\"en\">Residence</span>",
-    "Visit &amp; family<br><span lang=\"en\">Visit &amp; Family</span>"
+    "Residence, family &amp; diaspora<br><span lang=\"en\">Residence &amp; Family</span>",
+    "Visit, diplomacy &amp; other<br><span lang=\"en\">Visit &amp; Other</span>"
   ],
   "featureTitle": "Manual-based information<br>from Korea Immigration Service",
   "featureSubtitle": "Manual-based information navigation",
@@ -156,8 +156,18 @@
   "sourceNote": "Paradiso does not provide legal advice or filing representation and assumes no legal responsibility from use of this reference information.",
   "manualTitle": "MOJ manual-based,<br>structured guidance",
   "manualCopy": "We structure the manuals and guidance notices published by the Ministry of Justice for reference. Check the source label on the result screen, then confirm final decisions with HiKorea, 1345, or the competent immigration office.",
-  "manualCardTitles": ["Stay procedures manual", "Visa procedures manual", "Related statutes & forms", "HiKorea · 1345 confirmation"],
-  "manualCardDescs": ["The public manual for residence procedures: foreigner registration, stay extension, status change, and more.", "The public manual for visa procedures at Korean missions abroad.", "Cross-checked against the Immigration Act, Enforcement Decree, Enforcement Rules, and public forms.", "Confirm final decisions with HiKorea, 1345, or the competent immigration office."],
+  "manualCardTitles": [
+    "Stay procedures manual",
+    "Visa procedures manual",
+    "Related statutes & forms",
+    "HiKorea · 1345 confirmation"
+  ],
+  "manualCardDescs": [
+    "The public manual for residence procedures: foreigner registration, stay extension, status change, and more.",
+    "The public manual for visa procedures at Korean missions abroad.",
+    "Cross-checked against the Immigration Act, Enforcement Decree, Enforcement Rules, and public forms.",
+    "Confirm final decisions with HiKorea, 1345, or the competent immigration office."
+  ],
   "manualNote": "Paradiso is not an official government service. Information provided is for reference only; required documents and procedures may vary according to agency guidance.",
   "toolsTitle": "Useful tools stay close to the workflow.",
   "toolsCopy": "Implemented tools connect to the existing modals and search. Features still in preparation are marked as planned.",
@@ -718,8 +728,8 @@
   "gwUtilityAria": "Utility tools",
   "gwSearchTitle": "Visa & residence search",
   "gwSearchSub": "Start with a code (D-2, E-7) or situation keyword",
-  "gwDocLabel": "Required documents",
-  "gwDocSub": "Common and additional items by status",
+  "gwDocLabel": "Essential form builder",
+  "gwDocSub": "Fill out key forms online, then print or save as PDF.",
   "gwHikoreaLabel": "HiKorea appointment guide",
   "gwHikoreaSub": "Online booking assistant before your visit",
   "gwAiLabel": "Ask Waymaker by Paradiso",
@@ -931,14 +941,28 @@
   "hkPreEmailHint1": "Create a Google account (Gmail) first ·",
   "hkPreEmailHint2": "You can temporarily use a family member's or friend's email.",
   "hkPrePwQ": "Password preparation check",
-  "hkPwChecklist": ["✓ At least 10 characters", "✓ Includes letters (e.g. abc)", "✓ Includes numbers (e.g. 123)", "✓ Includes special characters (e.g. ! @ # $)"],
+  "hkPwChecklist": [
+    "✓ At least 10 characters",
+    "✓ Includes letters (e.g. abc)",
+    "✓ Includes numbers (e.g. 123)",
+    "✓ Includes special characters (e.g. ! @ # $)"
+  ],
   "hkPreExpLabel": "Check your stay expiry date",
   "hkExpMsgEmpty": "Enter your expiry date.",
   "hkExpExpired": "Your period of stay has expired. Call 1345 immediately.",
   "hkExpImminent": "Your period of stay is about to expire. Book a visit right away.",
   "hkExpDaysLeft": "{days} day(s) left until your period of stay expires.",
-  "hkStep0Items": ["⚠️ Reservations open from tomorrow. Same-day booking is not available.", "⚠️ If you are more than 5 minutes late, your reservation may be voided.", "⚠️ Reservations cannot be cancelled on the day of the visit.", "⚠️ Print your reservation confirmation or save it on your phone.<br>(Have the printout or the phone screen ready to present on site.)"],
-  "hkStep1Items": ["Go to www.hikorea.go.kr", "Log in with your member ID and password", "After signing up, open your email inbox and press the 'Verify' button"],
+  "hkStep0Items": [
+    "⚠️ Reservations open from tomorrow. Same-day booking is not available.",
+    "⚠️ If you are more than 5 minutes late, your reservation may be voided.",
+    "⚠️ Reservations cannot be cancelled on the day of the visit.",
+    "⚠️ Print your reservation confirmation or save it on your phone.<br>(Have the printout or the phone screen ready to present on site.)"
+  ],
+  "hkStep1Items": [
+    "Go to www.hikorea.go.kr",
+    "Log in with your member ID and password",
+    "After signing up, open your email inbox and press the 'Verify' button"
+  ],
   "hkLinkHikorea": "Open HiKorea",
   "hkLinkHikoreaMain": "Open the HiKorea main page",
   "hkStep2Item": "After logging in, press the 'Visit Reservation' button on the main screen",
@@ -948,19 +972,43 @@
   "hkUnknown": "Not identified",
   "hkSelectedTask": "Selected task:",
   "hkReselect": "Choose again",
-  "hkTaskBullets": ["Extension of period of stay: extend your current visa under the same status", "Change of status of stay: switch to a different type of visa", "Foreigner registration: registering in Korea for the first time"],
+  "hkTaskBullets": [
+    "Extension of period of stay: extend your current visa under the same status",
+    "Change of status of stay: switch to a different type of visa",
+    "Foreigner registration: registering in Korea for the first time"
+  ],
   "hkTaskPickerAria": "Select task type",
   "hkTaskPickerHint": "Recommended task information for this visa code is not yet registered. Choose the task that matches your situation. If unsure, confirm by calling ☎ <a href=\"tel:1345\">1345</a>.",
-  "hkTaskBtnTitles": ["Extension of period of stay", "Change of status of stay", "Foreigner registration"],
-  "hkTaskBtnDescs": ["Extend your current visa as is", "Switch to a different visa", "Registering for the first time"],
-  "hkStep5Items": ["Select your preferred date and time", "Book a date before your stay expiry date", "Reservations open from tomorrow."],
+  "hkTaskBtnTitles": [
+    "Extension of period of stay",
+    "Change of status of stay",
+    "Foreigner registration"
+  ],
+  "hkTaskBtnDescs": [
+    "Extend your current visa as is",
+    "Switch to a different visa",
+    "Registering for the first time"
+  ],
+  "hkStep5Items": [
+    "Select your preferred date and time",
+    "Book a date before your stay expiry date",
+    "Reservations open from tomorrow."
+  ],
   "hkEnteredExp": "Entered expiry date:",
   "hkNotEntered": "Not entered",
-  "hkStep6Items": ["Write down your reservation number or capture the screen", "Print your reservation confirmation or save it as a PDF", "Arrive 10 minutes before your reserved time on the day of the visit"],
+  "hkStep6Items": [
+    "Write down your reservation number or capture the screen",
+    "Print your reservation confirmation or save it as a PDF",
+    "Arrive 10 minutes before your reserved time on the day of the visit"
+  ],
   "hkSavedLabel": "I saved the reservation confirmation",
   "reminderBannerCta": "View reminders",
   "reminderBannerCloseAria": "Dismiss for today",
-  "reminderTypeLabels": ["Stay expiry date", "Residence card renewal date", "Visit reservation date"],
+  "reminderTypeLabels": [
+    "Stay expiry date",
+    "Residence card renewal date",
+    "Visit reservation date"
+  ],
   "reminderFallbackLabel": "Deadline reminder",
   "reminderTypeShort": "Deadline",
   "reminderIcsBtn": "Save to my calendar",
@@ -1056,5 +1104,46 @@
   "jurSigunguPlaceholder": "Select city/county/district",
   "jurMissingInfo": "Jurisdiction office information is missing.",
   "jurResultMsg": "Based on your registered residence, your competent immigration office is <b>[{office}]</b>.<br>You must visit the designated competent office; filing at another office may be rejected on the spot.",
-  "visaDataLoadError": "Could not load visa data. Please try again shortly."
+  "visaDataLoadError": "Could not load visa data. Please try again shortly.",
+  "docComposerKicker": "Forms & paperwork",
+  "docComposerTitle": "Draft the must-have forms<br>right here, stress-free.",
+  "docComposerCopy": "Key official immigration forms in one place. Fill them out online, then print or save as PDF — original HWP/Word files are available from the official HiKorea form library.",
+  "docComposerFormTitle": "Application Form (Report Form) — Annex No. 34",
+  "docComposerFormDesc": "The base form for ten common applications — registration, stay extension, status change and more. Fill it in step by step, then print or save as PDF.",
+  "docComposerFormCta": "Fill it out online",
+  "docComposerDownloadTitle": "Official form library (HWP · Word)",
+  "docComposerDownloadDesc": "Download original files for other application and report forms from the HiKorea form library.",
+  "docComposerDownloadCta": "Open the HiKorea library",
+  "docComposerPrintTitle": "Print & save as PDF",
+  "docComposerPrintDesc": "When you're done, use the browser print dialog to print on paper or choose 'Save as PDF'. Your input never leaves your browser.",
+  "docComposerBadgeLive": "Online editor",
+  "docComposerBadgeExternal": "Official download",
+  "docComposerBadgeGuide": "How it works",
+  "docComposerNote": "The form helper is a drafting aid only and does not submit anything for you. Check HiKorea for the latest official version.",
+  "issuanceUiLabels": [
+    "Visa issuance",
+    "Common documents",
+    "Additional documents",
+    "Conditional documents",
+    "Steps",
+    "Notes",
+    "Who applies",
+    "Where",
+    "Official local overlay",
+    "Source"
+  ],
+  "sourceFieldLabels": [
+    "Applicability",
+    "Documents",
+    "Timing",
+    "Fees",
+    "Channels",
+    "Warnings",
+    "source-backed",
+    "check authority",
+    "Sources",
+    "View evidence",
+    "Why limited?"
+  ],
+  "resultTotalSuffix": "{count} total"
 }
