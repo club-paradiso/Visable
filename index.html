@@ -11252,6 +11252,64 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .manual-subcode-card { background: #fff !important; border: 1.5px solid var(--k-ink) !important; border-radius: 10px !important; }
 :root[data-theme="archive_diary"] .manual-subcode-card.match { box-shadow: inset 4px 0 0 var(--k-blue), 2px 2px 0 var(--k-ink) !important; }
 
+/* ── Scenario picker (내 상황에 맞는 시나리오 선택) — PR-K2 #13 승인안 ──
+   Kitsch-only interaction polish. The choice buttons become a compact
+   responsive chip grid (label + one-line preview), and picking a scenario
+   focuses its single card: cards the existing selectProcedureVariant() JS
+   marks .is-muted are hidden here instead of dimmed; '전체 보기' clears the
+   selection and restores every card. No JS/markup change, no text change —
+   the full scenario description and document lists stay on the cards. */
+:root[data-theme="archive_diary"] .scenario-cards-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.55rem;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+:root[data-theme="archive_diary"] .scenario-choice {
+  min-height: 56px;
+  gap: 0.2rem;
+  padding: 0.6rem 0.85rem;
+  border: 2px solid var(--k-ink);
+  border-radius: 14px;
+  background: var(--k-white);
+  color: var(--k-ink);
+  transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring), background 0.2s ease, color 0.2s ease;
+}
+:root[data-theme="archive_diary"] .scenario-choice:hover,
+:root[data-theme="archive_diary"] .scenario-choice:focus-visible {
+  border-color: var(--k-ink);
+  background: var(--k-white);
+  color: var(--k-ink);
+  transform: translateY(-2px);
+  box-shadow: var(--k-pop-1);
+}
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] {
+  border-color: var(--k-ink);
+  background: var(--k-blue);
+  color: #fff;
+  box-shadow: var(--k-pop-1);
+}
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"]::before { color: #fff; }
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-preview { color: #fff; opacity: 0.92; }
+:root[data-theme="archive_diary"] .scenario-choice-preview { -webkit-line-clamp: 1; font-size: 0.78rem; }
+:root[data-theme="archive_diary"] .scenario-choice--showall {
+  border-style: dashed;
+  border-width: 2px;
+  background: transparent;
+  color: var(--t2);
+  border-radius: 999px;
+  box-shadow: none;
+}
+:root[data-theme="archive_diary"] .scenario-choice--showall[aria-pressed="true"] {
+  border-style: solid;
+  background: var(--k-blue-1);
+  color: var(--k-ink);
+  box-shadow: none;
+}
+:root[data-theme="archive_diary"] .manual-subcode-grid--docs .manual-subcode-card.is-muted { display: none; }
+
 /* Uncertainty / review-needed notices → bold but HIGH-CONTRAST pills (semantic
    amber kept for warning — not decorative; never weakened) */
 :root[data-theme="archive_diary"] .manual-badge {
