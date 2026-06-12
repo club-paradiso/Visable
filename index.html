@@ -14363,16 +14363,17 @@ function getProcedureFeeInfo(v, procedureKey) {
     const base = DEFAULT_PROCEDURE_FEES[procedureKey];
     if (!base) return null;
     const fee = { ...base, commonReference: true, notes: [...(base.notes || [])] };
-    if (procedureKey === 'statusChange') {
-        if (v.code === 'F-5') {
-            fee.revenueStamp = 200000;
-            fee.notes = ['영주(F-5) 자격 변경허가 정부수입인지 200,000원'];
-            fee.commonReference = false;
-        } else if (v.code === 'F-6') {
-            fee.revenueStamp = 40000;
-            fee.notes = ['결혼이민(F-6) 자격 변경허가 정부수입인지 40,000원'];
-            fee.commonReference = false;
-        }
+    if (procedureKey === 'statusChange' && v.code === 'F-5') {
+        fee.revenueStamp = 200000;
+        fee.notes = ['영주(F-5) 자격 변경허가 정부수입인지 200,000원'];
+        fee.commonReference = false;
+    }
+    // 출입국관리법 시행규칙 제72조: 결혼이민(F-6) 4만원 예외는 제4호 '체류자격 부여'에만 있음.
+    // 변경허가는 제5호(10만원, 예외는 영주 F-5뿐)이므로 F-6 예외를 부여(statusGrant)로 정정.
+    if (procedureKey === 'statusGrant' && v.code === 'F-6') {
+        fee.revenueStamp = 40000;
+        fee.notes = ['결혼이민(F-6) 체류자격 부여 정부수입인지 40,000원 (시행규칙 제72조제4호)'];
+        fee.commonReference = false;
     }
     if (procedureKey === 'extension' && v.code === 'F-6') {
         fee.revenueStamp = 30000;
@@ -18870,7 +18871,7 @@ function selectInKoreaAction(actionType) {
     },
     workplace: {
       title: '🏢 근무처 변경·추가',
-      desc:   '취업 자격 소지자가 근무처를 변경할 경우 15일 이내에 신고해야 합니다.',
+      desc:   '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
                  ⚠️ <strong>주의:</strong> 근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.
                </div>
