@@ -1782,6 +1782,45 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 /* Compact caution strip */
 .vc-caution { font-size: 0.74rem; color: var(--t3); line-height: 1.55; padding: 0.45rem 0.8rem; border-left: 2px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 5%, transparent); border-radius: 0 6px 6px 0; word-break: keep-all; overflow-wrap: anywhere; }
 
+/* Visa issuance scenario cards */
+.visa-issuance-section { display: flex; flex-direction: column; gap: 0.72rem; }
+.visa-issuance-summary { margin: 0; color: var(--t2); font-size: 0.84rem; line-height: 1.58; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.65rem; }
+.issuance-scenario-card { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, white 72%, var(--bg1)); padding: 0.78rem; display: flex; flex-direction: column; gap: 0.62rem; min-width: 0; }
+.issuance-scenario-card.is-not-applicable { background: color-mix(in srgb, var(--bg2) 68%, white); }
+.issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
+.issuance-card-title { margin: 0; font-size: 0.88rem; font-weight: 900; color: var(--t1); line-height: 1.35; word-break: keep-all; }
+.issuance-source-badge, .procedure-source-badge.limited, .procedure-source-badge.unavailable, .procedure-source-badge.not-applicable, .procedure-source-badge.contextual, .procedure-source-badge.source-confirmed { border: 1px solid var(--bd2); }
+.issuance-source-badge { display: inline-flex; align-items: center; flex: 0 0 auto; padding: 0.18rem 0.48rem; border-radius: 999px; font-size: 0.65rem; font-weight: 900; line-height: 1.35; white-space: nowrap; color: var(--t3); background: var(--bg2); }
+.issuance-source-badge.source-confirmed, .procedure-source-badge.source-confirmed { background: color-mix(in srgb, var(--color-success) 12%, transparent); border-color: color-mix(in srgb, var(--color-success) 35%, var(--bd)); color: var(--color-primary-ink); }
+.issuance-source-badge.contextual, .procedure-source-badge.contextual { background: color-mix(in srgb, var(--cy) 10%, transparent); border-color: color-mix(in srgb, var(--cy) 32%, var(--bd)); color: var(--hlT); }
+.issuance-source-badge.limited, .procedure-source-badge.limited { background: color-mix(in srgb, var(--color-warning) 12%, transparent); border-color: color-mix(in srgb, var(--color-warning) 38%, var(--bd)); color: color-mix(in srgb, var(--color-warning) 60%, var(--t1)); }
+.issuance-source-badge.unavailable, .procedure-source-badge.unavailable, .issuance-source-badge.not-applicable, .procedure-source-badge.not-applicable { background: var(--bg2); color: var(--t3); }
+.issuance-applies { margin: 0; font-size: 0.76rem; color: var(--t2); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.42rem; }
+.issuance-meta-item { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.42rem 0.5rem; background: color-mix(in srgb, white 76%, var(--bg1)); min-width: 0; }
+.issuance-meta-label { display: block; font-size: 0.62rem; font-weight: 900; color: var(--t3); margin-bottom: 0.12rem; }
+.issuance-meta-value { display: block; font-size: 0.74rem; font-weight: 800; color: var(--t1); line-height: 1.35; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-subtitle { margin: 0 0 0.34rem; color: var(--t1); font-size: 0.72rem; font-weight: 900; }
+.issuance-steps, .issuance-doc-list, .issuance-warning-list { margin: 0; padding-left: 1.05rem; color: var(--t2); font-size: 0.76rem; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-doc-groups { display: grid; gap: 0.45rem; }
+.issuance-doc-group { border-left: 2px solid color-mix(in srgb, var(--ac) 30%, var(--bd)); padding-left: 0.55rem; }
+.issuance-warning-list { color: var(--t3); }
+.issuance-source-line { font-size: 0.7rem; color: var(--t3); line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-variance-note, .issuance-disclaimer { margin: 0; font-size: 0.72rem; color: var(--t3); line-height: 1.52; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-variance-note { padding: 0.5rem 0.65rem; border-radius: 8px; background: color-mix(in srgb, var(--color-warning) 6%, transparent); border: 1px solid color-mix(in srgb, var(--color-warning) 20%, var(--bd)); }
+.source-limitation-detail { margin-top: 0.42rem; border: 1px solid var(--bd2); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 74%, white); overflow: hidden; }
+.source-limitation-detail > summary { cursor: pointer; list-style: none; padding: 0.45rem 0.6rem; font-size: 0.7rem; font-weight: 900; color: var(--t1); }
+.source-limitation-detail > summary::-webkit-details-marker { display: none; }
+.source-limitation-body { padding: 0 0.6rem 0.55rem; font-size: 0.72rem; color: var(--t3); line-height: 1.52; word-break: keep-all; overflow-wrap: anywhere; }
+.source-limitation-body p { margin: 0.35rem 0 0; }
+.source-limitation-body ul { margin: 0.35rem 0 0; padding-left: 1rem; }
+@media (max-width: 640px) {
+    .issuance-scenario-grid { grid-template-columns: 1fr; }
+    .issuance-meta-grid { grid-template-columns: 1fr; }
+    .issuance-card-head { flex-direction: column; }
+}
+
 /* Source-evidence collapsible panel */
 .source-evidence-panel { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 70%, white); overflow: hidden; }
 .source-evidence-panel > summary { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; padding: 0.6rem 0.85rem; cursor: pointer; list-style: none; font-size: 0.77rem; font-weight: 900; color: var(--t1); user-select: none; }
@@ -1797,6 +1836,10 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .sep-badge.visa-manual { background: color-mix(in srgb, var(--color-success) 10%, transparent); border-color: color-mix(in srgb, var(--color-success) 30%, var(--bd)); color: var(--color-primary-ink); }
 .sep-badge.stay-manual { background: color-mix(in srgb, var(--cy) 10%, transparent); border-color: color-mix(in srgb, var(--cy) 30%, var(--bd)); color: var(--hlT); }
 .sep-badge.unverified { background: var(--bg2); border-color: var(--bd2); color: var(--t3); }
+.sep-badge.source-confirmed { background: color-mix(in srgb, var(--color-success) 10%, transparent); border-color: color-mix(in srgb, var(--color-success) 30%, var(--bd)); color: var(--color-primary-ink); }
+.sep-badge.contextual { background: color-mix(in srgb, var(--cy) 10%, transparent); border-color: color-mix(in srgb, var(--cy) 30%, var(--bd)); color: var(--hlT); }
+.sep-badge.limited { background: color-mix(in srgb, var(--color-warning) 10%, transparent); border-color: color-mix(in srgb, var(--color-warning) 32%, var(--bd)); color: color-mix(in srgb, var(--color-warning) 60%, var(--t1)); }
+.sep-badge.not-applicable, .sep-badge.unavailable { background: var(--bg2); border-color: var(--bd2); color: var(--t3); }
 .sep-note { font-size: 0.74rem; color: var(--t3); line-height: 1.55; margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
 .procedure-doc-count { margin: 0.12rem 0 0.6rem; font-size: 0.74rem; color: var(--t3); }
 
@@ -12893,6 +12936,11 @@ const DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
 const API_BASE = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
     || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
 let VISA_DATA = [];
+let VISA_ISSUANCE_RECORDS = [];
+let VISA_ISSUANCE_BY_CODE = new Map();
+let PROCEDURE_EVIDENCE_BINDINGS = [];
+let PROCEDURE_EVIDENCE_BY_KEY = new Map();
+let OFFICIAL_WEB_OVERLAYS = [];
 let dataReady = false;
 const qEl = document.getElementById('q');
 const SEARCH_DEBUG_ENABLED = (() => {
@@ -14660,9 +14708,10 @@ function getProcedure(v, cfg) {
     // Procedure-scoped data is the display authority. Legacy top-level arrays
     // are a fallback only; merging them into explicit procedure docs can pool
     // scenario/status-specific requirements into the basic/common section.
+    const emptyLegacyDocs = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
     const docs = hasProcedureScopedDocs
-        ? mergeDocGroups(structuredDocs, rawDocs)
-        : mergeDocGroups(legacyDocs);
+        ? mergeDocGroups(structuredDocs, rawDocs, emptyLegacyDocs)
+        : mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
     return {
         key: cfg.key,
         label: txAt('procedureLabels', cfg.labelIndex, cfg.label),
@@ -14841,6 +14890,7 @@ function dedupeDocs(docs) {
    shape what users see when the same official requirement arrives both as a
    procedure-bucket string (e.g. "신청서") and a legacy doc-id whose DOC_DICT
    label is the decorated official form ("통합신청서 (별지 제34호 서식)").
+   Static contract canonical domestic label: "통합신청서(별지 제34호 서식)".
    The pre-patch regression: dedupe keys were computed on the RAW entry, so a
    doc_* id never collided with its Korean-string twin and both rendered.
    audits/official-document-dedupe/audit_document_duplicates.js extracts this
@@ -15414,19 +15464,139 @@ function renderDocGroupingSourceNote() {
     return `<p class="doc-grouping-note">${escapeHtml(tx('docGroupingNote') || '화면의 묶음은 이해를 돕기 위한 Paradiso 분류이며, 원문 매뉴얼의 표현은 자격·절차별로 다를 수 있습니다.')}</p>`;
 }
 
+const PROCEDURE_EVIDENCE_TYPE_BY_KEY = {
+    visaIssuance: 'visa_issuance',
+    certificateOfVisaIssuance: 'visa_issuance',
+    registration: 'registration',
+    extension: 'extension',
+    statusChange: 'status_change',
+    statusGrant: 'status_grant',
+    workplaceChange: 'workplace_change',
+    activitiesOutsideStatus: 'activities_outside_status',
+    reentry: 'reentry_permit',
+    partTimeWork: 'activities_outside_status',
+    schoolChange: 'status_change'
+};
+
+const SOURCE_EVIDENCE_LABELS = {
+    ko: {
+        source_confirmed: '공식근거 직접 확인',
+        contextual: '관련 공식근거 있음',
+        limited: '공식근거 제한',
+        unavailable: '공식근거 확인 불가',
+        not_applicable: '해당 없음'
+    },
+    en: {
+        source_confirmed: 'Official source confirmed',
+        contextual: 'Official reference available',
+        limited: 'Official source limited',
+        unavailable: 'Official source unavailable',
+        not_applicable: 'Not applicable'
+    }
+};
+
+function getSourceEvidenceLabel(level) {
+    const lang = currentLanguage === 'en' ? 'en' : 'ko';
+    return SOURCE_EVIDENCE_LABELS[lang][level] || SOURCE_EVIDENCE_LABELS[lang].limited;
+}
+
+function getSourceEvidenceBadgeClass(level) {
+    return String(level || 'limited').replace(/_/g, '-');
+}
+
+function formatManualSourceRef(ref) {
+    if (!ref) return '';
+    if (typeof ref === 'string') return ref;
+    const manual = ref.manualName || ref.manual || '';
+    const version = ref.manualVersion || ref.version || ref.sourceRevisionDate || '';
+    const pageRange = ref.pageRange || (Number.isInteger(ref.pageStart) && Number.isInteger(ref.pageEnd)
+        ? `pp.${ref.pageStart}-${ref.pageEnd}`
+        : (ref.page || ''));
+    const section = ref.sectionTitle || ref.section || '';
+    const url = ref.sourceUrl || ref.url || '';
+    return [manual, version, pageRange, section, url].filter(Boolean).join(' · ');
+}
+
+function getFormattedSourceRefs(sourceState, fallbackRefs = []) {
+    const refs = [];
+    if (Array.isArray(fallbackRefs)) refs.push(...fallbackRefs);
+    if (sourceState && Array.isArray(sourceState.manualSources)) refs.push(...sourceState.manualSources);
+    if (sourceState && Array.isArray(sourceState.sourceRefs)) refs.push(...sourceState.sourceRefs);
+    return refs.map(formatManualSourceRef).filter(Boolean);
+}
+
+function getDefaultLimitationExplanation(level) {
+    if (currentLanguage === 'en') {
+        if (level === 'not_applicable') return 'This route is not shown as an application procedure for this status.';
+        if (level === 'unavailable') return 'No direct official source binding has been structured yet.';
+        if (level === 'contextual') return 'An official source exists, but some fields still depend on status, mission, or case-specific review.';
+        if (level === 'source_confirmed') return 'The visible summary is bound to official manual references. Timing, fees, and channels may still vary by authority.';
+        return 'Official grounding is limited because mission, country, timing, fees, or channel details may vary.';
+    }
+    if (level === 'not_applicable') return '이 경로는 해당 체류자격의 신청 절차로 표시하지 않습니다.';
+    if (level === 'unavailable') return '아직 직접 연결된 공식 근거가 구조화되지 않은 항목입니다.';
+    if (level === 'contextual') return '관련 공식 근거는 있으나 국가·공관·개별 사정에 따라 일부 요건이 달라질 수 있어 확정 표시하지 않습니다.';
+    if (level === 'source_confirmed') return '표시된 요약은 공식 매뉴얼 근거와 연결되어 있습니다. 다만 수수료·처리기간·예약 방식은 관할 기관 확인이 필요할 수 있습니다.';
+    return '공식 근거는 있으나 국가·공관·개별 사정에 따라 달라질 수 있어 확정 표시하지 않습니다.';
+}
+
+function renderSourceBackedFields(fields) {
+    if (!fields || typeof fields !== 'object') return '';
+    const labels = {
+        applicability: currentLanguage === 'en' ? 'Applicability' : '적용대상',
+        documents: currentLanguage === 'en' ? 'Documents' : '구비서류',
+        timing: currentLanguage === 'en' ? 'Timing' : '처리기간',
+        fees: currentLanguage === 'en' ? 'Fees' : '수수료',
+        channels: currentLanguage === 'en' ? 'Channels' : '접수채널',
+        warnings: currentLanguage === 'en' ? 'Warnings' : '주의사항'
+    };
+    const rows = Object.keys(labels).map(key => {
+        const ok = fields[key] === true;
+        const state = ok ? (currentLanguage === 'en' ? 'source-backed' : '근거 연결') : (currentLanguage === 'en' ? 'check authority' : '공식 확인 필요');
+        return `<li>${escapeHtml(labels[key])}: ${escapeHtml(state)}</li>`;
+    }).join('');
+    return rows ? `<ul>${rows}</ul>` : '';
+}
+
+function renderSourceLimitationExplanation(sourceState, fallbackRefs = []) {
+    const level = sourceState && sourceState.evidenceLevel ? sourceState.evidenceLevel : 'limited';
+    const explanation = (currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
+        ? sourceState.userFacingExplanationEn
+        : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level);
+    const refs = getFormattedSourceRefs(sourceState, fallbackRefs).slice(0, 4);
+    const refsHtml = refs.length ? `<p>${escapeHtml(currentLanguage === 'en' ? 'Sources' : '근거')}: ${escapeHtml(refs.join(' / '))}</p>` : '';
+    const fieldsHtml = renderSourceBackedFields(sourceState && sourceState.sourceBackedFields);
+    const summary = level === 'source_confirmed'
+        ? (currentLanguage === 'en' ? 'View evidence' : '근거 보기')
+        : (currentLanguage === 'en' ? 'Why limited?' : '왜 제한인가요?');
+    return `<details class="source-limitation-detail">
+        <summary>${escapeHtml(summary)}</summary>
+        <div class="source-limitation-body"><p>${escapeHtml(explanation)}</p>${refsHtml}${fieldsHtml}</div>
+    </details>`;
+}
+
+function getProcedureEvidenceBinding(code, procedureKey) {
+    const procedureType = PROCEDURE_EVIDENCE_TYPE_BY_KEY[procedureKey] || procedureKey;
+    return PROCEDURE_EVIDENCE_BY_KEY.get(`${normalizeVisaCode(code)}:${procedureType}`) || null;
+}
+
 function renderProcedureHeader(v, proc) {
-    const sourceLabel = proc.sourceConfirmed
-        ? (currentLanguage === 'en' ? 'Official source confirmed' : '공식근거 직접 확인')
-        : (proc.manualRefs && proc.manualRefs.length
-            ? (currentLanguage === 'en' ? 'Official reference available' : '관련 공식근거 있음')
-            : (currentLanguage === 'en' ? 'Official source limited' : '공식근거 제한'));
-    const badgeClass = proc.sourceConfirmed ? ' confirmed' : '';
+    const evidenceBinding = getProcedureEvidenceBinding(v.code, proc.key);
+    const fallbackLevel = proc.sourceConfirmed ? 'source_confirmed' : ((proc.manualRefs && proc.manualRefs.length) ? 'contextual' : 'limited');
+    const sourceState = evidenceBinding || {
+        evidenceLevel: fallbackLevel,
+        userFacingExplanationKo: getDefaultLimitationExplanation(fallbackLevel),
+        manualSources: proc.manualRefs || []
+    };
+    const sourceLabel = getSourceEvidenceLabel(sourceState.evidenceLevel);
+    const badgeClass = ` ${getSourceEvidenceBadgeClass(sourceState.evidenceLevel)}${sourceState.evidenceLevel === 'source_confirmed' ? ' confirmed' : ''}`;
     const refBits = (proc.manualRefs || []).map(ref => {
         const title = [ref.manualName || ref.manual, ref.manualVersion || ref.version, ref.pageRange].filter(Boolean).join(' · ');
         const section = ref.sectionTitle ? ` — ${ref.sectionTitle}` : '';
         const sub = ref.subCode ? ` (${ref.subCode})` : '';
         return `${title}${section}${sub}`.trim();
     }).filter(Boolean);
+    const allRefBits = [...refBits, ...getFormattedSourceRefs(sourceState)].filter(Boolean);
     const refHtml = refBits.length
         ? `<div class="procedure-source-ref">${escapeHtml(refBits.slice(0, 3).join(' / '))}</div>`
         : '';
@@ -15434,6 +15604,7 @@ function renderProcedureHeader(v, proc) {
         <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureLabel(proc))}</span></div>
         <span class="procedure-source-badge${badgeClass}">${escapeHtml(sourceLabel)}</span>
         ${refHtml}
+        ${renderSourceLimitationExplanation(sourceState, allRefBits)}
     </div>`;
 }
 
@@ -16511,6 +16682,135 @@ function renderCardSummary(v, kw) {
     return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
 }
 
+const ISSUANCE_ACTOR_LABELS = {
+    applicant: { ko: '신청인', en: 'Applicant' },
+    inviter: { ko: '초청자', en: 'Inviter' },
+    employer: { ko: '고용주', en: 'Employer' },
+    school: { ko: '학교', en: 'School' },
+    local_government: { ko: '지방자치단체', en: 'Local government' },
+    agency: { ko: '대행기관', en: 'Agency' },
+    mixed: { ko: '사례별 다름', en: 'Varies by case' }
+};
+
+const ISSUANCE_APPLY_PLACE_LABELS = {
+    overseas_mission: { ko: '재외공관', en: 'Overseas mission' },
+    visa_portal: { ko: '비자포털', en: 'Visa Portal' },
+    immigration_office: { ko: '출입국·외국인관서', en: 'Immigration office' },
+    mixed: { ko: '공식 안내별 확인', en: 'Check official route' }
+};
+
+function getVisaIssuanceRecord(code) {
+    return VISA_ISSUANCE_BY_CODE.get(normalizeVisaCode(code)) || null;
+}
+
+function getVisaIssuanceBinding(code) {
+    return getProcedureEvidenceBinding(code, 'visaIssuance');
+}
+
+function getVisaIssuanceOverlays(code) {
+    const codeNorm = normalizeVisaCode(code);
+    return OFFICIAL_WEB_OVERLAYS.filter(record => normalizeVisaCode(record.code) === codeNorm);
+}
+
+function localizedMetaLabel(map, key) {
+    const item = map[key] || map.mixed;
+    return currentLanguage === 'en' ? item.en : item.ko;
+}
+
+function renderIssuanceDocList(items, keywords) {
+    if (!Array.isArray(items) || !items.length) return '';
+    return `<ul class="issuance-doc-list">${items.map(item => `<li>${hl(escapeHtml(item), keywords || [])}</li>`).join('')}</ul>`;
+}
+
+function renderIssuanceDocGroups(documents, keywords) {
+    const docs = documents || {};
+    const groups = [
+        { key: 'common', label: currentLanguage === 'en' ? 'Common documents' : '공통서류' },
+        { key: 'additional', label: currentLanguage === 'en' ? 'Additional documents' : '추가서류' },
+        { key: 'conditional', label: currentLanguage === 'en' ? 'Conditional documents' : '해당 시 서류' }
+    ].map(group => {
+        const listHtml = renderIssuanceDocList(docs[group.key], keywords);
+        if (!listHtml) return '';
+        return `<div class="issuance-doc-group"><h6 class="issuance-subtitle">${escapeHtml(group.label)}</h6>${listHtml}</div>`;
+    }).filter(Boolean).join('');
+    if (!groups) return '';
+    return `<div class="issuance-doc-groups">${groups}</div>`;
+}
+
+function renderIssuanceSteps(steps, keywords) {
+    if (!Array.isArray(steps) || !steps.length) return '';
+    return `<ol class="issuance-steps">${steps.map(step => {
+        const text = currentLanguage === 'en' ? (step.en || step.ko || '') : (step.ko || step.en || '');
+        return `<li>${hl(escapeHtml(text), keywords || [])}</li>`;
+    }).join('')}</ol>`;
+}
+
+function renderIssuanceWarnings(warnings, keywords) {
+    if (!Array.isArray(warnings) || !warnings.length) return '';
+    return `<div><h6 class="issuance-subtitle">${escapeHtml(currentLanguage === 'en' ? 'Notes' : '주의사항')}</h6><ul class="issuance-warning-list">${warnings.map(w => `<li>${hl(escapeHtml(w), keywords || [])}</li>`).join('')}</ul></div>`;
+}
+
+function renderIssuanceOverlaySelector(code) {
+    const overlays = getVisaIssuanceOverlays(code);
+    if (!overlays.length) return '';
+    const options = overlays.map(record => {
+        const label = [record.country, record.post, record.sourceTitle].filter(Boolean).join(' · ');
+        return `<option value="${escapeHtml(record.sourceUrl || label)}">${escapeHtml(label)}</option>`;
+    }).join('');
+    return `<label class="issuance-source-line">${escapeHtml(currentLanguage === 'en' ? 'Official local overlay' : '국가·공관별 공식 오버레이')} <select>${options}</select></label>`;
+}
+
+function renderIssuanceModeCard(mode, record, binding, keywords) {
+    const level = binding && binding.evidenceLevel ? binding.evidenceLevel : (mode.type === 'not_applicable' ? 'not_applicable' : 'limited');
+    const sourceState = binding || {
+        evidenceLevel: level,
+        userFacingExplanationKo: getDefaultLimitationExplanation(level),
+        manualSources: mode.sourceRefs || []
+    };
+    const title = currentLanguage === 'en' ? (mode.labelEn || mode.labelKo || '') : (mode.labelKo || mode.labelEn || '');
+    const applies = currentLanguage === 'en' ? (mode.appliesToEn || mode.appliesToKo || '') : (mode.appliesToKo || mode.appliesToEn || '');
+    const sourceRefs = mode.sourceRefs || (record.manualSource ? [record.manualSource] : []);
+    const sourceLine = getFormattedSourceRefs({ sourceRefs }).slice(0, 2).join(' / ');
+    return `<article class="issuance-scenario-card${mode.type === 'not_applicable' ? ' is-not-applicable' : ''}">
+        <div class="issuance-card-head">
+            <h5 class="issuance-card-title">${escapeHtml(title)}</h5>
+            <span class="issuance-source-badge ${escapeHtml(getSourceEvidenceBadgeClass(level))}">${escapeHtml(getSourceEvidenceLabel(level))}</span>
+        </div>
+        ${applies ? `<p class="issuance-applies">${escapeHtml(applies)}</p>` : ''}
+        <div class="issuance-meta-grid">
+            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(currentLanguage === 'en' ? 'Who applies' : '신청 주체')}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_ACTOR_LABELS, mode.actor))}</span></div>
+            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(currentLanguage === 'en' ? 'Where' : '접수 위치')}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_APPLY_PLACE_LABELS, mode.whereToApply))}</span></div>
+        </div>
+        <div><h6 class="issuance-subtitle">${escapeHtml(currentLanguage === 'en' ? 'Steps' : '절차')}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
+        ${renderIssuanceDocGroups(mode.documents, keywords)}
+        ${renderIssuanceWarnings(mode.warnings, keywords)}
+        ${sourceLine ? `<div class="issuance-source-line">${escapeHtml(sourceLine)}</div>` : ''}
+        ${renderSourceLimitationExplanation(sourceState, sourceRefs)}
+    </article>`;
+}
+
+function renderVisaIssuanceSection(v, keywords) {
+    if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
+    const record = getVisaIssuanceRecord(v.code);
+    if (!record) return '';
+    const binding = getVisaIssuanceBinding(v.code);
+    const summary = currentLanguage === 'en'
+        ? (record.issuanceSummaryEn || record.issuanceSummaryKo || '')
+        : (record.issuanceSummaryKo || record.issuanceSummaryEn || '');
+    const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
+    const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords)).join('');
+    const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
+    const disclaimer = currentLanguage === 'en' ? (record.disclaimerEn || record.disclaimerKo || '') : (record.disclaimerKo || record.disclaimerEn || '');
+    return `<section class="manual-section visa-issuance-section" aria-label="${escapeHtml(currentLanguage === 'en' ? 'Visa issuance' : '사증발급')}">
+        <h4 class="manual-section-title">${escapeHtml(currentLanguage === 'en' ? 'Visa issuance' : '사증발급')}</h4>
+        ${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
+        <div class="issuance-scenario-grid">${cards}</div>
+        ${renderIssuanceOverlaySelector(v.code)}
+        ${variance ? `<p class="issuance-variance-note">${escapeHtml(variance)}</p>` : ''}
+        ${disclaimer ? `<p class="issuance-disclaimer">${escapeHtml(disclaimer)}</p>` : ''}
+    </section>`;
+}
+
 function renderCautionBlock() {
     return `<div class="vc-caution">${escapeHtml(tx('cautionText'))}</div>`;
 }
@@ -16698,6 +16998,7 @@ function renderSourceEvidencePanel(v) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const status = v.sourceManualStatus || {};
     const domains = getManualDomains(v);
+    const issuanceBinding = getVisaIssuanceBinding(v.code);
     const hasVisa = domains.includes('visa_issuance');
     const hasStay = domains.includes('stay_sojourn');
     const isVerified = status.verified === true && !status.needsManualReview;
@@ -16712,12 +17013,14 @@ function renderSourceEvidencePanel(v) {
     if (isProvisional) badges += `<span class="sep-badge source-linked-unverified">${escapeHtml(tx('sourceProvisional'))}</span>`;
     if (hasVisa) badges += `<span class="sep-badge visa-manual">${escapeHtml(tx('sourceVisaManual'))}</span>`;
     if (hasStay) badges += `<span class="sep-badge stay-manual">${escapeHtml(tx('sourceStayManual'))}</span>`;
+    if (issuanceBinding) badges += `<span class="sep-badge ${escapeHtml(getSourceEvidenceBadgeClass(issuanceBinding.evidenceLevel))}">${escapeHtml(currentLanguage === 'en' ? `Visa issuance: ${getSourceEvidenceLabel(issuanceBinding.evidenceLevel)}` : `사증발급: ${getSourceEvidenceLabel(issuanceBinding.evidenceLevel)}`)}</span>`;
     if (!isVerified) badges += `<span class="sep-badge unverified">${escapeHtml(tx('sourceUnverified'))}</span>`;
     const noteKey = isVerified
         ? 'sourceVerifiedNote'
         : (pendingReview ? 'sourcePendingReviewNote' : (hasPageHint ? 'sourceNeedLinkingNote' : 'sourceUnverifiedNote'));
     const provisionalNote = isProvisional ? `<p class="sep-note">${escapeHtml(tx('sourceProvisionalNote'))}</p>` : '';
-    const noteHtml = `<p class="sep-note">${escapeHtml(tx(noteKey))}</p>${provisionalNote}`;
+    const issuanceNote = issuanceBinding ? `<p class="sep-note">${escapeHtml((issuanceBinding.userFacingExplanationKo || issuanceBinding.limitationReasonKo || getDefaultLimitationExplanation(issuanceBinding.evidenceLevel)))}</p>` : '';
+    const noteHtml = `<p class="sep-note">${escapeHtml(tx(noteKey))}</p>${issuanceNote}${provisionalNote}`;
     return `<details class="source-evidence-panel">
         <summary><span class="sep-title">${escapeHtml(tx('sourceEvidenceTitle'))}</span><span class="sep-chevron">▾</span></summary>
         <div class="sep-body"><div class="sep-badges">${badges}</div>${noteHtml}</div>
@@ -17032,8 +17335,8 @@ function renderResults(query){
 
     let filtered;
     if (queryIsCodeLike) {
-        const exactTopLevel = scored.filter(v => v._exactRank === 6);
-        const exactSubcode = scored.filter(v => v._exactRank === 5);
+        const exactTopLevel = scored.filter(v => v._exactRank >= 10000);
+        const exactSubcode = scored.filter(v => v._exactRank >= 5000 && v._exactRank < 10000);
         const exactOnly = exactTopLevel.length ? exactTopLevel : (exactSubcode.length ? exactSubcode : scored.filter(v => v._exactRank > 0));
         filtered = (exactOnly.length ? exactOnly : scored.filter(v=>v._score>0))
             .sort((a,b)=>b._exactRank-a._exactRank||b._codeRank-a._codeRank||b._score-a._score);
@@ -17091,6 +17394,7 @@ function renderResults(query){
                     ${renderSubcodes(v, kw, ms, { broadParentQuery, queryCode: primaryCodeQuery })}
                     ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
+                    ${renderVisaIssuanceSection(v, kw)}
                     ${renderDocumentTabs(v)}
                     ${renderCautionBlock()}
                     ${renderSourceEvidencePanel(v)}
@@ -17794,9 +18098,43 @@ function updateCategoryCounts() {
     });
 }
 
+function buildProcedureEvidenceIndex(records) {
+    const map = new Map();
+    (Array.isArray(records) ? records : []).forEach(record => {
+        if (!record || !record.code || !record.procedureType) return;
+        map.set(`${normalizeVisaCode(record.code)}:${record.procedureType}`, record);
+    });
+    return map;
+}
+
+async function fetchOptionalJson(path) {
+    try {
+        const res = await fetch(path, { cache: 'no-store' });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+    } catch (e) {
+        console.warn(`Optional Paradiso data not loaded: ${path}`, e);
+        return null;
+    }
+}
+
+async function loadVisaIssuanceData() {
+    const [issuance, evidence, overlays] = await Promise.all([
+        fetchOptionalJson('./data/visa_issuance_records.json'),
+        fetchOptionalJson('./data/procedure_evidence_bindings.json'),
+        fetchOptionalJson('./data/official_web_overlays.json')
+    ]);
+    VISA_ISSUANCE_RECORDS = Array.isArray(issuance?.records) ? issuance.records : [];
+    VISA_ISSUANCE_BY_CODE = new Map(VISA_ISSUANCE_RECORDS.map(record => [normalizeVisaCode(record.code), record]));
+    PROCEDURE_EVIDENCE_BINDINGS = Array.isArray(evidence?.records) ? evidence.records : [];
+    PROCEDURE_EVIDENCE_BY_KEY = buildProcedureEvidenceIndex(PROCEDURE_EVIDENCE_BINDINGS);
+    OFFICIAL_WEB_OVERLAYS = Array.isArray(overlays?.records) ? overlays.records : [];
+}
+
 async function loadVisaData() {
     const parse = (raw) => injectLocalData(Array.isArray(raw) ? raw : (Array.isArray(raw?.data) ? raw.data : (Array.isArray(raw?.visas) ? raw.visas : [])));
-    const applySuccess = (arr, label) => {
+    const applySuccess = async (arr, label) => {
+        await loadVisaIssuanceData();
         VISA_DATA = arr; dataReady = true; if(rcEl) rcEl.textContent = tx('dataReady', { count: VISA_DATA.length, source: label });
         setSearchEnabled(true); initUI(); updateCategoryCounts();
     };
@@ -17804,13 +18142,13 @@ async function loadVisaData() {
         if (!API_BASE) throw new Error("Local");
         const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store' });
         if (!res.ok) throw new Error(`API Fail`);
-        applySuccess(parse(await res.json()), tx('sourceApi')); return;
+        await applySuccess(parse(await res.json()), tx('sourceApi')); return;
     } catch (e) {
         try {
             const res = await fetch('./visa_data.json', { cache: 'no-store' });
             if (!res.ok) throw new Error(`JSON Fail`);
-            applySuccess(parse(await res.json()), tx('sourceStatic'));
-    } catch (err) {
+            await applySuccess(parse(await res.json()), tx('sourceStatic'));
+        } catch (err) {
             dataReady = false;
             if (rcEl) rcEl.textContent = tx('visaDataLoadError');
             setSearchEnabled(false);

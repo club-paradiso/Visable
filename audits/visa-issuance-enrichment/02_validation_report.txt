@@ -1,0 +1,45 @@
+Visa Issuance Enrichment Validation Report
+Generated: 2026-06-12
+
+Targeted checks:
+- node scripts/validate_visa_issuance_enrichment.js: PASS (270 passed, 0 warnings, 0 failed)
+- node scripts/check_exact_code_search.js: PASS (20 passed, 0 failed)
+- python3 scripts/check_exact_code_search_coverage.py: PASS (56 smoke queries; F-3-18 documented soft miss)
+- node scripts/check_d2_student_journey.js: PASS via check_exact_code_search.js
+- python3 scripts/check_visa_data_text_integrity.py: PASS
+- python3 scripts/check_visa_text_corruption.py: PASS
+- python3 scripts/sync_visa_data.py --check: PASS
+- python3 -m json.tool data/visa_issuance_records.json / data/procedure_evidence_bindings.json / data/official_web_overlays.json: PASS
+
+Browser / Playwright notes:
+- Served the static app at http://localhost:4173 with `python3 -m http.server 4173`.
+- Checked exact-code URLs `?q=D-2`, `?q=B-1`, `?q=E-7`, and `?q=F-6` in the in-app browser.
+- Each checked query returned one top result with the expected exact code.
+- Each checked result rendered the new `사증발급` section.
+- D-2, E-7, and F-6 showed `공식근거 직접 확인`; B-1 showed `해당 없음`.
+- Saved screenshots:
+  - /Users/seonjaekim/Documents/Codex/2026-06-12/github-plugin-github-openai-curated-plugin/outputs/paradiso-d2-visa-issuance-browser-check.png
+  - /Users/seonjaekim/Documents/Codex/2026-06-12/github-plugin-github-openai-curated-plugin/outputs/paradiso-d2-visa-issuance-card-open-browser-check.png
+
+Broad repo check:
+- bash scripts/check_repo.sh: FAIL in backend regression phase.
+- Static/data phases before backend tests passed, including JSON format, U+FFFD scan, source manuals registration, i18n, git diff --check, backend visa data sync, required-documents coverage, and duplicate rendering audit.
+- Backend tests then reported 142 errors. The repeated root cause was the test harness expecting missing attributes on `backend/paradiso_backend.py`, especially `_reset_visas_cache_for_tests`, `_DEFAULT_OPENROUTER_MODEL`, and `OPENROUTER_API_KEY`.
+- This failure is not caused by the visa issuance data/UI patch; this PR did not edit backend runtime code other than syncing `backend/data/visas.json` from `visa_data.json`.
+
+Operator note:
+- An accidental command, `node scripts/check_visa_text_corruption.py`, failed because the file is a Python script. The correct Python invocation passed.
+
+Source-lens counts:
+- All rows before: {'unavailable': 208, 'limited': 58, 'contextual': 50, 'source_confirmed': 20}
+- All rows after: {'not_applicable': 3, 'limited': 90, 'contextual': 47, 'unavailable': 169, 'source_confirmed': 27}
+- Parent visa_issuance before: {'unavailable': 39, 'contextual': 3}
+- Parent visa_issuance after: {'not_applicable': 3, 'source_confirmed': 7, 'limited': 32}
+- Priority visa_issuance before: {'unavailable': 13, 'contextual': 2}
+- Priority visa_issuance after: {'not_applicable': 3, 'source_confirmed': 7, 'limited': 5}
+
+Priority records:
+- Covered issuance records: D-2, D-4, D-10, E-7, E-8, E-9, F-1, F-2, F-4, F-6, G-1, H-2, C-3, B-1, B-2
+- Source-confirmed: D-2, D-4, D-10, E-7, E-8, F-6, C-3
+- Limited: E-9, F-1, F-2, F-4, G-1
+- Not applicable: H-2, B-1, B-2

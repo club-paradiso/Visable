@@ -26,7 +26,10 @@ HELPER_CATS = {"faq", "scn", "nhis"}
 INACTIVE = {"deprecated", "suspended", "reference_only", "legacy", "abolished"}
 
 SMOKE = [
-    "G-1", "G-1-2", "G-1-3", "G-1-4", "G-1-5", "G-1-6", "G-1-7", "G-1-9",
+    "D-2", "D-4", "D-10", "E-7", "E-8", "E-9",
+    "F-1", "F-2", "F-4", "F-6", "G-1", "H-2",
+    "C-3", "B-1", "B-2",
+    "G-1-2", "G-1-3", "G-1-4", "G-1-5", "G-1-6", "G-1-7", "G-1-9",
     "G-1-10", "G-1-11", "G-1-12", "G-1-99",
     "C-3-7", "C-4-1", "C-4-5", "E-8-1", "E-8-2", "E-8-5", "E-8-7", "E-8-99",
     "D-8-4S", "D-9-5", "E-7-S1", "E-7-S2", "F-1-D", "F-2-7S", "F-3-18",
@@ -59,17 +62,17 @@ def rank(rec, query):
         return 0
     helper = rec.get("cat") in HELPER_CATS
     if norm(rec.get("code")) == q:
-        return 6
+        return 10000
     for s in get_subcodes(rec):
         if norm(s.get("code")) == q:
-            return 5
+            return 5000
     aliases = list(rec.get("aliases") or []) + list(rec.get("searchAliases") or [])
     if any(norm(a) == q for a in aliases):
-        return 2 if helper else 4
+        return 200 if helper else 4000
     for s in get_subcodes(rec):
         sub_aliases = list(s.get("aliases") or []) + list(s.get("searchAliases") or [])
         if any(norm(a) == q for a in sub_aliases):
-            return 3
+            return 3000
     procs = rec.get("procedures") if isinstance(rec.get("procedures"), dict) else {}
     for proc in procs.values():
         for v in (proc.get("variants") or []) if isinstance(proc, dict) else []:
@@ -78,7 +81,7 @@ def rank(rec, query):
                 codes.append(v["statusCode"])
             codes += v.get("statusCodes") or []
             if any(norm(c) == q for c in codes):
-                return 3
+                return 3000
     return 0
 
 
@@ -108,7 +111,7 @@ def main():
     for r in data:
         if r.get("cat") in HELPER_CATS or r.get("isProgram"):
             continue
-        if rank(r, r.get("code")) < 6:
+        if rank(r, r.get("code")) < 10000:
             failures.append(f"top-level code not self-resolving: {r.get('code')}")
 
     # 2. active subcodes

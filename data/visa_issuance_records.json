@@ -1,0 +1,1210 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-06-12",
+  "sourcePolicy": {
+    "officialSourceHierarchy": [
+      "local visa issuance manual 2026-05-21",
+      "local stay/residence manual 2026-06-01",
+      "visa.go.kr",
+      "hikorea.go.kr",
+      "mofa.go.kr",
+      "overseas.mofa.go.kr",
+      "law.go.kr"
+    ],
+    "unofficialSourcesAllowed": false,
+    "notesKo": "사증발급 기록은 원문 매뉴얼 전문을 복사하지 않고, 구조화 가능한 요약·절차·서류 묶음과 근거 포인터만 저장합니다."
+  },
+  "records": [
+    {
+      "code": "D-2",
+      "titleKo": "유학",
+      "titleEn": "Study",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§10 유 학(D-2)",
+        "pages": [
+          62,
+          69
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "유학(D-2)은 대학·전문대학 등 고등교육기관의 정규과정 유학자를 위한 사증발급 항목입니다. 매뉴얼은 표준입학허가서, 교육기관 서류, 학력·재정 입증을 핵심 서류로 둡니다.",
+      "issuanceSummaryEn": "D-2 covers degree or higher-education study. The manual centers the certificate of admission, institution documents, and education/finance evidence.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "재외공관 신청 또는 인정서·전자사증 대상 확인",
+          "labelEn": "Consular application or confirmation/e-visa eligibility check",
+          "appliesToKo": "학교·과정·국적에 따라 재외공관 직접 신청, 사증발급인정서, 전자사증 가능 여부가 갈릴 수 있습니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "입학할 교육기관에서 표준입학허가서와 기관 서류를 준비합니다.",
+              "en": "Obtain the certificate of admission and institution documents from the school."
+            },
+            {
+              "order": 2,
+              "ko": "거주국 관할 재외공관 또는 비자포털 안내에서 접수 경로를 확인합니다.",
+              "en": "Check the competent overseas mission or Visa Portal for the applicable route."
+            },
+            {
+              "order": 3,
+              "ko": "신청서·여권·사진과 학력·재정 입증서류를 제출합니다.",
+              "en": "Submit the application, passport/photo, and education/finance evidence."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급(인정)신청서",
+              "여권 사본",
+              "사진 1매",
+              "교육기관 사업자등록증 또는 고유번호증",
+              "표준입학허가서"
+            ],
+            "additional": [
+              "최종학력 입증서류",
+              "재정능력 입증서류"
+            ],
+            "conditional": [
+              "결핵진단서(해당자)",
+              "가족관계 입증서류(부모 잔고증명 등 가족 명의 재정 입증 시)",
+              "아포스티유 또는 영사확인 대상 학력서류"
+            ]
+          },
+          "warnings": [
+            "공관별 추가서류·번역·인증 방식은 달라질 수 있습니다.",
+            "90일 초과 체류자는 입국 후 외국인등록 등 국내 체류절차를 별도로 확인해야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§10 유 학(D-2)",
+              "pageStart": 62,
+              "pageEnd": 69,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "D-4",
+      "titleKo": "일반연수",
+      "titleEn": "General Training",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§12 일반연수(D-4)",
+        "pages": [
+          73,
+          87
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "일반연수(D-4)는 한국어·외국어 연수 등 비학위 연수 활동을 위한 항목입니다. 매뉴얼은 90일 이하 어학연수는 C-3-1 대상이 될 수 있음을 별도로 둡니다.",
+      "issuanceSummaryEn": "D-4 covers non-degree training such as language training. The manual separately notes that language training of 90 days or less can fall under C-3-1.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "재외공관 신청 또는 인정서·전자사증 대상 확인",
+          "labelEn": "Consular application or confirmation/e-visa eligibility check",
+          "appliesToKo": "연수기관·연수기간·국적에 따라 접수 경로가 달라질 수 있습니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "거주국 또는 최종학교 소재지 관할 재외공관을 기준으로 접수 가능 여부를 확인합니다.",
+              "en": "Check the mission competent for the residence country or last school location."
+            },
+            {
+              "order": 2,
+              "ko": "연수기관에서 표준입학허가서와 연수계획 자료를 준비합니다.",
+              "en": "Prepare the certificate of admission and training plan materials from the institution."
+            },
+            {
+              "order": 3,
+              "ko": "신청서·여권·사진·수수료와 학력·재정 입증서류를 제출합니다.",
+              "en": "Submit application, passport/photo/fee, and education/finance evidence."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서",
+              "여권",
+              "사진",
+              "수수료",
+              "교육기관 사업자등록증 또는 고유번호증",
+              "표준입학허가서"
+            ],
+            "additional": [
+              "재학증명서 또는 최종학력 입증서류",
+              "재정능력 입증서류",
+              "연수계획서"
+            ],
+            "conditional": [
+              "공관장이 필요하다고 인정하는 추가서류"
+            ]
+          },
+          "warnings": [
+            "90일 이하 어학연수는 D-4가 아니라 C-3-1 검토 대상이 될 수 있습니다.",
+            "공관장이 제출서류를 가감할 수 있습니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§12 일반연수(D-4)",
+              "pageStart": 73,
+              "pageEnd": 87,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "D-10",
+      "titleKo": "구직",
+      "titleEn": "Job Seeking",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§18 구 직(D-10)",
+        "pages": [
+          122,
+          135
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "구직(D-10)은 구직활동·기술창업 준비 등 세부 유형별 요건을 전제로 재외공관장이 발급할 수 있는 단수 사증 항목입니다.",
+      "issuanceSummaryEn": "D-10 covers job seeking and start-up preparation categories; issuance depends on the detailed subtype and consular review.",
+      "issuanceModes": [
+        {
+          "type": "consular_discretion",
+          "labelKo": "재외공관에서 직접 신청",
+          "labelEn": "Apply directly at an overseas mission",
+          "appliesToKo": "D-10-1, D-10-2, D-10-3, D-10-T 등 세부 유형에 맞는 점수·면제·추천 요건을 갖춘 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "자국 또는 거주국 소재 한국 재외공관에서 신청 가능 여부를 확인합니다.",
+              "en": "Check eligibility at the Korean mission in the applicant’s country or residence country."
+            },
+            {
+              "order": 2,
+              "ko": "구직활동계획서 또는 창업 관련 계획자료를 준비합니다.",
+              "en": "Prepare a job-seeking plan or start-up preparation materials."
+            },
+            {
+              "order": 3,
+              "ko": "학위·경력·체재비·추천서 등 해당 세부유형의 입증서류를 제출합니다.",
+              "en": "Submit evidence for the subtype, such as degree, career, funds, or recommendation documents."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "신분증 사본"
+            ],
+            "additional": [
+              "구직활동계획서 또는 창업계획 자료",
+              "학위증 또는 학력 입증서류",
+              "경력증명서(해당자)",
+              "체재비 입증서류"
+            ],
+            "conditional": [
+              "대학순위 소명자료",
+              "국내 연수활동 증빙",
+              "한국어능력 입증",
+              "추천서",
+              "고소득 전문가 입증서류",
+              "점수제 평가 관련 서류"
+            ]
+          },
+          "warnings": [
+            "D-10은 세부 유형과 점수·면제요건에 따라 제출서류가 크게 달라집니다.",
+            "복수사증 가능 여부는 협정·국적 등 별도 조건이 필요합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§18 구 직(D-10)",
+              "pageStart": 122,
+              "pageEnd": 135,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "E-7",
+      "titleKo": "특정활동",
+      "titleEn": "Specially Designated Activities",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§25 특정활동(E-7)",
+        "pages": [
+          168,
+          277
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "특정활동(E-7)은 직종·고용계약·학력 또는 경력 요건과 필요 시 추천요건을 함께 보는 취업 사증 항목입니다.",
+      "issuanceSummaryEn": "E-7 is an employment status assessed by occupation, contract, education/career evidence, and recommendations where required.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "재외공관 신청 또는 사증발급인정서",
+          "labelEn": "Consular application or visa issuance confirmation",
+          "appliesToKo": "고용계약을 체결한 외국인이 직종별 요건을 충족하고 초청기관 또는 고용주가 관련 서류를 갖춘 경우입니다.",
+          "actor": "mixed",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "고용주와 직종·임금·계약내용이 E-7 기준에 맞는지 확인합니다.",
+              "en": "Confirm that occupation, wage, and contract terms meet E-7 standards."
+            },
+            {
+              "order": 2,
+              "ko": "직종별 학력·경력·추천 필요 여부를 확인합니다.",
+              "en": "Check education, experience, and recommendation requirements by occupation."
+            },
+            {
+              "order": 3,
+              "ko": "재외공관 직접 신청 또는 사증발급인정서/비자포털 경로 중 적용되는 절차로 접수합니다.",
+              "en": "Apply via the applicable consular, confirmation certificate, or Visa Portal route."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서 또는 사증발급인정신청서",
+              "여권 사본",
+              "사진",
+              "고용계약서",
+              "초청기관 또는 고용업체 관련 서류"
+            ],
+            "additional": [
+              "학위증 또는 경력증명서",
+              "고용 필요성 입증자료",
+              "업체 납세 관련 자료"
+            ],
+            "conditional": [
+              "관계 중앙행정기관장 추천서(필요 직종)",
+              "직종별 별도 요건 입증서류"
+            ]
+          },
+          "warnings": [
+            "E-7은 직종별 세부요건이 방대하므로 직종코드·추천요건을 별도로 확인해야 합니다.",
+            "인정서와 재외공관 직접 신청 가능 여부는 직종·기관·공관 안내에 따라 달라질 수 있습니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§25 특정활동(E-7)",
+              "pageStart": 168,
+              "pageEnd": 277,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "E-8",
+      "titleKo": "계절근로",
+      "titleEn": "Seasonal Work",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§26 계절근로(E-8)",
+        "pages": [
+          278,
+          283
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "계절근로(E-8)는 지방자치단체가 관리하는 계절근로 프로그램 중심의 사증발급 항목입니다.",
+      "issuanceSummaryEn": "E-8 is organized around seasonal worker programs managed by local governments.",
+      "issuanceModes": [
+        {
+          "type": "visa_issuance_confirmation",
+          "labelKo": "사증발급인정서 먼저 필요",
+          "labelEn": "Visa issuance confirmation first",
+          "appliesToKo": "지방자치단체가 계절근로자 배정·초청 절차를 진행하는 경우입니다.",
+          "actor": "local_government",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "지방자치단체가 계절근로 프로그램 대상자와 초청 절차를 정리합니다.",
+              "en": "The local government organizes the seasonal worker program and invitation process."
+            },
+            {
+              "order": 2,
+              "ko": "비자포털 또는 관할 출입국 절차로 사증발급인정 신청자료를 제출합니다.",
+              "en": "Submit confirmation materials through Visa Portal or the competent immigration route."
+            },
+            {
+              "order": 3,
+              "ko": "인정서 발급 후 해당 재외공관의 사증 신청 안내를 확인합니다.",
+              "en": "After confirmation, follow the relevant overseas mission’s visa instructions."
+            }
+          ],
+          "documents": {
+            "common": [
+              "표준근로계약서",
+              "국내 구인 노력 입증자료",
+              "근로자 여권 사본 등 신원자료",
+              "숙소 관련 확인자료"
+            ],
+            "additional": [
+              "지자체 계절근로 배정·운영 관련 자료"
+            ],
+            "conditional": [
+              "MOU 또는 가족관계 입증자료",
+              "결혼이민자 가족 초청 관련 서류",
+              "유학생 부모 초청 관련 서류"
+            ]
+          },
+          "warnings": [
+            "E-8은 지자체 프로그램·배정·초청 조건이 핵심입니다.",
+            "숙소·근로조건·초청관계 자료는 지자체와 관할 기관 확인이 필요합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§26 계절근로(E-8)",
+              "pageStart": 278,
+              "pageEnd": 283,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "E-9",
+      "titleKo": "비전문취업",
+      "titleEn": "Non-professional Employment",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§27 비전문취업(E-9)",
+        "pages": [
+          284,
+          293
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "비전문취업(E-9)은 고용허가제(EPS) 체계와 연결되는 취업 사증 항목입니다. 이번 POC는 공식 매뉴얼 위치와 경로 성격을 묶고, 세부 제출서류 구조화는 후속 추출 대상으로 남깁니다.",
+      "issuanceSummaryEn": "E-9 is tied to the Employment Permit System. This POC binds the official manual section and route character, while detailed document extraction remains follow-up work.",
+      "issuanceModes": [
+        {
+          "type": "visa_issuance_confirmation",
+          "labelKo": "고용허가제 기반 인정서 경로",
+          "labelEn": "EPS-based confirmation route",
+          "appliesToKo": "고용허가제 절차에 따라 고용허가·근로계약 등 선행 절차가 있는 경우입니다.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "고용허가제 절차상 고용허가·근로계약 등 선행 요건을 확인합니다.",
+              "en": "Confirm EPS preconditions such as employment permit and labor contract."
+            },
+            {
+              "order": 2,
+              "ko": "인정서 또는 공관 신청 경로는 관할 기관·송출국 절차에 맞춰 확인합니다.",
+              "en": "Check the confirmation or mission route according to the competent authority and sending-country process."
+            },
+            {
+              "order": 3,
+              "ko": "공식 매뉴얼과 공관 안내에 따라 추가서류를 보완합니다.",
+              "en": "Supplement documents according to the official manual and mission guidance."
+            }
+          ],
+          "documents": {
+            "common": [
+              "고용허가제 관련 선행 절차 자료",
+              "근로계약 관련 자료"
+            ],
+            "additional": [
+              "사업장 관련 자료"
+            ],
+            "conditional": [
+              "건강·결핵 등 국가별 또는 공관별 요구자료"
+            ]
+          },
+          "warnings": [
+            "E-9 세부 절차는 EPS·송출국·공관 안내가 함께 작동하므로 이번 화면은 확정 체크리스트가 아닙니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "F-1",
+      "titleKo": "방문동거",
+      "titleEn": "Visiting and Joining Family",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§29 방문동거(F-1)",
+        "pages": [
+          297,
+          307
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "방문동거(F-1)는 방문·동거 목적과 초청자·가족관계·체류목적 입증이 중요한 가족·동거 계열 항목입니다.",
+      "issuanceSummaryEn": "F-1 focuses on visit/cohabitation purpose and evidence of inviter, family relationship, and stay purpose.",
+      "issuanceModes": [
+        {
+          "type": "consular_discretion",
+          "labelKo": "재외공관에서 직접 신청",
+          "labelEn": "Apply directly at an overseas mission",
+          "appliesToKo": "초청자와의 관계, 동거·방문 목적, 체류 필요성을 설명할 수 있는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "초청자·가족관계·방문 목적을 정리합니다.",
+              "en": "Clarify inviter, family relationship, and visit purpose."
+            },
+            {
+              "order": 2,
+              "ko": "거주국 관할 재외공관의 F-1 제출서류 안내를 확인합니다.",
+              "en": "Check F-1 document instructions from the competent overseas mission."
+            },
+            {
+              "order": 3,
+              "ko": "신청서와 관계·목적 입증자료를 제출합니다.",
+              "en": "Submit the application and evidence of relationship/purpose."
+            }
+          ],
+          "documents": {
+            "common": [
+              "여권 및 신분자료",
+              "가족관계 또는 초청관계 입증자료",
+              "체류목적 소명자료"
+            ],
+            "additional": [
+              "초청자 체류자격 또는 신분 입증자료"
+            ],
+            "conditional": [
+              "공관별 추가 소명자료"
+            ]
+          },
+          "warnings": [
+            "F-1은 세부 대상이 넓어 공관별 추가 확인이 필요합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§29 방문동거(F-1)",
+              "pageStart": 297,
+              "pageEnd": 307,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "F-2",
+      "titleKo": "거주",
+      "titleEn": "Resident",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§30 거 주(F-2)",
+        "pages": [
+          308,
+          312
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "거주(F-2)는 가족·점수제·투자·우수인재 등 세부 유형별 요건 차이가 큰 항목입니다.",
+      "issuanceSummaryEn": "F-2 has materially different requirements by subtype, including family, points-based, investment, and talent routes.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "세부 유형별 신청 경로 확인",
+          "labelEn": "Subtype-specific route check",
+          "appliesToKo": "F-2 세부 자격별 요건과 선행 체류상태가 충족되는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "F-2 세부 유형을 먼저 특정합니다.",
+              "en": "Identify the exact F-2 subtype first."
+            },
+            {
+              "order": 2,
+              "ko": "점수·가족관계·투자·소득 등 해당 유형의 핵심 입증자료를 준비합니다.",
+              "en": "Prepare evidence required by the subtype, such as points, family relationship, investment, or income."
+            },
+            {
+              "order": 3,
+              "ko": "재외공관 또는 국내 절차 적용 여부를 공식 안내로 확인합니다.",
+              "en": "Confirm whether the overseas mission or domestic route applies."
+            }
+          ],
+          "documents": {
+            "common": [
+              "세부 유형별 자격 입증자료"
+            ],
+            "additional": [
+              "가족관계 입증자료",
+              "소득·재정 입증자료",
+              "투자 관련 자료",
+              "한국어 또는 사회통합 관련 자료"
+            ],
+            "conditional": [
+              "세부 유형별 추가서류"
+            ]
+          },
+          "warnings": [
+            "F-2는 세부 유형 차이가 커서 이 POC 화면은 유형 선택 전 확정 체크리스트가 아닙니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§30 거 주(F-2)",
+              "pageStart": 308,
+              "pageEnd": 312,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "F-4",
+      "titleKo": "재외동포",
+      "titleEn": "Overseas Korean",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§38 외국국적동포 사증발급 안내(F-4/H-2 참조)",
+        "pages": [
+          379,
+          444
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "재외동포(F-4)는 외국국적동포 하위 매뉴얼과 연결되는 항목입니다. 현재 POC는 공식 위치와 일반 경로를 묶고, 2026년 동포 제도 변경 후속 검토를 명시합니다.",
+      "issuanceSummaryEn": "F-4 is tied to the overseas Korean sub-manual. This POC binds the official location and general route, with follow-up review for 2026 changes.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "재외공관 신청 또는 동포 관련 경로 확인",
+          "labelEn": "Consular or overseas Korean route check",
+          "appliesToKo": "외국국적동포임을 입증하고 결격·제한 사유가 없는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "외국국적동포 해당 여부와 입증자료를 먼저 확인합니다.",
+              "en": "Confirm overseas Korean eligibility and evidence."
+            },
+            {
+              "order": 2,
+              "ko": "한국어·범죄경력·국적상실/이탈 등 제한 요건을 확인합니다.",
+              "en": "Check Korean language, criminal record, and nationality-loss related restrictions."
+            },
+            {
+              "order": 3,
+              "ko": "관할 공관 또는 하이코리아 안내에 따라 접수 경로를 확인합니다.",
+              "en": "Check the applicable route with the mission or HiKorea guidance."
+            }
+          ],
+          "documents": {
+            "common": [
+              "외국국적동포 입증자료",
+              "여권 및 신분자료"
+            ],
+            "additional": [
+              "범죄경력증명서",
+              "한국어능력 또는 사회통합 관련 자료"
+            ],
+            "conditional": [
+              "국적상실·이탈 또는 가족관계 관련 자료",
+              "공관별 추가서류"
+            ]
+          },
+          "warnings": [
+            "외국국적동포 하위 매뉴얼 기준과 2026년 제도 변경 사항은 후속 PR에서 별도 정리해야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§38 외국국적동포 사증발급 안내(F-4/H-2 참조)",
+              "pageStart": 379,
+              "pageEnd": 444,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "F-6",
+      "titleKo": "결혼이민",
+      "titleEn": "Marriage Migrant",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§34 결혼이민(F-6)",
+        "pages": [
+          324,
+          335
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "결혼이민(F-6)은 한국인 배우자와의 혼인관계, 초청, 소득·주거·의사소통 등 입증자료가 핵심인 사증발급 항목입니다.",
+      "issuanceSummaryEn": "F-6 focuses on marriage relationship, invitation, income, housing, and communication evidence.",
+      "issuanceModes": [
+        {
+          "type": "consular_discretion",
+          "labelKo": "재외공관에서 직접 신청",
+          "labelEn": "Apply directly at an overseas mission",
+          "appliesToKo": "한국인 배우자와 혼인관계가 성립하고 초청·보증·소득·주거 등 요건을 소명하는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국인 배우자의 초청장·신원보증 등 초청자료를 준비합니다.",
+              "en": "Prepare invitation and guarantee materials from the Korean spouse."
+            },
+            {
+              "order": 2,
+              "ko": "혼인관계·가족관계·주민등록 등 한국 측 증명서류를 준비합니다.",
+              "en": "Prepare Korean-side certificates such as marriage/family/resident registration documents."
+            },
+            {
+              "order": 3,
+              "ko": "소득·주거·의사소통·교제경위 등 심사자료를 공관 안내에 맞춰 제출합니다.",
+              "en": "Submit income, housing, communication, and relationship-history evidence according to mission instructions."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서",
+              "여권용 사진",
+              "신청인 여권 원본 및 사본",
+              "수수료",
+              "외국인 배우자 초청장",
+              "신원보증서",
+              "외국인 배우자의 결혼배경 진술서"
+            ],
+            "additional": [
+              "한국인 배우자 여권 사본",
+              "기본증명서",
+              "혼인관계증명서",
+              "가족관계증명서",
+              "주민등록등본",
+              "소득요건 입증서류",
+              "주거요건 입증서류",
+              "의사소통 입증서류"
+            ],
+            "conditional": [
+              "국제결혼 안내프로그램 이수증(해당자)",
+              "범죄경력 또는 건강 관련 자료(해당자)",
+              "교제경위 입증자료"
+            ]
+          },
+          "warnings": [
+            "입국 후 90일 이내 외국인등록·체류기간연장 등 국내 절차를 확인해야 합니다.",
+            "소득기준과 공관별 양식·추가서류는 최신 공식 안내 확인이 필요합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§34 결혼이민(F-6)",
+              "pageStart": 324,
+              "pageEnd": 335,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "G-1",
+      "titleKo": "기타",
+      "titleEn": "Miscellaneous",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§35 기 타(G-1)",
+        "pages": [
+          336,
+          342
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "기타(G-1)는 난민, 치료, 소송 등 다양한 기타 사유가 포함되는 항목입니다. 이번 POC는 공식 매뉴얼 위치와 제한 설명을 제공하고, 세부 사유별 서류는 후속 구조화 대상으로 둡니다.",
+      "issuanceSummaryEn": "G-1 covers diverse miscellaneous grounds such as refugee-related, medical, and litigation situations. This POC binds the manual location and explains the limits.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "사유별 신청 경로 확인",
+          "labelEn": "Ground-specific route check",
+          "appliesToKo": "난민·치료·소송 등 G-1 세부 사유에 해당하는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "G-1 세부 사유를 먼저 특정합니다.",
+              "en": "Identify the exact G-1 ground first."
+            },
+            {
+              "order": 2,
+              "ko": "사유별 입증자료와 체류 필요성을 정리합니다.",
+              "en": "Prepare evidence for the ground and need for stay."
+            },
+            {
+              "order": 3,
+              "ko": "재외공관 또는 국내 절차 적용 여부를 공식 안내로 확인합니다.",
+              "en": "Confirm whether overseas mission or domestic procedures apply."
+            }
+          ],
+          "documents": {
+            "common": [
+              "세부 사유를 입증하는 자료",
+              "여권 및 신분자료"
+            ],
+            "additional": [
+              "난민 관련 자료",
+              "진단서 또는 치료 관련 자료",
+              "소송 또는 권리구제 관련 자료"
+            ],
+            "conditional": [
+              "사유별 추가 소명자료"
+            ]
+          },
+          "warnings": [
+            "G-1은 세부 사유별 차이가 커서 이번 화면은 확정 체크리스트가 아닙니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§35 기 타(G-1)",
+              "pageStart": 336,
+              "pageEnd": 342,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "H-2",
+      "titleKo": "방문취업 (신규발급 중단)",
+      "titleEn": "Working Visit (new issuance suspended)",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§38 외국국적동포 사증발급 안내(H-2 신규발급 중단 참조)",
+        "pages": [
+          379,
+          444
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "low"
+      },
+      "issuanceSummaryKo": "방문취업(H-2)은 2026년 외국국적동포 제도 변경으로 신규 사증발급 중단 안내가 붙은 항목입니다.",
+      "issuanceSummaryEn": "H-2 carries a new-issuance suspension notice under the 2026 overseas Korean policy changes.",
+      "issuanceModes": [
+        {
+          "type": "not_applicable",
+          "labelKo": "신규 사증발급 중단",
+          "labelEn": "New visa issuance suspended",
+          "appliesToKo": "신규 H-2 사증발급 경로는 현재 사용자 안내에서 확정 신청 경로로 표시하지 않습니다.",
+          "actor": "applicant",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "H-2 신규발급 중단 여부와 F-4 통합·전환 안내를 공식 동포 관련 안내에서 확인합니다.",
+              "en": "Confirm H-2 new issuance suspension and F-4 integration/transition guidance from official overseas Korean guidance."
+            },
+            {
+              "order": 2,
+              "ko": "이미 H-2 체류 중인 경우 국내 체류절차와 취업활동 절차를 별도로 확인합니다.",
+              "en": "If already staying under H-2, check domestic stay and employment activity procedures separately."
+            }
+          ],
+          "documents": {
+            "common": [],
+            "additional": [],
+            "conditional": []
+          },
+          "warnings": [
+            "신규 H-2 사증발급은 일반 신청 가능 카드로 표시하지 않습니다.",
+            "기존 H-2 체류자의 연장·취업활동 안내와 신규 사증발급 중단은 구분해야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§38 외국국적동포 사증발급 안내(H-2 신규발급 중단 참조)",
+              "pageStart": 379,
+              "pageEnd": 444,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "low",
+        "reasonKo": "신규발급 중단 항목이므로 국가별 접수 방식 안내보다 제도 변경 확인이 우선입니다.",
+        "officialOverlayRequired": false
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "C-3",
+      "titleKo": "단기방문",
+      "titleEn": "Short-term Visit",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§7 단기방문(C-3)",
+        "pages": [
+          27,
+          50
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "단기방문(C-3)은 관광·상용·방문 등 90일 이하 단기 목적을 포괄하는 사증발급 항목입니다. 세부 C-3 유형별 목적 입증자료가 달라질 수 있습니다.",
+      "issuanceSummaryEn": "C-3 covers short-term purposes such as tourism, business, and visits, generally up to 90 days. Documents vary by subtype and purpose.",
+      "issuanceModes": [
+        {
+          "type": "consular_discretion",
+          "labelKo": "재외공관에서 직접 신청",
+          "labelEn": "Apply directly at an overseas mission",
+          "appliesToKo": "단기 방문 목적이 C-3 세부 유형에 해당하고 무사증 대상이 아닌 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "방문 목적에 맞는 C-3 세부 유형을 확인합니다.",
+              "en": "Identify the C-3 subtype that matches the visit purpose."
+            },
+            {
+              "order": 2,
+              "ko": "관할 재외공관 안내에 따라 목적·일정·체류비 입증자료를 준비합니다.",
+              "en": "Prepare purpose, itinerary, and financial evidence according to mission instructions."
+            },
+            {
+              "order": 3,
+              "ko": "신청서·여권·사진과 목적별 서류를 제출합니다.",
+              "en": "Submit the application, passport/photo, and purpose-specific documents."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서",
+              "여권",
+              "사진",
+              "방문 목적 입증자료"
+            ],
+            "additional": [
+              "항공권 또는 일정 관련 자료",
+              "숙소 또는 체류지 관련 자료",
+              "체류비 입증자료"
+            ],
+            "conditional": [
+              "초청장 또는 거래·행사 관련 자료",
+              "국가·공관별 추가서류"
+            ]
+          },
+          "warnings": [
+            "C-3은 세부 유형별 서류 차이가 크며, 국가별 공관 안내가 반드시 필요합니다.",
+            "무사증·K-ETA 대상 여부와 C-3 신청 필요 여부는 별도 확인해야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§7 단기방문(C-3)",
+              "pageStart": 27,
+              "pageEnd": 50,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "B-1",
+      "titleKo": "사증면제협정",
+      "titleEn": "Visa Exemption Agreement",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§4 사증면제(B-1)",
+        "pages": [
+          14,
+          21
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "사증면제협정(B-1)은 협정 국가 국민에게 협정상 체류기간 범위에서 사증 없이 입국할 수 있는 경로를 설명하는 항목입니다.",
+      "issuanceSummaryEn": "B-1 describes treaty-based visa-exempt entry within the stay period allowed by the applicable agreement.",
+      "issuanceModes": [
+        {
+          "type": "visa_exempt",
+          "labelKo": "무사증/협정 대상",
+          "labelEn": "Visa-exempt treaty route",
+          "appliesToKo": "대한민국과 사증면제협정을 체결한 국가 국민이고 협정상 허용 목적·기간에 해당하는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "국적국이 사증면제협정 대상인지 확인합니다.",
+              "en": "Confirm whether the nationality is covered by a visa exemption agreement."
+            },
+            {
+              "order": 2,
+              "ko": "협정상 허용 체류기간과 활동 범위를 확인합니다.",
+              "en": "Check the stay period and activity scope allowed by the agreement."
+            },
+            {
+              "order": 3,
+              "ko": "협정 범위를 넘는 목적·기간이면 해당 사증을 사전에 받아야 합니다.",
+              "en": "If the purpose or period exceeds the treaty scope, obtain the appropriate visa before entry."
+            }
+          ],
+          "documents": {
+            "common": [
+              "여권"
+            ],
+            "additional": [],
+            "conditional": []
+          },
+          "warnings": [
+            "협정상 체류기간을 넘거나 수익·취업활동 목적이면 사전에 해당 사증을 받아야 합니다.",
+            "B-1은 사증발급인정서 경로가 아니라 무사증 협정 경로입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§4 사증면제(B-1)",
+              "pageStart": 14,
+              "pageEnd": 21,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "medium",
+        "reasonKo": "협정 적용 여부와 체류기간은 국적·협정 내용에 따라 달라집니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "B-2",
+      "titleKo": "관광통과·무사증",
+      "titleEn": "Tourist/Transit Visa-free",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§5 관광통과(B-2)",
+        "pages": [
+          22,
+          24
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "관광통과·무사증(B-2)은 관광·통과 등 무사증 입국 대상자를 위한 항목입니다. 국가·대상·입국 조건에 따라 적용 여부가 달라질 수 있습니다.",
+      "issuanceSummaryEn": "B-2 covers tourist/transit visa-free entry. Applicability varies by nationality, route, and entry condition.",
+      "issuanceModes": [
+        {
+          "type": "visa_exempt",
+          "labelKo": "무사증/협정 대상",
+          "labelEn": "Visa-free route",
+          "appliesToKo": "무사증 입국 대상 국가·경로·조건에 해당하는 경우입니다.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "국적과 입국 경로가 무사증 대상인지 확인합니다.",
+              "en": "Confirm whether the nationality and route are visa-free eligible."
+            },
+            {
+              "order": 2,
+              "ko": "K-ETA 등 사전 전자여행허가 필요 여부를 확인합니다.",
+              "en": "Check whether advance electronic travel authorization such as K-ETA is required."
+            },
+            {
+              "order": 3,
+              "ko": "무사증 범위를 넘는 활동이면 해당 사증 신청 경로를 확인합니다.",
+              "en": "If the activity exceeds the visa-free scope, check the relevant visa route."
+            }
+          ],
+          "documents": {
+            "common": [
+              "여권"
+            ],
+            "additional": [
+              "왕복 또는 제3국행 항공권 등 입국 조건 확인자료"
+            ],
+            "conditional": [
+              "K-ETA 등 사전 전자여행허가(해당자)"
+            ]
+          },
+          "warnings": [
+            "B-2는 사증발급 신청 카드가 아니라 무사증 입국 가능성 안내입니다.",
+            "국가별 무사증 중단·재개와 K-ETA 예외는 최신 공식 안내 확인이 필요합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§5 관광통과(B-2)",
+              "pageStart": 22,
+              "pageEnd": 24,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        }
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "무사증 적용은 국가·경로·K-ETA 예외·정책 변경에 따라 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    }
+  ]
+}
