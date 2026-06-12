@@ -9794,6 +9794,10 @@ button[data-keyword]:focus-visible {
    Directly fixes the landing search autocomplete list.
    The previous broad search overlay patch did not sufficiently target .auto-list/.auto-item,
    causing white suggestion rows with low-contrast text on the dark hero background.
+   Palette plumbing (PR-K1 #7): every colour below resolves through a
+   --auto-* custom property whose fallback is the exact previous literal, so
+   Civic (light/dark) renders byte-identically while the Kitsch layer can
+   re-point the variables without fighting the important flags used here.
 */
 .auto-list {
   top: calc(100% + 8px) !important;
@@ -9804,9 +9808,9 @@ button[data-keyword]:focus-visible {
   overflow-y: auto !important;
   padding: 0.45rem !important;
   border-radius: 18px !important;
-  border: 1px solid rgba(183, 217, 200, 0.38) !important;
+  border: 1px solid var(--auto-list-border, rgba(183, 217, 200, 0.38)) !important;
   background:
-    linear-gradient(180deg, rgba(14, 31, 26, 0.98), rgba(8, 42, 36, 0.98)) !important;
+    var(--auto-list-bg, linear-gradient(180deg, rgba(14, 31, 26, 0.98), rgba(8, 42, 36, 0.98))) !important;
   box-shadow:
     0 22px 52px rgba(0, 0, 0, 0.36),
     0 4px 14px rgba(0, 0, 0, 0.22) !important;
@@ -9829,10 +9833,10 @@ button[data-keyword]:focus-visible {
   gap: 0.65rem !important;
   margin: 0 !important;
   padding: 0.78rem 0.9rem !important;
-  border: 1px solid rgba(244, 238, 224, 0.12) !important;
+  border: 1px solid var(--auto-item-border, rgba(244, 238, 224, 0.12)) !important;
   border-radius: 12px !important;
-  background: rgba(244, 238, 224, 0.075) !important;
-  color: #F8F3E8 !important;
+  background: var(--auto-item-bg, rgba(244, 238, 224, 0.075)) !important;
+  color: var(--auto-item-text, #F8F3E8) !important;
   box-shadow: none !important;
   opacity: 1 !important;
   line-height: 1.38 !important;
@@ -9850,7 +9854,7 @@ button[data-keyword]:focus-visible {
 }
 
 .auto-item svg {
-  color: rgba(183, 217, 200, 0.9) !important;
+  color: var(--auto-item-icon, rgba(183, 217, 200, 0.9)) !important;
   flex-shrink: 0 !important;
 }
 
@@ -9858,10 +9862,10 @@ button[data-keyword]:focus-visible {
 .auto-item:focus,
 .auto-item:focus-visible,
 .auto-item[aria-selected="true"] {
-  background: rgba(183, 217, 200, 0.18) !important;
-  border-color: rgba(183, 217, 200, 0.42) !important;
-  color: #FFFFFF !important;
-  outline: 2px solid rgba(52, 212, 168, 0.42) !important;
+  background: var(--auto-item-hover-bg, rgba(183, 217, 200, 0.18)) !important;
+  border-color: var(--auto-item-hover-border, rgba(183, 217, 200, 0.42)) !important;
+  color: var(--auto-item-hover-text, #FFFFFF) !important;
+  outline: 2px solid var(--auto-item-focus-ring, rgba(52, 212, 168, 0.42)) !important;
   outline-offset: -2px !important;
 }
 
@@ -9875,8 +9879,8 @@ button[data-keyword]:focus-visible {
   min-height: 1.35rem !important;
   padding: 0.08rem 0.36rem !important;
   border-radius: 0.4rem !important;
-  background: rgba(183, 217, 200, 0.20) !important;
-  color: #BFF3DD !important;
+  background: var(--auto-item-mark-bg, rgba(183, 217, 200, 0.20)) !important;
+  color: var(--auto-item-mark-text, #BFF3DD) !important;
   font-weight: 900 !important;
 }
 
@@ -10732,6 +10736,42 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .sbar-icon { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go:hover { color: var(--k-blue); }
+/* Autocomplete (연관검색어) dropdown — PR-K1 #7.
+   The shared "autocomplete row contrast fix" block paints a dark-green glass
+   panel via important-flagged declarations; it now resolves its colours
+   through the --auto-* custom properties below (fallback = previous
+   literals), so Kitsch re-points them to its own tokens here. White paper
+   card, ink border, blue accents — same family as the .sbar capsule above.
+   Custom-property definitions ride the existing important declarations. */
+:root[data-theme="archive_diary"] {
+  --auto-list-bg: var(--k-white);
+  --auto-list-border: var(--k-ink);
+  --auto-item-bg: var(--k-blue-1);
+  --auto-item-border: var(--bd2);
+  --auto-item-text: var(--k-ink);
+  --auto-item-icon: var(--k-blue);
+  --auto-item-hover-bg: var(--acL);
+  --auto-item-hover-border: var(--k-blue);
+  --auto-item-hover-text: var(--k-ink);
+  --auto-item-focus-ring: color-mix(in srgb, var(--k-blue) 42%, transparent);
+  --auto-item-mark-bg: var(--acG);
+  --auto-item-mark-text: var(--k-blue-deep);
+}
+/* Kitsch + dark: deep-ink navy panel (same literals as the Kitsch dark section). */
+:root[data-theme="archive_diary"] body[data-theme="dark"] {
+  --auto-list-bg: #18203A;
+  --auto-list-border: #2C3756;
+  --auto-item-bg: #1E2746;
+  --auto-item-border: #2C3756;
+  --auto-item-text: #EEF2FF;
+  --auto-item-icon: #A6C2FF;
+  --auto-item-hover-bg: #233459;
+  --auto-item-hover-border: #A6C2FF;
+  --auto-item-hover-text: #EEF2FF;
+  --auto-item-focus-ring: color-mix(in srgb, #A6C2FF 42%, transparent);
+  --auto-item-mark-bg: #233459;
+  --auto-item-mark-text: #A6C2FF;
+}
 /* Visa-track card text → ink on white card */
 :root[data-theme="archive_diary"] .visa-track-title { color: var(--k-ink) !important; }
 :root[data-theme="archive_diary"] .visa-track-desc { color: var(--t2) !important; }
@@ -10914,8 +10954,24 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .doc-guide-toggle:hover, :root[data-theme="archive_diary"] .doc-guide-toggle:focus-visible { transform: translateY(-1px); box-shadow: var(--k-pop-1); background: var(--k-white); }
 :root[data-theme="archive_diary"] .doc-guide-toggle.is-open { background: var(--k-blue); color: #fff; border-color: var(--k-ink); }
 :root[data-theme="archive_diary"] .doc-guide-drawer { background: var(--k-white); border: 1.5px solid var(--k-ink); border-left: 4px solid var(--k-blue); border-radius: 14px; box-shadow: var(--k-pop-1); }
+/* Restore the renderer's collapse contract: the drawer ships with [hidden] and
+   the 가이드 button toggles it (toggleDocGuide), but the base sheet's
+   `display: grid` defeats the hidden attribute, leaving every drawer open.
+   Scoped to Kitsch per layer constraints — Civic shares the same root cause
+   (base .doc-guide-drawer has no [hidden] guard) and needs its own pass. */
+:root[data-theme="archive_diary"] .doc-guide-drawer[hidden] { display: none; }
 :root[data-theme="archive_diary"] .doc-guide-chip { border-width: 1.5px; }
 :root[data-theme="archive_diary"] .doc-guide-source, :root[data-theme="archive_diary"] .doc-guide-figure figcaption { font-family: 'Space Mono', monospace; }
+/* PR-K2 #18: conditional-submission line gets the butter highlighter so
+   '특정 국적/유형만 해당' cautions stand out inside the drawer; the country
+   list slot stays UA-hidden until the S4 data PR populates it. */
+:root[data-theme="archive_diary"] .doc-guide-conditional {
+  width: fit-content; padding: 0.12rem 0.45rem; border-radius: 6px;
+  background: var(--k-butter); color: var(--k-ink); font-weight: 700;
+}
+:root[data-theme="archive_diary"] .doc-guide-country-list {
+  margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.78rem; color: var(--t2);
+}
 
 /* Primary / secondary buttons → ink stroke + hard offset */
 :root[data-theme="archive_diary"] .btn-primary {
@@ -11082,19 +11138,26 @@ body.searched .hero-container::before {
    data, next-step/document structure, source grounding & uncertainty/legal
    notices are all preserved (and kept high-contrast / legible).
    ══════════════════════════════════════════════════════════════════════════ */
-/* Result page surface → bright cream poster board with faint dotted grid */
+/* Result page surface — PR-K2 #5 (B안 승인): continue the landing board's
+   editorial wash (cream → cloud linear + two blue washes + one pink bloom,
+   same literals as the landing .hero-container::before recipe) under the
+   existing ink dot grid. Static layers only — no animation, no new colours.
+   Kitsch dark keeps its own deep-ink surface further down this sheet. */
 :root[data-theme="archive_diary"] body.searched {
-  background: #FFF7E8 !important;
+  background: #FFFDF4 !important;
 }
 :root[data-theme="archive_diary"] body.searched #starCanvas {
   background:
     radial-gradient(rgba(20,20,40,0.05) 1.3px, transparent 1.4px) 0 0 / 22px 22px,
-    #FFF7E8 !important;
+    radial-gradient(62% 52% at 14% 6%, rgba(47,94,252,0.16) 0%, transparent 62%),
+    radial-gradient(55% 48% at 90% 8%, rgba(255,142,209,0.30) 0%, transparent 62%),
+    radial-gradient(70% 60% at 80% 100%, rgba(47,94,252,0.10) 0%, transparent 66%),
+    linear-gradient(175deg, #FFFDF4 0%, #F6F4EA 55%, #EFF3FF 100%) !important;
   opacity: 1 !important;
 }
 /* Sticky search header → ink-ruled poster bar */
 :root[data-theme="archive_diary"] body.searched .hero-container {
-  background: rgba(255,247,232,0.92) !important;
+  background: color-mix(in srgb, #FFFDF4 92%, transparent) !important;
   border-bottom: 2px solid var(--k-ink) !important;
   backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
@@ -11198,6 +11261,64 @@ body.searched .hero-container::before {
 /* Subcode cards → sticker tiles */
 :root[data-theme="archive_diary"] .manual-subcode-card { background: #fff !important; border: 1.5px solid var(--k-ink) !important; border-radius: 10px !important; }
 :root[data-theme="archive_diary"] .manual-subcode-card.match { box-shadow: inset 4px 0 0 var(--k-blue), 2px 2px 0 var(--k-ink) !important; }
+
+/* ── Scenario picker (내 상황에 맞는 시나리오 선택) — PR-K2 #13 승인안 ──
+   Kitsch-only interaction polish. The choice buttons become a compact
+   responsive chip grid (label + one-line preview), and picking a scenario
+   focuses its single card: cards the existing selectProcedureVariant() JS
+   marks .is-muted are hidden here instead of dimmed; '전체 보기' clears the
+   selection and restores every card. No JS/markup change, no text change —
+   the full scenario description and document lists stay on the cards. */
+:root[data-theme="archive_diary"] .scenario-cards-scroll {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.55rem;
+  max-height: none;
+  overflow: visible;
+  padding-right: 0;
+}
+:root[data-theme="archive_diary"] .scenario-choice {
+  min-height: 56px;
+  gap: 0.2rem;
+  padding: 0.6rem 0.85rem;
+  border: 2px solid var(--k-ink);
+  border-radius: 14px;
+  background: var(--k-white);
+  color: var(--k-ink);
+  transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring), background 0.2s ease, color 0.2s ease;
+}
+:root[data-theme="archive_diary"] .scenario-choice:hover,
+:root[data-theme="archive_diary"] .scenario-choice:focus-visible {
+  border-color: var(--k-ink);
+  background: var(--k-white);
+  color: var(--k-ink);
+  transform: translateY(-2px);
+  box-shadow: var(--k-pop-1);
+}
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] {
+  border-color: var(--k-ink);
+  background: var(--k-blue);
+  color: #fff;
+  box-shadow: var(--k-pop-1);
+}
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"]::before { color: #fff; }
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-preview { color: #fff; opacity: 0.92; }
+:root[data-theme="archive_diary"] .scenario-choice-preview { -webkit-line-clamp: 1; font-size: 0.78rem; }
+:root[data-theme="archive_diary"] .scenario-choice--showall {
+  border-style: dashed;
+  border-width: 2px;
+  background: transparent;
+  color: var(--t2);
+  border-radius: 999px;
+  box-shadow: none;
+}
+:root[data-theme="archive_diary"] .scenario-choice--showall[aria-pressed="true"] {
+  border-style: solid;
+  background: var(--k-blue-1);
+  color: var(--k-ink);
+  box-shadow: none;
+}
+:root[data-theme="archive_diary"] .manual-subcode-grid--docs .manual-subcode-card.is-muted { display: none; }
 
 /* Uncertainty / review-needed notices → bold but HIGH-CONTRAST pills (semantic
    amber kept for warning — not decorative; never weakened) */
@@ -14561,6 +14682,27 @@ async function loadDocGuide() {
     }
 }
 
+// PR-K2 #18 skeleton — conditional-document applicability container.
+// Wraps the manual-sourced conditional sentence (결핵·마약검사 등 특정 국적/
+// 유형에만 요구되는 서류) together with an applicable-country list slot.
+// ── S4 DATA INJECTION POINT ─────────────────────────────────────────────
+// The country/eligibility list must come from doc_guide.json (field name:
+// applicable_countries) once the 항목 10·17 전수조사 data PR lands. Never
+// hand-author country lists here: until the field exists in data this
+// renders the conditional sentence plus an empty, hidden list element.
+function buildDocGuideApplicability(g, en) {
+    const countries = Array.isArray(g.applicable_countries)
+        ? g.applicable_countries.map(c => String(c || '').trim()).filter(Boolean)
+        : [];
+    const listHtml = countries.length
+        ? `<ul class="doc-guide-country-list" data-doc-countries>${countries.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>`
+        : '<ul class="doc-guide-country-list" data-doc-countries hidden></ul>';
+    return `<div class="doc-guide-applicability">
+        <p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>
+        ${listHtml}
+    </div>`;
+}
+
 function buildDocGuideDrawer(docId) {
     const g = docGuideData && docGuideData[docId];
     if (!g) return '';
@@ -14578,7 +14720,7 @@ function buildDocGuideDrawer(docId) {
         ${g.spec ? `<p class="doc-guide-spec">${escapeHtml(g.spec)}</p>` : ''}
         ${(accepts || rejects) ? `<div class="doc-guide-chips">${accepts}${rejects}</div>` : ''}
         ${g.tip ? `<p class="doc-guide-tip">💡 ${escapeHtml(g.tip)}</p>` : ''}
-        ${g.conditional ? `<p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>` : ''}
+        ${g.conditional ? buildDocGuideApplicability(g, en) : ''}
         ${img}
         <p class="doc-guide-source">${escapeHtml(en ? 'Source: ' : '출처: ')}${escapeHtml(sourceText)}</p>
     </div>`;
@@ -16783,8 +16925,8 @@ function renderSubcodePreview(group, query) {
     ).join('');
     return `<div class="subcode-preview-chips" role="list" aria-label="${escapeHtml(tx('subcodePreviewAria'))}">${chips}</div>`;
 }
-function renderExpandableSubcodeGroup(v, group, innerHtml, query) {
-    const groupId = `subgroup-${normalizeVisaCode(v.code)}`;
+function renderExpandableSubcodeGroup(v, group, innerHtml, query, idSuffix) {
+    const groupId = `subgroup-${normalizeVisaCode(v.code)}${idSuffix ? `-${idSuffix}` : ''}`;
     const expanded = shouldAutoExpandSubcodeGroup(query, group);
     return `<div class="subcode-expand-wrap">
         <button type="button" class="subcode-expand-btn" data-action="toggle-subcode-group" aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="${groupId}">
@@ -16844,44 +16986,21 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     }
 
     // B) Matched subcodes are lifted into their own labeled group up top
-    //    (original code order preserved). Exact subcode searches stay prominent.
+    //    (original code order preserved). PR-K1 #8: the matched group and the
+    //    remainder both default to the accessible collapse toggle so keyword
+    //    searches never open with walls of full subcode cards. Exact subcode
+    //    searches stay prominent via shouldAutoExpandSubcodeGroup().
     const matched = subs.filter(s => matchSet.has(s.code));
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
     if (matched.length) {
-        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div><div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div></div>`;
+        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
         if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
     }
-
-    // Short remainder → flat grid (no awkward collapse).
-    if (rest.length <= 4) {
-        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${buildGroupedHtml(rest)}</div>`;
-    }
-    // Long remainder → collapse the full list behind the accessible toggle so
-    // neither exact-subcode nor keyword searches drown in full cards.
-    if (matched.length || rest.every(s => !s.group)) {
-        return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)}</div>`;
-    }
-    // Keyword search, no specific match, multiple category groups → legacy
-    // behavior: first category group open, remaining groups behind "더 보기".
-    const groupMap = new Map();
-    subs.forEach(s => { const g = s.group || '기타'; if (!groupMap.has(g)) groupMap.set(g, []); });
-    rest.forEach(s => groupMap.get(s.group || '기타').push(s));
-    const groups = [...groupMap.keys()].filter(g => groupMap.get(g).length);
-    const hasGroups = rest.some(s => s.group);
-    const renderGroup = (g) => {
-        const cards = groupMap.get(g).map(renderCard).join('');
-        const groupTitle = hasGroups ? `<div class="manual-subcode-group-title">${escapeHtml(g)}</div>` : '';
-        return `<div class="manual-subcode-group">${groupTitle}<div class="manual-subcode-grid">${cards}</div></div>`;
-    };
-    const firstGroup = renderGroup(groups[0]);
-    const restGroups = groups.slice(1);
-    const hiddenCount = restGroups.reduce((n, g) => n + groupMap.get(g).length, 0);
-    const moreHtml = `<details class="manual-subcode-more">
-            <summary><span class="more-open">세부코드 더 보기 (${hiddenCount})</span><span class="more-close">접기</span></summary>
-            <div class="manual-subcode-more-body">${restGroups.map(renderGroup).join('')}</div>
-        </details>`;
-    return `<div class="manual-section" data-subcode-section>${title}${firstGroup}${moreHtml}</div>`;
+    const restHtml = rest.length
+        ? renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)
+        : '';
+    return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
@@ -17895,7 +18014,13 @@ const BOOTSTRAP_KO_FALLBACK = {
     sourceApi: 'API',
     sourceStatic: '정적 데이터',
     visaDataLoadError: '비자 데이터를 불러오지 못했습니다.',
-    landingHints: ['체류지 변경', '여권 변경', '등록증 재발급', '비예약 방문', '제주 무사증', 'K-ETA', 'E-7-4', 'F-6', 'F-3 소득요건', 'TB-1', 'RF-1', 'SCN-6', 'D-10', 'D-4-2K'],
+    /* PR-K2 #6 (승인): every entry below is a live-tested search query —
+       2026-06-12 audit removed six 0-result chips (체류지 변경 · 여권 변경 ·
+       등록증 재발급 · 비예약 방문 · TB-1 · SCN-6; the scenario-record ids died
+       with the 2026-06-08 visa_data cleanup) and re-pointed 난민 to G-1-5.
+       Labels live in data/i18n/{ko,en,zh-CN}.json landingHints — keep the
+       index order in sync with this query list. */
+    landingHints: ['유학', '영주', 'D-10', 'F-6', 'E-7-4', 'F-4', '계절근로', 'F-3 소득요건', 'G-1-5', 'D-4-2K', '제주 무사증', 'K-ETA'],
     quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
     aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
     f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)',
