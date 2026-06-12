@@ -18081,6 +18081,7 @@ function applyLanguage(code, options = {}) {
     setHtml('#pFooterCtaTitle', tx('footerCtaTitle'));
     setText('.p-footer-cta > p', tx('footerCtaCopy'));
     setIndexedText('.p-footer-actions .p-cta-btn', txArray('footerCtaButtons'));
+    setText('.p-footer-cta-note', tx('footerCtaNote'));
     setAttr('#qf', 'aria-label', tx('quickFiltersAria'));
     setHtml('.ft', `<span class="ft-logo">Paradiso</span> ${tx('footerLegal')}`);
     setAttr('.modal-close', 'aria-label', tx('closeModal'));
