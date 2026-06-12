@@ -14361,6 +14361,14 @@ async function loadDocGuide() {
         const json = await res.json();
         if (json && typeof json === 'object' && !Array.isArray(json)) docGuideData = json;
     } catch (e) { /* optional enhancement — checklist must keep working without it */ }
+    // The guide load runs in parallel with visa/API data and is not awaited
+    // before initial render. For ?q= deep links, the visa response can win the
+    // race and renderDocTags() runs while docGuideData is still null, omitting
+    // the guide buttons. If results are already on screen when the guide data
+    // arrives, re-render the current query so the buttons appear.
+    if (docGuideData && dataReady && qEl && qEl.value.trim() && document.body.classList.contains('searched')) {
+        renderResults(qEl.value.trim());
+    }
 }
 
 function buildDocGuideDrawer(docId) {
@@ -14439,7 +14447,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
         const guideAvailable = !isUnresolvedId && docGuideData && docGuideData[key];
-        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" onclick="toggleDocGuide(this)" aria-expanded="false">${currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
+        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
         const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key) : '';
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
@@ -18372,6 +18380,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.addEventListener('click', (e) => {
+        // Document-guide toggle lives inside the .vc-h[data-action="toggle-su"]
+        // wrapper, so it must be handled BEFORE the toggle-su branch — otherwise
+        // the bubbled click collapses the result card and hides the drawer the
+        // user just opened. stopPropagation keeps the card from toggling.
+        const guideToggle = e.target.closest('.doc-guide-toggle');
+        if (guideToggle) { e.stopPropagation(); toggleDocGuide(guideToggle); return; }
+        // Reading/clicking inside an open drawer must not bubble up and collapse
+        // the surrounding result card.
+        if (e.target.closest('.doc-guide-drawer')) { e.stopPropagation(); return; }
+
         // Toggle su wrapper inside results
         const toggleSu = e.target.closest('[data-action="toggle-su"]');
         if (toggleSu) { toggleSu.parentElement.classList.toggle('open'); return; }
