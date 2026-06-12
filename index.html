@@ -10914,6 +10914,12 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .doc-guide-toggle:hover, :root[data-theme="archive_diary"] .doc-guide-toggle:focus-visible { transform: translateY(-1px); box-shadow: var(--k-pop-1); background: var(--k-white); }
 :root[data-theme="archive_diary"] .doc-guide-toggle.is-open { background: var(--k-blue); color: #fff; border-color: var(--k-ink); }
 :root[data-theme="archive_diary"] .doc-guide-drawer { background: var(--k-white); border: 1.5px solid var(--k-ink); border-left: 4px solid var(--k-blue); border-radius: 14px; box-shadow: var(--k-pop-1); }
+/* Restore the renderer's collapse contract: the drawer ships with [hidden] and
+   the 가이드 button toggles it (toggleDocGuide), but the base sheet's
+   `display: grid` defeats the hidden attribute, leaving every drawer open.
+   Scoped to Kitsch per layer constraints — Civic shares the same root cause
+   (base .doc-guide-drawer has no [hidden] guard) and needs its own pass. */
+:root[data-theme="archive_diary"] .doc-guide-drawer[hidden] { display: none; }
 :root[data-theme="archive_diary"] .doc-guide-chip { border-width: 1.5px; }
 :root[data-theme="archive_diary"] .doc-guide-source, :root[data-theme="archive_diary"] .doc-guide-figure figcaption { font-family: 'Space Mono', monospace; }
 
