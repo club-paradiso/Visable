@@ -10962,6 +10962,16 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .doc-guide-drawer[hidden] { display: none; }
 :root[data-theme="archive_diary"] .doc-guide-chip { border-width: 1.5px; }
 :root[data-theme="archive_diary"] .doc-guide-source, :root[data-theme="archive_diary"] .doc-guide-figure figcaption { font-family: 'Space Mono', monospace; }
+/* PR-K2 #18: conditional-submission line gets the butter highlighter so
+   '특정 국적/유형만 해당' cautions stand out inside the drawer; the country
+   list slot stays UA-hidden until the S4 data PR populates it. */
+:root[data-theme="archive_diary"] .doc-guide-conditional {
+  width: fit-content; padding: 0.12rem 0.45rem; border-radius: 6px;
+  background: var(--k-butter); color: var(--k-ink); font-weight: 700;
+}
+:root[data-theme="archive_diary"] .doc-guide-country-list {
+  margin: 0.3rem 0 0; padding-left: 1.1rem; font-size: 0.78rem; color: var(--t2);
+}
 
 /* Primary / secondary buttons → ink stroke + hard offset */
 :root[data-theme="archive_diary"] .btn-primary {
@@ -14672,6 +14682,27 @@ async function loadDocGuide() {
     }
 }
 
+// PR-K2 #18 skeleton — conditional-document applicability container.
+// Wraps the manual-sourced conditional sentence (결핵·마약검사 등 특정 국적/
+// 유형에만 요구되는 서류) together with an applicable-country list slot.
+// ── S4 DATA INJECTION POINT ─────────────────────────────────────────────
+// The country/eligibility list must come from doc_guide.json (field name:
+// applicable_countries) once the 항목 10·17 전수조사 data PR lands. Never
+// hand-author country lists here: until the field exists in data this
+// renders the conditional sentence plus an empty, hidden list element.
+function buildDocGuideApplicability(g, en) {
+    const countries = Array.isArray(g.applicable_countries)
+        ? g.applicable_countries.map(c => String(c || '').trim()).filter(Boolean)
+        : [];
+    const listHtml = countries.length
+        ? `<ul class="doc-guide-country-list" data-doc-countries>${countries.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>`
+        : '<ul class="doc-guide-country-list" data-doc-countries hidden></ul>';
+    return `<div class="doc-guide-applicability">
+        <p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>
+        ${listHtml}
+    </div>`;
+}
+
 function buildDocGuideDrawer(docId) {
     const g = docGuideData && docGuideData[docId];
     if (!g) return '';
@@ -14689,7 +14720,7 @@ function buildDocGuideDrawer(docId) {
         ${g.spec ? `<p class="doc-guide-spec">${escapeHtml(g.spec)}</p>` : ''}
         ${(accepts || rejects) ? `<div class="doc-guide-chips">${accepts}${rejects}</div>` : ''}
         ${g.tip ? `<p class="doc-guide-tip">💡 ${escapeHtml(g.tip)}</p>` : ''}
-        ${g.conditional ? `<p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>` : ''}
+        ${g.conditional ? buildDocGuideApplicability(g, en) : ''}
         ${img}
         <p class="doc-guide-source">${escapeHtml(en ? 'Source: ' : '출처: ')}${escapeHtml(sourceText)}</p>
     </div>`;
