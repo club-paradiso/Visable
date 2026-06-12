@@ -10053,13 +10053,14 @@ button[data-keyword]:focus-visible {
 <style id="paradiso-gateway-ratio-polish">
   /*
     Final gateway ratio polish.
-    Keeps the two primary cards visually balanced without changing actions:
-    - HiKorea visit reservation guidance remains first.
-    - Waymaker by Paradiso remains second.
+    Keeps the three primary cards visually balanced without changing actions:
+    - Essential form builder (doc composer) first.
+    - HiKorea visit reservation guidance second.
+    - Waymaker by Paradiso third.
   */
   .p-gateway .p-gw-primary {
     display: grid;
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: clamp(12px, 1.5vw, 18px);
     align-items: stretch;
   }
@@ -10516,8 +10517,13 @@ body.searched .hero-container::before {
   top: 9%; left: 31%; width: 26px; height: 46px; border: 3px solid var(--k-blue);
   border-radius: 14px; --kr: rotate(24deg); transform: rotate(24deg);
 }
-/* passport entry stamp — faded blue ink, pressed beside the main logo tag */
+/* passport entry stamp — faded blue ink, pressed beside the main logo tag.
+   Kitsch (archive_diary) only: both the static ENTRY stamp and the JS-injected
+   country stamp must stay hidden in civic_editorial, including after a runtime
+   theme toggle leaves the injected SVG in the DOM. */
 .k-stamp { display: none; }
+:root:not([data-theme="archive_diary"]) .k-stamp,
+:root:not([data-theme="archive_diary"]) #k-stamp-country { display: none !important; }
 :root[data-theme="archive_diary"] body:not(.searched) .logo-area { position: relative; }
 :root[data-theme="archive_diary"] body:not(.searched) .logo-area .k-stamp {
   display: block; position: absolute;
@@ -11789,6 +11795,139 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
 </style>
 <!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
 
+<!-- PARADISO_TASK_PASS_20260612: doc composer · manual links · button readability -->
+<style id="paradiso-task-pass-20260612">
+/* ── 1 · Manual/source cards are now real links (HiKorea manuals · LawLink · portal) ── */
+a.p-manual-card { text-decoration: none; color: inherit; cursor: pointer; grid-template-columns: auto 1fr auto; }
+.p-manual-ext {
+  align-self: start; font-size: 1rem; font-weight: 800; line-height: 1;
+  color: var(--p-green, #1F4F3D); opacity: 0.5;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+a.p-manual-card:hover .p-manual-ext,
+a.p-manual-card:focus-visible .p-manual-ext { opacity: 1; transform: translate(2px, -2px); }
+a.p-manual-card:focus-visible { outline: 2px solid var(--p-green, #1F4F3D); outline-offset: 3px; }
+[data-theme="dark"] .p-manual-ext { color: var(--ac, #6ee7b7); }
+:root[data-theme="archive_diary"] .p-manual-ext { color: var(--k-blue, #2B50C8); }
+
+/* ── 2 · Essential form composer (필수 서류 작성기) ─────────────────────────
+   Civic: a tidy paper-form desk — dashed “fill me in” frames on warm paper.
+   Kitsch: sticker-sheet pop — ink borders, offset shadows, a tilted badge. */
+.p-doc-composer { scroll-margin-top: 5rem; }
+.doc-composer-grid {
+  display: grid; grid-template-columns: 1.25fr 1fr 1fr;
+  gap: clamp(0.8rem, 1.8vw, 1.2rem); align-items: stretch;
+}
+.doc-composer-card {
+  position: relative; display: flex; flex-direction: column; gap: 0.55rem;
+  padding: clamp(1.15rem, 2.4vw, 1.6rem);
+  border: 1px solid color-mix(in srgb, var(--p-green, #1F4F3D) 16%, var(--p-line, #C9BFA5));
+  border-radius: var(--p-r-lg, 16px);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 26px, color-mix(in srgb, var(--p-line, #C9BFA5) 26%, transparent) 26px 27px),
+    linear-gradient(150deg, rgba(255, 252, 246, 0.97), rgba(238, 243, 235, 0.9));
+  box-shadow: var(--p-shadow-1, 0 1px 2px rgba(14,31,26,0.05));
+  color: inherit; text-decoration: none;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+}
+.doc-composer-card::after {
+  /* the “fill me in” dashed inner frame, like a blank form field */
+  content: ""; position: absolute; inset: 7px; pointer-events: none;
+  border: 1.5px dashed color-mix(in srgb, var(--p-green, #1F4F3D) 26%, transparent);
+  border-radius: calc(var(--p-r-lg, 16px) - 6px);
+}
+a.doc-composer-card:hover, a.doc-composer-card:focus-visible {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--p-green, #1F4F3D) 42%, var(--p-line, #C9BFA5));
+  box-shadow: var(--p-shadow-2, 0 4px 12px rgba(14,31,26,0.08));
+}
+a.doc-composer-card:focus-visible { outline: 2px solid var(--p-green, #1F4F3D); outline-offset: 3px; }
+.doc-composer-badge {
+  position: absolute; top: -0.7rem; left: 1.1rem; z-index: 1;
+  padding: 0.22rem 0.7rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em;
+  background: var(--bg1, #fcfaf5); color: var(--t2, #4f5552);
+  border: 1px solid var(--p-line, #C9BFA5);
+}
+.doc-composer-badge.live { background: var(--p-green, #1F4F3D); color: #fff; border-color: var(--p-green, #1F4F3D); }
+.doc-composer-icon { font-size: 1.7rem; line-height: 1; margin-top: 0.3rem; }
+.doc-composer-card h3 { margin: 0; font-size: clamp(1.02rem, 1.6vw, 1.18rem); font-weight: 800; line-height: 1.35; color: var(--t1, #202221); word-break: keep-all; }
+.doc-composer-card p { margin: 0; font-size: 0.92rem; line-height: 1.62; color: var(--t2, #4f5552); word-break: keep-all; }
+.doc-composer-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.2rem; }
+.doc-composer-tag {
+  font-size: 0.74rem; font-weight: 650; padding: 0.18rem 0.55rem; border-radius: 6px;
+  background: color-mix(in srgb, var(--p-mint, #B7D9C8) 38%, transparent);
+  border: 1px solid color-mix(in srgb, var(--p-green, #1F4F3D) 18%, transparent);
+  color: var(--t2, #4f5552); white-space: nowrap;
+}
+.doc-composer-tag.more { background: transparent; border-style: dashed; }
+.doc-composer-cta {
+  margin-top: auto; padding-top: 0.6rem; align-self: flex-start;
+  font-size: 0.94rem; font-weight: 800; color: var(--p-green, #1F4F3D);
+}
+a.doc-composer-card:hover .doc-composer-cta { text-decoration: underline; text-underline-offset: 3px; }
+.doc-composer-note { margin-top: 1.1rem; }
+@media (max-width: 900px) { .doc-composer-grid { grid-template-columns: 1fr; gap: 1.1rem; } }
+/* dark brightness */
+[data-theme="dark"] .doc-composer-card {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 26px, rgba(255,255,255,0.045) 26px 27px),
+    linear-gradient(150deg, var(--bg1, #113B32), var(--bg0, #0B2A24));
+  border-color: var(--bd, #2D5A50);
+}
+[data-theme="dark"] .doc-composer-card h3 { color: var(--t1, #F3EEDF); }
+[data-theme="dark"] .doc-composer-card p { color: var(--t2, #C7BFA8); }
+[data-theme="dark"] .doc-composer-badge { background: var(--bg1, #113B32); color: var(--t2, #C7BFA8); border-color: var(--bd, #2D5A50); }
+[data-theme="dark"] .doc-composer-cta { color: var(--ac, #6ee7b7); }
+[data-theme="dark"] .doc-composer-tag { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.16); color: var(--t2, #C7BFA8); }
+/* kitsch (archive_diary) flourish: sticker sheet */
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card {
+  background: linear-gradient(173deg, #FFFEFA 0%, #FFFAF0 78%, #FDF6EA 100%) !important;
+  border: 2px solid var(--k-ink, #14143C) !important;
+  border-radius: 24px 24px 24px 8px !important;
+  box-shadow: 4px 4px 0 var(--k-blue-2, #9DB8F2) !important;
+  transition: transform 0.38s var(--k-spring, ease), box-shadow 0.38s var(--k-spring, ease);
+}
+:root[data-theme="archive_diary"] body:not(.searched) a.doc-composer-card:hover {
+  transform: translateY(-5px) rotate(-0.6deg); box-shadow: 7px 7px 0 var(--k-blue, #2B50C8) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-card::after { border-color: color-mix(in srgb, var(--k-blue, #2B50C8) 38%, transparent); }
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge {
+  transform: rotate(-3deg); border: 2px solid var(--k-ink, #14143C);
+  background: var(--k-butter, #FFE48A); color: var(--k-ink, #14143C); font-weight: 800;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-badge.live { background: var(--k-blue, #2B50C8); color: #fff; }
+:root[data-theme="archive_diary"] body:not(.searched) .doc-composer-cta { color: var(--k-blue-deep, #1A2F86); }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card {
+  background: linear-gradient(173deg, #1B2541, #141B30 70%) !important;
+  border-color: #44558A !important; box-shadow: 4px 4px 0 #0B1020 !important;
+}
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(h3) { color: #EEF2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) .doc-composer-card :is(p, .doc-composer-tag) { color: #BAC5E4 !important; }
+
+/* ── 3 · Button text readability pass (color · ratio · size, both themes) ──
+   Raises undersized type and washed-out contrast on interactive labels without
+   reshaping any layout. */
+.cb { font-size: 0.84rem; font-weight: 700; color: var(--t1, #202221); }
+.qb { font-size: 0.84rem; font-weight: 650; color: var(--t2, #4f5552); }
+.btn-en { font-size: 0.8rem; opacity: 0.85; }
+.p-gw-card-label { font-size: clamp(1rem, 1.5vw, 1.1rem); font-weight: 800; line-height: 1.3; }
+.p-gw-card-sub { font-size: 0.85rem; color: var(--t2, #4f5552); line-height: 1.5; }
+.p-gw-util-label { font-size: 0.92rem; font-weight: 700; }
+.p-gw-search-title { font-size: 1.05rem; font-weight: 800; }
+.p-gw-search-sub { font-size: 0.85rem; }
+button.stat-code-chip { font-family: inherit; cursor: pointer; font-size: 0.78rem; line-height: 1.4; }
+button.stat-code-chip:focus-visible { outline: 2px solid var(--ac, #0EA37B); outline-offset: 2px; }
+.next-action-btn strong { font-size: 0.98rem; }
+.next-action-btn small { font-size: 0.8rem; opacity: 0.92; }
+.doc-trigger-btn { font-size: 0.95rem; }
+body:not(.searched) .brand-hero-buttons .btn-secondary {
+  border-color: rgba(255,255,255,0.85); text-shadow: 0 1px 2px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .cb { color: var(--t1, #F3EEDF); }
+[data-theme="dark"] .qb { color: var(--t2, #C7BFA8); }
+</style>
+
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
 <body class="landing" data-theme="light">
@@ -11904,6 +12043,14 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
+                <!-- Card order matters: applyLanguage() maps gwDocLabel / gwHikoreaLabel /
+                     gwAiLabel onto .p-gw-card-label by index. -->
+                <a class="p-gw-card p-gw-card-doc" href="#docComposer">
+                    <span class="p-gw-card-icon" aria-hidden="true">✎</span>
+                    <span class="p-gw-card-label">필수 서류 작성기</span>
+                    <span class="p-gw-card-sub">통합신청서 등 필수 서식을 온라인으로 작성하고 인쇄·PDF로 저장합니다.</span>
+                </a>
+
                 <button type="button" class="p-gw-card p-gw-card-hikorea" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
                     <span class="p-gw-card-label">HiKorea 방문예약 안내</span>
@@ -12065,6 +12212,45 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
 
     <div class="section-divider" aria-hidden="true"></div>
 
+    <!-- Essential form composer (필수 서류 작성기) — main-screen drafting entry.
+         The online editor lives in form-helper.html; original HWP/Word files
+         stay on the official HiKorea form library. -->
+    <section class="p-section p-doc-composer" id="docComposer" aria-labelledby="docComposerTitle">
+        <div class="p-section-head">
+            <div>
+                <p class="p-kicker">Forms &amp; paperwork</p>
+                <h2 class="p-section-title" id="docComposerTitle">필수 서류, 헤매지 말고<br>여기서 바로 작성하세요.</h2>
+            </div>
+            <p class="p-section-copy" id="docComposerCopy">출입국 민원에 자주 쓰는 공식 서식을 모았습니다. 온라인으로 작성한 뒤 인쇄하거나 PDF로 저장하고, 원본 한글(HWP)·워드 파일은 HiKorea 공식 서식 자료실에서 받을 수 있습니다.</p>
+        </div>
+        <div class="doc-composer-grid">
+            <a class="doc-composer-card doc-composer-main" href="form-helper.html">
+                <span class="doc-composer-badge live" id="docComposerBadgeLive">온라인 작성 지원</span>
+                <span class="doc-composer-icon" aria-hidden="true">🖋</span>
+                <h3 id="docComposerFormTitle">통합신청서(별지 제34호 서식)</h3>
+                <p id="docComposerFormDesc">외국인등록·기간연장·자격변경 등 10가지 민원에 쓰는 기본 서식입니다. 단계별로 작성하고 인쇄·PDF 저장까지 한 번에.</p>
+                <span class="doc-composer-tags" id="docComposerTags" aria-hidden="true"></span>
+                <span class="doc-composer-cta" id="docComposerFormCta">온라인으로 작성하기 →</span>
+            </a>
+            <a class="doc-composer-card" href="https://www.hikorea.go.kr/board/BoardApplicationListR.pt?page=1" target="_blank" rel="noopener noreferrer">
+                <span class="doc-composer-badge" id="docComposerBadgeExternal">공식 다운로드</span>
+                <span class="doc-composer-icon" aria-hidden="true">📂</span>
+                <h3 id="docComposerDownloadTitle">공식 서식 자료실 (HWP·Word)</h3>
+                <p id="docComposerDownloadDesc">그 외 신청서·신고서 원본 파일은 HiKorea 서식 자료실에서 내려받아 작성하세요.</p>
+                <span class="doc-composer-cta" id="docComposerDownloadCta">HiKorea 자료실 열기 ↗</span>
+            </a>
+            <div class="doc-composer-card doc-composer-print">
+                <span class="doc-composer-badge" id="docComposerBadgeGuide">이용 안내</span>
+                <span class="doc-composer-icon" aria-hidden="true">🖨</span>
+                <h3 id="docComposerPrintTitle">인쇄·PDF 저장</h3>
+                <p id="docComposerPrintDesc">작성을 마치면 브라우저 인쇄 기능으로 종이에 출력하거나 'PDF로 저장'을 선택하면 됩니다. 입력 내용은 내 브라우저에만 머뭅니다.</p>
+            </div>
+        </div>
+        <p class="p-manual-note doc-composer-note" id="docComposerNote">서식 작성 도우미는 참고용이며 제출·접수를 대행하지 않습니다. 최신 서식 여부는 HiKorea에서 확인하세요.</p>
+    </section>
+
+    <div class="section-divider" aria-hidden="true"></div>
+
     <!-- Feature Section -->
     <section id="brandFeature" class="brand-feature figma-feature-section" aria-labelledby="brandFeatureTitle">
         <div class="feature-content" data-reveal="fade-left">
@@ -12116,34 +12302,38 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
             </p>
         </div>
         <div class="p-manual-grid" role="list" aria-label="참고 매뉴얼 및 출처">
-            <article class="p-manual-card" role="listitem">
+            <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📘</span>
                 <div class="p-manual-body">
                     <h3>체류민원 안내 매뉴얼</h3>
                     <p>외국인 등록, 체류기간 연장, 자격 변경 등 국내 체류 절차의 공개 매뉴얼.</p>
                 </div>
-            </article>
-            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
+            <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📗</span>
                 <div class="p-manual-body">
                     <h3>사증 민원 안내 매뉴얼</h3>
                     <p>재외공관 사증 발급, 비자 신청 절차 안내의 공개 매뉴얼.</p>
                 </div>
-            </article>
-            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
+            <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/guide/LawLink.pt" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📑</span>
                 <div class="p-manual-body">
                     <h3>관련 법령·서식 참고</h3>
                     <p>출입국관리법, 시행령, 시행규칙과 공개 서식을 교차 확인합니다.</p>
                 </div>
-            </article>
-            <article class="p-manual-card" role="listitem">
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
+            <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📞</span>
                 <div class="p-manual-body">
                     <h3>HiKorea · 1345 확인</h3>
                     <p>최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.</p>
                 </div>
-            </article>
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
         </div>
         <p class="p-manual-note">
             Paradiso는 공식 정부 서비스가 아닙니다. 제공 정보는 참고용이며, 제출서류와 절차는 관할기관 안내에 따라 달라질 수 있습니다.
@@ -14675,12 +14865,23 @@ function getExactQueryMatchRank(item, query) {
 
 function isEnglishMode() { return currentLanguage === 'en'; }
 function getVisaNameKo(v) { return v.nameKo || v.name || ''; }
-function getVisaNameEn(v) { return v.nameEn || v.name_en || v.titleEn || v.title_en || ''; }
-function getLocalizedVisaName(v) {
-    return isEnglishMode() ? (getVisaNameEn(v) || getVisaNameKo(v)) : getVisaNameKo(v);
+function getVisaNameEn(v) {
+    return v.nameEn || v.name_en || v.titleEn || v.title_en || localizedVisaNameFromPack(v.code, 'en') || '';
 }
+// Primary display name follows the active locale (record fields first, then the
+// visa-name i18n pack); Korean canonical is the universal fallback.
+function getLocalizedVisaName(v) {
+    const lang = normalizeLocaleCode(currentLanguage);
+    if (lang === 'ko') return getVisaNameKo(v);
+    if (lang === 'en') return getVisaNameEn(v) || getVisaNameKo(v);
+    return localizedVisaNameFromPack(v.code, lang) || getVisaNameKo(v);
+}
+// Secondary line keeps the Korean canonical name visible whenever the primary
+// line is a translation (and surfaces English next to Korean in ko mode).
 function getSecondaryVisaName(v) {
-    if (isEnglishMode()) return getVisaNameEn(v) ? getVisaNameKo(v) : '';
+    const primary = getLocalizedVisaName(v);
+    const ko = getVisaNameKo(v);
+    if (primary && primary !== ko) return ko;
     return getVisaNameEn(v);
 }
 function getVisaSubcodes(v) { return Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []); }
@@ -15725,17 +15926,19 @@ function getDefaultLimitationExplanation(level) {
 
 function renderSourceBackedFields(fields) {
     if (!fields || typeof fields !== 'object') return '';
+    // Label order matches the sourceFieldLabels pack array (indices 0-5);
+    // 6/7 = state labels, 8 = "Sources", 9/10 = detail summaries.
     const labels = {
-        applicability: currentLanguage === 'en' ? 'Applicability' : '적용대상',
-        documents: currentLanguage === 'en' ? 'Documents' : '구비서류',
-        timing: currentLanguage === 'en' ? 'Timing' : '처리기간',
-        fees: currentLanguage === 'en' ? 'Fees' : '수수료',
-        channels: currentLanguage === 'en' ? 'Channels' : '접수채널',
-        warnings: currentLanguage === 'en' ? 'Warnings' : '주의사항'
+        applicability: txAt('sourceFieldLabels', 0, '적용대상'),
+        documents: txAt('sourceFieldLabels', 1, '구비서류'),
+        timing: txAt('sourceFieldLabels', 2, '처리기간'),
+        fees: txAt('sourceFieldLabels', 3, '수수료'),
+        channels: txAt('sourceFieldLabels', 4, '접수채널'),
+        warnings: txAt('sourceFieldLabels', 5, '주의사항')
     };
     const rows = Object.keys(labels).map(key => {
         const ok = fields[key] === true;
-        const state = ok ? (currentLanguage === 'en' ? 'source-backed' : '근거 연결') : (currentLanguage === 'en' ? 'check authority' : '공식 확인 필요');
+        const state = ok ? txAt('sourceFieldLabels', 6, '근거 연결') : txAt('sourceFieldLabels', 7, '공식 확인 필요');
         return `<li>${escapeHtml(labels[key])}: ${escapeHtml(state)}</li>`;
     }).join('');
     return rows ? `<ul>${rows}</ul>` : '';
@@ -15747,11 +15950,11 @@ function renderSourceLimitationExplanation(sourceState, fallbackRefs = []) {
         ? sourceState.userFacingExplanationEn
         : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level);
     const refs = getFormattedSourceRefs(sourceState, fallbackRefs).slice(0, 4);
-    const refsHtml = refs.length ? `<p>${escapeHtml(currentLanguage === 'en' ? 'Sources' : '근거')}: ${escapeHtml(refs.join(' / '))}</p>` : '';
+    const refsHtml = refs.length ? `<p>${escapeHtml(txAt('sourceFieldLabels', 8, '근거'))}: ${escapeHtml(refs.join(' / '))}</p>` : '';
     const fieldsHtml = renderSourceBackedFields(sourceState && sourceState.sourceBackedFields);
     const summary = level === 'source_confirmed'
-        ? (currentLanguage === 'en' ? 'View evidence' : '근거 보기')
-        : (currentLanguage === 'en' ? 'Why limited?' : '왜 제한인가요?');
+        ? txAt('sourceFieldLabels', 9, '근거 보기')
+        : txAt('sourceFieldLabels', 10, '왜 제한인가요?');
     return `<details class="source-limitation-detail">
         <summary>${escapeHtml(summary)}</summary>
         <div class="source-limitation-body"><p>${escapeHtml(explanation)}</p>${refsHtml}${fieldsHtml}</div>
@@ -16907,9 +17110,22 @@ function getVisaIssuanceOverlays(code) {
     return OFFICIAL_WEB_OVERLAYS.filter(record => normalizeVisaCode(record.code) === codeNorm);
 }
 
+/* Locale-chain text picker for {ko, en, ...} objects coming from data files.
+   Resolution order: active locale → manifest fallback → ko → en (no inline
+   per-language branching at call sites). */
+function pickLocalizedManualText(item) {
+    if (!item || typeof item !== 'object') return '';
+    const chain = [normalizeLocaleCode(currentLanguage), I18N_MANIFEST.fallbackLocale || 'ko', 'ko', 'en'];
+    for (const key of chain) {
+        const value = item[key];
+        if (typeof value === 'string' && value.trim()) return value;
+    }
+    return '';
+}
+
 function localizedMetaLabel(map, key) {
     const item = map[key] || map.mixed;
-    return currentLanguage === 'en' ? item.en : item.ko;
+    return pickLocalizedManualText(item);
 }
 
 function renderIssuanceDocList(items, keywords) {
@@ -16920,9 +17136,9 @@ function renderIssuanceDocList(items, keywords) {
 function renderIssuanceDocGroups(documents, keywords) {
     const docs = documents || {};
     const groups = [
-        { key: 'common', label: currentLanguage === 'en' ? 'Common documents' : '공통서류' },
-        { key: 'additional', label: currentLanguage === 'en' ? 'Additional documents' : '추가서류' },
-        { key: 'conditional', label: currentLanguage === 'en' ? 'Conditional documents' : '해당 시 서류' }
+        { key: 'common', label: txAt('issuanceUiLabels', 1, '공통서류') },
+        { key: 'additional', label: txAt('issuanceUiLabels', 2, '추가서류') },
+        { key: 'conditional', label: txAt('issuanceUiLabels', 3, '해당 시 서류') }
     ].map(group => {
         const listHtml = renderIssuanceDocList(docs[group.key], keywords);
         if (!listHtml) return '';
@@ -16935,14 +17151,14 @@ function renderIssuanceDocGroups(documents, keywords) {
 function renderIssuanceSteps(steps, keywords) {
     if (!Array.isArray(steps) || !steps.length) return '';
     return `<ol class="issuance-steps">${steps.map(step => {
-        const text = currentLanguage === 'en' ? (step.en || step.ko || '') : (step.ko || step.en || '');
+        const text = pickLocalizedManualText(step);
         return `<li>${hl(escapeHtml(text), keywords || [])}</li>`;
     }).join('')}</ol>`;
 }
 
 function renderIssuanceWarnings(warnings, keywords) {
     if (!Array.isArray(warnings) || !warnings.length) return '';
-    return `<div><h6 class="issuance-subtitle">${escapeHtml(currentLanguage === 'en' ? 'Notes' : '주의사항')}</h6><ul class="issuance-warning-list">${warnings.map(w => `<li>${hl(escapeHtml(w), keywords || [])}</li>`).join('')}</ul></div>`;
+    return `<div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 5, '주의사항'))}</h6><ul class="issuance-warning-list">${warnings.map(w => `<li>${hl(escapeHtml(w), keywords || [])}</li>`).join('')}</ul></div>`;
 }
 
 function renderIssuanceOverlaySelector(code) {
@@ -16952,7 +17168,7 @@ function renderIssuanceOverlaySelector(code) {
         const label = [record.country, record.post, record.sourceTitle].filter(Boolean).join(' · ');
         return `<option value="${escapeHtml(record.sourceUrl || label)}">${escapeHtml(label)}</option>`;
     }).join('');
-    return `<label class="issuance-source-line">${escapeHtml(currentLanguage === 'en' ? 'Official local overlay' : '국가·공관별 공식 오버레이')} <select>${options}</select></label>`;
+    return `<label class="issuance-source-line">${escapeHtml(txAt('issuanceUiLabels', 8, '국가·공관별 공식 오버레이'))} <select>${options}</select></label>`;
 }
 
 function renderIssuanceModeCard(mode, record, binding, keywords) {
@@ -16962,8 +17178,8 @@ function renderIssuanceModeCard(mode, record, binding, keywords) {
         userFacingExplanationKo: getDefaultLimitationExplanation(level),
         manualSources: mode.sourceRefs || []
     };
-    const title = currentLanguage === 'en' ? (mode.labelEn || mode.labelKo || '') : (mode.labelKo || mode.labelEn || '');
-    const applies = currentLanguage === 'en' ? (mode.appliesToEn || mode.appliesToKo || '') : (mode.appliesToKo || mode.appliesToEn || '');
+    const title = pickLocalizedManualText({ ko: mode.labelKo, en: mode.labelEn });
+    const applies = pickLocalizedManualText({ ko: mode.appliesToKo, en: mode.appliesToEn });
     const sourceRefs = mode.sourceRefs || (record.manualSource ? [record.manualSource] : []);
     const sourceLine = getFormattedSourceRefs({ sourceRefs }).slice(0, 2).join(' / ');
     return `<article class="issuance-scenario-card${mode.type === 'not_applicable' ? ' is-not-applicable' : ''}">
@@ -16973,10 +17189,10 @@ function renderIssuanceModeCard(mode, record, binding, keywords) {
         </div>
         ${applies ? `<p class="issuance-applies">${escapeHtml(applies)}</p>` : ''}
         <div class="issuance-meta-grid">
-            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(currentLanguage === 'en' ? 'Who applies' : '신청 주체')}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_ACTOR_LABELS, mode.actor))}</span></div>
-            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(currentLanguage === 'en' ? 'Where' : '접수 위치')}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_APPLY_PLACE_LABELS, mode.whereToApply))}</span></div>
+            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(txAt('issuanceUiLabels', 6, '신청 주체'))}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_ACTOR_LABELS, mode.actor))}</span></div>
+            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(txAt('issuanceUiLabels', 7, '접수 위치'))}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_APPLY_PLACE_LABELS, mode.whereToApply))}</span></div>
         </div>
-        <div><h6 class="issuance-subtitle">${escapeHtml(currentLanguage === 'en' ? 'Steps' : '절차')}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
+        <div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 4, '절차'))}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
         ${renderIssuanceDocGroups(mode.documents, keywords)}
         ${renderIssuanceWarnings(mode.warnings, keywords)}
         ${sourceLine ? `<div class="issuance-source-line">${escapeHtml(sourceLine)}</div>` : ''}
@@ -16989,15 +17205,13 @@ function renderVisaIssuanceSection(v, keywords) {
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
     const binding = getVisaIssuanceBinding(v.code);
-    const summary = currentLanguage === 'en'
-        ? (record.issuanceSummaryEn || record.issuanceSummaryKo || '')
-        : (record.issuanceSummaryKo || record.issuanceSummaryEn || '');
+    const summary = pickLocalizedManualText({ ko: record.issuanceSummaryKo, en: record.issuanceSummaryEn });
     const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
     const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords)).join('');
     const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
-    const disclaimer = currentLanguage === 'en' ? (record.disclaimerEn || record.disclaimerKo || '') : (record.disclaimerKo || record.disclaimerEn || '');
-    return `<section class="manual-section visa-issuance-section" aria-label="${escapeHtml(currentLanguage === 'en' ? 'Visa issuance' : '사증발급')}">
-        <h4 class="manual-section-title">${escapeHtml(currentLanguage === 'en' ? 'Visa issuance' : '사증발급')}</h4>
+    const disclaimer = pickLocalizedManualText({ ko: record.disclaimerKo, en: record.disclaimerEn });
+    return `<section class="manual-section visa-issuance-section" aria-label="${escapeHtml(txAt('issuanceUiLabels', 0, '사증발급'))}">
+        <h4 class="manual-section-title">${escapeHtml(txAt('issuanceUiLabels', 0, '사증발급'))}</h4>
         ${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
         <div class="issuance-scenario-grid">${cards}</div>
         ${renderIssuanceOverlaySelector(v.code)}
@@ -17037,7 +17251,7 @@ function formatDocumentTabRefNote(refs) {
         const versionLabel = sourceDate ? `${ref.manualVersion || ref.version || '2026.5'} (${sourceDate})` : (ref.manualVersion || ref.version || '2026.5');
         return [ref.manualName || ref.manual || '체류민원', versionLabel, ref.pageRange || '페이지 확인 필요'].filter(Boolean).join(' · ');
     });
-    return `${currentLanguage === 'en' ? 'Source' : '출처'}: ${bits.join(' / ')}`;
+    return `${txAt('issuanceUiLabels', 9, '출처')}: ${bits.join(' / ')}`;
 }
 
 // TODO: label map not used here — doc_* IDs in item.name or item.label would render as raw strings
@@ -17208,7 +17422,7 @@ function renderSourceEvidencePanel(v) {
     if (isProvisional) badges += `<span class="sep-badge source-linked-unverified">${escapeHtml(tx('sourceProvisional'))}</span>`;
     if (hasVisa) badges += `<span class="sep-badge visa-manual">${escapeHtml(tx('sourceVisaManual'))}</span>`;
     if (hasStay) badges += `<span class="sep-badge stay-manual">${escapeHtml(tx('sourceStayManual'))}</span>`;
-    if (issuanceBinding) badges += `<span class="sep-badge ${escapeHtml(getSourceEvidenceBadgeClass(issuanceBinding.evidenceLevel))}">${escapeHtml(currentLanguage === 'en' ? `Visa issuance: ${getSourceEvidenceLabel(issuanceBinding.evidenceLevel)}` : `사증발급: ${getSourceEvidenceLabel(issuanceBinding.evidenceLevel)}`)}</span>`;
+    if (issuanceBinding) badges += `<span class="sep-badge ${escapeHtml(getSourceEvidenceBadgeClass(issuanceBinding.evidenceLevel))}">${escapeHtml(`${txAt('issuanceUiLabels', 0, '사증발급')}: ${getSourceEvidenceLabel(issuanceBinding.evidenceLevel)}`)}</span>`;
     if (!isVerified) badges += `<span class="sep-badge unverified">${escapeHtml(tx('sourceUnverified'))}</span>`;
     const noteKey = isVerified
         ? 'sourceVerifiedNote'
@@ -17600,7 +17814,7 @@ function renderResults(query){
         fg.appendChild(c);
     });
     box.innerHTML=''; box.appendChild(fg);
-    rc.textContent=(st ? tx('resultCountWithSub', { count: filtered.length, subcount: st }) : tx('resultCount', { count: filtered.length })) + ` · ${VISA_DATA.length}${currentLanguage === 'en' ? ' total' : '개 전체'}`;
+    rc.textContent=(st ? tx('resultCountWithSub', { count: filtered.length, subcount: st }) : tx('resultCount', { count: filtered.length })) + ` · ${tx('resultTotalSuffix', { count: VISA_DATA.length })}`;
     const modeStr=currentSearchMode==='and'?'AND':'OR';
     const catLabels = txArray('searchedCategoryLabels');
     const catMap = {short:catLabels[0]||'단기',study:catLabels[1]||'유학/연수',work:catLabels[2]||'취업',invest:catLabels[3]||'투자',family:catLabels[4]||'가족/이민',other:catLabels[5]||'기타',diplo:catLabels[6]||'외교',nhis:catLabels[7]||'건강보험',faq:catLabels[8]||'안내',scn:catLabels[9]||'시나리오'};
@@ -17729,7 +17943,35 @@ async function loadI18nTranslations() {
         OFFICIAL_TERMS = {};
     }
     indexOfficialTerms();
+    try {
+        const visaNames = await fetchJson(VISA_NAME_I18N_PATH);
+        VISA_NAME_I18N = (visaNames && visaNames.names) || {};
+    } catch (err) {
+        console.warn('[i18n] name pack unavailable; falling back to Korean canonical names', err);
+        VISA_NAME_I18N = {};
+    }
     return loaded.some(Boolean);
+}
+
+/* Localized display names for top-level status-of-stay codes
+   (data/i18n/visa-names.json). Korean stays canonical; missing locales fall
+   back along the manifest chain (locale → fallbackLocale). */
+const VISA_NAME_I18N_PATH = './data/i18n/visa-names.json';
+let VISA_NAME_I18N = {};
+
+function localizedVisaNameFromPack(code, locale = currentLanguage) {
+    const lang = normalizeLocaleCode(locale);
+    if (lang === 'ko' || !code) return '';
+    const entry = VISA_NAME_I18N[String(code).toUpperCase()];
+    if (!entry) return '';
+    const chain = [lang];
+    const fallback = I18N_MANIFEST.fallbackLocale || 'ko';
+    if (fallback !== 'ko' && !chain.includes(fallback)) chain.push(fallback);
+    for (const key of chain) {
+        const value = entry[key];
+        if (typeof value === 'string' && value.trim()) return value.trim();
+    }
+    return '';
 }
 
 /* Official terminology glossary (data/i18n/official-terms.json).
@@ -18044,6 +18286,21 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.p-manual-card h3', txArray('manualCardTitles'));
     setIndexedText('.p-manual-card p', txArray('manualCardDescs'));
     setText('.p-manual-note', tx('manualNote'));
+    setHtml('#docComposerTitle', tx('docComposerTitle'));
+    setText('#docComposerCopy', tx('docComposerCopy'));
+    setText('#docComposerFormTitle', tx('docComposerFormTitle'));
+    setText('#docComposerFormDesc', tx('docComposerFormDesc'));
+    setHtml('#docComposerFormCta', `${escapeHtml(tx('docComposerFormCta'))} →`);
+    setText('#docComposerDownloadTitle', tx('docComposerDownloadTitle'));
+    setText('#docComposerDownloadDesc', tx('docComposerDownloadDesc'));
+    setHtml('#docComposerDownloadCta', `${escapeHtml(tx('docComposerDownloadCta'))} ↗`);
+    setText('#docComposerPrintTitle', tx('docComposerPrintTitle'));
+    setText('#docComposerPrintDesc', tx('docComposerPrintDesc'));
+    setText('#docComposerBadgeLive', tx('docComposerBadgeLive'));
+    setText('#docComposerBadgeExternal', tx('docComposerBadgeExternal'));
+    setText('#docComposerBadgeGuide', tx('docComposerBadgeGuide'));
+    setText('#docComposerNote', tx('docComposerNote'));
+    renderDocComposerTags();
     setText('#pPathwayTitle', tx('pathwayTitle'));
     setText('.p-pathway-section .p-section-copy', tx('pathwayCopy'));
     setAttr('.p-pathway-grid', 'aria-label', tx('pathwayAria'));
@@ -18266,16 +18523,22 @@ function setSearchEnabled(enabled) {
 function coverageBucket(v) {
     const code = v && v.code, cat = v && v.cat;
     if (!code || !cat) return null;
-    if (['etc', 'faq', 'scn', 'nhis'].includes(cat)) return null;
+    if (['faq', 'scn', 'nhis'].includes(cat)) return null;
     if (cat === 'study') return 'stat-study';
     if (cat === 'family') return 'stat-residence';
     if (cat === 'work' || cat === 'invest') return 'stat-work';
     // 'other'/'short' members whose activity is employment in nature are grouped
-    // with 취업·전문직: 취재(D-5)·종교(D-6)·관광취업(H-1)·방문취업(H-2)·단기취업(C-4).
-    if (['D-5', 'D-6', 'H-1', 'H-2', 'C-4'].includes(code)) return 'stat-work';
-    // Remaining short-stay, diplomatic (A-1~A-3) and misc/humanitarian (G-1) →
+    // with 취업·전문직: 취재(D-5)·관광취업(H-1)·방문취업(H-2)·단기취업(C-4).
+    if (['D-5', 'H-1', 'H-2', 'C-4'].includes(code)) return 'stat-work';
+    // Remaining short-stay, diplomatic (A-1~A-3), religious (D-6),
+    // misc/humanitarian (G-1) and special pilot tracks (cat 'etc') →
     // 방문·외교·기타.
     return 'stat-visit';
+}
+// Sort coverage chips in the familiar A→K family order, numerically within a family.
+function coverageCodeSortKey(code) {
+    const m = String(code || '').match(/^([A-Z]+)-?(\d+)?/);
+    return [m ? m[1] : String(code || ''), m && m[2] ? parseInt(m[2], 10) : 999, String(code || '')];
 }
 function updateCategoryCounts() {
     if (!Array.isArray(VISA_DATA) || !VISA_DATA.length) return;
@@ -18291,7 +18554,46 @@ function updateCategoryCounts() {
         el.dataset.count = n;
         const card = el.closest('.stat-card');
         if (card && card.classList.contains('revealed')) el.textContent = n;
+        // Every code in the bucket becomes a visible, searchable chip (the static
+        // markup only carries a representative few as a pre-data fallback).
+        const chipBox = card && card.querySelector('.stat-codes');
+        if (chipBox) {
+            const codes = [...buckets[id]].sort((a, b) => {
+                const ka = coverageCodeSortKey(a), kb = coverageCodeSortKey(b);
+                return ka[0].localeCompare(kb[0]) || (ka[1] - kb[1]) || ka[2].localeCompare(kb[2]);
+            });
+            chipBox.removeAttribute('aria-hidden');
+            chipBox.setAttribute('role', 'list');
+            chipBox.innerHTML = codes.map(code =>
+                `<button type="button" role="listitem" class="stat-code-chip" data-action="search-hint" data-query="${escapeHtml(code)}" aria-label="${escapeHtml(code)}">${escapeHtml(code)}</button>`
+            ).join('');
+        }
     });
+}
+
+/* ── Essential form composer (#docComposer) ─────────────────────────────────
+   Metadata comes from data/integrated_form_metadata.json (the same source the
+   form-helper editor is built on); the chips preview which 민원 checkboxes the
+   통합신청서 covers. */
+let INTEGRATED_FORM_META = null;
+
+function renderDocComposerTags() {
+    const host = document.getElementById('docComposerTags');
+    if (!host) return;
+    const types = INTEGRATED_FORM_META && Array.isArray(INTEGRATED_FORM_META.applicationTypes)
+        ? INTEGRATED_FORM_META.applicationTypes : [];
+    if (!types.length) { host.innerHTML = ''; return; }
+    const shown = types.slice(0, 6);
+    const rest = types.length - shown.length;
+    host.innerHTML = shown.map(t => {
+        const label = pickLocalizedManualText({ ko: t.formCheckboxKo, en: t.formCheckboxEn });
+        return label ? `<span class="doc-composer-tag">☑ ${escapeHtml(label)}</span>` : '';
+    }).filter(Boolean).join('') + (rest > 0 ? `<span class="doc-composer-tag more">+${rest}</span>` : '');
+}
+
+async function loadDocComposerMeta() {
+    INTEGRATED_FORM_META = await fetchOptionalJson('./data/integrated_form_metadata.json');
+    renderDocComposerTags();
 }
 
 function buildProcedureEvidenceIndex(records) {
@@ -18360,6 +18662,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderLanguageMenu();
     applyLanguage(getInitialLanguage(), { silent: true });
     loadDocGuide();
+    loadDocComposerMeta();
     loadVisaData();
     if(qEl) {
         qEl.addEventListener('input', handleInput);
@@ -18733,7 +19036,10 @@ ${ticks}
             if (!document.getElementById('k-stamp-country-style')) {
                 const style = document.createElement('style');
                 style.id = 'k-stamp-country-style';
-                style.textContent = ':root[data-theme="archive_diary"] #k-stamp-country{position:absolute;bottom:-60px;right:-50px;transform:rotate(18deg);opacity:0.85;pointer-events:none;z-index:2;filter:drop-shadow(0 1px 0 rgba(0,0,0,0.06));}';
+                style.textContent = ':root[data-theme="archive_diary"] #k-stamp-country{position:absolute;bottom:-60px;right:-50px;transform:rotate(18deg);opacity:0.85;pointer-events:none;z-index:2;filter:drop-shadow(0 1px 0 rgba(0,0,0,0.06));}'
+                    /* The stamp is injected only while archive_diary is active, but the element
+                       survives a runtime toggle to civic — keep it kitsch-only. */
+                    + ':root:not([data-theme="archive_diary"]) #k-stamp-country{display:none !important;}';
                 document.head.appendChild(style);
             }
         })();

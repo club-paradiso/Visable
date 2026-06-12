@@ -410,8 +410,8 @@
   "gwUtilityAria": "辅助工具",
   "gwSearchTitle": "签证·居留搜索",
   "gwSearchSub": "以代码（D-2, E-7）或关键词开始",
-  "gwDocLabel": "所需材料确认",
-  "gwDocSub": "按资格分类的通用及附加材料",
+  "gwDocLabel": "必备表格填写助手",
+  "gwDocSub": "在线填写主要申请表格，可打印或保存为PDF。",
   "gwHikoreaLabel": "HiKorea 预约指南",
   "gwHikoreaSub": "访问前的在线预约助手",
   "gwAiLabel": "向Waymaker by Paradiso提问",
@@ -623,14 +623,28 @@
   "hkPreEmailHint1": "请先创建谷歌账户（Gmail）·",
   "hkPreEmailHint2": "也可以暂时使用家人或朋友的电子邮箱。",
   "hkPrePwQ": "密码准备确认",
-  "hkPwChecklist": ["✓ 10位以上", "✓ 包含英文字母（例：abc）", "✓ 包含数字（例：123）", "✓ 包含特殊字符（例：! @ # $）"],
+  "hkPwChecklist": [
+    "✓ 10位以上",
+    "✓ 包含英文字母（例：abc）",
+    "✓ 包含数字（例：123）",
+    "✓ 包含特殊字符（例：! @ # $）"
+  ],
   "hkPreExpLabel": "确认停留期限到期日",
   "hkExpMsgEmpty": "请输入到期日。",
   "hkExpExpired": "停留期限已到期。请立即拨打 1345。",
   "hkExpImminent": "停留期限即将到期。请立即预约。",
   "hkExpDaysLeft": "距停留期限到期还有 {days} 天。",
-  "hkStep0Items": ["⚠️ 预约从明天起可办理。当天预约不可用。", "⚠️ 超过预约时间5分钟，预约可能被作废。", "⚠️ 访问预约当天无法取消。", "⚠️ 请打印预约确认证或保存到手机屏幕。<br>（请准备好打印件或手机画面，以便现场出示。）"],
-  "hkStep1Items": ["访问 www.hikorea.go.kr", "使用会员账号和密码登录", "首次注册后，请打开邮箱收件箱并点击\"认证\"按钮"],
+  "hkStep0Items": [
+    "⚠️ 预约从明天起可办理。当天预约不可用。",
+    "⚠️ 超过预约时间5分钟，预约可能被作废。",
+    "⚠️ 访问预约当天无法取消。",
+    "⚠️ 请打印预约确认证或保存到手机屏幕。<br>（请准备好打印件或手机画面，以便现场出示。）"
+  ],
+  "hkStep1Items": [
+    "访问 www.hikorea.go.kr",
+    "使用会员账号和密码登录",
+    "首次注册后，请打开邮箱收件箱并点击\"认证\"按钮"
+  ],
   "hkLinkHikorea": "前往 HiKorea",
   "hkLinkHikoreaMain": "前往 HiKorea 主页",
   "hkStep2Item": "登录后在主页点击\"访问预约\"按钮",
@@ -640,19 +654,43 @@
   "hkUnknown": "未确认",
   "hkSelectedTask": "已选业务：",
   "hkReselect": "重新选择",
-  "hkTaskBullets": ["停留期限延长许可：以相同类别延长当前签证", "停留资格变更：变更为其他类别的签证", "外国人登记：首次在韩国登记"],
+  "hkTaskBullets": [
+    "停留期限延长许可：以相同类别延长当前签证",
+    "停留资格变更：变更为其他类别的签证",
+    "外国人登记：首次在韩国登记"
+  ],
   "hkTaskPickerAria": "选择业务类型",
   "hkTaskPickerHint": "该签证代码的推荐业务信息尚未登记。请选择符合您情况的业务。如不确定，请拨打 ☎ <a href=\"tel:1345\">1345</a> 确认。",
-  "hkTaskBtnTitles": ["停留期限延长许可", "停留资格变更", "外国人登记"],
-  "hkTaskBtnDescs": ["按原样延长当前签证", "变更为其他签证", "首次登记"],
-  "hkStep5Items": ["选择您希望的日期和时间", "请预约停留期限到期日之前的日期", "预约从明天起可办理。"],
+  "hkTaskBtnTitles": [
+    "停留期限延长许可",
+    "停留资格变更",
+    "外国人登记"
+  ],
+  "hkTaskBtnDescs": [
+    "按原样延长当前签证",
+    "变更为其他签证",
+    "首次登记"
+  ],
+  "hkStep5Items": [
+    "选择您希望的日期和时间",
+    "请预约停留期限到期日之前的日期",
+    "预约从明天起可办理。"
+  ],
   "hkEnteredExp": "已输入的到期日：",
   "hkNotEntered": "未输入",
-  "hkStep6Items": ["记下预约号码或截屏保存", "打印预约确认证或保存为 PDF", "访问当天请提前10分钟到达"],
+  "hkStep6Items": [
+    "记下预约号码或截屏保存",
+    "打印预约确认证或保存为 PDF",
+    "访问当天请提前10分钟到达"
+  ],
   "hkSavedLabel": "我已保存预约确认证",
   "reminderBannerCta": "查看提醒",
   "reminderBannerCloseAria": "今天不再显示",
-  "reminderTypeLabels": ["停留期限到期日", "外国人登录证更新日", "访问预约日期"],
+  "reminderTypeLabels": [
+    "停留期限到期日",
+    "外国人登录证更新日",
+    "访问预约日期"
+  ],
   "reminderFallbackLabel": "期限提醒",
   "reminderTypeShort": "期限",
   "reminderIcsBtn": "保存到我的日历",
@@ -755,10 +793,10 @@
     "1345 Hotline"
   ],
   "brandHeroStats": [
-    "취업·전문직<br><span lang=\"en\">Employment</span>",
-    "유학·연수<br><span lang=\"en\">Study</span>",
-    "거주·동포<br><span lang=\"en\">Residence</span>",
-    "방문·가족<br><span lang=\"en\">Visit &amp; Family</span>"
+    "就业·专业人才<br><span lang=\"en\">Employment</span>",
+    "留学·研修<br><span lang=\"en\">Study</span>",
+    "居住·家庭·同胞<br><span lang=\"en\">Residence &amp; Family</span>",
+    "访问·外交·其他<br><span lang=\"en\">Visit &amp; Other</span>"
   ],
   "featureTitle": "출입국·외국인정책본부<br>매뉴얼 기반의 정보 탐색",
   "featureSubtitle": "Manual-based information navigation",
@@ -845,8 +883,18 @@
   "sourceNote": "Paradiso는 법률 자문이나 민원 대행을 제공하지 않으며, 이에 따른 어떠한 법적 책임도 지지 않습니다.",
   "manualTitle": "基于法务部手册，<br>结构化的指引",
   "manualCopy": "以出入境·外国人政策本部公开的手册和施行指引为参考进行结构化整理。请确认结果页面标注的出处，最终判断请向 HiKorea、1345 或主管出入境机关确认。",
-  "manualCardTitles": ["体留程序指南手册", "签证程序指南手册", "相关法规与表格参考", "HiKorea · 1345 确认"],
-  "manualCardDescs": ["外国人登记、停留期限延长、资格变更等国内停留程序的公开手册。", "驻外韩国使领馆签证签发、签证申请程序的公开手册。", "与出入境管理法、施行令、施行规则及公开表格交叉核对。", "最终判断请向 HiKorea、1345 或主管出入境机关确认。"],
+  "manualCardTitles": [
+    "体留程序指南手册",
+    "签证程序指南手册",
+    "相关法规与表格参考",
+    "HiKorea · 1345 确认"
+  ],
+  "manualCardDescs": [
+    "外国人登记、停留期限延长、资格变更等国内停留程序的公开手册。",
+    "驻外韩国使领馆签证签发、签证申请程序的公开手册。",
+    "与出入境管理法、施行令、施行规则及公开表格交叉核对。",
+    "最终判断请向 HiKorea、1345 或主管出入境机关确认。"
+  ],
   "manualNote": "Paradiso 不是官方政府服务。所提供信息仅供参考，所需材料和程序可能因机关指引而有所不同。",
   "toolsTitle": "필요한 도구는 흐름 가까이에 둡니다.",
   "toolsCopy": "이미 구현된 도구는 기존 모달과 검색에 연결하고, 아직 준비 중인 기능은 계획 상태로 표시합니다.",
@@ -858,11 +906,11 @@
     "<h3>1345 통화 스크립트</h3><p>상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.</p>"
   ],
   "toolTitles": [
-    "관할 출입국 찾기",
-    "직업·산업 코드",
-    "법무부지정 병원",
-    "서류 체크리스트",
-    "1345 통화 스크립트",
+    "管辖出入境机关查询",
+    "职业·行业代码",
+    "法务部指定医院",
+    "材料清单",
+    "1345 通话提纲",
     "统合申请书填写助手"
   ],
   "toolBodies": [
@@ -998,12 +1046,12 @@
     "외국인종합안내센터 상담 확인."
   ],
   "toolDescs": [
-    "체류지 기준으로 관할 출입국·외국인관서를 확인합니다.",
-    "취업 신고에 필요한 직종·업종 코드를 찾아봅니다.",
-    "채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.",
-    "체류자격별 공통서류와 추가 확인 항목으로 이동합니다.",
-    "상황 요약을 바탕으로 상담 전 확인할 질문을 정리하는 기능입니다.",
-    "逐步指导填写外国人统合申请书（申报书）——该勾选哪些栏目、填写哪些内容。"
+    "按居住地确认管辖出入境·外国人机关。",
+    "查找就业申报所需的职业·行业代码。",
+    "按地区·机构名·地址搜索可进行就业体检及健康诊断的医疗机构。",
+    "跳转到各居留资格的通用材料与补充确认项目。",
+    "在咨询前根据情况摘要整理需要确认的问题。",
+    "分步指导填写外国人统合申请书（申报书）。"
   ],
   "agentSourceNote": "출처: 출입국업무 민원신청대행 등록기관 현황(2026.04.30.부)",
   "agentDisclaimer": "Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.",
@@ -1056,5 +1104,46 @@
   "lawSourceUnavailableDeploy": "이 배포 환경에서는 법령 출처 조회를 사용할 수 없습니다.",
   "lawSourceBadResponse": "법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다.",
   "lawSourceOfficialError": "공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.",
-  "lawSourceTimeout": "법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다."
+  "lawSourceTimeout": "법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.",
+  "docComposerKicker": "Forms & paperwork",
+  "docComposerTitle": "必备材料无需四处寻找，<br>在这里直接填写。",
+  "docComposerCopy": "汇集了出入境申请常用的官方表格。在线填写后可打印或保存为PDF，原版HWP·Word文件可在HiKorea官方表格资料室下载。",
+  "docComposerFormTitle": "통합신청서(별지 제34호 서식)",
+  "docComposerFormDesc": "用于外国人登记、延长停留期限、变更资格等10种申请的基本表格。按步骤填写后可直接打印或保存为PDF。",
+  "docComposerFormCta": "在线填写",
+  "docComposerDownloadTitle": "官方表格资料室（HWP·Word）",
+  "docComposerDownloadDesc": "其他申请书·申报书的原件可在HiKorea表格资料室下载填写。",
+  "docComposerDownloadCta": "打开HiKorea资料室",
+  "docComposerPrintTitle": "打印·保存为PDF",
+  "docComposerPrintDesc": "填写完成后，使用浏览器打印功能即可纸质打印或选择'另存为PDF'。输入内容只保留在您的浏览器中。",
+  "docComposerBadgeLive": "支持在线填写",
+  "docComposerBadgeExternal": "官方下载",
+  "docComposerBadgeGuide": "使用指南",
+  "docComposerNote": "填写助手仅供参考，不代办提交·受理。请在HiKorea确认最新版本表格。",
+  "issuanceUiLabels": [
+    "签证签发",
+    "通用材料",
+    "附加材料",
+    "条件性材料",
+    "步骤",
+    "注意事项",
+    "申请主体",
+    "受理地点",
+    "各国·使领馆官方说明",
+    "来源"
+  ],
+  "sourceFieldLabels": [
+    "适用对象",
+    "所需材料",
+    "处理期限",
+    "手续费",
+    "受理渠道",
+    "注意事项",
+    "已关联依据",
+    "需官方确认",
+    "依据",
+    "查看依据",
+    "为何受限？"
+  ],
+  "resultTotalSuffix": "共{count}项"
 }
