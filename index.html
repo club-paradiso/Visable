@@ -17959,6 +17959,11 @@ function applyLanguage(code, options = {}) {
     setText('.feature-cta span:first-child', tx('brandFeatureCta'));
     setAttr('.feature-checklist', 'aria-label', tx('brandFeatureChecklistAria'));
     setIndexedHtml('.feature-checklist li > div', txArray('featureChecklist'));
+    setHtml('#pManualTitle', tx('manualTitle'));
+    setText('.p-manual-section .p-section-copy', tx('manualCopy'));
+    setIndexedText('.p-manual-card h3', txArray('manualCardTitles'));
+    setIndexedText('.p-manual-card p', txArray('manualCardDescs'));
+    setText('.p-manual-note', tx('manualNote'));
     setText('#pPathwayTitle', tx('pathwayTitle'));
     setText('.p-pathway-section .p-section-copy', tx('pathwayCopy'));
     setAttr('.p-pathway-grid', 'aria-label', tx('pathwayAria'));
