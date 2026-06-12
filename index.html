@@ -10705,6 +10705,47 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .sbar-go { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go:hover { color: var(--k-blue); }
 
+/* Hero action buttons + AI link → ink on light background (not glass) */
+:root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn {
+  background: var(--k-white) !important;
+  backdrop-filter: none !important; -webkit-backdrop-filter: none !important;
+  border: 2px solid var(--k-ink) !important;
+  color: var(--k-ink) !important;
+  box-shadow: var(--k-pop-1) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .hero-action-btn:hover {
+  background: var(--k-blue-1) !important;
+  border-color: var(--k-ink) !important;
+  color: var(--k-ink) !important;
+  box-shadow: var(--k-pop-2) !important;
+  transform: translate(-2px,-3px) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn {
+  border-color: var(--k-ink) !important;
+  color: var(--k-ink) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn:hover {
+  background: var(--k-blue-1) !important;
+  border-color: var(--k-blue) !important;
+  border-style: solid !important;
+  color: var(--k-blue-deep) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .search-toggle-btn.active {
+  background: var(--k-blue-1) !important;
+  border-color: var(--k-blue) !important;
+  color: var(--k-blue-deep) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .hero-ai-link {
+  background: rgba(47,94,252,0.08) !important;
+  border: 1px solid rgba(47,94,252,0.28) !important;
+  color: var(--k-blue-deep) !important;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .hero-ai-link:hover {
+  background: rgba(47,94,252,0.16) !important;
+  border-color: var(--k-blue) !important;
+  color: var(--k-blue) !important;
+}
+
 /* Gateway tiles → poster panels, ink stroke, hard offset (varied accents) */
 :root[data-theme="archive_diary"] .p-gateway { gap: clamp(0.9rem, 2vw, 1.4rem) !important; }
 :root[data-theme="archive_diary"] .p-gw-primary,
@@ -11094,6 +11135,9 @@ body.searched .hero-container::before {
 /* Result-page reference disclaimer (legal) → clearly visible card, never muted */
 :root[data-theme="archive_diary"] body.searched .reference-disclaimer {
   color: var(--k-ink) !important; border-top: 2px dashed var(--k-ink) !important; font-weight: 600;
+}
+:root[data-theme="archive_diary"] body:not(.searched) .reference-disclaimer {
+  color: var(--t2) !important;
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
