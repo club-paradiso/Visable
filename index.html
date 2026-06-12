@@ -9794,6 +9794,10 @@ button[data-keyword]:focus-visible {
    Directly fixes the landing search autocomplete list.
    The previous broad search overlay patch did not sufficiently target .auto-list/.auto-item,
    causing white suggestion rows with low-contrast text on the dark hero background.
+   Palette plumbing (PR-K1 #7): every colour below resolves through a
+   --auto-* custom property whose fallback is the exact previous literal, so
+   Civic (light/dark) renders byte-identically while the Kitsch layer can
+   re-point the variables without fighting the important flags used here.
 */
 .auto-list {
   top: calc(100% + 8px) !important;
@@ -9804,9 +9808,9 @@ button[data-keyword]:focus-visible {
   overflow-y: auto !important;
   padding: 0.45rem !important;
   border-radius: 18px !important;
-  border: 1px solid rgba(183, 217, 200, 0.38) !important;
+  border: 1px solid var(--auto-list-border, rgba(183, 217, 200, 0.38)) !important;
   background:
-    linear-gradient(180deg, rgba(14, 31, 26, 0.98), rgba(8, 42, 36, 0.98)) !important;
+    var(--auto-list-bg, linear-gradient(180deg, rgba(14, 31, 26, 0.98), rgba(8, 42, 36, 0.98))) !important;
   box-shadow:
     0 22px 52px rgba(0, 0, 0, 0.36),
     0 4px 14px rgba(0, 0, 0, 0.22) !important;
@@ -9829,10 +9833,10 @@ button[data-keyword]:focus-visible {
   gap: 0.65rem !important;
   margin: 0 !important;
   padding: 0.78rem 0.9rem !important;
-  border: 1px solid rgba(244, 238, 224, 0.12) !important;
+  border: 1px solid var(--auto-item-border, rgba(244, 238, 224, 0.12)) !important;
   border-radius: 12px !important;
-  background: rgba(244, 238, 224, 0.075) !important;
-  color: #F8F3E8 !important;
+  background: var(--auto-item-bg, rgba(244, 238, 224, 0.075)) !important;
+  color: var(--auto-item-text, #F8F3E8) !important;
   box-shadow: none !important;
   opacity: 1 !important;
   line-height: 1.38 !important;
@@ -9850,7 +9854,7 @@ button[data-keyword]:focus-visible {
 }
 
 .auto-item svg {
-  color: rgba(183, 217, 200, 0.9) !important;
+  color: var(--auto-item-icon, rgba(183, 217, 200, 0.9)) !important;
   flex-shrink: 0 !important;
 }
 
@@ -9858,10 +9862,10 @@ button[data-keyword]:focus-visible {
 .auto-item:focus,
 .auto-item:focus-visible,
 .auto-item[aria-selected="true"] {
-  background: rgba(183, 217, 200, 0.18) !important;
-  border-color: rgba(183, 217, 200, 0.42) !important;
-  color: #FFFFFF !important;
-  outline: 2px solid rgba(52, 212, 168, 0.42) !important;
+  background: var(--auto-item-hover-bg, rgba(183, 217, 200, 0.18)) !important;
+  border-color: var(--auto-item-hover-border, rgba(183, 217, 200, 0.42)) !important;
+  color: var(--auto-item-hover-text, #FFFFFF) !important;
+  outline: 2px solid var(--auto-item-focus-ring, rgba(52, 212, 168, 0.42)) !important;
   outline-offset: -2px !important;
 }
 
@@ -9875,8 +9879,8 @@ button[data-keyword]:focus-visible {
   min-height: 1.35rem !important;
   padding: 0.08rem 0.36rem !important;
   border-radius: 0.4rem !important;
-  background: rgba(183, 217, 200, 0.20) !important;
-  color: #BFF3DD !important;
+  background: var(--auto-item-mark-bg, rgba(183, 217, 200, 0.20)) !important;
+  color: var(--auto-item-mark-text, #BFF3DD) !important;
   font-weight: 900 !important;
 }
 
@@ -10732,6 +10736,42 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .sbar-icon { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .sbar-go:hover { color: var(--k-blue); }
+/* Autocomplete (연관검색어) dropdown — PR-K1 #7.
+   The shared "autocomplete row contrast fix" block paints a dark-green glass
+   panel via important-flagged declarations; it now resolves its colours
+   through the --auto-* custom properties below (fallback = previous
+   literals), so Kitsch re-points them to its own tokens here. White paper
+   card, ink border, blue accents — same family as the .sbar capsule above.
+   Custom-property definitions ride the existing important declarations. */
+:root[data-theme="archive_diary"] {
+  --auto-list-bg: var(--k-white);
+  --auto-list-border: var(--k-ink);
+  --auto-item-bg: var(--k-blue-1);
+  --auto-item-border: var(--bd2);
+  --auto-item-text: var(--k-ink);
+  --auto-item-icon: var(--k-blue);
+  --auto-item-hover-bg: var(--acL);
+  --auto-item-hover-border: var(--k-blue);
+  --auto-item-hover-text: var(--k-ink);
+  --auto-item-focus-ring: color-mix(in srgb, var(--k-blue) 42%, transparent);
+  --auto-item-mark-bg: var(--acG);
+  --auto-item-mark-text: var(--k-blue-deep);
+}
+/* Kitsch + dark: deep-ink navy panel (same literals as the Kitsch dark section). */
+:root[data-theme="archive_diary"] body[data-theme="dark"] {
+  --auto-list-bg: #18203A;
+  --auto-list-border: #2C3756;
+  --auto-item-bg: #1E2746;
+  --auto-item-border: #2C3756;
+  --auto-item-text: #EEF2FF;
+  --auto-item-icon: #A6C2FF;
+  --auto-item-hover-bg: #233459;
+  --auto-item-hover-border: #A6C2FF;
+  --auto-item-hover-text: #EEF2FF;
+  --auto-item-focus-ring: color-mix(in srgb, #A6C2FF 42%, transparent);
+  --auto-item-mark-bg: #233459;
+  --auto-item-mark-text: #A6C2FF;
+}
 /* Visa-track card text → ink on white card */
 :root[data-theme="archive_diary"] .visa-track-title { color: var(--k-ink) !important; }
 :root[data-theme="archive_diary"] .visa-track-desc { color: var(--t2) !important; }
