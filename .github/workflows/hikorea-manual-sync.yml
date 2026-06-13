@@ -42,9 +42,20 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends libreoffice-core libreoffice-writer poppler-utils
           python3 -m pip install --quiet olefile pyhwp || python3 -m pip install --quiet olefile
+          # Optional external backends (hephaex/hwp2md, kordoc, roboco-io/hwp2md) are
+          # NOT installed here — they are detected at runtime and skipped if absent.
+          # To enable one, install it on a custom runner and set its command via a
+          # repo variable (HWP2MD_HEPHAEX_CMD / KORDOC_CMD / HWP2MD_ROBOCO_CMD).
+
+      - name: Run converter self-tests
+        run: python3 scripts/tests/test_convert_manual_hwp.py
 
       - name: Run manual sync
         id: sync
+        env:
+          HWP2MD_HEPHAEX_CMD: ${{ vars.HWP2MD_HEPHAEX_CMD }}
+          KORDOC_CMD: ${{ vars.KORDOC_CMD }}
+          HWP2MD_ROBOCO_CMD: ${{ vars.HWP2MD_ROBOCO_CMD }}
         run: |
           ARGS=""
           if [ "${{ inputs.allow_network }}" = "true" ]; then ARGS="$ARGS --allow-network"; fi

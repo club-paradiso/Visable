@@ -126,6 +126,11 @@ def main() -> int:
                 subprocess.run(cmd, check=True, capture_output=True, timeout=900)
                 report = conv_out / f"{staged.stem}.extraction_report.md"
                 entry["report"] = report.read_text(encoding="utf-8") if report.exists() else None
+                bench = conv_out / f"{staged.stem}.benchmark.json"
+                if bench.exists():
+                    b = json.loads(bench.read_text(encoding="utf-8"))
+                    entry["overall_quality"] = b.get("overall_quality")
+                    entry["candidate_backend"] = b.get("candidate_backend")
             except Exception as e:  # noqa: BLE001
                 entry["detail"] += f" · conversion error: {e}"
             results.append(entry)
@@ -139,18 +144,28 @@ def main() -> int:
              "An updated HiKorea manual was detected. This PR is a **draft for human",
              "review** — it stages the new file and a *best-effort* extraction only.",
              "It does NOT modify any production data.", ""]
+    any_confident = any(r.get("overall_quality") == "confident" for r in changed)
     if changed:
         lines.append("## Changed manuals")
         for r in changed:
             lines += [
                 f"### {r['title']} (`{r['id']}`)",
                 f"- {r.get('detail','')}",
+                f"- extraction classification: **{r.get('overall_quality','unknown')}**"
+                f" (candidate backend: {r.get('candidate_backend') or 'none'})",
                 f"- new sha256: `{r.get('new_sha256','')}`",
                 f"- baseline:   `{r.get('baseline_sha256','')}`",
                 "",
             ]
             if r.get("report"):
-                lines += ["<details><summary>extraction report</summary>", "", r["report"], "</details>", ""]
+                lines += ["<details><summary>converter benchmark</summary>", "", r["report"], "</details>", ""]
+        if not any_confident:
+            lines += [
+                "> **Do not merge as a verified manual text update.** This PR only"
+                " detects and stages the upstream file change. A verified text"
+                " extraction must be supplied by a maintainer.",
+                "",
+            ]
         lines += [
             "## Reviewer checklist (before merge)",
             "- [ ] Confirm the staged HWP under `docs/source-manuals/incoming/` is the genuine official file.",
