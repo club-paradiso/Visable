@@ -46,7 +46,7 @@
     resultPath: '추천 경로',
     resultWhy: '왜 이 경로인가요?',
     resultNext: '다음에 해야 할 일',
-    resultWarn: '주의할 점',
+    resultWarn: '반드시 확인할 점',
     resultOfficial: '공식 확인',
     resultAlt: '다른 가능성',
     sourceBadgeVerified: '공식 기준 확인됨',
@@ -203,7 +203,8 @@
       sourceStatus: rules.sourceStatus,
       sourceDate: rules.lastUpdated,
       showKeta: false,
-      provisional: false
+      provisional: false,
+      verdict: null
     };
 
     var c3map = rules.rules.c3Fallback.purposeMap;
@@ -452,11 +453,20 @@
     return base;
   }
   function ketaStepText(c, rules, ageGroup) {
-    var keta = rules.rules.b21GeneralVisaFreeKeta.ketaProgram;
+    var b21node = rules.rules.b21GeneralVisaFreeKeta || {};
+    var keta = b21node.ketaProgram || {};
+    var exempt = b21node.ketaTemporaryExemption || {};
     var tmp = c.keta && c.keta.temporaryExemption;
     var t = 'K-ETA 공식 누리집에서 전자여행허가를 신청하세요(수수료 ' + Number(keta.feeKRW).toLocaleString('ko-KR') + '원).';
     if (tmp) {
-      t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
+      var through = exempt.lastVerifiedThrough;
+      if (through && exempt.extensionUnverified === false) {
+        /* Within a confirmed temporary-exemption window: no K-ETA application
+           is required. Keep the forward caveat for travel after the end date. */
+        t = 'K-ETA가 ' + through + '까지 한시 면제된 국가·지역이므로, 면제 기간 중 무사증 입국 시에는 K-ETA를 신청하지 않아도 됩니다. ' + through + ' 이후 출발한다면 면제 연장·종료 여부를 K-ETA 공식 누리집에서 확인하세요.';
+      } else {
+        t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
+      }
     } else if (ageGroup === '17_or_younger' || ageGroup === '65_or_older') {
       t += ' 저장된 자료 기준으로 만 17세 이하·만 65세 이상은 K-ETA 신청 면제 대상이지만, 공식 누리집에서 최신 기준을 확인하세요.';
     }
@@ -472,6 +482,42 @@
       { label: '재외공관 확인하기', url: 'https://www.mofa.go.kr' }
     ];
   }
+  /* Map the internal primary.status into a single, scannable top-line verdict.
+     The verdict is a clear conclusion based on the stored official lists; it does
+     NOT replace the mandatory caveats, which stay visible in the "반드시 확인할 점"
+     block (entry is never guaranteed, K-ETA is not a visa, no extension, etc.). */
+  function passportLabelKo(v) {
+    var m = { ordinary: '일반여권', diplomatic: '외교여권', official: '관용/공무여권', special: '특별/서비스여권', unknown: '일반여권' };
+    return m[v] || '일반여권';
+  }
+  function computeVerdict(r) {
+    var c = r.country, st = r.primary && r.primary.status, name = (c && c.nameKo) || '';
+    if (st === 'likely_available') {
+      var b21 = String(r.primary.path).indexOf('B-2-1') !== -1;
+      var stay = b21 ? (c.b21 && c.b21.stay) : (c.b1 && c.b1.stay);
+      return {
+        tone: 'go',
+        headline: '무사증으로 입국할 수 있습니다',
+        summary: name + ' ' + withParticle(passportLabelKo(r.passportType)) + ' 현재 저장된 공식 목록 기준 무사증 대상입니다'
+          + (stay ? '(허용 체류 ' + stay + ').' : '.') + ' 아래 준비사항과 반드시 확인할 점을 함께 확인하세요.'
+      };
+    }
+    if (st === 'visa_required') {
+      return {
+        tone: 'visa',
+        headline: '사증(비자)을 받아야 입국할 수 있습니다',
+        summary: '현재 저장된 공식 목록 기준 무사증 대상이 아니거나 예정 일정이 허용 기간을 넘습니다. 아래 경로로 재외공관·비자포털에서 신청하세요.'
+      };
+    }
+    if (st === 'not_available') {
+      return { tone: 'visa', headline: '무사증 입국이 어렵습니다 — 사증 경로 확인', summary: '아래 안내된 사증 경로를 확인하세요.' };
+    }
+    return {
+      tone: 'check',
+      headline: '공식 확인이 필요한 사례입니다',
+      summary: '국적·여권·목적 조합상 저장된 자료만으로 단정하기 어렵습니다. 아래 안내에 따라 관할 재외공관·공식 누리집에서 확인하세요.'
+    };
+  }
   function finalizeResult(r, rules) {
     if (r.showKeta) {
       if (r.warnings.indexOf(WARN_KETA_NOT_VISA) === -1) r.warnings.push(WARN_KETA_NOT_VISA);
@@ -479,6 +525,7 @@
     if (rules.sourceStatus !== 'verified') {
       r.warnings.push('현재 저장된 자료 기준입니다. 공식 목록이 업데이트되었을 수 있으므로 출발 전 공식 누리집에서 확인하세요.');
     }
+    r.verdict = computeVerdict(r);
     r.alternatives = rankShortStayOptions(r.alternatives);
     return r;
   }
@@ -593,7 +640,26 @@
 '.ssc-details{margin-top:.6rem;}' +
 '.ssc-details summary{cursor:pointer;font-size:.8rem;font-weight:700;color:var(--t2,#4f5552);min-height:32px;}' +
 '.ssc-srcline{font-size:.74rem;color:var(--t3,#757a76);margin-top:.55rem;}' +
-'@media (max-width:480px){.ssc-grid{grid-template-columns:1fr;}.ssc-card{padding:.9rem .8rem;}}' +
+'.ssc-verdict{display:flex;gap:.6rem;align-items:flex-start;border-radius:12px;padding:.8rem .9rem;margin:.2rem 0 .7rem;border:1px solid var(--bd,#d1c6b4);}' +
+'.ssc-verdict-icon{font-size:1.45rem;line-height:1.15;flex:0 0 auto;}' +
+'.ssc-verdict-head{font-size:1.08rem;font-weight:800;margin:0 0 .2rem;color:var(--t1,#202221);word-break:keep-all;}' +
+'.ssc-verdict-sum{font-size:.85rem;line-height:1.6;margin:0;color:var(--t2,#4f5552);word-break:keep-all;}' +
+'.ssc-verdict-go{background:var(--acG,rgba(14,163,123,.10));border-color:var(--cSt,#0EA37B);}' +
+'.ssc-verdict-go .ssc-verdict-head{color:var(--cSt,#0a7a5c);}' +
+'.ssc-verdict-visa{background:var(--cyL,#FFE2DB);border-color:var(--cy,#FF6B5B);}' +
+'.ssc-verdict-visa .ssc-verdict-head{color:var(--hlT,#8A3426);}' +
+'.ssc-verdict-check{background:var(--bg2,#f7f3ea);border-color:var(--cWk,#E68A3A);}' +
+'.ssc-verdict-check .ssc-verdict-head{color:var(--cWk,#a85f1c);}' +
+'.ssc-route{font-size:.95rem;font-weight:700;color:var(--t1,#202221);margin:.1rem 0 .2rem;word-break:keep-all;}' +
+'.ssc-must{background:var(--cyL,#FFF4E6);border:1px solid var(--cWk,#E68A3A);border-radius:10px;padding:.4rem .85rem .7rem;margin-top:.5rem;}' +
+'.ssc-result .ssc-must h4{margin:.55rem 0 .3rem;color:var(--cWk,#a85f1c);}' +
+'.ssc-must li{color:var(--t1,#202221);}' +
+'.ssc-note{border:1px solid var(--bd,#d1c6b4);border-left:3px solid var(--ac,#2f5e67);border-radius:8px;padding:.45rem .8rem .55rem;margin-top:.55rem;background:var(--bg2,#f7f3ea);}' +
+'.ssc-note strong{font-size:.8rem;color:var(--ac,#2f5e67);}' +
+'.ssc-note li{font-size:.82rem;color:var(--t2,#4f5552);}' +
+'.ssc-srcrefs{margin:.2rem 0 .2rem;padding-left:1.1rem;}' +
+'.ssc-srcrefs li{font-size:.74rem;color:var(--t3,#757a76);line-height:1.5;}' +
+'@media (max-width:480px){.ssc-grid{grid-template-columns:1fr;}.ssc-card{padding:.9rem .8rem;}.ssc-verdict-head{font-size:1rem;}}' +
 '@media (prefers-reduced-motion: no-preference){.ssc-result{animation:sscFade .25s ease-out;}@keyframes sscFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}}';
     var style = document.createElement('style');
     style.id = 'shortStayCheckerStyles';
@@ -663,16 +729,46 @@
     var alt = result.alternatives.map(function (a) {
       return '<div class="ssc-alt"><strong>' + esc(a.path) + '</strong><p>' + esc(a.note) + '</p></div>';
     }).join('');
-    var srcRefs = (result.sourceRefs || []).join(', ');
+    /* (A) Map the answer's source IDs to readable titles + 기준일 + 신뢰도 via the
+       sourceCatalog baked into rules.json (single source of truth, no extra fetch). */
+    var catalog = (state.rules && state.rules.sourceCatalog) || [];
+    var catById = {};
+    catalog.forEach(function (s) { catById[s.id] = s; });
+    var srcItems = (result.sourceRefs || []).map(function (id) {
+      var s = catById[id];
+      return s ? (esc(s.title) + ' · 기준일 ' + esc(s.sourceDate) + ' · 신뢰도 ' + esc(s.confidence)) : esc(id);
+    });
+    var srcListHtml = srcItems.length
+      ? '<ul class="ssc-srcrefs">' + srcItems.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>'
+      : '<p class="ssc-srcline">—</p>';
+    /* (B) Per-country data notes (source conflicts, designation revocations) are
+       recorded in rules.json; surface them so the basis/uncertainty is visible. */
+    var countryNotes = (result.country && result.country.notes) || [];
+    var notesHtml = countryNotes.length
+      ? '<div class="ssc-note"><strong>자료 유의</strong><ul>' +
+        countryNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul></div>'
+      : '';
+    var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
+    var toneClass = { go: 'ssc-verdict-go', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
+    var toneIcon = { go: '✅', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
     return '' +
+      '<div class="ssc-verdict ' + toneClass + '" role="status">' +
+        '<span class="ssc-verdict-icon" aria-hidden="true">' + toneIcon + '</span>' +
+        '<div><p class="ssc-verdict-head">' + esc(v.headline) + statusBadge(result.primary.status) + '</p>' +
+          (v.summary ? '<p class="ssc-verdict-sum">' + esc(v.summary) + '</p>' : '') +
+        '</div>' +
+      '</div>' +
       '<h4>' + esc(STR.resultPath) + '</h4>' +
-      '<h3>' + esc(result.primary.path) + statusBadge(result.primary.status) + '</h3>' +
+      '<p class="ssc-route">' + esc(result.primary.path) + '</p>' +
       '<h4>' + esc(STR.resultWhy) + '</h4>' +
       result.primary.explanation.map(function (p) { return '<p>' + esc(p) + '</p>'; }).join('') +
       '<h4>' + esc(STR.resultNext) + '</h4>' +
       '<ol>' + getShortStayProcedureSteps(result).map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>' +
-      '<h4>' + esc(STR.resultWarn) + '</h4>' +
-      '<div class="ssc-warn"><ul>' + formatShortStayWarnings(result).map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul></div>' +
+      '<div class="ssc-must">' +
+        '<h4>' + esc(STR.resultWarn) + '</h4>' +
+        '<ul>' + formatShortStayWarnings(result).map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>' +
+      '</div>' +
+      notesHtml +
       '<h4>' + esc(STR.resultOfficial) + '</h4>' +
       '<div class="ssc-links">' + result.officialLinks.map(function (l) {
         var external = l.url.indexOf('http') === 0;
@@ -681,7 +777,9 @@
       (alt ? '<h4>' + esc(STR.resultAlt) + '</h4>' + alt : '') +
       '<details class="ssc-details"><summary>출처·자료 기준 자세히</summary>' +
         '<p class="ssc-srcline">' + renderSourceFreshnessBadge(result.sourceStatus, result.sourceDate) + '</p>' +
-        '<p class="ssc-srcline">출처 ID: ' + esc(srcRefs || '—') + ' · 자세한 출처 메타데이터: data/short-stay/sources.json</p>' +
+        '<p class="ssc-srcline">이 답변이 근거한 공식 출처:</p>' +
+        srcListHtml +
+        '<p class="ssc-srcline">전체 출처 메타데이터: data/short-stay/sources.json</p>' +
         '<p class="ssc-srcline">이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.</p>' +
       '</details>';
   }
@@ -869,4 +967,15 @@
     var section = document.getElementById('shortStayChecker');
     if (section) section.hidden = true;
   });
+
+  /* Public entry point so a landing-page button can open the checker directly,
+     not only as a contextual panel after a relevant search. */
+  api.open = function () {
+    var section = mountIfNeeded();
+    if (!section) return;
+    section.hidden = false;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var input = section.querySelector('input[name="country"]');
+    if (input) setTimeout(function () { input.focus(); }, 350);
+  };
 })();

@@ -337,7 +337,12 @@ const sources = {
       hash: fixtureHash('keta_program.json'),
       scope: 'K-ETA 제도(비자 아님)·수수료·한시 면제국',
       confidence: 'medium',
-      notes: '실시간 조회 불가(네트워크 차단) — 마지막 확인 사본 기준. 한시 면제 연장 여부 미확인 → needs_refresh.'
+      notes: '제도 세부(수수료·유효기간)는 실시간 조회 불가로 저장 사본 기준(medium). K-ETA 한시 면제 2026-12-31 연장은 2026-06-13 외부 공식 출처(법무부·재외공관 K-ETA 면제 연장 공지)로 교차확인됨.',
+      crossCheckedAt: '2026-06-13',
+      crossCheckUrls: [
+        'https://www.mofa.go.kr/ca-en/brd/m_5231/view.do?seq=761797',
+        'https://english.visitkorea.or.kr/svc/contents/contentsView.do?vcontsId=251923'
+      ]
     },
     {
       id: 'moj_jeju_notice_2022_189',
@@ -401,6 +406,12 @@ if (existsSync(OUT_RULES)) {
     };
   } catch { /* keep initial diff */ }
 }
+
+// Compact source catalogue so the UI can show readable per-answer citations
+// (제목 + 기준일 + 신뢰도) without a second fetch of sources.json.
+rules.sourceCatalog = sources.sources.map(function (s) {
+  return { id: s.id, title: s.title, sourceDate: s.sourceDate, confidence: s.confidence };
+});
 
 mkdirSync(AUDIT_DIR, { recursive: true });
 writeFileSync(OUT_RULES, JSON.stringify(rules, null, 2) + '\n');

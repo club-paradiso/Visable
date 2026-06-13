@@ -1,0 +1,145 @@
+name: hikorea-manual-converter-benchmark
+
+# MANUAL ONLY. Installs and benchmarks the optional HWP->text converter backends
+# against the HiKorea manuals committed in the repo, and uploads the benchmark
+# outputs as artifacts. It does NOT modify production data, does NOT update
+# baseline hashes, does NOT open/merge any PR, and is NOT depended on by the
+# normal hikorea-manual-sync workflow. See docs/hikorea_manual_sync.md.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hikorea-manual-converter-benchmark
+  cancel-in-progress: false
+
+env:
+  OUTDIR: build/manual-converter-benchmark
+  BINDIR: build/converter-bin
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - name: Set up Rust
+        run: rustup toolchain install stable --profile minimal --no-self-update || true
+
+      - name: Install baseline deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libreoffice-core libreoffice-writer poppler-utils
+          python3 -m pip install --quiet olefile pyhwp || python3 -m pip install --quiet olefile
+
+      - name: Verify current scripts/tests still pass
+        run: python3 scripts/tests/test_convert_manual_hwp.py
+
+      # Install each optional backend in a controlled, best-effort way. A failure
+      # is recorded as install_failed and never aborts the job. Both hwp2md
+      # binaries are copied to distinct names under $BINDIR to avoid the clash.
+      - name: Install optional converter backends (best-effort)
+        run: |
+          set +e
+          mkdir -p "$BINDIR" "$OUTDIR"
+          LOG="$OUTDIR/install.log"
+          : > "$LOG"
+          python3 - <<'PY'
+          import json, pathlib, os
+          pathlib.Path(os.environ["OUTDIR"], "install_log.json").write_text("{}", encoding="utf-8")
+          PY
+          record() { # name status command
+            python3 - "$1" "$2" "$3" <<'PY'
+          import json, os, sys
+          p = os.path.join(os.environ["OUTDIR"], "install_log.json")
+          d = json.load(open(p)) if os.path.exists(p) else {}
+          d[sys.argv[1]] = {"status": sys.argv[2], "command": sys.argv[3]}
+          json.dump(d, open(p, "w"), ensure_ascii=False, indent=2)
+          PY
+          }
+
+          # 1) hephaex/hwp2md (Rust, GPL-3.0-only — run as subprocess, not vendored)
+          #    Upstream: `cargo install hwp2md`; CLI `hwp2md to-md <file>` -> stdout.
+          echo "== hephaex: cargo install hwp2md ==" | tee -a "$LOG"
+          cargo install hwp2md >>"$LOG" 2>&1
+          if [ -x "$HOME/.cargo/bin/hwp2md" ]; then
+            cp "$HOME/.cargo/bin/hwp2md" "$BINDIR/hwp2md-hephaex"
+            echo "HWP2MD_HEPHAEX_CMD=$PWD/$BINDIR/hwp2md-hephaex to-md {input}" >> "$GITHUB_ENV"
+            record hwp2md_hephaex installed "cargo install hwp2md; hwp2md-hephaex to-md {input}"
+          else
+            record hwp2md_hephaex install_failed "cargo install hwp2md (see install.log)"
+          fi
+
+          # 2) roboco-io/hwp2md (Go, MIT). Upstream: go install .../cmd/hwp2md@latest; CLI `hwp2md <file>` -> stdout.
+          echo "== roboco: go install github.com/roboco-io/hwp2md/cmd/hwp2md@latest ==" | tee -a "$LOG"
+          go install github.com/roboco-io/hwp2md/cmd/hwp2md@latest >>"$LOG" 2>&1
+          GOBIN_PATH="$(go env GOPATH)/bin/hwp2md"
+          if [ -x "$GOBIN_PATH" ]; then
+            cp "$GOBIN_PATH" "$BINDIR/hwp2md-roboco"
+            echo "HWP2MD_ROBOCO_CMD=$PWD/$BINDIR/hwp2md-roboco {input}" >> "$GITHUB_ENV"
+            record hwp2md_roboco installed "go install .../cmd/hwp2md@latest; hwp2md-roboco {input}"
+          else
+            record hwp2md_roboco install_failed "go install github.com/roboco-io/hwp2md/cmd/hwp2md@latest (see install.log)"
+          fi
+
+          # 3) chrisryugj/kordoc (Node, MIT). Upstream: npm install kordoc; CLI `kordoc <file>` -> stdout.
+          echo "== kordoc: npm install -g kordoc ==" | tee -a "$LOG"
+          npm install -g kordoc >>"$LOG" 2>&1
+          if command -v kordoc >/dev/null 2>&1; then
+            echo "KORDOC_CMD=kordoc {input}" >> "$GITHUB_ENV"
+            record kordoc installed "npm install -g kordoc; kordoc {input}"
+          else
+            record kordoc install_failed "npm install -g kordoc (see install.log)"
+          fi
+          set -e
+          echo "Install step complete (failures are non-fatal)."
+
+      - name: Run converter benchmark for each configured manual
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess, sys, pathlib
+          cfg = json.load(open("data/sources/hikorea_manual_sync.json"))
+          outdir = os.environ["OUTDIR"]
+          for m in cfg["manuals"]:
+              hwp = pathlib.Path(m["hwp_path"])
+              if not hwp.exists():
+                  print(f"skip {m['id']}: {hwp} missing"); continue
+              cmd = [sys.executable, "scripts/convert_manual_hwp.py", str(hwp),
+                     "--outdir", f"{outdir}/{m['id']}"]
+              prev = pathlib.Path(m["txt_path"])
+              if prev.exists():
+                  cmd += ["--compare", str(prev)]
+              print("RUN", " ".join(cmd))
+              subprocess.run(cmd, check=True)
+          PY
+
+      - name: Aggregate benchmark summary
+        run: python3 scripts/benchmark_summary.py --outdir "$OUTDIR"
+
+      - name: Upload benchmark artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: hikorea-manual-converter-benchmark
+          path: |
+            build/manual-converter-benchmark/benchmark_summary.md
+            build/manual-converter-benchmark/conversion_report.json
+            build/manual-converter-benchmark/conversion_report.md
+            build/manual-converter-benchmark/install.log
+            build/manual-converter-benchmark/install_log.json
+            build/manual-converter-benchmark/**/*.extraction_report.md
+            build/manual-converter-benchmark/**/*.benchmark.json
+            build/manual-converter-benchmark/**/*.txt
+          if-no-files-found: warn

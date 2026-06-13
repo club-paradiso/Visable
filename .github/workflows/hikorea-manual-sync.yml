@@ -1,0 +1,94 @@
+name: hikorea-manual-sync
+
+# Detect updates to the HiKorea 사증/체류 자격별 안내 매뉴얼, stage the new file +
+# a best-effort extraction, and open a DRAFT PR for human review. It never edits
+# production data — promotion of any legal content is a reviewed, manual step.
+# See docs/hikorea_manual_sync.md.
+
+on:
+  schedule:
+    - cron: '0 1 1,15 * *'   # twice a month
+  workflow_dispatch:
+    inputs:
+      allow_network:
+        description: 'Attempt best-effort download from configured download_url'
+        type: boolean
+        default: false
+      manual_hwp_visa:
+        description: 'Path (in checkout) to a manually-provided visa manual HWP'
+        required: false
+        default: ''
+      manual_hwp_stay:
+        description: 'Path (in checkout) to a manually-provided stay manual HWP'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: hikorea-manual-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install conversion tooling
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libreoffice-core libreoffice-writer poppler-utils
+          python3 -m pip install --quiet olefile pyhwp || python3 -m pip install --quiet olefile
+          # Optional external backends (hephaex/hwp2md, kordoc, roboco-io/hwp2md) are
+          # NOT installed here — they are detected at runtime and skipped if absent.
+          # To enable one, install it on a custom runner and set its command via a
+          # repo variable (HWP2MD_HEPHAEX_CMD / KORDOC_CMD / HWP2MD_ROBOCO_CMD).
+
+      - name: Run converter self-tests
+        run: python3 scripts/tests/test_convert_manual_hwp.py
+
+      - name: Run manual sync
+        id: sync
+        env:
+          HWP2MD_HEPHAEX_CMD: ${{ vars.HWP2MD_HEPHAEX_CMD }}
+          KORDOC_CMD: ${{ vars.KORDOC_CMD }}
+          HWP2MD_ROBOCO_CMD: ${{ vars.HWP2MD_ROBOCO_CMD }}
+        run: |
+          ARGS=""
+          if [ "${{ inputs.allow_network }}" = "true" ]; then ARGS="$ARGS --allow-network"; fi
+          if [ -n "${{ inputs.manual_hwp_visa }}" ]; then ARGS="$ARGS --input visa_manual=${{ inputs.manual_hwp_visa }}"; fi
+          if [ -n "${{ inputs.manual_hwp_stay }}" ]; then ARGS="$ARGS --input stay_manual=${{ inputs.manual_hwp_stay }}"; fi
+          python3 scripts/sync_hikorea_manuals.py $ARGS
+          echo "changed=$(python3 -c "import json;print(str(json.load(open('build/manual-sync/summary.json'))['changed']).lower())")" >> "$GITHUB_OUTPUT"
+
+      - name: Stage artifacts for the PR
+        if: steps.sync.outputs.changed == 'true'
+        run: |
+          mkdir -p docs/source-manuals/incoming/extraction-reports
+          # keep the extraction reports alongside the staged HWP for reviewers
+          find build/manual-sync -name '*.extraction_report.md' -exec cp {} docs/source-manuals/incoming/extraction-reports/ \; || true
+
+      - name: Open draft PR
+        if: steps.sync.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: auto/hikorea-manual-sync
+          base: main
+          draft: true
+          title: 'HiKorea manual update detected — review required'
+          body-path: build/manual-sync/pr_body.md
+          labels: source-manual-sync
+          add-paths: |
+            docs/source-manuals/incoming/**
+          commit-message: |
+            chore(manuals): stage updated HiKorea manual for review
+
+            Auto-detected by hikorea-manual-sync. Best-effort extraction only;
+            verified extraction + any data changes are a reviewed manual step.
+
+      - name: No changes
+        if: steps.sync.outputs.changed != 'true'
+        run: echo "No manual changes detected (sha256 match baseline, or no source available)."
