@@ -12146,8 +12146,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <!-- Kitsch-only zine marquee tape (decorative) -->
         <div class="k-marquee" aria-hidden="true">
             <div class="k-marquee-track">
-                <span>PARADISO ZINE ✦ 비자·체류 가이드 ✦ KOREA RESIDENCE ✦ NEW ISSUE ✦ 출처 확인 ✦ </span>
-                <span>PARADISO ZINE ✦ 비자·체류 가이드 ✦ KOREA RESIDENCE ✦ NEW ISSUE ✦ 출처 확인 ✦ </span>
+                <span>PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
+                <span>PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
             </div>
         </div>
 
@@ -19086,29 +19086,13 @@ document.addEventListener('DOMContentLoaded', async () => {
             if (_kCalB) _kCalB.textContent = _kd.getDate();
             if (_kCalI) _kCalI.textContent = _kMonths[_kd.getMonth()];
         }
-        (async function resolveKitschCity() {
-            const _kTimeout = (ms) => new Promise((_, r) => setTimeout(() => r('timeout'), ms));
-            let city = '';
-            try {
-                const r = await Promise.race([fetch('https://ipapi.co/json/'), _kTimeout(3000)]);
-                const d = await r.json();
-                if (d.city) city = d.city.toUpperCase();
-            } catch (_) {}
-            if (!city) {
-                try {
-                    const r = await Promise.race([fetch('https://ip-api.com/json/?fields=city'), _kTimeout(3000)]);
-                    const d = await r.json();
-                    if (d.city) city = d.city.toUpperCase();
-                } catch (_) {}
-            }
-            if (!city) city = 'JEJU';
-            const el = document.getElementById('k-masthead-meta');
-            if (el) el.textContent = `PARADISO · ${_kDateStr} · ${city}`;
-        })();
+        // Masthead city was previously IP-resolved via external geolocation APIs;
+        // replaced with a static label to avoid unconsented external network calls.
+        const el = document.getElementById('k-masthead-meta');
+        if (el) el.textContent = `PARADISO · ${_kDateStr} · REPUBLIC OF KOREA`;
 
         // --- Random country passport stamp (archive_diary only) ---
         (async () => {
-            const _ksTimeout = (ms) => new Promise((_, r) => setTimeout(() => r('timeout'), ms));
             const flagFromCca2 = (cca2) => [...cca2.toUpperCase()]
                 .map((c) => String.fromCodePoint(0x1F1E6 + c.charCodeAt(0) - 65)).join('');
             function countryInkColor(cca2) {
@@ -19151,34 +19135,17 @@ ${ticks}
 </g>
 </svg>`;
             }
-            let countries = null;
-            try {
-                const res = await Promise.race([
-                    fetch('https://restcountries.com/v3.1/all?fields=name,cca2,flag'),
-                    _ksTimeout(4000)
-                ]);
-                const d = await res.json();
-                if (Array.isArray(d) && d.length) countries = d;
-            } catch (_) {}
-            if (!countries) {
-                try {
-                    const res = await Promise.race([
-                        fetch('https://flagcdn.com/en/codes.json'),
-                        _ksTimeout(4000)
-                    ]);
-                    const d = await res.json();
-                    const list = Object.entries(d)
-                        .filter(([code]) => /^[a-z]{2}$/.test(code))
-                        .map(([code, label]) => ({
-                            name: { common: label },
-                            cca2: code.toUpperCase(),
-                            flag: flagFromCca2(code)
-                        }));
-                    if (list.length) countries = list;
-                } catch (_) {}
-            }
-            if (!countries || !countries.length) return;
-            const country = countries[Math.floor(Math.random() * countries.length)];
+            // Country pool was previously fetched from external country/flag APIs;
+            // replaced with a static local list to avoid external network calls.
+            const KS_COUNTRIES = [
+                {name:{common:'NEPAL'},cca2:'NP',flag:'🇳🇵'},{name:{common:'VIETNAM'},cca2:'VN',flag:'🇻🇳'},
+                {name:{common:'PHILIPPINES'},cca2:'PH',flag:'🇵🇭'},{name:{common:'INDONESIA'},cca2:'ID',flag:'🇮🇩'},
+                {name:{common:'THAILAND'},cca2:'TH',flag:'🇹🇭'},{name:{common:'CAMBODIA'},cca2:'KH',flag:'🇰🇭'},
+                {name:{common:'MONGOLIA'},cca2:'MN',flag:'🇲🇳'},{name:{common:'UZBEKISTAN'},cca2:'UZ',flag:'🇺🇿'},
+                {name:{common:'CHINA'},cca2:'CN',flag:'🇨🇳'},{name:{common:'USA'},cca2:'US',flag:'🇺🇸'},
+                {name:{common:'JAPAN'},cca2:'JP',flag:'🇯🇵'},{name:{common:'INDIA'},cca2:'IN',flag:'🇮🇳'},
+            ];
+            const country = KS_COUNTRIES[Math.floor(Math.random() * KS_COUNTRIES.length)];
             if (!country.flag) country.flag = flagFromCca2(country.cca2);
             const searchWrapper = document.querySelector('.k-gw-search, .p-gw-search, [class*="gw-search"]');
             if (!searchWrapper) return;
