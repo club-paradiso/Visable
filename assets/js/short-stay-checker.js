@@ -654,6 +654,11 @@
 '.ssc-must{background:var(--cyL,#FFF4E6);border:1px solid var(--cWk,#E68A3A);border-radius:10px;padding:.4rem .85rem .7rem;margin-top:.5rem;}' +
 '.ssc-result .ssc-must h4{margin:.55rem 0 .3rem;color:var(--cWk,#a85f1c);}' +
 '.ssc-must li{color:var(--t1,#202221);}' +
+'.ssc-note{border:1px solid var(--bd,#d1c6b4);border-left:3px solid var(--ac,#2f5e67);border-radius:8px;padding:.45rem .8rem .55rem;margin-top:.55rem;background:var(--bg2,#f7f3ea);}' +
+'.ssc-note strong{font-size:.8rem;color:var(--ac,#2f5e67);}' +
+'.ssc-note li{font-size:.82rem;color:var(--t2,#4f5552);}' +
+'.ssc-srcrefs{margin:.2rem 0 .2rem;padding-left:1.1rem;}' +
+'.ssc-srcrefs li{font-size:.74rem;color:var(--t3,#757a76);line-height:1.5;}' +
 '@media (max-width:480px){.ssc-grid{grid-template-columns:1fr;}.ssc-card{padding:.9rem .8rem;}.ssc-verdict-head{font-size:1rem;}}' +
 '@media (prefers-reduced-motion: no-preference){.ssc-result{animation:sscFade .25s ease-out;}@keyframes sscFade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}}';
     var style = document.createElement('style');
@@ -724,7 +729,25 @@
     var alt = result.alternatives.map(function (a) {
       return '<div class="ssc-alt"><strong>' + esc(a.path) + '</strong><p>' + esc(a.note) + '</p></div>';
     }).join('');
-    var srcRefs = (result.sourceRefs || []).join(', ');
+    /* (A) Map the answer's source IDs to readable titles + 기준일 + 신뢰도 via the
+       sourceCatalog baked into rules.json (single source of truth, no extra fetch). */
+    var catalog = (state.rules && state.rules.sourceCatalog) || [];
+    var catById = {};
+    catalog.forEach(function (s) { catById[s.id] = s; });
+    var srcItems = (result.sourceRefs || []).map(function (id) {
+      var s = catById[id];
+      return s ? (esc(s.title) + ' · 기준일 ' + esc(s.sourceDate) + ' · 신뢰도 ' + esc(s.confidence)) : esc(id);
+    });
+    var srcListHtml = srcItems.length
+      ? '<ul class="ssc-srcrefs">' + srcItems.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>'
+      : '<p class="ssc-srcline">—</p>';
+    /* (B) Per-country data notes (source conflicts, designation revocations) are
+       recorded in rules.json; surface them so the basis/uncertainty is visible. */
+    var countryNotes = (result.country && result.country.notes) || [];
+    var notesHtml = countryNotes.length
+      ? '<div class="ssc-note"><strong>자료 유의</strong><ul>' +
+        countryNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul></div>'
+      : '';
     var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
     var toneClass = { go: 'ssc-verdict-go', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
     var toneIcon = { go: '✅', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
@@ -745,6 +768,7 @@
         '<h4>' + esc(STR.resultWarn) + '</h4>' +
         '<ul>' + formatShortStayWarnings(result).map(function (w) { return '<li>' + esc(w) + '</li>'; }).join('') + '</ul>' +
       '</div>' +
+      notesHtml +
       '<h4>' + esc(STR.resultOfficial) + '</h4>' +
       '<div class="ssc-links">' + result.officialLinks.map(function (l) {
         var external = l.url.indexOf('http') === 0;
@@ -753,7 +777,9 @@
       (alt ? '<h4>' + esc(STR.resultAlt) + '</h4>' + alt : '') +
       '<details class="ssc-details"><summary>출처·자료 기준 자세히</summary>' +
         '<p class="ssc-srcline">' + renderSourceFreshnessBadge(result.sourceStatus, result.sourceDate) + '</p>' +
-        '<p class="ssc-srcline">출처 ID: ' + esc(srcRefs || '—') + ' · 자세한 출처 메타데이터: data/short-stay/sources.json</p>' +
+        '<p class="ssc-srcline">이 답변이 근거한 공식 출처:</p>' +
+        srcListHtml +
+        '<p class="ssc-srcline">전체 출처 메타데이터: data/short-stay/sources.json</p>' +
         '<p class="ssc-srcline">이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.</p>' +
       '</details>';
   }
