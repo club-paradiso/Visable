@@ -16293,7 +16293,7 @@ function renderScenarioChecklist(visaCode, procedureKey, variant) {
             const rawText = String(item || '').trim();
             if (!rawText) return '';
             const isDocId = rawText.startsWith('doc_');
-            const text = isDocId ? (DOC_DICT[rawText] || ('(서류명 확인 필요: ' + rawText + ')')) : rawText;
+            const text = isDocId ? (DOC_DICT[rawText] || tx('docDefinitionNeeded')) : rawText;
             const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, rawText);
             const checked = scenarioChecklistStoreGet(storageKey) === '1' ? ' checked' : '';
             return `<li class="scenario-checklist-row">
@@ -17438,9 +17438,10 @@ function getRegistrationProcedureTabItems(v) {
     const docs = flattenDocGroups(proc.docs).filter(doc => !isDocPlaceholder(doc));
     if (!docs.length) return [];
     const refNote = formatDocumentTabRefNote(proc.manualRefs);
-    // Note: label map not used here — falls back to raw doc string; unresolved doc_* IDs would surface to users
+    // Unresolved doc_* IDs fall back to a safe generic label (tx('docDefinitionNeeded'))
+    // instead of surfacing the raw ID to users.
     return docs.map(doc => ({
-        name: DOC_DICT[doc] || '(서류명 확인 필요: ' + doc + ')',
+        name: DOC_DICT[doc] || tx('docDefinitionNeeded'),
         note: refNote || proc.summary || ''
     }));
 }
@@ -18056,6 +18057,10 @@ const BOOTSTRAP_KO_FALLBACK = {
     sourceApi: 'API',
     sourceStatic: '정적 데이터',
     visaDataLoadError: '비자 데이터를 불러오지 못했습니다.',
+    medTotalCount: '총 {count}개 기관',
+    agentTotalCount: '총 {count}개 기관',
+    agentRegionAll: '전체 지역',
+    docDefinitionNeeded: '문서 정의 필요',
     /* PR-K2 #6 (승인): every entry below is a live-tested search query —
        2026-06-12 audit removed six 0-result chips (체류지 변경 · 여권 변경 ·
        등록증 재발급 · 비예약 방문 · TB-1 · SCN-6; the scenario-record ids died
@@ -18063,7 +18068,7 @@ const BOOTSTRAP_KO_FALLBACK = {
        Labels live in data/i18n/{ko,en,zh-CN}.json landingHints — keep the
        index order in sync with this query list. */
     landingHints: ['유학', '영주', 'D-10', 'F-6', 'E-7-4', 'F-4', '계절근로', 'F-3 소득요건', 'G-1-5', 'D-4-2K', '제주 무사증', 'K-ETA'],
-    quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', 'TB-1', 'SCN-6', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
+    quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
     aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
     f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)',
     editorialThemeCivic: '모던',
