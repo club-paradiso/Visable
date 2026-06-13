@@ -14703,14 +14703,19 @@ function buildDocGuideApplicability(g, en) {
     </div>`;
 }
 
-function buildDocGuideDrawer(docId) {
+function buildDocGuideDrawer(docId, visaCode = '') {
     const g = docGuideData && docGuideData[docId];
     if (!g) return '';
     const en = currentLanguage === 'en';
     const chip = (txt, cls, mark) => `<span class="doc-guide-chip ${cls}"><b aria-hidden="true">${mark}</b>${escapeHtml(txt)}</span>`;
     const accepts = Array.isArray(g.accept) ? g.accept.map(a => chip(a, 'doc-guide-chip--ok', '✓')).join('') : '';
     const rejects = Array.isArray(g.reject) ? g.reject.map(r => chip(r, 'doc-guide-chip--no', '✗')).join('') : '';
-    const img = g.image_url
+    // S3-C1-01: doc_health's sample image is the E-2-only statutory form
+    // (별지 제21호의3 회화지도(E-2) 자격 사증신청자 건강확인서). doc_health is a
+    // shared health-document concept across 6 statuses, so this form image must
+    // render only on E-2; other statuses keep the textual health guidance.
+    const imageScopedOut = docId === 'doc_health' && normalizeVisaCode(visaCode) !== 'E-2';
+    const img = (g.image_url && !imageScopedOut)
         ? `<figure class="doc-guide-figure"><img src="${escapeHtml(g.image_url)}" alt="${escapeHtml((en ? 'Official form example' : '공식 서식 예시'))}" loading="lazy"><figcaption>${escapeHtml(en ? 'Official statutory form (Enforcement Rule annex)' : '출입국관리법 시행규칙 별지 서식 (진본)')}</figcaption></figure>`
         : '';
     // Source line renders unconditionally — a guide without provenance must
@@ -14780,7 +14785,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
         const guideAvailable = !isUnresolvedId && docGuideData && docGuideData[key];
         const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
-        const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key) : '';
+        const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key, visaCode) : '';
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
     const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docUxGroupLabels', 1, '상황별 추가서류'))}</div>` : '';
@@ -15892,9 +15897,9 @@ function normalizeProcedureVariants(rawVariants) {
     }).filter(item => item.available && item.label && hasAnyDocs(item.docs));
 }
 
-function renderDocGroup(title, docs, keywords, groupType = '') {
+function renderDocGroup(title, docs, keywords, groupType = '', visaCode = '') {
     if (!docs || !docs.length) return '';
-    return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords)}</div>`;
+    return `<div class="doc-group ${groupType}"><h5 class="doc-group-title">${title}</h5>${renderDocTags(docs, keywords, false, visaCode)}</div>`;
 }
 
 const MANUAL_LONG_TEXT_THRESHOLD = 150;
@@ -15966,11 +15971,11 @@ function renderProcedureSummaryBlock(value, keywords) {
    manual headings — the manuals use varying local headings per status and
    procedure). Empty groups are hidden; discretionary catch-all wording is
    shown as a caution note instead of checklist tiles. */
-function renderProcedureDocGroups(groups, keywords) {
+function renderProcedureDocGroups(groups, keywords, visaCode = '') {
     const display = paradisoBuildDocDisplayGroups(groups);
     return [
-        renderDocGroup(txAt('docUxGroupLabels', 0, '기본 준비서류'), display.basic, keywords, 'group-basic'),
-        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가서류'), display.situational, keywords, 'group-situational'),
+        renderDocGroup(txAt('docUxGroupLabels', 0, '기본 준비서류'), display.basic, keywords, 'group-basic', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가서류'), display.situational, keywords, 'group-situational', visaCode),
         renderDocDiscretionaryNote(display.discretionary, keywords)
     ].filter(Boolean).join('');
 }
@@ -16140,7 +16145,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
     const effectiveDocs = alreadyShownDocs
         ? subtractDocGroupsForRender(variant.docs, alreadyShownDocs)
         : variant.docs;
-    const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords);
+    const docsHtml = renderProcedureDocGroups(effectiveDocs, keywords, visaCode);
     const docCount = countRenderableDocs(effectiveDocs);
     const checklistVariant = { ...variant, docs: effectiveDocs };
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
@@ -16460,7 +16465,7 @@ function resetScenarioChecklist(button) {
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const hasVariants = !!(proc.variants && proc.variants.length);
     const totalDocCount = countRenderableDocs(proc.docs);
-    const docsHtml = renderProcedureDocGroups(proc.docs, keywords);
+    const docsHtml = renderProcedureDocGroups(proc.docs, keywords, v.code);
     const variantsHtml = renderProcedureVariants(v, proc, keywords, proc.docs);
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
