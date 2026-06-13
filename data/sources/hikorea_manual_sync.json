@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0",
+  "generated_for": "HiKorea 자격별 안내 매뉴얼 sync pipeline",
+  "notes": [
+    "Config for scripts/sync_hikorea_manuals.py + .github/workflows/hikorea-manual-sync.yml.",
+    "download_url is null until a maintainer supplies the verified official",
+    "download link; while null, the pipeline relies on the manual-upload fallback",
+    "(workflow_dispatch input). Auto-fetch never bypasses the human-review gate:",
+    "a change only ever opens a DRAFT PR — it never edits production data.",
+    "These manuals ship as 배포용(distribution) HWP, which open tools cannot fully",
+    "extract; the committed *_hwp_full.txt were produced by verified human/AI",
+    "extraction. See docs/hikorea_manual_sync.md."
+  ],
+  "manuals": [
+    {
+      "id": "visa_manual",
+      "title_ko": "사증민원 자격별 안내 매뉴얼",
+      "title_en": "Visa civil-affairs manual by status",
+      "landing_url": "https://www.hikorea.go.kr/",
+      "download_url": null,
+      "hwp_path": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
+      "txt_path": "docs/data/claude_opus_manual_extraction_2026_05/visa_hwp_full.txt",
+      "baseline_sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4"
+    },
+    {
+      "id": "stay_manual",
+      "title_ko": "체류민원 자격별 안내 매뉴얼",
+      "title_en": "Stay/residence civil-affairs manual by status",
+      "landing_url": "https://www.hikorea.go.kr/",
+      "download_url": null,
+      "hwp_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
+      "txt_path": "docs/data/claude_opus_manual_extraction_2026_05/stay_hwp_full.txt",
+      "baseline_sha256": "9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d"
+    }
+  ]
+}
