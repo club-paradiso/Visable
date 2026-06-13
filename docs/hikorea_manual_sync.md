@@ -102,6 +102,59 @@ classifies the result `blocked_distribution_hwp` and the draft PR carries the
 5. Run the data audits and decide, with review, whether any grounding-data
    changes follow (separate from this PR if needed).
 
+## Manual converter benchmark workflow
+
+`.github/workflows/hikorea-manual-converter-benchmark.yml` is a **manual-only**
+(`workflow_dispatch`) job for real-world benchmarking of the optional backends.
+It installs each converter in a controlled, best-effort way, runs
+`scripts/convert_manual_hwp.py` against every manual in
+`data/sources/hikorea_manual_sync.json`, and uploads the results as artifacts.
+It **never** updates production data or baseline hashes, never opens or merges a
+PR, and the scheduled `hikorea-manual-sync` job does not depend on it.
+
+### How to run
+
+- GitHub UI: **Actions → "hikorea-manual-converter-benchmark" → Run workflow**
+  (no inputs). Or via CLI: `gh workflow run hikorea-manual-converter-benchmark.yml`.
+
+Install strategy (verified from each upstream repo; uncertain installs are marked
+`install_failed` and the run continues):
+
+| backend | install | invocation | license |
+| --- | --- | --- | --- |
+| hephaex/hwp2md | `cargo install hwp2md` → copied to `build/converter-bin/hwp2md-hephaex` | `hwp2md-hephaex to-md {input}` (stdout) | GPL-3.0-only (run as a subprocess only — not vendored) |
+| roboco-io/hwp2md | `go install github.com/roboco-io/hwp2md/cmd/hwp2md@latest` → `build/converter-bin/hwp2md-roboco` | `hwp2md-roboco {input}` (stdout) | MIT |
+| chrisryugj/kordoc | `npm install -g kordoc` | `kordoc {input}` (stdout) | MIT |
+
+The two `hwp2md` binaries are copied to distinct names so they never clash, and
+each backend is selected through its own env var (`HWP2MD_HEPHAEX_CMD`,
+`HWP2MD_ROBOCO_CMD`, `KORDOC_CMD`).
+
+### Artifacts to inspect (download from the run)
+
+1. **`benchmark_summary.md`** — start here: which tools installed, commands used,
+   per-backend chars / Korean ratio / headings / codes / quality, whether any
+   backend beat the builtin extractor, and the review verdict.
+2. `conversion_report.json` / `conversion_report.md` — the aggregate + concatenated
+   per-manual benchmark reports.
+3. per-manual `*.<backend>.txt` — the actual extracted text from each backend.
+4. `install.log` / `install_log.json` — install success/failure per tool.
+
+### Interpreting the classification
+
+- **confident** — a backend produced substantial, manual-like text (enough Korean,
+  headings/anchors, and/or visa·stay codes). Still review it before use.
+- **low_confidence** — some text, but not enough evidence; treat as a draft.
+- **blocked_distribution_hwp** — the file is a 배포용/DRM HWP and the best output is
+  a stub; open tools cannot extract it on Linux.
+- **failed** — no backend ran, or the file is not an HWP.
+
+> ⚠ **Even a `confident` extraction is not automatically production-ready.** The
+> benchmark only measures extraction; it never promotes text. Protected/distribution
+> HWP may require **Hancom Office (Windows)** or a verified human extraction. Any
+> promotion of manual text or downstream grounding-data change stays a separate,
+> reviewed, manual step.
+
 ## Maintainer decision flow after a draft PR
 
 When `hikorea-manual-sync` opens a draft PR, read the converter benchmark matrix

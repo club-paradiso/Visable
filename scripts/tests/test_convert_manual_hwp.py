@@ -12,6 +12,7 @@ that production guidance data is never modified.
 from __future__ import annotations
 
 import hashlib
+import json
 import os
 import sys
 import tempfile
@@ -119,6 +120,40 @@ def test_production_guidance_data_untouched():
         cm.convert(dummy, tdp / "o", compare=None)
     after = {p: _sha(ROOT / p) for p in PROTECTED}
     assert before == after, "production guidance data must not change"
+
+
+def test_benchmark_summary_writes_under_outdir():
+    """benchmark_summary.py writes only under --outdir (an ignored build dir)."""
+    import subprocess
+    with tempfile.TemporaryDirectory() as td:
+        outdir = Path(td) / "build" / "manual-converter-benchmark"
+        (outdir / "visa").mkdir(parents=True)
+        fake_bench = {
+            "input": "x.hwp", "hwp_format": "distribution", "overall_quality": "blocked_distribution_hwp",
+            "candidate_backend": None, "candidate_chars": 0, "previous_chars": 1000, "completeness_pct": 0.0,
+            "backends": [{"name": "olefile", "url": "builtin", "installed": True, "exit_code": None,
+                          "command": "olefile", "error": None, "output_path": None,
+                          "metrics": {"chars": 106, "korean_ratio": 0.6, "headings": 0, "codes": 0},
+                          "quality": "blocked_distribution_hwp"}],
+        }
+        (outdir / "visa" / "x.benchmark.json").write_text(json.dumps(fake_bench), encoding="utf-8")
+        r = subprocess.run([sys.executable, str(ROOT / "scripts/benchmark_summary.py"),
+                            "--outdir", str(outdir)], capture_output=True)
+        assert r.returncode == 0, r.stderr.decode()
+        for name in ("benchmark_summary.md", "conversion_report.json", "conversion_report.md"):
+            assert (outdir / name).exists(), name
+        # nothing was written outside the provided outdir
+        assert not (Path(td) / "conversion_report.json").exists()
+
+
+def test_workflow_yaml_valid():
+    try:
+        import yaml
+    except Exception:
+        print("SKIP test_workflow_yaml_valid (pyyaml absent)")
+        return
+    for wf in ("hikorea-manual-sync.yml", "hikorea-manual-converter-benchmark.yml"):
+        yaml.safe_load((ROOT / ".github/workflows" / wf).read_text(encoding="utf-8"))
 
 
 def _run_all() -> int:
