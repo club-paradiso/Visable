@@ -1,0 +1,138 @@
+{
+  "schema_version": "1.0",
+  "title": "Paradiso source-grounding metadata model (SourceRecord / EvidenceRecord / AnswerGrounding)",
+  "generated_for": "docs/audits/source-grounding-and-law-mcp-audit-2026-06-14.md",
+  "status": "documentation + validation layer",
+  "purpose": [
+    "Formalize the three durable grounding concepts the platform already expresses",
+    "in scattered, inconsistently-named fields across several JSON files and the",
+    "runtime AskResponse model. This file introduces NO new runtime contract: it",
+    "is a canonical vocabulary plus a field crosswalk so audits and CI can reason",
+    "about source freshness, evidence lineage, and per-answer grounding uniformly.",
+    "It is validated by scripts/check_source_grounding_metadata.py and the test",
+    "backend/tests/test_source_grounding_metadata_schema.py. It is NOT read by",
+    "/api/ask and changing it never alters answer behavior."
+  ],
+  "record_types": {
+    "SourceRecord": {
+      "description": "An official source the platform relies on (a manual PDF, a law/regulation, a public API, an official web page, or an internal-review decision).",
+      "canonical_fields": {
+        "id": "stable string id",
+        "source_type": "one of source_type enum",
+        "title": "human title (Korean authoritative; English optional helper)",
+        "issuing_authority": "the body that publishes the source",
+        "official_url": "canonical official URL (may be null for offline PDFs)",
+        "retrieved_at": "ISO8601 timestamp the source was last fetched/checked (nullable)",
+        "published_or_updated_at": "ISO8601 date the source itself was published/updated",
+        "version_label": "publisher version label (e.g. 2026.5)",
+        "hash_or_etag": "content hash or HTTP ETag for drift detection (nullable)",
+        "language": "primary language code(s)",
+        "confidence": "one of confidence enum",
+        "review_status": "one of review_status enum"
+      },
+      "required": ["id", "source_type", "title"],
+      "recommended": ["issuing_authority", "official_url", "published_or_updated_at", "version_label", "hash_or_etag", "review_status"],
+      "enums": {
+        "source_type": ["manual", "law", "public_api", "official_web", "internal_review"],
+        "confidence": ["high", "medium", "low", "unknown"],
+        "review_status": ["source_confirmed", "needs_manual_review", "verified_candidate", "active", "deprecated", "not_configured"]
+      }
+    },
+    "EvidenceRecord": {
+      "description": "A specific excerpt/binding that ties a visa-or-status code + topic to a SourceRecord, with a precise location and a normalized summary.",
+      "canonical_fields": {
+        "id": "stable string id (may be synthesized from code+source+section)",
+        "source_id": "id of the SourceRecord this evidence comes from",
+        "visa_or_status_code": "e.g. D-2, E-7-1, F-6",
+        "topic": "e.g. extension, registration, activity_scope, visa_issuance",
+        "excerpt": "verbatim or close source excerpt (never invented)",
+        "location_reference": "page, section, article, route, or URL fragment",
+        "normalized_summary": "neutral paraphrase used for prompt context",
+        "last_verified_at": "ISO8601 timestamp of last human/automated verification",
+        "verification_method": "e.g. pdf_text_conservative_auto_extract, pdf_verified, law_api, manual_review",
+        "reviewer_note": "free-text reviewer note / limitation"
+      },
+      "required": ["source_id", "visa_or_status_code", "topic"],
+      "recommended": ["location_reference", "verification_method", "last_verified_at"]
+    },
+    "AnswerGrounding": {
+      "description": "Per-answer grounding lineage. Currently COMPUTED at runtime by /api/ask and surfaced on AskResponse; it is not persisted. The field map below shows where each canonical concept already lives.",
+      "canonical_fields": {
+        "answer_id_or_request_id": "stable id for the generated answer/request",
+        "cited_evidence_ids": "evidence/source ids actually used to ground the answer",
+        "missing_evidence_flags": "markers for evidence that was sought but unavailable",
+        "uncertainty_flags": "markers that force hedged / confirmation-required language",
+        "prohibited_claim_flags": "markers for claims the answer must not assert",
+        "generated_at": "ISO8601 timestamp the answer was produced"
+      },
+      "runtime_only": true,
+      "persisted": false
+    }
+  },
+  "field_crosswalk": {
+    "note": "Maps the canonical SourceRecord/EvidenceRecord field names to the real field names used across existing files. Validators use this to read heterogeneous files uniformly.",
+    "SourceRecord": {
+      "id": ["id", "source_id"],
+      "source_type": ["type", "source_type", "role"],
+      "title": ["title", "title_ko", "title_en"],
+      "issuing_authority": ["authority", "issuing_authority"],
+      "official_url": ["url", "official_url", "sourceUrl"],
+      "retrieved_at": ["last_checked_at", "retrievedAt", "retrieved_at"],
+      "published_or_updated_at": ["source_date", "sourceDate", "sourceRevisionDate", "effectiveDate", "updatedAt", "published_or_updated_at"],
+      "version_label": ["version", "manualVersion", "version_label"],
+      "hash_or_etag": ["last_known_hash", "file_sha256", "hash", "hash_or_etag", "etag"],
+      "language": ["language", "languages", "lang"],
+      "confidence": ["confidence", "extractionConfidence"],
+      "review_status": ["status", "reviewStatus", "verification_status", "review_status"]
+    },
+    "EvidenceRecord": {
+      "id": ["id", "evidenceId"],
+      "source_id": ["manual", "source", "source_id", "sourceId", "manualName", "file"],
+      "visa_or_status_code": ["code", "statusCode", "visa_or_status_code"],
+      "topic": ["procedureType", "procedure_type", "scope", "topic", "evidenceType"],
+      "excerpt": ["sourceExcerpt", "excerpt", "snippet", "snippets"],
+      "location_reference": ["pageRange", "pageStart", "pageEnd", "pages", "sectionTitle", "section", "lawArticle", "location_reference", "sourceLocator"],
+      "normalized_summary": ["normalized_summary", "userFacingExplanationKo", "issuanceSummaryKo", "summary"],
+      "last_verified_at": ["last_verified_at", "lastChecked", "reviewedAt", "updatedAt"],
+      "verification_method": ["method", "evidenceSource", "verification_method", "extraction_primary_format"],
+      "reviewer_note": ["reviewerNotes", "reviewNotes", "limitationReasonKo", "verificationNote", "notes", "reviewer_note"]
+    },
+    "AnswerGrounding": {
+      "answer_id_or_request_id": ["(not persisted; add request_id to AskResponse to populate)"],
+      "cited_evidence_ids": ["grounding_sources", "law_sources", "precedent_evidence_items"],
+      "missing_evidence_flags": ["missing_direct_authority", "law_grounding_warnings", "grounding_warnings", "law_lookup_failed"],
+      "uncertainty_flags": ["requires_official_confirmation", "grounded_answer_limited", "source_confidence_level", "answer_quality_mode", "law_grounding_status"],
+      "prohibited_claim_flags": ["(enforced via prompt confidence-gate + post-answer quality gate; not a single stored field)"],
+      "generated_at": ["(response time; add to AskResponse to persist)"]
+    }
+  },
+  "instances": {
+    "SourceRecord": [
+      {"file": "data/source_registry.json", "path": "sources[]", "dialect": "snake_case", "role": "monitoring allow-list (not read by /api/ask)"},
+      {"file": "docs/source-manuals/source_manifest.json", "path": "current.*", "dialect": "snake_case", "role": "canonical current-manual manifest"},
+      {"file": "data/short-stay/sources.json", "path": "sources[]", "dialect": "camelCase", "role": "short-stay source notes"},
+      {"file": "data/sources/hikorea_source_catalog.json", "path": "sources[]", "dialect": "snake_case", "role": "HiKorea web catalog (monitoring-only)"}
+    ],
+    "EvidenceRecord": [
+      {"file": "data/procedure_evidence_bindings.json", "path": "records[].manualSources[]", "dialect": "camelCase"},
+      {"file": "data/visa_issuance_records.json", "path": "records[].sourceRefs[]", "dialect": "camelCase"},
+      {"file": "backend/data/manual_grounding/structured_requirements_2026_05.json", "path": "[].manualSource", "dialect": "camelCase", "role": "source-confirmed structured requirements consumed by /api/ask"}
+    ],
+    "AnswerGrounding": [
+      {"file": "backend/paradiso_backend.py", "path": "AskResponse", "dialect": "snake_case", "runtime": true, "role": "computed per answer; see field_crosswalk.AnswerGrounding"}
+    ]
+  },
+  "manual_version_invariants": {
+    "note": "Asserted by the validator + test against data/source_registry.json and docs/source-manuals/source_manifest.json. Update intentionally when a new official manual is installed.",
+    "visa_issuance_manual": {"version_label": "2026.5", "published_or_updated_at": "2026-05-21", "expected_status": "active", "registry_id_keyword": "visa_manual", "manifest_key": "visa_issuance_manual"},
+    "stay_residence_manual": {"version_label": "2026.5", "published_or_updated_at": "2026-06-01", "expected_status": "active", "registry_id_keyword": "stay_manual", "manifest_key": "stay_residence_manual", "must_supersede_prior": true}
+  },
+  "freshness_policy": {
+    "stale_source_warning_marker": "STALE_SOURCE_WARNING",
+    "rules": [
+      "If an active SourceRecord hash_or_etag disagrees between data/source_registry.json and docs/source-manuals/source_manifest.json, that is hard drift (validator error).",
+      "If a registry active-manual published_or_updated_at is older than the manifest current source_date, emit STALE_SOURCE_WARNING.",
+      "retrieved_at / confidence / language / review_status fields that are null on official manuals are reported as freshness gaps (warning), not errors."
+    ]
+  }
+}

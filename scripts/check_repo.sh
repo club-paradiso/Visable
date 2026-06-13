@@ -133,6 +133,18 @@ echo "[5/12] Running source-monitoring report (local-only)..."
 # data/source_registry.json itself is malformed.
 python3 scripts/check_source_updates.py --local-only > /dev/null
 
+echo "[5b/14] Validating source-grounding metadata model (schema + registry/manifest parity)..."
+# Stdlib-only, offline. Enforces the SourceRecord/EvidenceRecord/AnswerGrounding
+# model in data/schemas/source_grounding_schema.json. Fails only on schema/enum
+# violations, manual-version invariant breaks, or registry<->manifest hash drift
+# (e.g. updating source_manifest.json without source_registry.json). Freshness
+# gaps are non-blocking warnings. See
+# docs/audits/source-grounding-and-law-mcp-audit-2026-06-14.md.
+python3 scripts/check_source_grounding_metadata.py
+python3 backend/tests/test_source_grounding_metadata_schema.py > /dev/null 2>&1 \
+  || { echo "ERROR: source-grounding metadata schema tests failed." >&2; \
+       python3 backend/tests/test_source_grounding_metadata_schema.py >&2; exit 1; }
+
 echo "[6/12] Validating manual-grounding candidates (if any)..."
 # Passes cleanly when no candidate.json files exist. Only fails if a
 # committed candidate file is structurally invalid.
