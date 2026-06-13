@@ -1055,6 +1055,42 @@ const F06_PROVIDER = [
           F('f6_confirmDate','확인일','Date of confirmation','date',false) ] },
 ];
 
+/* F07 신원보증서 — questionnaire options + two-party field schemas */
+const F07_Q = {
+  role: { ko:'어느 쪽 작성을 도와드릴까요?', en:'Whose side are you?', opts:[
+    {v:'guarantor',ko:'신원보증인(보증인)',en:'The guarantor'},{v:'applicant',ko:'피보증외국인(피보증인)',en:'The applicant'} ] },
+  rel: { ko:'보증인과 외국인의 관계는?', en:'Relationship to the applicant', opts:[
+    {v:'employer',ko:'고용주',en:'Employer'},{v:'family',ko:'가족',en:'Family'},{v:'relative',ko:'친척',en:'Relative'},{v:'acquaintance',ko:'지인',en:'Acquaintance'},{v:'other',ko:'기타',en:'Other'} ] },
+};
+const F07_APPLICANT = [
+  { row:[ F('f7_aSurname','성 (Surname)','Family name','text',true,{ph:'NGUYEN'}),
+          F('f7_aGiven','명 (Given names)','Given names','text',true,{ph:'VAN ANH'}) ] },
+  { row:[ F('f7_aDob','생년월일','Date of birth','text',true,{ph:'YYYY.MM.DD'}),
+          F('f7_aSex','성별','Sex','select',true,{options:[{value:'',label:'— 선택 —'},{value:'M',label:'남(Male)'},{value:'F',label:'여(Female)'}]}) ] },
+  { row:[ F('f7_aNat','국적','Nationality','text',true,{ph:'VIETNAM'}),
+          F('f7_aPassport','여권번호','Passport No.','text',false,{ph:'M12345678'}) ] },
+  { field: F('f7_aAddr','대한민국 주소','Address in Korea','text',true,{ph:'서울특별시 …'}) },
+  { row:[ F('f7_aPhone','전화번호','Phone','tel',false,{ph:'010-XXXX-XXXX'}),
+          F('f7_aPurpose','체류목적','Purpose of sojourn','text',true,{ph:'예: 유학(D-2), 취업(E-7)'}) ] },
+  { note:'<strong>漢字(한자 성명)</strong> 칸은 자동 표기하지 않습니다. 한자 성명이 있으면 출력 후 수기로 적으세요.' },
+];
+const F07_GUARANTOR = [
+  { row:[ F('f7_gName','신원보증인 성명','Guarantor name','text',true),
+          F('f7_gNat','국적','Nationality','text',true,{ph:'대한민국'}) ] },
+  { row:[ F('f7_gSex','성별','Sex','select',false,{options:[{value:'',label:'— 선택 —'},{value:'M',label:'남(Male)'},{value:'F',label:'여(Female)'}]}),
+          F('f7_gPassportDob','여권번호 또는 생년월일','Passport No. or DOB','text',true,{ph:'주민등록번호·생년월일 등'}) ] },
+  { field: F('f7_gAddr','주소','Address','text',true,{ph:'서울특별시 …'}) },
+  { row:[ F('f7_gPhone','전화번호','Phone','tel',false),
+          F('f7_gPeriod','보증기간 (최장 4년)','Period of guarantee','text',false,{ph:'예: 2026.06.13 ~ 2028.06.12'}) ] },
+  { section:'근무처 (선택)' },
+  { row:[ F('f7_gWorkplace','근무처','Workplace','text',false),
+          F('f7_gPosition','직위','Job position','text',false) ] },
+  { row:[ F('f7_gWorkAddr','근무처 주소','Work address','text',false),
+          F('f7_gNote','비고','Note','text',false) ] },
+  { field: F('f7_gSignDate','작성일','Date of signing','date',false) },
+  { note:'<strong>보증내용 (1)(2)(3)</strong>은 서식에 인쇄되어 있어 별도 기재가 필요 없고, <strong>서명 또는 인</strong>은 신원보증인이 직접 합니다.' },
+];
+
 /* FORM REGISTRY */
 const FORMS = {
   F01: {
@@ -1075,6 +1111,12 @@ const FORMS = {
     stepLabels: { 1:'기본 질문', 3:'거주자 정보', 4:'제공자 정보', 5:'누락 확인', 6:'작성 안내' },
     overlay: overlayValuesF06,
   },
+  F07: {
+    id:'F07', kind:'confirmation', nameKo:'신원보증서', nameEn:'Letter of Guarantee', dlNoun:'신원보증서',
+    legalKo:'출입국관리법 시행규칙 별지 제129호서식', rev:'2022. 2. 7.',
+    stepLabels: { 1:'기본 질문', 3:'피보증외국인', 4:'신원보증인', 5:'누락 확인', 6:'작성 안내' },
+    overlay: overlayValuesF07,
+  },
 };
 
 /* DOCUMENT PICKER registry (landing). Phase 1 = integrated/residence; others arrive in later phases. */
@@ -1084,7 +1126,7 @@ const DOCS = [
   { id:'residence', num:'항목 2', ko:'거주/숙소제공확인서', en:'Confirmation of Residence/Accommodation',
     desc:'체류지 입증용. 질문 2개로 작성 주체와 칸을 안내하고 정본 위에 채워 드립니다.', ready:true, formId:'F06' },
   { id:'guarantee', num:'항목 3', ko:'신원보증서', en:'Letter of Guarantee',
-    desc:'특정 체류자격에서 요구되는 보증인·피보증인 서식.', ready:false },
+    desc:'특정 체류자격에서만 요구. 보증인/피보증인 분기로 작성 칸을 안내하고 정본 위에 채워 드립니다.', ready:true, formId:'F07' },
 ];
 
 function currentForm() { return state.formId ? FORMS[state.formId] : null; }
@@ -1149,6 +1191,11 @@ const state = {
   f6_rName: '', f6_rNat: '', f6_rReg: '', f6_rPhone: '', f6_rAddr: '',
   f6_pName: '', f6_pNat: '', f6_pReg: '', f6_pPhone: '', f6_pCompany: '',
   f6_startDate: '', f6_confirmDate: '',
+  // F07 신원보증서 — questionnaire + two-party fields (memory only)
+  f7_role: '', f7_rel: '', f7_relOther: '',
+  f7_aSurname: '', f7_aGiven: '', f7_aDob: '', f7_aSex: '', f7_aNat: '', f7_aPassport: '', f7_aAddr: '', f7_aPhone: '', f7_aPurpose: '',
+  f7_gName: '', f7_gNat: '', f7_gSex: '', f7_gPassportDob: '', f7_gPhone: '', f7_gAddr: '',
+  f7_gWorkplace: '', f7_gPosition: '', f7_gWorkAddr: '', f7_gNote: '', f7_gPeriod: '', f7_gSignDate: '',
 };
 
 const STEPS = [
@@ -1263,6 +1310,27 @@ function overlayValuesF06() {
   // dates
   const sd = splitDate(state.f6_startDate); v.start_y = sd.y; v.start_m = sd.m; v.start_d = sd.d;
   const cd = splitDate(state.f6_confirmDate); v.conf_y = cd.y; v.conf_m = cd.m; v.conf_d = cd.d;
+  return v;
+}
+function f07RelText() {
+  return { employer: '고용주', family: '가족', relative: '친척', acquaintance: '지인' }[state.f7_rel] ||
+    (state.f7_rel === 'other' ? state.f7_relOther : '');
+}
+function overlayValuesF07() {
+  const v = {};
+  // 피보증외국인 (applicant) — 漢字 칸은 폰트 미수록으로 자동 표기하지 않음
+  v.app_surname = state.f7_aSurname; v.app_given = state.f7_aGiven; v.app_dob = state.f7_aDob;
+  if (state.f7_aSex === 'M') v.app_sex_m = true; else if (state.f7_aSex === 'F') v.app_sex_f = true;
+  v.app_nat = state.f7_aNat; v.app_passport = state.f7_aPassport; v.app_addr = state.f7_aAddr;
+  v.app_phone = state.f7_aPhone; v.app_purpose = state.f7_aPurpose;
+  // 신원보증인 (guarantor)
+  v.g_name = state.f7_gName; v.g_nat = state.f7_gNat;
+  if (state.f7_gSex === 'M') v.g_sex_m = true; else if (state.f7_gSex === 'F') v.g_sex_f = true;
+  v.g_passport_dob = state.f7_gPassportDob; v.g_phone = state.f7_gPhone; v.g_addr = state.f7_gAddr;
+  v.g_relationship = f07RelText();
+  v.g_workplace = state.f7_gWorkplace; v.g_position = state.f7_gPosition; v.g_work_addr = state.f7_gWorkAddr; v.g_note = state.f7_gNote;
+  v.g_period = state.f7_gPeriod;
+  const sg = splitDate(state.f7_gSignDate); v.g_sign_y = sg.y; v.g_sign_m = sg.m; v.g_sign_d = sg.d;
   return v;
 }
 
@@ -1753,7 +1821,7 @@ function renderOutput() {
    LIVE PREVIEW
    ═══════════════════════════════════════════════════════════════ */
 function updatePreview() {
-  if (isConfirmation()) { updateF06Preview(); return; }
+  if (isConfirmation()) { (state.formId === 'F07' ? updateF07Preview : updateF06Preview)(); return; }
   const t = getAppType();
   const body = document.getElementById('fhPreviewBody');
   const badge = document.getElementById('fhPreviewBadge');
@@ -1807,7 +1875,9 @@ function updateNavButtons() {
     nextBtn.style.display = 'none';
   } else {
     nextBtn.style.display = '';
-    const step1Done = isConfirmation() ? !!(state.f6_resType && state.f6_holder && state.f6_resForm) : !!state.appTypeId;
+    const step1Done = isConfirmation()
+      ? (state.formId === 'F07' ? !!state.f7_rel : !!(state.f6_resType && state.f6_holder && state.f6_resForm))
+      : !!state.appTypeId;
     nextBtn.disabled = state.currentStep === 1 && !step1Done;
     nextBtn.textContent = next === 6 ? (isConfirmation() ? '작성 안내 보기 →' : '작성 가이드 보기 →') : '다음 →';
   }
@@ -1825,11 +1895,12 @@ function goToStep(n) {
   updateNavButtons();
   setStepHeadings();
   if (isConfirmation()) {
-    if (n === 1) renderF06Questions();
-    if (n === 3) renderF06Recipient();
-    if (n === 4) renderF06Provider();
-    if (n === 5) renderF06Validation();
-    if (n === 6) renderF06Output();
+    const F7 = state.formId === 'F07';
+    if (n === 1) (F7 ? renderF07Questions : renderF06Questions)();
+    if (n === 3) (F7 ? renderF07Applicant : renderF06Recipient)();
+    if (n === 4) (F7 ? renderF07Guarantor : renderF06Provider)();
+    if (n === 5) renderIssueList((F7 ? f07Issues : f06Issues)(), 'fhValResult');
+    if (n === 6) (F7 ? renderF07Output : renderF06Output)();
     return;
   }
   if (n === 1) renderTypeGrid();
@@ -1844,7 +1915,7 @@ function goToStep(n) {
    OUTPUT ACTIONS
    ═══════════════════════════════════════════════════════════════ */
 function buildCopyText() {
-  if (isConfirmation()) return buildF06CopyText();
+  if (isConfirmation()) return state.formId === 'F07' ? buildF07CopyText() : buildF06CopyText();
   const t = getAppType();
   if (!t) return '신청 유형을 먼저 선택하세요.';
   const f = currentForm();
@@ -2039,14 +2110,125 @@ function buildF06CopyText() {
   L.push('출처: 거주/숙소제공확인서 (HiKorea 민원서식, 개정 2024. 5.)');
   return L.join('\n');
 }
+
+/* ── F07 신원보증서 render functions ── */
+function renderF07Questions() {
+  const grid = document.getElementById('fhTypeGrid');
+  grid.className = '';
+  function cards(qKey, cur) {
+    const q = F07_Q[qKey];
+    const opts = q.opts.map(o => `<button type="button" class="fh-branch-btn f6-opt${cur === o.v ? ' selected' : ''}" data-q="${qKey}" data-v="${o.v}" role="radio" aria-checked="${cur === o.v}"><b>${esc(o.ko)}</b><span>${esc(o.en)}</span></button>`).join('');
+    return `<div class="fh-field"><label class="fh-label">${esc(q.ko)} <span class="fh-label-en">${esc(q.en)}</span></label><div class="fh-branch-opts" role="radiogroup" aria-label="${esc(q.ko)}">${opts}</div></div>`;
+  }
+  let html = `<div class="fh-caution" style="margin-bottom:.25rem"><p class="fh-caution-title">⚠ 신원보증서가 필요한지 먼저 확인하세요</p>신원보증서는 모든 신청에 필요한 서류가 아니라 <strong>특정 체류자격·신청에서만</strong> 요구됩니다. 본인 절차에 필요한지 관할 출입국·외국인청 또는 1345·HiKorea에서 먼저 확인하세요.</div>`;
+  html += `<div class="fh-field-group">${cards('role', state.f7_role)}${cards('rel', state.f7_rel)}`;
+  if (state.f7_rel === 'other') html += fieldHTML('f7_relOther', '관계 기타 내용', 'Relationship (other)', 'text', state.f7_relOther, '', false);
+  html += `</div>`;
+  grid.innerHTML = html;
+  grid.querySelectorAll('.f6-opt').forEach(b => b.addEventListener('click', () => {
+    const q = b.dataset.q, vv = b.dataset.v;
+    if (q === 'role') state.f7_role = vv; else state.f7_rel = vv;
+    renderF07Questions(); renderStepper(); updatePreview(); updateNavButtons();
+  }));
+  const ro = document.getElementById('f7_relOther'); if (ro) ro.addEventListener('input', e => { state.f7_relOther = e.target.value; updatePreview(); });
+}
+function renderF07Applicant() { renderSchemaInto('fhStep3Fields', F07_APPLICANT); }
+function renderF07Guarantor() {
+  renderSchemaInto('fhStep4Fields', F07_GUARANTOR);
+  const rel = f07RelText() || '(질문에서 선택)';
+  document.getElementById('fhStep4Fields').insertAdjacentHTML('afterbegin',
+    `<div class="fh-note" style="margin-bottom:.6rem">질문에서 고른 관계에 따라 정본의 <strong>피보증인과의 관계 = ${esc(rel)}</strong> 칸이 채워집니다. 보증기간은 <strong>최장 4년</strong>입니다.</div>`);
+}
+function f07Issues() {
+  const I = [];
+  if (!state.f7_rel) I.push({ type: 'error', msg: '보증인과 외국인의 관계(질문 2)를 선택하지 않았습니다.' });
+  if (!state.f7_aSurname.trim() || !state.f7_aGiven.trim()) I.push({ type: 'error', msg: '피보증외국인 성명이 입력되지 않았습니다.' });
+  if (!state.f7_aDob.trim()) I.push({ type: 'error', msg: '피보증외국인 생년월일이 입력되지 않았습니다.' });
+  if (!state.f7_aNat.trim()) I.push({ type: 'error', msg: '피보증외국인 국적이 입력되지 않았습니다.' });
+  if (!state.f7_aAddr.trim()) I.push({ type: 'error', msg: '피보증외국인 대한민국 주소가 입력되지 않았습니다.' });
+  if (!state.f7_aPurpose.trim()) I.push({ type: 'error', msg: '피보증외국인 체류목적이 입력되지 않았습니다.' });
+  if (!state.f7_gName.trim()) I.push({ type: 'error', msg: '신원보증인 성명이 입력되지 않았습니다.' });
+  if (!state.f7_gNat.trim()) I.push({ type: 'error', msg: '신원보증인 국적이 입력되지 않았습니다.' });
+  if (!state.f7_gPassportDob.trim()) I.push({ type: 'error', msg: '신원보증인 여권번호 또는 생년월일이 입력되지 않았습니다.' });
+  if (!state.f7_gAddr.trim()) I.push({ type: 'error', msg: '신원보증인 주소가 입력되지 않았습니다.' });
+  I.push({ type: 'warn', msg: '🔏 보증내용 (1)(2)(3)은 정본에 인쇄되어 있으며, 서명 또는 인은 신원보증인이 직접 합니다.' });
+  I.push({ type: 'ok', msg: '신원보증서 요구 여부·보증기간 상한은 관할 출입국·외국인청 또는 1345·HiKorea에서 확인하세요.' });
+  return I;
+}
+function renderF07Output() {
+  const el = document.getElementById('fhOutputContent');
+  const rel = f07RelText() || '(미선택)';
+  const mine = state.f7_role === 'guarantor' ? '신원보증인(보증인)' : state.f7_role === 'applicant' ? '피보증외국인(피보증인)' : null;
+  let html = '';
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">① 신원보증서가 필요한지 먼저 확인</div>
+    <div class="fh-output-body">신원보증서는 <strong>특정 체류자격·신청에서만</strong> 요구되는 서류입니다(모든 신청에 필요하지 않음). 본인 절차에 필요한지 관할 출입국·외국인청 또는 1345·HiKorea에서 먼저 확인하세요.</div>
+  </div>`;
+  html += `<div class="fh-output-section">
+    <div class="fh-output-head">② 누가 어느 칸을 작성하나요?</div>
+    <div class="fh-output-body">
+      <p><span class="f6-tag f6-tag-r">피보증외국인</span> 서식 상단 <strong>피보증외국인 구획</strong>(성명·생년월일·성별·국적·여권번호·주소·전화·체류목적).</p>
+      <p style="margin-top:.4rem"><span class="f6-tag f6-tag-p">신원보증인</span> <strong>신원보증인 가.인적사항 + 나.보증기간</strong>과 <strong>서명/날인</strong>. 피보증인과의 관계는 <strong>${esc(rel)}</strong>.</p>
+      ${mine ? `<p style="margin-top:.4rem" class="fh-help">이번 작성 주체: <strong>${esc(mine)}</strong> — 해당 구획을 중심으로 확인하세요.</p>` : ''}
+      <p style="margin-top:.4rem" class="fh-help">다. 보증내용 (1)(2)(3)은 정본에 인쇄되어 있어 기재 불필요. 漢字(한자 성명) 칸은 자동 표기하지 않으니 필요 시 수기 작성. 2쪽 영문면은 참고용입니다.</p>
+    </div>
+  </div>`;
+  el.innerHTML = html;
+}
+function updateF07Preview() {
+  const body = document.getElementById('fhPreviewBody'), badge = document.getElementById('fhPreviewBadge');
+  const role = { guarantor: '보증인', applicant: '피보증인' }[state.f7_role] || '—';
+  function prow(k, v) { return `<div class="fh-preview-row"><span class="fh-preview-k">${k}</span><span class="fh-preview-v${v && v !== '—' ? '' : ' empty'}">${esc(v || '—')}</span></div>`; }
+  let html = prow('작성 주체', role) + prow('관계', f07RelText() || '—');
+  const an = (state.f7_aSurname + ' ' + state.f7_aGiven).trim();
+  if (an) html += prow('피보증외국인', an);
+  if (state.f7_gName) html += prow('신원보증인', state.f7_gName);
+  body.innerHTML = html;
+  const errs = f07Issues().filter(i => i.type === 'error').length;
+  badge.textContent = errs ? `누락 ${errs}` : '입력 중';
+  badge.style.background = errs ? 'var(--color-warning)' : 'var(--p-green)';
+}
+function buildF07CopyText() {
+  const L = [];
+  L.push('=== 신원보증서 작성 안내 (Paradiso 참고용) ===');
+  L.push('※ 신원보증서는 특정 체류자격·신청에서만 요구됩니다. 필요 여부를 먼저 확인하세요.');
+  L.push(`보증인과의 관계: ${f07RelText() || '(미선택)'}`);
+  L.push('');
+  L.push('[피보증외국인]');
+  const an = (state.f7_aSurname + ' ' + state.f7_aGiven).trim();
+  if (an) L.push(`성명: ${an}`);
+  if (state.f7_aNat) L.push(`국적: ${state.f7_aNat}`);
+  if (state.f7_aPurpose) L.push(`체류목적: ${state.f7_aPurpose}`);
+  L.push('');
+  L.push('[신원보증인]');
+  if (state.f7_gName) L.push(`성명: ${state.f7_gName}`);
+  if (state.f7_gPeriod) L.push(`보증기간(최장 4년): ${state.f7_gPeriod}`);
+  L.push('- 보증내용 (1)(2)(3)은 정본 인쇄분 / 서명·날인은 보증인 직접');
+  L.push('- 漢字(한자 성명)은 수기 / 2쪽 영문면은 참고용');
+  L.push('');
+  L.push('출처: 신원보증서 출입국관리법 시행규칙 별지 제129호서식 (2022. 2. 7.)');
+  return L.join('\n');
+}
 function setStepHeadings() {
-  const conf = isConfirmation();
-  const H = {
-    1: conf ? ['기본 질문', '거주 형태와 계약자(제공 주체)에 따라 작성 칸과 첨부서류가 달라집니다.'] : ['신청/신고 유형 선택', '어떤 신청 또는 신고를 하려 하십니까? 통합신청서에서 체크할 항목이 결정됩니다.'],
-    3: conf ? ['거주자(외국인) 정보', '숙소를 제공받는 외국인 본인의 정보입니다. (서식 ① 구획)'] : ['기본 인적사항', '신청서 공통 기재 항목입니다. 민감한 정보는 이 페이지 안에서만 사용되며 외부로 전송되지 않습니다.'],
-    4: conf ? ['제공자 정보 및 제공일', '숙소를 제공하는 사람·업체의 정보와 제공일입니다. (서식 ② 구획)'] : ['절차별 추가정보', '선택하신 신청 유형에 따라 추가 입력 항목이 표시됩니다.'],
-    6: conf ? ['작성 안내 및 정본 PDF', '누가 어느 칸을 쓰는지와 첨부서류를 정리하고, 정본 위에 채운 PDF를 받습니다.'] : ['작성 가이드', '아래 내용을 참고하여 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.'],
+  const APP = {
+    1: ['신청/신고 유형 선택', '어떤 신청 또는 신고를 하려 하십니까? 통합신청서에서 체크할 항목이 결정됩니다.'],
+    3: ['기본 인적사항', '신청서 공통 기재 항목입니다. 민감한 정보는 이 페이지 안에서만 사용되며 외부로 전송되지 않습니다.'],
+    4: ['절차별 추가정보', '선택하신 신청 유형에 따라 추가 입력 항목이 표시됩니다.'],
+    6: ['작성 가이드', '아래 내용을 참고하여 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.'],
   };
+  const F06H = {
+    1: ['기본 질문', '거주 형태와 계약자(제공 주체)에 따라 작성 칸과 첨부서류가 달라집니다.'],
+    3: ['거주자(외국인) 정보', '숙소를 제공받는 외국인 본인의 정보입니다. (서식 ① 구획)'],
+    4: ['제공자 정보 및 제공일', '숙소를 제공하는 사람·업체의 정보와 제공일입니다. (서식 ② 구획)'],
+    6: ['작성 안내 및 정본 PDF', '누가 어느 칸을 쓰는지와 첨부서류를 정리하고, 정본 위에 채운 PDF를 받습니다.'],
+  };
+  const F07H = {
+    1: ['기본 질문', '신원보증서는 특정 자격에서만 필요합니다. 작성 주체와 관계를 먼저 확인하세요.'],
+    3: ['피보증외국인 정보', '보증을 받는 외국인 본인의 정보입니다. (서식 상단 구획)'],
+    4: ['신원보증인 정보', '보증을 서는 사람의 인적사항·보증기간입니다. (서식 하단 구획)'],
+    6: ['작성 안내 및 정본 PDF', '필요 여부 확인 + 누가 어느 칸을 쓰는지 정리하고, 정본 위에 채운 PDF를 받습니다.'],
+  };
+  const H = !isConfirmation() ? APP : (state.formId === 'F07' ? F07H : F06H);
   Object.keys(H).forEach(n => {
     const h = document.getElementById(`fhStep${n}Heading`); if (h) h.textContent = H[n][0];
     const sub = document.querySelector(`#fhStep${n} .fh-step-subheading`); if (sub) sub.textContent = H[n][1];
@@ -2119,6 +2301,7 @@ function selectForm(formId) {
   document.getElementById('fhLayout').hidden = false;
   updateDocChrome();
   if (formId === 'F06' && !state.f6_confirmDate) state.f6_confirmDate = new Date().toISOString().slice(0, 10);
+  if (formId === 'F07' && !state.f7_gSignDate) state.f7_gSignDate = new Date().toISOString().slice(0, 10);
   if (!isConfirmation()) renderTypeGrid();
   goToStep(1);
   updatePreview();
@@ -2215,8 +2398,12 @@ async function generateOfficialPdf() {
       let size = o.size || 9;
       const text = String(val);
       const maxW = o.maxWidth || (spec.pageWidth - o.x - 6);
-      while (size > 5 && font.widthOfTextAtSize(text, size) > maxW) size -= 0.5;
-      page.drawText(text, { x:o.x, y:H - o.y, size, font, color:ink });
+      try {
+        // The embedded font covers Latin + Hangul; characters it cannot encode (e.g. 漢字)
+        // would otherwise throw and abort the whole PDF — skip just that field instead.
+        while (size > 5 && font.widthOfTextAtSize(text, size) > maxW) size -= 0.5;
+        page.drawText(text, { x:o.x, y:H - o.y, size, font, color:ink });
+      } catch (e) { /* unencodable field — leave blank for hand-writing */ }
     });
     const out = await pdfDoc.save();
     const blob = new Blob([out], { type: 'application/pdf' });
@@ -2232,7 +2419,8 @@ async function generateOfficialPdf() {
     a.click();
     document.body.removeChild(a);
     setTimeout(() => URL.revokeObjectURL(url), 4000);
-    const errs = runValidation().filter(i => i.type === 'error').length;
+    const issues = isConfirmation() ? (state.formId === 'F07' ? f07Issues() : f06Issues()) : runValidation();
+    const errs = issues.filter(i => i.type === 'error').length;
     dlStatus(errs
       ? `정본 PDF가 생성되었습니다. 미입력 필수항목 ${errs}건은 출력 후 현장에서 직접 보완하세요.`
       : '정본 PDF가 생성되었습니다. 다운로드 폴더를 확인하세요. 서명/날인은 제출 시 직접 하세요.', 'ok');

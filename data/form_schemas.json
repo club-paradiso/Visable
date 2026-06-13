@@ -1457,6 +1457,391 @@
           "size": 8
         }
       }
+    },
+    "F07": {
+      "nameKo": "신원보증서",
+      "nameEn": "Letter of Guarantee",
+      "legalBasis": "출입국관리법 시행규칙 별지 제129호서식",
+      "revisionDate": "2022-02-07",
+      "kind": "confirmation",
+      "pdf": "assets/forms/pdf/F07.pdf",
+      "pageWidth": 595,
+      "pageHeight": 841,
+      "pages": 2,
+      "ink": [
+        12,
+        18,
+        92
+      ],
+      "note": "漢字(한자 성명) 칸은 폰트 한자 미수록으로 자동 표기하지 않으며 필요 시 수기 작성. 2쪽 영문면은 참고용.",
+      "fields": [
+        {
+          "key": "app_surname",
+          "ko": "피보증외국인 성",
+          "en": "Applicant surname",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "app_given",
+          "ko": "피보증외국인 명",
+          "en": "Applicant given names",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "app_dob",
+          "ko": "피보증외국인 생년월일",
+          "en": "Applicant date of birth",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "app_sex_m",
+          "ko": "피보증외국인 성별 남",
+          "en": "Applicant sex male",
+          "group": "applicant",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "app_sex_f",
+          "ko": "피보증외국인 성별 여",
+          "en": "Applicant sex female",
+          "group": "applicant",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "app_nat",
+          "ko": "피보증외국인 국적",
+          "en": "Applicant nationality",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "app_passport",
+          "ko": "피보증외국인 여권번호",
+          "en": "Applicant passport No.",
+          "group": "applicant",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "app_addr",
+          "ko": "피보증외국인 대한민국 주소",
+          "en": "Applicant address in Korea",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "app_phone",
+          "ko": "피보증외국인 전화번호",
+          "en": "Applicant phone",
+          "group": "applicant",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "app_purpose",
+          "ko": "피보증외국인 체류목적",
+          "en": "Applicant purpose of sojourn",
+          "group": "applicant",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_name",
+          "ko": "신원보증인 성명",
+          "en": "Guarantor full name",
+          "group": "guarantor",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_nat",
+          "ko": "신원보증인 국적",
+          "en": "Guarantor nationality",
+          "group": "guarantor",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_sex_m",
+          "ko": "신원보증인 성별 남",
+          "en": "Guarantor sex male",
+          "group": "guarantor",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "g_sex_f",
+          "ko": "신원보증인 성별 여",
+          "en": "Guarantor sex female",
+          "group": "guarantor",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "g_passport_dob",
+          "ko": "신원보증인 여권번호 또는 생년월일",
+          "en": "Guarantor passport No. or DOB",
+          "group": "guarantor",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_phone",
+          "ko": "신원보증인 전화번호",
+          "en": "Guarantor phone",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_addr",
+          "ko": "신원보증인 주소",
+          "en": "Guarantor address",
+          "group": "guarantor",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_relationship",
+          "ko": "피보증인과의 관계",
+          "en": "Relationship to applicant",
+          "group": "guarantor",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "g_workplace",
+          "ko": "신원보증인 근무처",
+          "en": "Guarantor workplace",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_position",
+          "ko": "신원보증인 직위",
+          "en": "Guarantor job position",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_work_addr",
+          "ko": "신원보증인 근무처 주소",
+          "en": "Guarantor work address",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_note",
+          "ko": "비고",
+          "en": "Note",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_period",
+          "ko": "보증기간(최장 4년)",
+          "en": "Period of guarantee (max 4 yrs)",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_sign_y",
+          "ko": "작성일(년)",
+          "en": "Sign date year",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_sign_m",
+          "ko": "작성일(월)",
+          "en": "Sign date month",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_sign_d",
+          "ko": "작성일(일)",
+          "en": "Sign date day",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "app_hanja",
+          "ko": "피보증외국인 漢字(한자 성명·수기)",
+          "en": "Applicant name in Chinese (hand-written)",
+          "group": "applicant",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "g_hanja",
+          "ko": "신원보증인 漢字(한자 성명·수기)",
+          "en": "Guarantor name in Chinese (hand-written)",
+          "group": "guarantor",
+          "req": "opt",
+          "kind": "text"
+        }
+      ],
+      "overlay": {
+        "app_surname": {
+          "x": 150,
+          "y": 157,
+          "size": 9
+        },
+        "app_given": {
+          "x": 285,
+          "y": 157,
+          "size": 9
+        },
+        "app_dob": {
+          "x": 170,
+          "y": 186,
+          "size": 8.5
+        },
+        "app_sex_m": {
+          "cx": 467,
+          "cy": 182,
+          "check": true
+        },
+        "app_sex_f": {
+          "cx": 508,
+          "cy": 182,
+          "check": true
+        },
+        "app_nat": {
+          "x": 150,
+          "y": 214,
+          "size": 8.5
+        },
+        "app_passport": {
+          "x": 456,
+          "y": 214,
+          "size": 8.5
+        },
+        "app_addr": {
+          "x": 192,
+          "y": 246,
+          "size": 8
+        },
+        "app_phone": {
+          "x": 456,
+          "y": 246,
+          "size": 8
+        },
+        "app_purpose": {
+          "x": 170,
+          "y": 278,
+          "size": 8.5
+        },
+        "g_name": {
+          "x": 150,
+          "y": 353,
+          "size": 9
+        },
+        "g_nat": {
+          "x": 150,
+          "y": 382,
+          "size": 8.5
+        },
+        "g_sex_m": {
+          "cx": 467,
+          "cy": 376,
+          "check": true
+        },
+        "g_sex_f": {
+          "cx": 508,
+          "cy": 376,
+          "check": true
+        },
+        "g_passport_dob": {
+          "x": 230,
+          "y": 410,
+          "size": 8
+        },
+        "g_phone": {
+          "x": 456,
+          "y": 410,
+          "size": 8
+        },
+        "g_addr": {
+          "x": 150,
+          "y": 441,
+          "size": 8
+        },
+        "g_relationship": {
+          "x": 210,
+          "y": 471,
+          "size": 8.5
+        },
+        "g_workplace": {
+          "x": 158,
+          "y": 503,
+          "size": 8.5
+        },
+        "g_position": {
+          "x": 440,
+          "y": 503,
+          "size": 8.5
+        },
+        "g_work_addr": {
+          "x": 182,
+          "y": 535,
+          "size": 8
+        },
+        "g_note": {
+          "x": 440,
+          "y": 535,
+          "size": 8
+        },
+        "g_period": {
+          "x": 340,
+          "y": 562,
+          "size": 8.5
+        },
+        "g_sign_y": {
+          "x": 392,
+          "y": 728,
+          "size": 9
+        },
+        "g_sign_m": {
+          "x": 442,
+          "y": 728,
+          "size": 9
+        },
+        "g_sign_d": {
+          "x": 492,
+          "y": 728,
+          "size": 9
+        },
+        "app_hanja": {
+          "x": 440,
+          "y": 157,
+          "size": 9
+        },
+        "g_hanja": {
+          "x": 440,
+          "y": 353,
+          "size": 9
+        }
+      }
     }
   }
 }
