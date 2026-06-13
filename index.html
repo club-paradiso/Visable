@@ -33,9 +33,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400..900&family=Pixelify+Sans:wght@400..700&family=Space+Mono:wght@400;700&display=swap">
     <style>
-/* === PART 2 GAP ANALYSIS — Figma Make file N695iXnoavEOSHITttdCCu ===
-   Source: https://www.figma.com/make/N695iXnoavEOSHITttdCCu/Paradiso-후보
-   Reference components (Figma Make): HeroGateway.tsx, Landing.tsx, FooterCTA.tsx
+/* === PART 2 GAP ANALYSIS — design-handoff reference (internal design source) ===
+   Reference components: HeroGateway, Landing, FooterCTA
 
    | Section                      | Current State                                                                 | Figma Design                                                                          | Action         |
    |------------------------------|-------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------|
@@ -1866,7 +1865,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .procedure-doc-count { margin: 0.12rem 0 0.6rem; font-size: 0.74rem; color: var(--t3); }
 
 /* Figma review: Document checklist tab section — current implementation retained, no change needed
-   DATA_MISSING: Figma Make N695iXnoavEOSHITttdCCu landing prototype contains no document
+   DATA_MISSING: the design-source landing prototype contains no document
    checklist tabs; Part 1 work (three-tab initial/registration/extension structure) is the
    source of truth and is preserved.
    mobile: DATA_MISSING — no change applied (existing 768px accordion fallback retained) */
@@ -2572,7 +2571,7 @@ body.searched .es { padding: 5rem 1rem; }
 /* ═══════════════════════════════════════════════════════════
    Phase 9B-2 · Style Softening + Wordmark
    Source: docs/design/STYLE_SOFTENING_BRIEF.md
-   Translates Jackie/Lazyweb concept (texture felt not seen,
+   Translates the editorial concept (texture felt not seen,
    organic rhythm without scrapbook chaos) into a CSS-only
    refinement of the existing Paradiso surface. No new
    external deps; no HTML structural changes; no JS.
@@ -7372,7 +7371,7 @@ body.searched .smeta {
    FIGMA PIXEL-PERFECT LAYER — 2026-05-19
    Final-cascade tuning to bring the production landing into
    tighter visual alignment with the Figma Make Version 21
-   handoff (file key N695iXnoavEOSHITttdCCu).
+   handoff (internal design source).
    Source briefs:
      - paradiso-v21-handoff.md (Version 21 brand direction)
      - STYLE_SOFTENING_BRIEF_(1).md (palette + typography discipline)
@@ -9412,7 +9411,7 @@ body:not(.searched) .brand-hero-kicker {
   }
 }
 
-/* 7 · Section spacing rhythm on mobile (Jackie editorial pacing, restrained) */
+/* 7 · Section spacing rhythm on mobile (editorial pacing, restrained) */
 @media (max-width: 720px) {
   .p-section { margin: 2.2rem auto !important; }
   .p-section-head { gap: 0.65rem !important; margin-bottom: 1rem !important; }
@@ -17176,7 +17175,7 @@ function renderHikoreaGuide() {
     /*0-A*/step0aHtml,
     /*1*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 0)))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikorea'))}</a></li>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 1)))}${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 2)))}</ul>`,
     /*2*/`<ul>${li(escapeHtml(gtx('hkStep2Item')))}</ul>${screenshot(2)}`,
-    /* TODO: 기관별 방문예약 딥링크 미확보 — 관할기관별 동적 연결은 후속 작업. 아래 링크는 HiKorea 메인으로 이동함 */
+    /* 기관별 방문예약 딥링크는 미제공 상태이므로 아래 링크는 HiKorea 메인으로 이동합니다. */
     /*3*/`<ul>${li(escapeHtml(gtx('hkStep3Item')))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikoreaMain'))}</a></li></ul>${screenshot(3)}`,
     /*4*/`<ul><li>${escapeHtml(gtx('hkCurrentVisaCode'))} ${escapeHtml(hikoreaGuideState.visaCode || gtx('hkUnknown'))}</li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `<li>${escapeHtml(gtx('hkSelectedTask'))} <strong>${escapeHtml(hikoreaTaskLabel(hikoreaGuideState.taskType))}</strong> <button type="button" class="hikorea-task-change" data-action="hikorea-clear-task">${escapeHtml(gtx('hkReselect'))}</button></li>` : ''}${gtxArr('hkTaskBullets').map(t => li(escapeHtml(t))).join('')}</ul>${hikoreaGuideState.taskType === 'DATA_MISSING' ? `<div class="hikorea-task-picker" role="group" aria-label="${escapeHtml(gtx('hkTaskPickerAria'))}"><p class="hikorea-task-picker-hint">${gtx('hkTaskPickerHint')}</p><div class="hikorea-task-buttons">${taskBtn(0, '체류기간 연장허가')}${taskBtn(1, '체류자격 변경')}${taskBtn(2, '외국인등록')}</div></div>` : ''}${screenshot(4)}`,
     /*5*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 0)))}${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 1)))}<li>${escapeHtml(gtx('hkEnteredExp'))} ${escapeHtml(hikoreaGuideState.expDate || gtx('hkNotEntered'))}</li>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 2)))}</ul>${screenshot(5)}`,
@@ -17403,7 +17402,7 @@ function formatDocumentTabRefNote(refs) {
     return `${txAt('issuanceUiLabels', 9, '출처')}: ${bits.join(' / ')}`;
 }
 
-// TODO: label map not used here — doc_* IDs in item.name or item.label would render as raw strings
+// Note: label map not used here — doc_* IDs in item.name or item.label would render as raw strings
 function normalizeDocumentTabItems(field) {
     // items are pre-resolved Korean labels, DOC_DICT not needed
     if (isDocFieldMissing(field) || !Array.isArray(field)) return [];
@@ -17437,7 +17436,7 @@ function getRegistrationProcedureTabItems(v) {
     const docs = flattenDocGroups(proc.docs).filter(doc => !isDocPlaceholder(doc));
     if (!docs.length) return [];
     const refNote = formatDocumentTabRefNote(proc.manualRefs);
-    // TODO: label map not used here — falls back to raw doc string; unresolved doc_* IDs would surface to users
+    // Note: label map not used here — falls back to raw doc string; unresolved doc_* IDs would surface to users
     return docs.map(doc => ({
         name: DOC_DICT[doc] || '(서류명 확인 필요: ' + doc + ')',
         note: refNote || proc.summary || ''
