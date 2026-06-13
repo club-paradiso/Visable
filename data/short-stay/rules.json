@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-06-11",
-  "generatedAt": "2026-06-11T07:21:04Z",
+  "lastUpdated": "2026-06-13",
+  "generatedAt": "2026-06-13T19:16:24Z",
   "sourceStatus": "needs_refresh",
   "sourceStatusReason": "seeded from stored fixtures — --from-fixtures flag",
   "countries": {
@@ -10396,8 +10396,8 @@
         "decisionNote": "K-ETA는 사증(비자)이 아닌 전자여행허가이며, 승인되어도 입국이 보장되지 않음. 최종 입국 여부는 입국심사관이 결정."
       },
       "ketaTemporaryExemption": {
-        "lastVerifiedThrough": "2025-12-31",
-        "extensionUnverified": true,
+        "lastVerifiedThrough": "2026-12-31",
+        "extensionUnverified": false,
         "countriesIso2": [
           "AT",
           "AU",

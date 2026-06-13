@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-11T07:21:04Z",
+  "generatedAt": "2026-06-13T19:16:24Z",
   "sourceStatus": "needs_refresh",
   "sources": [
     {
@@ -23,7 +23,7 @@
       "title": "2026.5 사증발급 안내매뉴얼 (B-1 협정 일람표 2022-09-22 기준 · B-2 무사증 일람표 · C-3 세부약호)",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/visa_hwp_full.txt",
-      "retrievedAt": "2026-06-11",
+      "retrievedAt": "2026-06-13",
       "effectiveDate": "2026-05-21",
       "sourceDate": "2026-05-21",
       "hash": "9ce1500a7dfd048d",
@@ -37,7 +37,7 @@
       "title": "2026.6.1 외국인체류 안내매뉴얼 — B-1/B-2 체류기간 연장·자격변경 원칙 불허 경고",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/stay_hwp_full.txt",
-      "retrievedAt": "2026-06-11",
+      "retrievedAt": "2026-06-13",
       "effectiveDate": "2026-06-01",
       "sourceDate": "2026-06-01",
       "hash": null,
@@ -53,8 +53,8 @@
       "localPath": "data/short-stay/fixtures/keta_program.json",
       "retrievedAt": null,
       "effectiveDate": null,
-      "sourceDate": "2025-12-31",
-      "hash": "aa141febe37ab888",
+      "sourceDate": "2026-06-13",
+      "hash": "aa04363f27c1e820",
       "scope": "K-ETA 제도(비자 아님)·수수료·한시 면제국",
       "confidence": "medium",
       "notes": "실시간 조회 불가(네트워크 차단) — 마지막 확인 사본 기준. 한시 면제 연장 여부 미확인 → needs_refresh."
@@ -93,7 +93,7 @@
       "title": "Paradiso visa_data.json B-2-2 서브코드 저장 사본 (제외국 23개국 — 이란 포함)",
       "url": null,
       "localPath": "visa_data.json",
-      "retrievedAt": "2026-06-11",
+      "retrievedAt": "2026-06-13",
       "effectiveDate": null,
       "sourceDate": "2026-05-21",
       "hash": null,

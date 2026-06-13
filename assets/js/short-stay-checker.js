@@ -453,11 +453,20 @@
     return base;
   }
   function ketaStepText(c, rules, ageGroup) {
-    var keta = rules.rules.b21GeneralVisaFreeKeta.ketaProgram;
+    var b21node = rules.rules.b21GeneralVisaFreeKeta || {};
+    var keta = b21node.ketaProgram || {};
+    var exempt = b21node.ketaTemporaryExemption || {};
     var tmp = c.keta && c.keta.temporaryExemption;
     var t = 'K-ETA 공식 누리집에서 전자여행허가를 신청하세요(수수료 ' + Number(keta.feeKRW).toLocaleString('ko-KR') + '원).';
     if (tmp) {
-      t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
+      var through = exempt.lastVerifiedThrough;
+      if (through && exempt.extensionUnverified === false) {
+        /* Within a confirmed temporary-exemption window: no K-ETA application
+           is required. Keep the forward caveat for travel after the end date. */
+        t = 'K-ETA가 ' + through + '까지 한시 면제된 국가·지역이므로, 면제 기간 중 무사증 입국 시에는 K-ETA를 신청하지 않아도 됩니다. ' + through + ' 이후 출발한다면 면제 연장·종료 여부를 K-ETA 공식 누리집에서 확인하세요.';
+      } else {
+        t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
+      }
     } else if (ageGroup === '17_or_younger' || ageGroup === '65_or_older') {
       t += ' 저장된 자료 기준으로 만 17세 이하·만 65세 이상은 K-ETA 신청 면제 대상이지만, 공식 누리집에서 최신 기준을 확인하세요.';
     }
