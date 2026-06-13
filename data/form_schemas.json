@@ -432,12 +432,12 @@
         },
         "surname": {
           "x": 178,
-          "y": 312,
+          "y": 314,
           "size": 9
         },
         "given": {
           "x": 322,
-          "y": 312,
+          "y": 314,
           "size": 9
         },
         "dob_y": {
@@ -485,82 +485,82 @@
         },
         "nationality": {
           "x": 480,
-          "y": 336,
+          "y": 340,
           "size": 8
         },
         "frn_reg_no": {
           "x": 200,
-          "y": 355,
+          "y": 361,
           "size": 9
         },
         "passport_no": {
           "x": 140,
-          "y": 380,
+          "y": 383,
           "size": 8.5
         },
         "passport_issue": {
           "x": 312,
-          "y": 380,
+          "y": 383,
           "size": 8.5
         },
         "passport_expiry": {
           "x": 478,
-          "y": 380,
+          "y": 383,
           "size": 8
         },
         "addr_korea": {
           "x": 150,
-          "y": 400,
+          "y": 404,
           "size": 8.5
         },
         "tel": {
           "x": 165,
-          "y": 419,
+          "y": 418,
           "size": 8.5
         },
         "cell": {
           "x": 400,
-          "y": 419,
+          "y": 418,
           "size": 8.5
         },
         "home_addr": {
           "x": 185,
-          "y": 435,
+          "y": 438,
           "size": 8
         },
         "home_tel": {
           "x": 472,
-          "y": 435,
+          "y": 438,
           "size": 8
         },
         "workplace_cur": {
           "x": 210,
-          "y": 500,
+          "y": 502,
           "size": 8
         },
         "biz_no_cur": {
           "x": 358,
-          "y": 500,
+          "y": 502,
           "size": 8
         },
         "tel_cur": {
           "x": 470,
-          "y": 500,
+          "y": 502,
           "size": 8
         },
         "workplace_new": {
           "x": 210,
-          "y": 521,
+          "y": 523,
           "size": 8
         },
         "biz_no_new": {
           "x": 358,
-          "y": 521,
+          "y": 523,
           "size": 8
         },
         "tel_new": {
           "x": 470,
-          "y": 521,
+          "y": 523,
           "size": 8
         },
         "annual_income": {
@@ -900,17 +900,17 @@
         },
         "surname": {
           "x": 195,
-          "y": 270,
+          "y": 272,
           "size": 9
         },
         "given": {
           "x": 330,
-          "y": 270,
+          "y": 272,
           "size": 9
         },
         "korean_name": {
           "x": 478,
-          "y": 270,
+          "y": 272,
           "size": 8.5
         },
         "dob_y": {
@@ -958,57 +958,57 @@
         },
         "nationality": {
           "x": 478,
-          "y": 297,
+          "y": 298,
           "size": 8
         },
         "frn_reg_no": {
           "x": 210,
-          "y": 322,
+          "y": 329,
           "size": 9
         },
         "passport_no": {
           "x": 130,
-          "y": 351,
+          "y": 352,
           "size": 8.5
         },
         "passport_issue": {
           "x": 315,
-          "y": 351,
+          "y": 352,
           "size": 8.5
         },
         "passport_expiry": {
           "x": 482,
-          "y": 349,
+          "y": 352,
           "size": 7
         },
         "residence_korea": {
           "x": 175,
-          "y": 374,
+          "y": 375,
           "size": 8.5
         },
         "email": {
           "x": 445,
-          "y": 368,
+          "y": 374,
           "size": 7.5
         },
         "tel": {
           "x": 170,
-          "y": 397,
+          "y": 398,
           "size": 8.5
         },
         "cell": {
           "x": 450,
-          "y": 397,
+          "y": 398,
           "size": 8.5
         },
         "overseas_addr": {
           "x": 180,
-          "y": 420,
+          "y": 422,
           "size": 8
         },
         "overseas_tel": {
           "x": 472,
-          "y": 420,
+          "y": 422,
           "size": 7
         },
         "occupation": {
@@ -1033,7 +1033,7 @@
         },
         "foreign_nat_date": {
           "x": 300,
-          "y": 519,
+          "y": 524,
           "size": 8
         },
         "refund_account": {

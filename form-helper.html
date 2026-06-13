@@ -692,7 +692,7 @@ main{flex:1;padding:0 1rem 3rem}
         <div class="fh-output-actions" id="fhOutputActions">
           <button type="button" class="fh-btn fh-btn-download" id="fhDownloadBtn">⬇ 정본 PDF 다운로드</button>
           <button type="button" class="fh-btn fh-btn-secondary" id="fhCopyBtn">📋 작성 가이드 복사</button>
-          <button type="button" class="fh-btn fh-btn-secondary" id="fhPrintBtn">🖨 인쇄용 보기</button>
+          <button type="button" class="fh-btn fh-btn-secondary" id="fhPrintBtn">🖨 작성 가이드 인쇄용 보기</button>
           <button type="button" class="fh-btn fh-btn-ghost" id="fhResetBtn">↺ 초기화</button>
         </div>
         <div class="fh-dl-status" id="fhDlStatus" role="status" aria-live="polite"></div>
@@ -1023,13 +1023,13 @@ const PERSONAL_F04 = [
 /* FORM REGISTRY */
 const FORMS = {
   F01: {
-    id:'F01', nameKo:'통합신청서(신고서)', nameEn:'Application Form (Report Form)',
+    id:'F01', nameKo:'통합신청서(신고서)', nameEn:'Application Form (Report Form)', dlNoun:'통합신청서',
     legalKo:'출입국관리법 시행규칙 별지 제34호서식', rev:'2022. 4. 12.',
     appTypes: APP_TYPES, personal: PERSONAL_F01,
     overlay: overlayValuesF01,
   },
   F04: {
-    id:'F04', nameKo:'재외동포(F-4) 통합신청서 · 국내거소신고서', nameEn:'Overseas Korean (F-4) Application / Report Form',
+    id:'F04', nameKo:'재외동포(F-4) 통합신청서 · 국내거소신고서', nameEn:'Overseas Korean (F-4) Application / Report Form', dlNoun:'국내거소신고서',
     legalKo:'재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호서식', rev:'2022. 4. 12.',
     appTypes: APP_TYPES_F04, personal: PERSONAL_F04,
     overlay: overlayValuesF04,
@@ -1059,7 +1059,6 @@ const state = {
   appTypeId: null,
   lang: 'ko',
   // Step 2
-  currentStatus: '',
   desiredStatus: '',
   desiredActivity: '',
   activityDescription: '',
@@ -1092,7 +1091,6 @@ const state = {
   changedItem: '',
   newInfo: '',
   reentryPeriod: '',
-  refundAccount: '',
   // additional official-form fields (F01 본국주소/소득/직업, F04 한글성명/거주국/취득일)
   koreanName: '',
   telephone: '',
@@ -1113,6 +1111,23 @@ const STEPS = [
   { num: 5, label: '누락 확인', shortLabel: '확인' },
   { num: 6, label: '작성 가이드', shortLabel: '가이드' },
 ];
+
+/* Steps 2(체류자격·목적) and 4(추가정보) appear only when the chosen application type
+   actually needs them — e.g. Step 2 is shown for 체류자격 변경/부여·활동허가·재입국,
+   and skipped for plain 외국인등록·연장·체류지 변경 등. */
+function isStepActive(n) {
+  if (n === 1 || n === 3 || n === 5 || n === 6) return true;
+  const t = getAppType();
+  if (!t) return n !== 2 && n !== 4;
+  if (n === 2) return !!(t.needsDesiredStatus || t.needsDesiredActivity || t.needsReentryPeriod);
+  if (n === 4) return !!(t.needsCurrentExpiry || t.needsWorkplace || t.needsReentryPeriod || t.needsAddressChange || t.needsChangedItem || t.needsPhoto);
+  return true;
+}
+function activeStepNums() { return STEPS.map(s => s.num).filter(isStepActive); }
+function adjacentStep(dir) {
+  const a = activeStepNums(); const i = a.indexOf(state.currentStep); const j = i + dir;
+  return (i >= 0 && j >= 0 && j < a.length) ? a[j] : null;
+}
 
 /* ═══════════════════════════════════════════════════════════════
    HELPERS
@@ -1147,13 +1162,15 @@ function overlayValuesF01() {
   if (state.sex === 'M') v.sex_m = true; if (state.sex === 'F') v.sex_f = true;
   v.nationality = state.nationality; v.frn_reg_no = state.arcNumber;
   v.passport_no = state.passportNumber; v.passport_issue = dot(state.passportIssueDate); v.passport_expiry = dot(state.passportExpiryDate);
-  v.addr_korea = state.koreanAddress; v.tel = state.telephone; v.cell = state.phone;
+  // 체류지 변경신고: the official 주소 cell must carry the CHANGED address (Step 4), not the old common one.
+  v.addr_korea = (t && t.id === 'address_change' && state.newAddress) ? state.newAddress : state.koreanAddress;
+  v.tel = state.telephone; v.cell = state.phone;
   v.home_addr = state.homeAddress; v.home_tel = state.homePhone;
   v.workplace_cur = state.currentWorkplace; v.workplace_new = state.newWorkplace;
   v.biz_no_new = state.bizRegNumber; v.tel_new = state.workplacePhone;
   v.annual_income = state.annualIncome; v.occupation = state.occupation;
   v.reentry_period = state.reentryPeriod; v.email = state.email;
-  v.refund_account = state.refundAccount; v.apply_date = dot(state.applicationDate);
+  v.apply_date = dot(state.applicationDate);
   return v;
 }
 function overlayValuesF04() {
@@ -1169,7 +1186,7 @@ function overlayValuesF04() {
   v.overseas_addr = state.overseasAddress; v.overseas_tel = state.overseasPhone;
   v.occupation = state.occupation; v.workplace = state.currentWorkplace;
   v.biz_no = state.bizRegNumber; v.tel_work = state.workplacePhone;
-  v.foreign_nat_date = dot(state.foreignNatDate); v.refund_account = state.refundAccount;
+  v.foreign_nat_date = dot(state.foreignNatDate);
   v.apply_date = dot(state.applicationDate);
   return v;
 }
@@ -1206,15 +1223,18 @@ function fieldHTML(id, labelKo, labelEn, type, value, helpText, required, opts) 
    ═══════════════════════════════════════════════════════════════ */
 function renderStepper() {
   const el = document.getElementById('fhStepper');
+  const active = activeStepNums();
   let html = '';
-  STEPS.forEach((s, i) => {
-    const status = s.num < state.currentStep ? 'done' : s.num === state.currentStep ? 'active' : 'pending';
-    const ariaLabel = `${status === 'done' ? '완료' : status === 'active' ? '현재' : '대기'} 단계 ${s.num}: ${s.label}`;
+  active.forEach((num, i) => {
+    const s = STEPS.find(x => x.num === num);
+    const status = num < state.currentStep ? 'done' : num === state.currentStep ? 'active' : 'pending';
+    const disp = i + 1;
+    const ariaLabel = `${status === 'done' ? '완료' : status === 'active' ? '현재' : '대기'} 단계 ${disp}: ${s.label}`;
     html += `<div class="fh-step-item">
-      <div class="fh-step-dot ${status}" role="status" aria-label="${ariaLabel}">${status === 'done' ? '✓' : s.num}</div>
+      <div class="fh-step-dot ${status}" role="status" aria-label="${ariaLabel}">${status === 'done' ? '✓' : disp}</div>
       <span class="fh-step-label ${status}">${s.label}</span>
     </div>`;
-    if (i < STEPS.length - 1) html += '<div class="fh-step-conn" aria-hidden="true"></div>';
+    if (i < active.length - 1) html += '<div class="fh-step-conn" aria-hidden="true"></div>';
   });
   el.innerHTML = html;
 }
@@ -1227,7 +1247,6 @@ function renderTypeGrid() {
   grid.innerHTML = appTypes().map(t => {
     const tags = [];
     if (t.needsPhoto) tags.push('<span class="fh-tag photo">사진 필요</span>');
-    if (t.needsRefundAccount) tags.push('<span class="fh-tag account">반환계좌 필요</span>');
     return `<button
       type="button"
       class="fh-type-card${state.appTypeId === t.id ? ' selected' : ''}"
@@ -1246,6 +1265,7 @@ function renderTypeGrid() {
     btn.addEventListener('click', () => {
       state.appTypeId = btn.dataset.type;
       renderTypeGrid();
+      renderStepper();
       updatePreview();
       updateNavButtons();
     });
@@ -1263,9 +1283,6 @@ function renderStep2() {
   const container = document.getElementById('fhStep2Fields');
   if (!t) { container.innerHTML = '<p class="fh-caution">신청 유형을 먼저 선택하세요.</p>'; return; }
   let html = '';
-
-  html += fieldHTML('currentStatus', '현재 체류자격', 'Current status of sojourn', 'text', state.currentStatus,
-    '예: D-2, E-7-1, F-4 등. 등록증 또는 비자 스티커에서 확인할 수 있습니다.', false, { placeholder: 'D-2, E-7-1, F-4 …' });
 
   if (t.needsDesiredStatus) {
     html += fieldHTML('desiredStatus', '희망 체류자격', 'Desired status of sojourn', 'text', state.desiredStatus,
@@ -1303,7 +1320,7 @@ function renderStep2() {
 }
 
 function bindStep2Events() {
-  ['currentStatus','desiredStatus','desiredActivity','activityDescription','activityInstitution','activityPeriod']
+  ['desiredStatus','desiredActivity','activityDescription','activityInstitution','activityPeriod']
     .forEach(id => { const el = document.getElementById(id); if(el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); }); });
   document.querySelectorAll('[data-reentry]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1359,6 +1376,9 @@ function renderStep4() {
   let html = '';
   let hasFields = false;
 
+  // When Step 2 is skipped for this type, surface its guidance note here.
+  if (t.note && !isStepActive(2)) { hasFields = true; html += `<div class="fh-note" style="margin-bottom:.25rem">ℹ ${esc(t.note)}</div>`; }
+
   if (t.needsCurrentExpiry) {
     hasFields = true;
     html += fieldHTML('currentExpiryDate', '현재 체류기간 만료일', 'Current sojourn expiry date', 'date', state.currentExpiryDate,
@@ -1409,15 +1429,6 @@ function renderStep4() {
     </div>`;
   }
 
-  if (t.needsRefundAccount) {
-    hasFields = true;
-    html += `<div class="fh-note" style="margin-bottom:.5rem">
-      반환용 계좌번호는 외국인등록 또는 등록증 재발급 신청 시에만 기재하는 항목입니다. 수수료 초과 납부 시 반환을 위한 계좌입니다.
-    </div>`;
-    html += fieldHTML('refundAccount', '반환용 계좌번호', 'Refund bank account number', 'text', state.refundAccount,
-      '수수료 반환이 필요한 경우를 위한 계좌번호입니다. 입력하신 정보는 이 페이지를 벗어나면 사라집니다.', false, { placeholder: '은행명 + 계좌번호' });
-  }
-
   if (!hasFields) {
     html = `<div class="fh-note">선택하신 신청 유형에 해당하는 추가 입력 항목이 없습니다. 다음 단계로 진행하세요.</div>`;
   }
@@ -1428,7 +1439,7 @@ function renderStep4() {
 
 function bindStep4Events() {
   ['currentExpiryDate','extensionReason','currentWorkplace','newWorkplace','bizRegNumber','workplacePhone',
-   'reentryPeriod','newAddress','moveDate','changedItem','newInfo','refundAccount']
+   'reentryPeriod','newAddress','moveDate','changedItem','newInfo']
     .forEach(id => {
       const el = document.getElementById(id);
       if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
@@ -1497,7 +1508,6 @@ function runValidation() {
   issues.push({ type: 'ok', msg: '실제 신청서 제출 전 관할 출입국·외국인청에서 최신 서식 및 제출서류를 확인하세요.' });
   issues.push({ type: 'ok', msg: 'HiKorea(www.hikorea.go.kr) 또는 1345로 문의하면 신청 절차 안내를 받을 수 있습니다.' });
   if (t.needsPhoto) issues.push({ type: 'warn', msg: '📷 여권용 사진(최근 6개월 이내, 3.5×4.5cm)을 준비하세요.' });
-  if (t.needsRefundAccount) issues.push({ type: 'ok', msg: '반환용 계좌번호를 신청서에 기재하는 항목이 있습니다. 신청서 원본에서 확인하세요.' });
 
   return issues;
 }
@@ -1588,7 +1598,6 @@ function renderOutput() {
 
   // Section 3: Procedure-specific
   let step3Rows = '';
-  if (state.currentStatus) step3Rows += row('현재 체류자격', state.currentStatus);
   if (t.needsDesiredStatus) step3Rows += row('희망 체류자격', state.desiredStatus);
   if (t.needsDesiredActivity) {
     step3Rows += row('희망 활동/자격', state.desiredActivity);
@@ -1629,7 +1638,6 @@ function renderOutput() {
   // Section 4: Conditional reminders
   let condNotes = '';
   if (t.needsPhoto) condNotes += '<li>📷 <strong>사진 필요</strong>: 최근 6개월 이내 여권용 사진(3.5×4.5cm, 흰 배경, 모자 미착용)</li>';
-  if (t.needsRefundAccount) condNotes += `<li>🏦 <strong>반환용 계좌번호</strong>: 신청서 원본에 직접 기재하세요. (입력한 경우: ${state.refundAccount ? esc(state.refundAccount) : '미입력'})</li>`;
   condNotes += '<li>✍ <strong>서명/인</strong>: 신청인 본인이 신청서에 직접 서명 또는 날인합니다.</li>';
   condNotes += '<li>📋 <strong>행정정보 공동이용 동의</strong>: 신청서 내 동의 항목을 확인하세요.</li>';
 
@@ -1692,7 +1700,6 @@ function updatePreview() {
   if (state.passportNumber) html += prow('여권번호', '****' + state.passportNumber.slice(-4), false);
   if (state.passportExpiryDate) html += prow('여권만료일', state.passportExpiryDate);
   if (state.koreanAddress) html += prow('주소', state.koreanAddress.slice(0, 18) + (state.koreanAddress.length > 18 ? '…' : ''));
-  if (state.currentStatus) html += prow('현 체류자격', state.currentStatus);
   if (t.needsDesiredStatus && state.desiredStatus) html += prow('희망 자격', state.desiredStatus);
   if (t.needsDesiredActivity && state.desiredActivity) html += prow('희망 활동', state.desiredActivity);
   if (t.needsCurrentExpiry && state.currentExpiryDate) html += prow('만료일', state.currentExpiryDate);
@@ -1700,7 +1707,6 @@ function updatePreview() {
   if (t.needsReentryPeriod && state.reentryPeriod) html += prow('재입국 기간', state.reentryPeriod);
   if (t.needsAddressChange && state.newAddress) html += prow('변경 주소', state.newAddress.slice(0,18)+'…');
   if (t.needsPhoto) html += `<div class="fh-preview-row"><span class="fh-preview-k" style="color:var(--p-coral)">사진</span><span class="fh-preview-v" style="color:var(--p-coral)">필요</span></div>`;
-  if (t.needsRefundAccount) html += `<div class="fh-preview-row"><span class="fh-preview-k" style="color:var(--p-green)">반환계좌</span><span class="fh-preview-v">${state.refundAccount ? '입력됨' : '미입력'}</span></div>`;
 
   body.innerHTML = html;
 
@@ -1716,14 +1722,14 @@ function updatePreview() {
 function updateNavButtons() {
   const prevBtn = document.getElementById('fhPrevBtn');
   const nextBtn = document.getElementById('fhNextBtn');
-  prevBtn.disabled = state.currentStep === 1;
-  if (state.currentStep === 6) {
+  prevBtn.disabled = adjacentStep(-1) === null;
+  const next = adjacentStep(1);
+  if (next === null) {
     nextBtn.style.display = 'none';
   } else {
     nextBtn.style.display = '';
-    const isStep1 = state.currentStep === 1;
-    nextBtn.disabled = isStep1 && !state.appTypeId;
-    nextBtn.textContent = state.currentStep === 5 ? '작성 가이드 보기 →' : '다음 →';
+    nextBtn.disabled = state.currentStep === 1 && !state.appTypeId;
+    nextBtn.textContent = next === 6 ? '작성 가이드 보기 →' : '다음 →';
   }
 }
 
@@ -1766,7 +1772,6 @@ function buildCopyText() {
   if (state.applicationDate) lines.push(`신청일: ${state.applicationDate}`);
   lines.push('');
   lines.push('[절차별 추가정보]');
-  if (state.currentStatus) lines.push(`현재 체류자격: ${state.currentStatus}`);
   if (t.needsDesiredStatus) lines.push(`희망 체류자격: ${state.desiredStatus || '(미입력)'}`);
   if (t.needsDesiredActivity) lines.push(`희망 활동: ${state.desiredActivity || '(미입력)'}`);
   if (t.needsCurrentExpiry) lines.push(`현재 체류기간 만료일: ${state.currentExpiryDate || '(미입력)'}`);
@@ -1776,7 +1781,6 @@ function buildCopyText() {
   lines.push('');
   lines.push('[조건부 항목]');
   if (t.needsPhoto) lines.push('- 사진: 최근 6개월 이내 여권용 사진 필요');
-  if (t.needsRefundAccount) lines.push('- 반환용 계좌번호: 신청서에 직접 기재');
   lines.push('- 서명/인: 신청서에 직접 서명 또는 날인');
   lines.push('');
   lines.push('[주의]');
@@ -1838,6 +1842,8 @@ function updateDocChrome() {
   document.getElementById('fhDocChipName').textContent = f.nameKo;
   document.getElementById('fhSourceMeta').innerHTML =
     `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Paradiso 참고용 도구 · 법적 효력 없음</span>`;
+  const dlBtn = document.getElementById('fhDownloadBtn');
+  if (dlBtn) dlBtn.textContent = `⬇ ${f.dlNoun} 작성본 PDF 다운로드`;
 }
 
 function selectForm(formId) {
@@ -1951,7 +1957,9 @@ async function generateOfficialPdf() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `Paradiso_${state.formId}_초안.pdf`;
+    const nm = [state.surname, state.givenName].map(s => (s || '').trim()).filter(Boolean).join(' ');
+    const safe = (nm || '작성본').replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim();
+    a.download = `${safe}_${f.dlNoun}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -1994,8 +2002,6 @@ function initLang() {
 function initURLParams() {
   try {
     const params = new URLSearchParams(window.location.search);
-    const statusParam = params.get('status');
-    if (statusParam) state.currentStatus = decodeURIComponent(statusParam);
     const formParam = (params.get('form') || '').toUpperCase();
     if (FORMS[formParam]) {
       state.docType = 'integrated';
@@ -2021,10 +2027,10 @@ document.addEventListener('DOMContentLoaded', function () {
   document.getElementById('fhDownloadBtn').addEventListener('click', generateOfficialPdf);
 
   document.getElementById('fhPrevBtn').addEventListener('click', () => {
-    if (state.currentStep > 1) goToStep(state.currentStep - 1);
+    const p = adjacentStep(-1); if (p !== null) goToStep(p);
   });
   document.getElementById('fhNextBtn').addEventListener('click', () => {
-    if (state.currentStep < 6) goToStep(state.currentStep + 1);
+    const n = adjacentStep(1); if (n !== null) goToStep(n);
   });
 
   document.getElementById('fhCopyBtn').addEventListener('click', () => {
