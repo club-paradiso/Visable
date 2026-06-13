@@ -10,7 +10,13 @@
     "URLs marked status=not_configured are placeholders that must be",
     "confirmed by a human reviewer before any HTTP fetch is attempted.",
     "Scripts must skip such entries unless an explicit --allow-network",
-    "flag is passed."
+    "flag is passed.",
+    "IMPORTANT (runtime distinction): a status=not_configured law_api/notice",
+    "entry here means the MONITOR is not wired to fetch it — it does NOT mean",
+    "the runtime law-grounding layer is unreachable. /api/ask reaches the same",
+    "법제처 source independently via backend/services/law_tools.py, gated by",
+    "LAW_GROUNDING_MODE (audit/enabled) and a registered LAW_API_OC. See",
+    "docs/audits/source-grounding-and-law-mcp-audit-2026-06-14.md."
   ],
   "sources": [
     {
@@ -73,7 +79,7 @@
       "last_checked_at": null,
       "update_frequency": "on_amendment",
       "status": "not_configured",
-      "notes": "Placeholder. Requires LAW_API_KEY in operator environment. Skipped without --allow-network. No live retrieval reachable from /api/ask."
+      "notes": "MONITORING placeholder only (the monitor does not fetch this; skipped without --allow-network). This is NOT the runtime law path: /api/ask reaches the 법제처 National Law Open API directly via backend/services/law_tools.py (DRF lawSearch.do/lawService.do) when LAW_GROUNDING_MODE=audit|enabled and a registered LAW_API_OC is set. Law grounding is supplemental context only, never the final adjudication. A 2026-06-14 reachability probe with the .env.example placeholder OC value returned HTTP 403, so a real registered OC is required for live retrieval."
     },
     {
       "id": "hikorea_notice_placeholder",
