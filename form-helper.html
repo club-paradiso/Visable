@@ -50,6 +50,7 @@
   --t1:#F3EEDF; --t2:#C7BFA8;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
 html{font-size:clamp(14px,1.35vw,16px)}
 body{
   font-family:var(--ff);
@@ -486,6 +487,86 @@ main{flex:1;padding:0 1rem 3rem}
   padding:.08rem .35rem;
 }
 
+/* ── Document picker (landing) ── */
+.fh-picker{margin-top:.5rem}
+.fh-doc-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:.85rem;margin-top:1rem;
+}
+.fh-doc-card{
+  position:relative;text-align:left;font-family:var(--ff);
+  border:1.5px solid var(--p-line-2);border-radius:var(--p-r-lg);
+  padding:1.1rem 1.1rem;cursor:pointer;background:var(--p-paper);color:var(--p-ink);
+  display:flex;flex-direction:column;gap:.35rem;
+  transition:all var(--p-dur-1) var(--p-ease);
+}
+.fh-doc-card:hover:not([disabled]){border-color:var(--p-green-soft);background:var(--p-mint-soft);transform:translateY(-2px);box-shadow:var(--p-shadow-2)}
+.fh-doc-card.selected{border-color:var(--p-green);background:var(--p-mint-soft);box-shadow:0 0 0 3px rgba(31,79,61,.12)}
+.fh-doc-card:focus-visible{outline:2px solid var(--p-green);outline-offset:2px}
+.fh-doc-card[disabled]{opacity:.55;cursor:not-allowed}
+.fh-doc-num{font-size:.7rem;font-weight:800;letter-spacing:.08em;color:var(--p-green);text-transform:uppercase}
+.fh-doc-ko{font-size:var(--p-fs-md);font-weight:820;word-break:keep-all;line-height:1.3}
+.fh-doc-en{font-size:var(--p-fs-xs);color:var(--p-ink-3);word-break:keep-all}
+.fh-doc-desc{font-size:.78rem;color:var(--p-ink-3);line-height:1.5;word-break:keep-all;margin-top:.15rem}
+.fh-doc-soon{
+  position:absolute;top:.75rem;right:.75rem;
+  font-size:.62rem;font-weight:750;letter-spacing:.04em;
+  background:var(--p-paper-3);color:var(--p-ink-3);
+  border-radius:3px;padding:.12rem .4rem;
+}
+/* branch question */
+.fh-branch{
+  margin-top:1.5rem;padding:1.1rem 1.15rem;
+  border:1.5px solid var(--p-line-2);border-radius:var(--p-r-lg);
+  background:color-mix(in srgb,var(--p-green) 5%,var(--p-paper));
+}
+.fh-branch-q{font-size:var(--p-fs-md);font-weight:800;color:var(--p-ink);word-break:keep-all}
+.fh-branch-note{font-size:.76rem;color:var(--p-ink-3);margin-top:.3rem;line-height:1.5;word-break:keep-all}
+.fh-branch-opts{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:.9rem}
+.fh-branch-btn{
+  flex:1 1 220px;text-align:left;font-family:var(--ff);cursor:pointer;
+  border:1.5px solid var(--p-line);border-radius:var(--p-r-md);
+  background:var(--p-paper);color:var(--p-ink);padding:.75rem .9rem;
+  display:flex;flex-direction:column;gap:.2rem;transition:all var(--p-dur-1);
+}
+.fh-branch-btn:hover{border-color:var(--p-green);background:var(--p-mint-soft);transform:translateY(-1px)}
+.fh-branch-btn:focus-visible{outline:2px solid var(--p-green);outline-offset:2px}
+.fh-branch-btn b{font-size:var(--p-fs-base);font-weight:800}
+.fh-branch-btn span{font-size:.74rem;color:var(--p-ink-3);word-break:keep-all}
+
+/* current-document chip + change control */
+.fh-doc-chip{
+  display:inline-flex;align-items:center;gap:.5rem;flex-wrap:wrap;
+  font-size:.76rem;color:var(--p-ink-3);margin-bottom:1rem;
+  border:1px solid var(--p-line-2);border-radius:999px;padding:.3rem .4rem .3rem .8rem;
+  background:var(--p-paper);
+}
+.fh-doc-chip b{color:var(--p-ink-2);font-weight:750}
+.fh-doc-change{
+  border:1px solid var(--p-line);background:transparent;color:var(--p-green);
+  font-family:var(--ff);font-size:.72rem;font-weight:700;cursor:pointer;
+  border-radius:999px;padding:.2rem .65rem;transition:all var(--p-dur-1);
+}
+.fh-doc-change:hover{background:var(--p-green);color:#fff;border-color:var(--p-green)}
+
+/* PDF download button + overlay status */
+.fh-btn-download{
+  background:var(--p-coral);color:#fff;border-color:var(--p-coral);
+}
+.fh-btn-download:hover{background:var(--p-coral-deep);border-color:var(--p-coral-deep)}
+.fh-btn[disabled]{opacity:.6;cursor:wait;pointer-events:none}
+.fh-dl-status{
+  margin-top:.6rem;font-size:.76rem;color:var(--p-ink-3);line-height:1.5;
+  display:flex;align-items:center;gap:.4rem;min-height:1.2rem;
+}
+.fh-dl-status.err{color:var(--color-error)}
+.fh-dl-status.ok{color:var(--p-green-soft)}
+.fh-spinner{
+  width:13px;height:13px;border:2px solid var(--p-line);border-top-color:var(--p-green);
+  border-radius:50%;animation:fhspin .7s linear infinite;flex-shrink:0;
+}
+@keyframes fhspin{to{transform:rotate(360deg)}}
+
 /* ── Print mode ── */
 @media print{
   .fh-header,.fh-stepper,.fh-nav,.fh-aside,.fh-step-panel:not(.visible),
@@ -531,26 +612,39 @@ main{flex:1;padding:0 1rem 3rem}
 
   <!-- Hero -->
   <div class="fh-hero">
-    <p class="fh-kicker">Immigration form guide</p>
-    <h1 class="fh-hero-title">통합신청서 작성 도우미</h1>
-    <p class="fh-hero-sub" id="fhHeroSub">어떤 칸을 체크하고 무엇을 적어야 하는지 단계별로 정리합니다.<br>
-      <span style="font-size:.85em">Step-by-step guide for filling out the Korean immigration Application Form (Report Form).</span></p>
+    <p class="fh-kicker">Immigration form helper</p>
+    <h1 class="fh-hero-title" id="fhHeroTitle">필수서류 작성 도우미</h1>
+    <p class="fh-hero-sub" id="fhHeroSub">출입국·외국인청 제출용 정본 서식을 단계별로 채워, 입력값이 정본 레이아웃 위에 배치된 PDF로 내려받습니다.<br>
+      <span style="font-size:.85em">Fill official Korean immigration forms step by step and download a draft with your entries placed onto the authentic layout.</span></p>
     <div class="fh-privacy-notice" role="note">
-      <strong>개인정보 안내</strong> — 입력하신 정보는 이 페이지 안에서만 사용되며, 서버에 전송되거나 저장되지 않습니다. 민감한 항목(여권번호, 등록번호, 주소 등)은 브라우저 메모리에만 보관됩니다. 제출 전 최신 공식 서식과 관할 출입국·외국인청 안내를 확인하세요.
+      <strong>개인정보 안내</strong> — 입력하신 정보는 이 페이지(브라우저 메모리) 안에서만 사용됩니다. 서버로 전송되거나 저장되지 않으며, localStorage에도 저장하지 않습니다. PDF는 브라우저 안에서 빈 정본 서식 위에 직접 작성됩니다. 제출 전 최신 공식 서식과 관할 출입국·외국인청 안내를 확인하세요.
     </div>
-    <div class="fh-source-meta" aria-label="참고 서식 정보">
-      <span>통합신청서(신고서)</span>
-      <span>출입국관리법 시행규칙 별지 제34호서식</span>
-      <span>서식 기준: 2022. 4. 12.</span>
+    <div class="fh-source-meta" id="fhSourceMeta" aria-label="참고 서식 정보">
+      <span>필수서류 작성 도우미</span>
       <span>Paradiso 참고용 도구 · 법적 효력 없음</span>
     </div>
   </div>
 
+  <!-- Document picker (landing) -->
+  <section class="fh-picker" id="fhPicker" aria-label="서류 선택">
+    <h2 class="fh-step-heading">어떤 서류를 작성하시나요?</h2>
+    <p class="fh-step-subheading">작성할 서류를 선택하세요. 서류별로 근거 법령과 작성 흐름이 다릅니다.</p>
+    <div class="fh-doc-grid" id="fhDocGrid" role="list"></div>
+    <div id="fhBranch" hidden></div>
+  </section>
+
+
   <!-- Two-column layout -->
-  <div class="fh-layout">
+  <div class="fh-layout" id="fhLayout" hidden>
 
     <!-- Wizard (left/main) -->
     <div class="fh-wizard">
+
+      <!-- Current document + change control -->
+      <div class="fh-doc-chip" id="fhDocChip">
+        <span>작성 중인 서류: <b id="fhDocChipName">—</b></span>
+        <button type="button" class="fh-doc-change" id="fhDocChange">← 서류 변경</button>
+      </div>
 
       <!-- Stepper -->
       <nav class="fh-stepper" aria-label="단계 진행" id="fhStepper"></nav>
@@ -596,10 +690,12 @@ main{flex:1;padding:0 1rem 3rem}
         <p class="fh-step-subheading">아래 내용을 참고하여 통합신청서를 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.</p>
         <div id="fhOutputContent"></div>
         <div class="fh-output-actions" id="fhOutputActions">
-          <button type="button" class="fh-btn fh-btn-primary" id="fhCopyBtn">📋 작성 가이드 복사</button>
+          <button type="button" class="fh-btn fh-btn-download" id="fhDownloadBtn">⬇ 정본 PDF 다운로드</button>
+          <button type="button" class="fh-btn fh-btn-secondary" id="fhCopyBtn">📋 작성 가이드 복사</button>
           <button type="button" class="fh-btn fh-btn-secondary" id="fhPrintBtn">🖨 인쇄용 보기</button>
           <button type="button" class="fh-btn fh-btn-ghost" id="fhResetBtn">↺ 초기화</button>
         </div>
+        <div class="fh-dl-status" id="fhDlStatus" role="status" aria-live="polite"></div>
         <div class="fh-caution" style="margin-top:1rem">
           <p class="fh-caution-title">⚠ 제출 전 반드시 확인하세요</p>
           이 도구는 통합신청서 작성을 돕는 참고용 도구입니다. 체류자격 허가 여부, 제출서류의 최종 적합성, 접수 가능 여부는 관할 출입국·외국인청의 판단에 따릅니다. 최신 서식 및 제출 요건은 <a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer" style="color:var(--p-green)">HiKorea</a> 또는 관할 출입국·외국인청(☎ 1345)에서 확인하세요.
@@ -828,11 +924,137 @@ const APP_TYPES = [
     note: '신청하고자 하는 체류자격을 명확히 기재하세요.',
   },
 ];
+// Map each F01 application type to its checkbox key on the official PDF (form_schemas.json → F01.overlay).
+const F01_KEYS = {
+  foreign_registration:'cb_reg_foreign', sojourn_extension:'cb_extension',
+  status_change:'cb_status_change', activity_outside_status:'cb_activity',
+  workplace_change:'cb_workplace', address_change:'cb_address_change',
+  registration_change:'cb_reg_change', reentry_permit:'cb_reentry',
+  card_reissuance:'cb_card_reissue', status_granting:'cb_status_grant',
+};
+APP_TYPES.forEach(t => { t.checkboxKey = F01_KEYS[t.id]; });
+
+/* F04 — 재외동포(F-4) 통합신청서 / 국내거소신고서 application types */
+const APP_TYPES_F04 = [
+  { id:'overseas_reg', ko:'국내거소신고', en:'Overseas Korean Registration', sub:'외국국적동포 최초 국내거소신고',
+    formCheckbox:'외국국적동포 국내거소신고', checkboxKey:'cb_overseas_reg',
+    needsPhoto:true, needsRefundAccount:true, needsDesiredStatus:false, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:false, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'국내거소신고는 거소증 발급을 동반합니다. 최근 6개월 이내 여권용 사진이 필요합니다.' },
+  { id:'move_report', ko:'국내거소 이전신고', en:'Report on Alteration of Domestic Residence', sub:'거소(주소) 이전 신고',
+    formCheckbox:'국내거소 이전신고', checkboxKey:'cb_move_report',
+    needsPhoto:false, needsRefundAccount:false, needsDesiredStatus:false, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:false, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'이전한 거소(주소)는 「대한민국 안의 거소」 칸에 새 주소로 기재합니다. 이전일로부터 신고기한을 관할청에 확인하세요.' },
+  { id:'card_reissue', ko:'국내거소신고증 재발급', en:'Reissuance of Overseas Korean Resident Card', sub:'분실·훼손 등 재발급',
+    formCheckbox:'국내거소신고증 재발급', checkboxKey:'cb_card_reissue',
+    needsPhoto:true, needsRefundAccount:true, needsDesiredStatus:false, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:false, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'재발급 사유(분실·훼손·기재변경 등)를 확인하세요. 사진이 필요합니다.' },
+  { id:'extension', ko:'체류기간 연장허가', en:'Extension of Sojourn Period', sub:'체류기간 만료 전 연장',
+    formCheckbox:'체류기간 연장허가', checkboxKey:'cb_extension',
+    needsPhoto:false, needsRefundAccount:false, needsDesiredStatus:false, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:true, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'체류기간 만료일 전에 신청하세요.' },
+  { id:'status_change', ko:'체류자격 변경허가', en:'Change of Status of Sojourn', sub:'다른 자격으로 변경',
+    formCheckbox:'체류자격 변경허가', checkboxKey:'cb_status_change',
+    needsPhoto:false, needsRefundAccount:false, needsDesiredStatus:true, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:false, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'변경하려는 자격의 요건을 충족하는지 확인하세요. (희망 자격은 가이드에 정리되며, F-4 서식에는 별도 자격 기입란이 없습니다.)' },
+  { id:'status_grant', ko:'체류자격 부여', en:'Granting Status of Sojourn', sub:'자격 부여 신청',
+    formCheckbox:'체류자격 부여', checkboxKey:'cb_status_grant',
+    needsPhoto:false, needsRefundAccount:false, needsDesiredStatus:true, needsWorkplace:false,
+    needsReentryPeriod:false, needsCurrentExpiry:false, needsDesiredActivity:false, needsAddressChange:false, needsChangedItem:false,
+    note:'신청하려는 체류자격을 가이드에 정리하세요.' },
+];
+
+/* Personal-info field schema per form (drives Step 3). Items: {section} | {row:[field…]} | {field} | {note} */
+const F = (id, ko, en, type, req, opts) => Object.assign({ id, ko, en, type, req: !!req }, opts || {});
+const PERSONAL_F01 = [
+  { row:[ F('surname','성 (Surname)','Family name','text',true,{ph:'KIM'}),
+          F('givenName','이름 (Given names)','Given names','text',true,{ph:'MINSOO'}) ] },
+  { row:[ F('dob','생년월일','Date of birth','date',true),
+          F('sex','성별','Sex','select',true,{options:[{value:'',label:'— 선택 —'},{value:'M',label:'남(Male)'},{value:'F',label:'여(Female)'}]}) ] },
+  { field: F('nationality','국적','Nationality','text',true,{ph:'예: United States of America', help:'여권에 기재된 국적을 입력하세요.'}) },
+  { section:'여권 Passport' },
+  { row:[ F('passportNumber','여권번호','Passport number','text',true,{ph:'M12345678'}),
+          F('arcNumber','외국인등록번호','Foreign resident registration number','text',false,{ph:'000000-0000000', help:'이미 등록한 경우 입력. 최초 신청자는 빈칸.'}) ] },
+  { row:[ F('passportIssueDate','여권 발급일','Passport issue date','date',false),
+          F('passportExpiryDate','여권 유효기간','Passport expiry date','date',true,{help:'신청일보다 이전이면 갱신이 필요합니다.'}) ] },
+  { section:'연락처 Contact' },
+  { field: F('koreanAddress','대한민국 내 주소','Address in Korea','text',true,{ph:'서울특별시 …'}) },
+  { row:[ F('telephone','전화번호','Telephone No.','tel',false,{ph:'02-XXX-XXXX'}),
+          F('phone','휴대전화','Cell phone No.','tel',false,{ph:'010-XXXX-XXXX'}) ] },
+  { row:[ F('homeAddress','본국 주소','Address in home country','text',false),
+          F('homePhone','본국 전화번호','Home country phone','tel',false) ] },
+  { row:[ F('email','전자우편','Email','email',false,{ph:'example@email.com'}),
+          F('applicationDate','신청일','Application date','date',false) ] },
+  { note:'<strong>서명/인</strong>: 신청서 제출 시 신청인이 직접 서명 또는 날인합니다. 이 도구는 서명을 수집하지 않습니다.' },
+];
+const PERSONAL_F04 = [
+  { row:[ F('surname','성 (Surname)','Family name','text',true,{ph:'KIM'}),
+          F('givenName','이름 (Given names)','Given names','text',true,{ph:'DAVID'}) ] },
+  { row:[ F('koreanName','한글 성명','Name in Korean','text',false,{ph:'김다윗', help:'한글 성명이 있으면 기재합니다.'}),
+          F('nationality','국적','Nationality','text',true,{ph:'예: United States of America'}) ] },
+  { row:[ F('dob','생년월일','Date of birth','date',true),
+          F('sex','성별','Sex','select',true,{options:[{value:'',label:'— 선택 —'},{value:'M',label:'남(Male)'},{value:'F',label:'여(Female)'}]}) ] },
+  { field: F('arcNumber','외국인등록번호(국내거소신고번호)','Foreign resident / overseas Korean No.','text',false,{ph:'000000-0000000', help:'이미 등록·신고한 경우 입력. 최초 신청자는 빈칸.'}) },
+  { section:'여권 Passport' },
+  { row:[ F('passportNumber','여권번호','Passport number','text',true,{ph:'M12345678'}),
+          F('passportIssueDate','여권 발급일','Passport issue date','date',false) ] },
+  { row:[ F('passportExpiryDate','여권 유효기간','Passport expiry date','date',true),
+          F('foreignNatDate','외국국적 취득일','Date of acquisition of foreign nationality','date',false,{help:'재외동포(F-4) 서식 항목입니다.'}) ] },
+  { section:'거소·연락처 Residence & Contact' },
+  { field: F('koreanAddress','대한민국 안의 거소','Residence in Korea','text',true,{ph:'서울특별시 …', help:'이전신고 시 새 거소(주소)를 기재합니다.'}) },
+  { row:[ F('telephone','전화번호','Telephone No.','tel',false,{ph:'02-XXX-XXXX'}),
+          F('phone','휴대전화','Cell phone No.','tel',false,{ph:'010-XXXX-XXXX'}) ] },
+  { row:[ F('overseasAddress','거주국 주소','Overseas address','text',false),
+          F('overseasPhone','거주국 전화번호','Overseas phone','tel',false) ] },
+  { section:'직업·근무처 Occupation (선택)' },
+  { row:[ F('occupation','직업','Occupation','text',false),
+          F('currentWorkplace','근무처','Workplace','text',false) ] },
+  { row:[ F('bizRegNumber','사업자등록번호','Business registration No.','text',false,{ph:'000-00-00000'}),
+          F('workplacePhone','근무처 전화번호','Workplace phone','tel',false) ] },
+  { row:[ F('email','전자우편','Email','email',false,{ph:'example@email.com'}),
+          F('applicationDate','신청일','Application date','date',false) ] },
+  { note:'<strong>서명/인</strong>: 신청서 제출 시 신청인이 직접 서명 또는 날인합니다. 이 도구는 서명을 수집하지 않습니다.' },
+];
+
+/* FORM REGISTRY */
+const FORMS = {
+  F01: {
+    id:'F01', nameKo:'통합신청서(신고서)', nameEn:'Application Form (Report Form)',
+    legalKo:'출입국관리법 시행규칙 별지 제34호서식', rev:'2022. 4. 12.',
+    appTypes: APP_TYPES, personal: PERSONAL_F01,
+    overlay: overlayValuesF01,
+  },
+  F04: {
+    id:'F04', nameKo:'재외동포(F-4) 통합신청서 · 국내거소신고서', nameEn:'Overseas Korean (F-4) Application / Report Form',
+    legalKo:'재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호서식', rev:'2022. 4. 12.',
+    appTypes: APP_TYPES_F04, personal: PERSONAL_F04,
+    overlay: overlayValuesF04,
+  },
+};
+
+/* DOCUMENT PICKER registry (landing). Phase 1 = integrated/residence; others arrive in later phases. */
+const DOCS = [
+  { id:'integrated', num:'항목 1', ko:'통합신청서 / 국내거소신고서', en:'Application / Domestic Residence Report',
+    desc:'외국인등록·체류기간 연장·체류자격 변경·재입국·체류지 변경 등. F-4 여부에 따라 서식이 갈립니다.', ready:true },
+  { id:'residence', num:'항목 2', ko:'거주/숙소제공확인서', en:'Confirmation of Residence/Accommodation',
+    desc:'체류지 입증용. 제공자·거주자가 함께 작성합니다.', ready:false },
+  { id:'guarantee', num:'항목 3', ko:'신원보증서', en:'Letter of Guarantee',
+    desc:'특정 체류자격에서 요구되는 보증인·피보증인 서식.', ready:false },
+];
+
+function currentForm() { return state.formId ? FORMS[state.formId] : null; }
+function appTypes() { const f = currentForm(); return f ? f.appTypes : []; }
 
 /* ═══════════════════════════════════════════════════════════════
    STATE — session/memory only; never persisted to localStorage
    ═══════════════════════════════════════════════════════════════ */
 const state = {
+  formId: null,
+  docType: null,
   currentStep: 1,
   appTypeId: null,
   lang: 'ko',
@@ -871,6 +1093,16 @@ const state = {
   newInfo: '',
   reentryPeriod: '',
   refundAccount: '',
+  // additional official-form fields (F01 본국주소/소득/직업, F04 한글성명/거주국/취득일)
+  koreanName: '',
+  telephone: '',
+  homeAddress: '',
+  homePhone: '',
+  annualIncome: '',
+  occupation: '',
+  overseasAddress: '',
+  overseasPhone: '',
+  foreignNatDate: '',
 };
 
 const STEPS = [
@@ -886,11 +1118,60 @@ const STEPS = [
    HELPERS
    ═══════════════════════════════════════════════════════════════ */
 function getAppType() {
-  return APP_TYPES.find(t => t.id === state.appTypeId) || null;
+  return appTypes().find(t => t.id === state.appTypeId) || null;
 }
 
 function esc(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* date helpers for overlay (state stores ISO yyyy-mm-dd from <input type=date>) */
+function splitDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? { y: m[1], m: m[2], d: m[3] } : { y: '', m: '', d: '' };
+}
+function dot(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso || '');
+  return m ? `${m[1]}.${m[2]}.${m[3]}` : (iso || '');
+}
+
+/* ── Overlay value builders: wizard state → form_schemas.json overlay keys ── */
+function overlayValuesF01() {
+  const t = getAppType(); const v = {}; const d = splitDate(state.dob);
+  if (t) v[t.checkboxKey] = true;
+  if (t && t.id === 'activity_outside_status') v.activity_status = state.desiredActivity;
+  if (t && t.id === 'status_change') v.change_status = state.desiredStatus;
+  if (t && t.id === 'status_granting') v.grant_status = state.desiredStatus;
+  v.surname = state.surname; v.given = state.givenName;
+  v.dob_y = d.y; v.dob_m = d.m; v.dob_d = d.d;
+  if (state.sex === 'M') v.sex_m = true; if (state.sex === 'F') v.sex_f = true;
+  v.nationality = state.nationality; v.frn_reg_no = state.arcNumber;
+  v.passport_no = state.passportNumber; v.passport_issue = dot(state.passportIssueDate); v.passport_expiry = dot(state.passportExpiryDate);
+  v.addr_korea = state.koreanAddress; v.tel = state.telephone; v.cell = state.phone;
+  v.home_addr = state.homeAddress; v.home_tel = state.homePhone;
+  v.workplace_cur = state.currentWorkplace; v.workplace_new = state.newWorkplace;
+  v.biz_no_new = state.bizRegNumber; v.tel_new = state.workplacePhone;
+  v.annual_income = state.annualIncome; v.occupation = state.occupation;
+  v.reentry_period = state.reentryPeriod; v.email = state.email;
+  v.refund_account = state.refundAccount; v.apply_date = dot(state.applicationDate);
+  return v;
+}
+function overlayValuesF04() {
+  const t = getAppType(); const v = {}; const d = splitDate(state.dob);
+  if (t) v[t.checkboxKey] = true;
+  v.surname = state.surname; v.given = state.givenName; v.korean_name = state.koreanName;
+  v.dob_y = d.y; v.dob_m = d.m; v.dob_d = d.d;
+  if (state.sex === 'M') v.sex_m = true; if (state.sex === 'F') v.sex_f = true;
+  v.nationality = state.nationality; v.frn_reg_no = state.arcNumber;
+  v.passport_no = state.passportNumber; v.passport_issue = dot(state.passportIssueDate); v.passport_expiry = dot(state.passportExpiryDate);
+  v.residence_korea = state.koreanAddress; v.email = state.email;
+  v.tel = state.telephone; v.cell = state.phone;
+  v.overseas_addr = state.overseasAddress; v.overseas_tel = state.overseasPhone;
+  v.occupation = state.occupation; v.workplace = state.currentWorkplace;
+  v.biz_no = state.bizRegNumber; v.tel_work = state.workplacePhone;
+  v.foreign_nat_date = dot(state.foreignNatDate); v.refund_account = state.refundAccount;
+  v.apply_date = dot(state.applicationDate);
+  return v;
 }
 
 function fieldHTML(id, labelKo, labelEn, type, value, helpText, required, opts) {
@@ -943,7 +1224,7 @@ function renderStepper() {
    ═══════════════════════════════════════════════════════════════ */
 function renderTypeGrid() {
   const grid = document.getElementById('fhTypeGrid');
-  grid.innerHTML = APP_TYPES.map(t => {
+  grid.innerHTML = appTypes().map(t => {
     const tags = [];
     if (t.needsPhoto) tags.push('<span class="fh-tag photo">사진 필요</span>');
     if (t.needsRefundAccount) tags.push('<span class="fh-tag account">반환계좌 필요</span>');
@@ -1040,61 +1321,32 @@ function bindStep2Events() {
    RENDER STEP 3 — Personal info
    ═══════════════════════════════════════════════════════════════ */
 function renderStep3() {
-  const t = getAppType();
+  const f = currentForm();
   const container = document.getElementById('fhStep3Fields');
+  if (!f) { container.innerHTML = ''; return; }
+  const render = fd => fieldHTML(fd.id, fd.ko, fd.en, fd.type, state[fd.id], fd.help || '', fd.req, { placeholder: fd.ph, options: fd.options });
   let html = '';
-
-  html += `<div class="fh-field-row">
-    ${fieldHTML('surname', '성 (Surname)', 'Family name', 'text', state.surname, '여권 영문 표기와 동일하게 입력하세요.', true, { placeholder: 'KIM' })}
-    ${fieldHTML('givenName', '이름 (Given names)', 'Given names', 'text', state.givenName, '여권 영문 표기와 동일하게 입력하세요.', true, { placeholder: 'MINSOO' })}
-  </div>`;
-
-  html += `<div class="fh-field-row">
-    ${fieldHTML('dob', '생년월일', 'Date of birth', 'date', state.dob, '', true)}
-    ${fieldHTML('sex', '성별', 'Sex', 'select', state.sex, '', true, { options: [
-      { value: '', label: '— 선택 —' },
-      { value: 'M', label: '남(Male)' },
-      { value: 'F', label: '여(Female)' }
-    ]})}
-  </div>`;
-
-  html += fieldHTML('nationality', '국적', 'Nationality', 'text', state.nationality,
-    '여권에 기재된 국적을 입력하세요. 예: Republic of Korea, United States of America, China', true, { placeholder: '예: United States of America' });
-
-  html += `<p class="fh-section-label">여권 정보 Passport</p>`;
-  html += `<div class="fh-field-row">
-    ${fieldHTML('passportNumber', '여권번호', 'Passport number', 'text', state.passportNumber, '예: M12345678', true, { placeholder: 'M12345678' })}
-    ${fieldHTML('arcNumber', '외국인등록번호', 'Foreign resident registration number', 'text', state.arcNumber, '이미 외국인등록을 한 경우 입력합니다. 최초 신청자는 빈칸으로 둡니다.', false, { placeholder: '000000-0000000' })}
-  </div>`;
-
-  html += `<div class="fh-field-row">
-    ${fieldHTML('passportIssueDate', '여권 발급일', 'Passport issue date', 'date', state.passportIssueDate, '', false)}
-    ${fieldHTML('passportExpiryDate', '여권 유효기간', 'Passport expiry date', 'date', state.passportExpiryDate, '신청일보다 이전이면 갱신이 필요합니다.', true)}
-  </div>`;
-
-  html += `<p class="fh-section-label">연락처 Contact</p>`;
-  html += fieldHTML('koreanAddress', '대한민국 내 주소', 'Korean address', 'text', state.koreanAddress, '현재 거주지 주소를 입력하세요.', true, { placeholder: '서울특별시 …' });
-  html += `<div class="fh-field-row">
-    ${fieldHTML('phone', '휴대전화', 'Cell phone number', 'tel', state.phone, '예: 010-1234-5678', false, { placeholder: '010-XXXX-XXXX' })}
-    ${fieldHTML('email', '전자우편', 'Email', 'email', state.email, 'HiKorea 등록 이메일을 입력하면 참고가 됩니다.', false, { placeholder: 'example@email.com' })}
-  </div>`;
-  html += fieldHTML('applicationDate', '신청일', 'Application date', 'date', state.applicationDate, '신청서를 제출하는 날짜를 입력하세요.', false);
-
-  html += `<div class="fh-note" style="margin-top:.75rem">
-    ℹ <strong>서명/인</strong>: 신청서 제출 시 신청인 서명 또는 인감을 직접 기재합니다. 이 도구에서는 서명을 수집하지 않습니다.
-  </div>`;
-
+  f.personal.forEach(item => {
+    if (item.section) { html += `<p class="fh-section-label">${esc(item.section)}</p>`; return; }
+    if (item.note)    { html += `<div class="fh-note" style="margin-top:.75rem">ℹ ${item.note}</div>`; return; }
+    if (item.row)     { html += `<div class="fh-field-row">${item.row.map(render).join('')}</div>`; return; }
+    if (item.field)   { html += render(item.field); }
+  });
   container.innerHTML = html;
   bindStep3Events();
 }
 
 function bindStep3Events() {
-  ['surname','givenName','dob','sex','nationality','arcNumber','passportNumber',
-   'passportIssueDate','passportExpiryDate','koreanAddress','phone','email','applicationDate']
-    .forEach(id => {
-      const el = document.getElementById(id);
-      if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
-    });
+  const f = currentForm(); if (!f) return;
+  const ids = [];
+  f.personal.forEach(item => {
+    if (item.row) item.row.forEach(fd => ids.push(fd.id));
+    if (item.field) ids.push(item.field.id);
+  });
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1288,6 +1540,7 @@ function renderValidation() {
    ═══════════════════════════════════════════════════════════════ */
 function renderOutput() {
   const t = getAppType();
+  const f = currentForm();
   const el = document.getElementById('fhOutputContent');
   if (!t) { el.innerHTML = '<p class="fh-caution">신청 유형이 선택되지 않았습니다.</p>'; return; }
 
@@ -1305,7 +1558,7 @@ function renderOutput() {
 
   // Section 1: Checkbox
   html += `<div class="fh-output-section">
-    <div class="fh-output-head">① 통합신청서에서 체크할 항목</div>
+    <div class="fh-output-head">① ${f ? esc(f.nameKo) : '신청서'}에서 체크할 항목</div>
     <div class="fh-output-body">
       <p style="margin-bottom:.5rem">다음 항목에 체크(☑)하세요:</p>
       <div class="fh-checkbox-display">☑ ${esc(t.formCheckbox)}</div>
@@ -1398,7 +1651,7 @@ function renderOutput() {
   html += `<div class="fh-output-section">
     <div class="fh-output-head">⑥ 제출 전 확인 체크리스트</div>
     <div class="fh-output-body"><ul>
-      <li>최신 통합신청서(신고서) 서식(별지 제34호서식)을 HiKorea 또는 관할청에서 받아 사용하세요.</li>
+      <li>최신 ${f ? esc(f.nameKo) + ' 서식(' + esc(f.legalKo) + ')' : '공식 서식'}을 HiKorea 또는 관할청에서 받아 제출 시 사용하세요. (이 도구의 PDF는 참고용 초안입니다.)</li>
       <li>제출 서류는 체류자격별·절차별로 다릅니다. 관할 출입국·외국인청 또는 HiKorea 홈페이지에서 확인하세요.</li>
       <li>수수료 납부 방법(현장·인터넷)을 미리 확인하세요.</li>
       <li>방문 전 온라인 예약(HiKorea)을 권장합니다.</li>
@@ -1497,8 +1750,9 @@ function goToStep(n) {
 function buildCopyText() {
   const t = getAppType();
   if (!t) return '신청 유형을 먼저 선택하세요.';
+  const f = currentForm();
   const lines = [];
-  lines.push('=== 통합신청서 작성 가이드 (Paradiso 참고용) ===');
+  lines.push(`=== ${f ? f.nameKo : '필수서류'} 작성 가이드 (Paradiso 참고용) ===`);
   lines.push(`신청 유형: ${t.ko} (${t.formCheckbox})`);
   lines.push('');
   lines.push('[기본 인적사항]');
@@ -1527,8 +1781,190 @@ function buildCopyText() {
   lines.push('');
   lines.push('[주의]');
   lines.push('이 내용은 참고용입니다. 최신 서식과 제출서류는 HiKorea(www.hikorea.go.kr) 또는 1345에서 확인하세요.');
-  lines.push(`출처: 통합신청서(신고서) 출입국관리법 시행규칙 별지 제34호서식 (2022. 4. 12.)`);
+  lines.push(`출처: ${f ? f.nameKo + ' ' + f.legalKo + ' (' + f.rev + ')' : '공식 서식'}`);
   return lines.join('\n');
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   DOCUMENT PICKER & BRANCH
+   ═══════════════════════════════════════════════════════════════ */
+function renderPicker() {
+  const grid = document.getElementById('fhDocGrid');
+  grid.innerHTML = DOCS.map(d => `
+    <button type="button" class="fh-doc-card${state.docType === d.id ? ' selected' : ''}" data-doc="${d.id}" role="listitem"
+      ${d.ready ? '' : 'disabled aria-disabled="true"'} aria-label="${esc(d.ko)} (${esc(d.en)})">
+      ${d.ready ? '' : '<span class="fh-doc-soon">준비 중 · Soon</span>'}
+      <span class="fh-doc-num">${esc(d.num)}</span>
+      <span class="fh-doc-ko">${esc(d.ko)}</span>
+      <span class="fh-doc-en">${esc(d.en)}</span>
+      <span class="fh-doc-desc">${esc(d.desc)}</span>
+    </button>`).join('');
+  grid.querySelectorAll('.fh-doc-card[data-doc]').forEach(btn => {
+    if (btn.disabled) return;
+    btn.addEventListener('click', () => {
+      state.docType = btn.dataset.doc;
+      renderPicker();
+      if (state.docType === 'integrated') renderBranch();
+    });
+  });
+}
+
+function renderBranch() {
+  const el = document.getElementById('fhBranch');
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="fh-branch" role="group" aria-label="서식 분기 질문">
+      <p class="fh-branch-q">재외동포(F-4) 관련 신청입니까?</p>
+      <p class="fh-branch-note">두 서식은 근거 법령이 다릅니다 — 통합신청서는 <b>출입국관리법 시행규칙 별지 제34호서식</b>, 국내거소신고서는 <b>재외동포법 시행규칙 별지 제1호서식</b>입니다.</p>
+      <div class="fh-branch-opts">
+        <button type="button" class="fh-branch-btn" data-form="F01">
+          <b>아니오 — 통합신청서</b>
+          <span>일반 외국인의 외국인등록·연장·변경·재입국 등 (별지 제34호서식)</span>
+        </button>
+        <button type="button" class="fh-branch-btn" data-form="F04">
+          <b>예 — 국내거소신고서</b>
+          <span>재외동포(F-4) 국내거소신고·이전·연장·변경 등 (별지 제1호서식)</span>
+        </button>
+      </div>
+    </div>`;
+  el.querySelectorAll('[data-form]').forEach(btn => {
+    btn.addEventListener('click', () => selectForm(btn.dataset.form));
+  });
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function updateDocChrome() {
+  const f = currentForm(); if (!f) return;
+  document.getElementById('fhDocChipName').textContent = f.nameKo;
+  document.getElementById('fhSourceMeta').innerHTML =
+    `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Paradiso 참고용 도구 · 법적 효력 없음</span>`;
+}
+
+function selectForm(formId) {
+  state.formId = formId;
+  state.appTypeId = null;
+  state.currentStep = 1;
+  document.getElementById('fhPicker').hidden = true;
+  document.getElementById('fhLayout').hidden = false;
+  updateDocChrome();
+  renderTypeGrid();
+  goToStep(1);
+  updatePreview();
+  dlStatus('', '');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showPicker() {
+  state.formId = null;
+  state.docType = null;
+  document.getElementById('fhLayout').hidden = true;
+  document.getElementById('fhBranch').hidden = true;
+  document.getElementById('fhBranch').innerHTML = '';
+  document.getElementById('fhPicker').hidden = false;
+  renderPicker();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   OFFICIAL-PDF OVERLAY ENGINE (pdf-lib) — all client-side, in-memory
+   ═══════════════════════════════════════════════════════════════ */
+let _schemaPromise = null;
+function loadSchema() {
+  if (!_schemaPromise) {
+    _schemaPromise = fetch('data/form_schemas.json').then(r => {
+      if (!r.ok) throw new Error('스키마 로드 실패 (' + r.status + ')');
+      return r.json();
+    });
+  }
+  return _schemaPromise;
+}
+const _scriptCache = {};
+function loadScript(src) {
+  if (_scriptCache[src]) return _scriptCache[src];
+  _scriptCache[src] = new Promise((res, rej) => {
+    const el = document.createElement('script');
+    el.src = src;
+    el.onload = () => res();
+    el.onerror = () => rej(new Error('스크립트 로드 실패: ' + src));
+    document.head.appendChild(el);
+  });
+  return _scriptCache[src];
+}
+function dlStatus(msg, cls, spinner) {
+  const el = document.getElementById('fhDlStatus');
+  if (!el) return;
+  el.className = 'fh-dl-status' + (cls ? ' ' + cls : '');
+  el.innerHTML = (spinner ? '<span class="fh-spinner" aria-hidden="true"></span>' : '') + (msg ? esc(msg) : '');
+}
+
+async function generateOfficialPdf() {
+  const f = currentForm();
+  if (!f) return;
+  const btn = document.getElementById('fhDownloadBtn');
+  btn.disabled = true;
+  try {
+    dlStatus('정본 서식과 한글 폰트를 불러오는 중…', '', true);
+    const schema = await loadSchema();
+    const spec = schema.forms[state.formId];
+    if (!spec) throw new Error('해당 서식 정의를 찾을 수 없습니다.');
+    await Promise.all([ loadScript(schema.vendor.pdfLib), loadScript(schema.vendor.fontkit) ]);
+    const PDFLib = window.PDFLib, fontkit = window.fontkit;
+    const [pdfBytes, fontBytes] = await Promise.all([
+      fetch(spec.pdf).then(r => { if (!r.ok) throw new Error('서식 PDF 로드 실패'); return r.arrayBuffer(); }),
+      fetch(schema.fontKorean).then(r => { if (!r.ok) throw new Error('한글 폰트 로드 실패'); return r.arrayBuffer(); }),
+    ]);
+    dlStatus('입력값을 정본 레이아웃 위에 배치하는 중…', '', true);
+    const pdfDoc = await PDFLib.PDFDocument.load(pdfBytes);
+    pdfDoc.registerFontkit(fontkit);
+    // The shipped font is already pre-subset (Latin + full Hangul); embed as-is (runtime subsetting is
+    // unreliable for large CJK fonts in this pdf-lib/fontkit build).
+    const font = await pdfDoc.embedFont(fontBytes);
+    const pages = pdfDoc.getPages();
+    const ink = PDFLib.rgb(spec.ink[0] / 255, spec.ink[1] / 255, spec.ink[2] / 255);
+    const white = PDFLib.rgb(1, 1, 1);
+    const H = spec.pageHeight;
+    const values = f.overlay();
+    Object.keys(values).forEach(key => {
+      const o = spec.overlay[key];
+      const val = values[key];
+      if (!o || val === '' || val == null || val === false) return;
+      const page = pages[o.page || 0];
+      if (!page) return;
+      if (o.check) {
+        const s = o.s || 5, cx = o.cx, cy = H - o.cy;
+        page.drawLine({ start:{x:cx-0.45*s, y:cy+0.02*s}, end:{x:cx-0.12*s, y:cy-0.38*s}, thickness:1.1, color:ink });
+        page.drawLine({ start:{x:cx-0.12*s, y:cy-0.38*s}, end:{x:cx+0.55*s, y:cy+0.5*s}, thickness:1.1, color:ink });
+        return;
+      }
+      if (o.wbox) {
+        const [x0, y0, x1, y1] = o.wbox;
+        page.drawRectangle({ x:x0, y:H-y1, width:x1-x0, height:y1-y0, color:white });
+      }
+      let size = o.size || 9;
+      const text = String(val);
+      const maxW = o.maxWidth || (spec.pageWidth - o.x - 6);
+      while (size > 5 && font.widthOfTextAtSize(text, size) > maxW) size -= 0.5;
+      page.drawText(text, { x:o.x, y:H - o.y, size, font, color:ink });
+    });
+    const out = await pdfDoc.save();
+    const blob = new Blob([out], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Paradiso_${state.formId}_초안.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    const errs = runValidation().filter(i => i.type === 'error').length;
+    dlStatus(errs
+      ? `정본 PDF가 생성되었습니다. 미입력 필수항목 ${errs}건은 출력 후 현장에서 직접 보완하세요.`
+      : '정본 PDF가 생성되었습니다. 다운로드 폴더를 확인하세요. 서명/날인은 제출 시 직접 하세요.', 'ok');
+  } catch (e) {
+    dlStatus('PDF 생성 중 오류가 발생했습니다: ' + (e && e.message ? e.message : e), 'err');
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -1558,23 +1994,31 @@ function initLang() {
 function initURLParams() {
   try {
     const params = new URLSearchParams(window.location.search);
-    const typeParam = params.get('type');
-    if (typeParam && APP_TYPES.find(t => t.id === typeParam)) {
-      state.appTypeId = typeParam;
-    }
     const statusParam = params.get('status');
     if (statusParam) state.currentStatus = decodeURIComponent(statusParam);
+    const formParam = (params.get('form') || '').toUpperCase();
+    if (FORMS[formParam]) {
+      state.docType = 'integrated';
+      selectForm(formParam);
+      const typeParam = params.get('type');
+      if (typeParam && appTypes().find(t => t.id === typeParam)) {
+        state.appTypeId = typeParam; renderTypeGrid(); updatePreview(); updateNavButtons();
+      }
+      return true;
+    }
   } catch (e) {}
+  return false;
 }
 
 document.addEventListener('DOMContentLoaded', function () {
   initTheme();
   initLang();
-  initURLParams();
-  renderStepper();
-  renderTypeGrid();
-  goToStep(1);
-  updatePreview();
+  renderPicker();
+  const autoSelected = initURLParams();
+  if (!autoSelected) showPicker();
+
+  document.getElementById('fhDocChange').addEventListener('click', showPicker);
+  document.getElementById('fhDownloadBtn').addEventListener('click', generateOfficialPdf);
 
   document.getElementById('fhPrevBtn').addEventListener('click', () => {
     if (state.currentStep > 1) goToStep(state.currentStep - 1);
@@ -1607,18 +2051,19 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   document.getElementById('fhResetBtn').addEventListener('click', () => {
-    if (!confirm('모든 입력 내용을 초기화하시겠습니까?')) return;
+    if (!confirm('현재 서류의 입력 내용을 초기화하시겠습니까?')) return;
     Object.keys(state).forEach(k => {
       if (k === 'currentStep') { state[k] = 1; }
       else if (k === 'applicationDate') { state[k] = new Date().toISOString().slice(0, 10); }
       else if (k === 'reentryType') { state[k] = 'single'; }
-      else if (k === 'lang') { /* keep */ }
+      else if (k === 'lang' || k === 'formId' || k === 'docType') { /* keep */ }
       else { state[k] = ''; }
     });
     state.appTypeId = null;
     renderTypeGrid();
     goToStep(1);
     updatePreview();
+    dlStatus('', '');
   });
 });
 </script>
