@@ -100,6 +100,7 @@ const embedded = obscure.filter(n => indexHtml.includes(n));
 ok(embedded.length === 0, 'no Jeju/expansion list countries embedded in index.html', embedded.join(','));
 ok(indexHtml.includes('assets/js/short-stay-checker.js'), 'index.html loads the deferred checker script');
 ok(indexHtml.includes('id="shortStayChecker"'), 'index.html has the checker mount section');
+ok(indexHtml.includes('id="shortStayModalOverlay"'), 'index.html hosts the short-stay checker as a page popup (modal)');
 ok(/fetch\(RULES_URL/.test(checkerJs) && /data\/short-stay\/rules\.json/.test(checkerJs), 'checker JS fetches external rules.json');
 
 /* ------------------------------------------------------- forbidden wording */
@@ -124,6 +125,8 @@ ok(!/K-ETA\s*(비자|사증)\b/.test(checkerJs.replace(/사증\(비자\)이 아�
 ok(/최종 입국 여부는 입국심사관이 결정/.test(checkerJs), 'final-entry-decision warning present');
 ok(/항공사 탑승 가능 여부/.test(checkerJs), 'airline boarding warning present');
 ok(/제주 무사증은 일반 무사증\/B-2-1·K-ETA와 별도 제도/.test(checkerJs), 'Jeju vs general separation warning present');
+ok(!/제주\s*무사증\s*\+/.test(checkerJs), 'checker never builds a "Jeju visa-free + ..." route label (no expansion-permit answer)');
+ok(/체류지역 확대는 원칙적으로 허용되지 않습니다/.test(checkerJs), 'checker states Jeju 체류지역 확대 is not allowed in principle');
 ok(/국적을 먼저 입력해 주세요/.test(checkerJs), 'empty-country prompt present');
 ok(/국가명을 찾지 못했습니다/.test(checkerJs), 'unknown-country prompt present');
 
@@ -143,8 +146,20 @@ const vnMain = scenario('베트남', 'ordinary', 'tourism', 'mainland', 30);
 ok(vnMain.primary.path.includes('C-3-9') && vnMain.primary.status === 'visa_required', 'VN mainland → C-3-9 visa_required');
 ok(vnMain.primary.explanation.join(' ').includes('등재되어 있지 않습니다'), 'VN mainland → deterministic not-listed wording');
 const vnBoth = scenario('베트남', 'ordinary', 'tourism', 'jeju_then_mainland', 30);
-ok(vnBoth.primary.path.includes('체류지역 확대허가'), 'VN jeju→mainland → expansion-permit path');
-ok(vnBoth.primary.explanation.join(' ').includes('별도 허가·제한을 확인'), 'VN jeju→mainland → permit warning wording');
+ok(vnBoth.primary.path.includes('C-3-9') && vnBoth.primary.status === 'visa_required',
+  'VN jeju→mainland → resolves to the mainland visa route (C-3-9), not a Jeju-expansion route');
+ok(!/체류지역\s*확대허가/.test(vnBoth.primary.path) && !vnBoth.primary.path.includes('제주 무사증 +'),
+  'VN jeju→mainland → never offers a "Jeju visa-free + 체류지역 확대허가" path');
+ok(vnBoth.primary.explanation.join(' ').includes('원칙적으로 허용되지 않'),
+  'VN jeju→mainland → states 체류지역 확대 is not allowed in principle');
+ok(vnBoth.alternatives.length === 0,
+  'VN jeju→mainland → no speculative "다른 가능성" when the required visa is determined');
+const jpBoth = scenario('일본', 'ordinary', 'tourism', 'jeju_then_mainland', 30);
+ok(jpBoth.primary.status === 'likely_available' && /B-2-1/.test(jpBoth.primary.path),
+  'JP jeju→mainland → general visa-free route (covers the mainland), not Jeju expansion');
+ok(jpBoth.primary.explanation.join(' ').includes('원칙적으로 허용되지 않'),
+  'JP jeju→mainland → explains Jeju visa-free cannot be expanded to the mainland');
+ok(jpBoth.alternatives.length === 0, 'JP jeju→mainland → no speculative "다른 가능성"');
 const jp = scenario('일본', 'ordinary', 'tourism', 'mainland', 30);
 ok(jp.primary.status === 'likely_available' && /B-2-1/.test(jp.primary.path), 'JP mainland → B-2-1 likely_available');
 ok(api.formatShortStayWarnings(jp).some(w => w.includes('입국심사관이 결정')), 'JP result carries final-decision warning');

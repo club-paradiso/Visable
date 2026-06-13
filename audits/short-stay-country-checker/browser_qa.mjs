@@ -154,21 +154,33 @@ check('B', mob.btnH >= 40 && mob.chipH >= 40, `mobile 375px: tap targets ≥40px
 await page.screenshot({ path: join(HERE, 'screen_c3_mobile_375.png'), fullPage: false });
 await page.setViewportSize({ width: 1280, height: 900 });
 
-/* checker/guide visibility per family */
+/* checker/guide visibility per family.
+   The short-stay checker now lives in a page popup (#shortStayModalOverlay), so a
+   relevant search pre-renders the form + injects the CTA but never auto-expands the
+   page; the popup opens only on the CTA / utility button. */
 await search('B-2');
-check('B', await page.evaluate(() => !document.getElementById('shortStayChecker').hidden),
-  'B-2 search: short-stay checker section visible');
+check('B', await page.evaluate(() => !!document.querySelector('#shortStayChecker [data-ssc-form]'),),
+  'B-2 search: short-stay checker form pre-rendered (ready for popup)');
+check('B', await page.evaluate(() => !document.getElementById('shortStayModalOverlay').classList.contains('active')),
+  'B-2 search: popup is NOT auto-opened (landing page not stretched)');
 await search('C-3');
-check('B', await page.evaluate(() => !document.getElementById('shortStayChecker').hidden),
-  'C-3 search: short-stay checker visible (tourist guidance CTA path)');
 check('B', await page.evaluate(() => !!document.querySelector('.external-guide-slot .ssc-cta')),
   'C-3 search: in-card checker CTA injected');
+/* opening + closing the popup */
+await page.evaluate(() => window.ParadisoShortStay.open());
+await page.waitForTimeout(150);
+check('B', await page.evaluate(() => document.getElementById('shortStayModalOverlay').classList.contains('active')),
+  'open(): short-stay popup (modal) opens');
+await page.evaluate(() => window.ParadisoShortStay.close());
+await page.waitForTimeout(150);
+check('B', await page.evaluate(() => !document.getElementById('shortStayModalOverlay').classList.contains('active')),
+  'close(): short-stay popup closes');
 await search('F-4');
 check('B', await page.evaluate(() => !document.getElementById('f4RouteGuide').hidden),
   'F-4 search: route guide section visible');
 await search('D-2');
-check('B', await page.evaluate(() => document.getElementById('shortStayChecker').hidden && document.getElementById('f4RouteGuide').hidden),
-  'D-2 search: unrelated query keeps both tools hidden');
+check('B', await page.evaluate(() => !document.getElementById('shortStayModalOverlay').classList.contains('active') && document.getElementById('f4RouteGuide').hidden),
+  'D-2 search: unrelated query keeps the popup closed and the F-4 guide hidden');
 
 /* =========================== A. short-stay scenarios ====================== */
 await search('B-2');
@@ -193,7 +205,8 @@ async function runScenario(country, passport, purpose, destination, days) {
 const A = [
   ['베트남', 'ordinary', 'tourism', 'jeju_only', 30, ['제주 무사증(B-2-2)', '포함되어 있지 않습니다', '입국심사관이 결정']],
   ['베트남', 'ordinary', 'tourism', 'mainland', 30, ['일반관광 사증(C-3-9)', '등재되어 있지 않습니다', '재외공관 또는 비자포털']],
-  ['베트남', 'ordinary', 'tourism', 'jeju_then_mainland', 30, ['체류지역 확대허가', '별도 허가·제한을 확인']],
+  ['베트남', 'ordinary', 'tourism', 'jeju_then_mainland', 30, ['일반관광 사증(C-3-9)', '원칙적으로 허용되지 않', '등재되어 있지 않습니다']],
+  ['일본', 'ordinary', 'tourism', 'jeju_then_mainland', 30, ['B-2-1', '원칙적으로 허용되지 않']],
   ['일본', 'ordinary', 'tourism', 'mainland', 30, ['B-2-1', '입국심사관이 결정']],
   ['United States', 'ordinary', 'tourism', 'mainland', 90, ['B-2-1', '90일']],
   ['중국', 'ordinary', 'tourism', 'mainland', 30, ['C-3-9', '등재되어 있지 않습니다']],
