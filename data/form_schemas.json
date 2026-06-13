@@ -1842,6 +1842,986 @@
           "size": 9
         }
       }
+    },
+    "F03": {
+      "nameKo": "통합신청서 (중문 병기)",
+      "nameEn": "Application Form — Chinese",
+      "dlNoun": "통합신청서(중문)",
+      "legalBasis": "출입국관리법 시행규칙 별지 제34호의3서식",
+      "revisionDate": "2023-06-14",
+      "isVariant": true,
+      "baseForm": "F01",
+      "pdf": "assets/forms/pdf/F03.pdf",
+      "pageWidth": 595,
+      "pageHeight": 841,
+      "pages": 1,
+      "ink": [
+        12,
+        18,
+        92
+      ],
+      "fields": [
+        {
+          "key": "cb_reg_foreign",
+          "ko": "외국인 등록",
+          "en": "Foreign resident registration",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_activity",
+          "ko": "체류자격 외 활동허가",
+          "en": "Activities outside status",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_card_reissue",
+          "ko": "등록증 재발급",
+          "en": "Reissuance of registration card",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_workplace",
+          "ko": "근무처 변경ㆍ추가허가/신고",
+          "en": "Change/addition of workplace",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_extension",
+          "ko": "체류기간 연장허가",
+          "en": "Extension of sojourn period",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_reentry",
+          "ko": "재입국허가",
+          "en": "Reentry permit",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_status_change",
+          "ko": "체류자격 변경허가",
+          "en": "Change of status of sojourn",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_address_change",
+          "ko": "체류지 변경신고",
+          "en": "Alteration of residence",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_status_grant",
+          "ko": "체류자격 부여",
+          "en": "Granting status of sojourn",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_reg_change",
+          "ko": "등록사항 변경신고",
+          "en": "Change of registration info",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "activity_status",
+          "ko": "활동허가 희망자격",
+          "en": "Status to apply for (activity)",
+          "group": "type",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "change_status",
+          "ko": "변경 희망 체류자격",
+          "en": "Desired status (change)",
+          "group": "type",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "grant_status",
+          "ko": "부여 희망 체류자격",
+          "en": "Desired status (granting)",
+          "group": "type",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "surname",
+          "ko": "성 Surname",
+          "en": "Surname",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "given",
+          "ko": "명 Given names",
+          "en": "Given names",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "dob_y",
+          "ko": "생년월일(년)",
+          "en": "DOB year",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "dob_m",
+          "ko": "생년월일(월)",
+          "en": "DOB month",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "dob_d",
+          "ko": "생년월일(일)",
+          "en": "DOB day",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "sex_m",
+          "ko": "성별 남",
+          "en": "Sex male",
+          "group": "person",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "sex_f",
+          "ko": "성별 여",
+          "en": "Sex female",
+          "group": "person",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "nationality",
+          "ko": "국적",
+          "en": "Nationality",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "frn_reg_no",
+          "ko": "외국인등록번호",
+          "en": "Foreign resident registration No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "passport_no",
+          "ko": "여권번호",
+          "en": "Passport No.",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "passport_issue",
+          "ko": "여권 발급일자",
+          "en": "Passport issue date",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "passport_expiry",
+          "ko": "여권 유효기간",
+          "en": "Passport expiry date",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "addr_korea",
+          "ko": "대한민국 내 주소",
+          "en": "Address in Korea",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "tel",
+          "ko": "전화번호",
+          "en": "Telephone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "cell",
+          "ko": "휴대전화",
+          "en": "Cell phone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "home_addr",
+          "ko": "본국 주소",
+          "en": "Address in home country",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "home_tel",
+          "ko": "본국 전화번호",
+          "en": "Home country phone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "workplace_cur",
+          "ko": "원 근무처",
+          "en": "Current workplace",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "biz_no_cur",
+          "ko": "원 근무처 사업자등록번호",
+          "en": "Current workplace biz No.",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "tel_cur",
+          "ko": "원 근무처 전화번호",
+          "en": "Current workplace phone",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "workplace_new",
+          "ko": "예정 근무처",
+          "en": "New workplace",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "biz_no_new",
+          "ko": "예정 근무처 사업자등록번호",
+          "en": "New workplace biz No.",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "tel_new",
+          "ko": "예정 근무처 전화번호",
+          "en": "New workplace phone",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "annual_income",
+          "ko": "연 소득금액(만원)",
+          "en": "Annual income (10k won)",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "occupation",
+          "ko": "직업",
+          "en": "Occupation",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "reentry_period",
+          "ko": "재입국 신청 기간",
+          "en": "Intended period of reentry",
+          "group": "proc",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "email",
+          "ko": "전자우편",
+          "en": "E-mail",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "apply_date",
+          "ko": "신청일",
+          "en": "Date of application",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        }
+      ],
+      "overlay": {
+        "cb_reg_foreign": {
+          "cx": 70,
+          "cy": 135,
+          "check": true
+        },
+        "cb_activity": {
+          "cx": 227.8,
+          "cy": 135,
+          "check": true
+        },
+        "cb_card_reissue": {
+          "cx": 70,
+          "cy": 162,
+          "check": true
+        },
+        "cb_workplace": {
+          "cx": 227.8,
+          "cy": 162,
+          "check": true
+        },
+        "cb_extension": {
+          "cx": 70,
+          "cy": 188.5,
+          "check": true
+        },
+        "cb_reentry": {
+          "cx": 227.8,
+          "cy": 188.5,
+          "check": true
+        },
+        "cb_status_change": {
+          "cx": 70,
+          "cy": 215.5,
+          "check": true
+        },
+        "cb_address_change": {
+          "cx": 227.8,
+          "cy": 215.5,
+          "check": true
+        },
+        "cb_status_grant": {
+          "cx": 70,
+          "cy": 242.5,
+          "check": true
+        },
+        "cb_reg_change": {
+          "cx": 227.8,
+          "cy": 242.5,
+          "check": true
+        },
+        "activity_status": {
+          "x": 372,
+          "y": 135,
+          "size": 7.5
+        },
+        "change_status": {
+          "x": 190,
+          "y": 215.5,
+          "size": 7.5
+        },
+        "grant_status": {
+          "x": 180,
+          "y": 242.5,
+          "size": 7.5
+        },
+        "surname": {
+          "x": 200,
+          "y": 283,
+          "size": 9
+        },
+        "given": {
+          "x": 350,
+          "y": 283,
+          "size": 9
+        },
+        "dob_y": {
+          "x": 150,
+          "y": 298,
+          "size": 8.5
+        },
+        "dob_m": {
+          "x": 212,
+          "y": 298,
+          "size": 8.5
+        },
+        "dob_d": {
+          "x": 256,
+          "y": 298,
+          "size": 8.5
+        },
+        "sex_m": {
+          "cx": 369.2,
+          "cy": 296,
+          "check": true
+        },
+        "sex_f": {
+          "cx": 369.2,
+          "cy": 309,
+          "check": true
+        },
+        "nationality": {
+          "x": 468,
+          "y": 303,
+          "size": 8
+        },
+        "frn_reg_no": {
+          "x": 200,
+          "y": 335,
+          "size": 9
+        },
+        "passport_no": {
+          "x": 140,
+          "y": 359,
+          "size": 8.5
+        },
+        "passport_issue": {
+          "x": 315,
+          "y": 359,
+          "size": 8.5
+        },
+        "passport_expiry": {
+          "x": 478,
+          "y": 359,
+          "size": 8
+        },
+        "addr_korea": {
+          "x": 150,
+          "y": 382,
+          "size": 8.5
+        },
+        "tel": {
+          "x": 160,
+          "y": 397,
+          "size": 8
+        },
+        "cell": {
+          "x": 400,
+          "y": 397,
+          "size": 8
+        },
+        "home_addr": {
+          "x": 180,
+          "y": 418,
+          "size": 8
+        },
+        "home_tel": {
+          "x": 475,
+          "y": 418,
+          "size": 7.5
+        },
+        "workplace_cur": {
+          "x": 200,
+          "y": 488,
+          "size": 8
+        },
+        "biz_no_cur": {
+          "x": 345,
+          "y": 488,
+          "size": 7.5
+        },
+        "tel_cur": {
+          "x": 470,
+          "y": 488,
+          "size": 7.5
+        },
+        "workplace_new": {
+          "x": 200,
+          "y": 512,
+          "size": 8
+        },
+        "biz_no_new": {
+          "x": 345,
+          "y": 512,
+          "size": 7.5
+        },
+        "tel_new": {
+          "x": 470,
+          "y": 512,
+          "size": 7.5
+        },
+        "annual_income": {
+          "x": 205,
+          "y": 527,
+          "size": 8.5
+        },
+        "occupation": {
+          "x": 455,
+          "y": 527,
+          "size": 8
+        },
+        "reentry_period": {
+          "x": 210,
+          "y": 540,
+          "size": 8
+        },
+        "email": {
+          "x": 345,
+          "y": 540,
+          "size": 8
+        },
+        "apply_date": {
+          "x": 160,
+          "y": 578,
+          "size": 9
+        }
+      }
+    },
+    "F05": {
+      "nameKo": "재외동포(F-4) 통합신청서 (중문 병기)",
+      "nameEn": "Overseas Korean (F-4) Form — Chinese",
+      "dlNoun": "국내거소신고서(중문)",
+      "legalBasis": "재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호의2서식",
+      "revisionDate": "2022-04-12",
+      "isVariant": true,
+      "baseForm": "F04",
+      "pdf": "assets/forms/pdf/F05.pdf",
+      "pageWidth": 595,
+      "pageHeight": 841,
+      "pages": 1,
+      "ink": [
+        12,
+        18,
+        92
+      ],
+      "fields": [
+        {
+          "key": "cb_overseas_reg",
+          "ko": "외국국적동포 국내거소신고",
+          "en": "Overseas Korean registration",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_extension",
+          "ko": "체류기간 연장허가",
+          "en": "Extension of sojourn period",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_move_report",
+          "ko": "국내거소 이전신고",
+          "en": "Report on alteration of domestic residence",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_status_change",
+          "ko": "체류자격 변경허가",
+          "en": "Change of status of sojourn",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_card_reissue",
+          "ko": "국내거소신고증 재발급",
+          "en": "Reissuance of overseas Korean resident card",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "cb_status_grant",
+          "ko": "체류자격 부여",
+          "en": "Granting status of sojourn",
+          "group": "type",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "surname",
+          "ko": "성 Surname",
+          "en": "Surname",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "given",
+          "ko": "명 Given names",
+          "en": "Given names",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "korean_name",
+          "ko": "한글 성명",
+          "en": "Name in Korean",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "dob_y",
+          "ko": "생년월일(년)",
+          "en": "DOB year",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "dob_m",
+          "ko": "생년월일(월)",
+          "en": "DOB month",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "dob_d",
+          "ko": "생년월일(일)",
+          "en": "DOB day",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "sex_m",
+          "ko": "성별 남",
+          "en": "Sex male",
+          "group": "person",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "sex_f",
+          "ko": "성별 여",
+          "en": "Sex female",
+          "group": "person",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "nationality",
+          "ko": "국적",
+          "en": "Nationality",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "frn_reg_no",
+          "ko": "외국인등록번호(국내거소신고번호)",
+          "en": "Foreign resident/overseas Korean No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "passport_no",
+          "ko": "여권번호",
+          "en": "Passport No.",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "passport_issue",
+          "ko": "여권 발급일자",
+          "en": "Passport issue date",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "passport_expiry",
+          "ko": "여권 유효기간",
+          "en": "Passport expiry date",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "residence_korea",
+          "ko": "대한민국 안의 거소",
+          "en": "Residence in Korea",
+          "group": "person",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "email",
+          "ko": "전자우편",
+          "en": "E-mail",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "tel",
+          "ko": "전화번호",
+          "en": "Telephone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "cell",
+          "ko": "휴대전화",
+          "en": "Cell phone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "overseas_addr",
+          "ko": "거주국 주소",
+          "en": "Overseas address",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "overseas_tel",
+          "ko": "거주국 전화번호",
+          "en": "Overseas phone No.",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "occupation",
+          "ko": "직업",
+          "en": "Occupation",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "workplace",
+          "ko": "근무처",
+          "en": "Workplace",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "biz_no",
+          "ko": "사업자등록번호",
+          "en": "Business registration No.",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "tel_work",
+          "ko": "근무처 전화번호",
+          "en": "Workplace phone No.",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "foreign_nat_date",
+          "ko": "외국국적 취득일",
+          "en": "Date of acquisition of foreign nationality",
+          "group": "proc",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "apply_date",
+          "ko": "신청일",
+          "en": "Date of application",
+          "group": "person",
+          "req": "opt",
+          "kind": "text"
+        }
+      ],
+      "overlay": {
+        "cb_overseas_reg": {
+          "cx": 67.4,
+          "cy": 133,
+          "check": true
+        },
+        "cb_extension": {
+          "cx": 272.3,
+          "cy": 133,
+          "check": true
+        },
+        "cb_move_report": {
+          "cx": 67.4,
+          "cy": 177,
+          "check": true
+        },
+        "cb_status_change": {
+          "cx": 272.3,
+          "cy": 177,
+          "check": true
+        },
+        "cb_card_reissue": {
+          "cx": 67.4,
+          "cy": 219.5,
+          "check": true
+        },
+        "cb_status_grant": {
+          "cx": 272.3,
+          "cy": 219.5,
+          "check": true
+        },
+        "surname": {
+          "x": 205,
+          "y": 268,
+          "size": 9
+        },
+        "given": {
+          "x": 340,
+          "y": 268,
+          "size": 9
+        },
+        "korean_name": {
+          "x": 478,
+          "y": 268,
+          "size": 8.5
+        },
+        "dob_y": {
+          "x": 150,
+          "y": 284,
+          "size": 8.5
+        },
+        "dob_m": {
+          "x": 220,
+          "y": 284,
+          "size": 8.5
+        },
+        "dob_d": {
+          "x": 278,
+          "y": 284,
+          "size": 8.5
+        },
+        "sex_m": {
+          "cx": 407,
+          "cy": 283,
+          "check": true
+        },
+        "sex_f": {
+          "cx": 407,
+          "cy": 294,
+          "check": true
+        },
+        "nationality": {
+          "x": 478,
+          "y": 288,
+          "size": 8
+        },
+        "frn_reg_no": {
+          "x": 210,
+          "y": 315,
+          "size": 9
+        },
+        "passport_no": {
+          "x": 140,
+          "y": 340,
+          "size": 8.5
+        },
+        "passport_issue": {
+          "x": 315,
+          "y": 340,
+          "size": 8.5
+        },
+        "passport_expiry": {
+          "x": 478,
+          "y": 340,
+          "size": 8
+        },
+        "residence_korea": {
+          "x": 175,
+          "y": 362,
+          "size": 8.5
+        },
+        "email": {
+          "x": 445,
+          "y": 362,
+          "size": 7.5
+        },
+        "tel": {
+          "x": 170,
+          "y": 385,
+          "size": 8.5
+        },
+        "cell": {
+          "x": 450,
+          "y": 385,
+          "size": 8.5
+        },
+        "overseas_addr": {
+          "x": 180,
+          "y": 408,
+          "size": 8
+        },
+        "overseas_tel": {
+          "x": 478,
+          "y": 408,
+          "size": 7
+        },
+        "occupation": {
+          "x": 155,
+          "y": 476,
+          "size": 8
+        },
+        "workplace": {
+          "x": 250,
+          "y": 490,
+          "size": 8
+        },
+        "biz_no": {
+          "x": 360,
+          "y": 490,
+          "size": 7
+        },
+        "tel_work": {
+          "x": 478,
+          "y": 476,
+          "size": 7
+        },
+        "foreign_nat_date": {
+          "x": 300,
+          "y": 503,
+          "size": 8
+        },
+        "apply_date": {
+          "x": 175,
+          "y": 550,
+          "size": 9
+        }
+      }
     }
   }
 }

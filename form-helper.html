@@ -700,6 +700,7 @@ main{flex:1;padding:0 1rem 3rem}
         <div id="fhOutputContent"></div>
         <div class="fh-output-actions" id="fhOutputActions">
           <button type="button" class="fh-btn fh-btn-download" id="fhDownloadBtn">⬇ 정본 PDF 다운로드</button>
+          <button type="button" class="fh-btn fh-btn-download" id="fhDownloadCnBtn" hidden>⬇ 중문 병기본 PDF 다운로드</button>
           <button type="button" class="fh-btn fh-btn-secondary" id="fhCopyBtn">📋 작성 가이드 복사</button>
           <button type="button" class="fh-btn fh-btn-secondary" id="fhPrintBtn">🖨 작성 가이드 인쇄용 보기</button>
           <button type="button" class="fh-btn fh-btn-ghost" id="fhResetBtn">↺ 초기화</button>
@@ -996,6 +997,9 @@ const PERSONAL_F01 = [
           F('phone','휴대전화','Cell phone No.','tel',false,{ph:'010-XXXX-XXXX'}) ] },
   { row:[ F('homeAddress','본국 주소','Address in home country','text',false),
           F('homePhone','본국 전화번호','Home country phone','tel',false) ] },
+  { section:'직업·소득 (선택)' },
+  { row:[ F('occupation','직업','Occupation','text',false,{ph:'예: 연구원, 회사원'}),
+          F('annualIncome','연 소득금액 (만원)','Annual income (10k won)','text',false,{ph:'예: 3600', help:'만원 단위 숫자만 입력하세요.'}) ] },
   { row:[ F('email','전자우편','Email','email',false,{ph:'example@email.com'}),
           F('applicationDate','신청일','Application date','date',false) ] },
   { note:'<strong>서명/인</strong>: 신청서 제출 시 신청인이 직접 서명 또는 날인합니다. 이 도구는 서명을 수집하지 않습니다.' },
@@ -1095,13 +1099,13 @@ const F07_GUARANTOR = [
 const FORMS = {
   F01: {
     id:'F01', nameKo:'통합신청서(신고서)', nameEn:'Application Form (Report Form)', dlNoun:'통합신청서',
-    legalKo:'출입국관리법 시행규칙 별지 제34호서식', rev:'2022. 4. 12.',
+    legalKo:'출입국관리법 시행규칙 별지 제34호서식', rev:'2022. 4. 12.', cnVariant:'F03',
     appTypes: APP_TYPES, personal: PERSONAL_F01,
     overlay: overlayValuesF01,
   },
   F04: {
     id:'F04', nameKo:'재외동포(F-4) 통합신청서 · 국내거소신고서', nameEn:'Overseas Korean (F-4) Application / Report Form', dlNoun:'국내거소신고서',
-    legalKo:'재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호서식', rev:'2022. 4. 12.',
+    legalKo:'재외동포의 출입국과 법적 지위에 관한 법률 시행규칙 별지 제1호서식', rev:'2022. 4. 12.', cnVariant:'F05',
     appTypes: APP_TYPES_F04, personal: PERSONAL_F04,
     overlay: overlayValuesF04,
   },
@@ -2291,6 +2295,8 @@ function updateDocChrome() {
     `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Paradiso 참고용 도구 · 법적 효력 없음</span>`;
   const dlBtn = document.getElementById('fhDownloadBtn');
   if (dlBtn) dlBtn.textContent = `⬇ ${f.dlNoun} 작성본 PDF 다운로드`;
+  const cnBtn = document.getElementById('fhDownloadCnBtn');
+  if (cnBtn) { cnBtn.hidden = !f.cnVariant; cnBtn.textContent = '⬇ 중문 병기본 PDF 다운로드'; }
 }
 
 function selectForm(formId) {
@@ -2352,15 +2358,16 @@ function dlStatus(msg, cls, spinner) {
   el.innerHTML = (spinner ? '<span class="fh-spinner" aria-hidden="true"></span>' : '') + (msg ? esc(msg) : '');
 }
 
-async function generateOfficialPdf() {
+async function generateOfficialPdf(targetId) {
   const f = currentForm();
   if (!f) return;
-  const btn = document.getElementById('fhDownloadBtn');
-  btn.disabled = true;
+  const formId = (typeof targetId === 'string' && targetId) ? targetId : state.formId;
+  const btns = ['fhDownloadBtn', 'fhDownloadCnBtn'].map(id => document.getElementById(id)).filter(Boolean);
+  btns.forEach(b => b.disabled = true);
   try {
     dlStatus('정본 서식과 한글 폰트를 불러오는 중…', '', true);
     const schema = await loadSchema();
-    const spec = schema.forms[state.formId];
+    const spec = schema.forms[formId];
     if (!spec) throw new Error('해당 서식 정의를 찾을 수 없습니다.');
     await Promise.all([ loadScript(schema.vendor.pdfLib), loadScript(schema.vendor.fontkit) ]);
     const PDFLib = window.PDFLib, fontkit = window.fontkit;
@@ -2414,7 +2421,7 @@ async function generateOfficialPdf() {
       ? (state.f6_rName || '').trim()
       : [state.surname, state.givenName].map(s => (s || '').trim()).filter(Boolean).join(' ');
     const safe = (nm || '작성본').replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim();
-    a.download = `${safe}_${f.dlNoun}.pdf`;
+    a.download = `${safe}_${spec.dlNoun || f.dlNoun}.pdf`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -2427,7 +2434,7 @@ async function generateOfficialPdf() {
   } catch (e) {
     dlStatus('PDF 생성 중 오류가 발생했습니다: ' + (e && e.message ? e.message : e), 'err');
   } finally {
-    btn.disabled = false;
+    btns.forEach(b => b.disabled = false);
   }
 }
 
@@ -2480,7 +2487,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!autoSelected) showPicker();
 
   document.getElementById('fhDocChange').addEventListener('click', showPicker);
-  document.getElementById('fhDownloadBtn').addEventListener('click', generateOfficialPdf);
+  document.getElementById('fhDownloadBtn').addEventListener('click', () => generateOfficialPdf());
+  document.getElementById('fhDownloadCnBtn').addEventListener('click', () => { const f = currentForm(); if (f && f.cnVariant) generateOfficialPdf(f.cnVariant); });
 
   document.getElementById('fhPrevBtn').addEventListener('click', () => {
     const p = adjacentStep(-1); if (p !== null) goToStep(p);
