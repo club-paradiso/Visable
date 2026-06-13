@@ -1790,9 +1790,10 @@ function renderOutput() {
   if (t.needsPhoto) condNotes += '<li>📷 <strong>사진 필요</strong>: 최근 6개월 이내 여권용 사진(3.5×4.5cm, 흰 배경, 모자 미착용)</li>';
   condNotes += '<li>✍ <strong>서명/인</strong>: 신청인 본인이 신청서에 직접 서명 또는 날인합니다.</li>';
   condNotes += '<li>📋 <strong>행정정보 공동이용 동의</strong>: 신청서 내 동의 항목을 확인하세요.</li>';
+  condNotes += '<li>🏫 <strong>재학 여부·학교 정보</strong>: 학생 등 해당자만 기재하는 칸입니다. 해당 사항이 없으면 비워 두어도 됩니다(필요 시 현장에서 보완).</li>';
 
   html += `<div class="fh-output-section">
-    <div class="fh-output-head">④ 사진·계좌·서명 등 조건부 안내</div>
+    <div class="fh-output-head">④ 사진·서명 등 조건부 안내</div>
     <div class="fh-output-body"><ul>${condNotes}</ul></div>
   </div>`;
 
