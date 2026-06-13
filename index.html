@@ -320,6 +320,8 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 .language-option-badge { display: inline-block; margin-left: 0.4rem; padding: 0.02rem 0.4rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg0); color: var(--t3); font-size: 0.62rem; font-weight: 800; vertical-align: middle; }
 .language-partial-notice { margin: 0.45rem 0.35rem 0.2rem; padding: 0.55rem 0.65rem; border: 1px solid var(--bd2); border-left: 3px solid var(--color-warning, #c47f17); border-radius: 8px; background: var(--bg0); color: var(--t2); font-size: 0.74rem; line-height: 1.5; }
 .language-option-check { color: var(--color-accent); font-weight: 900; }
+.language-option-preparing { cursor: not-allowed; opacity: 0.6; }
+.language-option-preparing:hover, .language-option-preparing:focus-visible { background: transparent; transform: none; }
 
 /* Toast */
 .toast { position: fixed; bottom: 5rem; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--color-surface-dark); color: var(--color-surface); padding: 0.9rem 1.4rem; border-radius: var(--radius-md); box-shadow: var(--shD); opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 2000; max-width: 90vw; font-size: 0.88rem; line-height: 1.5; pointer-events: none; }
@@ -18021,10 +18023,19 @@ let currentLanguage = 'ko';
 // surfaces; every other selectable language is treated as `partial` (some text
 // still falls back to Korean). Drives the partial-language notice + selector
 // badge so users are told transparently rather than silently shown Korean.
-const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full' };
+const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'preparing' };
 function languageSupportLevel(code) {
     const normalized = normalizeLocaleCode(code);
-    return LANGUAGE_SUPPORT[normalized] === 'full' && code === normalized ? 'full' : 'partial';
+    const level = LANGUAGE_SUPPORT[normalized];
+    if (level === 'preparing') return 'preparing';
+    return level === 'full' && code === normalized ? 'full' : 'partial';
+}
+// A 'preparing' language (e.g. zh-CN) is kept visible in the selector but cannot
+// be activated until its translation pack is complete — this prevents silently
+// showing Korean source text under a Chinese label. Assets are preserved.
+function isLanguageSelectable(code) {
+    return LANGUAGE_OPTIONS.some(lang => lang.code === normalizeLocaleCode(code))
+        && languageSupportLevel(code) !== 'preparing';
 }
 
 const I18N_MANIFEST_PATH = './data/i18n/manifest.json';
@@ -18035,6 +18046,8 @@ const BOOTSTRAP_KO_FALLBACK = {
     languageMenu: '언어 선택',
     languageChanged: '언어가 한국어로 변경되었습니다.',
     languagePartialBadge: '준비 중',
+    languagePreparingBadge: '준비 중',
+    languagePreparingNotice: '중국어 버전은 준비 중입니다.',
     partialLanguageNotice: '번역 파일을 불러올 수 없어 한국어 기본 화면으로 표시됩니다.',
     qPlaceholder: '비자 자격 및 키워드 검색',
     qAria: '비자 자격 및 키워드 검색',
@@ -18253,7 +18266,7 @@ function getLanguageOption(code = currentLanguage) {
 function getStoredLanguage() {
     try {
         const stored = normalizeLocaleCode(localStorage.getItem(LANGUAGE_STORAGE_KEY));
-        return LANGUAGE_OPTIONS.some(lang => lang.code === stored) ? stored : 'ko';
+        return isLanguageSelectable(stored) ? stored : 'ko';
     } catch (e) {
         return 'ko';
     }
@@ -18262,7 +18275,7 @@ function getStoredLanguage() {
 function getInitialLanguage() {
     try {
         const requested = normalizeLocaleCode(new URLSearchParams(window.location.search).get('lang'));
-        if (LANGUAGE_OPTIONS.some(lang => lang.code === requested)) return requested;
+        if (isLanguageSelectable(requested)) return requested;
     } catch (e) {}
     return getStoredLanguage();
 }
@@ -18271,7 +18284,20 @@ function renderLanguageMenu() {
     const menu = document.getElementById('languageMenu');
     if (!menu) return;
     const options = LANGUAGE_OPTIONS.map(lang => {
-        const partial = languageSupportLevel(lang.code) === 'partial';
+        const level = languageSupportLevel(lang.code);
+        if (level === 'preparing') {
+            // Disabled + no apply-language action so it can never be activated;
+            // the inline note + title explain why.
+            const note = escapeHtml(tx('languagePreparingNotice'));
+            return `
+        <button type="button" class="language-option language-option-preparing" role="option" aria-disabled="true" disabled data-lang="${lang.code}" title="${note}">
+            <span class="language-option-code">${lang.short}</span>
+            <span><span class="language-option-name">${lang.name}<span class="language-option-badge">${escapeHtml(tx('languagePreparingBadge'))}</span></span><br><span class="language-option-local">${note}</span></span>
+            <span class="language-option-check" aria-hidden="true"></span>
+        </button>
+    `;
+        }
+        const partial = level === 'partial';
         const badge = partial ? `<span class="language-option-badge">${escapeHtml(tx('languagePartialBadge'))}</span>` : '';
         return `
         <button type="button" class="language-option" role="option" aria-selected="${lang.code === currentLanguage ? 'true' : 'false'}" data-action="apply-language" data-lang="${lang.code}">
@@ -18334,7 +18360,9 @@ function updateSearchMetaText() {
 function applyLanguage(code, options = {}) {
     if (!hasFullKoI18nPack()) code = 'ko';
     code = normalizeLocaleCode(code);
-    if (!LANGUAGE_OPTIONS.some(lang => lang.code === code)) code = 'ko';
+    // Never activate a non-selectable (preparing) or unknown language; keep the
+    // current language if it is valid, otherwise fall back to Korean.
+    if (!isLanguageSelectable(code)) code = isLanguageSelectable(currentLanguage) ? currentLanguage : 'ko';
     currentLanguage = code;
     const lang = getLanguageOption(code);
     document.documentElement.lang = lang.html;
