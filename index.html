@@ -14910,12 +14910,17 @@ function renderProcedureFeeBox(feeInfo) {
     if (typeof feeInfo.cardIssueFee === 'number' && feeInfo.cardIssueFee > 0) amountBits.push(`${currentLanguage === 'en' ? 'registration card' : '등록증'} ${formatWon(feeInfo.cardIssueFee)}`);
     const amountText = amountBits.length ? amountBits.join(' · ') : (currentLanguage === 'en' ? 'Amount needs confirmation' : '금액 확인 필요');
     const notes = Array.isArray(feeInfo.notes) ? feeInfo.notes : [];
+    // D5 (1안): the generic 수수료 checklist tile was removed; carry its
+    // fee-exemption clause here so the 면제 예외조항 is never lost. Sourced from
+    // doc_guide doc_fee.conditional (시행규칙 제74조) — not invented.
+    const feeExemption = (typeof docGuideData === 'object' && docGuideData && docGuideData.doc_fee && docGuideData.doc_fee.conditional) || '';
     const title = feeInfo.commonReference
         ? (currentLanguage === 'en' ? 'Common fee reference' : '공통 수수료 참고')
         : (currentLanguage === 'en' ? 'Fee' : (feeInfo.label || '수수료'));
     return `<div class="procedure-fee-box">
         <div class="procedure-fee-title"><span>${escapeHtml(title)}</span><span class="procedure-fee-amount">${escapeHtml(amountText)}</span></div>
         ${notes.length ? `<ul class="procedure-fee-list">${notes.map(note => `<li>${escapeHtml(note)}</li>`).join('')}</ul>` : ''}
+        ${feeExemption ? `<div class="procedure-fee-exemption">${escapeHtml((currentLanguage === 'en' ? 'Exemption: ' : '면제: ') + feeExemption)}</div>` : ''}
         <div class="procedure-fee-note">${escapeHtml(feeInfo.sourceNote || STAY_FEE_SOURCE_NOTE)}</div>
     </div>`;
 }
@@ -15971,11 +15976,18 @@ function renderProcedureSummaryBlock(value, keywords) {
    manual headings — the manuals use varying local headings per status and
    procedure). Empty groups are hidden; discretionary catch-all wording is
    shown as a caution note instead of checklist tiles. */
+// PR-D1 #15 (D5, 1안): the procedure panel renders a dynamic fee box
+// (renderProcedureFeeBox) with the exact 법정 금액, so the generic "수수료
+// (정부수입인지…)" checklist tile (doc_fee*) is redundant here. Drop it from
+// the procedure checklist only; the fee box stays canonical and now also
+// carries the fee-exemption note relocated from doc_fee (예외 보존).
+const PROCEDURE_FEE_TILE_KEYS = new Set(['doc_fee', 'doc_fee_new', 'doc_fee_ext', 'doc_fee_generic']);
 function renderProcedureDocGroups(groups, keywords, visaCode = '') {
     const display = paradisoBuildDocDisplayGroups(groups);
+    const stripFeeTile = arr => (arr || []).filter(doc => !PROCEDURE_FEE_TILE_KEYS.has(doc));
     return [
-        renderDocGroup(txAt('docUxGroupLabels', 0, '기본 준비서류'), display.basic, keywords, 'group-basic', visaCode),
-        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가서류'), display.situational, keywords, 'group-situational', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 0, '기본 준비서류'), stripFeeTile(display.basic), keywords, 'group-basic', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가서류'), stripFeeTile(display.situational), keywords, 'group-situational', visaCode),
         renderDocDiscretionaryNote(display.discretionary, keywords)
     ].filter(Boolean).join('');
 }
