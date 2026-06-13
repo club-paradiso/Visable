@@ -12187,6 +12187,10 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 
 
             <div class="p-gw-utility" role="group" aria-label="보조 도구">
+                <button type="button" class="p-gw-util" data-action="open-short-stay">
+                    <span class="p-gw-util-icon" aria-hidden="true">🛂</span>
+                    <span class="p-gw-util-label">국적별 단기입국 경로 확인</span>
+                </button>
                 <button type="button" class="p-gw-util" data-action="open-jobcode-modal">
                     <span class="p-gw-util-icon" aria-hidden="true">💼</span>
                     <span class="p-gw-util-label">직업·산업분류 조회</span>
@@ -12393,8 +12397,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <aside class="feature-checklist figma-feature-checklist" aria-label="서비스 핵심 기능" data-reveal="fade-right" data-reveal-delay="150">
             <ul class="check-list" data-stagger data-stagger-delay="100">
                 <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>39가지 체류자격 통합 탐색</strong>
-                    <span lang="en">Browse all 39 stay categories</span></div></li>
+                    <div><strong>공식 39가지 체류자격 통합 탐색</strong>
+                    <span lang="en">Browse all 39 official stay categories</span></div></li>
                 <li><span class="check-icon" aria-hidden="true">✓</span>
                     <div><strong>목적별 체류 경로 정리</strong>
                     <span lang="en">Path overview by purpose</span></div></li>
@@ -12799,7 +12803,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <div class="intro-text">
                 <h3>Paradiso의 시작</h3>
                 <p>
-                    대한민국에는 39가지의 체류자격이 존재하지만, 관련 법령과 매뉴얼은 분산되어 있어 정보 탐색에 시간이 걸립니다. Paradiso는 흩어진 비자·체류 정보를 구조화하여 사용자 입장에서 한 번에 살펴볼 수 있는 안내 흐름을 제공하고, 정보 비대칭을 줄이는 사용자 안내 레이어를 지향합니다.
+                    대한민국에는 공식적으로 39가지의 체류자격이 존재하지만, 관련 법령과 매뉴얼은 분산되어 있어 정보 탐색에 시간이 걸립니다. Paradiso는 흩어진 비자·체류 정보를 구조화하여 사용자 입장에서 한 번에 살펴볼 수 있는 안내 흐름을 제공하고, 정보 비대칭을 줄이는 사용자 안내 레이어를 지향합니다.
                 </p>
             </div>
         </div>
@@ -12821,7 +12825,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <div class="hobby-inner">
                         <div class="hobby-icon" aria-hidden="true">🧭</div>
                         <div class="hobby-title">User Centric</div>
-                        <div class="hobby-desc">39개 체류자격을 목적별로 묶어 한 화면에서 비교·탐색할 수 있도록 정리합니다.</div>
+                        <div class="hobby-desc">공식 39개 체류자격을 목적별로 묶어 한 화면에서 비교·탐색할 수 있도록 정리합니다.</div>
                     </div>
                 </div>
                 <div class="hobby-card hobby-3 figma-value-card" aria-label="AI 기반 안내 보조">
@@ -12841,7 +12845,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <span class="exp-dot" aria-hidden="true"></span>
                 <div class="exp-text">
                     <span class="exp-company">2025 Q4 — 공공데이터 활용 공모전 출품 및 MVP 검증</span>
-                    <span class="exp-detail">39가지 체류자격 통합 탐색 MVP 공개·실사용자 피드백 수집</span>
+                    <span class="exp-detail">공식 39가지 체류자격 통합 탐색 MVP 공개·실사용자 피드백 수집</span>
                 </div>
                 <span class="exp-year">2025 Q4</span>
             </div>
@@ -12868,7 +12872,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <div class="figma-footer-hero-overlay" aria-hidden="true"></div>
                 <div class="figma-footer-hero-content">
                     <span class="footer-hero-eyebrow">Paradiso</span>
-                    <h3 class="figma-footer-hero-title">대한민국 39가지<br>체류자격, 한 곳에서 살펴보세요.</h3>
+                    <h3 class="figma-footer-hero-title">대한민국 공식 39가지<br>체류자격, 한 곳에서 살펴보세요.</h3>
                     <div class="figma-footer-chips">
                         <span class="footer-chip">📑 공식 출처 확인 경로</span>
                         <span class="footer-chip">🧭 목적별 경로 정리</span>
@@ -18668,9 +18672,12 @@ function setSearchEnabled(enabled) {
 
 // Coverage-hero purpose bucket for one status record. Presentation-layer
 // classification only — the canonical `cat` field in visa_data.json is never
-// mutated. The four buckets are mutually exclusive and together cover the 39
-// formal 체류자격; the three pilot programs (cat 'etc') and helper records are
-// intentionally excluded so the card totals match the canonical 39.
+// mutated. The four buckets are mutually exclusive. Helper/FAQ records
+// (cat 'faq'/'scn'/'nhis') route to a null bucket and are left out of the
+// card totals; the three pilot tracks (cat 'etc': K-STAR/REGION-S/YOUTH-STAY)
+// are grouped into 방문·외교·기타 (stat-visit). Card totals therefore reflect
+// every non-helper coverage entry — the 39 formal 체류자격 plus the 3 pilots
+// (42) — not the canonical 39 alone.
 function coverageBucket(v) {
     const code = v && v.code, cat = v && v.cat;
     if (!code || !cat) return null;
@@ -18958,6 +18965,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'close-visa-drawer': () => closeVisaDrawer(),
                 'open-jobcode-modal': () => openJobCodeModal(),
                 'open-jurisdiction-modal': () => openJurisdictionModal(),
+                'open-short-stay': () => { if (window.ParadisoShortStay && typeof window.ParadisoShortStay.open === 'function') window.ParadisoShortStay.open(); },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
                 'copy-jobcode': () => copyJobcode(actionBtn, actionBtn.dataset.code),
                 'copy-visa-result': () => copyVisaResult(actionBtn, actionBtn.dataset.vcode),

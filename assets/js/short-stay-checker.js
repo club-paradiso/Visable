@@ -869,4 +869,15 @@
     var section = document.getElementById('shortStayChecker');
     if (section) section.hidden = true;
   });
+
+  /* Public entry point so a landing-page button can open the checker directly,
+     not only as a contextual panel after a relevant search. */
+  api.open = function () {
+    var section = mountIfNeeded();
+    if (!section) return;
+    section.hidden = false;
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    var input = section.querySelector('input[name="country"]');
+    if (input) setTimeout(function () { input.focus(); }, 350);
+  };
 })();
