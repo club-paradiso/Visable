@@ -1047,6 +1047,416 @@
           "size": 9
         }
       }
+    },
+    "F06": {
+      "nameKo": "거주/숙소제공확인서",
+      "nameEn": "Confirmation of Residence/Accommodation",
+      "legalBasis": "HiKorea 민원서식 (거주/숙소제공확인서, 개정 2024. 5.)",
+      "revisionDate": "2024-05",
+      "kind": "confirmation",
+      "pdf": "assets/forms/pdf/F06.pdf",
+      "pageWidth": 595,
+      "pageHeight": 841,
+      "pages": 1,
+      "ink": [
+        12,
+        18,
+        92
+      ],
+      "fields": [
+        {
+          "key": "rcpt_nationality",
+          "ko": "거주자 국적",
+          "en": "Recipient nationality",
+          "group": "recipient",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "rcpt_regno",
+          "ko": "거주자 외국인등록(거소)번호",
+          "en": "Recipient registration No.",
+          "group": "recipient",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "rcpt_name",
+          "ko": "거주자 성명",
+          "en": "Recipient full name",
+          "group": "recipient",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "rcpt_phone",
+          "ko": "거주자 연락처",
+          "en": "Recipient phone",
+          "group": "recipient",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "rcpt_address",
+          "ko": "거주자 주소(제공받는 숙소)",
+          "en": "Recipient address",
+          "group": "recipient",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "prov_nationality",
+          "ko": "제공자 국적",
+          "en": "Provider nationality",
+          "group": "provider",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "prov_regno",
+          "ko": "제공자 주민/외국인등록번호",
+          "en": "Provider registration No.",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "prov_name",
+          "ko": "제공자 성명",
+          "en": "Provider full name",
+          "group": "provider",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "prov_phone",
+          "ko": "제공자 연락처",
+          "en": "Provider phone",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "rel_family",
+          "ko": "관계: 가족 및 친척",
+          "en": "Relationship: family/relatives",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "rel_employer",
+          "ko": "관계: 고용주",
+          "en": "Relationship: employer",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "rel_other",
+          "ko": "관계: 기타",
+          "en": "Relationship: other",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "rel_other_text",
+          "ko": "관계: 기타 내용",
+          "en": "Relationship other (text)",
+          "group": "provider",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "own_self",
+          "ko": "소유형태: 자가",
+          "en": "Ownership: own",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "own_rent",
+          "ko": "소유형태: 임대",
+          "en": "Ownership: rent",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "own_other",
+          "ko": "소유형태: 기타",
+          "en": "Ownership: other",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "own_other_text",
+          "ko": "소유형태: 기타 내용",
+          "en": "Ownership other (text)",
+          "group": "provider",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "res_house",
+          "ko": "주거형태: 개인주택 등",
+          "en": "Residence: private house",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "res_dorm",
+          "ko": "주거형태: 기숙사",
+          "en": "Residence: dormitory",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "res_lodging",
+          "ko": "주거형태: 숙박시설",
+          "en": "Residence: accommodation",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "res_other",
+          "ko": "주거형태: 기타",
+          "en": "Residence: other",
+          "group": "provider",
+          "req": "cond",
+          "kind": "check"
+        },
+        {
+          "key": "res_other_text",
+          "ko": "주거형태: 기타 내용",
+          "en": "Residence other (text)",
+          "group": "provider",
+          "req": "cond",
+          "kind": "text"
+        },
+        {
+          "key": "start_y",
+          "ko": "제공일(년)",
+          "en": "Start date year",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "start_m",
+          "ko": "제공일(월)",
+          "en": "Start date month",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "start_d",
+          "ko": "제공일(일)",
+          "en": "Start date day",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "conf_y",
+          "ko": "확인일(년)",
+          "en": "Confirm date year",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "conf_m",
+          "ko": "확인일(월)",
+          "en": "Confirm date month",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "conf_d",
+          "ko": "확인일(일)",
+          "en": "Confirm date day",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        },
+        {
+          "key": "prov_sign_name",
+          "ko": "제공자 성명(서명란)",
+          "en": "Provider signature name",
+          "group": "provider",
+          "req": "req",
+          "kind": "text"
+        },
+        {
+          "key": "prov_company",
+          "ko": "업체명(해당 시)",
+          "en": "Company name (if any)",
+          "group": "provider",
+          "req": "opt",
+          "kind": "text"
+        }
+      ],
+      "overlay": {
+        "rcpt_nationality": {
+          "x": 150,
+          "y": 145,
+          "size": 8
+        },
+        "rcpt_regno": {
+          "x": 438,
+          "y": 152,
+          "size": 7.5
+        },
+        "rcpt_name": {
+          "x": 150,
+          "y": 180,
+          "size": 8
+        },
+        "rcpt_phone": {
+          "x": 425,
+          "y": 180,
+          "size": 8
+        },
+        "rcpt_address": {
+          "x": 145,
+          "y": 205,
+          "size": 8
+        },
+        "prov_nationality": {
+          "x": 150,
+          "y": 276,
+          "size": 8
+        },
+        "prov_regno": {
+          "x": 438,
+          "y": 283,
+          "size": 7.5
+        },
+        "prov_name": {
+          "x": 150,
+          "y": 311,
+          "size": 8
+        },
+        "prov_phone": {
+          "x": 432,
+          "y": 311,
+          "size": 8
+        },
+        "rel_family": {
+          "cx": 181,
+          "cy": 338,
+          "check": true
+        },
+        "rel_employer": {
+          "cx": 271.5,
+          "cy": 338,
+          "check": true
+        },
+        "rel_other": {
+          "cx": 366,
+          "cy": 338,
+          "check": true
+        },
+        "rel_other_text": {
+          "x": 432,
+          "y": 328,
+          "size": 7
+        },
+        "own_self": {
+          "cx": 181,
+          "cy": 372,
+          "check": true
+        },
+        "own_rent": {
+          "cx": 271.5,
+          "cy": 372,
+          "check": true
+        },
+        "own_other": {
+          "cx": 379,
+          "cy": 372,
+          "check": true
+        },
+        "own_other_text": {
+          "x": 442,
+          "y": 382,
+          "size": 7
+        },
+        "res_house": {
+          "cx": 181,
+          "cy": 401,
+          "check": true
+        },
+        "res_dorm": {
+          "cx": 325,
+          "cy": 401,
+          "check": true
+        },
+        "res_lodging": {
+          "cx": 181,
+          "cy": 429,
+          "check": true
+        },
+        "res_other": {
+          "cx": 325,
+          "cy": 429,
+          "check": true
+        },
+        "res_other_text": {
+          "x": 390,
+          "y": 429,
+          "size": 7
+        },
+        "start_y": {
+          "x": 192,
+          "y": 459,
+          "size": 8
+        },
+        "start_m": {
+          "x": 270,
+          "y": 459,
+          "size": 8
+        },
+        "start_d": {
+          "x": 356,
+          "y": 459,
+          "size": 8
+        },
+        "conf_y": {
+          "x": 190,
+          "y": 522,
+          "size": 8
+        },
+        "conf_m": {
+          "x": 255,
+          "y": 522,
+          "size": 8
+        },
+        "conf_d": {
+          "x": 320,
+          "y": 522,
+          "size": 8
+        },
+        "prov_sign_name": {
+          "x": 268,
+          "y": 544,
+          "size": 8.5
+        },
+        "prov_company": {
+          "x": 268,
+          "y": 559,
+          "size": 8
+        }
+      }
     }
   }
 }
