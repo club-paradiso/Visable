@@ -14776,6 +14776,15 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         if (!isUnresolvedId && typeof key === 'string' && key.startsWith('doc_') && typeof annotateOfficialDocLabel === 'function') {
             officialName = annotateOfficialDocLabel(key, officialName);
         }
+        // D6 (항목 16): the foreign-resident occupation/income report moved to
+        // HiKorea online filing (외국인 취업정보 온라인 신고제, 2026-01-02 시행;
+        // 시범운영 ~2026.6, then online-only — 법무부 2025-12-16 보도). Surface
+        // that as a checklist note wherever the 직업 신고서 tile renders.
+        if (/직업\s*신고서/.test(String(officialName))) {
+            relocatedNotes.push(currentLanguage === 'en'
+                ? 'The foreign-resident occupation/income report is filed online via HiKorea (hikorea.go.kr).'
+                : '외국인 직업·연간소득 신고는 하이코리아(hikorea.go.kr) 온라인으로 처리합니다 (외국인 취업정보 온라인 신고제).');
+        }
         const debugAttr = isUnresolvedId ? ` data-doc-id="${escapeHtml(key)}"` : '';
         const isCritical = ['doc_health', 'doc_crim', 'doc_tb'].includes(key);
         const criticalClass = isCritical ? ' critical' : '';
