@@ -14973,6 +14973,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // checklist as supplementary guidance, never as required-document rows.
     const noteSeen = new Set();
     const noteItems = relocatedNotes.filter(n => {
+        if (paradisoIsRedundantSourceProvenanceNote(n)) return false;
         const k = canonicalDocDedupeKey(n);
         if (!k || noteSeen.has(k)) return false;
         noteSeen.add(k);
@@ -16166,8 +16167,22 @@ const PARADISO_DUMMY_NEXT_STEP_NOTE_RE = /^\s*다음\s*단계\s*[:：]/;
 function paradisoIsDummyProcedureNote(text) {
     return PARADISO_DUMMY_NEXT_STEP_NOTE_RE.test(String(text == null ? '' : text));
 }
+// Paradiso-internal provenance/methodology notes that only state HOW the document
+// lists were produced ("…자동 추출한 제출서류입니다 … 수동 검토가 필요합니다", "대표
+// 서류를 구조화했습니다", "…서류 목록은 보류했습니다"). The substantive caution they
+// carry (lists may vary by case; confirm with the authority) is ALREADY shown by
+// the per-procedure source-evidence header (getDefaultLimitationExplanation), the
+// "매뉴얼 확인 필요" source chip, the doc-grouping note, and the empty-state
+// fallback — so inline they are redundant, self-undermining prose. The official
+// 2026.5 manual itself states the listed documents may be added to or reduced at
+// the officer's discretion, so the kept disclaimers stay accurate; only the
+// redundant provenance phrasing is dropped. Display-only; data files unchanged.
+const PARADISO_SOURCE_PROVENANCE_NOTE_RE = /자동\s*추출한?\s*제출서류입니다|대표\s*서류를\s*구조화했습니다|자동\s*추출되었으며|서류\s*목록은\s*보류했습니다/;
+function paradisoIsRedundantSourceProvenanceNote(text) {
+    return PARADISO_SOURCE_PROVENANCE_NOTE_RE.test(String(text == null ? '' : text));
+}
 function paradisoFilterProcedureNotes(notes) {
-    return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n)) : [];
+    return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n) && !paradisoIsRedundantSourceProvenanceNote(n)) : [];
 }
 
 // Internal audit/TODO diagnostics that leaked into user-facing fields. These are
