@@ -83,9 +83,12 @@ experiments/waymaker-gemma4-finetune/
 ├── dataset/
 │   ├── train.sample.jsonl      # 6 placeholder examples (D-2 시간제취업, F-4, E-7 근무처 변경,
 │   │                           #   insufficient evidence, overstay risk, exact-fee request)
-│   └── eval.sample.jsonl       # 4 placeholder examples (incl. overclaim bait, exact-period request)
+│   └── eval.sample.jsonl       # 8 placeholder examples — golden behavior coverage for
+│                               #   D-2 / F-4 / G-1-5 / E-7 / D-10 / F-2 / F-6, plus
+│                               #   overclaim bait and exact-period bait
 ├── scripts/
-│   ├── validate_dataset.py     # structural + overclaim/fee/period checks on JSONL
+│   ├── validate_dataset.py     # structural + overclaim/fee/period + 6-section structure +
+│   │                           #   disclaimer checks; prints status-code coverage
 │   ├── build_colab_dataset.py  # dedupe/shuffle/split real exports into Colab-ready JSONL
 │   └── eval_outputs.py         # scores model outputs (citation, structure, defer, overclaims)
 ├── notebooks/
@@ -113,6 +116,20 @@ chain-of-thought). The user message contains the question and the evidence:
 
 The assistant answer must follow the 6-section Korean structure above and end with a
 non-legal-advice disclaimer.
+
+### Golden eval set (behavior, not legal facts)
+
+`dataset/eval.sample.jsonl` is a small **golden behavior set** spanning the main status
+families Waymaker is asked about — **D-2, F-4, G-1-5, E-7, D-10, F-2, F-6** — plus two
+adversarial "bait" cases (an overclaim bait and an exact-period bait). Every example uses
+**clearly marked placeholder evidence** (`[플레이스홀더 발췌 — 실제 규정 아님]`), so the
+"golden" answer demonstrates the right *behavior* — grounding only in the supplied
+evidence, deferring when a detail is not in it, citing the source, keeping the 6-section
+structure, and avoiding absolutes — **not** any real legal rule. The `G-1-5` case
+deliberately gives only `G-1`-level evidence so the golden answer defers on the
+sub-code rather than applying the parent family's generic rule. Run
+`scripts/eval_outputs.py` on a quality run's generations to score these behaviors; the
+checks are heuristic, not legal review.
 
 ## How to run
 
