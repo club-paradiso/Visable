@@ -505,6 +505,102 @@
     }
   },
   {
+    "code": "C-2",
+    "name": "단기상용(C-2) 매뉴얼 참조 코드",
+    "cat": "short",
+    "period": "수동검토 필요",
+    "dataBadge": "매뉴얼 참조 코드",
+    "dataDate": "2026.5 매뉴얼 추출 기반",
+    "newReq": "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격으로 검증되지 않았습니다. 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문과 관할기관에서 확인하세요.",
+    "newReqDocs": [],
+    "extReq": "",
+    "extReqDocs": [],
+    "faq": "Q: C-2로 신청할 수 있나요?\nA: C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격으로 검증되지 않았습니다. 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문과 관할기관에서 확인하세요.",
+    "aliases": [
+      "C-2",
+      "단기상용"
+    ],
+    "subCodes": [],
+    "initialReqDocs": [],
+    "extensionReqDocs": [],
+    "changeReqDocs": [],
+    "procedures": {
+      "extension": {
+        "available": false,
+        "summary": "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격/체류기간 연장 절차로 검증되지 않았습니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "수동검토 필요: 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 18,27,41,115",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      "registration": {
+        "available": false,
+        "summary": "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격/외국인등록 절차로 검증되지 않았습니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "수동검토 필요: 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 18,27,41,115",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      }
+    },
+    "sourceManualStatus": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격으로 검증되지 않았습니다. 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문과 관할기관에서 확인하세요."
+      ]
+    },
+    "manualRequiredDocAudit": {
+      "manualName": "체류민원/사증 매뉴얼",
+      "manualVersion": "2026.5",
+      "scope": "legacy_or_reference_code",
+      "needsManualReview": true
+    },
+    "searchAliases": [
+      "C-2",
+      "C2",
+      "단기상용"
+    ],
+    "manualRefs": [
+      {
+        "manualName": "체류민원/사증 매뉴얼",
+        "manualVersion": "2026.5",
+        "pageRange": "추출 페이지 후보: 18,27,41,115",
+        "confidence": "pdf_extracted_candidate_needs_review",
+        "needsManualReview": true
+      }
+    ]
+  },
+  {
     "code": "C-3",
     "name": "단기방문",
     "cat": "short",
@@ -673,6 +769,29 @@
         ],
         "group": "기타",
         "statusNote": "코로나19 한시 지침. 2022.6. 사증발급 정상화로 폐지(사증발급 안내매뉴얼)."
+      },
+      {
+        "code": "C-3-91",
+        "name": "C-3-91 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "C-3-91",
+          "C391"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 35",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -1215,7 +1334,9 @@
       "C-3-8",
       "C-3-9",
       "교대선원",
-      "도착관광"
+      "도착관광",
+      "C-3-91",
+      "C391"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -9125,7 +9246,12 @@
           "doc_emp_contract",
           "doc_purpose"
         ],
-        "note": "체류기간 연장·근무처 변경·자격변경·자격외활동 제한."
+        "note": "체류기간 연장·근무처 변경·자격변경·자격외활동 제한.",
+        "searchAliases": [
+          "E-7-91FTA",
+          "E791FTA",
+          "FTA독립전문가"
+        ]
       },
       {
         "code": "E-7-S1",
@@ -9221,6 +9347,52 @@
           }
         ],
         "group": "지역특화"
+      },
+      {
+        "code": "E-7-91FTA",
+        "name": "E-7-91FTA 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "E-7-91FTA",
+          "E791FTA"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 169,213",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "E-7-H",
+        "name": "E-7-H 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "E-7-H",
+          "E7H"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 499",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -9472,7 +9644,11 @@
       "E-7-S2",
       "E-7-T",
       "E-7-Y",
-      "지역특화 숙련기능"
+      "지역특화 숙련기능",
+      "E-7-91FTA",
+      "E791FTA",
+      "E-7-H",
+      "E7H"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -11275,6 +11451,190 @@
           }
         ],
         "group": "가족/동반"
+      },
+      {
+        "code": "F-1-1",
+        "name": "F-1-1 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-1",
+          "F11"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 365",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-6",
+        "name": "F-1-6 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-6",
+          "F16"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 345,352,489,495",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-11",
+        "name": "F-1-11 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-11",
+          "F111"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 629",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-12",
+        "name": "F-1-12 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-12",
+          "F112"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 311,342,344,354,407,408,409,410",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-15",
+        "name": "F-1-15 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-15",
+          "F115"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 305",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-28",
+        "name": "F-1-28 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-28",
+          "F128"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 349,354",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-51",
+        "name": "F-1-51 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-51",
+          "F151"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 304,349",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-1-72",
+        "name": "F-1-72 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-1-72",
+          "F172"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 405,544",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -11700,7 +12060,22 @@
       "workation",
       "디지털 노마드",
       "디지털노마드",
-      "워케이션"
+      "워케이션",
+      "F-1-1",
+      "F11",
+      "F16",
+      "F-1-11",
+      "F111",
+      "F-1-12",
+      "F112",
+      "F-1-15",
+      "F115",
+      "F-1-28",
+      "F128",
+      "F-1-51",
+      "F151",
+      "F-1-72",
+      "F172"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -12126,6 +12501,190 @@
           }
         ],
         "group": "투자"
+      },
+      {
+        "code": "F-2-1",
+        "name": "F-2-1 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-1",
+          "F21"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 496",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-4",
+        "name": "F-2-4 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-4",
+          "F24"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 407",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-5",
+        "name": "F-2-5 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-5",
+          "F25"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 407",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-6",
+        "name": "F-2-6 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-6",
+          "F26"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 413,417",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-10",
+        "name": "F-2-10 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-10",
+          "F210"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 496",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-12",
+        "name": "F-2-12 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-12",
+          "F212"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 379,412",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-13",
+        "name": "F-2-13 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-13",
+          "F213"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 383",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-2-16",
+        "name": "F-2-16 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-2-16",
+          "F216"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 385",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -12549,7 +13108,23 @@
       "F-2-T",
       "K-STAR 거주",
       "지역우수인재",
-      "지역특화 우수인재"
+      "지역특화 우수인재",
+      "F-2-1",
+      "F21",
+      "F-2-4",
+      "F24",
+      "F-2-5",
+      "F25",
+      "F-2-6",
+      "F26",
+      "F-2-10",
+      "F210",
+      "F-2-12",
+      "F212",
+      "F-2-13",
+      "F213",
+      "F-2-16",
+      "F216"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -12755,6 +13330,75 @@
         "addReq": "E-1(교수), E-3(연구), E-4(기술지도), E-5(전문직업), D-8(50만불 이상 고액투자자).",
         "addReqDocs": [],
         "note": "위 전문인력은 동반가족 초청 시 소득(체류경비) 요건 입증 면제."
+      },
+      {
+        "code": "F-3-18",
+        "name": "F-3-18 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-3-18",
+          "F318"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 315,389,394,398,399,400,401",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-3-19",
+        "name": "F-3-19 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-3-19",
+          "F319"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 315,425",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-3-20",
+        "name": "F-3-20 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-3-20",
+          "F320"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 315,425",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -13114,7 +13758,13 @@
     "searchAliases": [
       "F-3-1",
       "F-3-2",
-      "F-3-3"
+      "F-3-3",
+      "F-3-18",
+      "F318",
+      "F-3-19",
+      "F319",
+      "F-3-20",
+      "F320"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -13377,6 +14027,52 @@
           "doc_enroll"
         ],
         "note": "최초 2년 이내(3월말/9월말 기준), 연장 시 2년 부여."
+      },
+      {
+        "code": "F-4-41",
+        "name": "F-4-41 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-4-41",
+          "F441"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 390,529",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-4-42",
+        "name": "F-4-42 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-4-42",
+          "F442"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 390,529",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -13651,7 +14347,11 @@
       "F-4-20",
       "F-4-21",
       "F-4-25",
-      "F-4-30"
+      "F-4-30",
+      "F-4-41",
+      "F441",
+      "F-4-42",
+      "F442"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -14059,6 +14759,512 @@
           }
         ],
         "group": "특별요건"
+      },
+      {
+        "code": "F-5-1",
+        "name": "F-5-1 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-1",
+          "F51"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 436,440,446,447",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-2",
+        "name": "F-5-2 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-2",
+          "F52"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 350,357,429,447,628",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-4",
+        "name": "F-5-4 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-4",
+          "F54"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 436,440,453",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-6",
+        "name": "F-5-6 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-6",
+          "F56"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 397,398,399,429,536,537,538,628",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-7",
+        "name": "F-5-7 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-7",
+          "F57"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 397,398,400,405,429,536,537,539,544",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-8",
+        "name": "F-5-8 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-8",
+          "F58"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,440,442,455",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-9",
+        "name": "F-5-9 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-9",
+          "F59"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 409,431,436,438,440,456,549",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-10",
+        "name": "F-5-10 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-10",
+          "F510"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 432,436,440,457",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-12",
+        "name": "F-5-12 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-12",
+          "F512"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 409,431,435,436,438,440,463,549",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-13",
+        "name": "F-5-13 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-13",
+          "F513"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 402,432,434,436,440,463",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-14",
+        "name": "F-5-14 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-14",
+          "F514"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 381,397,398,401,429,442,520,536,537,540,582",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-15",
+        "name": "F-5-15 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-15",
+          "F515"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 409,431,436,438,440,456,457,549",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-17",
+        "name": "F-5-17 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-17",
+          "F517"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 429,435,436,437,440,441,453,465,466,469",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-18",
+        "name": "F-5-18 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-18",
+          "F518"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 436,440,464,465,758",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-19",
+        "name": "F-5-19 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-19",
+          "F519"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,437,440,442,465,466",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-20",
+        "name": "F-5-20 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-20",
+          "F520"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,440,467",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-21",
+        "name": "F-5-21 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-21",
+          "F521"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 383,429,435,436,437,440,441,453,468,469,472",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-22",
+        "name": "F-5-22 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-22",
+          "F522"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,437,440,468,469",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-23",
+        "name": "F-5-23 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-23",
+          "F523"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 429,435,436,437,440,441,468,469,472",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-24",
+        "name": "F-5-24 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-24",
+          "F524"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,440,469",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-25",
+        "name": "F-5-25 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-25",
+          "F525"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 435,436,440,445,470",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      {
+        "code": "F-5-26",
+        "name": "F-5-26 매뉴얼 참조 코드 (수동검토 필요)",
+        "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "addReqDocs": [],
+        "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+        "searchAliases": [
+          "F-5-26",
+          "F526"
+        ],
+        "status": "manual_review_required",
+        "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+        "needsManualReview": true,
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 436,440,471",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
       }
     ],
     "initialReqDocs": [
@@ -14220,7 +15426,51 @@
       "F-5-S2",
       "F-5-T",
       "K-STAR 영주",
-      "지역동포영주"
+      "지역동포영주",
+      "F-5-1",
+      "F51",
+      "F-5-2",
+      "F52",
+      "F-5-4",
+      "F54",
+      "F-5-6",
+      "F56",
+      "F-5-7",
+      "F57",
+      "F-5-8",
+      "F58",
+      "F-5-9",
+      "F59",
+      "F-5-10",
+      "F510",
+      "F-5-12",
+      "F512",
+      "F-5-13",
+      "F513",
+      "F-5-14",
+      "F514",
+      "F-5-15",
+      "F515",
+      "F-5-17",
+      "F517",
+      "F-5-18",
+      "F518",
+      "F-5-19",
+      "F519",
+      "F-5-20",
+      "F520",
+      "F-5-21",
+      "F521",
+      "F-5-22",
+      "F522",
+      "F-5-23",
+      "F523",
+      "F-5-24",
+      "F524",
+      "F-5-25",
+      "F525",
+      "F-5-26",
+      "F526"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [

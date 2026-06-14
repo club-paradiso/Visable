@@ -524,7 +524,52 @@
     "initialReqDocs": [],
     "extensionReqDocs": [],
     "changeReqDocs": [],
-    "procedures": {},
+    "procedures": {
+      "extension": {
+        "available": false,
+        "summary": "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격/체류기간 연장 절차로 검증되지 않았습니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "수동검토 필요: 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 18,27,41,115",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      },
+      "registration": {
+        "available": false,
+        "summary": "C-2는 매뉴얼 추출본에서 참조로 확인된 코드이나, 현재 Paradiso 구조화 데이터의 활성 체류자격/외국인등록 절차로 검증되지 않았습니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [],
+          "additionalDocs": [],
+          "conditionalDocs": []
+        },
+        "notes": [
+          "수동검토 필요: 현행 신청 가능 여부와 제출서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요."
+        ],
+        "manualRefs": [
+          {
+            "manualName": "체류민원/사증 매뉴얼",
+            "manualVersion": "2026.5",
+            "pageRange": "추출 페이지 후보: 18,27,41,115",
+            "confidence": "pdf_extracted_candidate_needs_review",
+            "needsManualReview": true
+          }
+        ]
+      }
+    },
     "sourceManualStatus": {
       "visaManualVersion": "2026.5",
       "stayManualVersion": "2026.5",
