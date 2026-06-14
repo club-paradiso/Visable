@@ -127,6 +127,8 @@ ok(/항공사 탑승 가능 여부/.test(checkerJs), 'airline boarding warning p
 ok(/제주 무사증은 일반 무사증\/B-2-1·K-ETA와 별도 제도/.test(checkerJs), 'Jeju vs general separation warning present');
 ok(!/제주\s*무사증\s*\+/.test(checkerJs), 'checker never builds a "Jeju visa-free + ..." route label (no expansion-permit answer)');
 ok(/체류지역 확대는 원칙적으로 허용되지 않습니다/.test(checkerJs), 'checker states Jeju 체류지역 확대 is not allowed in principle');
+ok(!/공식 최신성 확인 필요/.test(checkerJs), 'trust-damaging "freshness check needed" badge label removed');
+ok(/현재 저장된 자료 기준입니다/.test(checkerJs), 'substantive stale-source caution still present in results');
 ok(/국적을 먼저 입력해 주세요/.test(checkerJs), 'empty-country prompt present');
 ok(/국가명을 찾지 못했습니다/.test(checkerJs), 'unknown-country prompt present');
 
@@ -167,8 +169,22 @@ const np = scenario('네팔', 'ordinary', 'tourism', 'jeju_only', 20);
 ok(np.primary.status === 'visa_required' && np.primary.explanation.join(' ').includes('목록에 포함되어 있습니다'), 'NP jeju_only → denied, deterministic wording');
 const usWork = scenario('미국', 'ordinary', 'work_or_profit', 'mainland', 30);
 ok(/C-4/.test(usWork.primary.path), 'work/profit → C-4/official-check path');
-const dipl = scenario('베트남', 'diplomatic', 'tourism', 'mainland', 30);
-ok(dipl.primary.status === 'needs_official_check', 'non-ordinary passport → needs_official_check');
+/* passport-type-aware B-1 사증면제협정 application */
+const vnDipl = scenario('베트남', 'diplomatic', 'tourism', 'mainland', 30);
+ok(vnDipl.primary.status === 'likely_available' && /사증면제협정\(B-1\)/.test(vnDipl.primary.path),
+  'VN diplomatic → B-1 waiver applies (외교·관용 scope), even though ordinary needs a visa');
+const vnOff = scenario('베트남', 'official', 'tourism', 'mainland', 30);
+ok(vnOff.primary.status === 'likely_available', 'VN official(관용) → in 외교·관용 scope → B-1 waiver applies');
+const uzOff = scenario('우즈베키스탄', 'official', 'tourism', 'mainland', 30);
+ok(uzOff.primary.status === 'needs_official_check' && uzOff.primary.explanation.join(' ').includes('협정 대상으로 확인되지 않습니다'),
+  'UZ official → NOT in 외교-only scope → not auto visa-free (official check)');
+const deDipl = scenario('독일', 'diplomatic', 'tourism', 'mainland', 30);
+ok(deDipl.primary.status === 'likely_available', 'DE diplomatic → ordinary agreement ⇒ diplomatic also covered');
+const deSpecial = scenario('독일', 'special', 'tourism', 'mainland', 30);
+ok(deSpecial.primary.status === 'needs_official_check', 'DE special/service → not stored in agreement scope → official check');
+const usDipl = scenario('미국', 'diplomatic', 'tourism', 'mainland', 30);
+ok(usDipl.primary.status === 'needs_official_check' && usDipl.primary.explanation.join(' ').includes('B-2-1'),
+  'US diplomatic → no recorded B-1 agreement → official check, notes B-2-1 general visa-free');
 
 /* -------------------------------------------------------------- summary */
 console.log(`\n${checks} checks, ${failures} failures`);

@@ -39,7 +39,7 @@
     caution: '주의',
     timelineTitle: 'F-4 전체 단계 한눈에 보기',
     badgeVerified: '공식 기준 확인됨',
-    badgeNeedsRefresh: '공식 최신성 확인 필요',
+    badgeNeedsRefresh: '공식 고시·목록 기준',
     badgePartial: '일부 자료 기준',
     sourceDatePrefix: '출처 기준일'
   };
@@ -97,7 +97,8 @@
 '.f4g-note{font-size:.8rem;color:var(--hlT,#8A3426);background:var(--cyL,#FFE2DB);border:1px solid var(--cy,#FF6B5B);border-radius:8px;padding:.5rem .65rem;margin:0 0 .8rem;word-break:keep-all;}' +
 '.f4g-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}' +
 '.f4g-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;border:1px solid var(--bd,#d1c6b4);color:var(--t2,#4f5552);background:var(--bg2,#f1ece2);}' +
-'.f4g-badge-refresh,.f4g-badge-partial{border-color:var(--cWk,#E68A3A);color:var(--cWk,#a85f1c);background:transparent;}' +
+'.f4g-badge-refresh{border-color:var(--ac,#2f5e67);color:var(--ac,#2f5e67);background:transparent;}' +
+'.f4g-badge-partial{border-color:var(--cWk,#E68A3A);color:var(--cWk,#a85f1c);background:transparent;}' +
 '.f4g-badge-ok{border-color:var(--cSt,#0EA37B);color:var(--cSt,#0a7a5c);background:transparent;}' +
 '.f4g-question{font-size:.95rem;font-weight:800;color:var(--t1,#202221);margin:.2rem 0 .55rem;}' +
 '.f4g-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:.6rem;}' +

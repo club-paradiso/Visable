@@ -38,7 +38,7 @@
     destinationLabel: '4. 방문 지역',
     stayLabel: '5. 예정 체류일수',
     stayHelper: '며칠 정도 머무를 예정인가요?',
-    ageLabel: '나이대 (선택)',
+    ageLabel: '나이대 (선택 · K-ETA 면제 판단용)',
     submit: '경로 확인하기',
     reset: '다시 입력',
     loading: '공식 목록 데이터를 불러오는 중입니다…',
@@ -50,7 +50,7 @@
     resultOfficial: '공식 확인',
     resultAlt: '다른 가능성',
     sourceBadgeVerified: '공식 기준 확인됨',
-    sourceBadgeNeedsRefresh: '공식 최신성 확인 필요',
+    sourceBadgeNeedsRefresh: '공식 고시·목록 기준',
     sourceBadgePartial: '일부 자료 기준',
     sourceDatePrefix: '출처 기준일'
   };
@@ -223,22 +223,67 @@
       r.warnings.push('여권 종류를 모르는 경우 일반여권 기준으로 안내합니다. 외교·관용·특별여권은 적용 범위가 다를 수 있습니다.');
     }
 
-    /* --- non-ordinary passports: stored data is partial → official check --- */
+    /* --- non-ordinary passports: apply the B-1 사증면제협정 by passport type -------
+       The waiver applies differently per passport. Diplomatic/official coverage is a
+       superset of ordinary (매뉴얼: 외교 111 · 관용 109 · 일반 67), so:
+        - diplomaticOfficialOnly: visa-free for the passports inside the recorded scope
+          (외교/관용/공무) even when the ordinary passport needs a visa (예: 베트남 외교·관용 90일);
+          a passport OUTSIDE that scope (예: 우즈베키스탄 관용 — 외교만 대상) is not covered.
+        - ordinary agreement present (stay recorded, active or 일시정지): 외교·관용여권도
+          같은 협정으로 적용됨(일시정지는 일반여권에만 적용).
+        - otherwise the stored data does not pin this passport's agreement → 공식 확인. */
     if (!ordinaryLike) {
-      var dipl = c.b1 && c.b1.diplomaticOfficialOnly;
-      r.primary = {
-        path: '관할 재외공관 공식 확인',
-        status: 'needs_official_check',
-        explanation: [
-          '외교·관용·특별여권의 사증면제 적용 범위는 협정별로 달라, 현재 저장된 자료에는 일부 국가만 반영되어 있습니다.'
-        ].concat(dipl ? ['마지막으로 반영된 공식 목록 기준으로는 ' + c.nameKo + ' ' + c.b1.diplomaticOfficialScope +
-          ' 여권에 대해 사증면제협정(B-1)이 적용되는 것으로 기록되어 있습니다(체류 ' + c.b1.diplomaticOfficialStay + '). 최신 공식 확인이 필요합니다.'] : [])
-      };
+      var b1 = c.b1 || {};
+      var inScope = !!(b1.diplomaticOfficialOnly && passportInB1Scope(passport, b1.diplomaticOfficialScope));
+      var ptLabel = passportLabelKo(passport);
+      var ordinaryAgreement = !b1.diplomaticOfficialOnly && !!b1.stay && (passport === 'diplomatic' || passport === 'official');
+
+      if (inScope) {
+        r.primary = {
+          path: '사증면제협정(B-1) 무사증 입국',
+          status: 'likely_available',
+          explanation: [
+            '현재 반영된 사증면제협정 목록 기준으로, ' + c.nameKo + ' ' + b1.diplomaticOfficialScope +
+              ' 여권은 사증면제협정(B-1) 대상으로 등재되어 있습니다(협정상 체류 ' + b1.diplomaticOfficialStay + ').'
+          ]
+        };
+      } else if (ordinaryAgreement) {
+        r.primary = {
+          path: '사증면제협정(B-1) 무사증 입국',
+          status: 'likely_available',
+          explanation: [
+            '현재 반영된 사증면제협정 목록 기준으로, ' + withParticle(c.nameKo) + ' 사증면제협정(B-1) 체결국이며, 협정상 ' +
+              ptLabel + '은 일반여권과 같거나 더 넓은 범위로 적용되는 것이 일반적입니다(일반여권 기준 체류 ' + b1.stay + ').'
+          ].concat(b1.suspended ? ['일반여권 적용은 ' + (b1.suspensionNote || '일시정지') + ' 상태이나, 협정 자체는 ' + ptLabel + '에 대해 유효한 것으로 기록되어 있습니다.'] : [])
+        };
+      } else {
+        /* not pinned for this passport type → honest official check */
+        var scopeMismatch = !!b1.diplomaticOfficialOnly; /* recorded for other passports only */
+        r.primary = {
+          path: '관할 재외공관 공식 확인',
+          status: 'needs_official_check',
+          explanation: (scopeMismatch
+            ? ['현재 반영된 사증면제협정 목록 기준으로, ' + withParticle(c.nameKo) + ' ' + b1.diplomaticOfficialScope +
+                ' 여권만 사증면제협정(B-1) 대상으로 기록되어 있어, ' + ptLabel + '은 협정 대상으로 확인되지 않습니다. 목적에 맞는 사증이 필요할 수 있습니다.']
+            : [ptLabel + '의 사증면제 적용 범위는 협정별로 달라, 현재 저장된 자료에는 ' + c.nameKo + '의 해당 여권 종류 적용 여부가 확정 기록되어 있지 않습니다.'])
+            .concat(c.b21 && c.b21.listed ? ['참고로 ' + withParticle(c.nameKo) + ' 일반여권 기준 일반 무사증(B-2-1·K-ETA) 대상국으로 등재되어 있어, ' + ptLabel + '도 무사증 입국이 가능한 경우가 많지만 출발 전 공식 확인이 필요합니다.'] : [])
+        };
+        r.steps = [
+          '관할 재외공관 또는 소속 기관을 통해 해당 여권 종류의 사증면제 적용 여부를 확인하세요.',
+          '적용되지 않으면 목적에 맞는 사증(C-3 계열 등)을 신청하세요.'
+        ];
+        r.warnings.push(WARN_FINAL_DECISION);
+        return finalizeResult(r, rules);
+      }
+
+      /* visa-free (agreement) common tail for diplomatic/official passports */
       r.steps = [
-        '관할 재외공관 또는 소속 기관을 통해 해당 여권 종류의 사증면제 적용 여부를 확인하세요.',
-        '적용되지 않으면 목적에 맞는 사증(C-3 계열 등)을 신청하세요.'
+        '여권 유효기간과 입국 목적을 확인하세요.',
+        '협정상 활동범위(영리·취업활동 제외)와 체류기간을 넘지 않도록 주의하세요.',
+        '출발 전 항공사 탑승 가능 여부와 최신 협정 적용 여부를 확인하세요.'
       ];
-      r.warnings.push(WARN_FINAL_DECISION);
+      r.warnings.push('사증면제협정(B-1)은 협정상 활동범위·체류기간 제한이 있습니다. 영리·취업활동이나 협정기간 초과 체류는 사증이 필요합니다.');
+      r.warnings.push(WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION);
       return finalizeResult(r, rules);
     }
 
@@ -504,6 +549,14 @@
     }
     return t;
   }
+  /* Match a non-ordinary passport against a recorded 사증면제협정 scope string.
+     diplomatic ⇐ 외교, official(관용/공무) ⇐ 관용·공무, special/service ⇐ not stored. */
+  function passportInB1Scope(passport, scope) {
+    if (!scope) return false;
+    if (passport === 'diplomatic') return scope.indexOf('외교') !== -1;
+    if (passport === 'official') return scope.indexOf('관용') !== -1 || scope.indexOf('공무') !== -1;
+    return false;
+  }
   function addAlternative(r, path, note) { r.alternatives.push({ path: path, note: note }); }
   function defaultOfficialLinks() {
     return [
@@ -526,7 +579,7 @@
     var c = r.country, st = r.primary && r.primary.status, name = (c && c.nameKo) || '';
     if (st === 'likely_available') {
       var b21 = String(r.primary.path).indexOf('B-2-1') !== -1;
-      var stay = b21 ? (c.b21 && c.b21.stay) : (c.b1 && c.b1.stay);
+      var stay = b21 ? (c.b21 && c.b21.stay) : ((c.b1 && c.b1.stay) || (c.b1 && c.b1.diplomaticOfficialStay));
       return {
         tone: 'go',
         headline: '무사증으로 입국할 수 있습니다',
@@ -639,7 +692,7 @@
 '.ssc-sub{font-size:.85rem;color:var(--t2,#4f5552);margin:0 0 .7rem;word-break:keep-all;}' +
 '.ssc-badges{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.8rem;}' +
 '.ssc-badge{display:inline-block;font-size:.72rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;border:1px solid var(--bd,#d1c6b4);color:var(--t2,#4f5552);background:var(--bg2,#f1ece2);}' +
-'.ssc-badge-refresh{border-color:var(--cWk,#E68A3A);color:var(--cWk,#a85f1c);background:transparent;}' +
+'.ssc-badge-refresh{border-color:var(--ac,#2f5e67);color:var(--ac,#2f5e67);background:transparent;}' +
 '.ssc-badge-ok{border-color:var(--cSt,#0EA37B);color:var(--cSt,#0a7a5c);background:transparent;}' +
 '.ssc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem .8rem;margin-bottom:.8rem;}' +
 '.ssc-field{display:flex;flex-direction:column;gap:.3rem;position:relative;}' +
