@@ -1091,8 +1091,12 @@ body:not(.searched) .sbar-go { border-radius: 9999px; }
     .language-btn-native { display: none; }
     .language-menu { left: 0; right: auto; }
     .hero-action-label { font-size: 0.85rem; text-align: left; word-break: keep-all; min-width: 0; flex: 1; }
-    .theme-btn-text { display: none; }
-    #cityBtnLabel { display: none; }
+    .theme-btn-text,
+    .editorial-theme-btn-text,
+    #cityBtnLabel,
+    #cityBtnTime { display: none; }
+    .city-btn,
+    .theme-btn { min-width: 44px; padding-inline: 0.65rem; }
     .brand-hero { padding: 4rem 1rem 0; padding-bottom: 4rem; }
     .brand-hero-headline { font-size: clamp(1.9rem, 8vw, 2.4rem); }
     .brand-hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
@@ -1417,7 +1421,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .subcode-chip.chip-deprecated { color: var(--t3); background: color-mix(in srgb, var(--t3) 12%, var(--bg1)); border-color: var(--bd2); }
 .manual-subcode-card.is-inactive { opacity: 0.72; background: color-mix(in srgb, var(--bg1) 96%, var(--t3)); border-style: dashed; }
 .manual-subcode-card.is-inactive .manual-subcode-code { color: var(--t3); }
-.manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: var(--t3); line-height: 1.45; font-style: italic; }
+.manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: #8a5a00; line-height: 1.45; font-style: italic; font-weight: 700; }
 /* Matched-subcode emphasis: quiet badge + slightly stronger border on the card. */
 .subcode-match-badge { flex: none; margin-left: auto; border-radius: 999px; padding: 0.08rem 0.42rem; font-size: 0.62rem; font-weight: 800; white-space: nowrap; line-height: 1.5; color: var(--ac); border: 1px solid color-mix(in srgb, var(--ac) 36%, var(--bd)); }
 .subcode-chip + .subcode-match-badge { margin-left: 0; }
@@ -6634,6 +6638,9 @@ body.searched .qb:hover {
   border: 1px solid color-mix(in srgb, var(--p-emerald) 22%, transparent);
   letter-spacing: 0.01em;
   line-height: 1.2;
+  width: fit-content;
+  max-width: 8rem;
+  flex: 0 0 auto;
 }
 .manual-result .manual-head-main {
   gap: 0.85rem;
@@ -10094,6 +10101,15 @@ button[data-keyword]:focus-visible {
      trapped beneath the docked CTA (copy and existing mobile full-width
      treatment are left unchanged). */
   body.searched .results-area { padding-bottom: 5.5rem; }
+}
+
+@media (max-width: 640px) {
+  .ai-fab {
+    position: static;
+    width: auto;
+    margin: 0.85rem 1rem;
+    transform: none;
+  }
 }
 
 /* 5 · Long Korean text never forces horizontal overflow inside result cards. */
@@ -18138,7 +18154,10 @@ function renderResults(query){
         document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
         return;
     }
-    renderCompactResults(filtered, kw);
+    // Exact single-result searches should open directly into the detailed card.
+    // Showing the compact card and the full card for the same visa made the
+    // results page feel duplicated and crowded.
+    renderCompactResults(filtered.length === 1 ? [] : filtered, kw);
     const fg=document.createDocumentFragment();
     filtered.forEach((v,idx)=>{
         const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.dataset.testid = 'visa-result-card'; c.dataset.visaCode = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
@@ -18969,7 +18988,8 @@ function updateCategoryCounts() {
         const n = String(buckets[id].size);
         el.dataset.count = n;
         const card = el.closest('.stat-card');
-        if (card && card.classList.contains('revealed')) el.textContent = n;
+        // Keep the landing metrics correct even before the reveal animation runs.
+        el.textContent = n;
         // Every code in the bucket becomes a visible, searchable chip (the static
         // markup only carries a representative few as a pre-data fallback).
         const chipBox = card && card.querySelector('.stat-codes');
@@ -19488,7 +19508,8 @@ function initScrollReveal() {
     document.querySelectorAll('[data-stagger]').forEach(group => _staggerObs.observe(group));
 }
 function resetReveal() {
-    document.querySelectorAll('[data-count]').forEach(el => { el.textContent = '0'; });
+    // Never show stale zero counts after the live visa dataset has loaded.
+    document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count || '0'; });
     document.querySelectorAll('[data-reveal].revealed').forEach(el => {
         el.classList.remove('revealed');
         if (_revealObs) _revealObs.observe(el);
