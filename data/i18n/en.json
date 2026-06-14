@@ -1077,6 +1077,7 @@
   "aiLimitedPreparationNote": "Limited preparation note",
   "aiAllCandidatesUnavailable": "All online model candidates are currently unavailable",
   "aiTryAgainShortly": "Try again shortly",
+  "aiTimeout": "The AI response timed out and the request was stopped. Please try again shortly. For urgent matters, confirm with HiKorea or 1345.",
   "aiFallbackFromMetadata": "Fallback answer generated from available source/status metadata",
   "aiOllamaFallbackNote": "Provider: Ollama fallback · Response model",
   "aiOllamaFallbackProvider": "Ollama fallback",
