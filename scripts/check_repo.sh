@@ -174,6 +174,18 @@ else
   echo "INFO: scripts/check_i18n.js not present; skipping i18n validation."
 fi
 
+echo "[9b/14] Validating HiKorea employment-reporting helper dataset & UI logic..."
+# Stdlib-only data test: KSCO8/KSIC11 counts, source metadata, edition-correctness
+# (8th not 7th), type-scoped duplicate handling, required samples.
+python3 scripts/tests/test_employment_reporting_dataset.py
+if command -v node >/dev/null 2>&1; then
+  # Loads the real helper functions from index.html and exercises search,
+  # ambiguity, E-7 boundary, empty-state recovery, and the copy memo.
+  node scripts/check_employment_reporting_helper.mjs
+else
+  echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
+fi
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
