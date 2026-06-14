@@ -165,6 +165,16 @@ ok(jpBoth.alternatives.length === 0, 'JP jeju→mainland → no speculative "다
 const jp = scenario('일본', 'ordinary', 'tourism', 'mainland', 30);
 ok(jp.primary.status === 'likely_available' && /B-2-1/.test(jp.primary.path), 'JP mainland → B-2-1 likely_available');
 ok(api.formatShortStayWarnings(jp).some(w => w.includes('입국심사관이 결정')), 'JP result carries final-decision warning');
+
+/* K-ETA 한시 면제 자동 전환 (날짜 기반 — 데이터 수정 없이 종료일에 안내가 바뀜) */
+function jpKetaStepAt(asOfDate) {
+  const c = api.resolveCountryAlias('일본', rules).country;
+  const r = api.getShortStayEntryOptions({ country: c, passportType: 'ordinary', purpose: 'tourism', destination: 'mainland', stayDays: 10, asOfDate }, rules);
+  return r.steps.join(' ');
+}
+const ketaThrough = rules.rules.b21GeneralVisaFreeKeta.ketaTemporaryExemption.lastVerifiedThrough;
+ok(/신청하지 않아도 됩니다/.test(jpKetaStepAt(ketaThrough)), 'K-ETA: 면제기간 내(종료일 포함) → 신청 불필요 안내');
+ok(/한시 면제 기간\([^)]*\)이 지났습니다/.test(jpKetaStepAt('2099-01-01')), 'K-ETA: 종료일 경과 후 → 데이터 수정 없이 "신청 대상 여부 확인" 안내로 자동 전환');
 const np = scenario('네팔', 'ordinary', 'tourism', 'jeju_only', 20);
 ok(np.primary.status === 'visa_required' && np.primary.explanation.join(' ').includes('목록에 포함되어 있습니다'), 'NP jeju_only → denied, deterministic wording');
 const usWork = scenario('미국', 'ordinary', 'work_or_profit', 'mainland', 30);

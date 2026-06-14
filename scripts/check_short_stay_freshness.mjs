@@ -67,15 +67,16 @@ const keta = (rules.rules && rules.rules.b21GeneralVisaFreeKeta && rules.rules.b
 const through = parseDate(keta.lastVerifiedThrough);
 if (through) {
   const daysLeft = daysBetween(through, today);
+  const ketaField = 'rules.b21GeneralVisaFreeKeta.ketaTemporaryExemption.lastVerifiedThrough';
   if (daysLeft < 0) {
     findings.push({
       kind: 'keta_exemption_expired',
-      detail: `K-ETA 한시 면제 종료일(${keta.lastVerifiedThrough})이 지났습니다 (${-daysLeft}일 경과). 연장·종료 여부를 공식 확인하고 데이터를 갱신하세요.`
+      detail: `K-ETA 한시 면제 종료일(${keta.lastVerifiedThrough})이 지났습니다 (${-daysLeft}일 경과). K-ETA 공식 누리집에서 연장/재시행 여부를 확인한 뒤 data/short-stay/rules.json의 ${ketaField}(연장이면 새 종료일, 미확인이면 extensionUnverified=true)를 갱신하세요. 갱신 전까지 체커는 자동으로 "K-ETA 신청 대상 여부 확인" 안내로 전환됩니다.`
     });
   } else if (daysLeft <= EXPIRY_WARN_DAYS) {
     findings.push({
       kind: 'keta_exemption_expiring',
-      detail: `K-ETA 한시 면제 종료일(${keta.lastVerifiedThrough})까지 ${daysLeft}일 남았습니다. 연장 여부를 미리 공식 확인하세요.`
+      detail: `K-ETA 한시 면제 종료일(${keta.lastVerifiedThrough})까지 ${daysLeft}일 남았습니다. 공식 누리집에서 연장 여부를 확인하고, 연장 시 ${ketaField}를 새 종료일로 갱신하세요(이 한 칸만 바꾸면 안내가 전체 반영됩니다).`
     });
   }
 }

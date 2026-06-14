@@ -130,6 +130,13 @@
     return { country: null, suggestions: suggestions };
   }
 
+  /* Local calendar date as YYYY-MM-DD — drives the K-ETA exemption auto-transition.
+     Tests/callers may override via input.asOfDate; the browser uses the real date. */
+  function todayISO() {
+    var d = new Date();
+    var m = d.getMonth() + 1, day = d.getDate();
+    return d.getFullYear() + '-' + (m < 10 ? '0' + m : m) + '-' + (day < 10 ? '0' + day : day);
+  }
   function parseStayDays(stay) {
     if (!stay) return null;
     var m = /(\d+)\s*일/.exec(stay);
@@ -193,6 +200,7 @@
     var destination = input.destination || 'unknown';
     var stayDays = input.stayDays || null;
     var ageGroup = input.ageGroup || 'unknown';
+    var asOf = input.asOfDate || todayISO();
 
     var r = {
       country: c,
@@ -379,7 +387,7 @@
         };
         r.showKeta = true;
         r.steps = [
-          ketaStepText(c, rules, ageGroup),
+          ketaStepText(c, rules, ageGroup, asOf),
           '여권 유효기간과 왕복 항공권 등 기본 요건을 확인하세요.',
           '입국심사 시 방문 목적과 일정을 설명할 수 있도록 준비하세요.'
         ];
@@ -476,7 +484,7 @@
       r.primary = { path: label, status: 'likely_available', explanation: explain };
       r.showKeta = true;
       r.steps = [
-        ketaStepText(c, rules, ageGroup),
+        ketaStepText(c, rules, ageGroup, asOf),
         '여권 유효기간과 왕복 항공권 등 기본 요건을 확인하세요.',
         '입국심사 시 방문 목적을 명확히 설명할 수 있도록 준비하세요.'
       ];
@@ -529,18 +537,33 @@
     if (purpose === 'medical') base.unshift('법무부 지정 의료기관의 초청·예약을 먼저 확인하세요.');
     return base;
   }
-  function ketaStepText(c, rules, ageGroup) {
+  /* K-ETA guidance, made date-aware so it auto-transitions without a data edit.
+     The K-ETA application is currently temporarily exempted (한시 면제) for the
+     listed countries through `lastVerifiedThrough`. We compare that window against
+     the current date (`asOf`):
+       - within the confirmed window  → "K-ETA 신청 불필요" (면제 중)
+       - past the stored window       → auto-flip to "신청이 다시 필요할 수 있으니 확인/신청"
+         (we do NOT silently keep claiming exemption once the calendar passes the date;
+          the monthly short-stay-freshness 워크플로가 종료 전후로 공식 확인을 알림)
+       - listed but unconfirmed       → "확인 필요" */
+  function ketaStepText(c, rules, ageGroup, asOf) {
     var b21node = rules.rules.b21GeneralVisaFreeKeta || {};
     var keta = b21node.ketaProgram || {};
     var exempt = b21node.ketaTemporaryExemption || {};
     var tmp = c.keta && c.keta.temporaryExemption;
-    var t = 'K-ETA 공식 누리집에서 전자여행허가를 신청하세요(수수료 ' + Number(keta.feeKRW).toLocaleString('ko-KR') + '원).';
+    var fee = Number(keta.feeKRW).toLocaleString('ko-KR');
+    var t = 'K-ETA 공식 누리집에서 전자여행허가를 신청하세요(수수료 ' + fee + '원).';
     if (tmp) {
       var through = exempt.lastVerifiedThrough;
-      if (through && exempt.extensionUnverified === false) {
+      var withinWindow = !!through && (!asOf || asOf <= through);
+      if (through && exempt.extensionUnverified === false && withinWindow) {
         /* Within a confirmed temporary-exemption window: no K-ETA application
            is required. Keep the forward caveat for travel after the end date. */
         t = 'K-ETA가 ' + through + '까지 한시 면제된 국가·지역이므로, 면제 기간 중 무사증 입국 시에는 K-ETA를 신청하지 않아도 됩니다. ' + through + ' 이후 출발한다면 면제 연장·종료 여부를 K-ETA 공식 누리집에서 확인하세요.';
+      } else if (through && !withinWindow) {
+        /* Calendar has passed the stored exemption window and the data was not
+           extended → automatically stop claiming exemption and steer to confirm/apply. */
+        t = '저장된 자료 기준 K-ETA 한시 면제 기간(' + through + ')이 지났습니다. 현재는 K-ETA 신청이 다시 필요할 수 있으므로, 출발 전 K-ETA 공식 누리집에서 신청 대상 여부를 확인하고 필요 시 신청하세요(수수료 ' + fee + '원).';
       } else {
         t = '마지막으로 반영된 공식 목록 기준으로는 K-ETA 한시 면제 국가·지역에 포함되어 있으나, 면제 연장·종료 여부가 확인되지 않았으므로 출발 전 K-ETA 공식 누리집에서 반드시 확인하세요.';
       }
