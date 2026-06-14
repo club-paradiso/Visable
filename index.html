@@ -8282,15 +8282,13 @@ body:not(.searched) #visaManualSection.in-hero {
 body:not(.searched) .p-pathway-section,
 body:not(.searched) .p-how-section,
 body:not(.searched) .p-tools-section,
-body:not(.searched) .p-med-finder,
 body:not(.searched) .p-reminder-section {
   display: none !important;
 }
 
-/* Agency finder: hidden on landing, revealed when reached via utility card (#agentFinder) */
-body:not(.searched) .p-agent-finder { display: none !important; }
-body:not(.searched) .p-agent-finder:target,
-body:not(.searched) .p-med-finder:target { display: block !important; }
+/* 민원대행기관·법무부지정 병원 찾기 are now page popups (modals): see
+   #agentFinderModalOverlay / #medFinderModalOverlay. Modal-overlay visibility
+   replaces the old landing-page hide + :target reveal mechanism. */
 
 /* About Me block: flatten wrapper but keep brand/anagram/intro/values visible.
    .about-title (redundant heading), .about-experience (roadmap bloat), and
@@ -12200,14 +12198,14 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <span class="p-gw-util-icon" aria-hidden="true">🏛</span>
                     <span class="p-gw-util-label">관할 출입국관서 조회</span>
                 </button>
-                <a class="p-gw-util" href="#agentFinder">
+                <button type="button" class="p-gw-util" data-action="open-agent-finder">
                     <span class="p-gw-util-icon" aria-hidden="true">🧭</span>
                     <span class="p-gw-util-label">등록 민원대행기관 찾기</span>
-                </a>
-                <a class="p-gw-util" href="#medFinder">
+                </button>
+                <button type="button" class="p-gw-util" data-action="open-med-finder">
                     <span class="p-gw-util-icon" aria-hidden="true">🏥</span>
                     <span class="p-gw-util-label">법무부지정 병원 찾기</span>
-                </a>
+                </button>
             </div>
         </section>
 
@@ -12377,45 +12375,6 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 
     <div class="section-divider" aria-hidden="true"></div>
 
-    <!-- Feature Section -->
-    <section id="brandFeature" class="brand-feature figma-feature-section" aria-labelledby="brandFeatureTitle">
-        <div class="feature-content" data-reveal="fade-left">
-            <h2 id="brandFeatureTitle" class="feature-headline">
-                출입국·외국인정책본부<br>
-                매뉴얼 기반의 정보 탐색
-            </h2>
-            <p class="feature-subtitle" lang="en">
-                Manual-based information navigation
-            </p>
-            <p class="feature-body">
-                구조화된 체류자격 데이터를 토대로 공식 자료 확인을 전제로 한 정보 탐색을 보조합니다.
-                최종 판단과 신청 절차는 관할 출입국·외국인관서 안내 확인이 필요합니다.
-            </p>
-            <a href="tel:1345" class="btn-primary feature-cta">
-                <span>1345 외국인종합안내센터</span><span class="btn-en" lang="en">Contact 1345</span>
-            </a>
-        </div>
-        <aside class="feature-checklist figma-feature-checklist" aria-label="서비스 핵심 기능" data-reveal="fade-right" data-reveal-delay="150">
-            <ul class="check-list" data-stagger data-stagger-delay="100">
-                <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>공식 39가지 체류자격 통합 탐색</strong>
-                    <span lang="en">Browse all 39 official stay categories</span></div></li>
-                <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>목적별 체류 경로 정리</strong>
-                    <span lang="en">Path overview by purpose</span></div></li>
-                <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>관할기관 확인 흐름</strong>
-                    <span lang="en">Jurisdiction lookup flow</span></div></li>
-                <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>취업 관련 직종·업종 코드 접근</strong>
-                    <span lang="en">Employment occupation &amp; industry codes</span></div></li>
-                <li><span class="check-icon" aria-hidden="true">✓</span>
-                    <div><strong>공식 출처 확인 흐름 안내</strong>
-                    <span lang="en">Results with source-checking guidance</span></div></li>
-            </ul>
-        </aside>
-    </section>
-
     <!-- Figma direction: Manual/source-based guidance section -->
     <section class="p-section p-manual-section" aria-labelledby="pManualTitle">
         <div class="p-section-head">
@@ -12559,28 +12518,6 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
     </section>
 
-    <section class="p-section p-source-section" aria-labelledby="pSourceTitle">
-        <div class="p-source-panel">
-            <div class="p-section-head">
-                <div>
-                    <p class="p-kicker">Sourced, not invented</p>
-                    <h2 class="p-section-title" id="pSourceTitle">Paradiso의 문장은 출처를 향합니다.</h2>
-                </div>
-                <p class="p-section-copy">
-                    Paradiso는 참고용 정보 탐색 플랫폼입니다. 결과에 제시된 출처·페이지를 확인한 뒤, 최종 판단은 관할 출입국·외국인관서, HiKorea, 1345 또는 자격 있는 전문가에게 확인해야 합니다.
-                </p>
-            </div>
-            <div class="p-source-grid" aria-label="참고 출처">
-                <article class="p-source-card"><h3>출입국관리법</h3><p>체류자격, 허가 요건, 기본 절차를 확인하는 1차 법령 기준입니다.</p></article>
-                <article class="p-source-card"><h3>출입국관리매뉴얼</h3><p>실무 안내 문구와 구비서류 흐름을 교차 확인하는 공식 매뉴얼입니다.</p></article>
-                <article class="p-source-card"><h3>HiKorea 공지</h3><p>예약, 전자민원, 방문 운영시간처럼 자주 바뀌는 안내를 최종 점검합니다.</p></article>
-                <article class="p-source-card"><h3>직업·산업분류</h3><p>취업 신고 시 필요한 한국표준직업·산업분류 코드를 일치 확인합니다.</p></article>
-                <article class="p-source-card"><h3>1345 안내</h3><p>예외 상황이나 해석 차이는 외국인종합안내센터 상담으로 한 번 더 확인합니다.</p></article>
-            </div>
-            <p class="p-source-note">Paradiso는 법률 자문이나 민원 대행을 제공하지 않으며, 이에 따른 어떠한 법적 책임도 지지 않습니다.</p>
-        </div>
-    </section>
-
     <section class="p-section p-tools-section" aria-labelledby="pToolsTitle">
         <div class="p-section-head">
             <div>
@@ -12600,11 +12537,11 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <h3>직업·산업 코드</h3>
                 <p>취업 신고에 필요한 직종·업종 코드를 찾아봅니다.</p>
             </button>
-            <a class="p-tool-card" href="#medFinder">
+            <button type="button" class="p-tool-card" data-action="open-med-finder">
                 <span class="p-status">LIVE</span>
                 <h3>법무부지정 병원</h3>
                 <p>채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>
-            </a>
+            </button>
             <button type="button" class="p-tool-card" data-action="search-hint" data-query="구비서류">
                 <span class="p-status">SEARCH</span>
                 <h3>서류 체크리스트</h3>
@@ -12621,102 +12558,6 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <h3>필수서류 작성 도우미</h3>
                 <p>통합신청서·국내거소신고서 등 정본 서식을 단계별로 작성하고, 입력값이 정본 레이아웃 위에 배치된 PDF로 내려받습니다.</p>
             </a>
-        </div>
-    </section>
-
-    <section class="p-section p-agent-finder" id="agentFinder" aria-labelledby="agentFinderTitle">
-        <div class="p-section-head">
-            <div>
-                <p class="p-kicker">Local guidance</p>
-                <h2 class="p-section-title" id="agentFinderTitle">가까운 행정 도움 찾기</h2>
-            </div>
-            <p class="p-section-copy">공식 등록된 출입국민원 대행기관을 지역별로 확인하고, 지역명(예: 서울·제주)이나 사무소명으로 좁혀서 네이버지도/카카오맵 위치를 바로 열 수 있습니다.</p>
-        </div>
-        <p class="p-agent-finder__disclaimer" id="agentFinderSourceNote">
-            출처: 출입국업무 민원신청대행 등록기관 현황(2026.04.30.부)
-        </p>
-        <p class="p-agent-finder__disclaimer" id="agentFinderDisclaimer">
-            <span id="agentFinderDisclaimerText">Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.</span>
-            <a class="p-agent-finder__official-link" href="https://www.hikorea.go.kr/cvlappl/CvlapplAgentInfo.pt" target="_blank" rel="noopener noreferrer">하이코리아 공식 조회</a>
-        </p>
-        <!-- TASK 2: 전국 광역자치단체 region filter pills -->
-        <div class="jeju-region-filter" id="jejuRegionFilter" role="group" aria-label="광역자치단체 지역 필터">
-            <button type="button" class="jeju-region-pill jeju-pill-active" data-region="" aria-pressed="true">전체</button>
-            <button type="button" class="jeju-region-pill" data-region="서울특별시" aria-pressed="false">서울</button>
-            <button type="button" class="jeju-region-pill" data-region="부산광역시" aria-pressed="false">부산</button>
-            <button type="button" class="jeju-region-pill" data-region="대구광역시" aria-pressed="false">대구</button>
-            <button type="button" class="jeju-region-pill" data-region="인천광역시" aria-pressed="false">인천</button>
-            <button type="button" class="jeju-region-pill" data-region="광주광역시" aria-pressed="false">광주</button>
-            <button type="button" class="jeju-region-pill" data-region="대전광역시" aria-pressed="false">대전</button>
-            <button type="button" class="jeju-region-pill" data-region="울산광역시" aria-pressed="false">울산</button>
-            <button type="button" class="jeju-region-pill" data-region="세종특별자치시" aria-pressed="false">세종</button>
-            <button type="button" class="jeju-region-pill" data-region="경기도" aria-pressed="false">경기</button>
-            <button type="button" class="jeju-region-pill" data-region="강원특별자치도" aria-pressed="false">강원</button>
-            <button type="button" class="jeju-region-pill" data-region="충청북도" aria-pressed="false">충북</button>
-            <button type="button" class="jeju-region-pill" data-region="충청남도" aria-pressed="false">충남</button>
-            <button type="button" class="jeju-region-pill" data-region="전북특별자치도" aria-pressed="false">전북</button>
-            <button type="button" class="jeju-region-pill" data-region="전라남도" aria-pressed="false">전남</button>
-            <button type="button" class="jeju-region-pill" data-region="경상북도" aria-pressed="false">경북</button>
-            <button type="button" class="jeju-region-pill" data-region="경상남도" aria-pressed="false">경남</button>
-            <button type="button" class="jeju-region-pill" data-region="제주특별자치도" aria-pressed="false">제주</button>
-        </div>
-
-        <div class="p-agent-finder__controls" role="search" aria-controls="agentFinderList">
-            <label class="sr-only" for="agentFinderRegion">지역</label>
-            <select id="agentFinderRegion" aria-label="지역 선택">
-                <option value="">전체 지역</option>
-            </select>
-            <label class="sr-only" for="agentFinderKeyword">키워드</label>
-            <input id="agentFinderKeyword" type="search" placeholder="지역명·사무소명·주소로 검색" autocomplete="off" />
-        </div>
-        <p class="p-agent-finder__prompt" id="agentFinderPrompt">지역 선택 후 키워드를 입력하면 더 빠르게 찾을 수 있습니다. 예: 서울, 제주, 강릉</p>
-        <p class="p-agent-finder__loading" id="agentFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
-        <p class="p-agent-finder__count" id="agentFinderCount" aria-live="polite"></p>
-        <ul class="p-agent-finder__list" id="agentFinderList" aria-label="등록 대행기관 목록"></ul>
-        <p class="p-agent-finder__empty" id="agentFinderEmpty" hidden>검색 결과가 없습니다. 지역 필터를 "전체 지역"으로 바꾸거나 키워드를 줄여 다시 확인해 주세요.</p>
-        <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
-        <div class="p-agent-finder__more" id="agentFinderMore" hidden>
-            <button type="button" id="agentFinderShowMore" class="p-agent-finder__show-more">더 보기</button>
-        </div>
-    </section>
-
-    <section class="p-section p-med-finder" id="medFinder" aria-labelledby="medFinderTitle">
-        <div class="p-section-head">
-            <div>
-                <p class="p-kicker">Medical guidance</p>
-                <h2 class="p-section-title" id="medFinderTitle">법무부지정 건강검진 의료기관 찾기</h2>
-            </div>
-            <p class="p-section-copy">채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>
-        </div>
-        <p class="p-med-finder__source" id="medFinderSourceNote">
-            출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황, 2026.04.30.
-        </p>
-        <p class="p-med-finder__disclaimer" id="medFinderDisclaimer">
-            <span id="medFinderDisclaimerText">방문 전 반드시 전화로 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요. Paradiso는 의료기관을 추천하거나 검사 가능 여부를 보장하지 않습니다.</span>
-        </p>
-        <div class="p-med-finder__chips" id="medFinderChips" role="group" aria-label="지역 빠른 선택">
-            <button type="button" class="p-med-finder__chip" data-med-region="제주" aria-pressed="false">제주</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="서울" aria-pressed="false">서울</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="경기" aria-pressed="false">경기</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="부산" aria-pressed="false">부산</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="인천" aria-pressed="false">인천</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="대구" aria-pressed="false">대구</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="광주" aria-pressed="false">광주</button>
-            <button type="button" class="p-med-finder__chip" data-med-region="대전" aria-pressed="false">대전</button>
-        </div>
-        <div class="p-med-finder__controls" role="search" aria-controls="medFinderList">
-            <label class="sr-only" for="medFinderKeyword">검색어</label>
-            <input id="medFinderKeyword" type="search" placeholder="지역·기관명·주소로 검색" autocomplete="off" />
-            <button type="button" id="medFinderClear" class="p-med-finder__clear" hidden aria-label="검색 초기화">✕</button>
-        </div>
-        <p class="p-med-finder__prompt" id="medFinderPrompt">지역 버튼을 누르거나 2자 이상 입력하면 검색됩니다. 예: 제주, 한라병원, 강남</p>
-        <p class="p-med-finder__loading" id="medFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
-        <p class="p-med-finder__count" id="medFinderCount" aria-live="polite"></p>
-        <ul class="p-med-finder__list" id="medFinderList" aria-label="법무부지정 의료기관 목록"></ul>
-        <p class="p-med-finder__empty" id="medFinderEmpty" hidden>검색 결과가 없습니다. 다른 키워드나 지역을 시도해 보세요.</p>
-        <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
-        <div class="p-med-finder__more" id="medFinderMore" hidden>
-            <button type="button" id="medFinderShowMore" class="p-med-finder__show-more">더 보기</button>
         </div>
     </section>
 
@@ -13071,6 +12912,112 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <li>체류기간 만료 당일 방문자 (취약계층 및 인도적 사유)</li>
                 </ul>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- 등록 민원대행기관 찾기 — 페이지 내 팝업(모달). 데이터/로직은 initAgentFinder IIFE가 #agentFinder에 렌더. -->
+<div class="modal-overlay" id="agentFinderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="agentFinderTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 760px;">
+        <div class="modal-header">
+            <h2 class="modal-title"><span aria-hidden="true">🧭</span> <span id="agentFinderTitle">가까운 행정 도움 찾기</span></h2>
+            <button type="button" class="modal-close" data-action="close-agent-finder" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <section class="p-agent-finder" id="agentFinder" aria-labelledby="agentFinderTitle">
+                <p class="p-section-copy">공식 등록된 출입국민원 대행기관을 지역별로 확인하고, 지역명(예: 서울·제주)이나 사무소명으로 좁혀서 네이버지도/카카오맵 위치를 바로 열 수 있습니다.</p>
+                <p class="p-agent-finder__disclaimer" id="agentFinderSourceNote">
+                    출처: 출입국업무 민원신청대행 등록기관 현황(2026.04.30.부)
+                </p>
+                <p class="p-agent-finder__disclaimer" id="agentFinderDisclaimer">
+                    <span id="agentFinderDisclaimerText">Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.</span>
+                    <a class="p-agent-finder__official-link" href="https://www.hikorea.go.kr/cvlappl/CvlapplAgentInfo.pt" target="_blank" rel="noopener noreferrer">하이코리아 공식 조회</a>
+                </p>
+                <!-- TASK 2: 전국 광역자치단체 region filter pills -->
+                <div class="jeju-region-filter" id="jejuRegionFilter" role="group" aria-label="광역자치단체 지역 필터">
+                    <button type="button" class="jeju-region-pill jeju-pill-active" data-region="" aria-pressed="true">전체</button>
+                    <button type="button" class="jeju-region-pill" data-region="서울특별시" aria-pressed="false">서울</button>
+                    <button type="button" class="jeju-region-pill" data-region="부산광역시" aria-pressed="false">부산</button>
+                    <button type="button" class="jeju-region-pill" data-region="대구광역시" aria-pressed="false">대구</button>
+                    <button type="button" class="jeju-region-pill" data-region="인천광역시" aria-pressed="false">인천</button>
+                    <button type="button" class="jeju-region-pill" data-region="광주광역시" aria-pressed="false">광주</button>
+                    <button type="button" class="jeju-region-pill" data-region="대전광역시" aria-pressed="false">대전</button>
+                    <button type="button" class="jeju-region-pill" data-region="울산광역시" aria-pressed="false">울산</button>
+                    <button type="button" class="jeju-region-pill" data-region="세종특별자치시" aria-pressed="false">세종</button>
+                    <button type="button" class="jeju-region-pill" data-region="경기도" aria-pressed="false">경기</button>
+                    <button type="button" class="jeju-region-pill" data-region="강원특별자치도" aria-pressed="false">강원</button>
+                    <button type="button" class="jeju-region-pill" data-region="충청북도" aria-pressed="false">충북</button>
+                    <button type="button" class="jeju-region-pill" data-region="충청남도" aria-pressed="false">충남</button>
+                    <button type="button" class="jeju-region-pill" data-region="전북특별자치도" aria-pressed="false">전북</button>
+                    <button type="button" class="jeju-region-pill" data-region="전라남도" aria-pressed="false">전남</button>
+                    <button type="button" class="jeju-region-pill" data-region="경상북도" aria-pressed="false">경북</button>
+                    <button type="button" class="jeju-region-pill" data-region="경상남도" aria-pressed="false">경남</button>
+                    <button type="button" class="jeju-region-pill" data-region="제주특별자치도" aria-pressed="false">제주</button>
+                </div>
+
+                <div class="p-agent-finder__controls" role="search" aria-controls="agentFinderList">
+                    <label class="sr-only" for="agentFinderRegion">지역</label>
+                    <select id="agentFinderRegion" aria-label="지역 선택">
+                        <option value="">전체 지역</option>
+                    </select>
+                    <label class="sr-only" for="agentFinderKeyword">키워드</label>
+                    <input id="agentFinderKeyword" type="search" placeholder="지역명·사무소명·주소로 검색" autocomplete="off" />
+                </div>
+                <p class="p-agent-finder__prompt" id="agentFinderPrompt">지역 선택 후 키워드를 입력하면 더 빠르게 찾을 수 있습니다. 예: 서울, 제주, 강릉</p>
+                <p class="p-agent-finder__loading" id="agentFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
+                <p class="p-agent-finder__count" id="agentFinderCount" aria-live="polite"></p>
+                <ul class="p-agent-finder__list" id="agentFinderList" aria-label="등록 대행기관 목록"></ul>
+                <p class="p-agent-finder__empty" id="agentFinderEmpty" hidden>검색 결과가 없습니다. 지역 필터를 "전체 지역"으로 바꾸거나 키워드를 줄여 다시 확인해 주세요.</p>
+                <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
+                <div class="p-agent-finder__more" id="agentFinderMore" hidden>
+                    <button type="button" id="agentFinderShowMore" class="p-agent-finder__show-more">더 보기</button>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!-- 법무부지정 병원 찾기 — 페이지 내 팝업(모달). 데이터/로직은 initMedFinder IIFE가 #medFinder에 렌더. -->
+<div class="modal-overlay" id="medFinderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="medFinderTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 760px;">
+        <div class="modal-header">
+            <h2 class="modal-title"><span aria-hidden="true">🏥</span> <span id="medFinderTitle">법무부지정 건강검진 의료기관 찾기</span></h2>
+            <button type="button" class="modal-close" data-action="close-med-finder" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <section class="p-med-finder" id="medFinder" aria-labelledby="medFinderTitle">
+                <p class="p-section-copy">채용신체검사 및 건강진단 가능 의료기관을 지역·기관명·주소로 검색합니다.</p>
+                <p class="p-med-finder__source" id="medFinderSourceNote">
+                    출처: 법무부지정 채용신체검사 및 건강진단 의료기관 현황, 2026.04.30.
+                </p>
+                <p class="p-med-finder__disclaimer" id="medFinderDisclaimer">
+                    <span id="medFinderDisclaimerText">방문 전 반드시 전화로 검사 가능 여부, 예약 필요 여부, 검사 항목, 준비물을 확인하세요. Paradiso는 의료기관을 추천하거나 검사 가능 여부를 보장하지 않습니다.</span>
+                </p>
+                <div class="p-med-finder__chips" id="medFinderChips" role="group" aria-label="지역 빠른 선택">
+                    <button type="button" class="p-med-finder__chip" data-med-region="제주" aria-pressed="false">제주</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="서울" aria-pressed="false">서울</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="경기" aria-pressed="false">경기</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="부산" aria-pressed="false">부산</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="인천" aria-pressed="false">인천</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="대구" aria-pressed="false">대구</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="광주" aria-pressed="false">광주</button>
+                    <button type="button" class="p-med-finder__chip" data-med-region="대전" aria-pressed="false">대전</button>
+                </div>
+                <div class="p-med-finder__controls" role="search" aria-controls="medFinderList">
+                    <label class="sr-only" for="medFinderKeyword">검색어</label>
+                    <input id="medFinderKeyword" type="search" placeholder="지역·기관명·주소로 검색" autocomplete="off" />
+                    <button type="button" id="medFinderClear" class="p-med-finder__clear" hidden aria-label="검색 초기화">✕</button>
+                </div>
+                <p class="p-med-finder__prompt" id="medFinderPrompt">지역 버튼을 누르거나 2자 이상 입력하면 검색됩니다. 예: 제주, 한라병원, 강남</p>
+                <p class="p-med-finder__loading" id="medFinderLoading" hidden>데이터를 불러오는 중입니다.</p>
+                <p class="p-med-finder__count" id="medFinderCount" aria-live="polite"></p>
+                <ul class="p-med-finder__list" id="medFinderList" aria-label="법무부지정 의료기관 목록"></ul>
+                <p class="p-med-finder__empty" id="medFinderEmpty" hidden>검색 결과가 없습니다. 다른 키워드나 지역을 시도해 보세요.</p>
+                <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
+                <div class="p-med-finder__more" id="medFinderMore" hidden>
+                    <button type="button" id="medFinderShowMore" class="p-med-finder__show-more">더 보기</button>
+                </div>
+            </section>
         </div>
     </div>
 </div>
@@ -17795,7 +17742,7 @@ function closeDirectSearchMode(){
 }
 
 function closeSearchBlockingSurfaces() {
-    ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+    ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
         const el = document.getElementById(id);
         if (el && el.classList.contains('active')) closeModal(id);
     });
@@ -18474,14 +18421,6 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.brand-hero-buttons .btn-secondary span:first-child, .figma-footer-actions .btn-secondary span:first-child', [tx('brandHeroHotline'), tx('footerHotline')]);
     setAttr('.brand-hero-stats', 'aria-label', tx('brandHeroStatsAria'));
     setIndexedHtml('.brand-hero-stats .stat-label', txArray('brandHeroStats'));
-    setHtml('#brandFeatureTitle', tx('featureTitle'));
-    setHtml('#brandFeatureTitle', tx('brandFeatureTitle'));
-    setText('.feature-subtitle', tx('brandFeatureSubtitle'));
-    setText('.feature-body', tx('featureBody'));
-    setText('.feature-body', tx('brandFeatureBody'));
-    setText('.feature-cta span:first-child', tx('brandFeatureCta'));
-    setAttr('.feature-checklist', 'aria-label', tx('brandFeatureChecklistAria'));
-    setIndexedHtml('.feature-checklist li > div', txArray('featureChecklist'));
     setHtml('#pManualTitle', tx('manualTitle'));
     setText('.p-manual-section .p-section-copy', tx('manualCopy'));
     setIndexedText('.p-manual-card h3', txArray('manualCardTitles'));
@@ -18511,12 +18450,6 @@ function applyLanguage(code, options = {}) {
     setText('#pHowTitle', tx('howTitle'));
     setIndexedText('.p-how-step h3', txArray('howStepTitles'));
     setIndexedText('.p-how-step p', txArray('howStepDescs'));
-    setText('#pSourceTitle', tx('sourceTitle'));
-    setText('.p-source-section .p-section-copy', tx('sourceCopy'));
-    setAttr('.p-source-grid', 'aria-label', tx('sourceGridAria'));
-    setIndexedText('.p-source-card h3', txArray('sourceCardTitles'));
-    setIndexedText('.p-source-card p', txArray('sourceCardDescs'));
-    setText('.p-source-note', tx('sourceNote'));
     setText('#pToolsTitle', tx('toolsTitle'));
     setText('.p-tools-section .p-section-copy', tx('toolsCopy'));
     setIndexedText('.p-tool-card h3', txArray('toolTitles'));
@@ -18944,6 +18877,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'close-short-stay-modal': () => closeModal('shortStayModalOverlay'),
                 'close-jobcode-modal': () => closeModal('jobCodeModalOverlay'),
                 'close-jurisdiction-modal': () => closeModal('jurisdictionModalOverlay'),
+                'close-agent-finder': () => closeModal('agentFinderModalOverlay'),
+                'close-med-finder': () => closeModal('medFinderModalOverlay'),
                 'close-doc-modal': () => closeModal('docModalOverlay'),
                 'close-faq-modal': () => closeModal('faqModalOverlay'),
                 'close-hikorea-guide': () => closeModal('hikoreaGuideOverlay'),
@@ -19025,6 +18960,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'close-visa-drawer': () => closeVisaDrawer(),
                 'open-jobcode-modal': () => openJobCodeModal(),
                 'open-jurisdiction-modal': () => openJurisdictionModal(),
+                'open-agent-finder': () => openModal('agentFinderModalOverlay'),
+                'open-med-finder': () => openModal('medFinderModalOverlay'),
                 'open-short-stay': () => { if (window.ParadisoShortStay && typeof window.ParadisoShortStay.open === 'function') window.ParadisoShortStay.open(); },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
                 'copy-jobcode': () => copyJobcode(actionBtn, actionBtn.dataset.code),
@@ -19049,7 +18986,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const aiBtn = e.target.closest('.ai-action-btn');
         if (aiBtn) { e.preventDefault(); submitAiAnalysis(aiBtn.dataset.type, aiBtn); return; }
 
-        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
             const el = document.getElementById(id); if (el && e.target === el) closeModal(id);
         });
 
@@ -19073,7 +19010,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
