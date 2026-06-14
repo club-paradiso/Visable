@@ -11970,6 +11970,43 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
 :root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.brand-hero-headline, .brand-hero-subtitle) { color: #EEF2FF !important; }
 /* ─── end PARADISO KITSCH LAYER (B --k- system) ─── */
 
+/* ── Kitsch · DARK — searched-view text readability fixes ─────────────────
+   These fill gaps where archive_diary light-mode rules hard-code var(--k-ink)
+   or cream/white surfaces without a dark-mode counterpart. ── */
+
+/* Searched header meta text */
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched .smeta,
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched #rc,
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched #rh { color: #EEF2FF !important; }
+
+/* Visa-card subtitle (English name) — was dark navy, illegible on dark card */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .manual-name-en { color: #7FA6FF !important; }
+
+/* Procedure tab labels (non-active) — were var(--k-ink) black on dark background */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .procedure-tabs .procedure-tab { color: #BAC5E4 !important; }
+
+/* Procedure summary body text */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-summary { color: #BAC5E4 !important; }
+
+/* Next-action kicker (non-primary) — was dark blue, illegible on dark panel */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-kicker { color: #7FA6FF !important; }
+
+/* Subcode cards — white background collapses on dark page */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-subcode-card { background: #1B2440 !important; border-color: #44558A !important; }
+
+/* Procedure source badge & ref */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-source-ref { color: #BAC5E4 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-source-badge { border-color: #44558A !important; }
+
+/* Manual detail block (disclosure toggle + interior) */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-detail-block { border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-detail-block > summary { color: #EEF2FF !important; }
+
+/* Doc-guide drawer & toggle — white surfaces in dark mode */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-toggle { background: #1B2440 !important; border-color: #44558A !important; color: #A6C2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-toggle.is-open { background: #3B6FE0 !important; border-color: #0B1020 !important; color: #fff !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-drawer { background: #141B30 !important; border-color: #44558A !important; border-left-color: #3B6FE0 !important; box-shadow: 3px 3px 0 #0B1020 !important; }
+
 </style>
 <!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
 
