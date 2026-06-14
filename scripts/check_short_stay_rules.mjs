@@ -157,9 +157,18 @@ ok(vnBoth.alternatives.length === 0,
 const jpBoth = scenario('일본', 'ordinary', 'tourism', 'jeju_then_mainland', 30);
 ok(jpBoth.primary.status === 'likely_available' && /B-2-1/.test(jpBoth.primary.path),
   'JP jeju→mainland → general visa-free route (covers the mainland), not Jeju expansion');
-ok(jpBoth.primary.explanation.join(' ').includes('원칙적으로 허용되지 않'),
-  'JP jeju→mainland → explains Jeju visa-free cannot be expanded to the mainland');
+ok(jpBoth.primary.explanation.join(' ').includes('체류지역이 제주로 한정되지 않'),
+  'JP jeju→mainland → explains general visa-free is nationwide (not limited to Jeju)');
+ok(!jpBoth.primary.explanation.join(' ').includes('원칙적으로 허용되지 않'),
+  'JP jeju→mainland → does NOT show the B-2-2 expansion-not-allowed note (inapplicable to general visa-free travelers)');
 ok(jpBoth.alternatives.length === 0, 'JP jeju→mainland → no speculative "다른 가능성"');
+const jpJeju = scenario('일본', 'ordinary', 'tourism', 'jeju_only', 20);
+ok(jpJeju.primary.status === 'likely_available' && /B-2-1/.test(jpJeju.primary.path),
+  'JP jeju_only → general visa-free primary (B-1/B-2-1 nationals are not B-2-2 targets)');
+ok(!/제주 무사증\(B-2-2\) 경로 확인/.test(jpJeju.primary.path),
+  'JP jeju_only → B-2-2 is NOT presented as the primary route for general visa-free nationals');
+ok(jpJeju.primary.explanation.join(' ').includes('체류지역 확대허가 제약은 적용되지 않'),
+  'JP jeju_only → explains B-2-2 Jeju-only/expansion limits do not apply to general visa-free travelers');
 const jp = scenario('일본', 'ordinary', 'tourism', 'mainland', 30);
 ok(jp.primary.status === 'likely_available' && /B-2-1/.test(jp.primary.path), 'JP mainland → B-2-1 likely_available');
 ok(api.formatShortStayWarnings(jp).some(w => w.includes('입국심사관이 결정')), 'JP result carries final-decision warning');
