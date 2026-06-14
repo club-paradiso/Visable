@@ -1570,6 +1570,64 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   overflow-y: auto;
   padding-right: 4px;
 }
+/* ── In-screen scenario picker (popup) ────────────────────────────────────
+   Scenario choices move into a modal (#scenarioPickerOverlay). Before a pick,
+   no scenario card is shown — only a trigger button + hint. After a pick, ONLY
+   the selected card renders, so the result stays uncluttered. */
+.scenario-picker-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.scenario-picker-trigger {
+  flex: 1 1 auto;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  border: 1px solid color-mix(in srgb, var(--ac) 40%, var(--bd2));
+  background: color-mix(in srgb, var(--ac) 6%, var(--bg1));
+  color: var(--t1);
+  border-radius: var(--p-r-lg, 12px);
+  padding: 0.7rem 1rem;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+.scenario-picker-trigger:hover,
+.scenario-picker-trigger:focus-visible {
+  border-color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 11%, var(--bg1));
+  transform: translateY(-1px);
+}
+.scenario-picker-trigger-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.scenario-picker-trigger-caret { flex: 0 0 auto; color: var(--ac); font-size: 0.78rem; }
+.scenario-picker-clear {
+  flex: 0 0 auto;
+  min-height: 44px;
+  border: 1px dashed var(--bd2);
+  background: transparent;
+  color: var(--t2);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.scenario-picker-clear:hover,
+.scenario-picker-clear:focus-visible { border-color: var(--ac); color: var(--ac); }
+.scenario-picker-empty-hint { margin: 0; color: var(--t3); font-size: 0.78rem; line-height: 1.6; word-break: keep-all; }
+/* Hide every scenario card (and the grid) until the user picks one in the popup;
+   then reveal only the selected card. */
+.scenario-needs-pick .manual-subcode-grid--docs { display: none; }
+.scenario-needs-pick.has-selection .manual-subcode-grid--docs { display: grid; }
+.scenario-needs-pick .manual-subcode-card { display: none; }
+.scenario-needs-pick .manual-subcode-card.is-selected { display: block; }
+.scenario-needs-pick.has-selection .scenario-picker-empty-hint { display: none; }
+/* Scenario picker modal choice list */
+.scenario-picker-choice-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.65rem; }
+.scenario-picker-choice { min-height: 60px; }
 .official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
 .manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
@@ -13035,6 +13093,19 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
+<div class="modal-overlay" id="scenarioPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 560px;">
+        <div class="modal-header">
+            <h2 id="scenarioPickerTitle" class="modal-title">내 상황에 맞는 시나리오 선택</h2>
+            <button type="button" class="modal-close" data-action="close-scenario-picker" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <p id="scenarioPickerModalCopy" class="text-desc"></p>
+            <div id="scenarioPickerChoices" class="scenario-picker-choice-list" role="list" aria-live="polite"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="faqModalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
     <div class="modal-box" style="max-width: 600px;">
         <div class="modal-header">
@@ -15227,7 +15298,7 @@ function getProcedure(v, cfg) {
         oldType: cfg.oldType,
         available,
         eligibility: raw?.eligibility || [],
-        notes: raw?.notes || [],
+        notes: paradisoFilterProcedureNotes(raw?.notes),
         summary: raw?.summary || (cfg.oldText && v[cfg.oldText] ? v[cfg.oldText] : ''),
         docs,
         variants: normalizeProcedureVariants(raw?.variants),
@@ -15869,7 +15940,7 @@ function normalizeProcedureVariants(rawVariants) {
             scenario: item.scenarioKo || item.scenario || '',
             available: item.available !== false,
             docs: normalizeDocGroups(item.requiredDocs, item),
-            notes: Array.isArray(item.notes) ? item.notes : [],
+            notes: paradisoFilterProcedureNotes(item.notes),
             manualRefs: Array.isArray(item.manualRefs) ? item.manualRefs : []
         };
     }).filter(item => item.available && item.label && hasAnyDocs(item.docs));
@@ -15889,6 +15960,23 @@ const MANUAL_AUTO_EXTRACT_PREFIX_RE = /^\s*\[\s*\d{4}\.\d+\s*[^\]]*검토\s*필�
 // document/procedure keywords). Avoid stripping when directly followed by a Hangul
 // grammar particle (e.g. F-4's "체류기간연장허가가 제한될").
 const MANUAL_REDUNDANT_HEADING_RE = /^(?:체류기간\s*연장\s*허가\s*절차|체류기간\s*연장\s*허가|체류기간연장허가\s*절차|체류기간연장허가|체류기간\s*연장|체류기간연장)(?=\s|$|\d|[①-⑳]|[가-차]\.|[\-○※☞·•◦□*]|필수|첨부|제출|신청|공통|추가|조건|대상|적용|상한|발급|준비|절차)/;
+// Render-layer suppression of low-value auto-generated boilerplate that clutters
+// status results. The protected data files (visa_data.json) are NEVER mutated —
+// this is a display-only transform:
+//  - terse "[한국인] … [외국인] …" tag-summaries that merely abbreviate the real
+//    overview text (e.g. F-6's "지금 할 수 있는 일" summary). The legitimate
+//    leading prose (incl. a "[입국 전 · …]" lead-in) is preserved; only the
+//    bracketed tag list is dropped.
+const PARADISO_TERSE_TAG_SUMMARY_RE = /\s*\[한국인\][^[\]]*\[외국인\][^[\]]*/g;
+//  - templated "다음 단계: ① … → ② … → ③ …" hand-holding notes that repeat the
+//    generic HiKorea/관할 관서 workflow on nearly every status.
+const PARADISO_DUMMY_NEXT_STEP_NOTE_RE = /^\s*다음\s*단계\s*[:：]/;
+function paradisoIsDummyProcedureNote(text) {
+    return PARADISO_DUMMY_NEXT_STEP_NOTE_RE.test(String(text == null ? '' : text));
+}
+function paradisoFilterProcedureNotes(notes) {
+    return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n)) : [];
+}
 
 function stripManualArtifacts(value) {
     if (value == null) return '';
@@ -15902,6 +15990,7 @@ function stripManualArtifacts(value) {
         const b = s.replace(MANUAL_REDUNDANT_HEADING_RE, '');
         if (b !== s) { s = b; changed = true; }
     }
+    s = s.replace(PARADISO_TERSE_TAG_SUMMARY_RE, '');
     return s.trim();
 }
 
@@ -16153,12 +16242,69 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
     </div>`;
 }
 
-function renderProcedureVariantChoice(procedureKey, variant) {
-    const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
-    const preview = variant.scenario ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(variant.scenario, 90))}</span>` : '';
-    return `<button type="button" class="scenario-choice" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" aria-pressed="false">
-        <span class="scenario-choice-main"><span>${escapeHtml(variant.label)}</span>${statusCode}</span>${preview}
-    </button>`;
+// --- In-screen scenario picker popup -------------------------------------
+// The scenario choices live in a modal dialog (#scenarioPickerOverlay) populated
+// on demand from the originating selector's hidden variant cards. Picking a
+// scenario reveals only that card; everything else stays hidden.
+let scenarioPickerActiveSelector = null;
+
+function openScenarioPicker(trigger) {
+    const selector = trigger.closest('[data-procedure-variant-selector]');
+    if (!selector) return;
+    scenarioPickerActiveSelector = selector;
+    const host = document.getElementById('scenarioPickerChoices');
+    if (!host) return;
+    const selectedId = selector.getAttribute('data-selected-variant') || '';
+    const cards = Array.from(selector.querySelectorAll('[data-procedure-variant-card]'));
+    host.innerHTML = cards.map(card => {
+        const id = card.getAttribute('data-procedure-variant-card') || '';
+        const label = (card.querySelector('.manual-subcode-name')?.textContent || '').trim();
+        const code = (card.querySelector('.manual-subcode-code')?.textContent || '').trim();
+        const preview = (card.querySelector('.manual-subcode-desc')?.textContent || '').trim();
+        const pressed = id === selectedId ? 'true' : 'false';
+        return `<button type="button" class="scenario-choice scenario-picker-choice" role="listitem" data-action="choose-scenario-variant" data-variant-id="${escapeHtml(id)}" aria-pressed="${pressed}">
+            <span class="scenario-choice-main"><span class="scenario-picker-choice-label">${escapeHtml(label)}</span>${code ? `<span class="manual-subcode-code">${escapeHtml(code)}</span>` : ''}</span>
+            ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 110))}</span>` : ''}
+        </button>`;
+    }).join('');
+    const heading = document.getElementById('scenarioPickerTitle');
+    if (heading) heading.textContent = tx('scenarioSelectorTitle');
+    const copy = document.getElementById('scenarioPickerModalCopy');
+    if (copy) copy.textContent = tx('scenarioSelectorCopy');
+    openModal('scenarioPickerOverlay');
+}
+
+function chooseScenarioVariant(button) {
+    const id = button.dataset.variantId || '';
+    if (scenarioPickerActiveSelector) applyScenarioSelection(scenarioPickerActiveSelector, id);
+    closeModal('scenarioPickerOverlay');
+    scenarioPickerActiveSelector = null;
+}
+
+function clearScenarioSelection(button) {
+    const selector = button.closest('[data-procedure-variant-selector]');
+    if (selector) applyScenarioSelection(selector, '');
+}
+
+function applyScenarioSelection(selector, selectedId) {
+    if (!selector) return;
+    if (selectedId) selector.setAttribute('data-selected-variant', selectedId);
+    else selector.removeAttribute('data-selected-variant');
+    selector.classList.toggle('has-selection', !!selectedId);
+    let selectedCard = null;
+    selector.querySelectorAll('[data-procedure-variant-card]').forEach(card => {
+        const isSelected = !!selectedId && card.dataset.procedureVariantCard === selectedId;
+        card.classList.toggle('is-selected', isSelected);
+        card.classList.toggle('is-muted', !!selectedId && !isSelected);
+        if (isSelected) selectedCard = card;
+    });
+    const labelEl = selector.querySelector('.scenario-picker-trigger-label');
+    const clearBtn = selector.querySelector('.scenario-picker-clear');
+    if (labelEl) {
+        const picked = selectedCard ? (selectedCard.querySelector('.manual-subcode-name')?.textContent || '').trim() : '';
+        labelEl.textContent = picked ? `✓ ${picked}` : tx('scenarioPickerTrigger');
+    }
+    if (clearBtn) clearBtn.hidden = !selectedId;
 }
 
 function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
@@ -16167,32 +16313,30 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
     const notice = tx('scenarioSelectorCopy');
     const officialLabelsNote = currentLanguage === 'ko' ? '' : `<p class="scenario-official-labels-note">${escapeHtml(tx('scenarioOfficialLabelsKoNote'))}</p>`;
     const singleVariant = proc.variants.length === 1;
-    const scrollClass = proc.variants.length > 5 ? ' scenario-cards-scroll--overflow' : '';
-    const choicesHtml = singleVariant ? '' : `<div class="scenario-choice-list" role="group" aria-label="${escapeHtml(title)}">
-        <button type="button" class="scenario-choice scenario-choice--showall" data-action="select-procedure-variant" data-procedure-key="${escapeHtml(proc.key)}" data-variant-id="" aria-pressed="true"><span class="scenario-choice-main">${escapeHtml(tx('scenarioShowAll'))}</span></button>
-        <div class="scenario-cards-scroll${scrollClass}">
-            ${proc.variants.map(variant => renderProcedureVariantChoice(proc.key, variant)).join('')}
+    const cardsHtml = proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant, alreadyShownDocs)).join('');
+    const head = `<div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>`;
+    // A single scenario has nothing to choose between — show it directly.
+    if (singleVariant) {
+        return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}">
+            ${head}
+            <div class="manual-subcode-grid manual-subcode-grid--docs">${cardsHtml}</div>
+        </div>`;
+    }
+    // Multiple scenarios: the choice happens in an in-screen popup. Until the user
+    // picks their situation, NONE of the scenario cards are shown — only the
+    // selected one renders afterwards — so the result stays uncluttered.
+    return `<div class="procedure-variant-list scenario-needs-pick" data-procedure-variant-selector="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}">
+        ${head}
+        <div class="scenario-picker-bar">
+            <button type="button" class="scenario-picker-trigger" data-action="open-scenario-picker" data-procedure-key="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}" aria-haspopup="dialog">
+                <span class="scenario-picker-trigger-label">${escapeHtml(tx('scenarioPickerTrigger'))}</span>
+                <span class="scenario-picker-trigger-caret" aria-hidden="true">▾</span>
+            </button>
+            <button type="button" class="scenario-picker-clear" data-action="clear-procedure-variant" hidden>${escapeHtml(tx('scenarioPickerClear'))}</button>
         </div>
+        <p class="scenario-picker-empty-hint">${escapeHtml(tx('scenarioPickerEmptyHint'))}</p>
+        <div class="manual-subcode-grid manual-subcode-grid--docs">${cardsHtml}</div>
     </div>`;
-    return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}">
-        <div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>
-        ${choicesHtml}
-        <div class="manual-subcode-grid manual-subcode-grid--docs">${proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant, alreadyShownDocs)).join('')}</div>
-    </div>`;
-}
-
-function selectProcedureVariant(button) {
-    const selector = button.closest('[data-procedure-variant-selector]');
-    if (!selector) return;
-    const selectedId = button.dataset.variantId || '';
-    selector.querySelectorAll('[data-action="select-procedure-variant"]').forEach(choice => {
-        choice.setAttribute('aria-pressed', choice === button ? 'true' : 'false');
-    });
-    selector.querySelectorAll('[data-procedure-variant-card]').forEach(card => {
-        const isSelected = Boolean(selectedId) && card.dataset.procedureVariantCard === selectedId;
-        card.classList.toggle('is-selected', isSelected);
-        card.classList.toggle('is-muted', Boolean(selectedId) && !isSelected);
-    });
 }
 
 // --- Selected scenario action checklist ---------------------------------
@@ -16459,6 +16603,9 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
+    // The source-backed 사증발급 issuance detail lives inside the 사증발급 tab only,
+    // so it no longer trails every procedure panel.
+    const issuanceHtml = proc.key === 'visaIssuance' ? renderVisaIssuanceSection(v, keywords, { embedded: true }) : '';
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
         ${renderProcedureHeader(v, proc)}
         ${eligibilityHtml}${summaryHtml}${notesHtml}
@@ -16467,6 +16614,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         ${officialDocumentNamesNote}
         ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>${renderDocGroupingSourceNote()}` : ''}
         ${variantsHtml || (!docsHtml ? reviewFallback : '')}
+        ${issuanceHtml}
     </div>`;
 }
 
@@ -16656,11 +16804,12 @@ function selectF4Route(btn) {
         // newly selected route. This reuses the existing variant-selection
         // model and never invents documents.
         const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
-        const choices = panel ? Array.from(panel.querySelectorAll('[data-action="select-procedure-variant"]')) : [];
-        const target = variantId
-            ? choices.find(c => c.dataset.variantId === variantId)
-            : choices.find(c => !(c.dataset.variantId || ''));
-        if (target) selectProcedureVariant(target);
+        const selector = panel ? panel.querySelector('[data-procedure-variant-selector].scenario-needs-pick') : null;
+        // Route maps to a specific source-backed scenario variant → bring it
+        // forward (revealing only that card) via the in-screen picker model.
+        // Broad routes (no variantId) reset the picker to its empty state so a
+        // previously selected subtype cannot leak stale checklist/AI context.
+        if (selector) applyScenarioSelection(selector, variantId || '');
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
         // No source-backed procedure data for this route: explain it and send
@@ -17311,24 +17460,47 @@ function renderIssuanceModeCard(mode, record, binding, keywords) {
     </article>`;
 }
 
-function renderVisaIssuanceSection(v, keywords) {
+function renderVisaIssuanceSection(v, keywords, options = {}) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
+    const embedded = !!options.embedded;
     const binding = getVisaIssuanceBinding(v.code);
     const summary = pickLocalizedManualText({ ko: record.issuanceSummaryKo, en: record.issuanceSummaryEn });
     const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
     const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords)).join('');
     const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
     const disclaimer = pickLocalizedManualText({ ko: record.disclaimerKo, en: record.disclaimerEn });
-    return `<section class="manual-section visa-issuance-section" aria-label="${escapeHtml(txAt('issuanceUiLabels', 0, '사증발급'))}">
-        <h4 class="manual-section-title">${escapeHtml(txAt('issuanceUiLabels', 0, '사증발급'))}</h4>
-        ${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
+    const title = txAt('issuanceUiLabels', 0, '사증발급');
+    const body = `${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
         <div class="issuance-scenario-grid">${cards}</div>
         ${renderIssuanceOverlaySelector(v.code)}
         ${variance ? `<p class="issuance-variance-note">${escapeHtml(variance)}</p>` : ''}
-        ${disclaimer ? `<p class="issuance-disclaimer">${escapeHtml(disclaimer)}</p>` : ''}
+        ${disclaimer ? `<p class="issuance-disclaimer">${escapeHtml(disclaimer)}</p>` : ''}`;
+    if (embedded) {
+        // Rendered inside the 사증발급 procedure tab — the tab already labels the
+        // section, so the duplicate top-level "사증발급" heading is dropped.
+        return `<div class="visa-issuance-section visa-issuance-section--embedded" aria-label="${escapeHtml(title)}">${body}</div>`;
+    }
+    return `<section class="manual-section visa-issuance-section" aria-label="${escapeHtml(title)}">
+        <h4 class="manual-section-title">${escapeHtml(title)}</h4>
+        ${body}
     </section>`;
+}
+
+function visaIssuanceProcedureAvailable(v) {
+    const cfg = Array.isArray(PROCEDURE_CONFIG) ? PROCEDURE_CONFIG.find(p => p.key === 'visaIssuance') : null;
+    return cfg ? getProcedure(v, cfg).available : false;
+}
+
+// The rich 사증발급 (visa-issuance) section is rendered INSIDE the 사증발급
+// procedure tab (see renderProcedurePanel), so it only appears when that tab is
+// active instead of permanently sitting under every procedure tab. Only when the
+// status has no 사증발급 procedure tab to host it do we fall back to a standalone
+// section, so the source-backed issuance content is never lost.
+function renderStandaloneVisaIssuanceSection(v, keywords) {
+    if (visaIssuanceProcedureAvailable(v)) return '';
+    return renderVisaIssuanceSection(v, keywords);
 }
 
 function renderCautionBlock() {
@@ -17915,7 +18087,7 @@ function renderResults(query){
                     ${renderSubcodes(v, kw, ms, { broadParentQuery, queryCode: primaryCodeQuery })}
                     ${renderF4RouteChooser(v)}
                     ${renderProcedures(v, kw)}
-                    ${renderVisaIssuanceSection(v, kw)}
+                    ${renderStandaloneVisaIssuanceSection(v, kw)}
                     ${renderDocumentTabs(v)}
                     ${renderCautionBlock()}
                     ${renderSourceEvidencePanel(v)}
@@ -18927,7 +19099,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 },
                 'compute-deadlines': () => computeDeadlines(actionBtn),
                 'deadline-download-ics': () => downloadDeadlineIcs({ title: actionBtn.dataset.deadlineTitle, date: actionBtn.dataset.deadlineDate, note: actionBtn.dataset.deadlineNote }),
-                'select-procedure-variant': () => selectProcedureVariant(actionBtn),
+                'open-scenario-picker': () => openScenarioPicker(actionBtn),
+                'choose-scenario-variant': () => chooseScenarioVariant(actionBtn),
+                'clear-procedure-variant': () => clearScenarioSelection(actionBtn),
+                'close-scenario-picker': () => closeModal('scenarioPickerOverlay'),
                 'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
                 'copy-scenario-checklist': () => copyScenarioChecklist(actionBtn),
                 'print-scenario-checklist': () => printScenarioChecklist(actionBtn),
@@ -18986,7 +19161,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const aiBtn = e.target.closest('.ai-action-btn');
         if (aiBtn) { e.preventDefault(); submitAiAnalysis(aiBtn.dataset.type, aiBtn); return; }
 
-        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay'].forEach(id => {
             const el = document.getElementById(id); if (el && e.target === el) closeModal(id);
         });
 
@@ -19010,7 +19185,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;

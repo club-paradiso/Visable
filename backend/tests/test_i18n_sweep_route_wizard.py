@@ -207,9 +207,11 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
 
     def test_broad_route_resets_scenario_selector_to_show_all(self):
         handler = self._slice("function selectF4Route", "function resetF4Route")
-        self.assertIn("choices.find(c => c.dataset.variantId === variantId)", handler)
-        self.assertIn("choices.find(c => !(c.dataset.variantId || ''))", handler)
-        self.assertIn("selectProcedureVariant(target)", handler)
+        # The route wizard reuses the in-screen scenario picker model: a specific
+        # route selects its variant, while a broad route (empty variantId) resets
+        # the picker to its empty / unselected state.
+        self.assertIn(".scenario-needs-pick", handler)
+        self.assertIn("applyScenarioSelection(selector, variantId || '')", handler)
 
     # --- Part G: integration with checklist / AI --------------------------
     def test_selected_scenario_checklist_behavior_intact(self):
