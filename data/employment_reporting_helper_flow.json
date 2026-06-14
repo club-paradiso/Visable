@@ -37,14 +37,20 @@
   "classification_sources": {
     "occupation": {
       "name": "제8차 한국표준직업분류",
+      "short_name": "KSCO8",
       "runtime_seed": "data/jobcode_master_ksco8_major_middle.csv",
-      "full_extraction_status": "pending"
+      "full_candidate": "data/generated/employment_reporting_ksco8_full_candidate.csv",
+      "full_extraction_status": "runtime ships verified 대분류+중분류 (KSCO8); full 1,999-row table pending official file via the build pipeline"
     },
     "industry": {
       "name": "제11차 한국표준산업분류",
-      "runtime_seed": "data/industrycode_master_ksic11_major.csv",
-      "full_extraction_status": "pending"
+      "short_name": "KSIC11",
+      "runtime_source": "data/sources/ksic11_full_2038.csv",
+      "full_extraction_status": "complete (2,038 rows, all 5 levels)"
     }
   },
-  "ui_warning": "현재 seed는 전체 상세분류가 아니므로, 상세 코드 확정 전에는 공식 HiKorea/통계분류포털 확인 안내를 함께 표시해야 함"
+  "runtime_dataset": "data/jobcode_master.json",
+  "build_script": "scripts/build_employment_reporting_dataset.py",
+  "source_audit": "docs/audits/hikorea-employment-code-source-audit-2026.md",
+  "ui_warning": "직종 전체표(세분류 이하)는 공식 KSCO8 파일 적용 전까지 대·중분류만 제공되므로, 상세 코드 확정 전에는 HiKorea 신고 화면/1345/국가데이터처 통계분류포털 확인 안내를 함께 표시해야 함"
 }
