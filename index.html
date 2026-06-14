@@ -833,8 +833,10 @@ body.searched .landing-scroll { display: none; }
 [data-theme="dark"] .figma-anagram-section .anagram-visual { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
 #anagram { width: 100%; max-width: 320px; user-select: none; }
 .anagram-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--t3); text-align: center; margin: 0.25rem 0; }
-#anagram .anagram-row { display: flex; justify-content: center; }
-.anagram-letter { display: inline-block; width: 2em; text-align: center; padding: 0.2em 0; font-family: var(--ff-display); font-weight: 900; font-size: 1.5rem; letter-spacing: 0.1em; transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease; cursor: default; }
+#anagram .anagram-row { display: flex; justify-content: center; max-width: 100%; }
+/* font-size is viewport-responsive so all 8 letters fit on narrow screens
+   without the flex row crushing letter spacing (width:2em scales with it). */
+.anagram-letter { display: inline-block; width: 2em; text-align: center; padding: 0.2em 0; font-family: var(--ff-display); font-weight: 900; font-size: clamp(1rem, 4.6vw, 1.5rem); letter-spacing: 0.1em; transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease; cursor: default; }
 .anagram-letter.anagram-top { color: var(--color-primary-ink, #085E48); }
 .anagram-letter.anagram-top.active { color: var(--color-primary, #0EA37B); filter: drop-shadow(0 0 8px rgba(14,163,123,0.5)); transform: translateY(-2px); }
 .anagram-letter.anagram-bot { color: #E0513E; }
@@ -19527,7 +19529,14 @@ function resetReveal() {
     if (document.readyState === 'complete') buildLines();
     else window.addEventListener('load', buildLines);
     window.addEventListener('resize', buildLines);
+    window.addEventListener('orientationchange', () => setTimeout(buildLines, 200));
     setTimeout(buildLines, 150);
+    // The font-size clamp + single-column reflow change #anagram's width without
+    // always firing a window resize (e.g. mobile address-bar collapse); observe
+    // the element directly so the connector lines stay aligned to the letters.
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(buildLines).observe(wrap);
+    }
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
