@@ -760,7 +760,6 @@
           '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
           '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>') +
         '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
-        '<div class="ssc-badges" data-ssc-badges></div>' +
         '<form data-ssc-form novalidate>' +
           '<div class="ssc-grid">' +
             '<label class="ssc-field" style="grid-column:1/-1;">' +
@@ -783,19 +782,6 @@
         '<div class="ssc-result" data-ssc-result role="status" aria-live="polite" hidden></div>' +
       '</div>';
     bindForm(container);
-    refreshBadges(container);
-  }
-
-  function refreshBadges(container) {
-    var host = container.querySelector('[data-ssc-badges]');
-    if (!host) return;
-    if (state.rules) {
-      host.innerHTML = renderSourceFreshnessBadge(state.rules.sourceStatus, state.rules.lastUpdated);
-    } else if (state.loadError) {
-      host.innerHTML = renderSourceFreshnessBadge('needs_refresh', null);
-    } else {
-      host.innerHTML = '<span class="ssc-badge">' + esc(STR.loading) + '</span>';
-    }
   }
 
   function statusBadge(status) {
