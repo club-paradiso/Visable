@@ -92,8 +92,10 @@ class ExpandedRouteWizardTests(unittest.TestCase):
 
     def test_broad_route_behavior_keeps_pr252_show_all_reset(self):
         handler = self._slice("function selectF4Route", "function resetF4Route")
-        self.assertIn("choices.find(c => !(c.dataset.variantId || ''))", handler)
-        self.assertIn("if (target) selectProcedureVariant(target)", handler)
+        # The route wizard reuses the in-screen scenario picker model: specific
+        # routes select their mapped variant, while broad routes (empty
+        # variantId) reset the picker to its empty / unselected state.
+        self.assertIn("applyScenarioSelection(selector, variantId || '')", handler)
 
     def test_route_chooser_does_not_expose_raw_metadata(self):
         chooser = self._slice("function renderF4RouteChooser", "function selectF4Route")
