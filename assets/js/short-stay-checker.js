@@ -165,11 +165,17 @@
     return '현재 반영된 제주 무사증 고시 기준으로, ' + withParticle(c.nameKo) +
       ' 제주 무사증 입국불허 국가 목록에 포함되어 있습니다.';
   }
-  function phraseExpansionPermit(c, passportType) {
-    var scope = c.b22Jeju.passportScope;
-    var scopeLabel = scope === 'ordinary' ? ' 일반여권' : (scope === 'official_ordinary' ? ' 관용·일반여권' : '');
-    return '다만 ' + c.nameKo + scopeLabel +
-      '은 체류지역 확대허가 확인 대상에 포함되어 있으므로, 제주에서 본토로 이동하려는 경우 별도 허가·제한을 확인해야 합니다.';
+  /* Legal note reused by the Jeju → mainland resolution. The Jeju visa-free
+     (B-2-2) stay area is limited to Jeju, and 체류지역 확대허가 (expanding it to the
+     mainland) is, as a rule, NOT granted — it is an exceptional measure, not a
+     planning route. So we never present a "Jeju visa-free + expansion permit"
+     answer; instead we state the limitation plainly and steer to a route that
+     actually reaches the mainland. */
+  function phraseJejuStayAreaLimited(c) {
+    var deniedPrefix = (c.b22Jeju && c.b22Jeju.jejuEntryDenied)
+      ? (phraseJejuDenied(c) + ' 또한 ') : '';
+    return deniedPrefix + '제주 무사증(B-2-2)은 체류지역이 제주특별자치도로 한정되는 별도 제도이며, ' +
+      '제주에서 본토(타 지역)로 이동하는 체류지역 확대는 원칙적으로 허용되지 않습니다.';
   }
 
   var WARN_FINAL_DECISION = '최종 입국 여부는 입국심사관이 결정합니다. 어떤 경로도 입국을 보장하지 않습니다.';
@@ -297,7 +303,72 @@
 
     /* --- Jeju destinations ----------------------------------------------------- */
     var jeju = c.b22Jeju || {};
-    if (destination === 'jeju_only' || destination === 'jeju_then_mainland') {
+
+    /* Jeju → mainland: the traveler ultimately wants to reach the Korean mainland.
+       We NEVER answer "Jeju visa-free + 체류지역 확대허가" here, because expanding the
+       Jeju-only stay area to the mainland is, as a rule, not granted (see
+       phraseJejuStayAreaLimited). We resolve by the route that actually reaches the
+       mainland: general visa-free if the nationality is eligible, otherwise a
+       proper visa. When the route is clearly determined we do not surface
+       speculative "다른 가능성". */
+    if (destination === 'jeju_then_mainland') {
+      var purposeJTM = (purpose === 'unknown') ? 'tourism' : purpose;
+      if (purpose === 'unknown') {
+        r.provisional = true;
+        r.warnings.push('방문 목적을 알 수 없어 관광 기준의 잠정 안내입니다. 목적을 선택하면 더 정확한 경로를 안내합니다.');
+      }
+      var jejuLimitNote = phraseJejuStayAreaLimited(c);
+
+      if (visaFree) {
+        var phraseJTM = visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c);
+        var allowedJTM = parseStayDays(visaFreeB21 ? c.b21.stay : c.b1.stay);
+        var explainJTM = [phraseJTM];
+        if (purposeJTM === 'business') explainJTM.push('출장(회의·상담·계약 등 비영리 상용 활동)은 일반적으로 단기 방문 범위에서 검토되지만, 협정·제도별 활동범위 제한이 있을 수 있습니다.');
+        if (purposeJTM === 'medical') explainJTM.push('의료관광 일정·기관에 따라 의료관광(C-3-3) 사증이 더 적합할 수 있습니다.');
+        explainJTM.push('일반 무사증으로 입국하면 체류지역이 제주로 한정되지 않으므로, 제주와 본토를 함께 방문하려면 제주 무사증이 아니라 일반 무사증 경로로 입국하면 됩니다.');
+        explainJTM.push(jejuLimitNote);
+        r.primary = {
+          path: visaFreeB21 ? '일반 무사증(B-2-1) + K-ETA 확인' : '사증면제협정(B-1) 무사증 입국 + K-ETA 확인',
+          status: 'likely_available',
+          explanation: explainJTM
+        };
+        r.showKeta = true;
+        r.steps = [
+          ketaStepText(c, rules, ageGroup),
+          '여권 유효기간과 왕복 항공권 등 기본 요건을 확인하세요.',
+          '입국심사 시 방문 목적과 일정을 설명할 수 있도록 준비하세요.'
+        ];
+        if (visaFreeB1) r.warnings.push('사증면제협정은 협정상 활동범위·기간 제한이 있을 수 있습니다. 협정 기간(' + c.b1.stay + ')을 초과하거나 영리활동을 하려면 사증이 필요합니다.');
+        r.warnings.push(WARN_JEJU_SEPARATE, WARN_KETA_NOT_VISA, WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION);
+        if (allowedJTM && stayDays && stayDays > allowedJTM) {
+          r.primary.status = 'visa_required';
+          r.primary.path = c3PathLabel(c3map, purposeJTM) + ' 신청 (무사증 허용기간 초과)';
+          r.primary.explanation.push('예정 체류일수(' + stayDays + '일)가 무사증 허용 기간(' + (visaFreeB21 ? c.b21.stay : c.b1.stay) + ')을 초과하므로 사증을 발급받아 입국해야 합니다.');
+          r.steps = c3Steps(purposeJTM);
+          r.showKeta = false;
+        }
+        return finalizeResult(r, rules);
+      }
+
+      /* not general visa-free → a proper visa is required to reach the mainland */
+      var deniedNoteJTM = c.b1 && c.b1.suspended ? phraseB1Suspended(c) : null;
+      var c3jtm = c3map[purposeJTM] || c3map.tourism;
+      r.primary = {
+        path: c3jtm.code ? (c3jtm.nameKo + ' 사증(' + c3jtm.code + ') 신청') : '목적에 맞는 사증 신청 또는 공식 확인',
+        status: 'visa_required',
+        explanation: [
+          phraseB21NotListed(c),
+          deniedNoteJTM,
+          jejuLimitNote,
+          '따라서 본토를 방문하려면 처음부터 목적에 맞는 사증을 받아 입국해야 합니다.'
+        ].filter(Boolean)
+      };
+      r.steps = c3Steps(purposeJTM);
+      r.warnings.push(WARN_JEJU_SEPARATE, WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
+      return finalizeResult(r, rules);
+    }
+
+    if (destination === 'jeju_only') {
       if (jeju.jejuEntryDenied) {
         r.primary = {
           path: c3PathLabel(c3map, purpose) + ' 신청 또는 공식 확인',
@@ -310,63 +381,30 @@
         };
         r.steps = c3Steps(purpose);
         r.warnings.push(WARN_JEJU_SEPARATE, WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
-        addAlternative(r, '일반 무사증/B-2-1·K-ETA', visaFree ? '대상국으로 등재되어 있어 본토 입국 경로로 검토할 수 있습니다.' : phraseB21NotListed(c));
         return finalizeResult(r, rules);
       }
 
       var jejuExplain = [phraseJejuNotDenied(c)];
-      if (destination === 'jeju_only') {
-        jejuExplain.push('따라서 제주만 방문하는 경우 제주 무사증(B-2-2) 경로를 확인할 수 있습니다(체류 ' + (jeju.jejuStayDays || 30) + '일, 제주 직항 등 입국 경로 조건 적용).');
-        r.primary = {
-          path: '제주 무사증(B-2-2) 경로 확인',
-          status: visaFree ? 'likely_available' : 'needs_official_check',
-          explanation: jejuExplain
-        };
-        r.steps = [
-          '제주 직항 등 제주 무사증 인정 입국 경로(항공편·선편)를 확인하세요.',
-          '이용 항공사에 탑승 가능 여부를 확인하세요.',
-          '최신 법무부 고시와 입국 요건을 출발 전에 다시 확인하세요.'
-        ];
-        if (visaFree) {
-          addAlternative(r, visaFreeB21 ? '일반 무사증/B-2-1·K-ETA' : '사증면제협정(B-1)',
-            (visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)) + ' 일반 무사증 경로로 입국하면 제주 외 지역 이동 제한이 없습니다.');
-          r.showKeta = true;
-        } else {
-          addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
-        }
-      } else { /* jeju_then_mainland */
-        if (jeju.stayAreaExpansionPermitRequired) {
-          jejuExplain.push(phraseExpansionPermit(c, passport));
-          jejuExplain.push('제주 무사증은 본토 이동을 자동으로 허용하지 않으므로, 제주에서 본토로 이동하려는 경우 별도 허가·제한을 확인해야 합니다.');
-          r.primary = {
-            path: '제주 무사증 + 체류지역 확대허가 확인',
-            status: 'needs_official_check',
-            explanation: jejuExplain
-          };
-        } else {
-          jejuExplain.push('다만 제주 무사증(B-2-2)은 제주 한정 제도로, 본토 이동이 자동으로 허용되지 않습니다. 본토 이동 계획이 있다면 출국 전 공식 확인이 필요합니다.');
-          r.primary = {
-            path: visaFree ? '일반 무사증/B-2-1·K-ETA 경로 우선 검토' : '제주 무사증 + 본토 이동 가능 여부 공식 확인',
-            status: visaFree ? 'likely_available' : 'needs_official_check',
-            explanation: visaFree
-              ? [(visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)), '일반 무사증 경로로 입국하면 제주·본토 구분 없이 체류할 수 있어 더 단순합니다.'].concat(jejuExplain)
-              : jejuExplain
-          };
-        }
-        r.steps = [
-          '본토 이동 계획이 있다면 출국 전에 체류지역 확대허가 등 허용 여부를 공식 확인하세요.',
-          visaFree ? '일반 무사증/K-ETA 경로가 가능하므로 처음부터 일반 경로 입국을 우선 검토하세요.' : '확실하지 않으면 처음부터 일반관광 사증(C-3-9)을 신청하는 것이 안전합니다.',
-          '항공사 탑승 가능 여부와 최신 고시를 확인하세요.'
-        ].filter(Boolean);
-        if (visaFree) {
-          r.showKeta = true;
-          addAlternative(r, '제주 무사증(B-2-2)', '제주만 방문으로 일정을 한정하는 경우의 별도 경로입니다.');
-        } else {
-          addAlternative(r, '일반관광 사증(C-3-9)', phraseB21NotListed(c) + ' 본토 일정이 확실하면 사증 신청이 안전합니다.');
-        }
+      jejuExplain.push('따라서 제주만 방문하는 경우 제주 무사증(B-2-2) 경로를 확인할 수 있습니다(체류 ' + (jeju.jejuStayDays || 30) + '일, 제주 직항 등 입국 경로 조건 적용).');
+      r.primary = {
+        path: '제주 무사증(B-2-2) 경로 확인',
+        status: visaFree ? 'likely_available' : 'needs_official_check',
+        explanation: jejuExplain
+      };
+      r.steps = [
+        '제주 직항 등 제주 무사증 인정 입국 경로(항공편·선편)를 확인하세요.',
+        '이용 항공사에 탑승 가능 여부를 확인하세요.',
+        '최신 법무부 고시와 입국 요건을 출발 전에 다시 확인하세요.'
+      ];
+      if (visaFree) {
+        addAlternative(r, visaFreeB21 ? '일반 무사증/B-2-1·K-ETA' : '사증면제협정(B-1)',
+          (visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)) + ' 일반 무사증 경로로 입국하면 제주 외 지역 이동 제한이 없습니다.');
+        r.showKeta = true;
+      } else {
+        addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
       }
       r.warnings.push(WARN_JEJU_SEPARATE, WARN_AIRLINE, WARN_FINAL_DECISION);
-      if (stayDays && stayDays > (jeju.jejuStayDays || 30) && destination === 'jeju_only') {
+      if (stayDays && stayDays > (jeju.jejuStayDays || 30)) {
         r.warnings.push('예정 체류일수(' + stayDays + '일)가 제주 무사증 허용 기간(' + (jeju.jejuStayDays || 30) + '일)을 초과합니다. 사증 경로를 확인하세요.');
       }
       return finalizeResult(r, rules);
@@ -407,7 +445,6 @@
         r.showKeta = false;
       }
       addAlternative(r, c3PathLabel(c3map, purposeForC3), '무사증 요건이 맞지 않거나 장기 일정이면 사증 경로를 이용하세요.');
-      if (!jeju.jejuEntryDenied) addAlternative(r, '제주 무사증(B-2-2)', '제주만 방문하는 별도 제도도 있습니다(일반 무사증과 다른 제도).');
       return finalizeResult(r, rules);
     }
 
@@ -429,11 +466,6 @@
     r.warnings.push(WARN_CONSULATE_VARIES, WARN_FINAL_DECISION);
     if (purposeForC3 === 'tourism') {
       addAlternative(r, '단체관광(C-3-2)', '지정 여행사를 통한 단체관광·보증된 개별관광이라면 별도 경로가 있습니다.');
-    }
-    if (!jeju.jejuEntryDenied) {
-      addAlternative(r, '제주 무사증(B-2-2)', phraseJejuNotDenied(c) + ' 제주만 방문하는 경우의 별도 제도입니다(본토 이동 자동 불가).');
-    } else {
-      addAlternative(r, '제주 무사증(B-2-2)', phraseJejuDenied(c));
     }
     return finalizeResult(r, rules);
   }
@@ -599,7 +631,9 @@
     if (document.getElementById('shortStayCheckerStyles')) return;
     var css = '' +
 '.short-stay-checker{margin:1.25rem 0;}' +
+'.modal-body .short-stay-checker{margin:0;}' +
 '.ssc-card{background:var(--bg1,#fff);border:1px solid var(--bd,#d1c6b4);border-radius:var(--radius-lg,16px);box-shadow:var(--sh1,0 1px 2px rgba(0,0,0,.05));padding:1.1rem 1.15rem;}' +
+'.ssc-card-modal{background:transparent;border:0;border-radius:0;box-shadow:none;padding:0;}' +
 '.ssc-eyebrow{font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ac,#2f5e67);font-weight:800;margin:0 0 .3rem;}' +
 '.ssc-title{font-size:1.15rem;font-weight:800;color:var(--t1,#202221);margin:0 0 .25rem;}' +
 '.ssc-sub{font-size:.85rem;color:var(--t2,#4f5552);margin:0 0 .7rem;word-break:keep-all;}' +
@@ -675,10 +709,15 @@
 
   function renderShortStayChecker(container) {
     injectStyles();
+    /* When rendered inside the page popup (modal), the modal header already
+       carries the title, so drop the redundant eyebrow/title here (and avoid a
+       duplicate #shortStayCheckerTitle id). The subtitle stays as a description. */
+    var inModal = !!(container.closest && container.closest('.modal-body'));
     container.innerHTML =
-      '<div class="ssc-card">' +
-        '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
-        '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>' +
+      '<div class="ssc-card' + (inModal ? ' ssc-card-modal' : '') + '">' +
+        (inModal ? '' :
+          '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
+          '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>') +
         '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
         '<div class="ssc-badges" data-ssc-badges></div>' +
         '<form data-ssc-form novalidate>' +
@@ -939,43 +978,66 @@
       cta.className = 'ssc-btn ssc-btn-ghost ssc-cta';
       cta.style.cssText = 'margin:.5rem 0;width:100%;text-align:left;';
       cta.textContent = '🧭 ' + STR.title + ' — 내 국적으로 무사증·제주·C-3 가능성 확인하기';
-      cta.addEventListener('click', function () {
-        var section = mountIfNeeded();
-        if (!section) return;
-        section.hidden = false;
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        var input = section.querySelector('input[name="country"]');
-        if (input) setTimeout(function () { input.focus(); }, 350);
-      });
+      cta.addEventListener('click', openShortStayUI);
       slot.appendChild(cta);
     }
   }
 
-  document.addEventListener('paradiso:results-rendered', function (e) {
-    var section = document.getElementById('shortStayChecker');
-    if (!section) return;
-    var relevant = queryIsShortStayRelevant(e.detail || {});
-    if (relevant) {
-      mountIfNeeded();
-      section.hidden = false;
-    } else {
-      section.hidden = true;
-    }
-    injectCardCta(e.detail || {});
-  });
-  document.addEventListener('paradiso:landing-reset', function () {
-    var section = document.getElementById('shortStayChecker');
-    if (section) section.hidden = true;
-  });
-
-  /* Public entry point so a landing-page button can open the checker directly,
-     not only as a contextual panel after a relevant search. */
-  api.open = function () {
+  /* ------------------------------------------------------ popup (modal) host */
+  /* The checker lives inside a page popup (#shortStayModalOverlay in index.html)
+     instead of expanding the landing page. Opening renders the form lazily and
+     shows the modal via the host page's modal helpers (focus-trap + ESC + overlay
+     click), falling back to a self-managed reveal if no modal host is present. */
+  function focusCountrySoon(section) {
+    var input = section && section.querySelector('input[name="country"]');
+    if (input) setTimeout(function () { try { input.focus(); } catch (e) {} }, 250);
+  }
+  function openShortStayUI() {
     var section = mountIfNeeded();
     if (!section) return;
+    ensureRules().catch(function () {});
+    var overlay = document.getElementById('shortStayModalOverlay');
+    if (overlay) {
+      if (typeof window.openModal === 'function') {
+        window.openModal('shortStayModalOverlay');
+      } else {
+        overlay.classList.add('active');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+      focusCountrySoon(section);
+      return;
+    }
+    /* fallback: no modal host on this page — reveal inline as before */
     section.hidden = false;
     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    var input = section.querySelector('input[name="country"]');
-    if (input) setTimeout(function () { input.focus(); }, 350);
-  };
+    focusCountrySoon(section);
+  }
+  function closeShortStayUI() {
+    var overlay = document.getElementById('shortStayModalOverlay');
+    if (overlay && overlay.classList.contains('active')) {
+      if (typeof window.closeModal === 'function') {
+        window.closeModal('shortStayModalOverlay');
+      } else {
+        overlay.classList.remove('active');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+    } else {
+      var section = document.getElementById('shortStayChecker');
+      if (section && !overlay) section.hidden = true;
+    }
+  }
+
+  document.addEventListener('paradiso:results-rendered', function (e) {
+    if (!document.getElementById('shortStayChecker')) return;
+    /* Pre-render the form on a relevant search so the popup opens instantly, but
+       never auto-expand the landing page — entry is via the CTA / utility button. */
+    if (queryIsShortStayRelevant(e.detail || {})) mountIfNeeded();
+    injectCardCta(e.detail || {});
+  });
+  document.addEventListener('paradiso:landing-reset', closeShortStayUI);
+
+  /* Public entry points: a landing-page button (data-action="open-short-stay")
+     opens the popup directly, not only as a contextual panel after a search. */
+  api.open = openShortStayUI;
+  api.close = closeShortStayUI;
 })();

@@ -12909,13 +12909,25 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <section class="rlist-compact" id="rlistCompact" aria-label="요약 결과" hidden></section>
     <div class="rlist" id="rlist" aria-live="polite"></div>
     <!-- External guided tools (data + logic live in assets/js + data/, NOT in this file).
-         Hidden until a relevant search (B-1/B-2/C-3/K-ETA/제주 → short-stay checker,
-         F-4/재외동포/거소증/FBI → F-4 route guide) makes them useful. -->
-    <section id="shortStayChecker" class="short-stay-checker" aria-labelledby="shortStayCheckerTitle" hidden></section>
+         The short-stay checker opens as a page popup (modal) so it never stretches
+         the landing page; the F-4 route guide stays inline until a relevant search
+         (F-4/재외동포/거소증/FBI) makes it useful. -->
     <section id="f4RouteGuide" class="f4-route-guide" aria-labelledby="f4RouteGuideTitle" hidden></section>
 </main>
 
 <!-- Modals -->
+<!-- 국적별 단기입국 경로 확인 — 페이지 내 팝업. 폼/결과는 외부 모듈(assets/js/short-stay-checker.js)이 #shortStayChecker에 렌더. -->
+<div class="modal-overlay" id="shortStayModalOverlay" role="dialog" aria-modal="true" aria-labelledby="shortStayModalTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 720px;">
+        <div class="modal-header">
+            <h2 id="shortStayModalTitle" class="modal-title">🛂 국적별 단기입국 경로 확인</h2>
+            <button type="button" class="modal-close" data-action="close-short-stay-modal" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <section id="shortStayChecker" class="short-stay-checker"></section>
+        </div>
+    </div>
+</div>
 <div class="modal-overlay" id="aiModalOverlay" role="dialog" aria-modal="true" aria-labelledby="aiModalTitle">
     <div class="modal-box">
         <div class="modal-header">
@@ -17783,7 +17795,7 @@ function closeDirectSearchMode(){
 }
 
 function closeSearchBlockingSurfaces() {
-    ['jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+    ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
         const el = document.getElementById(id);
         if (el && el.classList.contains('active')) closeModal(id);
     });
@@ -18929,6 +18941,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const handlers = {
                 'clear-search': clearSearch,
                 'close-ai-modal': () => closeModal('aiModalOverlay'),
+                'close-short-stay-modal': () => closeModal('shortStayModalOverlay'),
                 'close-jobcode-modal': () => closeModal('jobCodeModalOverlay'),
                 'close-jurisdiction-modal': () => closeModal('jurisdictionModalOverlay'),
                 'close-doc-modal': () => closeModal('docModalOverlay'),
@@ -19036,7 +19049,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const aiBtn = e.target.closest('.ai-action-btn');
         if (aiBtn) { e.preventDefault(); submitAiAnalysis(aiBtn.dataset.type, aiBtn); return; }
 
-        ['jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
+        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].forEach(id => {
             const el = document.getElementById(id); if (el && e.target === el) closeModal(id);
         });
 
@@ -19060,7 +19073,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
