@@ -26,15 +26,54 @@ sample dataset is a **clearly marked fake placeholder** — there are no real le
 facts to memorize, by design. Do not replace placeholders with real legal text unless
 it comes from supplied, reviewed evidence excerpts.
 
-## Two-stage model strategy
+## Model strategy: smoke test → quality run
 
-| Stage | Model | Role |
-|---|---|---|
-| 1 | `google/gemma-4-E4B-it` | **Smoke test only.** Small enough to run cheaply on a free Colab T4. Verifies the dataset format, chat template, LoRA/QLoRA training code, adapter save/load, inference cells, and the eval script. Its answer quality is **not** a signal. |
-| 2 | `google/gemma-4-12B-it` | **The actual quality experiment.** Evaluates Waymaker-style answer quality, evidence-grounded Korean immigration guidance behavior, hallucination risk, and refusal behavior. Needs a Colab Pro L4/A100. |
+The notebook has a **model preset selector** (in the config cell). Everything except
+`gemma-12b` is a **wiring smoke test** — it proves the dataset format, chat template,
+LoRA/QLoRA code, adapter save/load, inference cells, and eval script work. Answer
+quality on the small models is **not** a signal.
 
-Never skip Stage 1: every wiring bug found on E4B is a wasted (and expensive) 12B run
-avoided.
+| Preset | Model | Free Colab T4 | HF token | Role |
+|---|---|---|---|---|
+| `qwen-0.6b` | `Qwen/Qwen3-0.6B` | ✅ safest | not needed | smallest smoke test |
+| `qwen-1.7b` *(default)* | `Qwen/Qwen3-1.7B` | ✅ good default | not needed | smoke test |
+| `qwen-4b` | `Qwen/Qwen3-4B` | ⚠️ only if GPU has spare memory | not needed | larger smoke test |
+| `gemma-e4b` | `google/gemma-4-E4B-it` | ⚠️ **may still OOM** | **required (gated)** | original Gemma smoke path |
+| `gemma-12b` | `google/gemma-4-12B-it` | ❌ Colab Pro L4/A100 | **required (gated)** | **actual quality experiment** |
+
+Never skip the smoke test: every wiring bug found on a small/cheap model is a wasted
+(and expensive) `gemma-12b` run avoided. The original Gemma 4 E4B path is preserved
+(`MODEL_CHOICE = "gemma-e4b"`), but on **free Colab it may still OOM** even in 4-bit —
+the open Qwen presets are the reliable free-tier choice and need no Hugging Face token
+or license acceptance.
+
+## Running on Google Colab Free (T4)
+
+The notebook is set up to pass an end-to-end **smoke test on a free Colab T4**:
+
+1. Open `notebooks/waymaker_gemma4_lora_colab.ipynb` in Colab. **Runtime → Change
+   runtime type → T4 GPU → Save.**
+2. Run the **GPU + memory check** cell first. It reports the assigned GPU and free
+   memory, recommends a preset, and — if **no GPU** is assigned — prints the exact
+   fallback steps (change runtime type → restart → rerun). The model-load and train
+   cells are guarded and will stop with a clear message if there is no GPU.
+3. Leave the defaults: `MODEL_CHOICE = "qwen-1.7b"` and `ULTRA_LOW_MEM = True`
+   (`max_seq_length 512`, batch 1, grad accum 4, `max_steps 30`). No `HF_TOKEN` is
+   required for the Qwen presets.
+4. Run the cells top to bottom. Upload `dataset/train.sample.jsonl`,
+   `dataset/eval.sample.jsonl`, and `scripts/eval_outputs.py` when prompted (or set the
+   paths to a Drive copy).
+5. A green smoke test = training runs the capped steps, the adapter saves locally
+   (`SAVE_TO_DRIVE = False` by default), the four inference behavior tests print output,
+   and the eval report prints. **Ignore answer quality** on the smoke-test models.
+
+If a preset OOMs, step down (`qwen-1.7b` → `qwen-0.6b`), keep `ULTRA_LOW_MEM = True`,
+and **Runtime → Restart session** before retrying. `gemma-e4b` may OOM on a T4; that is
+expected, not a bug — switch to a Qwen preset.
+
+For the **actual quality experiment**, set `MODEL_CHOICE = "gemma-12b"`,
+`ULTRA_LOW_MEM = False`, switch to a **Colab Pro L4/A100** runtime, add an `HF_TOKEN`
+secret (with the Gemma license accepted), and rerun.
 
 ## Layout
 
@@ -77,18 +116,12 @@ non-legal-advice disclaimer.
 
 ## How to run
 
-1. Open `notebooks/waymaker_gemma4_lora_colab.ipynb` in Google Colab
-   (upload it, or open from GitHub). Select a **GPU runtime**.
-2. Add a Colab secret named `HF_TOKEN` (a Hugging Face token whose account has
-   accepted the Gemma license on both model pages).
-3. Run the cells top to bottom with the default `google/gemma-4-E4B-it`. Upload
-   `dataset/train.sample.jsonl`, `dataset/eval.sample.jsonl`, and
-   `scripts/eval_outputs.py` when prompted.
-4. Confirm the smoke test: training completes, the adapter saves to Google Drive,
-   the four inference behavior tests produce output, and the eval report prints.
-5. In the clearly marked **STAGE 2 SWITCH** cell, uncomment
-   `MODEL_ID = "google/gemma-4-12B-it"`, switch to an L4/A100 runtime, and rerun
-   from the model-loading cell down.
+See **Running on Google Colab Free (T4)** above for the step-by-step smoke test. In
+short: select a T4 GPU runtime, run the GPU check cell, keep the `qwen-1.7b` /
+`ULTRA_LOW_MEM` defaults (no token needed), and run top to bottom. To switch models,
+change `MODEL_CHOICE` in the config cell (or uncomment a line in the optional override
+cell) and rerun from there down — set `gemma-12b` only on a Colab Pro L4/A100 with an
+`HF_TOKEN` secret.
 
 ## Replacing the samples with real Waymaker data
 
@@ -101,8 +134,10 @@ non-legal-advice disclaimer.
 
 ## Interpreting results
 
-- **Stage 1 (E4B):** pass/fail on wiring only. Ignore answer quality entirely.
-- **Stage 2 (12B):** run `scripts/eval_outputs.py` on generated outputs and look at:
+- **Smoke test (qwen-\* / gemma-e4b):** pass/fail on wiring only. Ignore answer quality
+  entirely.
+- **Quality run (gemma-12b on Colab Pro):** run `scripts/eval_outputs.py` on generated
+  outputs and look at:
   - `citation` / `structure` — does every answer keep the 6-section grounded format?
   - `defer_ok` — does the model defer on the insufficient-evidence cases?
   - `no_overclaim` — no "무조건 가능 / 반드시 허가"-style absolutes, even when baited?
@@ -116,6 +151,10 @@ non-legal-advice disclaimer.
 
 - Sample dataset is tiny and placeholder-only — sufficient for wiring tests, not for
   drawing quality conclusions.
-- `gemma-4-E4B-it` / `gemma-4-12B-it` are gated models; loading may require a recent
-  `transformers` release.
+- `gemma-4-E4B-it` / `gemma-4-12B-it` are gated and need a recent `transformers`
+  release and an accepted Gemma license. On a free Colab T4, `gemma-e4b` **may still
+  OOM** even in 4-bit; the open `Qwen/Qwen3-*` presets are the reliable free-tier path.
+- The `qwen-*` presets are smoke-test stand-ins only — they verify the pipeline, not
+  Waymaker answer quality. Qwen3 may emit a `<think>` reasoning preamble at inference;
+  that is cosmetic for the wiring test.
 - Nothing in this directory is imported by the Paradiso app or backend.
