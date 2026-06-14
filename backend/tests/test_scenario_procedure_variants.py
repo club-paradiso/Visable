@@ -18,7 +18,13 @@ for path in (str(BACKEND_DIR), str(SCRIPTS_DIR)):
     if path not in sys.path:
         sys.path.insert(0, path)
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
 from check_required_documents_coverage import validate_procedure_variants  # noqa: E402
+
+# Localized scenario/checklist copy now lives in external per-locale JSON packs
+# (data/i18n/*.json); supported display locales are ko, en, zh-CN (zh-Hant aliases
+# to zh-CN), so Simplified Chinese is validated against the zh-CN pack.
 
 SEEDS = {
     ("D-9", "statusChange"): "d-9-1-status-change",
@@ -174,32 +180,38 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
 class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
     def test_variants_render_before_generic_fallback_when_parent_docs_empty(self):
         html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        blobs = pack_blobs()
+        # Wiring stays inline in index.html...
         self.assertIn("variants: normalizeProcedureVariants(raw?.variants)", html)
-        self.assertIn("내 상황에 맞는 시나리오 선택", html)
-        self.assertIn("세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.", html)
-        self.assertIn("이 시나리오로 AI에게 질문하기", html)
         self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", html)
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", html)
-        self.assertIn("시나리오별 서류 근거", html)
         self.assertIn('title.closest(".procedure-panel, .procedure-variant-list, .doc-group-grid, .docs-section")', html)
         self.assertIn('data-procedure-variant="${escapeHtml(variant.id)}"', html)
         self.assertIn("procedures: visa.procedures || null", html)
+        # ...while the localized selector/handoff copy lives in the locale packs.
+        self.assertIn("내 상황에 맞는 시나리오 선택", blobs["ko"])
+        self.assertIn("세부 자격·사유에 따라 제출서류가 달라질 수 있습니다. 아래에서 가장 가까운 상황을 선택해 확인하세요.", blobs["ko"])
+        self.assertIn("이 시나리오로 AI에게 질문하기", blobs["ko"])
+        self.assertIn("시나리오별 서류 근거", blobs["ko"])
 
     def test_multilingual_selector_source_panel_and_handoff_copy_is_present(self):
         html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn("Choose the scenario closest to your situation", html)
-        self.assertIn("选择最符合您情况的情形", html)
-        self.assertIn("Ask AI about this scenario", html)
-        self.assertIn("就此情形询问 AI", html)
-        self.assertIn("Official document names are shown in Korean to match the immigration manual.", html)
-        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", html)
-        self.assertIn("행정 매뉴얼 근거", html)
-        self.assertIn("Administrative manual source", html)
-        self.assertIn("行政手册依据", html)
-        self.assertIn("Scenario-specific document source", html)
-        self.assertIn("分情形材料依据", html)
-        self.assertIn("For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.", html)
-        self.assertIn("请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。", html)
+        blobs = pack_blobs()
+        # Selector + handoff + source-panel copy now lives in the locale packs.
+        self.assertIn("Choose the scenario closest to your situation", blobs["en"])
+        self.assertIn("选择最符合您情况的情形", blobs["zh-CN"])
+        self.assertIn("Ask AI about this scenario", blobs["en"])
+        self.assertIn("就此情形询问 AI", blobs["zh-CN"])
+        self.assertIn("Official document names are shown in Korean to match the immigration manual.", blobs["en"])
+        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", blobs["zh-CN"])
+        self.assertIn("행정 매뉴얼 근거", blobs["ko"])
+        self.assertIn("Administrative manual source", blobs["en"])
+        self.assertIn("行政手册依据", blobs["zh-CN"])
+        self.assertIn("Scenario-specific document source", blobs["en"])
+        self.assertIn("分情形材料依据", blobs["zh-CN"])
+        self.assertIn("For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.", blobs["en"])
+        self.assertIn("请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。", blobs["zh-CN"])
+        # Wiring stays inline in index.html.
         self.assertIn("lang: currentLanguage", html)
         self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", html)
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", html)
@@ -214,76 +226,66 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.packs = load_packs()
+        cls.blobs = pack_blobs()
 
     def test_checklist_section_label_present_in_all_target_languages(self):
-        self.assertIn("선택한 시나리오 준비 체크리스트", self.html)
-        self.assertIn("Preparation checklist for the selected scenario", self.html)
-        self.assertIn("所选情形准备清单", self.html)
-        self.assertIn("所選情形準備清單", self.html)
+        self.assertIn("선택한 시나리오 준비 체크리스트", self.blobs["ko"])
+        self.assertIn("Preparation checklist for the selected scenario", self.blobs["en"])
+        self.assertIn("所选情形准备清单", self.blobs["zh-CN"])
 
     def test_copy_checklist_labels_present_in_all_target_languages(self):
-        self.assertIn("체크리스트 복사", self.html)
-        self.assertIn("Copy checklist", self.html)
-        self.assertIn("复制清单", self.html)
-        self.assertIn("複製清單", self.html)
+        self.assertIn("체크리스트 복사", self.blobs["ko"])
+        self.assertIn("Copy checklist", self.blobs["en"])
+        self.assertIn("复制清单", self.blobs["zh-CN"])
 
     def test_print_view_labels_present_in_all_target_languages(self):
-        self.assertIn("인쇄용 보기", self.html)
-        self.assertIn("Print view", self.html)
-        self.assertIn("打印视图", self.html)
-        self.assertIn("列印檢視", self.html)
+        self.assertIn("인쇄용 보기", self.blobs["ko"])
+        self.assertIn("Print view", self.blobs["en"])
+        self.assertIn("打印视图", self.blobs["zh-CN"])
 
     def test_reset_check_labels_present_in_all_target_languages(self):
-        self.assertIn("체크 초기화", self.html)
-        self.assertIn("Reset checks", self.html)
-        self.assertIn("重置勾选", self.html)
-        self.assertIn("重置勾選", self.html)
+        self.assertIn("체크 초기화", self.blobs["ko"])
+        self.assertIn("Reset checks", self.blobs["en"])
+        self.assertIn("重置勾选", self.blobs["zh-CN"])
 
     def test_confirmation_guidance_copy_present_in_all_target_languages(self):
         self.assertIn(
             "제출 전 HiKorea, 1345 또는 관할 출입국·외국인관서에서 실제 적용 여부와 추가서류를 확인하세요.",
-            self.html,
+            self.blobs["ko"],
         )
         self.assertIn(
             "Before submitting, confirm applicability and any additional documents with HiKorea, 1345, or the competent immigration office.",
-            self.html,
+            self.blobs["en"],
         )
         self.assertIn(
             "提交前，请向 HiKorea、1345 或管辖出入境外国人机构确认实际适用与追加材料。",
-            self.html,
-        )
-        self.assertIn(
-            "提交前，請向 HiKorea、1345 或管轄出入境外國人機構確認實際適用與追加材料。",
-            self.html,
+            self.blobs["zh-CN"],
         )
 
     def test_safety_note_present_and_does_not_imply_approval(self):
         self.assertIn(
             "이 체크리스트는 개인 준비용 도구이며, 항목을 체크해도 접수나 허가가 보장되지 않습니다.",
-            self.html,
+            self.blobs["ko"],
         )
         self.assertIn(
             "This checklist is a personal preparation aid only. Checking items does not guarantee acceptance or approval.",
-            self.html,
+            self.blobs["en"],
         )
 
     def test_secondary_ai_checklist_prompt_present_in_all_target_languages(self):
-        # Button labels.
-        self.assertIn("체크리스트 기준으로 누락 가능성 물어보기", self.html)
-        self.assertIn("Ask AI what might be missing from this checklist", self.html)
-        self.assertIn("询问 AI 这份清单可能缺少什么", self.html)
-        self.assertIn("詢問 AI 這份清單可能缺少什麼", self.html)
-        # Prompt templates (cautious; must not imply final sufficiency).
-        self.assertIn("scenarioChecklistMissingPrompt", self.html)
+        # Button labels (localized in every supported locale).
+        self.assertIn("체크리스트 기준으로 누락 가능성 물어보기", self.blobs["ko"])
+        self.assertIn("Ask AI what might be missing from this checklist", self.blobs["en"])
+        self.assertIn("询问 AI 这份清单可能缺少什么", self.blobs["zh-CN"])
+        # Prompt template (cautious; must not imply final sufficiency).
         self.assertIn(
             "For {visaCode}, based on the selected scenario ({label}), what documents might be missing from this preparation checklist",
-            self.html,
+            localized(self.packs, "en", "scenarioChecklistMissingPrompt"),
         )
-        self.assertNotIn(
-            "guarantee",
-            "For {visaCode}, based on the selected scenario ({label}), what documents might be missing from this preparation checklist and what common mistakes should I watch for? Do not assert final sufficiency or approval; point out what still needs official confirmation, and keep Korean official document names where relevant.",
-        )
+        self.assertNotIn("guarantee", localized(self.packs, "en", "scenarioChecklistMissingPrompt"))
         # Wired through the existing handoff with the checklist prompt key.
+        self.assertIn("scenarioChecklistMissingPrompt", self.html)
         self.assertIn(
             "'ask-checklist-missing': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel, 'scenarioChecklistMissingPrompt')",
             self.html,
@@ -333,16 +335,15 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", body)
 
     def test_source_panel_scenario_wording_unchanged(self):
-        self.assertIn("시나리오별 서류 근거", self.html)
-        self.assertIn("선택한 시나리오 기준", self.html)
-        self.assertIn("Scenario-specific document source", self.html)
-        self.assertIn("Based on selected scenario", self.html)
+        self.assertIn("시나리오별 서류 근거", self.blobs["ko"])
+        self.assertIn("선택한 시나리오 기준", self.blobs["ko"])
+        self.assertIn("Scenario-specific document source", self.blobs["en"])
+        self.assertIn("Based on selected scenario", self.blobs["en"])
 
     def test_official_korean_document_name_note_remains_in_non_korean_modes(self):
         self.assertIn("officialDocumentNamesKoNote", self.html)
-        self.assertIn("Official document names are shown in Korean to match the immigration manual.", self.html)
-        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", self.html)
-        self.assertIn("為與出入境手冊一致，正式文件名稱以韓文顯示。", self.html)
+        self.assertIn("Official document names are shown in Korean to match the immigration manual.", self.blobs["en"])
+        self.assertIn("为与出入境手册一致，正式材料名称以韩文显示。", self.blobs["zh-CN"])
         self.assertIn(
             "currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class=\"official-korean-terms-note\">",
             self.html,

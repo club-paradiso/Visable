@@ -2,11 +2,17 @@
 from __future__ import annotations
 
 import json
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-MAIN_LANGS = ("ko", "en", "zh", "zhHant")
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa: E402
+
+# Localized route copy now lives in external per-locale JSON packs (data/i18n/*.json);
+# supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
 
 
 class ExpandedRouteWizardTests(unittest.TestCase):
@@ -14,6 +20,7 @@ class ExpandedRouteWizardTests(unittest.TestCase):
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
         cls.config = cls._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
+        cls.packs = load_packs()
         visas = json.loads((REPO_ROOT / "visa_data.json").read_text(encoding="utf-8"))
         cls.visas = {visa["code"]: visa for visa in visas}
 
@@ -38,18 +45,20 @@ class ExpandedRouteWizardTests(unittest.TestCase):
         for code in ("E-7", "D-4", "F-1"):
             self.assertIn("    '%s':" % code, self.config)
 
-    def test_route_titles_and_labels_exist_in_four_main_languages(self):
+    def test_route_titles_and_labels_exist_in_supported_languages(self):
         for prefix, english_title, route_count in (
             ("e7", "Which E-7 procedure do you need?", 3),
             ("d4", "Which D-4 route applies to you?", 4),
             ("f1", "Which F-1 route applies to you?", 8),
         ):
-            self.assertIn("%sRouteTitle: '%s'" % (prefix, english_title), self.html)
-            for suffix in ("Title", "Intro", "ChooserAria"):
-                self.assertEqual(self.html.count("%sRoute%s:" % (prefix, suffix)), len(MAIN_LANGS))
+            self.assertEqual(localized(self.packs, "en", "%sRouteTitle" % prefix), english_title)
+            keys = ["%sRoute%s" % (prefix, suffix) for suffix in ("Title", "Intro", "ChooserAria")]
             for idx in range(1, route_count + 1):
-                self.assertEqual(self.html.count("%sRoute%dLabel:" % (prefix, idx)), len(MAIN_LANGS))
-                self.assertEqual(self.html.count("%sRoute%dDesc:" % (prefix, idx)), len(MAIN_LANGS))
+                keys.append("%sRoute%dLabel" % (prefix, idx))
+                keys.append("%sRoute%dDesc" % (prefix, idx))
+            for key in keys:
+                for locale in SUPPORTED_LOCALES:
+                    self.assertIn(key, self.packs[locale], "%s missing from %s pack" % (key, locale))
 
     def test_routes_use_existing_procedure_keys(self):
         expected = {

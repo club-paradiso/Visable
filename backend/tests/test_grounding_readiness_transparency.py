@@ -1,22 +1,31 @@
 """Deterministic frontend coverage for the grounding-readiness / transparency PR.
 
-Parses index.html as text (matching the established repo pattern) to guard:
+Parses index.html for wiring/structure (functions, CSS, data-* hooks) and asserts
+localized copy against the externalized locale packs in ``data/i18n/`` (the inline
+``UI_TRANSLATIONS`` object was migrated to per-locale JSON files loaded at runtime).
+Guards:
   - the law-grounding status row + localized labels (Part C),
   - the partial-language fallback notice + support map (Part F),
   - deadline calculator source-status labeling + calendar caution (Part H),
-  - site-wide i18n coverage for the new labels in all four main languages (Part G),
+  - site-wide i18n coverage for the new labels across supported languages (Part G),
   - F-4 route-aware follow-through still localized + distinct (Part J).
 
 No browser is executed; functional behavior of the JS date/ICS/Google-Calendar
-helpers is covered separately by scripts/check_deadline_helpers.js.
+helpers is covered separately by scripts/check_deadline_helpers.js. Localized copy
+is checked against the three supported locales (ko, en, zh-CN); Traditional Chinese
+(zh-Hant) aliases to zh-CN in the manifest and is no longer a separate display
+locale, so Simplified Chinese is validated against zh-CN.
 """
 from __future__ import annotations
 
-import re
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, pack_blobs  # noqa: E402
 
 
 def _fn(html: str, name: str) -> str:
@@ -30,33 +39,26 @@ class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
-
-    def _pack(self, code: str) -> str:
-        ui = self.html.find("const UI_TRANSLATIONS =")
-        assert ui != -1, "UI_TRANSLATIONS not found"
-        scope = self.html[ui:]
-        m = re.search(rf"\n    {re.escape(code)}: {{", scope)
-        assert m, f"language pack {code} not found"
-        return scope[m.start(): m.start() + 80000].split("\n    },", 1)[0]
+        cls.packs = load_packs()
+        cls.blobs = pack_blobs()
 
 
 class LawGroundingStatusPanelTests(_IndexHtml):
+    # The status-row label was renamed product-wide to "Legal analysis basis"
+    # (법률 분석 근거 / 法律分析依据) when copy moved to the external packs; the four
+    # state labels are unchanged.
     def test_labels_present_korean(self):
-        for s in ["법령 근거 확인 상태", "시도하지 않음", "설정상 비활성화", "외부 법령 API 확인 불가", "법령 검색 결과 사용"]:
-            self.assertIn(s, self.html, s)
+        for s in ["법률 분석 근거", "시도하지 않음", "설정상 비활성화", "외부 법령 API 확인 불가", "법령 검색 결과 사용"]:
+            self.assertIn(s, self.blobs["ko"], s)
 
     def test_labels_present_english(self):
-        for s in ["Law-grounding status", "Not attempted", "Disabled by configuration",
+        for s in ["Legal analysis basis", "Not attempted", "Disabled by configuration",
                   "External law API unavailable", "Law search results used"]:
-            self.assertIn(s, self.html, s)
+            self.assertIn(s, self.blobs["en"], s)
 
     def test_labels_present_simplified_chinese(self):
-        for s in ["法令依据确认状态", "未尝试", "因设置而停用", "无法确认外部法令 API", "已使用法令搜索结果"]:
-            self.assertIn(s, self.html, s)
-
-    def test_labels_present_traditional_chinese(self):
-        for s in ["法令依據確認狀態", "未嘗試", "因設定而停用", "無法確認外部法令 API", "已使用法令搜尋結果"]:
-            self.assertIn(s, self.html, s)
+        for s in ["法律分析依据", "未尝试", "因设置而停用", "无法确认外部法令 API", "已使用法令搜索结果"]:
+            self.assertIn(s, self.blobs["zh-CN"], s)
 
     def test_panel_renders_normalized_status_row(self):
         fn = _fn(self.html, "renderGroundingSourcePanel")
@@ -80,15 +82,17 @@ class LawGroundingStatusPanelTests(_IndexHtml):
 
 
 class PartialLanguageNoticeTests(_IndexHtml):
-    def test_support_map_exists_with_four_full_languages(self):
-        self.assertIn("const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', zh: 'full', zhHant: 'full' };", self.html)
+    def test_support_map_declares_supported_locales(self):
+        # ko/en are full; zh-CN is still being finalized ('preparing'), which is
+        # what drives the partial-language notice. zh-Hant is no longer a separate
+        # locale (manifest aliases zhHant -> zh-CN).
+        self.assertIn("const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'preparing' };", self.html)
         self.assertIn("function languageSupportLevel(", self.html)
 
-    def test_notice_present_all_four_languages(self):
-        self.assertIn("이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.", self.html)
-        self.assertIn("Some interface text may still appear in Korean for this language. Official document names remain in Korean to match the immigration manual.", self.html)
-        self.assertIn("此语言的部分界面文字仍可能显示为韩文。正式材料名称会保留韩文，以便与出入境手册一致。", self.html)
-        self.assertIn("此語言的部分介面文字仍可能顯示為韓文。正式文件名稱會保留韓文，以便與出入境手冊一致。", self.html)
+    def test_notice_present_all_supported_languages(self):
+        self.assertIn("이 언어는 일부 화면에서 한국어가 함께 표시될 수 있습니다. 공식 서류명은 출입국 매뉴얼과 맞추기 위해 한국어로 유지됩니다.", self.blobs["ko"])
+        self.assertIn("Some interface text may still appear in Korean for this language. Official document names remain in Korean to match the immigration manual.", self.blobs["en"])
+        self.assertIn("此语言的部分界面文字仍可能显示为韩文。正式材料名称会保留韩文，以便与出入境手册一致。", self.blobs["zh-CN"])
 
     def test_notice_gated_to_partial_languages_only(self):
         fn = _fn(self.html, "renderLanguageMenu")
@@ -98,23 +102,23 @@ class PartialLanguageNoticeTests(_IndexHtml):
         self.assertIn("data-language-partial-notice", fn)
 
     def test_partial_badge_present_and_used(self):
-        for s in ["일부 번역", "Partial", "部分翻译", "部分翻譯"]:
-            self.assertIn(s, self.html, s)
+        self.assertIn("일부 번역", self.blobs["ko"])
+        self.assertIn("Partial", self.blobs["en"])
+        self.assertIn("部分翻译", self.blobs["zh-CN"])
         fn = _fn(self.html, "renderLanguageMenu")
         self.assertIn("languagePartialBadge", fn)
 
     def test_official_korean_document_helper_still_present(self):
         # Must not be removed by this PR.
         self.assertIn("officialDocumentNamesKoNote", self.html)
-        self.assertIn("공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.", self.html)
+        self.assertIn("공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.", self.blobs["ko"])
 
 
 class DeadlineSourceStatusTests(_IndexHtml):
     def test_common_rule_label_present_all_languages(self):
-        self.assertIn("공통 규칙 기반 준비 참고일", self.html)
-        self.assertIn("Common-rule preparation date", self.html)
-        self.assertIn("基于通用规则的准备参考日期", self.html)
-        self.assertIn("基於通用規則的準備參考日期", self.html)
+        self.assertIn("공통 규칙 기반 준비 참고일", self.blobs["ko"])
+        self.assertIn("Common-rule preparation date", self.blobs["en"])
+        self.assertIn("基于通用规则的准备参考日期", self.blobs["zh-CN"])
 
     def test_registration_90day_uses_common_rule_not_official(self):
         fn = _fn(self.html, "computeDeadlines")
@@ -122,8 +126,8 @@ class DeadlineSourceStatusTests(_IndexHtml):
         self.assertIn("paradisoDeadlineAddDays(entry, 90)", fn)
         self.assertRegex(fn, r"deadlineRowHtml\(tx\('deadlineRegEstimate'\),\s*regDate,\s*tx\('deadlineRegCaution'\),\s*tx\('deadlineSourceCommonRule'\)\)")
         # The reg caution explicitly states it is not an official deadline.
-        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.html)
-        self.assertIn("not a confirmed official deadline", self.html)
+        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.blobs["ko"])
+        self.assertIn("not a confirmed official deadline", self.blobs["en"])
 
     def test_custom_reminder_uses_custom_source(self):
         fn = _fn(self.html, "computeDeadlines")
@@ -146,8 +150,8 @@ class DeadlineSourceStatusTests(_IndexHtml):
         self.assertIn("encodeURIComponent(note)", fn)
 
     def test_calendar_caution_label_present_all_languages(self):
-        self.assertIn("Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.", self.html)
-        self.assertIn("Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.", self.html)
+        self.assertIn("Paradiso 준비용 알림입니다. 공식 기한이 아니며 HiKorea·1345·관할 출입국·외국인관서에서 확인하세요.", self.blobs["ko"])
+        self.assertIn("Paradiso preparation reminder. Not an official deadline; confirm with HiKorea, 1345, or the competent immigration office.", self.blobs["en"])
 
     def test_local_reminder_state_not_sent_to_ai(self):
         start = self.html.find("function submitAiAnalysis")
@@ -164,22 +168,21 @@ class DeadlineSourceStatusTests(_IndexHtml):
 
 class F4RouteFollowThroughTests(_IndexHtml):
     def test_route_labels_still_localized(self):
-        self.assertIn("F-4는 어떤 경로로 진행하시나요?", self.html)
-        self.assertIn("Which F-4 route applies to you?", self.html)
-        self.assertIn("您属于哪一种 F-4 办理路径？", self.html)
-        self.assertIn("您屬於哪一種 F-4 辦理路徑？", self.html)
+        self.assertIn("F-4는 어떤 경로로 진행하시나요?", self.blobs["ko"])
+        self.assertIn("Which F-4 route applies to you?", self.blobs["en"])
+        self.assertIn("您属于哪一种 F-4 办理路径？", self.blobs["zh-CN"])
 
     def test_residence_report_distinct_from_foreigner_registration(self):
-        self.assertIn("F-4 국내거소신고", self.html)
-        self.assertIn("F-4 domestic residence report", self.html)
-        self.assertIn("distinct from a general foreigner registration", self.html)
+        self.assertIn("F-4 국내거소신고", self.blobs["ko"])
+        self.assertIn("F-4 domestic residence report", self.blobs["en"])
+        self.assertIn("distinct from a general foreigner registration", self.blobs["en"])
 
     def test_generic_f4_does_not_force_a_route(self):
         chooser = _fn(self.html, "renderF4RouteChooser")
         self.assertIn('aria-pressed="false"', chooser)
 
     def test_route_selection_does_not_imply_approval(self):
-        self.assertIn("경로를 선택해도 자격이나 허가가 보장되지 않습니다", self.html)
+        self.assertIn("경로를 선택해도 자격이나 허가가 보장되지 않습니다", self.blobs["ko"])
         fn = _fn(self.html, "selectF4Route")
         for forbidden in ("eligible", "approved", "guaranteed"):
             self.assertNotIn(forbidden, fn.lower())
@@ -193,11 +196,11 @@ class NewKeyI18nParityTests(_IndexHtml):
         "deadlineSourceCommonRule", "deadlineSourceCustom", "deadlineCalendarCaution",
     ]
 
-    def test_new_keys_in_all_four_packs(self):
-        for code in ("ko", "en", "zh", "zhHant"):
-            pack = self._pack(code)
+    def test_new_keys_in_all_supported_packs(self):
+        for locale in SUPPORTED_LOCALES:
+            pack = self.packs[locale]
             for key in self.NEW_KEYS:
-                self.assertIn(f"{key}:", pack, f"{key} missing from {code} pack")
+                self.assertIn(key, pack, f"{key} missing from {locale} pack")
 
 
 if __name__ == "__main__":

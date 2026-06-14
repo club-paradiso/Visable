@@ -17,17 +17,26 @@ the "polish core journeys and deployed UX" PR:
 """
 from __future__ import annotations
 
-import re
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import load_packs, localized, pack_blobs  # noqa: E402
+
+# Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
+# the actively supported display locales are ko, en, zh-CN (zh-Hant aliases to
+# zh-CN), so Simplified Chinese is validated against zh-CN.
 
 
 class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.packs = load_packs()
+        cls.blobs = pack_blobs()
 
     def _slice(self, start_marker: str, end_marker: str) -> str:
         start = self.html.index(start_marker)
@@ -55,15 +64,13 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertNotIn("HiKorea 예약 도우미</strong>", panel)
         self.assertNotIn("구비서류 확인</strong>", panel)
 
-    def test_next_action_labels_present_in_four_main_languages(self):
-        self.assertIn("nextActionTitle: '지금 할 수 있는 일'", self.html)
-        self.assertIn("nextActionTitle: 'What you can do now'", self.html)
-        self.assertIn("nextActionTitle: '现在可以做的事'", self.html)
-        self.assertIn("nextActionTitle: '現在可以做的事'", self.html)
-        # HiKorea action title localized in all four (Part G visibility).
-        self.assertIn("nextActionHikoreaTitle: 'HiKorea reservation helper'", self.html)
-        self.assertIn("nextActionHikoreaTitle: 'HiKorea 预约助手'", self.html)
-        self.assertIn("nextActionHikoreaTitle: 'HiKorea 預約助手'", self.html)
+    def test_next_action_labels_present_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "nextActionTitle"), "지금 할 수 있는 일")
+        self.assertEqual(localized(self.packs, "en", "nextActionTitle"), "What you can do now")
+        self.assertEqual(localized(self.packs, "zh-CN", "nextActionTitle"), "现在可以做的事")
+        # HiKorea action title localized across supported locales (Part G visibility).
+        self.assertEqual(localized(self.packs, "en", "nextActionHikoreaTitle"), "HiKorea reservation helper")
+        self.assertEqual(localized(self.packs, "zh-CN", "nextActionHikoreaTitle"), "HiKorea 预约助手")
 
     # --- F-4 route chooser hardening (Part B) ------------------------------
     def test_f4_selected_route_banner_present(self):
@@ -76,26 +83,25 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
 
     def test_f4_show_all_reset_action_exists(self):
         self.assertIn("data-action=\"show-all-f4-routes\"", self.html)
-        self.assertIn("f4RouteShowAll: '전체 경로 보기'", self.html)
-        self.assertIn("f4RouteShowAll: 'Show all F-4 routes'", self.html)
+        self.assertEqual(localized(self.packs, "ko", "f4RouteShowAll"), "전체 경로 보기")
+        self.assertEqual(localized(self.packs, "en", "f4RouteShowAll"), "Show all F-4 routes")
 
-    def test_f4_route_titles_present_in_four_languages(self):
-        self.assertIn("f4RouteTitle: 'F-4는 어떤 경로로 진행하시나요?'", self.html)
-        self.assertIn("f4RouteTitle: 'Which F-4 route applies to you?'", self.html)
-        self.assertIn("f4RouteTitle: '您属于哪一种 F-4 办理路径？'", self.html)
-        self.assertIn("f4RouteTitle: '您屬於哪一種 F-4 辦理路徑？'", self.html)
+    def test_f4_route_titles_present_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "f4RouteTitle"), "F-4는 어떤 경로로 진행하시나요?")
+        self.assertEqual(localized(self.packs, "en", "f4RouteTitle"), "Which F-4 route applies to you?")
+        self.assertEqual(localized(self.packs, "zh-CN", "f4RouteTitle"), "您属于哪一种 F-4 办理路径？")
 
     def test_f4_domestic_residence_report_wording_distinct(self):
         # Route 4 must read as a domestic residence report, distinct from a
         # generic foreigner registration.
-        self.assertIn("F-4 domestic residence report", self.html)
-        self.assertIn("distinct from a general foreigner registration", self.html)
+        self.assertIn("F-4 domestic residence report", self.blobs["en"])
+        self.assertIn("distinct from a general foreigner registration", self.blobs["en"])
 
     def test_f4_route_selection_does_not_imply_approval(self):
         # H-2 -> F-4 route must not imply automatic approval.
-        self.assertIn("Selecting a route does not imply eligibility or approval", self.html)
-        self.assertIn("Confirm eligibility and required documents", self.html)
-        self.assertNotIn("automatic approval", self.html.lower() if False else self.html)
+        self.assertIn("Selecting a route does not imply eligibility or approval", self.blobs["en"])
+        self.assertIn("Confirm eligibility and required documents", self.blobs["en"])
+        self.assertNotIn("automatic approval", self.blobs["en"])
 
     def test_f4_route_to_procedure_mapping_present(self):
         config = self._slice("const ROUTE_WIZARD_CONFIG", "function getRouteWizardConfig")
@@ -108,8 +114,11 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         panel = self._slice("function renderGroundingSourcePanel", "async function submitAiAnalysis")
         self.assertIn("gp-lead", panel)
         self.assertIn("tx('aiSourcePanelLead')", panel)
-        # Plain-language lead present in four languages.
-        self.assertIn("aiSourcePanelLead: 'Below is a summary of what this answer is based on. It is not a final confirmation.'", self.html)
+        # Plain-language lead present in the localized packs.
+        self.assertEqual(
+            localized(self.packs, "en", "aiSourcePanelLead"),
+            "Below is a summary of what this answer is based on. It is not a final confirmation.",
+        )
 
     def test_law_grounding_unavailable_has_reassurance_note(self):
         panel = self._slice("function renderGroundingSourcePanel", "async function submitAiAnalysis")
@@ -150,10 +159,9 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         self.assertIn("tx('aiModalContextNote')", modal)
         # Context banner is hidden again when no scenario is selected.
         self.assertIn("contextEl.hidden = true", modal)
-        # Labels present across the four languages.
-        self.assertIn("aiModalContextLabel: 'Selected context'", self.html)
-        self.assertIn("aiModalContextLabel: '已选背景'", self.html)
-        self.assertIn("aiModalContextLabel: '已選背景'", self.html)
+        # Labels present across the supported locales.
+        self.assertEqual(localized(self.packs, "en", "aiModalContextLabel"), "Selected context")
+        self.assertEqual(localized(self.packs, "zh-CN", "aiModalContextLabel"), "已选背景")
 
     def test_ai_payload_sends_only_safe_identifiers(self):
         # The request body must still send the selected scenario identifiers...

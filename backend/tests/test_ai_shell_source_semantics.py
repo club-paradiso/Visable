@@ -18,12 +18,19 @@ from __future__ import annotations
 
 import shutil
 import subprocess
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 AI_HTML = REPO_ROOT / "ai.html"
 CHECKER = REPO_ROOT / "scripts" / "check_ai_shell_semantics.js"
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import pack_blob  # noqa: E402
+
+# Some English answer-shell labels migrated into the external en.json locale pack;
+# others remain inline in ai.html/index.html, so assert against both surfaces.
 
 
 class AiShellSemanticsCheckerTests(unittest.TestCase):
@@ -158,8 +165,10 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
     def setUpClass(cls):
         cls.html = AI_HTML.read_text(encoding="utf-8")
         cls.index_html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.en_blob = pack_blob("en")
 
     def test_legal_analysis_source_panel_labels_exist(self):
+        surfaces = self.html + self.index_html + self.en_blob
         for label in (
             "Legal analysis basis",
             "Direct official authority found",
@@ -172,7 +181,7 @@ class LegalAnalysisSourcePanelStaticTests(unittest.TestCase):
             "Related legal context analysis",
             "Show developer diagnostics",
         ):
-            self.assertIn(label, self.html + self.index_html)
+            self.assertIn(label, surfaces, label)
 
     def test_raw_technical_codes_stay_in_details_not_default_labels(self):
         for code in ("SOURCE_UNAVAILABLE", "LAW_API_BAD_RESPONSE", "CITATION_VERIFICATION_NOT_WIRED"):

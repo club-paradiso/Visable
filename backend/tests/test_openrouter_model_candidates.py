@@ -28,6 +28,12 @@ SMOKE = REPO_ROOT / "scripts" / "smoke_ai_live_quality.py"
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa: E402
+
+# Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
+# supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
+
 CANDS = [
     "nvidia/nemotron-3-ultra-550b-a55b:free",
     "nvidia/nemotron-3-super-120b-a12b:free",
@@ -600,6 +606,7 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = INDEX.read_text(encoding="utf-8")
+        cls.packs = load_packs()
 
     def test_provider_error_helper_does_not_render_raw_json(self):
         fn = self.html.split("function buildProviderErrorHtml", 1)[1].split("\nfunction ", 1)[0]
@@ -620,25 +627,34 @@ class ProviderErrorUxFrontendTests(unittest.TestCase):
         self.assertIn("tx('aiFallbackSucceeded')", submit)
         self.assertIn("model_fallback_used", submit)
 
-    def test_provider_busy_message_in_four_languages(self):
-        self.assertIn("aiProviderBusy: 'AI 모델이 일시적으로 혼잡합니다.'", self.html)
-        self.assertIn("aiProviderBusy: 'The AI model is temporarily busy.'", self.html)
-        self.assertIn("aiProviderBusy: 'AI 模型暂时繁忙。'", self.html)
-        self.assertIn("aiProviderBusy: 'AI 模型暫時繁忙。'", self.html)
+    def test_provider_busy_message_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "aiProviderBusy"), "AI 모델이 일시적으로 혼잡합니다.")
+        self.assertEqual(localized(self.packs, "en", "aiProviderBusy"), "The AI model is temporarily busy.")
+        self.assertEqual(localized(self.packs, "zh-CN", "aiProviderBusy"), "AI 模型暂时繁忙。")
 
-    def test_all_candidates_failed_message_in_four_languages(self):
-        self.assertIn("aiAllCandidatesFailed: '다른 모델 후보로 재시도했지만 현재 응답을 생성하지 못했습니다. 잠시 후 다시 시도하세요.'", self.html)
-        self.assertIn("aiAllCandidatesFailed: 'Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.'", self.html)
-        self.assertEqual(self.html.count("aiAllCandidatesFailed:"), 4)
+    def test_all_candidates_failed_message_in_supported_languages(self):
+        self.assertEqual(
+            localized(self.packs, "ko", "aiAllCandidatesFailed"),
+            "다른 모델 후보로 재시도했지만 현재 응답을 생성하지 못했습니다. 잠시 후 다시 시도하세요.",
+        )
+        self.assertEqual(
+            localized(self.packs, "en", "aiAllCandidatesFailed"),
+            "Paradiso retried the configured model candidates but could not generate a response. Please try again shortly.",
+        )
+        for locale in SUPPORTED_LOCALES:
+            self.assertIn("aiAllCandidatesFailed", self.packs[locale])
 
-    def test_fallback_success_and_response_model_labels_in_four_languages(self):
-        self.assertIn("aiFallbackSucceeded: '다른 모델 후보로 재시도하여 응답했습니다.'", self.html)
-        self.assertIn("aiFallbackSucceeded: 'Paradiso retried with another configured model candidate and generated a response.'", self.html)
-        self.assertEqual(self.html.count("aiFallbackSucceeded:"), 4)
-        self.assertIn("aiResponseModel: '응답 모델'", self.html)
-        self.assertIn("aiResponseModel: 'Response model'", self.html)
-        self.assertEqual(self.html.count("aiResponseModel:"), 4)
-        self.assertEqual(self.html.count("aiShowTechnicalDetails:"), 4)
+    def test_fallback_success_and_response_model_labels_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "aiFallbackSucceeded"), "다른 모델 후보로 재시도하여 응답했습니다.")
+        self.assertEqual(
+            localized(self.packs, "en", "aiFallbackSucceeded"),
+            "Paradiso retried with another configured model candidate and generated a response.",
+        )
+        self.assertEqual(localized(self.packs, "ko", "aiResponseModel"), "응답 모델")
+        self.assertEqual(localized(self.packs, "en", "aiResponseModel"), "Response model")
+        for key in ("aiFallbackSucceeded", "aiResponseModel", "aiShowTechnicalDetails"):
+            for locale in SUPPORTED_LOCALES:
+                self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
 
     def test_model_badge_uses_localized_response_model_label(self):
         fn = self.html.split("function buildModelBadgeHtml", 1)[1].split("\nfunction ", 1)[0]
