@@ -1415,6 +1415,12 @@ select:focus-visible {
             || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
         const MAX_CHARS = 500;
         const QUOTA_LIMIT = 30;
+        // Hard client-side ceiling for an /api/ask round-trip so the loader can
+        // never spin forever when the backend or AI provider hangs. Kept above a
+        // single backend provider attempt (OPENROUTER_TIMEOUT_SECONDS, default
+        // 60s) plus law-grounding/overhead so a legitimately slow grounded answer
+        // is not cut off, while a true hang still fails gracefully.
+        const AI_REQUEST_TIMEOUT_MS = 75000;
         const STORE_KEYS = {
             CONSENT: 'paradiso_ai_consent',
             QUOTA: 'paradiso_ai_quota'
@@ -2544,6 +2550,7 @@ select:focus-visible {
 
         function errorClassBadge(errorClass, status, lang) {
             if (errorClass === 'backend_http' && status) return `HTTP ${escapeHtml(status)}`;
+            if (errorClass === 'timeout') return tt(lang, { ko: '응답 시간 초과', en: 'Request timed out', zh: '请求超时', zhHant: '請求逾時' });
             if (errorClass === 'provider') return tt(lang, { ko: 'AI 제공자 오류', en: 'AI provider unavailable', zh: 'AI 提供方不可用', zhHant: 'AI 提供方不可用' });
             if (errorClass === 'frontend_render') return tt(lang, { ko: '화면 표시 오류', en: 'Display error', zh: '显示错误', zhHant: '顯示錯誤' });
             return tt(lang, { ko: '통신 오류', en: 'Network error', zh: '通信错误', zhHant: '通訊錯誤' });
@@ -2584,11 +2591,18 @@ select:focus-visible {
             const detail = payload && payload.detail;
             const fallbackAnswer = detail && typeof detail === 'object' ? (detail.copy_safe_answer || detail.fallback_answer || '') : '';
             const rawMessage = detail && typeof detail === 'object' ? detail.message : (detail || (payload && payload.message));
-            const userMessage = fallbackAnswer || (errorClass === 'frontend_render'
-                ? t(lang, '답변을 표시하는 중 문제가 발생했습니다. 답변은 생성되었으나 화면에 표시하지 못했습니다.', 'Something went wrong while displaying the answer. The answer was generated but could not be rendered.')
-                : (rawMessage && error.status && error.status < 500
-                    ? String(rawMessage)
-                    : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.')));
+            const userMessage = fallbackAnswer || (errorClass === 'timeout'
+                ? tt(lang, {
+                    ko: 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr), 1345 또는 관할 출입국·외국인관서로 확인하십시오.',
+                    en: 'The request was stopped because the AI response was taking too long. Please try again shortly. For urgent matters, confirm with HiKorea (hikorea.go.kr), 1345, or the competent immigration office.',
+                    zh: 'AI 响应时间过长，已中止请求。请稍后重试。如属紧急情况，请通过 HiKorea（hikorea.go.kr）、1345 或主管出入境·外国人管理机关确认。',
+                    zhHant: 'AI 回應時間過長，已中止請求。請稍後重試。如屬緊急情況，請透過 HiKorea（hikorea.go.kr）、1345 或主管出入境·外國人管理機關確認。'
+                })
+                : (errorClass === 'frontend_render'
+                    ? t(lang, '답변을 표시하는 중 문제가 발생했습니다. 답변은 생성되었으나 화면에 표시하지 못했습니다.', 'Something went wrong while displaying the answer. The answer was generated but could not be rendered.')
+                    : (rawMessage && error.status && error.status < 500
+                        ? String(rawMessage)
+                        : t(lang, '답변 생성 중 문제가 발생했습니다. 잠시 후 다시 시도해 주세요.', 'Something went wrong while generating the answer. Please try again shortly.'))));
             const grounding = extractGroundingFromErrorPayload(payload || {});
             // Developer diagnostics. Human-readable classification line first, then
             // the structured machine detail. For a frontend render crash we surface
@@ -2598,7 +2612,8 @@ select:focus-visible {
                 network: tt(lang, { ko: '네트워크 오류: 서버 응답을 받지 못했습니다.', en: 'Network error: no response was received from the server.', zh: '网络错误：未收到服务器响应。', zhHant: '網路錯誤：未收到伺服器回應。' }),
                 backend_http: tt(lang, { ko: '백엔드 HTTP 오류: 서버가 오류 상태를 반환했습니다.', en: 'Backend HTTP error: the server returned an error status.', zh: '后端 HTTP 错误：服务器返回了错误状态。', zhHant: '後端 HTTP 錯誤：伺服器回傳了錯誤狀態。' }),
                 provider: tt(lang, { ko: 'AI 제공자 오류: 모델 제공자가 일시적으로 응답하지 않습니다.', en: 'Provider error: the AI model provider is temporarily unavailable.', zh: 'AI 提供方错误：模型提供方暂时不可用。', zhHant: 'AI 提供方錯誤：模型提供方暫時不可用。' }),
-                frontend_render: tt(lang, { ko: '프런트엔드 표시 오류: 답변은 수신되었으나 화면 렌더링 중 예외가 발생했습니다.', en: 'Frontend render error: the answer was received but an exception occurred while rendering it.', zh: '前端渲染错误：已收到答复，但渲染时发生异常。', zhHant: '前端渲染錯誤：已收到答覆，但渲染時發生例外。' })
+                frontend_render: tt(lang, { ko: '프런트엔드 표시 오류: 답변은 수신되었으나 화면 렌더링 중 예외가 발생했습니다.', en: 'Frontend render error: the answer was received but an exception occurred while rendering it.', zh: '前端渲染错误：已收到答复，但渲染时发生异常。', zhHant: '前端渲染錯誤：已收到答覆，但渲染時發生例外。' }),
+                timeout: tt(lang, { ko: '응답 시간 초과: 서버가 제한 시간 내에 응답하지 않아 요청을 중단했습니다.', en: 'Request timed out: the request was stopped because the server did not respond within the time limit.', zh: '请求超时：服务器未在限制时间内响应，已中止请求。', zhHant: '請求逾時：伺服器未在限制時間內回應，已中止請求。' })
             }[errorClass] || '';
             let diagDetail;
             if (errorClass === 'frontend_render') {
@@ -2692,7 +2707,13 @@ select:focus-visible {
             setStatus('법령 분석 및 데이터 맵핑 중...');
 
             _abortController = new AbortController();
-            
+            const _controller = _abortController;
+            // Timeout guard so the loader can never spin forever. `_didTimeout`
+            // distinguishes a timeout-triggered abort from a user-initiated one
+            // (sending a new question) in the catch block below.
+            let _didTimeout = false;
+            const _timeoutId = setTimeout(() => { _didTimeout = true; _controller.abort(); }, AI_REQUEST_TIMEOUT_MS);
+
             try {
                 const userLang = detectUserLang(text);
                 // Keep the static shell (footer disclaimer) in the user's language
@@ -2711,7 +2732,7 @@ select:focus-visible {
                         visa_data: visaPayload,
                         history: recentChatHistory()
                     }),
-                    signal: _abortController.signal
+                    signal: _controller.signal
                 });
 
                 let result = null;
@@ -2754,12 +2775,27 @@ select:focus-visible {
                 setStatus('분석 완료');
 
             } catch (err) {
-                if (err.name === 'AbortError') return;
+                // Always clear this request's loader first (fixes a stranded
+                // typing-loader when a request is aborted).
                 const loader = document.getElementById(lid);
                 if (loader) loader.remove();
+                if (err.name === 'AbortError' && !_didTimeout) {
+                    // User started a new question / navigated away — no error card.
+                    return;
+                }
+                if (err.name === 'AbortError' && _didTimeout) {
+                    // Hard timeout: surface a graceful, localized timeout card
+                    // (classifyAskError returns 'timeout' via errorClass).
+                    const timeoutErr = new Error('request timed out');
+                    timeoutErr.errorClass = 'timeout';
+                    appendAiError(timeoutErr, detectUserLang(text));
+                    setStatus('응답 시간 초과 — 재시도 요망');
+                    return;
+                }
                 appendAiError(err, detectUserLang(text));
                 setStatus('오류 발생 — 재시도 요망');
             } finally {
+                clearTimeout(_timeoutId);
                 inp.disabled = false;
                 btn.textContent = detectUserLang(inp.value) === 'en' ? 'Send' : '전송';
                 updateCharCounter();

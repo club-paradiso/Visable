@@ -8,6 +8,7 @@ static against index.html; smoke checks are static against the harness source.
 """
 from __future__ import annotations
 
+import asyncio
 import os
 import subprocess
 import sys
@@ -15,6 +16,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
+import httpx
 from fastapi import HTTPException
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -165,6 +167,95 @@ class ProviderErrorClassifierTests(unittest.TestCase):
         etype, retryable = pb._classify_openrouter_error(451, "flagged by content policy")
         self.assertEqual(etype, "policy_or_safety_rejection")
         self.assertFalse(retryable)
+
+
+# ---------------------------------------------------------------------------
+# Provider timeout / network error -> retryable upstream (no uncaught 500)
+# ---------------------------------------------------------------------------
+
+
+def _raising_async_client(exc):
+    """Factory mimicking httpx.AsyncClient(...) whose .post() raises ``exc``."""
+
+    class _C:
+        def __init__(self, *a, **k):
+            pass
+
+        async def __aenter__(self):
+            return self
+
+        async def __aexit__(self, *a):
+            return False
+
+        async def post(self, *a, **k):
+            raise exc
+
+    return _C
+
+
+class ProviderTimeoutBecomesRetryableTests(unittest.TestCase):
+    """A hung/slow OpenRouter call must surface as a *retryable* upstream error
+    so the candidate fallback chain + deterministic preparation note engage —
+    never as an uncaught 500 that strands the frontend and skips cooldown."""
+
+    def test_openrouter_timeout_raises_retryable_504(self):
+        pb = _pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
+                patch.object(pb.httpx, "AsyncClient",
+                             _raising_async_client(httpx.ReadTimeout("slow upstream"))):
+            with self.assertRaises(HTTPException) as ctx:
+                asyncio.run(pb._call_openrouter("q", model="x/y:free"))
+        detail = ctx.exception.detail
+        self.assertEqual(ctx.exception.status_code, 504)
+        self.assertEqual(detail.get("error"), "openrouter_timeout")
+        etype, retryable = pb._classify_openrouter_error(
+            detail.get("status"), detail.get("message"), detail.get("error")
+        )
+        self.assertEqual(etype, "upstream_unavailable")
+        self.assertTrue(retryable)
+
+    def test_openrouter_network_error_raises_retryable_503(self):
+        pb = _pb()
+        with patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
+                patch.object(pb.httpx, "AsyncClient",
+                             _raising_async_client(httpx.ConnectError("connection refused"))):
+            with self.assertRaises(HTTPException) as ctx:
+                asyncio.run(pb._call_openrouter("q", model="x/y:free"))
+        detail = ctx.exception.detail
+        self.assertEqual(ctx.exception.status_code, 503)
+        self.assertEqual(detail.get("error"), "openrouter_network_error")
+        _etype, retryable = pb._classify_openrouter_error(
+            detail.get("status"), detail.get("message"), detail.get("error")
+        )
+        self.assertTrue(retryable)
+
+    def test_candidate_loop_falls_through_on_timeout_and_cools_down(self):
+        pb = _pb()
+        if hasattr(pb, "_reset_openrouter_model_cooldowns_for_tests"):
+            pb._reset_openrouter_model_cooldowns_for_tests()
+        first, second = CANDS[0], CANDS[1]
+
+        async def fake(prompt, model=None):
+            if model == first:
+                # The *converted* timeout HTTPException from _call_openrouter.
+                raise HTTPException(
+                    status_code=504,
+                    detail={"error": "openrouter_timeout", "status": 504,
+                            "message": "OpenRouter request timed out after 60s"},
+                )
+            return "ANSWER from %s" % model
+
+        with patch.object(pb, "OPENROUTER_MODEL", first), \
+                patch.object(pb, "OPENROUTER_MODEL_CANDIDATES", list(CANDS)), \
+                patch.object(pb, "_call_openrouter", fake):
+            result = asyncio.run(pb._openrouter_complete_with_candidates("q"))
+
+        self.assertTrue(result["ok"])
+        self.assertEqual(result["final_model"], second)
+        self.assertTrue(result["model_fallback_used"])
+        self.assertIn(first, pb._cooling_down_models())
+        if hasattr(pb, "_reset_openrouter_model_cooldowns_for_tests"):
+            pb._reset_openrouter_model_cooldowns_for_tests()
 
 
 # ---------------------------------------------------------------------------

@@ -753,6 +753,7 @@
   "aiLimitedPreparationNote": "有限准备说明",
   "aiAllCandidatesUnavailable": "所有在线候选模型目前均不可用",
   "aiTryAgainShortly": "请稍后重试",
+  "aiTimeout": "AI 响应超时，已中止请求。请稍后重试。如属紧急情况，请通过 HiKorea 或 1345 确认。",
   "aiFallbackFromMetadata": "基于可用来源/居留资格元数据生成的后备答复",
   "aiOllamaFallbackNote": "Provider: Ollama fallback · Response model",
   "aiOllamaFallbackProvider": "Ollama fallback",

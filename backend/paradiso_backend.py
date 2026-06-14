@@ -191,6 +191,15 @@ OLLAMA_BASE_URL: str = os.environ.get("OLLAMA_BASE_URL", "http://localhost:11434
 OLLAMA_MODEL: str = os.environ.get("OLLAMA_MODEL", "qwen3:8b").strip() or "qwen3:8b"
 OLLAMA_TIMEOUT_SECONDS: float = _env_float("OLLAMA_TIMEOUT_SECONDS", 20.0)
 
+# Hard ceiling for a single outbound LLM provider request (OpenRouter / Groq).
+# A provider that hangs must never stall /api/ask indefinitely: when this
+# timeout is hit the request is converted into a *retryable* upstream error so
+# the candidate fallback chain, the per-model cooldown, and the deterministic
+# source-grounded preparation note all still engage (instead of bubbling up as
+# an uncaught 500). The default preserves the historical 60s behaviour; lower
+# it per-deploy (e.g. OPENROUTER_TIMEOUT_SECONDS=40) for snappier failure.
+OPENROUTER_TIMEOUT_SECONDS: float = _env_float("OPENROUTER_TIMEOUT_SECONDS", 60.0)
+
 
 def _validate_model_candidates(candidates: List[str]) -> List[str]:
     """Non-secret formatting/policy warnings about the candidate list."""
@@ -851,11 +860,36 @@ async def _call_openrouter(prompt: str, model: Optional[str] = None) -> str:
         headers["HTTP-Referer"] = SITE_URL
     if SITE_TITLE:
         headers["X-Title"] = SITE_TITLE
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        resp = await client.post(
-            "https://openrouter.ai/api/v1/chat/completions",
-            headers=headers,
-            json=payload,
+    try:
+        async with httpx.AsyncClient(timeout=OPENROUTER_TIMEOUT_SECONDS) as client:
+            resp = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers,
+                json=payload,
+            )
+    except httpx.TimeoutException as exc:
+        # A hung/slow provider must surface as a *retryable* upstream timeout
+        # (status 504 classifies as upstream_unavailable) so the candidate loop
+        # marks the model cooling-down and falls through to the next candidate
+        # and, ultimately, the deterministic source-grounded preparation note.
+        raise HTTPException(
+            status_code=504,
+            detail={
+                "error": "openrouter_timeout",
+                "status": 504,
+                "message": f"OpenRouter request timed out after {OPENROUTER_TIMEOUT_SECONDS:.0f}s: {str(exc)[:200]}",
+            },
+        )
+    except httpx.HTTPError as exc:
+        # Connection/transport-level failures (DNS, refused, reset) are also
+        # transient upstream unavailability — keep them retryable, never a 500.
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "openrouter_network_error",
+                "status": 503,
+                "message": f"OpenRouter request failed: {str(exc)[:200]}",
+            },
         )
     if resp.status_code >= 400:
         raise HTTPException(
@@ -902,11 +936,26 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
         "Authorization": f"Bearer {GROQ_API_KEY}",
         "Content-Type": "application/json",
     }
-    async with httpx.AsyncClient(timeout=60.0) as client:
-        resp = await client.post(
-            "https://api.groq.com/openai/v1/chat/completions",
-            headers=headers,
-            json=payload,
+    try:
+        async with httpx.AsyncClient(timeout=OPENROUTER_TIMEOUT_SECONDS) as client:
+            resp = await client.post(
+                "https://api.groq.com/openai/v1/chat/completions",
+                headers=headers,
+                json=payload,
+            )
+    except httpx.HTTPError as exc:
+        # Groq is only ever an explicitly-enabled provider-family fallback; a
+        # timeout/transport failure here must stay a clean HTTPException so the
+        # caller (try/except HTTPException) drops to the deterministic note
+        # rather than crashing /api/ask with an uncaught 500.
+        is_timeout = isinstance(exc, httpx.TimeoutException)
+        raise HTTPException(
+            status_code=504 if is_timeout else 503,
+            detail={
+                "error": "groq_timeout" if is_timeout else "groq_network_error",
+                "status": 504 if is_timeout else 503,
+                "message": f"Groq request failed: {str(exc)[:200]}",
+            },
         )
     if resp.status_code >= 400:
         raise HTTPException(

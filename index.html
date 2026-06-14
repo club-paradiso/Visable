@@ -13462,6 +13462,11 @@ function toggleCityMenu(force) {
 const DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
 const API_BASE = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
     || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+// Hard client-side ceiling for an /api/ask round-trip so the AI spinner can
+// never spin forever when the backend / AI provider hangs. Kept above a single
+// backend provider attempt (OPENROUTER_TIMEOUT_SECONDS, default 60s) plus
+// grounding overhead so a legitimately slow grounded answer is not cut off.
+const AI_REQUEST_TIMEOUT_MS = 75000;
 let VISA_DATA = [];
 let VISA_ISSUANCE_RECORDS = [];
 let VISA_ISSUANCE_BY_CODE = new Map();
@@ -14691,6 +14696,12 @@ async function submitAiAnalysis(actionType, btnEl) {
 
     if (currentAiController) currentAiController.abort();
     currentAiController = new AbortController();
+    const _aiController = currentAiController;
+    // Timeout guard so the spinner can never spin forever if the backend /
+    // provider hangs. `_didTimeout` distinguishes a timeout abort from a
+    // user-initiated one in the catch block below.
+    let _didTimeout = false;
+    const _timeoutId = setTimeout(() => { _didTimeout = true; _aiController.abort(); }, AI_REQUEST_TIMEOUT_MS);
     try {
         const response = await fetch(`${API_BASE}/api/ask`, {
             method: 'POST',
@@ -14744,9 +14755,15 @@ async function submitAiAnalysis(actionType, btnEl) {
         const sourcePanel = renderGroundingSourcePanel(result);
         resultBox.innerHTML = formattedText + fallbackNote + modelBadge + sourcePanel; resultBox.style.display = 'block';
     } catch (error) {
-        if (error.name === 'AbortError') return;
+        if (error.name === 'AbortError') {
+            // Timeout-triggered abort shows a graceful message; a user-initiated
+            // abort (new request) stays silent. The spinner is cleared in finally.
+            if (_didTimeout) { resultBox.innerHTML = `<b>${escapeHtml(tx('aiTimeout'))}</b>`; resultBox.style.display = 'block'; }
+            return;
+        }
         resultBox.innerHTML = `<b>${escapeHtml(tx('aiError'))}</b>`; resultBox.style.display = 'block';
     } finally {
+        clearTimeout(_timeoutId);
         allBtns.forEach(b => b.disabled = false); if (spinner) spinner.style.display = 'none'; currentAiController = null;
     }
 }
