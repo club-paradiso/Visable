@@ -14982,6 +14982,26 @@ function getProcedureFeeInfo(v, procedureKey) {
         fee.notes = ['결혼이민(F-6) 체류기간 연장허가 정부수입인지 30,000원'];
         fee.commonReference = false;
     }
+    // 영주(F-5)는 체류기간 상한이 없어 '체류기간 연장(시행규칙 제72조제6호, 6만원)'
+    // 대상이 아닙니다. 기본 연장 수수료가 오인되지 않도록, 영주증(영주카드) 재발급
+    // 수수료(시행규칙 제72조제10의2호, 35,000원)로 정정합니다.
+    if (procedureKey === 'extension' && v.code === 'F-5') {
+        fee.label = currentLanguage === 'en' ? 'Permanent residence card reissuance' : '영주증 재발급';
+        fee.revenueStamp = 0;
+        fee.cardIssueFee = 35000;
+        fee.notes = currentLanguage === 'en'
+            ? [
+                'Permanent residence (F-5) has no stay-period limit, so it is not subject to "extension of stay".',
+                'The permanent residence card is valid for 10 years and must be reissued before it expires (a late reissuance may incur a fine).',
+                'Permanent residence card reissuance fee: KRW 35,000 (Enforcement Rule Art. 72, item 10-2).'
+            ]
+            : [
+                '영주(F-5)는 체류기간 상한이 없어 ‘체류기간 연장’ 대상이 아닙니다.',
+                '영주증(영주카드) 유효기간은 10년이며 만료 전 재발급해야 합니다(기간 도과 시 과태료).',
+                '영주증 재발급 수수료 35,000원 (출입국관리법 시행규칙 제72조제10의2호)'
+            ];
+        fee.commonReference = false;
+    }
     return fee;
 }
 
@@ -15143,6 +15163,22 @@ function getProcedureLabelByKey(key, fallback = '') {
 
 function getProcedureLabel(proc) {
     return getProcedureLabelByKey(proc.key, proc.label);
+}
+
+// 영주(F-5)는 체류기간 상한이 없는 영주자격이라 '체류기간 연장' 개념이 없고,
+// 영주증(영주카드)을 유효기간 10년마다 재발급하는 절차만 존재합니다(출입국관리법
+// 제33조의2·시행규칙 제72조제10의2호). 데이터상 동일한 extension 절차 슬롯을
+// 재사용하되, 사용자에게는 잘못된 '체류기간 연장'이 아니라 올바른 명칭
+// '영주증 재발급'으로 표시합니다. (렌더러 전용 표시 보정 — 데이터 미변경)
+function isF5ResidenceCardReissuance(v, proc) {
+    return !!(v && v.code === 'F-5' && proc && proc.key === 'extension');
+}
+function getProcedureDisplayLabel(v, proc) {
+    if (isF5ResidenceCardReissuance(v, proc)) {
+        const label = tx('procExtensionResidenceCardF5');
+        return label && label !== 'procExtensionResidenceCardF5' ? label : '영주증 재발급';
+    }
+    return getProcedureLabel(proc);
 }
 
 function localizeResultCount(n, subtypeCount = 0) {
@@ -16247,7 +16283,7 @@ function renderProcedureHeader(v, proc) {
         ? `<div class="procedure-source-ref">${escapeHtml(refBits.slice(0, 3).join(' / '))}</div>`
         : '';
     return `<div class="procedure-source-header">
-        <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureLabel(proc))}</span></div>
+        <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureDisplayLabel(v, proc))}</span></div>
         <span class="procedure-source-badge${badgeClass}">${escapeHtml(sourceLabel)}</span>
         ${refHtml}
         ${renderSourceLimitationExplanation(sourceState, allRefBits)}
@@ -16666,7 +16702,7 @@ function renderProcedures(v, keywords) {
         </section>`;
     }
     const firstActive = procedures.find(p => p.available) || procedures[0];
-    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" data-testid="procedure-tab" data-procedure-key="${p.key}" ${p.available ? '' : 'disabled'}>${getProcedureLabel(p)}</button>`).join('');
+    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" data-testid="procedure-tab" data-procedure-key="${p.key}" ${p.available ? '' : 'disabled'}>${escapeHtml(getProcedureDisplayLabel(v, p))}</button>`).join('');
     const panels = procedures.map(p => renderProcedurePanel(v, p, keywords, p.key === firstActive.key)).join('');
     return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('procedureSectionTitle'))}</h4><div class="procedure-tabs" role="tablist">${tabs}</div>${panels}</div>`;
 }
