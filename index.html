@@ -18562,7 +18562,9 @@ function getLandingHintItems() {
     const labels = txArray('landingHints');
     const koLabels = Array.isArray(UI_TRANSLATIONS.ko?.landingHints) ? UI_TRANSLATIONS.ko.landingHints : BOOTSTRAP_KO_FALLBACK.landingHints;
     const queries = BOOTSTRAP_KO_FALLBACK.landingHints;
-    return queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
+    const items = queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
+    for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [items[i], items[j]] = [items[j], items[i]]; }
+    return items;
 }
 
 function getQuickFilterItems() {
