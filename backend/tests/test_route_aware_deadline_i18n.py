@@ -122,9 +122,12 @@ class F4RouteWizardFrontendTests(_IndexHtml):
         self.assertNotIn(".remove()", fn)
 
     def test_generic_f4_does_not_force_a_route(self):
-        # Chips render unpressed by default; nothing auto-selects a route.
+        # Nothing auto-selects a route: the popup trigger shows a neutral label
+        # and the explanation area starts hidden until the user picks a route.
         chooser = _extract_function(self.html, "renderF4RouteChooser")
-        self.assertIn('aria-pressed="false"', chooser)
+        self.assertIn('data-action="open-route-picker"', chooser)
+        self.assertIn('role="status" aria-live="polite" hidden', chooser)
+        self.assertNotIn('data-selected-route="', chooser)
 
     def test_wizard_does_not_expose_raw_manualrefs_or_requireddocs(self):
         chooser = _extract_function(self.html, "renderF4RouteChooser")
@@ -132,8 +135,11 @@ class F4RouteWizardFrontendTests(_IndexHtml):
         self.assertNotIn("requiredDocs", chooser)
 
     def test_route_chips_are_buttons_for_keyboard_access(self):
+        # The popup trigger and the in-popup route choices are all real buttons.
         chooser = _extract_function(self.html, "renderF4RouteChooser")
-        self.assertIn('<button type="button" class="f4-route-chip"', chooser)
+        self.assertIn('<button type="button" class="f4-route-trigger"', chooser)
+        picker = _extract_function(self.html, "openRoutePicker")
+        self.assertIn('<button type="button" class="scenario-choice route-picker-choice"', picker)
 
 
 class DeadlineCalculatorFrontendTests(_IndexHtml):

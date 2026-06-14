@@ -178,8 +178,11 @@ class F4RouteFollowThroughTests(_IndexHtml):
         self.assertIn("distinct from a general foreigner registration", self.blobs["en"])
 
     def test_generic_f4_does_not_force_a_route(self):
+        # Nothing auto-selects a route: the popup trigger is neutral and no route
+        # is pre-selected until the user opens the picker and chooses.
         chooser = _fn(self.html, "renderF4RouteChooser")
-        self.assertIn('aria-pressed="false"', chooser)
+        self.assertIn('data-action="open-route-picker"', chooser)
+        self.assertNotIn('data-selected-route="', chooser)
 
     def test_route_selection_does_not_imply_approval(self):
         self.assertIn("경로를 선택해도 자격이나 허가가 보장되지 않습니다", self.blobs["ko"])

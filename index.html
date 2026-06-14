@@ -1677,11 +1677,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 /* Scenario picker modal choice list */
 .scenario-picker-choice-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.2rem; }
 .scenario-picker-choice { min-height: 66px; }
-/* Scenario picker modal — roomy box + a clean intro line (overrides the boxed
-   .text-desc styling so the copy reads as a subtitle, not a callout). */
-#scenarioPickerOverlay .modal-box { max-width: 580px; }
-#scenarioPickerOverlay .modal-body { gap: 0.55rem; }
-#scenarioPickerModalCopy.text-desc { margin: 0; padding: 0; background: none; border: none; border-radius: 0; color: var(--t2); font-size: 0.86rem; line-height: 1.6; word-break: keep-all; }
+/* Scenario / route picker modal — roomy box + a clean intro line (overrides the
+   boxed .text-desc styling so the copy reads as a subtitle, not a callout). */
+#scenarioPickerOverlay .modal-box, #routePickerOverlay .modal-box { max-width: 580px; }
+#scenarioPickerOverlay .modal-body, #routePickerOverlay .modal-body { gap: 0.55rem; }
+#scenarioPickerModalCopy.text-desc, #routePickerModalCopy.text-desc { margin: 0; padding: 0; background: none; border: none; border-radius: 0; color: var(--t2); font-size: 0.86rem; line-height: 1.6; word-break: keep-all; }
 .official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
 .manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
@@ -1785,6 +1785,15 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .f4-route-chip:hover { border-color: var(--ac); }
 .f4-route-chip[aria-pressed="true"] { background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); border-color: var(--ac); color: var(--t1); }
 .f4-route-chip:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+/* F-4 route chooser is selected via an in-screen popup (#routePickerOverlay).
+   The inline trigger opens it; routes render as choices inside the modal. */
+.f4-route-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.f4-route-trigger { flex: 1 1 auto; min-height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; border: 1px solid color-mix(in srgb, var(--ac) 40%, var(--bd2)); background: color-mix(in srgb, var(--ac) 6%, var(--bg1)); color: var(--t1); border-radius: 10px; padding: 0.55rem 0.85rem; font: inherit; font-size: 0.82rem; font-weight: 800; cursor: pointer; text-align: left; transition: var(--btn-tr); word-break: keep-all; }
+.f4-route-trigger:hover { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 11%, var(--bg1)); }
+.f4-route-trigger:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.f4-route-trigger-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.f4-route-trigger-caret { flex: 0 0 auto; color: var(--ac); font-size: 0.72rem; }
+.route-picker-choice-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.65rem; }
 .f4-route-showall { min-height: 38px; border: 1px dashed var(--bd2); background: transparent; color: var(--t3); border-radius: 10px; padding: 0.45rem 0.7rem; font: inherit; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
 .f4-route-showall:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
 .f4-route-explain { margin-top: 0.7rem; padding: 0.7rem 0.8rem; border: 1px solid var(--bd2); border-left: 3px solid var(--ac); border-radius: 8px; background: var(--bg1); }
@@ -1844,7 +1853,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
         grid-template-columns: 1fr;
         grid-template-areas: "primary" "doc" "ai";
     }
-    .f4-route-chip, .f4-route-showall { flex: 1 1 100%; min-height: 44px; }
+    .f4-route-chip, .f4-route-showall, .f4-route-trigger { flex: 1 1 100%; min-height: 44px; }
     .scenario-choice { width: 100%; }
     /* Scenario picker becomes a bottom sheet on phones — easier thumb reach. */
     #scenarioPickerOverlay { align-items: flex-end; padding: 0; }
@@ -13225,6 +13234,19 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
+<div class="modal-overlay" id="routePickerOverlay" role="dialog" aria-modal="true" aria-labelledby="routePickerTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 560px;">
+        <div class="modal-header">
+            <h2 id="routePickerTitle" class="modal-title">경로 선택</h2>
+            <button type="button" class="modal-close" data-action="close-route-picker" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <p id="routePickerModalCopy" class="text-desc"></p>
+            <div id="routePickerChoices" class="route-picker-choice-list" role="list" aria-live="polite"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="faqModalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
     <div class="modal-box" style="max-width: 600px;">
         <div class="modal-header">
@@ -16989,30 +17011,46 @@ function isF4RouteWizardTarget(v) {
 function renderF4RouteChooser(v) {
     const cfg = getRouteWizardConfig(v);
     if (!cfg) return '';
-    const chips = cfg.routes.map(r =>
-        `<button type="button" class="f4-route-chip" data-action="select-f4-route" data-route-id="${escapeHtml(r.id)}" data-procedure-key="${escapeHtml(r.procedureKey)}" data-variant-id="${escapeHtml(r.variantId || '')}" data-label-key="${escapeHtml(r.labelKey)}" data-desc-key="${escapeHtml(r.descKey)}" aria-pressed="false">${escapeHtml(tx(r.labelKey))}</button>`
-    ).join('');
-    return `<section class="f4-route-wizard manual-section" data-f4-route-wizard aria-label="${escapeHtml(tx(cfg.ariaKey))}">
+    // Route selection happens in an in-screen popup (#routePickerOverlay). Nothing
+    // is pre-selected: the trigger shows a neutral label and the explanation area
+    // stays hidden until the user picks a route.
+    return `<section class="f4-route-wizard manual-section" data-f4-route-wizard data-route-wizard-code="${escapeHtml(v.code)}" aria-label="${escapeHtml(tx(cfg.ariaKey))}">
         <h4 class="manual-section-title">${escapeHtml(tx(cfg.titleKey))}</h4>
         <p class="f4-route-intro">${escapeHtml(tx(cfg.introKey))}</p>
-        <div class="f4-route-chips" role="group" aria-label="${escapeHtml(tx(cfg.ariaKey))}">${chips}<button type="button" class="f4-route-showall" data-action="show-all-f4-routes" hidden>${escapeHtml(tx('routeShowAll'))}</button></div>
+        <div class="f4-route-bar">
+            <button type="button" class="f4-route-trigger" data-action="open-route-picker" aria-haspopup="dialog">
+                <span class="f4-route-trigger-label">${escapeHtml(tx('routePickerTrigger'))}</span>
+                <span class="f4-route-trigger-caret" aria-hidden="true">▾</span>
+            </button>
+            <button type="button" class="f4-route-showall" data-action="show-all-f4-routes" hidden>${escapeHtml(tx('routeShowAll'))}</button>
+        </div>
         <div class="f4-route-explain" data-f4-route-explain role="status" aria-live="polite" hidden></div>
     </section>`;
 }
 function selectF4Route(btn) {
+    // Back-compat shim: resolve the wizard/card from the clicked control and
+    // delegate to the shared apply helper (the popup path uses chooseRoute).
     const wizard = btn.closest('[data-f4-route-wizard]');
-    const card = btn.closest('.manual-result');
     if (!wizard) return;
-    const procKey = btn.dataset.procedureKey;
-    const variantId = btn.dataset.variantId || '';
-    const labelKey = btn.dataset.labelKey;
-    const descKey = btn.dataset.descKey;
-    wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', String(c === btn)));
+    applyRouteSelection(wizard, btn.closest('.manual-result'), {
+        routeId: btn.dataset.routeId || '',
+        procKey: btn.dataset.procedureKey,
+        variantId: btn.dataset.variantId || '',
+        labelKey: btn.dataset.labelKey,
+        descKey: btn.dataset.descKey
+    });
+}
+function applyRouteSelection(wizard, card, route) {
+    if (!wizard) return;
+    const { routeId, procKey, variantId, labelKey, descKey } = route;
+    wizard.setAttribute('data-selected-route', routeId || '');
     const explain = wizard.querySelector('[data-f4-route-explain]');
     const tab = card ? card.querySelector(`.procedure-tab[data-procedure="${procKey}"]:not([disabled])`) : null;
-    // Make the selected route obvious in text (not color alone): a labelled
-    // banner echoing which route the user picked, above the cautious detail.
+    // Make the selected route obvious in text (not color alone): echo it in the
+    // trigger label and a labelled banner above the cautious detail.
     const routeLabel = labelKey ? tx(labelKey) : '';
+    const triggerLabel = wizard.querySelector('.f4-route-trigger-label');
+    if (triggerLabel) triggerLabel.textContent = routeLabel ? `✓ ${routeLabel}` : tx('routePickerTrigger');
     let html = `<p class="f4-route-selected"><span class="f4-route-selected-prefix">${escapeHtml(tx('f4RouteSelectedPrefix'))}</span> <strong>${escapeHtml(routeLabel)}</strong></p>`;
     html += `<p class="f4-route-desc">${escapeHtml(descKey ? tx(descKey) : '')}</p>`;
     if (tab && card) {
@@ -17023,18 +17061,12 @@ function selectF4Route(btn) {
             t.classList.toggle('is-route-muted', t !== tab);
         });
         card.querySelectorAll('.procedure-panel').forEach(p => p.classList.toggle('active', p.dataset.procedurePanel === procKey));
-        // If the route maps to a specific source-backed scenario variant, bring
-        // it forward in the activated panel's scenario selector. Broad routes
-        // deliberately reset to the empty / "Show all" choice so a previously
-        // selected subtype cannot leak stale checklist or AI context into the
-        // newly selected route. This reuses the existing variant-selection
-        // model and never invents documents.
-        const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
-        const selector = panel ? panel.querySelector('[data-procedure-variant-selector].scenario-needs-pick') : null;
         // Route maps to a specific source-backed scenario variant → bring it
         // forward (revealing only that card) via the in-screen picker model.
         // Broad routes (no variantId) reset the picker to its empty state so a
         // previously selected subtype cannot leak stale checklist/AI context.
+        const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
+        const selector = panel ? panel.querySelector('[data-procedure-variant-selector].scenario-needs-pick') : null;
         if (selector) applyScenarioSelection(selector, variantId || '');
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
@@ -17046,11 +17078,64 @@ function selectF4Route(btn) {
     const showAll = wizard.querySelector('.f4-route-showall');
     if (showAll) showAll.hidden = false;
 }
+// --- In-screen route picker popup ----------------------------------------
+// The route choices live in a modal dialog (#routePickerOverlay), built on
+// demand from ROUTE_WIZARD_CONFIG for the originating wizard's status code.
+let routePickerActiveWizard = null;
+let routePickerActiveCard = null;
+
+function openRoutePicker(trigger) {
+    const wizard = trigger.closest('[data-f4-route-wizard]');
+    if (!wizard) return;
+    routePickerActiveWizard = wizard;
+    routePickerActiveCard = trigger.closest('.manual-result');
+    const code = wizard.getAttribute('data-route-wizard-code') || '';
+    const v = (typeof VISA_DATA !== 'undefined') ? VISA_DATA.find(x => x.code === code) : null;
+    const cfg = v ? getRouteWizardConfig(v) : null;
+    const host = document.getElementById('routePickerChoices');
+    if (!cfg || !host) return;
+    const selectedId = wizard.getAttribute('data-selected-route') || '';
+    host.innerHTML = cfg.routes.map((r, i) => {
+        const label = tx(r.labelKey);
+        const desc = r.descKey ? tx(r.descKey) : '';
+        const pressed = r.id === selectedId ? 'true' : 'false';
+        return `<button type="button" class="scenario-choice route-picker-choice" role="listitem" data-action="choose-route" data-route-id="${escapeHtml(r.id)}" data-procedure-key="${escapeHtml(r.procedureKey)}" data-variant-id="${escapeHtml(r.variantId || '')}" data-label-key="${escapeHtml(r.labelKey)}" data-desc-key="${escapeHtml(r.descKey)}" aria-pressed="${pressed}">
+            <span class="scenario-choice-marker" aria-hidden="true"><span class="scenario-choice-num">${i + 1}</span></span>
+            <span class="scenario-choice-body">
+                <span class="scenario-choice-main"><span>${escapeHtml(label)}</span></span>
+                ${desc ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(desc, 110))}</span>` : ''}
+            </span>
+            <span class="scenario-choice-go" aria-hidden="true">→</span>
+        </button>`;
+    }).join('');
+    const heading = document.getElementById('routePickerTitle');
+    if (heading) heading.textContent = tx(cfg.titleKey);
+    const copy = document.getElementById('routePickerModalCopy');
+    if (copy) copy.textContent = tx(cfg.introKey);
+    openModal('routePickerOverlay');
+}
+
+function chooseRoute(button) {
+    if (routePickerActiveWizard) {
+        applyRouteSelection(routePickerActiveWizard, routePickerActiveCard, {
+            routeId: button.dataset.routeId || '',
+            procKey: button.dataset.procedureKey,
+            variantId: button.dataset.variantId || '',
+            labelKey: button.dataset.labelKey,
+            descKey: button.dataset.descKey
+        });
+    }
+    closeModal('routePickerOverlay');
+    routePickerActiveWizard = null;
+    routePickerActiveCard = null;
+}
 function resetF4Route(btn) {
     const wizard = btn.closest('[data-f4-route-wizard]');
     const card = btn.closest('.manual-result');
     if (!wizard) return;
-    wizard.querySelectorAll('.f4-route-chip').forEach(c => c.setAttribute('aria-pressed', 'false'));
+    wizard.removeAttribute('data-selected-route');
+    const triggerLabel = wizard.querySelector('.f4-route-trigger-label');
+    if (triggerLabel) triggerLabel.textContent = tx('routePickerTrigger');
     const explain = wizard.querySelector('[data-f4-route-explain]');
     if (explain) { explain.innerHTML = ''; explain.hidden = true; }
     if (card) card.querySelectorAll('.procedure-tab').forEach(t => t.classList.remove('is-route-muted'));
@@ -19324,6 +19409,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     card.querySelectorAll('.procedure-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.procedurePanel === actionBtn.dataset.procedure));
                 },
                 'select-f4-route': () => selectF4Route(actionBtn),
+                'open-route-picker': () => openRoutePicker(actionBtn),
+                'choose-route': () => chooseRoute(actionBtn),
+                'close-route-picker': () => closeModal('routePickerOverlay'),
                 'show-all-f4-routes': () => resetF4Route(actionBtn),
                 'toggle-subcode-group': () => {
                     const body = document.getElementById(actionBtn.getAttribute('aria-controls'));
@@ -19396,7 +19484,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const aiBtn = e.target.closest('.ai-action-btn');
         if (aiBtn) { e.preventDefault(); submitAiAnalysis(aiBtn.dataset.type, aiBtn); return; }
 
-        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay'].forEach(id => {
+        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].forEach(id => {
             const el = document.getElementById(id); if (el && e.target === el) closeModal(id);
         });
 
@@ -19420,7 +19508,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
