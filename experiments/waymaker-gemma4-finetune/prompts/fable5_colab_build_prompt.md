@@ -99,3 +99,24 @@ Must explain: experiment purpose; why E4B is only a smoke test; why 12B is the
 actual quality test; why the model must not memorize legal rules; how to run the
 notebook; how to replace samples with real Waymaker evidence_pack examples; how to
 interpret results; and a clear warning that this is not production-ready.
+
+## Google Colab Free constraints (addendum)
+
+The experiment must run an end-to-end smoke test on **Google Colab Free (T4 16 GB)**.
+Any regeneration must preserve these in addition to everything above:
+
+- **GPU + memory check cell first:** report the assigned GPU, total/free memory, and a
+  recommended preset. If no GPU is assigned, print explicit fallback steps (Runtime →
+  Change runtime type → T4 GPU → Save → Restart). Guard the model-load/train cells so
+  they stop with a clear message when no CUDA GPU is present.
+- **Ultra-low-memory smoke mode (default ON):** `max_seq_length` 512 (or 768), batch
+  size 1, gradient accumulation 4, `max_steps` 30–50. A toggle restores the longer
+  config for bigger GPUs.
+- **Model preset selector.** Keep the Gemma 4 E4B path (`gemma-e4b`) but document that
+  it **may still OOM** on free Colab. Add small **open Qwen** presets as the reliable
+  free-tier default — `Qwen/Qwen3-0.6B` and `Qwen/Qwen3-1.7B` first, `Qwen/Qwen3-4B`
+  only if GPU memory allows. Qwen presets need no HF token; make HF auth non-fatal and
+  enforce a token only for the gated Gemma presets.
+- Keep `gemma-12b` as the Colab Pro (L4/A100) quality run. Smoke-test presets are not a
+  quality signal. Still no real legal facts in any placeholder; still not wired into the
+  production Waymaker backend.

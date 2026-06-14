@@ -1,24 +1,32 @@
 """Deterministic frontend coverage for the route-aware deadline / i18n PR.
 
-These tests parse index.html as text (matching the established pattern in
-test_scenario_procedure_variants.py) and assert the presence/shape of:
+These tests parse index.html as text for the wiring/structure (functions, CSS,
+data-* hooks) and assert localized copy against the externalized locale packs in
+``data/i18n/`` (the inline ``UI_TRANSLATIONS`` object was migrated to per-locale
+JSON files loaded at runtime). They guard:
   - the F-4 route-aware intake wizard (Part B),
   - the deadline / calendar calculator (Part C/I),
   - the HiKorea pre-checkbox gate removal (Part D),
   - procedure-description fallbacks (Part E),
   - site-wide localization coverage for the new surfaces (Part A).
 
-They never execute a browser; they guard against regressions in the inline
-strings, wiring, and localization keys for all four supported UI languages
-(Korean, English, Simplified Chinese `zh`, Traditional Chinese `zhHant`).
+They never execute a browser. Localized copy is checked against the three
+supported locales (ko, en, zh-CN); Traditional Chinese (zh-Hant) is no longer a
+separately supported display locale (the manifest aliases zhHant -> zh-CN), so
+Simplified Chinese is validated against the zh-CN pack and the old zh-Hant-only
+assertions are dropped.
 """
 from __future__ import annotations
 
-import re
+import sys
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
+
+# Import the shared external-locale-pack helper regardless of pytest import mode.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, pack_blobs  # noqa: E402
 
 
 def _extract_function(html: str, name: str) -> str:
@@ -34,20 +42,20 @@ class _IndexHtml(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.packs = load_packs()
+        cls.blobs = pack_blobs()
 
 
 class F4RouteWizardFrontendTests(_IndexHtml):
     def test_route_chooser_title_present_in_all_languages(self):
-        self.assertIn("F-4는 어떤 경로로 진행하시나요?", self.html)
-        self.assertIn("Which F-4 route applies to you?", self.html)
-        self.assertIn("您属于哪一种 F-4 办理路径？", self.html)
-        self.assertIn("您屬於哪一種 F-4 辦理路徑？", self.html)
+        self.assertIn("F-4는 어떤 경로로 진행하시나요?", self.blobs["ko"])
+        self.assertIn("Which F-4 route applies to you?", self.blobs["en"])
+        self.assertIn("您属于哪一种 F-4 办理路径？", self.blobs["zh-CN"])
 
     def test_route_intro_present_in_all_languages(self):
-        self.assertIn("F-4는 입국 전 사증 발급, 국내 체류자격 변경, 국내거소신고, 체류기간 연장 등 경로가 나뉠 수 있습니다. 본인에게 맞는 경로를 먼저 확인하세요.", self.html)
-        self.assertIn("F-4 can involve different routes, including pre-entry visa issuance, domestic status change, domestic residence reporting, and extension of stay. Confirm which route matches your situation first.", self.html)
-        self.assertIn("F-4 可能涉及不同路径，包括入境前签证签发、境内资格变更、国内居所申报和停留期间延期。请先确认哪一种路径符合您的情况。", self.html)
-        self.assertIn("F-4 可能涉及不同路徑，包括入境前簽證核發、境內資格變更、國內居所申報和停留期間延期。請先確認哪一種路徑符合您的情況。", self.html)
+        self.assertIn("F-4는 입국 전 사증 발급, 국내 체류자격 변경, 국내거소신고, 체류기간 연장 등 경로가 나뉠 수 있습니다. 본인에게 맞는 경로를 먼저 확인하세요.", self.blobs["ko"])
+        self.assertIn("F-4 can involve different routes, including pre-entry visa issuance, domestic status change, domestic residence reporting, and extension of stay. Confirm which route matches your situation first.", self.blobs["en"])
+        self.assertIn("F-4 可能涉及不同路径，包括入境前签证签发、境内资格变更、国内居所申报和停留期间延期。请先确认哪一种路径符合您的情况。", self.blobs["zh-CN"])
 
     def test_all_five_route_labels_present_in_all_languages(self):
         ko = [
@@ -71,41 +79,38 @@ class F4RouteWizardFrontendTests(_IndexHtml):
             "F-4 国内居所申报",
             "F-4 停留期间延期",
         ]
-        zh_hant = [
-            "透過駐外韓國使領館取得 F-4 簽證後入境",
-            "以 B-2、C-3 等身分入境後在韓國境內變更為 F-4",
-            "從 H-2 變更為 F-4",
-            "F-4 國內居所申報",
-            "F-4 停留期間延期",
-        ]
-        for label in ko + en + zh + zh_hant:
-            self.assertIn(label, self.html, label)
+        for label in ko:
+            self.assertIn(label, self.blobs["ko"], label)
+        for label in en:
+            self.assertIn(label, self.blobs["en"], label)
+        for label in zh:
+            self.assertIn(label, self.blobs["zh-CN"], label)
 
     def test_domestic_residence_report_distinct_from_foreigner_registration(self):
         # Route 4 must read as a domestic residence report (거소신고), not a
         # generic foreigner registration (외국인등록).
-        self.assertIn("F-4 국내거소신고", self.html)
-        self.assertIn("F-4 domestic residence report", self.html)
-        self.assertIn("국내거소신고 대상일 수 있습니다", self.html)
+        self.assertIn("F-4 국내거소신고", self.blobs["ko"])
+        self.assertIn("F-4 domestic residence report", self.blobs["en"])
+        self.assertIn("국내거소신고 대상일 수 있습니다", self.blobs["ko"])
         # The English residence-report copy must not mislabel it as registration.
-        self.assertIn("distinct from a general foreigner registration", self.html)
+        self.assertIn("distinct from a general foreigner registration", self.blobs["en"])
 
     def test_show_all_reset_action_present(self):
-        self.assertIn("전체 경로 보기", self.html)
-        self.assertIn("Show all F-4 routes", self.html)
+        self.assertIn("전체 경로 보기", self.blobs["ko"])
+        self.assertIn("Show all F-4 routes", self.blobs["en"])
         self.assertIn('data-action="show-all-f4-routes"', self.html)
 
     def test_route_selection_does_not_imply_approval(self):
         # Source note must explicitly disclaim eligibility/approval.
-        self.assertIn("경로를 선택해도 자격이나 허가가 보장되지 않습니다", self.html)
-        self.assertIn("Selecting a route does not imply eligibility or approval", self.html)
+        self.assertIn("경로를 선택해도 자격이나 허가가 보장되지 않습니다", self.blobs["ko"])
+        self.assertIn("Selecting a route does not imply eligibility or approval", self.blobs["en"])
         fn = _extract_function(self.html, "selectF4Route")
         for forbidden in ("eligible", "approved", "guaranteed", "qualif"):
             self.assertNotIn(forbidden, fn.lower(), f"route selection code must not imply {forbidden}")
 
     def test_route_with_no_docs_directs_to_official_channels(self):
-        self.assertIn("HiKorea, 1345 또는 관할 출입국·외국인관서에서 직접 확인하세요.", self.html)
-        self.assertIn("Confirm directly with HiKorea, 1345, or the competent immigration office.", self.html)
+        self.assertIn("HiKorea, 1345 또는 관할 출입국·외국인관서에서 직접 확인하세요.", self.blobs["ko"])
+        self.assertIn("Confirm directly with HiKorea, 1345, or the competent immigration office.", self.blobs["en"])
 
     def test_wizard_is_additive_and_does_not_hide_procedures(self):
         # Injected before procedures, and de-emphasis is opacity-only (a CSS
@@ -142,32 +147,26 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
         for s in ["기한 계산기", "캘린더에 추가", "ICS 파일 다운로드", "Google Calendar에 추가",
                   "입국일", "체류만료일", "예상 등록 기한", "연장 준비 알림",
                   "공식 기한은 개인 상황과 관할 판단에 따라 달라질 수 있습니다."]:
-            self.assertIn(s, self.html, s)
+            self.assertIn(s, self.blobs["ko"], s)
 
     def test_required_labels_present_english(self):
         for s in ["Deadline calculator", "Add to calendar", "Download ICS file", "Add to Google Calendar",
                   "Entry date", "Stay expiry date", "Estimated registration deadline",
                   "Extension preparation reminders",
                   "Official deadlines may differ depending on your facts and the competent office."]:
-            self.assertIn(s, self.html, s)
+            self.assertIn(s, self.blobs["en"], s)
 
     def test_required_labels_present_simplified_chinese(self):
         for s in ["期限计算器", "添加到日历", "下载 ICS 文件", "添加到 Google Calendar",
                   "入境日期", "停留期限到期日", "预计外国人登记期限", "延期准备提醒",
                   "正式期限可能因个人情况和管辖机构判断而不同。"]:
-            self.assertIn(s, self.html, s)
-
-    def test_required_labels_present_traditional_chinese(self):
-        for s in ["期限計算器", "加入行事曆", "下載 ICS 檔案", "加入 Google Calendar",
-                  "入境日期", "停留期限到期日", "預計外國人登錄期限", "延期準備提醒",
-                  "正式期限可能因個人情況和管轄機構判斷而不同。"]:
-            self.assertIn(s, self.html, s)
+            self.assertIn(s, self.blobs["zh-CN"], s)
 
     def test_ninety_day_registration_rule_labeled_as_preparation_aid(self):
         self.assertIn("paradisoDeadlineAddDays(entry, 90)", self.html)
         # The 90-day estimate must be presented as a general preparation aid.
-        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.html)
-        self.assertIn("general preparation aid, not a confirmed official deadline", self.html)
+        self.assertIn("일반 준비용 안내이며 공식 확정 기한이 아닙니다.", self.blobs["ko"])
+        self.assertIn("general preparation aid, not a confirmed official deadline", self.blobs["en"])
 
     def test_extension_reminder_offsets_present(self):
         self.assertIn("[60, 30, 7, 0]", self.html)
@@ -195,8 +194,8 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
         self.assertIn("encodeURIComponent(title)", fn)
 
     def test_disclaimer_and_privacy_note_present(self):
-        self.assertIn("입력한 날짜는 브라우저에만 표시되며 저장하거나 AI·서버로 전송하지 않습니다.", self.html)
-        self.assertIn("Dates you enter are shown only in your browser and are not saved or sent to AI or the server.", self.html)
+        self.assertIn("입력한 날짜는 브라우저에만 표시되며 저장하거나 AI·서버로 전송하지 않습니다.", self.blobs["ko"])
+        self.assertIn("Dates you enter are shown only in your browser and are not saved or sent to AI or the server.", self.blobs["en"])
 
     def test_calculator_state_not_in_ai_payload(self):
         # The /api/ask request body must not carry any calculator/reminder state.
@@ -245,14 +244,13 @@ class HiKoreaGateRemovalFrontendTests(_IndexHtml):
 
     def test_visible_caution_replaces_gate_in_all_languages(self):
         self.assertIn('class="hikorea-precheck-caution"', self.html)
-        self.assertIn("아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다.", self.html)
-        self.assertIn("You can continue to the next step without checking them.", self.html)
-        self.assertIn("即使不勾选也可继续下一步。", self.html)
-        self.assertIn("即使不勾選也可繼續下一步。", self.html)
+        self.assertIn("아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다.", self.blobs["ko"])
+        self.assertIn("You can continue to the next step without checking them.", self.blobs["en"])
+        self.assertIn("即使不勾选也可继续下一步。", self.blobs["zh-CN"])
 
     def test_disclaimers_still_present(self):
         self.assertIn("hkDisc1", self.html)
-        self.assertIn("Paradiso는 공식 정부 서비스가 아닙니다.", self.html)
+        self.assertIn("Paradiso는 공식 정부 서비스가 아닙니다.", self.blobs["ko"])
 
 
 class ProcedureFallbackDescriptionFrontendTests(_IndexHtml):
@@ -270,19 +268,18 @@ class ProcedureFallbackDescriptionFrontendTests(_IndexHtml):
 
     def test_fallback_copy_present_all_languages(self):
         # Korean + English are provided verbatim by the task.
-        self.assertIn("입국 전 사증 발급 또는 해당 체류자격 신청 단계에서 확인하는 절차입니다.", self.html)
-        self.assertIn("This covers the pre-entry visa issuance or initial status application stage.", self.html)
-        # Simplified + Traditional Chinese equivalents.
-        self.assertIn("此为入境前签证签发或相应停留资格申请阶段需确认的程序。", self.html)
-        self.assertIn("此為入境前簽證核發或相應停留資格申請階段需確認的程序。", self.html)
+        self.assertIn("입국 전 사증 발급 또는 해당 체류자격 신청 단계에서 확인하는 절차입니다.", self.blobs["ko"])
+        self.assertIn("This covers the pre-entry visa issuance or initial status application stage.", self.blobs["en"])
+        # Simplified Chinese equivalent (zh-Hant aliases to zh-CN).
+        self.assertIn("此为入境前签证签发或相应停留资格申请阶段需确认的程序。", self.blobs["zh-CN"])
 
     def test_registration_fallback_distinguishes_residence_report(self):
-        self.assertIn("외국인등록 또는 국내거소신고가 필요할 수 있습니다", self.html)
-        self.assertIn("foreigner registration or domestic residence reporting", self.html)
+        self.assertIn("외국인등록 또는 국내거소신고가 필요할 수 있습니다", self.blobs["ko"])
+        self.assertIn("foreigner registration or domestic residence reporting", self.blobs["en"])
 
 
 class RouteAwareI18nCoverageTests(_IndexHtml):
-    """Guards that the new surfaces are localized in all four target packs."""
+    """Guards that the new surfaces are localized in all supported packs."""
 
     NEW_KEYS = [
         "f4RouteTitle", "f4RouteIntro", "f4RouteShowAll", "f4RouteSourceNote",
@@ -294,24 +291,15 @@ class RouteAwareI18nCoverageTests(_IndexHtml):
         "procFallbackExtension",
     ]
 
-    def _pack(self, code: str) -> str:
-        # Slice a single UI_TRANSLATIONS language pack body for substring checks.
-        ui = self.html.find("const UI_TRANSLATIONS =")
-        assert ui != -1, "UI_TRANSLATIONS not found"
-        scope = self.html[ui:]
-        m = re.search(rf"\n    {re.escape(code)}: {{", scope)
-        assert m, f"language pack {code} not found"
-        return scope[m.start(): m.start() + 70000].split("\n    },", 1)[0]
-
-    def test_new_keys_in_all_four_packs(self):
-        for code in ("ko", "en", "zh", "zhHant"):
-            pack = self._pack(code)
+    def test_new_keys_in_all_supported_packs(self):
+        for locale in SUPPORTED_LOCALES:
+            pack = self.packs[locale]
             for key in self.NEW_KEYS:
-                self.assertIn(f"{key}:", pack, f"{key} missing from {code} pack")
+                self.assertIn(key, pack, f"{key} missing from {locale} pack")
 
     def test_placeholder_token_present_for_days_before(self):
-        self.assertIn("{days}일 전", self.html)
-        self.assertIn("{days} days before", self.html)
+        self.assertIn("{days}일 전", self.blobs["ko"])
+        self.assertIn("{days} days before", self.blobs["en"])
 
 
 if __name__ == "__main__":

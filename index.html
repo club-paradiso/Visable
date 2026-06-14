@@ -833,8 +833,10 @@ body.searched .landing-scroll { display: none; }
 [data-theme="dark"] .figma-anagram-section .anagram-visual { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.08); }
 #anagram { width: 100%; max-width: 320px; user-select: none; }
 .anagram-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--t3); text-align: center; margin: 0.25rem 0; }
-#anagram .anagram-row { display: flex; justify-content: center; }
-.anagram-letter { display: inline-block; width: 2em; text-align: center; padding: 0.2em 0; font-family: var(--ff-display); font-weight: 900; font-size: 1.5rem; letter-spacing: 0.1em; transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease; cursor: default; }
+#anagram .anagram-row { display: flex; justify-content: center; max-width: 100%; }
+/* font-size is viewport-responsive so all 8 letters fit on narrow screens
+   without the flex row crushing letter spacing (width:2em scales with it). */
+.anagram-letter { display: inline-block; width: 2em; text-align: center; padding: 0.2em 0; font-family: var(--ff-display); font-weight: 900; font-size: clamp(1rem, 4.6vw, 1.5rem); letter-spacing: 0.1em; transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease; cursor: default; }
 .anagram-letter.anagram-top { color: var(--color-primary-ink, #085E48); }
 .anagram-letter.anagram-top.active { color: var(--color-primary, #0EA37B); filter: drop-shadow(0 0 8px rgba(14,163,123,0.5)); transform: translateY(-2px); }
 .anagram-letter.anagram-bot { color: #E0513E; }
@@ -1089,8 +1091,12 @@ body:not(.searched) .sbar-go { border-radius: 9999px; }
     .language-btn-native { display: none; }
     .language-menu { left: 0; right: auto; }
     .hero-action-label { font-size: 0.85rem; text-align: left; word-break: keep-all; min-width: 0; flex: 1; }
-    .theme-btn-text { display: none; }
-    #cityBtnLabel { display: none; }
+    .theme-btn-text,
+    .editorial-theme-btn-text,
+    #cityBtnLabel,
+    #cityBtnTime { display: none; }
+    .city-btn,
+    .theme-btn { min-width: 44px; padding-inline: 0.65rem; }
     .brand-hero { padding: 4rem 1rem 0; padding-bottom: 4rem; }
     .brand-hero-headline { font-size: clamp(1.9rem, 8vw, 2.4rem); }
     .brand-hero-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
@@ -1415,7 +1421,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .subcode-chip.chip-deprecated { color: var(--t3); background: color-mix(in srgb, var(--t3) 12%, var(--bg1)); border-color: var(--bd2); }
 .manual-subcode-card.is-inactive { opacity: 0.72; background: color-mix(in srgb, var(--bg1) 96%, var(--t3)); border-style: dashed; }
 .manual-subcode-card.is-inactive .manual-subcode-code { color: var(--t3); }
-.manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: var(--t3); line-height: 1.45; font-style: italic; }
+.manual-subcode-status { margin-top: 0.32rem; font-size: 0.68rem; color: #8a5a00; line-height: 1.45; font-style: italic; font-weight: 700; }
 /* Matched-subcode emphasis: quiet badge + slightly stronger border on the card. */
 .subcode-match-badge { flex: none; margin-left: auto; border-radius: 999px; padding: 0.08rem 0.42rem; font-size: 0.62rem; font-weight: 800; white-space: nowrap; line-height: 1.5; color: var(--ac); border: 1px solid color-mix(in srgb, var(--ac) 36%, var(--bd)); }
 .subcode-chip + .subcode-match-badge { margin-left: 0; }
@@ -1455,17 +1461,16 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 
 .scenario-choice {
   width: 100%;
-  min-height: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 0.28rem;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.85rem;
+  min-height: 66px;
   border: 1px solid var(--bd2);
-  background: color-mix(in srgb, var(--bg1) 96%, white);
-  color: var(--t2);
-  border-radius: var(--p-r-lg);
-  padding: 1rem 1.25rem;
+  background: var(--bg1);
+  color: var(--t1);
+  border-radius: 14px;
+  padding: 0.85rem 1rem;
   font: inherit;
   cursor: pointer;
   text-align: left;
@@ -1474,57 +1479,101 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 
 .scenario-choice:hover,
 .scenario-choice:focus-visible {
-  border-color: color-mix(in srgb, var(--ac) 48%, var(--bd2));
-  background: color-mix(in srgb, var(--ac) 7%, var(--bg1));
-  color: var(--t1);
+  border-color: color-mix(in srgb, var(--ac) 55%, var(--bd2));
+  background: color-mix(in srgb, var(--ac) 6%, var(--bg1));
+  box-shadow: 0 10px 24px -16px color-mix(in srgb, var(--ac) 80%, transparent);
   transform: translateY(-1px);
+  outline: none;
+}
+.scenario-choice:focus-visible {
+  border-color: var(--ac);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 32%, transparent);
 }
 
 .scenario-choice[aria-pressed="true"] {
-  border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 10%, var(--bg1));
-  color: var(--t1);
-  box-shadow: inset 4px 0 0 var(--color-primary);
+  border-color: var(--color-primary, var(--ac));
+  background: color-mix(in srgb, var(--color-primary, var(--ac)) 9%, var(--bg1));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-primary, var(--ac)) 55%, transparent);
 }
 
-.scenario-choice[aria-pressed="true"]::before {
-  content: var(--lang-scenario-selected-choice, "✓ 선택됨");
-  color: var(--color-primary);
-  font-size: 0.68rem;
-  font-weight: 600;
+/* Leading marker: scenario number, becomes a check mark when selected */
+.scenario-choice-marker {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ac) 12%, var(--bg1));
+  color: var(--ac);
+  font-size: 0.85rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
   line-height: 1;
+}
+.scenario-choice[aria-pressed="true"] .scenario-choice-marker {
+  background: var(--color-primary, var(--ac));
+  color: #fff;
+}
+.scenario-choice[aria-pressed="true"] .scenario-choice-num { display: none; }
+.scenario-choice[aria-pressed="true"] .scenario-choice-marker::after {
+  content: "✓";
+  font-size: 0.95rem;
+  font-weight: 900;
+}
+
+.scenario-choice-body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.22rem;
 }
 
 .scenario-choice-main {
-  display: inline-flex;
+  display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.4rem;
-  font-size: 1rem;
-  font-weight: 600;
-  line-height: 1.35;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--t1);
   word-break: keep-all;
 }
 
 .scenario-choice-preview {
   max-width: 100%;
   color: var(--t2);
-  font-size: 0.875rem;
-  line-height: 1.65;
+  font-size: 0.85rem;
+  line-height: 1.6;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: keep-all;
 }
+
+/* Trailing affordance chevron — signals "tap to choose" */
+.scenario-choice-go {
+  flex: none;
+  color: var(--t3);
+  font-size: 1.15rem;
+  line-height: 1;
+  transition: transform 0.18s ease, color 0.18s ease;
+}
+.scenario-choice:hover .scenario-choice-go,
+.scenario-choice:focus-visible .scenario-choice-go { color: var(--ac); transform: translateX(3px); }
+.scenario-choice[aria-pressed="true"] .scenario-choice-go { color: var(--color-primary, var(--ac)); }
+
 /* Pill badge for status code inside scenario choice cards */
 .scenario-choice .manual-subcode-code {
-  background: var(--color-surface-2);
+  background: var(--color-surface-2, color-mix(in srgb, var(--ac) 12%, var(--bg1)));
   color: var(--color-primary-ink, var(--ac));
   border-radius: 999px;
   padding: 2px 8px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.74rem;
+  font-weight: 700;
   white-space: nowrap;
   border: none;
 }
@@ -1626,8 +1675,13 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .scenario-needs-pick .manual-subcode-card.is-selected { display: block; }
 .scenario-needs-pick.has-selection .scenario-picker-empty-hint { display: none; }
 /* Scenario picker modal choice list */
-.scenario-picker-choice-list { display: flex; flex-direction: column; gap: 0.55rem; margin-top: 0.65rem; }
-.scenario-picker-choice { min-height: 60px; }
+.scenario-picker-choice-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.2rem; }
+.scenario-picker-choice { min-height: 66px; }
+/* Scenario / route picker modal — roomy box + a clean intro line (overrides the
+   boxed .text-desc styling so the copy reads as a subtitle, not a callout). */
+#scenarioPickerOverlay .modal-box, #routePickerOverlay .modal-box { max-width: 580px; }
+#scenarioPickerOverlay .modal-body, #routePickerOverlay .modal-body { gap: 0.55rem; }
+#scenarioPickerModalCopy.text-desc, #routePickerModalCopy.text-desc { margin: 0; padding: 0; background: none; border: none; border-radius: 0; color: var(--t2); font-size: 0.86rem; line-height: 1.6; word-break: keep-all; }
 .official-korean-terms-note, .scenario-official-labels-note { margin: 0.48rem 0 0; color: var(--t3); font-size: 0.72rem; line-height: 1.55; }
 .manual-subcode-card { transition: opacity 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease; }
 .manual-subcode-card.is-selected { border-color: var(--ac); box-shadow: inset 3px 0 0 var(--ac); }
@@ -1801,6 +1855,16 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     }
     .f4-route-chip, .f4-route-showall, .f4-route-trigger { flex: 1 1 100%; min-height: 44px; }
     .scenario-choice { width: 100%; }
+    /* Scenario picker becomes a bottom sheet on phones — easier thumb reach. */
+    #scenarioPickerOverlay { align-items: flex-end; padding: 0; }
+    #scenarioPickerOverlay .modal-box {
+        width: 100%;
+        max-width: 100%;
+        max-height: 88vh;
+        border-radius: 20px 20px 0 0;
+        transform: translateY(100%);
+    }
+    #scenarioPickerOverlay.active .modal-box { transform: translateY(0); }
     .scenario-checklist-actions { flex-wrap: wrap; }
     .scenario-checklist-actions .scenario-checklist-btn { flex: 1 1 calc(50% - 0.3rem); min-height: 44px; }
     .deadline-inputs { grid-template-columns: 1fr; }
@@ -6641,6 +6705,9 @@ body.searched .qb:hover {
   border: 1px solid color-mix(in srgb, var(--p-emerald) 22%, transparent);
   letter-spacing: 0.01em;
   line-height: 1.2;
+  width: fit-content;
+  max-width: 8rem;
+  flex: 0 0 auto;
 }
 .manual-result .manual-head-main {
   gap: 0.85rem;
@@ -10103,6 +10170,15 @@ button[data-keyword]:focus-visible {
   body.searched .results-area { padding-bottom: 5.5rem; }
 }
 
+@media (max-width: 640px) {
+  .ai-fab {
+    position: static;
+    width: auto;
+    margin: 0.85rem 1rem;
+    transform: none;
+  }
+}
+
 /* 5 · Long Korean text never forces horizontal overflow inside result cards. */
 .manual-result .manual-subcode-card,
 .manual-result .doc-group,
@@ -11385,6 +11461,11 @@ body.searched .hero-container::before {
   box-shadow: none;
 }
 :root[data-theme="archive_diary"] .manual-subcode-grid--docs .manual-subcode-card.is-muted { display: none; }
+/* Scenario choice marker + chevron contrast in the kitsch theme. */
+:root[data-theme="archive_diary"] .scenario-choice-marker { background: color-mix(in srgb, var(--k-ink) 9%, var(--k-white)); color: var(--k-ink); }
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-marker { background: var(--k-white); color: var(--k-blue); }
+:root[data-theme="archive_diary"] .scenario-choice-go { color: var(--k-ink); }
+:root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-go { color: #fff; }
 
 /* Uncertainty / review-needed notices → bold but HIGH-CONTRAST pills (semantic
    amber kept for warning — not decorative; never weakened) */
@@ -11979,6 +12060,43 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
 :root[data-theme="archive_diary"] body[data-theme="dark"]:not(.searched) :is(.brand-hero-headline, .brand-hero-subtitle) { color: #EEF2FF !important; }
 /* ─── end PARADISO KITSCH LAYER (B --k- system) ─── */
 
+/* ── Kitsch · DARK — searched-view text readability fixes ─────────────────
+   These fill gaps where archive_diary light-mode rules hard-code var(--k-ink)
+   or cream/white surfaces without a dark-mode counterpart. ── */
+
+/* Searched header meta text */
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched .smeta,
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched #rc,
+:root[data-theme="archive_diary"] body[data-theme="dark"].searched #rh { color: #EEF2FF !important; }
+
+/* Visa-card subtitle (English name) — was dark navy, illegible on dark card */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .manual-name-en { color: #7FA6FF !important; }
+
+/* Procedure tab labels (non-active) — were var(--k-ink) black on dark background */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-result .procedure-tabs .procedure-tab { color: #BAC5E4 !important; }
+
+/* Procedure summary body text */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-summary { color: #BAC5E4 !important; }
+
+/* Next-action kicker (non-primary) — was dark blue, illegible on dark panel */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-kicker { color: #7FA6FF !important; }
+
+/* Subcode cards — white background collapses on dark page */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-subcode-card { background: #1B2440 !important; border-color: #44558A !important; }
+
+/* Procedure source badge & ref */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-source-ref { color: #BAC5E4 !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-source-badge { border-color: #44558A !important; }
+
+/* Manual detail block (disclosure toggle + interior) */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-detail-block { border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-detail-block > summary { color: #EEF2FF !important; }
+
+/* Doc-guide drawer & toggle — white surfaces in dark mode */
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-toggle { background: #1B2440 !important; border-color: #44558A !important; color: #A6C2FF !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-toggle.is-open { background: #3B6FE0 !important; border-color: #0B1020 !important; color: #fff !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .doc-guide-drawer { background: #141B30 !important; border-color: #44558A !important; border-left-color: #3B6FE0 !important; box-shadow: 3px 3px 0 #0B1020 !important; }
+
 </style>
 <!-- PARADISO_GATEWAY_RATIO_POLISH_END -->
 
@@ -12171,7 +12289,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <span class="k-obj k-blob"></span>
     </div>
     <div class="k-masthead" aria-hidden="true">
-        <span id="k-masthead-meta" class="k-mh-meta">VOL.25 ● 2026 · SEOUL／JEJU</span>
+        <span id="k-masthead-meta" class="k-mh-meta">PARADISO · REPUBLIC OF KOREA</span>
+        <script>(function(){var m=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'],d=new Date(),el=document.getElementById('k-masthead-meta');if(el)el.textContent='PARADISO · '+m[d.getMonth()]+' '+d.getDate()+' '+d.getFullYear()+' · REPUBLIC OF KOREA';})()</script>
         <span class="k-mh-barcode"></span>
     </div>
     <div class="header-inner">
@@ -13208,7 +13327,7 @@ const DOC_DICT = {
     "doc_app_form": "통합신청서 (별지 제34호 서식)", "doc_passport": "여권 원본 및 사본", "doc_passport_org": "여권 원본 (대조용 필수지참)",
     "doc_passport_copy": "여권 인적사항면 사본", "doc_id": "외국인등록증(또는 거소증) 원본 및 사본 (기존 등록자에 한함)", "doc_photo": "표준규격사진 1매 (3.5x4.5cm, 최근 6개월)",
     "doc_fee": "수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)", "doc_fee_new": "신규/체류자격 부여 수수료 (정부수입인지, 절차별 금액은 수수료 안내 확인)", "doc_fee_ext": "체류기간 연장 수수료 (정부수입인지, 기본 60,000원)",
-    "doc_arc_fee": "외국인등록증 발급 및 재발급 수수료 35,000원",
+    "doc_arc_fee": "외국인등록증 발급 및 재발급 수수료 35,000원 (등기우편 수령 시 39,000원)",
     "doc_biz_reg": "사업자등록증 사본", "doc_corp_reg": "법인등기사항전부증명서 (발급 3개월 이내)", "doc_tax": "납세증명서 (국세 및 지방세 완납증명)",
     "doc_vat": "부가가치세 과세표준증명 (최근 1년)", "doc_inc_proof": "소득금액증명원 등 소득입증서류", "doc_score": "점수제 평가표 및 해당 항목별 증빙서류 (점수제 적용 비자에 한함)",
     "doc_emp_contract": "표준근로계약서 또는 고용계약서 원본/사본", "doc_emp_recom": "주무부처 고용추천서 (해당 직종 한정)", "doc_degree": "최종 학위/학력증명서 (아포스티유/영사확인 필수)",
@@ -13428,6 +13547,11 @@ function toggleCityMenu(force) {
 const DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
 const API_BASE = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
     || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+// Hard client-side ceiling for an /api/ask round-trip so the AI spinner can
+// never spin forever when the backend / AI provider hangs. Kept above a single
+// backend provider attempt (OPENROUTER_TIMEOUT_SECONDS, default 60s) plus
+// grounding overhead so a legitimately slow grounded answer is not cut off.
+const AI_REQUEST_TIMEOUT_MS = 75000;
 let VISA_DATA = [];
 let VISA_ISSUANCE_RECORDS = [];
 let VISA_ISSUANCE_BY_CODE = new Map();
@@ -14657,6 +14781,12 @@ async function submitAiAnalysis(actionType, btnEl) {
 
     if (currentAiController) currentAiController.abort();
     currentAiController = new AbortController();
+    const _aiController = currentAiController;
+    // Timeout guard so the spinner can never spin forever if the backend /
+    // provider hangs. `_didTimeout` distinguishes a timeout abort from a
+    // user-initiated one in the catch block below.
+    let _didTimeout = false;
+    const _timeoutId = setTimeout(() => { _didTimeout = true; _aiController.abort(); }, AI_REQUEST_TIMEOUT_MS);
     try {
         const response = await fetch(`${API_BASE}/api/ask`, {
             method: 'POST',
@@ -14702,7 +14832,12 @@ async function submitAiAnalysis(actionType, btnEl) {
         const fallbackNote = result.ollama_fallback_used
             ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiOllamaFallbackNote'))}: ${escapeHtml(result.ollama_model || result.model || '')}</div>`
             : (result.deterministic_fallback_answer_used
-                ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b> · ${escapeHtml(tx('aiFallbackFromMetadata'))}</div>`
+                // Deterministic fallback is NOT an evidence-grounded model answer.
+                // Surface it as a clear status callout (matching the prominence the
+                // same state gets on the 503 path) instead of a faint footnote, so
+                // the user can tell this is a temporary preparation note. Inline
+                // styles reuse the existing theme variables (no new CSS/i18n keys).
+                ? `<div class="ai-fallback-note ai-fallback-callout" role="status" style="margin-top:.6rem;padding:.55rem .7rem;border-radius:8px;border:1px solid color-mix(in srgb, var(--color-warning, #b45309) 45%, transparent);background:color-mix(in srgb, var(--color-warning, #b45309) 8%, var(--bg2, #fff));color:var(--t1);font-size:.84rem;line-height:1.5;"><b>${escapeHtml(tx('aiProviderTemporarilyUnavailable'))}</b><br>${escapeHtml(tx('aiFallbackFromMetadata'))}</div>`
                 : (result.model_fallback_used
                     ? `<div class="ai-fallback-note" style="margin-top:.5rem;font-size:.78rem;color:var(--t3);">${escapeHtml(tx('aiFallbackSucceeded'))}</div>`
                     : ''));
@@ -14710,9 +14845,15 @@ async function submitAiAnalysis(actionType, btnEl) {
         const sourcePanel = renderGroundingSourcePanel(result);
         resultBox.innerHTML = formattedText + fallbackNote + modelBadge + sourcePanel; resultBox.style.display = 'block';
     } catch (error) {
-        if (error.name === 'AbortError') return;
+        if (error.name === 'AbortError') {
+            // Timeout-triggered abort shows a graceful message; a user-initiated
+            // abort (new request) stays silent. The spinner is cleared in finally.
+            if (_didTimeout) { resultBox.innerHTML = `<b>${escapeHtml(tx('aiTimeout'))}</b>`; resultBox.style.display = 'block'; }
+            return;
+        }
         resultBox.innerHTML = `<b>${escapeHtml(tx('aiError'))}</b>`; resultBox.style.display = 'block';
     } finally {
+        clearTimeout(_timeoutId);
         allBtns.forEach(b => b.disabled = false); if (spinner) spinner.style.display = 'none'; currentAiController = null;
     }
 }
@@ -14898,6 +15039,11 @@ const COMMON_MANUAL_WARNINGS = [
 ];
 
 const STAY_FEE_SOURCE_NOTE = '출처: 법무부 체류민원 안내매뉴얼(2026.5) 공통사항 「각종 체류허가 등에 관한 심사수수료」 접수된 심사수수료는 반환되지 않을 수 있습니다.';
+// 외국인등록증·영주증 등 실물 신분증은 방문 수령 시 발급/재발급 수수료(35,000원,
+// 시행규칙 제72조제10·10의2호)만 들지만, 등기우편으로 수령할 경우 우편요금이
+// 추가됩니다(총 39,000원 = 35,000원 + 4,000원). 카드 수수료가 표시되는 모든
+// 체류자격 절차에 공통 적용되도록 렌더링 단계에서 일괄 반영합니다.
+const CARD_DELIVERY_SURCHARGE = 4000;
 const DEFAULT_PROCEDURE_FEES = {
     activitiesOutsideStatus: {
         label: '체류자격 외 활동허가',
@@ -14965,6 +15111,26 @@ function getProcedureFeeInfo(v, procedureKey) {
         fee.notes = ['결혼이민(F-6) 체류기간 연장허가 정부수입인지 30,000원'];
         fee.commonReference = false;
     }
+    // 영주(F-5)는 체류기간 상한이 없어 '체류기간 연장(시행규칙 제72조제6호, 6만원)'
+    // 대상이 아닙니다. 기본 연장 수수료가 오인되지 않도록, 영주증(영주카드) 재발급
+    // 수수료(시행규칙 제72조제10의2호, 35,000원)로 정정합니다.
+    if (procedureKey === 'extension' && v.code === 'F-5') {
+        fee.label = currentLanguage === 'en' ? 'Permanent residence card reissuance' : '영주증 재발급';
+        fee.revenueStamp = 0;
+        fee.cardIssueFee = 35000;
+        fee.notes = currentLanguage === 'en'
+            ? [
+                'Permanent residence (F-5) has no stay-period limit, so it is not subject to "extension of stay".',
+                'The permanent residence card is valid for 10 years and must be reissued before it expires (a late reissuance may incur a fine).',
+                'Permanent residence card reissuance fee: KRW 35,000 (Enforcement Rule Art. 72, item 10-2).'
+            ]
+            : [
+                '영주(F-5)는 체류기간 상한이 없어 ‘체류기간 연장’ 대상이 아닙니다.',
+                '영주증(영주카드) 유효기간은 10년이며 만료 전 재발급해야 합니다(기간 도과 시 과태료).',
+                '영주증 재발급 수수료 35,000원 (출입국관리법 시행규칙 제72조제10의2호)'
+            ];
+        fee.commonReference = false;
+    }
     return fee;
 }
 
@@ -14973,9 +15139,23 @@ function renderProcedureFeeBox(feeInfo) {
     const amountBits = [];
     if (typeof feeInfo.revenueStamp === 'number' && feeInfo.revenueStamp > 0) amountBits.push(`${currentLanguage === 'en' ? 'revenue stamp' : '수입인지'} ${formatWon(feeInfo.revenueStamp)}`);
     if (feeInfo.revenueStamp === 0) amountBits.push(currentLanguage === 'en' ? 'no revenue stamp' : '수입인지 없음');
-    if (typeof feeInfo.cardIssueFee === 'number' && feeInfo.cardIssueFee > 0) amountBits.push(`${currentLanguage === 'en' ? 'registration card' : '등록증'} ${formatWon(feeInfo.cardIssueFee)}`);
+    const hasCardFee = typeof feeInfo.cardIssueFee === 'number' && feeInfo.cardIssueFee > 0;
+    if (hasCardFee) {
+        const visitFee = formatWon(feeInfo.cardIssueFee);
+        const mailFee = formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE);
+        amountBits.push(currentLanguage === 'en'
+            ? `card ${visitFee} (${mailFee} by registered mail)`
+            : `등록증 ${visitFee} (등기우편 수령 시 ${mailFee})`);
+    }
     const amountText = amountBits.length ? amountBits.join(' · ') : (currentLanguage === 'en' ? 'Amount needs confirmation' : '금액 확인 필요');
-    const notes = Array.isArray(feeInfo.notes) ? feeInfo.notes : [];
+    const baseNotes = Array.isArray(feeInfo.notes) ? feeInfo.notes : [];
+    // 등기우편 수령 우편요금 안내는 카드 수수료가 있는 모든 절차/자격에 공통 부가.
+    const cardDeliveryNote = hasCardFee
+        ? (currentLanguage === 'en'
+            ? `The registration/permanent-residence card costs ${formatWon(feeInfo.cardIssueFee)} for in-person pickup; choosing registered-mail delivery adds a ${formatWon(CARD_DELIVERY_SURCHARGE)} postage fee (${formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE)} total).`
+            : `등록증·영주증은 방문 수령 시 ${formatWon(feeInfo.cardIssueFee)}이며, 등기우편 수령을 선택하면 우편요금 ${formatWon(CARD_DELIVERY_SURCHARGE)}이 추가되어 ${formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE)}입니다.`)
+        : '';
+    const notes = cardDeliveryNote ? [...baseNotes, cardDeliveryNote] : baseNotes;
     // D5 (1안): the generic 수수료 checklist tile was removed; carry its
     // fee-exemption clause here so the 면제 예외조항 is never lost. Sourced from
     // doc_guide doc_fee.conditional (시행규칙 제74조) — not invented.
@@ -15104,7 +15284,8 @@ function getSecondaryVisaName(v) {
 }
 function getVisaSubcodes(v) { return Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []); }
 function getLocalizedSubcodeName(s) {
-    return isEnglishMode() ? (s.nameEn || s.name_en || s.titleEn || s.title_en || s.nameKo || s.name || '') : (s.nameKo || s.name || '');
+    const raw = isEnglishMode() ? (s.nameEn || s.name_en || s.titleEn || s.title_en || s.nameKo || s.name || '') : (s.nameKo || s.name || '');
+    return paradisoStripInternalReviewArtifacts(raw) || raw;
 }
 
 const PROCEDURE_LABEL_INDEX = {
@@ -15126,6 +15307,22 @@ function getProcedureLabelByKey(key, fallback = '') {
 
 function getProcedureLabel(proc) {
     return getProcedureLabelByKey(proc.key, proc.label);
+}
+
+// 영주(F-5)는 체류기간 상한이 없는 영주자격이라 '체류기간 연장' 개념이 없고,
+// 영주증(영주카드)을 유효기간 10년마다 재발급하는 절차만 존재합니다(출입국관리법
+// 제33조의2·시행규칙 제72조제10의2호). 데이터상 동일한 extension 절차 슬롯을
+// 재사용하되, 사용자에게는 잘못된 '체류기간 연장'이 아니라 올바른 명칭
+// '영주증 재발급'으로 표시합니다. (렌더러 전용 표시 보정 — 데이터 미변경)
+function isF5ResidenceCardReissuance(v, proc) {
+    return !!(v && v.code === 'F-5' && proc && proc.key === 'extension');
+}
+function getProcedureDisplayLabel(v, proc) {
+    if (isF5ResidenceCardReissuance(v, proc)) {
+        const label = tx('procExtensionResidenceCardF5');
+        return label && label !== 'procExtensionResidenceCardF5' ? label : '영주증 재발급';
+    }
+    return getProcedureLabel(proc);
 }
 
 function localizeResultCount(n, subtypeCount = 0) {
@@ -16000,6 +16197,29 @@ function paradisoFilterProcedureNotes(notes) {
     return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n)) : [];
 }
 
+// Internal audit/TODO diagnostics that leaked into user-facing fields. These are
+// developer review notes — NOT genuine user disclaimers — so surfacing them only
+// erodes user trust. The legitimate source-transparency signals are deliberately
+// preserved: the per-subcode chips ("매뉴얼 확인 필요"), the data-provenance
+// notices ("…자동 추출한 제출서류입니다 … 수동 검토가 필요합니다"), the fee/source
+// citations, and every "관할 기관 확인" caution. Display-only suppression — the
+// protected data files (visa_data.json) are NEVER mutated — consistent with the
+// diagnostic-suppression contract (scripts/check_placeholder_suppression.js).
+//  - "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요." (a note/
+//    summary appended to subcode records as a reviewer reminder).
+const PARADISO_MANUAL_REVIEW_TODO_RE = /\s*체류민원\s*안내매뉴얼\s*\d{4}\.\d+\s*기준\s*[—–\-]\s*정확한\s*항목\s*[·ㆍ・]?\s*페이지\s*수동\s*검토\s*필요\.?/g;
+//  - "(수동검토 필요)" tag appended to placeholder "매뉴얼 참조 코드" subcode names.
+const PARADISO_MANUAL_REVIEW_PAREN_RE = /\s*[(（]\s*수동\s*검토\s*필요\s*[)）]/g;
+//  - "수동검토 필요: … 검색 연결용 항목입니다." statusNote on search-stub subcodes.
+const PARADISO_SEARCH_STUB_NOTE_RE = /수동\s*검토\s*필요\s*[:：][^\n]*검색\s*연결용\s*항목입니다\.?/g;
+function paradisoStripInternalReviewArtifacts(value) {
+    return String(value == null ? '' : value)
+        .replace(PARADISO_MANUAL_REVIEW_TODO_RE, '')
+        .replace(PARADISO_MANUAL_REVIEW_PAREN_RE, '')
+        .replace(PARADISO_SEARCH_STUB_NOTE_RE, '')
+        .trim();
+}
+
 function stripManualArtifacts(value) {
     if (value == null) return '';
     let s = String(value);
@@ -16013,7 +16233,7 @@ function stripManualArtifacts(value) {
         if (b !== s) { s = b; changed = true; }
     }
     s = s.replace(PARADISO_TERSE_TAG_SUMMARY_RE, '');
-    return s.trim();
+    return paradisoStripInternalReviewArtifacts(s);
 }
 
 function normalizeManualText(value) {
@@ -16230,7 +16450,7 @@ function renderProcedureHeader(v, proc) {
         ? `<div class="procedure-source-ref">${escapeHtml(refBits.slice(0, 3).join(' / '))}</div>`
         : '';
     return `<div class="procedure-source-header">
-        <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureLabel(proc))}</span></div>
+        <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureDisplayLabel(v, proc))}</span></div>
         <span class="procedure-source-badge${badgeClass}">${escapeHtml(sourceLabel)}</span>
         ${refHtml}
         ${renderSourceLimitationExplanation(sourceState, allRefBits)}
@@ -16245,8 +16465,10 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
     const docCount = countRenderableDocs(effectiveDocs);
     const checklistVariant = { ...variant, docs: effectiveDocs };
     const statusCode = variant.statusCode ? `<span class="manual-subcode-code">${escapeHtml(variant.statusCode)}</span>` : '';
-    const scenario = variant.scenario ? `<div class="manual-subcode-desc">${escapeHtml(variant.scenario)}</div>` : '';
-    const notes = variant.notes.length ? `<div class="manual-subcode-desc">${variant.notes.map(escapeHtml).join('<br>')}</div>` : '';
+    const scenarioText = stripManualArtifacts(variant.scenario);
+    const scenario = scenarioText ? `<div class="manual-subcode-desc">${escapeHtml(scenarioText)}</div>` : '';
+    const cleanNotes = variant.notes.map(n => stripManualArtifacts(n)).filter(Boolean);
+    const notes = cleanNotes.length ? `<div class="manual-subcode-desc">${cleanNotes.map(escapeHtml).join('<br>')}</div>` : '';
     const refs = variant.manualRefs.map(ref => [ref.manualName, ref.manualVersion, ref.pageRange].filter(Boolean).map(escapeHtml).join(' · ')).filter(Boolean);
     const citations = refs.length ? `<div class="manual-subcode-desc" style="margin-top:0.5rem; opacity:0.85;">${refs.join('<br>')}</div>` : '';
     return `<div class="manual-subcode-card${selectedByDefault ? ' is-selected' : ''}" data-procedure-variant="${escapeHtml(variant.id)}" data-procedure-variant-card="${escapeHtml(variant.id)}">
@@ -16278,15 +16500,19 @@ function openScenarioPicker(trigger) {
     if (!host) return;
     const selectedId = selector.getAttribute('data-selected-variant') || '';
     const cards = Array.from(selector.querySelectorAll('[data-procedure-variant-card]'));
-    host.innerHTML = cards.map(card => {
+    host.innerHTML = cards.map((card, i) => {
         const id = card.getAttribute('data-procedure-variant-card') || '';
         const label = (card.querySelector('.manual-subcode-name')?.textContent || '').trim();
         const code = (card.querySelector('.manual-subcode-code')?.textContent || '').trim();
         const preview = (card.querySelector('.manual-subcode-desc')?.textContent || '').trim();
         const pressed = id === selectedId ? 'true' : 'false';
         return `<button type="button" class="scenario-choice scenario-picker-choice" role="listitem" data-action="choose-scenario-variant" data-variant-id="${escapeHtml(id)}" aria-pressed="${pressed}">
-            <span class="scenario-choice-main"><span class="scenario-picker-choice-label">${escapeHtml(label)}</span>${code ? `<span class="manual-subcode-code">${escapeHtml(code)}</span>` : ''}</span>
-            ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 110))}</span>` : ''}
+            <span class="scenario-choice-marker" aria-hidden="true"><span class="scenario-choice-num">${i + 1}</span></span>
+            <span class="scenario-choice-body">
+                <span class="scenario-choice-main"><span class="scenario-picker-choice-label">${escapeHtml(label)}</span>${code ? `<span class="manual-subcode-code">${escapeHtml(code)}</span>` : ''}</span>
+                ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 110))}</span>` : ''}
+            </span>
+            <span class="scenario-choice-go" aria-hidden="true">→</span>
         </button>`;
     }).join('');
     const heading = document.getElementById('scenarioPickerTitle');
@@ -16649,7 +16875,7 @@ function renderProcedures(v, keywords) {
         </section>`;
     }
     const firstActive = procedures.find(p => p.available) || procedures[0];
-    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" data-testid="procedure-tab" data-procedure-key="${p.key}" ${p.available ? '' : 'disabled'}>${getProcedureLabel(p)}</button>`).join('');
+    const tabs = procedures.map(p => `<button type="button" class="procedure-tab${p.key === firstActive.key ? ' active' : ''}" data-action="select-procedure" data-procedure="${p.key}" data-testid="procedure-tab" data-procedure-key="${p.key}" ${p.available ? '' : 'disabled'}>${escapeHtml(getProcedureDisplayLabel(v, p))}</button>`).join('');
     const panels = procedures.map(p => renderProcedurePanel(v, p, keywords, p.key === firstActive.key)).join('');
     return `<div class="manual-section"><h4 class="manual-section-title">${escapeHtml(tx('procedureSectionTitle'))}</h4><div class="procedure-tabs" role="tablist">${tabs}</div>${panels}</div>`;
 }
@@ -16869,13 +17095,17 @@ function openRoutePicker(trigger) {
     const host = document.getElementById('routePickerChoices');
     if (!cfg || !host) return;
     const selectedId = wizard.getAttribute('data-selected-route') || '';
-    host.innerHTML = cfg.routes.map(r => {
+    host.innerHTML = cfg.routes.map((r, i) => {
         const label = tx(r.labelKey);
         const desc = r.descKey ? tx(r.descKey) : '';
         const pressed = r.id === selectedId ? 'true' : 'false';
         return `<button type="button" class="scenario-choice route-picker-choice" role="listitem" data-action="choose-route" data-route-id="${escapeHtml(r.id)}" data-procedure-key="${escapeHtml(r.procedureKey)}" data-variant-id="${escapeHtml(r.variantId || '')}" data-label-key="${escapeHtml(r.labelKey)}" data-desc-key="${escapeHtml(r.descKey)}" aria-pressed="${pressed}">
-            <span class="scenario-choice-main"><span>${escapeHtml(label)}</span></span>
-            ${desc ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(desc, 110))}</span>` : ''}
+            <span class="scenario-choice-marker" aria-hidden="true"><span class="scenario-choice-num">${i + 1}</span></span>
+            <span class="scenario-choice-body">
+                <span class="scenario-choice-main"><span>${escapeHtml(label)}</span></span>
+                ${desc ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(desc, 110))}</span>` : ''}
+            </span>
+            <span class="scenario-choice-go" aria-hidden="true">→</span>
         </button>`;
     }).join('');
     const heading = document.getElementById('routePickerTitle');
@@ -17167,10 +17397,13 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
 
     const renderCard = (s) => {
-        const label = s.nameKo || s.name || '';
-        const desc = s.summary || (Array.isArray(s.eligibility) && s.eligibility[0]) || s.note || s.addReq || tx('manualNeedsReview');
+        const label = paradisoStripInternalReviewArtifacts(s.nameKo || s.name || '');
+        const cleanSummary = stripManualArtifacts(s.summary);
+        const cleanNote = stripManualArtifacts(s.note);
+        const desc = cleanSummary || (Array.isArray(s.eligibility) && s.eligibility[0]) || cleanNote || s.addReq || tx('manualNeedsReview');
         const inactive = s.status && s.status !== 'active';
-        const statusNote = inactive && s.statusNote ? `<div class="manual-subcode-status">${escapeHtml(s.statusNote)}</div>` : '';
+        const cleanStatusNote = paradisoStripInternalReviewArtifacts(s.statusNote);
+        const statusNote = inactive && cleanStatusNote ? `<div class="manual-subcode-status">${escapeHtml(cleanStatusNote)}</div>` : '';
         const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="내 상황과 관련 가능성 있는 세부코드">관련 가능</span>` : '';
         return `<div id="${cardId(s)}" class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}">
             <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}</div>
@@ -17898,7 +18131,7 @@ function expandKeywords(keywords){
 const PREDEF_KEYWORDS = [
 "체류지 변경(주민센터)", "여권 갱신(비예약)", "등록증 재발급", "만료 당일/임산부 등",
 "제주 무사증", "K-ETA 발급", "숙련기능(E-7-4)", "결혼이민(F-6)",
-"동반(F-3) 소득요건", "결핵 제출 대상", "난민신청 절차", "오버스테이",
+"동반(F-3) 소득요건", "결핵 제출 대상", "비전문취업(E-9)", "오버스테이",
 "D-2 유학", "영주권(F-5)", "E-9 이직", "점수제 비자"
 ];
 
@@ -18125,7 +18358,10 @@ function renderResults(query){
         document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
         return;
     }
-    renderCompactResults(filtered, kw);
+    // Exact single-result searches should open directly into the detailed card.
+    // Showing the compact card and the full card for the same visa made the
+    // results page feel duplicated and crowded.
+    renderCompactResults(filtered.length === 1 ? [] : filtered, kw);
     const fg=document.createDocumentFragment();
     filtered.forEach((v,idx)=>{
         const c=document.createElement('article'); c.className='vc manual-result'; c.dataset.code = v.code || ''; c.dataset.testid = 'visa-result-card'; c.dataset.visaCode = v.code || ''; c.style.setProperty('--cbc', CC[v.cat]||CC.other); c.style.setProperty('--i', Math.min(idx,10));
@@ -18281,7 +18517,7 @@ const BOOTSTRAP_KO_FALLBACK = {
        with the 2026-06-08 visa_data cleanup) and re-pointed 난민 to G-1-5.
        Labels live in data/i18n/{ko,en,zh-CN}.json landingHints — keep the
        index order in sync with this query list. */
-    landingHints: ['유학', '영주', 'D-10', 'F-6', 'E-7-4', 'F-4', '계절근로', 'F-3 소득요건', 'G-1-5', 'D-4-2K', '제주 무사증', 'K-ETA'],
+    landingHints: ['유학', '영주', 'D-10', 'F-6', 'E-7-4', 'F-4', '계절근로', 'F-3 소득요건', 'E-9', 'D-4-2K', '제주 무사증', 'K-ETA'],
     quickFilters: ['체류지 변경', '비예약 방문', 'F-3 소득', 'K-ETA', '건강보험 면제', 'B-2-2 제주', 'E-7', 'E-9', 'F-6', 'F-5', '점수'],
     aiSourceBadgeLabels: ['검증됨', '출처 있음', '부분', '검토 필요', '참고', '미검증', '링크만', '사용 안 함', '미연결', '검증 실패', '관련 자격'],
     f4ApplicationForm: '재외동포(F-4) 통합신청서(별지 제1호서식)',
@@ -18548,7 +18784,9 @@ function getLandingHintItems() {
     const labels = txArray('landingHints');
     const koLabels = Array.isArray(UI_TRANSLATIONS.ko?.landingHints) ? UI_TRANSLATIONS.ko.landingHints : BOOTSTRAP_KO_FALLBACK.landingHints;
     const queries = BOOTSTRAP_KO_FALLBACK.landingHints;
-    return queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
+    const items = queries.map((q, idx) => ({ l: labels[idx] || koLabels[idx] || q, q }));
+    for (let i = items.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [items[i], items[j]] = [items[j], items[i]]; }
+    return items;
 }
 
 function getQuickFilterItems() {
@@ -18956,7 +19194,8 @@ function updateCategoryCounts() {
         const n = String(buckets[id].size);
         el.dataset.count = n;
         const card = el.closest('.stat-card');
-        if (card && card.classList.contains('revealed')) el.textContent = n;
+        // Keep the landing metrics correct even before the reveal animation runs.
+        el.textContent = n;
         // Every code in the bucket becomes a visible, searchable chip (the static
         // markup only carries a representative few as a pre-data fallback).
         const chipBox = card && card.querySelector('.stat-codes');
@@ -19478,7 +19717,8 @@ function initScrollReveal() {
     document.querySelectorAll('[data-stagger]').forEach(group => _staggerObs.observe(group));
 }
 function resetReveal() {
-    document.querySelectorAll('[data-count]').forEach(el => { el.textContent = '0'; });
+    // Never show stale zero counts after the live visa dataset has loaded.
+    document.querySelectorAll('[data-count]').forEach(el => { el.textContent = el.dataset.count || '0'; });
     document.querySelectorAll('[data-reveal].revealed').forEach(el => {
         el.classList.remove('revealed');
         if (_revealObs) _revealObs.observe(el);
@@ -19574,7 +19814,14 @@ function resetReveal() {
     if (document.readyState === 'complete') buildLines();
     else window.addEventListener('load', buildLines);
     window.addEventListener('resize', buildLines);
+    window.addEventListener('orientationchange', () => setTimeout(buildLines, 200));
     setTimeout(buildLines, 150);
+    // The font-size clamp + single-column reflow change #anagram's width without
+    // always firing a window resize (e.g. mobile address-bar collapse); observe
+    // the element directly so the connector lines stay aligned to the letters.
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(buildLines).observe(wrap);
+    }
 
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (prefersReduced) return;
@@ -20735,10 +20982,10 @@ function showVisaDocForAction(visaCode) {
   "use strict";
 
   const FEE_BY_LABEL = [
-    { test: /외국인등록/, title: "수수료 안내", body: "외국인등록증 발급 수수료 35,000원" },
+    { test: /외국인등록/, title: "수수료 안내", body: "외국인등록증 발급 수수료 35,000원 (등기우편 수령 시 39,000원)" },
     { test: /체류기간\s*연장|연장/, title: "수수료 안내", body: "체류기간 연장허가 정부수입인지 60,000원" },
-    { test: /체류자격\s*변경|변경/, title: "수수료 안내", body: "체류자격 변경허가 정부수입인지 100,000원. 등록증 발급이 필요한 경우 35,000원 별도 가능" },
-    { test: /최초\s*신청|입국\s*전|신규|사증/, title: "수수료 안내", body: "사증발급 수수료는 국적, 사증 종류, 재외공관 기준에 따라 달라짐. 국내 체류자격 부여는 정부수입인지 80,000원, 외국인등록 대상자는 등록증 발급 수수료 35,000원 별도 가능" }
+    { test: /체류자격\s*변경|변경/, title: "수수료 안내", body: "체류자격 변경허가 정부수입인지 100,000원. 등록증 발급이 필요한 경우 35,000원(등기우편 수령 시 39,000원) 별도 가능" },
+    { test: /최초\s*신청|입국\s*전|신규|사증/, title: "수수료 안내", body: "사증발급 수수료는 국적, 사증 종류, 재외공관 기준에 따라 달라짐. 국내 체류자격 부여는 정부수입인지 80,000원, 외국인등록 대상자는 등록증 발급 수수료 35,000원(등기우편 수령 시 39,000원) 별도 가능" }
   ];
 
   const TERM_REPLACEMENTS = [

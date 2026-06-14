@@ -305,19 +305,24 @@
     var jeju = c.b22Jeju || {};
 
     /* Jeju → mainland: the traveler ultimately wants to reach the Korean mainland.
-       We NEVER answer "Jeju visa-free + 체류지역 확대허가" here, because expanding the
-       Jeju-only stay area to the mainland is, as a rule, not granted (see
-       phraseJejuStayAreaLimited). We resolve by the route that actually reaches the
-       mainland: general visa-free if the nationality is eligible, otherwise a
-       proper visa. When the route is clearly determined we do not surface
-       speculative "다른 가능성". */
+       Legal basis (제주특별법 제197·198조): Jeju visa-free entry (B-2-2) is granted only
+       "for the purpose of staying in Jeju" and, as an exception to 출입국관리법 제7조제1항;
+       moving on to the mainland needs a discretionary 체류지역 확대 허가 (제198조). So we
+       NEVER answer "Jeju visa-free + 체류지역 확대허가". We resolve by the route that
+       actually reaches the mainland:
+         - General visa-free (B-1 사증면제 / B-2-1 일반무사증) is a NATIONWIDE status, not
+           the Jeju-only B-2-2 program: such travelers enter under general visa-free
+           even via Jeju, so the B-2-2 Jeju-only limitation does NOT apply to them and
+           must not be shown as a constraint on their trip.
+         - Otherwise a proper visa is required, and the B-2-2 limitation note IS shown
+           because the Jeju route genuinely cannot be expanded to the mainland.
+       When the route is clearly determined we do not surface speculative "다른 가능성". */
     if (destination === 'jeju_then_mainland') {
       var purposeJTM = (purpose === 'unknown') ? 'tourism' : purpose;
       if (purpose === 'unknown') {
         r.provisional = true;
         r.warnings.push('방문 목적을 알 수 없어 관광 기준의 잠정 안내입니다. 목적을 선택하면 더 정확한 경로를 안내합니다.');
       }
-      var jejuLimitNote = phraseJejuStayAreaLimited(c);
 
       if (visaFree) {
         var phraseJTM = visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c);
@@ -325,8 +330,7 @@
         var explainJTM = [phraseJTM];
         if (purposeJTM === 'business') explainJTM.push('출장(회의·상담·계약 등 비영리 상용 활동)은 일반적으로 단기 방문 범위에서 검토되지만, 협정·제도별 활동범위 제한이 있을 수 있습니다.');
         if (purposeJTM === 'medical') explainJTM.push('의료관광 일정·기관에 따라 의료관광(C-3-3) 사증이 더 적합할 수 있습니다.');
-        explainJTM.push('일반 무사증으로 입국하면 체류지역이 제주로 한정되지 않으므로, 제주와 본토를 함께 방문하려면 제주 무사증이 아니라 일반 무사증 경로로 입국하면 됩니다.');
-        explainJTM.push(jejuLimitNote);
+        explainJTM.push('일반 무사증(B-1·B-2-1) 대상국은 제주로 입국하더라도 제주 무사증(B-2-2)이 아니라 일반 무사증 자격으로 입국하므로 체류지역이 제주로 한정되지 않습니다. 따라서 제주로 입국한 뒤 본토로 이동하거나 제주와 본토를 함께 방문하는 데 제약이 없으며, 별도의 체류지역 확대허가도 필요하지 않습니다.');
         r.primary = {
           path: visaFreeB21 ? '일반 무사증(B-2-1) + K-ETA 확인' : '사증면제협정(B-1) 무사증 입국 + K-ETA 확인',
           status: 'likely_available',
@@ -350,7 +354,10 @@
         return finalizeResult(r, rules);
       }
 
-      /* not general visa-free → a proper visa is required to reach the mainland */
+      /* not general visa-free → a proper visa is required to reach the mainland.
+         Here the B-2-2 limitation note IS shown: these nationals might consider the
+         Jeju visa-free route, so we explain why it does not reach the mainland. */
+      var jejuLimitNote = phraseJejuStayAreaLimited(c);
       var deniedNoteJTM = c.b1 && c.b1.suspended ? phraseB1Suspended(c) : null;
       var c3jtm = c3map[purposeJTM] || c3map.tourism;
       r.primary = {
@@ -369,6 +376,46 @@
     }
 
     if (destination === 'jeju_only') {
+      /* General visa-free (B-1 사증면제 / B-2-1 일반무사증) is a nationwide status that
+         already covers Jeju. Such travelers enter under general visa-free — NOT the
+         Jeju-only B-2-2 program (제주특별법 제197조) — so B-2-2's Jeju-only limitation /
+         체류지역 확대 허가 (제198조) does not apply to them. We present the general
+         visa-free route, not B-2-2. */
+      if (visaFree) {
+        var purposeJO = (purpose === 'unknown') ? 'tourism' : purpose;
+        if (purpose === 'unknown') {
+          r.provisional = true;
+          r.warnings.push('방문 목적을 알 수 없어 관광 기준의 잠정 안내입니다. 목적을 선택하면 더 정확한 경로를 안내합니다.');
+        }
+        var allowedJO = parseStayDays(visaFreeB21 ? c.b21.stay : c.b1.stay);
+        r.primary = {
+          path: visaFreeB21 ? '일반 무사증(B-2-1) + K-ETA 확인' : '사증면제협정(B-1) 무사증 입국 + K-ETA 확인',
+          status: 'likely_available',
+          explanation: [
+            visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c),
+            '일반 무사증(B-1·B-2-1) 대상국은 제주만 방문하더라도 제주 무사증(B-2-2)이 아니라 일반 무사증 자격으로 입국합니다. 일반 무사증은 체류지역이 제주로 한정되지 않으므로 제주 무사증의 제주 한정·체류지역 확대허가 제약은 적용되지 않습니다.'
+          ]
+        };
+        r.showKeta = true;
+        r.steps = [
+          ketaStepText(c, rules, ageGroup),
+          '여권 유효기간과 왕복 항공권 등 기본 요건을 확인하세요.',
+          '입국심사 시 방문 목적과 일정을 설명할 수 있도록 준비하세요.'
+        ];
+        if (visaFreeB1) r.warnings.push('사증면제협정은 협정상 활동범위·기간 제한이 있을 수 있습니다. 협정 기간(' + c.b1.stay + ')을 초과하거나 영리활동을 하려면 사증이 필요합니다.');
+        r.warnings.push(WARN_KETA_NOT_VISA, WARN_NO_EXTENSION, WARN_AIRLINE, WARN_FINAL_DECISION);
+        if (allowedJO && stayDays && stayDays > allowedJO) {
+          r.primary.status = 'visa_required';
+          r.primary.path = c3PathLabel(c3map, purposeJO) + ' 신청 (무사증 허용기간 초과)';
+          r.primary.explanation.push('예정 체류일수(' + stayDays + '일)가 무사증 허용 기간(' + (visaFreeB21 ? c.b21.stay : c.b1.stay) + ')을 초과하므로 사증을 발급받아 입국해야 합니다.');
+          r.steps = c3Steps(purposeJO);
+          r.showKeta = false;
+        }
+        return finalizeResult(r, rules);
+      }
+
+      /* non-visa-free nationals → the Jeju visa-free (B-2-2) program is the relevant
+         route (subject to the entry-denied 고시 list). */
       if (jeju.jejuEntryDenied) {
         r.primary = {
           path: c3PathLabel(c3map, purpose) + ' 신청 또는 공식 확인',
@@ -388,7 +435,7 @@
       jejuExplain.push('따라서 제주만 방문하는 경우 제주 무사증(B-2-2) 경로를 확인할 수 있습니다(체류 ' + (jeju.jejuStayDays || 30) + '일, 제주 직항 등 입국 경로 조건 적용).');
       r.primary = {
         path: '제주 무사증(B-2-2) 경로 확인',
-        status: visaFree ? 'likely_available' : 'needs_official_check',
+        status: 'needs_official_check',
         explanation: jejuExplain
       };
       r.steps = [
@@ -396,13 +443,7 @@
         '이용 항공사에 탑승 가능 여부를 확인하세요.',
         '최신 법무부 고시와 입국 요건을 출발 전에 다시 확인하세요.'
       ];
-      if (visaFree) {
-        addAlternative(r, visaFreeB21 ? '일반 무사증/B-2-1·K-ETA' : '사증면제협정(B-1)',
-          (visaFreeB21 ? phraseB21Listed(c) : phraseB1Listed(c)) + ' 일반 무사증 경로로 입국하면 제주 외 지역 이동 제한이 없습니다.');
-        r.showKeta = true;
-      } else {
-        addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
-      }
+      addAlternative(r, '일반관광 사증(C-3-9)', '본토를 함께 방문하거나 일정이 바뀔 수 있다면 처음부터 사증 신청이 안전합니다.');
       r.warnings.push(WARN_JEJU_SEPARATE, WARN_AIRLINE, WARN_FINAL_DECISION);
       if (stayDays && stayDays > (jeju.jejuStayDays || 30)) {
         r.warnings.push('예정 체류일수(' + stayDays + '일)가 제주 무사증 허용 기간(' + (jeju.jejuStayDays || 30) + '일)을 초과합니다. 사증 경로를 확인하세요.');
@@ -719,7 +760,6 @@
           '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
           '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>') +
         '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
-        '<div class="ssc-badges" data-ssc-badges></div>' +
         '<form data-ssc-form novalidate>' +
           '<div class="ssc-grid">' +
             '<label class="ssc-field" style="grid-column:1/-1;">' +
@@ -742,19 +782,6 @@
         '<div class="ssc-result" data-ssc-result role="status" aria-live="polite" hidden></div>' +
       '</div>';
     bindForm(container);
-    refreshBadges(container);
-  }
-
-  function refreshBadges(container) {
-    var host = container.querySelector('[data-ssc-badges]');
-    if (!host) return;
-    if (state.rules) {
-      host.innerHTML = renderSourceFreshnessBadge(state.rules.sourceStatus, state.rules.lastUpdated);
-    } else if (state.loadError) {
-      host.innerHTML = renderSourceFreshnessBadge('needs_refresh', null);
-    } else {
-      host.innerHTML = '<span class="ssc-badge">' + esc(STR.loading) + '</span>';
-    }
   }
 
   function statusBadge(status) {

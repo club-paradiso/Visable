@@ -27,13 +27,21 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 BACKEND_DIR = REPO_ROOT / "backend"
 INDEX = REPO_ROOT / "index.html"
 CHECK_I18N = REPO_ROOT / "scripts" / "check_i18n.js"
+CHECK_I18N_COVERAGE = REPO_ROOT / "scripts" / "check_i18n_coverage.mjs"
+CHECK_I18N_HARDCODED = REPO_ROOT / "scripts" / "check_index_hardcoded_text.mjs"
 SMOKE = REPO_ROOT / "scripts" / "smoke_ai_live_quality.py"
 DOC = REPO_ROOT / "docs" / "data" / "I18N_LAW_FALLBACK_LIVE_SMOKE_2026_05.md"
 
 if str(BACKEND_DIR) not in sys.path:
     sys.path.insert(0, str(BACKEND_DIR))
 
-MAIN_LANGS = ("ko", "en", "zh", "zhHant")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized, pack_blobs  # noqa: E402
+
+# Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
+# the inline check_i18n guard was split into scripts/check_i18n_coverage.mjs (strict
+# cross-locale parity) and scripts/check_index_hardcoded_text.mjs (inline-leak
+# scanner). Supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
 
 
 def _client():
@@ -257,6 +265,8 @@ class I18nLeakGuardTests(unittest.TestCase):
     def setUpClass(cls):
         cls.html = INDEX.read_text(encoding="utf-8")
         cls.guard_src = CHECK_I18N.read_text(encoding="utf-8")
+        cls.packs = load_packs()
+        cls.blobs = pack_blobs()
 
     @unittest.skipUnless(_node_available(), "node not available")
     def test_guard_passes_on_current_index(self):
@@ -266,9 +276,14 @@ class I18nLeakGuardTests(unittest.TestCase):
 
     @unittest.skipUnless(_node_available(), "node not available")
     def test_guard_catches_injected_korean_ui_leak(self):
+        # Inject a Korean UI string literal into the i18n runtime region of
+        # index.html and confirm the inline hardcoded-text scanner flags it.
+        marker = "const LANGUAGE_STORAGE_KEY = 'paradiso:language';"
+        self.assertIn(marker, self.html, "i18n runtime marker not found in index.html")
         leaked = self.html.replace(
-            "jurMissingInfo: 'Jurisdiction office information is missing.'",
-            "jurMissingInfo: '관할 관서 정보가 누락되었습니다.'",
+            marker,
+            marker + "\nconst __leakProbe = '관할 관서 정보가 누락되었습니다.';",
+            1,
         )
         self.assertNotEqual(leaked, self.html, "fixture replacement did not apply")
         with tempfile.NamedTemporaryFile("w", suffix=".html", delete=False,
@@ -281,63 +296,68 @@ class I18nLeakGuardTests(unittest.TestCase):
                 env={**os.environ, "CHECK_I18N_INDEX": fixture},
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
             )
-            self.assertEqual(proc.returncode, 1)
-            self.assertIn("UI-chrome leak", proc.stdout + proc.stderr)
+            self.assertEqual(proc.returncode, 1, proc.stdout + proc.stderr)
+            self.assertIn("Suspicious inline UI strings", proc.stdout + proc.stderr)
         finally:
             os.unlink(fixture)
 
-    def test_guard_has_required_keys_and_allowlist(self):
-        self.assertIn("REQUIRED_UI_KEYS", self.guard_src)
-        self.assertIn("INTENTIONAL_KOREAN_ALLOWLIST", self.guard_src)
-        self.assertIn("checkRequiredKeysAcrossLanguages", self.guard_src)
-        # The four full languages are all checked.
-        for lang in MAIN_LANGS:
-            self.assertIn("'%s'" % lang, self.guard_src)
-        # Allowlist intentionally retains official Korean source-term keys.
+    def test_i18n_guard_enforces_parity_allowlist_and_official_korean_notes(self):
+        # Strict cross-locale parity guard: lists every supported locale and fails
+        # on missing/extra/shape-mismatched keys (replaces the old inline
+        # REQUIRED_UI_KEYS / checkRequiredKeysAcrossLanguages logic).
+        coverage = CHECK_I18N_COVERAGE.read_text(encoding="utf-8")
+        for locale in SUPPORTED_LOCALES:
+            self.assertIn("'%s'" % locale, coverage)
+        for token in ("requiredLocales", "missing", "extra", "shape mismatch"):
+            self.assertIn(token, coverage)
+        # Inline hardcoded-text scanner keeps an allowlist of intentionally
+        # retained strings (replaces INTENTIONAL_KOREAN_ALLOWLIST).
+        hardcoded = CHECK_I18N_HARDCODED.read_text(encoding="utf-8")
+        self.assertIn("allowlist", hardcoded)
+        # Official Korean source-term notes remain present (intentionally Korean
+        # even in non-Korean packs) in every supported pack.
         for key in ("scenarioOfficialLabelsKoNote", "officialDocumentNamesKoNote",
                     "partialLanguageNotice"):
-            self.assertIn(key, self.guard_src)
+            for locale in SUPPORTED_LOCALES:
+                self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
 
-    def test_manual_to_law_fallback_labels_in_four_languages(self):
-        self.assertIn("manualToLawFallbackLabel: '매뉴얼 근거 부족'", self.html)
-        self.assertIn("manualToLawFallbackLabel: 'Manual guidance insufficient'", self.html)
-        self.assertIn("manualToLawFallbackLabel: '手册依据不足'", self.html)
-        self.assertIn("manualToLawFallbackLabel: '手冊依據不足'", self.html)
-        self.assertIn("manualToLawFallbackChecked: '법령 근거로 보완 확인'", self.html)
-        self.assertIn("manualToLawFallbackChecked: 'Checked supporting legal grounding'", self.html)
-        self.assertIn("manualToLawFallbackChecked: '已尝试以法令依据补充确认'", self.html)
-        self.assertIn("manualToLawFallbackChecked: '已嘗試以法令依據補充確認'", self.html)
+    def test_manual_to_law_fallback_labels_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "manualToLawFallbackLabel"), "매뉴얼 근거 부족")
+        self.assertEqual(localized(self.packs, "en", "manualToLawFallbackLabel"), "Manual guidance insufficient")
+        self.assertEqual(localized(self.packs, "zh-CN", "manualToLawFallbackLabel"), "手册依据不足")
+        self.assertEqual(localized(self.packs, "ko", "manualToLawFallbackChecked"), "법령 근거로 보완 확인")
+        self.assertEqual(localized(self.packs, "en", "manualToLawFallbackChecked"), "Checked supporting legal grounding")
+        self.assertEqual(localized(self.packs, "zh-CN", "manualToLawFallbackChecked"), "已尝试以法令依据补充确认")
 
-    def test_doc_modal_titles_routed_through_tx_in_four_languages(self):
+    def test_doc_modal_titles_routed_through_tx(self):
         # openDocModal no longer uses a ko/en-only ternary for stage titles.
         modal = self.html.split("function openDocModal", 1)[1].split("function ", 1)[0]
         for key in ("docModalTitleNew", "docModalTitleExt", "docModalTitleChange",
                     "docModalTitleSub", "docModalTitleSubGeneric", "docStageReference"):
             self.assertIn("tx('%s'" % key, modal)
         self.assertNotIn("currentLanguage === 'en' ? 'Visa / new application documents'", self.html)
-        # Present in all four packs.
+        # Present in all supported packs.
         for key in ("docModalTitleNew", "docModalTitleExt", "docModalTitleChange",
                     "docStageReference"):
-            self.assertEqual(self.html.count("%s:" % key), 4, key)
+            for locale in SUPPORTED_LOCALES:
+                self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
 
     def test_jurisdiction_chrome_routed_through_tx(self):
         for key in ("jurSidoPlaceholder", "jurSigunguPlaceholder", "jurMissingInfo", "jurResultMsg"):
             self.assertIn("tx('%s'" % key, self.html)
-            self.assertEqual(self.html.count("%s:" % key), 4, key)
+            for locale in SUPPORTED_LOCALES:
+                self.assertIn(key, self.packs[locale], f"{key} missing from {locale} pack")
         # No longer hard-codes the Korean placeholders/messages.
         self.assertNotIn("'<option value=\"\">시/도 선택</option>'", self.html)
         self.assertNotIn('showToast("관할 관서 정보가 누락되었습니다.")', self.html)
 
-    def test_source_panel_labels_present_in_four_languages(self):
-        # sourceStatusTitle + manualActionLabels now exist in all four MAIN packs
-        # (zhHant was previously missing them). Check specific per-language values
-        # rather than a raw count, since secondary packs (vi) also carry the key.
-        self.assertIn("sourceStatusTitle: '출처 및 검증 상태'", self.html)
-        self.assertIn("sourceStatusTitle: 'Source and verification status'", self.html)
-        self.assertIn("sourceStatusTitle: '来源及核实状态'", self.html)
-        self.assertIn("sourceStatusTitle: '來源與核實狀態'", self.html)
-        self.assertIn("manualActionLabels: ['簽證/新辦文件'", self.html)
-        self.assertIn("aiActionLabels: ['✨ 綜合情況分析請求'", self.html)
+    def test_source_panel_labels_present_in_supported_languages(self):
+        self.assertEqual(localized(self.packs, "ko", "sourceStatusTitle"), "출처 및 검증 상태")
+        self.assertEqual(localized(self.packs, "en", "sourceStatusTitle"), "Source and verification status")
+        self.assertEqual(localized(self.packs, "zh-CN", "sourceStatusTitle"), "来源及核实状态")
+        # Action-label arrays remain localized per supported locale.
+        self.assertIn("签证/新申请材料", localized(self.packs, "zh-CN", "manualActionLabels"))
+        self.assertIn("✨ 请求综合情况分析", localized(self.packs, "zh-CN", "aiActionLabels"))
 
     def test_source_panel_renders_manual_to_law_fallback_row(self):
         fn = self.html.split("function renderGroundingSourcePanel", 1)[1].split("\nfunction ", 1)[0]
