@@ -1701,7 +1701,7 @@ class LawPublicDataScaffoldTests(unittest.TestCase):
         from services.grounding_config import load_grounding_config
 
         cfg = load_grounding_config()
-        self.assertEqual(cfg.mode, "disabled")
+        self.assertEqual(cfg.mode, "audit")
         self.assertGreater(cfg.timeout_seconds, 0)
         self.assertGreater(cfg.cache_ttl_seconds, 0)
 
@@ -2165,8 +2165,8 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
                     "law_api_endpoint_configured", "ready_for_external_calls",
                     "sample_would_trigger", "sample_law_search_query", "warnings"):
             self.assertIn(key, data)
-        self.assertEqual(data["mode"], "disabled")
-        self.assertIn("LAW_GROUNDING_DISABLED", data["warnings"])
+        self.assertEqual(data["mode"], "audit")
+        self.assertIn("LAW_GROUNDING_AUDIT_ONLY", data["warnings"])
 
     def test_get_preflight_accepts_custom_question(self):
         client, _ = _client()
@@ -2192,7 +2192,7 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, resp.text)
         body = resp.json()
         self.assertIn("preflight", body)
-        self.assertEqual(body["preflight"]["mode"], "disabled")
+        self.assertEqual(body["preflight"]["mode"], "audit")
 
     def test_post_debug_empty_still_400(self):
         # Existing contract preserved: empty POST body returns 400.
