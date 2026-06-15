@@ -21,6 +21,7 @@ import logging
 import os
 import re
 import time
+import dataclasses
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
 
@@ -3850,14 +3851,28 @@ async def ask(req: AskRequest) -> AskResponse:
     citation_verification: Optional[Dict[str, Any]] = None
     law_context: Dict[str, Any] = {}
     # Single source of truth for the grounding mode (default "enabled"): the same
-    # config the preflight/debug endpoints and the evidence pack read, so /api/ask
-    # can never silently disagree with them. External law/precedent calls still
-    # only fire when a credential (LAW_API_OC / legacy LAW_API_KEY) is present.
-    mode = load_grounding_config().mode
+    # config the preflight/debug endpoints and the evidence pack read.
+    #
+    # IMPORTANT: full activation ("enabled") only HELPS when a credential
+    # (LAW_API_OC / legacy LAW_API_KEY) is present. Without one, an "enabled"
+    # deploy used to push EVERY legal question into the "law unavailable" hedge
+    # path (manual-to-law fallback + downgraded confidence), producing degraded
+    # "source-limited preparation note" answers instead of normal helpful ones.
+    # So when enabled-but-uncredentialed, behave like "disabled" for the user
+    # answer (no external call, no hedging, no downgrade). The moment LAW_API_OC
+    # is set, this becomes fully active with no code change. The diagnostic
+    # "audit" mode is intentionally left untouched (operators opt into it).
+    grounding_cfg = load_grounding_config()
+    mode = grounding_cfg.mode
+    effective_mode = (
+        "disabled"
+        if (mode == "enabled" and not grounding_cfg.law_api_configured)
+        else mode
+    )
     intent = should_attempt_law_grounding(prompt)
     if intent.get("should_attempt"):
         law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
-        if mode in {"audit", "enabled"}:
+        if effective_mode in {"audit", "enabled"}:
             law_context = build_law_grounding_context(prompt)
             law_grounding_attempted = bool(law_context.get("attempted"))
             law_grounding_used = bool(law_context.get("law_grounding_used"))
@@ -3868,11 +3883,14 @@ async def ask(req: AskRequest) -> AskResponse:
             # The normalized law evidence is injected below via the structured
             # evidence pack (a single compact summary), not as a second raw dump.
         else:
-            # Intent detected but grounding is disabled: surface the state and
-            # the query that WOULD be issued, without making any external call.
+            # Off (or enabled-without-credential): surface the query that WOULD be
+            # issued, make NO external call, and do NOT degrade the answer.
             law_grounding_status = "disabled"
             law_search_query = build_law_search_query(prompt, law_grounding_intent_reasons)
-            law_grounding_warnings = ["LAW_GROUNDING_DISABLED"]
+            law_grounding_warnings = (
+                ["LAW_GROUNDING_DISABLED"] if mode == "disabled"
+                else ["LAW_GROUNDING_NOT_CONFIGURED"]
+            )
 
     # Manual-to-law fallback policy. When NO deterministic manual / source-
     # confirmed structured requirements grounding was found for a legal or
@@ -3886,7 +3904,7 @@ async def ask(req: AskRequest) -> AskResponse:
     manual_to_law_fallback_used = False
     manual_to_law_fallback_reason = ""
     if not manual_present and intent.get("should_attempt"):
-        if mode in {"audit", "enabled"}:
+        if effective_mode in {"audit", "enabled"}:
             manual_to_law_fallback_used = True
             manual_to_law_fallback_reason = "manual_grounding_absent_law_intent"
             # Tell the model to frame the answer honestly: manual-specific
@@ -3941,6 +3959,9 @@ async def ask(req: AskRequest) -> AskResponse:
             procedure_variant_present=bool(procedure_variant_block),
             law_context=law_context,
             quality=quality,
+            # Use the effective mode so an enabled-without-credential deploy does
+            # not surface "source unavailable" chips / downgrade the source panel.
+            config=dataclasses.replace(grounding_cfg, mode=effective_mode),
         )
     except Exception:  # pragma: no cover - the pack must never break /api/ask
         law_evidence_pack = None
