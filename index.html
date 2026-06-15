@@ -12686,11 +12686,6 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             </div>
             <div class="auto-list" id="auto-list" role="listbox" aria-label="검색 제안"></div>
             <div class="smeta"><span id="rc">데이터 로딩 중…</span><span id="rh"></span></div>
-            <div class="p-cmd-extras" aria-label="검색 도움말">
-                <p class="p-cmd-extras-title" id="pCmdChipsTitle">추천 키워드</p>
-                <div class="p-cmd-chips" id="pCmdChips" role="list"></div>
-                <p class="p-cmd-disclaimer" id="pCmdDisclaimer">출처를 확인하며 안내합니다. 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.</p>
-            </div>
         </form>
         <p class="reference-disclaimer">본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.</p>
 
@@ -12701,10 +12696,6 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <button class="cb" data-action="toggle-accordions" data-fold="false">펼치기</button>
         </div>
 
-        <section class="landing-hints-section" aria-labelledby="landingHintsTitle">
-            <h2 class="landing-hints-title" id="landingHintsTitle">추천 키워드</h2>
-            <div class="landing-hints" id="landingHints" aria-label="빠른 추천 검색어"></div>
-        </section>
         <div class="hero-ai-secondary" aria-label="선택형 AI 도우미">
             <a href="ai.html" class="hero-ai-link"><span aria-hidden="true">✦</span> AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
         </div>
@@ -18273,7 +18264,7 @@ function renderNextActionArea(v, isVisaCode) {
 
 function renderCardSummary(v, kw) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
-    const raw = v.summary || v.newReq || v.extReq || '';
+    const raw = v.summary || '';
     if (!raw) return '';
     const normalized = normalizeManualText(raw);
     if (!normalized) return '';
