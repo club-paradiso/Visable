@@ -144,6 +144,31 @@ class QualityGateTests(unittest.TestCase):
         self.assertFalse(r["passed"])
         self.assertTrue(any(w.startswith("irrelevant_terms") for w in r["warnings"]))
 
+    def test_substantive_answer_missing_slots_is_not_replaced_with_template(self):
+        # Regression: a real, on-topic answer that merely misses structured
+        # template slots must NOT be slammed into the deterministic preparation
+        # note. Only genuine non-answers / unsafe answers get deterministic
+        # synthesis; slot shortfall on a substantive answer keeps the model text.
+        c = _contract([], {})  # legal_general contract (broad informational Q)
+        substantive = (
+            "출입국·외국인청 민원 중에는 여권 원본이 반드시 필요하지 않은 업무도 있습니다. "
+            "외국인등록증 재발급, 체류기간 연장 접수, 각종 사실증명 발급 등은 외국인등록증과 "
+            "신청서로 진행되는 경우가 많습니다. 다만 신원확인이 필요한 일부 업무는 여권을 "
+            "요구할 수 있으니, 방문 전 1345 또는 HiKorea에서 해당 업무의 준비물을 확인하세요."
+        )
+        r = ashape.evaluate_answer_shape(substantive, _meta([], {}), c)
+        self.assertNotEqual(r["repair_strategy"], "deterministic_synthesis")
+
+    def test_generic_avoidance_answer_is_still_replaced(self):
+        # The safety role of the gate is preserved: a generic non-answer still
+        # triggers deterministic synthesis.
+        c = _contract([], {})
+        r = ashape.evaluate_answer_shape(
+            "해당 업무는 다양합니다. 자세한 내용은 확인이 필요합니다.", _meta([], {}), c
+        )
+        self.assertFalse(r["passed"])
+        self.assertEqual(r["repair_strategy"], "deterministic_synthesis")
+
     def test_gate_flags_source_limitation_first_line(self):
         bad = "본 답변은 공식 매뉴얼에 근거하지 않습니다.\n그래도 H-1 외국인등록은 입국일 기준입니다."
         c = _contract(["registration_or_residence_report"], {"current_status": "H-1"})
