@@ -307,7 +307,7 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         body = resp.json()
         # Fast tier answers on the small low-latency model first, NOT the 550B
         # ultra basic primary, and the used tier is reported honestly.
-        self.assertEqual(calls[0], "google/gemma-4-31b-it:free")
+        self.assertEqual(calls[0], "google/gemma-4-26b-a4b-it:free")
         self.assertEqual(body["answer_mode"], "fast")
         self.assertEqual(body["answer_mode_requested"], "fast")
 
@@ -840,7 +840,7 @@ class StreamingAnswerTests(unittest.TestCase):
         pb = _pb()
         resp, calls = self._stream(pb, {}, answer_mode="fast")
         self.assertEqual(resp.status_code, 200, resp.text)
-        self.assertEqual(calls[0], "google/gemma-4-31b-it:free")
+        self.assertEqual(calls[0], "google/gemma-4-26b-a4b-it:free")
         self.assertIn("\"answer_mode\": \"fast\"", resp.text)
 
 

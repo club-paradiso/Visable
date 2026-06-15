@@ -42,12 +42,20 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
 ANSWER_MODES = ("fast", "basic", "pro")
 DEFAULT_ANSWER_MODE = "basic"
 
-# Fast tier: prefer the smallest reliable model, then a mid model as fallback.
-DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-31b-it:free"
+# Fast tier: prefer the lightest reliable free model for low latency. Order is
+# Gemma first (requested), then Qwen, then Llama as a last resort — every entry
+# is a small / MoE-active-light free model so the fast tier stays snappy. The
+# candidate-skip logic (model_not_found -> next candidate) means a momentarily
+# unavailable slug simply falls through to the next, so the chain is resilient.
+# NOTE: qwen/* is normally reserved for Chinese-language routes by policy; it is
+# included here ONLY as an explicit fast-tier fallback per product request, and
+# never as a default for the (basic) final-answer chain.
+DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-31b-it:free",
-    "openai/gpt-oss-120b:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
+    "google/gemma-4-26b-a4b-it:free",   # Gemma 4 MoE (~3.8B active) — light + preferred
+    "google/gemma-3-4b-it:free",        # Gemma 3 4B — lightest Gemma fallback
+    "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen free (A3B active) — fallback
+    "meta-llama/llama-3.2-3b-instruct:free",  # Llama free 3B — last-resort fallback
 ]
 
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"
