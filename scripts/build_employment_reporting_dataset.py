@@ -41,7 +41,13 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 
 # --- inputs ---------------------------------------------------------------
+# Occupation source priority (highest -> lowest):
+#   1. full candidate (all 5 levels, 1,999) — from the KSCO-only 분류항목표
+#   2. ISCO-linkage candidate (4 levels, 728: 대/중/소/세분류 + EN at 세분류) —
+#      from scripts/convert_ksco8_isco_linkage.py
+#   3. verified seed (대분류+중분류, 67)
 OCC_FULL = REPO / "data" / "generated" / "employment_reporting_ksco8_full_candidate.csv"
+OCC_CANDIDATE = REPO / "data" / "generated" / "employment_reporting_ksco8_candidate.csv"
 OCC_SEED = REPO / "data" / "jobcode_master_ksco8_major_middle.csv"
 IND_FULL = REPO / "data" / "sources" / "ksic11_full_2038.csv"
 OUT = REPO / "data" / "jobcode_master.json"
@@ -205,11 +211,12 @@ def build_rows(records: list[dict], kind: str) -> list[dict]:
             if key not in seen:
                 seen.add(key)
                 uniq.append(t)
+        name_en = str(r.get("name_en") or "").strip() or None
         rows.append({
             "type": kind,
             "code": code,
             "name_ko": name,
-            "name_en": None,
+            "name_en": name_en,
             "level": level,
             "level_label_ko": LEVEL_LABEL_KO[level],
             "parent_code": parent or None,
@@ -227,10 +234,13 @@ def coverage(rows: list[dict]) -> dict:
 
 
 def main() -> int:
-    # occupation: full candidate if present, else verified seed
+    # occupation source priority: full table -> ISCO-linkage (4 levels) -> seed
     if OCC_FULL.is_file():
         occ_records = load_csv(OCC_FULL)
         occ_data_source = "full_candidate"
+    elif OCC_CANDIDATE.is_file():
+        occ_records = load_csv(OCC_CANDIDATE)
+        occ_data_source = "ksco8_isco08_linkage_4level"
     else:
         occ_records = load_csv(OCC_SEED)
         occ_data_source = "verified_seed_major_middle"
@@ -255,7 +265,7 @@ def main() -> int:
         "runtime_count": len(occ_rows),
         "runtime_coverage_levels": occ_cov,
         "data_source": occ_data_source,
-        "full_table_loaded": occ_data_source == "full_candidate",
+        "full_table_loaded": len(occ_rows) == OCCUPATION_SOURCE["full_table_expected_count"],
     })
     ind_meta = dict(INDUSTRY_SOURCE)
     ind_meta.update({
@@ -309,10 +319,11 @@ def main() -> int:
     print(f"  occupation ({occ_data_source}): {len(occ_rows)}  levels={occ_cov}")
     print(f"  industry:                       {len(ind_rows)}  levels={ind_cov}")
     print(f"  total: {payload['total_count']}")
-    if occ_data_source != "full_candidate":
-        print("  NOTE: occupation = verified 대분류+중분류 seed only. Drop in")
+    if not occ_meta["full_table_loaded"]:
+        print(f"  NOTE: occupation data_source={occ_data_source} ({len(occ_rows)} rows).")
+        print("        For the full 1,999-row table (incl. 세세분류/5-digit), drop in")
         print("        data/generated/employment_reporting_ksco8_full_candidate.csv")
-        print("        (1,999 rows) to ship the full KSCO8 table.")
+        print("        (from the KSCO-only 분류항목표) and re-run.")
     return 0
 
 
