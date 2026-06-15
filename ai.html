@@ -246,7 +246,20 @@
         }
         .ai-textarea:focus { border-color: var(--ac); box-shadow: 0 0 0 2px var(--acG); }
         .ai-textarea::placeholder { color: var(--t3); }
-        
+
+        .ai-mode-selector { display: flex; gap: var(--sp-2); margin-bottom: var(--sp-2); }
+        .ai-mode-btn {
+            flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+            padding: var(--sp-2); border: 1px solid var(--bd); background: var(--bg0);
+            border-radius: var(--btn-r-md); cursor: pointer; transition: var(--btn-tr);
+            font-family: var(--ff); color: var(--t2);
+        }
+        .ai-mode-btn:hover:not(.is-disabled) { border-color: var(--ac); }
+        .ai-mode-btn.is-active { border-color: var(--ac); background: var(--acG); color: var(--t1); box-shadow: 0 0 0 1px var(--ac) inset; }
+        .ai-mode-btn.is-disabled { opacity: 0.55; cursor: not-allowed; }
+        .ai-mode-title { font-size: 0.85rem; font-weight: 800; }
+        .ai-mode-sub { font-size: 0.7rem; font-weight: 600; opacity: 0.85; }
+
         .send-btn {
             background: var(--ac); color: #000; border: none; width: var(--btn-h-lg); height: var(--btn-h-lg); border-radius: var(--btn-r-md);
             font-weight: 800; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; transition: var(--btn-tr); line-height: 1;
@@ -1278,6 +1291,20 @@ select:focus-visible {
 
     <!-- Input Area -->
     <footer class="chat-input-area">
+        <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector">
+            <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
+                <span class="ai-mode-title">⚡ Fast</span>
+                <span class="ai-mode-sub">빠른 답변</span>
+            </button>
+            <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true">
+                <span class="ai-mode-title">⚖️ Basic</span>
+                <span class="ai-mode-sub">기본(권장)</span>
+            </button>
+            <button type="button" class="ai-mode-btn is-disabled" data-mode="pro" role="radio" aria-checked="false" aria-disabled="true" disabled>
+                <span class="ai-mode-title">💎 Pro</span>
+                <span class="ai-mode-sub">서비스 예정</span>
+            </button>
+        </div>
         <div class="input-wrapper">
             <label for="aiQ" class="sr-only">상황 분석 요청 입력창</label>
             <textarea id="aiQ" class="ai-textarea" rows="1" placeholder="예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다..." aria-describedby="charCount"></textarea>
@@ -2737,6 +2764,7 @@ select:focus-visible {
                         consent: true,
                         context: contextText,
                         lang: userLang,
+                        answer_mode: currentAiAnswerMode,
                         visa_data: visaPayload,
                         history: recentChatHistory()
                     }),
@@ -2815,9 +2843,33 @@ select:focus-visible {
         // ==========================================
         // Initialization
         // ==========================================
+        // Waymaker answer-speed tier: 'fast' | 'basic' | 'pro' (pro is coming-soon).
+        let currentAiAnswerMode = 'basic';
+        function setupAiModeSelector() {
+            const selector = document.getElementById('aiModeSelector');
+            if (!selector || selector.dataset.wired) return;
+            selector.dataset.wired = '1';
+            selector.querySelectorAll('.ai-mode-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const mode = btn.dataset.mode;
+                    if (mode === 'pro' || btn.classList.contains('is-disabled')) {
+                        showToast('Pro 모드는 곧 제공될 예정입니다.');
+                        return;
+                    }
+                    currentAiAnswerMode = mode;
+                    selector.querySelectorAll('.ai-mode-btn').forEach(b => {
+                        const active = b === btn;
+                        b.classList.toggle('is-active', active);
+                        b.setAttribute('aria-checked', active ? 'true' : 'false');
+                    });
+                });
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
-            
+            setupAiModeSelector();
+
             const qEl = document.getElementById('aiQ');
             if (qEl) {
                 qEl.addEventListener('input', updateCharCounter);
