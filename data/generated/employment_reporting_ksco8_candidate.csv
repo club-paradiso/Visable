@@ -1,0 +1,729 @@
+code,title_ko,level,parent_code,name_en
+1,관리자,major,,
+11,의회·정부 및 기업 고위직,middle,1,
+111,의회 의원·고위 공무원 및 공공단체 임원,minor,11,
+1111,의회 의원,unit,111,Legislators
+1112,고위 공무원 및 정당·특수 단체 임원,unit,111,"Senior Government Officials, Political Party Members, and Special Organization Members"
+112,기업 대표 및 기업 고위 임원,minor,11,
+1120,기업 대표 및 기업 고위 임원,unit,112,Business Leaders and Business Senior Executives
+12,행정·경영 지원 및 마케팅 관리직,middle,1,
+121,행정 및 경영 지원 관리자,minor,12,
+1211,정부 행정 관리자,unit,121,Government Administration Managers
+1212,경영 지원 관리자,unit,121,Business Support Managers
+122,마케팅 및 광고·홍보 관리자,minor,12,
+1220,마케팅 및 광고·홍보 관리자,unit,122,"Marketing, Advertising and Public Relations Managers"
+13,전문 서비스 관리직,middle,1,
+131,연구·교육 및 법률 관련 관리자,minor,13,
+1311,연구 관리자,unit,131,Research Managers
+1312,교육 관리자,unit,131,Education Managers
+1313,법률·경찰·소방 및 교도 관리자,unit,131,"Legal, Police, Fire, and Jail Administration Managers"
+132,보험 및 금융 관리자,minor,13,
+1320,보험 및 금융 관리자,unit,132,Insurance and Finance Managers
+133,보건 및 사회복지 관련 관리자,minor,13,
+1331,보건 의료 관련 관리자,unit,133,Health and Medical Service Managers
+1332,사회복지 관련 관리자,unit,133,Social Welfare Service Managers
+134,문화·예술 관련 관리자,minor,13,
+1340,문화·예술 관련 관리자,unit,134,Culture and Art-related Managers
+135,정보 통신 관련 관리자,minor,13,
+1350,정보 통신 관련 관리자,unit,135,Information and Communications-related Managers
+139,기타 전문 서비스 관리자,minor,13,
+1390,기타 전문 서비스 관리자,unit,139,Other Professional Services Managers
+14,건설·전기 및 생산 관련 관리직,middle,1,
+141,건설·전기 및 생산 관련 관리자,minor,14,
+1411,건설 및 광업 관련 관리자,unit,141,Construction and Mining-related Managers
+1412,전기·가스 및 수도 관련 관리자,unit,141,"Electricial, Water, and Gas Service-related Administrators"
+1413,제품 생산 관련 관리자,unit,141,Production-related Managers
+149,기타 건설·전기 및 생산 관련 관리자,minor,14,
+1490,기타 건설·전기 및 생산 관련 관리자,unit,149,"Other Construction, Electrical, and Production-related Managers"
+15,판매 및 고객 서비스 관리직,middle,1,
+151,판매 및 운송 관리자,minor,15,
+1511,영업 및 판매 관련 관리자,unit,151,Commerce and Sales-related Managers
+1512,운송 관련 관리자,unit,151,Transport-related Managers
+152,고객 서비스 관리자,minor,15,
+1521,숙박·여행·오락 및 스포츠 관련 관리자,unit,152,"Lodging, Tourism, Entertainment, and Sports-related Managers"
+1522,음식 서비스 관련 관리자,unit,152,Food Service-related Managers
+153,환경·청소 및 경비 관련 관리자,minor,15,
+1530,환경·청소 및 경비 관련 관리자,unit,153,"Environmental, Cleaning, and Protective Services-related Managers"
+159,기타 판매 및 고객 서비스 관리자,minor,15,
+1590,기타 판매 및 고객 서비스 관리자,unit,159,Other Sales and Customer Service Managers
+2,전문가 및 관련 종사자,major,,
+21,과학 전문가 및 관련직,middle,2,
+211,생명 및 자연과학 관련 전문가,minor,21,
+2111,생명과학 연구원,unit,211,Biological Science Researchers
+2112,자연과학 연구원,unit,211,Natural Science Researchers
+212,인문 및 사회과학 전문가,minor,21,
+2121,인문과학 연구원,unit,212,Liberal Arts Researchers
+2122,사회과학 연구원,unit,212,Social Science Researchers
+213,생명 및 자연과학 관련 시험원,minor,21,
+2131,생명과학 시험원,unit,213,Biological Science Technicians
+2132,농림어업 관련 시험원,unit,213,"Agriculture, Forestry, and Fisheries-related Technicians"
+2133,자연과학 시험원,unit,213,Natural Science-related Technicians
+22,정보 통신 전문가 및 기술직,middle,2,
+221,컴퓨터 하드웨어 및 통신공학 전문가,minor,22,
+2211,컴퓨터 하드웨어 기술자 및 연구원,unit,221,Computer Hardware Researchers and Engineers
+2212,통신공학 기술자 및 연구원,unit,221,Telecommunication Engineering Researchers and Engineers
+222,컴퓨터 시스템 및 소프트웨어 전문가,minor,22,
+2221,컴퓨터 시스템 전문가,unit,222,Computer System Professionals
+2222,시스템 소프트웨어 개발자,unit,222,System Software Developers
+2223,응용 소프트웨어 개발자,unit,222,Application Software Developers
+2224,웹 개발자,unit,222,Web Developers
+2229,기타 컴퓨터 시스템 및 소프트웨어 전문가,unit,222,Other Computer System and Application Software Developers
+223,네트워크 및 정보 보안 전문가,minor,22,
+2231,네트워크 시스템 개발자,unit,223,Network System Developers
+2232,정보 보안 전문가,unit,223,Information and Computer Security Professionals
+2239,기타 네트워크 및 정보 보안 전문가,unit,223,Other Network and Information Security Specialists
+224,데이터 전문가,minor,22,
+2241,데이터 시스템 전문가,unit,224,Data Systems Specialists
+2242,데이터 분석가,unit,224,Data Analysts
+225,정보 시스템 및 웹 운영자,minor,22,
+2251,정보 시스템 운영자,unit,225,Information System Administrators
+2252,웹 운영자,unit,225,Web Masters
+226,통신 및 방송 송출 장비 기사,minor,22,
+2260,통신 및 방송 송출 장비 기사,unit,226,Telecommunications and Broadcast Equipment Technicians
+23,공학 전문가 및 기술직,middle,2,
+231,건축·토목 공학 기술자 및 시험원,minor,23,
+2311,건축가,unit,231,Architectural Practicians
+2312,건축공학 기술자,unit,231,Building Engineers
+2313,토목공학 기술자,unit,231,Civil Engineers
+2314,조경 기술자,unit,231,Landscape Engineers
+2315,도시 및 교통 관련 전문가,unit,231,Urban and Traffic-related Professionals
+2316,측량 및 공간정보 전문가,unit,231,Land Surveying and Spatial Data Professionals
+2317,건설자재 시험원,unit,231,Construction Materials Technicians
+232,화학공학 기술자 및 시험원,minor,23,
+2321,화학공학 기술자 및 연구원,unit,232,Chemical Engineers and Researchers
+2322,화학공학 시험원,unit,232,Chemical Engineering Technicians
+233,금속·재료공학 기술자 및 시험원,minor,23,
+2331,금속·재료공학 연구원 및 기술자,unit,233,Metal and Material and Engineers and Researchers
+2332,금속 및 재료공학 시험원,unit,233,Metal and Material Engineering Technicians
+234,전기·전자공학 기술자 및 시험원,minor,23,
+2341,전기공학 기술자 및 연구원,unit,234,Electrical Engineers and Researchers
+2342,반도체공학 기술자 및 연구원,unit,234,Semiconductor Engineers and Researchers
+2343,전자공학 기술자 및 연구원,unit,234,Electronic Engineers and Researchers
+2344,전기 및 전자공학 시험원,unit,234,"Electrical, Electronic and Mechanical Technicians"
+235,기계·로봇공학 기술자 및 시험원,minor,23,
+2351,기계공학 기술자 및 연구원,unit,235,Mechanical Engineers and Researchers
+2352,로봇공학 기술자 및 연구원,unit,235,Robot Engineers and Researchers
+2353,기계 및 로봇공학 시험원,unit,235,Mechanical and Robot Engineering Technicians
+236,소방·방재·산업안전 기술자 및 시험원,minor,23,
+2361,방재 기술자 및 연구원,unit,236,Fire and Emergency Management Engineers and Researchers
+2362,소방공학 기술자 및 연구원,unit,236,Fire Protection Engineers and Researchers
+2363,산업안전 및 산업위험 관리 기술자,unit,236,Occupational Safety and Hygiene Engineers
+2364,산업보건 및 산업환경 관리 기술자,unit,236,Occupational Health and Environment Management Engineers
+2365,소방·방재 및 산업안전 시험원,unit,236,"Fire, Emergency Management, and Occupational Safety Technicians"
+237,환경공학·가스·에너지 기술자 및 시험원,minor,23,
+2371,환경공학 기술자 및 연구원,unit,237,Environmental Engineers and Researchers
+2372,신재생에너지 기술자 및 연구원,unit,237,Renewable Energy Engineers and Researchers
+2373,가스·에너지 기술자 및 연구원,unit,237,Gas and Energy Engineers and Researchers
+2374,환경공학 시험원,unit,237,Environment Engineering Technicians
+2375,신재생에너지 시험원,unit,237,Renewable Energy Technicians
+2376,가스 및 에너지 시험원,unit,237,Gas and Energy Technicians
+238,항공기·선박 기관사 및 관제사,minor,23,
+2381,항공기 조종사,unit,238,Aircraft Pilots
+2382,선장 및 항해사·도선사,unit,238,"Ship Captains, Navigation Officers, and Ship Pilots"
+2383,관제사,unit,238,Traffic Controllers
+239,기타 공학 전문가 및 관련 종사자,minor,23,
+2391,식품공학 기술자 및 연구원,unit,239,Food Engineers and Researchers
+2392,섬유공학 기술자 및 연구원,unit,239,Fiber and Textile Engineers and Researchers
+2393,식품공학 시험원,unit,239,Food Engineering Technicians
+2394,섬유공학 시험원,unit,239,Textile Engineering Technicians
+2395,제도사,unit,239,Drafters
+2399,기타 공학 관련 기술자 및 시험원,unit,239,Other Engineering-related Engineers and Technicians
+24,보건 전문가 및 관련직,middle,2,
+241,의사·한의사 및 치과의사,minor,24,
+2411,전문 의사,unit,241,Medical Specialists
+2412,일반 의사,unit,241,General Practitioners
+2413,한의사,unit,241,Oriental Medicine Practitioners
+2414,치과의사,unit,241,Dentists
+242,수의사,minor,24,
+2420,수의사,unit,242,Veterinarians
+243,약사 및 한약사,minor,24,
+2431,약사,unit,243,Pharmacists
+2432,한약사,unit,243,Oriental Pharmacists
+244,간호사,minor,24,
+2440,간호사,unit,244,Nurses
+245,영양사,minor,24,
+2450,영양사,unit,245,Dietitians
+246,치료·재활사 및 의료기사,minor,24,
+2461,임상병리사,unit,246,Clinical Laboratory Technologists
+2462,방사선사,unit,246,Radiologic Technologists
+2463,치과기공사,unit,246,Dental Technicians
+2464,치과위생사,unit,246,Dental Hygienists
+2465,재활공학 기사,unit,246,Rehabilitation Technicians
+2466,물리 및 작업 치료사,unit,246,Physical and Occupational Therapists
+2467,임상심리사,unit,246,Clinical Psychologists
+2468,언어 및 청각능력 재활사,unit,246,Speech-Language Pathologists and Audiologists
+2469,기타 치료·재활사 및 의료기사,unit,246,"Other Therapists, Pathologists, and Medical Technologists"
+249,기타 보건 전문가 및 관련 종사자,minor,24,
+2491,응급 구조사,unit,249,Emergency Medical Technicians
+2492,위생사,unit,249,Sanitarians
+2493,안경사,unit,249,Opticians
+2494,보건의료정보 관리사,unit,249,Health Information Managers
+2495,간호조무사,unit,249,Nursing Assistants
+2496,안마사,unit,249,Massage Therapists
+2497,환자안전 관리사,unit,249,Patient Safety Specialists
+25,사회복지·종교 전문가 및 관련직,middle,2,
+251,보육교사,minor,25,
+2510,보육교사,unit,251,Child Care Teachers
+252,시민사회 활동가,minor,25,
+2520,시민사회 활동가,unit,252,Civil Society Activists
+253,사회복지 전문가 및 관련 종사자,minor,25,
+2531,사회복지사,unit,253,Social Welfare Specialists
+2532,직업 관련 상담사,unit,253,Vocational-related Counselors
+2533,상담 전문가,unit,253,Counselling Specialists
+2534,청소년 지도사,unit,253,Juvenile Counselors
+2539,기타 사회복지 전문가 및 관련 종사원,unit,253,Other Social Welfare Professionals and Workers
+254,종교 관련 종사자,minor,25,
+2541,성직자,unit,254,Clergy Members
+2549,기타 종교 관련 종사원,unit,254,Other Religion-related Workers
+26,교육 전문가 및 관련직,middle,2,
+261,대학교수 및 강사,minor,26,
+2611,대학교수,unit,261,University Professors
+2612,대학 강사,unit,261,University Instructors
+262,학교 교사,minor,26,
+2621,중·고등학교 교사,unit,262,Middle and High School Teachers
+2622,초등학교 교사,unit,262,Elementary School Teachers
+2623,특수교육 교사,unit,262,Special Education Teachers
+263,유치원 교사,minor,26,
+2630,유치원 교사,unit,263,Kindergarten Teachers
+264,문리·기술 및 예능 강사,minor,26,
+2641,외국어 강사,unit,264,Foreign Language Instructors
+2642,문리강사,unit,264,Liberal Arts Instructors
+2643,정보통신기술 강사,unit,264,Information and Communication Technologies Instructors
+2644,간호조무 및 요양보호 강사,unit,264,Nursing Assistant and Licensed Caregiver Instructors
+2645,자동차 운전 강사,unit,264,Driving Instructors
+2646,기술 및 기능계 강사,unit,264,Vocational and Polytechnic Skills Instructors
+2647,예능 강사,unit,264,Arts Instructors
+2648,학습·교구 관련 방문강사,unit,264,Educational Teaching Aid-related Visiting Professors
+2649,기타 문리·기술 및 예능 강사,unit,264,"Other Liberal Arts, Technical and Arts Instructors"
+269,기타 교육 전문가,minor,26,
+2691,장학관·연구관 및 교육 관련 전문가,unit,269,"School Supervisors, Educational Research Specialists and Related Professionals"
+2692,대학 교육 조교,unit,269,University Teaching Assistants
+2699,기타 교사,unit,269,Other Teachers and Instructors
+27,법률 및 행정 전문직,middle,2,
+271,법률 전문가,minor,27,
+2711,판사 및 검사,unit,271,Judges and Public Prosecutors
+2712,변호사,unit,271,Attorneys-at-law
+2713,법무사 및 집행관,unit,271,Jurists and Bailiffs
+2714,변리사,unit,271,Patents Attorneys
+2719,기타 법률 전문가,unit,271,Other Legal Professionals
+272,정부 행정 전문가 및 관련 종사자,minor,27,
+2721,정부 행정 전문가,unit,272,Government Administration Specialists
+2722,행정사,unit,272,Administrative Agents
+28,경영·금융 전문가 및 관련직,middle,2,
+281,인사 및 경영 전문가,minor,28,
+2811,인사 및 노사 관련 전문가,unit,281,Human Resources (HR) and Labor Relations Professionals
+2812,회계사,unit,281,Accountants
+2813,세무사,unit,281,Tax Accountants
+2814,관세사,unit,281,Customs Attorneys
+2815,경영 및 진단 전문가,unit,281,Business Consultants and Specialists
+282,금융 및 보험 전문가,minor,28,
+2821,투자 및 신용 분석가,unit,282,Financial Investment and Credit Analysts
+2822,자산 운용가,unit,282,Fund Managers
+2823,보험 및 금융 상품 개발자,unit,282,Insurance and Financial Instruments Developers
+2824,증권 및 외환 딜러,unit,282,Stock and Foreign Exchange Dealers
+2825,손해 사정사,unit,282,Insurance Claims Assessors
+2829,기타 금융 및 보험 관련 전문가,unit,282,Other Finance and Insurance Professionals
+283,상품 기획·홍보 및 조사 전문가,minor,28,
+2831,상품 기획 전문가,unit,283,Product Planning Specialists
+2832,여행 상품 개발자,unit,283,Travel Service Developers
+2833,광고 및 홍보 전문가,unit,283,Advertising and Public Relations Specialists
+2834,조사 전문가,unit,283,Survey Specialists
+2835,행사·전시 및 회의 기획자,unit,283,"Event, Exhibition, and Conference Planners"
+284,감정·기술 영업 및 중개 관련 종사자,minor,28,
+2841,감정 관련 전문가,unit,284,Appraisers and Related Professionals
+2842,해외 영업원,unit,284,Overseas Sales Representatives
+2843,기술 영업원,unit,284,Technical Sales Representatives
+2844,상품 중개인 및 경매사,unit,284,Wholesale Brokers and Auctioneers
+2845,부동산 컨설턴트 및 중개사,unit,284,Real Estate Consultants and Estate Agents
+2849,기타 기술 영업 및 중개 관련 종사원,unit,284,"Other Technical Sales Representatives, Brokers, and Related Workers"
+29,문화·예술·스포츠·기타 전문가 및 관련직,middle,2,
+291,작가 및 언론 관련 전문가,minor,29,
+2911,작가,unit,291,Writers
+2912,출판물 전문가,unit,291,Publishing Professionals
+2913,기자 및 언론 관련 전문가,unit,291,Journalists and Journalism-related Professionals
+2914,번역가 및 통역가,unit,291,Translators and Interpreters
+292,학예사·사서 및 기록물 관리사,minor,29,
+2921,학예사 및 문화재 보존원,unit,292,Curators and Cultural Assets Preservation Workers and Conservators
+2922,사서 및 기록물 관리사,unit,292,Librarians and Archivists
+293,연극·영화 및 영상 전문가,minor,29,
+2931,감독 및 기술 감독,unit,293,Directors and Technical Directors
+2932,배우 및 모델,unit,293,Actors and Models
+2933,아나운서 및 리포터,unit,293,Announcers and Reporters
+2934,촬영기사,unit,293,Cinematographers
+2935,음향 및 녹음 기사,unit,293,Sound Equipment Engineers
+2936,영상·녹화 및 편집 기사,unit,293,Video Recording and Editing Engineers
+2937,조명기사 및 영사기사,unit,293,Lighting Technicians and Cinema Projectionists
+2938,미디어 콘텐츠 창작자,unit,293,Media Contents Creators
+2939,기타 연극·영화 및 영상 관련 종사원,unit,293,"Other Drama, Film, and Video-related Workers"
+294,시각 및 공연 예술가,minor,29,
+2941,화가 및 조각가,unit,294,Painters and Sculptors
+2942,사진기자 및 사진가,unit,294,Photograph Journalists and Photographers
+2943,만화가 및 만화영화 작가,unit,294,Cartoonists and Animators
+2944,국악 및 전통 예능인,unit,294,Korean Classical Musicians and Traditional Artists
+2945,지휘자·작곡가 및 연주가,unit,294,"Conductors, Composers, and Performers"
+2946,가수 및 성악가,unit,294,Singers and Vocalists
+2947,무용가 및 안무가,unit,294,Dancers and Choreographers
+2949,기타 시각 및 공연 예술가,unit,294,Other Visual and Performing Artists and Related Workers
+295,디자이너,minor,29,
+2951,제품 디자이너,unit,295,Product Designers
+2952,패션 디자이너,unit,295,Fashion Designers
+2953,실내장식 디자이너,unit,295,Interior Decoration Designers
+2954,시각 디자이너,unit,295,Graphic Designers
+2955,미디어 콘텐츠 디자이너,unit,295,Media Contents Designers
+296,스포츠 및 레크리에이션 관련 전문가,minor,29,
+2961,스포츠 감독 및 코치,unit,296,Sports Team Head Coaches and Coaching Staff
+2962,직업 운동선수,unit,296,Professional Athletes
+2963,경기 심판 및 경기 기록원,unit,296,Referees and Score Keepers
+2964,스포츠 강사 및 트레이너,unit,296,Sports Instructors and Trainers
+2969,기타 스포츠 및 레크리에이션 관련 전문가,unit,296,Other Sports and Recreation-related Professionals
+297,식문화 관련 전문가,minor,29,
+2970,주방장 및 요리 연구가,unit,297,Chefs and Culinary Development Professionals
+298,문화·예술 관련 기획자,minor,29,
+2981,공연 및 시각예술 기획자,unit,298,Performing and Visual Art Planners
+2982,영화 및 음반 기획자,unit,298,Film and Record Planners
+3,사무 종사자,major,,
+31,기획·영업 및 인사 사무직,middle,3,
+311,기획 및 마케팅 사무원,minor,31,
+3111,경영 기획 사무원,unit,311,Business Planning Clerks
+3112,영업 및 마케팅 사무원,unit,311,Commerce and Marketing Clerks
+312,인사 및 교육·훈련 사무원,minor,31,
+3121,인사 및 노무 사무원,unit,312,Human Resources (HR) and Labor Relations Clerks
+3122,교육 및 훈련 사무원,unit,312,Education and Training Clerks
+32,자재·생산 및 운송 사무직,middle,3,
+321,자재 및 생산관리 사무원,minor,32,
+3211,자재관리 사무원,unit,321,Inventory Clerks
+3212,생산 및 품질관리 사무원,unit,321,Production and Quality Management Clerks
+322,운송 및 무역 사무원,minor,32,
+3221,도로 및 철도운송 사무원,unit,322,Road and Rail Transport Clerks
+3222,수상 및 항공운송 사무원,unit,322,Ocean and Air Transport Clerks
+3223,무역 사무원,unit,322,Trade Clerks
+3229,기타 운송 및 무역 사무원,unit,322,Other Transport and Trade Clerks
+33,회계·경리 및 통계 사무직,middle,3,
+331,회계 및 경리 사무원,minor,33,
+3311,회계 사무원,unit,331,Accounting Clerks
+3312,경리 사무원,unit,331,Bookkeeping Clerks
+332,통계·데이터 관련 사무원,minor,33,
+3320,통계·데이터 관련 사무원,unit,332,Statistical and Data Entry-related Clerks
+34,금융 사무직,middle,3,
+340,금융 사무 종사자,minor,34,
+3401,출납 창구 사무원,unit,340,Tellers and Cashiers for Financial Services
+3402,보험 심사원 및 사무원,unit,340,Insurance Inspectors and Clerks
+3403,은행 사무원,unit,340,Bank Clerks
+3404,증권 사무원,unit,340,Securities Brokerage Clerks
+3405,수금원 및 신용 추심원,unit,340,Payment Collectors and Debt Collection Clerks
+3409,기타 금융 사무원,unit,340,Other Financial Service-related Clerks
+35,법률·감사 및 정부 행정 사무직,middle,3,
+351,법률 및 감사 사무 종사자,minor,35,
+3511,법률 관련 사무원,unit,351,Legal Assistants and Related Workers
+3512,감사 사무원,unit,351,Inspection Clerks
+352,정부 행정 사무 종사자,minor,35,
+3521,조세 행정 사무원,unit,352,Tax Administration Clerks
+3522,관세 행정 사무원,unit,352,Customs Administration Clerks
+3523,병무 행정 사무원,unit,352,Military Administration Clerks
+3529,기타 정부 행정 사무원,unit,352,Other Government Administrative Clerks
+36,상담·안내 및 접수 사무직,middle,3,
+361,여행·안내 및 접수 사무원,minor,36,
+3611,여행 사무원,unit,361,Travel Agents
+3612,안내·접수원 및 전화교환원,unit,361,"Receptionists, Information Clerks, and Telephone Operators"
+362,고객 상담 및 모니터 요원,minor,36,
+3620,고객 상담 및 모니터 요원,unit,362,Customer Consultation and Monitoring Service Workers
+37,일반 지원 사무직,middle,3,
+371,총무 사무원 및 대학 행정조교,minor,37,
+3710,총무 사무원 및 대학 행정조교,unit,371,General Affairs Clerks and University Administrative Assistants
+372,비서 및 사무 지원 종사자,minor,37,
+3721,비서,unit,372,Secretaries
+3722,연예인 및 스포츠 매니저,unit,372,Celebrities and Sports Agents
+3723,전산 자료 입력원,unit,372,Computer Data Entry Clerks
+3724,속기사,unit,372,Stenographers
+3725,자원봉사 관리원,unit,372,Volunteer Clerks
+3729,기타 사무 지원 종사원,unit,372,Other Clerical Support Workers
+4,서비스 종사자,major,,
+41,경찰·소방 및 보안 관련 서비스직,middle,4,
+411,경찰·소방 및 교도 관련 종사자,minor,41,
+4111,경찰관 및 수사관,unit,411,Police and Detectives
+4112,소방관,unit,411,Firefighters
+4113,소년원 학교 교사 및 교도관,unit,411,Juvenile Probation and Social Services Officers and Prison Guards
+412,경호 및 보안 관련 종사자,minor,41,
+4121,경호원,unit,412,Bodyguards
+4122,청원경찰,unit,412,Police Assigned for Special Guard
+4123,시설 및 특수 경비원,unit,412,Facility and Special Security Guards
+4124,보안 관제원,unit,412,Security Controllers
+4129,기타 경호 및 보안 관련 종사원,unit,412,Other Guards and Security-related Workers
+42,돌봄 및 보건 서비스직,middle,4,
+421,교사 보조 및 아동 돌봄 종사자,minor,42,
+4211,교사 보조 및 관련 종사원,unit,421,Teaching Assistants and Related Workers
+4212,보육 관련 시설 돌봄 종사원,unit,421,Childcare-related Facilities Care Workers
+4219,기타 교사 보조 및 아동 돌봄 종사원,unit,421,Other Teaching Assistants and Child Care Workers
+422,요양보호사 및 간병인,minor,42,
+4221,요양보호사,unit,422,Licensed Caregivers
+4222,간병인,unit,422,Caregivers for the sick
+423,노인 및 장애인 돌봄 종사자,minor,42,
+4231,노인 돌봄 종사원,unit,423,Geriatric Care Workers
+4232,장애인 돌봄 종사원,unit,423,Special Needs Care Workers
+429,기타 돌봄 및 보건 서비스 종사자,minor,42,
+4290,기타 돌봄 및 보건 서비스 종사원,unit,429,Other Caregiving and Health Service Workers
+43,개인 생활 서비스직,middle,4,
+431,미용 관련 서비스 종사자,minor,43,
+4311,이용사,unit,431,Barbers
+4312,미용사,unit,431,Hairdressers
+4313,네일 관리사,unit,431,Nail Artists and Salon Workers
+4314,피부 및 체형 관리사,unit,431,Skin Care and Fitness Managers
+4315,메이크업 아티스트 및 분장사,unit,431,Makeup Artists and Film Makeup Artists
+4319,기타 미용 관련 서비스 종사원,unit,431,Other Hairdressing and Beauty-related Service Workers
+432,혼례 및 장례 종사자,minor,43,
+4321,결혼 상담원 및 웨딩플래너,unit,432,Wedding Consultants and Planners
+4322,혼례 종사원,unit,432,Wedding Ceremony Workers
+4323,장례 상담원 및 장례 지도사,unit,432,Funeral Consultants and Guides
+433,동물 관련 서비스 종사자,minor,43,
+4331,수의사 보조원,unit,433,Veterinary Assistants
+4332,반려동물 훈련사 및 행동 상담사,unit,433,Pet Trainers and Animal Behaviorists
+4333,반려동물 관리 종사원,unit,433,Pet-related Workers
+439,기타 개인 생활 서비스 종사자,minor,43,
+4391,점술가 및 민속신앙 종사원,unit,439,Fortune Tellers and Folk Religion-related Workers
+4399,기타 개인 생활 서비스 종사원,unit,439,Other Personal Service Workers
+44,운송 및 여가 서비스직,middle,4,
+441,운송 서비스 종사자,minor,44,
+4411,항공기 객실 승무원,unit,441,Flight Attendants
+4412,선박 및 열차 객실 승무원,unit,441,Ship Stewards and Train Attendants
+442,여가 서비스 종사자,minor,44,
+4421,관광 서비스 종사원,unit,442,Tourism Service Workers
+4422,숙박시설 서비스 종사원,unit,442,Lodging Facilities Service Workers
+4423,오락시설 서비스 종사원,unit,442,Entertainment Facilities Service Workers
+4429,기타 여가 서비스 종사원,unit,442,Other Leisure Service Workers
+45,조리 및 음식 서비스직,middle,4,
+451,조리사,minor,45,
+4511,한식 조리사,unit,451,Korean Food Cooks
+4512,중식 조리사,unit,451,Chinese Food Cooks
+4513,양식 조리사,unit,451,Western Food Cooks
+4514,일식 조리사,unit,451,Japanese Food Cooks
+4515,단체급식 조리사,unit,451,Institutional Cooks
+4519,기타 조리사,unit,451,Other Cooks
+452,음료 조리 종사자,minor,45,
+4521,음료 조리원,unit,452,Beverage Makers
+4522,바텐더,unit,452,Bartenders
+453,식음료 서비스 종사자,minor,45,
+4531,식음료 서비스 종사원,unit,453,Food and Beverage Service Workers
+4539,기타 식음료 서비스 종사원,unit,453,Other Food and Beverage Service Workers
+5,판매 종사자,major,,
+51,영업직,middle,5,
+510,영업 종사자,minor,51,
+5101,자동차 영업원,unit,510,Automobile Sales Representatives
+5102,제품 영업원,unit,510,Product Sales Representatives
+5103,보험 모집인 및 투자 권유 대행인,unit,510,Insurance Salespersons and Investment Agents
+5104,대출 및 신용카드 모집인,unit,510,Loan and Credit Card Solicitors
+5105,홍보 도우미 및 판촉원,unit,510,Advertising Assistants and Demonstrators
+5109,기타 영업원,unit,510,Other Sales Representatives
+52,매장 판매 및 상품 대여직,middle,5,
+521,매장 판매 종사자,minor,52,
+5211,소규모 상점 경영 및 일선 관리 종사원,unit,521,Shopkeepers and Shop Supervisors
+5212,상점 판매원,unit,521,Shop Salespersons
+5213,매표원 및 복권 판매원,unit,521,Ticket Agents and Lottery Ticket Salespersons
+5214,매장 계산원 및 요금 정산원,unit,521,Cashiers
+522,상품 대여 종사자,minor,52,
+5220,상품 대여원,unit,522,Rental Agents
+53,통신 및 방문·노점 판매 관련직,middle,5,
+531,통신 관련 판매 종사자,minor,53,
+5311,단말기 및 통신 서비스 판매원,unit,531,Mobile Telecommunications Device and Service Salespersons
+5312,온라인 쇼핑 판매원,unit,531,Online Salespersons
+5313,텔레마케터,unit,531,Telemarketers
+532,방문 및 노점 판매 종사자,minor,53,
+5321,방문 판매원,unit,532,Door-to-Door Salespersons
+5322,노점 및 이동 판매원,unit,532,Street Stall Salespersons and Vendors
+6,농림·어업 숙련 종사자,major,,
+61,농축산 숙련직,middle,6,
+611,작물 재배 종사자,minor,61,
+6111,곡식작물 재배원,unit,611,Crop Farmers
+6112,채소 및 특용작물 재배원,unit,611,Vegetable and Special Crop Farmers
+6113,과수작물 재배원,unit,611,Fruit Farmers
+612,원예 및 조경 종사자,minor,61,
+6121,원예작물 재배원,unit,612,Horticultural Growers
+6122,조경원,unit,612,Landscapers
+613,축산 및 사육 관련 종사자,minor,61,
+6131,낙농 관련 종사원,unit,613,Dairy-related Workers
+6132,한우 및 육우 사육원,unit,613,Korean Beef Cattle and Beef Cattle Farmers
+6133,돼지 사육원,unit,613,Pig Farmers
+6134,가금 사육원,unit,613,Poultry Farmers
+6139,기타 축산 및 사육 관련 종사원,unit,613,Other Livestock and Breeding-related Workers
+62,임업 숙련직,middle,6,
+620,임업 관련 종사자,minor,62,
+6201,조림·산림 경영인 및 벌목원,unit,620,Forestation and Forest Management Workers and Loggers
+6209,기타 임업 관련 종사원,unit,620,Other Forestry-related Workers
+63,어업 숙련직,middle,6,
+630,어업 관련 종사자,minor,63,
+6301,양식원,unit,630,Fisheries Farm Workers
+6302,어부 및 해녀,unit,630,Fishermen and Shellfish Divers
+7,기능원 및 관련 기능 종사자,major,,
+71,식품 가공 관련 기능직,middle,7,
+710,식품 가공 관련 기능 종사자,minor,71,
+7101,제빵사 및 제과원,unit,710,"Bakers, Pastry Chefs, and Confectionery Makers"
+7102,떡 제조원,unit,710,Rice Cake Makers
+7103,정육 가공원 및 도축원,unit,710,Meat Processors and Butchers
+7104,식품 및 담배 등급원,unit,710,Food and Tobacco Graders
+7105,김치 및 밑반찬 제조 종사원,unit,710,Kimchi and Side Dish Makers
+7106,도시락 제조원,unit,710,Packed Lunch Makers
+7109,기타 식품 가공 관련 기능 종사원,unit,710,Other Food Processing-related Trade Workers
+72,섬유·의복 및 가죽 관련 기능직,middle,7,
+721,섬유 및 가죽 관련 기능 종사자,minor,72,
+7211,패턴사,unit,721,Pattern Makers
+7212,재단사,unit,721,Cutters
+7213,재봉사,unit,721,Sewers
+7214,제화원,unit,721,Shoe Makers
+7219,기타 섬유 및 가죽 관련 기능 종사원,unit,721,Other Textile and Leather-related Workers
+722,의복 제조 관련 기능 종사자,minor,72,
+7221,한복 제조원,unit,722,Korean Traditional Dressmakers
+7222,양장 및 양복 제조원,unit,722,Tailors and Dressmakers
+7223,모피 및 가죽 의복 제조원,unit,722,Fur and Leather Clothing Makers
+7224,의복·가죽 및 모피 수선원,unit,722,"Clothing, Leather, and Fur Repairers"
+7229,기타 의복 제조 관련 기능 종사원,unit,722,Other Clothing-related Workers
+73,목재·가구·악기 및 간판 관련 기능직,middle,7,
+730,목재·가구·악기 및 간판 관련 기능 종사자,minor,73,
+7301,목제품 제조 관련 종사원,unit,730,Woodworking-related Workers
+7302,가구 제조 및 수리원,unit,730,Furniture Makers and Repairers
+7303,악기 제조 및 조율사,unit,730,Musical Instrument Makers and Tuners
+7304,간판 제작 및 설치원,unit,730,Signboard Makers and Fitters
+74,금속 성형 관련 기능직,middle,7,
+740,금속 성형 관련 기능 종사자,minor,74,
+7401,금형원,unit,740,Die and Mold Makers
+7402,주조원,unit,740,Metal Casting Workers
+7403,단조원,unit,740,Hammersmiths and Forging Press Workers
+7404,제관원,unit,740,Pipe Makers
+7405,판금원,unit,740,Sheet Metal Makers
+7406,용접원,unit,740,Welders
+75,운송 및 기계 관련 기능직,middle,7,
+751,자동차 정비원,minor,75,
+7510,자동차 정비원,unit,751,Automobile Mechanics
+752,운송장비 정비원,minor,75,
+7521,항공기 정비원,unit,752,Aircraft Mechanics
+7522,선박 정비원,unit,752,Ship Mechanics
+7523,철도 기관차 및 전동차 정비원,unit,752,Rail and Electric Train Mechanics
+7529,기타 운송장비 정비원,unit,752,Other Transport Equipment Mechanics
+753,기계장비 설치 및 정비원,minor,75,
+7531,로봇 설치 및 정비원,unit,753,Robot Fitters and Mechanics
+7532,공업기계 설치 및 정비원,unit,753,Industrial Machine Fitters and Mechanics
+7533,승강기 설치 및 정비원,unit,753,"Elevator, Escalator, and Wheelchair Lift Fitters and Mechanics"
+7534,물품 이동 장비 설치 및 정비원,unit,753,Cargo Handling Equipment Fitters and Mechanics
+7535,냉동·냉장·공조기 설치 및 정비원,unit,753,"Refrigerating Systems, Freezers, and Ventilation Systems Fitters and Mechanics"
+7536,보일러 설치 및 정비원,unit,753,Boiler Fitters and Mechanics
+7537,건설·광업기계 설치 및 정비원,unit,753,Construction and Mining Machinery Fitters and Mechanics
+7539,농업용·기타 기계장비 설치 및 정비원,unit,753,Agricultural and Other Machinery Equipment Fitters and Mechanics
+76,전기 및 전자 관련 기능직,middle,7,
+761,전기·전자기기 설치 및 수리원,minor,76,
+7611,사무용 전자기기 설치 및 수리원,unit,761,Office Equipment Fitters and Repairers
+7612,가전제품 설치 및 수리원,unit,761,Electrical and Electronic Home Appliance Fitters and Repairers
+7619,기타 전기·전자기기 설치 및 수리원,unit,761,Other Electrical and Electronic Equipment Fitters and Repairers
+762,전기공,minor,76,
+7621,산업 전기공,unit,762,Industrial Electricians
+7622,내선 전기공,unit,762,Wireworkers
+7623,외선 전기공,unit,762,Lineworkers
+77,정보 통신 및 방송장비 관련 기능직,middle,7,
+771,정보 통신기기 설치 및 수리원,minor,77,
+7711,컴퓨터 설치 및 수리원,unit,771,Computer Fitters and Repairers
+7712,이동전화기 수리원,unit,771,Cell Phone Repairers
+7719,기타 정보 통신기기 설치 및 수리원,unit,771,Other Information and Communication Technologies Equipment Fitters and Repairers
+772,방송·통신장비 관련 설치 및 수리원,minor,77,
+7721,방송 관련 장비 설치 및 수리원,unit,772,Broadcast-related Equipment Fitters and Repairers
+7722,통신 관련 장비 설치 및 수리원,unit,772,Telecommunications-related Equipment Fitters and Repairers
+7723,통신·방송·인터넷 케이블 설치 및 수리원,unit,772,"Telecommunications, Broadcasting and Internet Network Cable Fitters and Repairers"
+78,건설 및 채굴 관련 기능직,middle,7,
+781,건설 구조 관련 기능 종사자,minor,78,
+7811,강구조물 가공원 및 건립원,unit,781,Steel Structure Workers and Builders
+7812,경량 철골공,unit,781,Lightweight Steel Frame-related Workers
+782,건설 관련 기능 종사자,minor,78,
+7821,철근공,unit,782,Reinforcing Ironworkers
+7822,콘크리트공,unit,782,Concrete Placers and Assemblers
+7823,건축 석공,unit,782,Construction Stonemasons
+7824,건축 목공,unit,782,Construction Carpenters
+7825,조적공 및 석재 부설원,unit,782,Bricklayers and Stonelayers
+7829,기타 건설 관련 기능 종사원,unit,782,Other Construction-related Trade Workers
+783,건축 마감 관련 기능 종사자,minor,78,
+7831,미장공,unit,783,Plasters
+7832,방수공,unit,783,Waterproofers
+7833,단열공,unit,783,Insulation Workers
+7834,바닥재 시공원,unit,783,Floor Installers
+7835,도배공 및 유리 부착원,unit,783,Paperhangers and Glaziers
+7836,건축 도장공,unit,783,Construction Painters
+7837,새시 조립 및 설치원,unit,783,Window Chassis Assemblers and Installers
+7839,기타 건축 마감 관련 기능 종사원,unit,783,Other Building Finishing-related Trade Workers
+784,채굴 및 토목 관련 기능 종사자,minor,78,
+7841,광원·채석원 및 석재 절단원,unit,784,"Miners, Quarry Workers, and Stone Cutters"
+7842,철로 설치 및 보수원,unit,784,Railroad Track Fitters and Repairers
+7849,기타 채굴 및 토목 관련 종사원,unit,784,Other Mining and Civil Engineering-related Workers
+79,기타 기능 관련직,middle,7,
+791,공예 및 귀금속 세공원,minor,79,
+7911,공예원,unit,791,Craftworkers
+7912,귀금속 및 보석 세공원,unit,791,Metalsmiths and Jewelers
+792,배관공,minor,79,
+7921,건설 배관공,unit,792,Construction Plumbers
+7922,공업 배관공,unit,792,Industrial Plumbers
+7929,기타 배관공,unit,792,Other Plumbers
+799,기타 기능 관련 종사자,minor,79,
+7991,세정원,unit,799,Building Maintanence and External Cleaners
+7992,방역원,unit,799,Quarantine Workers
+7999,기타 기능 관련 종사원,unit,799,Other Technical Workers
+8,장치·기계 조작 및 조립 종사자,major,,
+81,식품가공 관련 기계 조작직,middle,8,
+811,식품가공 관련 기계 조작원,minor,81,
+8111,제분 및 도정 관련 기계 조작원,unit,811,Miller and Rice Pounder-related Machine Operators
+8112,곡물가공 제품 기계 조작원,unit,811,Cereal Product Processing Machine Operators
+8113,육류·어패류 및 낙농품 가공 기계 조작원,unit,811,"Meat, Fish, and Dairy Products Processing Operators"
+8114,과실 및 채소가공 관련 기계 조작원,unit,811,Fruit and Vegetable-related Machine Operators
+812,음료 제조 관련 기계 조작원,minor,81,
+8120,음료 제조 관련 기계 조작원,unit,812,Beverage Product-related Machine Operators
+819,기타 식품가공 관련 기계 조작원,minor,81,
+8190,기타 식품가공 관련 기계 조작원,unit,819,Other Food Processing-related Machine Operators
+82,섬유 및 신발 관련 기계 조작직,middle,8,
+821,섬유 제조 및 가공 기계 조작원,minor,82,
+8211,섬유 제조 기계 조작원,unit,821,Textile Processing Machine Operators
+8212,표백 및 염색 관련 기계 조작원,unit,821,Textile Bleaching and Dyeing-related Machine Operators
+822,직물·신발 관련 기계 조작원,minor,82,
+8221,직조기 및 편직기 조작원,unit,822,Knitting and Weaving Machine Operators
+8222,신발 제조기 조작원,unit,822,Footwear Production Machine Operators
+8229,기타 직물·신발 관련 기계 조작원,unit,822,Other Textile and Footwear-related Machine Operators
+823,세탁 기계 조작원,minor,82,
+8230,세탁 기계 조작원,unit,823,Laundry Machine Operators
+83,화학 관련 기계 조작직,middle,8,
+831,석유 및 화학물 가공 장치 조작원,minor,83,
+8311,석유 및 천연가스 제조 관련 제어 장치 조작원,unit,831,Petroleum and Natural Gas Production-related Control Equipment Operators
+8312,화학물 가공 장치 조작원,unit,831,Chemical Material Processing Machine Operators
+8319,기타 석유 및 화학물 가공 장치 조작원,unit,831,Other Petroleum and Chemical Material Processing Machine Operators
+832,화학·고무 및 플라스틱 제품 생산기 조작원,minor,83,
+8321,화학제품 생산기 조작원,unit,832,Chemical Products Production Machine Operators
+8322,타이어 및 고무제품 생산기 조작원,unit,832,Tire and Rubber Products Production Machine Operators
+8323,플라스틱제품 생산기 조작원,unit,832,Plastic Products Production Machine Operators
+8324,고무 및 플라스틱제품 조립원,unit,832,Rubber and Plastic Products Assemblers
+84,금속 및 비금속 관련 기계 조작직,middle,8,
+841,주조 및 금속가공 관련 기계 조작원,minor,84,
+8411,주조기 조작원,unit,841,Metal Casting Machine Operators
+8412,단조기 조작원,unit,841,Forging Machine Operators
+8413,용접기 조작원,unit,841,Welding Machine Operators
+8414,금속가공 관련 제어 장치 조작원,unit,841,Metal Processing-related Control Equipment Operators
+8415,금속가공 기계 조작원,unit,841,Metal Processing Machine Operators
+8416,제관기 조작원,unit,841,Pipe Machine Operators
+8417,판금기 조작원,unit,841,Sheet Metal Machine Operators
+842,도장 및 도금기 조작원,minor,84,
+8421,도장기 조작원,unit,842,Painting Machine Operators
+8422,도금 및 금속 분무기 조작원,unit,842,Metal Plating and Spray Operators
+843,비금속제품 생산기 조작원,minor,84,
+8431,유리 제조 및 가공기 조작원,unit,843,Glass Fabricating and Processing Machine Operators
+8432,점토제품 생산기 조작원,unit,843,Clay Products Production Machine Operators
+8433,시멘트 및 광물제품 제조기 조작원,unit,843,Cement and Mineral Products Production Machine Operators
+8434,광석 및 석제품 가공기 조작원,unit,843,Mineral Ore and Stone Products Processing Machine Operators
+8439,기타 비금속제품 관련 생산기 조작원,unit,843,Other Nonmetal Products-related Production Machine Operators
+85,기계 제조·관련 기계 조작 및 조립직,middle,8,
+851,금속 공작 기계 조작원,minor,85,
+8510,금속 공작 기계 조작원,unit,851,Metalworking Machine Operators
+852,냉난방 관련 설비 조작원,minor,85,
+8520,냉난방 관련 설비 조작원,unit,852,Cooling and Heating-related Machine Operators
+853,자동 조립라인 및 산업용로봇 조작원,minor,85,
+8530,자동 조립라인 및 산업용로봇 조작원,unit,853,Automated Assembly Line Operators and Industrial Robot Operators
+854,운송차량 조립원,minor,85,
+8541,자동차 조립원,unit,854,Automobile Assemblers
+8542,자동차 부품 조립원,unit,854,Automobile Parts Assemblers
+8543,운송장비 조립원,unit,854,Transport Equipment Assemblers
+8551,일반기계 조립원,unit,855,General Machinery Assemblers
+855,기계 및 기계 부품 조립원,minor,85,
+8552,기계 부품 조립원,unit,855,Machine Parts Assemblers
+86,전기·전자 관련 기계 조작 및 조립직,middle,8,
+861,발전 및 배전 장치 조작원,minor,86,
+8610,발전 및 배전 장치 조작원,unit,861,Power Generation and Distribution Equipment Operators
+862,전기 및 전자설비 조작원,minor,86,
+8620,전기 및 전자설비 조작원,unit,862,Electrical and Electronic Equipment Operators
+863,전기·전자 부품 및 제품 제조 장치 조작원,minor,86,
+8632,전기 부품 및 제품 제조 기계 조작원,unit,863,Electrical Parts and Products Production Equipment Operators
+8633,전자 부품 및 제품 제조 기계 조작원,unit,863,Electronic Parts and Products Production Equipment Operators
+864,전기·전자 부품 및 제품 조립원,minor,86,
+8640,전기·전자 부품 및 제품 조립원,unit,864,Electrical and Electronic Parts and Products Assemblers
+87,운전 및 운송 관련 기계 조작직,middle,8,
+871,철도·전동차 기관사 및 관련 종사자,minor,87,
+8711,철도 및 전동차 기관사,unit,871,Locomotive and Electric Train Drivers
+8712,철도운송 관련 종사원,unit,871,Freight Train-related Workers
+872,자동차 운전원,minor,87,
+8721,택시 운전원,unit,872,Taxi Drivers
+8722,버스 운전원,unit,872,Bus Drivers
+8723,화물차 및 특수차 운전원,unit,872,Truck and Special Motor Vehicle Drivers
+8729,기타 자동차 운전원,unit,872,Other Automobile Drivers
+873,물품 이동 장비 조작원,minor,87,
+8730,물품 이동 장비 조작원,unit,873,Freight Handling Equipment Operators
+874,건설 및 채굴기계 운전원,minor,87,
+8740,건설 및 채굴기계 운전원,unit,874,Construction and Mining Machine Operators
+875,선박 승무원 및 관련 종사자,minor,87,
+8750,선박 승무원 및 관련 종사원,unit,875,Ship Workers and Related Workers
+88,상하수도 및 재활용 처리 관련 기계 조작직,middle,8,
+881,상하수도 처리 장치 조작원,minor,88,
+8810,상하수도 처리 장치 조작원,unit,881,Water Treatment Plant Operators
+882,재활용 처리 및 소각로 조작원,minor,88,
+8820,재활용 처리 및 소각로 조작원,unit,882,Recycling Machine and Incinerator Operators
+89,목재·인쇄 및 기타 기계 조작직,middle,8,
+891,목재 및 종이 관련 기계 조작원,minor,89,
+8911,목재 가공 관련 기계 조작원,unit,891,Wood Processing-related Machine Operators
+8912,펄프 및 종이 제조 장치 조작원,unit,891,Pulp and Paper Machine Operators
+8913,종이제품 생산기 조작원,unit,891,Paper Products Machine Operators
+8919,기타 목재 및 종이 관련 기계 조작원,unit,891,Other Wood and Paper-related Machine Operators
+892,인쇄 및 사진 현상 관련 기계 조작원,minor,89,
+8921,인쇄 관련 기계 조작원,unit,892,Printing-related Machine Operators
+8922,사진 인화 및 현상기 조작원,unit,892,Photo Printing and Development Machine Operators
+899,기타 기계 조작원,minor,89,
+8990,기타 기계 조작원,unit,899,Other Machine Operators
+9,단순노무 종사자,major,,
+91,건설 및 광업 관련 단순 노무직,middle,9,
+910,건설 및 광업 단순 종사자,minor,91,
+9100,건설 및 광업 단순 종사원,unit,910,Construction and Mining Laborers
+92,운송 관련 단순 노무직,middle,9,
+921,하역·적재 및 분류 단순 종사자,minor,92,
+9211,하역 및 적재 단순 종사원,unit,921,Loading and Lifting Laborers
+9212,화물 분류원,unit,921,Freight Classification Laborers
+922,배달원,minor,92,
+9221,우편집배원,unit,922,Postworkers
+9222,택배원,unit,922,Door-to-Door Deliverers
+9223,늘찬배달원,unit,922,Express Deliverers
+9224,정기배달원,unit,922,Couriers
+9229,기타 배달원,unit,922,Other Deliverers
+93,제조 관련 단순 노무직,middle,9,
+930,제조 관련 단순 종사자,minor,93,
+9301,가구 조립원,unit,930,Furniture Assemblers
+9309,기타 제조 관련 단순 종사원,unit,930,Other Production-related Laborers
+94,청소 및 건물 관리 단순 노무직,middle,9,
+941,청소 관련 종사자,minor,94,
+9411,건물 청소원,unit,941,Building Cleaners
+9412,운송 및 시설장비 청소원,unit,941,Transport and Facility Equipment Cleaners
+9413,거리 및 공공장소 청소원,unit,941,Street and Public Area Cleaners
+9414,재활용품 및 쓰레기 수거원,unit,941,Recyclable Material and Garbage Collectors
+9419,기타 청소 관련 종사원,unit,941,Other Cleaning-related Workers
+942,건물 관리원,minor,94,
+9420,건물 관리원,unit,942,Building Concierges
+95,가사·음식 및 판매 관련 단순 노무직,middle,9,
+951,가사 및 육아 도우미,minor,95,
+9511,가사 도우미,unit,951,Household Chore Helpers
+9512,육아 도우미,unit,951,Nannies and Au Pairs
+952,음식 관련 단순 종사자,minor,95,
+9521,패스트푸드 준비원,unit,952,Fast Food Preparers
+9522,주방 보조원,unit,952,Kitchen Helpers
+953,판매 관련 단순 종사자,minor,95,
+9531,주유원,unit,953,Gas Station Attendants
+9539,기타 판매 관련 단순 종사원,unit,953,Other Sales-related Elementary Workers
+99,농림어업 및 기타 서비스 단순 노무직,middle,9,
+991,농림어업 관련 단순 종사자,minor,99,
+9911,농업 관련 단순 종사원,unit,991,Agriculture-related Laborers
+9912,임업 관련 단순 종사원,unit,991,Forestry-related Laborers
+9913,어업 관련 단순 종사원,unit,991,Fisheries-related Laborers
+992,계기·자판기 및 주차 관리 종사자,minor,99,
+9921,계기 검침원 및 가스 점검원,unit,992,Gauge Readers and Gas Inspectors
+9922,자동판매기 관리원,unit,992,Vending Machine Operators
+9923,주차 관리원 및 안내원,unit,992,Parking Service Workers
+999,기타 서비스 관련 단순 종사자,minor,99,
+9991,구두 미화원,unit,999,Shoe Cleaners
+9992,세탁원 및 다림질원,unit,999,Laundry and Ironing Workers
+9993,검표원,unit,999,Ticket Inspectors
+9994,대여 제품 방문 점검원,unit,999,Door-to-Door Rental Equipment Inspectors
+9999,기타 서비스 관련 단순 종사원,unit,999,Other Service-related Elementary Workers
+A,군인,major,,
+A0,군인,middle,A,
+A01,장교,minor,A0,
+A011,영관급 이상 장교,unit,A01,Field Grade Officers (or Higher Rank)
+A012,위관급 장교,unit,A01,Company Grade Officers
+A02,준사관,minor,A0,
+A020,준사관,unit,A02,Warrant Officers
+A03,부사관,minor,A0,
+A030,부사관,unit,A03,Non-commissioned Officers
+A09,기타 군인,minor,A0,
+A090,기타 군인,unit,A09,"Armed Forces, Other Ranks"

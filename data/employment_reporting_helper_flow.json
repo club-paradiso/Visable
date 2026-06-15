@@ -39,8 +39,11 @@
       "name": "제8차 한국표준직업분류",
       "short_name": "KSCO8",
       "runtime_seed": "data/jobcode_master_ksco8_major_middle.csv",
+      "linkage_source": "data/sources/ksco8_isco08_linkage_2026.xlsx",
+      "linkage_converter": "scripts/convert_ksco8_isco_linkage.py",
+      "linkage_candidate": "data/generated/employment_reporting_ksco8_candidate.csv",
       "full_candidate": "data/generated/employment_reporting_ksco8_full_candidate.csv",
-      "full_extraction_status": "runtime ships verified 대분류+중분류 (KSCO8); full 1,999-row table pending official file via the build pipeline"
+      "full_extraction_status": "runtime ships 대/중/소/세분류 (728 rows) from the official KSCO8↔ISCO08 linkage; 세세분류(5-digit) pending the KSCO-only 분류항목표 via the build pipeline"
     },
     "industry": {
       "name": "제11차 한국표준산업분류",

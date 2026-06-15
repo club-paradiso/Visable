@@ -74,18 +74,32 @@ def main() -> int:
     check("돌봄·보건 및 개인 생활 서비스직" not in occ_map.values(),
           "7th-edition service middle name leaked into occupation table", f)
 
+    occ_levels = Counter(r["level"] for r in occ)
+    # Complete, verified upper levels — must always hold for KSCO8 (matched exactly
+    # against the official structure via the KSCO8↔ISCO08 linkage).
+    check(occ_levels.get("major") == 10, f"occupation major {occ_levels.get('major')} != 10", f)
+    check(occ_levels.get("middle") == 57, f"occupation middle {occ_levels.get('middle')} != 57", f)
+    check(occ_levels.get("minor") == 167, f"occupation minor {occ_levels.get('minor')} != 167", f)
+    # 222 (minor) present once the minor layer is loaded
+    check(occ_map.get("222") == "컴퓨터 시스템 및 소프트웨어 전문가",
+          f"KSCO8 sample 222 wrong: {occ_map.get('222')}", f)
+    # English names enriched at 세분류(unit) level (from the ISCO linkage)
+    check(sum(1 for r in occ if r.get("name_en")) >= 300,
+          "expected English names on occupation unit rows", f)
+
     full_loaded = bool(osrc.get("full_table_loaded"))
     if full_loaded:
+        check(occ_levels.get("unit") == 495, f"full table unit {occ_levels.get('unit')} != 495", f)
+        check(occ_levels.get("detailed_unit") == 1270, f"full table detailed_unit {occ_levels.get('detailed_unit')} != 1270", f)
         check(len(occ) == EXPECTED_OCC_FULL, f"occupation full_table_loaded but count {len(occ)} != 1999", f)
         check(len(d["data"]) == EXPECTED_TOTAL_FULL, f"total {len(d['data'])} != 4037 with full table", f)
-        check(occ_map.get("222") == "컴퓨터 시스템 및 소프트웨어 전문가",
-              f"KSCO8 sample 222 wrong: {occ_map.get('222')}", f)
     else:
-        # verified seed state: 대분류(10) + 중분류(57) only
-        occ_levels = Counter(r["level"] for r in occ)
-        check(dict(occ_levels) == {"major": 10, "middle": 57},
-              f"occupation seed level shape wrong: {dict(occ_levels)}", f)
-        check(osrc.get("runtime_count") == len(occ), "occupation_source.runtime_count mismatch", f)
+        # 4-level ISCO-linkage state: 세분류 present (494, one KSCO-only unit absent
+        # from any ISCO linkage), no 5-digit 세세분류 layer yet.
+        check(490 <= occ_levels.get("unit", 0) <= 495, f"linkage unit count out of range: {occ_levels.get('unit')}", f)
+        check(occ_levels.get("detailed_unit", 0) == 0, "detailed_unit present but full_table_loaded is false", f)
+        check(len(occ) < EXPECTED_OCC_FULL, f"occupation {len(occ)} should be < 1999 until full table", f)
+    check(osrc.get("runtime_count") == len(occ), "occupation_source.runtime_count mismatch", f)
 
     # --- type-scoped duplicate handling (codes may overlap ACROSS types) ---
     occ_dups = [c for c, n in Counter(occ_codes).items() if n > 1]

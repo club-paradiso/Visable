@@ -1,18 +1,21 @@
 {
   "schema_version": "2026-06-jobcode-runtime-audit",
-  "generated": "2026-06-14",
+  "generated": "2026-06-15",
   "runtime_file": "data/jobcode_master.json",
-  "occupation_count": 67,
+  "occupation_count": 728,
   "industry_count": 2038,
-  "total_count": 2105,
+  "total_count": 2766,
   "expected_occupation_count": 1999,
   "expected_industry_count": 2038,
   "expected_total_count": 4037,
   "occupation_source_runtime": "제8차 한국표준직업분류",
+  "occupation_data_source": "ksco8_isco08_linkage_4level",
   "industry_source_runtime": "제11차 한국표준산업분류",
   "occupation_runtime_coverage_levels": {
     "major": 10,
-    "middle": 57
+    "middle": 57,
+    "minor": 167,
+    "unit": 494
   },
   "industry_runtime_coverage_levels": {
     "major": 21,
@@ -21,7 +24,8 @@
     "unit": 501,
     "detailed_unit": 1205
   },
-  "suspected_issue": "BEFORE: occupation table was 제7차 한국표준직업분류 (1,899 rows; middle 42 = '돌봄·보건 및 개인 생활 서비스직', no code 45) mislabeled via a public-data-portal source string; industry was already correct KSIC11 (2,038). AFTER: occupation rebuilt to 제8차 KSCO8 — verified 대분류(10)+중분류(57)=67 rows; minor/unit/detailed_unit pending the official KSCO8 full table (not downloadable in-sandbox; all *.go.kr hosts 403). Industry kept full and enriched. Drop data/generated/employment_reporting_ksco8_full_candidate.csv (1,999 rows) and re-run scripts/build_employment_reporting_dataset.py to reach the full table.",
+  "suspected_issue": "RESOLVED for editions/levels 1-4. BEFORE: occupation was 제7차 (1,899; middle 42='돌봄·보건 및 개인 생활 서비스직', no code 45). NOW: occupation rebuilt to 제8차 KSCO8 from the official KSCO8<->ISCO08 linkage (data/sources/ksco8_isco08_linkage_2026.xlsx) -> 대분류10/중분류57/소분류167/세분류494 = 728 rows, with English names at 세분류. Upper 3 levels match the official structure exactly. REMAINING: 세세분류 (5-digit, 1,270) is absent from any ISCO linkage; the full 1,999-row table needs the KSCO-only 분류항목표 (kssc 통계분류포털). Industry = full KSIC11 (2,038).",
+  "unit_count_note": "세분류 is 494, not 495: both linkage sheets (3-1, 4-1) agree on 494 distinct KSCO units; one KSCO-only unit is absent from any ISCO linkage. Not fabricated.",
   "runtime_full_table_loaded": {
     "occupation": false,
     "industry": true
@@ -50,6 +54,12 @@
       "actual": "조리 및 음식 서비스직"
     },
     {
+      "type": "occupation",
+      "code": "222",
+      "expected": "컴퓨터 시스템 및 소프트웨어 전문가",
+      "actual": "컴퓨터 시스템 및 소프트웨어 전문가"
+    },
+    {
       "type": "industry",
       "code": "J",
       "expected": "정보통신업",
@@ -68,17 +78,10 @@
       "actual": "컴퓨터 프로그래밍 서비스업"
     }
   ],
-  "failed_sample_rows": [
-    {
-      "type": "occupation",
-      "code": "222",
-      "expected": "컴퓨터 시스템 및 소프트웨어 전문가",
-      "actual": null
-    }
-  ],
+  "failed_sample_rows": [],
   "notes": [
-    "Occupation minor-level samples (e.g. 222) require the full KSCO8 table; they are",
-    "reported in failed_sample_rows until the official file is dropped into the pipeline.",
-    "Duplicate-code handling is type-scoped: occupation and industry code spaces are independent."
+    "Occupation samples 42/43/45 (middle) and 222 (minor) now all verified from the official linkage.",
+    "Duplicate-code handling is type-scoped: occupation and industry code spaces are independent.",
+    "Reproducible: scripts/convert_ksco8_isco_linkage.py -> scripts/build_employment_reporting_dataset.py."
   ]
 }
