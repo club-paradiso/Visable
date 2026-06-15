@@ -14359,15 +14359,25 @@ function jcLevelRank(r) {
 }
 // leaf(말단) = 하위 자식이 없는 가장 구체적인 코드. 직종은 세분류, 업종은 세세분류가 말단.
 // HiKorea 신고에 실제로 쓰는 코드이므로 '세부코드만' 필터와 강조 표시에 사용.
-function jcLeafParentSet() {
-    if (!_jobcodeData) return new Set();
-    if (_jobcodeData._leafParentSet) return _jobcodeData._leafParentSet;
-    const parents = new Set();
-    _jobcodeData.data.forEach(r => { if (r.parent_code) parents.add(r.parent_code); });
-    _jobcodeData._leafParentSet = parents;
-    return parents;
+// ⚠ KSCO8(직종)과 KSIC11(업종)은 같은 숫자 코드를 공유한다(예: 2641 = 직종 '외국어 강사' / 업종 '유선 통신장비 제조업').
+//   따라서 부모 집합을 전역으로 모으면 한쪽의 부모 코드가 다른 쪽의 말단 코드를 오판한다.
+//   반드시 직종/업종 타입별로 분리해서 부모 집합을 구한다.
+function jcLeafParentSets() {
+    if (!_jobcodeData) return { occupation: new Set(), industry: new Set() };
+    if (_jobcodeData._leafParentSets) return _jobcodeData._leafParentSets;
+    const sets = { occupation: new Set(), industry: new Set() };
+    _jobcodeData.data.forEach(r => {
+        if (!r.parent_code) return;
+        const t = jcType(r);
+        (sets[t] || (sets[t] = new Set())).add(r.parent_code);
+    });
+    _jobcodeData._leafParentSets = sets;
+    return sets;
 }
-function jcIsLeaf(r) { return !jcLeafParentSet().has(jcCode(r)); }
+function jcIsLeaf(r) {
+    const set = jcLeafParentSets()[jcType(r)];
+    return set ? !set.has(jcCode(r)) : true;
+}
 function scoreJobcodeRow(row, query, terms) {
     const name = normalizeJobcodeText(jcName(row));
     const code = normalizeJobcodeText(jcCode(row));
