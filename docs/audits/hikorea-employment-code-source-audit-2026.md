@@ -106,10 +106,20 @@ match KSIC11 (see §5).
 
 ## 5. Runtime audit summary (see also `data/audits/jobcode_runtime_audit.json`)
 
-| Table | Before (runtime) | Edition detected | After this PR |
+| Table | Before (runtime) | Edition detected | After |
 | --- | --- | --- | --- |
-| 직종 (occupation) | 1,899 rows | **제7차 (WRONG)** — `42 = 돌봄·보건 및 개인 생활 서비스직`, no code 45 | **제8차 KSCO8** verified 대분류(10)+중분류(57) = 67 rows; full 1,999-row table pending official file (pipeline ready) |
+| 직종 (occupation) | 1,899 rows | **제7차 (WRONG)** — `42 = 돌봄·보건 및 개인 생활 서비스직`, no code 45 | **제8차 KSCO8** from the official KSCO8↔ISCO08 linkage: 대분류10/중분류57/소분류167/세분류494 = **728 rows** (+ EN names at 세분류). 세세분류(5-digit, 1,270) pending the KSCO-only 분류항목표 |
 | 업종 (industry) | 2,038 rows | **제11차 KSIC11 (CORRECT)** | KSIC11 2,038 rows, enriched (level/parent/path/search terms/metadata) |
+
+> **Update (2026-06-15):** the maintainer supplied the official **KSCO8↔ISCO08
+> 연계표** Excel (`data/sources/ksco8_isco08_linkage_2026.xlsx`). Its KSCO side was
+> extracted (`scripts/convert_ksco8_isco_linkage.py`) to 728 rows across 4 levels —
+> the upper 3 levels (10/57/167) match the official structure **exactly**, and
+> 세분류 is 494 (both linkage sheets agree; one KSCO-only unit has no ISCO match —
+> not fabricated). This replaces the earlier 67-row 대·중분류 seed. The 5-digit
+> 세세분류 layer does not exist in an ISCO linkage and still needs the KSCO-only
+> 분류항목표; the pipeline auto-upgrades to the full 1,999 rows when that file is
+> dropped at `data/generated/employment_reporting_ksco8_full_candidate.csv`.
 
 **Key proof the old occupation table was 제7차, not KSCO8:** the previous runtime
 had only 4 service middles (41–44) with `42 = 돌봄·보건 및 개인 생활 서비스직`, whereas
@@ -139,11 +149,12 @@ runtime occupation source. It is a viable input for a future 7th→8th crosswalk
 ## 6. Source-of-truth decision
 
 1. **직종 (occupation) = 제8차 한국표준직업분류 (KSCO8).** Runtime is built from the
-   repository's verified KSCO8 대분류+중분류 seed
-   (`data/jobcode_master_ksco8_major_middle.csv`, 67 rows, service sector correctly
-   split 42–45). When the official KSCO8 full table is extracted to
-   `data/generated/employment_reporting_ksco8_full_candidate.csv` (1,999 rows), the
-   build script picks it up automatically — **no code change required.**
+   official **KSCO8↔ISCO08 linkage** Excel (`data/sources/ksco8_isco08_linkage_2026.xlsx`)
+   via `scripts/convert_ksco8_isco_linkage.py` → 728 rows (대/중/소/세분류, service
+   sector correctly split 42–45, EN at 세분류). The repo's 67-row 대·중분류 seed
+   remains a fallback. When the official KSCO-only full table is extracted to
+   `data/generated/employment_reporting_ksco8_full_candidate.csv` (1,999 rows incl.
+   세세분류), the build script picks it up automatically — **no code change required.**
 2. **업종 (industry) = 제11차 한국표준산업분류 (KSIC11).** Runtime uses the full,
    already-correct 2,038-row table, snapshotted to
    `data/sources/ksic11_full_2038.csv` and enriched.
@@ -156,19 +167,20 @@ runtime occupation source. It is a viable input for a future 7th→8th crosswalk
 
 ## 7. Known limitations
 
-- **Sandbox network policy blocked every `*.go.kr` host (HTTP 403).** Official
-  HWP/PDF tables could not be downloaded here, and there is no clean public
-  CSV/JSON mirror of the **KSCO8 full 1,999-row** table. So the runtime ships the
-  **verified 대분류+중분류 (67 rows)**; minor/unit/detailed_unit occupation codes are
-  pending the official file. The reproducible pipeline closes this gap the moment
-  the file is supplied.
+- **Sandbox network policy blocks every `*.go.kr` host (HTTP 403)** (also namu.wiki
+  and Wikipedia); WebFetch egress here is effectively limited to `raw.githubusercontent.com`.
+  Official tables can't be downloaded in-sandbox. The maintainer supplied the
+  official **KSCO8↔ISCO08 linkage** Excel, which yields 4 of 5 KSCO levels (728 rows).
+  The remaining **세세분류 (5-digit, 1,270)** layer does not exist in any ISCO linkage
+  and still needs the **KSCO-only 분류항목표** (kssc 통계분류포털). The reproducible
+  pipeline closes that last gap the moment the file is supplied — no code change.
 - Web *search summaries* (not raw official pages) were the practical channel for
   some facts; structural counts were corroborated across multiple summaries but
   should be re-confirmed against the raw 고시 when network access allows.
 - The helper deliberately stops at **reference search**. Final codes must be
   confirmed on the live HiKorea screen or via **1345**.
-- English names (`name_en`) are `null` (official EN names not reliably available
-  here).
+- English names (`name_en`) are populated at **세분류(unit)** level from the ISCO
+  linkage's 영문명; 대/중/소분류 EN remain `null`.
 
 ---
 
