@@ -2201,7 +2201,9 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .visa-issuance-section { display: flex; flex-direction: column; gap: 0.72rem; }
 .visa-issuance-summary { margin: 0; color: var(--t2); font-size: 0.84rem; line-height: 1.58; word-break: keep-all; overflow-wrap: anywhere; }
 .issuance-scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 0.65rem; }
-.issuance-scenario-card { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, white 72%, var(--bg1)); padding: 0.78rem; display: flex; flex-direction: column; gap: 0.62rem; min-width: 0; }
+/* Shares the procedure subcode-card surface (border/radius/background) so the
+   issuance card reads as part of the same 절차별 안내 card family. */
+.issuance-scenario-card { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg1) 94%, white); padding: 0.74rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
 .issuance-scenario-card.is-not-applicable { background: color-mix(in srgb, var(--bg2) 68%, white); }
 .issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
 .issuance-card-title { margin: 0; font-size: 0.88rem; font-weight: 900; color: var(--t1); line-height: 1.35; word-break: keep-all; }
@@ -2212,15 +2214,22 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .issuance-source-badge.limited, .procedure-source-badge.limited { background: color-mix(in srgb, var(--color-warning) 12%, transparent); border-color: color-mix(in srgb, var(--color-warning) 38%, var(--bd)); color: color-mix(in srgb, var(--color-warning) 60%, var(--t1)); }
 .issuance-source-badge.unavailable, .procedure-source-badge.unavailable, .issuance-source-badge.not-applicable, .procedure-source-badge.not-applicable { background: var(--bg2); color: var(--t3); }
 .issuance-applies { margin: 0; font-size: 0.76rem; color: var(--t2); line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
-.issuance-meta-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.42rem; }
-.issuance-meta-item { border: 1px solid var(--bd2); border-radius: 8px; padding: 0.42rem 0.5rem; background: color-mix(in srgb, white 76%, var(--bg1)); min-width: 0; }
-.issuance-meta-label { display: block; font-size: 0.62rem; font-weight: 900; color: var(--t3); margin-bottom: 0.12rem; }
-.issuance-meta-value { display: block; font-size: 0.74rem; font-weight: 800; color: var(--t1); line-height: 1.35; word-break: keep-all; overflow-wrap: anywhere; }
+/* Procedure-stage kicker — small muted label above the issuance summary. */
+.issuance-stage-label { margin: 0; font-size: 0.66rem; font-weight: 900; letter-spacing: 0.02em; color: var(--t3); }
+/* Standardized application-route chips — reuse the result-context accent pill
+   language already used by .sep-badge.structured / .doc-group.group-required. */
+.issuance-route-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; }
+.issuance-route-label { font-size: 0.62rem; font-weight: 900; color: var(--t3); margin-right: 0.1rem; }
+.issuance-route-chip { display: inline-flex; align-items: center; border-radius: 999px; padding: 0.14rem 0.5rem; font-size: 0.68rem; font-weight: 800; line-height: 1.4; white-space: nowrap; border: 1px solid color-mix(in srgb, var(--ac) 24%, var(--bd2)); background: color-mix(in srgb, var(--ac) 8%, var(--bg1)); color: var(--ac); }
+.issuance-route-chip.is-check { border-style: dashed; border-color: color-mix(in srgb, var(--color-warning) 34%, var(--bd2)); background: color-mix(in srgb, var(--color-warning) 7%, var(--bg1)); color: color-mix(in srgb, var(--color-warning) 62%, var(--t1)); }
 .issuance-subtitle { margin: 0 0 0.34rem; color: var(--t1); font-size: 0.72rem; font-weight: 900; }
 .issuance-steps, .issuance-doc-list, .issuance-warning-list { margin: 0; padding-left: 1.05rem; color: var(--t2); font-size: 0.76rem; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
-.issuance-doc-groups { display: grid; gap: 0.45rem; }
-.issuance-doc-group { border-left: 2px solid color-mix(in srgb, var(--ac) 30%, var(--bd)); padding-left: 0.55rem; }
-.issuance-warning-list { color: var(--t3); }
+/* Warnings — visually distinct but calm, matching the .vc-caution tone (not alarmist). */
+.issuance-warnings { border-left: 2px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 5%, transparent); border-radius: 0 6px 6px 0; padding: 0.4rem 0.6rem; }
+.issuance-warnings .issuance-subtitle { color: color-mix(in srgb, var(--color-warning) 55%, var(--t1)); }
+.issuance-warning-list { color: var(--t3); list-style: none; padding-left: 0; }
+.issuance-warning-list li { position: relative; padding-left: 1rem; }
+.issuance-warning-list li::before { content: '※'; position: absolute; left: 0; color: var(--color-warning); }
 .issuance-source-line { font-size: 0.7rem; color: var(--t3); line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
 .issuance-variance-note, .issuance-disclaimer { margin: 0; font-size: 0.72rem; color: var(--t3); line-height: 1.52; word-break: keep-all; overflow-wrap: anywhere; }
 .issuance-variance-note { padding: 0.5rem 0.65rem; border-radius: 8px; background: color-mix(in srgb, var(--color-warning) 6%, transparent); border: 1px solid color-mix(in srgb, var(--color-warning) 20%, var(--bd)); }
@@ -2232,7 +2241,6 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .source-limitation-body ul { margin: 0.35rem 0 0; padding-left: 1rem; }
 @media (max-width: 640px) {
     .issuance-scenario-grid { grid-template-columns: 1fr; }
-    .issuance-meta-grid { grid-template-columns: 1fr; }
     .issuance-card-head { flex-direction: column; }
 }
 
@@ -11662,7 +11670,8 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .docs-list-name { color: var(--k-ink) !important; font-weight: 800; }
 
 /* Subcode cards → sticker tiles */
-:root[data-theme="archive_diary"] .manual-subcode-card { background: #fff !important; border: 1.5px solid var(--k-ink) !important; border-radius: 10px !important; }
+:root[data-theme="archive_diary"] .manual-subcode-card,
+:root[data-theme="archive_diary"] .issuance-scenario-card { background: #fff !important; border: 1.5px solid var(--k-ink) !important; border-radius: 10px !important; }
 :root[data-theme="archive_diary"] .manual-subcode-card.match { box-shadow: inset 4px 0 0 var(--k-blue), 2px 2px 0 var(--k-ink) !important; }
 
 /* ── Scenario picker (내 상황에 맞는 시나리오 선택) — PR-K2 #13 승인안 ──
@@ -12356,7 +12365,8 @@ html:root[data-theme="archive_diary"] body[data-theme="dark"].landing { backgrou
 :root[data-theme="archive_diary"] body[data-theme="dark"] .next-action-kicker { color: #7FA6FF !important; }
 
 /* Subcode cards — white background collapses on dark page */
-:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-subcode-card { background: #1B2440 !important; border-color: #44558A !important; }
+:root[data-theme="archive_diary"] body[data-theme="dark"] .manual-subcode-card,
+:root[data-theme="archive_diary"] body[data-theme="dark"] .issuance-scenario-card { background: #1B2440 !important; border-color: #44558A !important; }
 
 /* Procedure source badge & ref */
 :root[data-theme="archive_diary"] body[data-theme="dark"] .procedure-source-ref { color: #BAC5E4 !important; }
@@ -16060,7 +16070,35 @@ function mergeManualRefs(...refLists) {
     });
 }
 
+// 영주(F-5) 취득 경로 표시 보정 (렌더러 전용 — 보호 데이터 파일 미변경).
+// 영주자격은 재외공관에서 '영주 사증'을 발급받아 입국하는 자격이 아니라, 국내
+// 체류 중 다른 장기체류자격(F-2·F-6·D-8 등)에서 '체류자격 변경허가'를 받아
+// 취득합니다(출입국관리법 제10조의3 영주자격, 제24조 체류자격 변경허가). F-5
+// 레코드의 레거시 newReq/newReqDocs(전환 요건 입증·해외범죄경력·생계유지·사회통합
+// 5단계)는 바로 이 자격변경 요건이므로, '체류자격 변경' 절차가 이를 노출하도록
+// 매핑합니다. 변경허가 후에는 외국인등록과 함께 영주증이 발급되고, 영주증은 유효
+// 기간 10년마다 재발급합니다(extension 슬롯을 '영주증 재발급'으로 표시). 영주
+// 사증은 발급되지 않으므로 '사증발급' 절차는 노출하지 않습니다.
+function remapPermanentResidenceAcquisition(v, cfg) {
+    if (!v || v.code !== 'F-5' || !cfg) return cfg;
+    if (cfg.key === 'statusChange') {
+        const baseRequired = (cfg.docFields && cfg.docFields.requiredDocs) || cfg.oldDocs || [];
+        return {
+            ...cfg,
+            oldText: (cfg.oldText && v[cfg.oldText]) ? cfg.oldText : 'newReq',
+            docFields: { ...(cfg.docFields || {}), requiredDocs: [...baseRequired, 'newReqDocs'] }
+        };
+    }
+    return cfg;
+}
+function isSuppressedProcedureForStatus(v, cfg) {
+    // 영주(F-5)는 사증발급 대상이 아님 — '사증발급' 탭을 숨깁니다.
+    return !!(v && v.code === 'F-5' && cfg && cfg.key === 'visaIssuance');
+}
+
 function getProcedure(v, cfg) {
+    cfg = remapPermanentResidenceAcquisition(v, cfg);
+    const hidden = isSuppressedProcedureForStatus(v, cfg);
     const raw = v.procedures && v.procedures[cfg.key] ? v.procedures[cfg.key] : null;
     const structuredEntries = getSourceConfirmedEntriesForProcedure(v, cfg.key);
     const structuredDocs = groupSourceConfirmedDocuments(structuredEntries, cfg.key, v.code);
@@ -16075,7 +16113,7 @@ function getProcedure(v, cfg) {
     const hasExplicitAvailability = !!(raw && Object.prototype.hasOwnProperty.call(raw, 'available'));
     const explicitUnavailable = hasExplicitAvailability && raw.available === false;
     const explicitAvailable = hasExplicitAvailability && raw.available === true;
-    const available = explicitUnavailable ? false : (explicitAvailable || legacyAvailable);
+    const available = hidden ? false : (explicitUnavailable ? false : (explicitAvailable || legacyAvailable));
     const rawDocs = normalizeDocGroups(raw?.requiredDocs, raw || {});
     const hasProcedureScopedDocs = hasAnyDocs(structuredDocs) || hasAnyDocs(rawDocs);
     // Procedure-scoped data is the display authority. Legacy top-level arrays
@@ -16093,7 +16131,7 @@ function getProcedure(v, cfg) {
         eligibility: raw?.eligibility || [],
         notes: paradisoFilterProcedureNotes(raw?.notes),
         summary: raw?.summary || (cfg.oldText && v[cfg.oldText] ? v[cfg.oldText] : ''),
-        docs,
+        docs: hidden ? emptyLegacyDocs : docs,
         variants: normalizeProcedureVariants(raw?.variants),
         feeInfo: getProcedureFeeInfo(v, cfg.key),
         manualRefs: mergeManualRefs(structuredRefs, raw?.manualRefs || []),
@@ -16832,8 +16870,19 @@ const PARADISO_SOURCE_PROVENANCE_NOTE_RE = /자동\s*추출한?\s*제출서류�
 function paradisoIsRedundantSourceProvenanceNote(text) {
     return PARADISO_SOURCE_PROVENANCE_NOTE_RE.test(String(text == null ? '' : text));
 }
+// Internal source-audit annotations that leaked into user-facing notes, e.g.
+// "[2026-06-08 출처 대조] 2026-06-01 체류민원 매뉴얼 영주(F-5) 절 … 기준: …".
+// These are an internal reviewer's cross-check log (dated "출처 대조"), not user
+// guidance — surfacing them only erodes trust. The substantive facts they carry
+// are already shown in the proper fields (e.g. F-5's 영주증 10년·재발급·과태료 in
+// the fee box; G-1's 세부약호별 상이 in its summary/문서목록), so dropping the whole
+// annotation note loses no unique information. Display-only; data files unchanged.
+const PARADISO_AUDIT_ANNOTATION_NOTE_RE = /^\s*[\[（(]\s*20\d{2}[-.]\s*\d{1,2}(?:[-.]\s*\d{1,2})?\s*출처\s*대조\s*[\]）)]/;
+function paradisoIsInternalAuditAnnotationNote(text) {
+    return PARADISO_AUDIT_ANNOTATION_NOTE_RE.test(String(text == null ? '' : text));
+}
 function paradisoFilterProcedureNotes(notes) {
-    return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n) && !paradisoIsRedundantSourceProvenanceNote(n)) : [];
+    return Array.isArray(notes) ? notes.filter(n => n && !paradisoIsDummyProcedureNote(n) && !paradisoIsRedundantSourceProvenanceNote(n) && !paradisoIsInternalAuditAnnotationNote(n)) : [];
 }
 
 // Internal audit/TODO diagnostics that leaked into user-facing fields. These are
@@ -17008,7 +17057,9 @@ function getFormattedSourceRefs(sourceState, fallbackRefs = []) {
     if (Array.isArray(fallbackRefs)) refs.push(...fallbackRefs);
     if (sourceState && Array.isArray(sourceState.manualSources)) refs.push(...sourceState.manualSources);
     if (sourceState && Array.isArray(sourceState.sourceRefs)) refs.push(...sourceState.sourceRefs);
-    return refs.map(formatManualSourceRef).filter(Boolean);
+    // Drop exact-duplicate formatted refs (e.g. mode.sourceRefs == binding.manualSources)
+    // so the shared 근거 block never prints the same citation twice.
+    return [...new Set(refs.map(formatManualSourceRef).filter(Boolean))];
 }
 
 function getDefaultLimitationExplanation(level) {
@@ -17048,15 +17099,23 @@ function renderSourceBackedFields(fields) {
 
 function renderSourceLimitationExplanation(sourceState, fallbackRefs = []) {
     const level = sourceState && sourceState.evidenceLevel ? sourceState.evidenceLevel : 'limited';
+    // The "왜 제한인가요?" limitation disclosure was rendered on essentially every
+    // non-source-confirmed procedure and repeated a generic "국가·공관·개별 사정에
+    // 따라 … 확정 표시하지 않습니다" caveat plus a duplicated page-reference list
+    // (e.g. "p. 429 / p. 429 / p. 429"), which eroded user trust without adding
+    // actionable information. The evidence-level badge (procedure-source-badge)
+    // still communicates the source state, and the official-source / 관할 기관
+    // 확인 cautions remain in the notes and fee blocks. Only the positive
+    // "근거 보기" disclosure (source-confirmed: lists the real official manual
+    // references) is kept, with its references de-duplicated.
+    if (level !== 'source_confirmed') return '';
+    const refs = [...new Set(getFormattedSourceRefs(sourceState, fallbackRefs))].slice(0, 4);
+    const refsHtml = refs.length ? `<p>${escapeHtml(txAt('sourceFieldLabels', 8, '근거'))}: ${escapeHtml(refs.join(' / '))}</p>` : '';
+    const fieldsHtml = renderSourceBackedFields(sourceState && sourceState.sourceBackedFields);
     const explanation = (currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
         ? sourceState.userFacingExplanationEn
         : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level);
-    const refs = getFormattedSourceRefs(sourceState, fallbackRefs).slice(0, 4);
-    const refsHtml = refs.length ? `<p>${escapeHtml(txAt('sourceFieldLabels', 8, '근거'))}: ${escapeHtml(refs.join(' / '))}</p>` : '';
-    const fieldsHtml = renderSourceBackedFields(sourceState && sourceState.sourceBackedFields);
-    const summary = level === 'source_confirmed'
-        ? txAt('sourceFieldLabels', 9, '근거 보기')
-        : txAt('sourceFieldLabels', 10, '왜 제한인가요?');
+    const summary = txAt('sourceFieldLabels', 9, '근거 보기');
     return `<details class="source-limitation-detail">
         <summary>${escapeHtml(summary)}</summary>
         <div class="source-limitation-body"><p>${escapeHtml(explanation)}</p>${refsHtml}${fieldsHtml}</div>
@@ -18359,23 +18418,6 @@ function renderCardSummary(v, kw) {
     return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
 }
 
-const ISSUANCE_ACTOR_LABELS = {
-    applicant: { ko: '신청인', en: 'Applicant' },
-    inviter: { ko: '초청자', en: 'Inviter' },
-    employer: { ko: '고용주', en: 'Employer' },
-    school: { ko: '학교', en: 'School' },
-    local_government: { ko: '지방자치단체', en: 'Local government' },
-    agency: { ko: '대행기관', en: 'Agency' },
-    mixed: { ko: '사례별 다름', en: 'Varies by case' }
-};
-
-const ISSUANCE_APPLY_PLACE_LABELS = {
-    overseas_mission: { ko: '재외공관', en: 'Overseas mission' },
-    visa_portal: { ko: '비자포털', en: 'Visa Portal' },
-    immigration_office: { ko: '출입국·외국인관서', en: 'Immigration office' },
-    mixed: { ko: '공식 안내별 확인', en: 'Check official route' }
-};
-
 function getVisaIssuanceRecord(code) {
     return VISA_ISSUANCE_BY_CODE.get(normalizeVisaCode(code)) || null;
 }
@@ -18402,11 +18444,6 @@ function pickLocalizedManualText(item) {
     return '';
 }
 
-function localizedMetaLabel(map, key) {
-    const item = map[key] || map.mixed;
-    return pickLocalizedManualText(item);
-}
-
 function renderIssuanceDocList(items, keywords) {
     if (!Array.isArray(items) || !items.length) return '';
     return `<ul class="issuance-doc-list">${items.map(item => `<li>${hl(escapeHtml(item), keywords || [])}</li>`).join('')}</ul>`;
@@ -18415,16 +18452,18 @@ function renderIssuanceDocList(items, keywords) {
 function renderIssuanceDocGroups(documents, keywords) {
     const docs = documents || {};
     const groups = [
-        { key: 'common', label: txAt('issuanceUiLabels', 1, '공통서류') },
-        { key: 'additional', label: txAt('issuanceUiLabels', 2, '추가서류') },
-        { key: 'conditional', label: txAt('issuanceUiLabels', 3, '해당 시 서류') }
+        { key: 'common', cls: 'group-basic', label: txAt('issuanceUiLabels', 1, '공통서류') },
+        { key: 'additional', cls: 'group-situational', label: txAt('issuanceUiLabels', 2, '추가서류') },
+        { key: 'conditional', cls: 'group-conditional', label: txAt('issuanceUiLabels', 3, '해당 시 서류') }
     ].map(group => {
         const listHtml = renderIssuanceDocList(docs[group.key], keywords);
         if (!listHtml) return '';
-        return `<div class="issuance-doc-group"><h6 class="issuance-subtitle">${escapeHtml(group.label)}</h6>${listHtml}</div>`;
+        // Reuse the shared procedure document-group vocabulary so the issuance
+        // doc checklist looks identical to the other 절차별 안내 doc groups.
+        return `<div class="doc-group ${group.cls}"><h5 class="doc-group-title">${escapeHtml(group.label)}</h5>${listHtml}</div>`;
     }).filter(Boolean).join('');
     if (!groups) return '';
-    return `<div class="issuance-doc-groups">${groups}</div>`;
+    return `<div class="doc-group-grid">${groups}</div>`;
 }
 
 function renderIssuanceSteps(steps, keywords) {
@@ -18437,7 +18476,7 @@ function renderIssuanceSteps(steps, keywords) {
 
 function renderIssuanceWarnings(warnings, keywords) {
     if (!Array.isArray(warnings) || !warnings.length) return '';
-    return `<div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 5, '주의사항'))}</h6><ul class="issuance-warning-list">${warnings.map(w => `<li>${hl(escapeHtml(w), keywords || [])}</li>`).join('')}</ul></div>`;
+    return `<div class="issuance-warnings"><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 5, '주의사항'))}</h6><ul class="issuance-warning-list">${warnings.map(w => `<li>${hl(escapeHtml(w), keywords || [])}</li>`).join('')}</ul></div>`;
 }
 
 function renderIssuanceOverlaySelector(code) {
@@ -18448,6 +18487,68 @@ function renderIssuanceOverlaySelector(code) {
         return `<option value="${escapeHtml(record.sourceUrl || label)}">${escapeHtml(label)}</option>`;
     }).join('');
     return `<label class="issuance-source-line">${escapeHtml(txAt('issuanceUiLabels', 8, '국가·공관별 공식 오버레이'))} <select>${options}</select></label>`;
+}
+
+// F-4 (재외동포) is intentionally excluded from the generic 사증발급 issuance
+// renderer. F-4 keeps its dedicated diaspora route guide (assets/js/f4-route-guide.js
+// + data/f4/routes.json) and the in-page route chooser. This stays an explicit,
+// auditable exclusion set so a future refactor cannot silently re-absorb F-4 into
+// the generic issuance UI. The protected data record is left intact; the guard is
+// in code only (see scripts/check_f4_route_guide.mjs for the regression assertion).
+const GENERIC_VISA_ISSUANCE_EXCLUDED_CODES = new Set(['F-4']);
+function isGenericVisaIssuanceExcluded(code) {
+    return GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.has(normalizeVisaCode(code));
+}
+
+// Standardized 사증발급 application-route chips. Indices map to the
+// issuanceRouteChipLabels i18n pack. Chips are derived ONLY from the structured
+// issuanceMode fields (type / actor / whereToApply) and route facts already
+// present in the record's own source text — never invented. visa_exempt /
+// not_applicable routes are not application channels, so they get no route chips.
+const ISSUANCE_ROUTE_CHIP_INDEX = {
+    consular: 0,      // 재외공관 신청
+    confirmation: 1,  // 사증발급인정서
+    eVisa: 2,         // 전자사증
+    visaPortal: 3,    // 비자포털 확인
+    sponsor: 4,       // 초청기관·고용주 진행
+    perMission: 5     // 공관별 확인 필요
+};
+function deriveIssuanceRouteChips(mode, record) {
+    if (!mode) return [];
+    const type = mode.type || '';
+    const actor = mode.actor || '';
+    const where = mode.whereToApply || '';
+    // 사증면제·신규발급 중단 경로는 신청 채널이 아니므로 경로 칩을 만들지 않습니다.
+    if (type === 'visa_exempt' || type === 'not_applicable') return [];
+    const sourceText = [mode.labelKo, mode.labelEn, mode.appliesToKo, mode.appliesToEn]
+        .filter(Boolean).join(' ').toLowerCase();
+    const mentions = (...needles) => needles.some(n => sourceText.includes(n));
+    const picked = [];
+    const add = (key, isCheck = false) => {
+        if (!picked.some(item => item.key === key)) picked.push({ key, isCheck });
+    };
+    if (where === 'overseas_mission' || type === 'mixed' || type === 'consular_discretion') add('consular');
+    if (type === 'visa_issuance_confirmation' || mentions('발급인정', '인정서', 'certificate of confirmation', 'confirmation of visa')) add('confirmation');
+    if (mentions('전자사증', '전자비자', 'e-visa', 'electronic visa')) add('eVisa');
+    if (mentions('비자포털', 'visa.go.kr', 'visa portal')) add('visaPortal');
+    if (actor === 'employer' || mentions('초청', '고용주', 'sponsor', 'employer')) add('sponsor');
+    // 국가·공관별로 절차가 달라지는 경우에만 "확인 필요" 칩(점선)을 덧붙입니다.
+    const overlayRequired = !!(record && record.countryVariance && record.countryVariance.officialOverlayRequired);
+    if (where === 'mixed' || type === 'consular_discretion' || overlayRequired) add('perMission', true);
+    // 어떤 칩도 도출되지 않으면 최소한 재외공관 신청 채널을 안내합니다.
+    if (!picked.length) add('consular');
+    return picked
+        .map(item => ({ label: txAt('issuanceRouteChipLabels', ISSUANCE_ROUTE_CHIP_INDEX[item.key], ''), isCheck: item.isCheck }))
+        .filter(item => item.label);
+}
+function renderIssuanceRouteChips(mode, record) {
+    const chips = deriveIssuanceRouteChips(mode, record);
+    if (!chips.length) return '';
+    const groupLabel = tx('issuanceRouteLabel');
+    const chipHtml = chips.map(chip =>
+        `<span class="issuance-route-chip${chip.isCheck ? ' is-check' : ''}">${escapeHtml(chip.label)}</span>`
+    ).join('');
+    return `<div class="issuance-route-chips" role="group" aria-label="${escapeHtml(groupLabel)}"><span class="issuance-route-label">${escapeHtml(groupLabel)}</span>${chipHtml}</div>`;
 }
 
 function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
@@ -18466,11 +18567,8 @@ function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
             <h5 class="issuance-card-title">${escapeHtml(title)}</h5>
             <span class="issuance-source-badge ${escapeHtml(getSourceEvidenceBadgeClass(level))}">${escapeHtml(getSourceEvidenceLabel(level))}</span>
         </div>
+        ${renderIssuanceRouteChips(mode, record)}
         ${applies ? `<p class="issuance-applies">${escapeHtml(applies)}</p>` : ''}
-        <div class="issuance-meta-grid">
-            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(txAt('issuanceUiLabels', 6, '신청 주체'))}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_ACTOR_LABELS, mode.actor))}</span></div>
-            <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(txAt('issuanceUiLabels', 7, '접수 위치'))}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_APPLY_PLACE_LABELS, mode.whereToApply))}</span></div>
-        </div>
         <div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 4, '절차'))}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
         ${options.suppressDocuments ? '' : renderIssuanceDocGroups(mode.documents, keywords)}
         ${renderIssuanceWarnings(mode.warnings, keywords)}
@@ -18481,6 +18579,9 @@ function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
 
 function renderVisaIssuanceSection(v, keywords, options = {}) {
     if (['faq', 'scn', 'nhis'].includes(v.cat)) return '';
+    // F-4 (재외동포) keeps its dedicated diaspora route guide; it is never absorbed
+    // into the generic 사증발급 issuance renderer. See GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.
+    if (isGenericVisaIssuanceExcluded(v.code)) return '';
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
     const embedded = !!options.embedded;
@@ -18495,7 +18596,11 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
     const disclaimer = pickLocalizedManualText({ ko: record.disclaimerKo, en: record.disclaimerEn });
     const title = txAt('issuanceUiLabels', 0, '사증발급');
-    const body = `${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
+    // Small procedure-stage kicker ("입국 전 사증발급") so the user reads this as the
+    // before-entry step within 절차별 안내, distinct from the after-entry stay procedures.
+    const stageLabel = `<p class="issuance-stage-label">${escapeHtml(tx('issuanceStageLabel'))}</p>`;
+    const body = `${stageLabel}
+        ${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
         <div class="issuance-scenario-grid">${cards}</div>
         ${renderIssuanceOverlaySelector(v.code)}
         ${variance ? `<p class="issuance-variance-note">${escapeHtml(variance)}</p>` : ''}

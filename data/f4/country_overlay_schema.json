@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://paradiso.local/data/f4/country_overlay_schema.json",
+  "title": "F-4 country overlay entry",
+  "description": "Country-specific F-4 consular guidance overlay. Country overlays only supplement the common F-4 base; they never override common eligibility. Unverified specifics MUST use a verification state and the official-check fallback instead of invented values.",
+  "type": "object",
+  "definitions": {
+    "verificationState": {
+      "type": "string",
+      "enum": ["verified_official", "partial_official", "needs_refresh", "official_check_required", "not_available_or_unclear"]
+    },
+    "sectionField": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/definitions/verificationState" },
+        "summaryKo": { "type": "string" },
+        "detailKo": { "type": "array", "items": { "type": "string" } },
+        "sourceRefs": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "required": ["countryCode", "labelKo", "labelEn", "sourceStatus", "lastReviewed"],
+  "additionalProperties": false,
+  "properties": {
+    "countryCode": { "type": "string", "pattern": "^[A-Z]{2}$" },
+    "labelKo": { "type": "string", "minLength": 1 },
+    "labelEn": { "type": "string", "minLength": 1 },
+    "labelZh": { "type": "string" },
+    "sourceStatus": { "$ref": "#/definitions/verificationState" },
+    "sourceStatusReason": { "type": "string" },
+    "lastReviewed": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" },
+    "missionFinderUrl": { "type": "string" },
+    "missionUrl": { "type": ["string", "null"] },
+    "visaPortalUrl": { "type": "string" },
+    "hikoreaUrl": { "type": "string" },
+    "criminalRecord": { "$ref": "#/definitions/sectionField" },
+    "authentication": { "$ref": "#/definitions/sectionField" },
+    "booking": { "$ref": "#/definitions/sectionField" },
+    "fee": { "$ref": "#/definitions/sectionField" },
+    "processingTime": { "$ref": "#/definitions/sectionField" },
+    "missionPractice": { "$ref": "#/definitions/sectionField" },
+    "warnings": { "type": "array", "items": { "type": "string" } },
+    "sourceRefs": { "type": "array", "items": { "type": "string" } }
+  }
+}

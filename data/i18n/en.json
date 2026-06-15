@@ -1155,5 +1155,15 @@
     "View evidence",
     "Why limited?"
   ],
+  "issuanceStageLabel": "Visa issuance (before entry)",
+  "issuanceRouteLabel": "Application route",
+  "issuanceRouteChipLabels": [
+    "Consular application",
+    "Certificate of confirmation of visa issuance",
+    "e-Visa",
+    "Visa portal check",
+    "Sponsor / employer-led",
+    "Check with the mission"
+  ],
   "resultTotalSuffix": "{count} total"
 }
