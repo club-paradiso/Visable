@@ -982,7 +982,7 @@
       if (qNorm.indexOf(kw) !== -1) return true;
     }
     var codes = (detail && detail.codes) || [];
-    return codes.indexOf('B-1') === 0 || codes.indexOf('B-2') === 0 || codes.indexOf('C-3') === 0;
+    return codes.indexOf('B-1') !== -1 || codes.indexOf('B-2') !== -1 || codes.indexOf('C-3') !== -1;
   }
 
   function mountIfNeeded() {
