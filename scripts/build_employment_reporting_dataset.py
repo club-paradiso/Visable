@@ -104,35 +104,54 @@ LEVEL_LABEL_KO = {
 # Tokens too generic to be useful standalone search terms.
 TERM_STOPWORDS = {"및", "그", "외", "관련", "기타", "종사자", "종사원", "그외"}
 
-# Curated layperson-query synonyms keyed by code (type-scoped). Kept conservative:
-# every term is a plain-language alias for the category, never a new requirement.
-OCC_SYNONYMS = {
-    "22": ["개발자", "소프트웨어", "프로그래머", "웹개발", "앱개발", "코딩", "IT", "에스아이", "데이터"],
-    "21": ["연구원", "연구", "리서치"],
-    "25": ["강사", "영어강사", "학원강사", "선생님", "교사", "과외", "어학", "영어회화"],
-    "28": ["번역가", "통역사", "통번역", "디자이너", "작가", "콘텐츠"],
-    "24": ["간호사", "사회복지사", "상담사"],
-    "42": ["돌봄", "요양보호사", "간병인", "보육", "베이비시터"],
-    "44": ["요리사", "셰프", "바리스타", "주방", "카페", "서빙", "홀서빙", "종업원", "조리"],
-    "52": ["판매원", "점원", "매장", "자영업", "가게", "캐셔"],
-    "51": ["영업", "세일즈", "영업원"],
-    "87": ["운전", "운전기사", "배달", "택배", "기사"],
-    "8": ["공장", "생산직", "제조"],
-    "9": ["단순노무", "알바", "아르바이트"],
-}
-IND_SYNONYMS = {
-    "J": ["IT", "정보통신", "소프트웨어"],
-    "62": ["소프트웨어", "IT", "개발", "에스아이", "프로그래밍"],
-    "63": ["포털", "데이터", "호스팅", "온라인"],
-    "85": ["학원", "교육", "어학원", "과외"],
-    "56": ["음식점", "식당", "카페", "레스토랑", "주점", "술집"],
-    "55": ["숙박", "호텔", "게스트하우스", "모텔"],
-    "C": ["제조업", "공장", "생산"],
-    "47": ["소매", "가게", "상점", "자영업"],
-    "G": ["도소매", "유통", "판매업"],
-    "Q": ["병원", "요양", "복지", "돌봄"],
-    "I": ["숙박", "음식점", "외식"],
-}
+# Curated layperson-query synonyms, NAME-ANCHORED (not code-keyed) so they stay
+# correct regardless of KSCO/KSIC numbering: each group's extra terms attach to any
+# row whose name_ko contains one of the anchor substrings. Every term is a plain-
+# language alias for the category, never a new requirement.
+OCC_ANCHORS = [
+    (["정보 통신 전문가", "컴퓨터 시스템", "소프트웨어", "응용 소프트웨어", "웹 개발", "데이터 전문가", "네트워크", "정보 보안"],
+     ["개발자", "소프트웨어", "프로그래머", "웹개발", "앱개발", "코딩", "IT", "에스아이", "개발"]),
+    (["연구원"], ["연구원", "연구", "리서치"]),
+    (["외국어 강사"], ["영어강사", "영어회화", "어학강사", "외국어강사"]),
+    (["강사"], ["강사", "학원강사", "과외"]),
+    (["학교 교사", "교사"], ["교사", "선생님"]),
+    (["번역가 및 통역가", "번역", "통역"], ["통번역", "번역", "통역", "번역가", "통역사"]),
+    (["디자이너"], ["디자이너", "디자인"]),
+    (["작가", "기자", "콘텐츠"], ["작가", "콘텐츠", "기자"]),
+    (["돌봄", "요양", "간병"], ["돌봄", "요양보호사", "간병인", "베이비시터"]),
+    (["보육"], ["보육", "어린이집", "유치원"]),
+    (["간호사"], ["간호사"]),
+    (["의사"], ["의사"]),
+    (["사회복지"], ["사회복지사", "복지사"]),
+    (["조리", "주방", "요리사", "식음료 서비스"], ["요리사", "셰프", "바리스타", "카페", "주방", "서빙", "홀서빙", "종업원", "조리"]),
+    (["미용"], ["미용사", "헤어", "네일"]),
+    (["매장 판매", "상점", "판매원"], ["판매원", "점원", "매장", "자영업", "가게", "캐셔"]),
+    (["영업"], ["영업", "세일즈", "영업원"]),
+    (["운전"], ["운전", "운전기사", "기사"]),
+    (["배달", "택배"], ["배달", "택배", "배송"]),
+    (["건설", "건축", "토목"], ["건설", "건축", "토목", "현장"]),
+    (["용접"], ["용접", "용접공"]),
+    (["회계사", "세무사", "경리"], ["회계사", "세무사", "경리"]),
+    (["조작", "조립", "생산"], ["공장", "생산직", "제조", "조립"]),
+    (["단순"], ["단순노무", "알바", "아르바이트"]),
+    (["농업", "작물", "재배", "축산"], ["농업", "농장", "작물", "재배", "축산"]),
+]
+IND_ANCHORS = [
+    (["컴퓨터 프로그래밍", "소프트웨어", "정보통신", "정보 서비스"], ["소프트웨어", "IT", "개발", "에스아이", "프로그래밍", "정보통신"]),
+    (["포털", "호스팅", "데이터베이스"], ["포털", "데이터", "호스팅", "온라인"]),
+    (["교육 서비스", "학원", "교습"], ["학원", "교육", "어학원", "과외"]),
+    (["음식점 및 주점", "음식점업", "주점 및 비알코올", "주점업", "비알코올 음료점"],
+     ["음식점", "식당", "카페", "레스토랑", "주점", "술집", "외식", "분식", "치킨집"]),
+    (["숙박", "호텔"], ["숙박", "호텔", "게스트하우스", "모텔"]),
+    (["제조업"], ["제조", "공장", "생산"]),
+    (["소매업", "소매"], ["소매", "가게", "상점", "자영업"]),
+    (["도매업", "도매"], ["도매", "유통"]),
+    (["병원", "의원", "보건업", "의료"], ["병원", "의료", "보건", "클리닉"]),
+    (["사회복지", "요양"], ["요양", "복지", "돌봄"]),
+    (["건설업"], ["건설", "시공"]),
+    (["운수", "운송", "물류", "택배"], ["운송", "물류", "택배", "배송"]),
+    (["미용", "이용업"], ["미용실", "헤어샵", "네일샵"]),
+]
 
 
 def load_csv(path: Path) -> list[dict]:
@@ -174,7 +193,7 @@ def build_rows(records: list[dict], kind: str) -> list[dict]:
     """kind in {'occupation','industry'}."""
     source = OCCUPATION_SOURCE if kind == "occupation" else INDUSTRY_SOURCE
     parent_fn = occ_parent if kind == "occupation" else ind_parent
-    synonyms = OCC_SYNONYMS if kind == "occupation" else IND_SYNONYMS
+    anchors = OCC_ANCHORS if kind == "occupation" else IND_ANCHORS
 
     by_code = {str(r["code"]): str(r["title_ko"]) for r in records}
     rows = []
@@ -204,7 +223,9 @@ def build_rows(records: list[dict], kind: str) -> list[dict]:
             terms.extend(tokens(piece))
         terms.append(name)
         terms.append(code)
-        terms.extend(synonyms.get(code, []))
+        for anchor_keys, extra in anchors:
+            if any(a in name for a in anchor_keys):
+                terms.extend(extra)
         seen, uniq = set(), []
         for t in terms:
             key = t.lower()
@@ -301,11 +322,22 @@ def main() -> int:
             "excluded_statuses": ["F-5"],
             "excluded_cases": ["영리활동에 종사하지 않는 사람"],
             "deadline": "영리활동 개시 또는 신고사항(직종·업종·연간소득 구간) 변경 후 15일 이내",
+            "income_basis": "과세 전 소득 기준이며, 소득 '구간'이 변경된 경우에만 변경 신고",
+            "main_job_rule": "복수 직장(부업·겸업 포함) 시 주된 영리활동(근로시간이 가장 많은 직장) 1개 기준으로 신고",
+            "legal_basis": "출입국관리법 시행규칙 제47조 및 제49조의2",
+            "penalty_note": "기한 내 미신고 시 과태료 부과 가능(최대 100만원); 반복·의도적 불이행 등을 고려해 관할 출입국·외국인관서장이 결정",
+            "pilot_period": "2026년 1~6월 시범운영(온라인+기존 서식 병행), 이후 온라인 신고만 가능",
             "list_source_note": (
                 "HiKorea 신고 화면의 직종조회는 국가데이터처 표준직업분류표를, "
                 "업종조회는 국가데이터처 표준산업분류표를 기준으로 표시되며 "
-                "국가데이터처 통계분류포털에서 확인할 수 있다."
+                "국가데이터처 통계분류포털에서 확인할 수 있다. (FAQ Q7, 붙임2 절차)"
             ),
+            "classification_portal_url": "https://kssc.mods.go.kr",
+            "official_sources": [
+                "data/sources/hikorea_employment_reporting_overview.hwpx",
+                "data/sources/hikorea_employment_reporting_procedure_visit.hwpx",
+                "data/sources/hikorea_employment_reporting_faq.docx",
+            ],
             "final_confirmation": "최종 신고 코드는 HiKorea 신고 화면 또는 1345에서 반드시 확인",
         },
         # convenience aggregates
