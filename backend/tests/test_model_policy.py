@@ -57,6 +57,47 @@ class ModelRolePolicyTests(unittest.TestCase):
         self.assertIn("qwen/qwen3-next-80b-a3b-instruct:free", policy["chinese_fallback_models"])
         self.assertIn("moonshotai/kimi-k2.6:free", policy["chinese_fallback_models"])
 
+
+class AnswerModeTierTests(unittest.TestCase):
+    def setUp(self):
+        for key in (
+            "OPENROUTER_MODEL",
+            "OPENROUTER_MODEL_CANDIDATES",
+            "OPENROUTER_FAST_MODEL",
+            "OPENROUTER_FAST_MODEL_CANDIDATES",
+        ):
+            os.environ.pop(key, None)
+
+    def test_basic_mode_uses_full_nemotron_chain(self):
+        plan = model_policy.resolve_answer_mode_models("basic")
+        self.assertEqual(plan["mode"], "basic")
+        self.assertTrue(plan["available"])
+        self.assertEqual(plan["primary"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(plan["candidates"][0], "nvidia/nemotron-3-ultra-550b-a55b:free")
+
+    def test_fast_mode_uses_small_low_latency_model_first(self):
+        plan = model_policy.resolve_answer_mode_models("fast")
+        self.assertEqual(plan["mode"], "fast")
+        self.assertTrue(plan["available"])
+        self.assertEqual(plan["primary"], "google/gemma-4-31b-it:free")
+        # The slow 550B ultra model must not be the fast tier's primary.
+        self.assertNotEqual(plan["candidates"][0], "nvidia/nemotron-3-ultra-550b-a55b:free")
+
+    def test_pro_mode_is_coming_soon_and_falls_back_to_basic_chain(self):
+        plan = model_policy.resolve_answer_mode_models("pro")
+        self.assertEqual(plan["mode"], "basic")
+        self.assertFalse(plan["available"])
+        self.assertEqual(plan["requested_mode"], "pro")
+
+    def test_unknown_mode_defaults_to_basic(self):
+        self.assertEqual(model_policy.normalize_answer_mode("nonsense"), "basic")
+        self.assertEqual(model_policy.normalize_answer_mode(None), "basic")
+
+    def test_fast_model_env_override(self):
+        os.environ["OPENROUTER_FAST_MODEL"] = "openai/gpt-oss-120b:free"
+        plan = model_policy.resolve_answer_mode_models("fast")
+        self.assertEqual(plan["primary"], "openai/gpt-oss-120b:free")
+
     def test_env_overrides_keep_primary_first_and_deduped(self):
         with patch.dict(
             os.environ,

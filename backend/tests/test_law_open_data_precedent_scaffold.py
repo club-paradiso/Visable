@@ -460,5 +460,48 @@ class CitationVerifierTests(unittest.TestCase):
         self.assertIn("FABRICATED_CASE_CITATION", r["warnings"])
 
 
+class PrecedentWiredIntoEvidencePackTests(unittest.TestCase):
+    """판례 완전 활성화: precedent is fetched into the production evidence pack."""
+
+    def test_status_change_question_wires_precedent_evidence(self):
+        cfg = GroundingConfig(mode="enabled", law_api_oc="secret-oc")
+        transport = _transport(fixture("precedent_list.json"))
+        pack = lt.build_law_evidence_pack(
+            "D-2에서 E-7으로 체류자격 변경 중인데 거부될 수 있나요?",
+            visa_code="D-2",
+            config=cfg,
+            transport=transport,
+            retrieve=True,
+        )
+        self.assertTrue(pack.get("precedent_evidence_items"))
+        # Precedent list results are contextual, never verbatim "direct" citations.
+        for item in pack["precedent_evidence_items"]:
+            self.assertNotEqual(item.get("citationGrade"), "direct")
+
+    def test_routine_document_question_does_not_fetch_precedent(self):
+        cfg = GroundingConfig(mode="enabled", law_api_oc="secret-oc")
+        transport = _transport(fixture("precedent_list.json"))
+        pack = lt.build_law_evidence_pack(
+            "D-2 체류기간 연장에 필요한 서류가 뭐예요?",
+            visa_code="D-2",
+            config=cfg,
+            transport=transport,
+            retrieve=True,
+        )
+        self.assertEqual(pack.get("precedent_evidence_items"), [])
+
+    def test_precedent_skipped_without_credential(self):
+        cfg = GroundingConfig(mode="enabled")  # no OC/key
+        transport = _transport(fixture("precedent_list.json"))
+        pack = lt.build_law_evidence_pack(
+            "D-2에서 E-7으로 체류자격 변경 중인데 거부될 수 있나요?",
+            visa_code="D-2",
+            config=cfg,
+            transport=transport,
+            retrieve=True,
+        )
+        self.assertEqual(pack.get("precedent_evidence_items"), [])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

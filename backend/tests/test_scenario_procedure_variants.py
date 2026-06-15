@@ -521,7 +521,7 @@ class ScenarioProcedureVariantAiContextTests(unittest.TestCase):
         mod = _module()
         captured = []
 
-        async def fake_call(prompt, model=None):
+        async def fake_call(prompt, model=None, max_tokens=None):
             captured.append(prompt)
             return "ok"
 

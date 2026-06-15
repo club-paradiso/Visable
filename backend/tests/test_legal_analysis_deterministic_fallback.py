@@ -31,7 +31,7 @@ BAD_FIRST_SENTENCE_PREFIXES = (
 )
 
 
-async def _openrouter_all_unavailable(prompt: str, model: str | None = None) -> str:
+async def _openrouter_all_unavailable(prompt: str, model: str | None = None, max_tokens: int | None = None) -> str:
     raise HTTPException(
         status_code=502,
         detail={"error": "openrouter_upstream_error", "status": 503, "message": "No healthy upstream"},

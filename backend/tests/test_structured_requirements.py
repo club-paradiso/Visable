@@ -183,7 +183,7 @@ class StructuredRequirementsGroundingTests(unittest.TestCase):
     def _captured_prompt(self, mod, payload):
         captured = {}
 
-        async def _capture(prompt, model=None):
+        async def _capture(prompt, model=None, max_tokens=None):
             captured["prompt"] = prompt
             return "ok"
 

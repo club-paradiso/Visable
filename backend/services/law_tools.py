@@ -1150,6 +1150,18 @@ LQ_REFUGEE = "refugee_context"
 LQ_GENERAL_LEGAL = "general_legal"
 LQ_GENERAL = "general"
 
+# Question types where court precedent (판례) is genuinely informative. Routine
+# document/extension/procedure lookups are intentionally excluded so precedent
+# retrieval (an extra network call) only fires where case law adds value.
+_PRECEDENT_WARRANTED_QUESTION_TYPES = frozenset({
+    LQ_ACTIVITY_ON_STATUS,
+    LQ_STATUS_CHANGE,
+    LQ_HIGH_RISK_EXCEPTION,
+    LQ_DEADLINE_OR_REPORT,
+    LQ_NATIONALITY,
+    LQ_REFUGEE,
+})
+
 
 def _signal_flags(text: str) -> Dict[str, bool]:
     low = (text or "").lower()
@@ -1895,6 +1907,41 @@ def build_law_evidence_pack(
                 law_sources = _dedupe_sources(law_sources)[:_HARD_MAX_QUERIES]
                 if not law_sources and not law_grounding_error:
                     law_grounding_error = LAW_API_NO_RESULTS
+
+    # --- Precedent (판례) best-effort retrieval -----------------------------
+    # Court precedent is CONTEXTUAL evidence only: list-search results are never
+    # presented as verbatim citations (the normalizer grades them accordingly).
+    # It is fetched as a separate best-effort step so it never blocks or breaks
+    # the statute path — any failure simply leaves the precedent bucket empty.
+    # Gated on real legal intent + an enabled mode + a configured credential, and
+    # limited to question types where case law genuinely helps. When no credential
+    # is present this short-circuits without any network call (no latency cost).
+    precedent_warranted = (
+        law_intent
+        and cfg.mode in {"audit", "enabled"}
+        and cfg.law_api_configured
+        and question_type in _PRECEDENT_WARRANTED_QUESTION_TYPES
+    )
+    already_have_precedent = bool(source_family_retrieval.get("precedent_evidence_items"))
+    if precedent_warranted and not already_have_precedent and retrieve is not False:
+        try:
+            prec_query = (
+                (law_queries_attempted[0] if law_queries_attempted else "")
+                or (planned_queries[0] if planned_queries else text)
+            )
+            prec_result = retrieve_official_source_family(
+                "precedent", prec_query,
+                limit=max(1, min(cfg_display(cfg), 3)),
+                config=cfg, transport=transport,
+            )
+            prec_items = prec_result.get("precedent_evidence_items") or []
+            if prec_items:
+                source_family_retrieval["precedent_evidence_items"] = prec_items
+                fam_statuses = dict(source_family_retrieval.get("source_family_statuses") or {})
+                fam_statuses["precedent"] = prec_result.get("status", "")
+                source_family_retrieval["source_family_statuses"] = fam_statuses
+        except Exception:  # pragma: no cover - precedent must never break the pack
+            pass
 
     law_grounding_used = bool(law_sources) or context_used_hint
 

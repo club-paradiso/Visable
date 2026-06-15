@@ -28,6 +28,28 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
     "google/gemma-4-31b-it:free",
 ]
 
+# ---------------------------------------------------------------------------
+# Answer-speed tiers ("Waymaker" answer modes)
+# ---------------------------------------------------------------------------
+# The frontend exposes a Fast / Basic / Pro selector. Each tier maps to a
+# distinct OpenRouter candidate chain so users can trade depth for latency:
+#
+#   * fast  — a small, low-latency model first (snappy answers; less depth).
+#   * basic — the default Nemotron final-answer chain (current behavior).
+#   * pro   — reserved / "coming soon"; not yet wired to a model chain.
+#
+# Random routing stays forbidden; every tier is an explicit, auditable chain.
+ANSWER_MODES = ("fast", "basic", "pro")
+DEFAULT_ANSWER_MODE = "basic"
+
+# Fast tier: prefer the smallest reliable model, then a mid model as fallback.
+DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-31b-it:free"
+DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
+    "google/gemma-4-31b-it:free",
+    "openai/gpt-oss-120b:free",
+    "nvidia/nemotron-3-super-120b-a12b:free",
+]
+
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"
 
 DEFAULT_CHINESE_MODEL = "deepseek/deepseek-r1-0528:free"
@@ -95,6 +117,49 @@ def resolve_model_role_policy() -> Dict[str, Any]:
             "DeepSeek, Qwen, Kimi, and Z.ai families are reserved for Chinese-language routes by policy.",
             "Random OpenRouter routing such as openrouter/auto or openrouter/free is not allowed.",
         ],
+    }
+
+
+def normalize_answer_mode(mode: Any) -> str:
+    """Coerce an arbitrary client value into a supported answer mode label."""
+    value = str(mode or "").strip().lower()
+    if value in ANSWER_MODES:
+        return value
+    return DEFAULT_ANSWER_MODE
+
+
+def resolve_answer_mode_models(mode: Any) -> Dict[str, Any]:
+    """Resolve the OpenRouter primary model + candidate chain for an answer mode.
+
+    Returns a dict with ``mode`` (normalized), ``primary``, ``candidates`` and
+    ``available``. The ``pro`` tier is intentionally NOT wired to a model yet
+    ("coming soon") — callers should fall back to the basic chain and surface the
+    tier as unavailable rather than silently answering with a different depth.
+    Env overrides keep deploys flexible: ``OPENROUTER_FAST_MODEL`` /
+    ``OPENROUTER_FAST_MODEL_CANDIDATES`` for the fast tier; the basic tier reuses
+    ``OPENROUTER_MODEL`` / ``OPENROUTER_MODEL_CANDIDATES``.
+    """
+    normalized = normalize_answer_mode(mode)
+
+    if normalized == "fast":
+        primary = _env("OPENROUTER_FAST_MODEL", DEFAULT_FAST_ANSWER_MODEL)
+        candidates = _dedupe_preserve_order(
+            [primary, *_csv_env("OPENROUTER_FAST_MODEL_CANDIDATES", DEFAULT_FAST_ANSWER_MODEL_CANDIDATES)]
+        )
+        return {"mode": "fast", "primary": primary, "candidates": candidates, "available": True}
+
+    # basic (and pro -> basic fallback)
+    primary = _env("OPENROUTER_MODEL", DEFAULT_FINAL_ANSWER_MODEL)
+    candidates = _dedupe_preserve_order(
+        [primary, *_csv_env("OPENROUTER_MODEL_CANDIDATES", DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES)]
+    )
+    return {
+        "mode": normalized if normalized == "basic" else "basic",
+        "primary": primary,
+        "candidates": candidates,
+        # 'pro' is requested-but-not-yet-available; we answered on the basic chain.
+        "available": normalized == "basic",
+        "requested_mode": normalized,
     }
 
 
