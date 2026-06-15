@@ -760,6 +760,7 @@
           '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
           '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>') +
         '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
+        '<div class="ssc-badges" data-ssc-badges></div>' +
         '<form data-ssc-form novalidate>' +
           '<div class="ssc-grid">' +
             '<label class="ssc-field" style="grid-column:1/-1;">' +
@@ -941,6 +942,16 @@
           }).join('') + '</div>';
       });
     });
+  }
+
+  function refreshBadges(section) {
+    var badgesEl = section && section.querySelector('[data-ssc-badges]');
+    if (!badgesEl) return;
+    if (state.loadError || !state.rules) {
+      badgesEl.innerHTML = '<span class="ssc-badge ssc-badge-refresh">데이터 로드 실패 — 공식 누리집 직접 확인 필요</span>';
+    } else {
+      badgesEl.innerHTML = renderSourceFreshnessBadge(state.rules.sourceStatus, state.rules.lastUpdated);
+    }
   }
 
   function ensureRules() {
