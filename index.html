@@ -1726,34 +1726,60 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
    Scenario choices move into a modal (#scenarioPickerOverlay). Before a pick,
    no scenario card is shown — only a trigger button + hint. After a pick, ONLY
    the selected card renders, so the result stays uncluttered. */
-.scenario-picker-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.scenario-picker-bar { position: relative; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
 .scenario-picker-trigger {
   flex: 1 1 auto;
-  min-height: 48px;
+  min-height: 52px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 0.6rem;
-  border: 1px solid color-mix(in srgb, var(--ac) 40%, var(--bd2));
-  background: color-mix(in srgb, var(--ac) 6%, var(--bg1));
+  gap: 0.55rem;
+  border: 1.5px solid color-mix(in srgb, var(--ac) 45%, var(--bd2));
+  background: color-mix(in srgb, var(--ac) 7%, var(--bg1));
   color: var(--t1);
-  border-radius: var(--p-r-lg, 12px);
-  padding: 0.7rem 1rem;
+  border-radius: 14px;
+  padding: 0.75rem 1rem;
   font: inherit;
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
   text-align: left;
-  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease, transform 0.15s ease;
+  box-shadow: 0 2px 8px -4px color-mix(in srgb, var(--ac) 30%, transparent);
 }
 .scenario-picker-trigger:hover,
 .scenario-picker-trigger:focus-visible {
   border-color: var(--ac);
-  background: color-mix(in srgb, var(--ac) 11%, var(--bg1));
+  background: color-mix(in srgb, var(--ac) 12%, var(--bg1));
+  box-shadow: 0 6px 20px -8px color-mix(in srgb, var(--ac) 55%, transparent);
   transform: translateY(-1px);
+  outline: none;
 }
-.scenario-picker-trigger-label { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.scenario-picker-trigger-caret { flex: 0 0 auto; color: var(--ac); font-size: 0.78rem; }
+.scenario-picker-trigger[aria-expanded="true"] {
+  border-color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 10%, var(--bg1));
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 22%, transparent);
+}
+.scenario-picker-trigger-label { min-width: 0; flex: 1 1 auto; overflow: hidden; text-overflow: ellipsis; }
+.scenario-picker-trigger-count {
+  flex: none;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  background: color-mix(in srgb, var(--ac) 18%, var(--bg1));
+  color: var(--ac);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+/* 시나리오 선택 후 카운트 배지 숨기기 */
+.scenario-needs-pick.has-selection .scenario-picker-trigger-count { display: none; }
+.scenario-picker-trigger-caret { flex: 0 0 auto; color: var(--ac); font-size: 0.78rem; transition: transform 0.2s ease; }
+.scenario-picker-trigger[aria-expanded="true"] .scenario-picker-trigger-caret { transform: rotate(180deg); }
 .scenario-picker-clear {
   flex: 0 0 auto;
   min-height: 44px;
@@ -1780,6 +1806,118 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 /* Scenario picker modal choice list */
 .scenario-picker-choice-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.2rem; }
 .scenario-picker-choice { min-height: 66px; }
+/* ── 인라인 시나리오 픽커 팝업 패널 (화면내 팝업) ─────────────────────────────
+   트리거 버튼 바로 아래 앵커링된 떠있는 카드로 표시.
+   전체화면 모달 오버레이를 대체해 컨텍스트를 유지. */
+.scenario-picker-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 500;
+  background: var(--bg1);
+  border: 1.5px solid color-mix(in srgb, var(--ac) 40%, var(--bd2));
+  border-radius: 16px;
+  box-shadow: 0 20px 60px -16px rgba(0,0,0,0.24), 0 4px 16px -4px rgba(0,0,0,0.10);
+  transform-origin: top center;
+  overflow: hidden;
+}
+.scenario-picker-panel[hidden] { display: none; }
+.scenario-picker-panel:not([hidden]) { animation: __sppIn 0.2s cubic-bezier(0.22,1,0.36,1); }
+@keyframes __sppIn {
+  from { opacity: 0; transform: scaleY(0.92) translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+.scenario-picker-panel-inner {
+  padding: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 400px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.scenario-picker-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.58rem;
+  border-bottom: 1px solid var(--bd2);
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+.scenario-picker-panel-title {
+  font-size: 0.82rem;
+  font-weight: 900;
+  color: var(--t2);
+  word-break: keep-all;
+  line-height: 1.4;
+}
+.scenario-picker-panel-x {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  background: none;
+  border: 1px solid var(--bd2);
+  border-radius: 50%;
+  color: var(--t3);
+  font-size: 0.74rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.14s, color 0.14s;
+}
+.scenario-picker-panel-x:hover,
+.scenario-picker-panel-x:focus-visible {
+  background: color-mix(in srgb, var(--t3) 12%, var(--bg1));
+  color: var(--t1);
+  outline: none;
+}
+.scenario-picker-panel-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+/* 모바일: 하단 시트 */
+@media (max-width: 540px) {
+  .scenario-picker-panel {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 20px 20px 0 0;
+    z-index: 1200;
+  }
+  .scenario-picker-panel:not([hidden]) {
+    animation: __sppUp 0.24s cubic-bezier(0.22,1,0.36,1);
+  }
+  @keyframes __sppUp {
+    from { opacity: 0.8; transform: translateY(52px); }
+    to   { opacity: 1;   transform: none; }
+  }
+  .scenario-picker-panel-inner {
+    max-height: 76vh;
+    padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom, 0px));
+  }
+}
+/* 모바일 전용 백드롭 — 하단 시트 뒤 반투명 레이어 */
+.scenario-picker-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.30);
+  z-index: 1100;
+  -webkit-tap-highlight-color: transparent;
+}
+.scenario-picker-backdrop.is-active { display: block; }
+@media (prefers-reduced-motion: reduce) {
+  .scenario-picker-panel:not([hidden]) { animation: none; }
+}
 /* Scenario / route picker modal — roomy box + a clean intro line (overrides the
    boxed .text-desc styling so the copy reads as a subtitle, not a callout). */
 #scenarioPickerOverlay .modal-box, #routePickerOverlay .modal-box { max-width: 580px; }
@@ -11569,6 +11707,19 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-marker { background: var(--k-white); color: var(--k-blue); }
 :root[data-theme="archive_diary"] .scenario-choice-go { color: var(--k-ink); }
 :root[data-theme="archive_diary"] .scenario-choice[aria-pressed="true"] .scenario-choice-go { color: #fff; }
+/* 인라인 시나리오 패널 — Kitsch 테마 스타일 */
+:root[data-theme="archive_diary"] .scenario-picker-panel {
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 18px !important;
+  box-shadow: 4px 4px 0 var(--k-ink) !important;
+  background: var(--k-white) !important;
+}
+:root[data-theme="archive_diary"] .scenario-picker-panel-head { border-bottom: 2px dashed var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .scenario-picker-panel-title { font-family: var(--k-display); color: var(--k-ink); }
+:root[data-theme="archive_diary"] .scenario-picker-panel-x { border: 2px solid var(--k-ink) !important; color: var(--k-ink) !important; font-weight: 900; }
+:root[data-theme="archive_diary"] .scenario-picker-trigger { border: 2px solid var(--k-ink) !important; border-radius: 14px !important; background: var(--k-blue-1) !important; box-shadow: 3px 3px 0 var(--k-ink); }
+:root[data-theme="archive_diary"] .scenario-picker-trigger[aria-expanded="true"] { background: var(--k-blue) !important; color: #fff !important; box-shadow: 2px 2px 0 var(--k-ink); }
+:root[data-theme="archive_diary"] .scenario-picker-trigger[aria-expanded="true"] .scenario-picker-trigger-count { background: rgba(255,255,255,0.25); color: #fff; }
 
 /* Uncertainty / review-needed notices → bold but HIGH-CONTRAST pills (semantic
    amber kept for warning — not decorative; never weakened) */
@@ -13380,7 +13531,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
-<div class="modal-overlay" id="scenarioPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle" aria-hidden="true">
+<div class="modal-overlay" id="scenarioPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle" aria-hidden="true" style="display:none!important">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
             <h2 id="scenarioPickerTitle" class="modal-title">내 상황에 맞는 시나리오 선택</h2>
@@ -13392,6 +13543,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
     </div>
 </div>
+<div class="scenario-picker-backdrop" id="scenarioPickerBackdrop" data-action="close-scenario-picker"></div>
 
 <div class="modal-overlay" id="routePickerOverlay" role="dialog" aria-modal="true" aria-labelledby="routePickerTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 560px;">
@@ -16773,16 +16925,41 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
 // on demand from the originating selector's hidden variant cards. Picking a
 // scenario reveals only that card; everything else stays hidden.
 let scenarioPickerActiveSelector = null;
+let scenarioPickerActivePanel = null;
+
+function closeScenarioPicker() {
+    const panel = scenarioPickerActivePanel;
+    if (panel) {
+        if (panel._escHandler) { document.removeEventListener('keydown', panel._escHandler); panel._escHandler = null; }
+        if (panel._outsideHandler) { document.removeEventListener('pointerdown', panel._outsideHandler, true); panel._outsideHandler = null; }
+        panel.hidden = true;
+    }
+    if (scenarioPickerActiveSelector) {
+        const trigger = scenarioPickerActiveSelector.querySelector('.scenario-picker-trigger');
+        if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
+    const bd = document.getElementById('scenarioPickerBackdrop');
+    if (bd) bd.classList.remove('is-active');
+    scenarioPickerActivePanel = null;
+    scenarioPickerActiveSelector = null;
+}
 
 function openScenarioPicker(trigger) {
     const selector = trigger.closest('[data-procedure-variant-selector]');
     if (!selector) return;
+    const panel = selector.querySelector('.scenario-picker-panel');
+    // 토글: 이미 열린 패널 클릭 시 닫기
+    if (panel && !panel.hidden) { closeScenarioPicker(); return; }
+    // 다른 열린 패널 먼저 닫기
+    closeScenarioPicker();
     scenarioPickerActiveSelector = selector;
-    const host = document.getElementById('scenarioPickerChoices');
-    if (!host) return;
+    if (!panel) return;
+    scenarioPickerActivePanel = panel;
     const selectedId = selector.getAttribute('data-selected-variant') || '';
     const cards = Array.from(selector.querySelectorAll('[data-procedure-variant-card]'));
-    host.innerHTML = cards.map((card, i) => {
+    const choicesHost = panel.querySelector('.scenario-picker-panel-choices');
+    if (!choicesHost) return;
+    choicesHost.innerHTML = cards.map((card, i) => {
         const id = card.getAttribute('data-procedure-variant-card') || '';
         const label = (card.querySelector('.manual-subcode-name')?.textContent || '').trim();
         const code = (card.querySelector('.manual-subcode-code')?.textContent || '').trim();
@@ -16797,18 +16974,33 @@ function openScenarioPicker(trigger) {
             <span class="scenario-choice-go" aria-hidden="true">→</span>
         </button>`;
     }).join('');
-    const heading = document.getElementById('scenarioPickerTitle');
-    if (heading) heading.textContent = tx('scenarioSelectorTitle');
-    const copy = document.getElementById('scenarioPickerModalCopy');
-    if (copy) copy.textContent = tx('scenarioSelectorCopy');
-    openModal('scenarioPickerOverlay');
+    panel.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    // 모바일 백드롭 표시
+    const bd = document.getElementById('scenarioPickerBackdrop');
+    if (bd) bd.classList.add('is-active');
+    // 첫 번째 선택지로 포커스
+    const firstBtn = choicesHost.querySelector('button');
+    if (firstBtn) requestAnimationFrame(() => firstBtn.focus());
+    // Escape 키로 닫기
+    const escHandler = e => { if (e.key === 'Escape') { closeScenarioPicker(); trigger.focus(); } };
+    panel._escHandler = escHandler;
+    document.addEventListener('keydown', escHandler);
+    // 외부 클릭 시 닫기 (약간 지연해 현재 클릭 이벤트 제외)
+    const outsideHandler = e => {
+        if (!panel.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
+            closeScenarioPicker();
+        }
+    };
+    panel._outsideHandler = outsideHandler;
+    setTimeout(() => document.addEventListener('pointerdown', outsideHandler, true), 100);
 }
 
 function chooseScenarioVariant(button) {
     const id = button.dataset.variantId || '';
-    if (scenarioPickerActiveSelector) applyScenarioSelection(scenarioPickerActiveSelector, id);
-    closeModal('scenarioPickerOverlay');
-    scenarioPickerActiveSelector = null;
+    const selector = scenarioPickerActiveSelector;
+    closeScenarioPicker();
+    if (selector) applyScenarioSelection(selector, id);
 }
 
 function clearScenarioSelection(button) {
@@ -16855,14 +17047,25 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
     // Multiple scenarios: the choice happens in an in-screen popup. Until the user
     // picks their situation, NONE of the scenario cards are shown — only the
     // selected one renders afterwards — so the result stays uncluttered.
+    const variantCount = proc.variants.length;
     return `<div class="procedure-variant-list scenario-needs-pick" data-procedure-variant-selector="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}">
         ${head}
         <div class="scenario-picker-bar">
-            <button type="button" class="scenario-picker-trigger" data-action="open-scenario-picker" data-procedure-key="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}" aria-haspopup="dialog">
+            <button type="button" class="scenario-picker-trigger" data-action="open-scenario-picker" data-procedure-key="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}" aria-haspopup="dialog" aria-expanded="false">
                 <span class="scenario-picker-trigger-label">${escapeHtml(tx('scenarioPickerTrigger'))}</span>
+                <span class="scenario-picker-trigger-count" aria-hidden="true">${variantCount}</span>
                 <span class="scenario-picker-trigger-caret" aria-hidden="true">▾</span>
             </button>
             <button type="button" class="scenario-picker-clear" data-action="clear-procedure-variant" hidden>${escapeHtml(tx('scenarioPickerClear'))}</button>
+            <div class="scenario-picker-panel" hidden role="dialog" aria-label="${escapeHtml(title)}">
+                <div class="scenario-picker-panel-inner">
+                    <div class="scenario-picker-panel-head">
+                        <span class="scenario-picker-panel-title">${escapeHtml(title)}</span>
+                        <button type="button" class="scenario-picker-panel-x" data-action="close-scenario-picker" aria-label="닫기">✕</button>
+                    </div>
+                    <div class="scenario-picker-panel-choices" role="list"></div>
+                </div>
+            </div>
         </div>
         <p class="scenario-picker-empty-hint">${escapeHtml(tx('scenarioPickerEmptyHint'))}</p>
         <div class="manual-subcode-grid manual-subcode-grid--docs">${cardsHtml}</div>
@@ -19718,7 +19921,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'open-scenario-picker': () => openScenarioPicker(actionBtn),
                 'choose-scenario-variant': () => chooseScenarioVariant(actionBtn),
                 'clear-procedure-variant': () => clearScenarioSelection(actionBtn),
-                'close-scenario-picker': () => closeModal('scenarioPickerOverlay'),
+                'close-scenario-picker': () => closeScenarioPicker(),
                 'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
                 'copy-scenario-checklist': () => copyScenarioChecklist(actionBtn),
                 'print-scenario-checklist': () => printScenarioChecklist(actionBtn),
