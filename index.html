@@ -760,6 +760,10 @@ body.searched .ft { opacity: 1; }
 .jc2-empty b { color: var(--t2); display: block; margin-bottom: 0.3rem; }
 .jc2-empty ul { text-align: left; display: inline-block; margin: 0.5rem 0 0; padding-left: 1.1rem; }
 .jc2-loading { text-align: center; color: var(--t3); font-size: 0.85rem; padding: 1.4rem; }
+.jc2-section-head { font-size: 0.75rem; font-weight: 700; color: var(--t2); padding: 0.5rem 0.2rem 0.3rem; border-bottom: 1px solid var(--bd2); margin-bottom: 0.4rem; letter-spacing: 0.02em; }
+.jc2-section-head--parent { margin-top: 0.8rem; color: var(--t3); }
+.jc2-note--ai { background: color-mix(in srgb, var(--ac) 10%, var(--bg1)); color: var(--t1); border-left-color: var(--ac); cursor: pointer; }
+.jc2-note--ai:hover { background: color-mix(in srgb, var(--ac) 18%, var(--bg1)); }
 
 .jc2-summary { position: sticky; bottom: -1px; background: var(--bg0); border: 1.5px solid var(--ac); border-radius: var(--radius-md); padding: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-3); box-shadow: var(--shD); }
 .jc2-sum-grid { display: grid; gap: var(--sp-2); }
@@ -13312,6 +13316,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <!-- guidance / status notes -->
             <div id="jcAmbiguity" class="jc2-note jc2-note--ambig" role="status" hidden></div>
             <div id="jcBoundaryWarn" class="jc2-note jc2-note--warn" role="status" hidden></div>
+            <div id="jcAiHint" class="jc2-note jc2-note--ai" role="status" hidden></div>
             <div id="jcCoverageNote" class="jc2-coverage" aria-live="polite"></div>
 
             <!-- 4 · Results -->
@@ -14223,18 +14228,27 @@ const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람'
 const JC_AMBIGUOUS_TERMS = new Set(['카페','커피','음식점','식당','레스토랑','학원','호텔','병원','미용실','농장','공장','마트','편의점','술집','주점']);
 const JC_TYPE_LABEL = { occupation: '직종', industry: '업종' };
 const JOBCODE_QUERY_EXPANSIONS = [
-    { needles: ['개발자','소프트웨어','프로그래머','코딩','웹개발','앱개발','developer','software','programmer','coding'], terms: ['개발자','소프트웨어','프로그래머','정보 통신','컴퓨터','it','개발'] },
-    { needles: ['영어','어학원','학원','선생','선생님','교사','강사','가르치','english','teacher','instructor','academy','language','education'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학'] },
-    { needles: ['식당','음식점','주방','서빙','요리','조리','홀서빙','카페','바리스타','restaurant','kitchen','cook','server','food','cafe','barista'], terms: ['음식','조리','주방','서빙','음식점','웨이터','요리','식음료','외식','카페','바리스타','커피'] },
-    { needles: ['공장','제조','생산','조립','factory','manufacturing','production','assembly'], terms: ['제조','생산','조립','기계','공장','제조업'] },
-    { needles: ['청소','미화','cleaner','cleaning','housekeeping'], terms: ['청소','미화','환경','가사'] },
-    { needles: ['호텔','숙박','객실','hotel','hospitality','lodging'], terms: ['호텔','숙박','객실','접객','서비스'] },
-    { needles: ['돌봄','간병','요양','care','caregiver'], terms: ['간병','요양','돌봄','보육','사회복지','간호','요양보호사'] },
-    { needles: ['농장','농업','작물','farm','agriculture'], terms: ['농업','농장','작물','재배','축산'] },
-    { needles: ['배달','배송','택배','delivery','courier','logistics'], terms: ['배달','배송','택배','운송','물류'] },
-    { needles: ['연구원','연구','researcher','research'], terms: ['연구원','연구','전문가'] },
-    { needles: ['통번역','번역','통역','translator','interpreter'], terms: ['번역','통역','번역가','통역가','통번역'] },
-    { needles: ['자영업','자영업자','사장','상점','가게','소상공인','self-employed'], terms: ['자영업','소규모 상점','상점','판매','경영','소매'] }
+    { needles: ['개발자','소프트웨어','프로그래머','코딩','웹개발','앱개발','it개발','developer','software','programmer','coding'], terms: ['개발자','소프트웨어','프로그래머','정보 통신','컴퓨터','it','개발','응용 소프트웨어','시스템 소프트웨어','웹'] },
+    { needles: ['영어학원','어학원강사','학원강사','영어강사','영어선생','외국어강사','english teacher','language teacher'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학','외국어학원'] },
+    { needles: ['영어','어학원','학원','선생','선생님','교사','강사','가르치','english','teacher','instructor','academy','language','education'], terms: ['강사','교사','선생','학원','어학원','교육','외국어','어학'] },
+    { needles: ['식당','음식점','주방','서빙','요리','조리','홀서빙','카페','바리스타','restaurant','kitchen','cook','server','food','cafe','barista','요리사','주방장','셰프','chef'], terms: ['음식','조리','주방','서빙','음식점','웨이터','요리사','식음료','외식','카페','바리스타','커피','조리사','주방장'] },
+    { needles: ['공장','제조','생산','조립','작업자','라인','factory','manufacturing','production','assembly','operator'], terms: ['제조','생산','조립','기계','공장','제조업','생산직','작업원','조작원'] },
+    { needles: ['청소','미화','cleaner','cleaning','housekeeping','환경미화'], terms: ['청소','미화','환경미화','가사','청소부','청소원'] },
+    { needles: ['호텔','숙박','객실','리조트','hotel','hospitality','lodging','resort'], terms: ['호텔','숙박','객실','접객','서비스','프런트','리조트','여관','민박'] },
+    { needles: ['돌봄','간병','요양','요양보호','요양원','care','caregiver','nursing home'], terms: ['간병','요양','돌봄','요양보호사','사회복지','노인복지','복지시설'] },
+    { needles: ['농장','농업','작물','원예','비닐하우스','farm','agriculture','horticulture'], terms: ['농업','농장','작물','재배','축산','원예','농업종사자'] },
+    { needles: ['배달','배송','택배','퀵','delivery','courier','logistics'], terms: ['배달','배송','택배','운송','물류','배달원','택배기사'] },
+    { needles: ['택시','버스','화물차','트럭','운전기사','driver','taxi','bus'], terms: ['운전','택시','버스','운전기사','자동차','육상운송','화물','운수'] },
+    { needles: ['연구원','연구','박사','연구소','researcher','research'], terms: ['연구원','연구','연구사','전문가','기술연구','학술연구'] },
+    { needles: ['통번역','번역','통역','번역가','translator','interpreter'], terms: ['번역','통역','번역가','통역사','통번역','외국어','언어'] },
+    { needles: ['자영업','자영업자','사장님','상점','가게','점주','소상공인','self-employed'], terms: ['자영업','소매','판매','경영','상점','소규모'] },
+    { needles: ['편의점','마트','슈퍼','소매','retail','convenience store'], terms: ['편의점','소매','마트','판매원','소매업','슈퍼마켓'] },
+    { needles: ['미용','헤어','네일','뷰티','미용사','헤어디자이너','beauty','hair','nail'], terms: ['미용','헤어','네일','미용사','뷰티','헤어디자이너','미용실'] },
+    { needles: ['경비','보안','경호','security','guard','watchman'], terms: ['경비','보안','경호','시설경비','청원경찰','경비원'] },
+    { needles: ['간호','간호사','간호조무','nurse','nursing'], terms: ['간호','간호사','간호조무사','병원','의료','보건'] },
+    { needles: ['회계','세무','경리','재무','accountant','accounting'], terms: ['회계','세무','경리','재무','회계담당','회계사'] },
+    { needles: ['건설','건축','시공','현장','인테리어','construction','builder'], terms: ['건설','건축','시공','인테리어','토목','건설공사','현장'] },
+    { needles: ['디자이너','디자인','그래픽','designer','graphic','ux','ui'], terms: ['디자이너','디자인','그래픽','시각','영상','콘텐츠'] }
 ];
 async function loadJobcodeData() {
     if (_jobcodeData) return _jobcodeData;
@@ -14327,8 +14341,10 @@ function scoreJobcodeRow(row, query, terms) {
         if (synonyms.includes(term)) score += 120;
     });
     // 관련성이 있을 때만, 더 구체적인 단계(세세분류 > 세분류 > … > 대분류)를 위로 끌어올린다.
-    // 강한 코드/이름 일치(수백~천점)를 뒤집지 않는 선의 가벼운 가중치.
-    if (score > 0) score += jcLevelRank(row) * 16;
+    if (score > 0) {
+        score += jcLevelRank(row) * 28;
+        if (jcIsLeaf(row)) score += 90; // 실제 신고에 쓰는 말단 코드를 최우선으로 노출
+    }
     return score;
 }
 function getScoredJobcodeRows(type, query, terms, limit = 60) {
@@ -14396,10 +14412,26 @@ function jobcodeEmptyHtml(type) {
             <li>추천 칩을 눌러보기</li>
         </ul></div>`;
 }
-function renderJobcodeList(rows, box, type, query, terms) {
+function renderJobcodeList(rows, box, type, query, terms, leafFirst = false) {
     if (!box) return;
     if (!rows.length) { box.innerHTML = jobcodeEmptyHtml(type); return; }
     const MAX = 60;
+    if (leafFirst) {
+        const leafRows = rows.filter(r => jcIsLeaf(r));
+        const parentRows = rows.filter(r => !jcIsLeaf(r));
+        let html = '';
+        if (leafRows.length) {
+            html += `<div class="jc2-section-head">🎯 신고용 세부코드 <small style="font-weight:400;color:var(--t3);">— 실제 HiKorea 신고에 입력하는 코드</small></div>`;
+            html += leafRows.slice(0, MAX).map(r => renderJobcodeCard(r, query, terms)).join('');
+        }
+        if (parentRows.length) {
+            const parentMax = Math.max(0, MAX - leafRows.length);
+            html += `<div class="jc2-section-head jc2-section-head--parent">📁 상위 분류 <small style="font-weight:400;">— 참고용 (신고 시 세부코드 선택 필요)</small></div>`;
+            html += parentRows.slice(0, parentMax).map(r => renderJobcodeCard(r, query, terms)).join('');
+        }
+        box.innerHTML = html || jobcodeEmptyHtml(type);
+        return;
+    }
     const html = rows.slice(0, MAX).map(r => renderJobcodeCard(r, query, terms)).join('');
     box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.</div>` : '');
 }
@@ -14498,6 +14530,18 @@ function renderJobcodeResults(query) {
         else if (_jcFilter === 'industry') badge.textContent = `업종 ${indRows.length}`;
         else badge.textContent = q ? `직종 ${jobRows.length} · 업종 ${indRows.length}` : '전체 보기';
     }
+    const hintEl = document.getElementById('jcAiHint');
+    if (hintEl) {
+        const total = jobRows.length + indRows.length;
+        const leafTotal = jobRows.filter(r => jcIsLeaf(r)).length + indRows.filter(r => jcIsLeaf(r)).length;
+        if (q && q.length >= 2 && (total < 5 || leafTotal === 0)) {
+            hintEl.hidden = false;
+            hintEl.innerHTML = `💡 <b>신고용 세부코드</b>를 못 찾으셨나요? ↓ <b>AI 검색</b> 버튼을 눌러 더 정확한 코드를 찾아보세요. (Enter 키도 됩니다)`;
+            hintEl.onclick = () => searchJobcodeWithAI();
+        } else {
+            hintEl.hidden = true;
+        }
+    }
 }
 function selectJobcode(type, code) {
     if (!_jobcodeData || !['occupation', 'industry'].includes(type)) return;
@@ -14563,9 +14607,7 @@ async function searchJobcodeWithAI() {
             if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html; return;
         } }
         let jobKw = getJobcodeSearchTerms(input), indKw = jobKw.slice(), fallbackNote = null;
-        const localJobRows = getScoredJobcodeRows('occupation', input, jobKw, 12);
-        const localIndRows = getScoredJobcodeRows('industry', input, indKw, 12);
-        if (API_BASE && (localJobRows.length + localIndRows.length) < 3) {
+        if (API_BASE) {
             try {
                 const response = await fetch(`${API_BASE}/api/jobcodekeywords`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input }) });
                 if (!response.ok) throw new Error("키워드 확장 서버 응답 지연");
@@ -14576,9 +14618,9 @@ async function searchJobcodeWithAI() {
                 fallbackNote = currentLanguage === 'en' ? 'Keyword expansion is unavailable. Showing local matches only.' : '키워드 확장을 사용할 수 없어 자연어 직접 매칭으로 표시합니다.';
             }
         }
-        const jobRows = getScoredJobcodeRows('occupation', '', jobKw, 50), indRows = getScoredJobcodeRows('industry', '', indKw, 50);
-        renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw);
-        renderJobcodeList(indRows, indBox, 'industry', input, indKw);
+        const jobRows = getScoredJobcodeRows('occupation', '', jobKw, 60), indRows = getScoredJobcodeRows('industry', '', indKw, 60);
+        renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw, true);
+        renderJobcodeList(indRows, indBox, 'industry', input, indKw, true);
         renderJobcodeGuidance(input, jobRows, indRows);
         const badge = document.getElementById('jcCountBadge');
         if (badge) badge.textContent = `직종 ${jobRows.length} · 업종 ${indRows.length}`;
@@ -19962,9 +20004,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (jurSigungu) jurSigungu.addEventListener('change', showJurisdiction);
 
     const jcSearchInput = document.getElementById('jcSearchInput');
-    if (jcSearchInput) jcSearchInput.addEventListener('input', (e) => {
-        clearTimeout(_jcSearchDebounce); _jcSearchDebounce = setTimeout(() => renderJobcodeResults(e.target.value), 200);
-    });
+    if (jcSearchInput) {
+        jcSearchInput.addEventListener('input', (e) => {
+            clearTimeout(_jcSearchDebounce); _jcSearchDebounce = setTimeout(() => renderJobcodeResults(e.target.value), 200);
+        });
+        jcSearchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') { clearTimeout(_jcSearchDebounce); searchJobcodeWithAI(); }
+        });
+    }
 
     debugSearchState('DOMContentLoaded:init');
 
