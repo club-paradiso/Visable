@@ -2205,8 +2205,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
    issuance card reads as part of the same 절차별 안내 card family. */
 .issuance-scenario-card { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg1) 94%, white); padding: 0.74rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
 .issuance-scenario-card.is-not-applicable { background: color-mix(in srgb, var(--bg2) 68%, white); }
-.issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
-.issuance-card-title { margin: 0; font-size: 0.88rem; font-weight: 900; color: var(--t1); line-height: 1.35; word-break: keep-all; }
+.issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; padding-bottom: 0.52rem; border-bottom: 1px solid color-mix(in srgb, var(--bd) 60%, transparent); }
+/* 신청 경로 제목(예: "재외공관에서 직접 신청")은 카드의 핵심 정보이므로 명확히
+   크게, 작은 accent pip(원형 마커)과 함께 노출해 가독성과 시각적 위계를 높임. */
+.issuance-card-title { margin: 0; font-size: 1rem; font-weight: 900; color: var(--t1); line-height: 1.42; letter-spacing: -0.01em; word-break: keep-all; display: flex; align-items: flex-start; gap: 0.42rem; min-width: 0; }
+.issuance-card-title::before { content: ''; flex: 0 0 auto; width: 0.34rem; height: 0.34rem; margin-top: 0.42em; border-radius: 999px; background: var(--ac); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 15%, transparent); }
 .issuance-source-badge, .procedure-source-badge.limited, .procedure-source-badge.unavailable, .procedure-source-badge.not-applicable, .procedure-source-badge.contextual, .procedure-source-badge.source-confirmed { border: 1px solid var(--bd2); }
 .issuance-source-badge { display: inline-flex; align-items: center; flex: 0 0 auto; padding: 0.18rem 0.48rem; border-radius: 999px; font-size: 0.65rem; font-weight: 900; line-height: 1.35; white-space: nowrap; color: var(--t3); background: var(--bg2); }
 .issuance-source-badge.source-confirmed, .procedure-source-badge.source-confirmed { background: color-mix(in srgb, var(--color-success) 12%, transparent); border-color: color-mix(in srgb, var(--color-success) 35%, var(--bd)); color: var(--color-primary-ink); }
