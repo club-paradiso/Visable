@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-06-13T19:22:27Z",
+  "generatedAt": "2026-06-15T05:08:46Z",
   "sourceStatus": "needs_refresh",
   "sources": [
     {
@@ -23,7 +23,7 @@
       "title": "2026.5 사증발급 안내매뉴얼 (B-1 협정 일람표 2022-09-22 기준 · B-2 무사증 일람표 · C-3 세부약호)",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/visa_hwp_full.txt",
-      "retrievedAt": "2026-06-13",
+      "retrievedAt": "2026-06-15",
       "effectiveDate": "2026-05-21",
       "sourceDate": "2026-05-21",
       "hash": "9ce1500a7dfd048d",
@@ -37,7 +37,7 @@
       "title": "2026.6.1 외국인체류 안내매뉴얼 — B-1/B-2 체류기간 연장·자격변경 원칙 불허 경고",
       "url": null,
       "localPath": "docs/data/claude_opus_manual_extraction_2026_05/stay_hwp_full.txt",
-      "retrievedAt": "2026-06-13",
+      "retrievedAt": "2026-06-15",
       "effectiveDate": "2026-06-01",
       "sourceDate": "2026-06-01",
       "hash": null,
@@ -98,7 +98,7 @@
       "title": "Paradiso visa_data.json B-2-2 서브코드 저장 사본 (제외국 23개국 — 이란 포함)",
       "url": null,
       "localPath": "visa_data.json",
-      "retrievedAt": "2026-06-13",
+      "retrievedAt": "2026-06-15",
       "effectiveDate": null,
       "sourceDate": "2026-05-21",
       "hash": null,

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "lastUpdated": "2026-06-13",
-  "generatedAt": "2026-06-13T19:22:27Z",
+  "lastUpdated": "2026-06-15",
+  "generatedAt": "2026-06-15T05:08:46Z",
   "sourceStatus": "needs_refresh",
   "sourceStatusReason": "seeded from stored fixtures — --from-fixtures flag",
   "countries": {
@@ -10496,6 +10496,40 @@
           "nameKo": "해당 없음",
           "note": "보수를 받는 활동·영리활동은 B/C 단기체류 대상이 아님 — 단기취업(C-4) 또는 D/E 계열 등 별도 자격의 공식 확인 필요"
         }
+      },
+      "transitRule": {
+        "code": "C-3-10",
+        "nameKo": "순수환승",
+        "basis": "2026.5 사증발급 안내매뉴얼 — 순수환승(C-3-10) 발급대상·발급내용",
+        "legalBasis": "출입국관리법 제7조 — 사증은 '입국'에 필요하며, 입국심사를 거치지 않는 공항 환승구역 통과는 입국이 아님",
+        "visaRequiredNationalitiesKo": [
+          "시리아",
+          "수단",
+          "예멘",
+          "이집트"
+        ],
+        "visaRequiredIso2": [
+          "SY",
+          "SD",
+          "YE",
+          "EG"
+        ],
+        "visaRequiredPassportScope": "ordinary",
+        "diplomaticOfficialExempt": true,
+        "validity": "유효기간 3개월(단수사증)",
+        "stayPeriod": "체류기간 0일",
+        "transitAreaHours": 72,
+        "applicationDocsNote": "사증발급신청서, 여권, 사진, 수수료, 여행계획서(서식3 — 대한민국을 환승공항으로 정한 사유 등)",
+        "notVisaForEntry": true,
+        "notes": [
+          "순수환승(C-3-10)은 제3국행 연결편 환승만을 위한 사증으로, 입국심사(입국) 목적으로는 사용할 수 없습니다(체류기간 0일, 환승구역 내 72시간 임시 체재만 가능).",
+          "외교·관용여권 소지자는 순수환승(C-3-10) 사증 없이 환승할 수 있습니다.",
+          "그 밖의 국적은 입국심사를 거치지 않는 공항 환승의 경우 원칙적으로 별도 대한민국 사증이 필요하지 않으나, 노선·항공사 규정 및 최종 목적지(제3국) 입국 요건을 별도로 확인해야 합니다."
+        ],
+        "sourceRefs": [
+          "law_immigration_enforcement_decree_table_1",
+          "visa_manual_2026_05_b1_b2_c3"
+        ]
       },
       "sourceRefs": [
         "law_immigration_enforcement_decree_table_1",

@@ -79,6 +79,19 @@ ok(pm.transit && pm.transit.code === 'C-3-10', 'transit → C-3-10');
 ok(pm.overseas_korean && pm.overseas_korean.code === 'C-3-8', 'overseas Korean → C-3-8');
 ok(pm.work_or_profit && pm.work_or_profit.code === null && /C-4/.test(pm.work_or_profit.note), 'work/profit → no B/C path, C-4 warning');
 
+/* ----------------------------------------------- C-3-10 순수환승 transit rule */
+section('Transit rule (순수환승 C-3-10)');
+const tr = rules.rules.c3Fallback.transitRule;
+ok(tr && tr.code === 'C-3-10', 'transitRule present with code C-3-10');
+if (tr) {
+  ok(Array.isArray(tr.visaRequiredIso2) && ['SY', 'SD', 'YE', 'EG'].every(x => tr.visaRequiredIso2.includes(x)),
+    'transit visa-required nationalities = 시리아·수단·예멘·이집트 (SY/SD/YE/EG)', tr.visaRequiredIso2 && tr.visaRequiredIso2.join(','));
+  ok(tr.diplomaticOfficialExempt === true, 'diplomatic/official passports are C-3-10 exempt');
+  ok(/0일/.test(tr.stayPeriod || ''), 'transit C-3-10 stay period is 0일 (not an entry route)');
+  ok(tr.transitAreaHours === 72, 'transit-area temporary stay = 72 hours');
+  ok(Array.isArray(tr.sourceRefs) && tr.sourceRefs.includes('visa_manual_2026_05_b1_b2_c3'), 'transitRule cites the visa manual source');
+}
+
 /* -------------------------------------------------------------- sources */
 section('Sources');
 const srcIds = new Set(sources.sources.map(s => s.id));
@@ -178,6 +191,40 @@ const usWork = scenario('미국', 'ordinary', 'work_or_profit', 'mainland', 30);
 ok(/C-4/.test(usWork.primary.path), 'work/profit → C-4/official-check path');
 const dipl = scenario('베트남', 'diplomatic', 'tourism', 'mainland', 30);
 ok(dipl.primary.status === 'needs_official_check', 'non-ordinary passport → needs_official_check');
+
+/* transit (공항 환승만) */
+const syTransit = scenario('시리아', 'ordinary', 'transit', 'transit_only', 1);
+ok(syTransit.primary.status === 'transit_visa_required' && /C-3-10/.test(syTransit.primary.path),
+  'SY ordinary transit_only → 순수환승(C-3-10) 사증 필요');
+ok(syTransit.primary.explanation.join(' ').includes('체류기간 0일') || syTransit.primary.explanation.join(' ').includes('0일'),
+  'SY transit → states C-3-10 is stay 0 days (not entry)');
+ok(syTransit.verdict.tone === 'visa', 'SY transit → visa-tone verdict');
+const egDip = scenario('이집트', 'diplomatic', 'transit', 'transit_only', 1);
+ok(egDip.primary.status === 'transit_no_visa' && /면제/.test(egDip.primary.path),
+  'EG diplomatic transit_only → C-3-10 사증 면제 (no-visa transit)');
+ok(egDip.primary.explanation.join(' ').includes('일반여권 소지자는 순수환승(C-3-10) 사증이 필요'),
+  'EG diplomatic transit → still notes ordinary passport needs C-3-10');
+const yeSpecial = scenario('예멘', 'special', 'transit', 'transit_only', 1);
+ok(yeSpecial.primary.status === 'needs_official_check',
+  'YE special passport transit_only → official check (manual does not specify)');
+const jpTransit = scenario('일본', 'ordinary', 'transit', 'transit_only', 1);
+ok(jpTransit.primary.status === 'transit_no_visa', 'JP ordinary transit_only → no-visa airside transit');
+ok(jpTransit.primary.explanation.join(' ').includes('입국이 아니므로'),
+  'JP transit → explains airside transit is not 입국');
+ok(api.formatShortStayWarnings(jpTransit).some(w => /공항 밖으로 나가는 것은 환승이 아니라 입국/.test(w)),
+  'transit no-visa carries the "leaving airside = entry" warning');
+const vnTransit = scenario('베트남', 'ordinary', 'tourism', 'transit_only', 1);
+ok(vnTransit.primary.status === 'transit_no_visa',
+  'VN ordinary transit_only → no-visa transit regardless of stated purpose');
+ok(vnTransit.sourceRefs.includes('visa_manual_2026_05_b1_b2_c3'),
+  'transit answer cites the visa manual as its basis');
+/* transit answers must never overclaim entry (positive-guarantee wording only;
+   the safety warning "입국을 보장하지 않습니다" must NOT be flagged) */
+for (const t of [syTransit, egDip, jpTransit, vnTransit]) {
+  const text = JSON.stringify(t.primary) + ' ' + api.formatShortStayWarnings(t).join(' ');
+  const bad = [/입국\s*가능합니다/, /이동\s*가능합니다/, /입국(이|을|은)\s*보장(됩|됩니다|합니다)/, /환승(이|을|은)?\s*보장(됩|됩니다|합니다)/].find(g => g.test(text));
+  ok(!bad, `${t.country.nameKo} transit answer makes no entry/transit guarantee`, bad && String(bad));
+}
 
 /* -------------------------------------------------------------- summary */
 console.log(`\n${checks} checks, ${failures} failures`);
