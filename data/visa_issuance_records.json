@@ -445,7 +445,7 @@
           293
         ],
         "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "low"
+        "extractionConfidence": "medium"
       },
       "issuanceSummaryKo": "비전문취업(E-9)은 고용허가제(EPS) 체계와 연결되는 취업 사증 항목입니다. 이번 POC는 공식 매뉴얼 위치와 경로 성격을 묶고, 세부 제출서류 구조화는 후속 추출 대상으로 남깁니다.",
       "issuanceSummaryEn": "E-9 is tied to the Employment Permit System. This POC binds the official manual section and route character, while detailed document extraction remains follow-up work.",
@@ -476,14 +476,17 @@
           ],
           "documents": {
             "common": [
-              "고용허가제 관련 선행 절차 자료",
-              "근로계약 관련 자료"
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매"
             ],
             "additional": [
-              "사업장 관련 자료"
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
             ],
             "conditional": [
-              "건강·결핵 등 국가별 또는 공관별 요구자료"
+              "업종별 추가서류(건설·농축산·어업·음식점업 등)"
             ]
           },
           "warnings": [
@@ -492,11 +495,10 @@
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§27 비전문취업(E-9)",
+              "sectionTitle": "§ 비전문취업(E-9)",
               "pageStart": 284,
               "pageEnd": 293,
-              "sourceRevisionDate": "2026-05-21",
-              "extractionConfidence": "medium"
+              "sourceRevisionDate": "2026-05-21"
             }
           ]
         }
@@ -521,7 +523,7 @@
           307
         ],
         "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "low"
+        "extractionConfidence": "medium"
       },
       "issuanceSummaryKo": "방문동거(F-1)는 방문·동거 목적과 초청자·가족관계·체류목적 입증이 중요한 가족·동거 계열 항목입니다.",
       "issuanceSummaryEn": "F-1 focuses on visit/cohabitation purpose and evidence of inviter, family relationship, and stay purpose.",
@@ -552,15 +554,19 @@
           ],
           "documents": {
             "common": [
-              "여권 및 신분자료",
-              "가족관계 또는 초청관계 입증자료",
-              "체류목적 소명자료"
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
             ],
             "additional": [
-              "초청자 체류자격 또는 신분 입증자료"
+              "초청장",
+              "가족관계 입증서류",
+              "초청인·피초청인 관계 입증서류",
+              "체류비용 부담능력 입증서류"
             ],
             "conditional": [
-              "공관별 추가 소명자료"
+              "세부유형(주한 외국공관원 가사보조인 등)별 추가서류"
             ]
           },
           "warnings": [
@@ -569,11 +575,10 @@
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§29 방문동거(F-1)",
+              "sectionTitle": "§ 방문동거(F-1)",
               "pageStart": 297,
               "pageEnd": 307,
-              "sourceRevisionDate": "2026-05-21",
-              "extractionConfidence": "medium"
+              "sourceRevisionDate": "2026-05-21"
             }
           ]
         }
@@ -848,7 +853,7 @@
           342
         ],
         "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "low"
+        "extractionConfidence": "medium"
       },
       "issuanceSummaryKo": "기타(G-1)는 난민, 치료, 소송 등 다양한 기타 사유가 포함되는 항목입니다. 이번 POC는 공식 매뉴얼 위치와 제한 설명을 제공하고, 세부 사유별 서류는 후속 구조화 대상으로 둡니다.",
       "issuanceSummaryEn": "G-1 covers diverse miscellaneous grounds such as refugee-related, medical, and litigation situations. This POC binds the manual location and explains the limits.",
@@ -879,16 +884,16 @@
           ],
           "documents": {
             "common": [
-              "세부 사유를 입증하는 자료",
-              "여권 및 신분자료"
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
             ],
             "additional": [
-              "난민 관련 자료",
-              "진단서 또는 치료 관련 자료",
-              "소송 또는 권리구제 관련 자료"
+              "체류 사유 입증서류"
             ],
             "conditional": [
-              "사유별 추가 소명자료"
+              "사유별 추가서류(치료: 의료기관 서류·치료비 부담능력; 소송·산재·인도적 사유 등)"
             ]
           },
           "warnings": [
@@ -897,11 +902,10 @@
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§35 기 타(G-1)",
+              "sectionTitle": "§ 기타(G-1)",
               "pageStart": 336,
               "pageEnd": 342,
-              "sourceRevisionDate": "2026-05-21",
-              "extractionConfidence": "medium"
+              "sourceRevisionDate": "2026-05-21"
             }
           ]
         }
@@ -1274,6 +1278,1382 @@
               "sectionTitle": "§16 기업투자(D-8)",
               "pageStart": 102,
               "pageEnd": 116,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "C-4",
+      "titleKo": "단기취업",
+      "titleEn": "Short-term Employment",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 단기취업(C-4)",
+        "pages": [
+          51,
+          59
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "단기취업(C-4)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Short-term Employment (C-4) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "단기취업(C-4) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Short-term Employment (C-4) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "고용계약서",
+              "소관부처 고용추천서",
+              "공·사기관 설립 관련 서류",
+              "파견명령서 또는 용역계약서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 단기취업(C-4)",
+              "pageStart": 51,
+              "pageEnd": 59,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "C-1",
+      "titleKo": "일시취재",
+      "titleEn": "Temporary Journalism",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 일시취재(C-1)",
+        "pages": [
+          25,
+          26
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "일시취재(C-1)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Temporary Journalism (C-1) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "일시취재(C-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Temporary Journalism (C-1) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "소속회사 파견증명서·재직증명서",
+              "취재·보도 활동계획서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 일시취재(C-1)",
+              "pageStart": 25,
+              "pageEnd": 26,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-1",
+      "titleKo": "문화예술",
+      "titleEn": "Culture/Art",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 문화예술(D-1)",
+        "pages": [
+          60,
+          61
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "문화예술(D-1)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Culture/Art (D-1) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "문화예술(D-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Culture/Art (D-1) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "초청장",
+              "문화예술단체임을 입증하는 서류",
+              "이력서 또는 경력증명서",
+              "체류 중 경비지불능력 입증서류"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 문화예술(D-1)",
+              "pageStart": 60,
+              "pageEnd": 61,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-3",
+      "titleKo": "기술연수",
+      "titleEn": "Technical Training",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 기술연수(D-3)",
+        "pages": [
+          70,
+          72
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "기술연수(D-3)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Technical Training (D-3) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "기술연수(D-3) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Technical Training (D-3) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권 사본",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "현지법인등록증(또는 설립인가서) 사본",
+              "현지법인의 장이 발급한 재직증명서",
+              "한국어능력 입증자료",
+              "연수계획서",
+              "초청자 신원보증서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 기술연수(D-3)",
+              "pageStart": 70,
+              "pageEnd": 72,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-5",
+      "titleKo": "취재",
+      "titleEn": "Journalism (resident)",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 취재(D-5)",
+        "pages": [
+          88,
+          89
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "취재(D-5)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Journalism (resident) (D-5) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "취재(D-5) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Journalism (resident) (D-5) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "파견명령서 또는 재직증명서",
+              "국내 지국·지사 설치허가증 또는 운영자금 도입실적 증빙"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 취재(D-5)",
+              "pageStart": 88,
+              "pageEnd": 89,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-6",
+      "titleKo": "종교",
+      "titleEn": "Religious Affairs",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 종교(D-6)",
+        "pages": [
+          90,
+          91
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "종교(D-6)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Religious Affairs (D-6) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "종교(D-6) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Religious Affairs (D-6) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "파견명령서",
+              "종교단체 설립허가서",
+              "소속단체의 체류경비 지원 관련 서류"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 종교(D-6)",
+              "pageStart": 90,
+              "pageEnd": 91,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-7",
+      "titleKo": "주재",
+      "titleEn": "Intra-company Transfer",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 주재(D-7)",
+        "pages": [
+          92,
+          101
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "주재(D-7)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Intra-company Transfer (D-7) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "주재(D-7) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Intra-company Transfer (D-7) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "외국 소재 회사 재직증명서",
+              "파견명령서",
+              "국내 지사·지점 설치 입증서류"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 주재(D-7)",
+              "pageStart": 92,
+              "pageEnd": 101,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-9",
+      "titleKo": "무역경영",
+      "titleEn": "Trade Management",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 무역경영(D-9)",
+        "pages": [
+          116,
+          121
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "무역경영(D-9)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Trade Management (D-9) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "무역경영(D-9) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Trade Management (D-9) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "사업자등록증 사본",
+              "설비도입계약서",
+              "연간 납세사실증명서",
+              "파견명령서 또는 재직증명서"
+            ],
+            "conditional": [
+              "무역경영 세부유형(무역·산업설비·선박 등)별 추가서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 무역경영(D-9)",
+              "pageStart": 116,
+              "pageEnd": 121,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-1",
+      "titleKo": "교수",
+      "titleEn": "Professor",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 교수(E-1)",
+        "pages": [
+          136,
+          141
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "교수(E-1)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Professor (E-1) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "교수(E-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Professor (E-1) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "경력증명서 및 학위증",
+              "고용계약서 또는 임용예정확인서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 교수(E-1)",
+              "pageStart": 136,
+              "pageEnd": 141,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-2",
+      "titleKo": "회화지도",
+      "titleEn": "Foreign Language Instruction",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 회화지도(E-2)",
+        "pages": [
+          142,
+          149
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "회화지도(E-2)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Foreign Language Instruction (E-2) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "회화지도(E-2) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Foreign Language Instruction (E-2) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "시·도 교육감 등과 체결한 고용계약서"
+            ],
+            "conditional": [
+              "EPIK·TaLK·CPIK 등은 합격통지서·초청장으로 갈음(해당 서류 면제)"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 회화지도(E-2)",
+              "pageStart": 142,
+              "pageEnd": 149,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-3",
+      "titleKo": "연구",
+      "titleEn": "Research",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 연구(E-3)",
+        "pages": [
+          150,
+          156
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "연구(E-3)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Research (E-3) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "연구(E-3) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Research (E-3) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "고용기관 설립 관련 서류(사업자등록증·법인등기·연구기관 입증)",
+              "석사 이상 학위증·경력증명서",
+              "고용계약서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 연구(E-3)",
+              "pageStart": 150,
+              "pageEnd": 156,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-4",
+      "titleKo": "기술지도",
+      "titleEn": "Technology Transfer",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 기술지도(E-4)",
+        "pages": [
+          157,
+          158
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "기술지도(E-4)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Technology Transfer (E-4) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "기술지도(E-4) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Technology Transfer (E-4) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "공·사기관 설립 관련 서류(사업자등록증·외국인투자기업등록증·지사설치허가서)",
+              "기술도입계약신고수리서·기술도입계약서",
+              "파견명령서 또는 재직증명서"
+            ],
+            "conditional": []
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 기술지도(E-4)",
+              "pageStart": 157,
+              "pageEnd": 158,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-5",
+      "titleKo": "전문직업",
+      "titleEn": "Professional Employment",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 전문직업(E-5)",
+        "pages": [
+          159,
+          162
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "전문직업(E-5)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Professional Employment (E-5) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "전문직업(E-5) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Professional Employment (E-5) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "파견명령서 및 1년 이상 재직증명서",
+              "회사·기관 설립 관련 서류",
+              "우리나라 회사·기관과의 서비스 공급계약 입증서류",
+              "고용계약서 또는 용역계약서"
+            ],
+            "conditional": [
+              "학위증·자격증·해당 분야 경력 입증서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 전문직업(E-5)",
+              "pageStart": 159,
+              "pageEnd": 162,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-6",
+      "titleKo": "예술흥행",
+      "titleEn": "Arts/Entertainment",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 예술흥행(E-6)",
+        "pages": [
+          163,
+          167
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "예술흥행(E-6)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Arts/Entertainment (E-6) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "예술흥행(E-6) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Arts/Entertainment (E-6) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "사업자등록증 사본",
+              "고용계약서 사본",
+              "영상물등급위원회 공연추천서",
+              "공연계획서"
+            ],
+            "conditional": [
+              "연예활동계획서",
+              "자격증명서 또는 경력증명서",
+              "피초청인이 미성년자인 경우 법정대리인 동의서"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 예술흥행(E-6)",
+              "pageStart": 163,
+              "pageEnd": 167,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "E-10",
+      "titleKo": "선원취업",
+      "titleEn": "Maritime Crew",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 선원취업(E-10)",
+        "pages": [
+          294,
+          296
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "선원취업(E-10)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Maritime Crew (E-10) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "선원취업(E-10) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Maritime Crew (E-10) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "사업자등록증",
+              "표준근로계약서 사본",
+              "신원보증서",
+              "외국인선원고용신고수리서(지방해양항만청장 발급)"
+            ],
+            "conditional": [
+              "업종별 추가서류(내항선원·어선원 등 면허·등록증·고용추천서)"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 선원취업(E-10)",
+              "pageStart": 294,
+              "pageEnd": 296,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "F-3",
+      "titleKo": "동반",
+      "titleEn": "Accompanying Family",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 동반(F-3)",
+        "pages": [
+          313,
+          317
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "동반(F-3)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Accompanying Family (F-3) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "동반(F-3) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Accompanying Family (F-3) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "가족관계 입증서류(결혼 또는 출생증명서 등)",
+              "주체류자의 체류자격 입증서류"
+            ],
+            "conditional": [
+              "배우자: 본국 결혼증명서 원본",
+              "미성년 자녀: 본국 출생증명서 원본"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 동반(F-3)",
+              "pageStart": 313,
+              "pageEnd": 317,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "F-5",
+      "titleKo": "영주",
+      "titleEn": "Permanent Residence",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 영주(F-5)",
+        "pages": [
+          318,
+          323
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "영주(F-5)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Permanent Residence (F-5) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "영주(F-5) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Permanent Residence (F-5) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "신원보증서",
+              "자격요건 입증서류(투자·소득·점수 등 해당 유형)"
+            ],
+            "conditional": [
+              "영주(F-5) 세부유형(투자·고소득·점수제·국적취득요건 등)별 추가서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 영주(F-5)",
+              "pageStart": 318,
+              "pageEnd": 323,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "H-1",
+      "titleKo": "관광취업",
+      "titleEn": "Working Holiday",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 관광취업(H-1)",
+        "pages": [
+          343,
+          383
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "관광취업(H-1)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Working Holiday (H-1) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "관광취업(H-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Working Holiday (H-1) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "표준규격사진 1매",
+              "여권",
+              "왕복항공권"
+            ],
+            "additional": [
+              "예금잔고증명서 등 체재비 입증서류",
+              "범죄경력증명서·건강진단서",
+              "보험증서",
+              "관광취업 활동계획서"
+            ],
+            "conditional": [
+              "재학증명서",
+              "협정국별(상호주의) 추가서류",
+              "왕복항공권 미소지 시 상당금액 예치 입증서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 관광취업(H-1)",
+              "pageStart": 343,
+              "pageEnd": 383,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "A-2",
+      "titleKo": "공무",
+      "titleEn": "Government Affairs",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 공무(A-2)",
+        "pages": [
+          10,
+          12
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "공무(A-2)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Government Affairs (A-2) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "공무(A-2) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Government Affairs (A-2) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [],
+            "conditional": [
+              "파견·재직 증명서류",
+              "외교·공무 수행 입증서류(공한 등)"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 공무(A-2)",
+              "pageStart": 10,
+              "pageEnd": 12,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "A-3",
+      "titleKo": "협정",
+      "titleEn": "Treaty",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§ 협정(A-3)",
+        "pages": [
+          13,
+          13
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "협정(A-3)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
+      "issuanceSummaryEn": "Treaty (A-3) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "협정(A-3) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Treaty (A-3) visa issuance.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's attachments below (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [],
+            "conditional": [
+              "협정 적용 대상 입증서류",
+              "파견·재직 증명서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§ 협정(A-3)",
+              "pageStart": 13,
+              "pageEnd": 13,
               "sourceRevisionDate": "2026-05-21"
             }
           ]

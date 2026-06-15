@@ -81,3 +81,28 @@ visa.go.kr 차단으로, 사용자 승인(검토용 후보셋 우선)에 따라 
 비고: 본 승격은 매뉴얼 인용 페이지 기반의 기계 추출(extractionConfidence=medium)이며,
 세부유형·수수료·처리기간은 한계 안내문으로 관할기관 확인을 명시. 사람 spot-check 후
 나머지 자격으로 확대 가능.
+
+## 전체 롤아웃 결과 (사증발급 source_confirmed 9 → 32)
+파일럿 검증 후 사용자 지시로 나머지 `limited` 자격까지 동일 방식으로 확대 적용.
+모두 **비보호 파일**(`data/visa_issuance_records.json`, `data/procedure_evidence_bindings.json`)
+만 수정, 매뉴얼 인용 페이지 포함.
+
+승격(23): C-1, C-4, D-1, D-3, D-5, D-6, D-7, D-9, E-1, E-2, E-3, E-4, E-5, E-6,
+E-9, E-10, F-1, F-3, F-5, G-1, H-1, A-2, A-3
+(신규 레코드 20 + 기존 보강 3[E-9·F-1·G-1]). 파일럿(F-2·D-8) 포함 총 source_confirmed 32.
+
+이질적 자격(F-1·F-5·G-1·H-1 등)은 공통서류만 확정 표기하고 세부유형 차이를 한계
+안내문으로 명시. 별지 제17호(사증발급) vs 별지 제21호(사증발급인정) 구분 반영.
+
+보류(limited 유지):
+- **A-1(외교)**: 표준 첨부서류 목록이 아닌 외교절차(구상서 등) 특수 — 별도 검토.
+- **F-4(재외동포)**: 외국국적동포 특수 절차(한국어능력·범죄경력·국적입증 등) — 별도 검토.
+- 특수 트랙(D-4-1, D-4-2K, K-STAR, REGION-S, YOUTH-STAY): 지역특화/신설 제도 — 별도 검토.
+
+검증: `validate_visa_issuance_enrichment.js` 375 pass / 0 fail,
+`check_source_grounding_metadata.py` OK, placeholder suppression 19/19,
+헤드리스 Chromium 렌더로 표본(D-7·E-9·H-1 등) 모두 "공식근거 직접 확인" + 매뉴얼
+page + 실제 서류 표시 확인. 보호파일(`visa_data.json`·`doc_master.json`) 무변경.
+
+권고: 본 23건은 매뉴얼 인용 페이지 기반 기계추출(confidence=medium)이므로,
+인용 페이지 대조 사람 spot-check 후 보류 항목(A-1·F-4·특수트랙)으로 확대 권장.

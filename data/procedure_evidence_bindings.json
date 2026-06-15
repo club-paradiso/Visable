@@ -87,37 +87,55 @@
       "code": "C-4",
       "parentCode": "C-4",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 단기취업(C-4)",
+          "pageStart": 51,
+          "pageEnd": 59,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 단기취업(C-4) 항목(51–59p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 단기취업(C-4) 항목(51–59p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-1",
       "parentCode": "D-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 문화예술(D-1)",
+          "pageStart": 60,
+          "pageEnd": 61,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 문화예술(D-1) 항목(60–61p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 문화예술(D-1) 항목(60–61p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-2",
@@ -150,19 +168,28 @@
       "code": "D-3",
       "parentCode": "D-3",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 기술연수(D-3)",
+          "pageStart": 70,
+          "pageEnd": 72,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기술연수(D-3) 항목(70–72p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기술연수(D-3) 항목(70–72p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-4",
@@ -213,19 +240,28 @@
       "code": "D-7",
       "parentCode": "D-7",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 주재(D-7)",
+          "pageStart": 92,
+          "pageEnd": 101,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 주재(D-7) 항목(92–101p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 주재(D-7) 항목(92–101p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-8",
@@ -258,19 +294,28 @@
       "code": "D-9",
       "parentCode": "D-9",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 무역경영(D-9)",
+          "pageStart": 116,
+          "pageEnd": 121,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 무역경영(D-9) 항목(116–121p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 무역경영(D-9) 항목(116–121p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-10",
@@ -303,109 +348,163 @@
       "code": "E-1",
       "parentCode": "E-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 교수(E-1)",
+          "pageStart": 136,
+          "pageEnd": 141,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 교수(E-1) 항목(136–141p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 교수(E-1) 항목(136–141p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-2",
       "parentCode": "E-2",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 회화지도(E-2)",
+          "pageStart": 142,
+          "pageEnd": 149,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 회화지도(E-2) 항목(142–149p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 회화지도(E-2) 항목(142–149p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-3",
       "parentCode": "E-3",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 연구(E-3)",
+          "pageStart": 150,
+          "pageEnd": 156,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 연구(E-3) 항목(150–156p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 연구(E-3) 항목(150–156p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-4",
       "parentCode": "E-4",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 기술지도(E-4)",
+          "pageStart": 157,
+          "pageEnd": 158,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기술지도(E-4) 항목(157–158p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기술지도(E-4) 항목(157–158p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-5",
       "parentCode": "E-5",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 전문직업(E-5)",
+          "pageStart": 159,
+          "pageEnd": 162,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 전문직업(E-5) 항목(159–162p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 전문직업(E-5) 항목(159–162p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-6",
       "parentCode": "E-6",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 예술흥행(E-6)",
+          "pageStart": 163,
+          "pageEnd": 167,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 예술흥행(E-6) 항목(163–167p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 예술흥행(E-6) 항목(163–167p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-7",
@@ -465,73 +564,82 @@
       "code": "E-9",
       "parentCode": "E-9",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
+      "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
           "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§27 비전문취업(E-9)",
+          "sectionTitle": "§ 비전문취업(E-9)",
           "pageStart": 284,
           "pageEnd": 293,
           "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "low"
+          "extractionConfidence": "medium"
         }
       ],
       "sourceBackedFields": {
         "applicability": true,
-        "documents": false,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "공식 매뉴얼 위치는 확인했지만 EPS·송출국 절차와 세부 서류 구조화가 이번 PR에서 완료되지 않았습니다.",
-      "userFacingExplanationKo": "공식 매뉴얼 위치는 확인했지만 EPS·송출국 절차와 세부 서류 구조화가 이번 PR에서 완료되지 않았습니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 비전문취업(E-9) 항목(284–293p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 비전문취업(E-9) 항목(284–293p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "E-10",
       "parentCode": "E-10",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
-      "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
-        "timing": false,
-        "fees": false,
-        "channels": false,
-        "warnings": false
-      },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
-    },
-    {
-      "code": "F-1",
-      "parentCode": "F-1",
-      "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
+      "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
           "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§29 방문동거(F-1)",
-          "pageStart": 297,
-          "pageEnd": 307,
+          "sectionTitle": "§ 선원취업(E-10)",
+          "pageStart": 294,
+          "pageEnd": 296,
           "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "low"
+          "extractionConfidence": "medium"
         }
       ],
       "sourceBackedFields": {
         "applicability": true,
-        "documents": false,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "방문동거는 대상 범위가 넓어 세부 대상별 공식 서류 구조화가 아직 완료되지 않았습니다.",
-      "userFacingExplanationKo": "방문동거는 대상 범위가 넓어 세부 대상별 공식 서류 구조화가 아직 완료되지 않았습니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 선원취업(E-10) 항목(294–296p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 선원취업(E-10) 항목(294–296p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
+    },
+    {
+      "code": "F-1",
+      "parentCode": "F-1",
+      "procedureType": "visa_issuance",
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 방문동거(F-1)",
+          "pageStart": 297,
+          "pageEnd": 307,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
+      "sourceBackedFields": {
+        "applicability": true,
+        "documents": true,
+        "timing": false,
+        "fees": false,
+        "channels": false,
+        "warnings": true
+      },
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 방문동거(F-1) 항목(297–307p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 방문동거(F-1) 항목(297–307p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "F-2",
@@ -564,19 +672,28 @@
       "code": "F-3",
       "parentCode": "F-3",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 동반(F-3)",
+          "pageStart": 313,
+          "pageEnd": 317,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 동반(F-3) 항목(313–317p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 동반(F-3) 항목(313–317p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "F-4",
@@ -609,19 +726,28 @@
       "code": "F-5",
       "parentCode": "F-5",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 영주(F-5)",
+          "pageStart": 318,
+          "pageEnd": 323,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 영주(F-5) 항목(318–323p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 영주(F-5) 항목(318–323p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "F-6",
@@ -654,46 +780,55 @@
       "code": "G-1",
       "parentCode": "G-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
+      "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
           "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§35 기 타(G-1)",
+          "sectionTitle": "§ 기타(G-1)",
           "pageStart": 336,
           "pageEnd": 342,
           "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "low"
+          "extractionConfidence": "medium"
         }
       ],
       "sourceBackedFields": {
         "applicability": true,
-        "documents": false,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "G-1은 세부 사유가 다양해 사유별 공식 서류 구조화가 필요합니다.",
-      "userFacingExplanationKo": "G-1은 세부 사유가 다양해 사유별 공식 서류 구조화가 필요합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기타(G-1) 항목(336–342p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기타(G-1) 항목(336–342p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "H-1",
       "parentCode": "H-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 관광취업(H-1)",
+          "pageStart": 343,
+          "pageEnd": 383,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 관광취업(H-1) 항목(343–383p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 관광취업(H-1) 항목(343–383p)에 근거합니다. 세부유형별 추가서류 차이가 크므로 해당 세부코드와 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "H-2",
@@ -744,91 +879,136 @@
       "code": "A-2",
       "parentCode": "A-2",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 공무(A-2)",
+          "pageStart": 10,
+          "pageEnd": 12,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 공무(A-2) 항목(10–12p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 공무(A-2) 항목(10–12p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "A-3",
       "parentCode": "A-3",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 협정(A-3)",
+          "pageStart": 13,
+          "pageEnd": 13,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 협정(A-3) 항목(13–13p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 협정(A-3) 항목(13–13p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "C-1",
       "parentCode": "C-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 일시취재(C-1)",
+          "pageStart": 25,
+          "pageEnd": 26,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 일시취재(C-1) 항목(25–26p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 일시취재(C-1) 항목(25–26p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-5",
       "parentCode": "D-5",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 취재(D-5)",
+          "pageStart": 88,
+          "pageEnd": 89,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 취재(D-5) 항목(88–89p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 취재(D-5) 항목(88–89p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-6",
       "parentCode": "D-6",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§ 종교(D-6)",
+          "pageStart": 90,
+          "pageEnd": 91,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 종교(D-6) 항목(90–91p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 종교(D-6) 항목(90–91p)에 근거합니다. 추가서류·수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-4-2K",
