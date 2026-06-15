@@ -831,7 +831,11 @@ def evaluate_answer_shape(
         warnings.append("missing_source_confidence")
 
     # Decide pass/fail + repair strategy.
-    structural_fail = bool(
+    # "Hard" failures mean the answer is a non-answer or unsafe: generic
+    # avoidance, no practical answer, wrong framing/ordering, overbroad/unsafe
+    # claims, a missing computed deadline, asking for already-provided facts, or
+    # off-topic terms. These are legitimately replaced by deterministic synthesis.
+    hard_fail = bool(
         "generic_avoidance_opening" in warnings
         or "missing_direct_practical_answer" in warnings
         or "claims_not_based_on_manual_despite_context" in warnings
@@ -841,15 +845,20 @@ def evaluate_answer_shape(
         or missing_registration_deadline_date
         or asks_for_entry_date
         or irrelevant
-        or len(missing_slots) >= 2
     )
-    soft_only = bool((overconf or missing_slots) and not structural_fail)
+    # A substantive, on-topic answer that merely misses >= 2 structured template
+    # slots is NOT a non-answer. Keep the model's real answer (soft source note)
+    # instead of slamming it into the deterministic preparation note — this stops
+    # good model answers from being replaced by an alarming "출처 제한 / 준비 메모"
+    # template just because they did not hit every slot in our checklist.
+    slot_shortfall_only = (len(missing_slots) >= 2) and not hard_fail
+    soft_only = bool((overconf or missing_slots) and not hard_fail and not slot_shortfall_only)
 
-    passed = not (structural_fail or soft_only)
+    passed = not (hard_fail or slot_shortfall_only or soft_only)
 
-    if structural_fail:
+    if hard_fail:
         repair_strategy = "deterministic_synthesis"
-    elif soft_only:
+    elif slot_shortfall_only or soft_only:
         repair_strategy = "source_limited_note"
     else:
         repair_strategy = "retry_model"

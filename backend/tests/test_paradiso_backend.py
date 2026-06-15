@@ -2118,6 +2118,23 @@ class LawGroundingMetadataStatusTests(unittest.TestCase):
         self.assertEqual(detail.get("law_grounding_status"), "unavailable")
         self.assertFalse(detail.get("law_grounding_used"))
 
+    def test_enabled_mode_without_credential_does_not_degrade_answer(self):
+        # Regression: "enabled" + no LAW_API_OC/KEY must NOT push every legal
+        # question into the "law unavailable" hedge path (which produced the
+        # degraded "source-limited preparation note" answers). It behaves like
+        # off for the user: no external call attempted, no manual-to-law fallback,
+        # status is "disabled" (not "unavailable").
+        os.environ["LAW_GROUNDING_MODE"] = "enabled"  # no credential configured
+        os.environ.pop("LAW_API_OC", None)
+        os.environ.pop("LAW_API_KEY", None)
+        detail = self._detail(self.H1_COURSE_Q)
+        self.assertFalse(detail.get("law_grounding_attempted"))
+        self.assertFalse(detail.get("law_grounding_used"))
+        self.assertEqual(detail.get("law_grounding_status"), "disabled")
+        self.assertFalse(detail.get("manual_to_law_fallback_used"))
+        # Intent is still detected and surfaced honestly (just not acted on).
+        self.assertTrue(detail.get("law_grounding_intent_reasons"))
+
     def test_generic_activity_scope_question_attempts(self):
         os.environ["LAW_GROUNDING_MODE"] = "disabled"
         detail = self._detail("현재 체류자격으로 체류자격외활동(아르바이트)을 해도 되나요?")
