@@ -598,7 +598,7 @@
           312
         ],
         "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "low"
+        "extractionConfidence": "medium"
       },
       "issuanceSummaryKo": "거주(F-2)는 가족·점수제·투자·우수인재 등 세부 유형별 요건 차이가 큰 항목입니다.",
       "issuanceSummaryEn": "F-2 has materially different requirements by subtype, including family, points-based, investment, and talent routes.",
@@ -629,16 +629,20 @@
           ],
           "documents": {
             "common": [
-              "세부 유형별 자격 입증자료"
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
             ],
             "additional": [
-              "가족관계 입증자료",
-              "소득·재정 입증자료",
-              "투자 관련 자료",
-              "한국어 또는 사회통합 관련 자료"
+              "국내 배우자 또는 부·모의 신원보증서",
+              "초청장",
+              "가족관계·혼인관계 입증서류",
+              "재정(소득) 입증서류",
+              "초청인 신용정보조회서(전국은행연합회 발행)"
             ],
             "conditional": [
-              "세부 유형별 추가서류"
+              "세부 유형(국민자녀·영주자가족·점수제·투자·지역특화 등)별 추가서류"
             ]
           },
           "warnings": [
@@ -647,11 +651,10 @@
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§30 거 주(F-2)",
+              "sectionTitle": "§30 거주(F-2)",
               "pageStart": 308,
-              "pageEnd": 312,
-              "sourceRevisionDate": "2026-05-21",
-              "extractionConfidence": "medium"
+              "pageEnd": 313,
+              "sourceRevisionDate": "2026-05-21"
             }
           ]
         }
@@ -1205,6 +1208,77 @@
       },
       "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
       "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+    },
+    {
+      "code": "D-8",
+      "titleKo": "기업투자",
+      "titleEn": "Corporate Investment",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§16 기업투자(D-8)",
+        "pages": [
+          102,
+          116
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "기업투자(D-8)는 외국인투자기업 등에 투자한 사람에 대한 사증발급 항목으로, 세부유형(법인·벤처·기술창업 등)과 투자형태(현금/현물)·투자금액에 따라 제출서류가 달라집니다.",
+      "issuanceSummaryEn": "D-8 (Corporate Investment) covers visa issuance for foreign investors; required documents vary by subtype (corporate/venture/tech-startup) and by investment form/amount.",
+      "issuanceModes": [
+        {
+          "type": "consular_discretion",
+          "labelKo": "재외공관에서 직접 사증발급 신청",
+          "labelEn": "Apply for the visa directly at an overseas mission",
+          "appliesToKo": "외국인투자기업 등록 등 기업투자(D-8) 요건을 갖추고 본국 등 관할 재외공관에서 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For investors who meet D-8 requirements (e.g., registered foreign-invested company) and apply at the competent overseas mission.",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 기업투자(D-8) 세부유형(법인·벤처·기술창업 등)과 투자형태를 확인합니다.",
+              "en": "Identify your D-8 subtype (corporate/venture/tech-startup) and investment form."
+            },
+            {
+              "order": 2,
+              "ko": "외국인투자기업등록증·사업자등록증·법인등기사항증명서 및 투자자금 도입 입증서류 등 매뉴얼상 첨부서류를 준비합니다.",
+              "en": "Prepare the manual's attachments: foreign-invested company registration, business registration, corporate registry, and proof of investment funds."
+            },
+            {
+              "order": 3,
+              "ko": "신청서·여권·표준규격사진·수수료와 함께 관할 재외공관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit with the application form, passport, photo, and fee at the competent mission. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "외국인투자기업등록증 사본",
+              "사업자등록증 사본·법인등기사항전부증명서·주주변동상황명세서",
+              "투자자금 도입 입증서류(현금 또는 현물 출자)"
+            ],
+            "conditional": [
+              "주재활동의 경우 파견명령서·재직증명서",
+              "투자금액 3억원 미만 개인투자자 추가서류(자본금 사용내역·사업장 존재 입증 등)"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§16 기업투자(D-8)",
+              "pageStart": 102,
+              "pageEnd": 116,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

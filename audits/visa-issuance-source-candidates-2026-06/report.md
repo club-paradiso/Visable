@@ -59,3 +59,25 @@
 허용목록**에 해당 호스트가 없어 차단됨(curl·WebFetch 모두 403). 접근 허용(커스텀
 allowlist 환경) 시, 헤드리스 Chromium으로 SPA 렌더·추출해 `official_web_overlays.json`
 규칙(국가/공관 보완, 매뉴얼 미덮어쓰기)대로 적용 가능.
+
+## PILOT 적용 결과 (F-2, D-8)
+visa.go.kr 차단으로, 사용자 승인(검토용 후보셋 우선)에 따라 **읽기 가능한 매뉴얼 원문**
+으로 2개 자격을 end-to-end 적용. **보호파일(`visa_data.json`·`doc_master.json`)은
+변경하지 않고**, 사증발급 출처-그라운딩 전용 **비보호 파일**만 수정:
+- `data/visa_issuance_records.json`
+  - **F-2(거주)**: 기존 레코드의 모호한 서류("세부 유형별 자격 입증자료")를 매뉴얼
+    원문(308–313p) 기준 공통/추가/조건부 서류로 보강.
+  - **D-8(기업투자)**: 신규 레코드 생성(102–116p 기준 신청절차·공통/추가/조건부 서류,
+    매뉴얼 page sourceRefs 포함).
+- `data/procedure_evidence_bindings.json`
+  - F-2·D-8 `visa_issuance` 바인딩을 `limited` → **`source_confirmed`**로 승격
+    (manualSources page 인용, sourceBackedFields 정직 표기, 한계 안내문 유지).
+
+검증: `validate_visa_issuance_enrichment.js` 275 pass / 0 fail,
+`check_source_grounding_metadata.py` OK, `check_placeholder_suppression.js` 19/19,
+헤드리스 Chromium 렌더로 두 자격 모두 배지 "공식근거 직접 확인"(source_confirmed)
++ 매뉴얼 page + 실제 서류 표시 확인.
+
+비고: 본 승격은 매뉴얼 인용 페이지 기반의 기계 추출(extractionConfidence=medium)이며,
+세부유형·수수료·처리기간은 한계 안내문으로 관할기관 확인을 명시. 사람 spot-check 후
+나머지 자격으로 확대 가능.

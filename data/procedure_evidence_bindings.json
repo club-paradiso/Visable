@@ -231,19 +231,28 @@
       "code": "D-8",
       "parentCode": "D-8",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§16 기업투자(D-8)",
+          "pageStart": 102,
+          "pageEnd": 116,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "D-8 세부유형(법인·벤처·기술창업 등)과 투자형태(현금/현물)·금액에 따라 추가서류가 달라지며, 수수료·처리기간·예약방식은 관할 공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기업투자(D-8) 항목(102–116p)에 근거합니다. 세부유형·투자형태별 추가서류와 수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-9",
@@ -528,28 +537,28 @@
       "code": "F-2",
       "parentCode": "F-2",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
+      "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
           "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§30 거 주(F-2)",
+          "sectionTitle": "§30 거주(F-2)",
           "pageStart": 308,
-          "pageEnd": 312,
+          "pageEnd": 313,
           "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "low"
+          "extractionConfidence": "medium"
         }
       ],
       "sourceBackedFields": {
         "applicability": true,
-        "documents": false,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "거주(F-2)는 세부 유형별 요건 차이가 커서 유형 선택 전 확정 안내로 표시하지 않습니다.",
-      "userFacingExplanationKo": "거주(F-2)는 세부 유형별 요건 차이가 커서 유형 선택 전 확정 안내로 표시하지 않습니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "거주(F-2)는 세부유형(국민자녀·영주자가족·점수제·투자·지역특화 등)별 제출서류가 크게 다릅니다. 공통서류 외 추가서류는 해당 세부코드와 관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 공통서류는 2026.5 사증발급 안내매뉴얼 거주(F-2) 항목(308–313p)에 근거합니다. 세부유형별 추가서류·수수료·처리기간은 세부코드 안내 및 관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "F-3",
