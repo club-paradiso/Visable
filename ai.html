@@ -1152,6 +1152,14 @@ select:focus-visible {
             --cy: #8A74FF;
             --error: #E03B57; --warning: #EF8A2C;
             --sh-modal: 0 12px 48px rgba(20,20,40,0.25);
+            /* FIX(answer-text-visibility): the dark-console chat-refine block hardwires
+               body/.answer-body/.msg-bubble text to --p-paper (#F4EEE0 beige). On the
+               Kitsch paper theme those surfaces flip to white but the beige text token
+               was never remapped → beige-on-white answer text was invisible. Remap the
+               paper token to ink within this theme scope only (one place, ~42 text
+               usages). Backgrounds/borders that color-mix --p-paper become faint ink
+               tints on white (subtle, legible). Dark console default is untouched. */
+            --p-paper: var(--t1);
         }
         html[data-editorial-theme="archive_diary"] body::before,
         html[data-editorial-theme="archive_diary"] body::after { display: none; }
