@@ -431,11 +431,12 @@
         return finalizeResult(r, rules);
       }
 
+      var jejuDays = jeju.jejuStayDays || 30;
       var jejuExplain = [phraseJejuNotDenied(c)];
-      jejuExplain.push('따라서 제주만 방문하는 경우 제주 무사증(B-2-2) 경로를 확인할 수 있습니다(체류 ' + (jeju.jejuStayDays || 30) + '일, 제주 직항 등 입국 경로 조건 적용).');
+      jejuExplain.push('따라서 제주만 방문하는 경우 사증 없이 제주 무사증(B-2-2)으로 입국할 수 있습니다(체류 ' + jejuDays + '일). 단, 제주 직항 등 제주 무사증이 인정되는 입국경로(항공편·선편)로 들어와야 합니다.');
       r.primary = {
-        path: '제주 무사증(B-2-2) 경로 확인',
-        status: 'needs_official_check',
+        path: '제주 무사증(B-2-2) 무비자 입국',
+        status: 'jeju_visa_free',
         explanation: jejuExplain
       };
       r.steps = [
@@ -582,6 +583,15 @@
         summary: '현재 저장된 공식 목록 기준 무사증 대상이 아니거나 예정 일정이 허용 기간을 넘습니다. 아래 경로로 재외공관·비자포털에서 신청하세요.'
       };
     }
+    if (st === 'jeju_visa_free') {
+      var jstay = (c.b22Jeju && c.b22Jeju.jejuStayDays) || 30;
+      return {
+        tone: 'jeju',
+        headline: '제주 무사증으로 제주를 방문할 수 있습니다',
+        summary: name + ' ' + withParticle(passportLabelKo(r.passportType)) +
+          ' 현재 저장된 제주 무사증 고시 기준 입국불허 국가가 아니므로, 제주만 방문하는 경우 사증 없이 제주 무사증(B-2-2)으로 입국할 수 있습니다(체류 ' + jstay + '일). 제주 직항 등 인정 입국경로 조건과 아래 “반드시 확인할 점”을 함께 확인하세요.'
+      };
+    }
     if (st === 'not_available') {
       return { tone: 'visa', headline: '무사증 입국이 어렵습니다 — 사증 경로 확인', summary: '아래 안내된 사증 경로를 확인하세요.' };
     }
@@ -698,6 +708,7 @@
 '.ssc-result{margin-top:1rem;border-top:2px solid var(--bd2,#ddd3c3);padding-top:1rem;}' +
 '.ssc-status{display:inline-block;font-size:.75rem;font-weight:800;padding:.2rem .6rem;border-radius:999px;margin-left:.4rem;vertical-align:middle;}' +
 '.ssc-status-likely{background:var(--acG,rgba(47,94,103,.1));color:var(--ac,#2f5e67);border:1px solid var(--ac,#2f5e67);}' +
+'.ssc-status-jeju{background:var(--acG,rgba(14,163,123,.1));color:var(--cSt,#0a7a5c);border:1px solid var(--cSt,#0EA37B);}' +
 '.ssc-status-visa{background:var(--cyL,#FFE2DB);color:var(--hlT,#8A3426);border:1px solid var(--cy,#FF6B5B);}' +
 '.ssc-status-check{background:transparent;color:var(--cWk,#a85f1c);border:1px solid var(--cWk,#E68A3A);}' +
 '.ssc-result h4{font-size:.85rem;font-weight:800;color:var(--t2,#4f5552);margin:1rem 0 .35rem;}' +
@@ -721,6 +732,8 @@
 '.ssc-verdict-sum{font-size:.85rem;line-height:1.6;margin:0;color:var(--t2,#4f5552);word-break:keep-all;}' +
 '.ssc-verdict-go{background:var(--acG,rgba(14,163,123,.10));border-color:var(--cSt,#0EA37B);}' +
 '.ssc-verdict-go .ssc-verdict-head{color:var(--cSt,#0a7a5c);}' +
+'.ssc-verdict-jeju{background:var(--acG,rgba(14,163,123,.10));border-color:var(--cSt,#0EA37B);}' +
+'.ssc-verdict-jeju .ssc-verdict-head{color:var(--cSt,#0a7a5c);}' +
 '.ssc-verdict-visa{background:var(--cyL,#FFE2DB);border-color:var(--cy,#FF6B5B);}' +
 '.ssc-verdict-visa .ssc-verdict-head{color:var(--hlT,#8A3426);}' +
 '.ssc-verdict-check{background:var(--bg2,#f7f3ea);border-color:var(--cWk,#E68A3A);}' +
@@ -787,6 +800,7 @@
 
   function statusBadge(status) {
     if (status === 'likely_available') return '<span class="ssc-status ssc-status-likely">확인 가능 경로</span>';
+    if (status === 'jeju_visa_free') return '<span class="ssc-status ssc-status-jeju">제주 무사증 가능</span>';
     if (status === 'visa_required') return '<span class="ssc-status ssc-status-visa">사증 필요</span>';
     if (status === 'not_available') return '<span class="ssc-status ssc-status-visa">불가</span>';
     return '<span class="ssc-status ssc-status-check">공식 확인 필요</span>';
@@ -816,8 +830,8 @@
         countryNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul></div>'
       : '';
     var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
-    var toneClass = { go: 'ssc-verdict-go', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
-    var toneIcon = { go: '✅', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
+    var toneClass = { go: 'ssc-verdict-go', jeju: 'ssc-verdict-jeju', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
+    var toneIcon = { go: '✅', jeju: '🛫', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
     return '' +
       '<div class="ssc-verdict ' + toneClass + '" role="status">' +
         '<span class="ssc-verdict-icon" aria-hidden="true">' + toneIcon + '</span>' +
@@ -849,6 +863,18 @@
         '<p class="ssc-srcline">전체 출처 메타데이터: data/short-stay/sources.json</p>' +
         '<p class="ssc-srcline">이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.</p>' +
       '</details>';
+  }
+
+  /* After a result renders, gently bring the verdict into view. Inside the page
+     popup the modal body is the scroll container, so a short result is already
+     visible; on small screens this scrolls the verdict to the top so the user
+     sees the answer immediately instead of an unchanged-looking form. */
+  function revealResult(resultHost) {
+    try {
+      var target = resultHost.querySelector('.ssc-verdict') || resultHost;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'nearest' });
+    } catch (e) { /* non-fatal */ }
   }
 
   function bindForm(container) {
@@ -934,6 +960,7 @@
           ageGroup: form.querySelector('select[name="age"]').value
         }, rules);
         resultHost.innerHTML = renderShortStayResult(result);
+        revealResult(resultHost);
       }).catch(function () {
         resultHost.innerHTML = '<div class="ssc-error">' + esc(STR.fetchFail) + '</div>' +
           '<div class="ssc-links" style="margin-top:.5rem;">' + defaultOfficialLinks().map(function (l) {
