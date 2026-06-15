@@ -26,7 +26,7 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
 from services.law_grounding import (
     build_law_grounding_context,
@@ -333,6 +333,11 @@ class AskRequest(BaseModel):
     # missing values fall back to the default ("basic"). "pro" is not yet wired
     # to a model chain and transparently answers on the basic chain.
     answer_mode: Optional[str] = None
+    # When true, the answer is streamed back token-by-token as Server-Sent
+    # Events (text/event-stream) for a far snappier perceived response. The
+    # in-prompt safety/confidence directives still apply; the streamed path does
+    # not run the post-hoc answer-shape repair gate (which needs the full text).
+    stream: Optional[bool] = None
 
 
 class AskResponse(BaseModel):
@@ -2107,6 +2112,166 @@ async def _openrouter_complete_with_candidates(
         "retryable_provider_error": last_retryable,
         "all_candidates_failed": len(attempted) + len(skipped) == len(candidates),
     }
+
+
+# ---------------------------------------------------------------------------
+# Streaming (Server-Sent Events) answer path
+# ---------------------------------------------------------------------------
+def _sse(event: str, data: Dict[str, Any]) -> str:
+    """Format one Server-Sent Event frame (named event + JSON data)."""
+    return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
+async def _stream_openrouter_text(
+    prompt: str, model: str, max_tokens: Optional[int] = None
+):
+    """Async generator yielding answer text deltas from one OpenRouter model.
+
+    Raises HTTPException BEFORE the first yield on a pre-stream failure (bad
+    status, timeout, transport error) so the orchestrator can classify it and
+    fall through to the next candidate. Once deltas start flowing the model is
+    committed. No secrets are ever surfaced.
+    """
+    if not OPENROUTER_API_KEY:
+        raise HTTPException(status_code=503, detail={"error": "openrouter_not_configured", "status": 503, "message": "OPENROUTER_API_KEY is not set on the server."})
+    if httpx is None:
+        raise HTTPException(status_code=500, detail={"error": "httpx_missing", "message": "httpx is not installed."})
+
+    payload: Dict[str, Any] = {
+        "model": model or OPENROUTER_MODEL,
+        "messages": [{"role": "user", "content": prompt}],
+        "stream": True,
+    }
+    effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
+    if effective_max_tokens and effective_max_tokens > 0:
+        payload["max_tokens"] = int(effective_max_tokens)
+    headers = {
+        "Authorization": f"Bearer {OPENROUTER_API_KEY}",
+        "Content-Type": "application/json",
+    }
+    if SITE_URL:
+        headers["HTTP-Referer"] = SITE_URL
+    if SITE_TITLE:
+        headers["X-Title"] = SITE_TITLE
+    try:
+        async with httpx.AsyncClient(timeout=OPENROUTER_TIMEOUT_SECONDS) as client:
+            async with client.stream(
+                "POST", "https://openrouter.ai/api/v1/chat/completions",
+                headers=headers, json=payload,
+            ) as resp:
+                if resp.status_code >= 400:
+                    raw = await resp.aread()
+                    try:
+                        text = raw.decode("utf-8", errors="ignore")
+                    except Exception:
+                        text = ""
+                    raise HTTPException(
+                        status_code=502,
+                        detail={"error": "openrouter_upstream_error", "status": resp.status_code, "message": text[:500]},
+                    )
+                async for line in resp.aiter_lines():
+                    if not line or not line.startswith("data:"):
+                        continue
+                    data = line[len("data:"):].strip()
+                    if data == "[DONE]":
+                        break
+                    try:
+                        obj = json.loads(data)
+                    except (ValueError, TypeError):
+                        continue
+                    try:
+                        delta = obj["choices"][0]["delta"].get("content")
+                    except (KeyError, IndexError, TypeError):
+                        delta = None
+                    if delta:
+                        yield delta
+    except httpx.TimeoutException as exc:
+        raise HTTPException(status_code=504, detail={"error": "openrouter_timeout", "status": 504, "message": f"OpenRouter stream timed out after {OPENROUTER_TIMEOUT_SECONDS:.0f}s: {str(exc)[:200]}"})
+    except httpx.HTTPError as exc:
+        raise HTTPException(status_code=503, detail={"error": "openrouter_network_error", "status": 503, "message": f"OpenRouter stream failed: {str(exc)[:200]}"})
+
+
+async def _sse_answer_stream(
+    final_prompt: str,
+    candidates: List[str],
+    max_tokens: Optional[int],
+    base_meta: Dict[str, Any],
+    *,
+    prompt: str,
+    lang: Optional[str],
+):
+    """Orchestrate the streamed answer over the candidate chain.
+
+    Emits a ``meta`` event first, then ``model`` + ``delta`` events for the
+    committed model, then ``done``. A per-model failure before the first token
+    skips to the next candidate (mirroring the non-streaming loop). If every
+    candidate fails it emits a ``fallback`` event carrying the same deterministic
+    preparation note the non-streaming path uses, so the client never hangs.
+    """
+    # Non-secret meta event (grounding/answer-mode/source panel state).
+    yield _sse("meta", base_meta)
+
+    cooling = set(_cooling_down_models())
+    runnable = [m for m in candidates if m not in cooling] or list(candidates)
+    attempted: List[str] = []
+    last_error_type: Optional[str] = None
+
+    for model in runnable:
+        attempted.append(model)
+        committed = False
+        try:
+            async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
+                if not committed:
+                    committed = True
+                    yield _sse("model", {
+                        "final_model": model,
+                        "primary_model": candidates[0] if candidates else model,
+                        "model_fallback_used": bool(candidates) and model != candidates[0],
+                        "attempted_models": list(attempted),
+                    })
+                yield _sse("delta", {"text": delta})
+            if committed:
+                yield _sse("done", {"final_model": model, "attempted_models": list(attempted)})
+                return
+            # Stream ended with zero tokens: treat as a soft failure, try next.
+            last_error_type = "empty_stream"
+            continue
+        except HTTPException as exc:
+            if committed:
+                # Failure AFTER partial output: stop cleanly (can't switch models
+                # mid-answer) and let the client keep what it has.
+                yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "interrupted": True})
+                return
+            detail = exc.detail if isinstance(exc.detail, dict) else {}
+            etype, retryable = _classify_openrouter_error(
+                detail.get("status"), detail.get("message"), detail.get("error")
+            )
+            last_error_type = etype
+            if retryable:
+                _mark_openrouter_model_cooling_down(model)
+                continue
+            if etype in _PER_MODEL_SKIP_ERROR_TYPES:
+                continue
+            break
+
+    # Every candidate failed: stream the deterministic preparation note so the
+    # user still gets a safe, source-aware response instead of nothing.
+    attempt_meta = {
+        "llm_provider": "openrouter",
+        "attempted_models": list(attempted),
+        "final_model": None,
+        "provider_error_type": last_error_type or "unknown_provider_error",
+        "all_candidates_failed": True,
+    }
+    try:
+        fallback_payload = _build_deterministic_fallback_payload(
+            prompt, lang, base_meta, attempt_meta,
+            reason="openrouter_all_candidates_failed",
+        )
+        note = fallback_payload.get("answer") or ""
+    except Exception:  # pragma: no cover - the fallback must never break the stream
+        note = ""
+    yield _sse("fallback", {"answer": note, "provider_error_type": last_error_type or "unknown_provider_error"})
 
 
 # ---------------------------------------------------------------------------
@@ -3985,6 +4150,26 @@ async def ask(req: AskRequest) -> AskResponse:
         answer_mode_requested=answer_mode_requested,
         answer_mode_available=bool(answer_mode_plan.get("available", True)),
     )
+
+    # Streaming path (SSE): snappier perceived response. Only OpenRouter supports
+    # it here; other providers fall through to the normal buffered path. The
+    # in-prompt safety/confidence directives still apply; the post-hoc answer-
+    # shape repair gate is skipped (it needs the complete answer text).
+    if req.stream and llm["provider"] == "openrouter":
+        stream_meta = dict(base_meta)
+        stream_meta["streamed"] = True
+        return StreamingResponse(
+            _sse_answer_stream(
+                final_prompt,
+                answer_mode_plan["candidates"],
+                answer_mode_max_tokens,
+                stream_meta,
+                prompt=prompt,
+                lang=req.lang,
+            ),
+            media_type="text/event-stream",
+            headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+        )
 
     if llm["provider"] == "openrouter":
         result = await _openrouter_complete_with_candidates(

@@ -763,5 +763,86 @@ class SmokeCandidateReportingTests(unittest.TestCase):
         self.assertEqual(proc.returncode, 0)
 
 
+def _fake_stream(behaviors):
+    """Return (fake_async_gen, calls). behaviors: model -> "ok" | (status, msg)."""
+    calls = []
+
+    async def fake(prompt, model=None, max_tokens=None):
+        calls.append(model)
+        b = behaviors.get(model, "ok")
+        if b != "ok":
+            status, message = b
+            raise HTTPException(
+                status_code=502,
+                detail={"error": "openrouter_upstream_error", "status": status, "message": message},
+            )
+        for chunk in ["Hello ", "from ", str(model)]:
+            yield chunk
+
+    return fake, calls
+
+
+class StreamingAnswerTests(unittest.TestCase):
+    def setUp(self):
+        for k in ("GROQ_API_KEY", "OPENROUTER_MODEL", "OPENROUTER_MODEL_CANDIDATES"):
+            os.environ.pop(k, None)
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+
+    def tearDown(self):
+        os.environ.pop("LAW_GROUNDING_MODE", None)
+
+    def _stream(self, pb, behaviors, question="D-2 연장 서류", **extra):
+        fake, calls = _fake_stream(behaviors)
+        with patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
+                patch.object(pb, "GROQ_API_KEY", None), \
+                patch.object(pb, "ALLOW_GROQ_FALLBACK", False), \
+                patch.object(pb, "_stream_openrouter_text", fake):
+            client = _client(pb)
+            payload = {"question": question, "stream": True}
+            payload.update(extra)
+            resp = client.post("/api/ask", json=payload)
+        return resp, calls
+
+    def test_streaming_returns_sse_with_deltas_and_done(self):
+        pb = _pb()
+        resp, calls = self._stream(pb, {})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertIn("text/event-stream", resp.headers.get("content-type", ""))
+        body = resp.text
+        self.assertIn("event: meta", body)
+        self.assertIn("event: model", body)
+        self.assertIn("event: delta", body)
+        self.assertIn("event: done", body)
+        self.assertIn("Hello ", body)
+        # Committed to the first (primary) candidate.
+        self.assertEqual(calls[0], CANDS[0])
+
+    def test_streaming_skips_bad_primary_model(self):
+        # The Basic-mode bug, on the streaming path: a 404 primary must skip to
+        # the next candidate rather than emitting only a fallback.
+        pb = _pb()
+        resp, calls = self._stream(pb, {CANDS[0]: (404, "model not found")})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.text
+        self.assertIn("event: delta", body)
+        self.assertIn(f'"final_model": "{CANDS[1]}"', body)
+        self.assertEqual(calls[:2], [CANDS[0], CANDS[1]])
+
+    def test_streaming_all_fail_emits_fallback_event(self):
+        pb = _pb()
+        resp, calls = self._stream(pb, {c: (404, "model not found") for c in CANDS})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.text
+        self.assertIn("event: fallback", body)
+        self.assertNotIn("event: done", body)
+
+    def test_streaming_fast_mode_uses_fast_chain(self):
+        pb = _pb()
+        resp, calls = self._stream(pb, {}, answer_mode="fast")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(calls[0], "google/gemma-4-31b-it:free")
+        self.assertIn("\"answer_mode\": \"fast\"", resp.text)
+
+
 if __name__ == "__main__":
     unittest.main()

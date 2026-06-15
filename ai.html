@@ -2710,6 +2710,109 @@ select:focus-visible {
             }
         }
 
+        // Read a Server-Sent Events answer stream, render deltas live, then
+        // finalize into the full structured answer card (so disclaimers and the
+        // source panel are never lost). `meta` carries grounding/answer-mode
+        // metadata; `model` the committed model; `delta` text chunks; `done`
+        // ends a successful stream; `fallback` carries the deterministic note.
+        async function streamAiAnswer(response, lang, lid) {
+            const loader = document.getElementById(lid);
+            if (loader) loader.remove();
+            const hist = document.getElementById('chatHistory');
+            const liveRow = document.createElement('div');
+            liveRow.className = 'msg-row ai answer';
+            liveRow.innerHTML = `<article class="msg-bubble answer-card"><div class="answer-body" data-live="1"></div></article>`;
+            hist.appendChild(liveRow);
+            const liveBody = liveRow.querySelector('.answer-body');
+            setStatus('답변 생성 중...');
+
+            let meta = {};
+            let modelInfo = {};
+            let acc = '';
+            let finalized = false;
+
+            const finalize = (extra) => {
+                if (finalized) return;
+                finalized = true;
+                liveRow.remove();
+                const result = Object.assign({}, meta, modelInfo, extra || {});
+                try {
+                    appendAiAnswer(result, lang);
+                    useQuota();
+                    setStatus('분석 완료');
+                } catch (renderErr) {
+                    const w = new Error('frontend render error');
+                    w.renderError = true; w.errorClass = 'frontend_render';
+                    w.renderMessage = renderErr && renderErr.message ? renderErr.message : String(renderErr);
+                    appendAiError(w, lang);
+                    setStatus('표시 오류 — 재시도 요망');
+                }
+            };
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+            try {
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    buffer += decoder.decode(value, { stream: true });
+                    let sep;
+                    while ((sep = buffer.indexOf('\n\n')) >= 0) {
+                        const frame = buffer.slice(0, sep);
+                        buffer = buffer.slice(sep + 2);
+                        let ev = 'message', data = '';
+                        frame.split('\n').forEach(line => {
+                            if (line.startsWith('event:')) ev = line.slice(6).trim();
+                            else if (line.startsWith('data:')) data += line.slice(5).trim();
+                        });
+                        if (!data) continue;
+                        let obj = {};
+                        try { obj = JSON.parse(data); } catch (e) { continue; }
+                        if (ev === 'meta') {
+                            meta = obj;
+                        } else if (ev === 'model') {
+                            modelInfo = {
+                                model: obj.final_model,
+                                provider: 'openrouter',
+                                model_resolved: obj.final_model,
+                                model_fallback_used: obj.model_fallback_used,
+                            };
+                        } else if (ev === 'delta') {
+                            acc += (obj.text || '');
+                            liveBody.innerHTML = formatAnswerText(acc, lang);
+                            scrollConversationToEnd(liveRow);
+                        } else if (ev === 'done') {
+                            finalize({ answer: acc });
+                        } else if (ev === 'fallback') {
+                            finalize({
+                                answer: obj.answer || acc,
+                                deterministic_fallback_answer_used: true,
+                                provider_error_type: obj.provider_error_type,
+                            });
+                        }
+                    }
+                }
+            } catch (streamErr) {
+                // Aborted (new question / timeout) or transport drop. Keep any
+                // partial answer; otherwise let sendAi's catch handle it.
+                if (acc) { finalize({ answer: acc }); return; }
+                liveRow.remove();
+                throw streamErr;
+            }
+            // Stream closed without an explicit done/fallback frame.
+            if (!finalized) {
+                if (acc) {
+                    finalize({ answer: acc });
+                } else {
+                    liveRow.remove();
+                    const e = new Error('empty stream'); e.errorClass = 'provider';
+                    appendAiError(e, lang);
+                    setStatus('응답 없음 — 재시도 요망');
+                }
+            }
+        }
+
         async function sendAi() {
             if (!_isConsentGranted) return showConsent();
 
@@ -2765,28 +2868,41 @@ select:focus-visible {
                         context: contextText,
                         lang: userLang,
                         answer_mode: currentAiAnswerMode,
+                        stream: true,
                         visa_data: visaPayload,
                         history: recentChatHistory()
                     }),
                     signal: _controller.signal
                 });
 
-                let result = null;
-                try {
-                    result = await response.json();
-                } catch (jsonErr) {
-                    result = null;
-                }
                 if (!response.ok) {
+                    let errPayload = null;
+                    try { errPayload = await response.json(); } catch (jsonErr) { errPayload = null; }
                     const apiError = new Error(`서버 응답 오류 (${response.status})`);
                     apiError.status = response.status;
-                    apiError.payload = result;
+                    apiError.payload = errPayload;
                     // Pre-classify so the error card distinguishes a provider
                     // outage from a generic backend HTTP error (Part C).
                     apiError.errorClass = classifyAskError(apiError);
                     throw apiError;
                 }
 
+                // Streaming path (Server-Sent Events): render tokens live for a
+                // far snappier perceived response, then finalize into the full
+                // structured card (disclaimers + source panel preserved).
+                const ctype = (response.headers.get('content-type') || '').toLowerCase();
+                if (ctype.includes('text/event-stream') && response.body && response.body.getReader) {
+                    await streamAiAnswer(response, userLang, lid);
+                    return;
+                }
+
+                // Buffered JSON path (fallback when the backend does not stream).
+                let result = null;
+                try {
+                    result = await response.json();
+                } catch (jsonErr) {
+                    result = null;
+                }
                 const loader = document.getElementById(lid);
                 if (loader) loader.remove();
 
