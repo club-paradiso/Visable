@@ -2229,6 +2229,83 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
         self.assertEqual(data["verdict"], "DISABLED")
         self.assertEqual(data["live_call_status"], "not_attempted")
 
+    def test_get_netdiag_returns_known_diagnosis_without_secrets(self):
+        # Bound the probe timeout so the endpoint returns fast regardless of
+        # the runner's egress. We only assert on structure + safety here; the
+        # branch logic itself is covered deterministically below.
+        os.environ["LAW_NETDIAG_TIMEOUT_SECONDS"] = "1"
+        os.environ["LAW_API_OC"] = "paradiso"
+        try:
+            client, _ = _client()
+            resp = client.get("/api/debug/law-grounding/netdiag")
+            self.assertEqual(resp.status_code, 200, resp.text)
+            data = resp.json()
+            self.assertIn("diagnosis", data)
+            self.assertIn("probes", data)
+            self.assertEqual(data["law_host"], "www.law.go.kr")
+            self.assertIn(data["diagnosis"], {
+                "DNS_FAILURE", "EGRESS_BLOCKED", "REACHABLE_HTTPS",
+                "REACHABLE_HTTP", "LAWGOKR_CONNECTION_REFUSED",
+                "HTTP_PORT_80_BLOCKED", "HTTP_LAYER_ISSUE",
+            })
+            # The OC must never leak into any probe detail or the response.
+            self.assertNotIn("paradiso", resp.text)
+        finally:
+            os.environ.pop("LAW_NETDIAG_TIMEOUT_SECONDS", None)
+            os.environ.pop("LAW_API_OC", None)
+
+
+class LawHostReachabilityClassifierTests(unittest.TestCase):
+    """Deterministic, I/O-free coverage of every netdiag diagnosis branch."""
+
+    def _classify(self, **overrides):
+        from services.law_grounding import classify_law_host_reachability
+        # Default to a fully-reachable picture; override per case.
+        base = {
+            "dns_ok": True, "egress_ok": True,
+            "law_https_ok": True, "law_http_ok": True,
+            "law_tcp_443_ok": True, "law_tcp_80_ok": True,
+        }
+        base.update(overrides)
+        return classify_law_host_reachability(base)
+
+    def test_dns_failure_takes_precedence(self):
+        self.assertEqual(self._classify(dns_ok=False), "DNS_FAILURE")
+
+    def test_egress_blocked_when_control_fails(self):
+        self.assertEqual(self._classify(egress_ok=False), "EGRESS_BLOCKED")
+
+    def test_reachable_https(self):
+        self.assertEqual(
+            self._classify(law_https_ok=True, law_http_ok=False), "REACHABLE_HTTPS")
+
+    def test_reachable_http_only(self):
+        self.assertEqual(
+            self._classify(law_https_ok=False, law_http_ok=True), "REACHABLE_HTTP")
+
+    def test_connection_refused_both_ports(self):
+        self.assertEqual(
+            self._classify(law_https_ok=False, law_http_ok=False,
+                           law_tcp_80_ok=False, law_tcp_443_ok=False),
+            "LAWGOKR_CONNECTION_REFUSED")
+
+    def test_port_80_blocked(self):
+        self.assertEqual(
+            self._classify(law_https_ok=False, law_http_ok=False,
+                           law_tcp_80_ok=False, law_tcp_443_ok=True),
+            "HTTP_PORT_80_BLOCKED")
+
+    def test_http_layer_issue_when_tcp_ok_but_http_fails(self):
+        self.assertEqual(
+            self._classify(law_https_ok=False, law_http_ok=False,
+                           law_tcp_80_ok=True, law_tcp_443_ok=True),
+            "HTTP_LAYER_ISSUE")
+
+    def test_missing_keys_treated_as_false(self):
+        from services.law_grounding import classify_law_host_reachability
+        # Empty input → DNS not ok → DNS_FAILURE (no KeyError).
+        self.assertEqual(classify_law_host_reachability({}), "DNS_FAILURE")
+
 
 class VisaDataContextBlockHelperTests(unittest.TestCase):
     """Unit tests for _build_visa_data_context_block — the small helper

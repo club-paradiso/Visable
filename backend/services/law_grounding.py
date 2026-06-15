@@ -360,3 +360,64 @@ def law_grounding_preflight(sample_question: str = "") -> Dict[str, Any]:
         "warnings": list(dict.fromkeys(warnings)),
     }
 
+
+# ---------------------------------------------------------------------------
+# Network reachability diagnosis (pure logic — testable without any sockets)
+#
+# When the live selftest reports a connection-level failure (HTTP status 0,
+# error_type ``law_api_bad_response``), the cause is *below* HTTP and cannot be
+# inferred from the answer path alone. The debug ``netdiag`` endpoint gathers a
+# small set of layered probes (DNS, a control egress connect, raw TCP to the
+# law host on :80/:443, and HTTP(S) GETs without the OC) and feeds the boolean
+# outcomes here. This function maps those outcomes to one stable diagnosis
+# code. It performs NO I/O so every branch is unit-testable.
+# ---------------------------------------------------------------------------
+
+# Stable diagnosis codes (consumed by the debug endpoint + tests).
+NETDIAG_DNS_FAILURE = "DNS_FAILURE"
+NETDIAG_EGRESS_BLOCKED = "EGRESS_BLOCKED"
+NETDIAG_REACHABLE_HTTPS = "REACHABLE_HTTPS"
+NETDIAG_REACHABLE_HTTP = "REACHABLE_HTTP"
+NETDIAG_LAWGOKR_CONNECTION_REFUSED = "LAWGOKR_CONNECTION_REFUSED"
+NETDIAG_HTTP_PORT_80_BLOCKED = "HTTP_PORT_80_BLOCKED"
+NETDIAG_HTTP_LAYER_ISSUE = "HTTP_LAYER_ISSUE"
+
+
+def classify_law_host_reachability(probes: Dict[str, bool]) -> str:
+    """Classify Open Law API host reachability from layered probe outcomes.
+
+    ``probes`` keys (all booleans; missing keys treated as False):
+      * ``dns_ok``        — the law host resolved via DNS
+      * ``egress_ok``     — a control connection to a neutral host succeeded
+      * ``law_https_ok``  — an HTTPS GET to the law host got an HTTP response
+      * ``law_http_ok``   — an HTTP GET to the law host got an HTTP response
+      * ``law_tcp_443_ok``— a raw TCP connect to the law host :443 succeeded
+      * ``law_tcp_80_ok`` — a raw TCP connect to the law host :80 succeeded
+
+    Order matters: DNS and general egress are ruled out first; a successful
+    HTTP(S) response (even a 4xx) proves end-to-end reachability; otherwise a
+    TCP-level result distinguishes a refused host (likely foreign/cloud-IP
+    blocking by the Korean government server) from a port-80-only block or an
+    HTTP-layer problem.
+    """
+    dns_ok = bool(probes.get("dns_ok"))
+    egress_ok = bool(probes.get("egress_ok"))
+    law_https_ok = bool(probes.get("law_https_ok"))
+    law_http_ok = bool(probes.get("law_http_ok"))
+    law_tcp_443_ok = bool(probes.get("law_tcp_443_ok"))
+    law_tcp_80_ok = bool(probes.get("law_tcp_80_ok"))
+
+    if not dns_ok:
+        return NETDIAG_DNS_FAILURE
+    if not egress_ok:
+        return NETDIAG_EGRESS_BLOCKED
+    if law_https_ok:
+        return NETDIAG_REACHABLE_HTTPS
+    if law_http_ok:
+        return NETDIAG_REACHABLE_HTTP
+    if not law_tcp_80_ok and not law_tcp_443_ok:
+        return NETDIAG_LAWGOKR_CONNECTION_REFUSED
+    if law_tcp_443_ok and not law_tcp_80_ok:
+        return NETDIAG_HTTP_PORT_80_BLOCKED
+    return NETDIAG_HTTP_LAYER_ISSUE
+

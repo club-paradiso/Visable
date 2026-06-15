@@ -31,6 +31,7 @@ from pydantic import BaseModel, Field
 from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
+    classify_law_host_reachability,
     law_grounding_preflight,
     should_attempt_law_grounding,
 )
@@ -4179,6 +4180,124 @@ async def debug_law_grounding_selftest(question: Optional[str] = None) -> Dict[s
         "live_http_status": int(result.get("raw_status", 0) or 0),
         "live_result_count": int(result.get("result_count", 0) or 0),
         "sanitized_source_url": result.get("source_url", ""),
+    }
+
+
+@app.get("/api/debug/law-grounding/netdiag")
+async def debug_law_grounding_netdiag() -> Dict[str, Any]:
+    """Deep, read-only network diagnostic for the Open Law API host.
+
+    When the selftest reports UNREACHABLE (HTTP status 0 / law_api_bad_response)
+    the failure is below HTTP and could be DNS, a fully-blocked egress, the
+    Korean government server refusing this server's (foreign / cloud) IP, a
+    port-80-only block, or an HTTP-layer issue. This endpoint runs a small set
+    of layered probes and returns the precise, secret-free cause plus a
+    recommended remediation.
+
+    The OC is NEVER sent in any probe and NEVER returned. Each probe is bounded
+    by ``LAW_NETDIAG_TIMEOUT_SECONDS`` (default 4s). Never raises.
+    """
+    import socket as _socket
+    import urllib.error as _uerr
+    import urllib.request as _ureq
+
+    law_host = "www.law.go.kr"
+    drf_path = "/DRF/lawSearch.do?target=law&type=JSON&query=test"  # no OC sent
+    try:
+        timeout = float(os.environ.get("LAW_NETDIAG_TIMEOUT_SECONDS") or 4.0)
+    except (TypeError, ValueError):
+        timeout = 4.0
+    timeout = timeout if timeout > 0 else 4.0
+
+    cfg = load_grounding_config()
+    secrets = [s for s in (cfg.law_api_oc, cfg.law_api_key) if s]
+
+    def _scrub(text: str) -> str:
+        out = str(text or "")
+        for secret in secrets:
+            out = out.replace(secret, "[REDACTED]")
+        return out[:300]
+
+    def _tcp(host: str, port: int) -> Dict[str, Any]:
+        try:
+            with _socket.create_connection((host, port), timeout=timeout):
+                return {"ok": True, "detail": f"TCP connect {host}:{port} OK"}
+        except Exception as exc:  # noqa: BLE001 - diagnostic must never raise
+            return {"ok": False, "detail": _scrub(f"{type(exc).__name__}: {exc}")}
+
+    def _http(url: str) -> Dict[str, Any]:
+        req = _ureq.Request(
+            url,
+            headers={"User-Agent": "Paradiso-netdiag/1.0", "Accept": "*/*"},
+        )
+        try:
+            with _ureq.urlopen(req, timeout=timeout) as resp:  # noqa: S310
+                code = int(getattr(resp, "status", 0) or getattr(resp, "code", 0) or 0)
+                return {"ok": True, "http_status": code, "detail": f"HTTP {code}"}
+        except _uerr.HTTPError as exc:
+            # Any HTTP status (even 4xx/5xx) proves end-to-end reachability.
+            code = int(getattr(exc, "code", 0) or 0)
+            return {"ok": True, "http_status": code, "detail": _scrub(f"HTTPError {code}")}
+        except Exception as exc:  # noqa: BLE001 - diagnostic must never raise
+            return {"ok": False, "http_status": 0, "detail": _scrub(f"{type(exc).__name__}: {exc}")}
+
+    # 1) DNS resolution of the law host (no connection made).
+    try:
+        infos = _socket.getaddrinfo(law_host, None)
+        dns = {"ok": True, "resolved_ips": sorted({i[4][0] for i in infos})}
+    except Exception as exc:  # noqa: BLE001
+        dns = {"ok": False, "detail": _scrub(f"{type(exc).__name__}: {exc}")}
+
+    # 2) Control egress to a neutral host by IP literal (no DNS dependency).
+    egress = _tcp("1.1.1.1", 443)
+    # 3) Raw TCP reachability of the law host on :80 and :443.
+    law_tcp_80 = _tcp(law_host, 80)
+    law_tcp_443 = _tcp(law_host, 443)
+    # 4) HTTP(S) GET without the OC — distinguishes HTTP-layer from TCP-layer.
+    law_http = _http(f"http://{law_host}{drf_path}")
+    law_https = _http(f"https://{law_host}{drf_path}")
+
+    diagnosis = classify_law_host_reachability({
+        "dns_ok": dns.get("ok", False),
+        "egress_ok": egress.get("ok", False),
+        "law_https_ok": law_https.get("ok", False),
+        "law_http_ok": law_http.get("ok", False),
+        "law_tcp_443_ok": law_tcp_443.get("ok", False),
+        "law_tcp_80_ok": law_tcp_80.get("ok", False),
+    })
+
+    recommendations = {
+        "DNS_FAILURE": ("배포 환경이 www.law.go.kr 도메인을 DNS로 해석하지 못합니다. "
+                        "Railway DNS 설정/도메인 차단 여부를 확인하세요."),
+        "EGRESS_BLOCKED": ("아웃바운드 자체가 막혀 있습니다(중립 호스트 1.1.1.1:443도 실패). "
+                           "Railway 네트워킹/방화벽에서 외부 접속을 허용하세요."),
+        "REACHABLE_HTTPS": ("www.law.go.kr에 HTTPS로는 연결됩니다. 기본 호출이 http라서 막혔을 "
+                            "수 있으니 https로 전환하면 해결됩니다(코드에서 처리 가능)."),
+        "REACHABLE_HTTP": ("www.law.go.kr에 HTTP로 연결됩니다. 직전 selftest 실패는 일시적"
+                           "(타임아웃 등)일 수 있으니 selftest를 다시 실행해 보세요."),
+        "LAWGOKR_CONNECTION_REFUSED": ("중립 호스트는 되지만 www.law.go.kr은 80/443 모두 연결이 "
+                                       "거부/차단됩니다. 한국 정부 서버가 해외·클라우드 IP의 접속을 "
+                                       "막는 것으로 보입니다. 한국 소재 프록시를 거치도록 LAW_API_BASE_URL을 "
+                                       "설정하거나, open.law.go.kr에 호출 IP 허용을 요청해야 합니다."),
+        "HTTP_PORT_80_BLOCKED": ("443은 열리지만 80이 막힙니다. https로 전환하면 해결됩니다."),
+        "HTTP_LAYER_ISSUE": ("TCP는 연결되지만 HTTP 응답을 받지 못합니다. 프록시/방화벽의 HTTP 검사 "
+                             "또는 서버 측 차단 가능성이 있습니다."),
+    }
+
+    return {
+        "diagnosis": diagnosis,
+        "recommendation": recommendations.get(diagnosis, ""),
+        "law_host": law_host,
+        "probe_timeout_seconds": timeout,
+        "probes": {
+            "dns_resolution": dns,
+            "egress_control_1_1_1_1_443": egress,
+            "law_tcp_80": law_tcp_80,
+            "law_tcp_443": law_tcp_443,
+            "law_http_get_no_oc": law_http,
+            "law_https_get_no_oc": law_https,
+        },
+        "note": "이 진단은 OC 값을 전송하지 않으며 응답에도 포함하지 않습니다.",
     }
 
 
