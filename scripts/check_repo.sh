@@ -198,6 +198,18 @@ else
   echo "INFO: Node.js not found; skipping F-4 hub validation."
 fi
 
+echo "[9d/14] Validating subcode detail modal + scanning user-facing data for dummy text..."
+# Stdlib/Node-only, offline. check_subcode_modal exercises the pure subcode-modal
+# builder against every subcode in visa_data.json (structure, a11y wiring, no raw
+# value leaks, honest source-gap copy). check_dummy_text fails if user-facing data
+# files reintroduce dummy/placeholder/stale markers.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_subcode_modal.mjs
+  node scripts/check_dummy_text.mjs
+else
+  echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
+fi
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
