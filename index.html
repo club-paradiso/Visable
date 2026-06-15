@@ -2205,8 +2205,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
    issuance card reads as part of the same 절차별 안내 card family. */
 .issuance-scenario-card { border: 1px solid var(--result-border); border-radius: 8px; background: color-mix(in srgb, var(--bg1) 94%, white); padding: 0.74rem; display: flex; flex-direction: column; gap: 0.6rem; min-width: 0; }
 .issuance-scenario-card.is-not-applicable { background: color-mix(in srgb, var(--bg2) 68%, white); }
-.issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; }
-.issuance-card-title { margin: 0; font-size: 0.88rem; font-weight: 900; color: var(--t1); line-height: 1.35; word-break: keep-all; }
+.issuance-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.5rem; padding-bottom: 0.52rem; border-bottom: 1px solid color-mix(in srgb, var(--bd) 60%, transparent); }
+/* 신청 경로 제목(예: "재외공관에서 직접 신청")은 카드의 핵심 정보이므로 명확히
+   크게, 작은 accent pip(원형 마커)과 함께 노출해 가독성과 시각적 위계를 높임. */
+.issuance-card-title { margin: 0; font-size: 1rem; font-weight: 900; color: var(--t1); line-height: 1.42; letter-spacing: -0.01em; word-break: keep-all; display: flex; align-items: flex-start; gap: 0.42rem; min-width: 0; }
+.issuance-card-title::before { content: ''; flex: 0 0 auto; width: 0.34rem; height: 0.34rem; margin-top: 0.42em; border-radius: 999px; background: var(--ac); box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 15%, transparent); }
 .issuance-source-badge, .procedure-source-badge.limited, .procedure-source-badge.unavailable, .procedure-source-badge.not-applicable, .procedure-source-badge.contextual, .procedure-source-badge.source-confirmed { border: 1px solid var(--bd2); }
 .issuance-source-badge { display: inline-flex; align-items: center; flex: 0 0 auto; padding: 0.18rem 0.48rem; border-radius: 999px; font-size: 0.65rem; font-weight: 900; line-height: 1.35; white-space: nowrap; color: var(--t3); background: var(--bg2); }
 .issuance-source-badge.source-confirmed, .procedure-source-badge.source-confirmed { background: color-mix(in srgb, var(--color-success) 12%, transparent); border-color: color-mix(in srgb, var(--color-success) 35%, var(--bd)); color: var(--color-primary-ink); }
@@ -16102,8 +16105,11 @@ function remapPermanentResidenceAcquisition(v, cfg) {
     return cfg;
 }
 function isSuppressedProcedureForStatus(v, cfg) {
-    // 영주(F-5)는 사증발급 대상이 아님 — '사증발급' 탭을 숨깁니다.
-    return !!(v && v.code === 'F-5' && cfg && cfg.key === 'visaIssuance');
+    // 사증발급이 적용되지 않는 체류자격(영주 F-5, 사증면제 B-1·B-2, 비대상 H-2
+    // 등)은 '사증발급' 탭을 숨깁니다. 판정은 isVisaIssuanceNotApplicable
+    // (data/visa_issuance_records.json 기반)에 위임합니다.
+    if (!(v && cfg && cfg.key === 'visaIssuance')) return false;
+    return isVisaIssuanceNotApplicable(v);
 }
 
 function getProcedure(v, cfg) {
@@ -18510,6 +18516,30 @@ function isGenericVisaIssuanceExcluded(code) {
     return GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.has(normalizeVisaCode(code));
 }
 
+// 사증발급(비자 발급)이 적용되지 않는 체류자격은 '사증발급' 절차 탭과 별도
+// 섹션을 모두 노출하지 않습니다. 거의 모든 레코드가 레거시 newReq 텍스트를
+// 가지고 있어 legacyAvailable 만으로는 사증발급 탭이 무조건 켜지므로(사증면제·
+// 비대상 자격에도 '사증발급'이 떴던 원인), 보호 데이터
+// data/visa_issuance_records.json 의 issuanceModes.type 으로 적용 여부를
+// 판정합니다:
+//   - visa_exempt    : 사증면제 입국 (예: B-1 사증면제, B-2 관광·통과)
+//   - not_applicable : 사증발급 비대상 (예: H-2 방문취업 — 사증발급 절차 없음)
+// 또한 영주(F-5)는 재외공관에서 '영주 사증'을 받는 자격이 아니라 국내 체류자격
+// 변경으로 취득하므로(remapPermanentResidenceAcquisition 주석 참조) 동일하게
+// 사증발급 절차를 숨깁니다. 렌더러 전용 판정 — 보호 데이터는 변경하지 않습니다.
+const VISA_ISSUANCE_NOT_APPLICABLE_MODE_TYPES = new Set(['visa_exempt', 'not_applicable']);
+const VISA_ISSUANCE_NOT_APPLICABLE_CODES = new Set(['F-5']);
+function isVisaIssuanceNotApplicable(v) {
+    if (!v) return false;
+    if (VISA_ISSUANCE_NOT_APPLICABLE_CODES.has(normalizeVisaCode(v.code))) return true;
+    const record = getVisaIssuanceRecord(v.code);
+    const modes = record && Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
+    if (!modes.length) return false;
+    // 실제 신청 경로(mixed·consular_discretion·인정서 등)가 하나라도 있으면 그대로
+    // 노출하고, 모든 경로가 사증면제/비대상일 때에만 사증발급을 숨깁니다.
+    return modes.every(mode => mode && VISA_ISSUANCE_NOT_APPLICABLE_MODE_TYPES.has(mode.type));
+}
+
 // Standardized 사증발급 application-route chips. Indices map to the
 // issuanceRouteChipLabels i18n pack. Chips are derived ONLY from the structured
 // issuanceMode fields (type / actor / whereToApply) and route facts already
@@ -18592,6 +18622,10 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     // F-4 (재외동포) keeps its dedicated diaspora route guide; it is never absorbed
     // into the generic 사증발급 issuance renderer. See GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.
     if (isGenericVisaIssuanceExcluded(v.code)) return '';
+    // 사증발급이 적용되지 않는 체류자격(사증면제 B-1·B-2, 비대상 H-2, 영주 F-5)은
+    // 절차 탭(embedded)·별도 섹션(standalone) 어디에서도 사증발급을 렌더링하지
+    // 않습니다 — '[사증발급]이 아닌데도 사증발급이 뜨던' 오류 차단.
+    if (isVisaIssuanceNotApplicable(v)) return '';
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
     const embedded = !!options.embedded;
