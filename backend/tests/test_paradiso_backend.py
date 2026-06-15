@@ -2200,6 +2200,35 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
         resp = client.post("/api/debug/law-grounding", json={})
         self.assertEqual(resp.status_code, 400)
 
+    def test_get_selftest_reports_no_credential_without_secrets(self):
+        # With no OC/key configured (CI default), the live selftest must NOT
+        # attempt an external call: it reports the NO_CREDENTIAL verdict, the
+        # new "audit" default mode, ready_for_external_calls=False, and never
+        # leaks any OC value.
+        for k in ("LAW_API_OC", "LAW_API_KEY"):
+            os.environ.pop(k, None)
+        client, _ = _client()
+        resp = client.get("/api/debug/law-grounding/selftest")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        data = resp.json()
+        self.assertIn("verdict", data)
+        self.assertIn("message", data)
+        self.assertEqual(data["mode"], "audit")
+        self.assertEqual(data["verdict"], "NO_CREDENTIAL")
+        self.assertFalse(data["ready_for_external_calls"])
+        self.assertEqual(data["live_call_status"], "not_attempted")
+        # Never surface a secret-equivalent OC value in the response.
+        self.assertNotIn("paradiso", resp.text)
+
+    def test_get_selftest_disabled_mode_makes_no_call(self):
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        client, _ = _client()
+        resp = client.get("/api/debug/law-grounding/selftest")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        data = resp.json()
+        self.assertEqual(data["verdict"], "DISABLED")
+        self.assertEqual(data["live_call_status"], "not_attempted")
+
 
 class VisaDataContextBlockHelperTests(unittest.TestCase):
     """Unit tests for _build_visa_data_context_block — the small helper

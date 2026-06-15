@@ -35,7 +35,7 @@ from services.law_grounding import (
     should_attempt_law_grounding,
 )
 from services.grounding_config import load_grounding_config
-from services.law_tools import build_law_evidence_pack
+from services.law_tools import build_law_evidence_pack, search_laws
 from services.citation_verifier import verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
@@ -4094,6 +4094,92 @@ async def debug_law_grounding_preflight(question: Optional[str] = None) -> Dict[
     LAW_API_ENDPOINT_MISSING). Useful even when external calls are disabled.
     """
     return law_grounding_preflight(question or "")
+
+
+@app.get("/api/debug/law-grounding/selftest")
+async def debug_law_grounding_selftest(question: Optional[str] = None) -> Dict[str, Any]:
+    """Browser-friendly, one-call LIVE check of Open Law API grounding.
+
+    Unlike the preflight (which makes NO external call), this performs the same
+    mode-gated, secret-free law.go.kr search the answer path uses — against a
+    default statute query — and returns a plain-language verdict. An operator
+    can open this single URL on the deployed host (e.g. Railway) to confirm
+    whether law grounding actually works, distinguishing the common failure
+    modes: grounding disabled, no credential, HTTP 403 (OC valid but the
+    calling IP is not allow-listed on open.law.go.kr), unreachable host
+    (outbound/egress blocked), timeout, or reachable-but-no-results.
+
+    The OC value is NEVER returned; the source URL is sanitized at the tool
+    boundary. Read-only; never raises.
+    """
+    sample = (question or "").strip() or "출입국관리법"
+    cfg = load_grounding_config()
+    result: Dict[str, Any] = {}
+
+    if cfg.mode == "disabled":
+        verdict = "DISABLED"
+        message = ("법령 조회가 꺼져 있습니다. 환경변수 LAW_GROUNDING_MODE=audit "
+                   "(또는 enabled)로 설정하세요.")
+    elif not cfg.law_api_configured:
+        verdict = "NO_CREDENTIAL"
+        message = ("법령 API 인증값이 없습니다. open.law.go.kr에서 발급받은 OC를 "
+                   "환경변수 LAW_API_OC에 설정하세요.")
+    else:
+        try:
+            result = search_laws(sample, config=cfg)
+        except Exception:  # pragma: no cover - selftest must never crash
+            result = {"status": "error", "error_type": "selftest_exception",
+                      "raw_status": 0, "result_count": 0, "source_url": ""}
+        status = result.get("status")
+        error_type = result.get("error_type", "")
+        raw_status = int(result.get("raw_status", 0) or 0)
+        count = int(result.get("result_count", 0) or 0)
+        if status == "ok" and count > 0:
+            verdict = "WORKING"
+            message = (f"✅ 정상 작동 — law.go.kr 응답 OK, 결과 {count}건. "
+                       "실시간 법령 조회와 인용 검증이 켜졌습니다.")
+        elif status == "ok":
+            verdict = "REACHABLE_NO_RESULTS"
+            message = ("⚠️ law.go.kr 연결은 되지만 이 질의에 결과가 없습니다. "
+                       "다른 질의로 재시도하세요(예: ?question=출입국관리법).")
+        elif error_type == "law_api_http_error" and raw_status == 403:
+            verdict = "FORBIDDEN_403"
+            message = ("❌ law.go.kr이 403(접근 거부)을 반환했습니다. OC는 전달됐지만 "
+                       "호출 서버 IP가 open.law.go.kr에 허용 등록되지 않았을 가능성이 "
+                       "큽니다. open.law.go.kr OPEN API 신청에서 이 서버의 아웃바운드 "
+                       "IP를 허용 목록에 등록하세요.")
+        elif error_type == "law_api_http_error":
+            verdict = f"HTTP_{raw_status or 'ERROR'}"
+            message = f"❌ law.go.kr이 HTTP {raw_status or '오류'}를 반환했습니다."
+        elif error_type == "law_api_timeout":
+            verdict = "TIMEOUT"
+            message = "❌ law.go.kr 응답 시간 초과. 잠시 후 다시 시도하세요."
+        elif error_type == "law_api_bad_response" and raw_status == 0:
+            verdict = "UNREACHABLE"
+            message = ("❌ law.go.kr에 네트워크로 연결되지 않습니다(아웃바운드/egress "
+                       "차단 또는 DNS 문제). 배포 환경에서 www.law.go.kr 아웃바운드 "
+                       "접근이 허용돼야 합니다.")
+        else:
+            verdict = "ERROR"
+            message = f"❌ 법령 조회 실패: {error_type or 'unknown'}."
+
+    return {
+        "verdict": verdict,
+        "message": message,
+        "mode": cfg.mode,
+        "law_api_credential_source": cfg.law_api_credential_source,
+        "law_api_oc_configured": cfg.law_api_oc_configured,
+        "law_api_key_fallback_configured": cfg.law_api_key_fallback_configured,
+        "ready_for_external_calls": (
+            cfg.mode in {"audit", "enabled"} and cfg.law_api_configured
+        ),
+        "sample_query": sample,
+        "live_call_status": result.get("status", "not_attempted"),
+        "live_error_type": result.get("error_type", ""),
+        "live_http_status": int(result.get("raw_status", 0) or 0),
+        "live_result_count": int(result.get("result_count", 0) or 0),
+        "sanitized_source_url": result.get("source_url", ""),
+    }
 
 
 @app.post("/api/debug/law-grounding")
