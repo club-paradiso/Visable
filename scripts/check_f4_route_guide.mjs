@@ -91,6 +91,9 @@ section('UI integration');
 ok(/data\/f4\/routes\.json/.test(guideJs), 'guide JS fetches external routes.json');
 ok(indexHtml.includes('assets/js/f4-route-guide.js'), 'index.html loads the deferred guide script');
 ok(indexHtml.includes('id="f4RouteGuide"'), 'index.html has the guide mount section');
+ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHtml)
+  && /function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded/.test(indexHtml),
+  'F-4 is excluded from the generic visa-issuance renderer (keeps its dedicated route guide)');
 ok(/freshnessBadge/.test(guideJs) && /sourceStatus/.test(guideJs), 'freshness badge wired in guide JS');
 ok(guideJs.includes('어떤 상황에 가까우신가요') || routesText.includes('어떤 상황에 가까우신가요'),
   'guide opens with the life-situation question');
