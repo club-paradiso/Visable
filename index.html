@@ -17160,19 +17160,17 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
     const title = tx('scenarioSelectorTitle');
     const notice = tx('scenarioSelectorCopy');
     const officialLabelsNote = currentLanguage === 'ko' ? '' : `<p class="scenario-official-labels-note">${escapeHtml(tx('scenarioOfficialLabelsKoNote'))}</p>`;
-    const singleVariant = proc.variants.length === 1;
-    const cardsHtml = proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, singleVariant, alreadyShownDocs)).join('');
+    // Every scenario — even a lone one (e.g. F-4 외국인등록 → 국내거소신고) — is
+    // presented behind the in-screen popup, so clicking a procedure never dumps
+    // scenario docs inline. The user opens the popup, picks their situation, and
+    // only that scenario's 절차·서류 render. Cards therefore start unselected
+    // (selectedByDefault = false) and stay hidden until a pick.
+    const cardsHtml = proc.variants.map(variant => renderProcedureVariant(v.code, proc.key, variant, keywords, false, alreadyShownDocs)).join('');
     const head = `<div><h5 class="scenario-selector-heading">${escapeHtml(title)}</h5><p class="scenario-selector-copy">${escapeHtml(notice)}</p>${officialLabelsNote}</div>`;
-    // A single scenario has nothing to choose between — show it directly.
-    if (singleVariant) {
-        return `<div class="procedure-variant-list" data-procedure-variant-selector="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}">
-            ${head}
-            <div class="manual-subcode-grid manual-subcode-grid--docs">${cardsHtml}</div>
-        </div>`;
-    }
-    // Multiple scenarios: the choice happens in an in-screen popup. Until the user
-    // picks their situation, NONE of the scenario cards are shown — only the
-    // selected one renders afterwards — so the result stays uncluttered.
+    // The choice happens in an in-screen popup. Until the user picks their
+    // situation, NONE of the scenario cards are shown — only the selected one
+    // renders afterwards — so the result stays uncluttered. A single-scenario
+    // procedure uses the same popup path for a consistent experience.
     const variantCount = proc.variants.length;
     return `<div class="procedure-variant-list scenario-needs-pick" data-procedure-variant-selector="${escapeHtml(proc.key)}" data-visa-code="${escapeHtml(v.code)}">
         ${head}
@@ -17685,7 +17683,17 @@ function applyRouteSelection(wizard, card, route) {
         // previously selected subtype cannot leak stale checklist/AI context.
         const panel = card.querySelector(`.procedure-panel[data-procedure-panel="${procKey}"]`);
         const selector = panel ? panel.querySelector('[data-procedure-variant-selector].scenario-needs-pick') : null;
-        if (selector) applyScenarioSelection(selector, variantId || '');
+        if (selector) {
+            // A broad route (no specific variantId) that lands on a procedure with
+            // exactly one scenario auto-reveals it, so popup-gating single scenarios
+            // doesn't leave the route showing an empty state. Multi-scenario broad
+            // routes still reset to the empty picker so the user chooses.
+            const variantCards = selector.querySelectorAll('[data-procedure-variant-card]');
+            const autoId = (!variantId && variantCards.length === 1)
+                ? (variantCards[0].dataset.procedureVariantCard || '')
+                : '';
+            applyScenarioSelection(selector, variantId || autoId);
+        }
         html += `<p class="f4-route-source-note">${escapeHtml(tx('f4RouteSourceNote'))}</p>`;
     } else {
         // No source-backed procedure data for this route: explain it and send
