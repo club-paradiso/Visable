@@ -1020,6 +1020,17 @@ _RETRYABLE_PROVIDER_ERROR_TYPES = {
     "provider_unavailable",
 }
 
+# Model-SPECIFIC failures: the failure is tied to ONE model id (a bad/unknown
+# slug, or "no endpoints"/"no allowed providers" for a free model that has no
+# capacity right now). These are not transient in a way that benefits from a
+# cooldown retry of the SAME model, but they must NOT abort the whole request:
+# the candidate loop skips to the NEXT candidate instead of breaking, so one bad
+# model id can never sink an otherwise-answerable request (this is what made
+# Basic mode return only a fallback note while Fast mode worked).
+_PER_MODEL_SKIP_ERROR_TYPES = {
+    "model_not_found",
+}
+
 
 def _classify_openrouter_error(
     status: Optional[int], message: Optional[str], error_code: Optional[str] = None
@@ -1068,15 +1079,20 @@ def _classify_openrouter_error(
         or "authentication" in msg
     ):
         return "invalid_provider_config", False
-    # Model not found / unauthorized model -> do not retry blindly.
+    # Model-specific: bad/unknown slug, or no available provider/endpoint for
+    # this model right now. Not retryable on the SAME model, but the candidate
+    # loop skips to the NEXT candidate (see _PER_MODEL_SKIP_ERROR_TYPES) so a
+    # single bad model id never aborts the whole request.
     if (
         status_int == 404
         or "not found" in msg
         or "no endpoints" in msg
         or "no allowed providers" in msg
+        or "no endpoints found" in msg
         or "unknown model" in msg
+        or "not a valid model" in msg
     ):
-        return "invalid_provider_config", False
+        return "model_not_found", False
     # Safety / moderation / policy rejection.
     if (
         status_int == 451
@@ -2048,9 +2064,12 @@ async def _openrouter_complete_with_candidates(
             )
             if last_retryable:
                 _mark_openrouter_model_cooling_down(model)
-            if not last_retryable:
-                break  # auth/bad-request/model-not-found/safety: stop early
-            continue
+                continue
+            if last_error_type in _PER_MODEL_SKIP_ERROR_TYPES:
+                # Bad/unknown model id or no endpoints for THIS model: skip to the
+                # next candidate instead of aborting the whole request.
+                continue
+            break  # account-wide auth / bad-request / safety: stop early
         return {
             "ok": True,
             "answer": answer,

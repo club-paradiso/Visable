@@ -328,6 +328,37 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(resp.json()["answer_mode"], "basic")
         self.assertEqual(calls[0], CANDS[0])
 
+    def test_model_not_found_skips_to_next_candidate(self):
+        # A bad/unknown primary model id (404) must SKIP to the next candidate,
+        # not abort the request. This is the Basic-mode "fallback note only" bug:
+        # an invalid primary killed the whole request before reaching a good model.
+        pb = _pb()
+        resp, calls = self._ask(pb, {CANDS[0]: (404, "model not found")})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(body["final_model"], CANDS[1])
+        self.assertEqual(calls, [CANDS[0], CANDS[1]])
+        self.assertTrue(body["model_fallback_used"])
+
+    def test_no_endpoints_for_model_skips_to_next_candidate(self):
+        pb = _pb()
+        resp, calls = self._ask(pb, {CANDS[0]: (404, "No endpoints found for this model")})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(resp.json()["final_model"], CANDS[1])
+
+    def test_chain_reaches_working_model_past_several_bad_ids(self):
+        # First three candidates have invalid ids / no endpoints; the last one
+        # works. The loop must walk all the way to it and answer.
+        pb = _pb()
+        resp, calls = self._ask(pb, {
+            CANDS[0]: (404, "model not found"),
+            CANDS[1]: (404, "unknown model"),
+            CANDS[2]: (404, "No endpoints found"),
+        })
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(resp.json()["final_model"], CANDS[3])
+        self.assertEqual(calls, list(CANDS))
+
     def test_ultra_429_triggers_super(self):
         pb = _pb()
         resp, calls = self._ask(pb, {CANDS[0]: (429, "rate limit")})
