@@ -19,7 +19,7 @@ class GroundingConfig:
     # identifier (the ``OC`` query parameter on open.law.go.kr / DRF). It is
     # NEVER exposed in /health, debug output, logs, or sanitized source URLs.
     law_api_oc: str = ""
-    mode: str = "disabled"
+    mode: str = "audit"
     timeout_seconds: float = _DEFAULT_TIMEOUT_SECONDS
     cache_ttl_seconds: int = _DEFAULT_CACHE_TTL_SECONDS
     law_api_base_url: str = ""
@@ -91,7 +91,7 @@ def _parse_cache_ttl(raw_value: str | None) -> int:
 
 def load_grounding_config() -> GroundingConfig:
     warnings: List[str] = []
-    mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    mode = (os.environ.get("LAW_GROUNDING_MODE") or "audit").strip().lower()
     if mode not in _SUPPORTED_MODES:
         warnings.append("LAW_GROUNDING_MODE_INVALID_USING_DISABLED")
         mode = "disabled"
