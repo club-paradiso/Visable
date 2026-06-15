@@ -16092,8 +16092,11 @@ function remapPermanentResidenceAcquisition(v, cfg) {
     return cfg;
 }
 function isSuppressedProcedureForStatus(v, cfg) {
-    // 영주(F-5)는 사증발급 대상이 아님 — '사증발급' 탭을 숨깁니다.
-    return !!(v && v.code === 'F-5' && cfg && cfg.key === 'visaIssuance');
+    // 사증발급이 적용되지 않는 체류자격(영주 F-5, 사증면제 B-1·B-2, 비대상 H-2
+    // 등)은 '사증발급' 탭을 숨깁니다. 판정은 isVisaIssuanceNotApplicable
+    // (data/visa_issuance_records.json 기반)에 위임합니다.
+    if (!(v && cfg && cfg.key === 'visaIssuance')) return false;
+    return isVisaIssuanceNotApplicable(v);
 }
 
 function getProcedure(v, cfg) {
@@ -18500,6 +18503,30 @@ function isGenericVisaIssuanceExcluded(code) {
     return GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.has(normalizeVisaCode(code));
 }
 
+// 사증발급(비자 발급)이 적용되지 않는 체류자격은 '사증발급' 절차 탭과 별도
+// 섹션을 모두 노출하지 않습니다. 거의 모든 레코드가 레거시 newReq 텍스트를
+// 가지고 있어 legacyAvailable 만으로는 사증발급 탭이 무조건 켜지므로(사증면제·
+// 비대상 자격에도 '사증발급'이 떴던 원인), 보호 데이터
+// data/visa_issuance_records.json 의 issuanceModes.type 으로 적용 여부를
+// 판정합니다:
+//   - visa_exempt    : 사증면제 입국 (예: B-1 사증면제, B-2 관광·통과)
+//   - not_applicable : 사증발급 비대상 (예: H-2 방문취업 — 사증발급 절차 없음)
+// 또한 영주(F-5)는 재외공관에서 '영주 사증'을 받는 자격이 아니라 국내 체류자격
+// 변경으로 취득하므로(remapPermanentResidenceAcquisition 주석 참조) 동일하게
+// 사증발급 절차를 숨깁니다. 렌더러 전용 판정 — 보호 데이터는 변경하지 않습니다.
+const VISA_ISSUANCE_NOT_APPLICABLE_MODE_TYPES = new Set(['visa_exempt', 'not_applicable']);
+const VISA_ISSUANCE_NOT_APPLICABLE_CODES = new Set(['F-5']);
+function isVisaIssuanceNotApplicable(v) {
+    if (!v) return false;
+    if (VISA_ISSUANCE_NOT_APPLICABLE_CODES.has(normalizeVisaCode(v.code))) return true;
+    const record = getVisaIssuanceRecord(v.code);
+    const modes = record && Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
+    if (!modes.length) return false;
+    // 실제 신청 경로(mixed·consular_discretion·인정서 등)가 하나라도 있으면 그대로
+    // 노출하고, 모든 경로가 사증면제/비대상일 때에만 사증발급을 숨깁니다.
+    return modes.every(mode => mode && VISA_ISSUANCE_NOT_APPLICABLE_MODE_TYPES.has(mode.type));
+}
+
 // Standardized 사증발급 application-route chips. Indices map to the
 // issuanceRouteChipLabels i18n pack. Chips are derived ONLY from the structured
 // issuanceMode fields (type / actor / whereToApply) and route facts already
@@ -18582,6 +18609,10 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     // F-4 (재외동포) keeps its dedicated diaspora route guide; it is never absorbed
     // into the generic 사증발급 issuance renderer. See GENERIC_VISA_ISSUANCE_EXCLUDED_CODES.
     if (isGenericVisaIssuanceExcluded(v.code)) return '';
+    // 사증발급이 적용되지 않는 체류자격(사증면제 B-1·B-2, 비대상 H-2, 영주 F-5)은
+    // 절차 탭(embedded)·별도 섹션(standalone) 어디에서도 사증발급을 렌더링하지
+    // 않습니다 — '[사증발급]이 아닌데도 사증발급이 뜨던' 오류 차단.
+    if (isVisaIssuanceNotApplicable(v)) return '';
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
     const embedded = !!options.embedded;
