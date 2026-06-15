@@ -622,6 +622,47 @@ body.searched .ft { opacity: 1; }
 .modal-close:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
 .modal-body { padding: 1.4rem; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 1rem; }
 
+/* Subcode list cards: interactive (open the subcode detail modal). The base
+   .manual-subcode-card visual is shared with scenario document tiles, so only
+   the --interactive variant gets affordance + keyboard-focus styling. Uses
+   theme tokens so both civic_editorial and archive_diary are covered. */
+.manual-subcode-card--interactive { cursor: pointer; text-align: left; width: 100%; font: inherit; color: inherit; transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease; }
+.manual-subcode-card--interactive:hover { border-color: var(--ac); box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+.manual-subcode-card--interactive:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+.manual-subcode-card--interactive .manual-subcode-go { margin-left: auto; flex: none; color: var(--t3); font-size: 1.1rem; font-weight: 900; line-height: 1; transition: transform 0.18s ease, color 0.18s ease; }
+.manual-subcode-card--interactive:hover .manual-subcode-go { color: var(--ac); transform: translateX(2px); }
+
+/* Subcode detail modal */
+.subcode-modal-head-stack { display: flex; flex-direction: column; gap: 0.3rem; min-width: 0; }
+.subcode-modal-eyebrow { font-size: 0.7rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ac); }
+.subcode-modal-parent { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--t2); }
+.subcode-modal-section { display: flex; flex-direction: column; gap: 0.5rem; padding-bottom: 0.9rem; border-bottom: 1px solid var(--bd2); }
+.subcode-modal-section:last-of-type { border-bottom: none; padding-bottom: 0; }
+.subcode-modal-h { margin: 0; font-size: 0.92rem; font-weight: 800; color: var(--t1); }
+.subcode-modal-text { margin: 0; font-size: 0.86rem; line-height: 1.65; color: var(--t2); word-break: keep-all; }
+.subcode-modal-gap { margin: 0; font-size: 0.84rem; line-height: 1.6; color: var(--t3); background: var(--bg2); border: 1px dashed var(--bd2); border-radius: 8px; padding: 0.7rem 0.85rem; word-break: keep-all; }
+.subcode-modal-warn { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.84rem; line-height: 1.55; color: var(--t2); }
+.subcode-modal-source { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; line-height: 1.5; color: var(--t3); }
+.subcode-modal-variant { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.8rem; background: var(--bg0); display: flex; flex-direction: column; gap: 0.5rem; }
+.subcode-modal-variant + .subcode-modal-variant { margin-top: 0.55rem; }
+.subcode-modal-variant-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.subcode-modal-variant-proc { font-size: 0.72rem; font-weight: 900; color: var(--ac); background: var(--acG); border-radius: 999px; padding: 0.1rem 0.5rem; }
+.subcode-modal-variant-label { font-size: 0.84rem; font-weight: 700; color: var(--t1); }
+.subcode-modal-vnotes { margin: 0; padding-left: 1.05rem; font-size: 0.8rem; line-height: 1.5; color: var(--t2); display: flex; flex-direction: column; gap: 0.25rem; }
+.subcode-modal-cta { padding-top: 0.2rem; }
+.subcode-modal-cta-btn { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 44px; padding: 0.5rem 1rem; font: inherit; font-size: 0.84rem; font-weight: 800; color: var(--ac); background: transparent; border: 1.5px solid var(--ac); border-radius: 10px; cursor: pointer; transition: background 0.18s ease; }
+.subcode-modal-cta-btn:hover { background: var(--acG); }
+.subcode-modal-cta-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+
+/* Mobile: subcode detail modal becomes a full-width bottom sheet. */
+@media (max-width: 540px) {
+  .subcode-modal-overlay { align-items: flex-end; padding: 0; }
+  .subcode-modal-overlay .subcode-modal-box { max-width: 100%; max-height: 92vh; border-radius: 18px 18px 0 0; border-bottom: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .manual-subcode-card--interactive, .manual-subcode-card--interactive .manual-subcode-go, .subcode-modal-cta-btn { transition: none; }
+}
+
 /* FAQs & AI Actions */
 .faq-item { border: 1px solid var(--bd2); border-radius: 8px; margin-bottom: 0.8rem; overflow: hidden; background: var(--bg0); }
 .faq-q { background: var(--bg2); padding: 0.8rem 1rem; font-weight: 800; color: var(--ac); border-bottom: 1px solid var(--bd2); font-size: 0.85rem; }
@@ -13578,6 +13619,20 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
+<div class="modal-overlay subcode-modal-overlay" id="subcodeDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="subcodeModalTitle" aria-hidden="true">
+    <div class="modal-box subcode-modal-box" style="max-width: 620px;">
+        <div class="modal-header">
+            <div class="subcode-modal-head-stack">
+                <span class="subcode-modal-eyebrow" id="subcodeModalEyebrow"></span>
+                <h2 id="subcodeModalTitle" class="modal-title"></h2>
+                <div class="subcode-modal-parent" id="subcodeModalParent"></div>
+            </div>
+            <button type="button" class="modal-close" data-action="close-subcode-modal" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body" id="subcodeModalBody" aria-live="polite"></div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="scenarioPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle" aria-hidden="true" style="display:none!important">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
@@ -14217,6 +14272,110 @@ function openDocModal(visaCode, type, subIdx) {
         ? renderDocTags(docs, [], type === 'sub', targetCode) + renderDocGroupingSourceNote()
         : `<div class="text-desc">${escapeHtml(tx('docReviewFallback'))}</div>`;
     openModal('docModalOverlay');
+}
+
+// --- Subcode Detail Modal ---
+// Structured, data-driven detail view for a single 세부코드. Everything is
+// sourced from the parent record's existing subCodes[] entry and
+// procedures[].variants[] — nothing is invented (CLAUDE.md). Empty sections are
+// omitted; honest source-gap copy is shown when subcode-specific data is thin.
+function renderSubcodeProcedureVariants(visa, sub) {
+    const procs = (visa && visa.procedures) || {};
+    const target = normalizeVisaCode(sub.code);
+    const blocks = [];
+    Object.keys(procs).forEach(procKey => {
+        const proc = procs[procKey];
+        const variants = proc && Array.isArray(proc.variants) ? proc.variants : [];
+        variants.forEach(variant => {
+            if (!variant || normalizeVisaCode(variant.statusCode) !== target) return;
+            const procLabel = getProcedureLabelByKey(procKey, procKey);
+            const scenarioLabel = paradisoStripInternalReviewArtifacts(variant.labelKo || variant.label || '');
+            const scenario = stripManualArtifacts(variant.scenarioKo || variant.scenario || '');
+            const vDocs = flattenDocGroups(normalizeDocGroups(variant.requiredDocs || null, variant));
+            const docsHtml = vDocs.length ? renderDocTags(vDocs, [], true, sub.code) : '';
+            const notes = Array.isArray(variant.notes) ? variant.notes.map(n => stripManualArtifacts(n)).filter(Boolean) : [];
+            const notesHtml = notes.length ? `<ul class="subcode-modal-vnotes">${notes.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>` : '';
+            blocks.push(`<div class="subcode-modal-variant"><div class="subcode-modal-variant-head"><span class="subcode-modal-variant-proc">${escapeHtml(procLabel)}</span>${scenarioLabel ? `<span class="subcode-modal-variant-label">${escapeHtml(scenarioLabel)}</span>` : ''}</div>${scenario ? `<p class="subcode-modal-text">${escapeHtml(scenario)}</p>` : ''}${docsHtml}${notesHtml}</div>`);
+        });
+    });
+    return blocks.join('');
+}
+
+// Pure builder (no DOM): returns the modal's header + body HTML for one subcode.
+// Kept side-effect-free so it can be unit-tested headlessly (scripts/check_subcode_modal.mjs).
+function buildSubcodeModalView(visa, sub) {
+    const name = getLocalizedSubcodeName(sub) || '';
+    const parentName = getLocalizedVisaName(visa) || '';
+    const title = name ? `${escapeHtml(sub.code)} · ${escapeHtml(name)}` : escapeHtml(sub.code);
+    const parentHtml = `<span class="subcode-modal-parent-text">${escapeHtml(tx('subcodeModalParentLabel'))}: ${escapeHtml(visa.code)}${parentName ? ` (${escapeHtml(parentName)})` : ''}</span>${subcodeSourceChip(sub)}`;
+
+    const sections = [];
+
+    // 1) When does it apply (only when source text exists — never filler).
+    const about = stripManualArtifacts(sub.summary)
+        || (Array.isArray(sub.eligibility) && sub.eligibility[0])
+        || stripManualArtifacts(sub.note)
+        || stripManualArtifacts(sub.addReq);
+    if (about) {
+        sections.push(`<section class="subcode-modal-section"><h3 class="subcode-modal-h">${escapeHtml(tx('subcodeModalAbout'))}</h3><p class="subcode-modal-text">${escapeHtml(about)}</p></section>`);
+    }
+
+    // 2) Subcode-specific additional documents (cautious label — not "필수").
+    const docs = flattenDocGroups(normalizeDocGroups(null, sub, { additionalDocs: ['addReqDocs', 'addReq'] }));
+    const docsHtml = docs.length
+        ? renderDocTags(docs, [], true, sub.code) + renderDocGroupingSourceNote()
+        : `<p class="subcode-modal-gap">${escapeHtml(tx('subcodeModalNoDocs'))}</p>`;
+    sections.push(`<section class="subcode-modal-section"><h3 class="subcode-modal-h">${escapeHtml(tx('subcodeModalDocsTitle'))}</h3>${docsHtml}</section>`);
+
+    // 3) Subcode-specific procedure variants (omit section if none).
+    const variantHtml = renderSubcodeProcedureVariants(visa, sub);
+    if (variantHtml) {
+        sections.push(`<section class="subcode-modal-section"><h3 class="subcode-modal-h">${escapeHtml(tx('subcodeModalProcTitle'))}</h3>${variantHtml}</section>`);
+    }
+
+    // 4) Cautions (deprecated/inactive status note; omit if none).
+    const warnings = [];
+    if (sub.status && sub.status !== 'active') {
+        const sn = paradisoStripInternalReviewArtifacts(sub.statusNote);
+        if (sn) warnings.push(sn);
+    }
+    if (warnings.length) {
+        sections.push(`<section class="subcode-modal-section"><h3 class="subcode-modal-h">${escapeHtml(tx('subcodeModalWarnTitle'))}</h3><ul class="subcode-modal-warn">${warnings.map(w => `<li>${escapeHtml(w)}</li>`).join('')}</ul></section>`);
+    }
+
+    // 5) Official basis (subcode manualRefs, else honest source-gap copy).
+    const refs = Array.isArray(sub.manualRefs) ? sub.manualRefs : [];
+    const sourceHtml = refs.length
+        ? `<ul class="subcode-modal-source">${refs.map(ref => {
+            const bits = [ref.manualName || tx('sourceManualFallback'), ref.manualVersion || ref.version || '2026.5', ref.pageRange || tx('pageNeedsReview'), `${tx('confidenceLabel')}: ${ref.confidence || tx('confidenceNeedsReview')}`];
+            return `<li>${bits.map(escapeHtml).join(' · ')}</li>`;
+        }).join('')}</ul>`
+        : `<p class="subcode-modal-gap">${escapeHtml(tx('subcodeModalSourceGap'))}</p>`;
+    sections.push(`<section class="subcode-modal-section"><h3 class="subcode-modal-h">${escapeHtml(tx('subcodeModalSourceTitle'))}</h3>${sourceHtml}</section>`);
+
+    // CTA → parent status full guidance (avoids duplicating parent docs here).
+    sections.push(`<div class="subcode-modal-cta"><button type="button" class="subcode-modal-cta-btn" data-action="search-hint" data-query="${escapeHtml(visa.code)}">${escapeHtml(tx('subcodeModalParentCta', { code: visa.code }))}</button></div>`);
+
+    return { eyebrow: tx('subcodeModalEyebrow'), title, parentHtml, body: sections.join('') };
+}
+
+function openSubcodeModal(parentCode, subCode) {
+    const visa = VISA_DATA.find(v => v.code === parentCode);
+    if (!visa) return;
+    const subs = getVisaSubcodes(visa);
+    const sub = subs.find(s => normalizeVisaCode(s.code) === normalizeVisaCode(subCode));
+    if (!sub) return;
+
+    const view = buildSubcodeModalView(visa, sub);
+    const eyebrowEl = document.getElementById('subcodeModalEyebrow');
+    const titleEl = document.getElementById('subcodeModalTitle');
+    const parentEl = document.getElementById('subcodeModalParent');
+    const bodyEl = document.getElementById('subcodeModalBody');
+    if (eyebrowEl) eyebrowEl.textContent = view.eyebrow;
+    if (titleEl) titleEl.innerHTML = view.title;
+    if (parentEl) parentEl.innerHTML = view.parentHtml;
+    if (bodyEl) bodyEl.innerHTML = view.body;
+    openModal('subcodeDetailOverlay');
 }
 
 function renderModalFeeBox(visa, type) {
@@ -18146,12 +18305,12 @@ function shouldAutoExpandSubcodeGroup(query, group) {
     if (!qNorm) return false;
     return (group || []).some(s => normalizeVisaCode(s && s.code) === qNorm);
 }
-function renderSubcodePreview(group, query) {
+function renderSubcodePreview(group, query, parentCode) {
     const active = (group || []).filter(s => !s.status || s.status === 'active');
     const preview = (active.length ? active : group).slice(0, 4);
     if (!preview.length) return '';
     const chips = preview.map(s =>
-        `<button type="button" class="subcode-preview-chip" role="listitem" data-action="search-hint" data-query="${escapeHtml(s.code)}"><span class="subcode-preview-code">${hl(s.code, query ? [query] : [])}</span><span class="subcode-preview-name">${escapeHtml(getLocalizedSubcodeName(s))}</span></button>`
+        `<button type="button" class="subcode-preview-chip" role="listitem" data-action="open-subcode-detail" data-parent="${escapeHtml(parentCode || getParentVisaCode(s.code))}" data-subcode="${escapeHtml(s.code)}" aria-label="${escapeHtml(tx('subcodeModalOpenAria', { code: s.code }))}"><span class="subcode-preview-code">${hl(s.code, query ? [query] : [])}</span><span class="subcode-preview-name">${escapeHtml(getLocalizedSubcodeName(s))}</span></button>`
     ).join('');
     return `<div class="subcode-preview-chips" role="list" aria-label="${escapeHtml(tx('subcodePreviewAria'))}">${chips}</div>`;
 }
@@ -18185,8 +18344,8 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         const cleanStatusNote = paradisoStripInternalReviewArtifacts(s.statusNote);
         const statusNote = inactive && cleanStatusNote ? `<div class="manual-subcode-status">${escapeHtml(cleanStatusNote)}</div>` : '';
         const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="내 상황과 관련 가능성 있는 세부코드">관련 가능</span>` : '';
-        return `<div id="${cardId(s)}" class="manual-subcode-card${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}">
-            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}</div>
+        return `<div id="${cardId(s)}" class="manual-subcode-card manual-subcode-card--interactive${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}" role="button" tabindex="0" data-action="open-subcode-detail" data-parent="${escapeHtml(visaCode)}" data-subcode="${escapeHtml(s.code)}" aria-label="${escapeHtml(tx('subcodeModalOpenAria', { code: s.code }))}">
+            <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}<span class="manual-subcode-go" aria-hidden="true">›</span></div>
             <div class="manual-subcode-desc">${hl(desc, keywords)}</div>${statusNote}
         </div>`;
     };
@@ -18215,7 +18374,7 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         const names = activeSubs.slice(0, 4).map(s => getLocalizedSubcodeName(s)).filter(Boolean).join(', ');
         const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: subs.length, names }))}</p>`;
         const hint = `<p class="subcode-group-hint">${escapeHtml(tx('subcodeGroupHint', { example: (activeSubs[0] && activeSubs[0].code) || `${visaCode}-1` }))}</p>`;
-        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;
+        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode, v.code)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;
     }
 
     // B) Matched subcodes are lifted into their own labeled group up top
@@ -20223,6 +20382,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const toggleSu = e.target.closest('[data-action="toggle-su"]');
         if (toggleSu) { toggleSu.parentElement.classList.toggle('open'); return; }
 
+        // Subcode detail modal: clicking the dimmed backdrop (not the box) closes it.
+        if (e.target.classList.contains('subcode-modal-overlay')) { closeModal('subcodeDetailOverlay'); return; }
+
         const actionBtn = e.target.closest('[data-action]');
         if (actionBtn) {
             const action = actionBtn.dataset.action;
@@ -20235,6 +20397,8 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'close-agent-finder': () => closeModal('agentFinderModalOverlay'),
                 'close-med-finder': () => closeModal('medFinderModalOverlay'),
                 'close-doc-modal': () => closeModal('docModalOverlay'),
+                'open-subcode-detail': () => openSubcodeModal(actionBtn.dataset.parent, actionBtn.dataset.subcode),
+                'close-subcode-modal': () => closeModal('subcodeDetailOverlay'),
                 'close-faq-modal': () => closeModal('faqModalOverlay'),
                 'close-hikorea-guide': () => closeModal('hikoreaGuideOverlay'),
                 'open-ai-modal': () => openAiModal(actionBtn.dataset.visaCode),
@@ -20365,6 +20529,16 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (sWrap && !sWrap.contains(e.target) && al) al.classList.remove('active');
     });
 
+    // Keyboard activation (Enter/Space) for role="button" subcode cards. Real
+    // <button> preview chips handle this natively, so they are skipped here.
+    document.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;
+        const card = e.target && e.target.closest && e.target.closest('[data-action="open-subcode-detail"]');
+        if (!card || card.tagName === 'BUTTON') return;
+        e.preventDefault();
+        openSubcodeModal(card.dataset.parent, card.dataset.subcode);
+    });
+
     document.addEventListener('keydown', e => {
         if (e.key === 'Enter' && e.target.classList.contains('logo-area')) {
             if (document.body.classList.contains('searched')) resetToLanding();
@@ -20375,7 +20549,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
