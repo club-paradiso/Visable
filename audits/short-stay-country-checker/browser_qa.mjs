@@ -215,7 +215,10 @@ const A = [
   ['태국', 'ordinary', 'tourism', 'mainland', 30, ['사증면제협정(B-1)', '90일']],
   ['인도', 'ordinary', 'business', 'mainland', 30, ['일반상용 사증(C-3-4)']],
   ['칠레', 'ordinary', 'business', 'mainland', 90, ['사증면제협정(B-1)', '활동범위']],
-  ['싱가포르', 'ordinary', 'transit', 'transit_only', 1, ['환승', 'C-3-10']],
+  ['싱가포르', 'ordinary', 'transit', 'transit_only', 1, ['공항 환승', '입국이 아니므로', 'C-3-10']],
+  ['시리아', 'ordinary', 'transit', 'transit_only', 1, ['순수환승 사증(C-3-10)', '체류기간 0일', '입국할 수 없습니다']],
+  ['이집트', 'diplomatic', 'transit', 'transit_only', 1, ['외교·관용여권', '사증 없이', '일반여권 소지자는 순수환승(C-3-10)']],
+  ['일본', 'ordinary', 'tourism', 'transit_only', 1, ['입국심사를 거치지 않고', '입국이 아니므로', '환승이 아니라 입국']],
   ['몽골', 'ordinary', 'medical', 'mainland', 20, ['의료관광 사증(C-3-3)']],
   ['미국', 'ordinary', 'overseas_korean', 'mainland', 60, ['동포방문(C-3-8)', 'F-4']]
 ];

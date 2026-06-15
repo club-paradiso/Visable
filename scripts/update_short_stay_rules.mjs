@@ -71,6 +71,32 @@ function isoOf(nameKo) {
   return hit.iso2;
 }
 
+// 순수환승(C-3-10): resolve the manual's 발급대상 nationality list to ISO codes so
+// the checker can answer "공항 환승만" cases per nationality/passport without
+// hardcoding the list in the renderer. Stays separate from the entry-oriented
+// purposeMap (transit through the airside area is NOT 입국).
+function buildTransitRule(tr) {
+  if (!tr || !tr.code) return null;
+  const namesKo = tr.visaRequiredNationalitiesKo || [];
+  return {
+    code: tr.code,
+    nameKo: tr.nameKo,
+    basis: tr.basis || null,
+    legalBasis: tr.legalBasis || null,
+    visaRequiredNationalitiesKo: namesKo,
+    visaRequiredIso2: namesKo.map(isoOf),
+    visaRequiredPassportScope: tr.visaRequiredPassportScope || 'ordinary',
+    diplomaticOfficialExempt: tr.diplomaticOfficialExempt !== false,
+    validity: tr.validity || null,
+    stayPeriod: tr.stayPeriod || null,
+    transitAreaHours: tr.transitAreaHours || null,
+    applicationDocsNote: tr.applicationDocsNote || null,
+    notVisaForEntry: tr.notVisaForEntry !== false,
+    notes: tr.notes || [],
+    sourceRefs: tr.sourceRefs || ['law_immigration_enforcement_decree_table_1', 'visa_manual_2026_05_b1_b2_c3']
+  };
+}
+
 // --- 3. Assemble per-country records ----------------------------------------
 const countries = {};
 function ensureCountry(nameKo) {
@@ -266,6 +292,7 @@ const rules = {
     c3Fallback: {
       basis: '출입국관리법 시행령 별표1 단기방문(C-3) — 90일 이내, 영리활동 불가',
       purposeMap: fxC3.purposeMap,
+      transitRule: buildTransitRule(fxC3.transitRule),
       sourceRefs: ['law_immigration_enforcement_decree_table_1', 'visa_manual_2026_05_b1_b2_c3']
     },
     stayExtensionWarning: {
@@ -430,6 +457,7 @@ const report = `# Short-stay rules update report
 - B-2-1 listed: ${Object.values(countries).filter(c => c.b21.listed).length}
 - Jeju entry-denied: ${rules.rules.b22JejuVisaFree.entryDeniedCount} (+${rules.rules.b22JejuVisaFree.entryDeniedConflictCount} conflict-flagged)
 - Stay-area expansion permit: all=${exp.allPassports.length}, official/ordinary=${exp.officialOrdinaryPassports.length}, ordinary=${exp.ordinaryPassports.length}
+- 순수환승(C-3-10) 사증 대상국: ${(rules.rules.c3Fallback.transitRule ? rules.rules.c3Fallback.transitRule.visaRequiredIso2.join(', ') : '없음')}
 - Vietnam (VN): b1.ordinaryEligible=${countries.VN.b1.ordinaryEligible}, b21.listed=${countries.VN.b21.listed}, jejuEntryDenied=${countries.VN.b22Jeju.jejuEntryDenied}, expansionPermit=${countries.VN.b22Jeju.stayAreaExpansionPermitRequired}
 
 Diff vs previous: see source_diff.json

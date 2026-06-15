@@ -105,6 +105,11 @@
     return '은(는)';
   }
   function withParticle(word) { return word + topicParticle(word); }
+  function uniq(arr) {
+    var out = [], seen = {};
+    (arr || []).forEach(function (x) { if (x != null && !seen[x]) { seen[x] = true; out.push(x); } });
+    return out;
+  }
 
   function resolveCountryAlias(input, rules) {
     var norm = normalizeCountryInput(input);
@@ -184,6 +189,7 @@
   var WARN_JEJU_SEPARATE = '제주 무사증은 일반 무사증/B-2-1·K-ETA와 별도 제도입니다.';
   var WARN_NO_EXTENSION = 'B-1·B-2로 입국한 경우 원칙적으로 체류기간 연장·체류자격 변경이 허용되지 않습니다. 허용 기간을 초과해 머무르려면 사증을 받아 입국해야 합니다.';
   var WARN_CONSULATE_VARIES = '재외공관별 제출서류와 심사 기준은 다를 수 있습니다. 항공권 구매 전 관할 재외공관 또는 비자포털에서 확인하세요.';
+  var WARN_TRANSIT_NOT_ENTRY = '공항 밖으로 나가는 것은 환승이 아니라 입국입니다. 입국이 필요하면 무사증·사증 등 입국 경로를 별도로 확인해야 합니다.';
 
   /* -------------------------------------------------------------- the engine */
   function getShortStayEntryOptions(input, rules) {
@@ -223,6 +229,17 @@
       r.warnings.push('여권 종류를 모르는 경우 일반여권 기준으로 안내합니다. 외교·관용·특별여권은 적용 범위가 다를 수 있습니다.');
     }
 
+    /* --- pure airport transit (공항 환승만) ------------------------------------
+       Resolved FIRST, before the passport/purpose branches: airside transit is
+       not 입국 (출입국관리법 제7조), so the right answer depends on the C-3-10
+       순수환승 nationality/passport rule, not on the entry-oriented logic below.
+       Kept strictly separate from entry routes; never claims transit/boarding is
+       guaranteed. */
+    if (destination === 'transit_only' || (purpose === 'transit' && destination === 'unknown')) {
+      resolveTransit(r, c, passport, rules);
+      return finalizeResult(r, rules);
+    }
+
     /* --- non-ordinary passports: stored data is partial → official check --- */
     if (!ordinaryLike) {
       var dipl = c.b1 && c.b1.diplomaticOfficialOnly;
@@ -257,25 +274,6 @@
         '관할 재외공관 또는 비자포털에서 해당 활동에 맞는 자격(C-4, E 계열 등)을 확인하세요.'
       ];
       r.warnings.push('무사증·관광 목적 입국 후 보수 활동을 하면 출입국관리법 위반이 될 수 있습니다.');
-      r.warnings.push(WARN_FINAL_DECISION);
-      return finalizeResult(r, rules);
-    }
-
-    /* --- pure transit -------------------------------------------------------- */
-    if (destination === 'transit_only' || (purpose === 'transit' && destination === 'unknown')) {
-      r.primary = {
-        path: '환승 절차(순수환승 C-3-10 안내)',
-        status: 'needs_official_check',
-        explanation: [
-          '입국심사를 거치지 않는 공항 환승은 별도 입국 경로가 필요하지 않은 경우가 많지만, 국적·노선에 따라 환승 사증 또는 순수환승(C-3-10)이 필요할 수 있습니다.',
-          '순수환승(C-3-10)은 제3국행 연결편 환승을 위한 것으로, 일반적인 입국 목적에는 적합하지 않습니다.'
-        ]
-      };
-      r.steps = [
-        '이용 항공사에 환승 가능 여부와 환승구역 통과 조건을 확인하세요.',
-        '입국(공항 밖 이동)이 필요하면 관광·방문 경로를 별도로 확인하세요.'
-      ];
-      r.warnings.push(WARN_AIRLINE);
       r.warnings.push(WARN_FINAL_DECISION);
       return finalizeResult(r, rules);
     }
@@ -526,6 +524,97 @@
     if (purpose === 'medical') base.unshift('법무부 지정 의료기관의 초청·예약을 먼저 확인하세요.');
     return base;
   }
+  function transitNoVisaSteps() {
+    return [
+      '이용 항공사에 환승 가능 여부와 환승구역 통과 조건(연결편 항공권 등)을 확인하세요.',
+      '공항 밖으로 나가거나 입국심사가 필요하면, 그것은 환승이 아니라 입국이므로 방문 지역을 선택해 입국 경로를 다시 확인하세요.',
+      '최종 목적지(제3국)의 입국·비자 요건도 함께 확인하세요.'
+    ];
+  }
+  /* Pure airport-transit (공항 환승만) resolver. Mutates r. Manual/legal basis is
+     carried in rules.rules.c3Fallback.transitRule (순수환승 C-3-10). Distinguishes:
+       (1) C-3-10 사증 대상 일반여권 (시리아·수단·예멘·이집트) → 사증 필요,
+       (2) 같은 국적의 외교·관용여권 → 매뉴얼상 면제,
+       (3) C-3-10 대상이나 특별/서비스여권 등 → 매뉴얼 미명시 → 공식 확인,
+       (4) 그 밖의 국적 → 입국심사 없는 환승은 원칙적으로 별도 사증 불요.
+     Never claims transit/boarding/entry is guaranteed. */
+  function resolveTransit(r, c, passport, rules) {
+    var tr = (rules.rules.c3Fallback && rules.rules.c3Fallback.transitRule) || {};
+    var ordinaryLike = passport === 'ordinary' || passport === 'unknown';
+    var diplomaticOfficial = passport === 'diplomatic' || passport === 'official';
+    var listed = (tr.visaRequiredIso2 || []).indexOf(c.iso2) !== -1;
+    var hours = tr.transitAreaHours || 72;
+    /* attach the manual/law as the basis for this transit answer */
+    r.sourceRefs = uniq((tr.sourceRefs || []).concat(r.sourceRefs || []));
+
+    /* (1) C-3-10 사증 대상 일반여권 */
+    if (listed && ordinaryLike) {
+      r.primary = {
+        path: '순수환승 사증(C-3-10) 신청',
+        status: 'transit_visa_required',
+        explanation: [
+          c.nameKo + ' 일반여권 소지자가 대한민국을 경유해 제3국으로 가려면, 입국심사를 거치지 않는 공항 환승이라도 현재 반영된 공식 매뉴얼 기준 순수환승(C-3-10) 사증을 받아야 합니다.',
+          '순수환승(C-3-10)은 ' + (tr.validity || '단수사증') + ' · ' + (tr.stayPeriod || '체류기간 0일') + '이며, 환승구역 내에서 ' + hours + '시간 동안 임시 체재만 가능합니다. 입국심사(입국) 목적으로는 사용할 수 없습니다.',
+          (passport === 'unknown' ? '외교·관용여권 소지자는 순수환승(C-3-10) 사증 없이 환승할 수 있습니다.' : null)
+        ].filter(Boolean)
+      };
+      r.steps = [
+        tr.applicationDocsNote ? (tr.applicationDocsNote + '를 준비하세요.') : '여행계획서 등 제출서류를 준비하세요.',
+        '관할 재외공관에 순수환승(C-3-10) 사증을 신청하세요.',
+        '연결편 항공권과 최종 목적지(제3국)의 입국·비자 요건을 함께 확인하세요.'
+      ];
+      r.warnings.push('순수환승(C-3-10)으로는 대한민국에 입국(공항 밖 이동)할 수 없습니다. 한국을 방문하려면 목적에 맞는 사증을 별도로 받아 입국해야 합니다.');
+      r.warnings.push(WARN_AIRLINE, WARN_FINAL_DECISION);
+      return r;
+    }
+
+    /* (2) 같은 국적의 외교·관용여권 → 매뉴얼상 C-3-10 면제 */
+    if (listed && diplomaticOfficial && tr.diplomaticOfficialExempt) {
+      r.primary = {
+        path: '공항 환승 (외교·관용여권 순수환승 사증 면제)',
+        status: 'transit_no_visa',
+        explanation: [
+          '현재 반영된 공식 매뉴얼 기준, ' + c.nameKo + ' 외교·관용여권 소지자는 순수환승(C-3-10) 사증 없이 대한민국 공항에서 환승할 수 있습니다.',
+          '입국심사를 거치지 않고 환승구역만 통과하는 환승은 출입국관리법 제7조의 사증이 필요한 입국에 해당하지 않습니다.',
+          '같은 국적이라도 일반여권 소지자는 순수환승(C-3-10) 사증이 필요합니다.'
+        ]
+      };
+      r.steps = transitNoVisaSteps();
+      r.warnings.push(WARN_TRANSIT_NOT_ENTRY, WARN_AIRLINE, WARN_FINAL_DECISION);
+      return r;
+    }
+
+    /* (3) C-3-10 대상국이나 일반/외교·관용 외 여권(특별·서비스 등) → 매뉴얼 미명시 */
+    if (listed) {
+      r.primary = {
+        path: '환승 사증 필요 여부 공식 확인',
+        status: 'needs_official_check',
+        explanation: [
+          c.nameKo + ' 일반여권은 순수환승(C-3-10) 사증이 필요하고 외교·관용여권은 면제되지만, 선택하신 여권 종류는 공식 매뉴얼에 환승 기준이 명시되어 있지 않아 단정하기 어렵습니다.',
+          '관할 재외공관 또는 1345에서 해당 여권 종류의 순수환승(C-3-10) 사증 필요 여부를 확인하세요.'
+        ]
+      };
+      r.steps = [
+        '관할 재외공관 또는 1345에 해당 여권 종류의 순수환승(C-3-10) 사증 필요 여부를 문의하세요.',
+        '연결편 항공권과 최종 목적지(제3국)의 입국·비자 요건을 함께 확인하세요.'
+      ];
+      r.warnings.push(WARN_TRANSIT_NOT_ENTRY, WARN_AIRLINE, WARN_FINAL_DECISION);
+      return r;
+    }
+
+    /* (4) 그 밖의 모든 국적 → 입국심사 없는 공항 환승은 원칙적으로 별도 사증 불요 */
+    r.primary = {
+      path: '공항 환승 (입국심사 없이 환승구역 통과)',
+      status: 'transit_no_visa',
+      explanation: [
+        '입국심사를 거치지 않고 공항 환승구역만 통과하는 환승은 대한민국 입국이 아니므로, 현재 반영된 공식 기준으로는 별도의 대한민국 사증이 필요하지 않은 경우가 많습니다.',
+        '다만 순수환승(C-3-10) 사증 대상 국적(시리아·수단·예멘·이집트 일반여권)이거나 노선·항공사 규정에 따라 환승 조건이 달라질 수 있습니다.'
+      ]
+    };
+    r.steps = transitNoVisaSteps();
+    r.warnings.push(WARN_TRANSIT_NOT_ENTRY, WARN_AIRLINE, WARN_FINAL_DECISION);
+    return r;
+  }
   function ketaStepText(c, rules, ageGroup) {
     var b21node = rules.rules.b21GeneralVisaFreeKeta || {};
     var keta = b21node.ketaProgram || {};
@@ -590,6 +679,21 @@
         headline: '제주 무사증으로 제주를 방문할 수 있습니다',
         summary: name + ' ' + withParticle(passportLabelKo(r.passportType)) +
           ' 현재 저장된 제주 무사증 고시 기준 입국불허 국가가 아니므로, 제주만 방문하는 경우 사증 없이 제주 무사증(B-2-2)으로 입국할 수 있습니다(체류 ' + jstay + '일). 제주 직항 등 인정 입국경로 조건과 아래 “반드시 확인할 점”을 함께 확인하세요.'
+      };
+    }
+    if (st === 'transit_visa_required') {
+      return {
+        tone: 'visa',
+        headline: '환승에도 순수환승(C-3-10) 사증이 필요합니다',
+        summary: name + ' ' + withParticle(passportLabelKo(r.passportType)) +
+          ' 현재 저장된 공식 매뉴얼 기준 순수환승(C-3-10) 사증 대상입니다. 입국심사를 거치지 않는 공항 환승이라도 사증이 필요하며, 이 사증으로는 입국할 수 없습니다(체류 0일).'
+      };
+    }
+    if (st === 'transit_no_visa') {
+      return {
+        tone: 'transit',
+        headline: '사증 없이 공항 환승이 가능한 경우입니다',
+        summary: '입국심사를 거치지 않고 환승구역만 통과하는 환승은 대한민국 입국이 아니므로 별도 사증이 필요하지 않은 경우가 많습니다. 공항 밖으로 나가려면 입국 경로를 별도로 확인하세요. 탑승·환승 가능 여부는 항공사·노선 규정에 따릅니다.'
       };
     }
     if (st === 'not_available') {
@@ -734,6 +838,8 @@
 '.ssc-verdict-go .ssc-verdict-head{color:var(--cSt,#0a7a5c);}' +
 '.ssc-verdict-jeju{background:var(--acG,rgba(14,163,123,.10));border-color:var(--cSt,#0EA37B);}' +
 '.ssc-verdict-jeju .ssc-verdict-head{color:var(--cSt,#0a7a5c);}' +
+'.ssc-verdict-transit{background:var(--acG,rgba(47,94,103,.10));border-color:var(--ac,#2f5e67);}' +
+'.ssc-verdict-transit .ssc-verdict-head{color:var(--ac,#2f5e67);}' +
 '.ssc-verdict-visa{background:var(--cyL,#FFE2DB);border-color:var(--cy,#FF6B5B);}' +
 '.ssc-verdict-visa .ssc-verdict-head{color:var(--hlT,#8A3426);}' +
 '.ssc-verdict-check{background:var(--bg2,#f7f3ea);border-color:var(--cWk,#E68A3A);}' +
@@ -801,6 +907,8 @@
   function statusBadge(status) {
     if (status === 'likely_available') return '<span class="ssc-status ssc-status-likely">확인 가능 경로</span>';
     if (status === 'jeju_visa_free') return '<span class="ssc-status ssc-status-jeju">제주 무사증 가능</span>';
+    if (status === 'transit_no_visa') return '<span class="ssc-status ssc-status-jeju">환승 사증 불요</span>';
+    if (status === 'transit_visa_required') return '<span class="ssc-status ssc-status-visa">순수환승 사증 필요</span>';
     if (status === 'visa_required') return '<span class="ssc-status ssc-status-visa">사증 필요</span>';
     if (status === 'not_available') return '<span class="ssc-status ssc-status-visa">불가</span>';
     return '<span class="ssc-status ssc-status-check">공식 확인 필요</span>';
@@ -830,8 +938,8 @@
         countryNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul></div>'
       : '';
     var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
-    var toneClass = { go: 'ssc-verdict-go', jeju: 'ssc-verdict-jeju', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
-    var toneIcon = { go: '✅', jeju: '🛫', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
+    var toneClass = { go: 'ssc-verdict-go', jeju: 'ssc-verdict-jeju', transit: 'ssc-verdict-transit', visa: 'ssc-verdict-visa', check: 'ssc-verdict-check' }[v.tone] || 'ssc-verdict-check';
+    var toneIcon = { go: '✅', jeju: '🛫', transit: '✈️', visa: '📋', check: '⚠️' }[v.tone] || '⚠️';
     return '' +
       '<div class="ssc-verdict ' + toneClass + '" role="status">' +
         '<span class="ssc-verdict-icon" aria-hidden="true">' + toneIcon + '</span>' +
