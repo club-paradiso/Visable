@@ -1155,5 +1155,15 @@
     "查看依据",
     "为何受限？"
   ],
+  "issuanceStageLabel": "入境前签证签发",
+  "issuanceRouteLabel": "申请途径",
+  "issuanceRouteChipLabels": [
+    "在外公馆申请",
+    "签证签发认定书",
+    "电子签证",
+    "签证门户确认",
+    "邀请机构·雇主办理",
+    "需向公馆确认"
+  ],
   "resultTotalSuffix": "共{count}项"
 }

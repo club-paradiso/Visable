@@ -188,6 +188,23 @@ check('UI avoids stale exact-rank 6/5 filters',
 check('UI uses numeric exact-code thresholds',
   indexHtml.includes('v._exactRank >= 10000') && indexHtml.includes('v._exactRank >= 5000'));
 
+// --- Unified issuance procedure UI + F-4 exclusion (2026-06 UI unification) ---
+const koI18n = readJson('data/i18n/ko.json') || {};
+check('F-4 stays out of the generic issuance renderer (exclusion set present)',
+  /GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHtml));
+check('renderVisaIssuanceSection guards excluded codes before rendering',
+  /function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded\(\s*v\.code\s*\)/.test(indexHtml));
+check('F-4 keeps its dedicated diaspora route guide wiring',
+  indexHtml.includes('assets/js/f4-route-guide.js') && indexHtml.includes('id="f4RouteGuide"'));
+check('F-4 issuance record still present (excluded by code, not by data deletion)',
+  issuanceByCode.has('F-4'));
+check('UI derives standardized application-route chips',
+  indexHtml.includes('function deriveIssuanceRouteChips') && indexHtml.includes('issuance-route-chip'));
+check('issuance route chip labels exist as a 6-item i18n pack',
+  Array.isArray(koI18n.issuanceRouteChipLabels) && koI18n.issuanceRouteChipLabels.length === 6);
+check('issuance stage label routed through i18n',
+  indexHtml.includes("tx('issuanceStageLabel')") && !!koI18n.issuanceStageLabel);
+
 // Static safety check for user-visible enum leakage in the new renderer.
 const newUiRenderer = (indexHtml.match(/function renderVisaIssuanceSection[\s\S]*?function renderCautionBlock/) || [''])[0];
 for (const enumName of ['source_confirmed', 'not_applicable', 'visa_issuance_confirmation', 'consular_discretion']) {

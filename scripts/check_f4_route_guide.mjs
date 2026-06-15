@@ -231,6 +231,9 @@ ok(/data\/f4\/(base|diagnostic|faq|countries|country_overlays|sources)\.json/.te
   'guide JS fetches the external data/f4 files');
 ok(indexHtml.includes('assets/js/f4-route-guide.js'), 'index.html loads the deferred guide script');
 ok(indexHtml.includes('id="f4RouteGuide"'), 'index.html has the guide mount section');
+ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHtml)
+  && /function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded/.test(indexHtml),
+  'F-4 is excluded from the generic visa-issuance renderer (keeps its dedicated route guide)');
 ok(guideJs.includes('mountEntryPanel') && guideJs.includes('entryPanelHtml'), 'compact diagnostic entry panel rendered (not full hub)');
 ok(guideJs.includes('F-4 절차 확인하기') || diagnostic.ctaLabel === 'F-4 절차 확인하기', 'primary CTA opens the modal');
 ok(guideJs.includes("d.title") || guideJs.includes('diagnostic.title'), 'entry panel shows the diagnostic title');
