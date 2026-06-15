@@ -106,3 +106,26 @@ page + 실제 서류 표시 확인. 보호파일(`visa_data.json`·`doc_master.j
 
 권고: 본 23건은 매뉴얼 인용 페이지 기반 기계추출(confidence=medium)이므로,
 인용 페이지 대조 사람 spot-check 후 보류 항목(A-1·F-4·특수트랙)으로 확대 권장.
+
+## 보류 항목 처리 완료 — limited 0 (인터넷 차단, 법령·매뉴얼 기준)
+인터넷(visa.go.kr·law.go.kr 등 전부 403 차단)은 사용 불가하여, 보유 **법령·매뉴얼**
+원문으로 보류 7종을 모두 확인·반영. 비보호 파일만 수정.
+
+source_confirmed 승격(4, 매뉴얼 원문 서류 확정):
+- **D-4-1 한국어연수**(62–68p), **D-4-2K 기업맞춤형인턴십/K-Trainee**(76–78p),
+  **F-4 재외동포**(389–395p, 기존 레코드 보강), **K-STAR 비자트랙**(456–462p,
+  국내 자격변경 F-2-7S·F-5-S1 등 운영 명시).
+
+contextual 반영(3, 단일 확정 서류목록 없음 — 정직 표기):
+- **A-1 외교**: 외교공한(구상서)·외교여권 등 외교경로 처리 → 일반 첨부서류 목록과
+  다름. 배지 "관련 공식근거 있음".
+- **REGION-S 지역특화·광역형**, **YOUTH-STAY 국내성장 청소년**: 세부 체류자격
+  (F-2-R·F-4 / D-2·E-7 등) 절차로 라우팅되는 프로그램 집계 → 해당 자격 안내 포인터.
+
+최종 visa_issuance 근거등급: **source_confirmed 36 · contextual 3 · not_applicable 3
+(B-1·B-2·H-2) · limited 0**.
+
+검증: `validate_visa_issuance_enrichment.js` 402 pass / 0 fail,
+`check_source_grounding_metadata.py` OK, placeholder suppression 19/19,
+헤드리스 Chromium 표본(F-4 "공식근거 직접 확인", A-1·REGION-S "관련 공식근거 있음")
+렌더 확인. 보호파일(`visa_data.json`·`doc_master.json`) 무변경.

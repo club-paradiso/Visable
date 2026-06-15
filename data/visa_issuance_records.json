@@ -678,13 +678,13 @@
       "titleEn": "Overseas Korean",
       "manualSource": {
         "manual": "visa_manual_2026_05_21",
-        "sectionTitle": "§38 외국국적동포 사증발급 안내(F-4/H-2 참조)",
+        "sectionTitle": "§36 외국국적동포 - 재외동포(F-4)",
         "pages": [
-          379,
-          444
+          389,
+          395
         ],
         "sourceRevisionDate": "2026-05-21",
-        "extractionConfidence": "low"
+        "extractionConfidence": "medium"
       },
       "issuanceSummaryKo": "재외동포(F-4)는 외국국적동포 하위 매뉴얼과 연결되는 항목입니다. 현재 POC는 공식 위치와 일반 경로를 묶고, 2026년 동포 제도 변경 후속 검토를 명시합니다.",
       "issuanceSummaryEn": "F-4 is tied to the overseas Korean sub-manual. This POC binds the official location and general route, with follow-up review for 2026 changes.",
@@ -715,16 +715,19 @@
           ],
           "documents": {
             "common": [
-              "외국국적동포 입증자료",
-              "여권 및 신분자료"
+              "사증발급신청서(별지 제17호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
             ],
             "additional": [
-              "범죄경력증명서",
-              "한국어능력 또는 사회통합 관련 자료"
+              "외국국적동포 입증서류(가족관계기록·제적등본·호구부·거민증·출생증명서 등)",
+              "한국어능력 입증서류(별첨2 기준)",
+              "해외 범죄경력증명서(별첨1 기준)"
             ],
             "conditional": [
-              "국적상실·이탈 또는 가족관계 관련 자료",
-              "공관별 추가서류"
+              "세부대상(F-4-41·F-4-42 등)별 추가 신청서류",
+              "재외동포(F-4) 취업활동 제한직업 비취업 서약서"
             ]
           },
           "warnings": [
@@ -733,11 +736,10 @@
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§38 외국국적동포 사증발급 안내(F-4/H-2 참조)",
-              "pageStart": 379,
-              "pageEnd": 444,
-              "sourceRevisionDate": "2026-05-21",
-              "extractionConfidence": "medium"
+              "sectionTitle": "§36 외국국적동포 - 재외동포(F-4)",
+              "pageStart": 389,
+              "pageEnd": 395,
+              "sourceRevisionDate": "2026-05-21"
             }
           ]
         }
@@ -2654,6 +2656,414 @@
               "sectionTitle": "§ 협정(A-3)",
               "pageStart": 13,
               "pageEnd": 13,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-4-1",
+      "titleKo": "한국어연수",
+      "titleEn": "Korean Language Training",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§10 유학·연수 - 한국어연수(D-4-1)",
+        "pages": [
+          62,
+          68
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "한국어연수(D-4-1)는 대학부설 어학원 등의 한국어 연수 과정에 대한 사증발급 항목입니다.",
+      "issuanceSummaryEn": "Korean language training (D-4-1) at university-affiliated institutes.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "한국어연수(D-4-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Korean Language Training (D-4-1).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's documents (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission/office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급(인정)신청서",
+              "여권 사본",
+              "표준규격사진 1매"
+            ],
+            "additional": [
+              "교육기관 사업자등록증(또는 고유번호증) 사본",
+              "표준입학허가서(대학 총·학장 발행)",
+              "최종학력 입증서류",
+              "재정능력 입증서류(잔고증명 등)"
+            ],
+            "conditional": [
+              "결핵진단서(해당자)",
+              "부모 잔고증명 제출 시 가족관계 입증서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§10 유학·연수 - 한국어연수(D-4-1)",
+              "pageStart": 62,
+              "pageEnd": 68,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "D-4-2K",
+      "titleKo": "기업맞춤형인턴십(K-Trainee)",
+      "titleEn": "Customized Internship (K-Trainee)",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§13 일반연수 - 기업맞춤형 인턴십(D-4-2, K-Trainee)",
+        "pages": [
+          76,
+          78
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "기업맞춤형 인턴십(K-Trainee, D-4-2 계열)에 대한 사증발급 항목입니다.",
+      "issuanceSummaryEn": "Customized corporate internship (K-Trainee).",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "신청 경로 및 제출서류 확인",
+          "labelEn": "Confirm route and documents",
+          "appliesToKo": "기업맞춤형인턴십(K-Trainee)(D-4-2K) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Customized Internship (K-Trainee) (D-4-2K).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's documents (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission/office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "교육기관 사업자등록증(또는 고유번호증) 사본",
+              "표준입학허가서(대학 총·학장 발행)",
+              "재학증명서 또는 최종학력 입증서류",
+              "재정 입증서류"
+            ],
+            "conditional": [
+              "부·모 잔고증명서 제출 시 가족관계증명서"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§13 일반연수 - 기업맞춤형 인턴십(D-4-2, K-Trainee)",
+              "pageStart": 76,
+              "pageEnd": 78,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "K-STAR",
+      "titleKo": "K-STAR 비자트랙",
+      "titleEn": "K-STAR Visa Track",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§41 K-STAR 비자트랙 제도",
+        "pages": [
+          456,
+          462
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "K-STAR 비자트랙은 과학기술 우수인재 대상 제도로, 주로 국내 체류자격 변경(F-2-7S·F-5-S1 등)으로 운영됩니다.",
+      "issuanceSummaryEn": "K-STAR track for science/tech talent (mainly domestic status change to F-2-7S/F-5-S1).",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "K-STAR 신청 경로 및 제출서류 확인",
+          "labelEn": "K-STAR route and documents",
+          "appliesToKo": "K-STAR 비자트랙(K-STAR) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For K-STAR Visa Track (K-STAR).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
+              "en": "Identify your subtype and route."
+            },
+            {
+              "order": 2,
+              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
+              "en": "Prepare the manual's documents (common + status-specific)."
+            },
+            {
+              "order": 3,
+              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
+              "en": "Submit at the competent mission/office. Documents may be added or reduced during review."
+            }
+          ],
+          "documents": {
+            "common": [
+              "신청서",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [
+              "대학 총장(부총장) 추천서",
+              "학위취득(예정)증명서 또는 졸업(예정)증명서",
+              "해외 범죄경력증명서",
+              "체류지 입증서류"
+            ],
+            "conditional": [
+              "결핵진단서(해당자)",
+              "국내 신청 시 외국인등록증",
+              "석·박사 통합과정·박사 수료생 추가 학사서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§41 K-STAR 비자트랙 제도",
+              "pageStart": 456,
+              "pageEnd": 462,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "A-1",
+      "titleKo": "외교",
+      "titleEn": "Diplomatic",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§1 외교(A-1)",
+        "pages": [
+          6,
+          9
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "외교(A-1) 사증은 외교공한(구상서)·외교여권 등 외교경로로 처리되어 일반 신청 첨부서류 목록과 다릅니다.",
+      "issuanceSummaryEn": "A-1 diplomatic visas are processed via diplomatic channels (note verbale), not a standard applicant checklist.",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "외교(A-1) 사증발급 (외교경로)",
+          "labelEn": "A-1 issuance (diplomatic channel)",
+          "appliesToKo": "외교(A-1) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Diplomatic (A-1).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "외교(A-1) 대상(외교사절단·영사기관 구성원 및 그 가족 등) 여부를 확인합니다.",
+              "en": "Confirm A-1 eligibility (diplomatic/consular members and family)."
+            },
+            {
+              "order": 2,
+              "ko": "파견국 외교공한(구상서)·외교여권 등 외교경로 서류를 통해 진행합니다.",
+              "en": "Proceed via diplomatic channels (note verbale, diplomatic passport)."
+            },
+            {
+              "order": 3,
+              "ko": "세부 절차·수수료 면제 등은 관할 재외공관 및 외교부 안내를 확인합니다.",
+              "en": "Confirm details and fee exemptions with the mission/MOFA."
+            }
+          ],
+          "documents": {
+            "common": [],
+            "additional": [],
+            "conditional": [
+              "외교공한(구상서)·외교관여권 등 외교경로 서류(주재공관 경유)"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§1 외교(A-1)",
+              "pageStart": 6,
+              "pageEnd": 9,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "REGION-S",
+      "titleKo": "지역특화·광역형 비자 시범사업",
+      "titleEn": "Regional/Metro Pilot Visa",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§37·40 지역특화·광역형 비자",
+        "pages": [
+          430,
+          445
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "지역특화·광역형 비자 시범사업은 세부 체류자격(거주 F-2-R, 재외동포 F-4 등)으로 사증발급·변경이 진행됩니다.",
+      "issuanceSummaryEn": "Regional pilot programs route through underlying statuses (F-2-R, F-4, etc.).",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "지역특화·광역형 신청 경로 확인",
+          "labelEn": "Regional pilot route",
+          "appliesToKo": "지역특화·광역형 비자 시범사업(REGION-S) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Regional/Metro Pilot Visa (REGION-S).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "참여 지자체·요건과 해당 세부 체류자격(예: 거주 F-2-R)을 확인합니다.",
+              "en": "Confirm participating region, requirements, and underlying status (e.g., F-2-R)."
+            },
+            {
+              "order": 2,
+              "ko": "해당 세부 체류자격의 매뉴얼 기준 첨부서류와 지자체 추천·요건 서류를 준비합니다.",
+              "en": "Prepare the underlying status' documents plus local-government recommendation."
+            },
+            {
+              "order": 3,
+              "ko": "관할 기관에 제출합니다. 세부 요건은 해당 자격 안내·관할 기관 확인이 필요합니다.",
+              "en": "Submit; confirm details with the underlying status guidance and authority."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급신청서",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [],
+            "conditional": [
+              "세부 체류자격(F-2-R·F-4 등)별 추가서류 및 지자체 추천·요건 서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§37·40 지역특화·광역형 비자",
+              "pageStart": 430,
+              "pageEnd": 445,
+              "sourceRevisionDate": "2026-05-21"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "code": "YOUTH-STAY",
+      "titleKo": "국내 성장기반 외국인 청소년 취업·정주",
+      "titleEn": "Domestically-raised Foreign Youth",
+      "manualSource": {
+        "manual": "visa_manual_2026_05_21",
+        "sectionTitle": "§38 국내 성장기반 외국인 청소년",
+        "pages": [
+          470,
+          477
+        ],
+        "sourceRevisionDate": "2026-05-21",
+        "extractionConfidence": "medium"
+      },
+      "issuanceSummaryKo": "국내 성장기반 외국인 청소년 취업·정주 제도는 세부 체류자격(유학 D-2, 특정활동 E-7 등)으로 진행됩니다.",
+      "issuanceSummaryEn": "Youth track routes through underlying statuses (D-2, E-7, etc.).",
+      "issuanceModes": [
+        {
+          "type": "mixed",
+          "labelKo": "청소년 정주제도 신청 경로 확인",
+          "labelEn": "Youth track route",
+          "appliesToKo": "국내 성장기반 외국인 청소년 취업·정주(YOUTH-STAY) 사증발급을 신청하는 경우입니다.",
+          "appliesToEn": "For Domestically-raised Foreign Youth (YOUTH-STAY).",
+          "actor": "applicant",
+          "whereToApply": "overseas_mission",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "국내 성장기반 요건(국내 학교 재학·졸업 등)과 해당 세부 체류자격을 확인합니다.",
+              "en": "Confirm domestic-upbringing eligibility and underlying status."
+            },
+            {
+              "order": 2,
+              "ko": "해당 세부 체류자격의 매뉴얼 기준 첨부서류와 요건 입증서류를 준비합니다.",
+              "en": "Prepare underlying status documents and eligibility proof."
+            },
+            {
+              "order": 3,
+              "ko": "관할 기관에 제출합니다. 세부 요건은 해당 자격 안내·관할 기관 확인이 필요합니다.",
+              "en": "Submit; confirm details with underlying guidance and authority."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급(인정)신청서",
+              "여권",
+              "표준규격사진 1매",
+              "수수료"
+            ],
+            "additional": [],
+            "conditional": [
+              "세부 체류자격(D-2·E-7 등)별 추가서류 및 국내 성장기반 요건 입증서류"
+            ]
+          },
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§38 국내 성장기반 외국인 청소년",
+              "pageStart": 470,
+              "pageEnd": 477,
               "sourceRevisionDate": "2026-05-21"
             }
           ]

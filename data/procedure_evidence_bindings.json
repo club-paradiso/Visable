@@ -222,19 +222,28 @@
       "code": "D-4-1",
       "parentCode": "D-4-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§10 유학·연수 - 한국어연수(D-4-1)",
+          "pageStart": 62,
+          "pageEnd": 68,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 한국어연수(D-4-1) 항목(62–68p)에 근거합니다. 기관·국가별 추가서류와 수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 한국어연수(D-4-1) 항목(62–68p)에 근거합니다. 기관·국가별 추가서류와 수수료·처리기간은 관할 재외공관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "D-7",
@@ -699,28 +708,28 @@
       "code": "F-4",
       "parentCode": "F-4",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
+      "evidenceLevel": "source_confirmed",
       "manualSources": [
         {
           "manual": "visa_manual_2026_05_21",
-          "sectionTitle": "§38 외국국적동포 사증발급 안내(F-4/H-2 참조)",
-          "pageStart": 379,
-          "pageEnd": 444,
+          "sectionTitle": "§36 외국국적동포 - 재외동포(F-4)",
+          "pageStart": 389,
+          "pageEnd": 395,
           "sourceRevisionDate": "2026-05-21",
-          "extractionConfidence": "low"
+          "extractionConfidence": "medium"
         }
       ],
       "sourceBackedFields": {
         "applicability": true,
-        "documents": false,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
         "warnings": true
       },
-      "limitationReasonKo": "외국국적동포 하위 매뉴얼과 2026년 제도 변경 확인이 필요한 항목이라 제한 표시를 유지합니다.",
-      "userFacingExplanationKo": "외국국적동포 하위 매뉴얼과 2026년 제도 변경 확인이 필요한 항목이라 제한 표시를 유지합니다.",
-      "reviewStatus": "needs_official_web_overlay"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 재외동포(F-4) 항목(389–395p)에 근거합니다. 세부대상·국가별 추가서류와 수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 재외동포(F-4) 항목(389–395p)에 근거합니다. 세부대상·국가별 추가서류와 수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "F-5",
@@ -861,19 +870,28 @@
       "code": "A-1",
       "parentCode": "A-1",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "contextual",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§1 외교(A-1)",
+          "pageStart": 6,
+          "pageEnd": 9,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
+        "applicability": true,
         "documents": false,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "외교(A-1)는 외교공한(구상서)·외교여권 등 외교경로로 처리되어 일반 첨부서류 목록과 달라 확정 표시하지 않습니다. 세부 절차는 관할 재외공관·외교부 확인이 필요합니다.",
+      "userFacingExplanationKo": "외교(A-1)는 외교공한(구상서)·외교여권 등 외교경로로 처리되어 일반 첨부서류 목록과 달라 확정 표시하지 않습니다. 세부 절차는 관할 재외공관·외교부 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "A-2",
@@ -1014,73 +1032,109 @@
       "code": "D-4-2K",
       "parentCode": "D-4-2K",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§13 일반연수 - 기업맞춤형 인턴십(D-4-2, K-Trainee)",
+          "pageStart": 76,
+          "pageEnd": 78,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기업맞춤형 인턴십(D-4-2, K-Trainee) 항목(76–78p)에 근거합니다. 추가서류·수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 기업맞춤형 인턴십(D-4-2, K-Trainee) 항목(76–78p)에 근거합니다. 추가서류·수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "K-STAR",
       "parentCode": "K-STAR",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "source_confirmed",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§41 K-STAR 비자트랙 제도",
+          "pageStart": 456,
+          "pageEnd": 462,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
-        "documents": false,
+        "applicability": true,
+        "documents": true,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "표시된 제출서류는 2026.5 안내매뉴얼 K-STAR 비자트랙(456–462p)에 근거합니다. K-STAR는 주로 국내 체류자격 변경(F-2-7S·F-5-S1 등)으로 운영되며, 세부 요건·수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "표시된 제출서류는 2026.5 안내매뉴얼 K-STAR 비자트랙(456–462p)에 근거합니다. K-STAR는 주로 국내 체류자격 변경(F-2-7S·F-5-S1 등)으로 운영되며, 세부 요건·수수료·처리기간은 관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "REGION-S",
       "parentCode": "REGION-S",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "contextual",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§37·40 지역특화·광역형 비자",
+          "pageStart": 430,
+          "pageEnd": 445,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
+        "applicability": true,
         "documents": false,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "지역특화·광역형 비자는 세부 체류자격(F-2-R·F-4 등) 절차로 진행되어 단일 확정 서류목록으로 표시하지 않습니다. 해당 세부 자격 안내·지자체·관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "지역특화·광역형 비자는 세부 체류자격(F-2-R·F-4 등) 절차로 진행되어 단일 확정 서류목록으로 표시하지 않습니다. 해당 세부 자격 안내·지자체·관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     },
     {
       "code": "YOUTH-STAY",
       "parentCode": "YOUTH-STAY",
       "procedureType": "visa_issuance",
-      "evidenceLevel": "limited",
-      "manualSources": [],
+      "evidenceLevel": "contextual",
+      "manualSources": [
+        {
+          "manual": "visa_manual_2026_05_21",
+          "sectionTitle": "§38 국내 성장기반 외국인 청소년",
+          "pageStart": 470,
+          "pageEnd": 477,
+          "sourceRevisionDate": "2026-05-21",
+          "extractionConfidence": "medium"
+        }
+      ],
       "sourceBackedFields": {
-        "applicability": false,
+        "applicability": true,
         "documents": false,
         "timing": false,
         "fees": false,
         "channels": false,
-        "warnings": false
+        "warnings": true
       },
-      "limitationReasonKo": "이 체류자격은 공식 매뉴얼 구조화가 이번 POC 범위에 포함되지 않아 사증발급 안내를 확정 표시하지 않습니다.",
-      "userFacingExplanationKo": "아직 공식 매뉴얼 구조화가 완료되지 않은 항목입니다. 후속 PR에서 해당 매뉴얼 페이지와 구비서류를 분리 검증해야 합니다.",
-      "reviewStatus": "needs_manual_extraction"
+      "limitationReasonKo": "국내 성장기반 외국인 청소년 제도는 세부 체류자격(D-2·E-7 등) 절차로 진행되어 단일 확정 서류목록으로 표시하지 않습니다. 해당 세부 자격 안내·관할 기관 확인이 필요합니다.",
+      "userFacingExplanationKo": "국내 성장기반 외국인 청소년 제도는 세부 체류자격(D-2·E-7 등) 절차로 진행되어 단일 확정 서류목록으로 표시하지 않습니다. 해당 세부 자격 안내·관할 기관 확인이 필요합니다.",
+      "reviewStatus": "complete"
     }
   ]
 }
