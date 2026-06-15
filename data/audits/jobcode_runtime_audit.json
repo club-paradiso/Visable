@@ -1,0 +1,84 @@
+{
+  "schema_version": "2026-06-jobcode-runtime-audit",
+  "generated": "2026-06-14",
+  "runtime_file": "data/jobcode_master.json",
+  "occupation_count": 67,
+  "industry_count": 2038,
+  "total_count": 2105,
+  "expected_occupation_count": 1999,
+  "expected_industry_count": 2038,
+  "expected_total_count": 4037,
+  "occupation_source_runtime": "제8차 한국표준직업분류",
+  "industry_source_runtime": "제11차 한국표준산업분류",
+  "occupation_runtime_coverage_levels": {
+    "major": 10,
+    "middle": 57
+  },
+  "industry_runtime_coverage_levels": {
+    "major": 21,
+    "middle": 77,
+    "minor": 234,
+    "unit": 501,
+    "detailed_unit": 1205
+  },
+  "suspected_issue": "BEFORE: occupation table was 제7차 한국표준직업분류 (1,899 rows; middle 42 = '돌봄·보건 및 개인 생활 서비스직', no code 45) mislabeled via a public-data-portal source string; industry was already correct KSIC11 (2,038). AFTER: occupation rebuilt to 제8차 KSCO8 — verified 대분류(10)+중분류(57)=67 rows; minor/unit/detailed_unit pending the official KSCO8 full table (not downloadable in-sandbox; all *.go.kr hosts 403). Industry kept full and enriched. Drop data/generated/employment_reporting_ksco8_full_candidate.csv (1,999 rows) and re-run scripts/build_employment_reporting_dataset.py to reach the full table.",
+  "runtime_full_table_loaded": {
+    "occupation": false,
+    "industry": true
+  },
+  "edition_guard": {
+    "occupation_is_8th_edition": true,
+    "no_7th_edition_service_middle": true
+  },
+  "verified_sample_rows": [
+    {
+      "type": "occupation",
+      "code": "42",
+      "expected": "돌봄 및 보건 서비스직",
+      "actual": "돌봄 및 보건 서비스직"
+    },
+    {
+      "type": "occupation",
+      "code": "43",
+      "expected": "개인 생활 서비스직",
+      "actual": "개인 생활 서비스직"
+    },
+    {
+      "type": "occupation",
+      "code": "45",
+      "expected": "조리 및 음식 서비스직",
+      "actual": "조리 및 음식 서비스직"
+    },
+    {
+      "type": "industry",
+      "code": "J",
+      "expected": "정보통신업",
+      "actual": "정보통신업"
+    },
+    {
+      "type": "industry",
+      "code": "62",
+      "expected": "컴퓨터 프로그래밍, 시스템 통합 및 관리업",
+      "actual": "컴퓨터 프로그래밍, 시스템 통합 및 관리업"
+    },
+    {
+      "type": "industry",
+      "code": "62010",
+      "expected": "컴퓨터 프로그래밍 서비스업",
+      "actual": "컴퓨터 프로그래밍 서비스업"
+    }
+  ],
+  "failed_sample_rows": [
+    {
+      "type": "occupation",
+      "code": "222",
+      "expected": "컴퓨터 시스템 및 소프트웨어 전문가",
+      "actual": null
+    }
+  ],
+  "notes": [
+    "Occupation minor-level samples (e.g. 222) require the full KSCO8 table; they are",
+    "reported in failed_sample_rows until the official file is dropped into the pipeline.",
+    "Duplicate-code handling is type-scoped: occupation and industry code spaces are independent."
+  ]
+}

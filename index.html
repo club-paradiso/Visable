@@ -670,6 +670,109 @@ body.searched .ft { opacity: 1; }
 .jc-coverage-note { font-size: 0.73rem; color: var(--t3); padding: 0.3rem 0.5rem; margin-bottom: 0.4rem; }
 .jc-coverage-note:empty { display: none; }
 
+/* ════ Employment-reporting helper · redesigned (jc2) ═══════════════════════
+   Guided 직종(KSCO8)·업종(KSIC11) reference search. All colors use theme tokens,
+   so civic_editorial / archive_diary(Kitsch) / dark are supported automatically. */
+.jc2 { display: flex; flex-direction: column; gap: var(--sp-4); }
+.jc2-hero-sub { margin: 0 0 var(--sp-3); color: var(--t2); font-size: 0.9rem; line-height: 1.55; }
+.jc2-badges { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.jc2-badge { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.74rem; font-weight: 700; padding: 0.32rem 0.65rem; border-radius: var(--radius-full); border: 1px solid var(--bd); }
+.jc2-badge--trust { background: var(--acL); color: var(--ac2); border-color: var(--ac); }
+.jc2-badge--caution { background: color-mix(in srgb, var(--color-warning) 14%, var(--bg1)); color: var(--color-warning); border-color: color-mix(in srgb, var(--color-warning) 42%, var(--bd)); }
+
+.jc2-steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: var(--sp-2); }
+@media (min-width: 640px) { .jc2-steps { grid-template-columns: repeat(3, 1fr); } }
+.jc2-step { display: flex; gap: var(--sp-3); align-items: flex-start; padding: var(--sp-3); background: var(--bg1); border: 1px solid var(--bd2); border-radius: var(--radius-md); }
+.jc2-step-ic { font-size: 1.35rem; line-height: 1; flex: none; }
+.jc2-step-tx { display: flex; flex-direction: column; font-size: 0.85rem; min-width: 0; }
+.jc2-step-tx b { color: var(--t1); }
+.jc2-step-d { color: var(--t3); font-size: 0.77rem; margin-top: 0.15rem; }
+
+.jc2-searchpanel { display: flex; flex-direction: column; gap: var(--sp-3); }
+.jc2-search-wrap { position: relative; }
+.jc2-search-ic { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--t3); pointer-events: none; }
+.jc2-search-input { width: 100%; padding: 0.85rem 6rem 0.85rem 2.7rem; border: 1.5px solid var(--bd); border-radius: var(--radius-md); background: var(--bgI); color: var(--t1); font-size: 1rem; font-family: var(--ff) !important; outline: none; transition: border-color .18s, box-shadow .18s; }
+.jc2-search-input:focus { border-color: var(--ac); box-shadow: var(--shG); }
+.jc2-count { position: absolute; right: 0.55rem; top: 50%; transform: translateY(-50%); background: var(--bg2); color: var(--t2); padding: 0.25rem 0.6rem; border-radius: var(--radius-full); font-size: 0.71rem; font-weight: 700; pointer-events: none; white-space: nowrap; max-width: 5.2rem; overflow: hidden; text-overflow: ellipsis; }
+
+.jc2-filter { display: inline-flex; gap: 2px; padding: 3px; background: var(--bg2); border: 1px solid var(--bd2); border-radius: var(--radius-md); align-self: flex-start; }
+.jc2-seg { border: none; background: transparent; color: var(--t2); font-weight: 700; font-size: 0.82rem; font-family: var(--ff); padding: 0.42rem 0.95rem; border-radius: calc(var(--radius-md) - 2px); cursor: pointer; transition: var(--btn-tr); }
+.jc2-seg.is-on { background: var(--ac); color: #fff; }
+[data-theme="dark"] .jc2-seg.is-on { color: #0f172a; }
+.jc2-seg:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+
+.jc2-chips { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.jc2-chip { border: 1px solid var(--bd); background: var(--bg1); color: var(--t2); font-size: 0.8rem; font-weight: 600; font-family: var(--ff); padding: 0.36rem 0.78rem; border-radius: var(--radius-full); cursor: pointer; transition: var(--btn-tr); }
+.jc2-chip:hover { background: var(--acL); color: var(--ac2); border-color: var(--ac); }
+.jc2-chip:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+
+.jc2-ai-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; width: 100%; padding: 0.7rem; border: 1px dashed var(--bd3); background: transparent; color: var(--t2); font-weight: 700; font-size: 0.85rem; font-family: var(--ff); border-radius: var(--radius-md); cursor: pointer; transition: var(--btn-tr); }
+.jc2-ai-btn:hover { background: var(--bg1); color: var(--ac2); border-color: var(--ac); }
+.jc2-ai-btn:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+
+.jc2-note { font-size: 0.82rem; line-height: 1.55; padding: 0.7rem 0.9rem; border-radius: var(--radius-md); border-left: 3px solid var(--bd); }
+.jc2-note[hidden] { display: none; }
+.jc2-note--ambig { background: var(--acL); color: var(--t1); border-left-color: var(--ac); }
+.jc2-note--warn { background: color-mix(in srgb, var(--color-warning) 12%, var(--bg1)); color: var(--t1); border-left-color: var(--color-warning); }
+.jc2-coverage { font-size: 0.74rem; color: var(--t3); }
+.jc2-coverage:empty { display: none; }
+
+.jc2-results { display: grid; grid-template-columns: 1fr; gap: var(--sp-4); }
+@media (min-width: 820px) { .jc2-results { grid-template-columns: 1fr 1fr; } }
+.jc2.jc-filter-occupation .jc2-pane[data-pane="industry"], .jc2.jc-filter-industry .jc2-pane[data-pane="occupation"] { display: none; }
+.jc2.jc-filter-occupation .jc2-results, .jc2.jc-filter-industry .jc2-results { grid-template-columns: 1fr; }
+.jc2-pane { display: flex; flex-direction: column; min-width: 0; }
+.jc2-pane-h { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0 0 var(--sp-2); font-size: 0.95rem; font-weight: 800; color: var(--t1); }
+.jc2-pane-badge { font-size: 0.64rem; font-weight: 800; padding: 0.14rem 0.45rem; border-radius: var(--radius-full); }
+.jc2-pane-badge--occ { background: var(--acL); color: var(--ac2); }
+.jc2-pane-badge--ind { background: color-mix(in srgb, var(--cFm, #A84A6B) 16%, var(--bg1)); color: var(--cFm, #A84A6B); }
+.jc2-pane-tag { font-size: 0.68rem; font-weight: 600; color: var(--t3); }
+.jc2-list { display: flex; flex-direction: column; gap: var(--sp-2); max-height: 46vh; overflow-y: auto; padding: 2px; }
+
+.jc2-card { border: 1px solid var(--bd2); border-radius: var(--radius-md); background: var(--bg1); padding: 0.7rem 0.8rem; display: flex; flex-direction: column; gap: 0.4rem; transition: border-color .15s, box-shadow .15s; }
+.jc2-card:hover { border-color: var(--ac); box-shadow: var(--sh1); }
+.jc2-card:focus-within { border-color: var(--ac); box-shadow: var(--shG); }
+.jc2-card-top { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; }
+.jc2-code { font-family: 'SF Mono', Monaco, Consolas, monospace; font-weight: 800; background: var(--ac); color: #fff; padding: 0.2rem 0.5rem; border-radius: var(--radius-sm); font-size: 0.78rem; letter-spacing: .02em; }
+[data-theme="dark"] .jc2-code { color: #0f172a; }
+.jc2-card[data-type="industry"] .jc2-code { background: var(--cFm, #A84A6B); color: #fff; }
+.jc2-tb { font-size: 0.62rem; font-weight: 800; padding: 0.12rem 0.42rem; border-radius: var(--radius-sm); }
+.jc2-tb--occ { background: var(--acL); color: var(--ac2); }
+.jc2-tb--ind { background: color-mix(in srgb, var(--cFm, #A84A6B) 16%, var(--bg1)); color: var(--cFm, #A84A6B); }
+.jc2-lvl { font-size: 0.65rem; color: var(--t3); background: var(--bg2); padding: 0.12rem 0.42rem; border-radius: var(--radius-sm); }
+.jc2-card-name { font-size: 0.92rem; font-weight: 700; color: var(--t1); word-break: keep-all; line-height: 1.35; }
+.jc2-card-path { font-size: 0.72rem; color: var(--t3); line-height: 1.4; word-break: keep-all; }
+.jc2-card-why { font-size: 0.72rem; color: var(--ac2); }
+.jc2-select { align-self: flex-start; border: 1px solid var(--ac); background: transparent; color: var(--ac2); font-weight: 700; font-size: 0.76rem; font-family: var(--ff); padding: 0.32rem 0.85rem; border-radius: var(--radius-full); cursor: pointer; transition: var(--btn-tr); }
+.jc2-select:hover, .jc2-select.is-sel { background: var(--ac); color: #fff; }
+[data-theme="dark"] .jc2-select:hover, [data-theme="dark"] .jc2-select.is-sel { color: #0f172a; }
+.jc2-select:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; }
+.jc2-empty { text-align: center; color: var(--t3); font-size: 0.85rem; line-height: 1.6; padding: 1.4rem 1rem; }
+.jc2-empty b { color: var(--t2); display: block; margin-bottom: 0.3rem; }
+.jc2-empty ul { text-align: left; display: inline-block; margin: 0.5rem 0 0; padding-left: 1.1rem; }
+.jc2-loading { text-align: center; color: var(--t3); font-size: 0.85rem; padding: 1.4rem; }
+
+.jc2-summary { position: sticky; bottom: -1px; background: var(--bg0); border: 1.5px solid var(--ac); border-radius: var(--radius-md); padding: var(--sp-3); display: flex; flex-direction: column; gap: var(--sp-3); box-shadow: var(--shD); }
+.jc2-sum-grid { display: grid; gap: var(--sp-2); }
+.jc2-sum-row { display: flex; align-items: center; gap: var(--sp-3); justify-content: space-between; flex-wrap: wrap; }
+.jc2-sum-k { font-size: 0.78rem; font-weight: 700; color: var(--t2); flex: none; }
+.jc2-sum-v { font-size: 0.85rem; color: var(--t3); font-weight: 600; text-align: right; word-break: keep-all; }
+.jc2-sum-v.is-set { color: var(--ac2); }
+.jc2-income { font-family: var(--ff); font-size: 0.82rem; padding: 0.35rem 0.5rem; border: 1px solid var(--bd); border-radius: var(--radius-sm); background: var(--bgI); color: var(--t1); }
+.jc2-copy { width: 100%; border: none; background: var(--ac); color: #fff; font-weight: 800; font-size: 0.88rem; font-family: var(--ff); padding: 0.72rem; border-radius: var(--radius-md); cursor: pointer; transition: var(--btn-tr); }
+[data-theme="dark"] .jc2-copy { color: #0f172a; }
+.jc2-copy:hover { background: var(--ac2); }
+.jc2-copy.copied { background: var(--color-success); color: #fff; }
+.jc2-copy:focus-visible { outline: 2px solid var(--ac); outline-offset: 3px; }
+
+.jc2-disclaimer { font-size: 0.76rem; line-height: 1.6; color: var(--t3); border-top: 1px solid var(--bd2); padding-top: var(--sp-3); display: flex; flex-direction: column; gap: 0.35rem; }
+.jc2-disclaimer p { margin: 0; }
+.jc2-disclaimer b { color: var(--t2); }
+
+@media (prefers-reduced-motion: reduce) {
+  .jc2-card, .jc2-seg, .jc2-chip, .jc2-copy, .jc2-select, .jc2-ai-btn, .jc2-search-input { transition: none; }
+}
+
 .jur-section { padding: 1rem; background: var(--bg2); border-radius: 8px; margin-bottom: 0.8rem; }
 .jur-section:last-child { margin-bottom: 0; }
 .jur-section.jur-exception { background: var(--acL); border-left: 3px solid var(--ac); }
@@ -12991,43 +13094,97 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 <div class="modal-overlay" id="jobCodeModalOverlay" role="dialog" aria-modal="true" aria-labelledby="jobCodeModalTitle">
     <div class="modal-box" style="max-width: 860px;">
         <div class="modal-header">
-            <h2 id="jobCodeModalTitle" class="modal-title">💼 취업신고용 직종(KSCO8)·업종(KSIC11) 코드 찾기</h2>
+            <h2 id="jobCodeModalTitle" class="modal-title">🧭 취업정보 신고용 직종·업종 찾기</h2>
             <button type="button" class="modal-close" data-action="close-jobcode-modal" aria-label="닫기">✕</button>
         </div>
-        <div class="modal-body">
-            <div class="jc-search-wrap">
-                <label for="jcSearchInput" class="sr-only">업종 또는 직종 검색</label>
-                <input type="search" id="jcSearchInput" class="jc-search-input" placeholder="명칭 또는 상황 검색 (예: 영어 회화 강사, 중식당 종업원)" autocomplete="off">
-                <span id="jcCountBadge" class="jc-count-badge">0건</span>
+        <div class="modal-body jc2">
+            <!-- 1 · Header card -->
+            <div class="jc2-hero">
+                <p class="jc2-hero-sub" id="jcHeroSub">HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
+                <div class="jc2-badges">
+                    <span class="jc2-badge jc2-badge--trust" id="jcBadgeTrust">✓ 기준: KSCO8 · KSIC11</span>
+                    <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
+                </div>
             </div>
-            <div class="jc-ai-search-row">
-                <button type="button" class="ai-btn" data-action="search-jobcode-ai" style="width:100%; justify-content:center; padding:0.8rem;">
-                    <span id="jcNaturalSearchLabel">자연어 키워드로 공식 직종·업종 찾기</span>
-                    <div class="spinner" id="jcAiSpinner" style="margin-left:8px;"></div>
+
+            <!-- 2 · Source clarity strip (3 steps) -->
+            <ol class="jc2-steps" id="jcSteps" aria-label="신고 3단계">
+                <li class="jc2-step"><span class="jc2-step-ic" aria-hidden="true">🙋</span><span class="jc2-step-tx"><b>① 내 실제 일 찾기</b><span class="jc2-step-d">직종 = 내가 실제로 하는 일</span></span></li>
+                <li class="jc2-step"><span class="jc2-step-ic" aria-hidden="true">🏢</span><span class="jc2-step-tx"><b>② 회사/사업장 분야</b><span class="jc2-step-d">업종 = 회사·사업장이 하는 일</span></span></li>
+                <li class="jc2-step"><span class="jc2-step-ic" aria-hidden="true">💰</span><span class="jc2-step-tx"><b>③ 연간소득 구간</b><span class="jc2-step-d">소득 = 연간소득 구간</span></span></li>
+            </ol>
+
+            <!-- 3 · Search panel -->
+            <div class="jc2-searchpanel">
+                <div class="jc2-search-wrap">
+                    <svg class="jc2-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+                    <label for="jcSearchInput" class="sr-only">직종 또는 업종 검색</label>
+                    <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 개발자, 영어강사, 카페, 음식점, 제조업" autocomplete="off" aria-describedby="jcCountBadge">
+                    <span id="jcCountBadge" class="jc2-count" aria-live="polite">전체 보기</span>
+                </div>
+                <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택">
+                    <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all">전체</button>
+                    <button type="button" role="tab" class="jc2-seg" id="jcFilterOcc" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="occupation">직종만</button>
+                    <button type="button" role="tab" class="jc2-seg" id="jcFilterInd" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="industry">업종만</button>
+                </div>
+                <div class="jc2-chips" id="jcChips" aria-label="추천 검색어">
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="개발자">개발자</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영어강사">영어강사</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페">카페</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="음식점">음식점</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="연구원">연구원</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="통번역">통번역</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="자영업">자영업</button>
+                </div>
+                <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
+                    <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
+                    <span class="spinner" id="jcAiSpinner" style="display:none; margin-left:8px;"></span>
                 </button>
             </div>
 
-            <div id="jcCoverageNote" class="jc-coverage-note" aria-live="polite"></div>
+            <!-- guidance / status notes -->
+            <div id="jcAmbiguity" class="jc2-note jc2-note--ambig" role="status" hidden></div>
+            <div id="jcBoundaryWarn" class="jc2-note jc2-note--warn" role="status" hidden></div>
+            <div id="jcCoverageNote" class="jc2-coverage" aria-live="polite"></div>
 
-            <div class="jc-split-layout">
-                <div class="jc-pane">
-                    <div class="jc-pane-title">👔 직종 결과 <span class="jc-cls-tag">KSCO8 · 제8차 한국표준직업분류</span></div>
-                    <div id="jcJobResults" class="jc-results-split" aria-live="polite">
-                        <div class="jc-empty">처음 열면 데이터를 불러옵니다.</div>
-                    </div>
-                </div>
-                <div class="jc-pane">
-                    <div class="jc-pane-title">🏭 업종 결과 <span class="jc-cls-tag">KSIC11 · 제11차 한국표준산업분류</span></div>
-                    <div id="jcIndResults" class="jc-results-split" aria-live="polite">
-                        <div class="jc-empty">처음 열면 데이터를 불러옵니다.</div>
-                    </div>
-                </div>
+            <!-- 4 · Results -->
+            <div class="jc2-results">
+                <section class="jc2-pane" data-pane="occupation">
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> 직종 <span class="jc2-pane-badge jc2-pane-badge--occ">이건 직종입니다</span><span class="jc2-pane-tag">KSCO8 · 제8차 한국표준직업분류</span></h3>
+                    <div id="jcJobResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
+                </section>
+                <section class="jc2-pane" data-pane="industry">
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> 업종 <span class="jc2-pane-badge jc2-pane-badge--ind">이건 업종입니다</span><span class="jc2-pane-tag">KSIC11 · 제11차 한국표준산업분류</span></h3>
+                    <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
+                </section>
             </div>
 
-            <div class="jc-disclaimer">
-                ⚠️ <b>[실무 주의 사항]</b> HiKorea 외국인 취업정보 온라인 신고 시 <b>직종(직업)</b> 코드와 <b>업종(산업)</b> 코드를 모두 입력해야 하며, <b>연간소득</b> 정보도 필수입니다. 변동사항 발생 시 15일 이내에 신고하지 않으면 출입국관리법에 따라 범칙금이 부과될 수 있습니다.<br>
-                <b>[코드 확정]</b> 이 도구에서 찾은 코드는 반드시 <b>HiKorea 또는 1345(외국인종합안내센터)</b>에서 최종 확인하세요.<br>
-                <b>[적격성 심사 아님]</b> 이 분류 코드 탐색 도구는 취업정보 신고 편의를 위한 참고용이며, E-7 또는 다른 체류자격 적격성 심사와는 직접적인 관련이 없습니다.
+            <!-- 6 · Warnings -->
+            <div class="jc2-disclaimer">
+                <p>⚠ 이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
+                <p>📌 최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
+            </div>
+
+            <!-- 5 · Selected summary (sticky) -->
+            <div class="jc2-summary" id="jcSummary" aria-label="선택 요약">
+                <div class="jc2-sum-grid">
+                    <div class="jc2-sum-row"><span class="jc2-sum-k">선택한 직종</span><span class="jc2-sum-v" id="jcSelOcc">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row"><span class="jc2-sum-k">선택한 업종</span><span class="jc2-sum-v" id="jcSelInd">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row">
+                        <label class="jc2-sum-k" for="jcIncome">연간소득 구간</label>
+                        <select id="jcIncome" class="jc2-income">
+                            <option value="">선택 안 함</option>
+                            <option>소득없음</option>
+                            <option>연간 1천만 원 미만</option>
+                            <option>1천만~2천만 원 미만</option>
+                            <option>2천만~3천만 원 미만</option>
+                            <option>3천만~4천만 원 미만</option>
+                            <option>4천만~5천만 원 미만</option>
+                            <option>5천만 원 이상</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo">📋 HiKorea 입력용 메모 복사</button>
             </div>
         </div>
     </div>
@@ -13883,20 +14040,30 @@ function openFaqModal(visaCode) {
     openModal('faqModalOverlay');
 }
 
-// --- Job Code Modal ---
+// --- Job Code Modal · HiKorea 취업정보 신고용 직종(KSCO8)·업종(KSIC11) 참고 검색 ---
 const JOBCODE_TARGET_VISAS = ['E-1','E-2','E-3','E-4','E-5','E-6','E-7','E-8','E-9','E-10','H-1','H-2','D-8','D-9','D-10','F-2','F-4','F-5','F-6'];
 let _jobcodeData = null; let _jobcodeLoadPromise = null; let _jcSearchDebounce = null;
+let _jcFilter = 'all';
+let _jcSelected = { occupation: null, industry: null };
+let _jcIncome = '';
 const JOBCODE_JSON_PATHS = ['./data/jobcode_master.json', './data/output.json', './jobcode_master.json', './output.json'];
 const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람','직원','알바','파트타임','업무','관련','분야','직무','job','work','worker','staff','person','employee','part','time']);
+// Terms that legitimately match BOTH a 직종(person's job) and 업종(employer activity).
+const JC_AMBIGUOUS_TERMS = new Set(['카페','커피','음식점','식당','레스토랑','학원','호텔','병원','미용실','농장','공장','마트','편의점','술집','주점']);
+const JC_TYPE_LABEL = { occupation: '직종', industry: '업종' };
 const JOBCODE_QUERY_EXPANSIONS = [
-    { needles: ['영어','어학원','학원','선생','선생님','교사','강사','가르치','아이들 가르','아이 가르','english','teacher','instructor','academy','language','education','children'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학','문리','보육'] },
-    { needles: ['식당','음식점','주방','서빙','요리','조리','홀서빙','restaurant','kitchen','cook','server','food'], terms: ['음식','조리','주방','서빙','음식점','웨이터','요리','식음료','외식'] },
+    { needles: ['개발자','소프트웨어','프로그래머','코딩','웹개발','앱개발','developer','software','programmer','coding'], terms: ['개발자','소프트웨어','프로그래머','정보 통신','컴퓨터','it','개발'] },
+    { needles: ['영어','어학원','학원','선생','선생님','교사','강사','가르치','english','teacher','instructor','academy','language','education'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학'] },
+    { needles: ['식당','음식점','주방','서빙','요리','조리','홀서빙','카페','바리스타','restaurant','kitchen','cook','server','food','cafe','barista'], terms: ['음식','조리','주방','서빙','음식점','웨이터','요리','식음료','외식','카페','바리스타','커피'] },
     { needles: ['공장','제조','생산','조립','factory','manufacturing','production','assembly'], terms: ['제조','생산','조립','기계','공장','제조업'] },
-    { needles: ['청소','미화','cleaner','cleaning','housekeeping'], terms: ['청소','미화','환경','건물 관리','가사','housekeeping'] },
-    { needles: ['호텔','숙박','객실','hotel','hospitality','lodging'], terms: ['호텔','숙박','객실','접객','청소','서비스'] },
-    { needles: ['돌봄','간병','요양','care','caregiver','caregiving'], terms: ['간병','요양','돌봄','보육','사회복지','간호'] },
+    { needles: ['청소','미화','cleaner','cleaning','housekeeping'], terms: ['청소','미화','환경','가사'] },
+    { needles: ['호텔','숙박','객실','hotel','hospitality','lodging'], terms: ['호텔','숙박','객실','접객','서비스'] },
+    { needles: ['돌봄','간병','요양','care','caregiver'], terms: ['간병','요양','돌봄','보육','사회복지','간호','요양보호사'] },
     { needles: ['농장','농업','작물','farm','agriculture'], terms: ['농업','농장','작물','재배','축산'] },
-    { needles: ['배달','배송','택배','delivery','courier','logistics'], terms: ['배달','배송','택배','운송','물류'] }
+    { needles: ['배달','배송','택배','delivery','courier','logistics'], terms: ['배달','배송','택배','운송','물류'] },
+    { needles: ['연구원','연구','researcher','research'], terms: ['연구원','연구','전문가'] },
+    { needles: ['통번역','번역','통역','translator','interpreter'], terms: ['번역','통역','번역가','통역가','통번역'] },
+    { needles: ['자영업','자영업자','사장','상점','가게','소상공인','self-employed'], terms: ['자영업','소규모 상점','상점','판매','경영','소매'] }
 ];
 async function loadJobcodeData() {
     if (_jobcodeData) return _jobcodeData;
@@ -13925,7 +14092,7 @@ function updateJobcodeNaturalSearchLabel() {
 function normalizeJobcodeText(value) {
     return String(value || '')
         .toLowerCase()
-        .replace(/[(){}\[\],./|·•:;!?'"`~_+\-=]/g, ' ')
+        .replace(/[(){}\[\],.\/|·•∙:;!?'"`~_+\-=]/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
 }
@@ -13945,80 +14112,161 @@ function getJobcodeSearchTerms(query, extraTerms = []) {
     extraTerms.forEach(t => addJobcodeTerm(terms, t));
     return [...terms];
 }
+// new-schema field accessors (type/code/name_ko/search_terms_ko)
+function jcName(r) { return r.name_ko || r.상세설명 || ''; }
+function jcCode(r) { return r.code || r.코드값 || ''; }
+function jcType(r) { return r.type || (r.분류 === '산업' ? 'industry' : 'occupation'); }
+function jcTerms(r) { return Array.isArray(r.search_terms_ko) ? r.search_terms_ko : []; }
 function scoreJobcodeRow(row, query, terms) {
-    const desc = normalizeJobcodeText(row.상세설명 || '');
-    const code = normalizeJobcodeText(row.코드값 || '');
+    const name = normalizeJobcodeText(jcName(row));
+    const code = normalizeJobcodeText(jcCode(row));
+    const synonyms = jcTerms(row).map(normalizeJobcodeText);
     const q = normalizeJobcodeText(query);
     let score = 0;
     if (q && code === q) score += 1200;
     else if (q && code.startsWith(q)) score += 220;
-    if (q && desc === q) score += 500;
-    else if (q.length >= 2 && desc.includes(q)) score += 180 + Math.min(q.length, 20);
+    if (q && name === q) score += 520;
+    else if (q.length >= 2 && name.includes(q)) score += 180 + Math.min(q.length, 20);
+    if (q && synonyms.includes(q)) score += 360;
     terms.forEach(term => {
         if (code === term) score += 900;
-        else if (/^[0-9]+$/.test(term) && code.startsWith(term)) score += 180;
-        if (desc === term) score += 240;
-        else if (desc.includes(term)) score += 40 + Math.min(term.length * 4, 36);
+        else if (/^[0-9]+$/.test(term) && code.startsWith(term)) score += 160;
+        if (name === term) score += 260;
+        else if (name.includes(term)) score += 50 + Math.min(term.length * 4, 36);
+        if (synonyms.includes(term)) score += 120;
     });
     return score;
 }
-function getScoredJobcodeRows(type, query, terms, limit = 80) {
+function getScoredJobcodeRows(type, query, terms, limit = 60) {
     if (!_jobcodeData) return [];
     const q = normalizeJobcodeText(query);
+    const pool = _jobcodeData.data.filter(r => jcType(r) === type);
     if (!q && (!terms || !terms.length)) {
-        return _jobcodeData.data
-            .filter(r => r.분류 === type && (r.코드값 || '').length === 1)
-            .sort((a, b) => (a.코드값 || '').localeCompare(b.코드값 || ''));
+        // default browse: show top-level (대분류) categories
+        return pool.filter(r => (r.level ? r.level === 'major' : jcCode(r).length === 1))
+            .sort((a, b) => jcCode(a).localeCompare(jcCode(b)));
     }
-    return _jobcodeData.data
-        .filter(r => r.분류 === type)
-        .map(r => ({ ...r, score: scoreJobcodeRow(r, query, terms || []) }))
-        .filter(r => r.score > 0)
-        .sort((a, b) => b.score - a.score || (b.코드값 || '').length - (a.코드값 || '').length || (a.코드값 || '').localeCompare(b.코드값 || ''))
-        .slice(0, limit);
+    return pool
+        .map(r => ({ row: r, score: scoreJobcodeRow(r, query, terms || []) }))
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score || jcCode(a.row).length - jcCode(b.row).length || jcCode(a.row).localeCompare(jcCode(b.row)))
+        .slice(0, limit)
+        .map(x => Object.assign({}, x.row, { _score: x.score }));
 }
-function getJobcodeEmptyHtml(terms) {
-    const termText = (terms || []).slice(0, 10).map(t => `[${escapeHtml(t)}]`).join(' ');
-    return `<div class="jc-empty"><strong>${escapeHtml(tx('jobCodeNoConfirmed'))}</strong><br>${escapeHtml(tx('jobCodeNoConfirmedHint'))}<br>${escapeHtml(tx('jobCodeFinalCheck'))}${termText ? `<br><span style="font-size:0.75rem; color:var(--t3);">검색어: ${termText}</span>` : ''}</div>`;
+function jcMatchReason(row, query, terms) {
+    const q = normalizeJobcodeText(query);
+    const name = normalizeJobcodeText(jcName(row));
+    const code = normalizeJobcodeText(jcCode(row));
+    if (q && (code === q || code.startsWith(q)) && /[0-9a-z]/.test(q)) return `코드 ‘${escapeHtml(query.trim())}’ 일치`;
+    if (q && name.includes(q)) return '';
+    const syn = jcTerms(row).find(t => terms.includes(normalizeJobcodeText(t)) && !name.includes(normalizeJobcodeText(t)));
+    if (syn) return `‘${escapeHtml(syn)}’ 관련`;
+    return '';
 }
-function renderJobcodeRows(rows, box, terms, showWarning) {
-    const MAX_RENDER = 120, displayRows = rows.slice(0, MAX_RENDER);
-    if (!rows.length) { box.innerHTML = getJobcodeEmptyHtml(terms); return; }
-    const warningHtml = showWarning ? `<div class="jc-empty" style="color:var(--color-warning);">${escapeHtml(tx('jobCodePartial'))}</div>` : '';
-    const termHtml = terms && terms.length ? `<div style="padding: 0.4rem 0.8rem; background: var(--bg2); color: var(--ac); font-size: 0.75rem; font-weight:700; border-bottom:1px solid var(--bd2);">검색어: ${terms.slice(0, 12).map(k => `[${escapeHtml(k)}]`).join(' ')}</div>` : '';
-    const html = displayRows.map(r => {
-        const code = escapeHtml(r.코드값 || ''), desc = hl(r.상세설명 || '', terms || []), lv = Math.min(code.length, 5), levelLabel = ['', '대분류', '중분류', '소분류', '세분류', '세세분류'][lv] || '';
-        const scoreLabel = r.score ? `<span class="jc-level-tag">후보</span>` : '';
-        return `<div class="jc-item"><span class="jc-code lv${lv}">${code}</span><div>${scoreLabel}<span class="jc-level-tag">${levelLabel}</span><span class="jc-desc">${desc}</span></div><button type="button" class="jc-copy-btn" data-action="copy-jobcode" data-code="${code}">📋 복사</button></div>`;
-    }).join('');
-    box.innerHTML = warningHtml + termHtml + html + (rows.length > MAX_RENDER ? `<div class="jc-empty" style="padding:0.8rem; font-size:0.78rem;">※ 상위 ${MAX_RENDER}건만 표시.</div>` : '');
+function jcSelectedCode(type) { return _jcSelected[type] ? _jcSelected[type].code : null; }
+function renderJobcodeCard(row, query, terms) {
+    const type = jcType(row);
+    const code = jcCode(row);
+    const name = jcName(row);
+    const lvLabel = row.level_label_ko || ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level] || '';
+    const badge = type === 'occupation'
+        ? '<span class="jc2-tb jc2-tb--occ">직종</span>'
+        : '<span class="jc2-tb jc2-tb--ind">업종</span>';
+    const path = row.path_ko ? `<div class="jc2-card-path">${escapeHtml(row.path_ko)}</div>` : '';
+    const reason = jcMatchReason(row, query, terms);
+    const why = reason ? `<div class="jc2-card-why">${reason}</div>` : '';
+    const isSel = jcSelectedCode(type) === code;
+    return `<div class="jc2-card" role="listitem" data-type="${type}" data-code="${escapeHtml(code)}">
+        <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}<span class="jc2-lvl">${lvLabel}</span></div>
+        <div class="jc2-card-name">${hl(name, terms || [])}</div>
+        ${path}${why}
+        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? '✓ 선택됨' : '선택'}</button>
+    </div>`;
+}
+function jobcodeEmptyHtml(type) {
+    const label = JC_TYPE_LABEL[type];
+    return `<div class="jc2-empty"><b>${escapeHtml(tx('jobCodeEmptyTitle'))}</b>${escapeHtml(tx('jobCodeEmptyHint'))}
+        <ul>
+            <li>${escapeHtml(type === 'occupation' ? '직무명으로 검색 (예: 강사, 요리사, 개발)' : '회사 업종으로 검색 (예: 교육, 음식점, 제조)')}</li>
+            <li>더 짧은 단어로 검색</li>
+            <li>추천 칩을 눌러보기</li>
+        </ul></div>`;
+}
+function renderJobcodeList(rows, box, type, query, terms) {
+    if (!box) return;
+    if (!rows.length) { box.innerHTML = jobcodeEmptyHtml(type); return; }
+    const MAX = 60;
+    const html = rows.slice(0, MAX).map(r => renderJobcodeCard(r, query, terms)).join('');
+    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.</div>` : '');
+}
+function setJobcodeFilter(filter) {
+    _jcFilter = ['all', 'occupation', 'industry'].includes(filter) ? filter : 'all';
+    const root = document.querySelector('#jobCodeModalOverlay .jc2');
+    if (root) {
+        root.classList.toggle('jc-filter-occupation', _jcFilter === 'occupation');
+        root.classList.toggle('jc-filter-industry', _jcFilter === 'industry');
+    }
+    [['all','jcFilterAll'],['occupation','jcFilterOcc'],['industry','jcFilterInd']].forEach(([f,id]) => {
+        const b = document.getElementById(id);
+        if (b) { const on = f === _jcFilter; b.classList.toggle('is-on', on); b.setAttribute('aria-selected', String(on)); }
+    });
+    const input = document.getElementById('jcSearchInput');
+    renderJobcodeResults(input ? input.value : '');
+}
+function searchJobcodeChip(term) {
+    const input = document.getElementById('jcSearchInput');
+    if (!input) return;
+    input.value = term;
+    renderJobcodeResults(term);
+    input.focus();
 }
 async function openJobCodeModal() {
     openModal('jobCodeModalOverlay');
     updateJobcodeNaturalSearchLabel();
+    _jcFilter = 'all'; _jcSelected = { occupation: null, industry: null }; _jcIncome = '';
+    setJobcodeFilter('all');
     const input = document.getElementById('jcSearchInput');
     if (input) { input.value = ''; setTimeout(() => input.focus(), 100); }
-    document.getElementById('jcJobResults').innerHTML = '<div class="jc-loading">데이터 로드 중... (최초 1회만)</div>';
-    document.getElementById('jcIndResults').innerHTML = '<div class="jc-loading">데이터 로드 중... (최초 1회만)</div>';
+    const incomeSel = document.getElementById('jcIncome'); if (incomeSel) incomeSel.value = '';
+    renderJobcodeSelectedSummary();
+    const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults');
+    if (jobBox) jobBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoading'))}</div>`;
+    if (indBox) indBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoading'))}</div>`;
     try {
         await loadJobcodeData();
         const coverageEl = document.getElementById('jcCoverageNote');
         if (coverageEl && _jobcodeData) {
-            const occ = (_jobcodeData.categories || {})['직업'] || 0;
-            const ind = (_jobcodeData.categories || {})['산업'] || 0;
-            const ds = _jobcodeData.data_source;
-            let src;
-            if (ds === 'full') src = '전체표';
-            else if (ds === 'seed') src = 'seed(대·중분류)';
-            else if ((_jobcodeData.total_count || (occ + ind)) >= 3000) src = '기존 런타임 데이터';
-            else src = '부분 데이터';
-            coverageEl.textContent = `데이터: ${src} · 직업 ${occ}건 · 산업 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
+            const occ = (_jobcodeData.categories || {})['직종'] || 0;
+            const ind = (_jobcodeData.categories || {})['업종'] || 0;
+            const occFull = _jobcodeData.occupation_source && _jobcodeData.occupation_source.full_table_loaded;
+            const occNote = occFull ? '직종 전체표' : '직종 대·중분류(전체표 준비 중)';
+            coverageEl.textContent = `기준 KSCO8·KSIC11 · ${occNote} ${occ}건 · 업종 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
         }
         renderJobcodeResults('');
+    } catch (err) {
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>데이터 로드 실패</b><br><small>${escapeHtml(err.message)}</small></div>`;
+        if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     }
-    catch (err) {
-        const errorHtml = `<div class="jc-empty" style="color:var(--color-error); text-align:left; padding:1.2rem;">⚠ <strong>데이터 로드 실패</strong><br><br><small style="color:#64748b;">상세 오류: ${escapeHtml(err.message)}</small></div>`;
-        document.getElementById('jcJobResults').innerHTML = errorHtml; document.getElementById('jcIndResults').innerHTML = errorHtml;
+}
+function renderJobcodeGuidance(query, jobRows, indRows) {
+    const q = (query || '').trim();
+    const ambEl = document.getElementById('jcAmbiguity');
+    const warnEl = document.getElementById('jcBoundaryWarn');
+    // E-7 / visa boundary warning
+    const looksVisa = /\be-?\d/i.test(q) || /[a-z]-\d/i.test(q) || /비자|사증|visa/i.test(q);
+    if (warnEl) {
+        if (looksVisa) { warnEl.hidden = false; warnEl.innerHTML = tx('jobCodeBoundaryWarn'); }
+        else warnEl.hidden = true;
+    }
+    // ambiguity guidance
+    if (ambEl) {
+        const nq = normalizeJobcodeText(q);
+        const isAmbiguousTerm = [...JC_AMBIGUOUS_TERMS].some(t => nq && (nq === normalizeJobcodeText(t) || nq.includes(normalizeJobcodeText(t))));
+        const matchesBoth = q && jobRows.length > 0 && indRows.length > 0;
+        if (q && (isAmbiguousTerm || matchesBoth)) {
+            ambEl.hidden = false;
+            ambEl.innerHTML = tx('jobCodeAmbiguity');
+        } else ambEl.hidden = true;
     }
 }
 function renderJobcodeResults(query) {
@@ -14026,76 +14274,108 @@ function renderJobcodeResults(query) {
     if (!jobBox || !indBox || !_jobcodeData) return;
     const q = (query || '').trim();
     const terms = getJobcodeSearchTerms(q);
-    const jobRows = getScoredJobcodeRows('직업', q, terms);
-    const indRows = getScoredJobcodeRows('산업', q, terms);
-    const total = jobRows.length + indRows.length;
-    renderJobcodeRows(jobRows, jobBox, terms, !!q && total > 0);
-    renderJobcodeRows(indRows, indBox, terms, !!q && total > 0);
-    if(badge) badge.textContent = q ? (total ? `${tx('jobCodeFoundOfficial')} (${total}건)` : tx('jobCodeNoConfirmed')) : `총 ${total}건`;
+    const jobRows = getScoredJobcodeRows('occupation', q, terms);
+    const indRows = getScoredJobcodeRows('industry', q, terms);
+    renderJobcodeList(jobRows, jobBox, 'occupation', q, terms);
+    renderJobcodeList(indRows, indBox, 'industry', q, terms);
+    renderJobcodeGuidance(q, jobRows, indRows);
+    if (badge) {
+        if (_jcFilter === 'occupation') badge.textContent = `직종 ${jobRows.length}`;
+        else if (_jcFilter === 'industry') badge.textContent = `업종 ${indRows.length}`;
+        else badge.textContent = q ? `직종 ${jobRows.length} · 업종 ${indRows.length}` : '전체 보기';
+    }
+}
+function selectJobcode(type, code) {
+    if (!_jobcodeData || !['occupation', 'industry'].includes(type)) return;
+    const row = _jobcodeData.data.find(r => jcType(r) === type && jcCode(r) === code);
+    if (!row) return;
+    _jcSelected[type] = { code, name: jcName(row) };
+    renderJobcodeSelectedSummary();
+    // refresh select-button states in the relevant pane
+    const boxId = type === 'occupation' ? 'jcJobResults' : 'jcIndResults';
+    const box = document.getElementById(boxId);
+    if (box) box.querySelectorAll('.jc2-select').forEach(btn => {
+        const on = btn.dataset.code === code;
+        btn.classList.toggle('is-sel', on);
+        btn.setAttribute('aria-pressed', String(on));
+        btn.textContent = on ? '✓ 선택됨' : '선택';
+    });
+    showToast(`${JC_TYPE_LABEL[type]} 선택: ${code} ${jcName(row)}`, 'success');
+}
+function renderJobcodeSelectedSummary() {
+    const occEl = document.getElementById('jcSelOcc'), indEl = document.getElementById('jcSelInd');
+    const setCell = (el, sel) => {
+        if (!el) return;
+        if (sel) { el.textContent = `${sel.code} · ${sel.name}`; el.classList.add('is-set'); }
+        else { el.textContent = '아직 선택 안 함'; el.classList.remove('is-set'); }
+    };
+    setCell(occEl, _jcSelected.occupation);
+    setCell(indEl, _jcSelected.industry);
+}
+function buildJobcodeMemo() {
+    const occ = _jcSelected.occupation, ind = _jcSelected.industry;
+    const income = (document.getElementById('jcIncome') || {}).value || '';
+    return [
+        `직종: ${occ ? occ.code + ' ' + occ.name : '(미선택)'}`,
+        `업종: ${ind ? ind.code + ' ' + ind.name : '(미선택)'}`,
+        `연간소득: ${income || '(미입력)'}`,
+        `주의: 최종 신고 전 HiKorea 화면에서 재확인 필요`
+    ].join('\n');
+}
+function copyJobcodeMemo() {
+    const btn = document.getElementById('jcCopyBtn');
+    const text = buildJobcodeMemo();
+    const done = () => {
+        if (!btn) return;
+        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = '✓ 복사됨';
+        setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1600);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
+    else { fallbackCopy(text); done(); }
 }
 async function searchJobcodeWithAI() {
-    const input = document.getElementById('jcSearchInput').value.trim();
-    if(!input) { showToast("상황 검색창에 본인의 취업 상황(예: 중식당 주방장)을 상세히 적어주십시오."); return; }
+    const inputEl = document.getElementById('jcSearchInput');
+    const input = inputEl ? inputEl.value.trim() : '';
+    if (!input) { showToast("검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
-    const btn = spinner.parentElement; btn.disabled = true; spinner.style.display = 'inline-block';
-    jobBox.innerHTML = `<div class="jc-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`; indBox.innerHTML = `<div class="jc-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
+    const btn = spinner ? spinner.parentElement : null;
+    if (btn) btn.disabled = true; if (spinner) spinner.style.display = 'inline-block';
+    if (jobBox) jobBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
+    if (indBox) indBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
     try {
-        if (!_jobcodeData) {
-            try { await loadJobcodeData(); } catch (_) {
-                const msg = currentLanguage === 'en'
-                    ? 'The official job/industry analysis tool is currently unavailable. Try a more specific description or try again later.'
-                    : '현재 공식 직종·업종 분석 기능을 사용할 수 없습니다. 입력 내용을 조금 더 구체적으로 바꾸거나, 나중에 다시 시도해 주세요.';
-                const html = `<div class="jc-empty">${escapeHtml(msg)}</div>`;
-                jobBox.innerHTML = html; indBox.innerHTML = html; return;
-            }
-        }
+        if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) {
+            const msg = currentLanguage === 'en' ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
+            const html = `<div class="jc2-empty">${escapeHtml(msg)}</div>`;
+            if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html; return;
+        } }
         let jobKw = getJobcodeSearchTerms(input), indKw = jobKw.slice(), fallbackNote = null;
-        const localJobRows = getScoredJobcodeRows('직업', input, jobKw, 12);
-        const localIndRows = getScoredJobcodeRows('산업', input, indKw, 12);
+        const localJobRows = getScoredJobcodeRows('occupation', input, jobKw, 12);
+        const localIndRows = getScoredJobcodeRows('industry', input, indKw, 12);
         if (API_BASE && (localJobRows.length + localIndRows.length) < 3) {
             try {
                 const response = await fetch(`${API_BASE}/api/jobcodekeywords`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query: input }) });
-                if(!response.ok) throw new Error("키워드 확장 서버 응답 지연");
+                if (!response.ok) throw new Error("키워드 확장 서버 응답 지연");
                 const data = await response.json();
                 jobKw = getJobcodeSearchTerms(input, [...(data.job_keywords || data.keywords || []), ...(data.korean_keywords || []), ...(data.english_keywords || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
                 indKw = getJobcodeSearchTerms(input, [...(data.industry_keywords || []), ...(data.related_domains || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
-            } catch(_) {
-                fallbackNote = currentLanguage === 'en'
-                    ? 'Keyword expansion is unavailable. Showing local natural-language matches only.'
-                    : '키워드 확장을 사용할 수 없어 자연어 키워드 직접 매칭으로 표시합니다.';
+            } catch (_) {
+                fallbackNote = currentLanguage === 'en' ? 'Keyword expansion is unavailable. Showing local matches only.' : '키워드 확장을 사용할 수 없어 자연어 직접 매칭으로 표시합니다.';
             }
         }
-        renderUnifiedAiResults(jobKw, indKw, fallbackNote);
-    } catch(e) {
-        const errorHtml = `<div class="jc-empty" style="color:var(--color-error);">자연어 검색 오류: ${escapeHtml(e.message)}</div>`;
-        jobBox.innerHTML = errorHtml; indBox.innerHTML = errorHtml;
-    } finally { btn.disabled = false; spinner.style.display = 'none'; }
-}
-function renderUnifiedAiResults(jobKw, indKw, note) {
-    const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), badge = document.getElementById('jcCountBadge');
-    if (!_jobcodeData) {
-        const msg = currentLanguage === 'en'
-            ? 'The official job/industry analysis tool is currently unavailable. Try a more specific description or try again later.'
-            : '현재 공식 직종·업종 분석 기능을 사용할 수 없습니다. 입력 내용을 조금 더 구체적으로 바꾸거나, 나중에 다시 시도해 주세요.';
-        const html = `<div class="jc-empty">${escapeHtml(msg)}</div>`;
-        if(jobBox) jobBox.innerHTML = html; if(indBox) indBox.innerHTML = html; return;
-    }
-    const jobRows = getScoredJobcodeRows('직업', '', jobKw, 50), indRows = getScoredJobcodeRows('산업', '', indKw, 50);
-    const total = jobRows.length + indRows.length;
-    if (badge) badge.textContent = total ? `${tx('jobCodeFoundOfficial')} (${total}건)` : tx('jobCodeNoConfirmed');
-    const noteHtml = note ? `<div class="jc-empty" style="color:var(--color-warning);">${escapeHtml(note)}</div>` : '';
-    renderJobcodeRows(jobRows, jobBox, jobKw, total > 0);
-    renderJobcodeRows(indRows, indBox, indKw, total > 0);
-    if (noteHtml) { jobBox.insertAdjacentHTML('afterbegin', noteHtml); indBox.insertAdjacentHTML('afterbegin', noteHtml); }
-}
-function copyJobcode(btnEl, code) {
-    if (!code) return;
-    const done = () => {
-        btnEl.classList.add('copied'); const original = btnEl.textContent; btnEl.textContent = '✓ 복사됨';
-        setTimeout(() => { btnEl.classList.remove('copied'); btnEl.textContent = original; }, 1500);
-    };
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(code).then(done).catch(() => { fallbackCopy(code); done(); });
-    else { fallbackCopy(code); done(); }
+        const jobRows = getScoredJobcodeRows('occupation', '', jobKw, 50), indRows = getScoredJobcodeRows('industry', '', indKw, 50);
+        renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw);
+        renderJobcodeList(indRows, indBox, 'industry', input, indKw);
+        renderJobcodeGuidance(input, jobRows, indRows);
+        const badge = document.getElementById('jcCountBadge');
+        if (badge) badge.textContent = `직종 ${jobRows.length} · 업종 ${indRows.length}`;
+        if (fallbackNote) {
+            const noteHtml = `<div class="jc2-empty" style="color:var(--color-warning);padding:0.6rem;">${escapeHtml(fallbackNote)}</div>`;
+            if (jobBox) jobBox.insertAdjacentHTML('afterbegin', noteHtml);
+        }
+    } catch (e) {
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">자연어 검색 오류: ${escapeHtml(e.message)}</div>`;
+        if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
+    } finally { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; }
 }
 function fallbackCopy(text) {
     const ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
@@ -19462,7 +19742,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'open-med-finder': () => openModal('medFinderModalOverlay'),
                 'open-short-stay': () => { if (window.ParadisoShortStay && typeof window.ParadisoShortStay.open === 'function') window.ParadisoShortStay.open(); },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
-                'copy-jobcode': () => copyJobcode(actionBtn, actionBtn.dataset.code),
+                'set-jobcode-filter': () => setJobcodeFilter(actionBtn.dataset.jcFilter),
+                'search-jobcode-chip': () => searchJobcodeChip(actionBtn.dataset.jcChip),
+                'select-jobcode': () => selectJobcode(actionBtn.dataset.type, actionBtn.dataset.code),
+                'copy-jobcode-memo': () => copyJobcodeMemo(),
                 'copy-visa-result': () => copyVisaResult(actionBtn, actionBtn.dataset.vcode),
                 'verify-faq': () => verifyFaqWithAi(actionBtn.dataset.vcode, actionBtn.dataset.q),
                 'reset-to-landing': () => { if(document.body.classList.contains('searched')) resetToLanding(); },
