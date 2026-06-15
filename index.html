@@ -17132,8 +17132,15 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
     // The source-backed 사증발급 issuance detail lives inside the 사증발급 tab only,
-    // so it no longer trails every procedure panel.
-    const issuanceHtml = proc.key === 'visaIssuance' ? renderVisaIssuanceSection(v, keywords, { embedded: true }) : '';
+    // so it no longer trails every procedure panel. The procedure doc grid above
+    // (기본 준비서류) already lists the basic documents, so the embedded issuance
+    // card must NOT reprint the same 공통/추가/해당 시 서류 list — that duplicate
+    // "위/아래 두 번 노출" was confusing users. The card keeps its unique 신청
+    // 경로·절차·주의사항·출처. When the panel has no doc grid of its own, the card
+    // still carries the documents so nothing is lost.
+    const issuanceHtml = proc.key === 'visaIssuance'
+        ? renderVisaIssuanceSection(v, keywords, { embedded: true, suppressModeDocuments: !!docsHtml })
+        : '';
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
         ${renderProcedureHeader(v, proc)}
         ${eligibilityHtml}${summaryHtml}${notesHtml}
@@ -18025,7 +18032,7 @@ function renderIssuanceOverlaySelector(code) {
     return `<label class="issuance-source-line">${escapeHtml(txAt('issuanceUiLabels', 8, '국가·공관별 공식 오버레이'))} <select>${options}</select></label>`;
 }
 
-function renderIssuanceModeCard(mode, record, binding, keywords) {
+function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
     const level = binding && binding.evidenceLevel ? binding.evidenceLevel : (mode.type === 'not_applicable' ? 'not_applicable' : 'limited');
     const sourceState = binding || {
         evidenceLevel: level,
@@ -18047,7 +18054,7 @@ function renderIssuanceModeCard(mode, record, binding, keywords) {
             <div class="issuance-meta-item"><span class="issuance-meta-label">${escapeHtml(txAt('issuanceUiLabels', 7, '접수 위치'))}</span><span class="issuance-meta-value">${escapeHtml(localizedMetaLabel(ISSUANCE_APPLY_PLACE_LABELS, mode.whereToApply))}</span></div>
         </div>
         <div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 4, '절차'))}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
-        ${renderIssuanceDocGroups(mode.documents, keywords)}
+        ${options.suppressDocuments ? '' : renderIssuanceDocGroups(mode.documents, keywords)}
         ${renderIssuanceWarnings(mode.warnings, keywords)}
         ${sourceLine ? `<div class="issuance-source-line">${escapeHtml(sourceLine)}</div>` : ''}
         ${renderSourceLimitationExplanation(sourceState, sourceRefs)}
@@ -18059,10 +18066,14 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     const record = getVisaIssuanceRecord(v.code);
     if (!record) return '';
     const embedded = !!options.embedded;
+    // When the host procedure panel already renders the basic-document grid, the
+    // scenario cards drop their duplicate document list so the same documents are
+    // not shown twice (top grid + card).
+    const suppressModeDocuments = !!options.suppressModeDocuments;
     const binding = getVisaIssuanceBinding(v.code);
     const summary = pickLocalizedManualText({ ko: record.issuanceSummaryKo, en: record.issuanceSummaryEn });
     const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
-    const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords)).join('');
+    const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords, { suppressDocuments: suppressModeDocuments })).join('');
     const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
     const disclaimer = pickLocalizedManualText({ ko: record.disclaimerKo, en: record.disclaimerEn });
     const title = txAt('issuanceUiLabels', 0, '사증발급');
@@ -20261,7 +20272,7 @@ function showVisaRecommendations(purpose) {
         <span class="vt">${escapeHtml(v.name)}</span>
         ${v.period ? `<span class="bp">${escapeHtml(v.period)}</span>` : ''}
       </div>
-      <p class="visa-result-desc">${escapeHtml((stripManualArtifacts(v.newReq) || '상세 정보를 확인하세요.').substring(0, 100))}...</p>
+      <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || '상세 정보를 확인하세요.')}</p>
       <div class="visa-result-actions">
         <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">📝 신규 발급 서류</button>
         <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">✨ AI 분석</button>
