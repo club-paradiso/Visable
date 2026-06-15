@@ -186,6 +186,18 @@ else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi
 
+echo "[9c/14] Validating F-4 (재외동포) global official-source hub..."
+# Stdlib/Node-only, offline. Validates the search-first diagnostic, country-ready
+# data architecture, country overlays + source-coverage matrix, accessible modal,
+# procedure-based FAQ, and the legal/accuracy guardrails (거소증 separation,
+# 90-day deadline, US-specific terms confined to the US overlay, no bare 수수료).
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_f4_route_guide.mjs
+  node scripts/smoke_f4_hub.mjs
+else
+  echo "INFO: Node.js not found; skipping F-4 hub validation."
+fi
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
