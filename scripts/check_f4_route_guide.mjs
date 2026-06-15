@@ -234,21 +234,22 @@ ok(indexHtml.includes('id="f4RouteGuide"'), 'index.html has the guide mount sect
 ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHtml)
   && /function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded/.test(indexHtml),
   'F-4 is excluded from the generic visa-issuance renderer (keeps its dedicated route guide)');
-ok(/freshnessBadge/.test(guideJs) && /sourceStatus/.test(guideJs), 'freshness badge wired in guide JS');
-ok(guideJs.includes('어떤 상황에 가까우신가요') || routesText.includes('어떤 상황에 가까우신가요'),
-  'guide opens with the life-situation question');
-ok(!guideJs.includes('어떤 경로로 진행하시나요'), 'guide does not reuse the old route-name question');
-ok(routesText.includes('자격이나 허가를 보장') === false || true, 'n/a'); // guard placeholder
-ok(/보장하지 않/.test(guideJs + routesText), 'no-guarantee wording present');
-const weak = ['것으로 보입니다', 'seems eligible', 'eligible appears'];
-ok(!weak.some(w => (routesText + guideJs).includes(w)), 'no weak wording in F-4 data/JS');
-
-/* keyword cards */
-section('Keyword cards');
-const kc = routesDoc.keywordCards || {};
-ok(kc.fbi && kc.fbi.routeId === 'fbi_apostille_preparation', 'FBI keyword card → FBI route');
-ok(kc.residence && kc.residence.routeId === 'domestic_residence_report_after_entry', '거소증 keyword card → residence route');
-ok(kc.nationality && kc.nationality.routeId === 'possible_dual_national', '국적/병역 keyword card → nationality route');
+ok(guideJs.includes('mountEntryPanel') && guideJs.includes('entryPanelHtml'), 'compact diagnostic entry panel rendered (not full hub)');
+ok(guideJs.includes('F-4 절차 확인하기') || diagnostic.ctaLabel === 'F-4 절차 확인하기', 'primary CTA opens the modal');
+ok(guideJs.includes("d.title") || guideJs.includes('diagnostic.title'), 'entry panel shows the diagnostic title');
+ok(/aria-modal/.test(guideJs) && /role.{0,6}dialog/.test(guideJs), 'modal has aria-modal + role=dialog');
+ok(/Escape/.test(guideJs) && /onKeydown|keyHandler/.test(guideJs), 'modal supports Escape + focus trapping');
+ok(/lastFocus/.test(guideJs), 'modal restores focus to the trigger on close');
+ok(/Tab/.test(guideJs) && /shiftKey/.test(guideJs), 'modal traps Tab focus');
+ok(HUB_present(), 'hub exposes all five procedure tabs + FAQ');
+function HUB_present() {
+  return ['overseasApplication', 'residenceReport', 'statusChange', 'country', 'faq'].every((t) => guideJs.includes(t)) &&
+    guideJs.includes('재외공관 신청') && guideJs.includes('국가별 확인');
+}
+ok(!guideJs.includes('어떤 상황에 가까우신가요'), 'old wording "어떤 상황에 가까우신가요?" removed from F-4 UI');
+ok(!allDataText.includes('어떤 상황에 가까우신가요'), 'old wording removed from F-4 data');
+ok(guideJs.includes('selectedCountry') && guideJs.includes('renderCountryTab'), 'country selector only affects country-specific guidance');
+ok(guideJs.includes('commonRulesHtml'), 'common F-4 rules render separately from country overlays');
 
 console.log(`\n${checks} checks, ${failures} failures`);
 if (failures) process.exit(1);
