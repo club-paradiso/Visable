@@ -52,9 +52,12 @@ from services.answer_shape import (
 )
 from services.model_policy import (
     CHINESE_ONLY_MODEL_PREFIXES,
+    DEFAULT_ANSWER_MODE,
     DEFAULT_FINAL_ANSWER_MODEL,
     DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES,
     MODEL_POLICY_VERSION,
+    normalize_answer_mode,
+    resolve_answer_mode_models,
     sanitize_model_role_policy_for_public,
 )
 
@@ -201,6 +204,15 @@ OLLAMA_TIMEOUT_SECONDS: float = _env_float("OLLAMA_TIMEOUT_SECONDS", 20.0)
 # it per-deploy (e.g. OPENROUTER_TIMEOUT_SECONDS=40) for snappier failure.
 OPENROUTER_TIMEOUT_SECONDS: float = _env_float("OPENROUTER_TIMEOUT_SECONDS", 60.0)
 
+# Output-length cap for the final answer. Unbounded generation over Paradiso's
+# large grounded prompt was a major perceived-latency source ("Waymaker is too
+# slow"): a long answer takes proportionally longer to generate and stream back.
+# Capping completion tokens keeps answers focused and materially faster without
+# changing model selection. 0 / negative disables the cap (legacy behaviour).
+# The fast answer tier uses a tighter cap for snappier responses.
+OPENROUTER_MAX_TOKENS: int = int(_env_float("OPENROUTER_MAX_TOKENS", 1400.0))
+OPENROUTER_FAST_MAX_TOKENS: int = int(_env_float("OPENROUTER_FAST_MAX_TOKENS", 900.0))
+
 
 def _validate_model_candidates(candidates: List[str]) -> List[str]:
     """Non-secret formatting/policy warnings about the candidate list."""
@@ -316,6 +328,11 @@ class AskRequest(BaseModel):
     consent: Optional[bool] = None
     history: Optional[List[Dict[str, Any]]] = None
     model: Optional[str] = None
+    # Answer-speed tier selected in the UI: "fast" | "basic" | "pro".
+    # Controls which OpenRouter candidate chain + output cap is used. Unknown /
+    # missing values fall back to the default ("basic"). "pro" is not yet wired
+    # to a model chain and transparently answers on the basic chain.
+    answer_mode: Optional[str] = None
 
 
 class AskResponse(BaseModel):
@@ -464,6 +481,12 @@ class AskResponse(BaseModel):
     # primary model is rate-limited / upstream-unavailable, Paradiso retries the
     # next explicit OpenRouter candidate rather than switching providers.
     llm_provider: str = ""
+    # Answer-speed tier transparency. `answer_mode` is the tier actually used;
+    # `answer_mode_requested` echoes what the client asked for so a "pro"
+    # (coming-soon) request that fell back to basic is auditable.
+    answer_mode: str = ""
+    answer_mode_requested: str = ""
+    answer_mode_available: bool = True
     requested_model: Optional[str] = None
     primary_model: Optional[str] = None
     model_candidates: List[str] = Field(default_factory=list)
@@ -834,7 +857,9 @@ def _extract_keywords(text: str, max_keywords: int = 12) -> List[str]:
     return seen
 
 
-async def _call_openrouter(prompt: str, model: Optional[str] = None) -> str:
+async def _call_openrouter(
+    prompt: str, model: Optional[str] = None, max_tokens: Optional[int] = None
+) -> str:
     if not OPENROUTER_API_KEY:
         raise HTTPException(
             status_code=503,
@@ -849,10 +874,13 @@ async def _call_openrouter(prompt: str, model: Optional[str] = None) -> str:
             detail={"error": "httpx_missing", "message": "httpx is not installed."},
         )
 
-    payload = {
+    payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
         "messages": [{"role": "user", "content": prompt}],
     }
+    effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
+    if effective_max_tokens and effective_max_tokens > 0:
+        payload["max_tokens"] = int(effective_max_tokens)
     headers = {
         "Authorization": f"Bearer {OPENROUTER_API_KEY}",
         "Content-Type": "application/json",
@@ -1956,7 +1984,10 @@ def _apply_answer_shape_gate(
 
 
 async def _openrouter_complete_with_candidates(
-    prompt: str, requested_model: Optional[str] = None
+    prompt: str,
+    requested_model: Optional[str] = None,
+    candidate_models: Optional[List[str]] = None,
+    max_tokens: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Try OpenRouter candidates in order, skipping models in short cooldown.
 
@@ -1966,10 +1997,11 @@ async def _openrouter_complete_with_candidates(
     it returns deterministic metadata so /api/ask can use the preparation-note
     fallback (or an explicitly enabled provider-family/private fallback).
     """
+    base_candidates = candidate_models or OPENROUTER_MODEL_CANDIDATES
     if requested_model:
-        candidates = _dedupe_preserve_order([requested_model, *OPENROUTER_MODEL_CANDIDATES])
+        candidates = _dedupe_preserve_order([requested_model, *base_candidates])
     else:
-        candidates = list(OPENROUTER_MODEL_CANDIDATES) or [OPENROUTER_MODEL]
+        candidates = list(base_candidates) or [OPENROUTER_MODEL]
 
     cooling = set(_cooling_down_models())
     runnable = [model for model in candidates if model not in cooling]
@@ -2003,7 +2035,7 @@ async def _openrouter_complete_with_candidates(
     for model in runnable:
         attempted.append(model)
         try:
-            answer = await _call_openrouter(prompt, model=model)
+            answer = await _call_openrouter(prompt, model=model, max_tokens=max_tokens)
         except HTTPException as exc:
             detail = exc.detail if isinstance(exc.detail, dict) else {}
             upstream = detail.get("status", exc.status_code)
@@ -3633,7 +3665,11 @@ async def ask(req: AskRequest) -> AskResponse:
     law_grounding_warnings: List[str] = []
     citation_verification: Optional[Dict[str, Any]] = None
     law_context: Dict[str, Any] = {}
-    mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    # Single source of truth for the grounding mode (default "enabled"): the same
+    # config the preflight/debug endpoints and the evidence pack read, so /api/ask
+    # can never silently disagree with them. External law/precedent calls still
+    # only fire when a credential (LAW_API_OC / legacy LAW_API_KEY) is present.
+    mode = load_grounding_config().mode
     intent = should_attempt_law_grounding(prompt)
     if intent.get("should_attempt"):
         law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
@@ -3916,9 +3952,27 @@ async def ask(req: AskRequest) -> AskResponse:
         **source_panel_meta,
     )
 
+    # Resolve the answer-speed tier (Fast / Basic / Pro). Fast uses a smaller,
+    # low-latency candidate chain and a tighter output cap; Pro is coming-soon
+    # and transparently answers on the Basic chain.
+    answer_mode_plan = resolve_answer_mode_models(req.answer_mode)
+    answer_mode_used = answer_mode_plan["mode"]
+    answer_mode_requested = normalize_answer_mode(req.answer_mode)
+    answer_mode_max_tokens = (
+        OPENROUTER_FAST_MAX_TOKENS if answer_mode_used == "fast" else OPENROUTER_MAX_TOKENS
+    )
+    base_meta.update(
+        answer_mode=answer_mode_used,
+        answer_mode_requested=answer_mode_requested,
+        answer_mode_available=bool(answer_mode_plan.get("available", True)),
+    )
+
     if llm["provider"] == "openrouter":
         result = await _openrouter_complete_with_candidates(
-            final_prompt, requested_model=req.model
+            final_prompt,
+            requested_model=req.model,
+            candidate_models=answer_mode_plan["candidates"],
+            max_tokens=answer_mode_max_tokens,
         )
         # Non-secret attempt metadata (model ids + classified error only).
         attempt_meta: Dict[str, Any] = dict(

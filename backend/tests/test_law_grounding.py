@@ -27,6 +27,8 @@ class LawGroundingIntentTests(unittest.TestCase):
         self.assertIn("G-1", intent["reasons"])
         self.assertIn("출국/해외여행", intent["reasons"])
 
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        self.addCleanup(lambda: os.environ.pop("LAW_GROUNDING_MODE", None))
         context = build_law_grounding_context(question)
         self.assertFalse(context["attempted"], "disabled mode should not call external law API")
         self.assertIn("LAW_GROUNDING_DISABLED", context["grounding_warnings"])
@@ -83,8 +85,10 @@ class LawGroundingActivityScopeIntentTests(unittest.TestCase):
         self.assertIn("유학/수강/계절학기", intent["reasons"])
         self.assertIn("관광취업/워킹홀리데이/H-1", intent["reasons"])
 
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        self.addCleanup(lambda: os.environ.pop("LAW_GROUNDING_MODE", None))
         context = build_law_grounding_context(question)
-        # Disabled by default: no external call, but the anchored query is built.
+        # Disabled mode: no external call, but the anchored query is built.
         self.assertFalse(context["attempted"], "disabled mode must not call external law API")
         self.assertIn("LAW_GROUNDING_DISABLED", context["grounding_warnings"])
         for anchor in ("출입국관리법", "활동범위", "체류자격외활동", "관광취업", "H-1", "유학", "계절학기"):
@@ -153,6 +157,8 @@ class H1ActivityScopeRegressionTests(unittest.TestCase):
     def test_disabled_mode_reports_intent_and_query_without_external_call(self):
         from services.law_grounding import build_law_grounding_context
 
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
+        self.addCleanup(lambda: os.environ.pop("LAW_GROUNDING_MODE", None))
         ctx = build_law_grounding_context(self.CASES[0])
         self.assertFalse(ctx["attempted"], "disabled mode must not call external API")
         self.assertIn("LAW_GROUNDING_DISABLED", ctx["grounding_warnings"])
@@ -172,6 +178,7 @@ class LawGroundingPreflightTests(unittest.TestCase):
     def test_disabled_preflight_reports_safe_defaults(self):
         from services.law_grounding import law_grounding_preflight
 
+        os.environ["LAW_GROUNDING_MODE"] = "disabled"
         pf = law_grounding_preflight()
         self.assertEqual(pf["mode"], "disabled")
         self.assertEqual(pf["external_calls"], "disabled")

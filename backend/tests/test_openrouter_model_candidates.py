@@ -61,7 +61,7 @@ def _fake_openrouter(behaviors):
     """Return (fake_call, calls). behaviors: model -> "ok" | (status, message)."""
     calls = []
 
-    async def fake(prompt, model=None):
+    async def fake(prompt, model=None, max_tokens=None):
         calls.append(model)
         b = behaviors.get(model, "ok")
         if b == "ok":
@@ -241,7 +241,7 @@ class ProviderTimeoutBecomesRetryableTests(unittest.TestCase):
             pb._reset_openrouter_model_cooldowns_for_tests()
         first, second = CANDS[0], CANDS[1]
 
-        async def fake(prompt, model=None):
+        async def fake(prompt, model=None, max_tokens=None):
             if model == first:
                 # The *converted* timeout HTTPException from _call_openrouter.
                 raise HTTPException(
@@ -299,6 +299,34 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(body["final_model"], CANDS[0])
         self.assertFalse(body["model_fallback_used"])
         self.assertEqual(calls, [CANDS[0]])
+
+    def test_fast_answer_mode_uses_fast_chain_and_reports_mode(self):
+        pb = _pb()
+        resp, calls = self._ask(pb, {}, answer_mode="fast")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        # Fast tier answers on the small low-latency model first, NOT the 550B
+        # ultra basic primary, and the used tier is reported honestly.
+        self.assertEqual(calls[0], "google/gemma-4-31b-it:free")
+        self.assertEqual(body["answer_mode"], "fast")
+        self.assertEqual(body["answer_mode_requested"], "fast")
+
+    def test_pro_answer_mode_falls_back_to_basic_chain_marked_unavailable(self):
+        pb = _pb()
+        resp, calls = self._ask(pb, {}, answer_mode="pro")
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(calls[0], CANDS[0])  # basic ultra primary
+        self.assertEqual(body["answer_mode"], "basic")
+        self.assertEqual(body["answer_mode_requested"], "pro")
+        self.assertFalse(body["answer_mode_available"])
+
+    def test_default_answer_mode_is_basic(self):
+        pb = _pb()
+        resp, calls = self._ask(pb, {})
+        self.assertEqual(resp.status_code, 200, resp.text)
+        self.assertEqual(resp.json()["answer_mode"], "basic")
+        self.assertEqual(calls[0], CANDS[0])
 
     def test_ultra_429_triggers_super(self):
         pb = _pb()
@@ -398,7 +426,7 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
     def _ask_all_fail(self, pb, allow_groq, groq_key="groq-key"):
         fake, _ = _fake_openrouter({c: (503, "No healthy upstream") for c in CANDS})
 
-        async def groq_ok(prompt, model=None):
+        async def groq_ok(prompt, model=None, max_tokens=None):
             return "GROQ ANSWER"
 
         with patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
@@ -540,7 +568,7 @@ class DeterministicFallbackAndOllamaTests(unittest.TestCase):
         self.assertIn("AI 모델이 일시적으로 응답하지", body["answer"])
 
     def test_ollama_enabled_mocked_success_returns_ollama_answer(self):
-        async def ollama_ok(prompt, model=None):
+        async def ollama_ok(prompt, model=None, max_tokens=None):
             return "OLLAMA ANSWER"
         resp, _ = self._ask(enable_ollama=True, ollama=ollama_ok)
         self.assertEqual(resp.status_code, 200, resp.text)
@@ -552,7 +580,7 @@ class DeterministicFallbackAndOllamaTests(unittest.TestCase):
         self.assertEqual(body["copy_safe_answer"], "OLLAMA ANSWER")
 
     def test_ollama_enabled_timeout_returns_deterministic_fallback(self):
-        async def ollama_timeout(prompt, model=None):
+        async def ollama_timeout(prompt, model=None, max_tokens=None):
             raise HTTPException(status_code=503, detail={"error": "ollama_timeout"})
         resp, _ = self._ask(enable_ollama=True, ollama=ollama_timeout)
         body = resp.json()

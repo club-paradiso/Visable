@@ -152,7 +152,7 @@ CANDS = [
 ]
 
 
-async def _openrouter_all_unavailable(prompt, model=None):
+async def _openrouter_all_unavailable(prompt, model=None, max_tokens=None):
     raise HTTPException(
         status_code=502,
         detail={"error": "openrouter_upstream_error", "status": 503, "message": "No healthy upstream"},
@@ -229,7 +229,7 @@ class BackendMetadataContractTests(unittest.TestCase):
         pb._reset_grounding_cache_for_tests()
         pb._reset_openrouter_model_cooldowns_for_tests()
 
-        async def _provider_config_error(prompt, model=None):
+        async def _provider_config_error(prompt, model=None, max_tokens=None):
             raise HTTPException(
                 status_code=502,
                 detail={"error": "openrouter_provider_error", "status": 401, "message": "bad key"},

@@ -240,7 +240,7 @@ class _AskHarness(unittest.TestCase):
         import paradiso_backend as pb
         from fastapi.testclient import TestClient
 
-        async def weak(prompt, model=None):
+        async def weak(prompt, model=None, max_tokens=None):
             return model_answer
 
         pb._reset_visas_cache_for_tests()

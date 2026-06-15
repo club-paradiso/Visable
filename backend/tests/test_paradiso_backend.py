@@ -1694,14 +1694,16 @@ class GoldenEvalSuiteTests(unittest.TestCase):
 
 
 class LawPublicDataScaffoldTests(unittest.TestCase):
-    def test_default_grounding_config_mode_is_disabled(self):
+    def test_default_grounding_config_mode_is_enabled(self):
         os.environ.pop("LAW_GROUNDING_MODE", None)
         os.environ.pop("LAW_GROUNDING_TIMEOUT_SECONDS", None)
         os.environ.pop("LAW_GROUNDING_CACHE_TTL_SECONDS", None)
         from services.grounding_config import load_grounding_config
 
         cfg = load_grounding_config()
-        self.assertEqual(cfg.mode, "audit")
+        # Law/precedent grounding is fully activated by default; external calls
+        # still require a credential (LAW_API_OC / legacy LAW_API_KEY).
+        self.assertEqual(cfg.mode, "enabled")
         self.assertGreater(cfg.timeout_seconds, 0)
         self.assertGreater(cfg.cache_ttl_seconds, 0)
 
@@ -2165,8 +2167,11 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
                     "law_api_endpoint_configured", "ready_for_external_calls",
                     "sample_would_trigger", "sample_law_search_query", "warnings"):
             self.assertIn(key, data)
-        self.assertEqual(data["mode"], "audit")
-        self.assertIn("LAW_GROUNDING_AUDIT_ONLY", data["warnings"])
+        # Law grounding is fully activated by default; without a credential the
+        # preflight still honestly reports it cannot make external calls yet.
+        self.assertEqual(data["mode"], "enabled")
+        self.assertIn("LAW_API_KEY_MISSING", data["warnings"])
+        self.assertFalse(data["ready_for_external_calls"])
 
     def test_get_preflight_accepts_custom_question(self):
         client, _ = _client()
@@ -2192,7 +2197,7 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
         self.assertEqual(resp.status_code, 200, resp.text)
         body = resp.json()
         self.assertIn("preflight", body)
-        self.assertEqual(body["preflight"]["mode"], "audit")
+        self.assertEqual(body["preflight"]["mode"], "enabled")
 
     def test_post_debug_empty_still_400(self):
         # Existing contract preserved: empty POST body returns 400.
@@ -2203,7 +2208,7 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
     def test_get_selftest_reports_no_credential_without_secrets(self):
         # With no OC/key configured (CI default), the live selftest must NOT
         # attempt an external call: it reports the NO_CREDENTIAL verdict, the
-        # new "audit" default mode, ready_for_external_calls=False, and never
+        # default "enabled" mode, ready_for_external_calls=False, and never
         # leaks any OC value.
         for k in ("LAW_API_OC", "LAW_API_KEY"):
             os.environ.pop(k, None)
@@ -2213,7 +2218,7 @@ class LawGroundingPreflightEndpointTests(unittest.TestCase):
         data = resp.json()
         self.assertIn("verdict", data)
         self.assertIn("message", data)
-        self.assertEqual(data["mode"], "audit")
+        self.assertEqual(data["mode"], "enabled")
         self.assertEqual(data["verdict"], "NO_CREDENTIAL")
         self.assertFalse(data["ready_for_external_calls"])
         self.assertEqual(data["live_call_status"], "not_attempted")

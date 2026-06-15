@@ -635,6 +635,13 @@ body.searched .ft { opacity: 1; }
 .ai-action-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(10,92,71,0.1); }
 .ai-action-btn.primary:hover:not(:disabled) { background: var(--ac2); box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3); }
 .ai-action-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.ai-mode-selector { display: flex; gap: var(--sp-2); margin: var(--sp-3) 0; }
+.ai-mode-btn { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: var(--sp-2) var(--sp-2); border: 1px solid var(--bd, #d1d5db); background: var(--bg2); border-radius: var(--btn-r-md); cursor: pointer; transition: var(--btn-tr); font-family: var(--ff) !important; color: var(--t2, #6b7280); }
+.ai-mode-btn:hover:not(.is-disabled) { border-color: var(--ac); }
+.ai-mode-btn.is-active { border-color: var(--ac); background: color-mix(in srgb, var(--ac) 10%, var(--bg2)); color: var(--t1); box-shadow: 0 0 0 1px var(--ac) inset; }
+.ai-mode-btn.is-disabled { opacity: 0.55; cursor: not-allowed; }
+.ai-mode-title { font-size: 0.85rem; font-weight: 800; }
+.ai-mode-sub { font-size: 0.7rem; font-weight: 600; opacity: 0.85; }
 .ai-result { background: var(--bg2); border-radius: 8px; padding: 1.2rem; font-size: 0.88rem; color: var(--t2); line-height: 1.65; display: none; border-left: 4px solid var(--ac); word-break: keep-all; box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); margin-top: 0.5rem; }
 .spinner { width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.3); border-radius: 50%; border-top-color: currentColor; animation: spin 1s ease-in-out infinite; display: none; }
 .primary .spinner { border-top-color: white; }
@@ -13230,6 +13237,21 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <label for="aiInput" class="sr-only">상황 입력</label>
             <textarea id="aiInput" class="ai-textarea" placeholder="예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다."></textarea>
 
+            <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector">
+                <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
+                    <span class="ai-mode-title">⚡ Fast</span>
+                    <span class="ai-mode-sub">빠른 답변</span>
+                </button>
+                <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true">
+                    <span class="ai-mode-title">⚖️ Basic</span>
+                    <span class="ai-mode-sub">기본(권장)</span>
+                </button>
+                <button type="button" class="ai-mode-btn is-disabled" data-mode="pro" role="radio" aria-checked="false" aria-disabled="true" disabled>
+                    <span class="ai-mode-title">💎 Pro</span>
+                    <span class="ai-mode-sub">서비스 예정</span>
+                </button>
+            </div>
+
             <div class="ai-quick-actions">
                 <button type="button" class="ai-action-btn primary" data-type="analyze">
                     <span>✨ 종합 상황 분석 요청</span>
@@ -14072,6 +14094,29 @@ let currentAiVisaCode = null;
 let currentAiController = null;
 let currentAiSelectedProcedureKey = null;
 let currentAiSelectedProcedureVariantId = null;
+// Waymaker answer-speed tier: 'fast' | 'basic' | 'pro' (pro is coming-soon).
+let currentAiAnswerMode = 'basic';
+function setupAiModeSelector() {
+    const selector = document.getElementById('aiModeSelector');
+    if (!selector || selector.dataset.wired) return;
+    selector.dataset.wired = '1';
+    selector.querySelectorAll('.ai-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const mode = btn.dataset.mode;
+            if (mode === 'pro' || btn.classList.contains('is-disabled')) {
+                showToast('Pro 모드는 곧 제공될 예정입니다.');
+                return;
+            }
+            currentAiAnswerMode = mode;
+            selector.querySelectorAll('.ai-mode-btn').forEach(b => {
+                const active = b === btn;
+                b.classList.toggle('is-active', active);
+                b.setAttribute('aria-checked', active ? 'true' : 'false');
+            });
+        });
+    });
+}
+document.addEventListener('DOMContentLoaded', setupAiModeSelector);
 function findProcedureVariant(visa, procedureKey, variantId) {
     const variants = visa?.procedures?.[procedureKey]?.variants;
     if (!Array.isArray(variants)) return null;
@@ -15290,6 +15335,7 @@ async function submitAiAnalysis(actionType, btnEl) {
                 consent: true,
                 context: actionDirective,
                 lang: currentLanguage,
+                answer_mode: currentAiAnswerMode,
                 visa_data: {
                     code: visa.code,
                     name: visa.name,
