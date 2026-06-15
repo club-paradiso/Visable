@@ -23,19 +23,26 @@ HiKorea: **직종 (occupation)**, **업종 (industry)**, and **연간소득 (ann
 | Target statuses | **E-1 ~ E-10, F-2, F-4, F-6, H-2, D-7, D-8, D-9** doing profit activity (incl. self-employed). | Primary |
 | Excluded | **F-5** permanent residents; people not engaged in profit activity. | Primary |
 | Change deadline | Report a change of 직종/업종 or annual-income **band** within **15 days**. | Primary |
-| Income bands | 7 bands: 소득없음 / 1천만 미만 / 1~2천만 / 2~3천만 / 3~4천만 / 4~5천만 / 5천만 이상. | Primary |
-| Filing paths | (a) auto-shown during 방문예약, (b) 전자민원 → 취업정보(변경)신고. | Primary |
-| **List source** | "직종·업종은 **국가데이터처가 공표하는 표준분류(한국표준직업분류 / 한국표준산업분류)**를 참고" — HiKorea 직종조회 = 표준직업분류표, 업종조회 = 표준산업분류표, checkable on **국가데이터처 통계분류포털**. | Primary |
+| Income bands | 7 bands: 소득없음 / 1천만 미만 / 1~2천만 / 2~3천만 / 3~4천만 / 4~5천만 / 5천만 이상. **과세 전 소득** 기준, 구간 변경 시에만 신고 (FAQ Q2). | Primary |
+| Filing paths | (a) auto-shown during 방문예약, (b) 전자민원 → 취업정보(변경)신고 (FAQ Q5, 붙임2/3). | Primary |
+| Multi-job | Report the **one main job** = 주된 영리활동 (most work hours), incl. 부업·겸업 (FAQ Q8). | Primary |
+| Legal basis | 출입국관리법 시행규칙 **제47조 및 제49조의2** (붙임1). | Primary |
+| Penalty | Late/no report → 과태료 up to **₩1,000,000**; not automatic — 관할관서장 discretion (FAQ Q4). | Primary |
+| **List source** | "직종·업종은 **국가데이터처가 공표하는 표준분류(한국표준직업분류 / 한국표준산업분류)**를 참고" — 붙임2: 직종조회 = **국가데이터처 표준직업분류표**, 업종조회 = **국가데이터처 표준산업분류표**; 확인 = **국가데이터처 통계분류포털 kssc.mods.go.kr** (FAQ Q7, 붙임2). | Primary |
 
 > **This confirms the task premise:** the HiKorea 직종 list is the **한국표준직업분류
 > (KSCO)** and the 업종 list is the **한국표준산업분류 (KSIC)** — *not* E-7 visa
-> occupation codes, *not* 한국고용직업분류(KECO), *not* NTS business codes.
+> occupation codes, *not* 한국고용직업분류(KECO), *not* NTS business codes. The
+> reporting screen requires **both** a 직종 and a 업종, so the helper shows both.
 
-**Sources (retrieved 2026-06-14):**
-- 법무부 보도자료 / 재외동포신문: "법무부, 외국인 취업정보 '온라인 신고제' 시행…'하이코리아'로 간편 신고" — https://www.dongponews.net/news/articleView.html?idxno=55810
+**Sources:**
+- **Official MOJ announcement attachments (committed, retrieved 2026-06-15):**
+  `data/sources/hikorea_employment_reporting_overview.hwpx` (붙임1 개요),
+  `…_procedure_visit.hwpx` (붙임2 신고 절차: 직종조회/업종조회/연간소득),
+  `…_faq.docx` (붙임4 FAQ Q1–Q8).
+- 법무부 보도자료 / 재외동포신문 (2026-06-14): https://www.dongponews.net/news/articleView.html?idxno=55810
 - 아시아한인회총연합회 공지: https://asia.korean.net/bbs/board.php?bo_table=notice&wr_id=484
 - EKW 동포세계신문, "새해 달라지는 '외국인 취업정보 온라인 신고제' 이해하기": https://www.ekw.co.kr/news/articleView.html?idxno=20145
-- (secondary explainers) 탤런트링크, 대림투데이, 길가온 blog guides.
 
 ---
 
