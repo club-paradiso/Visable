@@ -1,0 +1,529 @@
+{
+  "schemaVersion": 1,
+  "lastUpdated": "2026-06-15",
+  "notesKo": "국가별 오버레이는 공통 F-4 기준을 보완할 뿐 자격 기준을 바꾸지 않습니다. 공식 출처가 확인된 항목만 표기하고, 그 외에는 공식 확인 안내로 안전하게 대체합니다. 미국 전용(FBI·미 국무부 아포스티유) 내용은 미국 오버레이에만 둡니다. 직접 열람이 봇 차단된 공관 페이지는 검색 색인 기준으로만 확인되어 신청 전 원문 확인이 필요할 수 있습니다.",
+  "commonAuthority": {
+    "missionFinderUrl": "https://overseas.mofa.go.kr",
+    "visaPortalUrl": "https://www.visa.go.kr",
+    "hikoreaUrl": "https://www.hikorea.go.kr"
+  },
+  "overlays": {
+    "US": {
+      "countryCode": "US",
+      "labelKo": "미국",
+      "labelEn": "United States",
+      "labelZh": "美国",
+      "sourceStatus": "verified_official",
+      "sourceStatusReason": "범죄경력(FBI Identity History Summary)·인증(미 국무부 아포스티유) 기준은 2026.5 매뉴얼 별첨1과 미 연방 공식 사이트로 확인됨. 사증 수수료·예약·처리기간 등 공관 실무는 실시간 확인 불가(needs_refresh).",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://www.mofa.go.kr/us-ko/brd/m_4478/view.do?seq=1110183",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "criminalRecord": {
+        "status": "verified_official",
+        "summaryKo": "미국은 FBI 본부 발급 범죄경력증명서(Identity History Summary)가 원칙입니다. 본인이 직접 신청하거나 FBI 공인 채널(FBI-Approved Channeler)을 통해 발급받습니다. 주정부 발급본은 미국 전역 범죄경력이 포함된 경우에만 인정됩니다(2026.5 매뉴얼 별첨1).",
+        "detailKo": [
+          "지문 채취 후 신청하며 온라인 PDF 또는 우편 수령 — 방식에 따라 소요기간이 크게 다릅니다.",
+          "신청일 기준 6개월 이내 발급본이어야 하며, 원본과 공증된 번역본 제출이 원칙입니다.",
+          "면제 예시: 만 14세 미만, 만 60세 이상(F-4) 등(별첨1 기준)."
+        ],
+        "sourceRefs": ["visa_manual_2026_05_f4_annex1_criminal_record", "fbi_identity_history_summary_guide"]
+      },
+      "authentication": {
+        "status": "verified_official",
+        "summaryKo": "미국은 아포스티유 협약 가입국입니다. FBI 등 연방 발급 문서는 미 국무부(U.S. Department of State) 아포스티유 확인을 받아야 합니다.",
+        "detailKo": [
+          "우편 처리 시 수 주~수개월 소요 가능 — 일찍 시작하세요."
+        ],
+        "sourceRefs": ["us_state_dept_apostille", "hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "needs_refresh",
+        "summaryKo": "거주지 관할 공관(주미대사관 또는 관할 총영사관)을 먼저 확인하세요. 워싱턴 DC 영사과는 방문 접수만 받는 안내가 있어 왔습니다(공관 기준 확인 필요).",
+        "sourceRefs": ["us_embassy_f4_visa_page", "mofa_overseas_mission_finder"]
+      },
+      "fee": {
+        "status": "needs_refresh",
+        "summaryKo": "미국 여권 기준 사증 수수료가 부과되며, 국적별 상호주의로 금액이 다를 수 있습니다. 구체적 금액은 공관 공지에서 확인하세요(실시간 확인 불가).",
+        "sourceRefs": ["us_embassy_visa_fee_page"]
+      },
+      "processingTime": {
+        "status": "needs_refresh",
+        "summaryKo": "처리 기간은 시기별로 변동됩니다. 신청 전 공관 공지에서 확인하세요.",
+        "sourceRefs": ["us_embassy_f4_visa_page"]
+      },
+      "warnings": [
+        "FBI Identity History Summary와 미 국무부 아포스티유는 미국 신청자에게만 해당합니다 — 다른 국가의 절차로 일반화하지 마세요.",
+        "공관 실무(수수료·예약·처리기간)는 실시간 확인이 안 된 정보입니다 — 신청 전 공관 공지 확인 필수.",
+        "해외 공관은 거소증을 발급하지 않습니다."
+      ],
+      "sourceRefs": ["visa_manual_2026_05_f4_chapter", "visa_manual_2026_05_f4_annex1_criminal_record", "us_state_dept_apostille", "fbi_identity_history_summary_guide", "us_embassy_f4_visa_page", "us_embassy_visa_fee_page", "hcch_apostille_status"]
+    },
+    "CA": {
+      "countryCode": "CA",
+      "labelKo": "캐나다",
+      "labelEn": "Canada",
+      "labelZh": "加拿大",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주캐나다 대사관 F-4 안내 페이지가 확인됨(검색 색인 기준). 아포스티유 협약 가입(2024.1.11 발효)으로 인증은 아포스티유 방식. 수수료·예약·처리기간 등 세부는 공관 원문 확인 필요.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/ca-ko/brd/m_5346/view.do?seq=1178447",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "캐나다는 아포스티유 협약 가입국입니다(2024.1.11 발효). 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님). 접수 방식은 관할 공관 안내를 확인하세요.",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "criminalRecord": {
+        "status": "partial_official",
+        "summaryKo": "해외 범죄경력증명서(별첨1) — 원본+공증 번역본, 신청일 기준 6개월 이내 발급본 원칙. 캐나다 발급기관·세부 기준은 관할 공관 안내를 확인하세요.",
+        "sourceRefs": ["visa_manual_2026_05_f4_annex1_criminal_record", "mission_f4_ca"]
+      },
+      "warnings": ["수수료·예약·처리기간은 공관 공지에서 확인하세요."],
+      "sourceRefs": ["mission_f4_ca", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "JP": {
+      "countryCode": "JP",
+      "labelKo": "일본",
+      "labelEn": "Japan",
+      "labelZh": "日本",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주일본 대사관 재외동포 안내가 확인됨(검색 색인 기준). 아포스티유 협약 가입국. 관할 총영사관별 세부 안내는 다를 수 있음.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/jp-ko/wpge/m_1159/contents.do",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "일본은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님). 접수 방식은 관할 공관 안내를 확인하세요.",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "partial_official",
+        "summaryKo": "거주지 관할(대사관/총영사관)을 먼저 확인하세요. 관할별 접수 방식·서류가 다를 수 있습니다.",
+        "sourceRefs": ["mission_f4_jp", "mofa_overseas_mission_finder"]
+      },
+      "warnings": ["관할 총영사관별 안내가 다를 수 있어 원문 확인이 필요합니다."],
+      "sourceRefs": ["mission_f4_jp", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "CN": {
+      "countryCode": "CN",
+      "labelKo": "중국",
+      "labelEn": "China",
+      "labelZh": "中国",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주중국 대사관 F-4 구비서류 안내가 확인됨(검색 색인 기준). 중국은 2023.11.7 아포스티유 협약 발효. 공관 페이지의 일부 수치(복수사증·체류기간)는 매뉴얼(체류기간 1회 최대 3년)과 함께 원문 확인 필요.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/cn-ko/brd/m_1244/view.do?seq=1345559",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "중국은 아포스티유 협약 가입국입니다(2023.11.7 발효). 종전 공증·영사확인 방식에서 아포스티유로 전환되었으므로 인증 방식을 관할 공관에서 다시 확인하세요.",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "criminalRecord": {
+        "status": "partial_official",
+        "summaryKo": "해외 범죄경력증명서(별첨1) — 만 14세 이상은 신청일 기준 6개월 이내 발급본 원칙. 중국 발급기관·세부 기준은 관할 공관 안내를 확인하세요.",
+        "sourceRefs": ["visa_manual_2026_05_f4_annex1_criminal_record", "mission_f4_cn"]
+      },
+      "missionPractice": {
+        "status": "needs_refresh",
+        "summaryKo": "공관 페이지에 직무분야·구비서류 안내가 있습니다. 복수사증·체류기간 등 일부 수치는 전국 매뉴얼(체류기간 1회 최대 3년)과 다를 수 있어 공관 원문과 매뉴얼을 함께 확인하세요.",
+        "sourceRefs": ["mission_f4_cn", "visa_manual_2026_05_f4_chapter"]
+      },
+      "warnings": ["2026.2.12 동포 체류자격 F-4 통합으로 중국·고려인 동포에게도 동일 기준이 적용됩니다.", "공관 페이지의 일부 수치는 매뉴얼과 상이할 수 있어 원문 확인이 필요합니다."],
+      "sourceRefs": ["mission_f4_cn", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "AU": {
+      "countryCode": "AU",
+      "labelKo": "호주",
+      "labelEn": "Australia",
+      "labelZh": "澳大利亚",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주멜버른 분관 F-4 안내가 확인됨(검색 색인 기준). 아포스티유 협약 가입국. 사증·국적 업무는 예약 후 방문 접수 안내.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/au-melbourne-ko/brd/m_1984/view.do?seq=983727",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "호주는 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "booking": {
+        "status": "partial_official",
+        "summaryKo": "사증·국적 업무는 예약 후 방문 접수 안내가 있습니다(관할 공관 기준 확인). 거주지 관할(대사관/총영사관/분관)을 먼저 확인하세요.",
+        "sourceRefs": ["mission_f4_au"]
+      },
+      "warnings": ["관할(대사관/총영사관/분관)별 안내가 다를 수 있어 원문 확인이 필요합니다."],
+      "sourceRefs": ["mission_f4_au", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "NZ": {
+      "countryCode": "NZ",
+      "labelKo": "뉴질랜드",
+      "labelEn": "New Zealand",
+      "labelZh": "新西兰",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주뉴질랜드 대사관 F-4 안내가 확인됨(검색 색인 기준). 아포스티유 협약 가입국.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/nz-ko/brd/m_23192/view.do?seq=1037958",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "뉴질랜드는 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "warnings": ["수수료·예약·처리기간은 공관 공지에서 확인하세요."],
+      "sourceRefs": ["mission_f4_nz", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "RU": {
+      "countryCode": "RU",
+      "labelKo": "러시아",
+      "labelEn": "Russia",
+      "labelZh": "俄罗斯",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주러시아 대사관 동포비자(F-4) 구비서류·FAQ가 확인됨(검색 색인 기준). 아포스티유 협약 가입국. 여권 잔여 유효기간 안내 등 일부 실무 확인.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/ru-ko/brd/m_7329/view.do?seq=1345608",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "러시아는 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님). 접수 방식은 관할 공관 안내를 확인하세요.",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "partial_official",
+        "summaryKo": "공관 안내상 여권 잔여 유효기간 6개월 이상(2~3년 권장)이 안내되어 있습니다. 관할 총영사관별 접수 방식은 원문을 확인하세요.",
+        "sourceRefs": ["mission_f4_ru"]
+      },
+      "warnings": ["관할 총영사관별 안내가 다를 수 있어 원문 확인이 필요합니다."],
+      "sourceRefs": ["mission_f4_ru", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "KZ": {
+      "countryCode": "KZ",
+      "labelKo": "카자흐스탄",
+      "labelEn": "Kazakhstan",
+      "labelZh": "哈萨克斯坦",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주알마티 총영사관 재외동포(고려인동포) F-4 발급 안내가 확인됨(검색 색인 기준). 아포스티유 협약 가입국.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/kz-almaty-ko/brd/m_8310/view.do?seq=744458",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "카자흐스탄은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "partial_official",
+        "summaryKo": "고려인동포 대상 F-4 발급 안내가 있습니다. 거주지 관할(대사관/총영사관)을 먼저 확인하세요.",
+        "sourceRefs": ["mission_f4_kz", "mofa_overseas_mission_finder"]
+      },
+      "warnings": ["2026.2.12 동포 체류자격 F-4 통합으로 CIS 지역 동포에게도 동일 기준이 적용됩니다."],
+      "sourceRefs": ["mission_f4_kz", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "SG": {
+      "countryCode": "SG",
+      "labelKo": "싱가포르",
+      "labelEn": "Singapore",
+      "labelZh": "新加坡",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "주싱가포르 대사관 F-4 발급 신청 안내가 확인됨(검색 색인 기준). 아포스티유 협약 가입국(2021.9.16 발효). 경찰증명서(C.O.C.) 관련 안내 일부 확인.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": "https://overseas.mofa.go.kr/sg-ko/brd/m_2516/view.do?seq=1345601",
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "싱가포르는 아포스티유 협약 가입국입니다(2021.9.16 발효). 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "criminalRecord": {
+        "status": "partial_official",
+        "summaryKo": "공관 안내상 싱가포르 경찰증명서(Certificate of Clearance, C.O.C.) 관련 안내(영문 출력본 등)가 있습니다. 기본증명서/제적등본에 국적취득 시점이 표시되면 시민권증서 제출을 생략할 수 있다는 사례 안내도 있습니다. 세부는 공관 원문을 확인하세요.",
+        "sourceRefs": ["mission_f4_sg", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "warnings": ["세부 서류·접수 방식은 공관 원문 확인이 필요합니다."],
+      "sourceRefs": ["mission_f4_sg", "hcch_apostille_status", "visa_manual_2026_05_f4_chapter"]
+    },
+    "GB": {
+      "countryCode": "GB",
+      "labelKo": "영국",
+      "labelEn": "United Kingdom",
+      "labelZh": "英国",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 영국 내 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함 — 관할 공관 원문 확인 필요.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "영국은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "영국 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "DE": {
+      "countryCode": "DE",
+      "labelKo": "독일",
+      "labelEn": "Germany",
+      "labelZh": "德国",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 독일 내 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "독일은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "독일 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "FR": {
+      "countryCode": "FR",
+      "labelKo": "프랑스",
+      "labelEn": "France",
+      "labelZh": "法国",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 프랑스 내 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "프랑스는 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "프랑스 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "UZ": {
+      "countryCode": "UZ",
+      "labelKo": "우즈베키스탄",
+      "labelEn": "Uzbekistan",
+      "labelZh": "乌兹别克斯坦",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함. CIS 지역 고려인동포 통합 적용.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "우즈베키스탄은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "우즈베키스탄 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["2026.2.12 동포 체류자격 F-4 통합으로 CIS 지역 동포에게도 동일 기준이 적용됩니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "PH": {
+      "countryCode": "PH",
+      "labelKo": "필리핀",
+      "labelEn": "Philippines",
+      "labelZh": "菲律宾",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국(2019.5.14 발효)으로 인증 방식은 확인됨. 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "필리핀은 아포스티유 협약 가입국입니다(2019.5.14 발효). 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "필리핀 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "ID": {
+      "countryCode": "ID",
+      "labelKo": "인도네시아",
+      "labelEn": "Indonesia",
+      "labelZh": "印度尼西亚",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국(2022.6.4 발효)으로 인증 방식은 확인됨. 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "인도네시아는 아포스티유 협약 가입국입니다(2022.6.4 발효). 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "인도네시아 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "BR": {
+      "countryCode": "BR",
+      "labelKo": "브라질",
+      "labelEn": "Brazil",
+      "labelZh": "巴西",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "브라질은 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "브라질 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "AR": {
+      "countryCode": "AR",
+      "labelKo": "아르헨티나",
+      "labelEn": "Argentina",
+      "labelZh": "阿根廷",
+      "sourceStatus": "partial_official",
+      "sourceStatusReason": "아포스티유 협약 가입국으로 인증 방식은 확인됨. 공관의 F-4 전용 안내 페이지는 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "partial_official",
+        "summaryKo": "아르헨티나는 아포스티유 협약 가입국입니다. 공문서는 아포스티유 확인 방식이 원칙입니다(영사확인 아님).",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "아르헨티나 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "VN": {
+      "countryCode": "VN",
+      "labelKo": "베트남",
+      "labelEn": "Vietnam",
+      "labelZh": "越南",
+      "sourceStatus": "needs_refresh",
+      "sourceStatusReason": "베트남은 2025.12.31 아포스티유 협약에 가입했으나 발효일은 2026.9.11입니다. 현재(2026.6 기준)는 영사확인 방식이 원칙이며 발효 후 아포스티유로 전환됩니다 — 시점에 따라 안내 갱신 필요.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "needs_refresh",
+        "summaryKo": "베트남은 아포스티유 협약에 가입(2025.12.31)했으나 발효일은 2026.9.11입니다. 발효 전에는 영사확인 방식이 원칙이고, 발효 후에는 아포스티유로 전환됩니다. 신청 시점의 인증 방식을 관할 공관에서 반드시 확인하세요.",
+        "sourceRefs": ["hcch_apostille_status", "visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "missionPractice": {
+        "status": "official_check_required",
+        "summaryKo": "베트남 내 F-4 전용 공관 안내 페이지를 확인하지 못했습니다. 관할 재외공관 누리집에서 사증 안내를 확인하세요.",
+        "sourceRefs": ["mofa_overseas_mission_finder"]
+      },
+      "warnings": ["아포스티유 발효일(2026.9.11) 전후로 인증 방식이 달라집니다 — 신청 시점 기준으로 확인하세요."],
+      "sourceRefs": ["hcch_apostille_status", "mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "TH": {
+      "countryCode": "TH",
+      "labelKo": "태국",
+      "labelEn": "Thailand",
+      "labelZh": "泰国",
+      "sourceStatus": "official_check_required",
+      "sourceStatusReason": "태국의 아포스티유 협약 가입 여부를 공식 확인하지 못했습니다(HCCH 가입국으로 단정 불가). 공관의 F-4 전용 안내 페이지도 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "official_check_required",
+        "summaryKo": "태국의 아포스티유 협약 가입 여부가 공식 확인되지 않았습니다. 인증 방식(아포스티유/영사확인)은 관할 공관에서 확인하세요.",
+        "sourceRefs": ["visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "warnings": ["인증 방식과 공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    },
+    "MY": {
+      "countryCode": "MY",
+      "labelKo": "말레이시아",
+      "labelEn": "Malaysia",
+      "labelZh": "马来西亚",
+      "sourceStatus": "official_check_required",
+      "sourceStatusReason": "말레이시아의 아포스티유 협약 가입 여부를 공식 확인하지 못했습니다. 공관의 F-4 전용 안내 페이지도 검색으로 특정하지 못함.",
+      "lastReviewed": "2026-06-15",
+      "missionFinderUrl": "https://overseas.mofa.go.kr",
+      "missionUrl": null,
+      "visaPortalUrl": "https://www.visa.go.kr",
+      "hikoreaUrl": "https://www.hikorea.go.kr",
+      "authentication": {
+        "status": "official_check_required",
+        "summaryKo": "말레이시아의 아포스티유 협약 가입 여부가 공식 확인되지 않았습니다. 인증 방식(아포스티유/영사확인)은 관할 공관에서 확인하세요.",
+        "sourceRefs": ["visa_manual_2026_05_f4_annex1_criminal_record"]
+      },
+      "warnings": ["인증 방식과 공관별 F-4 세부 절차는 공식 확인이 필요합니다."],
+      "sourceRefs": ["mofa_overseas_mission_finder", "visa_manual_2026_05_f4_chapter"]
+    }
+  }
+}
