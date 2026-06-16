@@ -221,6 +221,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-check-box { flex-shrink: 0; width: 1.3rem; height: 1.3rem; border: 2px solid var(--ac); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: var(--ac); font-size: 0.85rem; font-weight: 800; }
 .nh-check-body strong { display: block; font-size: 0.95rem; }
 .nh-check-body span { font-size: 0.83rem; color: var(--t2); }
+.nh-check-caution { color: var(--cyT) !important; font-weight: 700; }
 
 /* ── Hub ── */
 .nh-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.7rem; margin-top: 1.2rem; }
@@ -330,6 +331,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-btn-sm { min-height: 42px; padding: 0 1.1rem; border-radius: var(--r-md); font-weight: 800; font-size: 0.9rem; font-family: var(--ff); cursor: pointer; border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); transition: border-color 0.18s, transform 0.18s; }
 .nh-btn-sm:hover { border-color: var(--ac); transform: translateY(-1px); }
 .nh-btn-sm.primary { background: var(--ac); color: #fff; border-color: transparent; }
+.nh-btn-sm:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 .nh-loaderr { padding: 2rem 1rem; text-align: center; color: var(--t2); }
 
 /* ── Kitsch (archive_diary) component touches ── */
@@ -342,6 +344,72 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 :root[data-theme="archive_diary"] .nh-back,
 :root[data-theme="archive_diary"] .nh-ctl { border-color: var(--k-ink); border-width: 2px; }
 :root[data-theme="archive_diary"] .nh-tagline { color: var(--k-pink-deep); }
+
+/* ── Official-source badge ── */
+.nh-official-badge {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.18rem 0.6rem; border-radius: 999px;
+  font-size: 0.72rem; font-weight: 800; letter-spacing: 0.01em;
+  color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 30%, transparent);
+}
+.nh-official-badge::before { content: "✓"; font-size: 0.7rem; }
+
+/* ── KIIP rich block ── */
+.nh-kiip-card { padding: 1rem 1.1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); margin-bottom: 0.8rem; }
+.nh-kiip-card h3 { margin: 0 0 0.35rem; font-size: 0.98rem; }
+.nh-kiip-card p { margin: 0; font-size: 0.88rem; color: var(--t2); }
+.nh-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin: 0.4rem 0 0.8rem; }
+.nh-pill-card { padding: 0.85rem 1rem; border-radius: var(--r-md); border: 1px solid var(--bd); background: var(--bg2); }
+.nh-pill-card h4 { margin: 0 0 0.45rem; font-size: 0.86rem; }
+.nh-pill-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.3rem; }
+.nh-pill-list li { font-size: 0.83rem; color: var(--t2); padding-left: 1.1rem; position: relative; }
+.nh-pill-list.yes li::before { content: "✓"; position: absolute; left: 0; color: var(--ok); font-weight: 800; }
+.nh-pill-list.no li::before { content: "✕"; position: absolute; left: 0; color: var(--warn); font-weight: 800; }
+
+/* ── Source chips (inline, in cards/details) ── */
+.nh-src-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
+.nh-src-chip {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  padding: 0.15rem 0.55rem; border-radius: 999px; font-size: 0.72rem; font-weight: 700;
+  color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 26%, transparent);
+  text-decoration: none;
+}
+.nh-src-chip:hover { border-color: var(--ac); }
+.nh-src-chip::after { content: "↗"; font-size: 0.66rem; opacity: 0.8; }
+
+/* ── Result categories (readiness) ── */
+.nh-result-cat { margin-bottom: 1rem; }
+.nh-result-cat-head { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0 0 0.5rem; font-size: 0.92rem; font-weight: 800; }
+.nh-result-cat-head .nh-chip-glyph { font-size: 0.85rem; }
+.nh-result-note { padding: 0.7rem 0.9rem; border: 1px solid var(--bd); border-left: 3px solid var(--ac); border-radius: var(--r-sm); background: var(--bg2); font-size: 0.85rem; color: var(--t2); margin-bottom: 0.5rem; }
+.nh-result-cat[data-tone="warn"] .nh-result-note { border-left-color: var(--warn); }
+
+/* ── Rich path card details ── */
+.nh-path-detail { display: grid; gap: 0.7rem; }
+.nh-path-detail h5 { margin: 0 0 0.3rem; font-size: 0.82rem; color: var(--t1); text-transform: none; }
+.nh-path-detail ul { margin: 0; padding-left: 1.1rem; }
+.nh-path-detail li { font-size: 0.84rem; color: var(--t2); margin-bottom: 0.2rem; }
+.nh-path-caution { font-size: 0.82rem; color: var(--cyT); background: var(--cyL); border: 1px solid color-mix(in srgb, var(--cy) 30%, transparent); border-radius: var(--r-sm); padding: 0.6rem 0.8rem; }
+
+/* ── Hub groups ── */
+.nh-hub-group { margin-bottom: 1.2rem; }
+.nh-hub-group-title { margin: 0 0 0.6rem; font-size: 0.84rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--t3); }
+
+/* ── Source panel ── */
+.nh-source-group { margin-bottom: 1.3rem; }
+.nh-source-group-title { margin: 0 0 0.6rem; font-size: 0.9rem; font-weight: 800; color: var(--t1); }
+.nh-source-card { display: grid; gap: 0.3rem; padding: 0.85rem 1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); margin-bottom: 0.55rem; }
+.nh-source-card-top { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.nh-source-link { font-weight: 800; font-size: 0.92rem; text-decoration: none; color: var(--ac); }
+.nh-source-link:hover { text-decoration: underline; }
+.nh-source-type { font-size: 0.68rem; font-weight: 800; color: var(--t3); border: 1px solid var(--bd); border-radius: 999px; padding: 0.05rem 0.45rem; }
+.nh-source-nav { font-size: 0.8rem; color: var(--t2); }
+.nh-source-flag { font-size: 0.68rem; font-weight: 800; color: var(--warn); border: 1px dashed color-mix(in srgb, var(--warn) 50%, var(--bd)); border-radius: 999px; padding: 0.05rem 0.45rem; }
+
+/* ── Detail modal rows ── */
+.nh-detail-row { margin-bottom: 0.8rem; }
+.nh-detail-row h4 { margin: 0 0 0.25rem; font-size: 0.82rem; color: var(--t3); text-transform: uppercase; letter-spacing: 0.03em; }
+.nh-detail-row p { margin: 0; font-size: 0.9rem; color: var(--t1); }
 
 /* ── Responsive ── */
 @media (max-width: 720px) {
@@ -407,10 +475,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
   <div class="nh-wrap">
     <section class="nh-block" id="kiip">
-      <div class="nh-section-h"><h2 data-c="kiip.title"></h2></div>
-      <p class="nh-section-intro" data-c="kiip.intro"></p>
-      <div class="nh-sub-grid" id="kiipGrid"></div>
-      <p class="nh-inline-note" data-c="kiip.note"></p>
+      <div class="nh-section-h"><h2 data-c="kiip.title"></h2><span class="nh-official-badge" data-c="ui.officialSourceBadge"></span></div>
+      <div id="kiipBody"></div>
     </section>
 
     <section class="nh-block" id="after">
@@ -445,10 +511,10 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       </div>
     </section>
 
-    <section class="nh-sources">
-      <div class="nh-section-h"><h2 data-c="sources.title"></h2></div>
-      <p class="nh-section-intro" data-c="sources.intro"></p>
-      <ul class="nh-source-list" id="sourceList"></ul>
+    <section class="nh-sources" id="sources">
+      <div class="nh-section-h"><h2 data-c="sourcesPanel.title"></h2><span class="nh-official-badge" data-c="ui.officialSourceBadge"></span></div>
+      <p class="nh-section-intro" data-c="sourcesPanel.intro"></p>
+      <div id="sourcePanel"></div>
     </section>
   </div>
 </main>
@@ -507,8 +573,12 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   var SUPPORTED = ['ko', 'en'];
   var lang = initialLang();
   var content = null;     // nationality_content.json
-  var paths = null;       // nationality_paths.json
-  var chipMap = {};       // id -> chip
+  var paths = null;       // nationality_paths.json (path catalog)
+  var flows = null;       // nationality_flows.json (wizards)
+  var sources = null;     // nationality_sources.json (registry)
+  var chipMap = {};       // chip id -> chip
+  var catMap = {};        // result-category id -> category
+  var srcMap = {};        // sourceId -> source
   var lastFocus = null;
   var activeOverlay = null;
   var activeRebuild = null; // re-render hook for the open modal on language switch
@@ -600,47 +670,152 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     });
   }
 
-  function renderKiip() {
-    var grid = document.getElementById('kiipGrid');
-    grid.innerHTML = '';
-    content.kiip.subsections.forEach(function (s) {
-      grid.appendChild(el('div', 'nh-sub-item',
-        '<h3>' + esc(pick(s.label)) + '</h3><p>' + esc(pick(s.desc)) + '</p>'));
+  // Field helpers: support both {ko,en} objects and Ko/En-suffixed fields.
+  function fld(obj, base) {
+    if (!obj) return '';
+    if (obj[base] != null) return pick(obj[base]);
+    var ko = obj[base + 'Ko'], en = obj[base + 'En'];
+    if (ko != null || en != null) return pick({ ko: ko, en: en });
+    return '';
+  }
+  function fldArr(obj, base) {
+    var v = obj && obj[base];
+    if (!v) return [];
+    if (Array.isArray(v)) return v;
+    var a = pick(v);
+    return Array.isArray(a) ? a : [];
+  }
+  function srcTitle(s) { return (lang === 'en' && s.titleEn) ? s.titleEn : s.title; }
+  function sourceById(id) { return srcMap[id]; }
+  function srcChipsHtml(ids) {
+    if (!ids || !ids.length) return '';
+    var chips = ids.map(function (id) {
+      var s = srcMap[id];
+      if (!s) return '';
+      return '<a class="nh-src-chip" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(srcTitle(s)) + '</a>';
+    }).join('');
+    return '<div class="nh-src-chips">' + chips + '</div>';
+  }
+
+  function richPathCardHtml(p) {
+    var li = function (s) { return '<li>' + esc(s) + '</li>'; };
+    var kc = fldArr(p, 'keyChecks').map(li).join('');
+    var ev = fldArr(p, 'requiredEvidenceGroups').map(li).join('');
+    var ns = fldArr(p, 'nextSteps').map(li).join('');
+    return '<div class="nh-path-card" data-path="' + esc(p.id) + '">' +
+      '<button type="button" class="nh-path-head" aria-expanded="false">' +
+      '<span class="nh-path-icon" aria-hidden="true">' + esc(p.icon) + '</span>' +
+      '<span class="nh-path-head-text"><strong>' + esc(fld(p, 'title')) + '</strong>' +
+      '<span>' + esc(fld(p, 'summary')) + '</span></span>' +
+      chipHtml(p.chip) +
+      '<span class="nh-path-toggle" aria-hidden="true">▾</span>' +
+      '</button>' +
+      '<div class="nh-path-body"><div class="nh-path-detail">' +
+      '<div><h5>' + esc(pick(content.ui.whoLabel)) + '</h5><ul><li>' + esc(fld(p, 'who')) + '</li></ul></div>' +
+      (kc ? '<div><h5>' + esc(pick(content.ui.keyChecksLabel)) + '</h5><ul>' + kc + '</ul></div>' : '') +
+      (ev ? '<div><h5>' + esc(pick(content.ui.evidenceLabel)) + '</h5><ul>' + ev + '</ul></div>' : '') +
+      (ns ? '<div><h5>' + esc(pick(content.ui.nextStepsLabel)) + '</h5><ul>' + ns + '</ul></div>' : '') +
+      '<div class="nh-path-caution">' + esc(fld(p, 'caution')) + '</div>' +
+      '<div><h5>' + esc(pick(content.ui.sourcesLabel)) + '</h5>' + srcChipsHtml(p.sourceIds) + '</div>' +
+      '</div></div>' +
+      '</div>';
+  }
+  function wirePathCards(container) {
+    container.querySelectorAll('.nh-path-head').forEach(function (head) {
+      head.addEventListener('click', function () {
+        var card = head.closest('.nh-path-card');
+        var open = card.classList.toggle('open');
+        head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     });
+  }
+
+  function renderKiip() {
+    var k = content.kiip;
+    var box = document.getElementById('kiipBody');
+    if (!box) return;
+    var html = '';
+    html += '<p class="nh-section-intro">' + esc(pick(k.intro)) + '</p>';
+    html += '<div class="nh-kiip-card"><h3>KIIP</h3><p>' + esc(pick(k.whatIs)) + '</p></div>';
+    html += '<div class="nh-kiip-card"><p>' + esc(pick(k.distinction)) + '</p></div>';
+    html += '<div class="nh-sub-grid">';
+    k.subsections.forEach(function (s) {
+      html += '<div class="nh-sub-item"><h3>' + esc(pick(s.label)) + '</h3><p>' + esc(pick(s.desc)) + '</p>' + srcChipsHtml(s.sourceIds) + '</div>';
+    });
+    html += '</div>';
+    var helps = (pick(k.helps) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
+    var nots = (pick(k.notClaims) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
+    var helpsTitle = lang === 'en' ? 'What Paradiso helps with' : 'Paradiso가 돕는 것';
+    var notsTitle = lang === 'en' ? "What Paradiso won't claim" : 'Paradiso가 단정하지 않는 것';
+    html += '<div class="nh-cols">' +
+      '<div class="nh-pill-card"><h4>' + esc(helpsTitle) + '</h4><ul class="nh-pill-list yes">' + helps + '</ul></div>' +
+      '<div class="nh-pill-card"><h4>' + esc(notsTitle) + '</h4><ul class="nh-pill-list no">' + nots + '</ul></div>' +
+      '</div>';
+    html += '<p class="nh-inline-note">' + esc(pick(k.note)) + '</p>';
+    box.innerHTML = html;
   }
 
   function renderAfter() {
     var list = document.getElementById('afterList');
     list.innerHTML = '';
-    content.afterApproval.items.forEach(function (it) {
+    content.afterApproval.groups.forEach(function (g) {
+      var caution = g.caution ? '<span class="nh-check-caution"> ⚠ ' + esc(pick(g.caution)) + '</span>' : '';
       list.appendChild(el('li', null,
         '<span class="nh-check-box" aria-hidden="true">✓</span>' +
-        '<span class="nh-check-body"><strong>' + esc(pick(it.label)) + '</strong>' +
-        '<span>' + esc(pick(it.hint)) + '</span></span>'));
+        '<span class="nh-check-body"><strong>' + esc(pick(g.label)) + '</strong>' +
+        '<span>' + esc(pick(g.explain)) + ' · ' + esc(pick(g.prepare)) + caution + '</span>' +
+        srcChipsHtml(g.sourceIds) + '</span>'));
     });
   }
 
   function renderHub() {
     var grid = document.getElementById('hubGrid');
     grid.innerHTML = '';
+    grid.className = '';
+    var order = [];
+    var byGroup = {};
     content.hub.items.forEach(function (it) {
-      var b = el('button', 'nh-hub-item');
-      b.type = 'button';
-      b.setAttribute('data-action', 'open-hub');
-      b.setAttribute('data-id', it.id);
-      b.innerHTML = '<h3>' + esc(pick(it.label)) + '</h3><p>' + esc(pick(it.desc)) + '</p>';
-      grid.appendChild(b);
+      var g = lang === 'en' ? (it.groupEn || 'Other') : (it.groupKo || '기타');
+      if (!byGroup[g]) { byGroup[g] = []; order.push(g); }
+      byGroup[g].push(it);
+    });
+    order.forEach(function (g) {
+      var section = el('div', 'nh-hub-group');
+      section.appendChild(el('p', 'nh-hub-group-title', esc(g)));
+      var cards = el('div', 'nh-hub-grid');
+      byGroup[g].forEach(function (it) {
+        var b = el('button', 'nh-hub-item');
+        b.type = 'button';
+        b.setAttribute('data-action', 'open-hub');
+        b.setAttribute('data-id', it.id);
+        b.innerHTML = '<h3>' + esc(pick(it.label)) + '</h3><p>' + esc(pick(it.desc)) + '</p>';
+        cards.appendChild(b);
+      });
+      section.appendChild(cards);
+      grid.appendChild(section);
     });
   }
 
   function renderSources() {
-    var list = document.getElementById('sourceList');
-    list.innerHTML = '';
-    content.sources.items.forEach(function (s) {
-      var verifying = pick(content.ui.officialCheckBadge);
-      list.appendChild(el('li', null,
-        '<span>' + esc(s.label) + '</span>' +
-        '<span class="nh-source-flag">' + esc(verifying) + '</span>'));
+    var panel = document.getElementById('sourcePanel');
+    if (!panel || !sources) return;
+    panel.innerHTML = '';
+    var verify = pick(content.ui.verifyBadge);
+    (sources.groups || []).forEach(function (grp) {
+      var items = (sources.sources || []).filter(function (s) { return s.group === grp.id; });
+      if (!items.length) return;
+      var wrap = el('div', 'nh-source-group');
+      wrap.appendChild(el('p', 'nh-source-group-title', esc(pick(grp))));
+      items.forEach(function (s) {
+        var flag = s.contentVerified ? '' : '<span class="nh-source-flag">' + esc(verify) + '</span>';
+        var nav = (lang === 'en' ? s.navHintEn : s.navHintKo) || '';
+        wrap.appendChild(el('div', 'nh-source-card',
+          '<div class="nh-source-card-top">' +
+          '<a class="nh-source-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(srcTitle(s)) + '</a>' +
+          '<span class="nh-source-type">' + esc(s.publisher) + '</span>' + flag + '</div>' +
+          (nav ? '<div class="nh-source-nav">' + esc(pick(content.ui.navLabel)) + ': ' + esc(nav) + '</div>' : '')));
+      });
+      panel.appendChild(wrap);
     });
   }
 
@@ -697,89 +872,150 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     lastFocus = null;
   }
 
-  // ── Readiness check ──────────────────────────────────────────────────────
+  // ── Readiness check (one question per screen) ──────────────────────────────
   var readinessAnswers = {};
+  var readinessStep = 0;
 
-  function buildReadinessForm() {
-    document.getElementById('readinessTitle').textContent = pick(paths.readiness.title);
+  function fillTemplate(str, vars) {
+    return String(str == null ? '' : str).replace(/\{(\w+)\}/g, function (m, k) {
+      return vars[k] != null ? vars[k] : m;
+    });
+  }
+
+  function buildReadinessStep() {
+    var r = flows.readiness;
+    var qs = r.questions;
+    if (readinessStep < 0) readinessStep = 0;
+    if (readinessStep >= qs.length) { showReadinessResult(); return; }
+    var q = qs[readinessStep];
+    var isLast = readinessStep === qs.length - 1;
+    document.getElementById('readinessTitle').textContent = pick(r.title);
     var body = document.getElementById('readinessBody');
     var foot = document.getElementById('readinessFoot');
+
     body.innerHTML = '';
-    body.appendChild(el('p', 'nh-section-intro', esc(pick(paths.readiness.intro))));
-    var form = el('form', 'nh-readiness-form');
-    form.id = 'readinessForm';
-    paths.readiness.questions.forEach(function (q) {
-      var fs = el('fieldset', 'nh-q');
-      fs.appendChild(el('legend', null, esc(pick(q.q))));
-      var opts = el('div', 'nh-q-options');
-      q.options.forEach(function (o) {
-        var checked = readinessAnswers[q.id] === o.value ? ' checked' : '';
-        var label = el('label', 'nh-opt',
-          '<input type="radio" name="' + esc(q.id) + '" value="' + esc(o.value) + '"' + checked + '>' +
-          '<span>' + esc(pick(o.label)) + '</span>');
-        opts.appendChild(label);
-      });
-      fs.appendChild(opts);
-      form.appendChild(fs);
+    body.appendChild(el('p', 'nh-progress', esc(fillTemplate(pick(r.progressLabel), { current: readinessStep + 1, total: qs.length }))));
+    if (readinessStep === 0) body.appendChild(el('p', 'nh-section-intro', esc(pick(r.intro))));
+
+    var fs = el('fieldset', 'nh-q');
+    var legend = el('legend', null, esc(pick(q.q)));
+    legend.setAttribute('tabindex', '-1');
+    fs.appendChild(legend);
+    var opts = el('div', 'nh-q-options');
+    q.options.forEach(function (o) {
+      var checked = readinessAnswers[q.id] === o.value ? ' checked' : '';
+      var label = el('label', 'nh-opt',
+        '<input type="radio" name="' + esc(q.id) + '" value="' + esc(o.value) + '"' + checked + '>' +
+        '<span>' + esc(pick(o.label)) + '</span>');
+      opts.appendChild(label);
     });
-    form.addEventListener('change', function (e) {
-      if (e.target && e.target.name) readinessAnswers[e.target.name] = e.target.value;
-    });
-    body.appendChild(form);
+    fs.appendChild(opts);
+    body.appendChild(fs);
+
     foot.innerHTML = '';
-    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(paths.readiness.disclaimer))));
-    var go = el('button', 'nh-btn-sm primary', esc(pick(content.ui.viewResult)));
-    go.type = 'button';
-    go.addEventListener('click', showReadinessResult);
-    foot.appendChild(go);
+    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+    back.type = 'button';
+    back.style.visibility = readinessStep === 0 ? 'hidden' : 'visible';
+    back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+
+    var next = el('button', 'nh-btn-sm primary', esc(pick(isLast ? content.ui.viewResult : content.ui.next)));
+    next.type = 'button';
+    next.disabled = readinessAnswers[q.id] == null;
+    next.addEventListener('click', function () {
+      if (readinessAnswers[q.id] == null) return;
+      if (isLast) showReadinessResult();
+      else { readinessStep++; buildReadinessStep(); }
+    });
+
+    opts.addEventListener('change', function (e) {
+      if (e.target && e.target.name) {
+        readinessAnswers[e.target.name] = e.target.value;
+        next.disabled = false;
+      }
+    });
+
+    foot.appendChild(back);
+    foot.appendChild(next);
+    legend.focus();
   }
 
   function evaluateReadiness(a) {
-    var ids = [];
-    var push = function (id) { if (ids.indexOf(id) < 0) ids.push(id); };
-    var hasF5 = a.f5 === 'yes' || a.status === 'f5';
-    var longStay = a.years === 'ge5' || a.years === '3to5';
+    var cats = { review: [], firstcheck: [], materials: [], official: [], risk: [] };
+    var addP = function (id) { if (cats.review.indexOf(id) < 0) cats.review.push(id); };
+    var addN = function (c, m) { if (cats[c].indexOf(m) < 0) cats[c].push(m); };
+    var hasF5 = a.r_status === 'f5';
 
-    if (a.spouse === 'yes') push('spouseRoute');
-    if (a.family === 'yes') push('familyRoute');
-    if (hasF5 && longStay) push('generalRoute');
-    else if (a.years === 'ge5') push('generalRoute');
+    if (a.r_spouse === 'intact' || a.r_spouse === 'changed') addP('marriage');
+    if (a.r_family === 'parent') addP('family');
+    if (a.r_family === 'selfPast') { addP('restoration'); addP('determination'); }
+    if (a.r_family === 'overseas') { addP('family'); addP('restoration'); addP('determination'); addN('firstcheck', 'overseasInfo'); }
+    if (hasF5 || a.r_residence === 'ge5') addP('general');
 
-    if (!hasF5 && a.spouse !== 'yes' && a.family !== 'yes') push('needF5First');
-    if (a.kiip === 'none' || a.kiip === 'unknown' || a.kiip === 'inprogress') push('kiipNeeded');
-    if (a.flags === 'yes') push('flagsReview');
+    if (a.r_status === 'unsure' || a.r_inkorea === 'unsure') addN('firstcheck', 'confirmStatus');
+    var shortStay = a.r_residence === 'lt1' || a.r_residence === '1to2' || a.r_residence === '2to3' || a.r_residence === '3to5';
+    if (a.r_need === 'f5first' || (!hasF5 && cats.review.indexOf('marriage') < 0 && cats.review.indexOf('family') < 0 && shortStay)) addN('firstcheck', 'needF5First');
 
-    // Order: routes → status → kiip → flags; fall back to limited.
-    var order = ['spouseRoute', 'familyRoute', 'generalRoute', 'needF5First', 'kiipNeeded', 'flagsReview'];
-    var ordered = order.filter(function (id) { return ids.indexOf(id) >= 0; });
-    if (!ordered.length) ordered = ['limitedInfo'];
-    return ordered;
+    addN('official', 'officialAlways');
+    if (a.r_kiip && a.r_kiip !== 'done') addN('official', 'kiipNeeded');
+
+    addN('materials', 'materialsGeneral');
+    if (cats.review.indexOf('marriage') >= 0) addN('materials', 'materialsMarriage');
+    if (a.r_need === 'docs') addN('materials', 'materialsDocs');
+    if (a.r_need === 'kiip') addN('materials', 'kiipPrep');
+    if (a.r_need === 'progress') addN('materials', 'progressInfo');
+    if (a.r_need === 'after') addN('materials', 'afterInfo');
+
+    if (a.r_risk === 'absence' || a.r_residence === 'gap') addN('risk', 'riskAbsence');
+    if (a.r_risk === 'tax') addN('risk', 'riskTax');
+    if (a.r_risk === 'criminal') addN('risk', 'riskCriminal');
+    if (a.r_risk === 'complexFamily') addN('risk', 'riskComplexFamily');
+
+    if (cats.review.length === 0) addN('firstcheck', 'limited');
+    return cats;
   }
 
   function showReadinessResult() {
-    var r = paths.readiness;
+    var r = flows.readiness;
     var body = document.getElementById('readinessBody');
     var foot = document.getElementById('readinessFoot');
-    var results = evaluateReadiness(readinessAnswers);
+    var cats = evaluateReadiness(readinessAnswers);
     body.innerHTML = '';
-    body.appendChild(el('h3', null, esc(pick(r.resultTitle))));
-    body.appendChild(el('p', 'nh-section-intro', esc(pick(r.resultIntro))));
-    results.forEach(function (tid) {
-      var t = r.resultTemplates[tid];
-      if (!t) return;
-      var item = el('div', 'nh-result-item',
-        chipHtml(t.chip) +
-        '<h4>' + esc(pick(t.title)) + '</h4>' +
-        '<p>' + esc(pick(t.note)) + '</p>');
-      body.appendChild(item);
+    var head = el('div', null, '');
+    head.setAttribute('data-nh-result', '1');
+    head.appendChild(el('h3', null, esc(pick(r.resultTitle))));
+    head.appendChild(el('p', 'nh-section-intro', esc(pick(r.resultIntro))));
+    body.appendChild(head);
+
+    var order = ['review', 'firstcheck', 'materials', 'official', 'risk'];
+    order.forEach(function (catId) {
+      var entries = cats[catId];
+      if (!entries || !entries.length) return;
+      var cat = catMap[catId] || { ko: catId, en: catId, tone: 'neutral', icon: '·' };
+      var block = el('div', 'nh-result-cat');
+      block.setAttribute('data-tone', cat.tone || 'neutral');
+      block.appendChild(el('p', 'nh-result-cat-head',
+        '<span class="nh-chip-glyph" aria-hidden="true">' + esc(cat.icon) + '</span>' + esc(pick(cat))));
+      if (catId === 'review') {
+        entries.forEach(function (pid) {
+          var p = pathById(pid);
+          if (p) block.insertAdjacentHTML('beforeend', richPathCardHtml(p));
+        });
+      } else {
+        entries.forEach(function (mid) {
+          var msg = r.messages[mid];
+          if (msg) block.appendChild(el('div', 'nh-result-note', esc(pick(msg))));
+        });
+      }
+      body.appendChild(block);
     });
-    var dis = el('p', 'nh-inline-note', esc(pick(r.disclaimer)));
-    body.appendChild(dis);
+    wirePathCards(body);
+    body.appendChild(el('p', 'nh-inline-note', esc(pick(r.disclaimer))));
+
     foot.innerHTML = '';
     var again = el('button', 'nh-btn-sm', esc(pick(content.ui.restart)));
     again.type = 'button';
-    again.addEventListener('click', buildReadinessForm);
-    var pf = el('button', 'nh-btn-sm primary', esc(pick(paths.pathFinder.title)));
+    again.addEventListener('click', function () { readinessStep = 0; readinessAnswers = {}; buildReadinessStep(); });
+    var pf = el('button', 'nh-btn-sm primary', esc(pick(flows.pathFinder.title)));
     pf.type = 'button';
     pf.addEventListener('click', function () { closeOverlay(); openPathfinder(); });
     foot.appendChild(again);
@@ -787,11 +1023,12 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   }
 
   function openReadiness() {
-    buildReadinessForm();
+    readinessStep = 0;
+    readinessAnswers = {};
+    buildReadinessStep();
     openOverlay('readinessModal', function () {
-      // On language switch while open, rebuild the current view.
-      var inResult = document.querySelector('#readinessBody .nh-result-item');
-      if (inResult) showReadinessResult(); else buildReadinessForm();
+      var inResult = document.querySelector('#readinessBody [data-nh-result]');
+      if (inResult) showReadinessResult(); else buildReadinessStep();
     });
   }
 
@@ -800,75 +1037,121 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     return (paths.paths || []).filter(function (p) { return p.id === id; })[0];
   }
 
-  function pathCardHtml(p) {
-    var cps = (pick(p.checkpoints) || []).map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('');
-    return '<div class="nh-path-card" data-path="' + esc(p.id) + '">' +
-      '<button type="button" class="nh-path-head" aria-expanded="false">' +
-      '<span class="nh-path-icon" aria-hidden="true">' + esc(p.icon) + '</span>' +
-      '<span class="nh-path-head-text"><strong>' + esc(pick(p.label)) + '</strong>' +
-      '<span>' + esc(pick(p.summary)) + '</span></span>' +
-      chipHtml(p.chip) +
-      '<span class="nh-path-toggle" aria-hidden="true">▾</span>' +
-      '</button>' +
-      '<div class="nh-path-body"><p>' + esc(pick(p.who)) + '</p><ul>' + cps + '</ul></div>' +
-      '</div>';
+  var pfAnswers = {};
+  var pfStep = 0;
+
+  function pfSteps(a) {
+    var pf = flows.pathFinder;
+    var variant = (a.pf_start && pf.step2.byChoice[a.pf_start]) ? pf.step2.byChoice[a.pf_start] : pf.step2.fallback;
+    return [
+      { id: pf.step1.id, q: pf.step1.q, options: pf.step1.options },
+      { id: pf.step2.id, q: pf.step2.q, options: variant },
+      { id: pf.step3.id, q: pf.step3.q, options: pf.step3.options }
+    ];
   }
 
-  function buildPathfinderQuestion() {
-    document.getElementById('pathfinderTitle').textContent = pick(paths.pathFinder.title);
+  function buildPathfinderStep() {
+    var pf = flows.pathFinder;
+    var steps = pfSteps(pfAnswers);
+    if (pfStep < 0) pfStep = 0;
+    if (pfStep >= steps.length) { showPathfinderResult(); return; }
+    var step = steps[pfStep];
+    var isLast = pfStep === steps.length - 1;
+    document.getElementById('pathfinderTitle').textContent = pick(pf.title);
     var body = document.getElementById('pathfinderBody');
     var foot = document.getElementById('pathfinderFoot');
-    var q = paths.pathFinder.firstQuestion;
+
     body.innerHTML = '';
-    body.appendChild(el('p', 'nh-section-intro', esc(pick(paths.pathFinder.intro))));
+    body.appendChild(el('p', 'nh-progress', esc(fillTemplate(pick(pf.progressLabel), { current: pfStep + 1, total: steps.length }))));
+    if (pfStep === 0) body.appendChild(el('p', 'nh-section-intro', esc(pick(pf.intro))));
     var fs = el('fieldset', 'nh-q');
-    fs.appendChild(el('legend', null, esc(pick(q.q))));
+    var legend = el('legend', null, esc(pick(step.q)));
+    legend.setAttribute('tabindex', '-1');
+    fs.appendChild(legend);
     var opts = el('div', 'nh-q-options');
-    q.options.forEach(function (o) {
-      var b = el('button', 'nh-opt');
-      b.type = 'button';
-      b.style.cursor = 'pointer';
-      b.innerHTML = '<span aria-hidden="true">→</span><span>' + esc(pick(o.label)) + '</span>';
-      b.addEventListener('click', function () { showPathfinderResult(o.routesTo); });
-      opts.appendChild(b);
+    step.options.forEach(function (o) {
+      var checked = pfAnswers[step.id] === o.value ? ' checked' : '';
+      opts.appendChild(el('label', 'nh-opt',
+        '<input type="radio" name="' + esc(step.id) + '" value="' + esc(o.value) + '"' + checked + '><span>' + esc(pick(o.label)) + '</span>'));
     });
     fs.appendChild(opts);
     body.appendChild(fs);
+
     foot.innerHTML = '';
-    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(paths.pathFinder.disclaimer))));
+    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+    back.type = 'button';
+    back.style.visibility = pfStep === 0 ? 'hidden' : 'visible';
+    back.addEventListener('click', function () { pfStep--; buildPathfinderStep(); });
+    var next = el('button', 'nh-btn-sm primary', esc(pick(isLast ? content.ui.viewResult : content.ui.next)));
+    next.type = 'button';
+    next.disabled = pfAnswers[step.id] == null;
+    next.addEventListener('click', function () {
+      if (pfAnswers[step.id] == null) return;
+      if (isLast) showPathfinderResult();
+      else { pfStep++; buildPathfinderStep(); }
+    });
+    opts.addEventListener('change', function (e) {
+      if (e.target && e.target.name) {
+        pfAnswers[e.target.name] = e.target.value;
+        // Branching: clear downstream answers so step 2/3 stay consistent.
+        var ss = pfSteps(pfAnswers);
+        for (var j = pfStep + 1; j < ss.length; j++) { delete pfAnswers[ss[j].id]; }
+        next.disabled = false;
+      }
+    });
+    foot.appendChild(back);
+    foot.appendChild(next);
+    legend.focus();
   }
 
-  function showPathfinderResult(routeIds) {
-    var pf = paths.pathFinder;
+  function pfRoutes(a) {
+    var pf = flows.pathFinder;
+    var opt = (pf.step1.options || []).filter(function (o) { return o.value === a.pf_start; })[0];
+    var routes = opt ? (opt.routesTo || []).slice() : [];
+    if (a.pf_start === 'overseas' && a.pf_situation === 'restoreVsNat') routes = ['restoration', 'determination', 'general'];
+    if (a.pf_start === 'restore' && a.pf_situation === 'lostByForeign') routes = ['restoration'];
+    if (a.pf_start === 'applied') routes = ['after'];
+    if (a.pf_start === 'dual') routes = ['dual'];
+    if (!routes.length) routes = ['general', 'marriage', 'family', 'restoration'];
+    return routes;
+  }
+
+  function showPathfinderResult() {
+    var pf = flows.pathFinder;
     var body = document.getElementById('pathfinderBody');
     var foot = document.getElementById('pathfinderFoot');
     body.innerHTML = '';
-    body.appendChild(el('h3', null, esc(pick(pf.resultTitle))));
-    body.appendChild(el('p', 'nh-section-intro', esc(pick(pf.resultIntro))));
-    (routeIds || []).forEach(function (id) {
+    var head = el('div', null, '');
+    head.setAttribute('data-nh-result', '1');
+    head.appendChild(el('h3', null, esc(pick(pf.resultTitle))));
+    head.appendChild(el('p', 'nh-section-intro', esc(pick(pf.resultIntro))));
+    body.appendChild(head);
+    pfRoutes(pfAnswers).forEach(function (id) {
       var p = pathById(id);
-      if (p) body.insertAdjacentHTML('beforeend', pathCardHtml(p));
+      if (p) body.insertAdjacentHTML('beforeend', richPathCardHtml(p));
     });
-    body.querySelectorAll('.nh-path-head').forEach(function (head) {
-      head.addEventListener('click', function () {
-        var card = head.closest('.nh-path-card');
-        var open = card.classList.toggle('open');
-        head.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-    });
+    wirePathCards(body);
+    var bn = pf.blockerNotes[pfAnswers.pf_blocker];
+    if (bn) body.appendChild(el('div', 'nh-result-note', '<strong>' + esc(pick(pf.nextActionLabel)) + ':</strong> ' + esc(pick(bn))));
+    body.appendChild(el('p', 'nh-inline-note', esc(pick(pf.disclaimer))));
+
     foot.innerHTML = '';
-    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(pf.disclaimer))));
-    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
-    back.type = 'button';
-    back.addEventListener('click', buildPathfinderQuestion);
-    foot.appendChild(back);
+    var again = el('button', 'nh-btn-sm', esc(pick(content.ui.restart)));
+    again.type = 'button';
+    again.addEventListener('click', function () { pfStep = 0; pfAnswers = {}; buildPathfinderStep(); });
+    var wm = el('a', 'nh-btn-sm primary', esc(pick(content.ui.openWaymaker)));
+    wm.href = 'ai.html?domain=nationality';
+    foot.appendChild(again);
+    foot.appendChild(wm);
   }
 
   function openPathfinder() {
-    buildPathfinderQuestion();
+    pfStep = 0;
+    pfAnswers = {};
+    buildPathfinderStep();
     openOverlay('pathfinderModal', function () {
-      var inResult = document.querySelector('#pathfinderBody .nh-path-card');
-      if (!inResult) buildPathfinderQuestion();
+      var inResult = document.querySelector('#pathfinderBody [data-nh-result]');
+      if (inResult) showPathfinderResult(); else buildPathfinderStep();
     });
   }
 
@@ -879,12 +1162,16 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     document.getElementById('detailTitle').textContent = pick(item.label);
     var body = document.getElementById('detailBody');
     var foot = document.getElementById('detailFoot');
-    body.innerHTML = '';
-    body.appendChild(el('p', null, esc(pick(item.desc))));
-    body.appendChild(el('p', 'nh-inline-note', esc(pick(content.hub.expansionNote))));
+    var rows = '<div class="nh-detail-row"><p>' + esc(pick(item.desc)) + '</p></div>';
+    if (item.who) rows += '<div class="nh-detail-row"><h4>' + esc(pick(content.ui.whoLabel)) + '</h4><p>' + esc(pick(item.who)) + '</p></div>';
+    if (item.firstCheck) rows += '<div class="nh-detail-row"><h4>' + esc(pick(content.ui.firstCheckLabel)) + '</h4><p>' + esc(pick(item.firstCheck)) + '</p></div>';
+    if (item.caution) rows += '<div class="nh-path-caution">' + esc(pick(item.caution)) + '</div>';
+    if (item.sourceIds && item.sourceIds.length) rows += '<div class="nh-detail-row"><h4>' + esc(pick(content.ui.sourcesLabel)) + '</h4>' + srcChipsHtml(item.sourceIds) + '</div>';
+    rows += '<p class="nh-inline-note">' + esc(pick(content.hub.expansionNote)) + '</p>';
+    body.innerHTML = rows;
     foot.innerHTML = '';
     foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(content.notice))));
-    var wm = el('a', 'nh-btn-sm primary', esc(pick(content.waymaker.cta)));
+    var wm = el('a', 'nh-btn-sm primary', esc(pick(content.ui.openWaymaker)));
     wm.href = 'ai.html?domain=nationality';
     foot.appendChild(wm);
     openOverlay('detailModal', function () { openHubDetail(id); });
@@ -970,14 +1257,24 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     }
   }
 
+  function getJson(path, label) {
+    return fetch(path, { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error(label); return r.json(); });
+  }
+
   function boot() {
     Promise.all([
-      fetch('data/nationality_content.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('content'); return r.json(); }),
-      fetch('data/nationality_paths.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('paths'); return r.json(); })
+      getJson('data/nationality_content.json', 'content'),
+      getJson('data/nationality_paths.json', 'paths'),
+      getJson('data/nationality_flows.json', 'flows'),
+      getJson('data/nationality_sources.json', 'sources')
     ]).then(function (res) {
       content = res[0];
       paths = res[1];
-      (paths.statusChips || []).forEach(function (c) { chipMap[c.id] = c; });
+      flows = res[2];
+      sources = res[3];
+      (flows.statusChips || []).forEach(function (c) { chipMap[c.id] = c; });
+      (flows.resultCategories || []).forEach(function (c) { catMap[c.id] = c; });
+      (sources.sources || []).forEach(function (s) { srcMap[s.sourceId] = s; });
       if (SUPPORTED.indexOf(lang) < 0) lang = 'ko';
       try { if (localStorage.getItem(BRIGHT_KEY) === 'dark') document.body.setAttribute('data-theme', 'dark'); } catch (e) {}
       renderAll();

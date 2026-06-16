@@ -1,0 +1,259 @@
+{
+  "_meta": {
+    "schemaVersion": "1.0",
+    "title": "Paradiso: New Home — guided wizard flows",
+    "generatedAt": "2026-06-16",
+    "purpose": "One-question-per-screen wizard definitions for the Naturalization Readiness Check (linear, 8 steps) and the Find-Your-Path finder (branching, 3 steps). UI logic lives in the page; user-facing strings and routing hints live here.",
+    "note": "Cautious by design. Results organize directions to review and never assert eligibility, approval, or final determination. No statutory thresholds, fees, or schedules are stated."
+  },
+
+  "statusChips": [
+    { "id": "review", "ko": "검토 가능", "en": "Worth reviewing", "tone": "go", "icon": "○" },
+    { "id": "official", "ko": "공식 확인 필요", "en": "Official check needed", "tone": "warn", "icon": "◇" },
+    { "id": "prep", "ko": "준비 단계", "en": "Preparation", "tone": "neutral", "icon": "▷" },
+    { "id": "more", "ko": "추가 확인 필요", "en": "Needs more info", "tone": "warn", "icon": "△" },
+    { "id": "limited", "ko": "판단 제한", "en": "Limited", "tone": "neutral", "icon": "—" }
+  ],
+
+  "resultCategories": [
+    { "id": "review", "ko": "검토 가능 경로", "en": "Paths worth reviewing", "tone": "go", "icon": "○" },
+    { "id": "firstcheck", "ko": "먼저 확인할 항목", "en": "Check these first", "tone": "warn", "icon": "◆" },
+    { "id": "materials", "ko": "준비하면 좋은 자료", "en": "Helpful materials to prepare", "tone": "neutral", "icon": "▷" },
+    { "id": "official", "ko": "공식 확인 필요", "en": "Confirm officially", "tone": "warn", "icon": "◇" },
+    { "id": "risk", "ko": "주의할 리스크", "en": "Risks to watch", "tone": "warn", "icon": "△" }
+  ],
+
+  "readiness": {
+    "title": { "ko": "귀화 가능성 진단", "en": "Naturalization Readiness Check" },
+    "intro": {
+      "ko": "여덟 개의 질문에 한 번에 하나씩 답하면, 어떤 귀화 경로를 검토할 수 있는지 방향을 정리해 드립니다. 이 진단은 허가 여부를 결정하지 않으며, 입력하신 정보 기준의 참고 안내입니다.",
+      "en": "Answer eight questions, one at a time, and we will organize which naturalization paths may be worth reviewing. This check does not decide approval — it is reference guidance based on what you enter."
+    },
+    "progressLabel": { "ko": "{current} / {total}", "en": "{current} / {total}" },
+    "questions": [
+      {
+        "id": "r_inkorea",
+        "q": { "ko": "현재 한국에 체류 중인가요?", "en": "Are you currently staying in Korea?" },
+        "options": [
+          { "value": "in", "label": { "ko": "예, 한국에 체류 중입니다", "en": "Yes, I am in Korea" } },
+          { "value": "abroad", "label": { "ko": "아니요, 해외에 있습니다", "en": "No, I am abroad" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ]
+      },
+      {
+        "id": "r_status",
+        "q": { "ko": "현재 체류자격 또는 신분에 가장 가까운 것은 무엇인가요?", "en": "Which status best describes you now?" },
+        "options": [
+          { "value": "f5", "label": { "ko": "F-5 영주자격", "en": "F-5 permanent residence" } },
+          { "value": "f6", "label": { "ko": "F-6 결혼이민", "en": "F-6 marriage migrant" } },
+          { "value": "f4", "label": { "ko": "F-4 재외동포", "en": "F-4 overseas Korean" } },
+          { "value": "e", "label": { "ko": "E계열 취업 체류자격", "en": "E-series employment status" } },
+          { "value": "d", "label": { "ko": "D계열 유학/연수 체류자격", "en": "D-series study/training status" } },
+          { "value": "other", "label": { "ko": "기타 장기체류", "en": "Other long-term stay" } },
+          { "value": "unsure", "label": { "ko": "체류자격을 잘 모르겠습니다", "en": "Not sure of my status" } }
+        ]
+      },
+      {
+        "id": "r_residence",
+        "q": { "ko": "한국에 계속 거주한 기간은 어느 정도인가요?", "en": "How long have you continuously lived in Korea?" },
+        "options": [
+          { "value": "lt1", "label": { "ko": "1년 미만", "en": "Less than 1 year" } },
+          { "value": "1to2", "label": { "ko": "1년 이상 2년 미만", "en": "1–2 years" } },
+          { "value": "2to3", "label": { "ko": "2년 이상 3년 미만", "en": "2–3 years" } },
+          { "value": "3to5", "label": { "ko": "3년 이상 5년 미만", "en": "3–5 years" } },
+          { "value": "ge5", "label": { "ko": "5년 이상", "en": "5 years or more" } },
+          { "value": "gap", "label": { "ko": "중간에 장기출국 또는 체류 공백이 있었습니다", "en": "There were long absences or gaps" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ]
+      },
+      {
+        "id": "r_spouse",
+        "q": { "ko": "한국 국민 배우자가 있나요?", "en": "Are you married to a Korean citizen?" },
+        "options": [
+          { "value": "intact", "label": { "ko": "예, 혼인관계를 유지하고 있습니다", "en": "Yes, the marriage is intact" } },
+          { "value": "changed", "label": { "ko": "예, 그러나 이혼/사별/별거 등 변동이 있습니다", "en": "Yes, but with changes (divorce/bereavement/separation)" } },
+          { "value": "none", "label": { "ko": "아니요", "en": "No" } },
+          { "value": "na", "label": { "ko": "답변하기 어렵습니다", "en": "Prefer not to say" } }
+        ]
+      },
+      {
+        "id": "r_family",
+        "q": { "ko": "부모 또는 가족의 한국 국적 이력이 있나요?", "en": "Does your parent or family member have a Korean nationality history?" },
+        "options": [
+          { "value": "parent", "label": { "ko": "부모 중 한 명 이상이 한국 국민이거나 과거 한국 국민이었습니다", "en": "A parent is/was a Korean citizen" } },
+          { "value": "selfPast", "label": { "ko": "본인이 과거 한국 국적을 가진 적이 있습니다", "en": "I previously held Korean nationality" } },
+          { "value": "overseas", "label": { "ko": "재외동포/F-4 관련 이력이 있습니다", "en": "I have overseas-Korean / F-4 ties" } },
+          { "value": "none", "label": { "ko": "아니요", "en": "No" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ]
+      },
+      {
+        "id": "r_kiip",
+        "q": { "ko": "사회통합프로그램(KIIP) 또는 귀화용 종합평가 이력이 있나요?", "en": "Do you have KIIP or naturalization evaluation history?" },
+        "options": [
+          { "value": "done", "label": { "ko": "KIIP 5단계 수료 및 귀화용 종합평가 합격", "en": "KIIP stage 5 completed and comprehensive evaluation passed" } },
+          { "value": "partial", "label": { "ko": "KIIP를 일부 이수했습니다", "en": "I have partly completed KIIP" } },
+          { "value": "examOnly", "label": { "ko": "귀화용 종합평가만 응시/합격했습니다", "en": "I have only taken/passed the comprehensive evaluation" } },
+          { "value": "none", "label": { "ko": "아직 없습니다", "en": "Not yet" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ]
+      },
+      {
+        "id": "r_risk",
+        "q": { "ko": "추가 확인이 필요한 사유가 있나요?", "en": "Do any risk factors need extra review?" },
+        "options": [
+          { "value": "absence", "label": { "ko": "장기출국 또는 체류 공백", "en": "Long absences or gaps in stay" } },
+          { "value": "tax", "label": { "ko": "세금 체납 또는 소득 증빙 어려움", "en": "Unpaid taxes or difficulty proving income" } },
+          { "value": "criminal", "label": { "ko": "범죄·수사·행정처분 이력", "en": "Criminal/investigation/administrative history" } },
+          { "value": "complexFamily", "label": { "ko": "혼인관계 또는 가족관계 증빙이 복잡함", "en": "Complex marriage or family evidence" } },
+          { "value": "none", "label": { "ko": "해당 없음", "en": "None apply" } },
+          { "value": "na", "label": { "ko": "답변하기 어렵습니다", "en": "Prefer not to say" } }
+        ]
+      },
+      {
+        "id": "r_need",
+        "q": { "ko": "지금 가장 필요한 안내는 무엇인가요?", "en": "What guidance do you need most right now?" },
+        "options": [
+          { "value": "paths", "label": { "ko": "내가 어떤 귀화 경로를 검토할 수 있는지", "en": "Which naturalization paths I can review" } },
+          { "value": "f5first", "label": { "ko": "먼저 F-5 또는 체류자격 정리가 필요한지", "en": "Whether I should sort out F-5/status first" } },
+          { "value": "docs", "label": { "ko": "서류와 증빙 준비", "en": "Preparing documents and evidence" } },
+          { "value": "kiip", "label": { "ko": "KIIP/면접 준비", "en": "KIIP / interview preparation" } },
+          { "value": "progress", "label": { "ko": "신청 후 진행상황 확인", "en": "Checking progress after applying" } },
+          { "value": "after", "label": { "ko": "귀화 후 절차", "en": "Steps after approval" } }
+        ]
+      }
+    ],
+    "resultTitle": { "ko": "검토 방향 요약", "en": "Your directions to review" },
+    "resultIntro": {
+      "ko": "입력하신 정보 기준으로 살펴볼 만한 방향입니다. 아래는 가능성을 정리한 것이며, 실제 신청 가능 여부와 허가는 관할기관의 심사와 공식 기준 확인이 필요합니다.",
+      "en": "Based on what you entered, here are directions worth looking into. These organize possibilities only; whether you can actually apply, and approval, require the competent authority's review and official criteria."
+    },
+    "disclaimer": {
+      "ko": "이 결과는 사용자가 제공한 정보에 기반한 참고용 안내이며, 최종적인 법적 판단이나 허가 결정이 아닙니다.",
+      "en": "This result is reference guidance based on the information you provided. It is not a final legal determination or an approval decision."
+    },
+    "messages": {
+      "officialAlways": { "ko": "최종 신청 가능 여부와 허가 여부는 관할기관의 심사와 공식 기준(국적법령·법무부·하이코리아) 확인이 필요합니다.", "en": "Eligibility to apply and the final decision both depend on the competent authority's review and official criteria (Nationality Act, MOJ, HiKorea)." },
+      "needF5First": { "ko": "먼저 영주(F-5) 또는 체류자격을 정리하는 것이 도움이 될 수 있습니다. 본인 상황에 맞는 순서는 관할기관에서 확인하세요.", "en": "Sorting out F-5 or your status first may help. Confirm the right order for your situation with the competent authority." },
+      "confirmStatus": { "ko": "현재 체류자격을 정확히 확인하면 검토가 수월해집니다. 외국인등록증 또는 하이코리아에서 확인하세요.", "en": "Confirming your exact status makes review easier — check your ARC or HiKorea." },
+      "kiipNeeded": { "ko": "사회통합프로그램(KIIP) 이수 또는 귀화용 종합평가 확인이 필요할 수 있습니다. 사회통합정보망에서 단계와 일정을 확인하세요.", "en": "KIIP completion or the comprehensive evaluation may need checking. Confirm your stage and schedule on Soci-Net." },
+      "materialsGeneral": { "ko": "신원·가족관계, 국내 거주·체류, 생계 관련 증빙을 미리 정리해 두면 도움이 됩니다.", "en": "It helps to organize identity/family, residence/stay, and livelihood evidence in advance." },
+      "materialsMarriage": { "ko": "혼인·가족관계 관련 증빙을 정리해 두면 도움이 됩니다.", "en": "Organizing marriage/family-relation evidence in advance helps." },
+      "materialsDocs": { "ko": "필요 서류는 법무부 온라인 민원의 민원분야별 안내에서 본인 경로에 맞게 확인하세요.", "en": "Check required documents for your path in the MOJ online petition 'by field' guide." },
+      "overseasInfo": { "ko": "재외동포/F-4 이력이 있는 경우 귀화 외에 국적회복·국적판정도 함께 검토해 보세요.", "en": "If you have overseas-Korean/F-4 ties, also consider nationality restoration and determination alongside naturalization." },
+      "progressInfo": { "ko": "이미 신청한 경우 '국적 심사 진행상황 조회'로 상태를 확인할 수 있습니다.", "en": "If you have already applied, you can check status via 'Nationality review progress inquiry'." },
+      "afterInfo": { "ko": "허가 이후에는 관보 고시 확인과 등록 절차가 이어집니다. '귀화 후 절차'를 참고하세요.", "en": "After approval, gazette confirmation and registration steps follow. See 'After Approval'." },
+      "kiipPrep": { "ko": "KIIP·면접 준비는 'KIIP·면접 준비' 섹션과 사회통합정보망을 함께 활용하세요.", "en": "For KIIP/interview prep, use the 'KIIP & Interview Prep' section together with Soci-Net." },
+      "riskAbsence": { "ko": "장기출국·체류 공백은 거주 요건 계산에 영향을 줄 수 있어 미리 정리·확인이 필요합니다.", "en": "Long absences/gaps can affect residence calculations — organize and confirm them in advance." },
+      "riskTax": { "ko": "세금·소득 증빙은 생계유지능력 확인과 관련될 수 있어 미리 점검이 필요합니다.", "en": "Tax/income evidence can relate to livelihood checks — review it in advance." },
+      "riskCriminal": { "ko": "범죄·수사·행정처분 이력은 품행 관련 심사와 연결될 수 있어 사전 확인이 중요합니다.", "en": "Criminal/investigation/administrative history can relate to conduct review — check it in advance." },
+      "riskComplexFamily": { "ko": "혼인·가족관계 증빙이 복잡한 경우 해외 서류 준비에 시간이 걸릴 수 있습니다.", "en": "Complex marriage/family evidence (esp. overseas documents) can take time to prepare." },
+      "limited": { "ko": "입력하신 정보만으로는 방향을 충분히 좁히기 어렵습니다. 체류자격·거주기간·가족관계를 확인한 뒤 다시 진단하거나, Waymaker 국적 상담 모드를 이용해 보세요.", "en": "The information entered isn't enough to narrow a direction. Confirm your status, residence period, and family ties, then run the check again, or try Waymaker in nationality mode." }
+    }
+  },
+
+  "pathFinder": {
+    "title": { "ko": "귀화 경로 찾기", "en": "Find Your Path to Korean Citizenship" },
+    "intro": {
+      "ko": "법률 용어를 먼저 알 필요는 없습니다. 한 번에 하나씩, 지금 상황에 가장 가까운 것을 고르면 검토할 수 있는 경로로 안내합니다.",
+      "en": "You don't need to know the legal terms first. One question at a time — choose what's closest to your situation and we'll point you to the paths worth reviewing."
+    },
+    "progressLabel": { "ko": "{current} / {total}", "en": "{current} / {total}" },
+    "step1": {
+      "id": "pf_start",
+      "q": { "ko": "무엇을 준비하고 있나요?", "en": "What are you trying to do?" },
+      "options": [
+        { "value": "become", "label": { "ko": "한국 국적을 취득하고 싶어요", "en": "I want to become a Korean citizen" }, "routesTo": ["general", "special"] },
+        { "value": "spouse", "label": { "ko": "한국 국민 배우자가 있어요", "en": "I am married to a Korean citizen" }, "routesTo": ["marriage"] },
+        { "value": "family", "label": { "ko": "부모 또는 가족의 한국 국적 이력이 있어요", "en": "My parent or family member is/was Korean" }, "routesTo": ["family", "restoration", "determination"] },
+        { "value": "overseas", "label": { "ko": "재외동포/F-4 관련 경로가 궁금해요", "en": "I am an overseas Korean or F-4 holder" }, "routesTo": ["family", "restoration", "determination", "dual"] },
+        { "value": "restore", "label": { "ko": "국적회복을 알아보고 있어요", "en": "I want to restore Korean nationality" }, "routesTo": ["restoration", "determination"] },
+        { "value": "applied", "label": { "ko": "이미 신청했고 다음 절차가 궁금해요", "en": "I already applied and need next steps" }, "routesTo": ["after"] },
+        { "value": "dual", "label": { "ko": "복수국적 또는 외국국적불행사서약이 궁금해요", "en": "I have questions about dual nationality or the non-exercise pledge" }, "routesTo": ["dual"] }
+      ]
+    },
+    "step2": {
+      "id": "pf_situation",
+      "q": { "ko": "현재 상황에 가장 가까운 것은 무엇인가요?", "en": "Which situation is closest to yours?" },
+      "byChoice": {
+        "become": [
+          { "value": "longstay", "label": { "ko": "한국에 오래 거주했거나 장기체류 중입니다", "en": "I have lived in Korea a long time / am in long-term stay" } },
+          { "value": "hasF5", "label": { "ko": "F-5 영주자격을 가지고 있습니다", "en": "I hold F-5 permanent residence" } },
+          { "value": "noF5", "label": { "ko": "F-5는 아직 없습니다", "en": "I don't have F-5 yet" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ],
+        "spouse": [
+          { "value": "intact", "label": { "ko": "혼인관계를 유지하고 있습니다", "en": "The marriage is intact" } },
+          { "value": "changed", "label": { "ko": "이혼/사별/실종/별거 등 변동이 있습니다", "en": "There are changes (divorce/bereavement/missing/separation)" } },
+          { "value": "childRearing", "label": { "ko": "미성년 자녀를 양육 중입니다", "en": "I am raising a minor child" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ],
+        "family": [
+          { "value": "parentKorean", "label": { "ko": "부모 중 한 명 이상이 한국 국민이거나 과거 한국 국민입니다", "en": "A parent is/was a Korean citizen" } },
+          { "value": "selfPast", "label": { "ko": "본인이 과거 한국 국적을 가진 적이 있습니다", "en": "I previously held Korean nationality" } },
+          { "value": "adoptionBirth", "label": { "ko": "입양 또는 출생 관련 이력이 있습니다", "en": "There is adoption- or birth-related history" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ],
+        "overseas": [
+          { "value": "hasF4", "label": { "ko": "F-4 체류자격을 가지고 있습니다", "en": "I hold F-4 status" } },
+          { "value": "applyingF4", "label": { "ko": "F-4 신청을 준비 중입니다", "en": "I am preparing an F-4 application" } },
+          { "value": "restoreVsNat", "label": { "ko": "국적회복과 귀화 중 무엇이 맞는지 모르겠습니다", "en": "I'm unsure whether restoration or naturalization fits me" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ],
+        "restore": [
+          { "value": "lostByForeign", "label": { "ko": "외국국적을 취득하면서 한국 국적을 상실했습니다", "en": "I lost Korean nationality by acquiring a foreign one" } },
+          { "value": "renounced", "label": { "ko": "과거 국적이탈/포기를 한 적이 있습니다", "en": "I renounced/relinquished nationality in the past" } },
+          { "value": "unclear", "label": { "ko": "상실 경위가 분명하지 않습니다", "en": "How I lost it is unclear" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ],
+        "applied": [
+          { "value": "waiting", "label": { "ko": "접수 후 대기 중입니다", "en": "Submitted and waiting" } },
+          { "value": "examNotice", "label": { "ko": "종합평가/면접 안내를 받았습니다", "en": "I received evaluation/interview notice" } },
+          { "value": "supplement", "label": { "ko": "보완서류 요청을 받았습니다", "en": "I was asked for additional documents" } },
+          { "value": "afterApproval", "label": { "ko": "허가 통보 이후 절차가 궁금합니다", "en": "I want post-approval steps" } }
+        ],
+        "dual": [
+          { "value": "byBirth", "label": { "ko": "출생 등으로 복수국적이 된 경우입니다", "en": "I became dual-national by birth, etc." } },
+          { "value": "afterNaturalization", "label": { "ko": "귀화 후 외국국적불행사서약이 궁금합니다", "en": "I have questions about the post-naturalization pledge" } },
+          { "value": "choicePeriod", "label": { "ko": "국적선택 기간/의무가 궁금합니다", "en": "I have questions about the nationality-choice period/duty" } },
+          { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+        ]
+      },
+      "fallback": [
+        { "value": "general", "label": { "ko": "위 상황과 정확히 맞지 않습니다", "en": "None of these fit exactly" } },
+        { "value": "unsure", "label": { "ko": "잘 모르겠습니다", "en": "Not sure" } }
+      ]
+    },
+    "step3": {
+      "id": "pf_blocker",
+      "q": { "ko": "현재 가장 막히는 부분은 무엇인가요?", "en": "What is the biggest blocker right now?" },
+      "options": [
+        { "value": "req", "label": { "ko": "요건을 모르겠습니다", "en": "I don't know the requirements" } },
+        { "value": "docs", "label": { "ko": "서류를 모르겠습니다", "en": "I don't know the documents" } },
+        { "value": "booking", "label": { "ko": "방문예약/접수 절차가 어렵습니다", "en": "Visit reservation / submission is hard" } },
+        { "value": "exam", "label": { "ko": "KIIP/종합평가/면접이 어렵습니다", "en": "KIIP / evaluation / interview is hard" } },
+        { "value": "progress", "label": { "ko": "진행상황 확인이 어렵습니다", "en": "Checking progress is hard" } },
+        { "value": "after", "label": { "ko": "귀화 후 절차가 어렵습니다", "en": "Post-approval steps are hard" } }
+      ]
+    },
+    "resultTitle": { "ko": "검토할 수 있는 경로", "en": "Paths you can review" },
+    "resultIntro": {
+      "ko": "선택하신 상황에 가까운 경로입니다. 각 경로의 세부 요건과 적용 여부는 공식 출처 확인이 필요하며, 하나의 최종 답이 아니라 검토 방향입니다.",
+      "en": "These paths are close to the situation you chose. Each path's details and whether it applies require official confirmation — they are directions to review, not a single final answer."
+    },
+    "disclaimer": {
+      "ko": "경로 안내는 상황 분류를 돕는 참고 자료이며, 자격 충족이나 허가를 보장하지 않습니다.",
+      "en": "Path guidance helps classify your situation; it does not guarantee meeting requirements or approval."
+    },
+    "blockerNotes": {
+      "req": { "ko": "요건은 국적법령과 하이코리아 국적/귀화 안내에서 본인 경로에 맞게 확인하세요.", "en": "Confirm requirements for your path via the Nationality Act and HiKorea's nationality guide." },
+      "docs": { "ko": "필요 서류는 법무부 온라인 민원의 민원분야별 안내에서 확인하세요.", "en": "Check required documents in the MOJ online petition 'by field' guide." },
+      "booking": { "ko": "방문예약·접수는 하이코리아 방문예약에서 진행하세요.", "en": "Make visit reservations / submissions via HiKorea visit reservation." },
+      "exam": { "ko": "KIIP·종합평가·면접은 사회통합정보망과 평가 홈페이지에서 일정·준비를 확인하세요.", "en": "Check KIIP/evaluation/interview schedules and prep on Soci-Net and the assessment site." },
+      "progress": { "ko": "신청 후 상태는 '국적 심사 진행상황 조회'로 확인하세요.", "en": "Check post-application status via 'Nationality review progress inquiry'." },
+      "after": { "ko": "허가 후 절차는 '귀화 후 절차' 섹션과 관보 고시 확인을 참고하세요.", "en": "For post-approval, see the 'After Approval' section and the official gazette." }
+    },
+    "nextActionLabel": { "ko": "다음 행동", "en": "Next action" },
+    "blockerLabel": { "ko": "막히는 부분에 대한 안내", "en": "Guidance for your blocker" }
+  }
+}
