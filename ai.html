@@ -1786,19 +1786,37 @@ select:focus-visible {
             return 'ko';
         }
 
+        // Optional domain hint forwarded from the Paradiso New Home platform
+        // (ai.html?domain=nationality). It routes nationality/citizenship framing
+        // through the EXISTING `context` channel — no request-schema or backend
+        // change. When the param is absent, behavior is byte-for-byte unchanged.
+        const AI_DOMAIN = (() => {
+            try { return (new URLSearchParams(location.search).get('domain') || '').toLowerCase(); }
+            catch (e) { return ''; }
+        })();
+
+        function nationalityContextLine(lang) {
+            if (AI_DOMAIN !== 'nationality') return '';
+            return lang === 'en'
+                ? '[Domain: nationality] The user arrived from the Paradiso New Home nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.'
+                : '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
+        }
+
         function buildAskContext(lang) {
             if (lang === 'en') {
                 return [
                     '[Requirement] Diagnose the user\'s situation objectively based on the Korean Immigration Control Act and field manuals. Present required documents and procedures clearly.',
                     '[Language lock] The user wrote in English. Respond strictly in English. Do not use Chinese, Japanese, or any other language. Do not insert Chinese characters such as 您 or 您的.',
-                    '[Fallback] If the provided reference data is insufficient, acknowledge the detected visa code or topic, do not pretend the question is unrecognized, do not invent legal rules or specific numbers, and recommend the user confirm with the 1345 immigration call center, HiKorea (hikorea.go.kr), or the nearest immigration office.'
-                ].join('\n');
+                    '[Fallback] If the provided reference data is insufficient, acknowledge the detected visa code or topic, do not pretend the question is unrecognized, do not invent legal rules or specific numbers, and recommend the user confirm with the 1345 immigration call center, HiKorea (hikorea.go.kr), or the nearest immigration office.',
+                    nationalityContextLine('en')
+                ].filter(Boolean).join('\n');
             }
             return [
                 '[요구사항] 출입국관리법 및 실무 매뉴얼에 근거하여 사용자 상황을 객관적이고 논리적으로 진단하고, 필요한 구비서류와 절차를 명확히 제시하십시오.',
                 '[언어 고정] 사용자가 한국어로 질문했습니다. 답변은 반드시 한국어로 작성하고, 중국어/일본어/기타 언어 및 중국식 한자(您, 您的 등)는 사용하지 마십시오.',
-                '[데이터 부족 시] 참고 자료가 부족하더라도 감지된 비자 코드 또는 주제는 인지하고 있음을 밝히고, 질문 자체를 인식하지 못한 것처럼 응답하지 마십시오. 구체 수치나 법적 결론을 임의로 단정하지 말고, 1345 외국인종합안내센터, 하이코리아(hikorea.go.kr) 또는 관할 출입국·외국인청에서 최종 확인하도록 안내하십시오.'
-            ].join('\n');
+                '[데이터 부족 시] 참고 자료가 부족하더라도 감지된 비자 코드 또는 주제는 인지하고 있음을 밝히고, 질문 자체를 인식하지 못한 것처럼 응답하지 마십시오. 구체 수치나 법적 결론을 임의로 단정하지 말고, 1345 외국인종합안내센터, 하이코리아(hikorea.go.kr) 또는 관할 출입국·외국인청에서 최종 확인하도록 안내하십시오.',
+                nationalityContextLine('ko')
+            ].filter(Boolean).join('\n');
         }
 
         // ==========================================
@@ -3034,9 +3052,33 @@ select:focus-visible {
             });
         }
 
+        // Presentational seed for nationality mode. Fully guarded: only runs when
+        // the New Home platform opened Waymaker with ?domain=nationality and the
+        // target elements exist, so the default visa experience is never altered.
+        function applyNationalityDomainHint() {
+            if (AI_DOMAIN !== 'nationality') return;
+            const sub = document.querySelector('.ai-title-sub');
+            if (sub) sub.textContent = '국적·귀화 상담 모드 · 공개 법령·매뉴얼 기반 안내 · 최종 판단은 관할기관·HiKorea·1345';
+            const ta = document.getElementById('aiQ');
+            if (ta) ta.placeholder = '예: F-2 영주 상태인데 일반귀화 요건을 어떻게 확인하나요?';
+            const chips = document.querySelector('.ai-welcome-chips');
+            if (chips) {
+                const starters = [
+                    ['귀화 경로 분류', '제 상황에서 어떤 귀화 경로를 검토할 수 있는지 궁금합니다.'],
+                    ['혼인 간이귀화', '한국 국민과 혼인한 경우 간이귀화는 어떻게 확인하나요?'],
+                    ['국적회복', '과거 한국 국적이 있었던 경우 국적회복 절차가 궁금합니다.'],
+                    ['사회통합프로그램', '귀화를 위한 사회통합프로그램(KIIP)·면접은 어떻게 준비하나요?']
+                ];
+                chips.innerHTML = starters.map(([label, q]) =>
+                    `<button type="button" class="ai-welcome-chip" data-chip-text="${q}">${label}</button>`
+                ).join('');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
             setupAiModeSelector();
+            applyNationalityDomainHint();
 
             const qEl = document.getElementById('aiQ');
             if (qEl) {

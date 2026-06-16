@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="ko" data-theme="civic_editorial">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f5f2ea">
+<meta name="description" content="Paradiso: New Home — 귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램(KIIP), 면접, 귀화 후 절차까지 단계별 안내. Step-by-step guidance for Korean nationality and naturalization.">
+<title>Paradiso: New Home — 국적·귀화 안내</title>
+
+<!-- Editorial theme bootstrap (shared with the Paradiso main page). Runs before
+     paint so the page never flashes the wrong palette. -->
+<script>
+(function () {
+  try {
+    var t = localStorage.getItem('paradiso:editorial-theme');
+    if (t === 'civic_editorial' || t === 'archive_diary') {
+      document.documentElement.setAttribute('data-theme', t);
+    }
+  } catch (e) {}
+})();
+</script>
+
+<!-- Pretendard — already used across Paradiso; no new external font is introduced. -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+
+<style>
+/* ── Design tokens (mirrors the Paradiso main page so the look is shared) ── */
+:root {
+  --ff: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --bg0: #f5f2ea; --bg1: #fcfaf5; --bg2: #f1ece2; --bg3: #e7dece;
+  --bd: #d1c6b4; --bd2: #ddd3c3;
+  --t1: #202221; --t2: #4f5552; --t3: #757a76;
+  --ac: #2f5e67; --ac2: #2a4f57; --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
+  --cy: #FF6B5B; --cyL: #FFE2DB; --cyT: #8A3426;
+  --ok: #0EA37B; --warn: #E68A3A;
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 26px;
+  --sh1: 0 1px 2px rgba(24,28,26,0.05);
+  --sh2: 0 10px 28px -10px rgba(24,28,26,0.18);
+  --shCard: 0 2px 12px rgba(31,107,94,0.08);
+  --maxw: 1040px;
+}
+/* Brightness: dark mode lives on <body data-theme="dark"> */
+[data-theme="dark"] {
+  --bg0: #0B2A24; --bg1: #113B32; --bg2: #184B40; --bg3: #205A4E;
+  --bd: #2D5A50; --bd2: #224A41;
+  --t1: #F3EEDF; --t2: #C7BFA8; --t3: #8C8572;
+  --ac: #34D4A8; --ac2: #17B388; --acG: rgba(52,212,168,0.14); --acL: #163E36;
+  --cy: #FF8B7A; --cyL: #3A1E1A; --cyT: #FFB5A5;
+  --sh1: 0 1px 4px rgba(0,0,0,0.35);
+  --sh2: 0 12px 32px -10px rgba(0,0,0,0.55);
+  --shCard: 0 6px 20px rgba(0,0,0,0.4);
+}
+/* Editorial-pop (kitsch) theme — shared archive_diary palette */
+:root[data-theme="archive_diary"] {
+  --k-cream: #FFF7E8; --k-ink: #141414; --k-pink: #FF8ED1; --k-pink-deep: #F451B0;
+  --k-blue: #2F5EFC; --k-butter: #FFE45E; --k-lime: #C2FF44;
+  --bg0: #EEF3FF; --bg1: #FFFFFF; --bg2: #F4F7FF; --bg3: #E6EDFF;
+  --bd: #C2D2EE; --bd2: #DCE5F8;
+  --t1: #141414; --t2: #353A45; --t3: #6B7280;
+  --ac: #2F5EFC; --ac2: #1B36C9; --acG: rgba(47,94,252,0.12); --acL: #E3EAFF;
+  --cy: #F451B0; --cyL: #FFE3F4; --cyT: #8A0F58;
+  --ok: #1F8A5B; --warn: #EF8A2C;
+  --shCard: 4px 4px 0 var(--k-ink);
+  --sh2: 5px 6px 0 rgba(20,20,40,0.14);
+}
+:root[data-theme="archive_diary"] [data-theme="dark"] {
+  --bg0: #14182B; --bg1: #1B2138; --bg2: #232B47; --bg3: #2C3656;
+  --bd: #38456A; --bd2: #2B3658;
+  --t1: #EEF2FF; --t2: #BAC5E4; --t3: #8C97BE;
+  --ac: #6EC6FF; --ac2: #2F5EFC; --acG: rgba(110,198,255,0.14); --acL: #1E2746;
+  --cy: #FF8ED1; --cyL: #2E1B2A; --cyT: #FFC4E8;
+  --shCard: 4px 4px 0 #0A0D17;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--ff);
+  background: var(--bg0);
+  color: var(--t1);
+  line-height: 1.6;
+  font-size: clamp(15px, 1.2vw, 16px);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--ac); }
+h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+:focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; border-radius: 4px; }
+
+/* ── Top bar ── */
+.nh-topbar {
+  position: sticky; top: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between; gap: 0.75rem;
+  padding: 0.7rem clamp(1rem, 4vw, 2rem);
+  background: color-mix(in srgb, var(--bg1) 86%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bd2);
+}
+.nh-back {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  min-height: 40px; padding: 0 0.85rem;
+  font-weight: 700; font-size: 0.9rem; text-decoration: none;
+  color: var(--t1); border: 1px solid var(--bd); border-radius: 999px; background: var(--bg2);
+  transition: border-color 0.18s, background 0.18s, transform 0.18s;
+}
+.nh-back:hover { border-color: var(--ac); transform: translateX(-2px); }
+.nh-controls { display: flex; gap: 0.4rem; }
+.nh-ctl {
+  min-height: 40px; min-width: 40px; padding: 0 0.75rem;
+  font-family: var(--ff); font-weight: 700; font-size: 0.85rem;
+  color: var(--t2); background: var(--bg2); border: 1px solid var(--bd); border-radius: 999px; cursor: pointer;
+  transition: border-color 0.18s, color 0.18s, background 0.18s;
+}
+.nh-ctl:hover { border-color: var(--ac); color: var(--t1); }
+
+main { display: block; }
+.nh-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2rem); }
+
+/* ── Hero ── */
+.nh-hero {
+  position: relative; overflow: hidden;
+  padding: clamp(2.4rem, 6vw, 4.2rem) clamp(1rem, 4vw, 2rem) clamp(1.8rem, 4vw, 2.6rem);
+  background:
+    radial-gradient(120% 90% at 90% -10%, var(--cyL) 0%, transparent 55%),
+    radial-gradient(110% 80% at -10% 0%, var(--acL) 0%, transparent 50%),
+    var(--bg1);
+  border-bottom: 1px solid var(--bd2);
+}
+.nh-hero-inner { max-width: var(--maxw); margin: 0 auto; position: relative; z-index: 1; }
+.nh-hero-motif {
+  position: absolute; right: clamp(-40px, -2vw, 0px); top: 50%; transform: translateY(-50%);
+  width: clamp(180px, 30vw, 320px); height: auto; opacity: 0.16; color: var(--ac);
+  pointer-events: none; z-index: 0;
+}
+.nh-kicker {
+  display: inline-block; margin: 0 0 0.8rem;
+  font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ac2); padding: 0.3rem 0.7rem; border: 1px solid var(--bd); border-radius: 999px; background: var(--bg2);
+}
+.nh-title { margin: 0; font-size: clamp(2rem, 6vw, 3.3rem); font-weight: 800; }
+.nh-tagline { margin: 0.35rem 0 0; font-size: clamp(1.1rem, 2.6vw, 1.5rem); font-weight: 700; font-style: italic; color: var(--cyT); }
+.nh-lead { margin: 1rem 0 0; max-width: 60ch; font-size: clamp(0.98rem, 1.6vw, 1.1rem); color: var(--t2); }
+.nh-cta-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; }
+.nh-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  min-height: 50px; padding: 0 1.4rem;
+  font-family: var(--ff); font-weight: 800; font-size: 0.98rem; cursor: pointer;
+  border-radius: var(--r-md); border: 1px solid transparent; text-decoration: none;
+  transition: transform 0.18s, box-shadow 0.18s, background 0.18s, border-color 0.18s;
+}
+.nh-btn-primary { background: var(--ac); color: #fff; box-shadow: var(--sh2); }
+.nh-btn-primary:hover { transform: translateY(-2px); }
+.nh-btn-secondary { background: var(--bg1); color: var(--t1); border-color: var(--bd); }
+.nh-btn-secondary:hover { border-color: var(--ac); transform: translateY(-2px); }
+.nh-notice {
+  display: flex; gap: 0.6rem; align-items: flex-start;
+  margin-top: 1.6rem; max-width: 72ch; padding: 0.85rem 1rem;
+  background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 28%, transparent);
+  border-radius: var(--r-md); color: var(--t2); font-size: 0.88rem;
+}
+.nh-notice-icon { flex-shrink: 0; }
+
+/* ── Sections ── */
+section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding: clamp(2rem, 5vw, 3rem) 0; }
+.nh-section-h { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.nh-section-h h2 { margin: 0; font-size: clamp(1.3rem, 3vw, 1.8rem); }
+.nh-section-intro { margin: 0.6rem 0 1.4rem; max-width: 70ch; color: var(--t2); }
+
+/* ── Dashboard grid ── */
+.nh-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: clamp(0.8rem, 1.6vw, 1.1rem); }
+.nh-card {
+  display: flex; flex-direction: column; gap: 0.5rem; text-align: left;
+  padding: 1.2rem 1.25rem; min-height: 168px;
+  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-lg);
+  box-shadow: var(--shCard); cursor: pointer; font-family: var(--ff); color: var(--t1);
+  transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+}
+.nh-card:hover, .nh-card:focus-visible { transform: translateY(-3px); border-color: var(--ac); }
+.nh-card-icon {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 12px; font-size: 1.35rem;
+  background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 24%, transparent);
+}
+.nh-card-label { font-size: 1.08rem; font-weight: 800; }
+.nh-card-desc { font-size: 0.88rem; color: var(--t2); flex: 1; }
+.nh-card-cta { font-size: 0.85rem; font-weight: 800; color: var(--ac); display: inline-flex; align-items: center; gap: 0.3rem; }
+.nh-card-cta::after { content: "→"; transition: transform 0.18s; }
+.nh-card:hover .nh-card-cta::after { transform: translateX(3px); }
+.nh-card[data-variant="waymaker"] .nh-card-icon { background: var(--cyL); border-color: color-mix(in srgb, var(--cy) 40%, transparent); color: var(--cyT); }
+
+/* ── Pathway preview ── */
+.nh-pathway { background: var(--bg2); border-top: 1px solid var(--bd2); border-bottom: 1px solid var(--bd2); }
+.nh-pathway-steps { list-style: none; counter-reset: step; margin: 1.2rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: stretch; }
+.nh-pathway-steps li {
+  counter-increment: step; position: relative; flex: 1 1 170px;
+  padding: 0.9rem 1rem 0.9rem 2.6rem;
+  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md);
+  font-size: 0.88rem; font-weight: 600; color: var(--t1);
+}
+.nh-pathway-steps li::before {
+  content: counter(step); position: absolute; left: 0.8rem; top: 0.85rem;
+  width: 1.4rem; height: 1.4rem; border-radius: 999px; background: var(--ac); color: #fff;
+  font-size: 0.78rem; font-weight: 800; display: inline-flex; align-items: center; justify-content: center;
+}
+
+/* ── Generic content blocks ── */
+.nh-block { border-bottom: 1px solid var(--bd2); }
+.nh-sub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 0.8rem; margin-top: 1.2rem; }
+.nh-sub-item { padding: 1rem 1.1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); }
+.nh-sub-item h3 { margin: 0 0 0.35rem; font-size: 0.98rem; }
+.nh-sub-item p { margin: 0; font-size: 0.85rem; color: var(--t2); }
+.nh-inline-note {
+  margin-top: 1.1rem; padding: 0.75rem 0.95rem; font-size: 0.85rem; color: var(--t2);
+  background: color-mix(in srgb, var(--warn) 10%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--warn) 32%, transparent); border-radius: var(--r-md);
+}
+
+/* ── Checklist ── */
+.nh-checklist { list-style: none; margin: 1.2rem 0 0; padding: 0; display: grid; gap: 0.55rem; }
+.nh-checklist li { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.8rem 1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); }
+.nh-check-box { flex-shrink: 0; width: 1.3rem; height: 1.3rem; border: 2px solid var(--ac); border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; color: var(--ac); font-size: 0.85rem; font-weight: 800; }
+.nh-check-body strong { display: block; font-size: 0.95rem; }
+.nh-check-body span { font-size: 0.83rem; color: var(--t2); }
+
+/* ── Hub ── */
+.nh-hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.7rem; margin-top: 1.2rem; }
+.nh-hub-item { text-align: left; padding: 1rem 1.05rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); cursor: pointer; font-family: var(--ff); color: var(--t1); transition: transform 0.18s, border-color 0.18s; }
+.nh-hub-item:hover, .nh-hub-item:focus-visible { transform: translateY(-2px); border-color: var(--ac); }
+.nh-hub-item h3 { margin: 0 0 0.3rem; font-size: 0.98rem; }
+.nh-hub-item p { margin: 0; font-size: 0.82rem; color: var(--t2); }
+
+/* ── Waymaker block ── */
+.nh-waymaker .nh-waymaker-inner {
+  display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+  margin-top: 1.2rem; padding: 1.4rem 1.5rem;
+  background: linear-gradient(120deg, var(--acG), var(--cyL));
+  border: 1px solid var(--bd); border-radius: var(--r-lg);
+}
+.nh-waymaker-text { max-width: 56ch; }
+.nh-waymaker-text h3 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+.nh-waymaker-text p { margin: 0; font-size: 0.9rem; color: var(--t2); }
+.nh-waymaker-note { margin-top: 0.7rem !important; font-size: 0.8rem !important; color: var(--t3) !important; }
+
+/* ── Caution + sources ── */
+.nh-caution .nh-caution-inner { padding: 1.4rem 1.5rem; background: color-mix(in srgb, var(--warn) 9%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--warn) 34%, transparent); border-radius: var(--r-lg); }
+.nh-caution h2 { margin: 0 0 0.5rem; font-size: 1.2rem; }
+.nh-caution p { margin: 0; color: var(--t2); }
+.nh-source-list { list-style: none; margin: 1.1rem 0 0; padding: 0; display: grid; gap: 0.5rem; }
+.nh-source-list li { display: flex; flex-wrap: wrap; gap: 0.5rem 0.7rem; align-items: center; padding: 0.7rem 0.95rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); font-size: 0.88rem; }
+.nh-source-flag { font-size: 0.72rem; font-weight: 800; color: var(--t3); border: 1px dashed var(--bd); border-radius: 999px; padding: 0.1rem 0.5rem; }
+
+/* ── Status chips (never color-only: each has a glyph + text) ── */
+.nh-chip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.2rem 0.6rem; border-radius: 999px;
+  font-size: 0.76rem; font-weight: 800; line-height: 1.3;
+  border: 1px solid var(--bd); background: var(--bg2); color: var(--t2);
+}
+.nh-chip-glyph { font-size: 0.8rem; }
+.nh-chip[data-tone="go"] { border-color: color-mix(in srgb, var(--ok) 45%, transparent); background: color-mix(in srgb, var(--ok) 12%, var(--bg1)); color: color-mix(in srgb, var(--ok) 72%, var(--t1)); }
+.nh-chip[data-tone="warn"] { border-color: color-mix(in srgb, var(--warn) 45%, transparent); background: color-mix(in srgb, var(--warn) 12%, var(--bg1)); color: color-mix(in srgb, var(--warn) 72%, var(--t1)); }
+.nh-chip[data-tone="neutral"] { border-color: var(--bd); background: var(--bg2); color: var(--t2); }
+
+/* ── Footer ── */
+.nh-footer { padding: 2rem clamp(1rem,4vw,2rem) 3rem; background: var(--bg2); border-top: 1px solid var(--bd2); }
+.nh-footer-inner { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 0.8rem; }
+.nh-footer p { margin: 0; font-size: 0.85rem; color: var(--t3); max-width: 80ch; }
+.nh-footer a { font-weight: 800; text-decoration: none; }
+.nh-footer a:hover { text-decoration: underline; }
+
+/* ── Modal ── */
+.nh-modal-overlay {
+  position: fixed; inset: 0; z-index: 200; display: none;
+  align-items: center; justify-content: center; padding: 1rem;
+  background: rgba(12,16,14,0.55); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  opacity: 0; transition: opacity 0.25s;
+}
+.nh-modal-overlay.active { display: flex; opacity: 1; }
+.nh-modal {
+  width: 100%; max-width: 680px; max-height: 90vh; display: flex; flex-direction: column;
+  background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-xl);
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,0.5);
+  transform: translateY(10px) scale(0.98); transition: transform 0.25s;
+}
+.nh-modal-overlay.active .nh-modal { transform: none; }
+.nh-modal-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.1rem 1.3rem; border-bottom: 1px solid var(--bd2); }
+.nh-modal-title { margin: 0; font-size: 1.1rem; font-weight: 800; }
+.nh-modal-close {
+  flex-shrink: 0; width: 40px; height: 40px; border-radius: 999px; cursor: pointer;
+  background: var(--bg2); border: 1px solid var(--bd); color: var(--t2); font-size: 1.1rem;
+  display: inline-flex; align-items: center; justify-content: center; transition: background 0.18s, color 0.18s, transform 0.2s;
+}
+.nh-modal-close:hover { color: var(--t1); transform: rotate(90deg); }
+.nh-modal-body { padding: 1.3rem; overflow-y: auto; }
+.nh-modal-foot { padding: 1rem 1.3rem; border-top: 1px solid var(--bd2); display: flex; flex-wrap: wrap; gap: 0.6rem; justify-content: space-between; align-items: center; }
+.nh-modal-disclaimer { font-size: 0.78rem; color: var(--t3); flex: 1 1 240px; }
+
+.nh-progress { font-size: 0.8rem; font-weight: 700; color: var(--t3); margin-bottom: 0.6rem; }
+.nh-q { margin: 0 0 1rem; }
+.nh-q legend { font-size: 1.02rem; font-weight: 800; margin-bottom: 0.7rem; padding: 0; border: 0; }
+.nh-q-options { display: grid; gap: 0.5rem; border: 0; margin: 0; padding: 0; }
+.nh-opt {
+  display: flex; align-items: center; gap: 0.65rem; padding: 0.7rem 0.9rem;
+  border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); cursor: pointer;
+  font-size: 0.92rem; transition: border-color 0.16s, background 0.16s;
+}
+.nh-opt:hover { border-color: var(--ac); }
+.nh-opt input { accent-color: var(--ac); width: 1.05rem; height: 1.05rem; flex-shrink: 0; }
+.nh-opt:has(input:checked) { border-color: var(--ac); background: var(--acG); font-weight: 700; }
+
+.nh-result-item { padding: 0.95rem 1.05rem; border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); margin-bottom: 0.7rem; }
+.nh-result-item h4 { margin: 0.5rem 0 0.3rem; font-size: 0.98rem; }
+.nh-result-item p { margin: 0; font-size: 0.86rem; color: var(--t2); }
+
+.nh-path-card { border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); margin-bottom: 0.7rem; overflow: hidden; }
+.nh-path-head { width: 100%; display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; background: transparent; border: 0; cursor: pointer; font-family: var(--ff); text-align: left; color: var(--t1); }
+.nh-path-head:hover { background: var(--acG); }
+.nh-path-icon { font-size: 1.2rem; }
+.nh-path-head-text { flex: 1; min-width: 0; }
+.nh-path-head-text strong { display: block; font-size: 0.98rem; }
+.nh-path-head-text span { font-size: 0.82rem; color: var(--t2); }
+.nh-path-toggle { flex-shrink: 0; color: var(--t3); transition: transform 0.2s; }
+.nh-path-card.open .nh-path-toggle { transform: rotate(180deg); }
+.nh-path-body { display: none; padding: 0 1rem 1rem; }
+.nh-path-card.open .nh-path-body { display: block; }
+.nh-path-body p { margin: 0.2rem 0 0.6rem; font-size: 0.86rem; color: var(--t2); }
+.nh-path-body ul { margin: 0; padding-left: 1.1rem; }
+.nh-path-body li { font-size: 0.85rem; color: var(--t2); margin-bottom: 0.2rem; }
+
+.nh-btn-sm { min-height: 42px; padding: 0 1.1rem; border-radius: var(--r-md); font-weight: 800; font-size: 0.9rem; font-family: var(--ff); cursor: pointer; border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); transition: border-color 0.18s, transform 0.18s; }
+.nh-btn-sm:hover { border-color: var(--ac); transform: translateY(-1px); }
+.nh-btn-sm.primary { background: var(--ac); color: #fff; border-color: transparent; }
+.nh-loaderr { padding: 2rem 1rem; text-align: center; color: var(--t2); }
+
+/* ── Kitsch (archive_diary) component touches ── */
+:root[data-theme="archive_diary"] .nh-card,
+:root[data-theme="archive_diary"] .nh-hub-item,
+:root[data-theme="archive_diary"] .nh-modal { border-width: 2px; border-color: var(--k-ink); }
+:root[data-theme="archive_diary"] .nh-card { border-radius: 22px; }
+:root[data-theme="archive_diary"] .nh-card:hover { box-shadow: 6px 7px 0 var(--k-pink); }
+:root[data-theme="archive_diary"] .nh-btn-primary { box-shadow: 4px 4px 0 var(--k-ink); }
+:root[data-theme="archive_diary"] .nh-back,
+:root[data-theme="archive_diary"] .nh-ctl { border-color: var(--k-ink); border-width: 2px; }
+:root[data-theme="archive_diary"] .nh-tagline { color: var(--k-pink-deep); }
+
+/* ── Responsive ── */
+@media (max-width: 720px) {
+  .nh-cta-row .nh-btn { flex: 1 1 100%; }
+  .nh-modal { max-height: 94vh; }
+  .nh-modal-overlay { padding: 0.5rem; align-items: flex-end; }
+  .nh-modal { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+</style>
+</head>
+<body>
+<a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
+
+<header class="nh-topbar">
+  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span data-c="ui.backToParadiso">Paradiso로 돌아가기</span></a>
+  <div class="nh-controls">
+    <button type="button" class="nh-ctl" data-action="toggle-lang" id="langBtn">English</button>
+    <button type="button" class="nh-ctl" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환">✦ <span id="themeBtnLabel">Editorial</span></button>
+    <button type="button" class="nh-ctl" data-action="toggle-brightness" id="brightBtn" aria-label="밝기 전환">◐</button>
+  </div>
+</header>
+
+<main id="nhMain">
+  <section class="nh-hero">
+    <svg class="nh-hero-motif" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M10 80 Q40 60 60 70 T110 55" stroke-dasharray="2 6"/>
+      <path d="M38 78 V50 L62 32 L86 50 V78 Z"/>
+      <path d="M54 78 V62 H70 V78"/>
+    </svg>
+    <div class="nh-hero-inner">
+      <span class="nh-kicker" data-c="hero.kicker">Paradiso 국적·귀화 플랫폼</span>
+      <h1 class="nh-title">Paradiso: New Home</h1>
+      <p class="nh-tagline">You Belong Here.</p>
+      <p class="nh-lead" data-c="hero.lead"></p>
+      <div class="nh-cta-row">
+        <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness" data-c="hero.ctaPrimary"></button>
+        <button type="button" class="nh-btn nh-btn-secondary" data-action="open-pathfinder" data-c="hero.ctaSecondary"></button>
+      </div>
+      <div class="nh-notice" role="note">
+        <span class="nh-notice-icon" aria-hidden="true">ℹ️</span>
+        <span data-c="notice"></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="nh-wrap">
+    <section class="nh-dashboard" id="dashboard">
+      <div class="nh-section-h"><h2 data-c="dashboard.title"></h2></div>
+      <p class="nh-section-intro" data-c="dashboard.intro"></p>
+      <div class="nh-grid" id="featureGrid"></div>
+    </section>
+  </div>
+
+  <section class="nh-pathway">
+    <div class="nh-wrap">
+      <div class="nh-section-h"><h2 data-c="pathwayPreview.title"></h2></div>
+      <ol class="nh-pathway-steps" id="pathwaySteps"></ol>
+    </div>
+  </section>
+
+  <div class="nh-wrap">
+    <section class="nh-block" id="kiip">
+      <div class="nh-section-h"><h2 data-c="kiip.title"></h2></div>
+      <p class="nh-section-intro" data-c="kiip.intro"></p>
+      <div class="nh-sub-grid" id="kiipGrid"></div>
+      <p class="nh-inline-note" data-c="kiip.note"></p>
+    </section>
+
+    <section class="nh-block" id="after">
+      <div class="nh-section-h"><h2 data-c="afterApproval.title"></h2></div>
+      <p class="nh-section-intro" data-c="afterApproval.intro"></p>
+      <ul class="nh-checklist" id="afterList"></ul>
+      <p class="nh-inline-note" data-c="afterApproval.caution"></p>
+    </section>
+
+    <section class="nh-block" id="hub">
+      <div class="nh-section-h"><h2 data-c="hub.title"></h2></div>
+      <p class="nh-section-intro" data-c="hub.intro"></p>
+      <div class="nh-hub-grid" id="hubGrid"></div>
+      <p class="nh-inline-note" data-c="hub.expansionNote"></p>
+    </section>
+
+    <section class="nh-block nh-waymaker" id="waymaker">
+      <div class="nh-section-h"><h2 data-c="waymaker.title"></h2></div>
+      <div class="nh-waymaker-inner">
+        <div class="nh-waymaker-text">
+          <p data-c="waymaker.desc"></p>
+          <p class="nh-waymaker-note" data-c="waymaker.note"></p>
+        </div>
+        <a class="nh-btn nh-btn-primary" id="waymakerCta" href="ai.html?domain=nationality" data-c="waymaker.cta"></a>
+      </div>
+    </section>
+
+    <section class="nh-caution">
+      <div class="nh-caution-inner" role="note">
+        <h2 data-c="caution.title"></h2>
+        <p data-c="caution.body"></p>
+      </div>
+    </section>
+
+    <section class="nh-sources">
+      <div class="nh-section-h"><h2 data-c="sources.title"></h2></div>
+      <p class="nh-section-intro" data-c="sources.intro"></p>
+      <ul class="nh-source-list" id="sourceList"></ul>
+    </section>
+  </div>
+</main>
+
+<footer class="nh-footer">
+  <div class="nh-footer-inner">
+    <p data-c="footer.notice"></p>
+    <a href="index.html" data-c="footer.back"></a>
+  </div>
+</footer>
+
+<!-- Readiness modal -->
+<div class="nh-modal-overlay" id="readinessModal" role="dialog" aria-modal="true" aria-labelledby="readinessTitle" aria-hidden="true">
+  <div class="nh-modal">
+    <div class="nh-modal-header">
+      <h2 class="nh-modal-title" id="readinessTitle"></h2>
+      <button type="button" class="nh-modal-close" data-action="close-modal" aria-label="닫기">✕</button>
+    </div>
+    <div class="nh-modal-body" id="readinessBody"></div>
+    <div class="nh-modal-foot" id="readinessFoot"></div>
+  </div>
+</div>
+
+<!-- Path finder modal -->
+<div class="nh-modal-overlay" id="pathfinderModal" role="dialog" aria-modal="true" aria-labelledby="pathfinderTitle" aria-hidden="true">
+  <div class="nh-modal">
+    <div class="nh-modal-header">
+      <h2 class="nh-modal-title" id="pathfinderTitle"></h2>
+      <button type="button" class="nh-modal-close" data-action="close-modal" aria-label="닫기">✕</button>
+    </div>
+    <div class="nh-modal-body" id="pathfinderBody"></div>
+    <div class="nh-modal-foot" id="pathfinderFoot"></div>
+  </div>
+</div>
+
+<!-- Detail modal (hub items) -->
+<div class="nh-modal-overlay" id="detailModal" role="dialog" aria-modal="true" aria-labelledby="detailTitle" aria-hidden="true">
+  <div class="nh-modal">
+    <div class="nh-modal-header">
+      <h2 class="nh-modal-title" id="detailTitle"></h2>
+      <button type="button" class="nh-modal-close" data-action="close-modal" aria-label="닫기">✕</button>
+    </div>
+    <div class="nh-modal-body" id="detailBody"></div>
+    <div class="nh-modal-foot" id="detailFoot"></div>
+  </div>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // ── State ──────────────────────────────────────────────────────────────
+  var LANG_KEY = 'paradiso:language';
+  var THEME_KEY = 'paradiso:editorial-theme';
+  var BRIGHT_KEY = 'paradiso:nh-brightness';
+  var SUPPORTED = ['ko', 'en'];
+  var lang = initialLang();
+  var content = null;     // nationality_content.json
+  var paths = null;       // nationality_paths.json
+  var chipMap = {};       // id -> chip
+  var lastFocus = null;
+  var activeOverlay = null;
+  var activeRebuild = null; // re-render hook for the open modal on language switch
+
+  function initialLang() {
+    try {
+      var stored = (localStorage.getItem(LANG_KEY) || '').toLowerCase();
+      if (stored.indexOf('en') === 0) return 'en';
+      if (stored.indexOf('ko') === 0) return 'ko';
+    } catch (e) {}
+    try {
+      if ((navigator.language || '').toLowerCase().indexOf('en') === 0) return 'en';
+    } catch (e) {}
+    return 'ko';
+  }
+
+  function pick(node) {
+    if (node == null) return '';
+    if (typeof node === 'string') return node;
+    if (typeof node === 'object') {
+      if (node[lang] != null) return node[lang];
+      if (node.ko != null) return node.ko;
+      if (node.en != null) return node.en;
+    }
+    return '';
+  }
+
+  function resolve(root, dotted) {
+    return dotted.split('.').reduce(function (acc, k) { return acc == null ? acc : acc[k]; }, root);
+  }
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function el(tag, cls, html) {
+    var n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  }
+
+  // ── Status chips ───────────────────────────────────────────────────────
+  function chipHtml(id) {
+    var c = chipMap[id];
+    if (!c) return '';
+    return '<span class="nh-chip" data-tone="' + esc(c.tone) + '"><span class="nh-chip-glyph" aria-hidden="true">' +
+      esc(c.icon) + '</span>' + esc(pick(c)) + '</span>';
+  }
+
+  // ── Static text binding: elements carry a dotted content path attribute ──
+  function applyStatic() {
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-c]').forEach(function (node) {
+      var val = resolve(content, node.getAttribute('data-c'));
+      if (val != null) node.textContent = pick(val);
+    });
+    var langBtn = document.getElementById('langBtn');
+    if (langBtn) langBtn.textContent = pick(content.ui.langToggle);
+    var themeLabel = document.getElementById('themeBtnLabel');
+    if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+  }
+
+  // ── Renderers ────────────────────────────────────────────────────────────
+  function renderFeatures() {
+    var grid = document.getElementById('featureGrid');
+    grid.innerHTML = '';
+    content.features.forEach(function (f) {
+      var card = el('button', 'nh-card');
+      card.type = 'button';
+      card.setAttribute('data-action', f.action);
+      card.setAttribute('data-variant', f.id);
+      card.innerHTML =
+        '<span class="nh-card-icon" aria-hidden="true">' + esc(f.icon) + '</span>' +
+        '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
+        '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
+        '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>';
+      grid.appendChild(card);
+    });
+  }
+
+  function renderPathway() {
+    var ol = document.getElementById('pathwaySteps');
+    ol.innerHTML = '';
+    (pick(content.pathwayPreview.steps) || []).forEach(function (s) {
+      ol.appendChild(el('li', null, esc(s)));
+    });
+  }
+
+  function renderKiip() {
+    var grid = document.getElementById('kiipGrid');
+    grid.innerHTML = '';
+    content.kiip.subsections.forEach(function (s) {
+      grid.appendChild(el('div', 'nh-sub-item',
+        '<h3>' + esc(pick(s.label)) + '</h3><p>' + esc(pick(s.desc)) + '</p>'));
+    });
+  }
+
+  function renderAfter() {
+    var list = document.getElementById('afterList');
+    list.innerHTML = '';
+    content.afterApproval.items.forEach(function (it) {
+      list.appendChild(el('li', null,
+        '<span class="nh-check-box" aria-hidden="true">✓</span>' +
+        '<span class="nh-check-body"><strong>' + esc(pick(it.label)) + '</strong>' +
+        '<span>' + esc(pick(it.hint)) + '</span></span>'));
+    });
+  }
+
+  function renderHub() {
+    var grid = document.getElementById('hubGrid');
+    grid.innerHTML = '';
+    content.hub.items.forEach(function (it) {
+      var b = el('button', 'nh-hub-item');
+      b.type = 'button';
+      b.setAttribute('data-action', 'open-hub');
+      b.setAttribute('data-id', it.id);
+      b.innerHTML = '<h3>' + esc(pick(it.label)) + '</h3><p>' + esc(pick(it.desc)) + '</p>';
+      grid.appendChild(b);
+    });
+  }
+
+  function renderSources() {
+    var list = document.getElementById('sourceList');
+    list.innerHTML = '';
+    content.sources.items.forEach(function (s) {
+      var verifying = pick(content.ui.officialCheckBadge);
+      list.appendChild(el('li', null,
+        '<span>' + esc(s.label) + '</span>' +
+        '<span class="nh-source-flag">' + esc(verifying) + '</span>'));
+    });
+  }
+
+  function renderAll() {
+    applyStatic();
+    renderFeatures();
+    renderPathway();
+    renderKiip();
+    renderAfter();
+    renderHub();
+    renderSources();
+    if (activeOverlay && activeRebuild) activeRebuild();
+  }
+
+  // ── Modal plumbing ───────────────────────────────────────────────────────
+  function focusables(container) {
+    return Array.prototype.slice.call(container.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    )).filter(function (n) { return !n.disabled && n.offsetParent !== null; });
+  }
+
+  function trap(e) {
+    if (e.key !== 'Tab' || !activeOverlay) return;
+    var f = focusables(activeOverlay);
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  function openOverlay(id, rebuild) {
+    var ov = document.getElementById(id);
+    if (!ov) return;
+    lastFocus = document.activeElement;
+    activeOverlay = ov;
+    activeRebuild = rebuild || null;
+    ov.classList.add('active');
+    ov.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', trap);
+    var f = focusables(ov);
+    if (f.length) f[0].focus();
+  }
+
+  function closeOverlay() {
+    if (!activeOverlay) return;
+    activeOverlay.classList.remove('active');
+    activeOverlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', trap);
+    activeOverlay = null;
+    activeRebuild = null;
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    lastFocus = null;
+  }
+
+  // ── Readiness check ──────────────────────────────────────────────────────
+  var readinessAnswers = {};
+
+  function buildReadinessForm() {
+    document.getElementById('readinessTitle').textContent = pick(paths.readiness.title);
+    var body = document.getElementById('readinessBody');
+    var foot = document.getElementById('readinessFoot');
+    body.innerHTML = '';
+    body.appendChild(el('p', 'nh-section-intro', esc(pick(paths.readiness.intro))));
+    var form = el('form', 'nh-readiness-form');
+    form.id = 'readinessForm';
+    paths.readiness.questions.forEach(function (q) {
+      var fs = el('fieldset', 'nh-q');
+      fs.appendChild(el('legend', null, esc(pick(q.q))));
+      var opts = el('div', 'nh-q-options');
+      q.options.forEach(function (o) {
+        var checked = readinessAnswers[q.id] === o.value ? ' checked' : '';
+        var label = el('label', 'nh-opt',
+          '<input type="radio" name="' + esc(q.id) + '" value="' + esc(o.value) + '"' + checked + '>' +
+          '<span>' + esc(pick(o.label)) + '</span>');
+        opts.appendChild(label);
+      });
+      fs.appendChild(opts);
+      form.appendChild(fs);
+    });
+    form.addEventListener('change', function (e) {
+      if (e.target && e.target.name) readinessAnswers[e.target.name] = e.target.value;
+    });
+    body.appendChild(form);
+    foot.innerHTML = '';
+    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(paths.readiness.disclaimer))));
+    var go = el('button', 'nh-btn-sm primary', esc(pick(content.ui.viewResult)));
+    go.type = 'button';
+    go.addEventListener('click', showReadinessResult);
+    foot.appendChild(go);
+  }
+
+  function evaluateReadiness(a) {
+    var ids = [];
+    var push = function (id) { if (ids.indexOf(id) < 0) ids.push(id); };
+    var hasF5 = a.f5 === 'yes' || a.status === 'f5';
+    var longStay = a.years === 'ge5' || a.years === '3to5';
+
+    if (a.spouse === 'yes') push('spouseRoute');
+    if (a.family === 'yes') push('familyRoute');
+    if (hasF5 && longStay) push('generalRoute');
+    else if (a.years === 'ge5') push('generalRoute');
+
+    if (!hasF5 && a.spouse !== 'yes' && a.family !== 'yes') push('needF5First');
+    if (a.kiip === 'none' || a.kiip === 'unknown' || a.kiip === 'inprogress') push('kiipNeeded');
+    if (a.flags === 'yes') push('flagsReview');
+
+    // Order: routes → status → kiip → flags; fall back to limited.
+    var order = ['spouseRoute', 'familyRoute', 'generalRoute', 'needF5First', 'kiipNeeded', 'flagsReview'];
+    var ordered = order.filter(function (id) { return ids.indexOf(id) >= 0; });
+    if (!ordered.length) ordered = ['limitedInfo'];
+    return ordered;
+  }
+
+  function showReadinessResult() {
+    var r = paths.readiness;
+    var body = document.getElementById('readinessBody');
+    var foot = document.getElementById('readinessFoot');
+    var results = evaluateReadiness(readinessAnswers);
+    body.innerHTML = '';
+    body.appendChild(el('h3', null, esc(pick(r.resultTitle))));
+    body.appendChild(el('p', 'nh-section-intro', esc(pick(r.resultIntro))));
+    results.forEach(function (tid) {
+      var t = r.resultTemplates[tid];
+      if (!t) return;
+      var item = el('div', 'nh-result-item',
+        chipHtml(t.chip) +
+        '<h4>' + esc(pick(t.title)) + '</h4>' +
+        '<p>' + esc(pick(t.note)) + '</p>');
+      body.appendChild(item);
+    });
+    var dis = el('p', 'nh-inline-note', esc(pick(r.disclaimer)));
+    body.appendChild(dis);
+    foot.innerHTML = '';
+    var again = el('button', 'nh-btn-sm', esc(pick(content.ui.restart)));
+    again.type = 'button';
+    again.addEventListener('click', buildReadinessForm);
+    var pf = el('button', 'nh-btn-sm primary', esc(pick(paths.pathFinder.title)));
+    pf.type = 'button';
+    pf.addEventListener('click', function () { closeOverlay(); openPathfinder(); });
+    foot.appendChild(again);
+    foot.appendChild(pf);
+  }
+
+  function openReadiness() {
+    buildReadinessForm();
+    openOverlay('readinessModal', function () {
+      // On language switch while open, rebuild the current view.
+      var inResult = document.querySelector('#readinessBody .nh-result-item');
+      if (inResult) showReadinessResult(); else buildReadinessForm();
+    });
+  }
+
+  // ── Path finder ──────────────────────────────────────────────────────────
+  function pathById(id) {
+    return (paths.paths || []).filter(function (p) { return p.id === id; })[0];
+  }
+
+  function pathCardHtml(p) {
+    var cps = (pick(p.checkpoints) || []).map(function (c) { return '<li>' + esc(c) + '</li>'; }).join('');
+    return '<div class="nh-path-card" data-path="' + esc(p.id) + '">' +
+      '<button type="button" class="nh-path-head" aria-expanded="false">' +
+      '<span class="nh-path-icon" aria-hidden="true">' + esc(p.icon) + '</span>' +
+      '<span class="nh-path-head-text"><strong>' + esc(pick(p.label)) + '</strong>' +
+      '<span>' + esc(pick(p.summary)) + '</span></span>' +
+      chipHtml(p.chip) +
+      '<span class="nh-path-toggle" aria-hidden="true">▾</span>' +
+      '</button>' +
+      '<div class="nh-path-body"><p>' + esc(pick(p.who)) + '</p><ul>' + cps + '</ul></div>' +
+      '</div>';
+  }
+
+  function buildPathfinderQuestion() {
+    document.getElementById('pathfinderTitle').textContent = pick(paths.pathFinder.title);
+    var body = document.getElementById('pathfinderBody');
+    var foot = document.getElementById('pathfinderFoot');
+    var q = paths.pathFinder.firstQuestion;
+    body.innerHTML = '';
+    body.appendChild(el('p', 'nh-section-intro', esc(pick(paths.pathFinder.intro))));
+    var fs = el('fieldset', 'nh-q');
+    fs.appendChild(el('legend', null, esc(pick(q.q))));
+    var opts = el('div', 'nh-q-options');
+    q.options.forEach(function (o) {
+      var b = el('button', 'nh-opt');
+      b.type = 'button';
+      b.style.cursor = 'pointer';
+      b.innerHTML = '<span aria-hidden="true">→</span><span>' + esc(pick(o.label)) + '</span>';
+      b.addEventListener('click', function () { showPathfinderResult(o.routesTo); });
+      opts.appendChild(b);
+    });
+    fs.appendChild(opts);
+    body.appendChild(fs);
+    foot.innerHTML = '';
+    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(paths.pathFinder.disclaimer))));
+  }
+
+  function showPathfinderResult(routeIds) {
+    var pf = paths.pathFinder;
+    var body = document.getElementById('pathfinderBody');
+    var foot = document.getElementById('pathfinderFoot');
+    body.innerHTML = '';
+    body.appendChild(el('h3', null, esc(pick(pf.resultTitle))));
+    body.appendChild(el('p', 'nh-section-intro', esc(pick(pf.resultIntro))));
+    (routeIds || []).forEach(function (id) {
+      var p = pathById(id);
+      if (p) body.insertAdjacentHTML('beforeend', pathCardHtml(p));
+    });
+    body.querySelectorAll('.nh-path-head').forEach(function (head) {
+      head.addEventListener('click', function () {
+        var card = head.closest('.nh-path-card');
+        var open = card.classList.toggle('open');
+        head.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+    });
+    foot.innerHTML = '';
+    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(pf.disclaimer))));
+    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+    back.type = 'button';
+    back.addEventListener('click', buildPathfinderQuestion);
+    foot.appendChild(back);
+  }
+
+  function openPathfinder() {
+    buildPathfinderQuestion();
+    openOverlay('pathfinderModal', function () {
+      var inResult = document.querySelector('#pathfinderBody .nh-path-card');
+      if (!inResult) buildPathfinderQuestion();
+    });
+  }
+
+  // ── Hub detail ───────────────────────────────────────────────────────────
+  function openHubDetail(id) {
+    var item = content.hub.items.filter(function (x) { return x.id === id; })[0];
+    if (!item) return;
+    document.getElementById('detailTitle').textContent = pick(item.label);
+    var body = document.getElementById('detailBody');
+    var foot = document.getElementById('detailFoot');
+    body.innerHTML = '';
+    body.appendChild(el('p', null, esc(pick(item.desc))));
+    body.appendChild(el('p', 'nh-inline-note', esc(pick(content.hub.expansionNote))));
+    foot.innerHTML = '';
+    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(content.notice))));
+    var wm = el('a', 'nh-btn-sm primary', esc(pick(content.waymaker.cta)));
+    wm.href = 'ai.html?domain=nationality';
+    foot.appendChild(wm);
+    openOverlay('detailModal', function () { openHubDetail(id); });
+  }
+
+  // ── Theme / brightness / language ────────────────────────────────────────
+  function currentTheme() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t === 'archive_diary' ? 'archive_diary' : 'civic_editorial';
+  }
+  function toggleTheme() {
+    var next = currentTheme() === 'civic_editorial' ? 'archive_diary' : 'civic_editorial';
+    document.documentElement.setAttribute('data-theme', next);
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    var label = document.getElementById('themeBtnLabel');
+    if (label) label.textContent = next === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+    syncMeta();
+  }
+  function toggleBrightness() {
+    var dark = document.body.getAttribute('data-theme') === 'dark';
+    if (dark) document.body.removeAttribute('data-theme');
+    else document.body.setAttribute('data-theme', 'dark');
+    try { localStorage.setItem(BRIGHT_KEY, dark ? 'light' : 'dark'); } catch (e) {}
+    syncMeta();
+  }
+  function toggleLang() {
+    lang = lang === 'ko' ? 'en' : 'ko';
+    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    renderAll();
+  }
+  function syncMeta() {
+    var meta = document.querySelector('meta[name="theme-color"]');
+    if (!meta) return;
+    var bg = getComputedStyle(document.body).getPropertyValue('--bg0').trim();
+    if (bg) meta.setAttribute('content', bg);
+  }
+
+  // ── Action dispatch ──────────────────────────────────────────────────────
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-action]');
+    if (!t) return;
+    var action = t.getAttribute('data-action');
+    var handlers = {
+      'toggle-lang': toggleLang,
+      'toggle-theme': toggleTheme,
+      'toggle-brightness': toggleBrightness,
+      'open-readiness': openReadiness,
+      'open-pathfinder': openPathfinder,
+      'close-modal': closeOverlay,
+      'open-hub': function () { openHubDetail(t.getAttribute('data-id')); },
+      'open-waymaker': function () { window.location.href = 'ai.html?domain=nationality'; },
+      'scroll-kiip': function () { scrollTo('kiip'); },
+      'scroll-after': function () { scrollTo('after'); },
+      'scroll-hub': function () { scrollTo('hub'); }
+    };
+    if (handlers[action]) {
+      if (t.tagName !== 'A') e.preventDefault();
+      handlers[action]();
+    }
+  });
+
+  // Backdrop click closes the active modal.
+  document.addEventListener('click', function (e) {
+    if (activeOverlay && e.target === activeOverlay) closeOverlay();
+  });
+
+  // ESC closes the active modal.
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && activeOverlay) { e.preventDefault(); closeOverlay(); }
+  });
+
+  function scrollTo(id) {
+    var n = document.getElementById(id);
+    if (n) n.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ── Boot ─────────────────────────────────────────────────────────────────
+  function showLoadError() {
+    var main = document.getElementById('nhMain');
+    if (main) {
+      main.innerHTML = '<div class="nh-loaderr"><p>콘텐츠를 불러오지 못했습니다. / Content could not be loaded.</p>' +
+        '<p><a href="index.html">← Paradiso</a></p></div>';
+    }
+  }
+
+  function boot() {
+    Promise.all([
+      fetch('data/nationality_content.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('content'); return r.json(); }),
+      fetch('data/nationality_paths.json', { cache: 'no-store' }).then(function (r) { if (!r.ok) throw new Error('paths'); return r.json(); })
+    ]).then(function (res) {
+      content = res[0];
+      paths = res[1];
+      (paths.statusChips || []).forEach(function (c) { chipMap[c.id] = c; });
+      if (SUPPORTED.indexOf(lang) < 0) lang = 'ko';
+      try { if (localStorage.getItem(BRIGHT_KEY) === 'dark') document.body.setAttribute('data-theme', 'dark'); } catch (e) {}
+      renderAll();
+      syncMeta();
+    }).catch(function () { showLoadError(); });
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
+</body>
+</html>
