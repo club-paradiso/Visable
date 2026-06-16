@@ -330,6 +330,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-btn-sm { min-height: 42px; padding: 0 1.1rem; border-radius: var(--r-md); font-weight: 800; font-size: 0.9rem; font-family: var(--ff); cursor: pointer; border: 1px solid var(--bd); background: var(--bg1); color: var(--t1); transition: border-color 0.18s, transform 0.18s; }
 .nh-btn-sm:hover { border-color: var(--ac); transform: translateY(-1px); }
 .nh-btn-sm.primary { background: var(--ac); color: #fff; border-color: transparent; }
+.nh-btn-sm:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
 .nh-loaderr { padding: 2rem 1rem; text-align: center; color: var(--t2); }
 
 /* ── Kitsch (archive_diary) component touches ── */
@@ -697,41 +698,71 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     lastFocus = null;
   }
 
-  // ── Readiness check ──────────────────────────────────────────────────────
+  // ── Readiness check (one question per screen) ──────────────────────────────
   var readinessAnswers = {};
+  var readinessStep = 0;
 
-  function buildReadinessForm() {
-    document.getElementById('readinessTitle').textContent = pick(paths.readiness.title);
+  function fillTemplate(str, vars) {
+    return String(str == null ? '' : str).replace(/\{(\w+)\}/g, function (m, k) {
+      return vars[k] != null ? vars[k] : m;
+    });
+  }
+
+  function buildReadinessStep() {
+    var r = paths.readiness;
+    var qs = r.questions;
+    if (readinessStep < 0) readinessStep = 0;
+    if (readinessStep >= qs.length) { showReadinessResult(); return; }
+    var q = qs[readinessStep];
+    var isLast = readinessStep === qs.length - 1;
+    document.getElementById('readinessTitle').textContent = pick(r.title);
     var body = document.getElementById('readinessBody');
     var foot = document.getElementById('readinessFoot');
+
     body.innerHTML = '';
-    body.appendChild(el('p', 'nh-section-intro', esc(pick(paths.readiness.intro))));
-    var form = el('form', 'nh-readiness-form');
-    form.id = 'readinessForm';
-    paths.readiness.questions.forEach(function (q) {
-      var fs = el('fieldset', 'nh-q');
-      fs.appendChild(el('legend', null, esc(pick(q.q))));
-      var opts = el('div', 'nh-q-options');
-      q.options.forEach(function (o) {
-        var checked = readinessAnswers[q.id] === o.value ? ' checked' : '';
-        var label = el('label', 'nh-opt',
-          '<input type="radio" name="' + esc(q.id) + '" value="' + esc(o.value) + '"' + checked + '>' +
-          '<span>' + esc(pick(o.label)) + '</span>');
-        opts.appendChild(label);
-      });
-      fs.appendChild(opts);
-      form.appendChild(fs);
+    body.appendChild(el('p', 'nh-progress', esc(fillTemplate(pick(r.progressLabel), { current: readinessStep + 1, total: qs.length }))));
+    if (readinessStep === 0) body.appendChild(el('p', 'nh-section-intro', esc(pick(r.intro))));
+
+    var fs = el('fieldset', 'nh-q');
+    var legend = el('legend', null, esc(pick(q.q)));
+    legend.setAttribute('tabindex', '-1');
+    fs.appendChild(legend);
+    var opts = el('div', 'nh-q-options');
+    q.options.forEach(function (o) {
+      var checked = readinessAnswers[q.id] === o.value ? ' checked' : '';
+      var label = el('label', 'nh-opt',
+        '<input type="radio" name="' + esc(q.id) + '" value="' + esc(o.value) + '"' + checked + '>' +
+        '<span>' + esc(pick(o.label)) + '</span>');
+      opts.appendChild(label);
     });
-    form.addEventListener('change', function (e) {
-      if (e.target && e.target.name) readinessAnswers[e.target.name] = e.target.value;
-    });
-    body.appendChild(form);
+    fs.appendChild(opts);
+    body.appendChild(fs);
+
     foot.innerHTML = '';
-    foot.appendChild(el('span', 'nh-modal-disclaimer', esc(pick(paths.readiness.disclaimer))));
-    var go = el('button', 'nh-btn-sm primary', esc(pick(content.ui.viewResult)));
-    go.type = 'button';
-    go.addEventListener('click', showReadinessResult);
-    foot.appendChild(go);
+    var back = el('button', 'nh-btn-sm', esc(pick(content.ui.back)));
+    back.type = 'button';
+    back.style.visibility = readinessStep === 0 ? 'hidden' : 'visible';
+    back.addEventListener('click', function () { readinessStep--; buildReadinessStep(); });
+
+    var next = el('button', 'nh-btn-sm primary', esc(pick(isLast ? content.ui.viewResult : content.ui.next)));
+    next.type = 'button';
+    next.disabled = readinessAnswers[q.id] == null;
+    next.addEventListener('click', function () {
+      if (readinessAnswers[q.id] == null) return;
+      if (isLast) showReadinessResult();
+      else { readinessStep++; buildReadinessStep(); }
+    });
+
+    opts.addEventListener('change', function (e) {
+      if (e.target && e.target.name) {
+        readinessAnswers[e.target.name] = e.target.value;
+        next.disabled = false;
+      }
+    });
+
+    foot.appendChild(back);
+    foot.appendChild(next);
+    legend.focus();
   }
 
   function evaluateReadiness(a) {
@@ -778,7 +809,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     foot.innerHTML = '';
     var again = el('button', 'nh-btn-sm', esc(pick(content.ui.restart)));
     again.type = 'button';
-    again.addEventListener('click', buildReadinessForm);
+    again.addEventListener('click', function () { readinessStep = 0; readinessAnswers = {}; buildReadinessStep(); });
     var pf = el('button', 'nh-btn-sm primary', esc(pick(paths.pathFinder.title)));
     pf.type = 'button';
     pf.addEventListener('click', function () { closeOverlay(); openPathfinder(); });
@@ -787,11 +818,12 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   }
 
   function openReadiness() {
-    buildReadinessForm();
+    readinessStep = 0;
+    buildReadinessStep();
     openOverlay('readinessModal', function () {
       // On language switch while open, rebuild the current view.
       var inResult = document.querySelector('#readinessBody .nh-result-item');
-      if (inResult) showReadinessResult(); else buildReadinessForm();
+      if (inResult) showReadinessResult(); else buildReadinessStep();
     });
   }
 
