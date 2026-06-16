@@ -2147,6 +2147,9 @@ select:focus-visible {
                 source_family_statuses: asObject(m.source_family_statuses),
                 parser_status_by_family: asObject(m.parser_status_by_family),
                 law_sources: asArray(m.law_sources),
+                legal_evidence_cases: asArray(m.legal_evidence_cases),
+                legal_evidence_status: asString(m.legal_evidence_status),
+                legal_evidence_used: Boolean(m.legal_evidence_used),
                 grounding_sources: asArray(m.grounding_sources),
                 related_statuses_not_sources: asArray(m.related_statuses_not_sources),
                 legal_analysis: asObject(m.legal_analysis),
@@ -2359,6 +2362,38 @@ select:focus-visible {
                     zhHant: '僅供法律背景參考；所需材料與最終判斷需經 1345／HiKorea／主管出入境確認。'
                 });
                 rows.push(`<div class="source-row state-partial" data-row-kind="law-evidence"><strong>${escapeHtml(head)}</strong>: ${names}<div class="source-subnote">${escapeHtml(note)}</div></div>`);
+            }
+
+            // Supplementary case-law / adjudication evidence (관련 판례 / 관련 재결례).
+            // Separate cards from the statute "보조 법령 근거" row above, so the user
+            // can tell manuals/statutes apart from individual case decisions. Case
+            // law is contextual only and never guarantees an outcome.
+            const legalCases = Array.isArray(safe.legal_evidence_cases)
+                ? safe.legal_evidence_cases.filter((c) => c && (c.case_name || c.case_number)) : [];
+            if (legalCases.length) {
+                const caution = tt(lang, {
+                    ko: '주의: 개별 사건 판단이며 결과를 보장하지 않습니다.',
+                    en: 'Caution: these are individual case decisions and do not guarantee any outcome.',
+                    zh: '注意：这些是个案裁决，不保证任何结果。',
+                    zhHant: '注意：這些為個案裁決，不保證任何結果。'
+                });
+                const fmt = (c) => {
+                    const name = escapeHtml(String(c.case_name || c.retrieved_source_id || ''));
+                    const meta = [c.case_number, c.court_or_tribunal, c.decision_date]
+                        .map((x) => String(x || '').trim()).filter(Boolean).map(escapeHtml).join(' · ');
+                    return meta ? `${name} <span class="source-subnote">(${meta})</span>` : name;
+                };
+                const groups = [
+                    { kind: 'precedent', head: tt(lang, { ko: '관련 판례', en: 'Related case law', zh: '相关判例', zhHant: '相關判例' }),
+                      items: legalCases.filter((c) => c.source_type === 'precedent') },
+                    { kind: 'admin', head: tt(lang, { ko: '관련 재결례', en: 'Related administrative decisions', zh: '相关裁决例', zhHant: '相關裁決例' }),
+                      items: legalCases.filter((c) => c.source_type === 'administrative_appeal' || c.source_type === 'special_administrative_appeal') },
+                ];
+                groups.forEach((g) => {
+                    if (!g.items.length) return;
+                    const list = g.items.slice(0, 3).map(fmt).join(' / ');
+                    rows.push(`<div class="source-row state-partial" data-row-kind="case-law" data-case-kind="${g.kind}"><strong>${escapeHtml(g.head)}</strong>: ${list}<div class="source-subnote">${escapeHtml(caution)}</div></div>`);
+                });
             }
 
             if (!rows.length) return '';

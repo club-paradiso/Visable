@@ -29,6 +29,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
+from services import legal_evidence
 from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
@@ -439,6 +440,14 @@ class AskResponse(BaseModel):
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
     precedent_evidence_items: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
+    # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
+    # A SEPARATE field from manual/statute evidence so the UI distinguishes them.
+    # Case law is contextual only and never a primary source for current rules.
+    legal_evidence: Optional[Dict[str, Any]] = None
+    legal_evidence_status: str = "not_attempted"
+    legal_evidence_used: bool = False
+    legal_evidence_cases: List[Dict[str, Any]] = Field(default_factory=list)
+    legal_evidence_source_types: List[str] = Field(default_factory=list)
     legal_analysis: Optional[Dict[str, Any]] = None
     legal_analysis_exists: bool = False
     immigration_facts: Dict[str, Any] = Field(default_factory=dict)
@@ -3857,6 +3866,116 @@ async def get_available_packets_endpoint(
     }
 
 
+# Legal-issue dimensions for which supplementary case law / adjudication
+# decisions add genuine value (adjudicative / discretionary / remedy / overstay /
+# refugee / status-change / extension). Routine document/registration lookups are
+# intentionally excluded so case-law retrieval never fires for them.
+_CASE_LAW_WARRANTED_ISSUES = frozenset({
+    "denial_revocation_or_remedy", "constitutional_or_fundamental_rights",
+    "discretionary_or_ambiguous_interpretation", "overstay_or_risk",
+    "nationality_or_refugee_context", "status_change", "extension",
+    "activity_scope", "outside_status_activity",
+})
+# Issues where administrative-appeal (행정심판 재결례) is most relevant.
+_ADMIN_APPEAL_WARRANTED_ISSUES = frozenset({
+    "denial_revocation_or_remedy", "overstay_or_risk",
+    "discretionary_or_ambiguous_interpretation",
+})
+
+
+def _maybe_retrieve_legal_evidence(
+    prompt: str,
+    *,
+    answer_mode: str,
+    effective_mode: str,
+    grounding_cfg,
+    law_intent: bool,
+    law_evidence_pack: Optional[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Gated, supplementary 판례/재결례 retrieval for /api/ask.
+
+    SEPARATE from the manual/statute pipeline and SUPPLEMENTARY only — manuals,
+    statutes, and official guidance remain primary. It fires ONLY when:
+      * the answer mode is not Fast (case law is a depth feature; Fast stays snappy),
+      * law grounding is actually active (audit/enabled + credential),
+      * the question carries legal intent AND a case-law-warranted issue.
+    Never raises; any failure degrades to a skip/unavailable status so it can
+    never break Fast/Basic routing or the request.
+    """
+    meta: Dict[str, Any] = {
+        "legal_evidence": None,
+        "legal_evidence_status": "not_attempted",
+        "legal_evidence_used": False,
+        "legal_evidence_cases": [],
+        "legal_evidence_source_types": [],
+        "legal_evidence_prompt": "",
+    }
+    if answer_mode == "fast":
+        meta["legal_evidence_status"] = "skipped_fast_mode"
+        return meta
+    if effective_mode not in {"audit", "enabled"} or not law_intent:
+        return meta
+
+    issues = list((law_evidence_pack or {}).get("legal_issue_types") or [])
+    if not (set(issues) & _CASE_LAW_WARRANTED_ISSUES):
+        meta["legal_evidence_status"] = "not_warranted"
+        return meta
+
+    try:
+        from services.evidence_ontology import ISSUE_CONCEPT_KO
+
+        source_types = [legal_evidence.LegalEvidenceSourceType.PRECEDENT]
+        if set(issues) & _ADMIN_APPEAL_WARRANTED_ISSUES:
+            source_types.append(legal_evidence.LegalEvidenceSourceType.ADMINISTRATIVE_APPEAL)
+        issue_concepts = [ISSUE_CONCEPT_KO[i] for i in issues if i in ISSUE_CONCEPT_KO]
+        statute_refs = [
+            s.get("law_name", "") for s in (law_evidence_pack or {}).get("law_sources", []) if s.get("law_name")
+        ][:5]
+
+        result = legal_evidence.retrieve_legal_evidence(
+            prompt,
+            source_types=source_types,
+            issue_concepts=issue_concepts,
+            statute_refs=statute_refs,
+            config=dataclasses.replace(grounding_cfg, mode=effective_mode),
+            max_cases=3,
+        )
+    except Exception:  # pragma: no cover - case law must never break /api/ask
+        meta["legal_evidence_status"] = "error"
+        return meta
+
+    meta["legal_evidence"] = result.to_dict()
+    meta["legal_evidence_status"] = result.status
+    meta["legal_evidence_source_types"] = list(result.source_types)
+    meta["legal_evidence_cases"] = list(result.citations)
+    meta["legal_evidence_used"] = result.status == "available" and bool(result.cases)
+    if meta["legal_evidence_used"]:
+        meta["legal_evidence_prompt"] = _render_legal_evidence_prompt(result)
+    return meta
+
+
+def _render_legal_evidence_prompt(result) -> str:
+    """Compact, safe prompt rendering of the top case-law evidence: the directive
+    plus citations and the preferred chunks (판시사항/판결요지/참조조문 + top
+    reasoning). Never the raw full body; never invents anything."""
+    lines: List[str] = [legal_evidence.LEGAL_EVIDENCE_PROMPT_DIRECTIVE, ""]
+    for case in result.cases[:3]:
+        cite = case.citation()
+        head = (
+            f"- [{cite['source_type']}] {cite['case_name']} "
+            f"({cite['case_number']}, {cite['court_or_tribunal']}, {cite['decision_date']}) "
+            f"[id:{cite['retrieved_source_id']}]"
+        )
+        lines.append(head)
+        for chunk in case.chunks[:4]:
+            text = (chunk.text or "").strip()
+            if text:
+                lines.append(f"    · {chunk.label}: {text[:280]}")
+    lines.append("")
+    lines.append(legal_evidence.CASE_LAW_CAUTION_KO)
+    return "\n".join(lines)
+
+
 @app.post("/api/ask", response_model=AskResponse)
 async def ask(req: AskRequest) -> AskResponse:
     prompt = (req.message or req.query or req.question or "").strip()
@@ -4062,6 +4181,17 @@ async def ask(req: AskRequest) -> AskResponse:
     if law_evidence_pack and law_evidence_pack.get("citation_verification"):
         citation_verification = law_evidence_pack.get("citation_verification")
 
+    # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
+    # Gated + Fast-mode-skipped; never breaks the request (see helper).
+    legal_evidence_meta = _maybe_retrieve_legal_evidence(
+        prompt,
+        answer_mode=normalize_answer_mode(req.answer_mode),
+        effective_mode=effective_mode,
+        grounding_cfg=grounding_cfg,
+        law_intent=bool(intent.get("should_attempt")),
+        law_evidence_pack=law_evidence_pack,
+    )
+
     # Shared, non-secret grounding/law metadata reused across prompt and response paths.
     source_panel_meta = _derive_source_panel_metadata(
         law_evidence_pack=law_evidence_pack,
@@ -4133,6 +4263,12 @@ async def ask(req: AskRequest) -> AskResponse:
                 "Required framing: use the issue-based template; practical legal posture first; identify current status/activity/issue; explain backend legal_analysis; source basis later; concrete official-confirmation questions fourth; no final administrative determination.\n"
                 "Official-confirmation questions:\n" + confirmation_lines
             )
+
+    # Supplementary case-law / adjudication evidence: the safe directive + the
+    # preferred chunks for the top cases. Manuals/statutes stay primary; this is
+    # context only and is governed by the case-law safety directive.
+    if legal_evidence_meta.get("legal_evidence_prompt"):
+        final_prompt += "\n\n" + legal_evidence_meta["legal_evidence_prompt"]
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
@@ -4243,6 +4379,14 @@ async def ask(req: AskRequest) -> AskResponse:
         source_state=(law_evidence_pack or {}).get("analysis_mode", "") or law_grounding_status,
         direct_manual_sources=(law_evidence_pack or {}).get("direct_manual_sources", []),
         related_manual_sources=(law_evidence_pack or {}).get("related_manual_sources", []),
+        # Supplementary case-law / adjudication evidence (판례 / 재결례), kept as a
+        # SEPARATE response field from manual/statute evidence so the UI can
+        # distinguish them. Secret-free; OC/full bodies never appear.
+        legal_evidence=legal_evidence_meta["legal_evidence"],
+        legal_evidence_status=legal_evidence_meta["legal_evidence_status"],
+        legal_evidence_used=legal_evidence_meta["legal_evidence_used"],
+        legal_evidence_cases=legal_evidence_meta["legal_evidence_cases"],
+        legal_evidence_source_types=legal_evidence_meta["legal_evidence_source_types"],
         law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
         parser_status=(law_evidence_pack or {}).get("parser_status", ""),
         response_shape_hint=(law_evidence_pack or {}).get("response_shape_hint", ""),
