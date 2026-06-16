@@ -102,6 +102,87 @@ def _audit_oc_cfg(**over) -> GroundingConfig:
 
 
 # ---------------------------------------------------------------------------
+# Transport scheme fallback (https <-> http for law.go.kr)
+# ---------------------------------------------------------------------------
+class SchemeFallbackTests(unittest.TestCase):
+    HTTPS = "https://www.law.go.kr/DRF/lawSearch.do?OC=oc-x&target=prec&query=t"
+
+    def _sender(self, behavior):
+        calls = []
+
+        def sender(url, timeout):
+            calls.append(url)
+            return behavior(url)
+
+        return sender, calls
+
+    def test_https_network_failure_falls_back_to_http(self):
+        def behavior(url):
+            if url.startswith("https://"):
+                return lt.LawHttpResponse(ok=False, error_type="network")
+            return lt.LawHttpResponse(ok=True, status_code=200, text="{}")
+
+        sender, calls = self._sender(behavior)
+        resp = lt._transport_with_scheme_fallback(self.HTTPS, 8.0, sender)
+        self.assertTrue(resp.ok)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(calls[0].startswith("https://"))
+        self.assertTrue(calls[1].startswith("http://"))
+
+    def test_http_network_failure_falls_back_to_https(self):
+        http_url = "http://www.law.go.kr/DRF/lawSearch.do?OC=oc-x&target=prec"
+
+        def behavior(url):
+            if url.startswith("http://"):
+                return lt.LawHttpResponse(ok=False, error_type="network")
+            return lt.LawHttpResponse(ok=True, status_code=200, text="{}")
+
+        sender, calls = self._sender(behavior)
+        resp = lt._transport_with_scheme_fallback(http_url, 8.0, sender)
+        self.assertTrue(resp.ok)
+        self.assertEqual(len(calls), 2)
+        self.assertTrue(calls[1].startswith("https://"))
+
+    def test_http_403_does_not_swap_scheme(self):
+        # A real HTTP response (incl. 403 = OC / IP-allowlist) means the host was
+        # reached: never swap scheme (it would not help and would mask the cause).
+        def behavior(url):
+            return lt.LawHttpResponse(ok=False, status_code=403, error_type="http_error")
+
+        sender, calls = self._sender(behavior)
+        resp = lt._transport_with_scheme_fallback(self.HTTPS, 8.0, sender)
+        self.assertEqual(resp.error_type, "http_error")
+        self.assertEqual(resp.status_code, 403)
+        self.assertEqual(len(calls), 1, "no scheme swap on an HTTP response")
+
+    def test_non_law_host_network_failure_does_not_retry(self):
+        def behavior(url):
+            return lt.LawHttpResponse(ok=False, error_type="network")
+
+        sender, calls = self._sender(behavior)
+        resp = lt._transport_with_scheme_fallback("https://example.com/x", 8.0, sender)
+        self.assertFalse(resp.ok)
+        self.assertEqual(len(calls), 1)
+
+    def test_fallback_kept_only_if_alt_reaches_host(self):
+        # If BOTH schemes fail at the connection level, keep the original result.
+        def behavior(url):
+            return lt.LawHttpResponse(ok=False, error_type="network")
+
+        sender, calls = self._sender(behavior)
+        resp = lt._transport_with_scheme_fallback(self.HTTPS, 8.0, sender)
+        self.assertFalse(resp.ok)
+        self.assertEqual(resp.error_type, "network")
+        self.assertEqual(len(calls), 2)
+
+    def test_is_law_host_matches_law_go_kr_only(self):
+        self.assertTrue(lt._is_law_host("https://www.law.go.kr/DRF/x"))
+        self.assertTrue(lt._is_law_host("http://law.go.kr/x"))
+        self.assertFalse(lt._is_law_host("https://evil-law.go.kr.example.com/x"))
+        self.assertFalse(lt._is_law_host("https://example.com/x"))
+
+
+# ---------------------------------------------------------------------------
 # Part A — LAW_API_OC config / security
 # ---------------------------------------------------------------------------
 class LawApiOcConfigTests(unittest.TestCase):

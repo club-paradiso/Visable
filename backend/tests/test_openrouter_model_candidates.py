@@ -698,6 +698,32 @@ class HealthCandidateExposureTests(unittest.TestCase):
         self.assertIn("MODEL_CANDIDATES_RANDOM_ROUTING", llm["candidate_warnings"])
         self.assertIn("PROVIDER_FAMILY_FALLBACK_ENABLED", llm["candidate_warnings"])
 
+    def test_health_surfaces_env_override_of_answer_model(self):
+        # A deploy env var pinning an old model (the "answer model didn't update
+        # after merge" case) is made visible: code_default_model differs from the
+        # active primary_model and an override warning is flagged.
+        pb = _pb()
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": "nvidia/nemotron-3-ultra-550b-a55b:free"}, clear=False), \
+                patch.object(pb, "OPENROUTER_MODEL", "nvidia/nemotron-3-ultra-550b-a55b:free"):
+            client = _client(pb)
+            llm = client.get("/health").json()["llm"]
+        self.assertEqual(llm["primary_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(llm["code_default_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertTrue(llm["model_env_override"])
+        self.assertIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
+
+    def test_health_no_override_warning_when_env_unset(self):
+        pb = _pb()
+        with patch.dict(os.environ, {}, clear=False):
+            os.environ.pop("OPENROUTER_MODEL", None)
+            os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
+            with patch.object(pb, "OPENROUTER_MODEL", pb._DEFAULT_OPENROUTER_MODEL):
+                client = _client(pb)
+                llm = client.get("/health").json()["llm"]
+        self.assertFalse(llm["model_env_override"])
+        self.assertNotIn("OPENROUTER_MODEL_ENV_OVERRIDE", llm["candidate_warnings"])
+        self.assertEqual(llm["code_default_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
+
 
 # ---------------------------------------------------------------------------
 # Frontend / i18n provider error UX
