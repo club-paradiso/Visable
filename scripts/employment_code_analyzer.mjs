@@ -107,15 +107,39 @@ function matchConcepts(normalizedText, tokenSet, concepts) {
     let hit = null;
     for (const s of surfaces) {
       if (!s) continue;
-      // Multi-word surfaces: substring match. Single tokens: exact token match
-      // OR substring (so "카페에서" still matches surface "카페").
+      // Multi-word surfaces: substring match. Single tokens: exact token match,
+      // with substring allowed only for length>=3 surfaces. Short 2-char surfaces
+      // (모델, 배우, 가수, 타투 …) must hit a real token so they don't false-match
+      // inside longer words (모델링, 배우자, …) — the tokenizer already strips
+      // Korean particles so "카페에서" still yields the token "카페".
       if (s.includes(' ')) {
         if (normalizedText.includes(s)) { hit = s; break; }
-      } else if (tokenSet.has(s) || normalizedText.includes(s)) {
+      } else if (tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s))) {
         hit = s; break;
       }
     }
     if (hit) matched.push({ concept, matchedSurface: hit });
+  }
+  return matched;
+}
+
+/**
+ * Match umbrella / ambiguous inputs (data/employment/ambiguous_inputs.json).
+ * These are vague or non-existent-as-a-single-code terms (아이돌, 댄서, 연습생,
+ * 타투이스트, 반영구화장, 알바, 회사원, 프리랜서, …) that must be DECOMPOSED into
+ * real sub-roles rather than mapped to one invented code.
+ */
+function matchAmbiguous(normalizedText, tokenSet, entries) {
+  const matched = [];
+  for (const entry of entries || []) {
+    const surfaces = (Array.isArray(entry.surface) ? entry.surface : []).map(normalize).filter(Boolean);
+    let hit = null;
+    for (const s of surfaces) {
+      if (!s) continue;
+      if (s.includes(' ')) { if (normalizedText.includes(s)) { hit = s; break; } }
+      else if (tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s))) { hit = s; break; }
+    }
+    if (hit) matched.push({ entry, matchedSurface: hit });
   }
   return matched;
 }
@@ -175,12 +199,52 @@ export function extractEntities(input, lex) {
     ? uniq(workplaceMatches.map((m) => m.concept.business_label_ko || m.concept.label_ko)).join(' / ')
     : null;
 
+  // --- richer entities (entertainment / tattoo / self-employment aware) ---
+  // employer_type from a matched workplace (or its explicit employer_type field).
+  const employerType = workplaceMatches.length
+    ? uniq(workplaceMatches.map((m) => m.concept.employer_type || m.concept.id)).join(' / ')
+    : (empMatches.some((m) => m.concept.owner) ? 'self-employed' : null);
+
+  // income_status: detected from explicit unpaid/paid cues in the text.
+  let incomeStatus = 'unknown';
+  if (/무급|무보수|소득\s*없|돈\s*안|unpaid|no\s*pay|volunteer|봉사/.test(normalizedText)) incomeStatus = 'unpaid';
+  else if (/유급|월급|급여|페이|시급|일당|보수|소득\s*있|paid|salary|wage/.test(normalizedText)) incomeStatus = 'paid';
+
+  // performance_type / role_status / legal_sensitivity from concept metadata.
+  const performanceType = uniq(matches.map((m) => m.concept.performance_type)).join(' / ') || null;
+  const roleStatusFromConcept = uniq([
+    ...empMatches.map((m) => m.concept.role_status),
+    ...matches.map((m) => m.concept.role_status)
+  ]);
+  let roleStatus = roleStatusFromConcept[0] || null;
+  if (!roleStatus) {
+    if (empMatches.some((m) => m.concept.owner)) roleStatus = 'owner';
+    else if (empMatches.some((m) => m.concept.freelancer)) roleStatus = 'freelancer';
+    else if (empMatches.some((m) => m.concept.trainee)) roleStatus = 'trainee';
+  }
+  const legalSensitivity = uniq(matches.map((m) => m.concept.legal_sensitivity));
+
+  // Confidence cap (broad/indirect mappings, e.g. tattoo, idol umbrella) and
+  // per-track candidate caveats carried by the matched concepts.
+  const caps = uniq(matches.map((m) => m.concept.confidence_cap));
+  const confidenceCap = caps.includes('low') ? 'low' : (caps.includes('medium') ? 'medium' : null);
+  const candidateCaveats = { occupation: [], industry: [] };
+  matches.forEach((m) => {
+    const cav = m.concept.candidate_caveat;
+    if (!cav) return;
+    const tracks = m.concept.type === 'workplace' ? ['industry'] : (m.concept.type === 'role' ? ['occupation'] : ['occupation', 'industry']);
+    tracks.forEach((t) => candidateCaveats[t].push(cav));
+  });
+  candidateCaveats.occupation = uniq(candidateCaveats.occupation);
+  candidateCaveats.industry = uniq(candidateCaveats.industry);
+
   // Ambiguity flags drive the follow-up questions later.
   const ambiguityFlags = [];
   if (workplaceMatches.length && !roleMatches.length) ambiguityFlags.push('workplace_without_role');
   if (roleMatches.length && !workplaceMatches.length) ambiguityFlags.push('role_without_workplace');
   if (!roleMatches.length && !workplaceMatches.length) ambiguityFlags.push('underspecified');
   if (empMatches.some((m) => m.concept.owner)) ambiguityFlags.push('owner_or_self_employed');
+  if (roleStatus === 'trainee' || empMatches.some((m) => m.concept.trainee)) ambiguityFlags.push('trainee_status_unclear');
 
   return {
     normalizedInput: normalizedText,
@@ -190,7 +254,14 @@ export function extractEntities(input, lex) {
     businessActivity,
     employmentType,
     employmentTypeLabel,
+    employerType,
+    incomeStatus,
+    performanceType,
+    roleStatus,
+    legalSensitivity,
     visaStatus,
+    confidenceCap,
+    candidateCaveats,
     occupationTerms: [...occupationTerms].filter(Boolean),
     industryTerms: [...industryTerms].filter(Boolean),
     matchedConcepts: matches.map((m) => ({ id: m.concept.id, type: m.concept.type, surface: m.matchedSurface })),
@@ -288,6 +359,13 @@ function confidenceLabel(score, topScore) {
   return 'low';
 }
 
+const CONF_ORDER = { low: 0, medium: 1, high: 2 };
+/** Never let a candidate read higher than the cap imposed by a broad/indirect concept. */
+function applyCap(confidence, cap) {
+  if (!cap) return confidence;
+  return CONF_ORDER[confidence] <= CONF_ORDER[cap] ? confidence : cap;
+}
+
 function buildReason(entry, matchedTerms, classificationLabel) {
   const lvl = LEVEL_LABEL[entry.level] || entry.level || '';
   const leafTag = entry.isLeaf ? '신고용 세부코드' : '상위 분류';
@@ -296,15 +374,27 @@ function buildReason(entry, matchedTerms, classificationLabel) {
   return `${classificationLabel} ${lvl} · ${leafTag} — ${termPart}`;
 }
 
-function toCandidate(entry, scored, classificationType, sourceMeta, topScore) {
+function buildReasonEn(entry, matchedTerms, classificationLabel) {
+  const lvl = entry.level || '';
+  const leafTag = entry.isLeaf ? 'reporting-level code' : 'parent category';
+  const terms = matchedTerms.filter((t) => t && t !== entry.code).slice(0, 4);
+  const termPart = terms.length ? `matched terms: ${terms.join(', ')}` : 'code/name match';
+  return `${classificationLabel} ${lvl} · ${leafTag} — ${termPart}`;
+}
+
+function toCandidate(entry, scored, classificationType, sourceMeta, topScore, opts = {}) {
   const r = entry.row;
-  const classificationLabel = classificationType === 'occupation' ? '직종(KSCO8)' : '업종(KSIC11)';
-  const confidence = confidenceLabel(scored.score, topScore);
+  const officialName = r.name_ko || r.name_en || '';
+  let confidence = applyCap(confidenceLabel(scored.score, topScore), opts.confidenceCap);
+  const caveats = [...(opts.caveats || [])];
+  const reasonKo = buildReason(entry, scored.matchedTerms, classificationType === 'occupation' ? '직종' : '업종');
   const candidate = {
     code: entry.code,
-    name: r.name_ko || r.name_en || '',
+    name: officialName,
+    officialName, // spec alias
     nameEn: r.name_en || null,
     classification: classificationType, // 'occupation' | 'industry'
+    classificationType, // spec alias
     level: entry.level,
     levelLabel: LEVEL_LABEL[entry.level] || entry.level,
     isReportingLeaf: entry.isLeaf,
@@ -312,7 +402,10 @@ function toCandidate(entry, scored, classificationType, sourceMeta, topScore) {
     score: scored.score,
     confidence,
     matchedTerms: scored.matchedTerms,
-    reason: buildReason(entry, scored.matchedTerms, classificationType === 'occupation' ? '직종' : '업종'),
+    reason: reasonKo,
+    reasonKo,
+    reasonEn: buildReasonEn(entry, scored.matchedTerms, classificationType === 'occupation' ? 'Occupation(KSCO8)' : 'Industry(KSIC11)'),
+    caveats,
     source: {
       classification: r.source_classification || (sourceMeta && sourceMeta.classification) || null,
       version: r.source_version || (sourceMeta && sourceMeta.short_name) || null,
@@ -343,15 +436,25 @@ export function searchTrack(index, classificationType, rawQuery, terms, options 
     return a.entry.code.length - b.entry.code.length;
   });
   const topScore = scoredRows.length ? scoredRows[0].scored.score : 0;
-  return scoredRows.slice(0, limit).map((s) => toCandidate(s.entry, s.scored, classificationType, sourceMeta, topScore));
+  return scoredRows.slice(0, limit).map((s) => toCandidate(s.entry, s.scored, classificationType, sourceMeta, topScore, {
+    confidenceCap: options.confidenceCap || null,
+    caveats: options.caveats || []
+  }));
 }
 
 /* --------------------------------------------------------------------------
  * 5. Ambiguity follow-up questions
  * ------------------------------------------------------------------------ */
 
-function buildAmbiguity(entities, occCandidates, indCandidates, lex) {
+function buildAmbiguity(entities, occCandidates, indCandidates, lex, ambiguousMatches) {
   const questions = [];
+
+  // Umbrella / decomposition terms (아이돌, 댄서, 타투이스트, 반영구화장, 알바, ...):
+  // their question + chips come straight from data/employment/ambiguous_inputs.json.
+  (ambiguousMatches || []).forEach((m) => {
+    const e = m.entry;
+    if (e.question_ko) questions.push({ flag: e.id, question: e.question_ko, chips: e.chips || [] });
+  });
 
   // Workplace given but no concrete role -> ask what they actually do there.
   entities.workplaceMatches.forEach((m) => {
@@ -406,6 +509,31 @@ function buildAmbiguity(entities, occCandidates, indCandidates, lex) {
   return questions;
 }
 
+// Follow-up chips help the user refine without typing. General chips always apply;
+// domain chips appear when the input touches entertainment or tattoo work.
+const GENERAL_CHIPS = [
+  '직접 하는 일을 선택할게요', '근무 장소를 선택할게요', '회사/가게가 하는 일을 선택할게요',
+  '직원이에요', '프리랜서예요', '사업주예요', '연습생이에요', '소득이 있어요', '소득이 없어요'
+];
+const ENTERTAINMENT_CHIPS = [
+  '공연자로 활동해요', '노래를 해요', '춤을 춰요', '안무를 만들어요', '댄스를 가르쳐요',
+  '백댄서예요', '연습생이에요', '소속사 아티스트예요', '소속사 직원이에요', '공연단체 소속이에요'
+];
+const TATTOO_CHIPS = [
+  '타투 시술을 해요', '반영구화장을 해요', '눈썹문신을 해요', '디자인만 해요',
+  '타투샵 직원이에요', '타투샵을 운영해요', '강의/교육을 해요'
+];
+function buildFollowUpChips(entities, ambiguousMatches) {
+  const out = [];
+  const sens = entities.legalSensitivity || [];
+  // Chips explicitly attached to the matched umbrella entries come first.
+  (ambiguousMatches || []).forEach((m) => (m.entry.chips || []).forEach((c) => out.push(c)));
+  if (sens.includes('entertainment')) ENTERTAINMENT_CHIPS.forEach((c) => out.push(c));
+  if (sens.includes('tattoo')) TATTOO_CHIPS.forEach((c) => out.push(c));
+  GENERAL_CHIPS.forEach((c) => out.push(c));
+  return [...new Set(out)];
+}
+
 /* --------------------------------------------------------------------------
  * 6. Warnings + source notes
  * ------------------------------------------------------------------------ */
@@ -437,6 +565,19 @@ function buildWarnings(input, entities, occCandidates, indCandidates, context) {
   }
   if (entities.empMatches.some((m) => m.concept.owner) || entities.ambiguityFlags.includes('owner_or_self_employed')) {
     warnings.push('자영업/사업주는 직종을 보통 관리자·경영으로, 업종은 사업자등록상 업태·종목 기준으로 신고합니다.');
+  }
+
+  const sens = entities.legalSensitivity || [];
+  // Entertainment / performance caution.
+  if (sens.includes('entertainment')) {
+    warnings.push('연예·공연 활동은 소속기관, 계약형태, 보수 발생 여부, 실제 활동내용, 체류자격별 활동범위에 따라 별도 검토가 필요합니다. 직종·업종 후보는 취업 가능 여부 판단이 아닙니다.');
+    warnings.push('‘아이돌’ 등은 공식 표준분류에 단일 항목이 없어 실제 활동(가수/무용/연기/방송 등)으로 나눠 후보를 제시합니다. 연습생·훈련 과정은 유급 취업 여부 자체가 별도 확인 대상입니다.');
+  }
+  // Tattoo caution — legally sensitive (문신사법: 2025-09-25 국회 통과, 2027-10-29 시행 예정).
+  if (sens.includes('tattoo')) {
+    warnings.push('문신 관련 활동은 문신사법 시행일, 면허 요건, 체류자격, 고용형태, 실제 시술 여부에 따라 별도 검토가 필요합니다. 코드가 있다고 해서 해당 활동이 곧바로 허용되는 것은 아닙니다.');
+    warnings.push('참고: 문신사법은 2025-09-25 국회 본회의를 통과했고 2027-10-29 시행 예정입니다(문신·반영구화장 포함, 국가자격 면허 필요). 시행 전·후 요건과 외국인 가능 여부는 국가법령정보센터(law.go.kr)·관할 출입국에서 반드시 확인하세요.');
+    warnings.push('현재 표준직업/표준산업분류에는 ‘문신/타투’ 전용 항목이 없어 미용·개인서비스 등 넓은 분류로 간접 매칭됩니다(신뢰도 낮음). 실제 신고 코드는 HiKorea에서 확인하세요.');
   }
   return warnings;
 }
@@ -475,6 +616,28 @@ function buildSourceNotes(sources, context) {
   return notes;
 }
 
+// Legal source notes appended only when the input is legally sensitive (tattoo /
+// entertainment), so users see the governing-law provenance, not just the
+// classification provenance.
+function buildLegalNotes(legalSources, sensitivity) {
+  const out = [];
+  (legalSources || []).forEach((ls) => {
+    if (!ls.applies_to || ls.applies_to.some((s) => (sensitivity || []).includes(s))) {
+      out.push({
+        track: 'legal',
+        classification: ls.source_name,
+        version: ls.status || null,
+        effectiveDate: ls.effective_date || null,
+        sourceName: ls.source_name,
+        sourceRef: ls.source_reference || ls.source_url || null,
+        verified: ls.verified === true,
+        notes: ls.notes || null
+      });
+    }
+  });
+  return out;
+}
+
 /* --------------------------------------------------------------------------
  * 7. Public API
  * ------------------------------------------------------------------------ */
@@ -492,45 +655,91 @@ export function createEmploymentAnalyzer(deps = {}) {
   const lexicon = deps.lexicon || { ko: { concepts: [] }, en: { concepts: [] } };
   const sources = deps.sources || null;
   const context = deps.context || (dataset && dataset.employment_reporting_context) || null;
+  const ambiguousEntries = (deps.ambiguous && Array.isArray(deps.ambiguous.entries)) ? deps.ambiguous.entries : [];
+  const legalSources = deps.legalSources || (sources && sources.legal_sources) || [];
   const index = buildIndex(dataset);
   const occMeta = dataset && dataset.occupation_source;
   const indMeta = dataset && dataset.industry_source;
+
+  const uniq = (arr) => [...new Set(arr.filter(Boolean))];
 
   function analyze(input) {
     const safeInput = typeof input === 'string' ? { text: input } : (input || { text: '' });
     const entities = extractEntities(safeInput, lexicon);
 
-    const occupationCandidates = searchTrack(index, 'occupation', safeInput.text, entities.occupationTerms, {
-      limit: 5, sourceMeta: occMeta
+    // Umbrella / ambiguous inputs (아이돌, 댄서, 타투이스트, 반영구화장, 알바, ...):
+    // decompose into real sub-role terms, never a single invented code, and carry
+    // their legal sensitivity + confidence cap into retrieval.
+    const tokenSet = new Set(tokenize(safeInput.text));
+    const ambiguousMatches = matchAmbiguous(entities.normalizedInput, tokenSet, ambiguousEntries);
+    let occTerms = entities.occupationTerms.slice();
+    let indTerms = entities.industryTerms.slice();
+    ambiguousMatches.forEach((m) => {
+      const dec = m.entry.decompose || {};
+      (dec.occupation_terms || []).forEach((t) => occTerms.push(normalize(t)));
+      (dec.industry_terms || []).forEach((t) => indTerms.push(normalize(t)));
     });
-    const industryCandidates = searchTrack(index, 'industry', safeInput.text, entities.industryTerms, {
-      limit: 5, sourceMeta: indMeta
+    occTerms = uniq(occTerms);
+    indTerms = uniq(indTerms);
+
+    // Merge sensitivity + confidence cap from concepts AND ambiguous entries.
+    const legalSensitivity = uniq([
+      ...(entities.legalSensitivity || []),
+      ...ambiguousMatches.map((m) => m.entry.legal_sensitivity)
+    ]);
+    entities.legalSensitivity = legalSensitivity;
+    const caps = uniq([entities.confidenceCap, ...ambiguousMatches.map((m) => m.entry.confidence_cap)]);
+    const confidenceCap = caps.includes('low') ? 'low' : (caps.includes('medium') ? 'medium' : null);
+    const occCaveats = uniq([
+      ...entities.candidateCaveats.occupation,
+      ...ambiguousMatches.map((m) => m.entry.candidate_caveat_occupation || m.entry.candidate_caveat)
+    ]);
+    const indCaveats = uniq([
+      ...entities.candidateCaveats.industry,
+      ...ambiguousMatches.map((m) => m.entry.candidate_caveat_industry || m.entry.candidate_caveat)
+    ]);
+
+    const occupationCandidates = searchTrack(index, 'occupation', safeInput.text, occTerms, {
+      limit: 5, sourceMeta: occMeta, confidenceCap, caveats: occCaveats
+    });
+    const industryCandidates = searchTrack(index, 'industry', safeInput.text, indTerms, {
+      limit: 5, sourceMeta: indMeta, confidenceCap, caveats: indCaveats
     });
 
-    const ambiguityQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon);
+    const ambiguityQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches);
+    const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
-    const sourceNotes = buildSourceNotes(sources || { occupation: occMeta, industry: indMeta }, context);
+    const sourceNotes = [
+      ...buildSourceNotes(sources || { occupation: occMeta, industry: indMeta }, context),
+      ...buildLegalNotes(legalSources, legalSensitivity)
+    ];
 
     return {
       normalizedInput: entities.normalizedInput,
       extracted: {
+        language: entities.language,
         jobRole: entities.jobRole || undefined,
         workplaceType: entities.workplaceType || undefined,
         businessActivity: entities.businessActivity || undefined,
         employmentType: entities.employmentType || undefined,
         employmentTypeLabel: entities.employmentTypeLabel || undefined,
-        visaStatus: entities.visaStatus || undefined,
-        language: entities.language
+        employerType: entities.employerType || undefined,
+        incomeStatus: entities.incomeStatus || undefined,
+        performanceType: entities.performanceType || undefined,
+        roleStatus: entities.roleStatus || undefined,
+        legalSensitivity: legalSensitivity.length ? legalSensitivity : undefined,
+        visaStatus: entities.visaStatus || undefined
       },
       occupationCandidates,
       industryCandidates,
       ambiguityQuestions,
+      followUpChips,
       ambiguityFlags: entities.ambiguityFlags,
       matchedConcepts: entities.matchedConcepts,
       // Per-track expanded search terms — exposed so a host UI can feed them into
       // its own scorer (entity-aware retrieval) instead of re-deriving them.
-      occupationTerms: entities.occupationTerms,
-      industryTerms: entities.industryTerms,
+      occupationTerms: occTerms,
+      industryTerms: indTerms,
       warnings,
       sourceNotes
     };

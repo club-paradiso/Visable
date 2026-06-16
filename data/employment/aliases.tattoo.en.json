@@ -1,0 +1,13 @@
+{
+  "schema_version": "2026-06-employment-analyzer-aliases",
+  "locale": "en",
+  "domain": "tattoo",
+  "kind": "occupation-and-industry concept lexicon (tattoo / cosmetic tattoo — legally sensitive)",
+  "important": "There is NO dedicated standard occupation/industry code for tattoo/문신 work. All candidates are broad indirect matches (beauty / personal services) capped at low confidence. No codes are invented; legality is not asserted. See the Tattooist Act (문신사법): passed 2025-09-25, effective 2027-10-29.",
+  "concepts": [
+    { "id": "tattoo_artist_en", "type": "role", "surface": ["tattoo artist", "tattooist", "tattooer", "body art worker", "tattoo worker"], "label_ko": "타투이스트 / 문신사 (no dedicated code → beauty/personal-service indirect match)", "occupation_terms": ["기타 미용 관련 서비스", "미용 관련 서비스", "미용사"], "industry_terms": [], "legal_sensitivity": "tattoo", "confidence_cap": "low", "candidate_caveat": "No dedicated standard-occupation code for tattoo work; matched indirectly to broad beauty/personal-service categories (low confidence). Tattooist Act timing, licensing, visa status and employment type require separate legal review." },
+    { "id": "cosmetic_tattoo_en", "type": "role", "surface": ["permanent makeup artist", "cosmetic tattoo artist", "eyebrow tattoo", "semi-permanent makeup", "scalp micropigmentation", "smp artist"], "label_ko": "반영구화장 / 눈썹문신 (beauty vs tattoo boundary — indirect match)", "occupation_terms": ["메이크업 아티스트", "분장사", "기타 미용 관련 서비스"], "industry_terms": [], "legal_sensitivity": "tattoo", "confidence_cap": "low", "candidate_caveat": "Cosmetic tattoo sits on the beauty/tattoo boundary with no dedicated code; matched indirectly to makeup/other-beauty. The Tattooist Act counts cosmetic tattoo as a tattoo act — confirm timing, licensing and visa eligibility." },
+
+    { "id": "tattoo_shop_en", "type": "workplace", "surface": ["tattoo shop", "tattoo studio", "tattoo parlor", "tattoo parlour"], "label_ko": "타투샵 / 문신샵 (no dedicated industry code → other beauty/personal service)", "business_label_ko": "기타 미용업 / 그 외 기타 개인 서비스업(간접 매칭)", "employer_type": "tattoo shop", "industry_terms": ["기타 미용업", "그 외 기타 개인 서비스", "미용"], "occupation_terms": [], "legal_sensitivity": "tattoo", "confidence_cap": "low", "candidate_caveat": "No dedicated standard-industry code for a tattoo shop; matched indirectly to ‘other beauty / other personal services’. Confirm via HiKorea industry search and the business-registration category.", "ambiguous_roles": ["tattoo procedure", "cosmetic tattoo", "design only", "employee", "owner/operator", "instructor"] }
+  ]
+}
