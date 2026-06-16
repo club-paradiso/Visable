@@ -547,20 +547,25 @@ class WaymakerIntegrationTests(unittest.TestCase):
         # No OC leaks anywhere in the response.
         self.assertNotIn("oc-", resp.text.lower().replace("or-sentinel", ""))
 
-    def test_fast_mode_skips_case_law_retrieval(self):
+    def test_fast_mode_also_retrieves_case_law(self):
+        # Fast mode now performs real-time case-law lookup too (lighter budget),
+        # so the retrieval IS called and the evidence is surfaced.
         pb = _pb()
-        calls = {"n": 0}
+        calls = {"n": 0, "max_cases": None}
 
-        def tripwire(*a, **k):
+        def fake(*a, **k):
             calls["n"] += 1
+            calls["max_cases"] = k.get("max_cases")
             return _fake_case_law_result()
 
-        resp = self._ask(pb, answer_mode="fast", retrieve_fake=tripwire)
+        resp = self._ask(pb, answer_mode="fast", retrieve_fake=fake)
         self.assertEqual(resp.status_code, 200, resp.text)
         body = resp.json()
-        self.assertEqual(body["legal_evidence_status"], "skipped_fast_mode")
-        self.assertFalse(body["legal_evidence_used"])
-        self.assertEqual(calls["n"], 0, "case law must NOT be retrieved in Fast mode")
+        self.assertEqual(body["legal_evidence_status"], "available")
+        self.assertTrue(body["legal_evidence_used"])
+        self.assertEqual(calls["n"], 1, "case law MUST be retrieved in Fast mode")
+        # Fast mode uses the lighter budget.
+        self.assertEqual(calls["max_cases"], 2)
 
     def test_missing_oc_degrades_without_breaking_request(self):
         pb = _pb()

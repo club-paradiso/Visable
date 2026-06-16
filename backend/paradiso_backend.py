@@ -3914,8 +3914,8 @@ def _maybe_retrieve_legal_evidence(
     """Gated, supplementary 판례/재결례 retrieval for /api/ask.
 
     SEPARATE from the manual/statute pipeline and SUPPLEMENTARY only — manuals,
-    statutes, and official guidance remain primary. It fires ONLY when:
-      * the answer mode is not Fast (case law is a depth feature; Fast stays snappy),
+    statutes, and official guidance remain primary. It fires (in BOTH Fast and
+    Basic modes; Fast uses a lighter case budget) when:
       * law grounding is actually active (audit/enabled + credential),
       * the question carries legal intent AND a case-law-warranted issue.
     Never raises; any failure degrades to a skip/unavailable status so it can
@@ -3929,9 +3929,6 @@ def _maybe_retrieve_legal_evidence(
         "legal_evidence_source_types": [],
         "legal_evidence_prompt": "",
     }
-    if answer_mode == "fast":
-        meta["legal_evidence_status"] = "skipped_fast_mode"
-        return meta
     if effective_mode not in {"audit", "enabled"} or not law_intent:
         return meta
 
@@ -3951,13 +3948,17 @@ def _maybe_retrieve_legal_evidence(
             s.get("law_name", "") for s in (law_evidence_pack or {}).get("law_sources", []) if s.get("law_name")
         ][:5]
 
+        # Real-time case-law lookup runs in BOTH Fast and Basic modes. Fast keeps a
+        # lighter budget (fewer cases) so it stays snappy while still surfacing live
+        # 판례/재결례 citations; the in-memory cache makes repeat queries cheap.
+        max_cases = 2 if answer_mode == "fast" else 3
         result = legal_evidence.retrieve_legal_evidence(
             prompt,
             source_types=source_types,
             issue_concepts=issue_concepts,
             statute_refs=statute_refs,
             config=dataclasses.replace(grounding_cfg, mode=effective_mode),
-            max_cases=3,
+            max_cases=max_cases,
         )
     except Exception:  # pragma: no cover - case law must never break /api/ask
         meta["legal_evidence_status"] = "error"
