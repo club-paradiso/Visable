@@ -2283,9 +2283,37 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .source-limitation-body { padding: 0 0.6rem 0.55rem; font-size: 0.72rem; color: var(--t3); line-height: 1.52; word-break: keep-all; overflow-wrap: anywhere; }
 .source-limitation-body p { margin: 0.35rem 0 0; }
 .source-limitation-body ul { margin: 0.35rem 0 0; padding-left: 1rem; }
+/* --- 사증발급 시나리오 안내 팝업 (세부코드/업종/국적별 경로 분기) -------------
+   친절한 단일 질문형 선택 UI: 큰 버튼으로 본인 상황을 고르면 해당 시나리오의
+   서류·절차만 표시. E-8~E-10 등 단순노무 사용자를 위해 아이콘 + 큰 글씨 + 한
+   번에 하나씩 고르는 흐름으로 설계(가독성·인지부담 최소화). 기존 모달/포커스/
+   ESC 인프라(openModal/closeModal)를 재사용 — 새 동작 모델을 만들지 않음. */
+.issuance-scenario-guide { display: flex; flex-direction: column; gap: 0.6rem; }
+.issuance-guide-question { margin: 0; font-size: 0.94rem; font-weight: 900; color: var(--t1); line-height: 1.45; word-break: keep-all; }
+.issuance-guide-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+.issuance-guide-trigger { display: inline-flex; align-items: center; gap: 0.5rem; flex: 1 1 auto; min-width: 0; padding: 0.72rem 0.9rem; border-radius: 12px; border: 2px solid color-mix(in srgb, var(--ac) 40%, var(--bd2)); background: color-mix(in srgb, var(--ac) 9%, var(--bg1)); color: var(--ac); font-size: 0.94rem; font-weight: 900; cursor: pointer; transition: background 0.15s ease, box-shadow 0.15s ease; text-align: left; }
+.issuance-guide-trigger:hover, .issuance-guide-trigger:focus-visible { background: color-mix(in srgb, var(--ac) 16%, var(--bg1)); outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 20%, transparent); }
+.issuance-guide-trigger-icon { font-size: 1.15rem; flex: 0 0 auto; }
+.issuance-guide-trigger-label { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.issuance-guide-trigger-caret { flex: 0 0 auto; font-size: 0.78rem; }
+.issuance-guide-clear { flex: 0 0 auto; padding: 0.55rem 0.72rem; border-radius: 10px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); font-size: 0.78rem; font-weight: 800; cursor: pointer; }
+.issuance-guide-empty-hint { margin: 0; font-size: 0.78rem; color: var(--t3); line-height: 1.5; word-break: keep-all; }
+/* 카드는 선택 전 모두 숨김 → 선택한 시나리오의 카드만 표시(인지부담 최소화). */
+.issuance-needs-pick .issuance-mode-card-wrap { display: none; }
+.issuance-needs-pick.has-selection .issuance-mode-card-wrap.is-selected { display: block; }
+.issuance-needs-pick.has-selection .issuance-guide-empty-hint { display: none; }
+/* 선택된 시나리오 카드 제목의 친절한 이모지 아이콘(아이콘이 있으면 accent pip 생략). */
+.issuance-card-icon { font-size: 1.05rem; flex: 0 0 auto; }
+.issuance-card-title:has(.issuance-card-icon)::before { display: none; }
+/* 팝업(모달) 안의 큰 선택 버튼 — 큰 아이콘 + 큰 글씨 + 한 줄 설명. */
+.issuance-guide-choice { width: 100%; }
+.issuance-guide-choice-icon { font-size: 1.7rem; flex: 0 0 auto; width: 2.3rem; text-align: center; line-height: 1.1; }
+.issuance-guide-choice-label { font-size: 0.98rem; font-weight: 900; }
 @media (max-width: 640px) {
     .issuance-scenario-grid { grid-template-columns: 1fr; }
     .issuance-card-head { flex-direction: column; }
+    .issuance-guide-trigger { font-size: 0.9rem; }
+    .issuance-guide-choice-icon { font-size: 1.5rem; width: 2rem; }
 }
 
 /* Source-evidence collapsible panel */
@@ -13660,6 +13688,20 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
+<!-- 사증발급 시나리오 안내 팝업 — 세부코드/업종/선박종류별 경로를 큰 버튼으로 선택 -->
+<div class="modal-overlay" id="issuanceGuideOverlay" role="dialog" aria-modal="true" aria-labelledby="issuanceGuideTitle" aria-hidden="true">
+    <div class="modal-box" style="max-width: 560px;">
+        <div class="modal-header">
+            <h2 id="issuanceGuideTitle" class="modal-title">사증발급 시나리오 선택</h2>
+            <button type="button" class="modal-close" data-action="close-issuance-guide" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+            <p id="issuanceGuideModalCopy" class="text-desc"></p>
+            <div id="issuanceGuideChoices" class="scenario-picker-choice-list issuance-guide-choice-list" role="list" aria-live="polite"></div>
+        </div>
+    </div>
+</div>
+
 <div class="modal-overlay" id="faqModalOverlay" role="dialog" aria-modal="true" aria-labelledby="faqModalTitle">
     <div class="modal-box" style="max-width: 600px;">
         <div class="modal-header">
@@ -17764,14 +17806,23 @@ function resetScenarioChecklist(button) {
 function renderProcedurePanel(v, proc, keywords, isActive) {
     const hasVariants = !!(proc.variants && proc.variants.length);
     const totalDocCount = countRenderableDocs(proc.docs);
-    const docsHtml = renderProcedureDocGroups(proc.docs, keywords, v.code);
+    let docsHtml = renderProcedureDocGroups(proc.docs, keywords, v.code);
     const variantsHtml = renderProcedureVariants(v, proc, keywords, proc.docs);
+    // 사증발급 시나리오 안내(팝업)를 쓰는 자격(E-8·E-9·E-10 등)은 팝업이 서류의
+    // 단일 출처가 되도록 상단 기본 서류 그리드·서류 수·요약·검토 안내를 생략합니다
+    // (위/아래 중복 노출 방지). 팝업이 시나리오별 공통+추가서류와 절차를 직접
+    // 표시하므로 이 자격에서는 사증발급 탭이 깔끔하게 팝업 하나로 정리됩니다.
+    const issuanceRecordForPanel = proc.key === 'visaIssuance' ? getVisaIssuanceRecord(v.code) : null;
+    const issuanceOwnsPanel = !!(issuanceRecordForPanel && issuanceRecordForPanel.scenarioGuide
+        && Array.isArray(issuanceRecordForPanel.issuanceModes) && issuanceRecordForPanel.issuanceModes.length >= 2
+        && !isGenericVisaIssuanceExcluded(v.code) && !isVisaIssuanceNotApplicable(v));
+    if (issuanceOwnsPanel) docsHtml = '';
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
     const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
-    const summaryHtml = renderProcedureSummaryBlock(proc.summary, keywords) || renderProcedureFallbackSummary(proc.key);
+    const summaryHtml = issuanceOwnsPanel ? '' : (renderProcedureSummaryBlock(proc.summary, keywords) || renderProcedureFallbackSummary(proc.key));
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
-    const countHtml = totalDocCount ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
+    const countHtml = (totalDocCount && !issuanceOwnsPanel) ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
     // The source-backed 사증발급 issuance detail lives inside the 사증발급 tab only,
     // so it no longer trails every procedure panel. The procedure doc grid above
@@ -17779,9 +17830,10 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     // card must NOT reprint the same 공통/추가/해당 시 서류 list — that duplicate
     // "위/아래 두 번 노출" was confusing users. The card keeps its unique 신청
     // 경로·절차·주의사항·출처. When the panel has no doc grid of its own, the card
-    // still carries the documents so nothing is lost.
+    // still carries the documents so nothing is lost. Scenario-guide panels let the
+    // popup own the documents (suppressModeDocuments:false).
     const issuanceHtml = proc.key === 'visaIssuance'
-        ? renderVisaIssuanceSection(v, keywords, { embedded: true, suppressModeDocuments: !!docsHtml })
+        ? renderVisaIssuanceSection(v, keywords, { embedded: true, suppressModeDocuments: issuanceOwnsPanel ? false : !!docsHtml })
         : '';
     return `<div class="procedure-panel${isActive ? ' active' : ''}" data-procedure-panel="${proc.key}">
         ${renderProcedureHeader(v, proc)}
@@ -17790,7 +17842,7 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
         ${countHtml}
         ${officialDocumentNamesNote}
         ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>${renderDocGroupingSourceNote()}` : ''}
-        ${variantsHtml || (!docsHtml ? reviewFallback : '')}
+        ${variantsHtml || ((!docsHtml && !issuanceOwnsPanel) ? reviewFallback : '')}
         ${issuanceHtml}
     </div>`;
 }
@@ -18761,9 +18813,11 @@ function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
     const applies = pickLocalizedManualText({ ko: mode.appliesToKo, en: mode.appliesToEn });
     const sourceRefs = mode.sourceRefs || (record.manualSource ? [record.manualSource] : []);
     const sourceLine = getFormattedSourceRefs({ sourceRefs }).slice(0, 2).join(' / ');
+    // Optional friendly emoji icon (used by the scenario-guide cards for E-8~E-10).
+    const iconHtml = mode.icon ? `<span class="issuance-card-icon" aria-hidden="true">${escapeHtml(mode.icon)}</span>` : '';
     return `<article class="issuance-scenario-card${mode.type === 'not_applicable' ? ' is-not-applicable' : ''}">
         <div class="issuance-card-head">
-            <h5 class="issuance-card-title">${escapeHtml(title)}</h5>
+            <h5 class="issuance-card-title">${iconHtml}${escapeHtml(title)}</h5>
             <span class="issuance-source-badge ${escapeHtml(getSourceEvidenceBadgeClass(level))}">${escapeHtml(getSourceEvidenceLabel(level))}</span>
         </div>
         ${renderIssuanceRouteChips(mode, record)}
@@ -18774,6 +18828,32 @@ function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
         ${sourceLine ? `<div class="issuance-source-line">${escapeHtml(sourceLine)}</div>` : ''}
         ${renderSourceLimitationExplanation(sourceState, sourceRefs)}
     </article>`;
+}
+
+// 사증발급 시나리오 안내 팝업 — 세부코드/업종/국적 등으로 신청 경로·서류가
+// 갈리는 자격(E-8·E-9·E-10 등)을 위한 단일 질문형 선택 UI. 모든 모드 카드를
+// 한꺼번에 쏟지 않고, 사용자가 본인 상황을 고르면 해당 시나리오의 카드만 보여
+// 인지부담을 최소화합니다. 출처 기반 issuanceModes 데이터만 사용 — 발명 없음.
+function renderIssuanceScenarioPicker(v, record, modes, binding, keywords) {
+    const question = pickLocalizedManualText({ ko: record.scenarioQuestionKo, en: record.scenarioQuestionEn }) || tx('issuanceGuideQuestionFallback');
+    const cards = modes.map(mode => {
+        const choiceTitle = pickLocalizedManualText({ ko: mode.choiceTitleKo || mode.labelKo, en: mode.choiceTitleEn || mode.labelEn });
+        const card = renderIssuanceModeCard(mode, record, binding, keywords, { suppressDocuments: false });
+        return `<div class="issuance-mode-card-wrap" data-issuance-mode-card="${escapeHtml(mode.id || '')}" data-issuance-choice="${escapeHtml(choiceTitle)}">${card}</div>`;
+    }).join('');
+    return `<div class="issuance-scenario-guide issuance-needs-pick" data-issuance-guide data-visa-code="${escapeHtml(v.code)}">
+        <p class="issuance-guide-question">${escapeHtml(question)}</p>
+        <div class="issuance-guide-bar">
+            <button type="button" class="issuance-guide-trigger" data-action="open-issuance-guide" data-visa-code="${escapeHtml(v.code)}" aria-haspopup="dialog">
+                <span class="issuance-guide-trigger-icon" aria-hidden="true">🧭</span>
+                <span class="issuance-guide-trigger-label">${escapeHtml(tx('issuanceGuideTrigger'))}</span>
+                <span class="issuance-guide-trigger-caret" aria-hidden="true">▾</span>
+            </button>
+            <button type="button" class="issuance-guide-clear" data-action="clear-issuance-guide" hidden>${escapeHtml(tx('issuanceGuideClear'))}</button>
+        </div>
+        <p class="issuance-guide-empty-hint">${escapeHtml(tx('issuanceGuideEmptyHint'))}</p>
+        <div class="issuance-scenario-grid issuance-mode-cards">${cards}</div>
+    </div>`;
 }
 
 function renderVisaIssuanceSection(v, keywords, options = {}) {
@@ -18795,7 +18875,13 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     const binding = getVisaIssuanceBinding(v.code);
     const summary = pickLocalizedManualText({ ko: record.issuanceSummaryKo, en: record.issuanceSummaryEn });
     const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
-    const cards = modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords, { suppressDocuments: suppressModeDocuments })).join('');
+    // Scenario-guide records (E-8/E-9/E-10 등) carry multiple source-backed modes
+    // (세부코드·업종·선박종류별). Present them behind a friendly single-question
+    // popup so the user picks their situation and sees only that path's 서류·절차.
+    const useScenarioGuide = !!record.scenarioGuide && modes.length >= 2;
+    const cardsBlock = useScenarioGuide
+        ? renderIssuanceScenarioPicker(v, record, modes, binding, keywords)
+        : `<div class="issuance-scenario-grid">${modes.map(mode => renderIssuanceModeCard(mode, record, binding, keywords, { suppressDocuments: suppressModeDocuments })).join('')}</div>`;
     const variance = record.countryVariance && record.countryVariance.reasonKo ? record.countryVariance.reasonKo : '';
     const disclaimer = pickLocalizedManualText({ ko: record.disclaimerKo, en: record.disclaimerEn });
     const title = txAt('issuanceUiLabels', 0, '사증발급');
@@ -18804,7 +18890,7 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
     const stageLabel = `<p class="issuance-stage-label">${escapeHtml(tx('issuanceStageLabel'))}</p>`;
     const body = `${stageLabel}
         ${summary ? `<p class="visa-issuance-summary">${hl(escapeHtml(summary), keywords || [])}</p>` : ''}
-        <div class="issuance-scenario-grid">${cards}</div>
+        ${cardsBlock}
         ${renderIssuanceOverlaySelector(v.code)}
         ${variance ? `<p class="issuance-variance-note">${escapeHtml(variance)}</p>` : ''}
         ${disclaimer ? `<p class="issuance-disclaimer">${escapeHtml(disclaimer)}</p>` : ''}`;
@@ -18817,6 +18903,75 @@ function renderVisaIssuanceSection(v, keywords, options = {}) {
         <h4 class="manual-section-title">${escapeHtml(title)}</h4>
         ${body}
     </section>`;
+}
+
+// --- 사증발급 시나리오 안내 팝업 동작 -------------------------------------
+// The choices live in a modal dialog (#issuanceGuideOverlay), built on demand
+// from the record's own issuanceModes. Picking a scenario reveals only that
+// mode's card (가게이팅), so the result stays uncluttered for 단순노무 사용자.
+// The active guide is tracked by ELEMENT (not just code) so selection always
+// targets the card group the user opened, even if the same status code renders
+// in more than one place (e.g. the cloned visa-detail drawer).
+let issuanceGuideActiveGuide = null;
+
+function openIssuanceGuide(trigger) {
+    const guide = trigger.closest('[data-issuance-guide]');
+    const code = (guide && guide.getAttribute('data-visa-code')) || trigger.dataset.visaCode || '';
+    const record = getVisaIssuanceRecord(code);
+    if (!record) return;
+    issuanceGuideActiveGuide = guide || null;
+    const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
+    const host = document.getElementById('issuanceGuideChoices');
+    if (!host) return;
+    const selectedId = guide ? (guide.getAttribute('data-selected-mode') || '') : '';
+    host.innerHTML = modes.map(mode => {
+        const icon = mode.icon || '';
+        const title = pickLocalizedManualText({ ko: mode.choiceTitleKo || mode.labelKo, en: mode.choiceTitleEn || mode.labelEn });
+        const preview = pickLocalizedManualText({ ko: mode.appliesToKo, en: mode.appliesToEn });
+        const pressed = (mode.id && mode.id === selectedId) ? 'true' : 'false';
+        return `<button type="button" class="scenario-choice issuance-guide-choice" role="listitem" data-action="choose-issuance-mode" data-mode-id="${escapeHtml(mode.id || '')}" aria-pressed="${pressed}">
+            <span class="issuance-guide-choice-icon" aria-hidden="true">${escapeHtml(icon)}</span>
+            <span class="scenario-choice-body">
+                <span class="scenario-choice-main"><span class="issuance-guide-choice-label">${escapeHtml(title)}</span></span>
+                ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 120))}</span>` : ''}
+            </span>
+            <span class="scenario-choice-go" aria-hidden="true">→</span>
+        </button>`;
+    }).join('');
+    const heading = document.getElementById('issuanceGuideTitle');
+    if (heading) heading.textContent = pickLocalizedManualText({ ko: record.scenarioQuestionKo, en: record.scenarioQuestionEn }) || tx('issuanceGuideModalTitle');
+    const copy = document.getElementById('issuanceGuideModalCopy');
+    if (copy) copy.textContent = tx('issuanceGuideModalCopy');
+    openModal('issuanceGuideOverlay');
+}
+
+function chooseIssuanceMode(button) {
+    const id = button.dataset.modeId || '';
+    if (issuanceGuideActiveGuide) applyIssuanceModeSelection(issuanceGuideActiveGuide, id);
+    closeModal('issuanceGuideOverlay');
+    issuanceGuideActiveGuide = null;
+}
+
+function applyIssuanceModeSelection(guide, modeId) {
+    if (!guide) return;
+    if (modeId) guide.setAttribute('data-selected-mode', modeId);
+    else guide.removeAttribute('data-selected-mode');
+    guide.classList.toggle('has-selection', !!modeId);
+    let selectedLabel = '';
+    guide.querySelectorAll('[data-issuance-mode-card]').forEach(card => {
+        const isSel = !!modeId && card.dataset.issuanceModeCard === modeId;
+        card.classList.toggle('is-selected', isSel);
+        if (isSel) selectedLabel = card.dataset.issuanceChoice || '';
+    });
+    const label = guide.querySelector('.issuance-guide-trigger-label');
+    if (label) label.textContent = selectedLabel ? `✓ ${selectedLabel}` : tx('issuanceGuideTrigger');
+    const clearBtn = guide.querySelector('.issuance-guide-clear');
+    if (clearBtn) clearBtn.hidden = !modeId;
+}
+
+function clearIssuanceGuide(button) {
+    const guide = button.closest('[data-issuance-guide]');
+    if (guide) applyIssuanceModeSelection(guide, '');
 }
 
 function visaIssuanceProcedureAvailable(v) {
@@ -20440,6 +20595,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'choose-route': () => chooseRoute(actionBtn),
                 'close-route-picker': () => closeModal('routePickerOverlay'),
                 'show-all-f4-routes': () => resetF4Route(actionBtn),
+                'open-issuance-guide': () => openIssuanceGuide(actionBtn),
+                'choose-issuance-mode': () => chooseIssuanceMode(actionBtn),
+                'close-issuance-guide': () => closeModal('issuanceGuideOverlay'),
+                'clear-issuance-guide': () => clearIssuanceGuide(actionBtn),
                 'toggle-subcode-group': () => {
                     const body = document.getElementById(actionBtn.getAttribute('aria-controls'));
                     if (!body) return;
@@ -20515,7 +20674,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const aiBtn = e.target.closest('.ai-action-btn');
         if (aiBtn) { e.preventDefault(); submitAiAnalysis(aiBtn.dataset.type, aiBtn); return; }
 
-        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].forEach(id => {
+        ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].forEach(id => {
             const el = document.getElementById(id); if (el && e.target === el) closeModal(id);
         });
 
@@ -20549,7 +20708,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay'].some(id => {
+            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;

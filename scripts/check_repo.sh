@@ -210,6 +210,19 @@ else
   echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
 fi
 
+echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..."
+# Stdlib/Node-only, offline. check_visa_issuance_ui executes the real route-chip
+# derivation + F-4 exclusion guard for every record; validate_visa_issuance_enrichment
+# validates the issuance/evidence data layer; check_visa_issuance_scenario_guide locks
+# the E-8/E-9/E-10 scenario-guide popup contract and the E-9 wrong-document fix.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_visa_issuance_ui.mjs
+  node scripts/validate_visa_issuance_enrichment.js
+  node scripts/check_visa_issuance_scenario_guide.mjs
+else
+  echo "INFO: Node.js not found; skipping visa-issuance UI/scenario-guide validation."
+fi
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"

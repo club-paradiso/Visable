@@ -1164,6 +1164,12 @@
   ],
   "issuanceStageLabel": "Visa issuance (before entry)",
   "issuanceRouteLabel": "Application route",
+  "issuanceGuideTrigger": "Choose my situation",
+  "issuanceGuideClear": "Choose again",
+  "issuanceGuideEmptyHint": "Tap the button above and pick your situation to see only the documents you need.",
+  "issuanceGuideModalCopy": "Pick the one item that matches you.",
+  "issuanceGuideModalTitle": "Choose your visa-issuance path",
+  "issuanceGuideQuestionFallback": "Select your situation",
   "issuanceRouteChipLabels": [
     "Consular application",
     "Certificate of confirmation of visa issuance",

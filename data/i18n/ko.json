@@ -1164,6 +1164,12 @@
   ],
   "issuanceStageLabel": "입국 전 사증발급",
   "issuanceRouteLabel": "신청 경로",
+  "issuanceGuideTrigger": "내 상황 고르기",
+  "issuanceGuideClear": "다시 고르기",
+  "issuanceGuideEmptyHint": "위 버튼을 눌러 본인 상황을 고르면, 그 경우에 필요한 서류만 보여드립니다.",
+  "issuanceGuideModalCopy": "본인에게 해당하는 항목을 하나만 고르세요.",
+  "issuanceGuideModalTitle": "사증발급 시나리오 선택",
+  "issuanceGuideQuestionFallback": "본인 상황을 선택하세요",
   "issuanceRouteChipLabels": [
     "재외공관 신청",
     "사증발급인정서",
