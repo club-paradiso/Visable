@@ -9016,6 +9016,111 @@ body.searching:not(.searched) .p-gateway { display: none !important; }
   border: 1px solid rgba(125, 216, 184, 0.32);
 }
 
+/* New Home platform banner — warm, distinct full-width entry to the
+   nationality/citizenship platform. Sits between the primary cards and the
+   compact utility row. Reuses the gateway's frosted glass language with a warm
+   "belonging" accent so it reads as a separate platform, not another tool. */
+.p-gw-newhome {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(0.8rem, 1.6vw, 1.1rem);
+  width: 100%;
+  min-height: 76px;
+  padding: 0.95rem 1.15rem;
+  background: linear-gradient(120deg, rgba(255, 184, 168, 0.16), rgba(125, 216, 184, 0.10));
+  border: 1px solid rgba(255, 184, 168, 0.40);
+  border-radius: 16px;
+  color: #fffaf2;
+  font-family: var(--ff);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow:
+    0 14px 40px -10px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.10);
+  transition:
+    transform var(--p-dur-1) var(--p-ease),
+    border-color var(--p-dur-1) var(--p-ease),
+    background var(--p-dur-1) var(--p-ease),
+    box-shadow var(--p-dur-1) var(--p-ease);
+}
+.p-gw-newhome:hover,
+.p-gw-newhome:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(255, 184, 168, 0.66);
+  background: linear-gradient(120deg, rgba(255, 184, 168, 0.24), rgba(125, 216, 184, 0.14));
+  outline: none;
+}
+.p-gw-newhome:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(255, 184, 168, 0.55),
+    0 14px 40px -10px rgba(0, 0, 0, 0.32);
+}
+.p-gw-newhome-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: rgba(255, 184, 168, 0.22);
+  border: 1px solid rgba(255, 184, 168, 0.40);
+  font-size: 1.4rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.p-gw-newhome-body { display: grid; gap: 0.2rem; min-width: 0; }
+.p-gw-newhome-titles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+.p-gw-newhome-label {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #fffaf2;
+  word-break: keep-all;
+}
+.p-gw-newhome-brand {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: rgba(255, 221, 210, 0.95);
+  padding: 0.1rem 0.55rem;
+  border: 1px solid rgba(255, 184, 168, 0.50);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.p-gw-newhome-desc {
+  font-size: 0.82rem;
+  color: rgba(247, 246, 241, 0.74);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+.p-gw-newhome-cta {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+.p-gw-newhome-tagline {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-style: italic;
+  color: rgba(255, 221, 210, 0.95);
+  white-space: nowrap;
+}
+.p-gw-newhome-arrow {
+  font-size: 1.1rem;
+  color: #fffaf2;
+  transition: transform var(--p-dur-1) var(--p-ease);
+}
+.p-gw-newhome:hover .p-gw-newhome-arrow { transform: translateX(3px); }
+
 /* Compact utility row */
 .p-gw-utility {
   display: grid;
@@ -9114,6 +9219,13 @@ body:not(.searched) .reference-disclaimer {
     grid-template-columns: 1fr;
     gap: 0.45rem;
   }
+  .p-gw-newhome {
+    grid-template-columns: auto 1fr;
+    padding: 0.85rem 0.95rem;
+    min-height: 0;
+  }
+  .p-gw-newhome-cta { display: none; }
+  .p-gw-newhome-icon { width: 38px; height: 38px; font-size: 1.2rem; }
 }
 
 /* Footer: drop the heavy border line, keep the text mute */
@@ -11400,6 +11512,23 @@ body.searched .hero-container::before {
 :root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-label,
 :root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-sub,
 :root[data-theme="archive_diary"] .p-gw-card-ai .p-gw-card-icon { color: #fff !important; }
+/* New Home banner → warm pink-accent poster panel */
+:root[data-theme="archive_diary"] .p-gw-newhome {
+  background: var(--k-cream) !important;
+  border: 2px solid var(--k-ink) !important;
+  border-radius: 22px !important;
+  box-shadow: 5px 5px 0 var(--k-pink) !important;
+  color: var(--k-ink) !important;
+  transition: transform 0.38s var(--k-spring), box-shadow 0.38s var(--k-spring) !important;
+}
+:root[data-theme="archive_diary"] .p-gw-newhome:hover,
+:root[data-theme="archive_diary"] .p-gw-newhome:focus-visible { transform: translate(-2px,-3px) scale(1.012); box-shadow: 8px 9px 0 var(--k-pink-deep) !important; }
+:root[data-theme="archive_diary"] .p-gw-newhome-label,
+:root[data-theme="archive_diary"] .p-gw-newhome-tagline,
+:root[data-theme="archive_diary"] .p-gw-newhome-arrow { color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .p-gw-newhome-desc { color: var(--t2) !important; }
+:root[data-theme="archive_diary"] .p-gw-newhome-brand { color: var(--k-ink) !important; border-color: var(--k-ink) !important; }
+:root[data-theme="archive_diary"] .p-gw-newhome-icon { background: var(--k-butter) !important; border: 2px solid var(--k-ink) !important; }
 
 /* Visa-track entry cards → poster panels */
 :root[data-theme="archive_diary"] .visa-track-card {
@@ -12750,6 +12879,23 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </a>
             </div>
 
+            <!-- New Home platform banner — distinct warm entry to the dedicated
+                 nationality/citizenship platform. Plain <a> so it opens normally;
+                 labels are localized in applyLanguage() via #gwNewHome* ids. -->
+            <a class="p-gw-newhome" id="gwNewHomeLink" href="new-home.html" aria-label="국적·귀화 안내 플랫폼 열기 (Paradiso: New Home)">
+                <span class="p-gw-newhome-icon" aria-hidden="true">🏡</span>
+                <span class="p-gw-newhome-body">
+                    <span class="p-gw-newhome-titles">
+                        <span class="p-gw-newhome-label" id="gwNewHomeLabel">국적·귀화 안내</span>
+                        <span class="p-gw-newhome-brand" id="gwNewHomeSub">Paradiso: New Home</span>
+                    </span>
+                    <span class="p-gw-newhome-desc" id="gwNewHomeDesc">귀화·국적회복·복수국적·사회통합프로그램까지 한 곳에서 안내합니다.</span>
+                </span>
+                <span class="p-gw-newhome-cta" aria-hidden="true">
+                    <span class="p-gw-newhome-tagline" id="gwNewHomeTagline">You Belong Here.</span>
+                    <span class="p-gw-newhome-arrow">→</span>
+                </span>
+            </a>
 
             <div class="p-gw-utility" role="group" aria-label="보조 도구">
                 <button type="button" class="p-gw-util" data-action="open-short-stay">
@@ -20231,6 +20377,11 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
     setIndexedText('.p-gw-util-label', [tx('gwShortStayLabel'), tx('gwJobcodeLabel'), tx('jurisdiction'), tx('gwAgentLabel'), tx('gwMedLabel')]);
+    setText('#gwNewHomeLabel', tx('gwNewHomeLabel'));
+    setText('#gwNewHomeSub', tx('gwNewHomeSub'));
+    setText('#gwNewHomeDesc', tx('gwNewHomeDesc'));
+    setText('#gwNewHomeTagline', tx('gwNewHomeTagline'));
+    setAttr('#gwNewHomeLink', 'aria-label', tx('gwNewHomeAria'));
     setText('#pCmdChipsTitle', tx('cmdChipsTitle'));
     setText('#pCmdDisclaimer', tx('cmdDisclaimer'));
     setText('.p-cmd-close-label', tx('cmdCloseLabel'));
