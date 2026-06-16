@@ -182,6 +182,9 @@ if command -v node >/dev/null 2>&1; then
   # Loads the real helper functions from index.html and exercises search,
   # ambiguity, E-7 boundary, empty-state recovery, and the copy memo.
   node scripts/check_employment_reporting_helper.mjs
+  # Deterministic natural-language analyzer: no hallucinated codes, 직종/업종
+  # track separation, ambiguity follow-ups, and source metadata present.
+  node scripts/check_employment_code_analyzer.mjs
 else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi
