@@ -154,8 +154,8 @@ class LawHttpResponse:
 LawTransport = Callable[[str, float], LawHttpResponse]
 
 
-def _default_transport(url: str, timeout: float) -> LawHttpResponse:
-    """Real network transport (urllib; no third-party dependency required)."""
+def _http_get_once(url: str, timeout: float) -> LawHttpResponse:
+    """Single urllib GET (no scheme fallback). The URL is never logged here."""
     import socket
     import urllib.error
     import urllib.request
@@ -185,6 +185,49 @@ def _default_transport(url: str, timeout: float) -> LawHttpResponse:
         return LawHttpResponse(ok=False, error_type="timeout")
     except Exception:  # pragma: no cover - defensive: never raise out of transport
         return LawHttpResponse(ok=False, error_type="network")
+
+
+def _swap_scheme(url: str) -> str:
+    if url.startswith("https://"):
+        return "http://" + url[len("https://"):]
+    if url.startswith("http://"):
+        return "https://" + url[len("http://"):]
+    return url
+
+
+def _is_law_host(url: str) -> bool:
+    try:
+        host = urlsplit(url).netloc.lower()
+    except Exception:  # pragma: no cover - defensive
+        return False
+    return host == "law.go.kr" or host.endswith(".law.go.kr")
+
+
+def _transport_with_scheme_fallback(url: str, timeout: float, sender: LawTransport) -> LawHttpResponse:
+    """Send via ``sender``; on a CONNECTION-level failure for a law.go.kr host,
+    retry once with the opposite scheme.
+
+    Rationale: cloud egress (e.g. Railway) can block plaintext http / port 80,
+    while the law.go.kr DRF host may not serve every scheme identically. Trying
+    one scheme and falling back to the other on a *network* failure makes the
+    lookup robust either way. A real HTTP response — including a 403 (the OC /
+    calling-IP-allowlist case) — means the host WAS reached, so we never swap
+    scheme on it (swapping would not help and would mask the real cause).
+    """
+    resp = sender(url, timeout)
+    if (not resp.ok) and resp.error_type == "network" and _is_law_host(url):
+        alt = _swap_scheme(url)
+        if alt != url:
+            alt_resp = sender(alt, timeout)
+            if alt_resp.ok or alt_resp.error_type == "http_error":
+                return alt_resp
+    return resp
+
+
+def _default_transport(url: str, timeout: float) -> LawHttpResponse:
+    """Real network transport (urllib) with https<->http scheme fallback for the
+    law.go.kr host. No third-party dependency; the URL/OC is never logged."""
+    return _transport_with_scheme_fallback(url, timeout, _http_get_once)
 
 
 def _sanitize_url(url: str) -> str:
