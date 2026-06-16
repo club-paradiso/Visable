@@ -845,6 +845,10 @@ body.searched .ft { opacity: 1; }
 .jc2-refine-chip:hover, .jc2-refine-chip:focus-visible { background: var(--ac); color: #fff; }
 .jc2-tips { font-size: 0.78rem; line-height: 1.55; color: var(--t2); background: color-mix(in srgb, var(--color-warning) 9%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--color-warning) 30%, transparent); border-radius: var(--radius-md); padding: 0.7rem 0.9rem; }
 .jc2-tips-list { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.jc2-followup { background: var(--bg2); border-color: var(--bd2); }
+.jc2-legal-banner { background: color-mix(in srgb, var(--color-error) 12%, var(--bg1)); border: 1.5px solid color-mix(in srgb, var(--color-error) 45%, transparent); border-radius: var(--radius-md); padding: 0.7rem 0.9rem; margin-bottom: 0.7rem; }
+.jc2-legal-h { font-size: 0.84rem; font-weight: 800; color: var(--color-error); margin-bottom: 0.45rem; line-height: 1.45; }
+.jc2-legal-banner .jc2-tips-list { color: var(--t1); font-size: 0.8rem; }
 @media (max-width: 520px) {
   .jc2-interpret-grid { grid-template-columns: 1fr; gap: 0.15rem; }
   .jc2-interpret-v { margin-bottom: 0.3rem; }
@@ -13414,13 +13418,20 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </div>
                 <p class="jc2-level-hint" id="jcLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
                 <div class="jc2-chips" id="jcChips" aria-label="추천 검색어">
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="개발자">개발자</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영어강사">영어강사</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페">카페</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="음식점">음식점</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="연구원">연구원</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="통번역">통번역</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="자영업">자영업</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페 바리스타">카페 바리스타</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영어학원 강사">영어학원 강사</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="식당 주방보조">식당 주방보조</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="IT 개발자">IT 개발자</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="농장 계절근로">농장 계절근로</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="댄서">댄서</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="무용수">무용수</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="아이돌 연습생">아이돌 연습생</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="안무가">안무가</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="가수">가수</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="연예기획사 소속 아티스트">연예기획사 소속 아티스트</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투이스트">타투이스트</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="반영구화장">반영구화장</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투샵 운영">타투샵 운영</button>
                 </div>
                 <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
                     <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
@@ -13437,8 +13448,11 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <!-- 3.5 · 내가 입력한 내용 해석 (natural-language analyzer interpretation) -->
             <div id="jcInterpret" class="jc2-interpret" role="status" aria-live="polite" hidden></div>
 
-            <!-- 3.6 · 애매한 부분 — 더 정확히 고르기 (ambiguity follow-up chips) -->
-            <div id="jcRefine" class="jc2-refine" role="group" aria-label="더 정확히 고르기" hidden></div>
+            <!-- 3.6 · 확인이 필요한 부분 — 더 정확히 고르기 (ambiguity follow-up questions) -->
+            <div id="jcRefine" class="jc2-refine" role="group" aria-label="확인이 필요한 부분" hidden></div>
+
+            <!-- 3.7 · 후속 선택 칩 (general/entertainment/tattoo follow-up chips) -->
+            <div id="jcFollowup" class="jc2-refine jc2-followup" role="group" aria-label="후속 선택" hidden></div>
 
             <!-- 4 · Results -->
             <div class="jc2-results">
@@ -14751,8 +14765,12 @@ function searchJobcodeChip(term) {
     const input = document.getElementById('jcSearchInput');
     if (!input) return;
     input.value = term;
-    renderJobcodeResults(term);
     input.focus();
+    // Multi-word / natural-language chips (e.g. "아이돌 연습생", "카페 바리스타")
+    // run the full analyzer so interpretation + decomposition + cautions show;
+    // single keyword chips keep the instant filter.
+    if (/\s/.test(term.trim()) || term.trim().length >= 3) searchJobcodeWithAI();
+    else renderJobcodeResults(term);
 }
 async function openJobCodeModal() {
     openModal('jobCodeModalOverlay');
@@ -14894,15 +14912,28 @@ async function ensureEmploymentAnalyzer() {
     _empLoadPromise = (async () => {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) { _empLoadPromise = null; return null; } }
         const grab = (p) => fetch(p, { cache: 'default' }).then(r => r.ok ? r.json() : null).catch(() => null);
-        const [ko, en, src] = await Promise.all([
+        // Base aliases + entertainment + tattoo alias packs + umbrella/ambiguous
+        // inputs + source/legal metadata, merged the same way the Node loader does.
+        const [koBase, enBase, koEnt, enEnt, koTat, enTat, amb, src] = await Promise.all([
             grab('./data/employment/synonyms.ko.json'),
             grab('./data/employment/synonyms.en.json'),
+            grab('./data/employment/aliases.entertainment.ko.json'),
+            grab('./data/employment/aliases.entertainment.en.json'),
+            grab('./data/employment/aliases.tattoo.ko.json'),
+            grab('./data/employment/aliases.tattoo.en.json'),
+            grab('./data/employment/ambiguous_inputs.json'),
             grab('./data/employment/classification_sources.json')
         ]);
-        _empLex = { ko: ko || { concepts: [] }, en: en || { concepts: [] } };
+        const cc = (o) => (o && Array.isArray(o.concepts) ? o.concepts : []);
+        _empLex = {
+            ko: { concepts: [...cc(koBase), ...cc(koEnt), ...cc(koTat)] },
+            en: { concepts: [...cc(enBase), ...cc(enEnt), ...cc(enTat)] }
+        };
         _empSources = src;
         _empAnalyzer = window.EmploymentCodeAnalyzer.createEmploymentAnalyzer({
             data: _jobcodeData, lexicon: _empLex, sources: src,
+            ambiguous: amb || { entries: [] },
+            legalSources: (src && src.legal_sources) || [],
             context: _jobcodeData && _jobcodeData.employment_reporting_context
         });
         return _empAnalyzer;
@@ -14915,19 +14946,46 @@ function renderEmploymentInterpretation(analysis) {
     if (!el) return;
     if (!analysis) { el.hidden = true; el.innerHTML = ''; return; }
     const e = analysis.extracted || {};
+    const SENS_LABEL = { tattoo: '문신·타투(법적 민감)', entertainment: '연예·공연(별도 검토)' };
+    const sens = (e.legalSensitivity || []).map(s => SENS_LABEL[s] || s).join(', ');
     const rows = [
         ['🙋 하는 일(직종)', e.jobRole],
         ['🏢 근무처', e.workplaceType],
         ['🏭 사업 활동(업종)', e.businessActivity],
         ['📄 고용형태', e.employmentTypeLabel || e.employmentType],
+        ['🏷 고용주 유형', e.employerType],
+        ['🎭 활동 유형', e.performanceType],
+        ['🧩 역할 상태', e.roleStatus],
+        ['💰 소득 상태', e.incomeStatus && e.incomeStatus !== 'unknown' ? e.incomeStatus : null],
+        ['⚖ 법적 민감도', sens || null],
         ['🪪 체류자격', e.visaStatus]
     ].filter(([, v]) => v);
     if (!rows.length) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-interpret-h">📝 내가 입력한 내용 해석</div>`
+    el.innerHTML = `<div class="jc2-interpret-h">📝 입력 내용 해석</div>`
         + `<div class="jc2-interpret-grid">`
         + rows.map(([k, v]) => `<span class="jc2-interpret-k">${escapeHtml(k)}</span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
         + `</div>`;
+}
+function renderEmploymentFollowupChips(analysis) {
+    const el = document.getElementById('jcFollowup');
+    if (!el) return;
+    const chips = analysis && Array.isArray(analysis.followUpChips) ? analysis.followUpChips : [];
+    if (!chips.length) { el.hidden = true; el.innerHTML = ''; return; }
+    el.hidden = false;
+    el.innerHTML = `<div class="jc2-refine-h">➕ 후속 선택 — 눌러서 더 구체화</div>`
+        + `<div class="jc2-refine-chips">`
+        + chips.slice(0, 14).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
+        + `</div>`;
+    el.querySelectorAll('.jc2-refine-chip').forEach((btn) => {
+        btn.onclick = () => {
+            const inp = document.getElementById('jcSearchInput');
+            if (!inp) return;
+            const cleaned = (btn.dataset.jcRefine || '').replace(/\([^)]*\)/g, '').trim();
+            inp.value = (inp.value.trim() + ' ' + cleaned).trim();
+            searchJobcodeWithAI();
+        };
+    });
 }
 function renderEmploymentRefine(analysis) {
     const el = document.getElementById('jcRefine');
@@ -14958,12 +15016,24 @@ function renderEmploymentTips(analysis) {
     if (!el) return;
     const warns = analysis && Array.isArray(analysis.warnings) ? analysis.warnings : [];
     if (!warns.length) { el.hidden = true; el.innerHTML = ''; return; }
+    const sens = (analysis.extracted && analysis.extracted.legalSensitivity) || [];
+    // Legal cautions (문신사법 / 연예·공연 / 별도 검토) are pulled to the top as a
+    // prominent banner so warnings are never buried in tiny text.
+    const isLegal = (w) => /문신|타투|연예|공연|별도 검토|별도 확인|허용되는 것은 아닙/.test(w);
+    const legal = warns.filter(isLegal);
+    const rest = warns.filter((w) => !isLegal(w));
+    let html = '';
+    if (sens.length && legal.length) {
+        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다</div>`
+            + `<ul class="jc2-tips-list">` + legal.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></div>`;
+    }
+    html += `<div class="jc2-tips-h">📌 하이코리아 입력 팁 · 공식 기준</div>`
+        + `<ul class="jc2-tips-list">` + (sens.length && legal.length ? rest : warns).map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-tips-h">📌 하이코리아 입력 팁 · 공식 기준</div>`
-        + `<ul class="jc2-tips-list">` + warns.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
+    el.innerHTML = html;
 }
 function clearEmploymentAnalysisUI() {
-    ['jcInterpret', 'jcRefine', 'jcTips'].forEach((id) => {
+    ['jcInterpret', 'jcRefine', 'jcFollowup', 'jcTips'].forEach((id) => {
         const el = document.getElementById(id);
         if (el) { el.hidden = true; el.innerHTML = ''; }
     });
@@ -14992,6 +15062,7 @@ async function searchJobcodeWithAI() {
         } catch (_) { analysis = null; }
         renderEmploymentInterpretation(analysis);
         renderEmploymentRefine(analysis);
+        renderEmploymentFollowupChips(analysis);
         renderEmploymentTips(analysis);
         let jobKw = getJobcodeSearchTerms(input, analysis ? analysis.occupationTerms : []);
         let indKw = getJobcodeSearchTerms(input, analysis ? analysis.industryTerms : []);

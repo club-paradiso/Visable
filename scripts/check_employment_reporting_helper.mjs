@@ -37,8 +37,8 @@ has('data-jc-filter="all"', 'filter: all missing');
 has('data-jc-filter="occupation"', 'filter: occupation missing');
 has('data-jc-filter="industry"', 'filter: industry missing');
 ['전체', '직종만', '업종만'].forEach(t => has(`>${t}<`, `filter label ${t} missing`));
-// suggested chips
-['개발자', '영어강사', '카페', '음식점', '연구원', '통번역', '자영업'].forEach(c =>
+// suggested chips (ordinary + entertainment + tattoo example chips)
+['카페 바리스타', '영어학원 강사', 'IT 개발자', '댄서', '아이돌 연습생', '타투이스트', '반영구화장'].forEach(c =>
   has(`data-jc-chip="${c}"`, `suggested chip ${c} missing`));
 // separate panes + badges
 has('data-pane="occupation"', 'occupation pane missing');

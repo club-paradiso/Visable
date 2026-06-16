@@ -1,0 +1,23 @@
+{
+  "schema_version": "2026-06-employment-analyzer-aliases",
+  "locale": "en",
+  "domain": "entertainment",
+  "kind": "occupation-and-industry concept lexicon (performance / entertainment)",
+  "important": "No official codes. Search terms are Korean because the canonical dataset is Korean; they only match existing KSCO8/KSIC11 names.",
+  "concepts": [
+    { "id": "ent_dancer_en", "type": "role", "surface": ["dancer", "dance performer", "backup dancer", "ballet dancer", "street dancer", "b-boy", "b-girl"], "label_ko": "무용가 / 댄서", "occupation_terms": ["무용가", "안무", "무용"], "industry_terms": [], "performance_type": "dancing", "legal_sensitivity": "entertainment" },
+    { "id": "ent_choreographer_en", "type": "role", "surface": ["choreographer"], "label_ko": "안무가", "occupation_terms": ["안무", "무용가"], "industry_terms": [], "performance_type": "choreography", "legal_sensitivity": "entertainment" },
+    { "id": "ent_dance_instructor_en", "type": "role", "surface": ["dance instructor", "dance teacher", "dance trainer"], "label_ko": "댄스 강사", "occupation_terms": ["예능 강사", "강사"], "industry_terms": ["예술학원"], "performance_type": "dancing", "role_status": "instructor", "legal_sensitivity": "entertainment" },
+    { "id": "ent_singer_en", "type": "role", "surface": ["singer", "vocalist", "rapper", "songwriter", "musician vocalist"], "label_ko": "가수 / 성악가", "occupation_terms": ["가수", "성악"], "industry_terms": [], "performance_type": "singing", "legal_sensitivity": "entertainment" },
+    { "id": "ent_musician_en", "type": "role", "surface": ["musician", "instrumentalist", "composer", "conductor", "session musician"], "label_ko": "연주가 / 작곡가", "occupation_terms": ["연주가", "작곡", "지휘"], "industry_terms": [], "performance_type": "music", "legal_sensitivity": "entertainment" },
+    { "id": "ent_actor_en", "type": "role", "surface": ["actor", "actress", "musical actor", "stage actor", "film actor", "voice actor"], "label_ko": "배우", "occupation_terms": ["배우", "연기"], "industry_terms": [], "performance_type": "acting", "legal_sensitivity": "entertainment" },
+    { "id": "ent_model_en", "type": "role", "surface": ["model", "fashion model", "runway model"], "label_ko": "모델", "occupation_terms": ["모델"], "industry_terms": [], "performance_type": "modeling", "legal_sensitivity": "entertainment" },
+    { "id": "ent_announcer_en", "type": "role", "surface": ["announcer", "anchor", "reporter", "mc", "host", "show host"], "label_ko": "아나운서 / 방송 진행", "occupation_terms": ["아나운서", "리포터"], "industry_terms": [], "performance_type": "broadcasting", "legal_sensitivity": "entertainment" },
+    { "id": "ent_performer_en", "type": "role", "surface": ["performer", "performing artist", "entertainer", "stage artist"], "label_ko": "공연 예술가", "occupation_terms": ["공연 예술가", "시각 및 공연"], "industry_terms": ["공연단체", "자영 예술가"], "performance_type": "performance", "legal_sensitivity": "entertainment", "confidence_cap": "medium" },
+
+    { "id": "ent_agency_en", "type": "workplace", "surface": ["entertainment agency", "talent agency", "management agency", "label agency"], "label_ko": "연예기획사 / 소속사", "business_label_ko": "공연 기획업(연예기획 — 간접 매칭)", "employer_type": "entertainment agency", "industry_terms": ["공연 기획업", "기타 창작 및 예술"], "occupation_terms": [], "legal_sensitivity": "entertainment", "confidence_cap": "medium", "candidate_caveat": "No exact standard-industry code for a talent/entertainment agency; matched indirectly to ‘공연 기획업’. Confirm on HiKorea industry search.", "ambiguous_roles": ["singer", "dancer", "actor", "manager/staff", "trainee"] },
+    { "id": "ent_company_en", "type": "workplace", "surface": ["performance company", "dance company", "theater company", "orchestra", "troupe"], "label_ko": "공연단체", "business_label_ko": "공연단체", "employer_type": "performance company", "industry_terms": ["공연단체"], "occupation_terms": [], "legal_sensitivity": "entertainment", "ambiguous_roles": ["dancer", "singer", "musician", "actor"] },
+
+    { "id": "ent_trainee_en", "type": "employment_type", "surface": ["trainee", "idol trainee", "k-pop trainee"], "employment_type": "trainee", "label_ko": "연습생/훈련 과정", "role_status": "trainee", "trainee": true, "legal_sensitivity": "entertainment", "confidence_cap": "low" }
+  ]
+}
