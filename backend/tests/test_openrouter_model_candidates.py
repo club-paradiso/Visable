@@ -131,6 +131,8 @@ class CandidateListParsingTests(unittest.TestCase):
         self.assertEqual(cands, [
             "nousresearch/hermes-3-llama-3.1-405b:free",
             "google/gemma-4-26b-a4b-it:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+            "meta-llama/llama-4-scout:free",
         ])
 
     def test_default_candidate_list_excludes_random_routing(self):
