@@ -16,16 +16,22 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List
 
-MODEL_POLICY_VERSION = "2026-06-hermes-basic-gemma-fast"
+MODEL_POLICY_VERSION = "2026-06-hermes-basic-gemma-fast-extended"
 
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
 
-# Basic answer tier (final answers): Hermes 3 405B primary, Gemma 4 fallback.
+# Basic answer tier (final answers): Hermes 3 405B primary with a 4-deep
+# fallback chain across multiple providers (NousResearch, Google, Meta).
+# A 4-candidate chain prevents the "all online model candidates failed" fallback
+# banner when 1–2 models are simultaneously rate-limited or their upstream is
+# temporarily down — a common occurrence on OpenRouter's free tier.
 DEFAULT_FINAL_ANSWER_MODEL = "nousresearch/hermes-3-llama-3.1-405b:free"
 DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "nousresearch/hermes-3-llama-3.1-405b:free",  # Basic primary
-    "google/gemma-4-26b-a4b-it:free",             # Basic fallback (light Gemma 4 MoE)
+    "nousresearch/hermes-3-llama-3.1-405b:free",  # Basic primary (Hermes 3 405B)
+    "google/gemma-4-26b-a4b-it:free",             # Fallback 1 — Gemma 4 MoE (~3.8B active)
+    "meta-llama/llama-3.3-70b-instruct:free",     # Fallback 2 — Llama 3.3 70B (diverse provider)
+    "meta-llama/llama-4-scout:free",              # Fallback 3 — Llama 4 Scout 17B MoE
 ]
 
 # ---------------------------------------------------------------------------
@@ -35,29 +41,28 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
 # distinct OpenRouter candidate chain so users can trade depth for latency:
 #
 #   * fast  — a small, low-latency model first (snappy answers; less depth).
-#   * basic — the default Nemotron final-answer chain (current behavior).
+#   * basic — the default Hermes 3 final-answer chain (current behavior).
 #   * pro   — reserved / "coming soon"; not yet wired to a model chain.
 #
 # Random routing stays forbidden; every tier is an explicit, auditable chain.
 ANSWER_MODES = ("fast", "basic", "pro")
 DEFAULT_ANSWER_MODE = "basic"
 
-# Fast tier: a light, low-latency primary plus one fast fallback.
-#
-# The fast chain must never collapse as a whole while the basic chain would have
-# answered — that was the reported "all online model candidates failed" bug.
-# The light Gemma 4 MoE primary keeps answers snappy, and gpt-oss-20b is a small,
-# fast fallback; the candidate-skip logic (model_not_found / rate-limit -> next
-# candidate) falls through to it instead of giving up. The fast primary
-# (gemma-4-26b-a4b) is also the basic fallback, so the two tiers share a proven
-# model and neither can be left without a reachable model.
+# Fast tier: a light, low-latency primary with a 4-deep fallback chain.
+# Each fallback is tried in order when the previous model is rate-limited
+# (429) or its upstream is temporarily unavailable (503). A 4-candidate chain
+# means all four models must fail simultaneously before the "no candidates
+# available" deterministic fallback is shown — substantially less likely than
+# with a 2-candidate chain.
 #
 # qwen/* is intentionally NOT used here — it is reserved for Chinese-language
 # routes by policy.
 DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-26b-a4b-it:free",   # Fast primary — Gemma 4 MoE (~3.8B active)
-    "openai/gpt-oss-20b:free",          # Fast fallback — small, fast gpt-oss
+    "google/gemma-4-26b-a4b-it:free",            # Fast primary — Gemma 4 MoE (~3.8B active)
+    "openai/gpt-oss-20b:free",                   # Fast fallback 1 — small, fast gpt-oss
+    "google/gemma-4-31b-it:free",                # Fast fallback 2 — Gemma 4 31B dense
+    "meta-llama/llama-3.3-70b-instruct:free",    # Fast fallback 3 — Llama 3.3 70B
 ]
 
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"

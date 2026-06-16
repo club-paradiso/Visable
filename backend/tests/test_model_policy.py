@@ -34,6 +34,8 @@ class ModelRolePolicyTests(unittest.TestCase):
             [
                 "nousresearch/hermes-3-llama-3.1-405b:free",
                 "google/gemma-4-26b-a4b-it:free",
+                "meta-llama/llama-3.3-70b-instruct:free",
+                "meta-llama/llama-4-scout:free",
             ],
         )
 
@@ -76,6 +78,8 @@ class AnswerModeTierTests(unittest.TestCase):
             [
                 "nousresearch/hermes-3-llama-3.1-405b:free",
                 "google/gemma-4-26b-a4b-it:free",
+                "meta-llama/llama-3.3-70b-instruct:free",
+                "meta-llama/llama-4-scout:free",
             ],
         )
 
@@ -83,11 +87,16 @@ class AnswerModeTierTests(unittest.TestCase):
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["mode"], "fast")
         self.assertTrue(plan["available"])
-        # Lightweight Gemma 4 (MoE) is the fast primary; gpt-oss-20b is the fast
-        # fallback.
+        # Lightweight Gemma 4 (MoE) is the fast primary; gpt-oss-20b is the first
+        # fallback, then Gemma 4 31B and Llama 3.3 70B as deeper fallbacks.
         self.assertEqual(plan["primary"], "google/gemma-4-26b-a4b-it:free")
         cands = plan["candidates"]
-        self.assertEqual(cands, ["google/gemma-4-26b-a4b-it:free", "openai/gpt-oss-20b:free"])
+        self.assertEqual(cands, [
+            "google/gemma-4-26b-a4b-it:free",
+            "openai/gpt-oss-20b:free",
+            "google/gemma-4-31b-it:free",
+            "meta-llama/llama-3.3-70b-instruct:free",
+        ])
         # The fast primary is also the basic fallback, so the two tiers share a
         # proven model and the fast tier can never be left without a reachable
         # model while basic-mode models are answering fine.
