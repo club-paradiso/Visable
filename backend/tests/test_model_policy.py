@@ -75,20 +75,29 @@ class AnswerModeTierTests(unittest.TestCase):
         self.assertEqual(plan["primary"], "nvidia/nemotron-3-ultra-550b-a55b:free")
         self.assertEqual(plan["candidates"][0], "nvidia/nemotron-3-ultra-550b-a55b:free")
 
-    def test_fast_mode_uses_light_gemma_first_then_qwen_then_llama(self):
+    def test_fast_mode_leads_with_light_gemma_then_proven_working_tail(self):
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["mode"], "fast")
         self.assertTrue(plan["available"])
         # Lightweight Gemma 4 (MoE) is the fast primary.
         self.assertEqual(plan["primary"], "google/gemma-4-26b-a4b-it:free")
         cands = plan["candidates"]
-        # Gemma family leads; Qwen then Llama provide resilient fallbacks.
+        # A light Gemma leads for snappy answers when it is available.
         self.assertTrue(cands[0].startswith("google/gemma-4"))
-        self.assertTrue(any(c.startswith("google/gemma") for c in cands))
-        self.assertTrue(any(c.startswith("qwen/") for c in cands))
-        self.assertTrue(any(c.startswith("meta-llama/") for c in cands))
-        # The slow 550B ultra model must never be in the fast tier.
+        # The chain MUST end with proven-working models that the basic chain also
+        # uses, so the fast tier can never collapse into the "all candidates
+        # failed" note while basic-mode models are answering fine.
+        basic = model_policy.resolve_answer_mode_models("basic")["candidates"]
+        self.assertTrue(
+            any(c in basic for c in cands),
+            "fast chain must share at least one proven model with the basic chain",
+        )
+        self.assertIn("openai/gpt-oss-120b:free", cands)
+        self.assertIn("google/gemma-4-31b-it:free", cands)
+        # The slow 550B ultra model must never be in the fast tier, and qwen/* is
+        # reserved for Chinese-language routes (not a fast fallback).
         self.assertNotIn("nvidia/nemotron-3-ultra-550b-a55b:free", cands)
+        self.assertFalse(any(c.startswith("qwen/") for c in cands))
 
     def test_pro_mode_is_coming_soon_and_falls_back_to_basic_chain(self):
         plan = model_policy.resolve_answer_mode_models("pro")

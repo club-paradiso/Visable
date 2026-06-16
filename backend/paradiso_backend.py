@@ -267,6 +267,33 @@ CORS_ALLOW_ORIGINS = [
 
 
 # ---------------------------------------------------------------------------
+# Law-grounding runtime state (single source of truth)
+# ---------------------------------------------------------------------------
+def _law_grounding_runtime_state(cfg=None):
+    """Resolve the runtime law-grounding state from the one config source.
+
+    Returns ``(configured_mode, effective_mode, active)``:
+
+    * ``configured_mode`` — the resolved LAW_GROUNDING_MODE (default ``enabled``
+      via grounding_config; NOT the stale ``disabled`` literal that /health and
+      the startup log used to hardcode, which misreported an active deployment).
+    * ``effective_mode`` — applies the enabled-without-credential rule: an
+      ``enabled`` deploy with no LAW_API_OC makes no external call and does not
+      degrade answers, so it behaves like ``disabled``.
+    * ``active`` — True only when a real-time law lookup will actually be
+      attempted (``audit`` always; ``enabled`` only with a credential).
+
+    The same helper drives the /api/ask gate, /health, and the startup log so the
+    reported mode can never disagree with the behavior.
+    """
+    cfg = cfg or load_grounding_config()
+    mode = cfg.mode
+    effective = "disabled" if (mode == "enabled" and not cfg.law_api_configured) else mode
+    active = effective in {"audit", "enabled"}
+    return mode, effective, active
+
+
+# ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
 
@@ -278,13 +305,16 @@ async def _lifespan(_app: "FastAPI"):
     feature flags). API keys are never logged.
     """
     llm = _resolve_llm_config()
-    law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    law_mode, law_effective, law_active = _law_grounding_runtime_state()
     logger.info(
-        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s law_grounding_mode=%s",
+        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s "
+        "law_grounding_mode=%s law_grounding_effective=%s law_grounding_active=%s",
         llm["provider"],
         llm["model"],
         llm["groq_fallback_allowed"],
         law_mode,
+        law_effective,
+        law_active,
     )
     yield
 
@@ -3563,6 +3593,7 @@ async def health() -> Dict[str, Any]:
     # credential. Computed live so LAW_API_OC-only deployments report correctly.
     try:
         law_cfg = load_grounding_config()
+        law_mode, law_effective_mode, law_grounding_active = _law_grounding_runtime_state(law_cfg)
         law_api_status: Dict[str, Any] = {
             "law_api_configured": law_cfg.law_api_configured,
             "law_api_oc_configured": law_cfg.law_api_oc_configured,
@@ -3570,6 +3601,9 @@ async def health() -> Dict[str, Any]:
             "law_api_credential_source": law_cfg.law_api_credential_source,
         }
     except Exception:  # pragma: no cover - defensive
+        law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
+        law_effective_mode = law_mode if LAW_API_KEY else ("disabled" if law_mode == "enabled" else law_mode)
+        law_grounding_active = law_effective_mode in {"audit", "enabled"}
         law_api_status = {
             "law_api_configured": bool(LAW_API_KEY),
             "law_api_oc_configured": False,
@@ -3602,7 +3636,13 @@ async def health() -> Dict[str, Any]:
             "ollama_configured": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
             "ollama_timeout_seconds": OLLAMA_TIMEOUT_SECONDS,
         },
-        "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
+        # Single source of truth (default "enabled"); was previously hardcoded to
+        # "disabled" here, which misreported active deployments. `effective` and
+        # `active` make the enabled-without-credential degradation explicit so an
+        # operator can see at a glance whether real-time law calls actually fire.
+        "law_grounding_mode": law_mode,
+        "law_grounding_effective_mode": law_effective_mode,
+        "law_grounding_active": law_grounding_active,
         # Granular, non-secret Open Law API configuration flags (Part A).
         "law_api": law_api_status,
     }
@@ -3863,12 +3903,7 @@ async def ask(req: AskRequest) -> AskResponse:
     # is set, this becomes fully active with no code change. The diagnostic
     # "audit" mode is intentionally left untouched (operators opt into it).
     grounding_cfg = load_grounding_config()
-    mode = grounding_cfg.mode
-    effective_mode = (
-        "disabled"
-        if (mode == "enabled" and not grounding_cfg.law_api_configured)
-        else mode
-    )
+    mode, effective_mode, _law_active = _law_grounding_runtime_state(grounding_cfg)
     intent = should_attempt_law_grounding(prompt)
     if intent.get("should_attempt"):
         law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
@@ -4550,15 +4585,17 @@ async def debug_law_grounding_netdiag() -> Dict[str, Any]:
                         "Railway DNS 설정/도메인 차단 여부를 확인하세요."),
         "EGRESS_BLOCKED": ("아웃바운드 자체가 막혀 있습니다(중립 호스트 1.1.1.1:443도 실패). "
                            "Railway 네트워킹/방화벽에서 외부 접속을 허용하세요."),
-        "REACHABLE_HTTPS": ("www.law.go.kr에 HTTPS로는 연결됩니다. 기본 호출이 http라서 막혔을 "
-                            "수 있으니 https로 전환하면 해결됩니다(코드에서 처리 가능)."),
+        "REACHABLE_HTTPS": ("www.law.go.kr에 HTTPS로 연결됩니다. 실시간 법령 호출은 이미 https를 "
+                            "기본으로 사용하므로 전송 경로는 정상입니다. 직전 selftest 실패는 일시적이거나 "
+                            "OC/호출 IP 허용 문제일 수 있으니 selftest 결과(403=IP 미등록)를 확인하세요."),
         "REACHABLE_HTTP": ("www.law.go.kr에 HTTP로 연결됩니다. 직전 selftest 실패는 일시적"
                            "(타임아웃 등)일 수 있으니 selftest를 다시 실행해 보세요."),
         "LAWGOKR_CONNECTION_REFUSED": ("중립 호스트는 되지만 www.law.go.kr은 80/443 모두 연결이 "
                                        "거부/차단됩니다. 한국 정부 서버가 해외·클라우드 IP의 접속을 "
                                        "막는 것으로 보입니다. 한국 소재 프록시를 거치도록 LAW_API_BASE_URL을 "
                                        "설정하거나, open.law.go.kr에 호출 IP 허용을 요청해야 합니다."),
-        "HTTP_PORT_80_BLOCKED": ("443은 열리지만 80이 막힙니다. https로 전환하면 해결됩니다."),
+        "HTTP_PORT_80_BLOCKED": ("443은 열리지만 80이 막힙니다. 실시간 법령 호출은 이미 https(443)를 "
+                                 "기본으로 사용하므로 전송 경로는 정상입니다."),
         "HTTP_LAYER_ISSUE": ("TCP는 연결되지만 HTTP 응답을 받지 못합니다. 프록시/방화벽의 HTTP 검사 "
                              "또는 서버 측 차단 가능성이 있습니다."),
     }

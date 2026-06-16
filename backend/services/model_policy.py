@@ -42,20 +42,28 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
 ANSWER_MODES = ("fast", "basic", "pro")
 DEFAULT_ANSWER_MODE = "basic"
 
-# Fast tier: prefer the lightest reliable free model for low latency. Order is
-# Gemma first (requested), then Qwen, then Llama as a last resort — every entry
-# is a small / MoE-active-light free model so the fast tier stays snappy. The
-# candidate-skip logic (model_not_found -> next candidate) means a momentarily
-# unavailable slug simply falls through to the next, so the chain is resilient.
-# NOTE: qwen/* is normally reserved for Chinese-language routes by policy; it is
-# included here ONLY as an explicit fast-tier fallback per product request, and
-# never as a default for the (basic) final-answer chain.
+# Fast tier: a light, low-latency model first, then a GUARANTEED-working tail.
+#
+# The fast chain must never be able to fail as a whole while the basic chain
+# would have answered. Earlier the fast tier was a set of ultralight free slugs
+# (gemma-4-26b-a4b / gemma-3-4b / qwen / llama-3.2-3b) that were DISJOINT from
+# the proven basic chain, so whenever those light free endpoints were all down
+# or rate-limited, every fast request collapsed into the deterministic
+# "all online model candidates failed" preparation note — even though the basic
+# tier's models were answering fine. The fast chain now ENDS with the same
+# proven-working models the basic chain uses (gpt-oss-120b, gemma-4-31b): the
+# light primary keeps answers snappy when it is available, and the candidate-skip
+# logic (model_not_found / rate-limit -> next candidate) falls through to a model
+# that is known to answer instead of giving up.
+#
+# qwen/* is intentionally NOT used here — it is reserved for Chinese-language
+# routes by policy, and it was one of the unreliable slugs in the broken chain.
 DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-26b-a4b-it:free",   # Gemma 4 MoE (~3.8B active) — light + preferred
+    "google/gemma-4-26b-a4b-it:free",   # Gemma 4 MoE (~3.8B active) — light, fast primary
     "google/gemma-3-4b-it:free",        # Gemma 3 4B — lightest Gemma fallback
-    "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen free (A3B active) — fallback
-    "meta-llama/llama-3.2-3b-instruct:free",  # Llama free 3B — last-resort fallback
+    "openai/gpt-oss-120b:free",         # proven-working tail (shared with the basic chain)
+    "google/gemma-4-31b-it:free",       # proven-working tail (shared with the basic chain)
 ]
 
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"

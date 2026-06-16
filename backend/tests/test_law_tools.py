@@ -206,9 +206,33 @@ class HealthAndDebugSecurityTests(unittest.TestCase):
         self.assertTrue(law["law_api_key_fallback_configured"])
         self.assertEqual(law["law_api_credential_source"], "LAW_API_OC")
         self.assertEqual(body["law_grounding_mode"], "audit")
+        # audit + credential => real-time law calls actually fire.
+        self.assertEqual(body["law_grounding_effective_mode"], "audit")
+        self.assertTrue(body["law_grounding_active"])
         # Neither secret value appears anywhere in the response text.
         self.assertNotIn("oc-sentinel-zzz-987", resp.text)
         self.assertNotIn("legacy-secret-key-654", resp.text)
+
+    def test_health_law_mode_default_is_enabled_not_stale_disabled(self):
+        # /health used to hardcode law_grounding_mode="disabled" by default,
+        # contradicting the real default ("enabled" from grounding_config) and
+        # making an active deployment look off. It must now report the true mode
+        # plus the credential-gated effective state.
+        client = self._client()  # no LAW_* env set
+        body = client.get("/health").json()
+        self.assertEqual(body["law_grounding_mode"], "enabled")
+        # enabled WITHOUT a credential degrades to disabled (no external call,
+        # no answer downgrade) and is reported honestly as inactive.
+        self.assertEqual(body["law_grounding_effective_mode"], "disabled")
+        self.assertFalse(body["law_grounding_active"])
+
+    def test_health_law_mode_enabled_with_oc_is_active(self):
+        os.environ["LAW_API_OC"] = "oc-sentinel-active-111"
+        body = self._client().get("/health").json()
+        self.assertEqual(body["law_grounding_mode"], "enabled")
+        self.assertEqual(body["law_grounding_effective_mode"], "enabled")
+        self.assertTrue(body["law_grounding_active"])
+        self.assertNotIn("oc-sentinel-active-111", str(body))
 
     def test_health_only_key_reports_fallback_only(self):
         os.environ["LAW_API_KEY"] = "legacy-secret"

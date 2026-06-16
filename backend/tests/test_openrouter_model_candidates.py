@@ -311,6 +311,38 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(body["answer_mode"], "fast")
         self.assertEqual(body["answer_mode_requested"], "fast")
 
+    def test_fast_mode_falls_through_dead_light_models_to_proven_tail(self):
+        # Regression for the reported bug: Fast mode showed only the
+        # "all online model candidates failed" preparation note. Root cause: the
+        # fast chain was disjoint from the proven basic chain, so when the
+        # ultralight free slugs were all down, every fast request collapsed into
+        # the deterministic fallback even though basic-mode models answered fine.
+        # The fast chain now ends with proven-working models (gpt-oss / gemma-4-31b),
+        # so a dead light primary must fall THROUGH to a real answer, not give up.
+        pb = _pb()
+        resp, calls = self._ask(
+            pb,
+            {
+                "google/gemma-4-26b-a4b-it:free": (404, "No endpoints found for this model"),
+                "google/gemma-3-4b-it:free": (404, "No endpoints found for this model"),
+            },
+            answer_mode="fast",
+        )
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        # Walked past both dead light models and answered on the proven tail.
+        self.assertEqual(calls, [
+            "google/gemma-4-26b-a4b-it:free",
+            "google/gemma-3-4b-it:free",
+            "openai/gpt-oss-120b:free",
+        ])
+        self.assertEqual(body["final_model"], "openai/gpt-oss-120b:free")
+        self.assertTrue(body["model_fallback_used"])
+        self.assertEqual(body["answer_mode"], "fast")
+        # The deterministic "all candidates failed" note must NOT be used.
+        self.assertFalse(body.get("deterministic_fallback_answer_used", False))
+        self.assertFalse(body.get("all_candidates_failed", False))
+
     def test_pro_answer_mode_falls_back_to_basic_chain_marked_unavailable(self):
         pb = _pb()
         resp, calls = self._ask(pb, {}, answer_mode="pro")
