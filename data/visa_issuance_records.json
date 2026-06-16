@@ -366,52 +366,308 @@
         "sourceRevisionDate": "2026-05-21",
         "extractionConfidence": "medium"
       },
-      "issuanceSummaryKo": "계절근로(E-8)는 지방자치단체가 관리하는 계절근로 프로그램 중심의 사증발급 항목입니다.",
-      "issuanceSummaryEn": "E-8 is organized around seasonal worker programs managed by local governments.",
+      "scenarioGuide": true,
+      "scenarioQuestionKo": "어떤 방법으로 추천받았나요?",
+      "scenarioQuestionEn": "How were you recommended?",
+      "issuanceSummaryKo": "계절근로(E-8)는 농·어번기에 최대 8개월 일하는 단수사증입니다. 외국인 본인이 아니라 한국의 지방자치단체(시·군·구)가 계절근로자를 배정받아 비자포털(visa.go.kr)로 사증발급인정서를 신청합니다. 누가 추천했는지(추천경로)에 따라 서류가 다릅니다. 아래에서 본인 경우를 고르세요.",
+      "issuanceSummaryEn": "E-8 is a single-entry visa for up to 8 months of seasonal farm/fishery work. Not the worker but the Korean local government (si/gun/gu) files the Certificate of Visa Issuance Confirmation on the Visa Portal. Documents depend on who recommended you. Pick your case below.",
       "issuanceModes": [
         {
+          "id": "e-8-mou",
+          "icon": "🤝",
+          "choiceTitleKo": "MOU 외국지자체 추천",
+          "choiceTitleEn": "Foreign-government MOU",
           "type": "visa_issuance_confirmation",
-          "labelKo": "사증발급인정서 먼저 필요",
-          "labelEn": "Visa issuance confirmation first",
-          "appliesToKo": "지방자치단체가 계절근로자 배정·초청 절차를 진행하는 경우입니다.",
+          "labelKo": "MOU 외국지자체 추천(E-8-1·3) 사증발급",
+          "labelEn": "Foreign-government MOU (E-8-1 / E-8-3)",
+          "appliesToKo": "한국 지자체와 MOU를 맺은 외국 지자체가 자기 주민을 추천한 경우입니다. (E-8-1 농업 / E-8-3 어업)",
+          "appliesToEn": "Your foreign local government has an MOU with a Korean local government and recommended you. (E-8-1 farming / E-8-3 fishery)",
           "actor": "local_government",
           "whereToApply": "mixed",
           "steps": [
             {
               "order": 1,
-              "ko": "지방자치단체가 계절근로 프로그램 대상자와 초청 절차를 정리합니다.",
-              "en": "The local government organizes the seasonal worker program and invitation process."
+              "ko": "지방자치단체(시·군·구)가 계절근로자를 농가·어가에 배정합니다.",
+              "en": "The local government (si/gun/gu) assigns the seasonal worker to a farm or fishery."
             },
             {
               "order": 2,
-              "ko": "비자포털 또는 관할 출입국 절차로 사증발급인정 신청자료를 제출합니다.",
-              "en": "Submit confirmation materials through Visa Portal or the competent immigration route."
+              "ko": "지자체가 비자포털(visa.go.kr)에서 사증발급인정서를 신청합니다(지자체가 신청을 대행).",
+              "en": "The local government files the Certificate of Visa Issuance Confirmation on the Visa Portal (visa.go.kr) on the applicant's behalf."
             },
             {
               "order": 3,
-              "ko": "인정서 발급 후 해당 재외공관의 사증 신청 안내를 확인합니다.",
-              "en": "After confirmation, follow the relevant overseas mission’s visa instructions."
+              "ko": "사증발급인정서가 나오면, 본국 재외공관에서 단수사증(E-8)을 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker receives a single-entry E-8 visa at the home-country mission and enters Korea."
             }
           ],
           "documents": {
             "common": [
               "표준근로계약서",
-              "국내 구인 노력 입증자료",
-              "근로자 여권 사본 등 신원자료",
-              "숙소 관련 확인자료"
+              "내국인 구인노력 증빙자료(구인 광고 사본 및 최종 구인실적 등)",
+              "외국인 계절근로자 여권 사본",
+              "숙소시설표(계절근로자에게 제공 예정인 숙소)"
             ],
             "additional": [
-              "지자체 계절근로 배정·운영 관련 자료"
+              "본국에서의 농·어업 종사 이력",
+              "업무협약(MOU) 체결 결과서 등"
             ],
             "conditional": [
-              "MOU 또는 가족관계 입증자료",
-              "결혼이민자 가족 초청 관련 서류",
-              "유학생 부모 초청 관련 서류"
+              "외국어로 된 서류는 번역자 확인서 및 번역문 첨부(공증 불요)"
             ]
           },
           "warnings": [
-            "E-8은 지자체 프로그램·배정·초청 조건이 핵심입니다.",
-            "숙소·근로조건·초청관계 자료는 지자체와 관할 기관 확인이 필요합니다."
+            "계절근로(E-8)는 단수사증이며 최대 8개월까지 일할 수 있습니다.",
+            "외국인 본인이 아니라 한국의 지방자치단체가 비자포털로 사증발급인정서를 신청합니다.",
+            "비자포털에 사증 종류(E-8-1~99)와 정보를 정확히 입력해야 합니다. 잘못 입력하면 반려될 수 있습니다.",
+            "결혼이민자 등 국내에 체류 중인 가족은 사증발급인정서 대상이 아니라 '체류자격 외 활동허가' 대상입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§26 계절근로(E-8)",
+              "pageStart": 278,
+              "pageEnd": 283,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-8-marriage-relative",
+          "icon": "👪",
+          "choiceTitleKo": "결혼이민자의 친척",
+          "choiceTitleEn": "Marriage-migrant's relative",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "결혼이민자 친척 추천(E-8-2·4) 사증발급",
+          "labelEn": "Marriage-migrant relative (E-8-2 / E-8-4)",
+          "appliesToKo": "한국에 사는 결혼이민자(한국 국적 취득자 포함)가 해외 거주 4촌 이내 친척을 추천한 경우입니다. (E-8-2 농업 / E-8-4 어업)",
+          "appliesToEn": "A marriage migrant living in Korea recommended an overseas relative within the 4th degree. (E-8-2 farming / E-8-4 fishery)",
+          "actor": "local_government",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "지방자치단체(시·군·구)가 계절근로자를 농가·어가에 배정합니다.",
+              "en": "The local government (si/gun/gu) assigns the seasonal worker to a farm or fishery."
+            },
+            {
+              "order": 2,
+              "ko": "지자체가 비자포털(visa.go.kr)에서 사증발급인정서를 신청합니다(지자체가 신청을 대행).",
+              "en": "The local government files the Certificate of Visa Issuance Confirmation on the Visa Portal (visa.go.kr) on the applicant's behalf."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본국 재외공관에서 단수사증(E-8)을 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker receives a single-entry E-8 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "표준근로계약서",
+              "내국인 구인노력 증빙자료(구인 광고 사본 및 최종 구인실적 등)",
+              "외국인 계절근로자 여권 사본",
+              "숙소시설표(계절근로자에게 제공 예정인 숙소)"
+            ],
+            "additional": [
+              "결혼이민자 신분증",
+              "(국내용) 혼인관계증명서",
+              "(국내용) 가족관계증명서(혼인귀화자 해당)",
+              "기본증명서(혼인귀화자 해당)",
+              "결혼이민자의 친척 관계도",
+              "거주국(체류국)에서 발급한 가족관계증명서"
+            ],
+            "conditional": [
+              "외국어로 된 서류는 번역자 확인서 및 번역문 첨부(공증 불요)"
+            ]
+          },
+          "warnings": [
+            "계절근로(E-8)는 단수사증이며 최대 8개월까지 일할 수 있습니다.",
+            "외국인 본인이 아니라 한국의 지방자치단체가 비자포털로 사증발급인정서를 신청합니다.",
+            "비자포털에 사증 종류(E-8-1~99)와 정보를 정확히 입력해야 합니다. 잘못 입력하면 반려될 수 있습니다.",
+            "결혼이민자 등 국내에 체류 중인 가족은 사증발급인정서 대상이 아니라 '체류자격 외 활동허가' 대상입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§26 계절근로(E-8)",
+              "pageStart": 278,
+              "pageEnd": 283,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-8-reentry-g1",
+          "icon": "🔁",
+          "choiceTitleKo": "G-1 활동 후 재입국",
+          "choiceTitleEn": "Re-entry after G-1 work",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "G-1 자격 활동 후 재입국 추천(E-8-5·6) 사증발급",
+          "labelEn": "Re-entry after G-1 work (E-8-5 / E-8-6)",
+          "appliesToKo": "기타(G-1-19) 자격으로 계절근로에 참여한 사람을 고용주가 지자체에 재고용 추천한 경우입니다. (E-8-5 농업 / E-8-6 어업)",
+          "appliesToEn": "An employer recommended re-hiring someone who previously did seasonal work on a G-1-19 status. (E-8-5 farming / E-8-6 fishery)",
+          "actor": "local_government",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "지방자치단체(시·군·구)가 계절근로자를 농가·어가에 배정합니다.",
+              "en": "The local government (si/gun/gu) assigns the seasonal worker to a farm or fishery."
+            },
+            {
+              "order": 2,
+              "ko": "지자체가 비자포털(visa.go.kr)에서 사증발급인정서를 신청합니다(지자체가 신청을 대행).",
+              "en": "The local government files the Certificate of Visa Issuance Confirmation on the Visa Portal (visa.go.kr) on the applicant's behalf."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본국 재외공관에서 단수사증(E-8)을 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker receives a single-entry E-8 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "표준근로계약서",
+              "내국인 구인노력 증빙자료(구인 광고 사본 및 최종 구인실적 등)",
+              "외국인 계절근로자 여권 사본",
+              "숙소시설표(계절근로자에게 제공 예정인 숙소)"
+            ],
+            "additional": [
+              "직전 계절근로 참여 및 재고용 추천 입증자료"
+            ],
+            "conditional": [
+              "외국어로 된 서류는 번역자 확인서 및 번역문 첨부(공증 불요)"
+            ]
+          },
+          "warnings": [
+            "계절근로(E-8)는 단수사증이며 최대 8개월까지 일할 수 있습니다.",
+            "외국인 본인이 아니라 한국의 지방자치단체가 비자포털로 사증발급인정서를 신청합니다.",
+            "비자포털에 사증 종류(E-8-1~99)와 정보를 정확히 입력해야 합니다. 잘못 입력하면 반려될 수 있습니다.",
+            "결혼이민자 등 국내에 체류 중인 가족은 사증발급인정서 대상이 아니라 '체류자격 외 활동허가' 대상입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§26 계절근로(E-8)",
+              "pageStart": 278,
+              "pageEnd": 283,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-8-student-parent",
+          "icon": "🎓",
+          "choiceTitleKo": "유학생의 부모",
+          "choiceTitleEn": "Student's parent",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "유학생 부모 초청(E-8-7·8) 사증발급",
+          "labelEn": "Student's parent (E-8-7 / E-8-8)",
+          "appliesToKo": "요건을 충족한 유학(D-2) 자격 소지자가 부모를 계절근로자로 초청한 경우입니다. (E-8-7 농업 / E-8-8 어업)",
+          "appliesToEn": "A qualifying D-2 student invited a parent as a seasonal worker. (E-8-7 farming / E-8-8 fishery)",
+          "actor": "local_government",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "지방자치단체(시·군·구)가 계절근로자를 농가·어가에 배정합니다.",
+              "en": "The local government (si/gun/gu) assigns the seasonal worker to a farm or fishery."
+            },
+            {
+              "order": 2,
+              "ko": "지자체가 비자포털(visa.go.kr)에서 사증발급인정서를 신청합니다(지자체가 신청을 대행).",
+              "en": "The local government files the Certificate of Visa Issuance Confirmation on the Visa Portal (visa.go.kr) on the applicant's behalf."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본국 재외공관에서 단수사증(E-8)을 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker receives a single-entry E-8 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "표준근로계약서",
+              "내국인 구인노력 증빙자료(구인 광고 사본 및 최종 구인실적 등)",
+              "외국인 계절근로자 여권 사본",
+              "숙소시설표(계절근로자에게 제공 예정인 숙소)"
+            ],
+            "additional": [
+              "유학생 외국인등록증",
+              "재학증명서",
+              "출생증명서 또는 가족관계증명서 등"
+            ],
+            "conditional": [
+              "외국어로 된 서류는 번역자 확인서 및 번역문 첨부(공증 불요)"
+            ]
+          },
+          "warnings": [
+            "계절근로(E-8)는 단수사증이며 최대 8개월까지 일할 수 있습니다.",
+            "외국인 본인이 아니라 한국의 지방자치단체가 비자포털로 사증발급인정서를 신청합니다.",
+            "비자포털에 사증 종류(E-8-1~99)와 정보를 정확히 입력해야 합니다. 잘못 입력하면 반려될 수 있습니다.",
+            "결혼이민자 등 국내에 체류 중인 가족은 사증발급인정서 대상이 아니라 '체류자격 외 활동허가' 대상입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§26 계절근로(E-8)",
+              "pageStart": 278,
+              "pageEnd": 283,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-8-helper",
+          "icon": "🗣️",
+          "choiceTitleKo": "언어소통 도우미 등",
+          "choiceTitleEn": "Language helper, etc.",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "언어소통 도우미 등 기타 인력(E-8-99) 사증발급",
+          "labelEn": "Language helper / other support (E-8-99)",
+          "appliesToKo": "해외 지자체에서 언어소통 도우미 등 관리 목적의 인력을 파견하는 경우입니다.",
+          "appliesToEn": "A foreign local government sends a language helper or other management-purpose staff.",
+          "actor": "local_government",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "지방자치단체(시·군·구)가 계절근로자를 농가·어가에 배정합니다.",
+              "en": "The local government (si/gun/gu) assigns the seasonal worker to a farm or fishery."
+            },
+            {
+              "order": 2,
+              "ko": "지자체가 비자포털(visa.go.kr)에서 사증발급인정서를 신청합니다(지자체가 신청을 대행).",
+              "en": "The local government files the Certificate of Visa Issuance Confirmation on the Visa Portal (visa.go.kr) on the applicant's behalf."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본국 재외공관에서 단수사증(E-8)을 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker receives a single-entry E-8 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "표준근로계약서",
+              "내국인 구인노력 증빙자료(구인 광고 사본 및 최종 구인실적 등)",
+              "외국인 계절근로자 여권 사본",
+              "숙소시설표(계절근로자에게 제공 예정인 숙소)"
+            ],
+            "additional": [
+              "파견·관리 목적 및 입국 필요성 입증자료"
+            ],
+            "conditional": [
+              "외국어로 된 서류는 번역자 확인서 및 번역문 첨부(공증 불요)"
+            ]
+          },
+          "warnings": [
+            "계절근로(E-8)는 단수사증이며 최대 8개월까지 일할 수 있습니다.",
+            "외국인 본인이 아니라 한국의 지방자치단체가 비자포털로 사증발급인정서를 신청합니다.",
+            "비자포털에 사증 종류(E-8-1~99)와 정보를 정확히 입력해야 합니다. 잘못 입력하면 반려될 수 있습니다.",
+            "결혼이민자 등 국내에 체류 중인 가족은 사증발급인정서 대상이 아니라 '체류자격 외 활동허가' 대상입니다."
           ],
           "sourceRefs": [
             {
@@ -427,11 +683,11 @@
       ],
       "countryVariance": {
         "level": "high",
-        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "reasonKo": "지자체 프로그램·MOU·초청관계·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
         "officialOverlayRequired": true
       },
-      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
-      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+      "disclaimerKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 계절근로(E-8) 항목(278–283p)에 근거하며, 심사 과정에서 가감될 수 있습니다. 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Documents shown follow the 2026.5 visa manual E-8 section (pp. 278–283) and may be added to or reduced during review. Final approval rests with the competent authority."
     },
     {
       "code": "E-9",
@@ -447,69 +703,473 @@
         "sourceRevisionDate": "2026-05-21",
         "extractionConfidence": "medium"
       },
-      "issuanceSummaryKo": "비전문취업(E-9)은 고용허가제(EPS) 체계와 연결되는 취업 사증 항목입니다. 이번 POC는 공식 매뉴얼 위치와 경로 성격을 묶고, 세부 제출서류 구조화는 후속 추출 대상으로 남깁니다.",
-      "issuanceSummaryEn": "E-9 is tied to the Employment Permit System. This POC binds the official manual section and route character, while detailed document extraction remains follow-up work.",
+      "scenarioGuide": true,
+      "scenarioQuestionKo": "어떤 일(업종)을 하러 오시나요?",
+      "scenarioQuestionEn": "Which industry will you work in?",
+      "issuanceSummaryKo": "비전문취업(E-9)은 고용허가제(EPS)로 들어오는 취업 비자입니다. 한국 고용주(회사)가 먼저 고용허가를 받고, 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다. 비자는 사증발급인정서로만 발급되며, 업종에 따라 추가서류가 다릅니다. 아래에서 본인 업종을 고르면 필요한 서류를 보여드립니다.",
+      "issuanceSummaryEn": "E-9 is a work visa under the Employment Permit System (EPS). The Korean employer first obtains the employment permit, then files a Certificate of Visa Issuance Confirmation. The visa is issued only via that certificate, and extra documents depend on the industry. Pick your industry below to see the documents you need.",
       "issuanceModes": [
         {
+          "id": "e-9-1-manufacturing",
+          "icon": "🏭",
+          "choiceTitleKo": "제조업",
+          "choiceTitleEn": "Manufacturing",
           "type": "visa_issuance_confirmation",
-          "labelKo": "고용허가제 기반 인정서 경로",
-          "labelEn": "EPS-based confirmation route",
-          "appliesToKo": "고용허가제 절차에 따라 고용허가·근로계약 등 선행 절차가 있는 경우입니다.",
+          "labelKo": "제조업(E-9-1) 사증발급",
+          "labelEn": "Manufacturing (E-9-1)",
+          "appliesToKo": "상시근로자 300인 미만 또는 자본금 80억원 이하 제조업에서 일하는 경우입니다. 제조업은 공통서류 외 별도 추가서류가 없습니다.",
+          "appliesToEn": "For manufacturing workplaces with under 300 regular employees or capital up to KRW 8bn. No industry-specific extra documents.",
           "actor": "employer",
           "whereToApply": "mixed",
           "steps": [
             {
               "order": 1,
-              "ko": "고용허가제 절차상 고용허가·근로계약 등 선행 요건을 확인합니다.",
-              "en": "Confirm EPS preconditions such as employment permit and labor contract."
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
             },
             {
               "order": 2,
-              "ko": "인정서 또는 공관 신청 경로는 관할 기관·송출국 절차에 맞춰 확인합니다.",
-              "en": "Check the confirmation or mission route according to the competent authority and sending-country process."
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
             },
             {
               "order": 3,
-              "ko": "공식 매뉴얼과 공관 안내에 따라 추가서류를 보완합니다.",
-              "en": "Supplement documents according to the official manual and mission guidance."
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
             }
           ],
           "documents": {
             "common": [
               "사증발급인정신청서(별지 제21호 서식)",
               "여권",
-              "표준규격사진 1매"
-            ],
-            "additional": [
+              "표준규격사진 1매",
               "사업자등록증 사본",
               "고용허가서 및 표준근로계약서 사본",
               "사업장실태조사서"
             ],
+            "additional": [],
             "conditional": [
-              "업종별 추가서류(건설·농축산·어업·음식점업 등)"
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
             ]
           },
           "warnings": [
-            "E-9 세부 절차는 EPS·송출국·공관 안내가 함께 작동하므로 이번 화면은 확정 체크리스트가 아닙니다."
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다.",
+            "기준을 충족하지 않아도 중소기업확인서·뿌리기업확인서·중견기업확인서·국내복귀기업 선정확인서가 있으면 인정될 수 있습니다.(해당 시)"
           ],
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§ 비전문취업(E-9)",
+              "sectionTitle": "§27 비전문취업(E-9)",
               "pageStart": 284,
               "pageEnd": 293,
-              "sourceRevisionDate": "2026-05-21"
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-2-construction",
+          "icon": "🏗️",
+          "choiceTitleKo": "건설업",
+          "choiceTitleEn": "Construction",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "건설업(E-9-2) 사증발급",
+          "labelEn": "Construction (E-9-2)",
+          "appliesToKo": "건설공사 현장에서 일하는 경우입니다. 건설업 등록·도급 관련 서류가 추가됩니다.",
+          "appliesToEn": "For construction sites. Construction registration and subcontract documents are added.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "건설업등록증",
+              "도급(하도급) 계약서",
+              "건설현장 근무 중 외국인력 현황표(원도급업체 작성)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-3-agriculture",
+          "icon": "🌾",
+          "choiceTitleKo": "농축산업",
+          "choiceTitleEn": "Agriculture / Livestock",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "농축산업(E-9-3) 사증발급",
+          "labelEn": "Agriculture & Livestock (E-9-3)",
+          "appliesToKo": "작물재배업·축산업 등에서 일하는 경우입니다.",
+          "appliesToEn": "For crop farming, livestock and related services.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "농업경영체등록(변경등록)확인서(국립농산물품질관리원장 발급, 유효기간 1년)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-4-fishery",
+          "icon": "🎣",
+          "choiceTitleKo": "어업",
+          "choiceTitleEn": "Fishery",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "어업(E-9-4) 사증발급",
+          "labelEn": "Fishery (E-9-4)",
+          "appliesToKo": "연근해어업·양식어업·소금채취업 등에서 일하는 경우입니다. 어업 형태에 따라 서류가 다릅니다.",
+          "appliesToEn": "For coastal/offshore fishing, aquaculture and salt farming. Documents differ by fishery type.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "연근해어업: 선박(어선)검사증서, 어업허가증(연안·근해·구획어업) 또는 어업면허증 및 관리선사용지정증(정치망어업)",
+              "양식어업: 선박(어선)검사증서, 어업허가증 또는 어업면허증 또는 내수면어업신고필증",
+              "천일염 생산·암염 채취업: 염제조업허가증 사본(염전임차인은 염제조업확인서·임대차계약서·임대인 염제조허가증)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다.",
+            "비전문취업 어업(E-9-4)은 선원법 적용을 받지 않는 20톤 미만 어선 종사자에 한합니다. 20톤 이상 어선은 선원취업(E-10)입니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-5-service",
+          "icon": "🍽️",
+          "choiceTitleKo": "서비스업",
+          "choiceTitleEn": "Services",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "서비스업(E-9-5) 사증발급",
+          "labelEn": "Services (E-9-5)",
+          "appliesToKo": "한식 음식점업, 호텔·숙박업, 건설폐기물 처리업, 냉장·냉동 창고업 등에서 일하는 경우입니다.",
+          "appliesToEn": "For Korean restaurants, hotels/lodging, construction-waste and cold-storage businesses, etc.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "한식 음식점업: 사업자등록증 또는 영업신고증(지자체 발급), 위탁·가맹점인 경우 위탁계약서·가맹계약서(필요시 부가가치세 과세표준증명원)",
+              "호텔·숙박업: 관광사업 등록증(지자체 발급), 건축물일반청소업은 호텔 등과 맺은 위탁계약서"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다.",
+            "한식 음식점업·호텔·숙박업·임업·광업은 '24년도 고용허가서 발급 시점 이후부터 사증발급인정서 신청이 가능합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-9-forestry",
+          "icon": "🌲",
+          "choiceTitleKo": "임업",
+          "choiceTitleEn": "Forestry",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "임업(E-9-9) 사증발급",
+          "labelEn": "Forestry (E-9-9)",
+          "appliesToKo": "임업 종묘 생산업·육림업·벌목업 등 임업 단순 종사원으로 일하는 경우입니다.",
+          "appliesToEn": "For forestry (seedling, afforestation, logging) as a simple forestry worker.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "산림사업시행법인: 사업자등록증 및 산림사업법인 등록증",
+              "국유림영림단: 사업자등록증 및 국유림영림단 등록증",
+              "산림조합·산림조합중앙회: 사업자등록증 또는 위탁계약서",
+              "원목생산업자: 사업자등록증 및 목재생산업 등록증",
+              "종묘생산법인: 사업자등록증 또는 위탁계약서"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-9-10-mining",
+          "icon": "⛏️",
+          "choiceTitleKo": "광업",
+          "choiceTitleEn": "Mining",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "광업(E-9-10) 사증발급",
+          "labelEn": "Mining (E-9-10)",
+          "appliesToKo": "금속·비금속광물 광업에서 광업 단순 종사원으로 일하는 경우입니다.",
+          "appliesToEn": "For metal/non-metal mining as a simple mining worker.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "한국 고용주(회사)가 고용노동부에서 고용허가서를 받습니다.",
+              "en": "The Korean employer first obtains an employment permit from the Ministry of Employment and Labor."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 업종별 대행기관이 사업장 관할 출입국·외국인청 또는 비자포털(visa.go.kr)에 사증발급인정서를 신청합니다.",
+              "en": "The employer or the industry agency files a Certificate of Visa Issuance Confirmation at the competent immigration office or the Visa Portal (visa.go.kr)."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(근로자)이 본국 재외공관에서 비자(사증)를 신청·발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the worker applies for the visa at the home-country Korean mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "표준규격사진 1매",
+              "사업자등록증 사본",
+              "고용허가서 및 표준근로계약서 사본",
+              "사업장실태조사서"
+            ],
+            "additional": [
+              "광업원부(광업등록사무소 발급)",
+              "광물생산보고서(광업법에 따라 관할 지자체에 매월 제출하는 보고서)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-9)는 사증발급인정서로만 발급됩니다. 근로자가 개인적으로 재외공관에 바로 신청할 수 없습니다.",
+            "대부분의 서류는 고용주(회사)가 준비합니다. 본인(근로자)은 여권·사진·범죄경력증명서·건강상태확인서를 준비하면 됩니다.",
+            "고용허가제 대상 17개국(태국·필리핀·스리랑카·베트남·인도네시아·몽골·파키스탄·우즈베키스탄·캄보디아·중국·방글라데시·네팔·미얀마·키르기스스탄·동티모르·라오스·타지키스탄) 국민에게 적용됩니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다.",
+            "연간 생산량 15만톤 이상의 채굴권·조광권이 설정된 업체에 한합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§27 비전문취업(E-9)",
+              "pageStart": 284,
+              "pageEnd": 293,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
             }
           ]
         }
       ],
       "countryVariance": {
         "level": "high",
-        "reasonKo": "국가·공관·초청기관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "reasonKo": "고용허가제 송출국·공관·업종·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
         "officialOverlayRequired": true
       },
-      "disclaimerKo": "제출서류는 심사 과정에서 가감될 수 있으며, 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
-      "disclaimerEn": "Required documents may be added or reduced during review, and final approval depends on the competent authority's examination."
+      "disclaimerKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 비전문취업(E-9) 항목(284–293p)에 근거하며, 심사 과정에서 가감될 수 있습니다. 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Documents shown follow the 2026.5 visa manual E-9 section (pp. 284–293) and may be added to or reduced during review. Final approval rests with the competent authority."
     },
     {
       "code": "F-1",
@@ -2252,7 +2912,7 @@
       "titleEn": "Maritime Crew",
       "manualSource": {
         "manual": "visa_manual_2026_05_21",
-        "sectionTitle": "§ 선원취업(E-10)",
+        "sectionTitle": "§28 선원취업(E-10)",
         "pages": [
           294,
           296
@@ -2260,61 +2920,216 @@
         "sourceRevisionDate": "2026-05-21",
         "extractionConfidence": "medium"
       },
-      "issuanceSummaryKo": "선원취업(E-10)는 2026.5 사증발급 안내매뉴얼 기준 제출서류를 안내합니다. 세부유형·국가/공관별 차이가 있을 수 있습니다.",
-      "issuanceSummaryEn": "Maritime Crew (E-10) issuance documents per the 2026.5 visa manual; details may vary by subtype and mission.",
+      "scenarioGuide": true,
+      "scenarioQuestionKo": "어떤 배에서 일하나요?",
+      "scenarioQuestionEn": "Which kind of ship will you work on?",
+      "issuanceSummaryKo": "선원취업(E-10)은 한국 배에서 일하는 선원(부원) 비자입니다. 선사(고용주)가 회사 소재지 관할 출입국·외국인청 또는 업종별 대행기관(내항·순항→한국해운조합, 어선→수협중앙회)을 통해 사증발급인정서를 신청합니다. 어떤 배에서 일하는지에 따라 서류가 다릅니다. 아래에서 본인 경우를 고르세요.",
+      "issuanceSummaryEn": "E-10 is a visa for crew (ratings) on Korean ships. The shipping company files the Certificate of Visa Issuance Confirmation at the competent immigration office or via an agency (Korea Shipping Association for coastal/cruise, Suhyup for fishing boats). Documents depend on the ship type. Pick your case below.",
       "issuanceModes": [
         {
-          "type": "mixed",
-          "labelKo": "신청 경로 및 제출서류 확인",
-          "labelEn": "Confirm route and documents",
-          "appliesToKo": "선원취업(E-10) 사증발급을 신청하는 경우입니다.",
-          "appliesToEn": "For Maritime Crew (E-10) visa issuance.",
-          "actor": "applicant",
-          "whereToApply": "overseas_mission",
+          "id": "e-10-1-coastal",
+          "icon": "🚢",
+          "choiceTitleKo": "내항상선 선원",
+          "choiceTitleEn": "Coastal merchant ship",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "내항선원(E-10-1) 사증발급",
+          "labelEn": "Coastal crew (E-10-1)",
+          "appliesToKo": "내항 여객·화물선(어선 제외, 총톤수 5톤 이상)에 승선하는 부원입니다. 운영기관은 한국해운조합입니다.",
+          "appliesToEn": "Crew (ratings) on coastal passenger/cargo ships (excl. fishing boats, 5+ gross tons). Operated via the Korea Shipping Association.",
+          "actor": "employer",
+          "whereToApply": "mixed",
           "steps": [
             {
               "order": 1,
-              "ko": "본인의 세부유형과 신청경로(재외공관 직접 신청 또는 사증발급인정서)를 확인합니다.",
-              "en": "Identify your subtype and route (direct mission application or certificate of visa issuance)."
+              "ko": "선사(고용주)가 외국인선원 고용신고를 하고 지방해양항만청장의 고용신고수리서를 받습니다.",
+              "en": "The shipping company reports the foreign-crew hire and obtains the acceptance from the regional maritime authority."
             },
             {
               "order": 2,
-              "ko": "아래 매뉴얼 기준 첨부서류(공통 + 자격별 추가서류)를 준비합니다.",
-              "en": "Prepare the manual's attachments below (common + status-specific)."
+              "ko": "고용주 또는 대행기관(내항·순항→한국해운조합, 어선→수협중앙회)이 회사 소재지 관할 출입국·외국인청에 사증발급인정서를 신청합니다.",
+              "en": "The employer or agency (Korea Shipping Association for coastal/cruise, Suhyup for fishing boats) files the Certificate of Visa Issuance Confirmation at the competent immigration office."
             },
             {
               "order": 3,
-              "ko": "관할 재외공관 또는 사증발급인정서 신청기관에 제출합니다. 심사상 필요 시 첨부서류가 가감될 수 있습니다.",
-              "en": "Submit at the competent mission or certificate-issuing office. Documents may be added or reduced during review."
+              "ko": "사증발급인정서가 나오면, 본인(선원)이 본국 재외공관에서 비자(E-10)를 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the crew member receives the E-10 visa at the home-country mission and enters Korea."
             }
           ],
           "documents": {
             "common": [
               "사증발급인정신청서(별지 제21호 서식)",
               "여권",
-              "표준규격사진 1매"
-            ],
-            "additional": [
               "사업자등록증",
+              "표준규격사진 1매",
               "표준근로계약서 사본",
               "신원보증서",
               "외국인선원고용신고수리서(지방해양항만청장 발급)"
             ],
+            "additional": [
+              "내항여객운송사업면허증 또는 내항화물운송사업등록증 사본(최초 신청 또는 등록사항 변경 시에만 제출)",
+              "외국인선원고용추천서(지방해양수산청장 발급)",
+              "'승선정원증서' 또는 '500톤 미만 선박검사증서' 등 청(사무소·출장소)장이 필요하다고 인정하는 서류",
+              "노사합의 선사별 T/O 운영승인서(선사별 총 정원제 적용 업체의 경우)"
+            ],
             "conditional": [
-              "업종별 추가서류(내항선원·어선원 등 면허·등록증·고용추천서)"
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
             ]
           },
+          "warnings": [
+            "비자(E-10)는 사증발급인정서로만 발급됩니다.",
+            "선원취업(E-10)은 고용허가제 적용 대상이 아닙니다. 20톤 미만 어선의 연근해어업 종사자는 비전문취업(E-9-4) 대상입니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
           "sourceRefs": [
             {
               "manual": "visa_manual_2026_05_21",
-              "sectionTitle": "§ 선원취업(E-10)",
+              "sectionTitle": "§28 선원취업(E-10)",
               "pageStart": 294,
               "pageEnd": 296,
-              "sourceRevisionDate": "2026-05-21"
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-10-2-fishing",
+          "icon": "🐟",
+          "choiceTitleKo": "어선 선원",
+          "choiceTitleEn": "Fishing boat",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "어선원(E-10-2) 사증발급",
+          "labelEn": "Fishing crew (E-10-2)",
+          "appliesToKo": "20톤 이상 어선에 승선하는 부원입니다. 운영기관은 수협중앙회입니다.",
+          "appliesToEn": "Crew (ratings) on fishing boats of 20+ gross tons. Operated via the National Federation of Fisheries Cooperatives (Suhyup).",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "선사(고용주)가 외국인선원 고용신고를 하고 지방해양항만청장의 고용신고수리서를 받습니다.",
+              "en": "The shipping company reports the foreign-crew hire and obtains the acceptance from the regional maritime authority."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 대행기관(내항·순항→한국해운조합, 어선→수협중앙회)이 회사 소재지 관할 출입국·외국인청에 사증발급인정서를 신청합니다.",
+              "en": "The employer or agency (Korea Shipping Association for coastal/cruise, Suhyup for fishing boats) files the Certificate of Visa Issuance Confirmation at the competent immigration office."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(선원)이 본국 재외공관에서 비자(E-10)를 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the crew member receives the E-10 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "사업자등록증",
+              "표준규격사진 1매",
+              "표준근로계약서 사본",
+              "신원보증서",
+              "외국인선원고용신고수리서(지방해양항만청장 발급)"
+            ],
+            "additional": [
+              "정치망어업면허증 및 관리선사용지정(어선사용승인)증 또는 근해어업허가증 사본(최초 신청 또는 등록사항 변경 시에만 제출)",
+              "선박검사증서",
+              "외국인선원고용추천서(지방해양수산청장 발급)",
+              "어획물운반업등록증(어획물운반업만 해당)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-10)는 사증발급인정서로만 발급됩니다.",
+            "선원취업(E-10)은 고용허가제 적용 대상이 아닙니다. 20톤 미만 어선의 연근해어업 종사자는 비전문취업(E-9-4) 대상입니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§28 선원취업(E-10)",
+              "pageStart": 294,
+              "pageEnd": 296,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
+            }
+          ]
+        },
+        {
+          "id": "e-10-3-cruise",
+          "icon": "🛳️",
+          "choiceTitleKo": "순항 여객선(크루즈) 선원",
+          "choiceTitleEn": "Cruise ship",
+          "type": "visa_issuance_confirmation",
+          "labelKo": "순항여객선원(E-10-3) 사증발급",
+          "labelEn": "Cruise crew (E-10-3)",
+          "appliesToKo": "총톤수 2천 톤 이상의 국제순항 크루즈선에 승선하는 부원입니다. 운영기관은 한국해운조합입니다.",
+          "appliesToEn": "Crew (ratings) on international cruise ships of 2,000+ gross tons. Operated via the Korea Shipping Association.",
+          "actor": "employer",
+          "whereToApply": "mixed",
+          "steps": [
+            {
+              "order": 1,
+              "ko": "선사(고용주)가 외국인선원 고용신고를 하고 지방해양항만청장의 고용신고수리서를 받습니다.",
+              "en": "The shipping company reports the foreign-crew hire and obtains the acceptance from the regional maritime authority."
+            },
+            {
+              "order": 2,
+              "ko": "고용주 또는 대행기관(내항·순항→한국해운조합, 어선→수협중앙회)이 회사 소재지 관할 출입국·외국인청에 사증발급인정서를 신청합니다.",
+              "en": "The employer or agency (Korea Shipping Association for coastal/cruise, Suhyup for fishing boats) files the Certificate of Visa Issuance Confirmation at the competent immigration office."
+            },
+            {
+              "order": 3,
+              "ko": "사증발급인정서가 나오면, 본인(선원)이 본국 재외공관에서 비자(E-10)를 발급받아 입국합니다.",
+              "en": "Once the certificate is issued, the crew member receives the E-10 visa at the home-country mission and enters Korea."
+            }
+          ],
+          "documents": {
+            "common": [
+              "사증발급인정신청서(별지 제21호 서식)",
+              "여권",
+              "사업자등록증",
+              "표준규격사진 1매",
+              "표준근로계약서 사본",
+              "신원보증서",
+              "외국인선원고용신고수리서(지방해양항만청장 발급)"
+            ],
+            "additional": [
+              "외국인선원고용추천서(지방해양수산청장 발급)",
+              "순항여객운송사업면허증 사본(최초 신청 또는 등록사항 변경 시에만 제출)"
+            ],
+            "conditional": [
+              "범죄경력증명서(국적국 권한기관 발급, 신청일 기준 3개월 이내)",
+              "건강상태확인서(본인 자필 작성)"
+            ]
+          },
+          "warnings": [
+            "비자(E-10)는 사증발급인정서로만 발급됩니다.",
+            "선원취업(E-10)은 고용허가제 적용 대상이 아닙니다. 20톤 미만 어선의 연근해어업 종사자는 비전문취업(E-9-4) 대상입니다.",
+            "범죄경력증명서는 신청일 기준 3개월 이내에 발급된 것이어야 합니다."
+          ],
+          "sourceRefs": [
+            {
+              "manual": "visa_manual_2026_05_21",
+              "sectionTitle": "§28 선원취업(E-10)",
+              "pageStart": 294,
+              "pageEnd": 296,
+              "sourceRevisionDate": "2026-05-21",
+              "extractionConfidence": "medium"
             }
           ]
         }
-      ]
+      ],
+      "countryVariance": {
+        "level": "high",
+        "reasonKo": "선박종류·운영기관·공관·세부 체류자격에 따라 제출서류와 접수 방식이 달라질 수 있습니다.",
+        "officialOverlayRequired": true
+      },
+      "disclaimerKo": "표시된 제출서류는 2026.5 사증발급 안내매뉴얼 선원취업(E-10) 항목(294–296p)에 근거하며, 심사 과정에서 가감될 수 있습니다. 최종 허가 여부는 관할 기관 심사로 결정됩니다.",
+      "disclaimerEn": "Documents shown follow the 2026.5 visa manual E-10 section (pp. 294–296) and may be added to or reduced during review. Final approval rests with the competent authority."
     },
     {
       "code": "F-3",
