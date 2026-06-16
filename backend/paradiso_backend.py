@@ -3655,6 +3655,18 @@ async def health() -> Dict[str, Any]:
     candidate_warnings = _validate_model_candidates(candidates)
     if llm.get("groq_fallback_allowed"):
         candidate_warnings = [*candidate_warnings, "PROVIDER_FAMILY_FALLBACK_ENABLED"]
+    # Make a deploy-time env override of the answer model VISIBLE. The active
+    # OPENROUTER_MODEL / *_CANDIDATES env vars override the committed code policy
+    # default by design, so a stale Railway env var (e.g. an old pinned model)
+    # silently keeps the live answer model on the old value even after the code
+    # default is updated. Surfacing this turns that invisible override into an
+    # obvious, diagnosable signal (model ids are public; no secrets here).
+    _model_env_override = bool((os.environ.get("OPENROUTER_MODEL") or "").strip())
+    _candidates_env_override = bool((os.environ.get("OPENROUTER_MODEL_CANDIDATES") or "").strip())
+    if _model_env_override and OPENROUTER_MODEL != _DEFAULT_OPENROUTER_MODEL:
+        candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_ENV_OVERRIDE"]
+    if _candidates_env_override and candidates != list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES):
+        candidate_warnings = [*candidate_warnings, "OPENROUTER_MODEL_CANDIDATES_ENV_OVERRIDE"]
     # Non-secret Open Law API posture. NEVER exposes LAW_API_OC / LAW_API_KEY
     # values — only booleans, the resolved mode, and which env var supplied the
     # credential. Computed live so LAW_API_OC-only deployments report correctly.
@@ -3695,6 +3707,13 @@ async def health() -> Dict[str, Any]:
             # OpenRouter candidate fallback posture (non-secret).
             "primary_model": OPENROUTER_MODEL,
             "model_candidates": candidates,
+            # Committed code-policy default + whether an env var is overriding it,
+            # so "the answer model did not update after merge" is self-diagnosing:
+            # if model_env_override is true and primary_model != code_default_model,
+            # a deploy env var (e.g. a stale Railway OPENROUTER_MODEL) is pinning it.
+            "code_default_model": _DEFAULT_OPENROUTER_MODEL,
+            "code_default_model_candidates": list(_DEFAULT_OPENROUTER_MODEL_CANDIDATES),
+            "model_env_override": _model_env_override or _candidates_env_override,
             "provider_family_fallback_allowed": llm["groq_fallback_allowed"],
             "candidate_warnings": candidate_warnings,
             **_openrouter_cooldown_metadata(),
