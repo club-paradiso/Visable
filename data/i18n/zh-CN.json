@@ -1164,6 +1164,12 @@
   ],
   "issuanceStageLabel": "入境前签证签发",
   "issuanceRouteLabel": "申请途径",
+  "issuanceGuideTrigger": "选择我的情况",
+  "issuanceGuideClear": "重新选择",
+  "issuanceGuideEmptyHint": "点击上方按钮选择您的情况，仅显示该情况所需的材料。",
+  "issuanceGuideModalCopy": "请选择一个符合您情况的选项。",
+  "issuanceGuideModalTitle": "选择签证签发情形",
+  "issuanceGuideQuestionFallback": "请选择您的情况",
   "issuanceRouteChipLabels": [
     "在外公馆申请",
     "签证签发认定书",
