@@ -1,0 +1,64 @@
+{
+  "schema_version": "2026-06-employment-analyzer-classification-sources",
+  "generated_by": "scripts/build_classification_sources.mjs",
+  "generated_at": "2026-06-16",
+  "note": "Consolidated source metadata for the HiKorea employment-reporting code analyzer. Canonical codes live in data/jobcode_master.json; this file only records provenance + checksum. It does not contain or alter any codes.",
+  "canonical_dataset": {
+    "path": "data/jobcode_master.json",
+    "schema_version": "2026-06-hikorea-employment-reporting-reference",
+    "total_count": 2766,
+    "categories": {
+      "직종": 728,
+      "업종": 2038
+    },
+    "checksum": "sha256:bb3aae750f30984438e1b73e9191b4112db021db746ebbd546d4f32b13d6ccec",
+    "fetched_at": "2026-06-16"
+  },
+  "occupation": {
+    "classification_name": "제8차 한국표준직업분류",
+    "short_name": "KSCO8",
+    "version": "KSCO8",
+    "revision": "통계청 고시 제2024-328호",
+    "announcement_date": "2024-07-01",
+    "effective_date": "2025-01-01",
+    "source_name": "통계청 / 국가데이터처",
+    "source_reference": "국가데이터처 통계분류포털 (kssc)",
+    "source_url": "https://kssc.mods.go.kr",
+    "runtime_count": 728,
+    "full_table_loaded": false,
+    "fetched_at": "2026-06-16"
+  },
+  "industry": {
+    "classification_name": "제11차 한국표준산업분류",
+    "short_name": "KSIC11",
+    "version": "KSIC11",
+    "revision": "통계청 고시 제2024-2호 (부칙개정 제2024-203호)",
+    "announcement_date": "2024-01-01",
+    "effective_date": "2024-07-01",
+    "source_name": "통계청 / 국가데이터처",
+    "source_reference": "국가데이터처 통계분류포털 (kssc)",
+    "source_url": "https://kssc.mods.go.kr",
+    "runtime_count": 2038,
+    "full_table_loaded": true,
+    "fetched_at": "2026-06-16"
+  },
+  "reporting_context": {
+    "reported_fields": [
+      "직종",
+      "업종",
+      "연간소득"
+    ],
+    "legal_basis": "출입국관리법 시행규칙 제47조 및 제49조의2",
+    "list_source_note": "HiKorea 신고 화면의 직종조회는 국가데이터처 표준직업분류표를, 업종조회는 국가데이터처 표준산업분류표를 기준으로 표시되며 국가데이터처 통계분류포털에서 확인할 수 있다. (FAQ Q7, 붙임2 절차)",
+    "classification_portal_url": "https://kssc.mods.go.kr",
+    "final_confirmation": "최종 신고 코드는 HiKorea 신고 화면 또는 1345에서 반드시 확인"
+  },
+  "adapter_note": "HiKorea 신고 화면의 직종/업종 드롭다운이 공개 표준분류표와 다를 경우, 캐논 데이터를 임의로 바꾸지 말고 이 메타데이터에 mismatch 를 기록하고 어댑터 계층(런타임 매핑)으로 처리한다.",
+  "known_mismatches": [
+    {
+      "area": "occupation",
+      "issue": "KSCO8 세세분류(5단계) 전체표 미적용 — 런타임은 대/중/소/세분류(728행)만 보유",
+      "handling": "세부코드 확정은 HiKorea 직종조회/통계분류포털에서 확인하도록 경고 표시(어댑터: warning)"
+    }
+  ]
+}

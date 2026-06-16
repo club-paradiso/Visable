@@ -1,0 +1,36 @@
+{
+  "schema_version": "2026-06-employment-analyzer-test-cases",
+  "purpose": "Regression fixtures for scripts/employment_code_analyzer.mjs. Every expected code is resolved from data/jobcode_master.json at test time — fixtures assert behaviour, not hard-coded codes, so they cannot drift into hallucination.",
+  "assertion_contract": {
+    "noHallucinatedCode": "always enforced: every returned candidate code must exist in jobcode_master.json with the matching classification type",
+    "sourceMetadataPresent": "always enforced: sourceNotes must be non-empty",
+    "minOccupation": "minimum number of occupation candidates",
+    "minIndustry": "minimum number of industry candidates",
+    "expectAmbiguity": "true if ambiguityQuestions must be non-empty",
+    "occupationIncludes": "each string must appear in some occupation candidate name or path",
+    "industryIncludes": "each string must appear in some industry candidate name or path"
+  },
+  "cases": [
+    { "id": "cafe_barista", "text": "카페에서 바리스타로 일해요", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["음료"], "industryIncludes": ["음료"] } },
+    { "id": "restaurant_kitchen", "text": "식당 주방보조", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["조리"], "industryIncludes": ["음식점"] } },
+    { "id": "english_academy_instructor", "text": "영어학원 강사", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["강사"], "industryIncludes": ["교육"] } },
+    { "id": "university_researcher", "text": "대학교 연구원", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["연구"], "industryIncludes": ["대학"] } },
+    { "id": "it_startup_developer", "text": "IT 스타트업 개발자", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["소프트웨어"], "industryIncludes": ["소프트웨어"] } },
+    { "id": "online_mall_cs", "text": "온라인 쇼핑몰 CS", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["소매"] } },
+    { "id": "farm_seasonal", "text": "농장 계절근로", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["재배"], "industryIncludes": ["재배"] } },
+    { "id": "factory_production", "text": "공장 생산직", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["제조"] } },
+    { "id": "hotel_front", "text": "호텔 프론트", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["숙박"] } },
+    { "id": "translator_freelancer", "text": "통번역 프리랜서", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "occupationIncludes": ["번역"] } },
+    { "id": "youtube_creator", "text": "유튜브 콘텐츠 제작자", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["콘텐츠"] } },
+    { "id": "convenience_part_time", "text": "편의점 알바", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["소매"] } },
+    { "id": "logistics_loading", "text": "택배 물류센터 상하차", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["하역"], "industryIncludes": ["운송"] } },
+    { "id": "daycare_assistant", "text": "어린이집 보조교사", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["보육"], "industryIncludes": ["보육"] } },
+    { "id": "caregiver", "text": "간병인", "expect": { "minOccupation": 1, "minIndustry": 0, "expectAmbiguity": true, "occupationIncludes": ["간병"] } },
+    { "id": "cafe_owner", "text": "사업자등록 내고 카페 운영", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "industryIncludes": ["음료"] } },
+
+    { "id": "ambiguous_cafe_only", "text": "카페에서 일해요", "expect": { "minIndustry": 1, "expectAmbiguity": true } },
+    { "id": "ambiguous_academy_only", "text": "학원에서 일해요", "expect": { "minIndustry": 1, "expectAmbiguity": true } },
+    { "id": "ambiguous_freelancer_only", "text": "프리랜서", "expect": { "expectAmbiguity": true } },
+    { "id": "english_software_engineer", "text": "software engineer at startup", "locale": "en", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["소프트웨어"] } }
+  ]
+}
