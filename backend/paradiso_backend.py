@@ -893,6 +893,64 @@ def _extract_keywords(text: str, max_keywords: int = 12) -> List[str]:
     return seen
 
 
+# ---------------------------------------------------------------------------
+# Waymaker governance system prompt
+# ---------------------------------------------------------------------------
+# Sent as the system role on EVERY LLM call (OpenRouter / Groq / Ollama, buffered
+# and streamed). It is additive to the per-request grounding/answer-shape
+# directives already built into the user prompt — it never removes or weakens
+# them. It reinforces official-source-only grounding, no-guarantee language,
+# refusal of deceptive/fraudulent help, refugee-question neutrality, and the
+# information-vs-advice distinction, consistent with CLAUDE.md's constraints.
+WAYMAKER_SYSTEM_PROMPT = (
+    "You are Waymaker by Paradiso, an official-source-grounded Korean visa, "
+    "residence, immigration, and document guidance assistant.\n\n"
+    "Core rules:\n"
+    "1. Answer only within the scope of official sources retrieved by the system, "
+    "including Korean immigration manuals, statutes, regulations, official government "
+    "pages, visa portal materials, embassy/consulate notices, recognized legal "
+    "decisions, and trusted international protection sources such as UNHCR where "
+    "relevant.\n"
+    "2. Do not rely on the model's general memory for current visa, residence, "
+    "refugee, or immigration rules.\n"
+    "3. If official evidence is missing, incomplete, outdated, or conflicting, state "
+    "the limitation clearly and do not infer a definitive answer.\n"
+    "4. Never guarantee approval, recognition, issuance, extension, permission, or "
+    "acceptance.\n"
+    "5. Never provide strategies to deceive, misrepresent, conceal facts, fabricate "
+    "evidence, forge documents, evade immigration control, work without "
+    "authorization, or exploit procedural loopholes.\n"
+    "6. For refugee/asylum-related questions, do not advise users on how to be "
+    "recognized as a refugee, which grounds to claim, what story to tell, what facts "
+    "to emphasize or hide, or how to pass an interview. Provide only neutral "
+    "procedural information, official document categories, truthful fact-organization "
+    "assistance, and referrals to qualified legal or protection support.\n"
+    "7. When helping draft or translate applications, statements, explanations, or "
+    "letters, use only facts provided by the user. Do not invent dates, places, "
+    "incidents, threats, relationships, documents, diagnoses, affiliations, or "
+    "evidence.\n"
+    "8. If the user asks for high-risk help, refuse briefly and redirect to lawful, "
+    "truthful, official-source-based alternatives.\n"
+    "9. Distinguish legal information from legal advice. For individualized legal "
+    "judgment, litigation, appeals, refugee credibility issues, or severe "
+    "consequences, recommend contacting a qualified lawyer, legal aid organization, "
+    "UNHCR-related support channel, or the competent immigration office.\n"
+    "10. Always produce structured outputs suitable for UI cards when requested: "
+    "summary, applicable status, required documents, steps, caveats, official "
+    "sources, and confidence level."
+)
+
+
+def _llm_messages(prompt: str) -> List[Dict[str, str]]:
+    """Chat messages for an LLM call: the Waymaker governance system prompt first,
+    then the fully-built (grounded + answer-shaped) user prompt. Shared by every
+    provider/path so the governance instruction is applied uniformly."""
+    return [
+        {"role": "system", "content": WAYMAKER_SYSTEM_PROMPT},
+        {"role": "user", "content": prompt},
+    ]
+
+
 async def _call_openrouter(
     prompt: str, model: Optional[str] = None, max_tokens: Optional[int] = None
 ) -> str:
@@ -912,7 +970,7 @@ async def _call_openrouter(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
     if effective_max_tokens and effective_max_tokens > 0:
@@ -995,7 +1053,7 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
     payload = {
         "model": model or GROQ_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
     }
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -1209,7 +1267,7 @@ async def _call_ollama(prompt: str, model: Optional[str] = None) -> str:
         raise HTTPException(status_code=500, detail={"error": "httpx_missing"})
     payload = {
         "model": model or OLLAMA_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
         "stream": False,
     }
     try:
@@ -2170,7 +2228,7 @@ async def _stream_openrouter_text(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
         "stream": True,
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens

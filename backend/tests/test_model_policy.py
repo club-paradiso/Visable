@@ -26,16 +26,14 @@ class ModelRolePolicyTests(unittest.TestCase):
         ):
             os.environ.pop(key, None)
 
-    def test_default_final_answer_chain_uses_nemotron_then_gpt_oss_then_gemma(self):
+    def test_default_final_answer_chain_uses_hermes_then_gemma(self):
         policy = model_policy.resolve_model_role_policy()
-        self.assertEqual(policy["final_answer_model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(policy["final_answer_model"], "nousresearch/hermes-3-llama-3.1-405b:free")
         self.assertEqual(
             policy["final_answer_model_candidates"],
             [
-                "nvidia/nemotron-3-ultra-550b-a55b:free",
-                "nvidia/nemotron-3-super-120b-a12b:free",
-                "openai/gpt-oss-120b:free",
-                "google/gemma-4-31b-it:free",
+                "nousresearch/hermes-3-llama-3.1-405b:free",
+                "google/gemma-4-26b-a4b-it:free",
             ],
         )
 
@@ -68,35 +66,37 @@ class AnswerModeTierTests(unittest.TestCase):
         ):
             os.environ.pop(key, None)
 
-    def test_basic_mode_uses_full_nemotron_chain(self):
+    def test_basic_mode_uses_hermes_then_gemma_chain(self):
         plan = model_policy.resolve_answer_mode_models("basic")
         self.assertEqual(plan["mode"], "basic")
         self.assertTrue(plan["available"])
-        self.assertEqual(plan["primary"], "nvidia/nemotron-3-ultra-550b-a55b:free")
-        self.assertEqual(plan["candidates"][0], "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(plan["primary"], "nousresearch/hermes-3-llama-3.1-405b:free")
+        self.assertEqual(
+            plan["candidates"],
+            [
+                "nousresearch/hermes-3-llama-3.1-405b:free",
+                "google/gemma-4-26b-a4b-it:free",
+            ],
+        )
 
-    def test_fast_mode_leads_with_light_gemma_then_proven_working_tail(self):
+    def test_fast_mode_uses_light_gemma_primary_then_fast_fallback(self):
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["mode"], "fast")
         self.assertTrue(plan["available"])
-        # Lightweight Gemma 4 (MoE) is the fast primary.
+        # Lightweight Gemma 4 (MoE) is the fast primary; gpt-oss-20b is the fast
+        # fallback.
         self.assertEqual(plan["primary"], "google/gemma-4-26b-a4b-it:free")
         cands = plan["candidates"]
-        # A light Gemma leads for snappy answers when it is available.
-        self.assertTrue(cands[0].startswith("google/gemma-4"))
-        # The chain MUST end with proven-working models that the basic chain also
-        # uses, so the fast tier can never collapse into the "all candidates
-        # failed" note while basic-mode models are answering fine.
+        self.assertEqual(cands, ["google/gemma-4-26b-a4b-it:free", "openai/gpt-oss-20b:free"])
+        # The fast primary is also the basic fallback, so the two tiers share a
+        # proven model and the fast tier can never be left without a reachable
+        # model while basic-mode models are answering fine.
         basic = model_policy.resolve_answer_mode_models("basic")["candidates"]
         self.assertTrue(
             any(c in basic for c in cands),
-            "fast chain must share at least one proven model with the basic chain",
+            "fast chain must share at least one model with the basic chain",
         )
-        self.assertIn("openai/gpt-oss-120b:free", cands)
-        self.assertIn("google/gemma-4-31b-it:free", cands)
-        # The slow 550B ultra model must never be in the fast tier, and qwen/* is
-        # reserved for Chinese-language routes (not a fast fallback).
-        self.assertNotIn("nvidia/nemotron-3-ultra-550b-a55b:free", cands)
+        # qwen/* is reserved for Chinese-language routes (not a fast fallback).
         self.assertFalse(any(c.startswith("qwen/") for c in cands))
 
     def test_pro_mode_is_coming_soon_and_falls_back_to_basic_chain(self):
