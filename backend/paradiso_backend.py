@@ -29,6 +29,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
+from services import legal_evidence
 from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
@@ -267,6 +268,33 @@ CORS_ALLOW_ORIGINS = [
 
 
 # ---------------------------------------------------------------------------
+# Law-grounding runtime state (single source of truth)
+# ---------------------------------------------------------------------------
+def _law_grounding_runtime_state(cfg=None):
+    """Resolve the runtime law-grounding state from the one config source.
+
+    Returns ``(configured_mode, effective_mode, active)``:
+
+    * ``configured_mode`` — the resolved LAW_GROUNDING_MODE (default ``enabled``
+      via grounding_config; NOT the stale ``disabled`` literal that /health and
+      the startup log used to hardcode, which misreported an active deployment).
+    * ``effective_mode`` — applies the enabled-without-credential rule: an
+      ``enabled`` deploy with no LAW_API_OC makes no external call and does not
+      degrade answers, so it behaves like ``disabled``.
+    * ``active`` — True only when a real-time law lookup will actually be
+      attempted (``audit`` always; ``enabled`` only with a credential).
+
+    The same helper drives the /api/ask gate, /health, and the startup log so the
+    reported mode can never disagree with the behavior.
+    """
+    cfg = cfg or load_grounding_config()
+    mode = cfg.mode
+    effective = "disabled" if (mode == "enabled" and not cfg.law_api_configured) else mode
+    active = effective in {"audit", "enabled"}
+    return mode, effective, active
+
+
+# ---------------------------------------------------------------------------
 # App
 # ---------------------------------------------------------------------------
 
@@ -278,13 +306,16 @@ async def _lifespan(_app: "FastAPI"):
     feature flags). API keys are never logged.
     """
     llm = _resolve_llm_config()
-    law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower()
+    law_mode, law_effective, law_active = _law_grounding_runtime_state()
     logger.info(
-        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s law_grounding_mode=%s",
+        "Paradiso backend startup: llm_provider=%s llm_model=%s groq_fallback_allowed=%s "
+        "law_grounding_mode=%s law_grounding_effective=%s law_grounding_active=%s",
         llm["provider"],
         llm["model"],
         llm["groq_fallback_allowed"],
         law_mode,
+        law_effective,
+        law_active,
     )
     yield
 
@@ -409,6 +440,14 @@ class AskResponse(BaseModel):
     law_sources: List[Dict[str, Any]] = Field(default_factory=list)
     precedent_evidence_items: List[Dict[str, Any]] = Field(default_factory=list)
     law_evidence_count: int = 0
+    # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
+    # A SEPARATE field from manual/statute evidence so the UI distinguishes them.
+    # Case law is contextual only and never a primary source for current rules.
+    legal_evidence: Optional[Dict[str, Any]] = None
+    legal_evidence_status: str = "not_attempted"
+    legal_evidence_used: bool = False
+    legal_evidence_cases: List[Dict[str, Any]] = Field(default_factory=list)
+    legal_evidence_source_types: List[str] = Field(default_factory=list)
     legal_analysis: Optional[Dict[str, Any]] = None
     legal_analysis_exists: bool = False
     immigration_facts: Dict[str, Any] = Field(default_factory=dict)
@@ -863,6 +902,64 @@ def _extract_keywords(text: str, max_keywords: int = 12) -> List[str]:
     return seen
 
 
+# ---------------------------------------------------------------------------
+# Waymaker governance system prompt
+# ---------------------------------------------------------------------------
+# Sent as the system role on EVERY LLM call (OpenRouter / Groq / Ollama, buffered
+# and streamed). It is additive to the per-request grounding/answer-shape
+# directives already built into the user prompt — it never removes or weakens
+# them. It reinforces official-source-only grounding, no-guarantee language,
+# refusal of deceptive/fraudulent help, refugee-question neutrality, and the
+# information-vs-advice distinction, consistent with CLAUDE.md's constraints.
+WAYMAKER_SYSTEM_PROMPT = (
+    "You are Waymaker by Paradiso, an official-source-grounded Korean visa, "
+    "residence, immigration, and document guidance assistant.\n\n"
+    "Core rules:\n"
+    "1. Answer only within the scope of official sources retrieved by the system, "
+    "including Korean immigration manuals, statutes, regulations, official government "
+    "pages, visa portal materials, embassy/consulate notices, recognized legal "
+    "decisions, and trusted international protection sources such as UNHCR where "
+    "relevant.\n"
+    "2. Do not rely on the model's general memory for current visa, residence, "
+    "refugee, or immigration rules.\n"
+    "3. If official evidence is missing, incomplete, outdated, or conflicting, state "
+    "the limitation clearly and do not infer a definitive answer.\n"
+    "4. Never guarantee approval, recognition, issuance, extension, permission, or "
+    "acceptance.\n"
+    "5. Never provide strategies to deceive, misrepresent, conceal facts, fabricate "
+    "evidence, forge documents, evade immigration control, work without "
+    "authorization, or exploit procedural loopholes.\n"
+    "6. For refugee/asylum-related questions, do not advise users on how to be "
+    "recognized as a refugee, which grounds to claim, what story to tell, what facts "
+    "to emphasize or hide, or how to pass an interview. Provide only neutral "
+    "procedural information, official document categories, truthful fact-organization "
+    "assistance, and referrals to qualified legal or protection support.\n"
+    "7. When helping draft or translate applications, statements, explanations, or "
+    "letters, use only facts provided by the user. Do not invent dates, places, "
+    "incidents, threats, relationships, documents, diagnoses, affiliations, or "
+    "evidence.\n"
+    "8. If the user asks for high-risk help, refuse briefly and redirect to lawful, "
+    "truthful, official-source-based alternatives.\n"
+    "9. Distinguish legal information from legal advice. For individualized legal "
+    "judgment, litigation, appeals, refugee credibility issues, or severe "
+    "consequences, recommend contacting a qualified lawyer, legal aid organization, "
+    "UNHCR-related support channel, or the competent immigration office.\n"
+    "10. Always produce structured outputs suitable for UI cards when requested: "
+    "summary, applicable status, required documents, steps, caveats, official "
+    "sources, and confidence level."
+)
+
+
+def _llm_messages(prompt: str) -> List[Dict[str, str]]:
+    """Chat messages for an LLM call: the Waymaker governance system prompt first,
+    then the fully-built (grounded + answer-shaped) user prompt. Shared by every
+    provider/path so the governance instruction is applied uniformly."""
+    return [
+        {"role": "system", "content": WAYMAKER_SYSTEM_PROMPT},
+        {"role": "user", "content": prompt},
+    ]
+
+
 async def _call_openrouter(
     prompt: str, model: Optional[str] = None, max_tokens: Optional[int] = None
 ) -> str:
@@ -882,7 +979,7 @@ async def _call_openrouter(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
     if effective_max_tokens and effective_max_tokens > 0:
@@ -965,7 +1062,7 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
 
     payload = {
         "model": model or GROQ_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
     }
     headers = {
         "Authorization": f"Bearer {GROQ_API_KEY}",
@@ -1179,7 +1276,7 @@ async def _call_ollama(prompt: str, model: Optional[str] = None) -> str:
         raise HTTPException(status_code=500, detail={"error": "httpx_missing"})
     payload = {
         "model": model or OLLAMA_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
         "stream": False,
     }
     try:
@@ -2140,7 +2237,7 @@ async def _stream_openrouter_text(
 
     payload: Dict[str, Any] = {
         "model": model or OPENROUTER_MODEL,
-        "messages": [{"role": "user", "content": prompt}],
+        "messages": _llm_messages(prompt),
         "stream": True,
     }
     effective_max_tokens = OPENROUTER_MAX_TOKENS if max_tokens is None else max_tokens
@@ -3563,6 +3660,7 @@ async def health() -> Dict[str, Any]:
     # credential. Computed live so LAW_API_OC-only deployments report correctly.
     try:
         law_cfg = load_grounding_config()
+        law_mode, law_effective_mode, law_grounding_active = _law_grounding_runtime_state(law_cfg)
         law_api_status: Dict[str, Any] = {
             "law_api_configured": law_cfg.law_api_configured,
             "law_api_oc_configured": law_cfg.law_api_oc_configured,
@@ -3570,6 +3668,9 @@ async def health() -> Dict[str, Any]:
             "law_api_credential_source": law_cfg.law_api_credential_source,
         }
     except Exception:  # pragma: no cover - defensive
+        law_mode = (os.environ.get("LAW_GROUNDING_MODE") or "enabled").strip().lower()
+        law_effective_mode = law_mode if LAW_API_KEY else ("disabled" if law_mode == "enabled" else law_mode)
+        law_grounding_active = law_effective_mode in {"audit", "enabled"}
         law_api_status = {
             "law_api_configured": bool(LAW_API_KEY),
             "law_api_oc_configured": False,
@@ -3602,7 +3703,13 @@ async def health() -> Dict[str, Any]:
             "ollama_configured": bool(ENABLE_OLLAMA_FALLBACK and OLLAMA_BASE_URL),
             "ollama_timeout_seconds": OLLAMA_TIMEOUT_SECONDS,
         },
-        "law_grounding_mode": (os.environ.get("LAW_GROUNDING_MODE") or "disabled").strip().lower(),
+        # Single source of truth (default "enabled"); was previously hardcoded to
+        # "disabled" here, which misreported active deployments. `effective` and
+        # `active` make the enabled-without-credential degradation explicit so an
+        # operator can see at a glance whether real-time law calls actually fire.
+        "law_grounding_mode": law_mode,
+        "law_grounding_effective_mode": law_effective_mode,
+        "law_grounding_active": law_grounding_active,
         # Granular, non-secret Open Law API configuration flags (Part A).
         "law_api": law_api_status,
     }
@@ -3759,6 +3866,116 @@ async def get_available_packets_endpoint(
     }
 
 
+# Legal-issue dimensions for which supplementary case law / adjudication
+# decisions add genuine value (adjudicative / discretionary / remedy / overstay /
+# refugee / status-change / extension). Routine document/registration lookups are
+# intentionally excluded so case-law retrieval never fires for them.
+_CASE_LAW_WARRANTED_ISSUES = frozenset({
+    "denial_revocation_or_remedy", "constitutional_or_fundamental_rights",
+    "discretionary_or_ambiguous_interpretation", "overstay_or_risk",
+    "nationality_or_refugee_context", "status_change", "extension",
+    "activity_scope", "outside_status_activity",
+})
+# Issues where administrative-appeal (행정심판 재결례) is most relevant.
+_ADMIN_APPEAL_WARRANTED_ISSUES = frozenset({
+    "denial_revocation_or_remedy", "overstay_or_risk",
+    "discretionary_or_ambiguous_interpretation",
+})
+
+
+def _maybe_retrieve_legal_evidence(
+    prompt: str,
+    *,
+    answer_mode: str,
+    effective_mode: str,
+    grounding_cfg,
+    law_intent: bool,
+    law_evidence_pack: Optional[Dict[str, Any]],
+) -> Dict[str, Any]:
+    """Gated, supplementary 판례/재결례 retrieval for /api/ask.
+
+    SEPARATE from the manual/statute pipeline and SUPPLEMENTARY only — manuals,
+    statutes, and official guidance remain primary. It fires ONLY when:
+      * the answer mode is not Fast (case law is a depth feature; Fast stays snappy),
+      * law grounding is actually active (audit/enabled + credential),
+      * the question carries legal intent AND a case-law-warranted issue.
+    Never raises; any failure degrades to a skip/unavailable status so it can
+    never break Fast/Basic routing or the request.
+    """
+    meta: Dict[str, Any] = {
+        "legal_evidence": None,
+        "legal_evidence_status": "not_attempted",
+        "legal_evidence_used": False,
+        "legal_evidence_cases": [],
+        "legal_evidence_source_types": [],
+        "legal_evidence_prompt": "",
+    }
+    if answer_mode == "fast":
+        meta["legal_evidence_status"] = "skipped_fast_mode"
+        return meta
+    if effective_mode not in {"audit", "enabled"} or not law_intent:
+        return meta
+
+    issues = list((law_evidence_pack or {}).get("legal_issue_types") or [])
+    if not (set(issues) & _CASE_LAW_WARRANTED_ISSUES):
+        meta["legal_evidence_status"] = "not_warranted"
+        return meta
+
+    try:
+        from services.evidence_ontology import ISSUE_CONCEPT_KO
+
+        source_types = [legal_evidence.LegalEvidenceSourceType.PRECEDENT]
+        if set(issues) & _ADMIN_APPEAL_WARRANTED_ISSUES:
+            source_types.append(legal_evidence.LegalEvidenceSourceType.ADMINISTRATIVE_APPEAL)
+        issue_concepts = [ISSUE_CONCEPT_KO[i] for i in issues if i in ISSUE_CONCEPT_KO]
+        statute_refs = [
+            s.get("law_name", "") for s in (law_evidence_pack or {}).get("law_sources", []) if s.get("law_name")
+        ][:5]
+
+        result = legal_evidence.retrieve_legal_evidence(
+            prompt,
+            source_types=source_types,
+            issue_concepts=issue_concepts,
+            statute_refs=statute_refs,
+            config=dataclasses.replace(grounding_cfg, mode=effective_mode),
+            max_cases=3,
+        )
+    except Exception:  # pragma: no cover - case law must never break /api/ask
+        meta["legal_evidence_status"] = "error"
+        return meta
+
+    meta["legal_evidence"] = result.to_dict()
+    meta["legal_evidence_status"] = result.status
+    meta["legal_evidence_source_types"] = list(result.source_types)
+    meta["legal_evidence_cases"] = list(result.citations)
+    meta["legal_evidence_used"] = result.status == "available" and bool(result.cases)
+    if meta["legal_evidence_used"]:
+        meta["legal_evidence_prompt"] = _render_legal_evidence_prompt(result)
+    return meta
+
+
+def _render_legal_evidence_prompt(result) -> str:
+    """Compact, safe prompt rendering of the top case-law evidence: the directive
+    plus citations and the preferred chunks (판시사항/판결요지/참조조문 + top
+    reasoning). Never the raw full body; never invents anything."""
+    lines: List[str] = [legal_evidence.LEGAL_EVIDENCE_PROMPT_DIRECTIVE, ""]
+    for case in result.cases[:3]:
+        cite = case.citation()
+        head = (
+            f"- [{cite['source_type']}] {cite['case_name']} "
+            f"({cite['case_number']}, {cite['court_or_tribunal']}, {cite['decision_date']}) "
+            f"[id:{cite['retrieved_source_id']}]"
+        )
+        lines.append(head)
+        for chunk in case.chunks[:4]:
+            text = (chunk.text or "").strip()
+            if text:
+                lines.append(f"    · {chunk.label}: {text[:280]}")
+    lines.append("")
+    lines.append(legal_evidence.CASE_LAW_CAUTION_KO)
+    return "\n".join(lines)
+
+
 @app.post("/api/ask", response_model=AskResponse)
 async def ask(req: AskRequest) -> AskResponse:
     prompt = (req.message or req.query or req.question or "").strip()
@@ -3863,12 +4080,7 @@ async def ask(req: AskRequest) -> AskResponse:
     # is set, this becomes fully active with no code change. The diagnostic
     # "audit" mode is intentionally left untouched (operators opt into it).
     grounding_cfg = load_grounding_config()
-    mode = grounding_cfg.mode
-    effective_mode = (
-        "disabled"
-        if (mode == "enabled" and not grounding_cfg.law_api_configured)
-        else mode
-    )
+    mode, effective_mode, _law_active = _law_grounding_runtime_state(grounding_cfg)
     intent = should_attempt_law_grounding(prompt)
     if intent.get("should_attempt"):
         law_grounding_intent_reasons = list(intent.get("reasons", []) or [])
@@ -3969,6 +4181,17 @@ async def ask(req: AskRequest) -> AskResponse:
     if law_evidence_pack and law_evidence_pack.get("citation_verification"):
         citation_verification = law_evidence_pack.get("citation_verification")
 
+    # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
+    # Gated + Fast-mode-skipped; never breaks the request (see helper).
+    legal_evidence_meta = _maybe_retrieve_legal_evidence(
+        prompt,
+        answer_mode=normalize_answer_mode(req.answer_mode),
+        effective_mode=effective_mode,
+        grounding_cfg=grounding_cfg,
+        law_intent=bool(intent.get("should_attempt")),
+        law_evidence_pack=law_evidence_pack,
+    )
+
     # Shared, non-secret grounding/law metadata reused across prompt and response paths.
     source_panel_meta = _derive_source_panel_metadata(
         law_evidence_pack=law_evidence_pack,
@@ -4040,6 +4263,12 @@ async def ask(req: AskRequest) -> AskResponse:
                 "Required framing: use the issue-based template; practical legal posture first; identify current status/activity/issue; explain backend legal_analysis; source basis later; concrete official-confirmation questions fourth; no final administrative determination.\n"
                 "Official-confirmation questions:\n" + confirmation_lines
             )
+
+    # Supplementary case-law / adjudication evidence: the safe directive + the
+    # preferred chunks for the top cases. Manuals/statutes stay primary; this is
+    # context only and is governed by the case-law safety directive.
+    if legal_evidence_meta.get("legal_evidence_prompt"):
+        final_prompt += "\n\n" + legal_evidence_meta["legal_evidence_prompt"]
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
@@ -4150,6 +4379,14 @@ async def ask(req: AskRequest) -> AskResponse:
         source_state=(law_evidence_pack or {}).get("analysis_mode", "") or law_grounding_status,
         direct_manual_sources=(law_evidence_pack or {}).get("direct_manual_sources", []),
         related_manual_sources=(law_evidence_pack or {}).get("related_manual_sources", []),
+        # Supplementary case-law / adjudication evidence (판례 / 재결례), kept as a
+        # SEPARATE response field from manual/statute evidence so the UI can
+        # distinguish them. Secret-free; OC/full bodies never appear.
+        legal_evidence=legal_evidence_meta["legal_evidence"],
+        legal_evidence_status=legal_evidence_meta["legal_evidence_status"],
+        legal_evidence_used=legal_evidence_meta["legal_evidence_used"],
+        legal_evidence_cases=legal_evidence_meta["legal_evidence_cases"],
+        legal_evidence_source_types=legal_evidence_meta["legal_evidence_source_types"],
         law_grounding_error=(law_evidence_pack or {}).get("law_grounding_error", ""),
         parser_status=(law_evidence_pack or {}).get("parser_status", ""),
         response_shape_hint=(law_evidence_pack or {}).get("response_shape_hint", ""),
@@ -4550,15 +4787,17 @@ async def debug_law_grounding_netdiag() -> Dict[str, Any]:
                         "Railway DNS 설정/도메인 차단 여부를 확인하세요."),
         "EGRESS_BLOCKED": ("아웃바운드 자체가 막혀 있습니다(중립 호스트 1.1.1.1:443도 실패). "
                            "Railway 네트워킹/방화벽에서 외부 접속을 허용하세요."),
-        "REACHABLE_HTTPS": ("www.law.go.kr에 HTTPS로는 연결됩니다. 기본 호출이 http라서 막혔을 "
-                            "수 있으니 https로 전환하면 해결됩니다(코드에서 처리 가능)."),
+        "REACHABLE_HTTPS": ("www.law.go.kr에 HTTPS로 연결됩니다. 실시간 법령 호출은 이미 https를 "
+                            "기본으로 사용하므로 전송 경로는 정상입니다. 직전 selftest 실패는 일시적이거나 "
+                            "OC/호출 IP 허용 문제일 수 있으니 selftest 결과(403=IP 미등록)를 확인하세요."),
         "REACHABLE_HTTP": ("www.law.go.kr에 HTTP로 연결됩니다. 직전 selftest 실패는 일시적"
                            "(타임아웃 등)일 수 있으니 selftest를 다시 실행해 보세요."),
         "LAWGOKR_CONNECTION_REFUSED": ("중립 호스트는 되지만 www.law.go.kr은 80/443 모두 연결이 "
                                        "거부/차단됩니다. 한국 정부 서버가 해외·클라우드 IP의 접속을 "
                                        "막는 것으로 보입니다. 한국 소재 프록시를 거치도록 LAW_API_BASE_URL을 "
                                        "설정하거나, open.law.go.kr에 호출 IP 허용을 요청해야 합니다."),
-        "HTTP_PORT_80_BLOCKED": ("443은 열리지만 80이 막힙니다. https로 전환하면 해결됩니다."),
+        "HTTP_PORT_80_BLOCKED": ("443은 열리지만 80이 막힙니다. 실시간 법령 호출은 이미 https(443)를 "
+                                 "기본으로 사용하므로 전송 경로는 정상입니다."),
         "HTTP_LAYER_ISSUE": ("TCP는 연결되지만 HTTP 응답을 받지 못합니다. 프록시/방화벽의 HTTP 검사 "
                              "또는 서버 측 차단 가능성이 있습니다."),
     }

@@ -34,6 +34,11 @@ from _i18n_pack_support import SUPPORTED_LOCALES, load_packs, localized  # noqa:
 # Localized UI copy now lives in external per-locale JSON packs (data/i18n/*.json);
 # supported display locales are ko, en, zh-CN (zh-Hant aliases to zh-CN).
 
+# Synthetic 4-model fixture used purely to exercise the candidate-fallback
+# machinery (every test below patches it in via OPENROUTER_MODEL_CANDIDATES). It
+# is intentionally DECOUPLED from the production default chain (Hermes 3 ->
+# Gemma 4); the real default is asserted in
+# test_default_candidate_list_matches_approved_policy.
 CANDS = [
     "nvidia/nemotron-3-ultra-550b-a55b:free",
     "nvidia/nemotron-3-super-120b-a12b:free",
@@ -121,9 +126,12 @@ class CandidateListParsingTests(unittest.TestCase):
     def test_default_candidate_list_matches_approved_policy(self):
         pb = _pb()
         os.environ.pop("OPENROUTER_MODEL_CANDIDATES", None)
-        with patch.object(pb, "OPENROUTER_MODEL", CANDS[0]):
+        with patch.object(pb, "OPENROUTER_MODEL", "nousresearch/hermes-3-llama-3.1-405b:free"):
             cands = pb._resolve_openrouter_candidates()
-        self.assertEqual(cands, CANDS)
+        self.assertEqual(cands, [
+            "nousresearch/hermes-3-llama-3.1-405b:free",
+            "google/gemma-4-26b-a4b-it:free",
+        ])
 
     def test_default_candidate_list_excludes_random_routing(self):
         pb = _pb()
@@ -279,7 +287,12 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
 
     def _ask(self, pb, behaviors, question="D-2 연장 서류", **extra):
         fake, calls = _fake_openrouter(behaviors)
-        with patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
+        # Drive the Basic answer chain via env so resolve_answer_mode_models()
+        # (which reads os.environ, not the module globals) uses the synthetic
+        # CANDS fixture rather than the production Hermes/Gemma default.
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
                 patch.object(pb, "GROQ_API_KEY", None), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", False), \
                 patch.object(pb, "OPENROUTER_MODEL", CANDS[0]), \
@@ -310,6 +323,31 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(calls[0], "google/gemma-4-26b-a4b-it:free")
         self.assertEqual(body["answer_mode"], "fast")
         self.assertEqual(body["answer_mode_requested"], "fast")
+
+    def test_fast_mode_falls_through_dead_primary_to_fast_fallback(self):
+        # Regression for the reported bug: Fast mode showed only the
+        # "all online model candidates failed" preparation note when the fast
+        # models were unavailable. A dead light primary must now fall THROUGH to
+        # the fast fallback (gpt-oss-20b) and return a real answer, not give up.
+        pb = _pb()
+        resp, calls = self._ask(
+            pb,
+            {"google/gemma-4-26b-a4b-it:free": (404, "No endpoints found for this model")},
+            answer_mode="fast",
+        )
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        # Walked past the dead light primary and answered on the fast fallback.
+        self.assertEqual(calls, [
+            "google/gemma-4-26b-a4b-it:free",
+            "openai/gpt-oss-20b:free",
+        ])
+        self.assertEqual(body["final_model"], "openai/gpt-oss-20b:free")
+        self.assertTrue(body["model_fallback_used"])
+        self.assertEqual(body["answer_mode"], "fast")
+        # The deterministic "all candidates failed" note must NOT be used.
+        self.assertFalse(body.get("deterministic_fallback_answer_used", False))
+        self.assertFalse(body.get("all_candidates_failed", False))
 
     def test_pro_answer_mode_falls_back_to_basic_chain_marked_unavailable(self):
         pb = _pb()
@@ -460,7 +498,9 @@ class ProviderFamilyFallbackTests(unittest.TestCase):
         async def groq_ok(prompt, model=None, max_tokens=None):
             return "GROQ ANSWER"
 
-        with patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
                 patch.object(pb, "GROQ_API_KEY", groq_key), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", allow_groq), \
                 patch.object(pb, "OPENROUTER_MODEL", CANDS[0]), \
@@ -554,6 +594,8 @@ class DeterministicFallbackAndOllamaTests(unittest.TestCase):
         pb = _pb()
         fake, calls = _fake_openrouter({c: (503, '{"error":"No healthy upstream"}') for c in CANDS})
         patches = [
+            patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
+                                    "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False),
             patch.object(pb, "OPENROUTER_API_KEY", "or-key"),
             patch.object(pb, "GROQ_API_KEY", None),
             patch.object(pb, "ALLOW_GROQ_FALLBACK", False),
@@ -793,7 +835,11 @@ class StreamingAnswerTests(unittest.TestCase):
 
     def _stream(self, pb, behaviors, question="D-2 연장 서류", **extra):
         fake, calls = _fake_stream(behaviors)
-        with patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
+        # Drive the Basic answer chain via env (resolve_answer_mode_models reads
+        # os.environ) so the streamed candidates are the synthetic CANDS fixture.
+        with patch.dict(os.environ, {"OPENROUTER_MODEL": CANDS[0],
+                                     "OPENROUTER_MODEL_CANDIDATES": ",".join(CANDS)}, clear=False), \
+                patch.object(pb, "OPENROUTER_API_KEY", "or-sentinel-key"), \
                 patch.object(pb, "GROQ_API_KEY", None), \
                 patch.object(pb, "ALLOW_GROQ_FALLBACK", False), \
                 patch.object(pb, "_stream_openrouter_text", fake):

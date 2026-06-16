@@ -3,7 +3,8 @@
 This module keeps model routing policy explicit and testable:
 
 - Gemma is the default low-risk router / translation model.
-- Nemotron is the final-answer model family for Paradiso's core visa/status AI.
+- Hermes 3 (Llama 3.1 405B) is the Basic final-answer model, with Gemma 4 as the
+  Basic fallback.
 - gpt-oss is the verifier / structured audit model.
 - China-origin model families are reserved for Chinese-language tasks only by policy.
 
@@ -15,17 +16,16 @@ from __future__ import annotations
 import os
 from typing import Any, Dict, List
 
-MODEL_POLICY_VERSION = "2026-06-nemotron-final-gemma-i18n"
+MODEL_POLICY_VERSION = "2026-06-hermes-basic-gemma-fast"
 
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
 
-DEFAULT_FINAL_ANSWER_MODEL = "nvidia/nemotron-3-ultra-550b-a55b:free"
+# Basic answer tier (final answers): Hermes 3 405B primary, Gemma 4 fallback.
+DEFAULT_FINAL_ANSWER_MODEL = "nousresearch/hermes-3-llama-3.1-405b:free"
 DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "nvidia/nemotron-3-ultra-550b-a55b:free",
-    "nvidia/nemotron-3-super-120b-a12b:free",
-    "openai/gpt-oss-120b:free",
-    "google/gemma-4-31b-it:free",
+    "nousresearch/hermes-3-llama-3.1-405b:free",  # Basic primary
+    "google/gemma-4-26b-a4b-it:free",             # Basic fallback (light Gemma 4 MoE)
 ]
 
 # ---------------------------------------------------------------------------
@@ -42,20 +42,22 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
 ANSWER_MODES = ("fast", "basic", "pro")
 DEFAULT_ANSWER_MODE = "basic"
 
-# Fast tier: prefer the lightest reliable free model for low latency. Order is
-# Gemma first (requested), then Qwen, then Llama as a last resort — every entry
-# is a small / MoE-active-light free model so the fast tier stays snappy. The
-# candidate-skip logic (model_not_found -> next candidate) means a momentarily
-# unavailable slug simply falls through to the next, so the chain is resilient.
-# NOTE: qwen/* is normally reserved for Chinese-language routes by policy; it is
-# included here ONLY as an explicit fast-tier fallback per product request, and
-# never as a default for the (basic) final-answer chain.
+# Fast tier: a light, low-latency primary plus one fast fallback.
+#
+# The fast chain must never collapse as a whole while the basic chain would have
+# answered — that was the reported "all online model candidates failed" bug.
+# The light Gemma 4 MoE primary keeps answers snappy, and gpt-oss-20b is a small,
+# fast fallback; the candidate-skip logic (model_not_found / rate-limit -> next
+# candidate) falls through to it instead of giving up. The fast primary
+# (gemma-4-26b-a4b) is also the basic fallback, so the two tiers share a proven
+# model and neither can be left without a reachable model.
+#
+# qwen/* is intentionally NOT used here — it is reserved for Chinese-language
+# routes by policy.
 DEFAULT_FAST_ANSWER_MODEL = "google/gemma-4-26b-a4b-it:free"
 DEFAULT_FAST_ANSWER_MODEL_CANDIDATES: List[str] = [
-    "google/gemma-4-26b-a4b-it:free",   # Gemma 4 MoE (~3.8B active) — light + preferred
-    "google/gemma-3-4b-it:free",        # Gemma 3 4B — lightest Gemma fallback
-    "qwen/qwen3-next-80b-a3b-instruct:free",  # Qwen free (A3B active) — fallback
-    "meta-llama/llama-3.2-3b-instruct:free",  # Llama free 3B — last-resort fallback
+    "google/gemma-4-26b-a4b-it:free",   # Fast primary — Gemma 4 MoE (~3.8B active)
+    "openai/gpt-oss-20b:free",          # Fast fallback — small, fast gpt-oss
 ]
 
 DEFAULT_VERIFIER_MODEL = "openai/gpt-oss-120b:free"
@@ -120,8 +122,8 @@ def resolve_model_role_policy() -> Dict[str, Any]:
         "chinese_only_model_prefixes": list(CHINESE_ONLY_MODEL_PREFIXES),
         "policy_notes": [
             "Gemma is reserved for translation, language detection, and low-risk routing by default.",
-            "Nemotron is the default final-answer model family for core Paradiso visa/status answers.",
-            "gpt-oss is the default verifier / structured audit model.",
+            "Hermes 3 (Llama 3.1 405B) is the default Basic final-answer model, with Gemma 4 as the Basic fallback.",
+            "gpt-oss is the default verifier / structured audit model (gpt-oss-20b is the Fast-tier fallback).",
             "DeepSeek, Qwen, Kimi, and Z.ai families are reserved for Chinese-language routes by policy.",
             "Random OpenRouter routing such as openrouter/auto or openrouter/free is not allowed.",
         ],

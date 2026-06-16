@@ -2002,17 +2002,17 @@ class ModelConfigResolutionTests(unittest.TestCase):
         import paradiso_backend  # noqa: WPS433
         return paradiso_backend
 
-    def test_code_default_openrouter_model_is_nemotron_ultra_free(self):
+    def test_code_default_openrouter_model_is_hermes_3_405b_free(self):
         pb = self._pb()
-        self.assertEqual(pb._DEFAULT_OPENROUTER_MODEL, "nvidia/nemotron-3-ultra-550b-a55b:free")
+        self.assertEqual(pb._DEFAULT_OPENROUTER_MODEL, "nousresearch/hermes-3-llama-3.1-405b:free")
 
     def test_resolve_prefers_openrouter_with_its_model(self):
         pb = self._pb()
         with patch.object(pb, "OPENROUTER_API_KEY", "or-key"), \
-                patch.object(pb, "OPENROUTER_MODEL", "nvidia/nemotron-3-ultra-550b-a55b:free"):
+                patch.object(pb, "OPENROUTER_MODEL", "nousresearch/hermes-3-llama-3.1-405b:free"):
             cfg = pb._resolve_llm_config()
             self.assertEqual(cfg["provider"], "openrouter")
-            self.assertEqual(cfg["model"], "nvidia/nemotron-3-ultra-550b-a55b:free")
+            self.assertEqual(cfg["model"], "nousresearch/hermes-3-llama-3.1-405b:free")
             self.assertTrue(cfg["configured"])
 
     def test_env_override_model_is_honored(self):

@@ -110,7 +110,13 @@ _ERROR_TO_SOURCE_STATUS = {
 # public, fixed endpoints (confirmed by scripts/probe_korean_law_open_api_2026_05.py);
 # only the OC value is a secret. A deployment that sets LAW_API_BASE_URL can
 # override the host (e.g. to a private proxy) without touching code.
-_DEFAULT_API_HOST = "http://www.law.go.kr"
+#
+# HTTPS by default: cloud egress proxies (e.g. Railway) commonly block plaintext
+# outbound HTTP / port 80 — the live smoke "CONNECT tunnel failed (000)" symptom
+# and the netdiag REACHABLE_HTTPS / HTTP_PORT_80_BLOCKED diagnoses. www.law.go.kr
+# serves the same DRF API over TLS, so defaulting to https lets the real-time law
+# lookup actually reach the host from a cloud deploy even when port 80 is blocked.
+_DEFAULT_API_HOST = "https://www.law.go.kr"
 _SEARCH_PATH = "/DRF/lawSearch.do"
 _SERVICE_PATH = "/DRF/lawService.do"
 
