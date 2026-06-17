@@ -16140,7 +16140,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key, visaCode) : '';
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
-    const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docUxGroupLabels', 1, '상황별 추가서류'))}</div>` : '';
+    const warningHtml = isSubCode ? `<div class="subcode-warning">${escapeHtml(tx('manualNeedsReview'))}: ${escapeHtml(txAt('docUxGroupLabels', 1, '상황별 추가 서류'))}</div>` : '';
     // De-duplicate relocated notes (canonicalized) and render them under the
     // checklist as supplementary guidance, never as required-document rows.
     const noteSeen = new Set();
@@ -17213,9 +17213,9 @@ function dedupeDocGroupsAcrossCategories(groups) {
    Paradiso classification — the official manuals use varying local headings
    (제출서류·신청서류·첨부서류·기본서류·추가서류 …), so the UI presents three
    reader-friendly groups WITHOUT claiming they are official headings:
-     기본 준비서류      ← commonDocs + requiredDocs
-     상황별 추가서류    ← additionalDocs + conditionalDocs
-     심사 중 추가 요청 가능 ← discretionary catch-all wording, shown as a
+     항상 확인할 서류    ← commonDocs + requiredDocs
+     상황별 추가 서류    ← additionalDocs + conditionalDocs
+     기관 확인 필요 서류 ← discretionary catch-all wording, shown as a
                             caution note rather than checklist tiles. */
 const PARADISO_DOC_DISCRETIONARY_RE = /((기타|그\s*밖에)\s*심사에\s*필요(하다고|한)?\s*(인정)?(하는|되는)?\s*(서류|자료)|심사\s*과정에서\s*추가\s*서류|추가\s*서류\s*제출을\s*요구할?\s*수|서류(는|를)?\s*[^,，]{0,10}가감될\s*수|출입국[·\s]*외국인(청|관서|사무소)?(\(.*?\))?장?이?\s*[^,，]{0,20}인정하는\s*서류)/;
 
@@ -17543,15 +17543,15 @@ function renderProcedureDocGroups(groups, keywords, visaCode = '') {
     const display = paradisoBuildDocDisplayGroups(groups);
     const stripFeeTile = arr => (arr || []).filter(doc => !PROCEDURE_FEE_TILE_KEYS.has(doc));
     return [
-        renderDocGroup(txAt('docUxGroupLabels', 0, '기본 준비서류'), stripFeeTile(display.basic), keywords, 'group-basic', visaCode),
-        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가서류'), stripFeeTile(display.situational), keywords, 'group-situational', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 0, '항상 확인할 서류'), stripFeeTile(display.basic), keywords, 'group-basic', visaCode),
+        renderDocGroup(txAt('docUxGroupLabels', 1, '상황별 추가 서류'), stripFeeTile(display.situational), keywords, 'group-situational', visaCode),
         renderDocDiscretionaryNote(display.discretionary, keywords)
     ].filter(Boolean).join('');
 }
 
 function renderDocDiscretionaryNote(items, keywords) {
     if (!items || !items.length) return '';
-    const title = txAt('docUxGroupLabels', 2, '심사 중 추가 요청 가능');
+    const title = txAt('docUxGroupLabels', 2, '기관 확인 필요 서류');
     return `<div class="doc-group doc-discretionary-note" role="note">
         <h5 class="doc-group-title">${escapeHtml(title)}</h5>
         <ul class="doc-discretionary-list">${items.map(d => `<li>${hl(escapeHtml(paradisoResolveDocDisplayLabel(d)), keywords || [])}</li>`).join('')}</ul>
@@ -17908,8 +17908,8 @@ const SCENARIO_CHECKLIST_STORAGE_PREFIX = 'paradiso:scenario-checklist:';
 // Display groups follow the user-facing Paradiso classification (the four
 // internal buckets remain the data model; see paradisoBuildDocDisplayGroups).
 const SCENARIO_CHECKLIST_GROUPS = [
-    { key: 'basic', labelIndex: 0, fallback: '기본 준비서류' },
-    { key: 'situational', labelIndex: 1, fallback: '상황별 추가서류' }
+    { key: 'basic', labelIndex: 0, fallback: '항상 확인할 서류' },
+    { key: 'situational', labelIndex: 1, fallback: '상황별 추가 서류' }
 ];
 
 function hashScenarioChecklistItem(text) {
@@ -18174,8 +18174,8 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     const officialDocumentNamesNote = currentLanguage === 'ko' || (!docsHtml && !variantsHtml) ? '' : `<p class="official-korean-terms-note">${escapeHtml(tx('officialDocumentNamesKoNote'))}</p>`;
     // The source-backed 사증발급 issuance detail lives inside the 사증발급 tab only,
     // so it no longer trails every procedure panel. The procedure doc grid above
-    // (기본 준비서류) already lists the basic documents, so the embedded issuance
-    // card must NOT reprint the same 공통/추가/해당 시 서류 list — that duplicate
+    // (항상 확인할 서류) already lists the basic documents, so the embedded issuance
+    // card must NOT reprint the same 항상 확인할/상황별 추가/해당 시 서류 list — that duplicate
     // "위/아래 두 번 노출" was confusing users. The card keeps its unique 신청
     // 경로·절차·주의사항·출처. When the panel has no doc grid of its own, the card
     // still carries the documents so nothing is lost. Scenario-guide panels let the
@@ -19027,8 +19027,8 @@ function renderIssuanceDocList(items, keywords) {
 function renderIssuanceDocGroups(documents, keywords) {
     const docs = documents || {};
     const groups = [
-        { key: 'common', cls: 'group-basic', label: txAt('issuanceUiLabels', 1, '공통서류') },
-        { key: 'additional', cls: 'group-situational', label: txAt('issuanceUiLabels', 2, '추가서류') },
+        { key: 'common', cls: 'group-basic', label: txAt('issuanceUiLabels', 1, '항상 확인할 서류') },
+        { key: 'additional', cls: 'group-situational', label: txAt('issuanceUiLabels', 2, '상황별 추가 서류') },
         { key: 'conditional', cls: 'group-conditional', label: txAt('issuanceUiLabels', 3, '해당 시 서류') }
     ].map(group => {
         const listHtml = renderIssuanceDocList(docs[group.key], keywords);
@@ -20986,6 +20986,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'show-detail': () => {
                     const code = actionBtn.dataset.code;
                     if (!code) return;
+                    // Unified route guidance: parent-with-subcodes opens a 세부코드/상황
+                    // selector, others open a 절차 selector, before landing on the
+                    // result drawer with the chosen subcode + procedure active. Falls
+                    // through to the plain drawer when the layer is absent or declines.
+                    if (window.ParadisoRoute && typeof window.ParadisoRoute.start === 'function'
+                        && window.ParadisoRoute.start(code, { source: 'search-result' })) return;
                     if (typeof openVisaDrawer === 'function' && openVisaDrawer(code)) return;
                     // Fallback: existing scroll-to-detail behaviour
                     const target = document.querySelector(`.vc[data-code="${CSS.escape(code)}"]`);
@@ -21061,7 +21067,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].some(id => {
+            const anyModalOpen = ['routeGuideOverlay', 'shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
@@ -22703,6 +22709,11 @@ function showVisaDocForAction(visaCode) {
      data/f4/) and load lazily — index.html never embeds country lists. -->
 <script defer src="assets/js/short-stay-checker.js"></script>
 <script defer src="assets/js/f4-route-guide.js"></script>
+<!-- Unified visa/status route-guidance layer: search → (세부코드/상황) → (절차)
+     → result drawer with the chosen subcode + procedure active. Self-contained
+     (window.ParadisoRoute); degrades gracefully to the plain drawer if absent.
+     Pure helpers shared with Node tests (scripts/check_visa_route_guide.mjs). -->
+<script defer src="assets/js/visa-route-guide.js"></script>
 <!-- HiKorea 취업정보 신고용 직종·업종 자연어 분석기. Module sets window.EmploymentCodeAnalyzer;
      the job-code modal degrades gracefully if it fails to load. Single source of
      truth shared with the Node CLI/tests (scripts/check_employment_code_analyzer.mjs). -->
