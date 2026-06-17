@@ -530,9 +530,9 @@
     "Conditional documents"
   ],
   "docUxGroupLabels": [
-    "Basic preparation documents",
-    "Situation-specific additional documents",
-    "May be additionally requested during review"
+    "Always-needed documents",
+    "Situation-specific documents",
+    "Confirm with the office"
   ],
   "docGroupingNote": "These groups are Paradiso’s reading aid — the official manuals use different local headings for each status and procedure.",
   "procedureLabels": [
@@ -1144,8 +1144,8 @@
   "docComposerNote": "The form helper is a drafting aid only and does not submit anything for you. Check HiKorea for the latest official version.",
   "issuanceUiLabels": [
     "Visa issuance",
-    "Common documents",
-    "Additional documents",
+    "Always-needed documents",
+    "Situation-specific documents",
     "Conditional documents",
     "Steps",
     "Notes",

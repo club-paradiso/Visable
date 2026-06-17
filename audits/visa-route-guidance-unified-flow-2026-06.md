@@ -18,7 +18,8 @@ records flow through one adapter + one set of components.
 | File | Change |
 | --- | --- |
 | `assets/js/visa-route-guide.js` | **New.** Self-contained route-guidance module (`window.ParadisoRoute`): normalized adapter, subcode selector, procedure selector, one-question route finder, procedure summary card, URL state machine, in-card CTA. ~Pure helpers are also `module.exports`-ed for Node tests. |
-| `index.html` | **3 surgical edits.** (a) `<script defer src="assets/js/visa-route-guide.js">`; (b) `show-detail` action delegates to `ParadisoRoute.start()` with graceful fallback to `openVisaDrawer`; (c) `'routeGuideOverlay'` added to the global Escape-to-close list. No existing render/search/i18n/theme code was rewritten. |
+| `index.html` | **3 surgical edits** for the route layer + document-taxonomy fallback labels (see §7). (a) `<script defer src="assets/js/visa-route-guide.js">`; (b) `show-detail` action delegates to `ParadisoRoute.start()` with graceful fallback to `openVisaDrawer`; (c) `'routeGuideOverlay'` added to the global Escape-to-close list. No existing render/search/i18n/theme code was rewritten. |
+| `data/i18n/{ko,en,zh-CN}.json` | Document-taxonomy relabel (display-only): `docUxGroupLabels` + `issuanceUiLabels` mapped to the spec's friendly taxonomy (§7). No keys added/removed (parity preserved). |
 | `scripts/check_visa_route_guide.mjs` | **New.** Offline validation: loads the real pure functions and exercises the adapter, URL state machine, and route finder against every record + asserts index.html wiring, i18n fallbacks, and no-dummy-text. 127 checks. |
 | `scripts/check_repo.sh` | Wired the new check in as step `[9d-2/14]`. |
 | `audits/visa-route-guidance-unified-flow-2026-06.md` | This report. |
@@ -160,15 +161,39 @@ valid parent); the validation was corrected to assert *reachability*.
 
 ---
 
-## 7. Known remaining gaps / deferred (honest)
+## 7. Document taxonomy relabel (spec item 9) — done
 
-- **Document taxonomy relabel (spec item 9).** The layer surfaces the existing,
-  already-source-grounded document groups (공통/필수/추가/해당 시) unchanged. Remapping
-  them to the friendlier taxonomy (항상 확인할 서류 / 상황별 추가 서류 / …) is a separate
-  data-hygiene pass on the shared renderer that is guarded by
-  `audit_duplicate_render_content.py` and `check_required_documents_coverage.py`;
-  doing it here would risk those invariants, so it is **deferred and logged**
-  rather than rushed (per CLAUDE.md "when uncertain, keep data intact").
+The shared procedure/issuance document groups now use the spec's friendlier,
+honest taxonomy instead of bare 공통서류/필수서류 — **display-only, all three
+locales, no document re-bucketing, all source references preserved:**
+
+| Internal bucket(s) (data model, unchanged) | Old label | New user-facing label |
+| --- | --- | --- |
+| `commonDocs` + `requiredDocs` | 기본 준비서류 / 공통서류 | **항상 확인할 서류** (Always-needed documents) |
+| `additionalDocs` (+ `conditionalDocs`) | 상황별 추가서류 / 추가서류 | **상황별 추가 서류** (Situation-specific documents) |
+| conditional (issuance only) | 해당 시 서류 | 해당 시 서류 (kept — distinct sub-type) |
+| discretionary catch-all note | 심사 중 추가 요청 가능 | **기관 확인 필요 서류** (Confirm with the office) |
+| fees | (already separated) | rendered in the dedicated fee box (수수료) |
+
+- Changed `docUxGroupLabels` and `issuanceUiLabels` in
+  `data/i18n/{ko,en,zh-CN}.json` plus the matching `txAt(...)` fallbacks in
+  `index.html`. The four internal buckets (`commonDocs`/`requiredDocs`/
+  `additionalDocs`/`conditionalDocs`) are untouched, so
+  `audit_duplicate_render_content.py` and `check_required_documents_coverage.py`
+  (which operate on the raw data buckets) still pass.
+- The existing `docGroupingNote` disclaimer ("화면의 묶음은 이해를 돕기 위한 Paradiso
+  분류이며, 원문 매뉴얼의 표현은 자격·절차별로 다를 수 있습니다.") keeps the friendly labels
+  honest — they are explicitly Paradiso's reader-facing classification, not a
+  claim about official manual headings.
+
+**Still deferred (needs document-level source classification, not a label swap):**
+the purely type-based buckets 번역·공증·아포스티유 확인 and 온라인·방문 제출 관련. Fees
+(수수료) are already pulled into their own box; 사진/신청서 remain inside 항상 확인할
+서류. Splitting translation/submission docs into their own groups would require
+re-classifying individual document IDs and is left as a follow-up data pass so it
+can be source-reviewed rather than guessed.
+
+## 7b. Earlier deferred items (still open)
 - **Route finder coverage.** Only F-6 has a curated question set today (verbatim
   from the spec). The engine is generic — additional statuses are added by
   config only, with no code changes — but new question text must be
