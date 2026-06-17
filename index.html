@@ -20986,6 +20986,12 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'show-detail': () => {
                     const code = actionBtn.dataset.code;
                     if (!code) return;
+                    // Unified route guidance: parent-with-subcodes opens a 세부코드/상황
+                    // selector, others open a 절차 selector, before landing on the
+                    // result drawer with the chosen subcode + procedure active. Falls
+                    // through to the plain drawer when the layer is absent or declines.
+                    if (window.ParadisoRoute && typeof window.ParadisoRoute.start === 'function'
+                        && window.ParadisoRoute.start(code, { source: 'search-result' })) return;
                     if (typeof openVisaDrawer === 'function' && openVisaDrawer(code)) return;
                     // Fallback: existing scroll-to-detail behaviour
                     const target = document.querySelector(`.vc[data-code="${CSS.escape(code)}"]`);
@@ -21061,7 +21067,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 toggleLanguageMenu(false);
                 return;
             }
-            const anyModalOpen = ['shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].some(id => {
+            const anyModalOpen = ['routeGuideOverlay', 'shortStayModalOverlay', 'jobCodeModalOverlay', 'jurisdictionModalOverlay', 'agentFinderModalOverlay', 'medFinderModalOverlay', 'aiModalOverlay', 'docModalOverlay', 'subcodeDetailOverlay', 'faqModalOverlay', 'hikoreaGuideOverlay', 'scenarioPickerOverlay', 'routePickerOverlay', 'issuanceGuideOverlay'].some(id => {
                 const el = document.getElementById(id);
                 if (el?.classList.contains('active')) { closeModal(id); return true; }
                 return false;
@@ -22703,6 +22709,11 @@ function showVisaDocForAction(visaCode) {
      data/f4/) and load lazily — index.html never embeds country lists. -->
 <script defer src="assets/js/short-stay-checker.js"></script>
 <script defer src="assets/js/f4-route-guide.js"></script>
+<!-- Unified visa/status route-guidance layer: search → (세부코드/상황) → (절차)
+     → result drawer with the chosen subcode + procedure active. Self-contained
+     (window.ParadisoRoute); degrades gracefully to the plain drawer if absent.
+     Pure helpers shared with Node tests (scripts/check_visa_route_guide.mjs). -->
+<script defer src="assets/js/visa-route-guide.js"></script>
 <!-- HiKorea 취업정보 신고용 직종·업종 자연어 분석기. Module sets window.EmploymentCodeAnalyzer;
      the job-code modal degrades gracefully if it fails to load. Single source of
      truth shared with the Node CLI/tests (scripts/check_employment_code_analyzer.mjs). -->

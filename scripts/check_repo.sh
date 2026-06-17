@@ -213,6 +213,19 @@ else
   echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
 fi
 
+echo "[9d-2/14] Validating unified visa/status route-guidance layer..."
+# Stdlib/Node-only, offline. Loads the real pure functions from
+# assets/js/visa-route-guide.js and exercises the adapter (guidance model +
+# procedure availability), the URL state machine (?code/subcode/procedure with
+# graceful fallback), and the one-question route finder against every record in
+# visa_data.json. Also asserts the index.html wiring (show-detail delegation,
+# Escape handling) and the trilingual/no-dummy-text guarantees.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_visa_route_guide.mjs
+else
+  echo "INFO: Node.js not found; skipping visa route-guidance validation."
+fi
+
 echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..."
 # Stdlib/Node-only, offline. check_visa_issuance_ui executes the real route-chip
 # derivation + F-4 exclusion guard for every record; validate_visa_issuance_enrichment
