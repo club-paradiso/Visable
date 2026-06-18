@@ -125,7 +125,7 @@ into the image. See `.env.example` for the full list.
 | `OPENROUTER_FAST_MODEL` / `OPENROUTER_FAST_MODEL_CANDIDATES` | optional | The Fast answer tier (UI "⚡ Fast"). Unset → built-in default (`google/gemma-4-26b-a4b-it:free` → `openai/gpt-oss-20b:free`): a light, low-latency primary plus a small fast fallback so the tier cannot collapse into the deterministic note while a model is reachable. |
 | `AI_ROUTER_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared low-risk router / query-classification model policy. |
 | `AI_TRANSLATION_MODEL` | optional | Defaults to `google/gemma-4-31b-it:free`. Used as the declared UI/site translation model policy. |
-| `AI_VERIFIER_MODEL` | optional | Defaults to `openai/gpt-oss-120b:free`. Used as the declared verifier / structured answer-audit model policy. **Note:** the verifier model is never a default *answer* primary for the Fast or Basic tier. If Fast **and** Basic both answer with `openai/gpt-oss-120b:free`, a deploy env (`OPENROUTER_MODEL` and/or `OPENROUTER_FAST_MODEL`/`*_CANDIDATES`) has been pointed at the verifier id — check those values. Each answer now returns `selected_model` (the model that actually answered, == `final_model`) and `fast_mode_fell_back` (true when Fast answered on a non-fast model) so this is diagnosable from the response. |
+| `AI_VERIFIER_MODEL` | optional | Defaults to `openai/gpt-oss-120b:free`. Used as the declared verifier / structured answer-audit model policy. **Note on the Basic tier:** a deploy may *intentionally* set `OPENROUTER_MODEL=openai/gpt-oss-120b:free` so Basic answers with that model — that is a valid, supported configuration, **not** an error. The concern is only when the **Fast** tier also resolves to it: Fast must use `OPENROUTER_FAST_MODEL` (default `google/gemma-4-26b-a4b-it:free`), which is independent of `OPENROUTER_MODEL`. To verify Fast and Basic are actually distinct, read the per-answer routing metadata: `answer_mode` (tier requested/used), `selected_model` (== `final_model`, the model that actually answered), and `fast_mode_fell_back` (true when Fast answered on a non-fast model). If Fast shows `selected_model=openai/gpt-oss-120b:free`, check `OPENROUTER_FAST_MODEL`/`OPENROUTER_FAST_MODEL_CANDIDATES` and that the request carried `answer_mode=fast`. |
 | `AI_CHINESE_MODEL` | optional | Defaults to `deepseek/deepseek-r1-0528:free`. Reserved for Chinese-language routes only. |
 | `AI_CHINESE_FALLBACK_MODELS` | optional | Defaults to `qwen/qwen3-next-80b-a3b-instruct:free,moonshotai/kimi-k2.6:free`. Reserved for Chinese-language fallback only. |
 | `OPENROUTER_MODEL_COOLDOWN_SECONDS` | optional | Defaults to `300`. Retryable per-model failures are remembered in memory and skipped during cooldown. If all models are cooling down, Paradiso returns deterministic limited preparation guidance instead of repeatedly hitting upstream. |
@@ -353,7 +353,10 @@ source panel can be honest without overclaiming:
   - `law_grounding_not_attempted` — the question had no legal intent.
   - `law_grounding_disabled` — `LAW_GROUNDING_MODE=disabled`, **or** `enabled`
     with no `LAW_API_OC` credential (the effective-disabled rule): no external
-    call, and the answer is NOT treated as real-time-law-grounded.
+    call, and the answer is NOT treated as real-time-law-grounded. **Scope note:**
+    the "enabled-without-`LAW_API_OC`" branch is the **local / CI** default (no OC
+    is configured there). It is *not* the diagnosis for Railway production, where
+    `LAW_API_OC` is already set — see the environment matrix below.
   - `law_grounding_audit_only` — `LAW_GROUNDING_MODE=audit`: the lookup runs as a
     diagnostics / citation-verifier posture, never as enabled grounding, so its
     output is never presented as verified real-time law.
@@ -391,6 +394,54 @@ Intent now covers activity-scope/study/working-holiday questions (H-1
 계절학기 수강, 체류자격외활동, etc.), status changes, family/marriage edge cases,
 humanitarian/G-1, short-term work/study, reporting duties, and overstay risk —
 not just explicit legal-basis wording.
+
+#### Environment matrix (which `law_grounding_status_detail` you get)
+
+The status depends on **mode × credential**, so local/CI and production differ:
+
+| Environment | `LAW_API_OC` | `LAW_GROUNDING_MODE` | Resulting status for a law-intent question |
+| --- | --- | --- | --- |
+| Local / CI (default) | unset | `enabled` (code default) or unset | `law_grounding_disabled` (effective-disabled: no OC) |
+| Local / CI (`.env.example`) | set | `audit` | `law_grounding_audit_only` |
+| Railway production (current) | **set** | `audit` | `law_grounding_audit_only` |
+| Railway production (target) | **set** | `enabled` | `law_grounding_verified` (when the lookup returns usable results) |
+
+So the bug report's "law not reflected" in **production** is the `audit` →
+`law_grounding_audit_only` path (OC is present, but audit is a diagnostics
+posture and is never reported as verified), **not** the missing-credential path.
+To make live citations trustworthy in production, switch
+`LAW_GROUNDING_MODE=enabled` (the OC is already set). The unverified-citation
+guardrail protects every non-`verified` state in the meantime.
+
+#### Post-deploy law-grounding verification checklist
+
+After merging and setting `LAW_GROUNDING_MODE=enabled` on Railway (OC already
+present), confirm grounding actually reaches `verified`:
+
+1. **Preflight (no external call, no secrets):**
+   `GET /api/debug/law-grounding/preflight`
+   - `mode: "enabled"`, `external_calls: "enabled"`
+   - `law_api_oc_configured: true`, `ready_for_external_calls: true`
+   - `warnings` does **not** contain `LAW_API_KEY_MISSING` (a `LAW_API_ENDPOINT_MISSING`
+     warning is benign — the tool layer falls back to the public DRF endpoints,
+     `law_api_default_endpoint_available: true`)
+2. **Selftest (one live call):** `GET /api/debug/law-grounding/selftest` →
+   reports a successful Open Law API round-trip (no `LAW_API_*` error type).
+3. **E-7 test question** via `POST /api/ask` (`stream:false`):
+   `"E-7 체류자격자가 퇴사 후 동종업계 다른 회사로 이직하는 경우, 출입국관리법과 시행령상 근무처 변경허가 또는 신고가 필요한지 법적 근거와 함께 설명해줘."`
+   - `law_grounding_status_detail: "law_grounding_verified"`, `law_grounding_verified: true`
+   - `law_grounding_display.sources[]` populated; `law_grounding_user_notice` empty
+   - `unverified_law_citation_detected: false`
+   - `legal_issue_types` ⊇ `workplace_change_addition`, `extension`,
+     `employment_condition`, `status_purpose_alignment`
+4. **Fast vs Basic routing** (same question, `answer_mode` `fast` then `basic`):
+   - Basic: `selected_model` == `OPENROUTER_MODEL` (intentional, e.g.
+     `openai/gpt-oss-120b:free`)
+   - Fast: `selected_model` == `OPENROUTER_FAST_MODEL` (≠ Basic); if it equals the
+     Basic id, check `OPENROUTER_FAST_MODEL` and `fast_mode_fell_back`.
+
+If step 3 still shows `audit_only`, the deploy is still in `audit` mode; if it
+shows `disabled`, the OC is not being read by the running process.
 
 The internal **law tool layer** (`services/law_tools.py`) is a typed, mockable
 adapter over the National Law Information Open API (open.law.go.kr / DRF
