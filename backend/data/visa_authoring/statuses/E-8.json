@@ -1,0 +1,550 @@
+{
+  "code": "E-8",
+  "name": "계절근로",
+  "cat": "work",
+  "period": "8개월",
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "(수수료 면제)",
+          "외국인 계절근로자(E-8) 체류기간 연장 추천 신청서",
+          "doc_passport_and_arc",
+          "거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요",
+          "고용주 신분증",
+          "인신매매 피해 식별지표",
+          "체류기간 만료 계절근로자 체류기간 연장 추천서",
+          "통합신청서 ※ 지방자치단체 방문 시:",
+          "출입국·외국인관서 방문 시:"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 325",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": false,
+      "summary": "2026.5 체류민원 매뉴얼 pp. 324-325에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "매뉴얼 확인 필요"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "원문 섹션은 존재할 수 있으나 PDF 텍스트 구조상 자동 확정하지 않았습니다. 수동 대조 후 구조화해야 합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 324-325",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "subcodes": [
+    {
+      "code": "E-8-1",
+      "name": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 농업",
+      "nameKo": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 농업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract"
+      ],
+      "note": "MOU 체결 외국지자체가 주민 추천 → 농가 배정 → 8개월 이내 종사.",
+      "searchAliases": [
+        "E-8-1",
+        "E81",
+        "MOU 계절근로",
+        "계절근로",
+        "농업 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "농업"
+    },
+    {
+      "code": "E-8-2",
+      "name": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 농업",
+      "nameKo": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 농업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract",
+        "doc_fam_rel"
+      ],
+      "note": "결혼이민자(국적 취득자 포함)가 해외 거주 4촌 이내 친척 추천 → 농가 배정.",
+      "searchAliases": [
+        "E-8-2",
+        "E82",
+        "결혼이민자 친척 계절근로",
+        "계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족추천"
+    },
+    {
+      "code": "E-8-3",
+      "name": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 어업",
+      "nameKo": "계절근로 — 국내지자체·외국지자체 간 MOU 방식, 어업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract"
+      ],
+      "note": "MOU 체결 외국지자체가 주민 추천 → 어가 배정 → 8개월 이내 종사.",
+      "searchAliases": [
+        "E-8-3",
+        "E83",
+        "MOU 계절근로",
+        "계절근로",
+        "어업 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "어업"
+    },
+    {
+      "code": "E-8-4",
+      "name": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 어업",
+      "nameKo": "계절근로 — 결혼이민자가 해외 거주 4촌 이내 친척 추천, 어업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract",
+        "doc_fam_rel"
+      ],
+      "note": "결혼이민자(국적 취득자 포함)가 해외 거주 4촌 이내 친척 추천 → 어가 배정.",
+      "searchAliases": [
+        "E-8-4",
+        "E84",
+        "결혼이민자 친척 계절근로",
+        "계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족추천"
+    },
+    {
+      "code": "E-8-5",
+      "name": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 농업",
+      "nameKo": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 농업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract"
+      ],
+      "note": "기타(G-1-19) 자격으로 농업분야 계절근로 참여 후 고용주가 재고용 추천 → 농가 배정.",
+      "searchAliases": [
+        "E-8-5",
+        "E85",
+        "계절근로",
+        "재입국 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "농업"
+    },
+    {
+      "code": "E-8-6",
+      "name": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 어업",
+      "nameKo": "계절근로 — 기타(G-1) 자격 활동 후 재입국 추천, 어업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract"
+      ],
+      "note": "기타(G-1-19) 자격으로 어업분야 계절근로 참여 후 고용주가 재고용 추천 → 어가 배정.",
+      "searchAliases": [
+        "E-8-6",
+        "E86",
+        "계절근로",
+        "재입국 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "어업"
+    },
+    {
+      "code": "E-8-7",
+      "name": "계절근로 — 유학생(D-2)의 부모, 농업",
+      "nameKo": "계절근로 — 유학생(D-2)의 부모, 농업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract",
+        "doc_fam_rel"
+      ],
+      "note": "요건을 충족한 유학(D-2) 자격자가 부모를 계절근로자로 초청 → 농가 배정.",
+      "searchAliases": [
+        "E-8-7",
+        "E87",
+        "계절근로",
+        "유학생 부모 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족추천"
+    },
+    {
+      "code": "E-8-8",
+      "name": "계절근로 — 유학생(D-2)의 부모, 어업",
+      "nameKo": "계절근로 — 유학생(D-2)의 부모, 어업",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract",
+        "doc_fam_rel"
+      ],
+      "note": "요건을 충족한 유학(D-2) 자격자가 부모를 계절근로자로 초청 → 어가 배정.",
+      "searchAliases": [
+        "E-8-8",
+        "E88",
+        "계절근로",
+        "유학생 부모 계절근로"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족추천"
+    },
+    {
+      "code": "E-8-99",
+      "name": "계절근로 — 언어소통 도우미 등 기타 보조 인력",
+      "nameKo": "계절근로 — 언어소통 도우미 등 기타 보조 인력",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_seasonal_worker_recommendation",
+        "doc_mou_local_government",
+        "doc_emp_contract"
+      ],
+      "note": "해외 지자체에서 언어소통 도우미 등 관리 목적 인력 파견 시 국내 지자체 신청 → 초청.",
+      "searchAliases": [
+        "E-8-99",
+        "E899",
+        "계절근로",
+        "계절근로 보조인력",
+        "언어소통 도우미"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 278-279",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "기타"
+    }
+  ],
+  "searchAliases": [
+    "E-8-1",
+    "E-8-2",
+    "E-8-3",
+    "E-8-4",
+    "E-8-5",
+    "E-8-6",
+    "E-8-7",
+    "E-8-8",
+    "E-8-99",
+    "계절근로",
+    "계절근로자",
+    "농업 계절근로",
+    "어업 계절근로"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "고용허가서, 표준근로계약서, 건강/결핵진단서.",
+      "newReqDocs": [
+        "doc_eps",
+        "doc_emp_contract",
+        "doc_health",
+        "doc_tb"
+      ],
+      "extReq": "체류기간 연장허가 절차① 계절근로자 체류기간 만료일 60일 ~ 40일 전: 관할 지방자치단체로 신청 → 지방자치단체에서 관할 출입국·외국인관서로 일괄 신청② 계절근로자 체류기간 만료일 40일 이내: 관할 지방자치단체로 신청 후, ‘체류기간 만료 계절근로자 체류기간 연장 추천서’ 발급 받아 관할 출입국·외국인관서로 방문 신청 제출서류 (수수료 면제)① 외국인 계절근로자(E-8) 체류기간 연장 추천 신청서② 여권 및 외국인등록증③ 거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요④ 근로계약서⑤ 고용주 신분증⑥ 인신매매 피해 식별지표⑦ 체류기간 만료 계절근로자 체류기간 연장 추천서⑧ 통합신청서 ※ 지방자치단체 방문 시: ① ~⑥ 출입국·외국인관서 방문 시: ② ~⑧ ",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_eps",
+        "doc_emp_contract",
+        "doc_address"
+      ],
+      "faq": "Q: 농가 이동?\nA: 무단 이직 불가.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_eps",
+        "doc_emp_contract",
+        "doc_health",
+        "doc_tb"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_eps",
+        "doc_emp_contract",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "고용허가서 사본",
+          "note": "고용노동부 발급"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "의료기관 건강진단서",
+          "note": "법무부 지정 마약검사 필수 포함"
+        },
+        {
+          "name": "결핵진단서",
+          "note": "보건소/지정병원, 고위험 35개국 필수"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "고용허가서 사본",
+          "note": "고용노동부 발급"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 절차① 계절근로자 체류기간 만료일 60일 ~ 40일 전: 관할 지방자치단체로 신청 → 지방자치단체에서 관할 출입국·외국인관서로 일괄 신청② 계절근로자 체류기간 만료일 40일 이내: 관할 지방자치단체로 신청 후, ‘체류기간 만료 계절근로자 체류기간 연장 추천서’ 발급 받아 관할 출입국·외국인관서로 방문 신청 제출서류 (수수료 면제)① 외국인 계절근로자(E-8) 체류기간 연장 추천 신청서② 여권 및 외국인등록증③ 거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요④ 근로계약서⑤ 고용주 신분증⑥ 인신매매 피해 식별지표⑦ 체류기간 만료 계절근로자 체류기간 연장 추천서⑧ 통합신청서 ※ 지방자치단체 방문 시: ① ~⑥ 출입국·외국인관서 방문 시: ② ~⑧ "
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 20,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "subCodes",
+      "searchAliases"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "subCodes": "subcodes",
+      "searchAliases": "identity"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "code": "C-1",
+  "name": "일시취재",
+  "cat": "other",
+  "period": "90일, 연장불가",
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권 원본, 수수료",
+          "체류기간 연장 필요성 소명 서류(본사의 취재명령서 또는 파견증명서, 외신 보도증 사본 또는 본사발생 재직증명서 등)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 26",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "체류 목적·기간이 장기체류 자격으로 바뀌는 경우의 등록 의무·서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인하세요."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 26-26",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "언론기관 재직증명, 기자증, 취재계획서.",
+      "newReqDocs": [
+        "doc_career",
+        "doc_id",
+        "doc_plan"
+      ],
+      "extReq": "체류기간 연장허가 최장체류기간: 90일 입국일로부터 90일 미만 사증으로 입국한 자 또는 90일 미만 체류기간 받은 자에 대하여 입국일로부터 90일까지 연장 제출서류 ① 통합신청서(별지 제34호 서식), 여권 원본, 수수료 ② 체류기간 연장 필요성 소명 서류(본사의 취재명령서 또는 파견증명서, 외신 보도증 사본 또는 본사발생 재직증명서 등)",
+      "extReqDocs": [],
+      "faq": "Q: 장기 취재?\nA: D-5 발급.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_career",
+        "doc_id",
+        "doc_plan"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "체류/구직/연수 계획서 또는 사유서"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 최장체류기간: 90일 입국일로부터 90일 미만 사증으로 입국한 자 또는 90일 미만 체류기간 받은 자에 대하여 입국일로부터 90일까지 연장 제출서류 ① 통합신청서(별지 제34호 서식), 여권 원본, 수수료 ② 체류기간 연장 필요성 소명 서류(본사의 취재명령서 또는 파견증명서, 외신 보도증 사본 또는 본사발생 재직증명서 등)",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 일시취재(C-1)는 단기·단수 체류 목적의 자격으로, 원칙적으로 외국인등록 대상이 아닙니다. 외국인등록은 장기체류(원칙적으로 91일 이상) 자격을 부여·변경받은 경우에 한해 적용됩니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 35,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

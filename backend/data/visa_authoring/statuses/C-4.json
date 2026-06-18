@@ -1,0 +1,351 @@
+{
+  "code": "C-4",
+  "name": "단기취업",
+  "cat": "short",
+  "period": "90일 이내",
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 31",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "체류 목적·기간이 장기체류 자격으로 바뀌는 경우의 등록 의무·서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인하세요."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 29-31",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "subcodes": [
+    {
+      "code": "C-4-1",
+      "name": "계절근로 단기취업 — MOU 체결 외국지자체, 농업 (2025년 발급중단)",
+      "nameKo": "계절근로 단기취업 — MOU 체결 외국지자체, 농업 (2025년 발급중단)",
+      "addReq": "",
+      "addReqDocs": [],
+      "note": "계절근로 단기취업 사증(C-4-1~4)은 '25년부터 발급이 중단되었습니다. 현행 계절근로는 계절근로(E-8) 자격으로 운영됩니다.",
+      "searchAliases": [
+        "C-4-1",
+        "C41",
+        "계절근로",
+        "단기취업 계절근로"
+      ],
+      "status": "suspended",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 277-278",
+          "confidence": "suspended_source_confirmed",
+          "needsManualReview": false
+        }
+      ],
+      "group": "농업",
+      "statusNote": "'25년부터 단기취업 계절근로(C-4-1~4) 사증발급 중단. 현행은 E-8."
+    },
+    {
+      "code": "C-4-2",
+      "name": "계절근로 단기취업 — 결혼이민자 추천 친척, 농업 (2025년 발급중단)",
+      "nameKo": "계절근로 단기취업 — 결혼이민자 추천 친척, 농업 (2025년 발급중단)",
+      "addReq": "",
+      "addReqDocs": [],
+      "note": "계절근로 단기취업 사증(C-4-1~4)은 '25년부터 발급이 중단되었습니다. 현행 계절근로는 계절근로(E-8) 자격으로 운영됩니다.",
+      "searchAliases": [
+        "C-4-2",
+        "C42",
+        "계절근로"
+      ],
+      "status": "suspended",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 277-278",
+          "confidence": "suspended_source_confirmed",
+          "needsManualReview": false
+        }
+      ],
+      "group": "농업",
+      "statusNote": "'25년부터 단기취업 계절근로(C-4-1~4) 사증발급 중단. 현행은 E-8."
+    },
+    {
+      "code": "C-4-3",
+      "name": "계절근로 단기취업 — MOU 체결 외국지자체, 어업 (2025년 발급중단)",
+      "nameKo": "계절근로 단기취업 — MOU 체결 외국지자체, 어업 (2025년 발급중단)",
+      "addReq": "",
+      "addReqDocs": [],
+      "note": "계절근로 단기취업 사증(C-4-1~4)은 '25년부터 발급이 중단되었습니다. 현행 계절근로는 계절근로(E-8) 자격으로 운영됩니다.",
+      "searchAliases": [
+        "C-4-3",
+        "C43",
+        "계절근로"
+      ],
+      "status": "suspended",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 277-278",
+          "confidence": "suspended_source_confirmed",
+          "needsManualReview": false
+        }
+      ],
+      "group": "어업",
+      "statusNote": "'25년부터 단기취업 계절근로(C-4-1~4) 사증발급 중단. 현행은 E-8."
+    },
+    {
+      "code": "C-4-4",
+      "name": "계절근로 단기취업 — 결혼이민자 추천 친척, 어업 (2025년 발급중단)",
+      "nameKo": "계절근로 단기취업 — 결혼이민자 추천 친척, 어업 (2025년 발급중단)",
+      "addReq": "",
+      "addReqDocs": [],
+      "note": "계절근로 단기취업 사증(C-4-1~4)은 '25년부터 발급이 중단되었습니다. 현행 계절근로는 계절근로(E-8) 자격으로 운영됩니다.",
+      "searchAliases": [
+        "C-4-4",
+        "C44",
+        "계절근로"
+      ],
+      "status": "suspended",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 277-278",
+          "confidence": "suspended_source_confirmed",
+          "needsManualReview": false
+        }
+      ],
+      "group": "어업",
+      "statusNote": "'25년부터 단기취업 계절근로(C-4-1~4) 사증발급 중단. 현행은 E-8."
+    },
+    {
+      "code": "C-4-5",
+      "name": "계절근로 외 단기취업",
+      "nameKo": "계절근로 외 단기취업",
+      "addReq": "입국목적·초청 입증자료, 고용·계약 관련 서류 등 (직종별 첨부서류는 매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_invitation",
+        "doc_purpose",
+        "doc_emp_contract"
+      ],
+      "note": "공연·강연·기술지도·모델 등 90일 이하 단기 수익활동. 단순노무 직종은 해당하지 않음.",
+      "searchAliases": [
+        "C-4-5",
+        "C45",
+        "계절근로 외 단기취업",
+        "단기 취업",
+        "단기취업"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 277-278",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "기타"
+    }
+  ],
+  "searchAliases": [
+    "C-4-1",
+    "C-4-2",
+    "C-4-3",
+    "C-4-4",
+    "C-4-5",
+    "계절근로",
+    "단기취업"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "사증발급신청서, 여권, 표준규격사진 1매, 고용계약서, 전문성 입증.",
+      "newReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_emp_contract",
+        "doc_specialty"
+      ],
+      "extReq": "체류기간 연장허가",
+      "extReqDocs": [],
+      "faq": "Q: 공연?\nA: C-4 필수. 수익활동은 C-3 불가.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_emp_contract",
+        "doc_specialty"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
+          "note": "3.5x4.5cm, 최근 6개월"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "해당 분야 전문성 입증서류",
+          "note": "국가공인자격증 등"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "[입국 후 · 국내 체류절차] 단기취업(C-4) 체류기간 연장은 체류기간 만료 전에 신청합니다. 자격별 제출서류는 세부 사유·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 단기취업(C-4)는 단기·단수 체류 목적의 자격으로, 원칙적으로 외국인등록 대상이 아닙니다. 외국인등록은 장기체류(원칙적으로 91일 이상) 자격을 부여·변경받은 경우에 한해 적용됩니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 3,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "subCodes",
+      "searchAliases"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "subCodes": "subcodes",
+      "searchAliases": "identity"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

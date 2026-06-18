@@ -1,0 +1,706 @@
+{
+  "code": "K-STAR",
+  "name": "K-STAR 비자트랙",
+  "cat": "etc",
+  "period": "시범사업 기준 적용",
+  "subcodes": [
+    {
+      "code": "F-2-7S",
+      "name": "K-STAR 거주 (2단계)",
+      "nameKo": "K-STAR 거주 (2단계)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_kstar_university_recommendation",
+        "doc_degree"
+      ],
+      "note": "K-STAR 비자트랙 2단계: 석·박사 유학생(D-2 등) → K-STAR 거주(F-2-7S).",
+      "searchAliases": [
+        "F-2-7S",
+        "F27S",
+        "K-STAR 거주",
+        "케이스타 거주"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 1, 3",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "K-STAR 비자트랙"
+        }
+      ],
+      "group": "거주"
+    },
+    {
+      "code": "F-5-S1",
+      "name": "K-STAR 영주 (3단계)",
+      "nameKo": "K-STAR 영주 (3단계)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_kstar_university_recommendation"
+      ],
+      "note": "K-STAR 비자트랙 3단계: K-STAR 거주(F-2-7S) 3년 이상 → K-STAR 영주(F-5-S1).",
+      "searchAliases": [
+        "F-5-S1",
+        "F5S1",
+        "K-STAR 영주",
+        "케이스타 영주"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 1, 5",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "K-STAR 비자트랙"
+        }
+      ],
+      "group": "영주"
+    },
+    {
+      "code": "F-2-71",
+      "name": "K-STAR 거주자의 동반가족",
+      "nameKo": "K-STAR 거주자의 동반가족",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": "K-STAR 거주(F-2-7S)의 동반가족.",
+      "searchAliases": [
+        "F-2-71",
+        "F271",
+        "K-STAR 동반가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 5",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "K-STAR 비자트랙"
+        }
+      ],
+      "group": "동반가족"
+    },
+    {
+      "code": "F-5-S2",
+      "name": "K-STAR 영주자의 동반가족",
+      "nameKo": "K-STAR 영주자의 동반가족",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": "K-STAR 영주(F-5-S1)의 동반가족.",
+      "searchAliases": [
+        "F-5-S2",
+        "F5S2",
+        "K-STAR 영주 동반가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 5",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "K-STAR 비자트랙"
+        }
+      ],
+      "group": "동반가족"
+    }
+  ],
+  "nameKo": "K-STAR 비자트랙",
+  "nameEn": "K-STAR Visa Track",
+  "manualDomains": [
+    "visa_issuance",
+    "stay_sojourn"
+  ],
+  "activityScope": "K-STAR 지정요건 충족 여부 및 관계기관 확인 필요.",
+  "stayPeriodCap": "시범사업 기준 적용",
+  "procedures": {
+    "visaIssuance": {
+      "available": true,
+      "summary": "K-STAR 지정요건 충족 여부 및 관계기관 확인 필요.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "doc_purpose",
+          "doc_emp_recom"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "K-STAR 세부 요건은 지정 트랙 및 관계기관 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "extension": {
+      "available": true,
+      "summary": "K-STAR 거주(F-2-7S) 제출서류. 연장 시 해외범죄경력증명서는 6개월 이상 해외 체류 시 제출로 표시되어 있습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
+          "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "doc_residence_proof_generic",
+          "해외범죄경력증명서(연장은 6개월 이상 해외 체류 시 제출)",
+          "결핵진단서(해당자)",
+          "대학 총장 추천서(발급일로부터 1년간 유효)",
+          "석·박사 학위 취득(예정)증명서 또는 졸업(예정)증명서",
+          "석·박사 통합과정·박사과정 수료생·박사후연구원 등 해당 유형별 입증서류"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 원문에서 대표 서류를 구조화했습니다. 세부약호·신청 이력별 예외는 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 749",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "summary": "체류자격 변경 전용 서류는 매뉴얼 확인 필요",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "doc_purpose"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "대표 데이터에서 변경 가능 요건을 확정하지 않습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusGrant": {
+      "available": false,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": false,
+      "summary": "K-STAR 섹션에서 외국인등록 전용 제출서류 표제를 자동 확정하지 못했습니다. 체류자격 변경/연장 서류와 별도 등록 필요서류는 수동 확인이 필요합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "매뉴얼 확인 필요"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "K-STAR 섹션은 F-2-7S/F-5-S1/F-2-71 등 트랙별 제출서류가 중심이며 외국인등록 전용 구간은 별도 확인 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 746-757",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "activitiesOutsideStatus": {
+      "available": false,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "workplaceChange": {
+      "available": false,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "reentry": {
+      "available": true,
+      "summary": "재입국 절차는 체류 이력과 허가 상태에 따라 확인 필요",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "대표 데이터에서 전용 구비서류를 확정하지 않습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "매뉴얼 확인 필요",
+          "confidence": "needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "manualRefs": [
+    {
+      "manualName": "사증민원",
+      "manualVersion": "2026.5",
+      "pageRange": "매뉴얼 확인 필요",
+      "confidence": "needs_review",
+      "needsManualReview": true
+    },
+    {
+      "manualName": "체류민원",
+      "manualVersion": "2026.5",
+      "pageRange": "매뉴얼 확인 필요",
+      "confidence": "needs_review",
+      "needsManualReview": true,
+      "sourceDate": "2026-06-01",
+      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    }
+  ],
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "K-STAR is present as a representative special-track record; full 2026.5 manual verification is deferred.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "F-2-71",
+    "F-2-7S",
+    "F-5-S1",
+    "F-5-S2",
+    "K STAR",
+    "K-STAR",
+    "K-STAR 비자트랙",
+    "KSTAR",
+    "K스타",
+    "과학기술 우수인재",
+    "케이스타"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "K-STAR 지정요건 충족 여부 및 관계기관 확인 필요.",
+      "newReqDocs": [
+        "doc_purpose",
+        "doc_emp_recom",
+        "doc_plan"
+      ],
+      "extReq": "체류기간 연장허가 ❍ 배우자 및 미성년자녀는 주체류자의 체류기간과 동일하게 F 71 자격 유지 ❍ 주체류자가 자격요건을 모두 갖추고 생계를 같이하는 경우 미성년자녀가 성인이 되더라도 만 25세 미만까지 체류기간 연장 허가󰊴 취업활동 ❍ 취업제한 분야 【",
+      "extReqDocs": [
+        "doc_purpose",
+        "doc_inc_proof"
+      ],
+      "faq": "Q: 누구나 신청 가능?\nA: 지정 대상·분야·기간 요건 충족자에 한해 가능.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_purpose",
+        "doc_emp_recom"
+      ],
+      "extensionReqDocs": [
+        "doc_purpose",
+        "doc_inc_proof"
+      ],
+      "changeReqDocs": [
+        "doc_purpose"
+      ],
+      "subcodes": [
+        {
+          "code": "F-2-7S",
+          "name": "K-STAR 거주 (2단계)",
+          "nameKo": "K-STAR 거주 (2단계)",
+          "addReq": "",
+          "addReqDocs": [
+            "doc_kstar_university_recommendation",
+            "doc_degree"
+          ],
+          "note": "K-STAR 비자트랙 2단계: 석·박사 유학생(D-2 등) → K-STAR 거주(F-2-7S).",
+          "searchAliases": [
+            "F-2-7S",
+            "F27S",
+            "K-STAR 거주",
+            "케이스타 거주"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "sourceDate": "2026-06-01",
+              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+              "pageRange": "pp. 1, 3",
+              "confidence": "manual_page_extract_needs_review",
+              "needsManualReview": true,
+              "sectionTitle": "K-STAR 비자트랙"
+            }
+          ],
+          "group": "거주"
+        },
+        {
+          "code": "F-5-S1",
+          "name": "K-STAR 영주 (3단계)",
+          "nameKo": "K-STAR 영주 (3단계)",
+          "addReq": "",
+          "addReqDocs": [
+            "doc_kstar_university_recommendation"
+          ],
+          "note": "K-STAR 비자트랙 3단계: K-STAR 거주(F-2-7S) 3년 이상 → K-STAR 영주(F-5-S1).",
+          "searchAliases": [
+            "F-5-S1",
+            "F5S1",
+            "K-STAR 영주",
+            "케이스타 영주"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "sourceDate": "2026-06-01",
+              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+              "pageRange": "pp. 1, 5",
+              "confidence": "manual_page_extract_needs_review",
+              "needsManualReview": true,
+              "sectionTitle": "K-STAR 비자트랙"
+            }
+          ],
+          "group": "영주"
+        },
+        {
+          "code": "F-2-71",
+          "name": "K-STAR 거주자의 동반가족",
+          "nameKo": "K-STAR 거주자의 동반가족",
+          "addReq": "",
+          "addReqDocs": [
+            "doc_fam_rel"
+          ],
+          "note": "K-STAR 거주(F-2-7S)의 동반가족.",
+          "searchAliases": [
+            "F-2-71",
+            "F271",
+            "K-STAR 동반가족"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "sourceDate": "2026-06-01",
+              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+              "pageRange": "p. 5",
+              "confidence": "manual_page_extract_needs_review",
+              "needsManualReview": true,
+              "sectionTitle": "K-STAR 비자트랙"
+            }
+          ],
+          "group": "동반가족"
+        },
+        {
+          "code": "F-5-S2",
+          "name": "K-STAR 영주자의 동반가족",
+          "nameKo": "K-STAR 영주자의 동반가족",
+          "addReq": "",
+          "addReqDocs": [
+            "doc_fam_rel"
+          ],
+          "note": "K-STAR 영주(F-5-S1)의 동반가족.",
+          "searchAliases": [
+            "F-5-S2",
+            "F5S2",
+            "K-STAR 영주 동반가족"
+          ],
+          "status": "active",
+          "needsManualReview": true,
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "sourceDate": "2026-06-01",
+              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+              "pageRange": "p. 5",
+              "confidence": "manual_page_extract_needs_review",
+              "needsManualReview": true,
+              "sectionTitle": "K-STAR 비자트랙"
+            }
+          ],
+          "group": "동반가족"
+        }
+      ],
+      "commonWarnings": [
+        "서류는 심사 과정에서 가감될 수 있습니다.",
+        "국내 발급 서류는 별도 규정이 없으면 발급일로부터 3개월 이내 자료를 원칙으로 확인합니다.",
+        "이미 제출되어 기록에 보관 중인 서류는 생략될 수 있습니다.",
+        "공동이용 가능한 행정정보는 제출 생략 가능하나, 동의하지 않으면 제출이 필요할 수 있습니다.",
+        "건강진단서 등 일부 서류는 밀봉 제출이 요구될 수 있습니다.",
+        "체류허가 신청자는 국내 체류 중이어야 합니다."
+      ],
+      "documents_initial": [
+        {
+          "name": "기타 체류목적 입증서류",
+          "note": "별도 소명자료"
+        },
+        {
+          "name": "주무부처 고용추천서",
+          "note": "해당 직종 한정"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "기타 체류목적 입증서류",
+          "note": "별도 소명자료"
+        },
+        {
+          "name": "소득금액증명원 등 소득입증서류"
+        }
+      ]
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 39,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "nameKo",
+      "nameEn",
+      "manualDomains",
+      "activityScope",
+      "stayPeriodCap",
+      "subcodes",
+      "procedures",
+      "commonWarnings",
+      "manualRefs",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "nameKo": "identity",
+      "nameEn": "identity",
+      "manualDomains": "identity",
+      "activityScope": "identity",
+      "stayPeriodCap": "identity",
+      "subcodes": "compat",
+      "procedures": "procedures",
+      "commonWarnings": "compat",
+      "manualRefs": "manualRefs",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "visaIssuance",
+      "extension",
+      "statusChange",
+      "statusGrant",
+      "registration",
+      "activitiesOutsideStatus",
+      "workplaceChange",
+      "reentry"
+    ],
+    "procKeyOrder": {
+      "visaIssuance": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusGrant": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "activitiesOutsideStatus": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "workplaceChange": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "reentry": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

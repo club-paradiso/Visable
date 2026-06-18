@@ -1,0 +1,635 @@
+{
+  "code": "E-7",
+  "name": "특정활동",
+  "cat": "work",
+  "period": "3년, 연장가능(트랙별 상이)",
+  "subcodes": [
+    {
+      "code": "E-7-1",
+      "name": "전문인력(67개 직종)",
+      "addReq": "학사↑ 또는 경력, 고용추천서, GNI 기준. 관리자(15개) + 전문가 및 관련종사자(52개) 직종.",
+      "addReqDocs": [
+        "doc_degree",
+        "doc_career",
+        "doc_emp_recom",
+        "doc_inc_proof"
+      ],
+      "note": ""
+    },
+    {
+      "code": "E-7-2",
+      "name": "준전문인력(10개 직종)",
+      "addReq": "사무종사자(5개) + 서비스종사자(5개) 직종.",
+      "addReqDocs": [
+        "doc_purpose"
+      ],
+      "note": ""
+    },
+    {
+      "code": "E-7-3",
+      "name": "일반기능인력(14개 직종)",
+      "addReq": "동물사육사, 양식기술자, 할랄도축원 등 기능원 및 관련 기능인력.",
+      "addReqDocs": [
+        "doc_purpose"
+      ],
+      "note": ""
+    },
+    {
+      "code": "E-7-4",
+      "name": "숙련기능인력(K-point E74, 점수제)",
+      "addReq": "선발인원 33,000명. 최근 10년간 E-9, E-10, H-2 자격으로 4년 이상 체류한 현재 등록외국인으로 현 근무처에서 정상 근로 중이어야 함. 현 근무처에서 연봉 2,600만원 이상으로 향후 2년 이상 E-7-4 고용계약이 필요하며, 농·축산업·어업·내항상선은 연봉 2,500만원 이상으로 완화. 현재 1년 이상 근무 중인 기업의 추천이 필수이고, 평균소득·한국어능력 기본항목이 각각 50점 이상이면서 총점 300점 만점에 200점 이상이어야 함. 한국어 외 점수요건 충족자는 총점 150점 이상 시 최초 연장까지 한국어 보완 조건으로 한시 유예 가능(~2026.12.31).",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport_copy",
+        "doc_point_table",
+        "doc_personal_statement",
+        "doc_emp_contract",
+        "doc_inc_proof",
+        "doc_topik",
+        "doc_kiip",
+        "doc_guarantee",
+        "doc_biz_reg",
+        "doc_tax_cert",
+        "doc_employment_insurance_list",
+        "doc_emp_recom",
+        "doc_specialty",
+        "doc_degree"
+      ],
+      "note": "체류민원 안내매뉴얼 2026-06-01 PDF pp.298-309 기준. 필수서류에는 통합신청서, 여권 사본, 점수제 자체 심사표, 신상기술서, E-7-4 표준근로계약서, 최근 2년 소득금액증명원, 한국어능력 입증, 신원보증서, 사업자등록증 또는 농업경영체등록, 국세·지방세 납세증명서, 4대보험 사업장 가입자 명부 등, 고용기업 추천서 및 추천자 신분증 사본이 포함됨. 자격증·국내학위·운전면허증·뿌리기업·조선업·내항정기운송 등은 해당자 추가서류."
+    },
+    {
+      "code": "E-7-S",
+      "name": "네거티브 방식 전문인력",
+      "addReq": "고소득자, 첨단산업분야 종사(예정)자.",
+      "addReqDocs": [
+        "doc_inc_proof",
+        "doc_purpose"
+      ],
+      "note": ""
+    },
+    {
+      "code": "E-7-Y",
+      "name": "국내성장인력",
+      "addReq": "국내 대학 석사↑ 학위 취득(예정)자 중 첨단산업분야 종사(예정)자.",
+      "addReqDocs": [
+        "doc_degree",
+        "doc_purpose"
+      ],
+      "note": "직종코드 9999(국내성장취업)."
+    },
+    {
+      "code": "E-7-T",
+      "name": "최우수인재 특정활동",
+      "addReq": "[연장 제출서류] ① 공통서류(통합신청서(별지 제34호 서식), 여권 사본, 체류지 입증서류, 수수료, 표준규격사진 1매) ② 재직증명서(이직 시 첨단분야 해당 여부 확인) ③ 사업자등록증·법인등기사항전부증명서 ④ 소득금액증명원 ⑤ 해외 범죄경력증명서(6개월↑ 출국 시) ⑥ 사회통합프로그램 1단계 이수확인서 또는 TOPIK 1급.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport_copy",
+        "doc_address",
+        "doc_fee",
+        "doc_photo",
+        "doc_career",
+        "doc_biz_reg",
+        "doc_corp_reg",
+        "doc_inc_proof",
+        "doc_crim",
+        "doc_kiip",
+        "doc_topik"
+      ],
+      "note": "연간 근로소득 GNI 2배↑, 부처 추천 필수. 체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요."
+    },
+    {
+      "code": "E-7-91",
+      "name": "FTA독립전문가",
+      "addReq": "FTA 요건. 서비스공급계약 체결 독립전문가. 최대 1년 단수사증.",
+      "addReqDocs": [
+        "doc_emp_contract",
+        "doc_purpose"
+      ],
+      "note": "체류기간 연장·근무처 변경·자격변경·자격외활동 제한.",
+      "searchAliases": [
+        "E-7-91FTA",
+        "E791FTA",
+        "FTA독립전문가"
+      ]
+    },
+    {
+      "code": "E-7-S1",
+      "name": "네거티브 방식 전문인력 — 고소득자",
+      "nameKo": "네거티브 방식 전문인력 — 고소득자",
+      "addReq": "고소득 요건(소득) 입증서류 등 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_inc_proof",
+        "doc_specialty"
+      ],
+      "note": "네거티브 방식 전문인력 중 고소득자. 학력·경력·분야와 무관하게 소득만 확인하여 E-7 발급.",
+      "searchAliases": [
+        "E-7-S1",
+        "E7S1",
+        "고소득자 전문인력",
+        "네거티브 고소득"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 169, 247",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "특별요건"
+    },
+    {
+      "code": "E-7-S2",
+      "name": "네거티브 방식 전문인력 — 첨단산업분야 종사(예정)자",
+      "nameKo": "네거티브 방식 전문인력 — 첨단산업분야 종사(예정)자",
+      "addReq": "점수제 요건(60점 이상) 및 사회통합프로그램 이수 등 입증서류 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_point_table",
+        "doc_specialty",
+        "doc_kiip"
+      ],
+      "note": "네거티브 방식 전문인력 중 첨단산업분야 종사(예정)자. E-7 도입직종이 아니어도 점수제 요건 충족 시 발급.",
+      "searchAliases": [
+        "E-7-S2",
+        "E7S2",
+        "네거티브 첨단산업",
+        "첨단산업 전문인력"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 169, 247-248",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "특별요건"
+    },
+    {
+      "code": "E-7-4R",
+      "name": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "addReq": "지역특화형 비자 대상 및 광역/기초 지자체 추천 입증서류 등 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_point_table"
+      ],
+      "note": "지역특화형 비자 숙련기능인력. 지역특화형 우수인재(F-2-R) 자격변경과 연계.",
+      "searchAliases": [
+        "E-7-4R",
+        "E74R",
+        "지역숙련인력",
+        "지역특화 숙련기능",
+        "지역특화형 숙련기능인력"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "지역특화"
+    },
+    {
+      "code": "E-7-91FTA",
+      "name": "E-7-91FTA 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "E-7-91FTA",
+        "E791FTA"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 169,213",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "E-7-H",
+      "name": "E-7-H 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "E-7-H",
+        "E7H"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 499",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료",
+          "개인 소득금액 증명(필수)",
+          "소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급)",
+          "사업자등록증 사본 또는 법인등기부등본",
+          "신원보증서 원본(아래 직종에 한해 징구)기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)]",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)2. 협정상 사증·체류허가 특례적용대상자에 대한 특례사항 규정 가. 한·인도 포괄적경제동반자협정(CEPA): 독립전문가(IP) 적용대상",
+          "국내법인 또는 개인사업자와 서비스공급계약을 체결한 전문가로서의 자격요건을 갖추고 해당 분야에서 1년 이상 경력이 있는 자* * 협정상 양허직종(162개)에서 서비스를 제공하기 위해 ‘서비스공급계약’을 체결한 독립전문가에게만 적용 (고용계약을 체결하고 E-7 허용직종에서 취업하는 전문인력에 대해서는 E-7지침 일반 적용) 사증특례",
+          "최대 1년의 범위 내에서 계약기간을 체류기간으로 하는 단수사증발급인정서 발급 (계약기간이 1년이 초과하는 경우에는 1년 부여) 체류특례",
+          "체류기간 연장허가,"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 226",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 212-323",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "workplaceChange": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "e-7-registered-workplace-change",
+          "labelKo": "특정활동(E-7) 등록외국인 근무처 변경·추가 사후신고",
+          "scenarioKo": "특정활동(E-7)으로 외국인등록을 하고 체류 중인 전문인력이 사후신고 대상에 해당하여 근무처를 변경하거나 추가하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호~제34호의2 서식), 여권 및 외국인등록증",
+              "주무부처 장의 고용추천서 또는 고용의 필요성을 입증하는 서류",
+              "고용계약서",
+              "사업자등록증"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "원 근무처 장의 동의서(계약기간 만료일 또는 합의한 날짜까지 근무한 경우 면제, 휴·폐업 및 임금체불 등의 사유가 있는 경우 입증서류 또는 사유서로 대체 가능)"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 221-222",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "특정활동(E-7) 등록 전문인력의 사후신고 대상 근무처 변경·추가에만 적용됩니다.",
+            "사유서와 신원보증서는 원칙적으로 제출이 생략됩니다.",
+            "고용업체별 허용인원 제한 등 사전관리가 필요한 직종은 근무처 변경·추가 허가 대상으로 별도 절차가 적용됩니다."
+          ],
+          "statusCode": "E-7"
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-01 체류민원 매뉴얼 pp.298-309에서 E-7-4 숙련기능인력(K-point E74) 개선 기준을 반영했습니다. 하위직종·쿼터·예외는 계속 수동 확인 필요."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "E-7-1",
+    "E-7-2",
+    "E-7-3",
+    "E-7-4",
+    "E-7-4R",
+    "E-7-91",
+    "E-7-S",
+    "E-7-S1",
+    "E-7-S2",
+    "E-7-T",
+    "E-7-Y",
+    "지역특화 숙련기능",
+    "E-7-91FTA",
+    "E791FTA",
+    "E-7-H",
+    "E7H"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "고용계약서, 학력/경력, 고용추천서(필요직종), 임금증빙(전년도 1인당 GNI 1배 이상). 직종: E-7-1 전문인력(67개), E-7-2 준전문(10개), E-7-3 일반기능(14개), E-7-4 숙련기능점수제(3개). 2026-06-01 체류민원 매뉴얼은 E-7-4 K-point E74 선발인원 33,000명, 최근 10년 E-9/E-10/H-2 4년 이상 체류, 현 근무처에서 향후 2년 이상 E-7-4 고용계약 및 연봉요건, 고용기업 추천, 300점 만점 200점 이상 기준을 반영.",
+      "newReqDocs": [
+        "doc_emp_contract",
+        "doc_degree",
+        "doc_career",
+        "doc_emp_recom",
+        "doc_inc_proof"
+      ],
+      "extReq": "체류기간 연장허가 체류기간 1. 제출 서류 및 확인사항 가. 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 개인 소득금액 증명(필수) - 소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급) ④ 사업자등록증 사본 또는 법인등기부등본 ⑤ 신원보증서 원본(아래 직종에 한해 징구)기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)] ⑥ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) ⑦ 고용주 납부내역증명, 납세증명",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_emp_contract",
+        "doc_inc_proof",
+        "doc_biz_reg",
+        "doc_corp_reg",
+        "doc_guarantee",
+        "doc_address",
+        "doc_tax",
+        "doc_reason_proof",
+        "doc_tax_cert",
+        "doc_employment_insurance_list"
+      ],
+      "faq": "Q: 이직?\nA: 근무처 변경·추가 신고. 사유 발생일로부터 15일 이내 관할 출입국관서 신고.\nQ: E-9→E-7?\nA: E-7-4(숙련기능점수제)만 허용.\nQ: 체류기간?\nA: 1회 3년(주무부처 추천 우수인재, 지역특화발전특구, 첨단의료복합단지, 경제자유구역 의료연구개발기관 연구원은 5년).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_emp_contract",
+        "doc_degree",
+        "doc_career",
+        "doc_emp_recom",
+        "doc_inc_proof"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_emp_contract",
+        "doc_inc_proof",
+        "doc_biz_reg",
+        "doc_corp_reg",
+        "doc_guarantee",
+        "doc_address",
+        "doc_tax",
+        "doc_reason_proof",
+        "doc_tax_cert",
+        "doc_employment_insurance_list"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "최종 학위/학력증명서",
+          "note": "아포스티유/영사확인 필수"
+        },
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "주무부처 고용추천서",
+          "note": "해당 직종 한정"
+        },
+        {
+          "name": "소득금액증명원 등 소득입증서류"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "소득금액증명원 등 소득입증서류"
+        },
+        {
+          "name": "사업자등록증 사본"
+        },
+        {
+          "name": "법인등기사항전부증명서",
+          "note": "발급 3개월 이내"
+        },
+        {
+          "name": "신원보증서",
+          "note": "보증기간 명시"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        },
+        {
+          "name": "납세증명서",
+          "note": "국세 및 지방세 완납증명"
+        },
+        {
+          "name": "신청 사유 입증서류"
+        },
+        {
+          "name": "국세·지방세 납세증명서"
+        },
+        {
+          "name": "고용보험 가입자 명부"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가",
+      "commonWarnings": [
+        "E-7-4 숙련기능인력은 2026-06-01 체류민원 매뉴얼의 K-point E74 개선 기준을 우선 확인해야 합니다."
+      ],
+      "_quarantineNotes": {
+        "E-7-H": "내부 전산기호: 기타(G-1) 등에 대한 체류자격외활동 허가를 출입국관리시스템에 입력할 때 사용하는 전산기호이며(체류민원 p. 499), 사용자 안내용 체류자격 코드가 아니므로 검색/표시 대상에서 제외(internal_system_marker)."
+      }
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 체류기간 1. 제출 서류 및 확인사항 가. 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 개인 소득금액 증명(필수) - 소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급) ④ 사업자등록증 사본 또는 법인등기부등본 ⑤ 신원보증서 원본(아래 직종에 한해 징구)기계공학기술자(2351), 제도사(2395), 해외영업원(2742) 중 해외 온라인상품판매원, 디자이너(285), 판매사무원(31215), 주방장 및 조리사(441), 고객상담사무원(3991), 호텔접수사무원(3922), 의료코디네이터(S3922), 양식기술자(6301), 조선용접공(7430), 숙련기능 점수제 종사자[뿌리산업체 숙련기능공(S740), 농림축산어업 숙련기능인(S610), 일반 제조업체 및 건설업체 숙련기능공(S700)] ⑥ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) ⑦ 고용주 납부내역증명, 납세증명",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 특정활동(E-7) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.workplaceChange.summary": "근무처 변경·추가 제출서류는 세부 자격과 신청 사유별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 19,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "hikorea_task_type",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "commonWarnings",
+      "_quarantineNotes"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "commonWarnings": "compat",
+      "_quarantineNotes": "compat"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "workplaceChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "workplaceChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

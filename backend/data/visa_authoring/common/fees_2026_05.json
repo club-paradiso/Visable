@@ -1,0 +1,118 @@
+{
+  "feeInfo": {
+    "paradisoDefault202605": {
+      "sourceBasis": "2026.5 체류민원/사증 매뉴얼 및 출입국관리법 시행규칙 수수료표 기준의 표시용 기본 수수료 메타데이터",
+      "verified": false,
+      "needsManualReview": true,
+      "displayCaution": "수수료는 면제, 감면, 온라인 신청, 관할기관 안내, 등록증 발급 필요 여부에 따라 달라질 수 있으므로 최종 금액은 하이코리아(HiKorea), 1345, 관할 출입국·외국인관서에서 확인해야 함.",
+      "procedures": {
+        "foreignRegistration": {
+          "labelKo": "외국인등록",
+          "items": [
+            {
+              "name": "외국인등록증 발급 수수료",
+              "amountKRW": 35000,
+              "display": "외국인등록증 발급 수수료 35,000원(등기우편으로 수령할 경우 39,000원)"
+            }
+          ]
+        },
+        "extension": {
+          "labelKo": "체류기간 연장",
+          "items": [
+            {
+              "name": "체류기간 연장허가 수수료",
+              "amountKRW": 60000,
+              "display": "체류기간 연장허가 정부수입인지 60,000원"
+            }
+          ]
+        },
+        "statusChange": {
+          "labelKo": "체류자격 변경",
+          "items": [
+            {
+              "name": "체류자격 변경허가 수수료",
+              "amountKRW": 100000,
+              "display": "체류자격 변경허가 정부수입인지 100,000원"
+            },
+            {
+              "name": "외국인등록증 재발급/교체 수수료",
+              "amountKRW": 35000,
+              "display": "외국인등록증 발급 수수료 35,000원(등기우편으로 수령할 경우 39,000원)"
+            }
+          ]
+        },
+        "grantStatus": {
+          "labelKo": "체류자격 부여",
+          "items": [
+            {
+              "name": "체류자격 부여 수수료",
+              "amountKRW": 80000,
+              "display": "체류자격 부여 정부수입인지 80,000원"
+            },
+            {
+              "name": "외국인등록증 발급 수수료",
+              "amountKRW": 35000,
+              "display": "외국인등록증 발급 수수료 35,000원(등기우편으로 수령할 경우 39,000원)"
+            }
+          ]
+        },
+        "visaIssuance": {
+          "labelKo": "사증 발급",
+          "items": [
+            {
+              "name": "재외공관 사증발급 수수료",
+              "amountKRW": null,
+              "display": "재외공관 사증발급 수수료는 국적, 사증 종류, 공관 기준에 따라 달라짐"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "_meta": {
+    "note": "Shared paradisoDefault fee block. Statuses whose feeInfo equals this are emitted by reference (feeRef) during build.",
+    "usedByCodes": [
+      "B-1",
+      "B-2",
+      "C-3",
+      "C-4",
+      "D-1",
+      "D-2",
+      "D-3",
+      "D-4",
+      "D-4-1",
+      "D-7",
+      "D-8",
+      "D-9",
+      "D-10",
+      "E-1",
+      "E-2",
+      "E-3",
+      "E-4",
+      "E-5",
+      "E-6",
+      "E-7",
+      "E-8",
+      "E-9",
+      "E-10",
+      "F-1",
+      "F-2",
+      "F-3",
+      "F-4",
+      "F-5",
+      "F-6",
+      "G-1",
+      "H-1",
+      "H-2",
+      "A-1",
+      "A-2",
+      "A-3",
+      "C-1",
+      "D-5",
+      "D-6",
+      "D-4-2K",
+      "K-STAR",
+      "REGION-S"
+    ]
+  }
+}

@@ -1,0 +1,520 @@
+{
+  "code": "D-4",
+  "name": "일반연수",
+  "cat": "study",
+  "period": "2년, 연장가능",
+  "subcodes": [
+    {
+      "code": "D-4-1",
+      "name": "대학부설어학원",
+      "addReq": "대학부설 입학허가서.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-4-2",
+      "name": "기타기관연수",
+      "addReq": "기타 기관 입학허가서.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-4-2K",
+      "name": "기업 맞춤형 인턴십(K-Trainee)",
+      "addReq": "법무부 지정 한국어연수기관 등록 필수. 주당 수업시간 기준 충족 필요.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport_org",
+        "doc_passport_copy",
+        "doc_photo",
+        "doc_id",
+        "doc_fee_new",
+        "doc_enroll",
+        "doc_attend"
+      ],
+      "note": "수료 후 연장 시 출석률 80% 이상 필요."
+    },
+    {
+      "code": "D-4-3",
+      "name": "초중고생연수",
+      "addReq": "초중고 재학증명.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": "동반부모 F-1-13."
+    },
+    {
+      "code": "D-4-5",
+      "name": "한식조리연수",
+      "addReq": "한식조리 등록증.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-4-6",
+      "name": "사설기관연수",
+      "addReq": "사설 등록증.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": "주 15시간 이하 시간제 취업 가능(체류민원 매뉴얼 2026.04 기준)."
+    },
+    {
+      "code": "D-4-7",
+      "name": "외국어연수",
+      "addReq": "법무부 인가 어학기관.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": "인가 확인 필수."
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
+          "재학을 입증하는 서류",
+          "재학증명서, 교환학생 연장증명서, 연구생 증명서 등",
+          "학업을 정상적으로 수행하고 있음을 입증하는 서류",
+          "성적증명서, 출석확인서 등",
+          "재정능력 입증서류(국내 본인계좌 예치금만 인정)",
+          "모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)2. 기업 맞춤형 인턴십(K-Trainee, D 2K)의 체류기간 연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능",
+          "doc_residence_proof_generic",
+          "기간연장 사유서 및 인턴·연수 활동 계획서3. 고등학교 이하 교육기관 외국인유학생(D-4-3)의 체류기간 연장 제출서류",
+          "학비 납부 내역서 (수업료, 기숙사비, 입학금 등 유학 관련 비용 일체)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 90-91",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 83-101",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "reentry": {
+      "available": true,
+      "summary": "재입국허가 면제 제도 및 복수재입국허가(1년 초과 2년 이내 재입국) 안내.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본",
+          "외국인등록증",
+          "doc_fee_generic"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능)."
+        ]
+      },
+      "notes": [
+        "재입국허가 면제 제도: 외국인등록을 마친 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가가 면제됩니다(체류기간이 1년보다 적게 남은 경우 남은 체류기간 범위 내 면제). 다만 입국규제 등 대상자는 체류지 관할 출입국·외국인관서에서 재입국허가를 받아야 합니다.",
+        "복수재입국허가는 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 이내에 재입국하려는 경우에 신청합니다.",
+        "2026.5 체류민원 안내매뉴얼의 해당 체류자격 재입국허가 항목에서 추출한 신청서류입니다. 체류이력·국적별 예외가 있어 신청 전 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 93",
+          "confidence": "manual_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "d-4-1-7-language-training-status-change",
+          "labelKo": "어학연수(D-4-1·D-4-7) 체류자격 변경허가",
+          "scenarioKo": "합법 체류 중인 장기체류자가 한국어연수(D-4-1) 또는 외국어연수(D-4-7)로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "신청서, 여권, 외국인등록증(소지자), 사진 1매, 수수료",
+              "교육기관 사업자등록증 또는 고유번호증 사본",
+              "표준입학허가서(대학 총·학장 발행)",
+              "재정능력입증서류",
+              "재학증명서 또는 최종학력입증서류",
+              "연수계획서(강의시간표, 강사구성표, 연수시설 등의 내용을 포함)"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "부·모 잔고증명서 제출 시 가족관계증명서 추가 제출",
+              "법무부장관 고시국가 국민 중 연령 등을 고려할 때 어학연수 필요성이 적다고 판단되는 경우 어학연수 필요성 소명자료를 추가로 요구할 수 있음"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 83-84",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "한국어연수(D-4-1) 및 외국어연수(D-4-7) 변경 시나리오에만 적용됩니다.",
+            "단기체류자와 일부 등록외국인은 변경이 제한됩니다."
+          ]
+        },
+        {
+          "id": "d-4-2-graduate-training-status-change",
+          "labelKo": "졸업생 일반연수(D-4-2) 체류자격 변경허가",
+          "scenarioKo": "국내 대학 졸업자가 공식 매뉴얼에 열거된 기관 또는 단체에서 연수가 필요하여 일반연수(D-4-2) 등으로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "신청서, 여권, 외국인등록증, 사진 1매, 수수료",
+              "연수의 필요성을 입증하는 서류(취업확인서, 연수계획서 등)",
+              "외국인 투자기업 또는 외국에 투자한 국내기업임을 입증하는 서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 84",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "국내 대학 졸업생의 공식 매뉴얼상 연수기관 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-4-2"
+        },
+        {
+          "id": "d-4-3-school-student-status-change",
+          "labelKo": "고등학교 이하 외국인유학생(D-4-3) 체류자격 변경허가",
+          "scenarioKo": "합법적으로 등록하여 장기체류 중인 자비부담 외국인유학생이 허용 교육기관의 입학허가를 받아 D-4-3으로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 외국인등록증(소지자), 표준규격사진 1매, 수수료",
+              "교육기관 사업자등록증 또는 고유번호증 사본",
+              "입학허가서(학교장 발행) 및 재학증명서(해당자)",
+              "최종 학력 입증서류(졸업증명서 또는 재학증명서 등)",
+              "학비 납부 내역서",
+              "국내 체류비용 부담능력 입증서류",
+              "후견 보증서",
+              "후견인과의 관계 증명서류",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "후견인 면제 대상자는 학교장 명의 기숙사 입소확인서 제출",
+              "불법체류 다발국가 국민은 후견인 재정능력 입증서류 및 가족관계 입증서류 추가 제출"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 85-86",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "고등학교 이하 자비부담 외국인유학생 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-4-3"
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "D-4-1",
+    "D-4-2",
+    "D-4-2K",
+    "D-4-3",
+    "D-4-5",
+    "D-4-6",
+    "D-4-7",
+    "F-1-13"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "입학허가서, 사업자등록증, 최종학력, 재정입증.",
+      "newReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "extReq": "체류기간 연장허가 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병·사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청: 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_photo",
+        "doc_enroll",
+        "doc_attend",
+        "doc_bank_bal",
+        "doc_address"
+      ],
+      "faq": "Q: 대학 입학?\nA: D-2 변경. 입학허가서+재정 필요.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_photo",
+        "doc_enroll",
+        "doc_attend",
+        "doc_bank_bal",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "표준입학허가서 또는 재학/수료증명서"
+        },
+        {
+          "name": "사업자등록증 사본"
+        },
+        {
+          "name": "최종 학위/학력증명서",
+          "note": "아포스티유/영사확인 필수"
+        },
+        {
+          "name": "재정능력 입증서류",
+          "note": "잔고증명, 소득증명 등 총괄"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
+          "note": "3.5x4.5cm, 최근 6개월"
+        },
+        {
+          "name": "표준입학허가서 또는 재학/수료증명서"
+        },
+        {
+          "name": "출석확인서",
+          "note": "출석률 명시"
+        },
+        {
+          "name": "은행 잔고증명서",
+          "note": "최근 30일 이내 발급본"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가"
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가 가. 기본원칙 가사휴직 불인정 ❍ 개인적인 사정 및 학점미달 등의 사유로 학업 중단 (휴학)자는 체류기간 연장 제한 체류기간 연장허가 ❍ 다만, 질병·사고 등 부득이한 사유가 있다고 인정되는 경우에는 예외적으로 해당 체류자격으로 변경 등 조치 어학연수생 학교변경 ❍ 어학연수생이 학교를 변경하고자 하는 경우 출국 후 해당 대학으로 사증을 받아 재입국해야하나, 아래 어느 하나에 해당하는 연수생에 대해서는 일반대 이상으로의 학교 변경을 예외적으로 허용 - 어학원 폐쇄 등 연수생 귀책 사유 없이 학교 변경이 불가피한 경우 - 토픽 3급(KIIP) 이상 성적표를 소지한 자로서 학교변경에 정당한 사유가 있다고 인정되는 경우 온라인 또는 유학생 담당자를 통한 연장 장려 (혼잡 완화 방안) ❍ (대 상) 인증 대학 재학생 등 직접방문 심사대상이 아닌자 ❍ (신청예시) - 온라인 신청: 유학생 본인 또는 유학생 담당자 ※ 유학생담당자의 경우 최대 10명까지 ",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 일반연수(D-4) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 세부 자격과 신청 사유별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 7,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "hikorea_task_type",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "reentry",
+      "statusChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "reentry": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

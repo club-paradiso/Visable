@@ -1,0 +1,472 @@
+{
+  "code": "REGION-S",
+  "name": "지역특화·광역형 비자 시범사업",
+  "cat": "etc",
+  "period": "시범사업 공고 기준",
+  "subcodes": [
+    {
+      "code": "F-2-R",
+      "name": "지역특화형 우수인재 (지역우수인재)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation"
+      ],
+      "note": "지역특화형 비자 우수인재 主 체류자격.",
+      "nameKo": "지역특화형 우수인재 (지역우수인재)",
+      "searchAliases": [
+        "F-2-R",
+        "F2R",
+        "지역우수인재",
+        "지역특화 우수인재"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "우수인재"
+    },
+    {
+      "code": "E-7-4R",
+      "name": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_point_table"
+      ],
+      "note": "지역특화형 비자 숙련기능인력 主 체류자격.",
+      "nameKo": "지역특화형 숙련기능인력 (지역숙련인력)",
+      "searchAliases": [
+        "E-7-4R",
+        "E74R",
+        "지역숙련인력",
+        "지역특화 숙련기능"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "숙련기능인력"
+    },
+    {
+      "code": "F-3-3R",
+      "name": "지역숙련인력가족 (지역특화 숙련기능인력 동반가족)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": "지역특화형 숙련기능인력(E-7-4R)의 동반가족.",
+      "nameKo": "지역숙련인력가족 (지역특화 숙련기능인력 동반가족)",
+      "searchAliases": [
+        "F-3-3R",
+        "F33R",
+        "지역숙련인력가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "숙련기능인력"
+    },
+    {
+      "code": "F-4-R",
+      "name": "지역특화형 재외동포 (지역재외동포)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_f4_proof"
+      ],
+      "note": "지역특화형 비자 재외동포 主 체류자격.",
+      "nameKo": "지역특화형 재외동포 (지역재외동포)",
+      "searchAliases": [
+        "F-4-R",
+        "F4R",
+        "지역재외동포",
+        "지역특화동포"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "동포"
+    },
+    {
+      "code": "REGIONAL-D-2",
+      "name": "광역형 비자 유학생 (시범사업)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_enroll"
+      ],
+      "note": "광역형 비자 시범사업 대상 유학(D-2). 광역 시·도지사 추천 필요.",
+      "nameKo": "광역형 비자 유학생 (시범사업)",
+      "searchAliases": [
+        "REGIONAL-D-2",
+        "REGIONALD2",
+        "광역형 D-2",
+        "광역형 비자",
+        "광역형 유학생"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 1",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "광역형 비자 시범사업"
+        }
+      ],
+      "group": "광역형"
+    },
+    {
+      "code": "REGIONAL-E-7",
+      "name": "광역형 비자 특정활동 (시범사업)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_emp_contract"
+      ],
+      "note": "광역형 비자 시범사업 대상 특정활동(E-7). 광역 시·도지사 추천 필요.",
+      "nameKo": "광역형 비자 특정활동 (시범사업)",
+      "searchAliases": [
+        "REGIONAL-E-7",
+        "REGIONALE7",
+        "광역형 E-7",
+        "광역형 비자",
+        "광역형 특정활동"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 1",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sectionTitle": "광역형 비자 시범사업"
+        }
+      ],
+      "group": "광역형"
+    },
+    {
+      "code": "F-3-1R",
+      "name": "지역인재가족 (지역특화 우수인재 동반가족)",
+      "nameKo": "지역인재가족 (지역특화 우수인재 동반가족)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": "지역특화형 우수인재(F-2-R)의 동반가족(배우자·미성년자녀).",
+      "searchAliases": [
+        "F-3-1R",
+        "F31R",
+        "지역인재가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "우수인재"
+    },
+    {
+      "code": "F-3-2R",
+      "name": "지역동포가족 (지역특화 재외동포 동반가족)",
+      "nameKo": "지역동포가족 (지역특화 재외동포 동반가족)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": "지역특화형 재외동포(F-4-R)의 동반가족.",
+      "searchAliases": [
+        "F-3-2R",
+        "F32R",
+        "지역동포가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "동포"
+    },
+    {
+      "code": "F-5-6R",
+      "name": "지역특화형 재외동포영주 (지역동포영주)",
+      "nameKo": "지역특화형 재외동포영주 (지역동포영주)",
+      "addReq": "",
+      "addReqDocs": [
+        "doc_local_recommendation",
+        "doc_f4_proof"
+      ],
+      "note": "지역특화형 비자 재외동포영주.",
+      "searchAliases": [
+        "F-5-6R",
+        "F56R",
+        "지역동포영주"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 67",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "동포"
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": false,
+      "summary": "지역특화·광역형 비자는 트랙별 제출서류가 달라 전체 연장 제출서류를 하나로 확정하지 않습니다. 2026-06-01 매뉴얼에서 변경된 E-7-4R 동반가족(F-3-3R) 및 지역특화동포(F-4-R) 제출서류를 하위 트랙 설명에 반영했습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "매뉴얼 확인 필요"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "지역특화형 비자와 광역형 비자 시범사업은 세부 트랙·지자체별 공고·가족동반 여부에 따라 제출서류가 달라집니다.",
+        "2026-06-01 체류민원 매뉴얼 변경 페이지는 REGIONAL p.619-621, p.623-624, p.627이며, 부모 레코드에 보편 제출서류로 평탄화하지 않았습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp.587-638, pp.689-745",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "registration": {
+      "available": false,
+      "summary": "지역특화·광역형 비자 섹션에서 외국인등록 전용 제출서류는 트랙별로 확인해야 합니다. 공통 레코드에서는 매뉴얼/지자체 공고 확인 필요로 유지합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "매뉴얼 확인 필요"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "시범사업 특성상 체류자격 변경·등록·연장 서류를 트랙별로 분리해야 합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp.587-638, pp.689-745",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-01 체류민원 매뉴얼 변경 페이지를 반영해 REGION-S를 트랙별 안내로 보수화했습니다. 부모 레코드에 보편 서류목록으로 평탄화하지 않았습니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "E-7-4R",
+    "F-2-R",
+    "F-3-1R",
+    "F-3-2R",
+    "F-3-3R",
+    "F-4-R",
+    "F-5-6R",
+    "REGION-S",
+    "REGIONAL-D-2",
+    "REGIONAL-E-7",
+    "광역형",
+    "광역형 비자",
+    "지역특화",
+    "지역특화 비자",
+    "지역특화형",
+    "지역특화형비자"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "지역특화형 비자와 광역형 비자 시범사업은 트랙별 지자체 추천, 체류지·근무지, 가족동반, 소득·고용·재학 요건을 각각 확인해야 함. 2026-06-01 체류민원 매뉴얼은 지역특화 숙련기능인력(E-7-4R) 동반가족(F-3-3R), 지역특화동포(F-4-R) 및 광역형 D-2/E-7 특례를 별도 절차로 제시함.",
+      "newReqDocs": [
+        "doc_local_recommendation",
+        "doc_address",
+        "doc_emp_contract",
+        "doc_case_specific_evidence"
+      ],
+      "extReq": "전체 공통 연장요건으로 단일화하지 않음. 지역특화 숙련기능인력(E-7-4R) 가족은 F-3-3R 체류자격 변경·부여·연장별로 가족관계, 동일 지역 실거주, 배우자 사회통합프로그램, 학령기 아동 재학·입학 또는 예외 입증을 확인. 지역특화동포(F-4-R)는 지역동포 유형, 가족 동반/순차 이주, 재학·입학 예정 또는 진단서, 직업 및 연간 소득금액 신고서 등을 트랙별로 확인. 광역형 비자(D-2/E-7)는 별도 시범사업 요건과 지자체별 기준을 확인.",
+      "extReqDocs": [
+        "doc_case_specific_evidence",
+        "doc_local_recommendation",
+        "doc_address"
+      ],
+      "faq": "Q: 전국 어디서나 가능?\nA: 아닙니다. 지정 지역, 추천 지자체, 대상 대학·직종·가족동반 요건에 한정됩니다.\nQ: REGION-S의 서류를 하나의 공통 목록으로 봐도 되나요?\nA: 안 됩니다. F-2-R, E-7-4R, F-3-3R, F-4-R, 광역형 D-2/E-7 등 세부 트랙별로 확인해야 합니다.\n\n[2026-06-01 체류민원 매뉴얼 유의사항] 제출서류는 세부 트랙과 관할기관 심사에 따라 가감될 수 있으며, 지자체 추천·체류지·가족관계·재학·소득·범죄경력 등은 해당 절차별로 확인해야 합니다.",
+      "initialReqDocs": [
+        "doc_local_recommendation",
+        "doc_address"
+      ],
+      "extensionReqDocs": [
+        "doc_case_specific_evidence",
+        "doc_local_recommendation",
+        "doc_address"
+      ],
+      "changeReqDocs": [
+        "doc_local_recommendation"
+      ]
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 40,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "searchAliases"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "searchAliases": "identity"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

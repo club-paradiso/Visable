@@ -1,0 +1,575 @@
+{
+  "code": "D-8",
+  "name": "기업투자",
+  "cat": "invest",
+  "period": "가목 5년 / 나·다목 2년, 연장가능",
+  "subcodes": [
+    {
+      "code": "D-8-1",
+      "name": "법인에 투자",
+      "addReq": "외투법상 등록, 투자금·지분.",
+      "addReqDocs": [
+        "doc_invest",
+        "doc_finance"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-8-2",
+      "name": "벤처기업",
+      "addReq": "벤처확인서, 투자금.",
+      "addReqDocs": [
+        "doc_invest",
+        "doc_finance"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-8-3",
+      "name": "개인기업투자",
+      "addReq": "국민 기업 투자 입증.",
+      "addReqDocs": [
+        "doc_invest"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-8-4",
+      "name": "기술창업",
+      "addReq": "점수제, 투자금, 학사↑.",
+      "addReqDocs": [
+        "doc_finance",
+        "doc_degree"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-8-91",
+      "name": "FTA전근",
+      "addReq": "FTA 전근.",
+      "addReqDocs": [
+        "doc_dispatch"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-8-4S",
+      "name": "스타트업 코리아 특별비자 (기술창업 특례)",
+      "nameKo": "스타트업 코리아 특별비자 (기술창업 특례)",
+      "addReq": "스타트업 코리아 특별비자 관련 부처 추천·창업 입증서류 등 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_startup_korea_recommendation",
+        "doc_biz_reg"
+      ],
+      "note": "기술창업(D-8-4) 중 스타트업 코리아 특별비자 트랙. 세부 요건·서류는 사증발급 안내매뉴얼 확인 필요.",
+      "searchAliases": [
+        "D-8-4S",
+        "D84S",
+        "startup korea",
+        "기술창업 특별비자",
+        "스타트업 코리아",
+        "스타트업코리아"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 106-107",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "기술창업"
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "※ 외국인투자기업등록지위를 갖춘 금융지주회사에서 100%출자한 자회사의 필수전문인력인 경우 제출서류",
+          "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매",
+          "금융지주회사의 인가서 및 외국인투자기업등록증",
+          "자회사의 법인등기사항전부증명서 및 주주명부(금융지주회사가 100% 출자한 자회사임을 입증하는 서류)",
+          "해외본사의 파견명령서(해외본사의 제3국 지사 발행 파견명령서도 인정)",
+          "금융지주회사 및 자회사의 사업자등록증 사본 기본서류",
+          "사업자등록증 사본, 법인등기사항전부증명서, 주주변동상황명세서 원본",
+          "투자기업등록증 사본",
+          "주재활동의 경우 파견명령서(파견기간이 명시된 해외 본사 및 해외 본사의 제3국 소재 지사 발행) 및 재직증명서",
+          "투자자금 도입관련 입증서류",
+          "해당국 세관이나 본국 은행 (금융기관)의 외화반출허가(신고)서 (해당자)",
+          "투자자금 도입 내역서 (송금확인증, 외국환 매입증명서, 세관신고서 등)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 122",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본",
+          "doc_standard_photo_one",
+          "doc_fee_generic"
+        ],
+        "requiredDocs": [
+          "사업자등록증",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "법인 등기사항전부증명서(법인기업인 경우)"
+        ]
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다.",
+        "외국인등록 제출서류는 2026.5 체류민원 매뉴얼 p. 126 '외국인등록 신청서류' 항목에서 직접 정리했습니다. 재외공관에서 기업투자(D-8) 자격을 직접 받아 입국한 경우에는 체류자격 변경신청 제출서류를 준용하며, 세부 사항은 관할 출입국·외국인관서에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 126",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "section": "외국인등록 신청서류"
+        }
+      ]
+    },
+    "reentry": {
+      "available": true,
+      "summary": "재입국허가 면제 제도 및 복수재입국허가(1년 초과 2년 이내 재입국) 안내.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본",
+          "외국인등록증",
+          "수수료 면제"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능)."
+        ]
+      },
+      "notes": [
+        "재입국허가 면제 제도: 외국인등록을 마친 외국인이 출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가가 면제됩니다(체류기간이 1년보다 적게 남은 경우 남은 체류기간 범위 내 면제). 다만 입국규제 등 대상자는 체류지 관할 출입국·외국인관서에서 재입국허가를 받아야 합니다.",
+        "복수재입국허가는 출국 후 체류기간 범위 내에서 1년을 초과하여 2년 이내에 재입국하려는 경우에 신청합니다.",
+        "2026.5 체류민원 안내매뉴얼의 해당 체류자격 재입국허가 항목에서 추출한 신청서류입니다. 체류이력·국적별 예외가 있어 신청 전 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 126",
+          "confidence": "manual_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "d-8-1-corporate-investment-status-change",
+          "labelKo": "법인 투자(D-8-1) 체류자격 변경허가",
+          "scenarioKo": "외국인투자기업인 대한민국 법인의 경영·관리 또는 생산·기술 분야 필수전문인력이 D-8-1로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매",
+              "사업자등록증 사본, 법인등기사항전부증명서, 주주변동상황명세서 원본",
+              "투자기업등록증 사본",
+              "투자자금 도입관련 입증서류",
+              "영업실적(수출입실적 등) 증명서",
+              "doc_residence_proof_generic",
+              "사업장 존재 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "주재활동의 경우 파견명령서 및 재직증명서 추가 제출",
+              "투자금액 3억원 미만 개인투자자는 자본금 사용내역 입증서류 및 필요시 해당 업종 또는 분야의 사업 경험 관련 국적국 서류 추가 제출",
+              "금융지주회사가 100% 출자한 자회사의 필수전문인력은 별도 제출서류 적용"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 119-120",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "법인 투자(D-8-1) 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-8-1"
+        },
+        {
+          "id": "d-8-2-venture-investment-status-change",
+          "labelKo": "벤처 투자(D-8-2) 체류자격 변경허가",
+          "scenarioKo": "벤처기업 대표자 등이 벤처 투자(D-8-2)로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매",
+              "사업자등록증 사본, 법인등기사항전부증명서",
+              "벤처기업확인서 또는 예비벤처기업확인서",
+              "지식재산권 보유 또는 우수 기술력 입증서류",
+              "doc_residence_proof_generic",
+              "사무실 임대차계약서",
+              "영업실적(수출입실적 등) 증명서"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 120",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "벤처 투자(D-8-2) 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-8-2"
+        },
+        {
+          "id": "d-8-3-individual-enterprise-status-change",
+          "labelKo": "개인기업 투자(D-8-3) 체류자격 변경허가",
+          "scenarioKo": "대한민국 국민이 경영하는 외국인투자 개인기업의 필수전문인력이 D-8-3으로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매",
+              "공동사업자가 표시된 사업자등록증 사본, 공동사업자약정서 원본",
+              "투자기업등록증 사본",
+              "공동사업자인 국민의 사업자금 사용내역 입증서류",
+              "투자자금 도입관련 입증서류",
+              "영업실적(수출입실적 등) 증명서",
+              "doc_residence_proof_generic",
+              "사업장 존재 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "주재활동의 경우 파견명령서 및 재직증명서 추가 제출",
+              "투자금액 3억원 미만 신청자는 자본금 사용내역 입증서류 및 필요시 해당 업종 또는 분야의 사업 경험 관련 국적국 서류 추가 제출"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 120-121",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "개인기업 투자(D-8-3) 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-8-3"
+        },
+        {
+          "id": "d-8-4-tech-startup-status-change",
+          "labelKo": "기술창업(D-8-4) 체류자격 변경허가",
+          "scenarioKo": "기술창업 요건을 갖춘 법인 창업자가 D-8-4로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "신청서, 여권, 표준규격사진, 체류지 입증서류",
+              "법인등기사항전부증명서 및 사업자등록증 사본",
+              "학위증명서 사본 또는 관계 중앙행정기관의 장의 추천서"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "법인 설립이 완료되지 않은 점수제 적용 대상자 및 스타트업코리아 특별비자 대상자는 법인등기사항전부증명서 및 사업자등록증 사본 제출을 생략할 수 있으나 6개월 이내 제출 및 체류기간 연장 필요",
+              "점수제 적용대상자는 지식재산권, 특허 출원, OASIS 이수 또는 기타 점수제 항목 입증서류 추가 제출",
+              "점수제 적용 면제 대상자는 해당 유형에 따른 중기부 확인서·추천 공문 또는 추천서 추가 제출"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 121-122",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "기술창업(D-8-4) 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "D-8-4"
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "D-8-1",
+    "D-8-2",
+    "D-8-3",
+    "D-8-4",
+    "D-8-4S",
+    "D-8-91",
+    "startup korea",
+    "스타트업 코리아",
+    "스타트업코리아"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "법인등기사항전부증명서, 사업자등록증, 투자기업등록증 사본, 투자금(1억↑), 사업/고용계획서.",
+      "newReqDocs": [
+        "doc_corp_reg",
+        "doc_biz_reg",
+        "doc_invest",
+        "doc_finance",
+        "doc_plan"
+      ],
+      "extReq": "체류기간 연장허가 연장허가 체류기간 연장허가 제출서류 ※ 외국인투자기업등록지위를 갖춘 금융지주회사에서 100%출자한 자회사의 필수전문인력인 경우 제출서류① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매② 금융지주회사의 인가서 및 외국인투자기업등록증③ 자회사의 법인등기사항전부증명서 및 주주명부(금융지주회사가 100% 출자한 자회사임을 입증하는 서류)④ 해외본사의 파견명령서(해외본사의 제3국 지사 발행 파견명령서도 인정)⑤ 금융지주회사 및 자회사의 사업자등록증 사본 기본서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매② 사업자등록증 사본, 법인등기사항전부증명서, 주주변동상황명세서 원본③ 투자기업등록증 사본④ 주재활동의 경우 파견명령서(파견기간이 명시된 해외 본사 및 해외 본사의 제3국 소재 지사 발행) 및 재직증명서⑤ 투자자금 도입관련 입증서류 - 해당국 세관이나 본국 은행 (금융기관)의 외화반출허가(신고)서 (해당자) - 투자자금 도입 내역서 (송금확인증, 외국환 매입증명서,",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_corp_reg",
+        "doc_invest",
+        "doc_tax",
+        "doc_vat"
+      ],
+      "faq": "Q: 제주 부동산?\nA: D-8 아닙니다. 부동산투자이민→F-2.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_corp_reg",
+        "doc_biz_reg",
+        "doc_invest",
+        "doc_finance",
+        "doc_plan"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_corp_reg",
+        "doc_invest",
+        "doc_tax",
+        "doc_vat"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "법인등기사항전부증명서",
+          "note": "발급 3개월 이내"
+        },
+        {
+          "name": "사업자등록증 사본"
+        },
+        {
+          "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류"
+        },
+        {
+          "name": "재정능력 입증서류",
+          "note": "잔고증명, 소득증명 등 총괄"
+        },
+        {
+          "name": "체류/구직/연수 계획서 또는 사유서"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "법인등기사항전부증명서",
+          "note": "발급 3개월 이내"
+        },
+        {
+          "name": "외국인투자기업등록증 사본 및 투자금 도입 입증서류"
+        },
+        {
+          "name": "납세증명서",
+          "note": "국세 및 지방세 완납증명"
+        },
+        {
+          "name": "부가가치세 과세표준증명",
+          "note": "최근 1년"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 연장허가 체류기간 연장허가 제출서류 ※ 외국인투자기업등록지위를 갖춘 금융지주회사에서 100%출자한 자회사의 필수전문인력인 경우 제출서류① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매② 금융지주회사의 인가서 및 외국인투자기업등록증③ 자회사의 법인등기사항전부증명서 및 주주명부(금융지주회사가 100% 출자한 자회사임을 입증하는 서류)④ 해외본사의 파견명령서(해외본사의 제3국 지사 발행 파견명령서도 인정)⑤ 금융지주회사 및 자회사의 사업자등록증 사본 기본서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매② 사업자등록증 사본, 법인등기사항전부증명서, 주주변동상황명세서 원본③ 투자기업등록증 사본④ 주재활동의 경우 파견명령서(파견기간이 명시된 해외 본사 및 해외 본사의 제3국 소재 지사 발행) 및 재직증명서⑤ 투자자금 도입관련 입증서류 - 해당국 세관이나 본국 은행 (금융기관)의 외화반출허가(신고)서 (해당자) - 투자자금 도입 내역서 (송금확인증, 외국환 매입증명서,",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 기업투자(D-8) 자격으로 입국하여 90일을 초과해 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 세부 자격과 신청 사유별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 10,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "reentry",
+      "statusChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "reentry": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}
