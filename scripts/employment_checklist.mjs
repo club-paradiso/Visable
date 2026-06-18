@@ -26,11 +26,11 @@ export const CHECKLIST_SCHEMA = '2026-06-employment-checklist';
 // Status vocabulary. `text` is shown next to the icon so status is never
 // conveyed by colour alone (accessibility).
 export const STATUS = {
-  pending: { ko: '대기', en: 'Pending', icon: '⬜' },
-  ready: { ko: '후보 찾음 · 선택 필요', en: 'Candidate found · select', icon: '🔵' },
-  needs_confirmation: { ko: '확인 필요', en: 'Needs confirmation', icon: '⚠️' },
-  complete: { ko: '선택 완료', en: 'Selected', icon: '✅' },
-  blocked: { ko: '입력 보완 필요', en: 'Add more detail', icon: '✏️' }
+  pending: { ko: '아직 필요해요', en: 'Not yet', icon: '⬜' },
+  ready: { ko: '후보를 찾았어요', en: 'Candidate found', icon: '🔵' },
+  needs_confirmation: { ko: '확인이 필요해요', en: 'Quick check needed', icon: '⚠️' },
+  complete: { ko: '선택했어요', en: 'Selected', icon: '✅' },
+  blocked: { ko: '조금 더 알려주세요', en: 'Add a detail', icon: '✏️' }
 };
 
 // All user-facing copy, keyed so tests can assert ko+en presence and so the
@@ -75,9 +75,40 @@ export const CHECKLIST_COPY = {
   'weak.detail.task': { ko: '하는 일', en: 'What you do' },
   'weak.detail.business': { ko: '회사/사업장이 하는 일', en: 'What the employer/business does' },
   'clarify.lead': { ko: '정확도를 높이려면 이것만 확인해 주세요.', en: 'One more detail will improve the match.' },
-  'card.fit': { ko: '이 항목이 맞는 경우', en: 'Pick this when' },
-  'card.other': { ko: '다른 항목이 더 맞을 수 있는 경우', en: 'Another may fit better when' },
-  'card.needsCode': { ko: '공식 코드 확인 필요', en: 'Official code needs confirmation' }
+  'card.fit': { ko: '이 항목이 맞을 수 있는 경우', en: 'This may fit when' },
+  'card.other': { ko: '다른 항목이 맞을 수 있는 경우', en: 'Another may fit when' },
+  'card.needsCode': { ko: '공식 코드 확인 필요', en: 'Official code needs confirmation' },
+  // HiKorea final step shows an action label, never a "complete" one.
+  'status.hikorea': { ko: '하이코리아에서 확인해 주세요', en: 'Confirm in HiKorea' },
+
+  // Toss-inspired guided UI copy (keyed ko/en; rendered by index.html).
+  'interpret.title': { ko: '이렇게 이해했어요', en: 'Here’s how Paradiso understood your input' },
+  'interpret.place': { ko: '일하는 곳', en: 'Where you work' },
+  'interpret.object': { ko: '대상', en: 'What you handle' },
+  'interpret.action': { ko: '하는 일', en: 'What you do' },
+  'interpret.check': { ko: '더 확인할 점', en: 'Still to confirm' },
+  'clarify.dunno': { ko: '잘 모르겠어요', en: 'Not sure' },
+  'conf.high': { ko: '가장 가까움', en: 'Closest' },
+  'conf.mid': { ko: '비슷함', en: 'Similar' },
+  'conf.low': { ko: '가능성 있음', en: 'Possible' },
+  'group.top': { ko: '가장 가까운 후보', en: 'Closest candidate' },
+  'group.others': { ko: '다른 가능성', en: 'Other possibilities' },
+  'group.several': { ko: '몇 가지 가능성이 있어요', en: 'A few possibilities' },
+  'card.source': { ko: '공식 분류 코드', en: 'Official classification code' },
+  'card.detail': { ko: '자세히 보기', en: 'See details' },
+  'more.show': { ko: '더 보기', en: 'Show more' },
+  'more.hide': { ko: '접기', en: 'Show less' },
+  'stepper.title': { ko: '신고 준비 4단계', en: 'Your 4 reporting steps' },
+  'occ.section': { ko: '직종 후보', en: 'Occupation candidates' },
+  'occ.sub': { ko: '내가 하는 일에 가까운 항목이에요.', en: 'These are close to the work you do.' },
+  'ind.section': { ko: '업종 후보', en: 'Industry candidates' },
+  'ind.sub': { ko: '회사나 사업장이 하는 일에 가까운 항목이에요.', en: 'These are close to what your employer or business does.' },
+  'income.title': { ko: '연간소득 구간도 필요해요', en: 'Annual income bracket is also required' },
+  'income.body': { ko: '하이코리아 신고 화면에서 실제 연간소득 구간을 선택해야 합니다.', en: 'Select your actual annual income bracket on the HiKorea reporting screen.' },
+  'needcode.title': { ko: '공식 코드 확인 필요', en: 'Official code needs confirmation' },
+  'needcode.body': { ko: '입력하신 업무는 해석할 수 있지만, 하이코리아에서 실제 선택할 공식 코드까지는 최종 확인이 필요해요.', en: 'Paradiso can read your work, but the exact official code to pick in HiKorea still needs a final check.' },
+  'needcode.research': { ko: '다른 표현으로 다시 검색', en: 'Search with different words' },
+  'needcode.portal': { ko: '통계분류포털에서 확인', en: 'Check the classification portal' }
 };
 
 /** Resolve a copy key to a language (ko default; zh-CN falls back to ko). */
@@ -198,7 +229,9 @@ export function buildEmploymentChecklistState(opts = {}) {
     labelKey,
     plainLanguageLabel: checklistCopy(plainKey, lang),
     status,
-    statusLabel: statusLabel(status, lang),
+    // statusLabelKey lets a step show an action-style label (e.g. the HiKorea
+    // step always says "하이코리아에서 확인해 주세요", never a "complete" label).
+    statusLabel: extra.statusLabelKey ? checklistCopy(extra.statusLabelKey, lang) : statusLabel(status, lang),
     reason: checklistCopy(reasonKeyStr, lang),
     reasonKey: reasonKeyStr,
     i18nKey: labelKey,
@@ -219,7 +252,7 @@ export function buildEmploymentChecklistState(opts = {}) {
       reasonKey('industry', indStatus, forks.industry), { code: true }),
     mkStep('income', 'step.income.label', 'step.income.plain', incomeStatus, incomeReasonKey),
     mkStep('hikorea', 'step.hikorea.label', 'step.hikorea.plain', hikoreaStatus, hikoreaReasonKey,
-      { sourceStatus: 'needs_confirmation' })
+      { sourceStatus: 'needs_confirmation', statusLabelKey: 'status.hikorea' })
   ];
 
   return {
