@@ -28,9 +28,11 @@ has('취업정보 신고용 직종·업종 찾기', 'header title microcopy miss
 has('HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리', 'hero subtitle missing');
 has('기준: KSCO8 · KSIC11', 'trust badge missing');
 has('최종 신고 전 HiKorea에서 재확인', 'caution badge missing');
-// source clarity strip (3 steps, plain-language before official terms)
-has('직종 = 내가 실제로 하는 일', 'step1 plain-language copy missing');
-has('업종 = 회사·사업장이 하는 일', 'step2 plain-language copy missing');
+// guided checklist (dynamic; copy lives in scripts/employment_checklist.mjs) +
+// plain-language pane labels before the official classification terms
+has('id="jcChecklist"', 'guided checklist container missing');
+has('내가 하는 일에 가까운 항목', 'occupation pane plain-language label missing');
+has('회사/사업장이 하는 일에 가까운 항목', 'industry pane plain-language label missing');
 has('연간소득 구간', 'income step copy missing');
 // segmented filter
 has('data-jc-filter="all"', 'filter: all missing');
