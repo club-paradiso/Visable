@@ -190,6 +190,9 @@ if command -v node >/dev/null 2>&1; then
   node scripts/check_employment_analyzer_modes.mjs
   # Source/data integrity: registry + visa scope + no hallucinated codes/vocab.
   node scripts/audit_employment_sources.mjs
+  # Guided-checklist state model + real DOM render smoke (candidate≠confirmed,
+  # ambiguous/공식 코드 확인 필요 never complete, HiKorea never complete).
+  node scripts/check_employment_checklist.mjs
 else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi

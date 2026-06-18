@@ -4,8 +4,10 @@
   "private": true,
   "description": "Paradiso — Korean visa/status-of-stay information platform (vanilla HTML/CSS/JS, no build system). This package.json only wraps existing Node scripts so common checks have npm aliases; the site itself needs no build. NOTE: no \"type\":\"module\" — the repo's .js scripts are CommonJS; analyzer modules are .mjs (ES) by extension.",
   "scripts": {
+    "validate": "bash scripts/check_repo.sh",
     "build:employment-test-cases": "node scripts/build_employment_test_cases.mjs",
     "test:employment-analyzer": "node scripts/check_employment_code_analyzer.mjs && node scripts/check_employment_analyzer_modes.mjs",
+    "test:employment-checklist": "node scripts/check_employment_checklist.mjs",
     "audit:employment-sources": "node scripts/audit_employment_sources.mjs",
     "report:employment-failures": "node scripts/employment_failure_report.mjs",
     "test:employment-reporting-helper": "node scripts/check_employment_reporting_helper.mjs"
