@@ -1,0 +1,442 @@
+{
+  "schema_version": "2026-06-employment-analyzer-mode-test-cases",
+  "generated_by": "scripts/build_employment_test_cases.mjs",
+  "contract": {
+    "noHallucinatedCode": "always: every returned candidate code exists in jobcode_master.json with the matching type",
+    "tracksSeparated": "always: occupation candidates type occupation, industry candidates type industry",
+    "sourceMetadataPresent": "always: sourceNotes non-empty",
+    "expectMode": "res.mode must equal this (when present)",
+    "expectSignals": "parsedSignals must contain >=1 of these kinds (field cases)",
+    "expectOccupationCluster": "SOFT: keyword should appear in some occupation candidate, OR the code is withheld and clarification is required. Aggregate hit-rate is gated.",
+    "expectIndustryCluster": "SOFT: same for industry",
+    "expectLegalSensitivity": "extracted.legalSensitivity includes this",
+    "expectMaxConfidence": "no candidate exceeds this confidence",
+    "expectWarningIncludes": "some warning contains this string",
+    "clarificationRequired": "res.clarificationRequired must be true",
+    "withholdCodeIfUnverified": "documentation: code may be withheld for unverified mapping",
+    "neverSilentDeadEnd": "must return candidates OR an interpretation + clarification"
+  },
+  "mode": "ambiguous_mode",
+  "cases": [
+    {
+      "id": "ambig_0445_프리랜서",
+      "input": "프리랜서",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0446_freelancer",
+      "input": "freelancer",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0447_알바",
+      "input": "알바",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0448_아르바이트",
+      "input": "아르바이트",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0449_회사원",
+      "input": "회사원",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0450_직장인",
+      "input": "직장인",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0451_일해요",
+      "input": "일해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0452_돈_벌어요",
+      "input": "돈 벌어요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0453_취업했어요",
+      "input": "취업했어요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0454_회사_다녀요",
+      "input": "회사 다녀요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0455_job",
+      "input": "job",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0456_work",
+      "input": "work",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0457_i_have_a_job",
+      "input": "I have a job",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0458_part_time_worker",
+      "input": "part time worker",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0459_자영업해요",
+      "input": "자영업해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0460_사업해요",
+      "input": "사업해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0461_장사해요",
+      "input": "장사해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0462_뭐든_해요",
+      "input": "뭐든 해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0463_이것저것_해요",
+      "input": "이것저것 해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0464_그냥_일함",
+      "input": "그냥 일함",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0465_바리스타아",
+      "input": "바리스타아",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0466_개발",
+      "input": "개발",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0467_디자인_일",
+      "input": "디자인 일",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0468_cafe에서_알바해요",
+      "input": "cafe에서 알바해요",
+      "language": "mixed",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0469_공장_다녀요",
+      "input": "공장 다녀요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0470_현장_일해요",
+      "input": "현장 일해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0471_배달해요",
+      "input": "배달해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0472_청소_일",
+      "input": "청소 일",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0473_서비스직",
+      "input": "서비스직",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0474_생산직",
+      "input": "생산직",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0475_ilhaeyo",
+      "input": "ilhaeyo",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0476_알바생",
+      "input": "알바생",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0477_투잡_해요",
+      "input": "투잡 해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0478_부업해요",
+      "input": "부업해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0479_인턴이에요",
+      "input": "인턴이에요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0480_수습이에요",
+      "input": "수습이에요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0481_파견_나가요",
+      "input": "파견 나가요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0482_용역_일해요",
+      "input": "용역 일해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0483_일용직",
+      "input": "일용직",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0484_막노동",
+      "input": "막노동",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0485_노가다",
+      "input": "노가다",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0486_손님_응대",
+      "input": "손님 응대",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0487_가게_봐요",
+      "input": "가게 봐요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0488_매장_일해요",
+      "input": "매장 일해요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0489_사무_봐요",
+      "input": "사무 봐요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0490_관리_일",
+      "input": "관리 일",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0491_contractor",
+      "input": "contractor",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0492_gig_worker",
+      "input": "gig worker",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0493_odd_jobs",
+      "input": "odd jobs",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0494_self_employed",
+      "input": "self employed",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0495_i_run_a_small_business",
+      "input": "I run a small business",
+      "language": "en",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0496_",
+      "input": "打工",
+      "language": "zh",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0497_",
+      "input": "工作",
+      "language": "zh",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0498_",
+      "input": "会社員",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0499_뭔가_만들어요",
+      "input": "뭔가 만들어요",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0500_포장_일",
+      "input": "포장 일",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0501_상하차",
+      "input": "상하차",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0502_새벽_알바",
+      "input": "새벽 알바",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0503_주말_알바",
+      "input": "주말 알바",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "ambig_0504_단기_알바",
+      "input": "단기 알바",
+      "language": "ko",
+      "neverSilentDeadEnd": true,
+      "noHallucinatedCode": true
+    }
+  ]
+}

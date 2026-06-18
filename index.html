@@ -837,6 +837,11 @@ body.searched .ft { opacity: 1; }
 .jc2-interpret-grid { display: grid; grid-template-columns: max-content 1fr; gap: 0.3rem 0.8rem; font-size: 0.82rem; }
 .jc2-interpret-k { color: var(--t3); white-space: nowrap; }
 .jc2-interpret-v { color: var(--t1); font-weight: 600; }
+.jc2-interpret-banner { background: var(--bg3, var(--bg2)); border-left: 3px solid var(--color-info, #3b82f6); border-radius: 6px; padding: 0.45rem 0.7rem; margin-bottom: 0.55rem; font-size: 0.82rem; font-weight: 600; color: var(--t1); }
+.jc2-interpret-mode { display: inline-block; font-size: 0.72rem; font-weight: 600; color: var(--t2); background: var(--bd2); border-radius: 999px; padding: 0.05rem 0.5rem; margin-left: 0.35rem; vertical-align: middle; }
+.jc2-interpret-sum { font-size: 0.86rem; font-weight: 700; color: var(--t1); margin-bottom: 0.5rem; }
+.jc2-interpret-pending { margin-top: 0.55rem; padding: 0.45rem 0.7rem; border-radius: 6px; background: color-mix(in srgb, var(--color-warning, #f59e0b) 12%, transparent); border: 1px solid var(--color-warning, #f59e0b); font-size: 0.8rem; color: var(--t1); }
+.jc2-interpret-income { margin-top: 0.45rem; font-size: 0.78rem; color: var(--t2); }
 .jc2-refine { background: var(--acL); border: 1px solid color-mix(in srgb, var(--ac) 35%, transparent); border-radius: var(--radius-md); padding: 0.7rem 0.9rem; display: flex; flex-direction: column; gap: 0.6rem; }
 .jc2-refine-q { display: flex; flex-direction: column; gap: 0.4rem; }
 .jc2-refine-qt { margin: 0; font-size: 0.82rem; line-height: 1.5; color: var(--t1); }
@@ -15059,8 +15064,10 @@ async function ensureEmploymentAnalyzer() {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) { _empLoadPromise = null; return null; } }
         const grab = (p) => fetch(p, { cache: 'default' }).then(r => r.ok ? r.json() : null).catch(() => null);
         // Base aliases + entertainment + tattoo alias packs + umbrella/ambiguous
-        // inputs + source/legal metadata, merged the same way the Node loader does.
-        const [koBase, enBase, koEnt, enEnt, koTat, enTat, amb, src] = await Promise.all([
+        // inputs + field-labor place/object/action lexicon + fork disambiguation
+        // rules + income reminder + source/legal metadata, merged the same way the
+        // Node loader (scripts/employment_data_loader.mjs) does.
+        const [koBase, enBase, koEnt, enEnt, koTat, enTat, amb, src, fieldKo, fieldEn, disamb, income] = await Promise.all([
             grab('./data/employment/synonyms.ko.json'),
             grab('./data/employment/synonyms.en.json'),
             grab('./data/employment/aliases.entertainment.ko.json'),
@@ -15068,7 +15075,11 @@ async function ensureEmploymentAnalyzer() {
             grab('./data/employment/aliases.tattoo.ko.json'),
             grab('./data/employment/aliases.tattoo.en.json'),
             grab('./data/employment/ambiguous_inputs.json'),
-            grab('./data/employment/classification_sources.json')
+            grab('./data/employment/classification_sources.json'),
+            grab('./data/employment/colloquial_field_terms_ko.json'),
+            grab('./data/employment/colloquial_field_terms_en.json'),
+            grab('./data/employment/disambiguation_rules.json'),
+            grab('./data/employment/income_brackets.json')
         ]);
         const cc = (o) => (o && Array.isArray(o.concepts) ? o.concepts : []);
         _empLex = {
@@ -15080,20 +15091,41 @@ async function ensureEmploymentAnalyzer() {
             data: _jobcodeData, lexicon: _empLex, sources: src,
             ambiguous: amb || { entries: [] },
             legalSources: (src && src.legal_sources) || [],
-            context: _jobcodeData && _jobcodeData.employment_reporting_context
+            context: _jobcodeData && _jobcodeData.employment_reporting_context,
+            fieldTerms: { ko: fieldKo || { signals: [] }, en: fieldEn || { signals: [] } },
+            disambiguation: disamb || { rules: [] },
+            incomeBrackets: income || null
         });
         return _empAnalyzer;
     })();
     return _empLoadPromise;
 }
 const JC_CONF_LABEL = { high: '높음', medium: '보통', low: '낮음' };
+const JC_MODE_LABEL = {
+    field_labor_mode: '현장·작업 기준 분석',
+    professional_mode: '전문·사무직 분석',
+    service_mode: '서비스·접객 분석',
+    arts_entertainment_mode: '예술·공연 분석',
+    ambiguous_mode: '추가 정보 필요'
+};
 function renderEmploymentInterpretation(analysis) {
     const el = document.getElementById('jcInterpret');
     if (!el) return;
     if (!analysis) { el.hidden = true; el.innerHTML = ''; return; }
     const e = analysis.extracted || {};
+    const ps = analysis.parsedSignals || {};
+    const en = (analysis.detectedLanguage === 'en');
     const SENS_LABEL = { tattoo: '문신·타투(법적 민감)', entertainment: '연예·공연(별도 검토)' };
     const sens = (e.legalSensitivity || []).map(s => SENS_LABEL[s] || s).join(', ');
+    const sigLine = (arr) => (Array.isArray(arr) ? arr.map(x => x && (x.label || x)).filter(Boolean).join(', ') : '');
+    const isField = analysis.mode === 'field_labor_mode';
+    // field-labor: lead with the place + object + action signals (the way the
+    // input was actually decoded), per the spec.
+    const fieldRows = isField ? [
+        ['📍 장소', sigLine(ps.places)],
+        ['📦 대상', sigLine(ps.objects)],
+        ['🛠 작업', sigLine(ps.actions)]
+    ].filter(([, v]) => v) : [];
     const rows = [
         ['🙋 하는 일(직종)', e.jobRole],
         ['🏢 근무처', e.workplaceType],
@@ -15106,12 +15138,28 @@ function renderEmploymentInterpretation(analysis) {
         ['⚖ 법적 민감도', sens || null],
         ['🪪 체류자격', e.visaStatus]
     ].filter(([, v]) => v);
-    if (!rows.length) { el.hidden = true; el.innerHTML = ''; return; }
+    const allRows = [...fieldRows, ...rows];
+    if (!allRows.length && !analysis.parsedInterpretation) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-interpret-h">📝 입력 내용 해석</div>`
+    const modeLabel = JC_MODE_LABEL[analysis.mode] || '';
+    const banner = isField
+        ? `<div class="jc2-interpret-banner">🧭 ${escapeHtml(en ? "Read by 'place + task'." : "입력하신 내용은 ‘장소 + 작업 내용’ 기준으로 분석했어요.")}</div>`
+        : '';
+    const interp = analysis.parsedInterpretation
+        ? `<div class="jc2-interpret-sum">🔎 ${escapeHtml(analysis.parsedInterpretation)}</div>` : '';
+    const needConfirm = analysis.sourceStatus === 'needs_confirmation'
+        ? `<div class="jc2-interpret-pending">⚠ ${escapeHtml(en ? 'Understood, but the official code is not verified — please confirm on HiKorea / the classification portal.' : '입력은 이해했지만 공식 코드 매핑은 미확정입니다 — HiKorea·통계분류포털에서 확인 필요(공식 코드 확인 필요).')}</div>`
+        : '';
+    const income = analysis.incomeReportingNote
+        ? `<div class="jc2-interpret-income">💰 ${escapeHtml(analysis.incomeReportingNote)}</div>` : '';
+    el.innerHTML = banner
+        + `<div class="jc2-interpret-h">📝 ${escapeHtml(en ? 'How we read your input' : '입력 내용 해석')}${modeLabel ? ` <span class="jc2-interpret-mode">${escapeHtml(modeLabel)}</span>` : ''}</div>`
+        + interp
         + `<div class="jc2-interpret-grid">`
-        + rows.map(([k, v]) => `<span class="jc2-interpret-k">${escapeHtml(k)}</span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
-        + `</div>`;
+        + allRows.map(([k, v]) => `<span class="jc2-interpret-k">${escapeHtml(k)}</span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
+        + `</div>`
+        + needConfirm
+        + income;
 }
 function renderEmploymentFollowupChips(analysis) {
     const el = document.getElementById('jcFollowup');
@@ -15230,6 +15278,20 @@ async function searchJobcodeWithAI() {
         renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw, true);
         renderJobcodeList(indRows, indBox, 'industry', input, indKw, true);
         renderJobcodeGuidance(input, jobRows, indRows);
+        // Never a bare "검색 결과 없음" when the input WAS understood (place/object/
+        // action or concept signals present): explain that the official mapping
+        // needs confirmation instead, so field-worker inputs don't dead-end.
+        const ps = analysis && analysis.parsedSignals;
+        const hasSignals = !!(ps && ((ps.places||[]).length || (ps.objects||[]).length || (ps.actions||[]).length))
+            || !!(analysis && (analysis.parsedInterpretation || (analysis.matchedConcepts||[]).length));
+        if (hasSignals) {
+            const pendMsg = currentLanguage === 'en'
+                ? 'We understood your work — but no verified official code matched. See "How we read your input" above and confirm on HiKorea / the classification portal.'
+                : '입력 내용은 이해했지만 일치하는 공식 코드를 찾지 못했어요. 위 ‘입력 내용 해석’을 확인하고, 최종 코드는 HiKorea·통계분류포털에서 확인하세요(공식 코드 확인 필요).';
+            const pendHtml = `<div class="jc2-empty" style="border:1px solid var(--color-warning);border-radius:8px;padding:0.6rem;color:var(--t1);">⚠ ${escapeHtml(pendMsg)}</div>`;
+            if (jobBox && !jobRows.length) jobBox.innerHTML = pendHtml;
+            if (indBox && !indRows.length) indBox.innerHTML = pendHtml;
+        }
         const badge = document.getElementById('jcCountBadge');
         if (badge) badge.textContent = `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {

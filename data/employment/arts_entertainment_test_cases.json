@@ -1,0 +1,672 @@
+{
+  "schema_version": "2026-06-employment-analyzer-mode-test-cases",
+  "generated_by": "scripts/build_employment_test_cases.mjs",
+  "contract": {
+    "noHallucinatedCode": "always: every returned candidate code exists in jobcode_master.json with the matching type",
+    "tracksSeparated": "always: occupation candidates type occupation, industry candidates type industry",
+    "sourceMetadataPresent": "always: sourceNotes non-empty",
+    "expectMode": "res.mode must equal this (when present)",
+    "expectSignals": "parsedSignals must contain >=1 of these kinds (field cases)",
+    "expectOccupationCluster": "SOFT: keyword should appear in some occupation candidate, OR the code is withheld and clarification is required. Aggregate hit-rate is gated.",
+    "expectIndustryCluster": "SOFT: same for industry",
+    "expectLegalSensitivity": "extracted.legalSensitivity includes this",
+    "expectMaxConfidence": "no candidate exceeds this confidence",
+    "expectWarningIncludes": "some warning contains this string",
+    "clarificationRequired": "res.clarificationRequired must be true",
+    "withholdCodeIfUnverified": "documentation: code may be withheld for unverified mapping",
+    "neverSilentDeadEnd": "must return candidates OR an interpretation + clarification"
+  },
+  "mode": "arts_entertainment_mode",
+  "cases": [
+    {
+      "id": "arts_0380_댄서",
+      "input": "댄서",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0381_무용수",
+      "input": "무용수",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0382_안무가",
+      "input": "안무가",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "안무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0383_백댄서",
+      "input": "백댄서",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0384_아이돌",
+      "input": "아이돌",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0385_아이돌_연습생",
+      "input": "아이돌 연습생",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0386_케이팝_아이돌",
+      "input": "케이팝 아이돌",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0387_가수",
+      "input": "가수",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "가수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0388_래퍼",
+      "input": "래퍼",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "가수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0389_뮤지컬_배우",
+      "input": "뮤지컬 배우",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "배우",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0390_배우",
+      "input": "배우",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "배우",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0391_모델",
+      "input": "모델",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "모델",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0392_연주가",
+      "input": "연주가",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "연주",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0393_공연_예술가",
+      "input": "공연 예술가",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0394_보컬_트레이너",
+      "input": "보컬 트레이너",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0395_댄스_강사",
+      "input": "댄스 강사",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0396_dancer",
+      "input": "dancer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0397_choreographer",
+      "input": "choreographer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "안무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0398_backup_dancer",
+      "input": "backup dancer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0399_idol",
+      "input": "idol",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0400_k_pop_trainee",
+      "input": "K-pop trainee",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0401_singer",
+      "input": "singer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "가수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0402_actor",
+      "input": "actor",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "배우",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0403_model",
+      "input": "model",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "모델",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0404_musical_actor",
+      "input": "musical actor",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "배우",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0405_dance_instructor",
+      "input": "dance instructor",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0406_발레리나",
+      "input": "발레리나",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0407_한국무용가",
+      "input": "한국무용가",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0408_현대무용수",
+      "input": "현대무용수",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0409_연습생이에요",
+      "input": "연습생이에요",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0410_걸그룹_멤버",
+      "input": "걸그룹 멤버",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0411_보이그룹_연습생",
+      "input": "보이그룹 연습생",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0412_트로트_가수",
+      "input": "트로트 가수",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "가수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0413_세션_연주자",
+      "input": "세션 연주자",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "연주",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0414_오케스트라_단원",
+      "input": "오케스트라 단원",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "연주",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0415_공연단체_무용수",
+      "input": "공연단체 무용수",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0416_뮤지컬_배우_지망생",
+      "input": "뮤지컬 배우 지망생",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "배우",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0417_패션_모델",
+      "input": "패션 모델",
+      "language": "ko",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "모델",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0418_ballerina",
+      "input": "ballerina",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0419_contemporary_dancer",
+      "input": "contemporary dancer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "무용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0420_session_musician",
+      "input": "session musician",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "연주",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0421_girl_group_member",
+      "input": "girl group member",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "clarificationRequired": true,
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0422_fashion_model",
+      "input": "fashion model",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "expectOccupationCluster": "모델",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "arts_0423_stage_performer",
+      "input": "stage performer",
+      "language": "en",
+      "expectMode": "arts_entertainment_mode",
+      "expectLegalSensitivity": "entertainment",
+      "withholdCodeIfUnverified": true,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0424_유튜버",
+      "input": "유튜버",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0425_youtuber",
+      "input": "youtuber",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0426_영상_편집하고_유튜브_콘텐츠_만들어요",
+      "input": "영상 편집하고 유튜브 콘텐츠 만들어요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0427_video_editor",
+      "input": "video editor",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0428_스트리머",
+      "input": "스트리머",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0429_streamer",
+      "input": "streamer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0430_인플루언서",
+      "input": "인플루언서",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0431_influencer",
+      "input": "influencer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0432_콘텐츠_크리에이터",
+      "input": "콘텐츠 크리에이터",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "creator_0433_content_creator",
+      "input": "content creator",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "콘텐츠",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0434_타투이스트",
+      "input": "타투이스트",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0435_문신사",
+      "input": "문신사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0436_반영구화장",
+      "input": "반영구화장",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0437_눈썹문신",
+      "input": "눈썹문신",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0438_타투샵_운영",
+      "input": "타투샵 운영",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0439_반영구_화장사",
+      "input": "반영구 화장사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0440_문신아티스트",
+      "input": "문신아티스트",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0441_tattoo_artist",
+      "input": "tattoo artist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0442_cosmetic_tattoo_artist",
+      "input": "cosmetic tattoo artist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0443_permanent_makeup_artist",
+      "input": "permanent makeup artist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "tattoo_0444_tattooist",
+      "input": "tattooist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectLegalSensitivity": "tattoo",
+      "expectMaxConfidence": "low",
+      "expectWarningIncludes": "문신",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    }
+  ]
+}

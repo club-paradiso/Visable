@@ -1,0 +1,3048 @@
+{
+  "schema_version": "2026-06-employment-analyzer-mode-test-cases",
+  "generated_by": "scripts/build_employment_test_cases.mjs",
+  "contract": {
+    "noHallucinatedCode": "always: every returned candidate code exists in jobcode_master.json with the matching type",
+    "tracksSeparated": "always: occupation candidates type occupation, industry candidates type industry",
+    "sourceMetadataPresent": "always: sourceNotes non-empty",
+    "expectMode": "res.mode must equal this (when present)",
+    "expectSignals": "parsedSignals must contain >=1 of these kinds (field cases)",
+    "expectOccupationCluster": "SOFT: keyword should appear in some occupation candidate, OR the code is withheld and clarification is required. Aggregate hit-rate is gated.",
+    "expectIndustryCluster": "SOFT: same for industry",
+    "expectLegalSensitivity": "extracted.legalSensitivity includes this",
+    "expectMaxConfidence": "no candidate exceeds this confidence",
+    "expectWarningIncludes": "some warning contains this string",
+    "clarificationRequired": "res.clarificationRequired must be true",
+    "withholdCodeIfUnverified": "documentation: code may be withheld for unverified mapping",
+    "neverSilentDeadEnd": "must return candidates OR an interpretation + clarification"
+  },
+  "mode": "field_labor_mode",
+  "cases": [
+    {
+      "id": "field_0001_배에서_한치_잡아요",
+      "input": "배에서 한치 잡아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0002_배에서_갈치_잡습니다",
+      "input": "배에서 갈치 잡습니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0003_배에서_생선_어획해요",
+      "input": "배에서 생선 어획해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0004_어선에서_오징어_조업해요",
+      "input": "어선에서 오징어 조업해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0005_어선에서_생선_잡아요",
+      "input": "어선에서 생선 잡아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0006_고깃배에서_오징어_잡습니다",
+      "input": "고깃배에서 오징어 잡습니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0007_고깃배에서_고등어_어획해요",
+      "input": "고깃배에서 고등어 어획해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0008_오징어배에서_한치_조업해요",
+      "input": "오징어배에서 한치 조업해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0009_오징어배에서_고등어_잡아요",
+      "input": "오징어배에서 고등어 잡아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0010_한치_잡습니다",
+      "input": "한치 잡습니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0011_갈치_어획해요",
+      "input": "갈치 어획해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0012_생선_조업해요",
+      "input": "생선 조업해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0013_과수원에서_귤_따요",
+      "input": "과수원에서 귤 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0014_과수원에서_감귤_수확해요",
+      "input": "과수원에서 감귤 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0015_과수원에서_배_땁니다",
+      "input": "과수원에서 배 땁니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0016_감귤_농장에서_귤_따요",
+      "input": "감귤 농장에서 귤 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0017_감귤_농장에서_감귤_수확해요",
+      "input": "감귤 농장에서 감귤 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0018_감귤_농장에서_배_땁니다",
+      "input": "감귤 농장에서 배 땁니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0019_사과밭에서_귤_따요",
+      "input": "사과밭에서 귤 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0020_사과밭에서_감귤_수확해요",
+      "input": "사과밭에서 감귤 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0021_사과밭에서_배_땁니다",
+      "input": "사과밭에서 배 땁니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0022_귤_따요",
+      "input": "귤 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0023_감귤_수확해요",
+      "input": "감귤 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0024_배_땁니다",
+      "input": "배 땁니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0025_밭에서_마늘_뽑아요",
+      "input": "밭에서 마늘 뽑아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0026_밭에서_양파_심어요",
+      "input": "밭에서 양파 심어요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0027_밭에서_고추_수확해요",
+      "input": "밭에서 고추 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0028_농장에서_마늘_캐요",
+      "input": "농장에서 마늘 캐요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0029_농장에서_배추_뽑아요",
+      "input": "농장에서 배추 뽑아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0030_농장에서_고추_심어요",
+      "input": "농장에서 고추 심어요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0031_하우스에서_마늘_수확해요",
+      "input": "하우스에서 마늘 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0032_하우스에서_배추_캐요",
+      "input": "하우스에서 배추 캐요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0033_하우스에서_감자_뽑아요",
+      "input": "하우스에서 감자 뽑아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0034_마늘_심어요",
+      "input": "마늘 심어요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0035_배추_수확해요",
+      "input": "배추 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0036_감자_캐요",
+      "input": "감자 캐요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0037_하우스에서_딸기_따요",
+      "input": "하우스에서 딸기 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0038_하우스에서_토마토_수확해요",
+      "input": "하우스에서 토마토 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0039_하우스에서_오이_포장해요",
+      "input": "하우스에서 오이 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0040_비닐하우스에서_딸기_따요",
+      "input": "비닐하우스에서 딸기 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0041_비닐하우스에서_토마토_수확해요",
+      "input": "비닐하우스에서 토마토 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0042_비닐하우스에서_오이_포장해요",
+      "input": "비닐하우스에서 오이 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0043_딸기_농장에서_딸기_따요",
+      "input": "딸기 농장에서 딸기 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0044_딸기_농장에서_토마토_수확해요",
+      "input": "딸기 농장에서 토마토 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0045_딸기_농장에서_오이_포장해요",
+      "input": "딸기 농장에서 오이 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0046_딸기_따요",
+      "input": "딸기 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0047_토마토_수확해요",
+      "input": "토마토 수확해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0048_오이_포장해요",
+      "input": "오이 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0049_양식장에서_전복_밥_줘요",
+      "input": "양식장에서 전복 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0050_양식장에서_물고기_밥_줘요",
+      "input": "양식장에서 물고기 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0051_양식장에서_새우_밥_줘요",
+      "input": "양식장에서 새우 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0052_양식장에서_굴_밥_줘요",
+      "input": "양식장에서 굴 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0053_가두리에서_전복_밥_줘요",
+      "input": "가두리에서 전복 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0054_가두리에서_물고기_밥_줘요",
+      "input": "가두리에서 물고기 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0055_가두리에서_새우_밥_줘요",
+      "input": "가두리에서 새우 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0056_가두리에서_굴_밥_줘요",
+      "input": "가두리에서 굴 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0057_전복_밥_줘요",
+      "input": "전복 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0058_물고기_밥_줘요",
+      "input": "물고기 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0059_새우_밥_줘요",
+      "input": "새우 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0060_굴_밥_줘요",
+      "input": "굴 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0061_수산물_공장에서_생선_손질해요",
+      "input": "수산물 공장에서 생선 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0062_수산물_공장에서_오징어_손질해요",
+      "input": "수산물 공장에서 오징어 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0063_수산물_공장에서_수산물_손질해요",
+      "input": "수산물 공장에서 수산물 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0064_가공공장에서_생선_손질해요",
+      "input": "가공공장에서 생선 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0065_가공공장에서_오징어_손질해요",
+      "input": "가공공장에서 오징어 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0066_가공공장에서_수산물_손질해요",
+      "input": "가공공장에서 수산물 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0067_선별장에서_생선_손질해요",
+      "input": "선별장에서 생선 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0068_선별장에서_오징어_손질해요",
+      "input": "선별장에서 오징어 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0069_선별장에서_수산물_손질해요",
+      "input": "선별장에서 수산물 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0070_생선_손질해요",
+      "input": "생선 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0071_오징어_손질해요",
+      "input": "오징어 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0072_수산물_손질해요",
+      "input": "수산물 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0073_공장에서_박스_포장해요",
+      "input": "공장에서 박스 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0074_공장에서_부품_조립해요",
+      "input": "공장에서 부품 조립해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0075_공장에서_제품_검사해요",
+      "input": "공장에서 제품 검사해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0076_제조공장에서_박스_포장해요",
+      "input": "제조공장에서 박스 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0077_제조공장에서_부품_조립해요",
+      "input": "제조공장에서 부품 조립해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0078_제조공장에서_제품_검사해요",
+      "input": "제조공장에서 제품 검사해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0079_생산라인에서_박스_포장해요",
+      "input": "생산라인에서 박스 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0080_생산라인에서_부품_조립해요",
+      "input": "생산라인에서 부품 조립해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0081_생산라인에서_제품_검사해요",
+      "input": "생산라인에서 제품 검사해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0082_박스_포장해요",
+      "input": "박스 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0083_부품_조립해요",
+      "input": "부품 조립해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0084_제품_검사해요",
+      "input": "제품 검사해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "단순",
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0085_창고에서_박스_나릅니다",
+      "input": "창고에서 박스 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0086_창고에서_택배_분류해요",
+      "input": "창고에서 택배 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0087_창고에서_화물_나릅니다",
+      "input": "창고에서 화물 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0088_물류센터에서_박스_분류해요",
+      "input": "물류센터에서 박스 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0089_물류센터에서_상자_나릅니다",
+      "input": "물류센터에서 상자 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0090_물류센터에서_화물_분류해요",
+      "input": "물류센터에서 화물 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0091_택배_터미널에서_택배_나릅니다",
+      "input": "택배 터미널에서 택배 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0092_택배_터미널에서_상자_분류해요",
+      "input": "택배 터미널에서 상자 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0093_박스_나릅니다",
+      "input": "박스 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0094_택배_분류해요",
+      "input": "택배 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0095_화물_나릅니다",
+      "input": "화물 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0096_창고에서_분류해요",
+      "input": "창고에서 분류해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0097_골프장에서_잔디_청소해요",
+      "input": "골프장에서 잔디 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0098_골프장에서_잔디_깎아요",
+      "input": "골프장에서 잔디 깎아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0099_골프장에서_그린_관리해요",
+      "input": "골프장에서 그린 관리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0100_골프장에서_쓰레기_청소해요",
+      "input": "골프장에서 쓰레기 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0101_골프장에서_쓰레기_깎아요",
+      "input": "골프장에서 쓰레기 깎아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0102_컨트리클럽에서_잔디_관리해요",
+      "input": "컨트리클럽에서 잔디 관리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0103_컨트리클럽에서_그린_청소해요",
+      "input": "컨트리클럽에서 그린 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0104_컨트리클럽에서_그린_깎아요",
+      "input": "컨트리클럽에서 그린 깎아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0105_컨트리클럽에서_쓰레기_관리해요",
+      "input": "컨트리클럽에서 쓰레기 관리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0106_잔디_청소해요",
+      "input": "잔디 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0107_잔디_깎아요",
+      "input": "잔디 깎아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0108_그린_관리해요",
+      "input": "그린 관리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0109_리조트에서_객실_청소해요",
+      "input": "리조트에서 객실 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0110_리조트에서_침대_청소해요",
+      "input": "리조트에서 침대 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0111_리조트에서_침구_청소해요",
+      "input": "리조트에서 침구 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0112_호텔에서_객실_청소해요",
+      "input": "호텔에서 객실 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0113_호텔에서_침대_청소해요",
+      "input": "호텔에서 침대 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0114_호텔에서_침구_청소해요",
+      "input": "호텔에서 침구 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0115_펜션에서_객실_청소해요",
+      "input": "펜션에서 객실 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0116_펜션에서_침대_청소해요",
+      "input": "펜션에서 침대 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0117_펜션에서_침구_청소해요",
+      "input": "펜션에서 침구 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0118_객실_청소해요",
+      "input": "객실 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0119_침대_청소해요",
+      "input": "침대 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0120_침구_청소해요",
+      "input": "침구 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "숙박",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0121_건설현장에서_자재_나릅니다",
+      "input": "건설현장에서 자재 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0122_건설현장에서_벽돌_용접해요",
+      "input": "건설현장에서 벽돌 용접해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0123_건설현장에서_철근_칠해요",
+      "input": "건설현장에서 철근 칠해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0124_공사장에서_자재_설치해요",
+      "input": "공사장에서 자재 설치해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0125_공사장에서_철근_나릅니다",
+      "input": "공사장에서 철근 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0126_현장에서_자재_용접해요",
+      "input": "현장에서 자재 용접해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0127_현장에서_벽돌_칠해요",
+      "input": "현장에서 벽돌 칠해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0128_현장에서_철근_설치해요",
+      "input": "현장에서 철근 설치해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0129_벽돌_나릅니다",
+      "input": "벽돌 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0130_철근_용접해요",
+      "input": "철근 용접해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0131_건설현장에서_칠해요",
+      "input": "건설현장에서 칠해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0132_공사장에서_설치해요",
+      "input": "공사장에서 설치해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "건설",
+      "expectIndustryCluster": "건설",
+      "clarificationTopic": "construction_labor_vs_technical_install",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0133_식당에서_접시_설거지해요",
+      "input": "식당에서 접시 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0134_식당에서_접시_주방보조해요",
+      "input": "식당에서 접시 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0135_식당에서_그릇_설거지해요",
+      "input": "식당에서 그릇 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0136_식당에서_그릇_주방보조해요",
+      "input": "식당에서 그릇 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0137_주방에서_접시_설거지해요",
+      "input": "주방에서 접시 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0138_주방에서_접시_주방보조해요",
+      "input": "주방에서 접시 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0139_주방에서_그릇_설거지해요",
+      "input": "주방에서 그릇 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0140_주방에서_그릇_주방보조해요",
+      "input": "주방에서 그릇 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0141_급식실에서_접시_설거지해요",
+      "input": "급식실에서 접시 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0142_급식실에서_접시_주방보조해요",
+      "input": "급식실에서 접시 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0143_급식실에서_그릇_설거지해요",
+      "input": "급식실에서 그릇 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0144_급식실에서_그릇_주방보조해요",
+      "input": "급식실에서 그릇 주방보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0145_건물에서_쓰레기_청소해요",
+      "input": "건물에서 쓰레기 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0146_건물에서_바닥_청소해요",
+      "input": "건물에서 바닥 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0147_건물에서_유리창_청소해요",
+      "input": "건물에서 유리창 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0148_사무실에서_쓰레기_청소해요",
+      "input": "사무실에서 쓰레기 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0149_사무실에서_바닥_청소해요",
+      "input": "사무실에서 바닥 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0150_사무실에서_유리창_청소해요",
+      "input": "사무실에서 유리창 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0151_빌딩에서_쓰레기_청소해요",
+      "input": "빌딩에서 쓰레기 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0152_빌딩에서_바닥_청소해요",
+      "input": "빌딩에서 바닥 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0153_빌딩에서_유리창_청소해요",
+      "input": "빌딩에서 유리창 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0154_쓰레기_청소해요",
+      "input": "쓰레기 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0155_바닥_청소해요",
+      "input": "바닥 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0156_유리창_청소해요",
+      "input": "유리창 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "expectIndustryCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0157_축산농가에서_소_키워요",
+      "input": "축산농가에서 소 키워요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0158_축산농가에서_돼지_먹이_줘요",
+      "input": "축산농가에서 돼지 먹이 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0159_축산농가에서_닭_사육해요",
+      "input": "축산농가에서 닭 사육해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0160_목장에서_소_키워요",
+      "input": "목장에서 소 키워요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0161_목장에서_돼지_먹이_줘요",
+      "input": "목장에서 돼지 먹이 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0162_목장에서_닭_사육해요",
+      "input": "목장에서 닭 사육해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0163_양계장에서_소_키워요",
+      "input": "양계장에서 소 키워요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0164_양계장에서_돼지_먹이_줘요",
+      "input": "양계장에서 돼지 먹이 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0165_양계장에서_닭_사육해요",
+      "input": "양계장에서 닭 사육해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0166_소_키워요",
+      "input": "소 키워요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0167_돼지_먹이_줘요",
+      "input": "돼지 먹이 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_0168_닭_사육해요",
+      "input": "닭 사육해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "사육",
+      "expectIndustryCluster": "축산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0169_한치잡이_배에서_한치잡아요",
+      "input": "한치잡이 배에서 한치잡아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0170_배_타고_고기_잡아요",
+      "input": "배 타고 고기 잡아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "clarificationTopic": "vessel_crew_vs_land_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0171_수산물_공장에서_생선_손질해요",
+      "input": "수산물 공장에서 생선 손질해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "가공",
+      "expectIndustryCluster": "수산물 가공",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0172_양식장에서_물고기_밥_줘요",
+      "input": "양식장에서 물고기 밥 줘요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "clarificationTopic": "aquaculture_vs_processing",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0173_귤_따요",
+      "input": "귤 따요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "clarificationTopic": "farm_harvest_vs_food_factory",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0174_감귤_농장에서_일해요",
+      "input": "감귤 농장에서 일해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectIndustryCluster": "재배",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0175_마늘_뽑아요",
+      "input": "마늘 뽑아요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0176_농장에서_채소_포장해요",
+      "input": "농장에서 채소 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0177_공장에서_박스_포장해요",
+      "input": "공장에서 박스 포장해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectIndustryCluster": "제조",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0178_공장에서_부품_조립해요",
+      "input": "공장에서 부품 조립해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조립",
+      "expectIndustryCluster": "제조",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0179_창고에서_택배_상자_나릅니다",
+      "input": "창고에서 택배 상자 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "clarificationTopic": "manufacturing_vs_logistics",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0180_골프장_청소해요",
+      "input": "골프장 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0181_골프장_잔디_관리해요",
+      "input": "골프장 잔디 관리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조경",
+      "expectIndustryCluster": "골프장",
+      "clarificationTopic": "direct_employer_vs_contractor",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0182_리조트_객실_청소해요",
+      "input": "리조트 객실 청소해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "clarificationTopic": "hospitality_role_unknown",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0183_호텔에서_침대_정리해요",
+      "input": "호텔에서 침대 정리해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0184_식당에서_설거지해요",
+      "input": "식당에서 설거지해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "clarificationTopic": "restaurant_employee_vs_outsourced",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0185_주방_보조해요",
+      "input": "주방 보조해요",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "조리",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0186_건설현장에서_자재_나릅니다",
+      "input": "건설현장에서 자재 나릅니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectIndustryCluster": "건설",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_req_0187_용접_보조합니다",
+      "input": "용접 보조합니다",
+      "language": "ko",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "places",
+        "objects",
+        "actions"
+      ],
+      "expectOccupationCluster": "용접",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0188_i_catch_squid_on_a_fishing_boat",
+      "input": "I catch squid on a fishing boat",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectOccupationCluster": "어",
+      "expectIndustryCluster": "어업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0189_i_pick_tangerines_at_an_orchard",
+      "input": "I pick tangerines at an orchard",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectOccupationCluster": "재배",
+      "expectIndustryCluster": "재배",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0190_i_pack_boxes_at_a_factory",
+      "input": "I pack boxes at a factory",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectIndustryCluster": "제조",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0191_i_clean_the_golf_course",
+      "input": "I clean the golf course",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectOccupationCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0192_i_feed_fish_at_an_aquaculture_farm",
+      "input": "I feed fish at an aquaculture farm",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectOccupationCluster": "양식",
+      "expectIndustryCluster": "양식",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "field_en_0193_i_carry_boxes_at_a_warehouse",
+      "input": "I carry boxes at a warehouse",
+      "language": "en",
+      "expectMode": "field_labor_mode",
+      "expectSignals": [
+        "actions"
+      ],
+      "expectOccupationCluster": "하역",
+      "expectIndustryCluster": "창고",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    }
+  ]
+}

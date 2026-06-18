@@ -1,0 +1,956 @@
+{
+  "schema_version": "2026-06-employment-analyzer-mode-test-cases",
+  "generated_by": "scripts/build_employment_test_cases.mjs",
+  "contract": {
+    "noHallucinatedCode": "always: every returned candidate code exists in jobcode_master.json with the matching type",
+    "tracksSeparated": "always: occupation candidates type occupation, industry candidates type industry",
+    "sourceMetadataPresent": "always: sourceNotes non-empty",
+    "expectMode": "res.mode must equal this (when present)",
+    "expectSignals": "parsedSignals must contain >=1 of these kinds (field cases)",
+    "expectOccupationCluster": "SOFT: keyword should appear in some occupation candidate, OR the code is withheld and clarification is required. Aggregate hit-rate is gated.",
+    "expectIndustryCluster": "SOFT: same for industry",
+    "expectLegalSensitivity": "extracted.legalSensitivity includes this",
+    "expectMaxConfidence": "no candidate exceeds this confidence",
+    "expectWarningIncludes": "some warning contains this string",
+    "clarificationRequired": "res.clarificationRequired must be true",
+    "withholdCodeIfUnverified": "documentation: code may be withheld for unverified mapping",
+    "neverSilentDeadEnd": "must return candidates OR an interpretation + clarification"
+  },
+  "mode": "professional_mode",
+  "cases": [
+    {
+      "id": "pro_0194_소프트웨어_개발자",
+      "input": "소프트웨어 개발자",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0195_software_developer",
+      "input": "software developer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0196_ai_엔지니어",
+      "input": "AI 엔지니어",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0197_ai_engineer",
+      "input": "AI engineer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0198_데이터_분석가",
+      "input": "데이터 분석가",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "분석",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0199_data_analyst",
+      "input": "data analyst",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "분석",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0200_웹_디자이너",
+      "input": "웹 디자이너",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0201_web_designer",
+      "input": "web designer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0202_ux_디자이너",
+      "input": "UX 디자이너",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0203_ux_designer",
+      "input": "UX designer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0204_연구원",
+      "input": "연구원",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "연구",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0205_researcher",
+      "input": "researcher",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "연구",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0206_실험실_보조",
+      "input": "실험실 보조",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "시험원",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0207_lab_assistant",
+      "input": "lab assistant",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "시험원",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0208_대학교수",
+      "input": "대학교수",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "교수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0209_professor",
+      "input": "professor",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "교수",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0210_영어_강사",
+      "input": "영어 강사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0211_english_teacher",
+      "input": "English teacher",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0212_학원_강사",
+      "input": "학원 강사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0213_hagwon_instructor",
+      "input": "hagwon instructor",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0214_번역가",
+      "input": "번역가",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "번역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0215_translator",
+      "input": "translator",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "번역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0216_통역사",
+      "input": "통역사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "통역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0217_interpreter",
+      "input": "interpreter",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "통역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0218_회계사",
+      "input": "회계사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "회계",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0219_accountant",
+      "input": "accountant",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "회계",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0220_컨설턴트",
+      "input": "컨설턴트",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "진단",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0221_consultant",
+      "input": "consultant",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "진단",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0222_마케터",
+      "input": "마케터",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "마케팅",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0223_marketer",
+      "input": "marketer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "마케팅",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0224_사무직",
+      "input": "사무직",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "사무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0225_office_administrator",
+      "input": "office administrator",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "사무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0226_무역회사_직원",
+      "input": "무역회사 직원",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0227_trade_company_employee",
+      "input": "trade company employee",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0228_해외_영업",
+      "input": "해외 영업",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "영업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0229_overseas_sales",
+      "input": "overseas sales",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "영업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0230_수출입_관리",
+      "input": "수출입 관리",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0231_import_export_manager",
+      "input": "import export manager",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "영업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0232_엔지니어",
+      "input": "엔지니어",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기술자",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0233_engineer",
+      "input": "engineer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기술자",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0234_정비공",
+      "input": "정비공",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "정비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0235_mechanic",
+      "input": "mechanic",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "정비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0236_건축가",
+      "input": "건축가",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "건축",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0237_architect",
+      "input": "architect",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "건축",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0238_변호사",
+      "input": "변호사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "변호사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0239_lawyer",
+      "input": "lawyer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "변호사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0240_의사",
+      "input": "의사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0241_doctor",
+      "input": "doctor",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0242_간호사",
+      "input": "간호사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "간호",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0243_nurse",
+      "input": "nurse",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "간호",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0244_수의사",
+      "input": "수의사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "수의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0245_veterinarian",
+      "input": "veterinarian",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "수의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0246_약사",
+      "input": "약사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "약사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0247_pharmacist",
+      "input": "pharmacist",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "약사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0248_백엔드_개발자",
+      "input": "백엔드 개발자",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0249_backend_developer",
+      "input": "backend developer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0250_프론트엔드_개발자",
+      "input": "프론트엔드 개발자",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0251_frontend_developer",
+      "input": "frontend developer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0252_앱_개발자",
+      "input": "앱 개발자",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0253_mobile_app_developer",
+      "input": "mobile app developer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0254_그래픽_디자이너",
+      "input": "그래픽 디자이너",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0255_graphic_designer",
+      "input": "graphic designer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0256_제품_디자이너",
+      "input": "제품 디자이너",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0257_product_designer",
+      "input": "product designer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0258_세무사",
+      "input": "세무사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "세무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0259_tax_accountant",
+      "input": "tax accountant",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "세무",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0260_연구개발",
+      "input": "연구개발",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "연구",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0261_r_d_researcher",
+      "input": "R&D researcher",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "연구",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0262_한의사",
+      "input": "한의사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "한의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0263_oriental_medicine_doctor",
+      "input": "oriental medicine doctor",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "한의사",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0264_치과의사",
+      "input": "치과의사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "치과",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0265_dentist",
+      "input": "dentist",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "치과",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0266_기계_엔지니어",
+      "input": "기계 엔지니어",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기계",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0267_mechanical_engineer",
+      "input": "mechanical engineer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기계",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0268_전기_엔지니어",
+      "input": "전기 엔지니어",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기술자",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0269_electrical_engineer",
+      "input": "electrical engineer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기술자",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0270_자동차_정비사",
+      "input": "자동차 정비사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "정비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0271_auto_mechanic",
+      "input": "auto mechanic",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "정비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0272_사진작가",
+      "input": "사진작가",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "사진",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0273_photographer",
+      "input": "photographer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "사진",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0274_카피라이터",
+      "input": "카피라이터",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0275_copywriter",
+      "input": "copywriter",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0276_경영_컨설턴트",
+      "input": "경영 컨설턴트",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "진단",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0277_management_consultant",
+      "input": "management consultant",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "진단",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0278_상품_기획자",
+      "input": "상품 기획자",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기획",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0279_product_planner",
+      "input": "product planner",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "기획",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0280_홍보_담당",
+      "input": "홍보 담당",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "홍보",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0281_pr_specialist",
+      "input": "PR specialist",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "홍보",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0282_데이터_엔지니어",
+      "input": "데이터 엔지니어",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "분석",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0283_data_engineer",
+      "input": "data engineer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "분석",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0284_ui_디자이너",
+      "input": "UI 디자이너",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0285_ui_designer",
+      "input": "UI designer",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "디자이너",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0286_통번역사",
+      "input": "통번역사",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "번역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_0287_translator_interpreter",
+      "input": "translator interpreter",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "번역",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0288_it_스타트업에서_개발해요",
+      "input": "IT 스타트업에서 개발해요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "expectIndustryCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0289_software_engineer_at_a_startup",
+      "input": "software engineer at a startup",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "소프트웨어",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0290_대학교에서_연구해요",
+      "input": "대학교에서 연구해요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "연구",
+      "expectIndustryCluster": "대학",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0291_영어학원에서_강의해요",
+      "input": "영어학원에서 강의해요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "expectIndustryCluster": "교육",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0292_i_teach_english_at_a_hagwon",
+      "input": "I teach English at a hagwon",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "강사",
+      "expectIndustryCluster": "교습",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0293_무역회사에서_해외영업_합니다",
+      "input": "무역회사에서 해외영업 합니다",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "영업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0294_회계법인에서_회계_업무",
+      "input": "회계법인에서 회계 업무",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "회계",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0295_병원에서_간호사로_일해요",
+      "input": "병원에서 간호사로 일해요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "expectOccupationCluster": "간호",
+      "expectIndustryCluster": "병원",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0296_startup_founder",
+      "input": "startup founder",
+      "language": "en",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "pro_wp_0297_스타트업_대표예요",
+      "input": "스타트업 대표예요",
+      "language": "ko",
+      "expectMode": "professional_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    }
+  ]
+}

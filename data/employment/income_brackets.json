@@ -1,0 +1,19 @@
+{
+  "schema_version": "2026-06-employment-analyzer-income-brackets",
+  "purpose": "Annual-income bracket labels for the 소득 part of 취업정보 신고. The analyzer surfaces a reminder that income bracket is reported alongside 직종·업종; exact live HiKorea bracket labels must be confirmed on the reporting screen.",
+  "source_ids": ["moj_employment_reporting_press_release_2026", "hikorea_employment_reporting_procedure_visit"],
+  "source_status": "unverified",
+  "verification_note": "These bracket labels mirror data/jobcode_master.json#employment_reporting_context.income_bands and the overview material, but the EXACT current HiKorea dropdown labels/thresholds were not machine-verified from a live screen. Treat as a guide; confirm on HiKorea before final reporting. Do not present these as authoritative thresholds.",
+  "basis_note": "과세 전(세전) 연간소득 기준. 소득 '구간'이 바뀐 경우에만 변경 신고.",
+  "brackets": [
+    { "id": "none", "label_ko": "소득없음", "label_en": "No income" },
+    { "id": "lt_10m", "label_ko": "연간 1천만 원 미만", "label_en": "Under KRW 10M" },
+    { "id": "10m_20m", "label_ko": "1천만~2천만 원 미만", "label_en": "KRW 10M–under 20M" },
+    { "id": "20m_30m", "label_ko": "2천만~3천만 원 미만", "label_en": "KRW 20M–under 30M" },
+    { "id": "30m_40m", "label_ko": "3천만~4천만 원 미만", "label_en": "KRW 30M–under 40M" },
+    { "id": "40m_50m", "label_ko": "4천만~5천만 원 미만", "label_en": "KRW 40M–under 50M" },
+    { "id": "gte_50m", "label_ko": "5천만 원 이상", "label_en": "KRW 50M or more" }
+  ],
+  "reminder_ko": "HiKorea 취업정보 신고는 직종·업종과 함께 '연간소득 구간'도 신고합니다(과세 전 기준). 구간이 바뀐 경우에만 변경 신고하세요.",
+  "reminder_en": "HiKorea employment reporting also requires an annual income bracket alongside occupation and industry (pre-tax). Report a change only when the bracket changes."
+}

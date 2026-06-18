@@ -1,0 +1,130 @@
+{
+  "schema_version": "2026-06-employment-analyzer-disambiguation",
+  "purpose": "Targeted, one-at-a-time clarifying questions for field-labor and ambiguous employment inputs where the occupation (what you do) or industry (employer's business) genuinely forks. Each rule fires from parsedSignals (sectors/places/objects/actions) and explains why both interpretations are plausible. Never asks five questions at once; the analyzer surfaces the highest-priority unresolved fork.",
+  "important": "Disambiguation does NOT decide visa eligibility. It only narrows reporting-category candidates. When unresolved, the analyzer keeps both candidate clusters and recommends official confirmation.",
+  "rules": [
+    {
+      "id": "vessel_vs_land_processing",
+      "topic": "vessel_crew_vs_land_processing",
+      "priority": 10,
+      "trigger": { "sectors": ["fishery_vessel", "fishery", "aquaculture", "seafood_processing"] },
+      "fires_when": "수산물 신호가 있으나 승선 어로인지 육상 손질·가공인지 불명확",
+      "question_ko": "실제로 어선에 승선해서 일하나요, 아니면 육상에서 수산물 손질·가공을 하나요?",
+      "question_en": "Do you actually work aboard a fishing vessel, or do you process/handle seafood on land?",
+      "chips": ["어선에 승선해서 일해요", "육상에서 손질·가공해요", "양식장에서 일해요"],
+      "branches": [
+        { "label": "승선 어로", "occupation_hint": ["어부", "선박 승무원"], "industry_hint": ["어로 어업", "어업"] },
+        { "label": "육상 가공", "occupation_hint": ["식품 가공", "수산"], "industry_hint": ["수산물 가공", "식료품 제조"] }
+      ]
+    },
+    {
+      "id": "aquaculture_vs_processing",
+      "topic": "aquaculture_vs_processing",
+      "priority": 9,
+      "trigger": { "sectors": ["aquaculture", "seafood_processing"] },
+      "fires_when": "양식 사육인지 가공 처리인지 불명확",
+      "question_ko": "물고기·해산물을 직접 기르는(양식) 일인가요, 아니면 잡힌 수산물을 가공·손질하는 일인가요?",
+      "question_en": "Do you raise the fish/seafood (aquaculture), or process/handle already-caught seafood?",
+      "chips": ["직접 길러요(양식)", "잡힌 걸 가공·손질해요"],
+      "branches": [
+        { "label": "양식", "occupation_hint": ["양식원"], "industry_hint": ["양식 어업"] },
+        { "label": "가공", "occupation_hint": ["식품 가공", "수산"], "industry_hint": ["수산물 가공"] }
+      ]
+    },
+    {
+      "id": "farm_vs_food_processing",
+      "topic": "farm_harvest_vs_food_factory",
+      "priority": 8,
+      "trigger": { "sectors": ["agriculture"] },
+      "fires_when": "밭·과수원 수확인지 식품 가공공장 작업인지 불명확",
+      "question_ko": "밭·과수원·하우스에서 직접 재배·수확하나요, 아니면 농산물 가공·포장 공장에서 일하나요?",
+      "question_en": "Do you grow/harvest in a field/orchard/greenhouse, or work at a produce processing/packing factory?",
+      "chips": ["밭·과수원에서 재배·수확해요", "가공·포장 공장에서 일해요", "농협 선별장에서 일해요"],
+      "branches": [
+        { "label": "재배·수확", "occupation_hint": ["재배원", "작물 재배"], "industry_hint": ["작물 재배업"] },
+        { "label": "가공·포장", "occupation_hint": ["식품 가공", "제조 관련 단순"], "industry_hint": ["식료품 제조", "과실, 채소 가공"] }
+      ]
+    },
+    {
+      "id": "golf_direct_vs_contractor",
+      "topic": "direct_employer_vs_contractor",
+      "priority": 8,
+      "trigger": { "sectors": ["grounds"], "places": ["place_golf_course", "en_place_golf"] },
+      "fires_when": "골프장 직접 고용인지 청소·시설관리 용역 파견인지 불명확",
+      "question_ko": "골프장에 직접 고용되어 있나요, 아니면 청소·시설관리 업체 소속으로 파견되어 일하나요?",
+      "question_en": "Are you employed directly by the golf course, or dispatched from a cleaning/facility-management contractor?",
+      "chips": ["골프장에 직접 고용", "청소·시설관리 업체 소속"],
+      "branches": [
+        { "label": "골프장 직접 고용", "industry_hint": ["골프장 운영", "경기장 운영"] },
+        { "label": "용역 업체 소속", "industry_hint": ["청소업", "사업시설 관리", "조경관리"] }
+      ]
+    },
+    {
+      "id": "factory_vs_warehouse",
+      "topic": "manufacturing_vs_logistics",
+      "priority": 7,
+      "trigger": { "sectors": ["manufacturing", "logistics"] },
+      "fires_when": "제조 생산인지 창고·물류 작업인지 불명확",
+      "question_ko": "물건을 직접 만들거나 조립하는 제조 작업인가요, 아니면 창고에서 보관·분류·상하차하는 물류 작업인가요?",
+      "question_en": "Do you make/assemble products (manufacturing), or store/sort/load goods in a warehouse (logistics)?",
+      "chips": ["만들거나 조립해요(제조)", "보관·분류·상하차해요(물류)"],
+      "branches": [
+        { "label": "제조", "occupation_hint": ["조립", "제조 관련 단순"], "industry_hint": ["제조"] },
+        { "label": "물류", "occupation_hint": ["하역", "적재", "분류"], "industry_hint": ["창고", "운송 관련"] }
+      ]
+    },
+    {
+      "id": "factory_product_unknown",
+      "topic": "employer_product_unknown",
+      "priority": 5,
+      "trigger": { "sectors": ["manufacturing"] },
+      "fires_when": "제조 공장이지만 무엇을 만드는지 불명확 → 업종 후보가 넓음",
+      "question_ko": "공장이 주로 무엇을 만드나요? (예: 식품, 전자부품, 자동차부품, 플라스틱, 의류) — 업종 후보를 좁히려면 생산 품목이 필요합니다.",
+      "question_en": "What does the factory mainly make? (e.g., food, electronic parts, auto parts, plastics, clothing) — needed to narrow the industry candidate.",
+      "chips": ["식품", "전자·전기부품", "자동차부품", "플라스틱·고무", "의류·섬유", "금속·기계", "직접 입력"],
+      "branches": []
+    },
+    {
+      "id": "restaurant_employee_vs_cleaning_contractor",
+      "topic": "restaurant_employee_vs_outsourced",
+      "priority": 6,
+      "trigger": { "sectors": ["kitchen_labor"] },
+      "fires_when": "식당 직접 고용인지 외주 청소·세척 업체 소속인지 불명확",
+      "question_ko": "식당에 직접 고용되어 주방에서 일하나요, 아니면 외주 청소·세척 업체 소속으로 파견되어 일하나요?",
+      "question_en": "Are you employed by the restaurant kitchen directly, or dispatched from an outsourced cleaning/dishwashing contractor?",
+      "chips": ["식당에 직접 고용", "외주 청소·세척 업체 소속"],
+      "branches": [
+        { "label": "식당 직접 고용", "industry_hint": ["음식점"] },
+        { "label": "외주 업체 소속", "industry_hint": ["청소업", "사업시설 관리"] }
+      ]
+    },
+    {
+      "id": "construction_labor_vs_install",
+      "topic": "construction_labor_vs_technical_install",
+      "priority": 6,
+      "trigger": { "sectors": ["construction"] },
+      "fires_when": "단순 건설 노무인지 설치·기능 기술 작업인지 불명확",
+      "question_ko": "현장에서 자재 운반 등 단순 노무를 하나요, 아니면 용접·배관·전기·타일 등 기능·설치 작업을 하나요?",
+      "question_en": "Do you do general labor (carrying materials), or skilled/installation work (welding, plumbing, electrical, tiling)?",
+      "chips": ["단순 노무(운반 등)", "기능·설치 작업(용접·배관 등)"],
+      "branches": [
+        { "label": "단순 노무", "occupation_hint": ["건설 및 광업 관련 단순", "단순 노무"] },
+        { "label": "기능·설치", "occupation_hint": ["용접원", "배관", "전기", "설치"] }
+      ]
+    },
+    {
+      "id": "hospitality_role_unknown",
+      "topic": "hospitality_role_unknown",
+      "priority": 4,
+      "trigger": { "sectors": ["hospitality"] },
+      "fires_when": "리조트·호텔에서 객실 청소인지 프론트·접객인지 불명확",
+      "question_ko": "리조트·호텔에서 객실 청소·정비를 하나요, 아니면 프론트·접객·식음료 등 다른 업무를 하나요?",
+      "question_en": "At the resort/hotel, do you do housekeeping, or front desk / guest service / F&B?",
+      "chips": ["객실 청소·정비", "프론트·접객", "식음료(F&B)"],
+      "branches": [
+        { "label": "객실 청소", "occupation_hint": ["건물 청소원", "청소"] },
+        { "label": "프론트·접객", "occupation_hint": ["안내", "접수", "고객 서비스"] }
+      ]
+    }
+  ]
+}
