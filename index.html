@@ -22382,7 +22382,13 @@ function showVisaDocForAction(visaCode) {
         if (a && !top.has(a) && !alias.has(a)) alias.set(a, code);
       }
 
-      const subcodes = Array.isArray(record.subCodes) ? record.subCodes : (Array.isArray(record.subcodes) ? record.subcodes : []);
+      // Prefer canonical `subcodes`, but also include any legacy compat
+      // `subCodes` entries so no exact-search code is dropped during the
+      // compatibility phase (the two may diverge until subCodes is removed).
+      const subcodes = [
+        ...(Array.isArray(record.subcodes) ? record.subcodes : []),
+        ...(Array.isArray(record.subCodes) ? record.subCodes : []),
+      ];
       for (const sub of subcodes) {
         const sc = norm(sub && sub.code);
         if (sc && !top.has(sc) && !alias.has(sc)) alias.set(sc, code);

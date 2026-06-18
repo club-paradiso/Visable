@@ -21,7 +21,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 VISA = ROOT / "visa_data.json"
-CLASS = ROOT / "docs/data/2026_05_21_visa_data_domain_classification.json"
+# Refreshed for the post-PR #440 generated 42-record master. The prior
+# 2026_05_21 snapshot classified the old 58/59-record file (17 scenario/help
+# records still inside the master) and no longer lines up by (array_index, code).
+# See scripts/visa/refresh_domain_classification.py.
+CLASS = ROOT / "docs/data/2026_06_18_visa_data_domain_classification.json"
 
 VALID_PRIMARY = {
     "visa_status", "stay_status", "visa_track", "special_program",
