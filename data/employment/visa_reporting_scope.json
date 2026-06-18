@@ -1,0 +1,45 @@
+{
+  "schema_version": "2026-06-employment-analyzer-visa-reporting-scope",
+  "purpose": "Employment-information reporting scope by 체류자격, transcribed from the 법무부 「외국인 취업정보 온라인 신고」 press release / HiKorea overview. This describes WHO must report 직종·업종·소득 — it does NOT decide whether a given activity is permitted under a status (자격외활동 허가 등은 별도).",
+  "source_ids": ["moj_employment_reporting_press_release_2026", "immigration_control_act_enforcement_rules"],
+  "applies_to_condition": "영리활동에 종사하는 사람(profit-making activity)",
+  "reporting_items": ["직종(occupation)", "업종(industry)", "연간소득 구간(annual income bracket)"],
+  "included_statuses": [
+    { "code": "E-1", "label_ko": "교수" },
+    { "code": "E-2", "label_ko": "회화지도" },
+    { "code": "E-3", "label_ko": "연구" },
+    { "code": "E-4", "label_ko": "기술지도" },
+    { "code": "E-5", "label_ko": "전문직업" },
+    { "code": "E-6", "label_ko": "예술흥행" },
+    { "code": "E-7", "label_ko": "특정활동" },
+    { "code": "E-8", "label_ko": "계절근로" },
+    { "code": "E-9", "label_ko": "비전문취업" },
+    { "code": "E-10", "label_ko": "선원취업" },
+    { "code": "F-2", "label_ko": "거주" },
+    { "code": "F-4", "label_ko": "재외동포" },
+    { "code": "F-6", "label_ko": "결혼이민" },
+    { "code": "H-2", "label_ko": "방문취업" },
+    { "code": "D-7", "label_ko": "주재" },
+    { "code": "D-8", "label_ko": "기업투자" },
+    { "code": "D-9", "label_ko": "무역경영" }
+  ],
+  "excluded_statuses": [
+    { "code": "F-5", "label_ko": "영주", "reason_ko": "보도자료상 취업정보 신고 대상에서 제외" }
+  ],
+  "excluded_cases": ["영리활동에 종사하지 않는 사람"],
+  "reporting_timing": {
+    "at_registration_or_residence_report": "외국인등록 또는 체류지 신고 시 이미 영리활동 중이면 그때 신고",
+    "change_within_15_days": "신고한 직종·업종·연간소득 구간이 변경되면 변경일로부터 15일 이내",
+    "start_within_15_days": "외국인등록/체류지 신고 당시 영리활동을 하지 않았다면, 영리활동 개시일로부터 15일 이내"
+  },
+  "change_deadline_days": 15,
+  "income_basis_note": "연간소득은 과세 전 소득 기준이며, 소득 '구간'이 바뀐 경우에만 변경 신고합니다.",
+  "multiple_jobs_rule": "복수 직장(부업·겸업 포함) 시 주된 영리활동(근로시간이 가장 많은 직장) 1개를 기준으로 신고합니다.",
+  "reporting_channels": {
+    "visit_reservation": "출입국·외국인관서 방문 시 방문예약 흐름으로 신고",
+    "e_civil_petition": "방문예약 없이 전자민원으로 최초 신고 또는 변경 신고 가능"
+  },
+  "legal_basis": "출입국관리법 시행규칙 제47조 및 제49조의2",
+  "penalty_note": "기한 내 미신고 시 과태료 부과 가능; 구체적 부과 여부·금액은 관할 출입국·외국인관서장이 결정합니다.",
+  "caution": "이 범위는 '취업정보 신고' 의무 대상에 관한 것이며, 해당 체류자격에서 특정 직종·업종 취업이 허용되는지(취업 가능 여부, 자격외활동 허가 필요 여부 등)를 판단하는 기준이 아닙니다. 최종 확인은 HiKorea·1345·관할 출입국에서 하세요."
+}

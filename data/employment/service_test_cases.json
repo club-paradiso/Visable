@@ -1,0 +1,776 @@
+{
+  "schema_version": "2026-06-employment-analyzer-mode-test-cases",
+  "generated_by": "scripts/build_employment_test_cases.mjs",
+  "contract": {
+    "noHallucinatedCode": "always: every returned candidate code exists in jobcode_master.json with the matching type",
+    "tracksSeparated": "always: occupation candidates type occupation, industry candidates type industry",
+    "sourceMetadataPresent": "always: sourceNotes non-empty",
+    "expectMode": "res.mode must equal this (when present)",
+    "expectSignals": "parsedSignals must contain >=1 of these kinds (field cases)",
+    "expectOccupationCluster": "SOFT: keyword should appear in some occupation candidate, OR the code is withheld and clarification is required. Aggregate hit-rate is gated.",
+    "expectIndustryCluster": "SOFT: same for industry",
+    "expectLegalSensitivity": "extracted.legalSensitivity includes this",
+    "expectMaxConfidence": "no candidate exceeds this confidence",
+    "expectWarningIncludes": "some warning contains this string",
+    "clarificationRequired": "res.clarificationRequired must be true",
+    "withholdCodeIfUnverified": "documentation: code may be withheld for unverified mapping",
+    "neverSilentDeadEnd": "must return candidates OR an interpretation + clarification"
+  },
+  "mode": "service_mode",
+  "cases": [
+    {
+      "id": "svc_0298_카페에서_바리스타로_일해요",
+      "input": "카페에서 바리스타로 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "음료",
+      "expectIndustryCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0299_barista_at_a_cafe",
+      "input": "barista at a cafe",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0300_식당_홀서빙",
+      "input": "식당 홀서빙",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "서비스",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0301_restaurant_server",
+      "input": "restaurant server",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "서비스",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0302_호텔_프론트",
+      "input": "호텔 프론트",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0303_hotel_front_desk",
+      "input": "hotel front desk",
+      "language": "en",
+      "expectMode": "service_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0304_미용실에서_머리해요",
+      "input": "미용실에서 머리해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0305_hair_designer",
+      "input": "hair designer",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0306_네일샵에서_네일아트",
+      "input": "네일샵에서 네일아트",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "네일",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0307_nail_artist",
+      "input": "nail artist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "네일",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0308_메이크업_아티스트",
+      "input": "메이크업 아티스트",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "메이크업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0309_makeup_artist",
+      "input": "makeup artist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "메이크업",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0310_편의점_알바",
+      "input": "편의점 알바",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0311_convenience_store_clerk",
+      "input": "convenience store clerk",
+      "language": "en",
+      "expectMode": "service_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0312_옷가게_판매원",
+      "input": "옷가게 판매원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0313_retail_sales_clerk",
+      "input": "retail sales clerk",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0314_백화점_매장_직원",
+      "input": "백화점 매장 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0315_department_store_staff",
+      "input": "department store staff",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0316_콜센터_상담원",
+      "input": "콜센터 상담원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "상담",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0317_call_center_agent",
+      "input": "call center agent",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "상담",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0318_고객센터_cs",
+      "input": "고객센터 CS",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "상담",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0319_customer_service_rep",
+      "input": "customer service rep",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "상담",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0320_온라인_쇼핑몰_cs",
+      "input": "온라인 쇼핑몰 CS",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0321_online_shop_customer_service",
+      "input": "online shop customer service",
+      "language": "en",
+      "expectMode": "service_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0322_택배_배송기사",
+      "input": "택배 배송기사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "운송",
+      "expectIndustryCluster": "운송",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0323_delivery_driver",
+      "input": "delivery driver",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "운송",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0324_주차_관리원",
+      "input": "주차 관리원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "주차",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0325_parking_attendant",
+      "input": "parking attendant",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "주차",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0326_빌딩_경비원",
+      "input": "빌딩 경비원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "경비",
+      "expectIndustryCluster": "경비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0327_building_security_guard",
+      "input": "building security guard",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "경비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0328_마트_캐셔",
+      "input": "마트 캐셔",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "계산",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0329_supermarket_cashier",
+      "input": "supermarket cashier",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "계산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0330_카페_매니저",
+      "input": "카페 매니저",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "관리",
+      "expectIndustryCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0331_cafe_manager",
+      "input": "cafe manager",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "관리",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0332_헤어_디자이너",
+      "input": "헤어 디자이너",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0333_hairstylist",
+      "input": "hairstylist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0334_피부관리사",
+      "input": "피부관리사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0335_esthetician",
+      "input": "esthetician",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0336_세탁소_직원",
+      "input": "세탁소 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "세탁",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_0337_laundry_worker",
+      "input": "laundry worker",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "세탁",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0338_카페에서_일해요",
+      "input": "카페에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0339_식당에서_일해요",
+      "input": "식당에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0340_호텔에서_일해요",
+      "input": "호텔에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0341_미용실에서_일해요",
+      "input": "미용실에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0342_편의점에서_일해요",
+      "input": "편의점에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0343_마트에서_일해요",
+      "input": "마트에서 일해요",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0344_i_work_at_a_cafe",
+      "input": "I work at a cafe",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0345_i_work_at_a_hotel",
+      "input": "I work at a hotel",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0346_i_work_at_a_restaurant",
+      "input": "I work at a restaurant",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc_wp_0347_i_work_at_a_beauty_salon",
+      "input": "I work at a beauty salon",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0348_중식당_주방장",
+      "input": "중식당 주방장",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0349_한식당_요리사",
+      "input": "한식당 요리사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "조리",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0350_치킨집_알바",
+      "input": "치킨집 알바",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0351_피자집_직원",
+      "input": "피자집 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "음식점",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0352_커피숍_직원",
+      "input": "커피숍 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "음료",
+      "expectIndustryCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0353_베이커리_판매",
+      "input": "베이커리 판매",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0354_리조트_식음료",
+      "input": "리조트 식음료",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0355_게스트하우스_운영",
+      "input": "게스트하우스 운영",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0356_모텔_카운터_직원",
+      "input": "모텔 카운터 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "숙박",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0357_스파_관리사",
+      "input": "스파 관리사",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0358_속눈썹_연장",
+      "input": "속눈썹 연장",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0359_왁싱샵_직원",
+      "input": "왁싱샵 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "expectIndustryCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0360_반려동물_미용",
+      "input": "반려동물 미용",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0361_세차장_직원",
+      "input": "세차장 직원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0362_주유소_알바",
+      "input": "주유소 알바",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0363_편의점_야간_알바",
+      "input": "편의점 야간 알바",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0364_옷가게_점원",
+      "input": "옷가게 점원",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0365_화장품_매장_판매",
+      "input": "화장품 매장 판매",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "expectIndustryCluster": "소매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0366_핸드폰_매장_판매",
+      "input": "핸드폰 매장 판매",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0367_프랜차이즈_매장_매니저",
+      "input": "프랜차이즈 매장 매니저",
+      "language": "ko",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "관리",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0368_waiter_at_a_restaurant",
+      "input": "waiter at a restaurant",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "서비스",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0369_hotel_housekeeping",
+      "input": "hotel housekeeping",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "청소",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0370_barista",
+      "input": "barista",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "음료",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0371_cashier",
+      "input": "cashier",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "계산",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0372_store_clerk",
+      "input": "store clerk",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "판매",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0373_call_center_agent",
+      "input": "call center agent",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "상담",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0374_security_guard",
+      "input": "security guard",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "경비",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0375_delivery_rider",
+      "input": "delivery rider",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "운송",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0376_hair_stylist",
+      "input": "hair stylist",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0377_esthetician",
+      "input": "esthetician",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0378_nail_technician",
+      "input": "nail technician",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "네일",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    },
+    {
+      "id": "svc2_0379_pet_groomer",
+      "input": "pet groomer",
+      "language": "en",
+      "expectMode": "service_mode",
+      "expectOccupationCluster": "미용",
+      "withholdCodeIfUnverified": false,
+      "noHallucinatedCode": true
+    }
+  ]
+}

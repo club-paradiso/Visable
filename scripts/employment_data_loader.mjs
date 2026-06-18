@@ -36,12 +36,25 @@ export function loadEmploymentAnalyzerDeps() {
   const ambiguous = readJson('data/employment/ambiguous_inputs.json');
   const sources = readJson('data/employment/classification_sources.json');
 
+  // Field-labor place/object/action/tool lexicon (장소 + 대상 + 작업) + fork
+  // disambiguation rules + income-bracket reminder. Optional, but loaded by
+  // default so the CLI and tests build the analyzer exactly like the browser.
+  const fieldTerms = {
+    ko: readJson('data/employment/colloquial_field_terms_ko.json'),
+    en: readJson('data/employment/colloquial_field_terms_en.json')
+  };
+  const disambiguation = readJson('data/employment/disambiguation_rules.json');
+  const incomeBrackets = readJson('data/employment/income_brackets.json');
+
   return {
     data,
     lexicon: { ko, en },
     ambiguous,
     sources,
     legalSources: sources.legal_sources || [],
-    context: data.employment_reporting_context
+    context: data.employment_reporting_context,
+    fieldTerms,
+    disambiguation,
+    incomeBrackets
   };
 }

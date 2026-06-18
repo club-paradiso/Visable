@@ -5,23 +5,369 @@
   "kind": "occupation-and-industry concept lexicon (performance / entertainment)",
   "important": "공식 코드를 포함하지 않습니다. occupation_terms/industry_terms 는 data/jobcode_master.json 의 실제 KSCO8/KSIC11 코드를 검색하기 위한 키워드입니다. 모든 키워드는 실제 분류명에 존재하는 것만 사용합니다(2947 무용가 및 안무가, 2946 가수 및 성악가, 2945 연주가, 2932 배우 및 모델, 2933 아나운서 및 리포터, 2647 예능 강사, 3722 연예인 및 스포츠 매니저, 9012 공연단체, 9013 자영 예술가, 90191 공연 기획업, 8562 예술학원 등).",
   "concepts": [
-    { "id": "ent_dancer", "type": "role", "surface": ["댄서", "무용수", "무용가", "춤추는 사람", "현대무용", "발레", "발레리나", "한국무용", "스트릿댄서", "백댄서", "방송댄서"], "label_ko": "무용가 / 댄서", "occupation_terms": ["무용가", "안무", "무용"], "industry_terms": [], "performance_type": "dancing", "legal_sensitivity": "entertainment" },
-    { "id": "ent_choreographer", "type": "role", "surface": ["안무가", "안무", "안무 디렉터", "크리에이티브 디렉터 안무"], "label_ko": "안무가", "occupation_terms": ["안무", "무용가"], "industry_terms": [], "performance_type": "choreography", "legal_sensitivity": "entertainment" },
-    { "id": "ent_dance_instructor", "type": "role", "surface": ["댄스 강사", "댄스강사", "무용 강사", "무용강사", "댄스 트레이너", "안무 선생님", "방과후 댄스"], "label_ko": "댄스 강사", "occupation_terms": ["예능 강사", "강사"], "industry_terms": ["예술학원", "교육 서비스"], "performance_type": "dancing", "role_status": "instructor", "legal_sensitivity": "entertainment" },
-    { "id": "ent_singer", "type": "role", "surface": ["가수", "보컬", "보컬리스트", "싱어송라이터", "래퍼", "성악가", "솔로가수", "세션 보컬"], "label_ko": "가수 / 성악가", "occupation_terms": ["가수", "성악"], "industry_terms": [], "performance_type": "singing", "legal_sensitivity": "entertainment" },
-    { "id": "ent_vocal_trainer", "type": "role", "surface": ["보컬 트레이너", "보컬트레이너", "보컬강사", "노래 강사", "노래강사"], "label_ko": "보컬 강사 / 트레이너", "occupation_terms": ["예능 강사", "강사"], "industry_terms": ["예술학원"], "performance_type": "singing", "role_status": "instructor", "legal_sensitivity": "entertainment" },
-    { "id": "ent_musician", "type": "role", "surface": ["연주가", "연주자", "작곡가", "지휘자", "뮤지션", "세션", "기악연주"], "label_ko": "연주가 / 작곡가", "occupation_terms": ["연주가", "작곡", "지휘"], "industry_terms": [], "performance_type": "music", "legal_sensitivity": "entertainment" },
-    { "id": "ent_actor", "type": "role", "surface": ["배우", "뮤지컬 배우", "뮤지컬배우", "연극배우", "영화배우", "탤런트", "연기자", "성우"], "label_ko": "배우", "occupation_terms": ["배우", "연기"], "industry_terms": [], "performance_type": "acting", "legal_sensitivity": "entertainment" },
-    { "id": "ent_model", "type": "role", "surface": ["모델", "패션모델", "런웨이 모델", "광고모델", "피팅모델"], "label_ko": "모델", "occupation_terms": ["모델"], "industry_terms": [], "performance_type": "modeling", "legal_sensitivity": "entertainment" },
-    { "id": "ent_announcer", "type": "role", "surface": ["방송인", "아나운서", "리포터", "엠씨", "진행자", "쇼호스트", "캐스터"], "label_ko": "아나운서 / 방송 진행", "occupation_terms": ["아나운서", "리포터"], "industry_terms": [], "performance_type": "broadcasting", "legal_sensitivity": "entertainment" },
-    { "id": "ent_traditional", "type": "role", "surface": ["국악인", "전통예능", "판소리", "사물놀이", "민요"], "label_ko": "국악 및 전통 예능인", "occupation_terms": ["국악", "전통 예능"], "industry_terms": [], "performance_type": "traditional", "legal_sensitivity": "entertainment" },
-    { "id": "ent_performer", "type": "role", "surface": ["공연자", "퍼포머", "공연예술가", "무대예술가", "공연 예술가", "엔터테이너"], "label_ko": "공연 예술가", "occupation_terms": ["공연 예술가", "시각 및 공연"], "industry_terms": ["공연단체", "자영 예술가"], "performance_type": "performance", "legal_sensitivity": "entertainment", "confidence_cap": "medium" },
-    { "id": "ent_manager", "type": "role", "surface": ["연예 매니저", "로드매니저", "소속사 직원", "기획사 직원", "매니지먼트 직원"], "label_ko": "연예인 매니저 / 소속사 직원", "occupation_terms": ["연예인 및 스포츠 매니저", "매니저"], "industry_terms": ["공연 기획업"], "role_status": "employee", "legal_sensitivity": "entertainment" },
-
-    { "id": "ent_agency", "type": "workplace", "surface": ["연예기획사", "소속사", "엔터테인먼트", "엔터", "매니지먼트", "기획사", "아이돌 기획사", "연예 기획사"], "label_ko": "연예기획사 / 소속사", "business_label_ko": "공연 기획업(연예기획 — 간접 매칭)", "employer_type": "entertainment agency", "industry_terms": ["공연 기획업", "기타 창작 및 예술"], "occupation_terms": [], "legal_sensitivity": "entertainment", "confidence_cap": "medium", "candidate_caveat": "‘연예기획사/소속사’에 정확히 대응하는 표준산업분류 단일 항목이 없어 ‘공연 기획업’ 등으로 간접 매칭됩니다. HiKorea 업종조회에서 확인하세요.", "ambiguous_roles": ["가수", "무용수", "배우", "매니저/직원", "연습생"] },
-    { "id": "ent_performance_company", "type": "workplace", "surface": ["공연단체", "무용단", "극단", "합창단", "오케스트라", "악단", "공연팀"], "label_ko": "공연단체", "business_label_ko": "공연단체", "employer_type": "performance company", "industry_terms": ["공연단체"], "occupation_terms": [], "legal_sensitivity": "entertainment", "ambiguous_roles": ["무용수", "가수", "연주자", "배우"] },
-    { "id": "ent_dance_academy", "type": "workplace", "surface": ["댄스학원", "무용학원", "실용음악학원", "연기학원", "보컬학원", "예술학원", "방송댄스학원"], "label_ko": "예술학원(댄스·실용음악·연기 등)", "business_label_ko": "예술학원", "employer_type": "academy", "industry_terms": ["예술학원", "교육 서비스"], "occupation_terms": [], "legal_sensitivity": "entertainment", "ambiguous_roles": ["강사", "사무/행정", "원장(자영업)"] },
-
-    { "id": "ent_trainee", "type": "employment_type", "surface": ["연습생", "아이돌 연습생", "트레이니", "견습 아티스트"], "employment_type": "trainee", "label_ko": "연습생/훈련 과정", "role_status": "trainee", "trainee": true, "legal_sensitivity": "entertainment", "confidence_cap": "low" }
+    {
+      "id": "ent_dancer",
+      "type": "role",
+      "surface": [
+        "댄서",
+        "무용수",
+        "무용가",
+        "춤추는 사람",
+        "현대무용",
+        "발레",
+        "발레리나",
+        "한국무용",
+        "스트릿댄서",
+        "백댄서",
+        "방송댄서"
+      ],
+      "label_ko": "무용가 / 댄서",
+      "occupation_terms": [
+        "무용가",
+        "안무",
+        "무용"
+      ],
+      "industry_terms": [],
+      "performance_type": "dancing",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_choreographer",
+      "type": "role",
+      "surface": [
+        "안무가",
+        "안무",
+        "안무 디렉터",
+        "크리에이티브 디렉터 안무"
+      ],
+      "label_ko": "안무가",
+      "occupation_terms": [
+        "안무",
+        "무용가"
+      ],
+      "industry_terms": [],
+      "performance_type": "choreography",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_dance_instructor",
+      "type": "role",
+      "surface": [
+        "댄스 강사",
+        "댄스강사",
+        "무용 강사",
+        "무용강사",
+        "댄스 트레이너",
+        "안무 선생님",
+        "방과후 댄스"
+      ],
+      "label_ko": "댄스 강사",
+      "occupation_terms": [
+        "예능 강사",
+        "강사"
+      ],
+      "industry_terms": [
+        "예술학원",
+        "교육 서비스"
+      ],
+      "performance_type": "dancing",
+      "role_status": "instructor",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_singer",
+      "type": "role",
+      "surface": [
+        "가수",
+        "보컬",
+        "보컬리스트",
+        "싱어송라이터",
+        "래퍼",
+        "성악가",
+        "솔로가수",
+        "세션 보컬"
+      ],
+      "label_ko": "가수 / 성악가",
+      "occupation_terms": [
+        "가수",
+        "성악"
+      ],
+      "industry_terms": [],
+      "performance_type": "singing",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_vocal_trainer",
+      "type": "role",
+      "surface": [
+        "보컬 트레이너",
+        "보컬트레이너",
+        "보컬강사",
+        "노래 강사",
+        "노래강사"
+      ],
+      "label_ko": "보컬 강사 / 트레이너",
+      "occupation_terms": [
+        "예능 강사",
+        "강사"
+      ],
+      "industry_terms": [
+        "예술학원"
+      ],
+      "performance_type": "singing",
+      "role_status": "instructor",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_musician",
+      "type": "role",
+      "surface": [
+        "연주가",
+        "연주자",
+        "작곡가",
+        "지휘자",
+        "뮤지션",
+        "세션",
+        "기악연주",
+        "오케스트라",
+        "오케스트라 단원"
+      ],
+      "label_ko": "연주가 / 작곡가",
+      "occupation_terms": [
+        "연주가",
+        "작곡",
+        "지휘"
+      ],
+      "industry_terms": [],
+      "performance_type": "music",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_actor",
+      "type": "role",
+      "surface": [
+        "배우",
+        "뮤지컬 배우",
+        "뮤지컬배우",
+        "연극배우",
+        "영화배우",
+        "탤런트",
+        "연기자",
+        "성우"
+      ],
+      "label_ko": "배우",
+      "occupation_terms": [
+        "배우",
+        "연기"
+      ],
+      "industry_terms": [],
+      "performance_type": "acting",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_model",
+      "type": "role",
+      "surface": [
+        "모델",
+        "패션모델",
+        "런웨이 모델",
+        "광고모델",
+        "피팅모델"
+      ],
+      "label_ko": "모델",
+      "occupation_terms": [
+        "모델"
+      ],
+      "industry_terms": [],
+      "performance_type": "modeling",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_announcer",
+      "type": "role",
+      "surface": [
+        "방송인",
+        "아나운서",
+        "리포터",
+        "엠씨",
+        "진행자",
+        "쇼호스트",
+        "캐스터"
+      ],
+      "label_ko": "아나운서 / 방송 진행",
+      "occupation_terms": [
+        "아나운서",
+        "리포터"
+      ],
+      "industry_terms": [],
+      "performance_type": "broadcasting",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_traditional",
+      "type": "role",
+      "surface": [
+        "국악인",
+        "전통예능",
+        "판소리",
+        "사물놀이",
+        "민요"
+      ],
+      "label_ko": "국악 및 전통 예능인",
+      "occupation_terms": [
+        "국악",
+        "전통 예능"
+      ],
+      "industry_terms": [],
+      "performance_type": "traditional",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_performer",
+      "type": "role",
+      "surface": [
+        "공연자",
+        "퍼포머",
+        "공연예술가",
+        "무대예술가",
+        "공연 예술가",
+        "엔터테이너"
+      ],
+      "label_ko": "공연 예술가",
+      "occupation_terms": [
+        "공연 예술가",
+        "시각 및 공연"
+      ],
+      "industry_terms": [
+        "공연단체",
+        "자영 예술가"
+      ],
+      "performance_type": "performance",
+      "legal_sensitivity": "entertainment",
+      "confidence_cap": "medium"
+    },
+    {
+      "id": "ent_manager",
+      "type": "role",
+      "surface": [
+        "연예 매니저",
+        "로드매니저",
+        "소속사 직원",
+        "기획사 직원",
+        "매니지먼트 직원"
+      ],
+      "label_ko": "연예인 매니저 / 소속사 직원",
+      "occupation_terms": [
+        "연예인 및 스포츠 매니저",
+        "매니저"
+      ],
+      "industry_terms": [
+        "공연 기획업"
+      ],
+      "role_status": "employee",
+      "legal_sensitivity": "entertainment"
+    },
+    {
+      "id": "ent_agency",
+      "type": "workplace",
+      "surface": [
+        "연예기획사",
+        "소속사",
+        "엔터테인먼트",
+        "엔터",
+        "매니지먼트",
+        "기획사",
+        "아이돌 기획사",
+        "연예 기획사"
+      ],
+      "label_ko": "연예기획사 / 소속사",
+      "business_label_ko": "공연 기획업(연예기획 — 간접 매칭)",
+      "employer_type": "entertainment agency",
+      "industry_terms": [
+        "공연 기획업",
+        "기타 창작 및 예술"
+      ],
+      "occupation_terms": [],
+      "legal_sensitivity": "entertainment",
+      "confidence_cap": "medium",
+      "candidate_caveat": "‘연예기획사/소속사’에 정확히 대응하는 표준산업분류 단일 항목이 없어 ‘공연 기획업’ 등으로 간접 매칭됩니다. HiKorea 업종조회에서 확인하세요.",
+      "ambiguous_roles": [
+        "가수",
+        "무용수",
+        "배우",
+        "매니저/직원",
+        "연습생"
+      ]
+    },
+    {
+      "id": "ent_performance_company",
+      "type": "workplace",
+      "surface": [
+        "공연단체",
+        "무용단",
+        "극단",
+        "합창단",
+        "오케스트라",
+        "악단",
+        "공연팀"
+      ],
+      "label_ko": "공연단체",
+      "business_label_ko": "공연단체",
+      "employer_type": "performance company",
+      "industry_terms": [
+        "공연단체"
+      ],
+      "occupation_terms": [],
+      "legal_sensitivity": "entertainment",
+      "ambiguous_roles": [
+        "무용수",
+        "가수",
+        "연주자",
+        "배우"
+      ]
+    },
+    {
+      "id": "ent_dance_academy",
+      "type": "workplace",
+      "surface": [
+        "댄스학원",
+        "무용학원",
+        "실용음악학원",
+        "연기학원",
+        "보컬학원",
+        "예술학원",
+        "방송댄스학원"
+      ],
+      "label_ko": "예술학원(댄스·실용음악·연기 등)",
+      "business_label_ko": "예술학원",
+      "employer_type": "academy",
+      "industry_terms": [
+        "예술학원",
+        "교육 서비스"
+      ],
+      "occupation_terms": [],
+      "legal_sensitivity": "entertainment",
+      "ambiguous_roles": [
+        "강사",
+        "사무/행정",
+        "원장(자영업)"
+      ]
+    },
+    {
+      "id": "ent_trainee",
+      "type": "employment_type",
+      "surface": [
+        "연습생",
+        "아이돌 연습생",
+        "트레이니",
+        "견습 아티스트"
+      ],
+      "employment_type": "trainee",
+      "label_ko": "연습생/훈련 과정",
+      "role_status": "trainee",
+      "trainee": true,
+      "legal_sensitivity": "entertainment",
+      "confidence_cap": "low"
+    }
   ]
 }

@@ -1,0 +1,833 @@
+{
+  "schema_version": "2026-06-employment-analyzer-field-terms",
+  "locale": "en",
+  "kind": "field-labor place / object / action / tool signal lexicon (English surfaces)",
+  "purpose": "Translate English field-worker descriptions (I catch squid on a boat / I pick tangerines / I clean the golf course / I pack boxes at a factory) into KSCO8(occupation)/KSIC11(industry) retrieval keywords. Search terms are Korean because the canonical dataset is Korean.",
+  "important": "No official codes. occupation_terms / industry_terms are Korean keywords verified to exist in data/jobcode_master.json. Occupation (what you do) and industry (what the workplace does) stay separate. A matching code never implies the activity is legally permitted.",
+  "signals": [
+    {
+      "id": "en_place_boat",
+      "signal": "place",
+      "sector": "fishery_vessel",
+      "mode": "field_labor",
+      "surface": [
+        "boat",
+        "fishing boat",
+        "vessel",
+        "ship",
+        "trawler",
+        "on a boat",
+        "at sea",
+        "deep sea"
+      ],
+      "label_en": "fishing boat / vessel",
+      "occupation_terms": [
+        "어부",
+        "어업",
+        "선박 승무원"
+      ],
+      "industry_terms": [
+        "어업",
+        "어로 어업"
+      ],
+      "disambiguation": [
+        "vessel_vs_land_processing"
+      ]
+    },
+    {
+      "id": "en_place_fishfarm",
+      "signal": "place",
+      "sector": "aquaculture",
+      "mode": "field_labor",
+      "surface": [
+        "fish farm",
+        "aquaculture",
+        "aquaculture site",
+        "fish tank",
+        "hatchery"
+      ],
+      "label_en": "fish farm / aquaculture",
+      "occupation_terms": [
+        "양식원",
+        "어업"
+      ],
+      "industry_terms": [
+        "양식 어업",
+        "어업"
+      ],
+      "disambiguation": [
+        "aquaculture_vs_processing"
+      ]
+    },
+    {
+      "id": "en_place_farm",
+      "signal": "place",
+      "sector": "agriculture",
+      "mode": "field_labor",
+      "surface": [
+        "farm",
+        "field",
+        "orchard",
+        "greenhouse",
+        "plantation",
+        "vineyard"
+      ],
+      "label_en": "farm / orchard / greenhouse",
+      "occupation_terms": [
+        "작물 재배",
+        "재배원",
+        "농업 관련 단순"
+      ],
+      "industry_terms": [
+        "작물 재배업",
+        "재배",
+        "농업"
+      ],
+      "disambiguation": [
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_place_factory",
+      "signal": "place",
+      "sector": "manufacturing",
+      "mode": "field_labor",
+      "surface": [
+        "factory",
+        "plant",
+        "production line",
+        "manufacturing",
+        "assembly line",
+        "workshop"
+      ],
+      "label_en": "factory / production line",
+      "occupation_terms": [
+        "제조 관련 단순",
+        "단순 노무",
+        "조립"
+      ],
+      "industry_terms": [
+        "제조"
+      ],
+      "disambiguation": [
+        "factory_vs_warehouse",
+        "factory_product_unknown"
+      ]
+    },
+    {
+      "id": "en_place_warehouse",
+      "signal": "place",
+      "sector": "logistics",
+      "mode": "field_labor",
+      "surface": [
+        "warehouse",
+        "logistics center",
+        "distribution center",
+        "fulfillment center",
+        "depot"
+      ],
+      "label_en": "warehouse / logistics center",
+      "occupation_terms": [
+        "하역",
+        "적재",
+        "분류",
+        "단순 노무"
+      ],
+      "industry_terms": [
+        "창고",
+        "운송 관련"
+      ],
+      "disambiguation": [
+        "factory_vs_warehouse"
+      ]
+    },
+    {
+      "id": "en_place_golf",
+      "signal": "place",
+      "sector": "grounds",
+      "mode": "field_labor",
+      "surface": [
+        "golf course",
+        "golf club",
+        "country club",
+        "golf range"
+      ],
+      "label_en": "golf course",
+      "occupation_terms": [
+        "조경원",
+        "청소",
+        "경기장"
+      ],
+      "industry_terms": [
+        "골프장 운영",
+        "경기장 운영"
+      ],
+      "disambiguation": [
+        "golf_direct_vs_contractor"
+      ]
+    },
+    {
+      "id": "en_place_resort",
+      "signal": "place",
+      "sector": "hospitality",
+      "mode": "field_labor",
+      "surface": [
+        "resort",
+        "hotel",
+        "guesthouse",
+        "motel",
+        "condo"
+      ],
+      "label_en": "resort / hotel",
+      "occupation_terms": [
+        "청소",
+        "건물 청소원",
+        "객실"
+      ],
+      "industry_terms": [
+        "숙박",
+        "호텔"
+      ],
+      "disambiguation": [
+        "hospitality_role_unknown"
+      ]
+    },
+    {
+      "id": "en_place_construction",
+      "signal": "place",
+      "sector": "construction",
+      "mode": "field_labor",
+      "surface": [
+        "construction site",
+        "building site",
+        "job site",
+        "scaffold"
+      ],
+      "label_en": "construction site",
+      "occupation_terms": [
+        "건설 단순",
+        "건설 및 광업 관련 단순",
+        "단순 노무"
+      ],
+      "industry_terms": [
+        "건설"
+      ],
+      "disambiguation": [
+        "construction_labor_vs_install"
+      ]
+    },
+    {
+      "id": "en_place_kitchen",
+      "signal": "place",
+      "sector": "kitchen_labor",
+      "mode": "field_labor",
+      "surface": [
+        "kitchen",
+        "back of house",
+        "cafeteria kitchen"
+      ],
+      "label_en": "kitchen",
+      "occupation_terms": [
+        "조리",
+        "주방",
+        "음식 서비스"
+      ],
+      "industry_terms": [
+        "음식점"
+      ],
+      "disambiguation": [
+        "restaurant_employee_vs_cleaning_contractor"
+      ]
+    },
+    {
+      "id": "en_obj_squid",
+      "signal": "object",
+      "sector": "fishery_vessel",
+      "mode": "field_labor",
+      "surface": [
+        "squid",
+        "cuttlefish",
+        "octopus"
+      ],
+      "label_en": "squid / cuttlefish",
+      "occupation_terms": [
+        "어부",
+        "어업"
+      ],
+      "industry_terms": [
+        "어업",
+        "어로 어업"
+      ],
+      "disambiguation": [
+        "vessel_vs_land_processing"
+      ]
+    },
+    {
+      "id": "en_obj_fish",
+      "signal": "object",
+      "sector": "fishery",
+      "mode": "field_labor",
+      "surface": [
+        "fish",
+        "mackerel",
+        "tuna",
+        "hairtail",
+        "anchovy"
+      ],
+      "label_en": "fish",
+      "occupation_terms": [
+        "어부",
+        "어업",
+        "식품 가공"
+      ],
+      "industry_terms": [
+        "어업",
+        "수산물 가공"
+      ],
+      "disambiguation": [
+        "vessel_vs_land_processing"
+      ]
+    },
+    {
+      "id": "en_obj_shellfish",
+      "signal": "object",
+      "sector": "aquaculture",
+      "mode": "field_labor",
+      "surface": [
+        "abalone",
+        "shellfish",
+        "oyster",
+        "shrimp",
+        "clam",
+        "seaweed"
+      ],
+      "label_en": "abalone / shellfish / seaweed",
+      "occupation_terms": [
+        "양식원",
+        "어업"
+      ],
+      "industry_terms": [
+        "양식 어업",
+        "수산물 가공"
+      ],
+      "disambiguation": [
+        "aquaculture_vs_processing"
+      ]
+    },
+    {
+      "id": "en_obj_citrus",
+      "signal": "object",
+      "sector": "agriculture",
+      "mode": "field_labor",
+      "surface": [
+        "citrus",
+        "tangerine",
+        "orange",
+        "apple",
+        "pear",
+        "grape",
+        "peach",
+        "fruit"
+      ],
+      "label_en": "citrus / fruit",
+      "occupation_terms": [
+        "과수작물 재배원",
+        "과수",
+        "재배원",
+        "농업 관련 단순"
+      ],
+      "industry_terms": [
+        "과실작물 재배업",
+        "과실 재배"
+      ],
+      "disambiguation": [
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_obj_vegetable",
+      "signal": "object",
+      "sector": "agriculture",
+      "mode": "field_labor",
+      "surface": [
+        "garlic",
+        "onion",
+        "cabbage",
+        "pepper",
+        "potato",
+        "radish",
+        "vegetable"
+      ],
+      "label_en": "vegetables",
+      "occupation_terms": [
+        "채소",
+        "재배원",
+        "작물 재배",
+        "농업 관련 단순"
+      ],
+      "industry_terms": [
+        "채소작물 재배업",
+        "채소 재배"
+      ],
+      "disambiguation": [
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_obj_produce",
+      "signal": "object",
+      "sector": "agriculture",
+      "mode": "field_labor",
+      "surface": [
+        "strawberry",
+        "tomato",
+        "cucumber",
+        "melon",
+        "mushroom",
+        "flower"
+      ],
+      "label_en": "strawberry / tomato (greenhouse)",
+      "occupation_terms": [
+        "원예작물 재배원",
+        "원예",
+        "재배원"
+      ],
+      "industry_terms": [
+        "채소",
+        "시설 재배",
+        "화훼"
+      ],
+      "disambiguation": [
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_obj_box",
+      "signal": "object",
+      "sector": "logistics",
+      "mode": "field_labor",
+      "surface": [
+        "box",
+        "parcel",
+        "package",
+        "carton",
+        "pallet",
+        "cargo"
+      ],
+      "label_en": "box / parcel",
+      "occupation_terms": [
+        "제조 관련 단순",
+        "하역",
+        "적재",
+        "분류",
+        "단순 노무"
+      ],
+      "industry_terms": [],
+      "disambiguation": [
+        "factory_vs_warehouse"
+      ]
+    },
+    {
+      "id": "en_obj_parts",
+      "signal": "object",
+      "sector": "manufacturing",
+      "mode": "field_labor",
+      "surface": [
+        "parts",
+        "components",
+        "materials"
+      ],
+      "label_en": "parts / product",
+      "occupation_terms": [
+        "조립",
+        "제조 관련 단순",
+        "단순 노무"
+      ],
+      "industry_terms": [
+        "제조"
+      ],
+      "disambiguation": [
+        "factory_product_unknown"
+      ]
+    },
+    {
+      "id": "en_obj_trash",
+      "signal": "object",
+      "sector": "cleaning",
+      "mode": "field_labor",
+      "surface": [
+        "trash",
+        "garbage",
+        "waste",
+        "recycling"
+      ],
+      "label_en": "trash / waste",
+      "occupation_terms": [
+        "청소",
+        "환경미화"
+      ],
+      "industry_terms": [
+        "폐기물",
+        "청소"
+      ],
+      "disambiguation": []
+    },
+    {
+      "id": "en_obj_room",
+      "signal": "object",
+      "sector": "hospitality",
+      "mode": "field_labor",
+      "surface": [
+        "room",
+        "bed",
+        "linen",
+        "sheets",
+        "towels"
+      ],
+      "label_en": "room / bed",
+      "occupation_terms": [
+        "청소",
+        "건물 청소원",
+        "객실"
+      ],
+      "industry_terms": [
+        "숙박"
+      ],
+      "disambiguation": [
+        "hospitality_role_unknown"
+      ]
+    },
+    {
+      "id": "en_obj_dishes",
+      "signal": "object",
+      "sector": "kitchen_labor",
+      "mode": "field_labor",
+      "surface": [
+        "dishes",
+        "plates",
+        "dishwashing"
+      ],
+      "label_en": "dishes",
+      "occupation_terms": [
+        "조리",
+        "주방",
+        "음식 서비스"
+      ],
+      "industry_terms": [
+        "음식점"
+      ],
+      "disambiguation": [
+        "restaurant_employee_vs_cleaning_contractor"
+      ]
+    },
+    {
+      "id": "en_obj_grass",
+      "signal": "object",
+      "sector": "grounds",
+      "mode": "field_labor",
+      "surface": [
+        "grass",
+        "lawn",
+        "turf",
+        "garden",
+        "landscaping"
+      ],
+      "label_en": "grass / lawn",
+      "occupation_terms": [
+        "조경원",
+        "조경",
+        "원예"
+      ],
+      "industry_terms": [
+        "조경관리",
+        "골프장 운영"
+      ],
+      "disambiguation": [
+        "golf_direct_vs_contractor"
+      ]
+    },
+    {
+      "id": "en_act_catch",
+      "signal": "action",
+      "sector": "fishery_vessel",
+      "mode": "field_labor",
+      "surface": [
+        "catch",
+        "catching",
+        "fishing",
+        "fish for",
+        "net"
+      ],
+      "label_en": "catch (fishing)",
+      "occupation_terms": [
+        "어부",
+        "어업",
+        "선박 승무원"
+      ],
+      "industry_terms": [
+        "어업",
+        "어로 어업"
+      ],
+      "disambiguation": [
+        "vessel_vs_land_processing"
+      ]
+    },
+    {
+      "id": "en_act_harvest",
+      "signal": "action",
+      "sector": "agriculture",
+      "mode": "field_labor",
+      "surface": [
+        "harvest",
+        "harvesting",
+        "pick",
+        "picking",
+        "pull",
+        "plant",
+        "planting",
+        "cultivate",
+        "dig"
+      ],
+      "label_en": "harvest / pick",
+      "occupation_terms": [
+        "재배원",
+        "작물 재배",
+        "농업 관련 단순"
+      ],
+      "industry_terms": [
+        "작물 재배업"
+      ],
+      "disambiguation": [
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_act_pack",
+      "signal": "action",
+      "sector": "logistics",
+      "mode": "field_labor",
+      "surface": [
+        "pack",
+        "packing",
+        "sort",
+        "sorting",
+        "package"
+      ],
+      "label_en": "pack / sort",
+      "occupation_terms": [
+        "제조 관련 단순",
+        "단순 노무",
+        "분류"
+      ],
+      "industry_terms": [],
+      "disambiguation": [
+        "factory_vs_warehouse",
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_act_assemble",
+      "signal": "action",
+      "sector": "manufacturing",
+      "mode": "field_labor",
+      "surface": [
+        "assemble",
+        "assembling",
+        "inspect",
+        "weld",
+        "welding"
+      ],
+      "label_en": "assemble / weld",
+      "occupation_terms": [
+        "조립",
+        "용접원",
+        "제조 관련 단순"
+      ],
+      "industry_terms": [
+        "제조"
+      ],
+      "disambiguation": [
+        "factory_product_unknown"
+      ]
+    },
+    {
+      "id": "en_act_clean",
+      "signal": "action",
+      "sector": "cleaning",
+      "mode": "field_labor",
+      "surface": [
+        "clean",
+        "cleaning",
+        "tidy",
+        "sweep",
+        "wipe"
+      ],
+      "label_en": "clean",
+      "occupation_terms": [
+        "청소",
+        "건물 청소원",
+        "환경미화"
+      ],
+      "industry_terms": [
+        "청소업"
+      ],
+      "disambiguation": [
+        "restaurant_employee_vs_cleaning_contractor",
+        "golf_direct_vs_contractor"
+      ]
+    },
+    {
+      "id": "en_act_wash_dishes",
+      "signal": "action",
+      "sector": "kitchen_labor",
+      "mode": "field_labor",
+      "surface": [
+        "wash dishes",
+        "dishwashing",
+        "kitchen helper",
+        "kitchen assistant"
+      ],
+      "label_en": "wash dishes / kitchen help",
+      "occupation_terms": [
+        "조리",
+        "주방",
+        "음식 서비스"
+      ],
+      "industry_terms": [
+        "음식점"
+      ],
+      "disambiguation": [
+        "restaurant_employee_vs_cleaning_contractor"
+      ]
+    },
+    {
+      "id": "en_act_carry",
+      "signal": "action",
+      "sector": "logistics",
+      "mode": "field_labor",
+      "surface": [
+        "carry",
+        "carrying",
+        "load",
+        "loading",
+        "unload",
+        "move",
+        "haul"
+      ],
+      "label_en": "carry / load",
+      "occupation_terms": [
+        "하역",
+        "적재",
+        "운반",
+        "단순 노무"
+      ],
+      "industry_terms": [
+        "창고",
+        "운송 관련"
+      ],
+      "disambiguation": [
+        "factory_vs_warehouse",
+        "construction_labor_vs_install"
+      ]
+    },
+    {
+      "id": "en_act_feed",
+      "signal": "action",
+      "sector": "aquaculture",
+      "mode": "field_labor",
+      "surface": [
+        "feed",
+        "feeding"
+      ],
+      "label_en": "feed (animals/fish)",
+      "occupation_terms": [
+        "양식원",
+        "사육",
+        "어업",
+        "축산"
+      ],
+      "industry_terms": [
+        "양식 어업",
+        "축산"
+      ],
+      "disambiguation": [
+        "aquaculture_vs_processing"
+      ]
+    },
+    {
+      "id": "en_act_process",
+      "signal": "action",
+      "sector": "seafood_processing",
+      "mode": "field_labor",
+      "surface": [
+        "process",
+        "processing",
+        "trim",
+        "gut",
+        "fillet"
+      ],
+      "label_en": "process / trim",
+      "occupation_terms": [
+        "식품 가공",
+        "수산",
+        "단순 노무"
+      ],
+      "industry_terms": [
+        "수산물 가공",
+        "식료품 제조"
+      ],
+      "disambiguation": [
+        "aquaculture_vs_processing",
+        "farm_vs_food_processing"
+      ]
+    },
+    {
+      "id": "en_act_serve",
+      "signal": "action",
+      "sector": "food_service",
+      "mode": "service",
+      "surface": [
+        "serve",
+        "serving",
+        "set up",
+        "wait tables"
+      ],
+      "label_en": "serve / set up",
+      "occupation_terms": [
+        "식음료 서비스",
+        "서빙",
+        "음식 서비스"
+      ],
+      "industry_terms": [
+        "음식점"
+      ],
+      "disambiguation": []
+    },
+    {
+      "id": "en_act_install",
+      "signal": "action",
+      "sector": "construction",
+      "mode": "field_labor",
+      "surface": [
+        "install",
+        "installing",
+        "wiring",
+        "plumbing",
+        "tiling"
+      ],
+      "label_en": "install",
+      "occupation_terms": [
+        "설치",
+        "건설",
+        "배관",
+        "전기"
+      ],
+      "industry_terms": [
+        "전문직별 공사"
+      ],
+      "disambiguation": [
+        "construction_labor_vs_install"
+      ]
+    }
+  ]
+}

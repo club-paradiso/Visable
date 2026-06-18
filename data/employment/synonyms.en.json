@@ -48,6 +48,23 @@
     { "id": "full_time_en", "type": "employment_type", "surface": ["full time", "full-time"], "employment_type": "employee", "label_ko": "정규직(피고용)" },
     { "id": "intern_en", "type": "employment_type", "surface": ["intern", "internship", "trainee"], "employment_type": "intern", "label_ko": "인턴/수습" },
     { "id": "freelancer_en", "type": "employment_type", "surface": ["freelancer", "freelance", "self-employed contractor"], "employment_type": "freelancer", "label_ko": "프리랜서", "freelancer": true },
-    { "id": "owner_en", "type": "employment_type", "surface": ["owner", "founder", "self-employed", "business owner", "ceo", "proprietor"], "employment_type": "self-employed / owner", "label_ko": "사업주/자영업", "owner": true }
+    { "id": "owner_en", "type": "employment_type", "surface": ["owner", "founder", "self-employed", "business owner", "ceo", "proprietor"], "employment_type": "self-employed / owner", "label_ko": "사업주/자영업", "owner": true },
+
+    { "id": "accountant_en", "type": "role", "surface": ["accountant", "accounting", "bookkeeper", "tax accountant", "cpa"], "label_ko": "회계사 / 회계·경리", "occupation_terms": ["회계사", "회계", "경리", "세무사"], "industry_terms": [] },
+    { "id": "lawyer_en", "type": "role", "surface": ["lawyer", "attorney", "legal counsel", "paralegal"], "label_ko": "변호사 / 법무", "occupation_terms": ["변호사", "법무사"], "industry_terms": [] },
+    { "id": "doctor_en", "type": "role", "surface": ["doctor", "physician", "medical doctor", "surgeon"], "label_ko": "의사", "occupation_terms": ["의사", "일반 의사", "전문 의사"], "industry_terms": [] },
+    { "id": "veterinarian_en", "type": "role", "surface": ["veterinarian", "vet", "veterinary"], "label_ko": "수의사", "occupation_terms": ["수의사"], "industry_terms": [] },
+    { "id": "pharmacist_en", "type": "role", "surface": ["pharmacist", "pharmacy"], "label_ko": "약사", "occupation_terms": ["약사", "한약사"], "industry_terms": [] },
+    { "id": "architect_en", "type": "role", "surface": ["architect", "architecture"], "label_ko": "건축가", "occupation_terms": ["건축가", "건축"], "industry_terms": [] },
+    { "id": "engineer_en", "type": "role", "surface": ["engineer", "mechanical engineer", "electrical engineer", "civil engineer", "hardware engineer"], "label_ko": "엔지니어 / 기술자", "occupation_terms": ["기계공학 기술자", "기술자", "공학 기술자"], "industry_terms": [] },
+    { "id": "mechanic_en", "type": "role", "surface": ["mechanic", "auto mechanic", "car repair", "technician"], "label_ko": "정비원", "occupation_terms": ["자동차 정비원", "정비원", "정비"], "industry_terms": [] },
+    { "id": "data_analyst_en", "type": "role", "surface": ["data analyst", "analyst", "data scientist", "data engineer", "business analyst"], "label_ko": "데이터 분석가", "occupation_terms": ["데이터 분석가", "분석"], "industry_terms": [] },
+    { "id": "consultant_en", "type": "role", "surface": ["consultant", "consulting", "management consultant", "strategy consultant"], "label_ko": "컨설턴트 / 경영 진단", "occupation_terms": ["경영 및 진단 전문가", "컨설턴트", "상품 기획"], "industry_terms": [] },
+    { "id": "sales_trade_en", "type": "role", "surface": ["overseas sales", "export sales", "import export manager", "international sales", "sales rep", "salesperson"], "label_ko": "영업 / 해외영업", "occupation_terms": ["해외 영업원", "영업", "상품 기획"], "industry_terms": [] },
+    { "id": "photographer_en", "type": "role", "surface": ["photographer", "photography", "photojournalist"], "label_ko": "사진가 / 촬영", "occupation_terms": ["사진가", "사진기자"], "industry_terms": [] },
+    { "id": "lab_assistant_en", "type": "role", "surface": ["lab assistant", "laboratory assistant", "research assistant"], "label_ko": "시험원 / 연구 보조", "occupation_terms": ["시험원", "연구", "연구 보조"], "industry_terms": [] },
+    { "id": "nail_artist_en", "type": "role", "surface": ["nail artist", "nail technician", "manicurist"], "label_ko": "네일 관리사", "occupation_terms": ["네일 관리사", "미용"], "industry_terms": ["미용"] },
+    { "id": "makeup_artist_en", "type": "role", "surface": ["makeup artist", "make-up artist", "mua"], "label_ko": "메이크업 아티스트 / 분장사", "occupation_terms": ["메이크업 아티스트", "분장사"], "industry_terms": ["미용"] },
+    { "id": "hair_designer_en", "type": "role", "surface": ["hair designer", "hairdresser", "hair stylist", "barber"], "label_ko": "미용사(헤어)", "occupation_terms": ["미용사", "이용사"], "industry_terms": ["미용"] }
   ]
 }

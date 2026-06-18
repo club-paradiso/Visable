@@ -54,8 +54,11 @@ const STOP_TERMS = new Set([
 export function detectLanguage(text) {
   const hasHangul = /[가-힣]/.test(text || '');
   const hasLatin = /[a-z]/i.test(text || '');
+  // CJK ideographs with no Hangul → treat as Chinese (한자 단독 입력).
+  const hasHan = /[一-鿿]/.test(text || '');
   if (hasHangul && hasLatin) return 'mixed';
   if (hasHangul) return 'ko';
+  if (hasHan && !hasLatin) return 'zh';
   if (hasLatin) return 'en';
   return 'unknown';
 }
@@ -99,6 +102,23 @@ function conceptSurfaces(concept) {
   return surfaces.map(normalize).filter(Boolean);
 }
 
+/**
+ * Surface-match rule shared by concepts, ambiguous entries and field signals.
+ *  - Multi-word surfaces: substring (phrase) match.
+ *  - Latin single words: EXACT token only — so "actor" never matches inside
+ *    "factory", "model" never inside "modeling", "vet" never inside "veteran".
+ *  - Korean single words: token match, or substring for length>=3 (handles
+ *    agglutination like "카페에서" → "카페"); short 2-char surfaces (모델, 배우,
+ *    가수, 타투) must hit a real token, not a substring of a longer word.
+ */
+function surfaceHits(surface, normalizedText, tokenSet) {
+  const s = normalize(surface);
+  if (!s) return false;
+  if (s.includes(' ')) return normalizedText.includes(s);
+  if (/^[a-z0-9]+$/.test(s)) return tokenSet.has(s);
+  return tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s));
+}
+
 /** Find every concept whose surface phrase appears in the normalized text. */
 function matchConcepts(normalizedText, tokenSet, concepts) {
   const matched = [];
@@ -106,17 +126,7 @@ function matchConcepts(normalizedText, tokenSet, concepts) {
     const surfaces = conceptSurfaces(concept);
     let hit = null;
     for (const s of surfaces) {
-      if (!s) continue;
-      // Multi-word surfaces: substring match. Single tokens: exact token match,
-      // with substring allowed only for length>=3 surfaces. Short 2-char surfaces
-      // (모델, 배우, 가수, 타투 …) must hit a real token so they don't false-match
-      // inside longer words (모델링, 배우자, …) — the tokenizer already strips
-      // Korean particles so "카페에서" still yields the token "카페".
-      if (s.includes(' ')) {
-        if (normalizedText.includes(s)) { hit = s; break; }
-      } else if (tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s))) {
-        hit = s; break;
-      }
+      if (s && surfaceHits(s, normalizedText, tokenSet)) { hit = s; break; }
     }
     if (hit) matched.push({ concept, matchedSurface: hit });
   }
@@ -135,9 +145,7 @@ function matchAmbiguous(normalizedText, tokenSet, entries) {
     const surfaces = (Array.isArray(entry.surface) ? entry.surface : []).map(normalize).filter(Boolean);
     let hit = null;
     for (const s of surfaces) {
-      if (!s) continue;
-      if (s.includes(' ')) { if (normalizedText.includes(s)) { hit = s; break; } }
-      else if (tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s))) { hit = s; break; }
+      if (s && surfaceHits(s, normalizedText, tokenSet)) { hit = s; break; }
     }
     if (hit) matched.push({ entry, matchedSurface: hit });
   }
@@ -270,6 +278,180 @@ export function extractEntities(input, lex) {
     empMatches,
     ambiguityFlags
   };
+}
+
+/* --------------------------------------------------------------------------
+ * 2b. Field-labor signal extraction + analyzer modes
+ *
+ * Field-worker descriptions ("한치잡이 배에서 한치잡아요", "귤 따요",
+ * "골프장 청소해요", "공장에서 박스 포장해요") rarely contain a formal job title.
+ * They are best decoded as PLACE + OBJECT + ACTION (+ TOOL). The
+ * colloquial_field_terms.{ko,en}.json lexicons carry these signals together with
+ * VERIFIED retrieval keywords (every term exists in jobcode_master.json) and a
+ * sector tag. No official codes live in those files.
+ * ------------------------------------------------------------------------ */
+
+// Sectors that mean site-based / field labor (E-8/E-9/E-10/H-2 style work).
+const FIELD_LABOR_SECTORS = new Set([
+  'fishery_vessel', 'fishery', 'aquaculture', 'seafood_processing', 'agriculture',
+  'livestock', 'manufacturing', 'logistics', 'grounds', 'construction',
+  'cleaning', 'kitchen_labor'
+  // NOTE: 'hospitality' deliberately excluded — a bare 호텔/리조트 PLACE is a
+  // service workplace; the field-labor angle (객실 청소·정비) comes from the
+  // cleaning ACTION/OBJECT, which is what flips those inputs to field mode.
+]);
+
+// Concept-id → coarse mode bucket, used only to pick service vs professional mode
+// when there is no field-labor signal. Field labor and arts are detected from
+// signals / legal sensitivity, so they are not listed here.
+const SERVICE_CONCEPT_IDS = new Set([
+  // Korean concept ids
+  'barista', 'server', 'cook', 'cook_assistant', 'sales_clerk', 'customer_service',
+  'hotel_front', 'cleaner', 'driver', 'delivery', 'cafe', 'restaurant', 'convenience_store',
+  'retail_store', 'online_shopping', 'hotel', 'beauty_shop',
+  // English concept ids (synonyms.en.json)
+  'barista_en', 'server_en', 'cook_en', 'cook_assistant_en', 'sales_clerk_en',
+  'customer_service_en', 'front_desk_en', 'cleaner_en', 'delivery_en', 'cafe_en',
+  'restaurant_en', 'online_shop_en', 'retail_en', 'convenience_en', 'hotel_en',
+  // beauty / personal service
+  'nail_artist', 'makeup_artist', 'nail_artist_en', 'makeup_artist_en', 'hair_designer_en'
+]);
+const PROFESSIONAL_CONCEPT_IDS = new Set([
+  // Korean concept ids
+  'developer', 'designer', 'marketer', 'translator', 'researcher', 'professor',
+  'english_instructor', 'instructor', 'ta', 'manager', 'office_worker',
+  'content_creator', 'nurse', 'caregiver', 'childcare_teacher', 'it_company',
+  'university', 'school', 'language_academy', 'media_company', 'hospital',
+  'care_facility', 'daycare',
+  // newly added Korean professional concepts
+  'accountant', 'lawyer', 'doctor', 'veterinarian', 'pharmacist', 'architect',
+  'engineer_general', 'mechanic', 'data_analyst', 'consultant', 'sales_trade',
+  'photographer', 'lab_assistant',
+  // English concept ids (synonyms.en.json)
+  'developer_en', 'designer_en', 'marketer_en', 'translator_en', 'researcher_en',
+  'professor_en', 'teacher_en', 'content_creator_en', 'nurse_en', 'caregiver_en',
+  'manager_en', 'academy_en', 'university_en', 'startup_en', 'hospital_en', 'daycare_en',
+  'accountant_en', 'lawyer_en', 'doctor_en', 'veterinarian_en', 'pharmacist_en',
+  'architect_en', 'engineer_en', 'mechanic_en', 'data_analyst_en', 'consultant_en',
+  'sales_trade_en', 'photographer_en', 'lab_assistant_en'
+]);
+
+/**
+ * Scan the input for field-labor place/object/action/tool signals.
+ * Returns the per-kind matches plus merged retrieval terms (occupation/industry),
+ * the union of sectors, and the disambiguation rule ids the signals point at.
+ */
+export function extractFieldSignals(text, fieldLex) {
+  const normalizedText = normalize(text);
+  const tokenSet = new Set(tokenize(text));
+  const signals = [
+    ...((fieldLex && fieldLex.ko && fieldLex.ko.signals) || []),
+    ...((fieldLex && fieldLex.en && fieldLex.en.signals) || [])
+  ];
+  const matched = [];
+  for (const sig of signals) {
+    const surfaces = Array.isArray(sig.surface) ? sig.surface : [];
+    let hit = null;
+    for (const sf of surfaces) { if (surfaceHits(sf, normalizedText, tokenSet)) { hit = normalize(sf); break; } }
+    if (hit) matched.push({ ...sig, matchedSurface: hit });
+  }
+  const byKind = { places: [], objects: [], actions: [], tools: [] };
+  const kindKey = { place: 'places', object: 'objects', action: 'actions', tool: 'tools' };
+  const occupationTerms = new Set();
+  const industryTerms = new Set();
+  const sectors = new Set();
+  const disambiguationIds = new Set();
+  // How many matched signals point at each fork rule — used to rank which single
+  // question is most relevant (3 signals agreeing on "vessel?" beats 1 stray ref).
+  const disambiguationRefs = Object.create(null);
+  for (const m of matched) {
+    const k = kindKey[m.signal];
+    if (k) byKind[k].push({ id: m.id, label: m.label_ko || m.label_en || m.id, sector: m.sector, surface: m.matchedSurface });
+    (m.occupation_terms || []).forEach((t) => occupationTerms.add(normalize(t)));
+    (m.industry_terms || []).forEach((t) => industryTerms.add(normalize(t)));
+    if (m.sector) sectors.add(m.sector);
+    (m.disambiguation || []).forEach((d) => { disambiguationIds.add(d); disambiguationRefs[d] = (disambiguationRefs[d] || 0) + 1; });
+  }
+  return {
+    matched,
+    places: byKind.places,
+    objects: byKind.objects,
+    actions: byKind.actions,
+    tools: byKind.tools,
+    sectors,
+    placeIds: new Set(byKind.places.map((p) => p.id)),
+    disambiguationIds,
+    disambiguationRefs,
+    occupationTerms: [...occupationTerms].filter(Boolean),
+    industryTerms: [...industryTerms].filter(Boolean)
+  };
+}
+
+/**
+ * Decide the analyzer mode. Order of precedence:
+ *   arts_entertainment → field_labor → service → professional → ambiguous.
+ * Field labor wins whenever a real place/object/action site-signal is present,
+ * even at a service-ish place (식당 설거지, 골프장 청소) — matching how those
+ * inputs should be read.
+ */
+export function detectMode(entities, fieldSig) {
+  const sens = entities.legalSensitivity || [];
+  if (sens.includes('entertainment')) return 'arts_entertainment_mode';
+  const inField = (arr) => (arr || []).some((m) => FIELD_LABOR_SECTORS.has(m.sector));
+  const hasFieldAction = inField(fieldSig.actions);
+  const hasFieldObjOrPlace = inField(fieldSig.objects) || inField(fieldSig.places) || inField(fieldSig.tools);
+  const ids = new Set((entities.matchedConcepts || []).map((c) => c.id));
+  const hasService = (fieldSig.matched || []).some((m) => m.sector === 'food_service') ||
+    [...ids].some((id) => SERVICE_CONCEPT_IDS.has(id));
+  const hasProfessional = [...ids].some((id) => PROFESSIONAL_CONCEPT_IDS.has(id));
+  // A field ACTION (잡다/따다/포장/청소/설거지/용접…) is decisive — it means
+  // hands-on site work even at a service-ish place (식당 설거지, 골프장 청소).
+  if (hasFieldAction) return 'field_labor_mode';
+  // A field place/object with no competing professional/service role is field too.
+  if (hasFieldObjOrPlace && !hasProfessional && !hasService) return 'field_labor_mode';
+  if (sens.includes('tattoo')) return 'service_mode';
+  if (hasProfessional) return 'professional_mode';
+  if (hasService) return 'service_mode';
+  if (hasFieldObjOrPlace) return 'field_labor_mode';
+  return 'ambiguous_mode';
+}
+
+/**
+ * Field-labor / fork disambiguation questions, driven by the matched signals.
+ * A rule fires only when (a) a matched signal references it AND (b) its trigger
+ * sector/place is actually present — so a stray fish token can't drag a vessel
+ * question into a clearly aquaculture/factory input. Ranked by how many signals
+ * agree on the fork, then by static priority.
+ */
+export function evaluateDisambiguation(fieldSig, rules) {
+  const fired = [];
+  for (const rule of rules || []) {
+    if (!fieldSig.disambiguationIds.has(rule.id)) continue;
+    const trig = rule.trigger || {};
+    if (trig.sectors && trig.sectors.length && !trig.sectors.some((s) => fieldSig.sectors.has(s))) continue;
+    if (trig.places && trig.places.length && !trig.places.some((p) => fieldSig.placeIds && fieldSig.placeIds.has(p))) continue;
+    fired.push({ rule, refs: (fieldSig.disambiguationRefs && fieldSig.disambiguationRefs[rule.id]) || 0 });
+  }
+  fired.sort((a, b) => (b.refs - a.refs) || ((b.rule.priority || 0) - (a.rule.priority || 0)));
+  return fired.map((f) => f.rule);
+}
+
+/** Human-readable "장소 + 작업" interpretation line. */
+function buildParsedInterpretation(entities, fieldSig, mode, locale) {
+  const en = locale === 'en';
+  if (mode === 'field_labor_mode') {
+    const parts = [];
+    fieldSig.places.forEach((p) => parts.push(p.label));
+    fieldSig.objects.forEach((o) => parts.push(o.label));
+    fieldSig.actions.forEach((a) => parts.push(a.label));
+    const uniq = [...new Set(parts)].slice(0, 4);
+    if (uniq.length) return en
+      ? `Read as: ${uniq.join(' + ')} (place + task)`
+      : `${uniq.join(' + ')} 기준으로 분석됨`;
+  }
+  const bits = [entities.jobRole, entities.businessActivity].filter(Boolean);
+  if (bits.length) return en ? `Read as: ${bits.join(' / ')}` : `${bits.join(' / ')}(으)로 분석됨`;
+  return null;
 }
 
 /* --------------------------------------------------------------------------
@@ -657,6 +839,11 @@ export function createEmploymentAnalyzer(deps = {}) {
   const context = deps.context || (dataset && dataset.employment_reporting_context) || null;
   const ambiguousEntries = (deps.ambiguous && Array.isArray(deps.ambiguous.entries)) ? deps.ambiguous.entries : [];
   const legalSources = deps.legalSources || (sources && sources.legal_sources) || [];
+  // Field-labor place/object/action lexicon + fork disambiguation rules + income
+  // reminder. All optional, so the analyzer degrades gracefully without them.
+  const fieldLex = deps.fieldTerms || { ko: { signals: [] }, en: { signals: [] } };
+  const disambiguationRules = (deps.disambiguation && Array.isArray(deps.disambiguation.rules)) ? deps.disambiguation.rules : [];
+  const incomeBrackets = deps.incomeBrackets || null;
   const index = buildIndex(dataset);
   const occMeta = dataset && dataset.occupation_source;
   const indMeta = dataset && dataset.industry_source;
@@ -672,6 +859,10 @@ export function createEmploymentAnalyzer(deps = {}) {
     // their legal sensitivity + confidence cap into retrieval.
     const tokenSet = new Set(tokenize(safeInput.text));
     const ambiguousMatches = matchAmbiguous(entities.normalizedInput, tokenSet, ambiguousEntries);
+
+    // Field-labor place/object/action/tool signals (장소 + 대상 + 작업).
+    const fieldSig = extractFieldSignals(safeInput.text, fieldLex);
+
     let occTerms = entities.occupationTerms.slice();
     let indTerms = entities.industryTerms.slice();
     ambiguousMatches.forEach((m) => {
@@ -679,6 +870,9 @@ export function createEmploymentAnalyzer(deps = {}) {
       (dec.occupation_terms || []).forEach((t) => occTerms.push(normalize(t)));
       (dec.industry_terms || []).forEach((t) => indTerms.push(normalize(t)));
     });
+    // Field signals contribute VERIFIED retrieval keywords on both tracks.
+    fieldSig.occupationTerms.forEach((t) => occTerms.push(t));
+    fieldSig.industryTerms.forEach((t) => indTerms.push(t));
     occTerms = uniq(occTerms);
     indTerms = uniq(indTerms);
 
@@ -706,7 +900,26 @@ export function createEmploymentAnalyzer(deps = {}) {
       limit: 5, sourceMeta: indMeta, confidenceCap, caveats: indCaveats
     });
 
-    const ambiguityQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches);
+    // Analyzer mode (field_labor / arts_entertainment / service / professional /
+    // ambiguous) decides the banner, which forks to ask, and how empty results are
+    // explained.
+    const mode = detectMode(entities, fieldSig);
+    const locale = entities.language === 'en' ? 'en' : 'ko';
+
+    // Field-labor fork questions come first (one targeted question at a time), then
+    // the concept-driven ambiguity follow-ups.
+    const firedRules = evaluateDisambiguation(fieldSig, disambiguationRules);
+    const fieldQuestions = firedRules.map((r) => ({
+      flag: r.id,
+      topic: r.topic,
+      question: (locale === 'en' && r.question_en) ? r.question_en : r.question_ko,
+      chips: r.chips || []
+    }));
+    const conceptQuestions = buildAmbiguity(entities, occupationCandidates, industryCandidates, lexicon, ambiguousMatches);
+    // Show the single most relevant field fork up front; keep concept follow-ups too,
+    // but never flood the user — cap the whole list.
+    const ambiguityQuestions = [...fieldQuestions.slice(0, 1), ...conceptQuestions, ...fieldQuestions.slice(1)].slice(0, 3);
+
     const followUpChips = buildFollowUpChips(entities, ambiguousMatches);
     const warnings = buildWarnings(safeInput, entities, occupationCandidates, industryCandidates, context);
     const sourceNotes = [
@@ -714,8 +927,45 @@ export function createEmploymentAnalyzer(deps = {}) {
       ...buildLegalNotes(legalSources, legalSensitivity)
     ];
 
+    // No official code found, but the input was understood (signals/concepts present)
+    // → drive the "공식 코드 확인 필요" state instead of a bare "검색 결과 없음".
+    const hasSignals = fieldSig.matched.length > 0 || (entities.matchedConcepts || []).length > 0 ||
+      !!entities.jobRole || !!entities.workplaceType;
+    const noOfficialCodeFound = occupationCandidates.length === 0 && industryCandidates.length === 0;
+    const sourceStatus = noOfficialCodeFound
+      ? (hasSignals ? 'needs_confirmation' : 'no_match')
+      : 'official_list';
+
+    const parsedInterpretation = buildParsedInterpretation(entities, fieldSig, mode, locale);
+    const clarificationRequired = ambiguityQuestions.length > 0;
+    const clarificationQuestion = clarificationRequired ? ambiguityQuestions[0].question : null;
+
+    const incomeReportingNote = incomeBrackets
+      ? (locale === 'en' ? incomeBrackets.reminder_en : incomeBrackets.reminder_ko)
+      : (locale === 'en'
+        ? 'HiKorea employment reporting also requires an annual income bracket alongside occupation and industry (pre-tax). Report a change only when the bracket changes.'
+        : 'HiKorea 취업정보 신고는 직종·업종과 함께 연간소득 구간도 신고합니다(과세 전 기준). 구간이 바뀐 경우에만 변경 신고하세요.');
+
+    // cautionNotes mirrors warnings (spec field name); warnings kept for back-compat.
+    const cautionNotes = warnings.slice();
+
     return {
+      input: safeInput.text,
       normalizedInput: entities.normalizedInput,
+      detectedLanguage: entities.language,
+      mode,
+      parsedInterpretation: parsedInterpretation || undefined,
+      // Structured field-labor signals (spec: parsedSignals).
+      parsedSignals: {
+        places: fieldSig.places,
+        objects: fieldSig.objects,
+        actions: fieldSig.actions,
+        tools: fieldSig.tools,
+        sectors: [...fieldSig.sectors],
+        employerHints: entities.businessActivity ? [entities.businessActivity] : [],
+        workSettingHints: entities.workplaceType ? [entities.workplaceType] : [],
+        visaContextHints: entities.visaStatus ? [entities.visaStatus] : []
+      },
       extracted: {
         language: entities.language,
         jobRole: entities.jobRole || undefined,
@@ -732,6 +982,9 @@ export function createEmploymentAnalyzer(deps = {}) {
       },
       occupationCandidates,
       industryCandidates,
+      incomeReportingNote,
+      clarificationRequired,
+      clarificationQuestion,
       ambiguityQuestions,
       followUpChips,
       ambiguityFlags: entities.ambiguityFlags,
@@ -740,7 +993,10 @@ export function createEmploymentAnalyzer(deps = {}) {
       // its own scorer (entity-aware retrieval) instead of re-deriving them.
       occupationTerms: occTerms,
       industryTerms: indTerms,
+      cautionNotes,
       warnings,
+      sourceStatus,
+      noOfficialCodeFound,
       sourceNotes
     };
   }
@@ -761,6 +1017,9 @@ if (typeof window !== 'undefined') {
     tokenize,
     detectLanguage,
     extractEntities,
+    extractFieldSignals,
+    detectMode,
+    evaluateDisambiguation,
     buildIndex,
     searchTrack,
     createEmploymentAnalyzer,
@@ -773,6 +1032,9 @@ export default {
   tokenize,
   detectLanguage,
   extractEntities,
+  extractFieldSignals,
+  detectMode,
+  evaluateDisambiguation,
   buildIndex,
   searchTrack,
   createEmploymentAnalyzer,

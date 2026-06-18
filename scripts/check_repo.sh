@@ -185,6 +185,11 @@ if command -v node >/dev/null 2>&1; then
   # Deterministic natural-language analyzer: no hallucinated codes, 직종/업종
   # track separation, ambiguity follow-ups, and source metadata present.
   node scripts/check_employment_code_analyzer.mjs
+  # Mode suites (field_labor/professional/service/arts/ambiguous): 500+ fixtures —
+  # mode detection, parsed signals, cluster coverage, never a silent dead-end.
+  node scripts/check_employment_analyzer_modes.mjs
+  # Source/data integrity: registry + visa scope + no hallucinated codes/vocab.
+  node scripts/audit_employment_sources.mjs
 else
   echo "INFO: Node.js not found; skipping employment-reporting helper UI logic test."
 fi
