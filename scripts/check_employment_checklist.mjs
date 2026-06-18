@@ -209,9 +209,9 @@ function assertInvariants(id, st) {
   else {
     const els = {};
     const mkEl = (id) => (els[id] ||= { id, hidden: true, innerHTML: '', textContent: '', value: '',
-      classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll: () => [], focus() {} });
+      classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll: () => [], querySelector: () => null, focus() {} });
     const sandbox = {
-      document: { getElementById: mkEl, querySelector: () => null },
+      document: { getElementById: mkEl, querySelector: () => null, querySelectorAll: () => [] },
       window: { EmploymentChecklist: { STATUS: chk.STATUS, checklistCopy: chk.checklistCopy, buildEmploymentChecklistState: chk.buildEmploymentChecklistState } },
       navigator: {}, API_BASE: '', currentLanguage: 'ko',
       escapeHtml: (s) => String(s == null ? '' : s), hl: (s) => String(s == null ? '' : s),
@@ -223,7 +223,9 @@ function assertInvariants(id, st) {
     vm.createContext(sandbox);
     const tail = `
 ;globalThis.__R = {
-  renderEmploymentChecklist, renderEmploymentWeakHelp,
+  renderEmploymentChecklist, renderEmploymentWeakHelp, renderEmploymentInterpretation,
+  renderEmploymentRefine, renderJobcodeList, getScoredJobcodeRows, getJobcodeSearchTerms,
+  setData(d){ _jobcodeData=d; },
   set(a, occ, ind){ _jcAnalysis=a; _jcResultCounts={occupation:occ, industry:ind}; _jcSelected={occupation:null,industry:null}; _jcClarificationAnswered=false; },
   select(t,c){ _jcSelected[t]={code:c,name:'x'}; } };`;
     try {
@@ -237,11 +239,11 @@ function assertInvariants(id, st) {
       expect('render', cl && !cl.hidden, 'checklist should be visible after render');
       expect('render', (cl.innerHTML.match(/<li/g) || []).length === 4, `checklist should render 4 items, got markup length ${cl ? cl.innerHTML.length : 0}`);
       expect('render', cl.innerHTML.includes('1단계'), 'checklist shows step-1 label');
-      expect('render', /후보 찾음|선택 필요/.test(cl.innerHTML), 'ready status label present in markup');
+      expect('render', cl.innerHTML.includes('후보를 찾았어요'), 'ready status label present in markup');
       // selecting occupation flips its step copy toward complete
       R.select('occupation', '5311');
       R.renderEmploymentChecklist();
-      expect('render', els['jcChecklist'].innerHTML.includes('선택 완료'), 'after selection, a step shows 선택 완료');
+      expect('render', els['jcChecklist'].innerHTML.includes('선택했어요'), 'after selection, a step shows 선택했어요');
       // weak-input help renders examples
       const rWeak = analyze('알바', 'ko');
       R.set(rWeak, 0, 0);
@@ -249,6 +251,33 @@ function assertInvariants(id, st) {
       const wh = els['jcWeakHelp'];
       expect('render', wh && !wh.hidden, 'weak help visible for 알바');
       expect('render', wh.innerHTML.includes('카페에서 음료 만들어요'), 'weak help shows guided examples');
+
+      // --- Toss-redesign render: interpretation title + 더 확인할 점 ---
+      const rGolf = analyze('골프장 청소해요', 'ko');
+      R.set(rGolf, 5, 5);
+      R.renderEmploymentInterpretation(rGolf);
+      const ip = els['jcInterpret'];
+      expect('render', ip && ip.innerHTML.includes('이렇게 이해했어요'), 'interpretation titled "이렇게 이해했어요"');
+      expect('render', ip.innerHTML.includes('더 확인할 점'), 'interpretation shows "더 확인할 점"');
+      // --- one-question clarification with large buttons + 잘 모르겠어요 ---
+      R.renderEmploymentRefine(rGolf);
+      const rf = els['jcRefine'];
+      expect('render', rf && rf.innerHTML.includes('잘 모르겠어요'), 'clarification offers "잘 모르겠어요"');
+      expect('render', rf.innerHTML.includes('jc2-answer'), 'clarification uses large answer buttons');
+      // --- candidate grouping: ambiguous → "몇 가지 가능성이 있어요" + confidence + source ---
+      const jobcodeData = JSON.parse(fs.readFileSync(j2(repo, 'data/jobcode_master.json'), 'utf8'));
+      R.setData(jobcodeData);
+      const occRows = R.getScoredJobcodeRows('occupation', '청소', R.getJobcodeSearchTerms('청소'));
+      expect('render', occRows.length > 0, 'scorer returns 청소 occupation rows');
+      const jb = mkEl('jcJobResults');
+      R.renderJobcodeList(occRows, jb, 'occupation', '청소', R.getJobcodeSearchTerms('청소'), { collapse: true, ambiguous: true });
+      expect('render', jb.innerHTML.includes('몇 가지 가능성이 있어요'), 'ambiguous list avoids false "closest"');
+      expect('render', jb.innerHTML.includes('jc2-conf'), 'cards carry a confidence chip');
+      expect('render', jb.innerHTML.includes('공식 분류 코드'), 'cards carry an official-source label');
+      if (occRows.length > 2) expect('render', jb.innerHTML.includes('더 보기'), 'extra candidates hide behind 더 보기');
+      // non-ambiguous → "가장 가까운 후보"
+      R.renderJobcodeList(occRows, jb, 'occupation', '청소', R.getJobcodeSearchTerms('청소'), { collapse: true, ambiguous: false });
+      expect('render', jb.innerHTML.includes('가장 가까운 후보'), 'high-confidence list shows "가장 가까운 후보"');
     } catch (e) {
       fail('render', `helper region failed to evaluate: ${e.message}`);
     }

@@ -885,13 +885,76 @@ body.searched .ft { opacity: 1; }
 .jc2-legal-banner { background: color-mix(in srgb, var(--color-error) 12%, var(--bg1)); border: 1.5px solid color-mix(in srgb, var(--color-error) 45%, transparent); border-radius: var(--radius-md); padding: 0.7rem 0.9rem; margin-bottom: 0.7rem; }
 .jc2-legal-h { font-size: 0.84rem; font-weight: 800; color: var(--color-error); margin-bottom: 0.45rem; line-height: 1.45; }
 .jc2-legal-banner .jc2-tips-list { color: var(--t1); font-size: 0.8rem; }
+/* --- Toss-inspired guided UX: ask heading, explainer, stepper, answers,
+       confidence, grouping, show-more, gentle no-code, income reminder --- */
+.jc2-ask { margin: 0 0 0.2rem; font-size: 1.15rem; font-weight: 800; color: var(--t1); letter-spacing: -0.01em; }
+.jc2-ask-help { margin: 0; font-size: 0.84rem; line-height: 1.5; color: var(--t2); word-break: keep-all; }
+.jc2-explain { margin: 0.5rem 0 0; background: color-mix(in srgb, var(--color-info, #3b82f6) 7%, var(--bg1)); border: 1px solid color-mix(in srgb, var(--color-info, #3b82f6) 22%, transparent); border-radius: var(--radius-md); padding: 0.55rem 0.75rem; }
+.jc2-explain-sum { font-size: 0.82rem; font-weight: 700; color: var(--t1); cursor: pointer; list-style: none; word-break: keep-all; line-height: 1.5; }
+.jc2-explain-sum::-webkit-details-marker { display: none; }
+.jc2-explain-sum::after { content: ' ⌄'; color: var(--t3); }
+.jc2-explain[open] .jc2-explain-sum::after { content: ' ⌃'; }
+.jc2-explain-body { margin: 0.45rem 0 0; font-size: 0.8rem; line-height: 1.55; color: var(--t2); word-break: keep-all; }
+.jc2-examples-label { margin: 0.7rem 0 0.35rem; font-size: 0.78rem; font-weight: 700; color: var(--t2); }
+.jc2-advanced { margin-top: 0.55rem; border-top: 1px dashed var(--bd2); padding-top: 0.5rem; }
+.jc2-advanced-sum { font-size: 0.76rem; font-weight: 700; color: var(--t3); cursor: pointer; list-style: none; }
+.jc2-advanced-sum::-webkit-details-marker { display: none; }
+.jc2-advanced[open] .jc2-advanced-sum { margin-bottom: 0.5rem; }
+.jc2-stepper-wrap { background: var(--bg2); border: 1px solid var(--bd2); border-radius: var(--radius-md); padding: 0.7rem 0.8rem; }
+.jc2-stepper-h { margin: 0 0 0.55rem; font-size: 0.84rem; font-weight: 800; color: var(--t1); }
+/* one-question clarification: large, tap-friendly answer buttons */
+.jc2-answers { display: flex; flex-direction: column; gap: 0.4rem; }
+.jc2-answer { min-height: 46px; width: 100%; text-align: left; border: 1.5px solid color-mix(in srgb, var(--ac) 40%, var(--bd2)); background: var(--bg1); color: var(--t1); font: inherit; font-size: 0.86rem; font-weight: 700; padding: 0.6rem 0.85rem; border-radius: var(--radius-md); cursor: pointer; transition: var(--btn-tr); }
+.jc2-answer:hover, .jc2-answer:focus-visible { border-color: var(--ac); background: var(--acL); }
+.jc2-answer:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 55%, white); outline-offset: 1px; }
+.jc2-answer--dunno { border-style: dashed; border-color: var(--bd2); color: var(--t2); font-weight: 600; }
+/* candidate card: confidence + source + grouping + progressive disclosure */
+.jc2-conf { font-size: 0.68rem; font-weight: 800; border-radius: 999px; padding: 0.04rem 0.5rem; white-space: nowrap; }
+.jc2-conf.is-high { background: color-mix(in srgb, var(--color-success, #16a34a) 16%, transparent); color: #15803d; }
+.jc2-conf.is-mid { background: color-mix(in srgb, var(--color-info, #3b82f6) 14%, transparent); color: #2563eb; }
+.jc2-conf.is-low { background: var(--bg2); color: var(--t2); }
+.jc2-card-meta { font-size: 0.72rem; color: var(--t3); display: flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.jc2-src { color: var(--color-success, #16a34a); font-weight: 700; white-space: nowrap; }
+.jc2-card-fit { font-size: 0.74rem; line-height: 1.45; color: var(--t2); word-break: keep-all; }
+.jc2-card-fit b { color: var(--t1); }
+.jc2-card-more { margin-top: 0.1rem; }
+.jc2-card-more > summary { font-size: 0.72rem; color: var(--ac2); cursor: pointer; list-style: none; font-weight: 700; }
+.jc2-card-more > summary::-webkit-details-marker { display: none; }
+.jc2-card-more > summary::after { content: ' ⌄'; }
+.jc2-card-more[open] > summary::after { content: ' ⌃'; }
+.jc2-card-other { font-size: 0.73rem; line-height: 1.45; color: var(--t2); margin-top: 0.3rem; word-break: keep-all; }
+.jc2-card-other b { color: var(--t1); }
+.jc2-group-head { font-size: 0.78rem; font-weight: 800; color: var(--t1); padding: 0.5rem 0.1rem 0.35rem; }
+.jc2-group-head:not(:first-child) { margin-top: 0.4rem; border-top: 1px solid var(--bd2); }
+.jc2-more-btn { width: 100%; min-height: 44px; border: 1px solid var(--bd2); background: var(--bg2); color: var(--t1); font: inherit; font-size: 0.82rem; font-weight: 700; border-radius: var(--radius-md); cursor: pointer; margin-top: 0.4rem; transition: var(--btn-tr); }
+.jc2-more-btn:hover, .jc2-more-btn:focus-visible { border-color: var(--ac); color: var(--ac); }
+.jc2-more-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 55%, white); outline-offset: 1px; }
+/* gentle "공식 코드 확인 필요" card */
+.jc2-needcode { border: 1px solid color-mix(in srgb, var(--color-info, #3b82f6) 30%, transparent); background: color-mix(in srgb, var(--color-info, #3b82f6) 7%, var(--bg1)); border-radius: var(--radius-md); padding: 0.8rem; }
+.jc2-needcode-h { font-size: 0.86rem; font-weight: 800; color: var(--t1); }
+.jc2-needcode-b { margin: 0.35rem 0 0.6rem; font-size: 0.8rem; line-height: 1.55; color: var(--t2); word-break: keep-all; }
+.jc2-needcode-acts { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.jc2-needcode-btn { min-height: 40px; display: inline-flex; align-items: center; border: 1px solid var(--ac); background: var(--bg1); color: var(--ac2); font: inherit; font-size: 0.78rem; font-weight: 700; padding: 0.4rem 0.8rem; border-radius: var(--radius-full); cursor: pointer; text-decoration: none; }
+.jc2-needcode-btn:hover, .jc2-needcode-btn:focus-visible { background: var(--ac); color: #fff; }
+.jc2-needcode-link { }
+/* income reminder card */
+.jc2-income-card { display: flex; gap: 0.55rem; align-items: flex-start; background: color-mix(in srgb, var(--ac) 6%, var(--bg1)); border: 1px solid var(--bd2); border-radius: var(--radius-md); padding: 0.6rem 0.8rem; }
+.jc2-income-ic { font-size: 1.05rem; flex: none; }
+.jc2-income-tx { font-size: 0.8rem; line-height: 1.5; color: var(--t2); }
+.jc2-income-tx b { display: block; color: var(--t1); font-weight: 800; font-size: 0.84rem; }
+
 @media (max-width: 520px) {
   .jc2-interpret-grid { grid-template-columns: 1fr; gap: 0.15rem; }
   .jc2-interpret-v { margin-bottom: 0.3rem; }
+  .jc2-chip, .jc2-seg { min-height: 40px; }
+  .jc2-list { max-height: none; overflow: visible; }
+  .jc2-ask { font-size: 1.05rem; }
 }
+.jc2 * { min-width: 0; }
+.jc2 .jc2-card, .jc2 .jc2-needcode, .jc2 .jc2-income-card, .jc2 .jc2-stepper-wrap { overflow-wrap: anywhere; }
 
 @media (prefers-reduced-motion: reduce) {
-  .jc2-card, .jc2-seg, .jc2-chip, .jc2-copy, .jc2-select, .jc2-ai-btn, .jc2-search-input, .jc2-refine-chip { transition: none; }
+  .jc2-card, .jc2-seg, .jc2-chip, .jc2-copy, .jc2-select, .jc2-ai-btn, .jc2-search-input, .jc2-refine-chip, .jc2-answer, .jc2-more-btn { transition: none; }
 }
 
 .jur-section { padding: 1rem; background: var(--bg2); border-radius: 8px; margin-bottom: 0.8rem; }
@@ -13563,19 +13626,16 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <button type="button" class="modal-close" data-action="close-jobcode-modal" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body jc2">
-            <!-- 1 · Header card -->
+            <!-- 1 · Friendly ask + trust badges -->
             <div class="jc2-hero">
-                <p class="jc2-hero-sub" id="jcHeroSub">HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
+                <h3 class="jc2-ask" id="jcAskHeading">어떤 일을 하나요?</h3>
+                <p class="jc2-ask-help" id="jcAskHelper">예시처럼 편하게 적어주세요. Paradiso가 직종과 업종 후보로 나눠서 찾아드릴게요.</p>
                 <div class="jc2-badges">
                     <span class="jc2-badge jc2-badge--trust" id="jcBadgeTrust">✓ 기준: KSCO8 · KSIC11</span>
                     <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
                 </div>
+                <p class="jc2-hero-sub" id="jcHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
             </div>
-
-            <!-- 2 · Guided checklist — updates with every search/selection.
-                 Rendered by renderEmploymentChecklist() from the shared
-                 buildEmploymentChecklistState() state model. -->
-            <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 체크리스트" aria-live="polite"></ol>
 
             <!-- 3 · Search panel -->
             <div class="jc2-searchpanel">
@@ -13585,38 +13645,43 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 골프장 청소해요 / 한치잡이 배에서 일해요 / English teacher at a hagwon" autocomplete="off" aria-describedby="jcCountBadge">
                     <span id="jcCountBadge" class="jc2-count" aria-live="polite">전체 보기</span>
                 </div>
-                <div class="jc2-filters-row">
-                    <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택">
-                        <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all">전체</button>
-                        <button type="button" role="tab" class="jc2-seg" id="jcFilterOcc" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="occupation">직종만</button>
-                        <button type="button" role="tab" class="jc2-seg" id="jcFilterInd" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="industry">업종만</button>
-                    </div>
-                    <div class="jc2-filter jc2-filter--level" role="tablist" aria-label="분류 단계 선택">
-                        <button type="button" role="tab" class="jc2-seg is-on" id="jcLevelAll" aria-selected="true" data-action="set-jobcode-level" data-jc-level="all">전체 단계</button>
-                        <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시">🎯 세부코드만</button>
-                    </div>
-                </div>
-                <p class="jc2-level-hint" id="jcLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
-                <div class="jc2-chips" id="jcChips" aria-label="추천 검색어">
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페 바리스타">카페 바리스타</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영어학원 강사">영어학원 강사</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="식당 주방보조">식당 주방보조</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="IT 개발자">IT 개발자</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="농장 계절근로">농장 계절근로</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="댄서">댄서</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="무용수">무용수</button>
+                <!-- Plain-language concept explainer (expandable, not a giant legal note) -->
+                <details class="jc2-explain" id="jcExplain">
+                    <summary class="jc2-explain-sum">💡 <span id="jcConceptExplain">직종은 ‘내가 하는 일’, 업종은 ‘회사나 사업장이 하는 일’이에요.</span></summary>
+                    <p class="jc2-explain-body" id="jcConceptExpand">예를 들어 골프장에서 청소를 한다면, 직종은 청소 업무에 가깝고 업종은 골프장 운영인지 청소·시설관리 업체인지에 따라 달라질 수 있어요.</p>
+                </details>
+                <!-- Friendly natural-language example chips (run the analyzer) -->
+                <p class="jc2-examples-label" id="jcExamplesLabel">이렇게 적어보세요</p>
+                <div class="jc2-chips" id="jcChips" aria-label="입력 예시">
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="골프장 청소해요">골프장 청소해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="한치잡이 배에서 일해요">한치잡이 배에서 일해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="공장에서 박스 포장해요">공장에서 박스 포장해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="학원에서 영어 가르쳐요">학원에서 영어 가르쳐요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영상 편집하고 유튜브 콘텐츠 만들어요">영상 편집하고 유튜브 콘텐츠 만들어요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페에서 음료 만들어요">카페에서 음료 만들어요</button>
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="아이돌 연습생">아이돌 연습생</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="안무가">안무가</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="가수">가수</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="연예기획사 소속 아티스트">연예기획사 소속 아티스트</button>
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투이스트">타투이스트</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="반영구화장">반영구화장</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투샵 운영">타투샵 운영</button>
                 </div>
                 <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
                     <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
                     <span class="spinner" id="jcAiSpinner" style="display:none; margin-left:8px;"></span>
                 </button>
+                <!-- Advanced: direct code browsing (collapsed to reduce cognitive load) -->
+                <details class="jc2-advanced">
+                    <summary class="jc2-advanced-sum">🔧 직접 코드 찾기 · 검색 옵션</summary>
+                    <div class="jc2-filters-row">
+                        <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택">
+                            <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all">전체</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcFilterOcc" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="occupation">직종만</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcFilterInd" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="industry">업종만</button>
+                        </div>
+                        <div class="jc2-filter jc2-filter--level" role="tablist" aria-label="분류 단계 선택">
+                            <button type="button" role="tab" class="jc2-seg is-on" id="jcLevelAll" aria-selected="true" data-action="set-jobcode-level" data-jc-level="all">전체 단계</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시">🎯 세부코드만</button>
+                        </div>
+                    </div>
+                    <p class="jc2-level-hint" id="jcLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
+                </details>
             </div>
 
             <!-- guidance / status notes -->
@@ -13637,6 +13702,14 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <!-- 3.7 · 후속 선택 칩 (general/entertainment/tattoo follow-up chips) -->
             <div id="jcFollowup" class="jc2-refine jc2-followup" role="group" aria-label="후속 선택" hidden></div>
 
+            <!-- 3.8 · Guided stepper — updates with every search/selection, placed
+                 after the clarification (mobile order). Rendered by
+                 renderEmploymentChecklist() from buildEmploymentChecklistState(). -->
+            <div class="jc2-stepper-wrap">
+                <p class="jc2-stepper-h" id="jcStepperH">🧭 신고 준비 4단계</p>
+                <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
+            </div>
+
             <!-- 4 · Results -->
             <div class="jc2-results">
                 <section class="jc2-pane" data-pane="occupation">
@@ -13647,6 +13720,13 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title">업종 후보 <span class="jc2-pane-plain">회사/사업장이 하는 일에 가까운 항목</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind">이건 업종입니다</span><span class="jc2-pane-tag">KSIC11 · 표준산업분류</span></h3>
                     <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
+            </div>
+
+            <!-- 4.5 · 연간소득 reminder — official reporting includes annual income -->
+            <div class="jc2-income-card" id="jcIncomeReminder">
+                <span class="jc2-income-ic" aria-hidden="true">💰</span>
+                <span class="jc2-income-tx"><b id="jcIncomeReminderTitle">연간소득 구간도 필요해요</b>
+                <span id="jcIncomeReminderBody">하이코리아 신고 화면에서 실제 연간소득 구간을 선택해야 합니다.</span></span>
             </div>
 
             <!-- 5.5 · 하이코리아 입력 팁 + 공식 기준 (analyzer warnings + tips) -->
@@ -14872,21 +14952,30 @@ function jcMatchReason(row, query, terms) {
     return '';
 }
 function jcSelectedCode(type) { return _jcSelected[type] ? _jcSelected[type].code : null; }
-// Plain-language "pick this when / another may fit when" helper for a card.
+// Friendly confidence label relative to the best candidate in the pane.
+function jcConfLabel(row, top) {
+    const s = row._score || 0;
+    const r = top > 0 ? s / top : 0;
+    if (r >= 0.8) return { key: 'conf.high', cls: 'is-high' };
+    if (r >= 0.45) return { key: 'conf.mid', cls: 'is-mid' };
+    return { key: 'conf.low', cls: 'is-low' };
+}
+// Plain-language "this may fit when / another may fit when" parts for a card.
 function jcCardHelp(type, isLeaf) {
     const en = currentLanguage === 'en';
-    const fitLabel = jcChecklistCopy('card.fit') || (en ? 'Pick this when' : '이 항목이 맞는 경우');
-    const otherLabel = jcChecklistCopy('card.other') || (en ? 'Another may fit when' : '다른 항목이 더 맞을 수 있는 경우');
-    const fit = type === 'occupation'
-        ? (en ? 'this is close to what you actually do' : '내가 실제로 하는 일과 비슷할 때')
-        : (en ? 'this is close to your employer/business activity' : '회사·사업장이 하는 일과 비슷할 때');
-    const other = isLeaf
-        ? (en ? 'a similar item below fits better — compare them' : '아래 비슷한 항목이 더 맞으면 비교해서 고르기')
-        : (en ? 'a more specific (detailed) code exists — pick that' : '더 구체적인 세부코드가 있으면 그걸 고르기');
-    return `<div class="jc2-card-help"><span class="jc2-card-help-fit">✓ <b>${escapeHtml(fitLabel)}</b>: ${escapeHtml(fit)}</span>`
-        + `<span class="jc2-card-help-other">↔ <b>${escapeHtml(otherLabel)}</b>: ${escapeHtml(other)}</span></div>`;
+    return {
+        fitLabel: jcChecklistCopy('card.fit'),
+        fitText: type === 'occupation'
+            ? (en ? 'this is close to what you actually do' : '내가 실제로 하는 일과 비슷할 때')
+            : (en ? 'this is close to your employer/business activity' : '회사·사업장이 하는 일과 비슷할 때'),
+        otherLabel: jcChecklistCopy('card.other'),
+        otherText: isLeaf
+            ? (en ? 'a similar item fits better — compare them' : '아래 비슷한 항목이 더 맞으면 비교해서 고르기')
+            : (en ? 'a more specific (detailed) code exists — pick that' : '더 구체적인 세부코드가 있으면 그걸 고르기')
+    };
 }
-function renderJobcodeCard(row, query, terms) {
+// opts.conf = { key, cls } confidence band computed by renderJobcodeList.
+function renderJobcodeCard(row, query, terms, opts = {}) {
     const type = jcType(row);
     const code = jcCode(row);
     const name = jcName(row);
@@ -14895,17 +14984,24 @@ function renderJobcodeCard(row, query, terms) {
         ? '<span class="jc2-tb jc2-tb--occ">직종</span>'
         : '<span class="jc2-tb jc2-tb--ind">업종</span>';
     const isLeaf = jcIsLeaf(row);
-    const lvCls = isLeaf ? 'jc2-lvl jc2-lvl--leaf' : 'jc2-lvl';
+    const conf = opts.conf || jcConfLabel(row, row._score || 1);
+    const confChip = `<span class="jc2-conf ${conf.cls}">${escapeHtml(jcChecklistCopy(conf.key))}</span>`;
     const leafTag = isLeaf ? '<span class="jc2-lvl jc2-lvl--report" title="가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다">🎯 신고용 세부코드</span>' : '';
-    const path = row.path_ko ? `<div class="jc2-card-path">${escapeHtml(row.path_ko)}</div>` : '';
+    const srcChip = `<span class="jc2-src">✓ ${escapeHtml(jcChecklistCopy('card.source'))}</span>`;
     const reason = jcMatchReason(row, query, terms);
     const why = reason ? `<div class="jc2-card-why">${reason}</div>` : '';
-    const help = jcCardHelp(type, isLeaf);
+    const h = jcCardHelp(type, isLeaf);
+    const fit = `<div class="jc2-card-fit">✓ <b>${escapeHtml(h.fitLabel)}</b>: ${escapeHtml(h.fitText)}</div>`;
+    const path = row.path_ko ? `<div class="jc2-card-path">${escapeHtml(row.path_ko)}</div>` : '';
+    // Progressive disclosure: the longer caveat + path hide behind "자세히 보기".
+    const details = `<details class="jc2-card-more"><summary>${escapeHtml(jcChecklistCopy('card.detail'))}</summary>`
+        + `<div class="jc2-card-other">↔ <b>${escapeHtml(h.otherLabel)}</b>: ${escapeHtml(h.otherText)}</div>${path}</details>`;
     const isSel = jcSelectedCode(type) === code;
     return `<div class="jc2-card${isLeaf ? ' jc2-card--leaf' : ''}" role="listitem" data-type="${type}" data-code="${escapeHtml(code)}">
-        <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}<span class="${lvCls}">${lvLabel}</span>${leafTag}</div>
+        <div class="jc2-card-top"><span class="jc2-code">${escapeHtml(code)}</span>${badge}${confChip}${leafTag}</div>
         <div class="jc2-card-name">${hl(name, terms || [])}</div>
-        ${path}${why}${help}
+        <div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}</div>
+        ${why}${fit}${details}
         <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? '✓ 선택됨' : '선택'}</button>
     </div>`;
 }
@@ -14918,27 +15014,49 @@ function jobcodeEmptyHtml(type) {
             <li>추천 칩을 눌러보기</li>
         </ul></div>`;
 }
-function renderJobcodeList(rows, box, type, query, terms, leafFirst = false) {
+// opts: true (legacy) or { collapse, ambiguous }. collapse → guided AI layout
+// (top recommendation vs alternatives, top 2 visible, rest behind "더 보기").
+function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     if (!box) return;
+    if (typeof opts === 'boolean') opts = { collapse: opts };
     if (!rows.length) { box.innerHTML = jobcodeEmptyHtml(type); return; }
     const MAX = 60;
-    if (leafFirst) {
-        const leafRows = rows.filter(r => jcIsLeaf(r));
-        const parentRows = rows.filter(r => !jcIsLeaf(r));
-        let html = '';
-        if (leafRows.length) {
-            html += `<div class="jc2-section-head">🎯 신고용 세부코드 <small style="font-weight:400;color:var(--t3);">— 실제 HiKorea 신고에 입력하는 코드</small></div>`;
-            html += leafRows.slice(0, MAX).map(r => renderJobcodeCard(r, query, terms)).join('');
+    const top = rows[0] ? (rows[0]._score || 0) : 0;
+    const card = (r) => renderJobcodeCard(r, query, terms, { conf: jcConfLabel(r, top) });
+    const groupHead = (label) => `<div class="jc2-group-head">${escapeHtml(label)}</div>`;
+
+    if (opts.collapse) {
+        // Reporting-level (leaf) codes first; show top 2, hide the rest under "더 보기".
+        const ordered = [...rows.filter(jcIsLeaf), ...rows.filter(r => !jcIsLeaf(r))].slice(0, MAX);
+        const visible = ordered.slice(0, 2);
+        const hidden = ordered.slice(2);
+        const ambiguous = !!opts.ambiguous;
+        let html = '', othersShown = false;
+        if (ambiguous) {
+            // Avoid false certainty: don't single out a "closest" candidate.
+            html += groupHead(jcChecklistCopy('group.several'));
+            html += visible.map(card).join('');
+        } else {
+            html += groupHead(jcChecklistCopy('group.top'));
+            html += card(visible[0]);
+            if (visible[1]) { html += groupHead(jcChecklistCopy('group.others')); othersShown = true; html += card(visible[1]); }
         }
-        if (parentRows.length) {
-            const parentMax = Math.max(0, MAX - leafRows.length);
-            html += `<div class="jc2-section-head jc2-section-head--parent">📁 상위 분류 <small style="font-weight:400;">— 참고용 (신고 시 세부코드 선택 필요)</small></div>`;
-            html += parentRows.slice(0, parentMax).map(r => renderJobcodeCard(r, query, terms)).join('');
+        if (hidden.length) {
+            html += `<button type="button" class="jc2-more-btn" aria-expanded="false">${escapeHtml(jcChecklistCopy('more.show'))} (${hidden.length})</button>`;
+            html += `<div class="jc2-more" hidden>` + ((!ambiguous && !othersShown) ? groupHead(jcChecklistCopy('group.others')) : '') + hidden.map(card).join('') + `</div>`;
         }
-        box.innerHTML = html || jobcodeEmptyHtml(type);
+        box.innerHTML = html;
+        const moreBtn = box.querySelector('.jc2-more-btn');
+        if (moreBtn) moreBtn.onclick = () => {
+            const more = box.querySelector('.jc2-more');
+            const show = more.hidden; more.hidden = !show;
+            moreBtn.setAttribute('aria-expanded', String(show));
+            moreBtn.textContent = show ? jcChecklistCopy('more.hide') : `${jcChecklistCopy('more.show')} (${hidden.length})`;
+        };
         return;
     }
-    const html = rows.slice(0, MAX).map(r => renderJobcodeCard(r, query, terms)).join('');
+    // Browse mode (direct keyword filter): flat list, capped.
+    const html = rows.slice(0, MAX).map(card).join('');
     box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.</div>` : '');
 }
 function setJobcodeFilter(filter) {
@@ -15176,46 +15294,42 @@ function renderEmploymentInterpretation(analysis) {
     const sigLine = (arr) => (Array.isArray(arr) ? arr.map(x => x && (x.label || x)).filter(Boolean).join(', ') : '');
     const isField = analysis.mode === 'field_labor_mode';
     // field-labor: lead with the place + object + action signals (the way the
-    // input was actually decoded), per the spec.
+    // input was actually decoded), with plain-language labels.
     const fieldRows = isField ? [
-        ['📍 장소', sigLine(ps.places)],
-        ['📦 대상', sigLine(ps.objects)],
-        ['🛠 작업', sigLine(ps.actions)]
+        ['📍 ' + jcChecklistCopy('interpret.place'), sigLine(ps.places)],
+        ['📦 ' + jcChecklistCopy('interpret.object'), sigLine(ps.objects)],
+        ['🛠 ' + jcChecklistCopy('interpret.action'), sigLine(ps.actions)]
     ].filter(([, v]) => v) : [];
     const rows = [
-        ['🙋 하는 일(직종)', e.jobRole],
-        ['🏢 근무처', e.workplaceType],
-        ['🏭 사업 활동(업종)', e.businessActivity],
-        ['📄 고용형태', e.employmentTypeLabel || e.employmentType],
-        ['🏷 고용주 유형', e.employerType],
-        ['🎭 활동 유형', e.performanceType],
-        ['🧩 역할 상태', e.roleStatus],
-        ['💰 소득 상태', e.incomeStatus && e.incomeStatus !== 'unknown' ? e.incomeStatus : null],
-        ['⚖ 법적 민감도', sens || null],
-        ['🪪 체류자격', e.visaStatus]
+        ['🙋 ' + (en ? 'Your work' : '하는 일(직종)'), e.jobRole],
+        ['🏢 ' + (en ? 'Workplace' : '근무처'), e.workplaceType],
+        ['🏭 ' + (en ? 'Business activity' : '사업 활동(업종)'), e.businessActivity],
+        ['📄 ' + (en ? 'Employment type' : '고용형태'), e.employmentTypeLabel || e.employmentType],
+        ['🎭 ' + (en ? 'Activity type' : '활동 유형'), e.performanceType],
+        ['⚖ ' + (en ? 'Sensitive area' : '법적 민감도'), sens || null],
+        ['🪪 ' + (en ? 'Status' : '체류자격'), e.visaStatus]
     ].filter(([, v]) => v);
+    // "더 확인할 점" — built from the top clarification's answer options so the
+    // uncertainty is shown gently and concretely (not a scary warning).
+    const topQ = Array.isArray(analysis.ambiguityQuestions) ? analysis.ambiguityQuestions[0] : null;
+    const checkOpts = topQ && Array.isArray(topQ.chips)
+        ? topQ.chips.filter(c => !/모르|not sure/i.test(c)).slice(0, 3).map(c => c.replace(/\([^)]*\)/g, '').trim()) : [];
+    if (checkOpts.length) rows.push(['🧐 ' + jcChecklistCopy('interpret.check'), checkOpts.join(en ? ' / ' : ' · ')]);
     const allRows = [...fieldRows, ...rows];
     if (!allRows.length && !analysis.parsedInterpretation) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
     const modeLabel = JC_MODE_LABEL[analysis.mode] || '';
-    const banner = isField
-        ? `<div class="jc2-interpret-banner">🧭 ${escapeHtml(en ? "Read by 'place + task'." : "입력하신 내용은 ‘장소 + 작업 내용’ 기준으로 분석했어요.")}</div>`
-        : '';
     const interp = analysis.parsedInterpretation
         ? `<div class="jc2-interpret-sum">🔎 ${escapeHtml(analysis.parsedInterpretation)}</div>` : '';
     const needConfirm = analysis.sourceStatus === 'needs_confirmation'
-        ? `<div class="jc2-interpret-pending">⚠ ${escapeHtml(en ? 'Understood, but the official code is not verified — please confirm on HiKorea / the classification portal.' : '입력은 이해했지만 공식 코드 매핑은 미확정입니다 — HiKorea·통계분류포털에서 확인 필요(공식 코드 확인 필요).')}</div>`
+        ? `<div class="jc2-interpret-pending">⚠ ${escapeHtml(jcChecklistCopy('needcode.body'))}</div>`
         : '';
-    const income = analysis.incomeReportingNote
-        ? `<div class="jc2-interpret-income">💰 ${escapeHtml(analysis.incomeReportingNote)}</div>` : '';
-    el.innerHTML = banner
-        + `<div class="jc2-interpret-h">📝 ${escapeHtml(en ? 'How we read your input' : '입력 내용 해석')}${modeLabel ? ` <span class="jc2-interpret-mode">${escapeHtml(modeLabel)}</span>` : ''}</div>`
+    el.innerHTML = `<div class="jc2-interpret-h">🙂 ${escapeHtml(jcChecklistCopy('interpret.title'))}${modeLabel ? ` <span class="jc2-interpret-mode">${escapeHtml(modeLabel)}</span>` : ''}</div>`
         + interp
         + `<div class="jc2-interpret-grid">`
         + allRows.map(([k, v]) => `<span class="jc2-interpret-k">${escapeHtml(k)}</span><span class="jc2-interpret-v">${escapeHtml(String(v))}</span>`).join('')
         + `</div>`
-        + needConfirm
-        + income;
+        + needConfirm;
 }
 function renderEmploymentFollowupChips(analysis) {
     const el = document.getElementById('jcFollowup');
@@ -15237,33 +15351,46 @@ function renderEmploymentFollowupChips(analysis) {
         };
     });
 }
+// User chose "잘 모르겠어요" — keep BOTH possibilities, stop blocking the
+// checklist, but never mark the fork resolved/complete. No re-search.
+function jcDismissClarification() {
+    _jcClarificationAnswered = true;
+    const el = document.getElementById('jcRefine');
+    if (el) { el.hidden = true; el.innerHTML = ''; }
+    renderEmploymentChecklist();
+}
 function renderEmploymentRefine(analysis) {
     const el = document.getElementById('jcRefine');
     if (!el) return;
     const qs = analysis && Array.isArray(analysis.ambiguityQuestions) ? analysis.ambiguityQuestions : [];
-    if (!qs.length) { el.hidden = true; el.innerHTML = ''; return; }
+    if (!qs.length || _jcClarificationAnswered) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    // ONE question at a time: show only the single most relevant fork; answering it
-    // re-runs the analyzer, which surfaces the next question only if still needed.
+    const en = currentLanguage === 'en';
+    // ONE question at a time: the single most relevant fork. Answering it re-runs
+    // the analyzer, which surfaces the next question only if still needed.
     const q = qs[0];
-    const lead = jcChecklistCopy('clarify.lead') || '정확도를 높이려면 이것만 확인해 주세요.';
+    const lead = jcChecklistCopy('clarify.lead');
     const remaining = qs.length > 1
-        ? `<span class="jc2-refine-more">${escapeHtml(currentLanguage === 'en' ? `+${qs.length - 1} more after this` : `답하면 ${qs.length - 1}개 더 확인할 수 있어요`)}</span>` : '';
-    const chips = (q.chips || []).map((c) =>
-        `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('');
-    el.innerHTML = `<div class="jc2-refine-h">🤔 ${escapeHtml(lead)}${remaining}</div>`
-        + `<div class="jc2-refine-q"><p class="jc2-refine-qt">${escapeHtml(q.question)}</p>${chips ? `<div class="jc2-refine-chips">${chips}</div>` : ''}</div>`;
-    // Clicking a chip appends the clarifier to the query and re-runs the analyzer.
-    el.querySelectorAll('.jc2-refine-chip').forEach((btn) => {
+        ? `<span class="jc2-refine-more">${escapeHtml(en ? `+${qs.length - 1} more after this` : `답하면 ${qs.length - 1}개 더 확인할 수 있어요`)}</span>` : '';
+    // Large, tap-friendly answer buttons; the analyzer chips are the real options.
+    const answers = (q.chips || []).map((c) =>
+        `<button type="button" class="jc2-answer" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c.replace(/\([^)]*\)/g, '').trim())}</button>`).join('');
+    const dunno = `<button type="button" class="jc2-answer jc2-answer--dunno" data-jc-dunno="1">${escapeHtml(jcChecklistCopy('clarify.dunno'))}</button>`;
+    el.innerHTML = `<div class="jc2-refine-h">🎯 ${escapeHtml(lead)}${remaining}</div>`
+        + `<div class="jc2-refine-q"><p class="jc2-refine-qt">${escapeHtml(q.question)}</p>`
+        + `<div class="jc2-answers">${answers}${dunno}</div></div>`;
+    // An answer appends the clarifier to the query and re-runs the analyzer.
+    el.querySelectorAll('.jc2-answer[data-jc-refine]').forEach((btn) => {
         btn.onclick = () => {
             const inp = document.getElementById('jcSearchInput');
             if (!inp) return;
-            const add = btn.dataset.jcRefine || '';
-            const cleaned = add.replace(/\([^)]*\)/g, '').trim();
+            const cleaned = (btn.dataset.jcRefine || '').replace(/\([^)]*\)/g, '').trim();
             inp.value = (inp.value.trim() + ' ' + cleaned).trim();
             searchJobcodeWithAI();
         };
     });
+    const dunnoBtn = el.querySelector('[data-jc-dunno]');
+    if (dunnoBtn) dunnoBtn.onclick = () => jcDismissClarification();
 }
 function renderEmploymentTips(analysis) {
     const el = document.getElementById('jcTips');
@@ -15409,8 +15536,11 @@ async function searchJobcodeWithAI() {
             }
         }
         const jobRows = getScoredJobcodeRows('occupation', '', jobKw, 60), indRows = getScoredJobcodeRows('industry', '', indKw, 60);
-        renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw, true);
-        renderJobcodeList(indRows, indBox, 'industry', input, indKw, true);
+        // Guided AI layout: top recommendation vs alternatives. When the analyzer
+        // is still clarifying, show "몇 가지 가능성이 있어요" (no false "closest").
+        const ambiguous = !!(analysis && analysis.clarificationRequired && !_jcClarificationAnswered);
+        renderJobcodeList(jobRows, jobBox, 'occupation', input, jobKw, { collapse: true, ambiguous });
+        renderJobcodeList(indRows, indBox, 'industry', input, indKw, { collapse: true, ambiguous });
         renderJobcodeGuidance(input, jobRows, indRows);
         // Never a bare "검색 결과 없음" when the input WAS understood (place/object/
         // action or concept signals present): explain that the official mapping
@@ -15419,12 +15549,20 @@ async function searchJobcodeWithAI() {
         const hasSignals = !!(ps && ((ps.places||[]).length || (ps.objects||[]).length || (ps.actions||[]).length))
             || !!(analysis && (analysis.parsedInterpretation || (analysis.matchedConcepts||[]).length));
         if (hasSignals) {
-            const pendMsg = currentLanguage === 'en'
-                ? 'We understood your work — but no verified official code matched. See "How we read your input" above and confirm on HiKorea / the classification portal.'
-                : '입력 내용은 이해했지만 일치하는 공식 코드를 찾지 못했어요. 위 ‘입력 내용 해석’을 확인하고, 최종 코드는 HiKorea·통계분류포털에서 확인하세요(공식 코드 확인 필요).';
-            const pendHtml = `<div class="jc2-empty" style="border:1px solid var(--color-warning);border-radius:8px;padding:0.6rem;color:var(--t1);">⚠ ${escapeHtml(pendMsg)}</div>`;
+            // Reassuring "공식 코드 확인 필요" card (not a scary dead-end), with two
+            // gentle next actions: re-word the search, or check the official portal.
+            const pendHtml = `<div class="jc2-needcode">`
+                + `<div class="jc2-needcode-h">🔎 ${escapeHtml(jcChecklistCopy('needcode.title'))}</div>`
+                + `<p class="jc2-needcode-b">${escapeHtml(jcChecklistCopy('needcode.body'))}</p>`
+                + `<div class="jc2-needcode-acts">`
+                + `<button type="button" class="jc2-needcode-btn" data-jc-research="1">${escapeHtml(jcChecklistCopy('needcode.research'))}</button>`
+                + `<a class="jc2-needcode-btn jc2-needcode-link" href="https://kssc.mods.go.kr" target="_blank" rel="noopener">${escapeHtml(jcChecklistCopy('needcode.portal'))} ↗</a>`
+                + `</div></div>`;
             if (jobBox && !jobRows.length) jobBox.innerHTML = pendHtml;
             if (indBox && !indRows.length) indBox.innerHTML = pendHtml;
+            document.querySelectorAll('.jc2-needcode-btn[data-jc-research]').forEach((b) => {
+                b.onclick = () => { const inp = document.getElementById('jcSearchInput'); if (inp) { inp.value = ''; inp.focus(); } };
+            });
         }
         // Update the guided checklist + weak-input help from what's actually shown.
         _jcResultCounts = { occupation: jobRows.length, industry: indRows.length };
@@ -20738,6 +20876,13 @@ function applyLanguage(code, options = {}) {
     setHtml('#jobCodeModalTitle', tx('jobCodeTitle'));
     setText('label[for="jcSearchInput"]', tx('jobCodeSearchLabel'));
     setAttr('#jcSearchInput', 'placeholder', tx('jobCodePlaceholder'));
+    setText('#jcAskHeading', tx('jobCodeAskHeading'));
+    setText('#jcAskHelper', tx('jobCodeAskHelper'));
+    setText('#jcConceptExplain', tx('jobCodeConceptExplain'));
+    setText('#jcConceptExpand', tx('jobCodeConceptExpand'));
+    setText('#jcExamplesLabel', tx('jobCodeExamplesLabel'));
+    setText('#jcIncomeReminderTitle', tx('jobCodeIncomeReminderTitle'));
+    setText('#jcIncomeReminderBody', tx('jobCodeIncomeNote'));
     updateJobcodeNaturalSearchLabel();
     setHtml('#jurisdictionModalTitle', tx('jurisdictionTitle'));
     if (typeof updateAgentFinderLanguage === 'function') updateAgentFinderLanguage();
