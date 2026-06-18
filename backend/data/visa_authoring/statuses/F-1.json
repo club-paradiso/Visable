@@ -11,7 +11,37 @@
       "addReqDocs": [
         "doc_fam_rel"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-3",
+        "F13"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 8",
+          "section": "1년 이하의 방문동거(F-1-3) 단수사증 발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 12",
+          "section": "1년 이하의 방문동거(F-1-3) 단수사증 발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-5",
@@ -22,7 +52,59 @@
         "doc_guarantee",
         "doc_purpose"
       ],
-      "note": "입국 후 전환 불가."
+      "note": "입국 후 전환 불가.",
+      "searchAliases": [
+        "F-1-5",
+        "F15"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 350",
+          "section": "(F-1-5) 」 준용",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 355",
+          "section": "(F-1-5) 」 준용",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 302",
+          "section": "대한 방문동거(F-1-5, 90일 이하) 단수 사증",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 303",
+          "section": "사실 등이 확인될 경우, 일정 기간 ‘F-1-5 비자’ 발급 목적 본국 가족 초청",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-9",
@@ -32,7 +114,15 @@
         "doc_f4_proof",
         "doc_fam_rel"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-9",
+        "F19"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "F-1-13",
@@ -42,7 +132,48 @@
         "doc_enroll",
         "doc_fam_rel"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-13",
+        "F113"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 347",
+          "section": "5. 고등학교 이하의 외국인 유학생 동반부모에 대한 방문동거(F-1-13) 체",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 360",
+          "section": "2. 외국인유학생 동반부모(F-1-13)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 299",
+          "section": "1. 외국인 유학생(고등학교 이하) 동반 부모(F-1-13)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-21",
@@ -51,7 +182,37 @@
       "addReqDocs": [
         "doc_invitation"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-21",
+        "F121"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 300",
+          "section": "대한 체류기간 1년 이하의 단수사증 (F-1-21)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 309",
+          "section": "3. 주한 외국공관원의 가사보조인(F-1-21)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-22",
@@ -60,7 +221,37 @@
       "addReqDocs": [
         "doc_emp_contract"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-22",
+        "F122"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "3. 투자가 및 전문인력의 외국인 가사보조인(F-1-22, F-1-23,",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "사증발급 (고액투자자 : F-1-22, 첨단투자자 : F-1-23, 전문인력 : F-1-24)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-23",
@@ -69,7 +260,37 @@
       "addReqDocs": [
         "doc_emp_contract"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-23",
+        "F123"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "3. 투자가 및 전문인력의 외국인 가사보조인(F-1-22, F-1-23,",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "사증발급 (고액투자자 : F-1-22, 첨단투자자 : F-1-23, 전문인력 : F-1-24)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-24",
@@ -78,7 +299,37 @@
       "addReqDocs": [
         "doc_emp_contract"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-1-24",
+        "F124"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "F-1-24)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 301",
+          "section": "사증발급 (고액투자자 : F-1-22, 첨단투자자 : F-1-23, 전문인력 : F-1-24)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-1-D",
@@ -104,13 +355,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 351",
+          "section": "13. 디지털노마드(워케이션) 비자(F-1-D)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 359",
+          "section": "14. 디지털노마드(워케이션) 비자(F-1-D)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "p. 303",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 305",
+          "section": "8. 디지털노마드(워케이션) 비자(F-1-D)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "기타"
@@ -135,12 +410,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 348",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 349",
+          "section": "9. 난민인정자의 배우자 및 미성년 자녀에 대한 방문동거(F-1-16) 체류자격 변경허가",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 503",
+          "section": "류 허가자의 가족(G-1-12), 난민인정자의 가족(F-1-16)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족/동반"
@@ -166,12 +454,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "pp. 350, 230",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 351",
+          "section": "12. 결혼이민자의 전혼관계 출생 미성년 자녀(F-1-52)에 대한 체류자격 변경허가",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 358",
+          "section": "13. 결혼이민자의 전혼관계 출생 자녀(F-1-52)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족/동반"
@@ -191,11 +492,15 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 365",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 366",
+          "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -214,11 +519,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 345,352,489,495",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 346",
+          "section": "F-1-6 자격의 체류허가 기간은 자격변경일로부터 1년까지",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 353",
+          "section": "F-1-6 자격의 체류허가 기간은 자격변경일로부터 1년까지",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -237,11 +557,15 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 629",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 630",
+          "section": "※ 단, 체류기간 연장 시 및 현재 동반가족(F-1-11 등) 체류자격인 사람이",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -260,11 +584,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 311,342,344,354,407,408,409,410",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 343",
+          "section": "5. 점수제 우수인재의 배우자 및 미성년 자녀로서 방문동거자(F-1-12)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 345",
+          "section": "배우자로서의 체류자격(F-1-12)으로의 변경 요건을 충족*한 경우는",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 313",
+          "section": "※주체류자의 소득기준(GNI이상) 미충족(다른허가요건 충족)시 F-1-12(단수, 90)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -283,11 +633,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 305",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 307",
+          "section": "1. 우수인재, 투자자 및 유학생 부모(F-1-15)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 307",
+          "section": "초청자가 관할 출입국ㆍ외국인청(사무소ㆍ출장소))에 방문동거(F-1-15), 90",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -306,11 +671,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 349,354",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 350",
+          "section": "10. 귀화자의 외국국적 부모 등(F-1-28)에 대한 체류허가 기준",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 355",
+          "section": "10. 귀화자의 외국국적 부모 등(F-1-28)에 대한 체류허가 기준",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -329,11 +709,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 304,349",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 350",
+          "section": "11. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 체류자격 변경허가",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 306",
+          "section": "9. 국제 입양 외국인(국내로 입양 아동, F-1-51)에 대한 사증발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -347,16 +742,31 @@
         "F-1-72",
         "F172"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "abolished",
+      "statusNote": "2026.6 외국인체류/사증 매뉴얼에서 기존 영주(F-5-7) 신청자 가족 방문동거(F-1-72)는 폐지된 것으로 확인됩니다. 현재 활성 일반 세부코드로 안내하지 않습니다.",
+      "needsManualReview": false,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 405,544",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 545",
+          "section": "(F-1-72)는 폐지하고, 영주(F-5-7) 신청자가 가족 동거를 희망하는 경우에는",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 408",
+          "section": "※ 기존에 영주(F-5-7) 신청자의 배우자와 미성년 자녀에게 부여하던 방문동거(F-1-72)는",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -395,12 +805,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 347-348",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01",
-              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -429,12 +852,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 345-346",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -459,12 +895,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 346",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -490,12 +939,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 348",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -527,12 +989,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 350",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -542,7 +1017,30 @@
           "statusCode": "F-1-52"
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "29. 방문동거(F-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 366",
+          "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
@@ -566,12 +1064,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 351",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "29. 방문동거(F-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 366",
+          "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -593,12 +1104,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 341-357",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "29. 방문동거(F-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 366",
+          "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -633,12 +1157,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 343",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -662,12 +1199,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 343",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "29. 방문동거(F-1)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 366",
+              "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -675,25 +1225,71 @@
           ]
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "29. 방문동거(F-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 366",
+          "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "F-1",
     "F-1-13",
     "F-1-16",
     "F-1-21",
@@ -728,7 +1324,9 @@
     "F172"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "초청인 여권/신분증, 가족관계 입증, 체류자격 입증.",
@@ -919,5 +1517,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "29. 방문동거(F-1)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 366",
+      "section": "※ 기존 방문동거(F-1-1)자격으로 체류하고 있는 국민의 미성년 외국인 자녀에",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 8",
+      "section": "1년 이하의 방문동거(F-1-3) 단수사증 발급",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 350",
+      "section": "(F-1-5) 」 준용",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

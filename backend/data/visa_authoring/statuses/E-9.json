@@ -11,7 +11,48 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-9-1",
+        "E91"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 397",
+          "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 402",
+          "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 286",
+          "section": "E-9-1",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-2",
@@ -20,7 +61,26 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-9-2",
+        "E92"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 286",
+          "section": "E-9-2",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-3",
@@ -29,7 +89,37 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": "제주 감귤 등."
+      "note": "제주 감귤 등.",
+      "searchAliases": [
+        "E-9-3",
+        "E93"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 329",
+          "section": "신청자격 : 작물재배업(계절적 농업)에 근무 중인 비전문취업(E-9-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 286",
+          "section": "E-9-3",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-4",
@@ -38,7 +128,37 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": "제주 양식업."
+      "note": "제주 양식업.",
+      "searchAliases": [
+        "E-9-4",
+        "E94"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 286",
+          "section": "E-9-4",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 287",
+          "section": "※ 비전문취업자 중 연근해어업(E-9-4)은 선원법 적용을 받지 않는 20톤 미만 어선",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-5",
@@ -47,7 +167,26 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-9-5",
+        "E95"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 287",
+          "section": "E-9-5",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-9",
@@ -56,7 +195,26 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-9-9",
+        "E99"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 286",
+          "section": "E-9-9",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-10",
@@ -65,7 +223,26 @@
       "addReqDocs": [
         "doc_eps"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-9-10",
+        "E910"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 287",
+          "section": "E-9-10",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-9-R",
@@ -82,7 +259,15 @@
         "doc_health",
         "doc_address"
       ],
-      "note": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요."
+      "note": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
+      "searchAliases": [
+        "E-9-R",
+        "E9R"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "E-9-JS",
@@ -96,7 +281,15 @@
         "doc_purpose",
         "doc_address"
       ],
-      "note": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요."
+      "note": "체류민원 안내매뉴얼 2026.5 기준 — 정확한 항목·페이지 수동 검토 필요.",
+      "searchAliases": [
+        "E-9-JS",
+        "E9JS"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     }
   ],
   "procedures": {
@@ -122,12 +315,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 329",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "27. 비전문취업(E-9)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 397",
+          "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -149,12 +355,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 326-335",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "27. 비전문취업(E-9)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 397",
+          "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -191,12 +410,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 328-329",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01",
-              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "27. 비전문취업(E-9)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 397",
+              "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -223,12 +455,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 327-328",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "27. 비전문취업(E-9)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 397",
+              "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -237,25 +482,71 @@
           "statusCode": "E-9"
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "27. 비전문취업(E-9)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 397",
+          "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "E-9",
     "E-9-1",
     "E-9-2",
     "E-9-3",
@@ -267,7 +558,9 @@
     "E-9-JS"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "고용허가서(고용노동부 발급), 표준근로계약서(EPS), 사업자등록증, 건강진단서.",
@@ -452,5 +745,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "27. 비전문취업(E-9)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 397",
+      "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 286",
+      "section": "E-9-1",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 329",
+      "section": "신청자격 : 작물재배업(계절적 농업)에 근무 중인 비전문취업(E-9-3)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

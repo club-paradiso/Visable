@@ -12,7 +12,59 @@
         "doc_career",
         "doc_emp_contract"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-6-1",
+        "E61"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 209",
+          "section": "세부자격 약호 E-6-1 및 E-6-3에 해당하는 경우 제한적으로 허용",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 165",
+          "section": "E-6-1",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 165",
+          "section": "‘E-6-1'에 해당하지 않고 관광진흥법에 의한 호텔업시설, 유흥업소",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-6-2",
@@ -22,7 +74,37 @@
         "doc_invitation",
         "doc_accom"
       ],
-      "note": "⚠ 인신매매 고위험."
+      "note": "⚠ 인신매매 고위험.",
+      "searchAliases": [
+        "E-6-2",
+        "E62"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 14",
+          "section": "󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 18",
+          "section": "󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "E-6-3",
@@ -32,7 +114,48 @@
         "doc_emp_contract",
         "doc_invitation"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "E-6-3",
+        "E63"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-3(운동선수, 프로팀 감독, 메니저)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 211",
+          "section": "E-6-1, E-6-3",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 165",
+          "section": "E-6-3",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     }
   ],
   "procedures": {
@@ -64,12 +187,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 210",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -91,12 +227,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 205-211",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -125,12 +274,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 211",
-          "confidence": "manual_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -167,12 +329,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 205-206",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "24. 예술흥행(E-6)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 207",
+              "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -181,7 +356,30 @@
           ]
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
@@ -218,12 +416,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 206-207",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "24. 예술흥행(E-6)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 207",
+              "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -250,12 +461,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "24. 예술흥행(E-6)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
               "pageRange": "p. 207",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -264,7 +488,30 @@
           "statusCode": "E-6-2"
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
@@ -299,12 +546,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 208-209",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "24. 예술흥행(E-6)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 207",
+              "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -312,31 +572,79 @@
           ]
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "24. 예술흥행(E-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 207",
+          "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "E-6",
     "E-6-1",
     "E-6-2",
     "E-6-3"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "고용계약서, 경력, 사업자등록증, 행사 입증.",
@@ -533,5 +841,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "24. 예술흥행(E-6)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 207",
+      "section": "E-6-1(음악, 미술, 문학 등의 예술, 방송연예활동)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 165",
+      "section": "E-6-1",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 14",
+      "section": "󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

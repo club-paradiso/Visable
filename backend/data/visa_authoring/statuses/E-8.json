@@ -31,12 +31,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 325",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "26. 계절근로(E-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "26. 계절근로(E-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -58,27 +71,62 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 324-325",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "26. 계절근로(E-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "26. 계절근로(E-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "subcodes": [
     {
@@ -104,12 +152,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-1",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-1) 국내지자체와 외국지자체간 계절근로 수급관련 MOU를 체결 → 해당",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "농업"
@@ -137,12 +198,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-2",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-2) 대한민국에 체류 중인 결혼이민자(한국 국적 취득자 포함)가 자신의 해외",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족추천"
@@ -170,12 +244,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-3",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-3) 국내지자체와 외국지자체간 계절근로 수급관련 MOU를 체결 → 해당",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "어업"
@@ -203,12 +290,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-4",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-4) 대한민국에 체류 중인 결혼이민자(한국 국적 취득자 포함)가 자신의 해외",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족추천"
@@ -235,12 +335,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-5",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-5) 기타(G-1-19) 자격으로 농업분야 계절근로에 참여한 외국인에 대하여",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "농업"
@@ -267,12 +380,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-6",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "-(E-8-6) 기타(G-1-19) 자격으로 어업분야 계절근로에 참여한 외국인에 대하여",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "어업"
@@ -300,12 +426,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-7",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 282",
+          "section": "-(E-8-7) 유학(D-2) 자격 소지자 중 요건을 충족한 자가 국내 지자체에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족추천"
@@ -333,12 +472,25 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-8",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 282",
+          "section": "-(E-8-8) 유학(D-2) 자격 소지자 중 요건을 충족한 자가 국내 지자체에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "가족추천"
@@ -366,18 +518,32 @@
       "manualRefs": [
         {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 278-279",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 281",
+          "section": "E-8-99",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 282",
+          "section": "-(E-8-99) 해외 지자체에서 언어소통 도우미 등 관리 목적의 인력 파견 시 국내 지자체에",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
       "group": "기타"
     }
   ],
   "searchAliases": [
+    "E-8",
     "E-8-1",
     "E-8-2",
     "E-8-3",
@@ -393,7 +559,9 @@
     "어업 계절근로"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "고용허가서, 표준근로계약서, 건강/결핵진단서.",
@@ -546,5 +714,40 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "26. 계절근로(E-8)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "26. 계절근로(E-8)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 281",
+      "section": "E-8-1",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

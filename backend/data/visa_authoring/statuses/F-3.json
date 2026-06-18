@@ -11,7 +11,15 @@
       "addReqDocs": [
         "doc_fam_rel"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-3-1",
+        "F31"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "F-3-2",
@@ -20,14 +28,30 @@
       "addReqDocs": [
         "doc_inc_proof"
       ],
-      "note": "E-7-4는 별도 기준이 적용될 수 있음. 2026년 기준 2인 25,195,752원, 3인 32,154,216원, 4인 38,968,428원, 5인 45,340,314원, 6인 51,335,712원, 7인 57,090,900원, 8인 이상은 1인 증가당 5,755,188원 추가."
+      "note": "E-7-4는 별도 기준이 적용될 수 있음. 2026년 기준 2인 25,195,752원, 3인 32,154,216원, 4인 38,968,428원, 5인 45,340,314원, 6인 51,335,712원, 7인 57,090,900원, 8인 이상은 1인 증가당 5,755,188원 추가.",
+      "searchAliases": [
+        "F-3-2",
+        "F32"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "F-3-3",
       "name": "소득요건 면제",
       "addReq": "E-1(교수), E-3(연구), E-4(기술지도), E-5(전문직업), D-8(50만불 이상 고액투자자).",
       "addReqDocs": [],
-      "note": "위 전문인력은 동반가족 초청 시 소득(체류경비) 요건 입증 면제."
+      "note": "위 전문인력은 동반가족 초청 시 소득(체류경비) 요건 입증 면제.",
+      "searchAliases": [
+        "F-3-3",
+        "F33"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "F-3-18",
@@ -44,11 +68,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 315,389,394,398,399,400,401",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 390",
+          "section": "(F-3-18)***",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 395",
+          "section": "○ 기타 장기(F-2-99) 자격자의 동반가족(배우자, F-3-18)이 자격변경을",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 317",
+          "section": "단수사증(F-3-18)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -67,11 +117,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 315,425",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 426",
+          "section": "거 체류자격 변경허가(F-3-19, F-3-20)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 317",
+          "section": "동반(F-3-19, 01년) 복수사증",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 317",
+          "section": "◦ 사증발급 : 1년간 유효한 방문동거(F-3-19, 01년) 복수사증 발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -90,11 +166,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 315,425",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 426",
+          "section": "거 체류자격 변경허가(F-3-19, F-3-20)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 317",
+          "section": "동반(F-3-20, 090일) 복수사증",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 317",
+          "section": "◦ 사증발급 : 1년간 유효한 방문동거(F-3-20, 090일) 복수사증 발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -118,12 +220,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 421-425",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -145,12 +260,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 421-425",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -179,12 +307,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 425",
-          "confidence": "manual_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -220,12 +361,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 421-422",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "31. 동반(F-3)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 588",
+              "section": "F-3-1R",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -253,12 +407,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 422",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "31. 동반(F-3)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 588",
+              "section": "F-3-1R",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -266,7 +433,30 @@
           ]
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
@@ -308,12 +498,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 424",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "31. 동반(F-3)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 588",
+              "section": "F-3-1R",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -322,7 +525,30 @@
           "statusCode": "F-3"
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
@@ -361,12 +587,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 423-424",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "31. 동반(F-3)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 588",
+              "section": "F-3-1R",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -374,25 +613,71 @@
           ]
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "31. 동반(F-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "F-3",
     "F-3-1",
     "F-3-2",
     "F-3-3",
@@ -401,10 +686,15 @@
     "F-3-19",
     "F319",
     "F-3-20",
-    "F320"
+    "F320",
+    "F-3-1R",
+    "F-3-2R",
+    "F-3-3R"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "주체류자 여권/외국인등록증, 가족관계 증빙(공증/아포스티유), 초청자 소득요건(2025.7.1 개편) 입증.",
@@ -601,5 +891,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "31. 동반(F-3)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 588",
+      "section": "F-3-1R",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 390",
+      "section": "(F-3-18)***",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 317",
+      "section": "단수사증(F-3-18)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }
