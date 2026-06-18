@@ -34,8 +34,15 @@ from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
     classify_law_host_reachability,
+    derive_law_grounding_status_detail,
     law_grounding_preflight,
+    law_grounding_status_detail_is_verified,
     should_attempt_law_grounding,
+)
+from services.law_citation_guard import (
+    build_citation_safety_directive,
+    build_unverified_citation_notice,
+    guard_answer_citations,
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack, search_laws
@@ -392,6 +399,25 @@ class AskResponse(BaseModel):
     #   "unavailable"   — intent matched, grounding attempted, but no usable result.
     #   "used"          — intent matched and law grounding contributed context.
     law_grounding_status: str = "not_attempted"
+    # Granular, mutually-exclusive, user-visible law-grounding status. One of:
+    #   law_grounding_not_attempted / law_grounding_disabled /
+    #   law_grounding_audit_only / law_grounding_verified /
+    #   law_grounding_attempted_no_results / law_grounding_attempted_failed.
+    # ``law_grounding_verified`` is the ONLY value that means specific real-time
+    # statute citations may be trusted as confirmed.
+    law_grounding_status_detail: str = "law_grounding_not_attempted"
+    law_grounding_verified: bool = False
+    law_grounding_retrieval_timestamp: str = ""
+    # User-facing notice (non-empty only when grounding is NOT verified) and the
+    # structured "실시간 법령 확인" panel payload.
+    law_grounding_user_notice: str = ""
+    law_grounding_display: Dict[str, Any] = Field(default_factory=dict)
+    # Unverified-citation guardrail (non-secret). Detected article tokens, the
+    # subset not backed by verified/local evidence, and the action taken.
+    law_citations_detected: List[str] = Field(default_factory=list)
+    unsupported_law_citations: List[str] = Field(default_factory=list)
+    unverified_law_citation_detected: bool = False
+    law_citation_guard_action: str = "none"
     law_grounding_intent_reasons: List[str] = Field(default_factory=list)
     law_search_query: str = ""
     law_grounding_warnings: List[str] = Field(default_factory=list)
@@ -537,6 +563,15 @@ class AskResponse(BaseModel):
     model_candidates: List[str] = Field(default_factory=list)
     attempted_models: List[str] = Field(default_factory=list)
     final_model: Optional[str] = None
+    # Debug alias for the model that actually produced the answer (== final_model).
+    # Surfaced so Fast vs Basic routing is auditable from the client without
+    # parsing the candidate chain.
+    selected_model: Optional[str] = None
+    # True when answer_mode == "fast" but the answer was produced by a model that
+    # is NOT the configured fast primary (OPENROUTER_FAST_MODEL) — i.e. Fast fell
+    # back down its chain. Lets the UI/operators see when Fast did not actually
+    # use the fast model.
+    fast_mode_fell_back: bool = False
     model_fallback_used: bool = False
     provider_family_fallback_used: bool = False
     provider_error_type: Optional[str] = None
@@ -695,6 +730,53 @@ def _case_law_uncertainty_answer(*, lang: Optional[str] = None) -> str:
         "따라서 판례 인용 없이 일반 준비 안내로만 보아야 하며, 구제절차·기한·제출 경로는 HiKorea, 1345, "
         "관할 출입국·외국인관서 또는 자격 있는 전문가에게 확인하세요."
     )
+
+
+def _collect_law_evidence_texts(
+    law_evidence_pack: Optional[Dict[str, Any]],
+    grounding_sources: Optional[List[Dict[str, Any]]],
+    structured_block: str,
+) -> List[str]:
+    """Gather the local/official evidence text a citation could legitimately come
+    from (manual grounding, the law evidence pack, source-confirmed structured
+    requirements). Used to tell a backed citation from a hallucinated one."""
+    texts: List[str] = []
+    pack = law_evidence_pack or {}
+    if pack.get("evidence_summary"):
+        texts.append(str(pack.get("evidence_summary")))
+    for src in pack.get("law_sources", []) or []:
+        if isinstance(src, dict):
+            texts.append(" ".join(str(src.get(k) or "") for k in ("law_name", "article", "title", "summary")))
+    for src in grounding_sources or []:
+        if isinstance(src, dict):
+            texts.append(" ".join(str(v) for v in src.values() if isinstance(v, str)))
+    if structured_block:
+        texts.append(str(structured_block))
+    return texts
+
+
+def _apply_law_citation_guard(
+    answer: str,
+    *,
+    law_grounding_verified: bool,
+    law_evidence_pack: Optional[Dict[str, Any]],
+    grounding_sources: Optional[List[Dict[str, Any]]],
+    structured_block: str,
+    lang: Optional[str],
+) -> tuple:
+    """Run the unverified-citation guardrail and return (answer, guard_meta)."""
+    evidence_texts = _collect_law_evidence_texts(law_evidence_pack, grounding_sources, structured_block)
+    guarded = guard_answer_citations(
+        answer,
+        law_grounding_verified=law_grounding_verified,
+        evidence_texts=evidence_texts,
+        lang=lang,
+    )
+    new_answer = guarded.pop("answer")
+    # Keep the copy-safe mirror in sync with the (possibly augmented) answer.
+    guarded["copy_safe_answer"] = new_answer
+    return new_answer, guarded
+
 
 def _derive_source_panel_metadata(
     *,
@@ -2321,10 +2403,15 @@ async def _sse_answer_stream(
             async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
                 if not committed:
                     committed = True
+                    _primary = candidates[0] if candidates else model
+                    _is_fast = str(base_meta.get("answer_mode") or "") == "fast"
                     yield _sse("model", {
                         "final_model": model,
-                        "primary_model": candidates[0] if candidates else model,
-                        "model_fallback_used": bool(candidates) and model != candidates[0],
+                        "selected_model": model,
+                        "primary_model": _primary,
+                        "model_fallback_used": bool(candidates) and model != _primary,
+                        "fast_mode_fell_back": bool(_is_fast and model != _primary),
+                        "answer_mode": base_meta.get("answer_mode", ""),
                         "attempted_models": list(attempted),
                     })
                 yield _sse("delta", {"text": delta})
@@ -4124,6 +4211,25 @@ async def ask(req: AskRequest) -> AskResponse:
                 else ["LAW_GROUNDING_NOT_CONFIGURED"]
             )
 
+    # Granular, user-visible law-grounding status (single source of truth). This
+    # distinguishes not_attempted / disabled / audit_only / verified /
+    # attempted_no_results / attempted_failed so the UI never implies the answer
+    # is real-time-law-grounded when it is not, and the citation guardrail below
+    # knows whether specific 조문 numbers may be trusted.
+    law_grounding_status_detail = derive_law_grounding_status_detail(
+        configured_mode=mode,
+        effective_mode=effective_mode,
+        intent_attempted=bool(intent.get("should_attempt")),
+        lookup_attempted=law_grounding_attempted,
+        lookup_used=law_grounding_used,
+        error_type=(law_context or {}).get("error_type", ""),
+        warnings=law_grounding_warnings,
+    )
+    law_grounding_verified = law_grounding_status_detail_is_verified(law_grounding_status_detail)
+    law_grounding_retrieval_timestamp = (
+        time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()) if law_grounding_attempted else ""
+    )
+
     # Manual-to-law fallback policy. When NO deterministic manual / source-
     # confirmed structured requirements grounding was found for a legal or
     # activity-scope question (legal basis, activity scope, reporting/permission
@@ -4292,6 +4398,16 @@ async def ask(req: AskRequest) -> AskResponse:
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
+    # Legal-citation safety directive. For ANY law-intent question, forbid the
+    # model from inventing statute/article numbers from memory; when real-time
+    # law grounding is not verified, require it to say the specific citation could
+    # not be verified. This is the primary defense on the streamed path (where the
+    # post-hoc text guard below cannot run).
+    if intent.get("should_attempt"):
+        final_prompt += "\n\n" + build_citation_safety_directive(
+            status_detail=law_grounding_status_detail, lang=req.lang
+        )
+
     # Steer the live model toward the issue-type answer-shape contract so the
     # post-answer quality gate has to repair fewer answers. This is guidance
     # only; it never invents facts and never changes provider/model selection.
@@ -4330,6 +4446,38 @@ async def ask(req: AskRequest) -> AskResponse:
     elif _exact_current and not public_visa_code_detected:
         public_visa_code_detected = _detected_facts.get("current_parent_status") or _exact_current
 
+    # User-visible "실시간 법령 확인" payload. When verified, surface the concrete
+    # law source(s) actually returned (title, law name, article, retrieval time,
+    # primary/background role); otherwise carry the standard not-verified notice
+    # the UI shows verbatim. Secret-free (URLs are already sanitized upstream).
+    _law_sources_for_display = (law_evidence_pack or {}).get("law_sources", []) or []
+    law_grounding_user_notice = (
+        "" if law_grounding_verified else build_unverified_citation_notice(req.lang)
+    )
+    law_grounding_display: Dict[str, Any] = {
+        "verified": law_grounding_verified,
+        "status_detail": law_grounding_status_detail,
+        "retrieval_timestamp": law_grounding_retrieval_timestamp,
+        # Real-time law is supplementary unless no manual grounding exists.
+        "evidence_role": (
+            ("primary" if manual_grounding_status != "present" else "background")
+            if law_grounding_verified else ""
+        ),
+        "sources": [],
+        "notice": law_grounding_user_notice,
+    }
+    if law_grounding_verified:
+        for _src in _law_sources_for_display[:3]:
+            if not isinstance(_src, dict):
+                continue
+            law_grounding_display["sources"].append({
+                "source_title": _src.get("title") or _src.get("law_name") or "",
+                "law_name": _src.get("law_name") or "",
+                "article": _src.get("article") or "",
+                "source_url": _src.get("source_url") or "",
+                "relevance": _src.get("relevance") or "background",
+            })
+
     base_meta: Dict[str, Any] = dict(
         grounding_used=bool(grounding),
         grounding_sources=grounding_sources,
@@ -4342,6 +4490,11 @@ async def ask(req: AskRequest) -> AskResponse:
         law_grounding_used=law_grounding_used,
         law_grounding_attempted=law_grounding_attempted,
         law_grounding_status=law_grounding_status,
+        law_grounding_status_detail=law_grounding_status_detail,
+        law_grounding_verified=law_grounding_verified,
+        law_grounding_retrieval_timestamp=law_grounding_retrieval_timestamp,
+        law_grounding_user_notice=law_grounding_user_notice,
+        law_grounding_display=law_grounding_display,
         law_grounding_intent_reasons=law_grounding_intent_reasons,
         law_search_query=law_search_query,
         law_grounding_warnings=law_grounding_warnings,
@@ -4456,6 +4609,14 @@ async def ask(req: AskRequest) -> AskResponse:
             candidate_models=answer_mode_plan["candidates"],
             max_tokens=answer_mode_max_tokens,
         )
+        # Fast-tier transparency: did Fast actually answer on the fast primary, or
+        # fall back to a non-fast model in its chain?
+        _fast_primary = (answer_mode_plan.get("candidates") or [None])[0]
+        fast_mode_fell_back = bool(
+            answer_mode_used == "fast"
+            and result["final_model"]
+            and result["final_model"] != _fast_primary
+        )
         # Non-secret attempt metadata (model ids + classified error only).
         attempt_meta: Dict[str, Any] = dict(
             llm_provider="openrouter",
@@ -4464,6 +4625,8 @@ async def ask(req: AskRequest) -> AskResponse:
             model_candidates=result["model_candidates"],
             attempted_models=result["attempted_models"],
             final_model=result["final_model"],
+            selected_model=result["final_model"],
+            fast_mode_fell_back=fast_mode_fell_back,
             model_fallback_used=result["model_fallback_used"],
             provider_error_type=result["provider_error_type"],
             upstream_statuses=result["upstream_statuses"],
@@ -4490,6 +4653,19 @@ async def ask(req: AskRequest) -> AskResponse:
                 primary_model=result.get("primary_model"),
             )
             response_meta.update(gate_meta)
+            # Unverified-citation guardrail. If the answer cites specific statutes/
+            # articles, real-time law grounding is NOT verified, and those citations
+            # are not backed by the manual/law evidence we actually retrieved, prepend
+            # an honest notice instead of silently presenting hallucinated law.
+            answer_text, citation_guard_meta = _apply_law_citation_guard(
+                answer_text,
+                law_grounding_verified=law_grounding_verified,
+                law_evidence_pack=law_evidence_pack,
+                grounding_sources=grounding_sources,
+                structured_block=structured_block,
+                lang=req.lang,
+            )
+            response_meta.update(citation_guard_meta)
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(

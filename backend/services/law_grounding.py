@@ -70,6 +70,26 @@ _INTENT_PATTERNS = [
     # (근무처 변경/추가, 체류지 변경, 신고의무).
     ("신고/등록 의무", re.compile(r"근무처\s*변경|근무처\s*추가|체류지\s*변경|신고의무|시간제\s*취업", re.IGNORECASE)),
 
+    # Workplace change / job transfer (근무처 변경·추가, 이직/전직/퇴사, 고용주 변경).
+    # E-7 (특정활동) holders changing employers is the canonical case: a move to a
+    # *different* company — even in the same industry — can trigger a 근무처
+    # 변경허가 or 변경신고 duty, so attempt official grounding before answering.
+    ("근무처변경/이직", re.compile(
+        r"근무처\s*변경|근무처\s*추가|직장\s*변경|직장\s*이동|이직|전직|퇴사|퇴직|"
+        r"동종\s*업계|동종업종|같은\s*업종|다른\s*회사|타\s*회사|타사|새\s*회사|새로운\s*회사|"
+        r"회사를?\s*옮|회사\s*이동|고용주\s*변경|사업주\s*변경|특정활동|"
+        r"change\s+(?:of\s+)?(?:employer|workplace|jobs?|companies)|switch(?:ing)?\s+(?:employer|company|companies|jobs?)|"
+        r"new\s+(?:employer|company|workplace)|job\s+transfer|change\s+jobs|"
+        r"move\s+to\s+(?:a\s+)?(?:another|new|different)\s+(?:company|employer)",
+        re.IGNORECASE)),
+
+    # Extension of stay (체류기간 연장 / 연장허가). A job transfer near the end of a
+    # permit often raises an extension question too, so recognize it explicitly.
+    ("체류기간연장/연장허가", re.compile(
+        r"체류기간\s*연장|연장허가|기간\s*연장|연장\s*신청|체류\s*연장|"
+        r"extension\s+of\s+stay|extend\s+(?:my\s+)?stay|stay\s+extension",
+        re.IGNORECASE)),
+
     # Employment / work-activity questions (취업/아르바이트/part-time/internship).
     ("취업/근로 활동", re.compile(
         r"시간제\s*취업|아르바이트|알바|부업|side\s+job|part[-\s]?time|intern(?:ship)?|"
@@ -193,6 +213,19 @@ def build_law_search_query(question: str, reasons: Sequence[str] | None = None) 
     if "신고/등록 의무" in reason_set:
         queries.append("출입국관리법 외국인등록 체류지 변경 근무처 변경 신고의무")
 
+    if "근무처변경/이직" in reason_set:
+        # Official law-search anchors for an E-7 / 특정활동 job transfer. The model
+        # must NOT invent article numbers — these queries fetch the real
+        # 근무처 변경·추가 허가/신고 provisions from the Open Law API.
+        queries.append("출입국관리법 근무처 변경 추가 허가")
+        queries.append("출입국관리법 근무처 변경 추가 신고")
+        queries.append("출입국관리법 시행령 근무처 변경 추가")
+        queries.append("특정활동 E-7 근무처 변경 추가 허가 신고")
+        queries.append("체류기간 연장허가 근무처 변경")
+
+    if "체류기간연장/연장허가" in reason_set:
+        queries.append("출입국관리법 체류기간 연장허가 체류자격 연장")
+
     if {"취업/근로 활동", "체류자격 활동 질문"} & reason_set:
         queries.append("출입국관리법 체류자격외활동 활동범위 취업활동 체류자격")
 
@@ -289,6 +322,90 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         "error_type": law_result.get("error_type", ""),
         "grounding_warnings": list(dict.fromkeys(warnings)),
     }
+
+
+# ---------------------------------------------------------------------------
+# Granular, user-visible law-grounding status (single source of truth)
+# ---------------------------------------------------------------------------
+# The legacy ``law_grounding_status`` field is coarse (not_attempted / disabled /
+# unavailable / used). The frontend "실시간 법령 확인" panel and operators need a
+# more honest, mutually-exclusive status so an answer is never presented as if it
+# were grounded on verified real-time law when it was not. These six values are
+# the contract surfaced as ``law_grounding_status_detail``.
+LAW_GROUNDING_STATUS_NOT_ATTEMPTED = "law_grounding_not_attempted"
+LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS = "law_grounding_attempted_no_results"
+LAW_GROUNDING_STATUS_ATTEMPTED_FAILED = "law_grounding_attempted_failed"
+LAW_GROUNDING_STATUS_VERIFIED = "law_grounding_verified"
+LAW_GROUNDING_STATUS_AUDIT_ONLY = "law_grounding_audit_only"
+LAW_GROUNDING_STATUS_DISABLED = "law_grounding_disabled"
+
+LAW_GROUNDING_STATUS_DETAILS = (
+    LAW_GROUNDING_STATUS_NOT_ATTEMPTED,
+    LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS,
+    LAW_GROUNDING_STATUS_ATTEMPTED_FAILED,
+    LAW_GROUNDING_STATUS_VERIFIED,
+    LAW_GROUNDING_STATUS_AUDIT_ONLY,
+    LAW_GROUNDING_STATUS_DISABLED,
+)
+
+# Transport markers that mean "the lookup ran but found nothing to cite" rather
+# than "the lookup failed". Anything else (timeouts, bad responses, transport
+# errors, not-configured) is a genuine failure.
+_NO_RESULT_MARKERS = {"LAW_API_NO_RESULTS", "NO_RESULTS"}
+
+
+def derive_law_grounding_status_detail(
+    *,
+    configured_mode: str,
+    effective_mode: str,
+    intent_attempted: bool,
+    lookup_attempted: bool,
+    lookup_used: bool,
+    error_type: str = "",
+    warnings: Sequence[str] | None = None,
+) -> str:
+    """Map the runtime law-grounding state to one mutually-exclusive status.
+
+    Semantics (these are what the UI/operators rely on):
+
+    * ``law_grounding_not_attempted`` — the question had no legal intent.
+    * ``law_grounding_disabled`` — LAW_GROUNDING_MODE=disabled, or ``enabled``
+      with no credential (the effective-disabled rule): no external call is made
+      and the answer is NOT treated as real-time-law-grounded.
+    * ``law_grounding_audit_only`` — LAW_GROUNDING_MODE=audit: the lookup runs as
+      a diagnostic / citation-verifier posture, NOT as enabled grounding, so its
+      output must never be presented as verified real-time law.
+    * ``law_grounding_verified`` — ``enabled`` (credentialed) and the lookup
+      returned usable law results.
+    * ``law_grounding_attempted_no_results`` — ``enabled`` lookup ran, found
+      nothing citable.
+    * ``law_grounding_attempted_failed`` — ``enabled`` lookup ran but errored
+      (timeout / bad response / transport / not-configured).
+    """
+    if not intent_attempted:
+        return LAW_GROUNDING_STATUS_NOT_ATTEMPTED
+    if configured_mode == "disabled" or effective_mode == "disabled":
+        return LAW_GROUNDING_STATUS_DISABLED
+    if configured_mode == "audit":
+        # Audit is the diagnostics/verifier posture; never "verified" grounding.
+        return LAW_GROUNDING_STATUS_AUDIT_ONLY
+    # configured/effective enabled (credentialed) from here on.
+    if lookup_used:
+        return LAW_GROUNDING_STATUS_VERIFIED
+    error_u = str(error_type or "").upper()
+    warnings_u = {str(w or "").upper() for w in (warnings or [])}
+    if error_u in _NO_RESULT_MARKERS or (warnings_u & _NO_RESULT_MARKERS):
+        return LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS
+    if error_u or (warnings_u - {""}):
+        return LAW_GROUNDING_STATUS_ATTEMPTED_FAILED
+    if lookup_attempted:
+        return LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS
+    return LAW_GROUNDING_STATUS_ATTEMPTED_FAILED
+
+
+def law_grounding_status_detail_is_verified(status_detail: str) -> bool:
+    """True only when real-time law grounding produced verified, usable law."""
+    return str(status_detail or "") == LAW_GROUNDING_STATUS_VERIFIED
 
 
 _DEFAULT_PREFLIGHT_SAMPLE = "H-1 비자인데 한국 대학에서 계절학기를 수강할 수 있을까요?"

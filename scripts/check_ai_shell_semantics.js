@@ -295,6 +295,7 @@ try {
   const docStub = { createElement: function () { let _t = ''; return { set textContent(v) { _t = v == null ? '' : String(v); }, get innerHTML() { return _t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); } }; } };
   const deps = ['normalizeAnswerMetadata', 't', 'tt', 'escapeHtml', 'sourceValue',
     'answerBasisText', 'buildAnswerBasisRow', 'answerBasisCommunicatesLimit',
+    'buildLawGroundingStatusRow',
     'sourcePanelCopyForState', 'lawSourcePanelMessage', 'mapLawWarningToFriendly',
     'lawVerificationStatus', 'renderGroundingSourcePanel'];
   let code = (extractConst('ANSWER_BASIS_LABELS') || '') + '\n';

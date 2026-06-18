@@ -2184,8 +2184,48 @@ select:focus-visible {
                 deterministic_fallback_answer_used: Boolean(m.deterministic_fallback_answer_used),
                 fallback_answer_kind: asString(m.fallback_answer_kind),
                 copy_safe_answer: asString(m.copy_safe_answer),
-                answer_certainty_level: asString(m.answer_certainty_level)
+                answer_certainty_level: asString(m.answer_certainty_level),
+                // Granular, user-visible law-grounding status (실시간 법령 확인).
+                law_grounding_status_detail: asString(m.law_grounding_status_detail),
+                law_grounding_verified: Boolean(m.law_grounding_verified),
+                law_grounding_user_notice: asString(m.law_grounding_user_notice),
+                law_grounding_display: asObject(m.law_grounding_display),
+                unverified_law_citation_detected: Boolean(m.unverified_law_citation_detected),
+                selected_model: asString(m.selected_model),
+                fast_mode_fell_back: Boolean(m.fast_mode_fell_back)
             };
+        }
+
+        // User-visible "실시간 법령 확인" row. Honestly distinguishes verified
+        // real-time law grounding (show the source title / law name / article /
+        // retrieval time / role) from the not-verified states (show the standard
+        // notice that the answer relies on stored manuals and that specific
+        // article numbers are not confirmed).
+        function buildLawGroundingStatusRow(safe, lang) {
+            const detail = String(safe.law_grounding_status_detail || '');
+            if (!detail || detail === 'law_grounding_not_attempted') return '';
+            const head = tt(lang, { ko: '실시간 법령 확인', en: 'Real-time legal source', zh: '实时法令确认', zhHant: '即時法令確認' });
+            const display = (safe.law_grounding_display && typeof safe.law_grounding_display === 'object') ? safe.law_grounding_display : {};
+            if (safe.law_grounding_verified) {
+                const sources = Array.isArray(display.sources) ? display.sources : [];
+                const role = String(display.evidence_role || '') === 'primary'
+                    ? tt(lang, { ko: '주요 근거', en: 'primary evidence', zh: '主要依据', zhHant: '主要依據' })
+                    : tt(lang, { ko: '보조 근거', en: 'background evidence', zh: '背景依据', zhHant: '背景依據' });
+                const ts = display.retrieval_timestamp ? ` · ${escapeHtml(String(display.retrieval_timestamp))}` : '';
+                const list = sources.slice(0, 3).map((s) => {
+                    const parts = [s.source_title || s.law_name, s.article].map((x) => String(x || '').trim()).filter(Boolean).map(escapeHtml).join(' ');
+                    return parts;
+                }).filter(Boolean).join(' · ');
+                const body = list || tt(lang, { ko: '실시간 법령 조회 결과를 확인했습니다.', en: 'Real-time legal source verified.', zh: '已确认实时法令查询结果。', zhHant: '已確認即時法令查詢結果。' });
+                return `<div class="source-row state-verified" data-row-kind="law-grounding-status"><strong>${escapeHtml(head)}</strong>: ${body} <span class="source-subnote">(${escapeHtml(role)}${ts})</span></div>`;
+            }
+            const notice = String(safe.law_grounding_user_notice || display.notice || tt(lang, {
+                ko: '실시간 법령 조회 결과를 확인하지 못해, 아래 답변은 보유 매뉴얼/공식자료 기준입니다. 특정 조문 번호는 확정하지 않습니다.',
+                en: 'Real-time legal lookup could not be verified; the answer relies on stored manuals/official materials and specific article numbers are not confirmed.',
+                zh: '未能确认实时法令查询结果，以下答复以已保存的手册/官方资料为准，且不确认具体条文编号。',
+                zhHant: '未能確認即時法令查詢結果，以下答覆以已保存的手冊/官方資料為準，且不確認具體條文編號。'
+            }));
+            return `<div class="source-row state-needs-review" data-row-kind="law-grounding-status" data-status-detail="${escapeHtml(detail)}"><strong>${escapeHtml(head)}</strong>: ${escapeHtml(notice)}</div>`;
         }
 
         function sourcePanelCopyForState(rawSafe, lang) {
@@ -2273,6 +2313,13 @@ select:focus-visible {
             // Answer-basis row first: the answer's overall identity (Part B).
             const basisRow = buildAnswerBasisRow(safe, lang);
             if (basisRow) rows.push(basisRow);
+
+            // User-visible real-time law-grounding status (실시간 법령 확인). Shown
+            // whenever the question triggered law-grounding intent, so the user can
+            // see whether the live legal source was actually verified or whether the
+            // answer relies on stored manuals with unconfirmed article numbers.
+            const lawStatusRow = buildLawGroundingStatusRow(safe, lang);
+            if (lawStatusRow) rows.push(lawStatusRow);
 
             const publicStatus = (safe.public_source_status && typeof safe.public_source_status === "object") ? safe.public_source_status : {};
             const publicLabels = Array.isArray(publicStatus.labels) ? publicStatus.labels.filter(Boolean) : [];
@@ -2461,7 +2508,21 @@ select:focus-visible {
                     tt(lang, { ko: '직접 법령 인용은 제한됩니다.', en: 'Direct legal citation is limited.', zh: '直接法令引用受限。', zhHant: '直接法令引用受限。' }),
                   ];
             const familyBlock = familyLines.length ? [''].concat([tt(lang, { ko: '법령군별 상태:', en: 'Per-family status:', zh: '各法令类别状态：', zhHant: '各法令類別狀態：' })]).concat(familyLines) : [];
-            const diagBody = headerLines.concat(familyBlock).concat(['', '--- raw developer codes ---']).concat(lawWarnings);
+            // Model-routing diagnostics (Fast vs Basic transparency). Lets a
+            // developer confirm which model actually answered and whether Fast fell
+            // back off its fast primary — the diagnosis surface for the reported
+            // "Fast and Basic both used gpt-oss-120b" issue.
+            const modelLines = [
+                '', '--- model routing ---',
+                'answer_mode: ' + String(safe.answer_mode || ''),
+                'answer_mode_requested: ' + String(safe.answer_mode_requested || ''),
+                'selected_model: ' + String(safe.selected_model || safe.model || safe.final_model || ''),
+                'primary_model: ' + String(safe.primary_model || ''),
+                'model_fallback_used: ' + String(Boolean(safe.model_fallback_used)),
+                'fast_mode_fell_back: ' + String(Boolean(safe.fast_mode_fell_back)),
+                'law_grounding_status_detail: ' + String(safe.law_grounding_status_detail || ''),
+            ];
+            const diagBody = headerLines.concat(familyBlock).concat(modelLines).concat(['', '--- raw developer codes ---']).concat(lawWarnings);
             // Public-safe contract: raw internal codes (bad_response, not_attempted,
             // statute:/enforcement_decree: family dumps, LAW_API_* warnings) must
             // NOT render for normal users. The developer-diagnostics block is shown
@@ -2475,7 +2536,7 @@ select:focus-visible {
                 else if (typeof localStorage !== 'undefined' && localStorage.getItem && localStorage.getItem('paradisoDevDiagnostics') === '1') devDiagnosticsEnabled = true;
                 else if (typeof location !== 'undefined' && location.search && /[?&](?:debug|dev)=1(?:&|$)/.test(location.search)) devDiagnosticsEnabled = true;
             } catch (e) { devDiagnosticsEnabled = false; }
-            const debugWarnings = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length))
+            const debugWarnings = (devDiagnosticsEnabled && (lawWarnings.length || familyLines.length || safe.selected_model || safe.law_grounding_status_detail))
                 ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(diagBody.join('\n'))}</pre></details>`
                 : '';
 
@@ -2846,7 +2907,10 @@ select:focus-visible {
                                 model: obj.final_model,
                                 provider: 'openrouter',
                                 model_resolved: obj.final_model,
+                                selected_model: obj.selected_model || obj.final_model,
                                 model_fallback_used: obj.model_fallback_used,
+                                fast_mode_fell_back: obj.fast_mode_fell_back,
+                                answer_mode: obj.answer_mode || (meta && meta.answer_mode),
                             };
                         } else if (ev === 'delta') {
                             acc += (obj.text || '');

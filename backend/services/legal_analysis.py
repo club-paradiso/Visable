@@ -40,6 +40,10 @@ LEGAL_ISSUE_TYPES = (
     "registration_or_residence_report", "registration_deadline",
     "deadline_trigger", "reentry", "overstay_or_risk",
     "approval_condition", "status_purpose_alignment", "employment_restriction",
+    # employment_condition: whether the *conditions* of the new employment (wage,
+    # work hours, job duties, employer/industry) still satisfy the status's
+    # approval basis — central to an E-7 (특정활동) job transfer.
+    "employment_condition",
     "study_on_non_study_status", "work_on_non_work_status",
     "post_status_change_residual_duty", "nationality_or_refugee_context",
     # Adjudicative-leaning dimensions (high-precision detection). These are the
@@ -317,9 +321,17 @@ def classify_activity_types(question: str) -> List[str]:
         add("business_activity")
     if _has_any(text, "자원봉사", "봉사", "volunteer"):
         add("volunteer_activity")
-    if _has_any(text, "근무처 변경", "직장 변경", "change workplace", "workplace change", "change employer"):
+    if _has_any(
+        text,
+        "근무처 변경", "근무처변경", "직장 변경", "직장변경", "직장 이동", "이직", "전직",
+        "퇴사", "퇴직", "동종업계", "동종 업계", "동종업종", "다른 회사", "타 회사", "타사",
+        "새 회사", "새로운 회사", "회사를 옮", "회사 이동", "고용주 변경", "사업주 변경",
+        "change workplace", "workplace change", "change employer", "change of employer",
+        "switch employer", "switch company", "switch companies", "change jobs",
+        "job transfer", "new employer", "move to another company", "move to a new company",
+    ):
         add("workplace_change")
-    if _has_any(text, "근무처 추가", "직장 추가", "add workplace", "workplace addition", "add employer"):
+    if _has_any(text, "근무처 추가", "근무처추가", "직장 추가", "add workplace", "workplace addition", "add employer", "additional employer"):
         add("workplace_addition")
     if _has_any(text, "치료", "medical treatment", "hospital"):
         add("medical_treatment")
@@ -450,6 +462,15 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
         add("reporting_duty"); add("registration_or_residence_report")
     if acts & {"workplace_change", "workplace_addition", "additional_employment"}:
         add("reporting_duty"); add("workplace_change_addition")
+        # A change of employer/workplace is not just a reporting duty: for a
+        # work status (E-7 특정활동 above all) it raises whether the NEW job still
+        # fits the approved status purpose (status_purpose_alignment) and whether
+        # its conditions — wage, hours, duties, industry — still qualify
+        # (employment_condition). A transfer near the permit's end also commonly
+        # implies an extension question.
+        if current_parent in _PARENT_WORK:
+            add("status_purpose_alignment"); add("employment_condition")
+            add("extension")
     if acts & {"reentry_or_departure"}:
         add("reentry")
     if _has_any(text, "overstay", "초과체류", "불법체류", "expired", "one day", "하루", "도과"):
