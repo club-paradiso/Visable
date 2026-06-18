@@ -12,7 +12,59 @@
         "doc_invest",
         "doc_finance"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "D-8-1",
+        "D81"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "법인에 투자(D-8-1) 및 개인기업에 투자(D-8-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 104",
+          "section": "기술 분야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 104",
+          "section": "해당자에 대한 기업투자(D-8-1) 사증발급 (특정국가 제외)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "D-8-2",
@@ -22,7 +74,59 @@
         "doc_invest",
         "doc_finance"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "D-8-2",
+        "D82"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "이 우수한 것으로 평가를 받은 기업의 대표자 [이하 ‘벤처 투자(D-8-2)'로",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "벤처투자(D-8-2) 및 기술창업(D-8-4)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 104",
+          "section": "이 우수한 것으로 평가를 받은 기업의 대표자 [이하 ‘벤처 투자(D-8-2)'로",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 105",
+          "section": "대한 기업투자(D-8-2) 사증발급 (중국, 특정국가 제외)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "D-8-3",
@@ -31,7 +135,59 @@
       "addReqDocs": [
         "doc_invest"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "D-8-3",
+        "D83"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "기업에 투자(D-8-3)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "법인에 투자(D-8-1) 및 개인기업에 투자(D-8-3)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 104",
+          "section": "기업에 투자(D-8-3)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 106",
+          "section": "3. 국민이 경영하는 기업에 투자하는 외국인에 대한 기업투자(D-8-3) 자격",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "D-8-4",
@@ -41,7 +197,37 @@
         "doc_finance",
         "doc_degree"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "D-8-4",
+        "D84"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "(D-8-4)'으로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "벤처투자(D-8-2) 및 기술창업(D-8-4)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "D-8-91",
@@ -50,7 +236,15 @@
       "addReqDocs": [
         "doc_dispatch"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "D-8-91",
+        "D891"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "D-8-4S",
@@ -74,16 +268,41 @@
       "needsManualReview": true,
       "manualRefs": [
         {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "④-2 기술창업-스타트업코리아 특별비자(D-8-4S)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
           "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "pp. 106-107",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 108",
+          "section": "(D-8-4S) 사증발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 114",
+          "section": "(D-8-4S) 사증발급",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "기술창업"
+      "group": "기술창업",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     }
   ],
   "procedures": {
@@ -118,12 +337,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 122",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "16. 기업투자(D-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -156,13 +388,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 126",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "section": "외국인등록 신청서류"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "16. 기업투자(D-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -191,12 +435,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 126",
-          "confidence": "manual_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "16. 기업투자(D-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -237,12 +494,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 119-120",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "16. 기업투자(D-8)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 116",
+              "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -271,12 +541,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "p. 120",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "16. 기업투자(D-8)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 116",
+              "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -309,12 +592,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 120-121",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "16. 기업투자(D-8)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 116",
+              "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -343,12 +639,25 @@
           "manualRefs": [
             {
               "manualName": "체류민원",
-              "manualVersion": "2026.5",
-              "pageRange": "pp. 121-122",
-              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-              "confidence": "manual_extracted_needs_review",
-              "needsManualReview": true,
-              "sourceDate": "2026-06-01"
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 2",
+              "section": "16. 기업투자(D-8)",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
+            },
+            {
+              "manualName": "체류민원",
+              "manualType": "stay",
+              "manualVersion": "2026.6",
+              "sourceDate": "2026-06-17",
+              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "pageRange": "p. 116",
+              "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+              "confidence": "manual_inventory_260617",
+              "needsManualReview": true
             }
           ],
           "notes": [
@@ -357,25 +666,71 @@
           "statusCode": "D-8-4"
         }
       ],
-      "manualRefs": [],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "16. 기업투자(D-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 116",
+          "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        }
+      ],
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "D-8",
     "D-8-1",
     "D-8-2",
     "D-8-3",
@@ -387,7 +742,9 @@
     "스타트업코리아"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "법인등기사항전부증명서, 사업자등록증, 투자기업등록증 사본, 투자금(1억↑), 사업/고용계획서.",
@@ -571,5 +928,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "16. 기업투자(D-8)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 116",
+      "section": "야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 104",
+      "section": "기술 분야에 종사하려는 필수 전문인력**[이하 ‘법인에 투자(D-8-1)'로 구분]",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "p. 108",
+      "section": "(D-8-4S) 사증발급",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

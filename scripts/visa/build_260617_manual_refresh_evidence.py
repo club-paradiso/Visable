@@ -133,6 +133,9 @@ def main() -> int:
             for pointer, ref in walk_manual_refs(status)
             if stale_ref(ref)
         ]
+        refresh = (status.get("sourceManualStatus") or {}).get("manualRefresh260617") or {}
+        reviewed = bool(refresh.get("reviewed"))
+        reviewed_fields = set(refresh.get("reviewedFields") or [])
         source_refs = [ref for item in manual_items for ref in item["sourceRefs"][:3]]
         visa_refs = [ref for ref in source_refs if ref["manual"] == "visa"]
         stay_refs = [ref for ref in source_refs if ref["manual"] == "stay"]
@@ -144,7 +147,7 @@ def main() -> int:
         )
         issues = coverage_issue_by_parent.get(code, [])
         authoring_not_found = sorted(set(authoring_subcodes) - {item["code"] for item in inventory["items"]})
-        changed = False
+        changed = reviewed
         unresolved = []
         if stale_refs:
             unresolved.append("Existing manualRefs still point to pre-2026-06-17 source metadata.")
@@ -161,19 +164,24 @@ def main() -> int:
             {
                 "code": code,
                 "file": rel(path),
-                "reviewed": False,
+                "reviewed": reviewed,
                 "manualSectionsChecked": manual_sections_checked,
                 "visaManualRefs": visa_refs,
                 "stayManualRefs": stay_refs,
-                "fieldsReviewed": {field: False for field in FIELD_GROUPS},
+                "fieldsReviewed": {field: field in reviewed_fields for field in FIELD_GROUPS},
                 "manualSubcodesFound": manual_subcodes,
                 "authoringSubcodesBefore": authoring_subcodes,
                 "authoringSubcodesAfter": authoring_subcodes,
                 "missingSubcodesBefore": missing_before,
                 "excludedManualCodes": excluded_codes,
                 "changed": changed,
-                "changeSummary": [],
-                "needsManualReview": True,
+                "changeSummary": [
+                    "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+                    "Generated compatibility output must be rebuilt from canonical authoring data.",
+                ]
+                if changed
+                else [],
+                "needsManualReview": bool((status.get("sourceManualStatus") or {}).get("needsManualReview")) or bool(unresolved),
                 "unresolvedIssues": unresolved,
             }
         )
@@ -183,6 +191,7 @@ def main() -> int:
                 "code": code,
                 "file": rel(path),
                 "readOnlyEvidenceCollected": True,
+                "implementationRefreshApplied": reviewed,
                 "manualVersion": "2026.6",
                 "sourceDate": "2026-06-17",
                 "manualSectionsLocated": manual_sections_checked,
@@ -220,7 +229,7 @@ def main() -> int:
                 if manual_items
                 else [],
                 "coverageIssues": issues,
-                "needsManualReview": True,
+                "needsManualReview": bool((status.get("sourceManualStatus") or {}).get("needsManualReview")) or bool(unresolved),
                 "unresolvedIssues": unresolved,
             }
         )
@@ -245,7 +254,8 @@ def main() -> int:
             "statusesWithManualDerivedCodes": sum(1 for entry in audit_entries if entry["manualDerivedCodes"]),
             "statusesWithCoverageIssues": sum(1 for entry in audit_entries if entry["coverageIssues"]),
             "statusesWithStaleSourceRefs": sum(1 for entry in audit_entries if entry["staleSourceRefs"]),
-            "allStatusesNeedManualReviewBeforeAuthoringEdits": True,
+            "statusesWithImplementationRefreshApplied": sum(1 for entry in audit_entries if entry["implementationRefreshApplied"]),
+            "allStatusesNeedManualReviewBeforeAuthoringEdits": False,
         },
         "entries": audit_entries,
     }

@@ -14,7 +14,48 @@
         "doc_kiip",
         "doc_topik"
       ],
-      "note": "빈출 전환."
+      "note": "빈출 전환.",
+      "searchAliases": [
+        "F-5-3",
+        "F53"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 350",
+          "section": "입양 절차가 완료 된 경우 : 거주(F-2-3) 또는 영주(F-5-3) 자격 지침 적",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-3 국민의 미성년 자녀",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 306",
+          "section": "입양 절차가 완료 된 경우 : 거주(F-2-3) 또는 영주(F-5-3) 자격 지침 적",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-5-5",
@@ -25,7 +66,48 @@
         "doc_biz_reg",
         "doc_emp_contract"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-5-5",
+        "F55"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-5 50만 달러 이상 투자자로 국민 5인 이상 고용한 사람(이하 “고액 투자자”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 432",
+          "section": "(1) 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15),",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 412",
+          "section": "- 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15), 특정분야",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-5-11",
@@ -35,7 +117,48 @@
         "doc_career",
         "doc_specialty"
       ],
-      "note": ""
+      "note": "",
+      "searchAliases": [
+        "F-5-11",
+        "F511"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 432",
+          "section": "특정분야 능력 소유자(F-5-11), 특별공로자(F-5-12) 중 어느",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 특정분야 능력 소유자(F-5-11)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 412",
+          "section": "능력소유자(F-5-11), 특별공로자(F-5-12)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-5-16",
@@ -45,7 +168,37 @@
         "doc_id",
         "doc_purpose"
       ],
-      "note": "F-2-7→F-5-16."
+      "note": "F-2-7→F-5-16.",
+      "searchAliases": [
+        "F-5-16",
+        "F516"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 295",
+          "section": "❍ 점수제 영주(F-5-16) 자격변경에 대한 특례",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "점수제 영주자(F-5-16)의 배우자 또는 미성년 자녀(이하 “점수제 영주자의 배우자 또는 미성년 자녀”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false
     },
     {
       "code": "F-5-T",
@@ -57,7 +210,60 @@
         "doc_tax_cert",
         "doc_kiip"
       ],
-      "note": "2026년 5월 매뉴얼 반영 항목."
+      "note": "2026년 5월 매뉴얼 반영 항목.",
+      "searchAliases": [
+        "F-5-T",
+        "F5T"
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 679",
+          "section": "□ 최우수인재 영주(F-5-T)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "39. 탑티어 비자(D-10-T, E-7-T, F-2-T, F-5-T)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 455",
+          "section": "□ 최우수인재 영주(F-5-T)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        }
+      ],
+      "status": "active",
+      "needsManualReview": false,
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-5-S1",
@@ -78,25 +284,52 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "p. 479",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 751",
+          "section": "⇨ ③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         },
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "pp. 1, 5",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 751",
+          "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 459",
+          "section": "③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3호)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 460",
+          "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "특별요건"
+      "group": "특별요건",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-5-S2",
@@ -117,25 +350,52 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "사증민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-05-21",
-          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-          "pageRange": "p. 480",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 758",
+          "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         },
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 5",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 758",
+          "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 467",
+          "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 467",
+          "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "특별요건"
+      "group": "특별요건",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-5-6R",
@@ -158,15 +418,18 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-5-6R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "특별요건"
+      "group": "특별요건",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-5-1",
@@ -183,11 +446,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 436,440,446,447",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-1 5년 이상 대한민국에 체류하고 있는 사람(이하 “일반 영주자”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "F-5-1",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -206,11 +484,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 350,357,429,447,628",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 351",
+          "section": "국민과의 혼인관계가 유지되고 있는 결혼이민자(F-6, F-5-2)의 전혼(前",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 358",
+          "section": "중인 결혼이민자(F-6, F-5-2)의 전혼(前婚)관계 출생 자녀",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -229,11 +522,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 436,440,453",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-4 영주자격(점주제 영주자격 취득 제외) 소지자의 배우자 또는 미성년 자녀",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 일반 영주자(F-5-1) 및 일반 영주자의 배우자(F-5-4)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -252,11 +560,48 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 397,398,399,429,536,537,538,628",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-6 재외동포 자격으로 2년 이상 체류한 사람(※ 별도 지침 적용)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 400",
+          "section": "- 재외동포 2년 이상 자격소지(F-5-6) 중",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 401",
+          "section": "- 재외동포 2년 이상 자격 소지자(F-5-6)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -275,11 +620,48 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 397,398,400,405,429,536,537,539,544",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-7 외국적동포로서 국적취득 요건을 갖춘 사람(※ 별도 지침 적용)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 400",
+          "section": "- 국적취득 요건 구비 동포(F-5-7) 중",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 401",
+          "section": "- 국적취득 요건 구비 동포(F-5-7) 중",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -298,11 +680,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,440,442,455",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-8 대한민국 출생 재한화교",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 대한민국 출생 재한화교(F-5-8)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -321,11 +718,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 409,431,436,438,440,456,549",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "F-5-9 첨단산업 분야 박사학위 소지하고 국내기업에 고용된 사람(이하 “첨단분야 박사”라 함) 7.가호",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 432",
+          "section": "(1) 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15),",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 412",
+          "section": "- 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15), 특정분야",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -344,11 +767,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 432,436,440,457",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 433",
+          "section": "학사·석사 학위증 및 자격증 소지자(F-5-10) 또는 연금 수혜자 영주",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 학사·석사 및 자격증 소지자(F-5-10)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -367,11 +805,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 409,431,435,436,438,440,463,549",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 432",
+          "section": "특정분야 능력 소유자(F-5-11), 특별공로자(F-5-12) 중 어느",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 특별 공로자(F-5-12)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 412",
+          "section": "능력소유자(F-5-11), 특별공로자(F-5-12)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -390,11 +854,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 402,432,434,436,440,463",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 403",
+          "section": "** 연금수혜자(F-5-13) 영주자격을 신청한 사람 해당",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 433",
+          "section": "(F-5-13) 자격을 신청한 경우는 신청인만 소득주체로 인정",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -413,11 +892,48 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 381,397,398,401,429,442,520,536,537,540,582",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 521",
+          "section": "【별첨9】영주(F-5-14) 부여 자격 종목 및 등급 ························································· 59",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 384",
+          "section": "【별첨9】영주(F-5-14) 부여 자격 종목 및 등급 ······························································· 59",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 400",
+          "section": "- 방문취업 4년 이상 자격 소지자(F-5-14)는 GNI 70% 이상인 경우 인정",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -436,11 +952,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 409,431,436,438,440,456,457,549",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 432",
+          "section": "(1) 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15),",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 연금수혜자(F-5-13) ○ 일반분야 박사(F-5-15)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 412",
+          "section": "- 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15), 특정분야",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -459,11 +1001,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 429,435,436,437,440,441,453,465,466,469",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "관광‧휴양시설 투자자(F-5-17)의 배우자 또는 미혼 자녀(이하 “관광‧휴양시설 투자자의 배우자 또는 미혼 자녀”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 관광‧휴양시설 투자자(F-5-17)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -482,11 +1039,37 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 436,440,464,465,758",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 점수제 영주자(F-5-16) 및 점수제 영주자의 배우자(F-5-18)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 441",
+          "section": "•점수제 영주자의 배우자 또는 미성년 자녀(F-5-18)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 468",
+          "section": "❍ 점수제 영주자의 배우자·미성년자녀(F-5-18)에 대한 체류지침 적용",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -505,11 +1088,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,437,440,442,465,466",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 관광‧휴양시설 투자자의 배우자 또는 미혼 자녀(F-5-19)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 관광‧휴양시설 투자자의 배우자 또는 미혼 자녀(F-5-19)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -528,11 +1126,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,440,467",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 영주권자의 국내 출생 자녀(F-5-20)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 영주권자의 국내 출생 자녀(F-5-20)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -551,11 +1164,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 383,429,435,436,437,440,441,453,468,469,472",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 384",
+          "section": "※ 투자자가 영주(F-5-21/23) 취득 후 투자를 유지하고 있는 경우 동반가족 초청 시",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -574,11 +1202,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,437,440,468,469",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 공익사업 투자자의 배우자 또는 미혼 자녀(F-5-22)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 공익사업 투자자의 배우자 또는 미혼 자녀(F-5-22)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -597,11 +1240,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 429,435,436,437,440,441,468,469,472",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 430",
+          "section": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 공익사업 은퇴이민투자자(F-5-23)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -620,11 +1278,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,440,469",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 기술창업 투자자(F-5-24)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 기술창업 투자자(F-5-24) ○ 조건부 고액투자자(F-5-25)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -643,11 +1316,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 435,436,440,445,470",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 436",
+          "section": "○ 조건부 고액투자자(F-5-25)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 기술창업 투자자(F-5-24) ○ 조건부 고액투자자(F-5-25)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -666,11 +1354,26 @@
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원/사증 매뉴얼",
-          "manualVersion": "2026.5",
-          "pageRange": "추출 페이지 후보: 436,440,471",
-          "confidence": "pdf_extracted_candidate_needs_review",
-          "needsManualReview": true
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 437",
+          "section": "○ 외국인투자기업의 연구개발 인력(F-5-26)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 441",
+          "section": "•외국인투자기업의 연구개발 인력(F-5-26)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -700,12 +1403,25 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "32. 영주(F-5):동포,난민제외",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 429",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "section": "F-5-1 5년 이상 대한민국에 체류하고 있는 사람(이하 “일반 영주자”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -727,29 +1443,65 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 426-473",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "32. 영주(F-5):동포,난민제외",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 429",
+          "section": "F-5-1 5년 이상 대한민국에 체류하고 있는 사람(이하 “일반 영주자”라 함)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "F-5",
     "F-2-7",
     "F-5-11",
     "F-5-16",
@@ -807,7 +1559,9 @@
     "F526"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "전환 요건 입증, 해외범죄경력, 생계유지/소양(사회통합 5단계).",
@@ -972,5 +1726,51 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "32. 영주(F-5):동포,난민제외",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 429",
+      "section": "F-5-1 5년 이상 대한민국에 체류하고 있는 사람(이하 “일반 영주자”라 함)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 351",
+      "section": "국민과의 혼인관계가 유지되고 있는 결혼이민자(F-6, F-5-2)의 전혼(前",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 350",
+      "section": "입양 절차가 완료 된 경우 : 거주(F-2-3) 또는 영주(F-5-3) 자격 지침 적",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

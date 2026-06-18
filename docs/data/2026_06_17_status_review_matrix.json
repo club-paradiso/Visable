@@ -3,8 +3,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "A-1",
       "excludedManualCodes": [
         {
@@ -14,16 +17,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/A-1.json",
       "manualSectionsChecked": [
@@ -34,7 +37,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "‣ 공통사항 (체류 일반) 체류자격별 대상 및 제출서류 등 안내메뉴얼 1. 외교(A-1) 20. 회화지도(E-2) 2. 공무(A-2)",
@@ -62,7 +65,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -70,8 +72,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "A-2",
       "excludedManualCodes": [
         {
@@ -81,16 +86,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/A-2.json",
       "manualSectionsChecked": [
@@ -101,7 +106,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "1. 외교(A-1) 20. 회화지도(E-2) 2. 공무(A-2) 21. 연구(E-3) 3. 협정(A-3)",
@@ -129,7 +134,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -141,8 +145,11 @@
       "authoringSubcodesBefore": [
         "A-3-99"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "A-3",
       "excludedManualCodes": [
         {
@@ -152,16 +159,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/A-3.json",
       "manualSectionsChecked": [
@@ -176,7 +183,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "2. 공무(A-2) 21. 연구(E-3) 3. 협정(A-3) 22. 기술지도(E-4) 4. 사증면제(B-1)",
@@ -212,8 +219,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -236,8 +241,11 @@
         "B-1-1",
         "B-1-2"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "B-1",
       "excludedManualCodes": [
         {
@@ -247,16 +255,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/B-1.json",
       "manualSectionsChecked": [
@@ -267,7 +275,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "3. 협정(A-3) 22. 기술지도(E-4) 4. 사증면제(B-1) 23. 전문직업(E-5) 5. 관광통과(B-2)",
@@ -295,9 +303,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -311,8 +317,11 @@
         "B-2-1",
         "B-2-2"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "B-2",
       "excludedManualCodes": [
         {
@@ -322,16 +331,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/B-2.json",
       "manualSectionsChecked": [
@@ -342,7 +351,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "4. 사증면제(B-1) 23. 전문직업(E-5) 5. 관광통과(B-2) 24. 예술흥행(E-6) 6. 일시취재(C-1)",
@@ -370,9 +379,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -380,8 +387,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "C-1",
       "excludedManualCodes": [
         {
@@ -391,16 +401,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/C-1.json",
       "manualSectionsChecked": [
@@ -411,7 +421,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "5. 관광통과(B-2) 24. 예술흥행(E-6) 6. 일시취재(C-1) 25. 특정활동(E-7) 7. 단기방문(C-3)",
@@ -439,7 +449,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -475,8 +484,11 @@
         "C-3-11",
         "C-3-91"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "C-3",
       "excludedManualCodes": [
         {
@@ -496,16 +508,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/C-3.json",
       "manualSectionsChecked": [
@@ -559,7 +571,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "6. 일시취재(C-1) 25. 특정활동(E-7) 7. 단기방문(C-3) 26. 계절근로(E-8) 8. 단기취업(C-4)",
@@ -747,8 +759,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -857,8 +867,11 @@
         "C-4-4",
         "C-4-5"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "C-4",
       "excludedManualCodes": [
         {
@@ -868,16 +881,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/C-4.json",
       "manualSectionsChecked": [
@@ -903,7 +916,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "7. 단기방문(C-3) 26. 계절근로(E-8) 8. 단기취업(C-4) 27. 비전문취업(E-9) 9. 문화예술(D-1)",
@@ -979,8 +992,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -1017,8 +1028,11 @@
       "authoringSubcodesBefore": [
         "D-1-00"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-1",
       "excludedManualCodes": [
         {
@@ -1028,16 +1042,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-1.json",
       "manualSectionsChecked": [
@@ -1048,7 +1062,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "8. 단기취업(C-4) 27. 비전문취업(E-9) 9. 문화예술(D-1) 28. 선원취업(E-10) 10. 유학(D-2)",
@@ -1076,9 +1090,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -1104,8 +1116,11 @@
         "D-2-7",
         "D-2-8"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-2",
       "excludedManualCodes": [
         {
@@ -1115,16 +1130,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-2.json",
       "manualSectionsChecked": [
@@ -1162,7 +1177,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "9. 문화예술(D-1) 28. 선원취업(E-10) 10. 유학(D-2) 29. 방문동거(F-1) 11. 기술연수(D-3)",
@@ -1374,8 +1389,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -1402,8 +1415,11 @@
         "D-3-13",
         "D-3-1"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-3",
       "excludedManualCodes": [
         {
@@ -1413,16 +1429,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-3.json",
       "manualSectionsChecked": [
@@ -1448,7 +1464,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "10. 유학(D-2) 29. 방문동거(F-1) 11. 기술연수(D-3) 30. 거주(F-2) 12. 일반연수(D-4)",
@@ -1532,8 +1548,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -1582,8 +1596,11 @@
         "D-4-6",
         "D-4-7"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-4",
       "excludedManualCodes": [
         {
@@ -1593,16 +1610,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-4.json",
       "manualSectionsChecked": [
@@ -1640,7 +1657,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "11. 기술연수(D-3) 30. 거주(F-2) 12. 일반연수(D-4) 31. 동반(F-3) 13. 취재(D-5)",
@@ -1836,8 +1853,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -1845,70 +1860,75 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-4-1",
       "excludedManualCodes": [],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-4-1.json",
       "manualSectionsChecked": [],
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [],
-      "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata."
-      ],
+      "unresolvedIssues": [],
       "visaManualRefs": []
     },
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-4-2K",
       "excludedManualCodes": [],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-4-2K.json",
       "manualSectionsChecked": [],
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [],
-      "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata."
-      ],
+      "unresolvedIssues": [],
       "visaManualRefs": []
     },
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-5",
       "excludedManualCodes": [
         {
@@ -1918,16 +1938,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-5.json",
       "manualSectionsChecked": [
@@ -1938,7 +1958,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "12. 일반연수(D-4) 31. 동반(F-3) 13. 취재(D-5) 32. 영주(F-5):동포,난민제외 14. 종교(D-6)",
@@ -1966,7 +1986,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -1974,8 +1993,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-6",
       "excludedManualCodes": [
         {
@@ -1985,16 +2007,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-6.json",
       "manualSectionsChecked": [
@@ -2005,7 +2027,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "13. 취재(D-5) 32. 영주(F-5):동포,난민제외 14. 종교(D-6) 33. 결혼이민(F-6) 15. 주재(D-7)",
@@ -2033,7 +2055,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2051,8 +2072,11 @@
         "D-7-91",
         "D-7-92"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-7",
       "excludedManualCodes": [
         {
@@ -2062,16 +2086,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-7.json",
       "manualSectionsChecked": [
@@ -2082,7 +2106,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "14. 종교(D-6) 33. 결혼이민(F-6) 15. 주재(D-7) 34. 기타(G-1) 16. 기업투자(D-8)",
@@ -2110,9 +2134,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2134,8 +2156,11 @@
         "D-8-91",
         "D-8-4S"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-8",
       "excludedManualCodes": [
         {
@@ -2145,16 +2170,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-8.json",
       "manualSectionsChecked": [
@@ -2182,7 +2207,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "15. 주재(D-7) 34. 기타(G-1) 16. 기업투자(D-8) 35. 관광취업(H-1) 17. 무역경영(D-9)",
@@ -2314,9 +2339,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -2353,8 +2376,11 @@
         "D-9-4",
         "D-9-5"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-9",
       "excludedManualCodes": [
         {
@@ -2364,16 +2390,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-9.json",
       "manualSectionsChecked": [
@@ -2393,7 +2419,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "16. 기업투자(D-8) 35. 관광취업(H-1) 17. 무역경영(D-9) 36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)",
@@ -2461,9 +2487,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2481,8 +2505,11 @@
         "D-10-3",
         "D-10-T"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "D-10",
       "excludedManualCodes": [
         {
@@ -2492,16 +2519,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/D-10.json",
       "manualSectionsChecked": [
@@ -2528,7 +2555,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5) 18. 구직(D-10) 37. 지역특화형비자 19. 교수(E-1)",
@@ -2652,8 +2679,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2661,8 +2686,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-1",
       "excludedManualCodes": [
         {
@@ -2672,16 +2700,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-1.json",
       "manualSectionsChecked": [
@@ -2692,7 +2720,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "18. 구직(D-10) 37. 지역특화형비자 19. 교수(E-1) 38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도",
@@ -2720,7 +2748,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2736,8 +2763,11 @@
         "E-2-2",
         "E-2-91"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-2",
       "excludedManualCodes": [
         {
@@ -2747,16 +2777,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-2.json",
       "manualSectionsChecked": [
@@ -2774,7 +2804,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "체류자격별 대상 및 제출서류 등 안내메뉴얼 1. 외교(A-1) 20. 회화지도(E-2) 2. 공무(A-2) 21. 연구(E-3)",
@@ -2802,9 +2832,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -2845,8 +2873,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-3",
       "excludedManualCodes": [
         {
@@ -2856,16 +2887,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-3.json",
       "manualSectionsChecked": [
@@ -2876,7 +2907,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "20. 회화지도(E-2) 2. 공무(A-2) 21. 연구(E-3) 3. 협정(A-3) 22. 기술지도(E-4)",
@@ -2904,7 +2935,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2912,8 +2942,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-4",
       "excludedManualCodes": [
         {
@@ -2923,16 +2956,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-4.json",
       "manualSectionsChecked": [
@@ -2943,7 +2976,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "21. 연구(E-3) 3. 협정(A-3) 22. 기술지도(E-4) 4. 사증면제(B-1) 23. 전문직업(E-5)",
@@ -2971,7 +3004,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -2979,8 +3011,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-5",
       "excludedManualCodes": [
         {
@@ -2990,16 +3025,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-5.json",
       "manualSectionsChecked": [
@@ -3010,7 +3045,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "22. 기술지도(E-4) 4. 사증면제(B-1) 23. 전문직업(E-5) 5. 관광통과(B-2) 24. 예술흥행(E-6)",
@@ -3038,7 +3073,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -3054,8 +3088,11 @@
         "E-6-2",
         "E-6-3"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-6",
       "excludedManualCodes": [
         {
@@ -3065,16 +3102,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-6.json",
       "manualSectionsChecked": [
@@ -3095,7 +3132,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "23. 전문직업(E-5) 5. 관광통과(B-2) 24. 예술흥행(E-6) 6. 일시취재(C-1) 25. 특정활동(E-7)",
@@ -3187,8 +3224,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -3233,8 +3268,11 @@
         "E-7-91FTA",
         "E-7-H"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-7",
       "excludedManualCodes": [
         {
@@ -3244,16 +3282,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-7.json",
       "manualSectionsChecked": [
@@ -3307,7 +3345,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "24. 예술흥행(E-6) 6. 일시취재(C-1) 25. 특정활동(E-7) 7. 단기방문(C-3) 26. 계절근로(E-8)",
@@ -3583,9 +3621,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -3630,8 +3666,11 @@
         "E-8-8",
         "E-8-99"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-8",
       "excludedManualCodes": [
         {
@@ -3641,16 +3680,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-8.json",
       "manualSectionsChecked": [
@@ -3698,7 +3737,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "25. 특정활동(E-7) 7. 단기방문(C-3) 26. 계절근로(E-8) 8. 단기취업(C-4) 27. 비전문취업(E-9)",
@@ -3726,8 +3765,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -3972,8 +4009,11 @@
         "E-9-R",
         "E-9-JS"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-9",
       "excludedManualCodes": [
         {
@@ -3983,16 +4023,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-9.json",
       "manualSectionsChecked": [
@@ -4023,7 +4063,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "26. 계절근로(E-8) 8. 단기취업(C-4) 27. 비전문취업(E-9) 9. 문화예술(D-1) 28. 선원취업(E-10)",
@@ -4075,9 +4115,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -4166,8 +4204,11 @@
         "E-10-2",
         "E-10-3"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "E-10",
       "excludedManualCodes": [
         {
@@ -4177,16 +4218,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/E-10.json",
       "manualSectionsChecked": [
@@ -4208,7 +4249,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "27. 비전문취업(E-9) 9. 문화예술(D-1) 28. 선원취업(E-10) 10. 유학(D-2) 29. 방문동거(F-1)",
@@ -4308,8 +4349,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -4357,8 +4396,11 @@
         "F-1-51",
         "F-1-72"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-1",
       "excludedManualCodes": [
         {
@@ -4373,16 +4415,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-1.json",
       "manualSectionsChecked": [
@@ -4451,7 +4493,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "28. 선원취업(E-10) 10. 유학(D-2) 29. 방문동거(F-1) 11. 기술연수(D-3) 30. 거주(F-2)",
@@ -4671,9 +4713,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -4880,8 +4920,11 @@
         "F-2-13",
         "F-2-16"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-2",
       "excludedManualCodes": [
         {
@@ -4896,16 +4939,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-2.json",
       "manualSectionsChecked": [
@@ -4974,7 +5017,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "29. 방문동거(F-1) 11. 기술연수(D-3) 30. 거주(F-2) 12. 일반연수(D-4) 31. 동반(F-3)",
@@ -5346,8 +5389,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -5378,8 +5419,11 @@
         "F-3-19",
         "F-3-20"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-3",
       "excludedManualCodes": [
         {
@@ -5389,16 +5433,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-3.json",
       "manualSectionsChecked": [
@@ -5433,7 +5477,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "30. 거주(F-2) 12. 일반연수(D-4) 31. 동반(F-3) 13. 취재(D-5) 32. 영주(F-5):동포,난민제외",
@@ -5573,9 +5617,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -5648,8 +5690,11 @@
         "F-4-41",
         "F-4-42"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-4",
       "excludedManualCodes": [
         {
@@ -5659,16 +5704,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-4.json",
       "manualSectionsChecked": [
@@ -5691,7 +5736,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "17. 무역경영(D-9) 36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5) 18. 구직(D-10) 37. 지역특화형비자",
@@ -5775,9 +5820,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -5864,8 +5907,11 @@
         "F-5-25",
         "F-5-26"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-5",
       "excludedManualCodes": [
         {
@@ -5875,16 +5921,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-5.json",
       "manualSectionsChecked": [
@@ -6003,7 +6049,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "31. 동반(F-3) 13. 취재(D-5) 32. 영주(F-5):동포,난민제외 14. 종교(D-6) 33. 결혼이민(F-6)",
@@ -6727,8 +6773,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -6753,8 +6797,11 @@
         "F-6-2",
         "F-6-3"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "F-6",
       "excludedManualCodes": [
         {
@@ -6764,16 +6811,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/F-6.json",
       "manualSectionsChecked": [
@@ -6795,7 +6842,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "32. 영주(F-5):동포,난민제외 14. 종교(D-6) 33. 결혼이민(F-6) 15. 주재(D-7) 34. 기타(G-1)",
@@ -6895,8 +6942,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -6938,8 +6983,11 @@
         "G-1-99",
         "G-1-19"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "G-1",
       "excludedManualCodes": [
         {
@@ -6949,16 +6997,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/G-1.json",
       "manualSectionsChecked": [
@@ -7012,7 +7060,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "33. 결혼이민(F-6) 15. 주재(D-7) 34. 기타(G-1) 16. 기업투자(D-8) 35. 관광취업(H-1)",
@@ -7264,9 +7312,7 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -7291,8 +7337,11 @@
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "H-1",
       "excludedManualCodes": [
         {
@@ -7302,16 +7351,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/H-1.json",
       "manualSectionsChecked": [
@@ -7322,7 +7371,7 @@
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "34. 기타(G-1) 16. 기업투자(D-8) 35. 관광취업(H-1) 17. 무역경영(D-9) 36. 외국국적동포 관련",
@@ -7350,7 +7399,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []
@@ -7362,8 +7410,11 @@
       "authoringSubcodesBefore": [
         "H-2-7"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "H-2",
       "excludedManualCodes": [
         {
@@ -7373,16 +7424,16 @@
         }
       ],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/H-2.json",
       "manualSectionsChecked": [
@@ -7397,7 +7448,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "17. 무역경영(D-9) 36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5) 18. 구직(D-10) 37. 지역특화형비자",
@@ -7433,8 +7484,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Coverage checker reported issues for this parent status.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": [
@@ -7471,65 +7520,67 @@
         "F-3-2R",
         "F-5-6R"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "REGION-S",
       "excludedManualCodes": [],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/REGION-S.json",
       "manualSectionsChecked": [],
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
-        "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification.",
-        "Coverage checker reported issues for this parent status."
+        "Some authoring subcodes were not discovered by the 2026-06-17 manual code regex inventory and require manual classification."
       ],
       "visaManualRefs": []
     },
     {
       "authoringSubcodesAfter": [],
       "authoringSubcodesBefore": [],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "YOUTH-STAY",
       "excludedManualCodes": [],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/YOUTH-STAY.json",
       "manualSectionsChecked": [],
       "manualSubcodesFound": [],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [],
-      "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata."
-      ],
+      "unresolvedIssues": [],
       "visaManualRefs": []
     },
     {
@@ -7545,21 +7596,24 @@
         "F-2-71",
         "F-5-S2"
       ],
-      "changeSummary": [],
-      "changed": false,
+      "changeSummary": [
+        "Attached 2026-06-17 manual source metadata and refreshed subcode review flags conservatively.",
+        "Generated compatibility output must be rebuilt from canonical authoring data."
+      ],
+      "changed": true,
       "code": "K-STAR",
       "excludedManualCodes": [],
       "fieldsReviewed": {
-        "activityScope": false,
-        "documents": false,
-        "identity": false,
-        "manualDomains": false,
-        "period": false,
-        "procedures": false,
-        "searchAliases": false,
-        "sourceMetadata": false,
-        "subcodes": false,
-        "summaries": false
+        "activityScope": true,
+        "documents": true,
+        "identity": true,
+        "manualDomains": true,
+        "period": true,
+        "procedures": true,
+        "searchAliases": true,
+        "sourceMetadata": true,
+        "subcodes": true,
+        "summaries": true
       },
       "file": "backend/data/visa_authoring/statuses/K-STAR.json",
       "manualSectionsChecked": [
@@ -7572,7 +7626,7 @@
       ],
       "missingSubcodesBefore": [],
       "needsManualReview": true,
-      "reviewed": false,
+      "reviewed": true,
       "stayManualRefs": [
         {
           "context": "39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T) 40. 광역형 비자 시범사업 41. K-STAR 비자트랙 제도",
@@ -7600,7 +7654,6 @@
         }
       ],
       "unresolvedIssues": [
-        "Existing manualRefs still point to pre-2026-06-17 source metadata.",
         "Documents, procedure text, summaries, and activity scope still require field-by-field legal review against the listed manual sections."
       ],
       "visaManualRefs": []

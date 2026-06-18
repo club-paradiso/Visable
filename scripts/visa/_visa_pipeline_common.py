@@ -204,11 +204,14 @@ def reconstruct_record(authoring: Dict[str, Any], ctx: BuildContext) -> Dict[str
     meta = authoring["_authoring"]
     code = authoring["code"]
     compat = authoring.get("_generated", {}).get("compat", {})
+    canonical_subcodes = authoring.get("subcodes")
     out: Dict[str, Any] = {}
 
     for key in meta["keyOrder"]:
         src = meta["keySource"][key]
-        if src == "identity":
+        if key in {"subcodes", "subCodes"} and isinstance(canonical_subcodes, list):
+            out[key] = canonical_subcodes
+        elif src == "identity":
             out[key] = authoring[key]
         elif src == "manualRefs":
             out[key] = authoring["manualRefs"]
@@ -229,6 +232,11 @@ def reconstruct_record(authoring: Dict[str, Any], ctx: BuildContext) -> Dict[str
             out[key] = ctx.audit[basename][code]
         else:  # pragma: no cover - defensive
             raise ValueError(f"{code}: unknown keySource {src!r} for key {key!r}")
+    if isinstance(canonical_subcodes, list):
+        if "subcodes" not in out:
+            out["subcodes"] = canonical_subcodes
+        if "subCodes" in out:
+            out["subCodes"] = canonical_subcodes
     return out
 
 

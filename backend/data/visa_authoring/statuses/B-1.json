@@ -19,14 +19,30 @@
       "name": "B-1 일반여권 유효 67개국",
       "addReq": "말레이시아(3개월), 싱가포르(90일), 아랍에미리트(90일), 이스라엘(90일), 카자흐스탄(30일/180일 내 60일), 태국(90일), 튀르키예(90일), 카타르(90일), 과테말라(90일), 그레나다(90일), 니카라과(90일), 도미니카공화국(90일), 도미니카연방(90일), 멕시코(3개월), 바베이도스(90일), 바하마(90일), 베네수엘라(90일), 브라질(90일), 세인트루시아(90일), 세인트빈센트그레나딘(90일), 세인트키츠네비스(90일), 수리남(3개월), 아이티(90일), 앤티가바부다(90일), 엘살바도르(90일), 우루과이(90일), 자메이카(90일), 칠레(90일), 코스타리카(90일), 콜롬비아(90일), 트리니다드토바고(90일), 파나마(90일), 페루(90일), 그리스(3개월), 네덜란드(3개월), 노르웨이(90일), 덴마크(90일), 독일(90일), 라트비아(90일), 러시아(60일/180일 내 90일), 루마니아(90일), 룩셈부르크(3개월), 리투아니아(90일), 리히텐슈타인(3개월), 몰타(90일), 벨기에(3개월), 불가리아(90일), 스웨덴(90일), 스위스(3개월), 스페인(90일), 슬로바키아(90일), 아이슬란드(90일), 아일랜드(90일), 에스토니아(90일), 영국(90일), 오스트리아(90일), 이탈리아(90일), 체코(90일), 포르투갈(90일), 폴란드(90일), 프랑스(90일), 핀란드(90일), 헝가리(90일), 레소토(60일), 모로코(90일), 튀니지(30일), 뉴질랜드(3개월).",
       "addReqDocs": [],
-      "note": "PDF 기준일 2024.12.04. 일시정지 3개국(방글라데시, 파키스탄, 라이베리아) 제외."
+      "note": "PDF 기준일 2024.12.04. 일시정지 3개국(방글라데시, 파키스탄, 라이베리아) 제외.",
+      "searchAliases": [
+        "B-1-1",
+        "B11"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     },
     {
       "code": "B-1-2",
       "name": "B-1 일시정지 3개국",
       "addReq": "방글라데시(90일, 불체 급증 사유), 파키스탄(3개월, 2001.10.1~ 일시정지), 라이베리아(90일).",
       "addReqDocs": [],
-      "note": "협정은 유효하나 일반여권 대상 일시정지 상태."
+      "note": "협정은 유효하나 일반여권 대상 일시정지 상태.",
+      "searchAliases": [
+        "B-1-2",
+        "B12"
+      ],
+      "needsManualReview": true,
+      "status": "manual_review_required",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
+      "manualRefs": []
     }
   ],
   "procedures": {
@@ -51,12 +67,14 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "p. 24",
-          "confidence": "auto_extracted_needs_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "4. 사증면제(B-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     },
@@ -77,34 +95,61 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "pageRange": "pp. 24-24",
-          "confidence": "needs_manual_review",
-          "needsManualReview": true,
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 2",
+          "section": "4. 사증면제(B-1)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": true
         }
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
+    "B-1",
     "B-1-1",
     "B-1-2"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "dataBadge": "67개국 협정 (일시정지 3개국 제외)",
@@ -210,5 +255,18 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "p. 2",
+      "section": "4. 사증면제(B-1)",
+      "confidence": "manual_inventory_260617",
+      "needsManualReview": false
+    }
+  ]
 }

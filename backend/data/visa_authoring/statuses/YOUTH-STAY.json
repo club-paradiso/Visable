@@ -33,35 +33,66 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "pp. 134-135",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true,
-          "sectionTitle": "국내 성장 기반 외국인 청소년 취업·정주 체류제도"
+          "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+          "confidence": "legacy_ref_migrated_to_260617_needs_review",
+          "needsManualReview": true
         }
       ]
     }
   },
   "sourceManualStatus": {
     "needsManualReview": true,
-    "stayManualVersion": "2026.5"
+    "stayManualVersion": "2026.6",
+    "visaManualVersion": "2026.6",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "verified": false,
+    "reviewNotes": [
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+    ],
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "manualRefs": [
     {
       "manualName": "체류민원",
-      "manualVersion": "2026.5",
-      "sourceDate": "2026-06-01",
-      "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
       "pageRange": "pp. 134-135",
-      "confidence": "manual_page_extract_needs_review",
-      "needsManualReview": true,
-      "sectionTitle": "국내 성장 기반 외국인 청소년 취업·정주 체류제도"
+      "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "confidence": "legacy_ref_migrated_to_260617_needs_review",
+      "needsManualReview": true
     }
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "name_en": "Domestic-growth foreign youth employment & settlement program",

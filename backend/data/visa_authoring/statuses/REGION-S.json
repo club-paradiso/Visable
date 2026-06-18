@@ -24,15 +24,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 150",
+          "section": "* 체류지는 향후 지역특화 우수인재(F-2-R) 자격변경 시 심사요건을 고려하여,",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-2-R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "우수인재"
+      "group": "우수인재",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "E-7-4R",
@@ -55,15 +69,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 303",
+          "section": "- (다른 자격 외국인 고용인원 포함 여부) E-7-4 및 E-7-4R 이외의 E-7·E-9·E-10·H-2",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "E-7-4R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "숙련기능인력"
+      "group": "숙련기능인력",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-3-3R",
@@ -84,15 +112,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-3R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 607",
+          "section": "- 최근 5년 이내 지역특화 숙련기능인력(E-7-4R) 및 동반가족(F-3-3R)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "숙련기능인력"
+      "group": "숙련기능인력",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-4-R",
@@ -115,15 +157,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 530",
+          "section": "- 지역특화동포(F-4-R) 자격을 소지한 사람이 특례 적용을 포기하고 일반",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-4-R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "동포"
+      "group": "동포",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "REGIONAL-D-2",
@@ -147,16 +203,18 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 1",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true,
-          "sectionTitle": "광역형 비자 시범사업"
+          "section": "광역형 비자 시범사업",
+          "confidence": "legacy_ref_migrated_to_260617_needs_review",
+          "needsManualReview": true
         }
       ],
-      "group": "광역형"
+      "group": "광역형",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review."
     },
     {
       "code": "REGIONAL-E-7",
@@ -180,16 +238,18 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 1",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true,
-          "sectionTitle": "광역형 비자 시범사업"
+          "section": "광역형 비자 시범사업",
+          "confidence": "legacy_ref_migrated_to_260617_needs_review",
+          "needsManualReview": true
         }
       ],
-      "group": "광역형"
+      "group": "광역형",
+      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review."
     },
     {
       "code": "F-3-1R",
@@ -210,15 +270,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-1R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 599",
+          "section": "❍ (주체) 신청인 및 배우자(F-3-1R 체류자격 소지자에 한함) 합산 소득",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "우수인재"
+      "group": "우수인재",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-3-2R",
@@ -239,15 +313,29 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-3-2R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 606",
+          "section": "❍ 지역우수인재(F-2-R) 자격 소지자의 배우자(F-3-2R)",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "동포"
+      "group": "동포",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     },
     {
       "code": "F-5-6R",
@@ -269,15 +357,18 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-          "pageRange": "p. 67",
-          "confidence": "manual_page_extract_needs_review",
-          "needsManualReview": true
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 588",
+          "section": "F-5-6R",
+          "confidence": "manual_inventory_260617",
+          "needsManualReview": false
         }
       ],
-      "group": "동포"
+      "group": "동포",
+      "statusNote": "2026.6 official manual special-track code; track-specific procedure/document details require source-aware review before broad reuse."
     }
   ],
   "procedures": {
@@ -300,11 +391,13 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "pp.587-638, pp.689-745",
-          "confidence": "manual_page_extract_needs_review",
+          "section": "REGION-S",
+          "confidence": "legacy_ref_migrated_to_260617_needs_review",
           "needsManualReview": true
         }
       ]
@@ -327,28 +420,52 @@
       "manualRefs": [
         {
           "manualName": "체류민원",
-          "manualVersion": "2026.5",
-          "sourceDate": "2026-06-01",
-          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "pp.587-638, pp.689-745",
-          "confidence": "manual_page_extract_needs_review",
+          "section": "REGION-S",
+          "confidence": "legacy_ref_migrated_to_260617_needs_review",
           "needsManualReview": true
         }
       ]
     }
   },
   "sourceManualStatus": {
-    "visaManualVersion": "2026.5",
-    "stayManualVersion": "2026.5",
+    "visaManualVersion": "2026.6",
+    "stayManualVersion": "2026.6",
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
       "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-01 체류민원 매뉴얼 변경 페이지를 반영해 REGION-S를 트랙별 안내로 보수화했습니다. 부모 레코드에 보편 서류목록으로 평탄화하지 않았습니다."
+      "2026-06-01 체류민원 매뉴얼 변경 페이지를 반영해 REGION-S를 트랙별 안내로 보수화했습니다. 부모 레코드에 보편 서류목록으로 평탄화하지 않았습니다.",
+      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
     ],
     "stayManualSourceDate": "2026-06-01",
-    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+    "sourceDate": "2026-06-17",
+    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "manualRefresh260617": {
+      "reviewed": true,
+      "reviewedFields": [
+        "identity",
+        "period",
+        "activityScope",
+        "manualDomains",
+        "subcodes",
+        "procedures",
+        "documents",
+        "summaries",
+        "sourceMetadata",
+        "searchAliases"
+      ],
+      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "needsManualReview": true,
+      "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+    }
   },
   "searchAliases": [
     "E-7-4R",
@@ -369,7 +486,9 @@
     "지역특화형비자"
   ],
   "reviewStatus": "needs_review",
-  "editorNotes": "",
+  "editorNotes": [
+    "2026-06-17 refresh pass: source refs normalized to extracted official manuals; unresolved legal/document/procedure details remain marked for manual review."
+  ],
   "_generated": {
     "compat": {
       "newReq": "지역특화형 비자와 광역형 비자 시범사업은 트랙별 지자체 추천, 체류지·근무지, 가족동반, 소득·고용·재학 요건을 각각 확인해야 함. 2026-06-01 체류민원 매뉴얼은 지역특화 숙련기능인력(E-7-4R) 동반가족(F-3-3R), 지역특화동포(F-4-R) 및 광역형 D-2/E-7 특례를 별도 절차로 제시함.",
