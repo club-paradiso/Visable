@@ -12,7 +12,7 @@ ALLOW_BACKEND_TEST_SKIP="${ALLOW_BACKEND_TEST_SKIP:-0}"
 
 run_offline_backend_checks() {
   echo "INFO: Running offline-safe backend syntax checks..."
-  if ! python3 -m py_compile backend/services/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py; then
+  if ! python3 -m py_compile backend/services/*.py backend/paradiso_backend.py backend/tests/test_paradiso_backend.py backend/tests/test_e7_workplace_change_law_grounding.py; then
     echo "ERROR: Offline-safe backend syntax checks failed." >&2
     exit 1
   fi
@@ -298,6 +298,9 @@ python3 scripts/audit_duplicate_render_content.py --check
 echo "[13/14] Running backend regression tests..."
 if ensure_backend_test_runtime; then
   $TEST_PYTHON backend/tests/test_paradiso_backend.py
+  # E-7 workplace-change / law-grounding-safety regression suite (intent triggers,
+  # status-detail contract, unverified-citation guardrail, Fast/Basic routing).
+  $TEST_PYTHON backend/tests/test_e7_workplace_change_law_grounding.py
 else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
