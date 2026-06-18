@@ -1,0 +1,565 @@
+{
+  "code": "F-4",
+  "name": "재외동포",
+  "cat": "family",
+  "period": "3년, 연장가능",
+  "subcodes": [
+    {
+      "code": "F-4-11",
+      "name": "재외동포 본인",
+      "addReq": "국적 상실/이탈 입증. 가족관계기록사항증명서, 제적등본 또는 폐쇄등록부. 외국국적 취득 원인·연월일 증명.",
+      "addReqDocs": [
+        "doc_f4_proof"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-12",
+      "name": "직계비속",
+      "addReq": "직계존속이 대한민국 국민이었던 사실 입증. 직계존비속 관계 입증(출생증명서 등). 여권 등 외국국적 취득 입증.",
+      "addReqDocs": [
+        "doc_f4_proof",
+        "doc_basic",
+        "doc_passport"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-13",
+      "name": "D·E계열 6개월↑",
+      "addReq": "D-1, D-5~D-9, E-1~E-7 자격 6개월↑ 체류 이력 입증.",
+      "addReqDocs": [
+        "doc_purpose"
+      ],
+      "note": "출입국정보시스템 확인."
+    },
+    {
+      "code": "F-4-14",
+      "name": "대학 졸업자",
+      "addReq": "재학증명서 또는 졸업증명서. 국외 전문학사 소지자는 TOPIK 3급↑ 필요.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_degree",
+        "doc_topik"
+      ],
+      "note": "정부초청 장학생은 장학생 입증서류."
+    },
+    {
+      "code": "F-4-15",
+      "name": "OECD영주자",
+      "addReq": "OECD 영주권.",
+      "addReqDocs": [
+        "doc_purpose"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-16",
+      "name": "법인대표 등",
+      "addReq": "법인대표 임명장.",
+      "addReqDocs": [
+        "doc_career"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-17",
+      "name": "10만불 기업가",
+      "addReq": "10만불↑ 투자 증명.",
+      "addReqDocs": [
+        "doc_invest"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-18",
+      "name": "다국적기업 종사자",
+      "addReq": "다국적기업 재직증명.",
+      "addReqDocs": [
+        "doc_career"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-19",
+      "name": "동포단체대표",
+      "addReq": "단체대표 증빙.",
+      "addReqDocs": [
+        "doc_career"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-20",
+      "name": "공무원 등",
+      "addReq": "공무원 재직증명.",
+      "addReqDocs": [
+        "doc_career"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-21",
+      "name": "교원",
+      "addReq": "교원 자격증/재직증명.",
+      "addReqDocs": [
+        "doc_specialty",
+        "doc_career"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-4-25",
+      "name": "60세 이상자",
+      "addReq": "연령 입증.",
+      "addReqDocs": [
+        "doc_passport",
+        "doc_basic"
+      ],
+      "note": "한국어 면제."
+    },
+    {
+      "code": "F-4-30",
+      "name": "국내 초·중·고 재학 동포 자녀",
+      "addReq": "국내 초·중·고 재학 입증.",
+      "addReqDocs": [
+        "doc_enroll"
+      ],
+      "note": "최초 2년 이내(3월말/9월말 기준), 연장 시 2년 부여."
+    },
+    {
+      "code": "F-4-41",
+      "name": "F-4-41 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-4-41",
+        "F441"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 390,529",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-4-42",
+      "name": "F-4-42 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-4-42",
+        "F442"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 390,529",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 등 □ 재외동포(F-4) 자격 소지자의 취업"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다.",
+        "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 534",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ],
+      "variants": [
+        {
+          "id": "f-4-overseas-korean-extension",
+          "labelKo": "F-4 재외동포 체류기간 연장",
+          "scenarioKo": "F-4 재외동포가 체류기간 연장을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "수수료"
+            ],
+            "requiredDocs": [
+              "한국어능력 입증서류",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "한국어능력 면제 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "PDF pp. 530-531",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "한국어능력 수준과 법 위반 여부 등에 따라 체류기간 부여 범위가 달라질 수 있습니다.",
+            "최대 체류기간과 제한 사유를 공식 매뉴얼에서 확인해야 합니다."
+          ],
+          "statusCode": "F-4"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 532-583",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ],
+      "variants": [
+        {
+          "id": "f-4-domestic-residence-report",
+          "labelKo": "F-4 국내거소신고",
+          "scenarioKo": "90일을 초과해 국내에 체류하려는 F-4 재외동포가 국내거소신고를 하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "통합신청서(별지 제1호 서식)",
+              "여권 및 사본",
+              "사진",
+              "수수료"
+            ],
+            "requiredDocs": [
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "조기적응프로그램 이수증",
+              "조기적응프로그램 면제 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "PDF p. 530",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "90일을 초과하여 체류하려는 경우의 국내거소신고 시나리오입니다."
+          ],
+          "statusCode": "F-4"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+      ],
+      "variants": [
+        {
+          "id": "f-4-overseas-korean-status-change",
+          "labelKo": "F-4 재외동포 국내 체류자격 변경",
+          "scenarioKo": "국내에서 발급하거나 전산으로 확인할 수 있는 입증서류를 갖춘 재외동포가 F-4 체류자격 변경을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "통합신청서(별지 제1호 서식)",
+              "여권 및 사본",
+              "사진",
+              "수수료",
+              "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
+            ],
+            "requiredDocs": [
+              "재외동포 해당 여부 입증서류",
+              "한국어능력 입증서류",
+              "해외범죄경력증명서"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "결핵진단서",
+              "조기적응프로그램 이수증",
+              "한국어능력 또는 조기적응프로그램 면제 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "PDF pp. 528-530",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "국내에서 발급하거나 전산으로 확인할 수 있는 서류를 갖춘 국내 변경 시나리오입니다.",
+            "H-2 방문취업 체류자격과 혼동하지 않습니다."
+          ],
+          "statusCode": "F-4"
+        }
+      ],
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "manualRefs": []
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "F-4-11",
+    "F-4-12",
+    "F-4-13",
+    "F-4-14",
+    "F-4-15",
+    "F-4-16",
+    "F-4-17",
+    "F-4-18",
+    "F-4-19",
+    "F-4-20",
+    "F-4-21",
+    "F-4-25",
+    "F-4-30",
+    "F-4-41",
+    "F441",
+    "F-4-42",
+    "F442"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "dataBadge": "2026.2.12~ H-2 통합, 동포 일원화",
+      "dataDate": "2026-02-12 (법무부 동포체류자격 통합 시행)",
+      "newReq": "[2026.1.1 신청 연령 확대] 만 18세 미만도 F-4 신청 가능(사증민원 매뉴얼 2026.04 기준). [2026.2.12 제도 변경] H-2(방문취업) 신규 발급 중단, 동포 체류자격 F-4로 일원화. 국적에 따른 차별 없이 동포임 입증 시 F-4 부여. [사증발급·자격변경 공통] ① 한국어능력 입증서류 ② 해외 범죄경력증명서 ③ 외국국적동포 입증서류(가족관계기록사항증명서, 제적등본, 호구부, 거민증, 출생증명서 등) ④ 조기적응프로그램 이수확인서(약 5시간, 면제 대상 제외). 장관고시 21개국(중국, 필리핀, 인도네시아, 방글라데시, 베트남, 몽골, 태국, 파키스탄, 스리랑카, 인도, 미얀마, 네팔, 이란, 우즈베키스탄, 카자흐스탄, 키르기스스탄, 우크라이나, 나이지리아, 가나, 이집트, 페루) 국민은 별도 첨부서류 기준 적용.",
+      "newReqDocs": [
+        "doc_topik",
+        "doc_crim",
+        "doc_f4_proof",
+        "doc_kiip"
+      ],
+      "extReq": "체류기간 연장허가가 제한될 수 있음을 유의하시기 바랍니다. ○ 체류기간 연장 신청 시 제출서류는 다음과 같습니다. - 신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 등 □ 재외동포(F-4) 자격 소지자의 취업",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_fee",
+        "doc_address"
+      ],
+      "faq": "Q: 취업 제한?\nA: 단순노무 일부 직종만 제한. 그 외 취업활동은 제한 없음(국내법상 자격 필요 직종은 해당 자격 필수). H-2 대비 직종 선택 폭 대폭 확대.\nQ: H-2에서 F-4로 변경하려면?\nA: 본인 직접 신청 필요(자동 전환 안 됨). 동포 입증서류 + 한국어능력 입증 + 조기적응프로그램 이수. 2027.12.31까지 수수료 면제.\nQ: 자격부여 제한?\nA: 살인·강간·마약·보이스피싱 등 범죄이력, 불법체류 이력 시 불허. 특정강력범죄 형 선고, 최근 5년 내 금고↑, 최근 3년 내 벌금·범칙금 합산 700만원↑ 시 제한.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_topik",
+        "doc_crim",
+        "doc_f4_proof",
+        "doc_kiip"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_fee",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "TOPIK 성적표 또는 한국어능력 입증서류"
+        },
+        {
+          "name": "해외 범죄경력증명서",
+          "note": "자국 정부 발급, 아포스티유/영사확인"
+        },
+        {
+          "name": "외국국적동포 입증서류",
+          "note": "공적장부 등"
+        },
+        {
+          "name": "사회통합프로그램(KIIP) 이수증/합격증"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가"
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가가 제한될 수 있음을 유의하시기 바랍니다. ○ 체류기간 연장 신청 시 제출서류는 다음과 같습니다. - 신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 등 □ 재외동포(F-4) 자격 소지자의 취업",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 재외동포(F-4) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 변경 대상 자격과 세부 상황별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 26,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "dataBadge",
+      "dataDate",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "hikorea_task_type",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "dataBadge": "compat",
+      "dataDate": "compat",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "statusChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs",
+        "variants"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs",
+        "variants"
+      ],
+      "statusChange": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "variants",
+        "summary",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "_meta": {
+    "note": "UI display labels for procedure keys. Reference data; not legal content. A procedure label is NOT a summary."
+  },
+  "labels": {
+    "visaIssuance": "사증발급",
+    "statusGrant": "체류자격 부여",
+    "statusChange": "체류자격 변경",
+    "extension": "체류기간 연장",
+    "registration": "외국인등록",
+    "reentry": "재입국허가",
+    "activitiesOutsideStatus": "체류자격외 활동",
+    "workplaceChange": "근무처 변경·추가",
+    "partTimeWork": "시간제취업",
+    "schoolChange": "학교(소속) 변경"
+  }
+}

@@ -1,0 +1,1633 @@
+{
+  "_meta": {
+    "note": "Relocated '_searchAliasAudit' fields, re-injected verbatim by build. Generated; do not hand-edit.",
+    "needsMigrationReview": false
+  },
+  "byCode": {
+    "B-1": {
+      "generatedAliases": [
+        {
+          "alias": "B-1-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "B-1-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "B-2": {
+      "generatedAliases": [
+        {
+          "alias": "B-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "B-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "C-3": {
+      "generatedAliases": [
+        {
+          "alias": "C-3-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-8",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "C-3-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-1": {
+      "generatedAliases": [
+        {
+          "alias": "D-1-00",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-2": {
+      "generatedAliases": [
+        {
+          "alias": "D-2-1",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-2",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-3",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-4",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-5",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-6",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-7",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "D-2-8",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "유학",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "학생비자",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "전문학사",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "학사",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "석사",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "박사",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "연구과정",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "교환학생",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "방문학생",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "일학습연계",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "일-학습연계",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "시간제취업",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "외국인 유학생",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        },
+        {
+          "alias": "유학생",
+          "reason": "manual_d2_subcode_or_user_search_term",
+          "source": "2026_05_stay_manual_d2_manual_insert",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-06-09"
+        }
+      ],
+      "method": "manual_d2_record_insert",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-3": {
+      "generatedAliases": [
+        {
+          "alias": "D-3-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-3-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-3-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-4": {
+      "generatedAliases": [
+        {
+          "alias": "D-4-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-2K",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-4-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-13",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-7": {
+      "generatedAliases": [
+        {
+          "alias": "D-7-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-7-92",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-8": {
+      "generatedAliases": [
+        {
+          "alias": "D-8-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-8-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-9": {
+      "generatedAliases": [
+        {
+          "alias": "D-9-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-9-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-10": {
+      "generatedAliases": [
+        {
+          "alias": "D-10-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "D-10-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "E-2": {
+      "generatedAliases": [
+        {
+          "alias": "E-2-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-2-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "E-6": {
+      "generatedAliases": [
+        {
+          "alias": "E-6-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-6-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-6-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "E-7": {
+      "generatedAliases": [
+        {
+          "alias": "E-7-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-S",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-Y",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-91",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "E-9": {
+      "generatedAliases": [
+        {
+          "alias": "E-9-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-4",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-R",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-9-JS",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "E-10": {
+      "generatedAliases": [
+        {
+          "alias": "E-10-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-10-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-10-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-1": {
+      "generatedAliases": [
+        {
+          "alias": "F-1-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-9",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-21",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-22",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-23",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-24",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-1-6",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-2": {
+      "generatedAliases": [
+        {
+          "alias": "F-2-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-99",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-71",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7S",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-3": {
+      "generatedAliases": [
+        {
+          "alias": "F-3-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-3-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-3-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-4": {
+      "generatedAliases": [
+        {
+          "alias": "F-4-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-13",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-14",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-15",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-16",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-17",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-18",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-19",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-20",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-21",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-25",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-4-30",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-5": {
+      "generatedAliases": [
+        {
+          "alias": "F-5-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-16",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-T",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-S1",
+          "reason": "detail_code_parent_fallback_from:K-STAR",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "F-6": {
+      "generatedAliases": [
+        {
+          "alias": "F-6-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-6-2",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-6-3",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-3",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "G-1": {
+      "generatedAliases": [
+        {
+          "alias": "G-1-1",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-5",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-6",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-10",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-11",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "G-1-12",
+          "reason": "existing_subCodes_code",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "D-4-2K": {
+      "generatedAliases": [
+        {
+          "alias": "C-3-4",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "E-7-2",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    },
+    "K-STAR": {
+      "generatedAliases": [
+        {
+          "alias": "F-2-71",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-2-7S",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        },
+        {
+          "alias": "F-5-S1",
+          "reason": "existing_record_text_code_token",
+          "source": "existing_repo_json_and_2026_05_manual_audit",
+          "sourceManualVersion": "2026.5",
+          "legalContentCreated": false,
+          "verified": false,
+          "needsManualReview": true,
+          "updatedAt": "2026-05-26"
+        }
+      ],
+      "method": "detail_code_alias_extraction_without_new_legal_content",
+      "verified": false,
+      "needsManualReview": true
+    }
+  }
+}

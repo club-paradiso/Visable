@@ -1,0 +1,225 @@
+{
+  "code": "D-4-2K",
+  "name": "기업맞춤형인턴십(K-Trainee)",
+  "cat": "study",
+  "period": "6개월(인턴기간+1개월), 최대 1년 이내 연장",
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summary": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간 연장. 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장이 가능합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료",
+          "doc_residence_proof_generic",
+          "기간연장 사유서 및 인턴·연수 활동 계획서"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 외국인체류 안내매뉴얼 pp.91-92 '기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간 연장 제출서류'에서 옮긴 제출서류입니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 91-92",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summary": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 외국인등록 제출서류.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권, 사진(6개월 내 촬영 반명함) 1장, 수수료",
+          "doc_residence_proof_generic",
+          "기업 맞춤형 인턴십(D-4-2K) 자격 소지자는 매뉴얼 붙임 1·2 안내문 참고"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 외국인체류 안내매뉴얼 p.94 '기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류'(외국인등록)에서 옮긴 제출서류입니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 94",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "C-3-4",
+    "E-7-1",
+    "E-7-2"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "dataBadge": "2025.10.29 신설 (2년 시범운영)",
+      "dataDate": "2025-10-29 (법무부 K-Trainee 체류자격 신설 시행)",
+      "newReq": "한국 기업 해외 현지법인 현지채용 직원 또는 산학협력 대상 재학생. [공통] ① 한국 기업 국내 본사의 공식 인턴십 계획서 ② 해외 법인 재직증명서 또는 재학증명서 ③ 본사 인턴십 수락서(초청장) ④ 사증발급인정서(본사가 출입국관리소에 신청). [재학생 추가요건] 만 29세 이하, 학사 3학년 이상(석·박사 포함), TOPIK 2급 이상. [직종요건] E-7-1·E-7-2 해당 77개 직종 분야. [대상국] 9개국: 베트남·중국·태국·일본·인도·인도네시아·말레이시아·싱가포르·필리핀.",
+      "newReqDocs": [
+        "doc_internship_plan",
+        "doc_emp_certificate",
+        "doc_invitation",
+        "doc_cvi"
+      ],
+      "extReq": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간 연장. 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장이 가능합니다.",
+      "extReqDocs": [
+        "doc_internship_plan",
+        "doc_emp_certificate"
+      ],
+      "addReq": "사업장별 상시근로자 수의 10% 이내, 동시 인턴십 최대 100명 초과 불가(기업 쿼터 제한). D-4-2K는 취업활동 불가, 인턴십 외 근로 금지. D-4-2K 경력은 E-7 비자 자격요건으로 자동 인정되지 않음.",
+      "addReqDocs": [],
+      "note": "2025.10.29 신설, 2년 시범운영 후 확대 여부 결정 예정. 9개국 이외 국적자는 D-3(산업연수) 또는 C-3-4(단기연수, 90일) 검토. (법무부 공식 보도자료·Mr. Visa Korea 행정사 검토 2026.04 기준)",
+      "initialReqDocs": [
+        "doc_internship_plan",
+        "doc_emp_certificate",
+        "doc_invitation",
+        "doc_cvi"
+      ],
+      "extensionReqDocs": [
+        "doc_internship_plan",
+        "doc_emp_certificate"
+      ],
+      "changeReqDocs": [],
+      "faq": "[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "documents_initial": [
+        {
+          "name": "인턴십(연수) 계획서"
+        },
+        {
+          "name": "재직증명서"
+        },
+        {
+          "name": "초청장",
+          "note": "초청목적, 귀국보증 등 상세 명시"
+        },
+        {
+          "name": "사증발급인정서",
+          "note": "Certificate for Visa Issuance"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "인턴십(연수) 계획서"
+        },
+        {
+          "name": "재직증명서"
+        }
+      ]
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 38,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "dataBadge",
+      "dataDate",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "addReq",
+      "addReqDocs",
+      "note",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "faq",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "dataBadge": "compat",
+      "dataDate": "compat",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "addReq": "compat",
+      "addReqDocs": "compat",
+      "note": "compat",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "faq": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

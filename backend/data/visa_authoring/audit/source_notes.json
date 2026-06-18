@@ -1,0 +1,138 @@
+{
+  "_meta": {
+    "note": "Relocated '_source_notes' fields, re-injected verbatim by build. Generated; do not hand-edit.",
+    "needsMigrationReview": false
+  },
+  "byCode": {
+    "B-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "B-2": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "C-3": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "C-4": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-2": {
+      "newReq": "2026.5_stay_manual_d2_manual_insert",
+      "extReq": "2026.5_stay_manual_d2_manual_insert",
+      "documents_initial": "체류민원 매뉴얼의 체류자격 변경 제출서류를 편의상 initial 문서 배열에 보수적으로 반영. 재외공관 사증발급 서류 아님.",
+      "documents_registration": "2026.5_stay_manual_p44",
+      "documents_extension": "2026.5_stay_manual_pp43_44"
+    },
+    "D-3": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-4": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-4-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-7": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-8": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-9": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-10": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-2": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-3": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-4": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-5": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-6": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-7": {
+      "extReq": "2026.5_manual_extract",
+      "e74Refresh": "2026-06-01_stay_manual_pp298_309"
+    },
+    "E-8": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-9": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "E-10": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-2": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-3": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-4": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-5": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "F-6": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "G-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "H-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "H-2": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "A-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "A-2": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "A-3": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "C-1": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-5": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-6": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "D-4-2K": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "K-STAR": {
+      "extReq": "2026.5_manual_extract"
+    },
+    "REGION-S": {
+      "extReq": "2026.5_manual_extract",
+      "regionalRefresh": "2026-06-01_stay_manual_changed_pages_619_621_623_624_627"
+    },
+    "YOUTH-STAY": "매뉴얼 프로그램 헬퍼 레코드. 공식 매뉴얼이 독립 체류자격 코드를 부여하지 않으므로 비자 코드로 표기하지 않습니다."
+  }
+}

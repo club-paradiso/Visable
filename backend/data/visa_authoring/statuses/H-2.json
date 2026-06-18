@@ -1,0 +1,383 @@
+{
+  "code": "H-2",
+  "name": "방문취업 (신규발급 중단)",
+  "cat": "other",
+  "period": "기존 체류자 한정",
+  "aliases": [
+    "방문취업",
+    "H2",
+    "H-2 폐지",
+    "H2 폐지",
+    "동포비자 통합",
+    "H-2 F-4 통합"
+  ],
+  "subcodes": [
+    {
+      "code": "H-2-7",
+      "name": "만기출국 후 재입국한 사람",
+      "nameKo": "만기출국 후 재입국한 사람",
+      "addReq": "만기출국 및 재입국 사실 입증서류 등 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "note": "방문취업(H-2) 만기출국 후 재입국한 사람. 세부 요건은 사증발급·체류 안내매뉴얼 확인.",
+      "searchAliases": [
+        "H-2-7",
+        "H27",
+        "만기출국 재입국",
+        "재입국 방문취업"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 33",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        },
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "p. 405",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "기타"
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다.",
+        "자동 추출 결과에 인접 절차 문구가 섞여 UI 표시용 서류 목록은 보류했습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 531",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 526-531",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ],
+      "variants": [
+        {
+          "id": "h-2-existing-holder-registration",
+          "labelKo": "H-2 기존 체류자 외국인등록",
+          "scenarioKo": "2026년 2월 12일 이전 H-2 체류자격을 부여받은 기존 체류자가 외국인등록을 하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "여권",
+              "최근 6개월 이내 촬영한 컬러 사진",
+              "외국인등록 신청서",
+              "수수료"
+            ],
+            "requiredDocs": [
+              "조기적응프로그램 이수증",
+              "지정병원 발급 건강진단서"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "재외공관에서 체류자격을 부여받을 때 제출하지 않은 경우 한국어능력 입증서류",
+              "재외공관에서 체류자격을 부여받을 때 제출하지 않은 경우 해외범죄경력증명서",
+              "유학생 부모인 경우 유학생의 재학증명서 및 외국인등록증 사본"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "PDF pp. 524-525",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "H-2 신규 발급은 2026년 2월 12일부터 중단되었으며, 이 카드는 기존 H-2 체류자의 등록 시나리오만 다룹니다.",
+            "입국일부터 90일 이내 등록 의무를 확인해야 합니다."
+          ],
+          "statusCode": "H-2"
+        }
+      ]
+    },
+    "workplaceChange": {
+      "available": true,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+      ],
+      "variants": [
+        {
+          "id": "h-2-employment-start-workplace-change-report",
+          "labelKo": "H-2 취업개시·근무처 변경 신고",
+          "scenarioKo": "기존 H-2 체류자가 허용 업종에서 취업을 시작하거나 근무처를 변경한 뒤 신고하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "취업개시 또는 근무처 변경 신고서",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "특례고용가능확인서 사본",
+              "표준근로계약서 사본",
+              "사업자등록증 사본"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "온라인 신고 시 시스템이 요구하는 입력정보"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "PDF pp. 525-526",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "취업개시 또는 근무처 변경일부터 15일 이내 신고 대상입니다.",
+            "이 카드는 허용 업종에서의 신고 제출서류를 안내하며, 취업 가능 업종 전체를 requiredDocs로 평탄화하지 않습니다.",
+            "F-4 재외동포 체류자격과 혼동하지 않습니다."
+          ],
+          "statusCode": "H-2"
+        }
+      ],
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "manualRefs": []
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "H-2-7",
+    "만기출국 후 재입국"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "dataBadge": "⚠ 2026.2.12~ 신규발급 중단",
+      "dataDate": "2026-02-12 (법무부 동포체류자격 통합 시행)",
+      "newReq": "[제도 변경] 2026.2.12부터 H-2(방문취업) 신규 사증 발급 중단. 동포 체류자격이 F-4(재외동포)로 일원화됨. 국적에 따른 차별 없이 동포임이 입증되면 F-4 자격 부여. [기존 H-2 체류자] 자동 전환 안 됨. 본인이 직접 F-4 체류자격 변경 신청 필요.",
+      "newReqDocs": [],
+      "extReq": "체류기간 연장허가 ○ 고용부에서 “취업기간 만료자 취업활동 기간연장 확인서”를 받은 경우 입국일(또는 체류자격 변경허가일)로부터 4년 10개월 내에서 허가(감염병 확산, 천재지변 등의 사유로 체류기간 직권 연장 시 6년 이내 연장 가능) ○ (건강상태에 따른 처리기준) 결핵(결핵의심 포함)등 진단을 받았지만, 외국인등록을 하고 체류기간 연장허가를 신청할 경우에는 “외국인 결핵환자 사증발급 및 체류관리 지침”에 따라 처리받습니다. ○ (외국인등록 시) 방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. ※ 한국어능력 입증서류를 제출한 경우에 한하여 체류기간 3년을 부여하고, 한국어능력 입증서류를 제출하지 않는 경우 체류기간 1년 부여 □ 방문취업 자격자의 법 위반 시 처리기준은 다음과 같습니다. ○ (원칙적 기준) 초범은 범칙금 500만 원 이상, 재범은 최근 3년 이내 합산 금액이 700만원 이상이면 체류 불허 후 출국조치 - 최근 3년 이내에 3회 이상 범칙금 처분을 받은",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_photo",
+        "doc_f4_proof",
+        "doc_topik",
+        "doc_address",
+        "doc_kiip"
+      ],
+      "faq": "Q: H-2→F-4 변경 시 한국어 능력에 따른 체류기간?\nA: 한국어능력 인정 시 최대 3년, 사회통합프로그램 등록 시 2년, 미등록 시 1년.\nQ: 기존 H-2 사업장에서 계속 근무 가능한가?\nA: 가능. F-4 변경 후에도 기존 사업장 계속 근무 가능하며, 별도 취업허가 불필요.\nQ: 변경 불허 사유?\nA: 불법체류·범칙 이력, 동포 입증서류 불충분, 살인·강간·마약·보이스피싱 등 범죄이력.\nQ: 조기적응프로그램?\nA: 약 5시간. 국내 생활 법질서, 범죄 예방, 산업안전, 정착 안내 내용.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_photo",
+        "doc_f4_proof",
+        "doc_topik",
+        "doc_address",
+        "doc_kiip"
+      ],
+      "changeReqDocs": [],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
+          "note": "3.5x4.5cm, 최근 6개월"
+        },
+        {
+          "name": "외국국적동포 입증서류",
+          "note": "공적장부 등"
+        },
+        {
+          "name": "TOPIK 성적표 또는 한국어능력 입증서류"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        },
+        {
+          "name": "사회통합프로그램(KIIP) 이수증/합격증"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 ○ 고용부에서 “취업기간 만료자 취업활동 기간연장 확인서”를 받은 경우 입국일(또는 체류자격 변경허가일)로부터 4년 10개월 내에서 허가(감염병 확산, 천재지변 등의 사유로 체류기간 직권 연장 시 6년 이내 연장 가능) ○ (건강상태에 따른 처리기준) 결핵(결핵의심 포함)등 진단을 받았지만, 외국인등록을 하고 체류기간 연장허가를 신청할 경우에는 “외국인 결핵환자 사증발급 및 체류관리 지침”에 따라 처리받습니다. ○ (외국인등록 시) 방문취업 사증으로 최초 입국하여 외국인등록 신청 시 체류기간은 최대 3년을 부여받을 수 있습니다. ※ 한국어능력 입증서류를 제출한 경우에 한하여 체류기간 3년을 부여하고, 한국어능력 입증서류를 제출하지 않는 경우 체류기간 1년 부여 □ 방문취업 자격자의 법 위반 시 처리기준은 다음과 같습니다. ○ (원칙적 기준) 초범은 범칙금 500만 원 이상, 재범은 최근 3년 이내 합산 금액이 700만원 이상이면 체류 불허 후 출국조치 - 최근 3년 이내에 3회 이상 범칙금 처분을 받은",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 방문취업 (신규발급 중단)(H-2) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.workplaceChange.summary": "근무처 변경·추가 신고 또는 허가 범위는 체류자격과 세부 상황별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 31,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "dataBadge",
+      "dataDate",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "aliases",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_extension",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "searchAliases"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "dataBadge": "compat",
+      "dataDate": "compat",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "aliases": "identity",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "searchAliases": "identity"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "workplaceChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs",
+        "variants"
+      ],
+      "workplaceChange": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "variants",
+        "summary",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

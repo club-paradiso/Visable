@@ -1,0 +1,370 @@
+{
+  "code": "E-1",
+  "name": "교수",
+  "cat": "work",
+  "period": "5년, 연장가능",
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "표준규격사진 1매(3.5×4.5cm, 최근 6개월)",
+          "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "고용계약서 원본 및 사본, 기타 심사에 필요한 자료*(필요시 1~2종 제출) * 교원활용계획서, 수강생 현황, 근로소득원천징수부 등",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 172",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 166-173",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "e-1-d2-d10-status-change",
+          "labelKo": "유학(D-2)·구직(D-10) → 교수(E-1) 체류자격 변경허가",
+          "scenarioKo": "합법 체류 중인 유학(D-2) 또는 구직(D-10) 자격 소지자가 교수(E-1) 분야의 고용계약을 체결하여 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료"
+            ],
+            "requiredDocs": [
+              "고용계약서",
+              "학위증 또는 경력증명서",
+              "고용업체 등 설립관련 서류(사업자등록증, 등기부등본 등)"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "조교수 이상의 자격기준에 해당하는 전임교수 등은 학위증 또는 경력증명서 제출 생략"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 172",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "유학(D-2) 또는 구직(D-10)에서 교수(E-1)로 변경하는 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "E-1"
+        },
+        {
+          "id": "e-1-professional-spouse-status-change",
+          "labelKo": "전문외국인력 배우자(F-3)의 교수(E-1) 등 전문직 체류자격 변경허가",
+          "scenarioKo": "전문외국인력(E-1~E-5, E-6(E-6-2 제외), E-7) 자격 소지자의 배우자로서 동반(F-3) 자격을 가진 자가 교수(E-1) 등 전문직으로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매, 수수료"
+            ],
+            "requiredDocs": [
+              "사업자등록증",
+              "학위증(원본 및 사본) 또는 경력증명서",
+              "고용계약서(원본 및 사본)"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "원 근무처의 장의 동의서(원 근무처가 있는 경우만 해당)"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 171",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "공식 매뉴얼상 동일 조항은 E-1부터 E-7(E-6-2 제외)까지의 전문직 변경에 적용되며, 본 변형은 교수(E-1) 장에 수록된 시나리오입니다.",
+            "전문외국인력 배우자(F-3) 시나리오에만 적용됩니다."
+          ]
+        },
+        {
+          "id": "e-1-science-graduate-status-change",
+          "labelKo": "이공계 졸업 유학생(석사 이상)의 교수(E-1) 체류자격 변경허가",
+          "scenarioKo": "이공계 대학을 졸업한 유학생 중 석사 이상의 학위를 취득하고 교육·과학기술 분야의 연구·지도 활동에 종사하려는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료"
+            ],
+            "requiredDocs": [
+              "졸업증명서",
+              "고용계약서",
+              "총(학)장의 고용추천서",
+              "사업자등록증"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 172",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "석사 이상의 학위를 취득한 이공계 졸업 유학생 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "E-1"
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "고용계약서, 학력(학사↑), 경력, 사업자등록증.",
+      "newReqDocs": [
+        "doc_emp_contract",
+        "doc_degree",
+        "doc_career",
+        "doc_biz_reg"
+      ],
+      "extReq": "체류기간 연장허가 제출서류 ① 신청서(제 34호 서식), 여권, 표준규격사진 1매, 수수료 ② 고용계약서 원본 및 사본, 기타 심사에 필요한 자료*(필요시 1~2종 제출) * 교원활용계획서, 수강생 현황, 근로소득원천징수부 등 ③ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_career",
+        "doc_emp_contract",
+        "doc_tax",
+        "doc_address"
+      ],
+      "faq": "Q: 연구만?\nA: E-3 검토.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_emp_contract",
+        "doc_degree",
+        "doc_career",
+        "doc_biz_reg"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_career",
+        "doc_emp_contract",
+        "doc_tax",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "최종 학위/학력증명서",
+          "note": "아포스티유/영사확인 필수"
+        },
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "사업자등록증 사본"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "납세증명서",
+          "note": "국세 및 지방세 완납증명"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 제출서류 ① 신청서(제 34호 서식), 여권, 표준규격사진 1매, 수수료 ② 고용계약서 원본 및 사본, 기타 심사에 필요한 자료*(필요시 1~2종 제출) * 교원활용계획서, 수강생 현황, 근로소득원천징수부 등 ③ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 교수(E-1) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 세부 자격과 신청 사유별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 13,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "statusChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

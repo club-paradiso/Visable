@@ -1,0 +1,218 @@
+{
+  "code": "A-3",
+  "name": "협정",
+  "cat": "diplo",
+  "period": "SOFA 등 존속기간",
+  "subcodes": [
+    {
+      "code": "A-3-99",
+      "name": "Fulbright 협정대상자",
+      "nameKo": "Fulbright 협정대상자",
+      "addReq": "Fulbright 협정 대상자임을 입증하는 서류 등 (매뉴얼 확인).",
+      "addReqDocs": [
+        "doc_case_specific_evidence"
+      ],
+      "note": "한·미 Fulbright 협정 대상자에 대한 협정(A-3) 체류자격. 세부 서류는 사증발급 안내매뉴얼 확인.",
+      "searchAliases": [
+        "A-3-99",
+        "A399",
+        "Fulbright",
+        "풀브라이트",
+        "협정대상자"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "p. 13",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "협정"
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 22",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summary": "외국인등록 외국인등록 면제 대상이나 본인이 원할 경우 외국인등록증 발급 - 기타 등록외국인에게 부여 되는 각종 의무(등록사항 변경신고, 체류지 변경 신고 등)도 적용 면제 ※인터넷 쇼핑 등 온라인 이용 시 본인 인증 곤란으로 국내생활 불편 해소 목적 제출서류 ① 통합신청서(별지 제34호 서식), 여권 원본, 반명함판 천연색 사진(3.5×4.5㎝) ② 주한외국공관원 신분증 등 신분 입증서류",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권 원본, 반명함판 천연색 사진(3.5×4.5㎝)",
+          "주한외국공관원 신분증 등 신분 입증서류"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 23",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "A-3-99",
+    "Fulbright",
+    "풀브라이트"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "파견 공문, SOFA 신분 증명서.",
+      "newReqDocs": [
+        "doc_dispatch",
+        "doc_purpose"
+      ],
+      "extReq": "체류기간 연장허가 1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여",
+      "extReqDocs": [],
+      "faq": "Q: 대상?\nA: 주한미군, 군속 및 가족.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_dispatch",
+        "doc_purpose"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "파견명령서",
+          "note": "본사 발급, 파견기간 및 직책 명시"
+        },
+        {
+          "name": "기타 체류목적 입증서류",
+          "note": "별도 소명자료"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가 1. Fulbright 협정 대상자 ◦ 신청서류 - 신청서(별지34호), 여권, Fulbright I/D 카드, 한미교육위원단 협조공한 ◦ 연장기간은 I/D 카드 상의 기간 및 한미교육위원단 협조공한상 요청기간을 확인하여 부여"
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 34,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "_source_notes",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "searchAliases"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "_source_notes": "audit:source_notes",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "searchAliases": "identity"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

@@ -1,0 +1,923 @@
+{
+  "code": "F-1",
+  "name": "방문동거",
+  "cat": "family",
+  "period": "2년, 연장가능",
+  "subcodes": [
+    {
+      "code": "F-1-3",
+      "name": "외교동거",
+      "addReq": "외교·공무 가족관계.",
+      "addReqDocs": [
+        "doc_fam_rel"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-5",
+      "name": "결혼이민자 부모·가족",
+      "addReq": "초청장, 신원보증서, 비취업서약서. 재외공관 필수.",
+      "addReqDocs": [
+        "doc_invitation",
+        "doc_guarantee",
+        "doc_purpose"
+      ],
+      "note": "입국 후 전환 불가."
+    },
+    {
+      "code": "F-1-9",
+      "name": "동포배우자 등",
+      "addReq": "F-4/H-2 동포 배우자·자녀 입증.",
+      "addReqDocs": [
+        "doc_f4_proof",
+        "doc_fam_rel"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-13",
+      "name": "유학생부모",
+      "addReq": "고교 이하 유학생 재학, 부모관계.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_fam_rel"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-21",
+      "name": "외교가사보조",
+      "addReq": "공관 요청서.",
+      "addReqDocs": [
+        "doc_invitation"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-22",
+      "name": "고액가사보조",
+      "addReq": "고액투자자 고용계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-23",
+      "name": "첨단가사보조",
+      "addReq": "우수인재 고용계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-24",
+      "name": "전문가사보조",
+      "addReq": "전문인력 고용계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": ""
+    },
+    {
+      "code": "F-1-D",
+      "name": "디지털노마드(워케이션) 비자",
+      "nameKo": "디지털노마드(워케이션) 비자",
+      "addReq": "해외 소속 기업 재직·원격근무 입증서류, 소득요건 입증서류, 민간 의료보험 가입 입증서류 등.",
+      "addReqDocs": [
+        "doc_remote_work_employment_proof",
+        "doc_digital_nomad_income_proof",
+        "doc_private_medical_insurance"
+      ],
+      "note": "해외 기업 소속으로 원격근무하며 국내 체류하는 디지털노마드. 세부 요건·소득 기준은 사증발급 안내매뉴얼 확인.",
+      "searchAliases": [
+        "F-1-D",
+        "F1D",
+        "digital nomad",
+        "workation",
+        "디지털 노마드",
+        "디지털노마드",
+        "워케이션"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "p. 303",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "기타"
+    },
+    {
+      "code": "F-1-16",
+      "name": "난민인정자의 배우자 및 미성년 자녀 (방문동거)",
+      "nameKo": "난민인정자의 배우자 및 미성년 자녀 (방문동거)",
+      "addReq": "난민인정자임을 입증하는 서류, 가족관계 입증서류.",
+      "addReqDocs": [
+        "doc_refugee",
+        "doc_fam_rel"
+      ],
+      "note": "난민인정자의 배우자 또는 미성년 자녀가 방문동거(F-1-16)로 변경하는 경우.",
+      "searchAliases": [
+        "F-1-16",
+        "F116",
+        "난민인정자 가족"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 348",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족/동반"
+    },
+    {
+      "code": "F-1-52",
+      "name": "결혼이민자의 전혼관계 출생 미성년 자녀 (방문동거)",
+      "nameKo": "결혼이민자의 전혼관계 출생 미성년 자녀 (방문동거)",
+      "addReq": "혼인관계 유지 입증서류, 전혼관계 친생자녀 가족관계 입증서류.",
+      "addReqDocs": [
+        "doc_fam_rel",
+        "doc_basic"
+      ],
+      "note": "혼인관계가 유지 중인 결혼이민자의 전혼관계 출생 친생 미성년 자녀가 F-1-52로 변경하는 경우.",
+      "searchAliases": [
+        "F-1-52",
+        "F152",
+        "전혼 자녀",
+        "전혼관계 자녀"
+      ],
+      "status": "active",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 350, 230",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true
+        }
+      ],
+      "group": "가족/동반"
+    },
+    {
+      "code": "F-1-1",
+      "name": "F-1-1 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-1",
+        "F11"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 365",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-6",
+      "name": "F-1-6 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-6",
+        "F16"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 345,352,489,495",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-11",
+      "name": "F-1-11 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-11",
+        "F111"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 629",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-12",
+      "name": "F-1-12 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-12",
+        "F112"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 311,342,344,354,407,408,409,410",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-15",
+      "name": "F-1-15 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-15",
+        "F115"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 305",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-28",
+      "name": "F-1-28 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-28",
+        "F128"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 349,354",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-51",
+      "name": "F-1-51 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-51",
+        "F151"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 304,349",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    {
+      "code": "F-1-72",
+      "name": "F-1-72 매뉴얼 참조 코드 (수동검토 필요)",
+      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReqDocs": [],
+      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "searchAliases": [
+        "F-1-72",
+        "F172"
+      ],
+      "status": "manual_review_required",
+      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "needsManualReview": true,
+      "manualRefs": [
+        {
+          "manualName": "체류민원/사증 매뉴얼",
+          "manualVersion": "2026.5",
+          "pageRange": "추출 페이지 후보: 405,544",
+          "confidence": "pdf_extracted_candidate_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    }
+  ],
+  "procedures": {
+    "statusChange": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "f-1-13-status-change",
+          "labelKo": "방문동거(F-1-13) 체류자격 변경허가",
+          "statusCode": "F-1-13",
+          "scenarioKo": "고등학교 이하 외국인 유학생의 동반부모 또는 2촌 이내 친인척이 방문동거(F-1-13)로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 외국인등록증(해당자), 표준규격사진 1매, 수수료",
+              "외국인유학생 입학허가서 또는 재학증명서",
+              "가족관계 입증서류",
+              "국내 체류비용 부담능력 입증서류(3개월 이상 계속 예치된 기준 이상 금액의 잔고증명서 등)"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "재정능력 입증서류(불법체류 다발국가 국민에 한함)"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 347-348",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01",
+              "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+            }
+          ],
+          "notes": [
+            "고등학교 이하 외국인 유학생 동반부모 또는 2촌 이내 친인척의 F-1-13 변경 시나리오에만 적용됩니다.",
+            "가족관계 입증서류는 원본 제출 및 번역본 첨부가 원칙입니다."
+          ]
+        },
+        {
+          "id": "f-1-6-marriage-cleanup-status-change",
+          "labelKo": "혼인단절 결혼이민자 가사정리(F-1-6) 체류자격 변경허가",
+          "scenarioKo": "국민과 혼인이 단절되었으나 F-6-3에 해당하지 않고 재산분할 또는 가사정리로 국내 체류가 불가피한 사람이 F-1-6으로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 사진 1매, 수수료",
+              "신원보증서",
+              "이혼 사실이 기재된 혼인관계 증명서",
+              "체류 불가피성 소명자료",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "기타 심사에 필요하다고 인정되는 서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 345-346",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "혼인단절 후 가사정리를 위한 F-1-6 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "F-1-6"
+        },
+        {
+          "id": "f-1-nationality-procedure-status-change",
+          "labelKo": "국적취득절차 진행자 방문동거(F-1) 체류자격 변경허가",
+          "scenarioKo": "국적회복, 귀화 또는 국적판정 절차를 밟고 있는 외국인이 방문동거(F-1)로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료",
+              "신원보증서",
+              "귀화허가 또는 국적회복허가 신청사실증명서"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 346",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "국적회복, 귀화 또는 국적판정 절차 진행자 변경 시나리오에만 적용됩니다."
+          ],
+          "statusCode": "F-1"
+        },
+        {
+          "id": "f-1-16-refugee-family-status-change",
+          "labelKo": "난민인정자 가족(F-1-16) 체류자격 변경허가",
+          "scenarioKo": "난민인정자의 배우자 또는 미성년 자녀가 방문동거(F-1-16)로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 표준규격사진 1매, 수수료",
+              "배우자 또는 그 부모의 난민인정증명서",
+              "난민인정자의 가족임을 입증하는 서류",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 348",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "배우자가 있는 미성년 자녀는 제외됩니다."
+          ],
+          "statusCode": "F-1-16"
+        },
+        {
+          "id": "f-1-52-prior-marriage-child-status-change",
+          "labelKo": "결혼이민자 전혼관계 출생 미성년 자녀(F-1-52) 체류자격 변경허가",
+          "scenarioKo": "혼인관계가 유지 중인 결혼이민자의 전혼관계 출생 친생 미성년 자녀가 F-1-52로 변경하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "여권, 통합신청서, 표준규격사진 1매, 수수료, 외국인등록증(해당자)",
+              "결혼이민자의 한국인 배우자의 기본증명서, 가족관계증명서, 혼인관계증명서, 주민등록등본",
+              "결혼이민자의 여권, 신분증, 외국인등록증",
+              "미성년 외국인 자녀의 여권 및 출생 관련 공적 증명서류 원본과 사본",
+              "양육권 보유관계 입증서류",
+              "결혼이민자와 한국인 배우자의 신원보증서",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "공교육 인정 대상 학교에 재학 중인 경우 재학증명서 추가 제출",
+              "결핵고위험국가의 경우 결핵진단서 추가 제출"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 350",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "결혼이민자의 전혼관계 출생 친생 미성년 자녀 F-1-52 변경 시나리오에만 적용됩니다.",
+            "해외 발급 서류는 아포스티유 또는 대한민국 공관 영사확인과 번역문 첨부가 필요합니다."
+          ],
+          "statusCode": "F-1-52"
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    },
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다.",
+        "자동 추출 결과에 인접 절차 문구가 섞여 UI 표시용 서류 목록은 보류했습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 351",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 341-357",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusGrant": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "variants": [
+        {
+          "id": "f-1-employment-parent-born-child-status-grant",
+          "labelKo": "취업계열 체류자격자 등의 국내출생 자녀 체류자격 부여",
+          "scenarioKo": "기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 재외동포(F-4) 자격으로 국내 체류 중인 부모의 국내출생 자녀에게 체류자격을 부여하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료",
+              "출생증명서",
+              "부모의 외국인등록증 사본"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "중국 국적자는 호구부 추가 제출"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 343",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "열거된 부모 체류자격의 국내출생 자녀 체류자격 부여 시나리오에만 적용됩니다."
+          ]
+        },
+        {
+          "id": "f-1-refugee-born-child-status-grant",
+          "labelKo": "난민인정자의 국내출생 미성년 자녀 체류자격 부여",
+          "scenarioKo": "난민인정자의 국내출생 미성년 자녀에게 부모의 체류기간 범위 내에서 체류자격을 부여하는 경우",
+          "requiredDocs": {
+            "commonDocs": [],
+            "requiredDocs": [
+              "통합신청서(별지 제34호 서식), 여권, 표준규격사진 1매, 수수료",
+              "출생증명서 등 부모와의 가족관계를 입증할 수 있는 서류 및 미성년 자녀의 나이를 확인할 수 있는 서류",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 343",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "난민인정자의 국내출생 미성년 자녀 시나리오에만 적용됩니다."
+          ]
+        }
+      ],
+      "manualRefs": [],
+      "notes": [
+        "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "F-1-13",
+    "F-1-16",
+    "F-1-21",
+    "F-1-22",
+    "F-1-23",
+    "F-1-24",
+    "F-1-3",
+    "F-1-5",
+    "F-1-52",
+    "F-1-6",
+    "F-1-9",
+    "F-1-D",
+    "digital nomad",
+    "workation",
+    "디지털 노마드",
+    "디지털노마드",
+    "워케이션",
+    "F-1-1",
+    "F11",
+    "F16",
+    "F-1-11",
+    "F111",
+    "F-1-12",
+    "F112",
+    "F-1-15",
+    "F115",
+    "F-1-28",
+    "F128",
+    "F-1-51",
+    "F151",
+    "F-1-72",
+    "F172"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "초청인 여권/신분증, 가족관계 입증, 체류자격 입증.",
+      "newReqDocs": [
+        "doc_passport",
+        "doc_id",
+        "doc_fam_rel",
+        "doc_purpose"
+      ],
+      "extReq": "체류기간 연장허가 1. 국내 친·인척 방문목적으로 입국한 자의 체류기간 연장 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친·인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간 연장 가. 허가기준: 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준: 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_fam_rel",
+        "doc_mar_rel",
+        "doc_basic",
+        "doc_inc_proof"
+      ],
+      "faq": "Q: 이혼 후?\nA: F-1-6 6개월 한시.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_passport",
+        "doc_id",
+        "doc_fam_rel",
+        "doc_purpose"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_fam_rel",
+        "doc_mar_rel",
+        "doc_basic",
+        "doc_inc_proof"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "가족관계증명서(상세)",
+          "note": "본국 권한기관 발급 및 공증/확인"
+        },
+        {
+          "name": "기타 체류목적 입증서류",
+          "note": "별도 소명자료"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "가족관계증명서(상세)",
+          "note": "본국 권한기관 발급 및 공증/확인"
+        },
+        {
+          "name": "혼인관계증명서(상세)",
+          "note": "상세"
+        },
+        {
+          "name": "기본증명서(상세)",
+          "note": "상세"
+        },
+        {
+          "name": "소득금액증명원 등 소득입증서류"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가"
+    },
+    "removedSummaries": {
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 세부 자격과 신청 사유별로 다릅니다.",
+      "procedures.extension.summary": "체류기간 연장허가 1. 국내 친·인척 방문목적으로 입국한 자의 체류기간 연장 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 국내 친·인척의 주민등록본 ③ 신원보증서(20세 이상인 자에 한함) ④ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)2. 중국동포1세로서 방문동거(F-1) 사증을 소지하고 입국한 자 및 그 존비속과 친척방문으로 입국한 자에 대한 체류기간 연장 가. 허가기준: 국내친척 등의 신원보증이 있어야 함 나. 체류허가기준: 허가일로부터 1년 범위 계속 체류 허용하되 1년씩 체류연장 허가 다. 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 동포1세 또는 가족, 친척관계임을 입증할 수 있는 가족관계임을 입증할 수 있는 가족관계기록사항에 관한 증명서, 기타 신분관계자료 ③ 호구부, 거민증 등 기타 본인신분을 확인 할 수 있는 서류 ④ 신원보증서(20세 이상인 자에 한함) ⑤ 체류",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 방문동거(F-1) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusGrant.summary": "체류자격부여 제출서류는 신청 사유와 가족관계별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 23,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "hikorea_task_type",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "statusChange",
+      "extension",
+      "registration",
+      "statusGrant"
+    ],
+    "procKeyOrder": {
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ],
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusGrant": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "variants",
+        "manualRefs",
+        "notes"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

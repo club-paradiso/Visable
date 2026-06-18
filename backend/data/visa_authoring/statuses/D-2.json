@@ -1,0 +1,722 @@
+{
+  "code": "D-2",
+  "name": "유학",
+  "cat": "study",
+  "period": "1회 부여 체류기간 상한 2년",
+  "subcodes": [
+    {
+      "code": "D-2-1",
+      "name": "전문학사과정",
+      "addReq": "전문학사 정규 학위과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "note": "체류기간 연장 특례 상한은 입학 후 최대 3년, 3년제 전문학사는 최대 4년입니다."
+    },
+    {
+      "code": "D-2-2",
+      "name": "학사과정",
+      "addReq": "학사 정규 학위과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "note": "체류기간 연장 특례 상한은 입학 후 최대 6년, 5년제 학사는 최대 7년입니다."
+    },
+    {
+      "code": "D-2-3",
+      "name": "석사과정",
+      "addReq": "석사 정규 학위과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "note": "체류기간 연장 특례 상한은 입학 후 최대 5년, 3년제 석사는 최대 6년입니다."
+    },
+    {
+      "code": "D-2-4",
+      "name": "박사과정",
+      "addReq": "박사 정규 학위과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "note": "체류기간 연장 특례 상한은 입학 후 최대 8년, 2년제 박사는 최대 7년입니다."
+    },
+    {
+      "code": "D-2-5",
+      "name": "연구과정",
+      "addReq": "학술 연구기관 등에서 특정 연구를 하려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_plan",
+        "doc_finance"
+      ],
+      "note": "연구유학생은 2년을 초과하여 체류할 수 없고, 1회 부여할 수 있는 체류기간 상한은 1년입니다."
+    },
+    {
+      "code": "D-2-6",
+      "name": "교환학생",
+      "addReq": "교환학생 과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_finance"
+      ],
+      "note": "외국인등록 및 변경·연장 시 해당 과정 종료일로부터 1개월 범위 내에서 1월 말 또는 7월 말로 조정하여 허가될 수 있습니다."
+    },
+    {
+      "code": "D-2-7",
+      "name": "일-학습연계 유학",
+      "addReq": "일-학습연계 유학 과정에 해당하는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "note": "D-2-1~D-2-4와 같이 학사일정을 고려하여 체류기간이 부여될 수 있습니다."
+    },
+    {
+      "code": "D-2-8",
+      "name": "방문학생",
+      "addReq": "방문학생 과정에서 교육을 받으려는 사람.",
+      "addReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_finance"
+      ],
+      "note": "시간제취업은 변경일 또는 사증소지자는 입국일부터 6개월이 경과된 사람을 대상으로 합니다."
+    }
+  ],
+  "procedures": {
+    "statusChange": {
+      "available": true,
+      "summary": "외국인등록 후 국내에서 합법적으로 체류 중인 장기체류자는 원칙적으로 유학(D-2) 체류자격 변경이 가능하나, D-3, E-8, E-9, E-10, G-1 일부 자격 등은 제한됩니다. 단기체류자(B, C 계열)는 원칙적으로 제한되며, 단기 합법체류, 체류기간 만료일 내 진학 예정 교육과정 개강, 매뉴얼상 예외 사유 충족 여부를 함께 심사합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "신청서",
+          "여권 및 사본 1부",
+          "표준규격사진 1매",
+          "수수료"
+        ],
+        "requiredDocs": [
+          "교육기관 사업자등록증 또는 고유번호증 사본",
+          "표준입학허가서",
+          "학력요건 입증서류",
+          "재정능력 입증서류"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "D-4에서 D-2로 변경하는 경우 이전 과정의 성적 또는 출석·연수 증명서",
+          "정부초청장학생은 학력증명서를 국립국제교육원 또는 대학 발행 사본으로 대체 가능",
+          "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
+          "비자심사강화대학 입학·진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙"
+        ]
+      },
+      "notes": [
+        "2026.5 체류민원 안내매뉴얼의 유학(D-2) 항목을 기준으로 수동 정리한 데이터입니다. 세부약호, 국적, 학교 유형, 체류 이력에 따라 제출서류가 달라질 수 있어 최종 확인이 필요합니다.",
+        "첨부 매뉴얼은 체류민원 기준입니다. 재외공관 사증발급 제출서류는 사증발급 안내매뉴얼로 별도 대조해야 합니다.",
+        "허가권한은 체류지 관할 또는 대학 소재지 관할 출입국·외국인관서장입니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 40-42",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "extension": {
+      "available": true,
+      "summary": "학사일정을 고려하여 체류기간을 부여합니다. D-2-1~D-2-4 및 D-2-7은 2년 이내에서 3월 말 또는 9월 말까지, D-2-6 및 D-2-8은 과정 종료일로부터 1개월 범위 내에서 1월 말 또는 7월 말까지 조정될 수 있습니다. 연구유학(D-2-5)은 2년을 초과하여 체류할 수 없고 1회 부여 상한은 1년입니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "신청서",
+          "여권",
+          "외국인등록증",
+          "수수료"
+        ],
+        "requiredDocs": [
+          "수료증명서, 지도교수 및 유학담당자 확인서",
+          "학업을 정상적으로 수행하고 있음을 입증하는 서류",
+          "재정능력 입증서류",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "우수인증대학 및 인증대학 학위과정 재학생으로 전체 평균학점 C학점 이상인 사람은 일부 재정능력 입증서류가 생략될 수 있으나, 장관 고시국가 및 중점관리국가 국민은 예외가 있습니다.",
+          "비자심사강화대학 학위과정 재학생으로 전체 평균 이수학점이 D학점 이하인 경우 심사가 강화될 수 있습니다."
+        ]
+      },
+      "notes": [
+        "2026.5 체류민원 안내매뉴얼의 유학(D-2) 항목을 기준으로 수동 정리한 데이터입니다. 세부약호, 국적, 학교 유형, 체류 이력에 따라 제출서류가 달라질 수 있어 최종 확인이 필요합니다.",
+        "학업 정상 수행 입증서류 예시: 재학증명서, 성적증명서, 출석확인서 등",
+        "첨부 매뉴얼은 체류민원 기준입니다. 재외공관 사증발급 제출서류는 사증발급 안내매뉴얼로 별도 대조해야 합니다.",
+        "개인적인 사정 및 학점미달 등의 사유로 학업을 중단한 휴학자는 체류기간 연장이 제한될 수 있습니다.",
+        "야간·주말수업 수강자는 원칙적으로 체류허가가 제한되며, 법무부에서 허용한 일부 야간 학위과정은 예외입니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 42-44",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summary": "입국 후 유학(D-2) 자격으로 90일을 초과하여 체류하는 경우 입국일로부터 90일 이내 외국인등록을 해야 합니다. 외국인등록 시 체류기간 연장허가를 동시에 신청하는 경우에 한하여 연장 수수료가 면제될 수 있습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 및 사본 1부",
+          "표준규격사진 1매",
+          "수수료"
+        ],
+        "requiredDocs": [
+          "재학증명서 또는 연구생증명서",
+          "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "인증대학 이상은 등록금납입증명서로 대체 가능",
+          "일반대학 이하는 개별접수 시 협조요청서 및 등록금납입증명서, 단체접수 시 등록금납입증명서로 대체 가능",
+          "외국인등록 단계에서는 재정능력 입증서류 제출 불요"
+        ]
+      },
+      "notes": [
+        "2026.5 체류민원 안내매뉴얼의 유학(D-2) 항목을 기준으로 수동 정리한 데이터입니다. 세부약호, 국적, 학교 유형, 체류 이력에 따라 제출서류가 달라질 수 있어 최종 확인이 필요합니다.",
+        "첨부 매뉴얼은 체류민원 기준입니다. 재외공관 사증발급 제출서류는 사증발급 안내매뉴얼로 별도 대조해야 합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 44",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "partTimeWork": {
+      "available": true,
+      "summary": "D-2 유학생의 시간제취업은 통상적으로 학생이 행하는 시간제취업 활동에 한정됩니다. 일정 한국어 또는 영어 능력, 유학 본연 활동 전념, 대학 유학생 담당자 확인 등이 필요합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "신청서",
+          "여권",
+          "외국인등록증"
+        ],
+        "requiredDocs": [
+          "성적 또는 출석 증명서",
+          "한국어 능력 또는 영어 능력 증빙서류",
+          "외국인 유학생 시간제 취업 확인서",
+          "사업자등록증 사본 및 고용주 신분증 사본",
+          "표준근로계약서 사본"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "사업자등록증에 제조업 또는 건설업이 포함된 경우 외국인 유학생 시간제취업 요건 준수 확인서",
+          "유학생정보시스템으로 성적 또는 출석 확인이 되는 경우 해당 증명서 생략 가능",
+          "시간제취업허가 수수료 면제"
+        ]
+      },
+      "notes": [
+        "D-2-1~D-2-4, D-2-6, D-2-7이 기본 대상입니다.",
+        "방문학생(D-2-8)은 변경일 또는 사증소지자는 입국일부터 6개월이 경과된 사람을 대상으로 합니다.",
+        "신청일 기준 직전학기 평균 성적이 C학점(2.0) 미만인 경우 제한될 수 있습니다.",
+        "D-2는 체류기간 내에서 최장 1년, 허용시간 범위 내 동시에 취업할 수 있는 장소 2곳으로 한정됩니다.",
+        "제조업·건설업·선원취업 업종, 파견·도급·알선 관계, 원거리 근무 등 제한 분야가 있습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 37-40",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "reentry": {
+      "available": true,
+      "summary": "외국인등록을 한 D-2 유학생이 출국한 날부터 1년 이내에 재입국하려는 경우 재입국허가가 면제됩니다. 등록을 마친 D-2 유학생이 1년 이후 2년 이내에 재입국하려는 경우에는 신청에 의해 복수재입국허가가 가능하며 수수료가 징구됩니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본",
+          "외국인등록증",
+          "수수료"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "입국규제 등의 사유로 재입국허가를 받아야 하는 경우 체류지 관할 출입국·외국인관서에서 재입국허가 필요",
+          "체류기간 만료일이 2년 미만인 경우 잔여 체류기간 범위 내에서 복수재입국허가 부여"
+        ]
+      },
+      "notes": [
+        "2026.5 체류민원 안내매뉴얼의 유학(D-2) 항목을 기준으로 수동 정리한 데이터입니다. 세부약호, 국적, 학교 유형, 체류 이력에 따라 제출서류가 달라질 수 있어 최종 확인이 필요합니다.",
+        "첨부 매뉴얼은 체류민원 기준입니다. 재외공관 사증발급 제출서류는 사증발급 안내매뉴얼로 별도 대조해야 합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "p. 44",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "schoolChange": {
+      "available": true,
+      "summary": "D-2-1~D-2-4 학위과정 유학생의 국내 학교 변경 및 학위과정 변경은 원칙적으로 제한되나, 학위과정을 정상적으로 이수 중이고 학교 변경 필요성이 있는 경우 동급 학위과정 학교 변경은 허용될 수 있습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "신청서",
+          "여권",
+          "외국인등록증"
+        ],
+        "requiredDocs": [
+          "변경 전 학교 재학증명서 또는 자퇴증명서",
+          "변경 전 학교 성적증명서",
+          "변경된 학교의 표준입학허가서"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "인증대학이 아닌 경우 한국어능력 입증서류",
+          "인증대학이 아닌 경우 재정능력 입증서류",
+          "정부초청장학생 입증서류",
+          "과정 폐지 등 학교 변경의 필요성 또는 부득이함을 증빙하는 서류"
+        ]
+      },
+      "notes": [
+        "학교 변경은 졸업 전의 변경을 의미하며, 졸업생은 신입학 대상으로 학교 변경 대상이 아닙니다.",
+        "출입국관리법 제18조 위반으로 통고처분을 받은 사실이 있는 사람, 최대 체류기간 상한 초과자, 한국어능력 미충족자, 제적되어 출국 대상인 사람 등은 학교 변경이 제한될 수 있습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 45-46",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    },
+    "visaIssuance": {
+      "available": true,
+      "summary": "입국 전 재외공관에서 유학(D-2) 사증을 신청하는 절차입니다. 표준입학허가서, 교육기관 서류, 학력 및 재정능력 입증서류를 중심으로 심사하며, 국가·공관·학교별로 사증발급인정서 또는 전자사증 가능 여부가 달라질 수 있습니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "사증발급(인정)신청서",
+          "여권 사본",
+          "사진 1매"
+        ],
+        "requiredDocs": [
+          "교육기관 사업자등록증 또는 고유번호증 사본",
+          "표준입학허가서",
+          "최종학력 입증서류",
+          "재정능력 입증서류"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "결핵진단서(해당자)",
+          "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
+          "아포스티유 또는 영사확인 대상 학력서류"
+        ]
+      },
+      "notes": [
+        "제출서류는 심사 과정에서 가감될 수 있으며, 국가·공관별 추가서류는 해당 공관 공식 안내를 확인해야 합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "사증발급",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-05-21",
+          "sourceFile": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+          "pageRange": "pp. 62-69",
+          "confidence": "manual_page_anchor_structured_poc",
+          "needsManualReview": false
+        }
+      ]
+    },
+    "activitiesOutsideStatus": {
+      "available": true,
+      "summary": "자격외활동(시간제취업) 허가는 D-2 유학생이 학업 외 시간제취업을 하려는 경우 별도로 받는 절차입니다. D-2 유학생의 시간제취업은 통상적으로 학생이 행하는 시간제취업 활동에 한정됩니다. 일정 한국어 또는 영어 능력, 유학 본연 활동 전념, 대학 유학생 담당자 확인 등이 필요합니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [
+          "신청서",
+          "여권",
+          "외국인등록증"
+        ],
+        "requiredDocs": [
+          "성적 또는 출석 증명서",
+          "한국어 능력 또는 영어 능력 증빙서류",
+          "외국인 유학생 시간제 취업 확인서",
+          "사업자등록증 사본 및 고용주 신분증 사본",
+          "표준근로계약서 사본"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "사업자등록증에 제조업 또는 건설업이 포함된 경우 외국인 유학생 시간제취업 요건 준수 확인서",
+          "유학생정보시스템으로 성적 또는 출석 확인이 되는 경우 해당 증명서 생략 가능",
+          "시간제취업허가 수수료 면제"
+        ]
+      },
+      "notes": [
+        "D-2-1~D-2-4, D-2-6, D-2-7이 기본 대상입니다.",
+        "방문학생(D-2-8)은 변경일 또는 사증소지자는 입국일부터 6개월이 경과된 사람을 대상으로 합니다.",
+        "신청일 기준 직전학기 평균 성적이 C학점(2.0) 미만인 경우 제한될 수 있습니다.",
+        "D-2는 체류기간 내에서 최장 1년, 허용시간 범위 내 동시에 취업할 수 있는 장소 2곳으로 한정됩니다.",
+        "제조업·건설업·선원취업 업종, 파견·도급·알선 관계, 원거리 근무 등 제한 분야가 있습니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "pageRange": "pp. 37-40",
+          "confidence": "manual_added_needs_review",
+          "needsManualReview": true
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "D-2 canonical record가 누락되어 2026.5 체류민원 매뉴얼 p.35-46 기준으로 수동 추가했습니다.",
+      "사증발급 안내매뉴얼이 아니라 체류민원 안내매뉴얼 기준이므로 재외공관 사증발급 서류는 별도 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "D-2-1",
+    "D-2-2",
+    "D-2-3",
+    "D-2-4",
+    "D-2-5",
+    "D-2-6",
+    "D-2-7",
+    "D-2-8",
+    "유학",
+    "학생비자",
+    "전문학사",
+    "학사",
+    "석사",
+    "박사",
+    "연구과정",
+    "교환학생",
+    "방문학생",
+    "일학습연계",
+    "일-학습연계",
+    "시간제취업",
+    "외국인 유학생",
+    "유학생"
+  ],
+  "manualDomains": [
+    "stay_sojourn"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "dataBadge": "D-2-1~D-2-8 세부약호 반영",
+      "dataDate": "2026-05 체류민원 안내매뉴얼 기준",
+      "newReq": "전문대학 이상의 교육기관 또는 학술연구기관에서 정규과정의 교육을 받거나 특정 연구를 하려는 외국인을 위한 체류자격입니다. 원격대학, 평생교육기관, 기능대학 중 직업훈련과정, 허용되지 않은 야간대학, 야간대학원은 유학(D-2) 대상 교육기관에서 제외됩니다.",
+      "newReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "extReq": "학사일정을 고려하여 체류기간을 부여합니다. D-2-1~D-2-4 및 D-2-7은 변경·연장 시 2년 이내에서 3월 말 또는 9월 말까지 허가될 수 있고, D-2-5 연구유학생은 2년을 초과하여 체류할 수 없으며 1회 부여 상한은 1년입니다. D-2-6 교환학생 및 D-2-8 방문학생은 해당 과정 종료일로부터 1개월 범위 내에서 1월 말 또는 7월 말로 조정하여 허가될 수 있습니다. 개인 사정, 학점미달 등으로 인한 휴학·학업중단은 연장이 제한될 수 있습니다.",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_attend",
+        "doc_finance",
+        "doc_address"
+      ],
+      "faq": "Q: D-2 외국인등록 때 재정능력 입증서류가 필요한가요?\nA: 체류민원 매뉴얼상 외국인등록 제출서류에서는 재정능력 입증서류 제출 불요로 안내되어 있습니다.\nQ: D-2 학생은 시간제취업이 가능한가요?\nA: 일정 한국어 또는 영어 능력, 학위과정, 성적, 학교 유학생 담당자 확인 등 요건을 충족하고 허가를 받아야 합니다. 허용시간과 제한업종이 다릅니다.\nQ: 휴학 중에도 D-2 연장이 가능한가요?\nA: 개인 사정이나 학점미달 등으로 학업을 중단한 경우 연장이 제한될 수 있습니다. 질병·사고 등 부득이한 사유는 예외적으로 심사될 수 있습니다.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_enroll",
+        "doc_biz_reg",
+        "doc_degree",
+        "doc_finance"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_attend",
+        "doc_finance",
+        "doc_address"
+      ],
+      "changeReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_fee",
+        "doc_biz_reg",
+        "doc_enroll",
+        "doc_degree",
+        "doc_finance",
+        "doc_fam_rel"
+      ],
+      "documents_initial": [
+        {
+          "name": "교육기관 사업자등록증 또는 고유번호증 사본",
+          "note": "체류민원 매뉴얼상 체류자격 변경 제출서류 기준"
+        },
+        {
+          "name": "표준입학허가서",
+          "note": "체류민원 매뉴얼상 체류자격 변경 제출서류 기준"
+        },
+        {
+          "name": "학력요건 입증서류",
+          "note": "정부초청장학생은 국립국제교육원 또는 대학 발행 사본으로 대체 가능"
+        },
+        {
+          "name": "재정능력 입증서류",
+          "note": "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류 필요"
+        },
+        {
+          "name": "체류민원 기준 주의",
+          "note": "재외공관 사증발급 서류는 별도 사증발급 안내매뉴얼 대조 필요"
+        }
+      ],
+      "documents_registration": [
+        {
+          "name": "통합신청서(별지 제34호 서식)"
+        },
+        {
+          "name": "여권 원본 및 사본 1부"
+        },
+        {
+          "name": "표준규격사진 1매"
+        },
+        {
+          "name": "외국인등록증 발급 수수료",
+          "note": "정부초청장학생 등 수수료 면제 대상자도 등록증 발급·재발급 수수료는 납부 대상"
+        },
+        {
+          "name": "재학증명서 또는 연구생증명서",
+          "note": "인증대학 이상은 등록금납입증명서로 대체 가능. 일반대학 이하는 접수 방식에 따라 협조요청서 및 등록금납입증명서 등 대체 가능"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "재정능력 입증서류 제출 불요"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)"
+        },
+        {
+          "name": "여권"
+        },
+        {
+          "name": "외국인등록증"
+        },
+        {
+          "name": "수수료"
+        },
+        {
+          "name": "수료증명서, 지도교수 및 유학담당자 확인서",
+          "note": "수료 후 논문작성, 졸업시험, 학점취득 등 해당자 중심"
+        },
+        {
+          "name": "정상 학업 수행 입증서류",
+          "note": "재학증명서, 성적증명서, 출석확인서 등"
+        },
+        {
+          "name": "재정능력 입증서류"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가"
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 5,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "dataBadge",
+      "dataDate",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "documents_initial",
+      "documents_registration",
+      "documents_extension",
+      "hikorea_task_type",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef",
+      "manualDomains"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "dataBadge": "compat",
+      "dataDate": "compat",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "documents_initial": "compat",
+      "documents_registration": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs",
+      "manualDomains": "identity"
+    },
+    "procOrder": [
+      "statusChange",
+      "extension",
+      "registration",
+      "partTimeWork",
+      "reentry",
+      "schoolChange",
+      "visaIssuance",
+      "activitiesOutsideStatus"
+    ],
+    "procKeyOrder": {
+      "statusChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "partTimeWork": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "reentry": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "schoolChange": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "visaIssuance": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "activitiesOutsideStatus": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

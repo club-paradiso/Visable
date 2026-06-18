@@ -1,0 +1,508 @@
+{
+  "_meta": {
+    "note": "Consolidated read-only view of each status's sourceManualStatus (the editable copy lives in the status file). Not a build input."
+  },
+  "byCode": {
+    "B-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "B-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "C-3": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "C-3 representative hierarchy uses existing data; C-3-1 through C-3-10 labels still need 2026.5 manual page verification.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "C-4": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "D-2 canonical record가 누락되어 2026.5 체류민원 매뉴얼 p.35-46 기준으로 수동 추가했습니다.",
+        "사증발급 안내매뉴얼이 아니라 체류민원 안내매뉴얼 기준이므로 재외공관 사증발급 서류는 별도 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-3": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-4": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-4-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-7": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-8": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-9": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-10": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-3": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-4": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-5": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-6": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-7": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026-06-01 체류민원 매뉴얼 pp.298-309에서 E-7-4 숙련기능인력(K-point E74) 개선 기준을 반영했습니다. 하위직종·쿼터·예외는 계속 수동 확인 필요."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-8": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-9": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "E-10": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-3": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-4": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-5": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "F-6": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "F-6 representative hierarchy uses existing data; F-6-1 through F-6-3 details still need 2026.5 manual page verification.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "G-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "H-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "H-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "A-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "A-2": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "A-3": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "C-1": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-5": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-6": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "D-4-2K": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "K-STAR": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "K-STAR is present as a representative special-track record; full 2026.5 manual verification is deferred.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "REGION-S": {
+      "visaManualVersion": "2026.5",
+      "stayManualVersion": "2026.5",
+      "verified": false,
+      "needsManualReview": true,
+      "reviewNotes": [
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
+        "2026-06-01 체류민원 매뉴얼 변경 페이지를 반영해 REGION-S를 트랙별 안내로 보수화했습니다. 부모 레코드에 보편 서류목록으로 평탄화하지 않았습니다."
+      ],
+      "stayManualSourceDate": "2026-06-01",
+      "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+    },
+    "YOUTH-STAY": {
+      "needsManualReview": true,
+      "stayManualVersion": "2026.5"
+    }
+  }
+}

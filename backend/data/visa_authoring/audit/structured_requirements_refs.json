@@ -1,0 +1,382 @@
+{
+  "_meta": {
+    "note": "Relocated 'structuredRequirementsRef' fields, re-injected verbatim by build. Generated; do not hand-edit.",
+    "needsMigrationReview": false
+  },
+  "byCode": {
+    "B-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "B-1",
+      "available": true,
+      "entryCount": 1,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "B-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "B-2",
+      "available": true,
+      "entryCount": 1,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "C-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "C-3",
+      "available": true,
+      "entryCount": 12,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "C-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "C-4",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-1",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-2",
+      "available": false,
+      "entryCount": 0,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json",
+      "note": "원본 JSON에 D-2 canonical record가 없어서 수동 추가했습니다. structured_requirements 파일이 별도로 존재하면 D-2 항목 생성 여부를 후속 확인해야 합니다."
+    },
+    "D-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-3",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-4-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "D-4-1 evidence is represented under structured statusCode D-4",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-7": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-7",
+      "available": true,
+      "entryCount": 13,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-8": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-8",
+      "available": true,
+      "entryCount": 18,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-9": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-9",
+      "available": true,
+      "entryCount": 10,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-10": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-10",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-1",
+      "available": true,
+      "entryCount": 11,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-2",
+      "available": true,
+      "entryCount": 10,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-3",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-4",
+      "available": true,
+      "entryCount": 8,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-5",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-6",
+      "available": true,
+      "entryCount": 8,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-7": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-7",
+      "available": true,
+      "entryCount": 39,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-8": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-8",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-9": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-9",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "E-10": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "E-10",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "F-1",
+      "available": true,
+      "entryCount": 20,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "F-2",
+      "available": true,
+      "entryCount": 18,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "F-3",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-4": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "FORDIASP",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "mappingNote": "F-4 evidence is represented under structured statusCode FORDIASP",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "F-5",
+      "available": true,
+      "entryCount": 8,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "F-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "F-6",
+      "available": true,
+      "entryCount": 9,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "G-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "G-1",
+      "available": true,
+      "entryCount": 10,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "H-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "H-1",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "H-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "H-2",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "A-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "A-1",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "A-2": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "A-2",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "A-3": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "A-3",
+      "available": true,
+      "entryCount": 4,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "C-1": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "C-1",
+      "available": true,
+      "entryCount": 3,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-5": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-5",
+      "available": true,
+      "entryCount": 5,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-6": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-6",
+      "available": true,
+      "entryCount": 6,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "D-4-2K": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "D-4",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "D-4-2K evidence is represented under structured statusCode D-4",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "K-STAR": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "K-STAR",
+      "available": true,
+      "entryCount": 2,
+      "requiresHumanReview": true,
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    },
+    "REGION-S": {
+      "source": "backend/data/manual_grounding/structured_requirements_2026_06_01.json",
+      "statusCode": "REGIONAL",
+      "available": true,
+      "entryCount": 15,
+      "requiresHumanReview": true,
+      "mappingNote": "REGION-S evidence is represented under structured statusCode REGIONAL",
+      "sourceDate": "2026-06-01",
+      "refreshAudit": "docs/data/2026_06_01_structured_stay_manual_refresh_audit.json"
+    }
+  }
+}

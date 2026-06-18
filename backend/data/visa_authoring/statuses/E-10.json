@@ -1,0 +1,284 @@
+{
+  "code": "E-10",
+  "name": "선원취업",
+  "cat": "work",
+  "period": "3년, 연장가능",
+  "subcodes": [
+    {
+      "code": "E-10-1",
+      "name": "내항선원",
+      "addReq": "내항 선원근로계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": ""
+    },
+    {
+      "code": "E-10-2",
+      "name": "어선원",
+      "addReq": "어선 승선 계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": "제주 근해어업."
+    },
+    {
+      "code": "E-10-3",
+      "name": "순항선원",
+      "addReq": "크루즈선 계약서.",
+      "addReqDocs": [
+        "doc_emp_contract"
+      ],
+      "note": ""
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 337",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [
+          "통합신청서(별지 제34호 서식)",
+          "여권 원본",
+          "doc_standard_photo_one",
+          "doc_fee_generic"
+        ],
+        "requiredDocs": [
+          "내항여객운송사업면허증 또는 내항화물운송등록증",
+          "건강검진서(밀봉된 상태로 제출, 개봉 불가)",
+          "마약검사 확인서(밀봉된 상태로 제출, 개봉 불가)",
+          "산업재해보상보험 또는 상해보험 가입증명원",
+          "doc_residence_proof_generic"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다.",
+        "외국인등록 제출서류는 2026.5 체류민원 매뉴얼 pp. 338-339 '외국인등록 신청서류' 항목에서 직접 정리했습니다. 일부 서류는 선종(내항·어선·순항)·근무처 형태에 따라 달라질 수 있어 관할 출입국·외국인관서에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 338-339",
+          "confidence": "manual_page_extract_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+          "section": "외국인등록 신청서류"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "E-10-1",
+    "E-10-2",
+    "E-10-3"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "선원근로계약서, 선원 교육/자격증명, 건강진단서.",
+      "newReqDocs": [
+        "doc_emp_contract",
+        "doc_specialty",
+        "doc_health"
+      ],
+      "extReq": "체류기간 연장허가 1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E-10-1, E-10-3, 한국해운조합), 선원취업활동기간연장 추천서(E-10-2, 수협중앙회) ⑥ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상: 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류: ① 통합신청서(별지 제34호 서식), 여권 및 외국인 등록증 ② 각서",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_emp_contract",
+        "doc_career",
+        "doc_guarantee",
+        "doc_address"
+      ],
+      "faq": "Q: 무단 하선?\nA: 불법체류. 선주 즉시 보고.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_emp_contract",
+        "doc_specialty",
+        "doc_health"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_emp_contract",
+        "doc_career",
+        "doc_guarantee",
+        "doc_address"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "해당 분야 전문성 입증서류",
+          "note": "국가공인자격증 등"
+        },
+        {
+          "name": "의료기관 건강진단서",
+          "note": "법무부 지정 마약검사 필수 포함"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "표준근로계약서 또는 고용계약서 원본/사본"
+        },
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "신원보증서",
+          "note": "보증기간 명시"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "[입국 후 · 국내 체류절차] 체류기간 연장허가 1. 연장 기준 및 절차 가. 연장기준 1회 부여할 수 있는 선원취업자의 체류기간은 3년 이내로 하고 최초 입국 후 최대 3년까지 체류 허용 - 단, 재고용에 의해 취업활동기간 연장 허가를 받은 경우에는 최초 입국일로부터 최대 4년 10개월까지 체류 허용 제출서류 ① 통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료 ② 고용계약서 ③ 사업자등록증 사본 ④ 신원보증서 ⑤ 외국인선원 고용추천서(E-10-1, E-10-3, 한국해운조합), 선원취업활동기간연장 추천서(E-10-2, 수협중앙회) ⑥ 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 체류기간 연장허가 체류허가기간 중에 고용해지 등으로 구직 중인 자는 고용해지일로부터 3개월의 범위 내에서 체류기간 연장허가 - 대 상: 잔여 체류가능 기간이 총 체류가능기간(3년) 기준 최소 4개 월 이상 남아 있는 자 - 제출서류: ① 통합신청서(별지 제34호 서식), 여권 및 외국인 등록증 ② 각서",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 선원취업(E-10) 자격으로 입국하여 90일을 초과해 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 22,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

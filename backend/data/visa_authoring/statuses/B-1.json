@@ -1,0 +1,214 @@
+{
+  "code": "B-1",
+  "name": "사증면제협정",
+  "cat": "short",
+  "period": "3개월, 연장불가",
+  "aliases": [
+    "사증면제협정국",
+    "사증면제협정",
+    "비자면제협정",
+    "무사증협정",
+    "협정국",
+    "상호주의",
+    "일방면제",
+    "비자면제국"
+  ],
+  "subcodes": [
+    {
+      "code": "B-1-1",
+      "name": "B-1 일반여권 유효 67개국",
+      "addReq": "말레이시아(3개월), 싱가포르(90일), 아랍에미리트(90일), 이스라엘(90일), 카자흐스탄(30일/180일 내 60일), 태국(90일), 튀르키예(90일), 카타르(90일), 과테말라(90일), 그레나다(90일), 니카라과(90일), 도미니카공화국(90일), 도미니카연방(90일), 멕시코(3개월), 바베이도스(90일), 바하마(90일), 베네수엘라(90일), 브라질(90일), 세인트루시아(90일), 세인트빈센트그레나딘(90일), 세인트키츠네비스(90일), 수리남(3개월), 아이티(90일), 앤티가바부다(90일), 엘살바도르(90일), 우루과이(90일), 자메이카(90일), 칠레(90일), 코스타리카(90일), 콜롬비아(90일), 트리니다드토바고(90일), 파나마(90일), 페루(90일), 그리스(3개월), 네덜란드(3개월), 노르웨이(90일), 덴마크(90일), 독일(90일), 라트비아(90일), 러시아(60일/180일 내 90일), 루마니아(90일), 룩셈부르크(3개월), 리투아니아(90일), 리히텐슈타인(3개월), 몰타(90일), 벨기에(3개월), 불가리아(90일), 스웨덴(90일), 스위스(3개월), 스페인(90일), 슬로바키아(90일), 아이슬란드(90일), 아일랜드(90일), 에스토니아(90일), 영국(90일), 오스트리아(90일), 이탈리아(90일), 체코(90일), 포르투갈(90일), 폴란드(90일), 프랑스(90일), 핀란드(90일), 헝가리(90일), 레소토(60일), 모로코(90일), 튀니지(30일), 뉴질랜드(3개월).",
+      "addReqDocs": [],
+      "note": "PDF 기준일 2024.12.04. 일시정지 3개국(방글라데시, 파키스탄, 라이베리아) 제외."
+    },
+    {
+      "code": "B-1-2",
+      "name": "B-1 일시정지 3개국",
+      "addReq": "방글라데시(90일, 불체 급증 사유), 파키스탄(3개월, 2001.10.1~ 일시정지), 라이베리아(90일).",
+      "addReqDocs": [],
+      "note": "협정은 유효하나 일반여권 대상 일시정지 상태."
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "통합신청서(별지 제34호 서식), 여권 원본, 수수료",
+          "체류기간 연장의 필요성을 소명하는 서류"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 24",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "체류 목적·기간이 장기체류 자격으로 바뀌는 경우의 등록 의무·서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인하세요."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 24-24",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "B-1-1",
+    "B-1-2"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "dataBadge": "67개국 협정 (일시정지 3개국 제외)",
+      "dataDate": "2026-04-14 (immigration.go.kr 공식 수치)",
+      "newReq": "사증면제협정국, 상호주의, 일방면제 대상 여부를 먼저 확인하고 유효 여권 및 K-ETA 적용 여부를 점검. B-1 대상은 총 67개국(사증면제협정 체결국 기준).",
+      "newReqDocs": [
+        "doc_passport"
+      ],
+      "extReq": "체류자격 변경 및 체류기간 연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 통합신청서(별지 제34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+      "extReqDocs": [],
+      "faq": "Q: 사증면제협정국이면 취업이나 영리활동도 가능한가?\nA: 아니오. 단기 비영리 방문 중심으로 보며, 취업·영리활동은 별도 체류자격 또는 사증 필요 여부를 심사해야 함.\nQ: B-1과 B-2의 차이?\nA: B-1은 국가 간 협정에 의한 사증면제, B-2는 상호주의·일방면제·제주 특례 등에 의한 관광통과(45개국·지역).\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_passport"
+      ],
+      "extensionReqDocs": [],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        }
+      ]
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "[입국 후 · 국내 체류절차] 체류자격 변경 및 체류기간 연장 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간을 초과하는 경우에는 반드시 사증을 발급 받아 입국하도록 안내 제출서류 ① 통합신청서(별지 제34호 서식), 여권 원본, 수수료 ② 체류기간 연장의 필요성을 소명하는 서류",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 사증면제협정(B-1)는 단기·단수 체류 목적의 자격으로, 원칙적으로 외국인등록 대상이 아닙니다. 외국인등록은 장기체류(원칙적으로 91일 이상) 자격을 부여·변경받은 경우에 한해 적용됩니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 0,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "dataBadge",
+      "dataDate",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "aliases",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "dataBadge": "compat",
+      "dataDate": "compat",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "aliases": "identity",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}

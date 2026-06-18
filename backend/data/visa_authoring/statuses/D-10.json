@@ -1,0 +1,642 @@
+{
+  "code": "D-10",
+  "name": "구직",
+  "cat": "work",
+  "period": "1년, 연장가능(세부 트랙별 상이)",
+  "subcodes": [
+    {
+      "code": "D-10-1",
+      "name": "구직활동",
+      "addReq": "학사↑, E-1~E-7 구직 계획서. 점수제 평가(190점 만점, 60점 이상 통과).",
+      "addReqDocs": [
+        "doc_degree",
+        "doc_plan",
+        "doc_point_table"
+      ],
+      "note": "점수제 190점 만점, 60점 이상 합격(사증민원 매뉴얼 2026.04 기준)."
+    },
+    {
+      "code": "D-10-2",
+      "name": "기술창업활동",
+      "addReq": "학사↑, 창업계획, 투자계획.",
+      "addReqDocs": [
+        "doc_degree",
+        "doc_plan",
+        "doc_finance"
+      ],
+      "note": ""
+    },
+    {
+      "code": "D-10-3",
+      "name": "첨단기술인턴",
+      "addReq": "국내 첨단산업 인턴십 확인서, 체류비 입증, 학력/경력 입증.",
+      "addReqDocs": [
+        "doc_internship_plan",
+        "doc_emp_contract",
+        "doc_inc_proof",
+        "doc_degree"
+      ],
+      "note": "첨단기술 분야 인턴 트랙."
+    },
+    {
+      "code": "D-10-T",
+      "name": "최우수인재 구직",
+      "addReq": "최근 5년 이내 세계대학 순위 100위권 대학 석사 이상 학위 등 최우수인재 요건. 취업 미확정 시 부여 가능.",
+      "addReqDocs": [
+        "doc_top_tier_degree",
+        "doc_degree",
+        "doc_plan",
+        "doc_passport_copy"
+      ],
+      "note": "Top-Tier 구직 트랙."
+    }
+  ],
+  "procedures": {
+    "extension": {
+      "available": true,
+      "summaryQuality": "ocr_blob",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D-10-1): 점수제 적용 대상자",
+          "공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본)",
+          "구직활동계획서",
+          "doc_residence_proof_generic",
+          "체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등",
+          "기타 점수제 평가를 위해 필요하다고 인정되는 서류 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ⅰ) 국내 대학 졸업 한국어능력 우수자",
+          "구직활동 계획서",
+          "체류지 입증서류 ⅱ) 국내 성장 기반 외국인 청소년",
+          "구직활동 계획서(붙임6)",
+          "체류지 입증서류 ⅲ) 유망인재",
+          "체류지 입증서류 ⅳ) 요양보호사 전문연수 과정 수료자"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다.",
+        "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "p. 155",
+          "confidence": "auto_extracted_needs_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ],
+      "variants": [
+        {
+          "id": "d-10-1-points-extension",
+          "labelKo": "D-10-1 점수제 구직 체류기간 연장",
+          "scenarioKo": "점수제 일반 구직활동 대상자가 D-10-1 체류기간 연장을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "구직활동계획서",
+              "doc_residence_proof_generic",
+              "체류비 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "점수 항목별 평가 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 155-156",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "점수제 요건과 연장 단계의 체류기간 범위를 공식 매뉴얼에서 함께 확인해야 합니다."
+          ],
+          "statusCode": "D-10-1"
+        },
+        {
+          "id": "d-10-2-tech-startup-extension",
+          "labelKo": "D-10-2 기술창업준비 체류기간 연장",
+          "scenarioKo": "기술창업 준비활동을 계속하는 신청인이 D-10-2 체류기간 연장을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "기술창업 활동계획서",
+              "doc_residence_proof_generic",
+              "체류비 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "K-Startup Grand Challenge 참여 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 157",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "K-Startup Grand Challenge 참여자는 체류비 입증서류 면제 여부를 공식 매뉴얼에서 확인합니다."
+          ],
+          "statusCode": "D-10-2"
+        },
+        {
+          "id": "d-10-3-high-tech-intern-extension",
+          "labelKo": "D-10-3 첨단기술 인턴 체류기간 연장",
+          "scenarioKo": "첨단기술 분야 인턴활동을 계속하는 신청인이 D-10-3 체류기간 연장을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "인턴 재직증명서",
+              "초청기업의 사업자등록증 사본",
+              "초청기업의 고용보험가입자 명부 또는 연구시설·연구인력 입증서류",
+              "초청기업 자격요건 유지 입증서류",
+              "인턴 또는 구직 활동계획서",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 157",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "인턴활동의 계속성과 초청기업 자격요건 유지 여부를 공식 매뉴얼에서 확인해야 합니다."
+          ],
+          "statusCode": "D-10-3"
+        }
+      ]
+    },
+    "registration": {
+      "available": true,
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+      ],
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualVersion": "2026.5",
+          "pageRange": "pp. 142-165",
+          "confidence": "needs_manual_review",
+          "needsManualReview": true,
+          "sourceDate": "2026-06-01",
+          "sourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+        }
+      ]
+    },
+    "statusChange": {
+      "available": true,
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [],
+        "additionalDocs": [],
+        "conditionalDocs": []
+      },
+      "notes": [
+        "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
+      ],
+      "variants": [
+        {
+          "id": "d-10-1-points-status-change",
+          "labelKo": "D-10-1 점수제 구직 체류자격 변경",
+          "scenarioKo": "점수제 일반 구직활동 대상자가 D-10-1 체류자격으로 변경을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "구직활동계획서",
+              "학력 입증서류",
+              "체류비 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "대학 순위 입증서류",
+              "근무 경력 입증서류",
+              "국내 연수활동 입증서류",
+              "한국어능력 입증서류",
+              "추천서",
+              "고소득 전문가 입증서류",
+              "그 밖의 점수 항목별 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 143-149",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "일반 점수제 구직 시나리오이며 점수제 면제 대상과 구분합니다.",
+            "기본항목과 총점 요건, 출신국·기존 체류자격에 따른 별도 점수요건을 공식 매뉴얼에서 확인해야 합니다."
+          ],
+          "statusCode": "D-10-1"
+        },
+        {
+          "id": "d-10-1-first-graduate-status-change",
+          "labelKo": "D-10-1 국내 졸업 후 최초 구직 체류자격 변경",
+          "scenarioKo": "국내 정규 대학을 졸업한 신청인이 졸업 후 최초로 D-10-1 구직 체류자격 변경을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "구직활동계획서",
+              "국내 정규 대학 전문학사 이상 학위증 또는 졸업증명서",
+              "doc_residence_proof_generic"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": []
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 149",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "국내 정규 대학 졸업 후 최초 변경에 한정된 점수제 면제 시나리오입니다.",
+            "이 시나리오에서는 체류비 입증서류 제출이 면제됩니다."
+          ],
+          "statusCode": "D-10-1"
+        },
+        {
+          "id": "d-10-2-tech-startup-status-change",
+          "labelKo": "D-10-2 기술창업준비 체류자격 변경",
+          "scenarioKo": "기술창업 준비활동을 하려는 신청인이 D-10-2 체류자격으로 변경을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "학력 입증서류",
+              "기술창업계획서",
+              "체류비 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "특허·실용신안·디자인 등록증 사본 또는 출원증명서",
+              "OASIS 교육 이수증 또는 참여 입증서류",
+              "OECD 국가 지식재산권 보유 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "p. 151",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "기술창업 준비 시나리오이며 일반 구직 D-10-1 및 첨단기술 인턴 D-10-3과 구분합니다."
+          ],
+          "statusCode": "D-10-2"
+        },
+        {
+          "id": "d-10-3-high-tech-intern-status-change",
+          "labelKo": "D-10-3 첨단기술 인턴 체류자격 변경",
+          "scenarioKo": "해외 우수대학 첨단기술 분야 학생·졸업자가 국내 적격 기업에서 인턴활동을 위해 D-10-3으로 변경을 신청하는 경우",
+          "requiredDocs": {
+            "commonDocs": [
+              "신청서",
+              "사진",
+              "여권 사본",
+              "수수료",
+              "외국인등록증 사본"
+            ],
+            "requiredDocs": [
+              "인턴활동계획서",
+              "학적 또는 학위 입증서류와 대학 순위 입증서류",
+              "업체·분야·기간을 확인할 수 있는 인턴 근로계약서",
+              "초청기업의 사업자등록증 사본",
+              "초청기업의 고용보험가입자 명부 또는 연구시설·연구인력 입증서류",
+              "초청기업 자격요건 입증서류"
+            ],
+            "additionalDocs": [],
+            "conditionalDocs": [
+              "인턴 근로계약서로 지급 수준을 확인할 수 없는 경우 체류비 입증서류"
+            ]
+          },
+          "manualRefs": [
+            {
+              "manualName": "체류민원",
+              "manualVersion": "2026.5",
+              "pageRange": "pp. 151-152",
+              "sourceFile": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+              "confidence": "manual_extracted_needs_review",
+              "needsManualReview": true,
+              "sourceDate": "2026-06-01"
+            }
+          ],
+          "notes": [
+            "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다.",
+            "대학 순위, 첨단기술 분야, 인턴 기간, 초청기업 자격요건을 공식 매뉴얼에서 함께 확인해야 합니다.",
+            "휴학증명서는 인정될 수 있으나 장기 휴학 제한을 공식 매뉴얼에서 확인해야 합니다."
+          ],
+          "statusCode": "D-10-3"
+        }
+      ],
+      "summaryQuality": "generated_legacy",
+      "summaryHiddenInUi": true,
+      "summaryCleanupStatus": "compat_only",
+      "manualRefs": []
+    }
+  },
+  "sourceManualStatus": {
+    "visaManualVersion": "2026.5",
+    "stayManualVersion": "2026.5",
+    "verified": false,
+    "needsManualReview": true,
+    "reviewNotes": [
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
+      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다."
+    ],
+    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceFile": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf"
+  },
+  "searchAliases": [
+    "D-10-1",
+    "D-10-2",
+    "D-10-3",
+    "D-10-T"
+  ],
+  "reviewStatus": "needs_review",
+  "editorNotes": "",
+  "_generated": {
+    "compat": {
+      "newReq": "최종학위(아포스티유), 경력, 구직/창업계획서, 재정능력.",
+      "newReqDocs": [
+        "doc_degree",
+        "doc_career",
+        "doc_plan",
+        "doc_finance"
+      ],
+      "extReq": "체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D-10-1): 점수제 적용 대상자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동계획서 ❍ 체류지 입증서류 ❍ 체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등 ❍ 기타 점수제 평가를 위해 필요하다고 인정되는 서류 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ⅰ) 국내 대학 졸업 한국어능력 우수자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서 ❍ 체류지 입증서류 ⅱ) 국내 성장 기반 외국인 청소년 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서(붙임6) ❍ 체류지 입증서류 ⅲ) 유망인재 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서 ❍ 체류지 입증서류 ⅳ) 요양보호사 전문연수 과정 수료자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 인턴 재직증명서 ❍",
+      "extReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_purpose",
+        "doc_finance",
+        "doc_address",
+        "doc_job_search_plan",
+        "doc_point_table",
+        "doc_tb"
+      ],
+      "faq": "Q: 한도?\nA: D-10-1 학사 1년, 석박사 2년.\n\n[2026-05 공통 유의사항] 제출서류는 별도 명시가 없으면 발급일로부터 3개월 이내를 권장하며, 전자정부 공동이용 가능 정보는 제출이 면제될 수 있습니다. 대리 신청은 체류자격별 허용 범위를 확인하세요. 분량이 많은 서류는 핵심 페이지 발췌 제출이 허용될 수 있습니다.",
+      "initialReqDocs": [
+        "doc_degree",
+        "doc_career",
+        "doc_plan",
+        "doc_finance"
+      ],
+      "extensionReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_purpose",
+        "doc_finance",
+        "doc_address",
+        "doc_job_search_plan",
+        "doc_point_table",
+        "doc_tb"
+      ],
+      "changeReqDocs": [],
+      "documents_initial": [
+        {
+          "name": "최종 학위/학력증명서",
+          "note": "아포스티유/영사확인 필수"
+        },
+        {
+          "name": "해외 및 국내 경력증명서"
+        },
+        {
+          "name": "체류/구직/연수 계획서 또는 사유서"
+        },
+        {
+          "name": "재정능력 입증서류",
+          "note": "잔고증명, 소득증명 등 총괄"
+        }
+      ],
+      "documents_extension": [
+        {
+          "name": "통합신청서(별지 제34호 서식)",
+          "note": "별지 제34호 서식"
+        },
+        {
+          "name": "여권 원본 및 인적사항면 사본"
+        },
+        {
+          "name": "외국인등록증 원본 및 사본(거소증 해당자 포함)",
+          "note": "기존 등록자에 한함"
+        },
+        {
+          "name": "수수료(절차별 정부수입인지/카드 발급 수수료 확인)",
+          "note": "절차별 정부수입인지 금액은 수수료 안내 확인"
+        },
+        {
+          "name": "기타 체류목적 입증서류",
+          "note": "별도 소명자료"
+        },
+        {
+          "name": "재정능력 입증서류",
+          "note": "잔고증명, 소득증명 등 총괄"
+        },
+        {
+          "name": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+          "note": "임대차계약서, 거주/숙소 제공 확인서, 공공요금 영수증 등"
+        },
+        {
+          "name": "구직활동계획서"
+        },
+        {
+          "name": "점수제 자기평가표 및 증빙서류"
+        },
+        {
+          "name": "결핵진단서",
+          "note": "보건소/지정병원, 고위험 35개국 필수"
+        }
+      ],
+      "hikorea_task_type": "체류기간 연장허가"
+    },
+    "removedSummaries": {
+      "procedures.extension.summary": "체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D-10-1): 점수제 적용 대상자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동계획서 ❍ 체류지 입증서류 ❍ 체재비 입증서류 * ‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등 ❍ 기타 점수제 평가를 위해 필요하다고 인정되는 서류 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ⅰ) 국내 대학 졸업 한국어능력 우수자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서 ❍ 체류지 입증서류 ⅱ) 국내 성장 기반 외국인 청소년 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서(붙임6) ❍ 체류지 입증서류 ⅲ) 유망인재 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 구직활동 계획서 ❍ 체류지 입증서류 ⅳ) 요양보호사 전문연수 과정 수료자 ❍ 공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본) ❍ 인턴 재직증명서 ❍",
+      "procedures.registration.summary": "[입국 후 · 국내 체류절차] 구직(D-10) 자격으로 90일을 초과하여 체류하는 경우, 입국일로부터 90일 이내에 체류지 관할 출입국·외국인관서에서 외국인등록(외국인등록증 발급)을 해야 합니다. 자격별 제출서류는 세부약호·국적·체류 이력에 따라 달라 공식 확인이 필요합니다.",
+      "procedures.statusChange.summary": "체류자격 변경 제출서류는 변경 대상 자격과 세부 상황별로 다릅니다."
+    }
+  },
+  "_authoring": {
+    "schemaVersion": 1,
+    "recordIndex": 12,
+    "keyOrder": [
+      "code",
+      "name",
+      "cat",
+      "period",
+      "newReq",
+      "newReqDocs",
+      "extReq",
+      "extReqDocs",
+      "faq",
+      "subCodes",
+      "initialReqDocs",
+      "extensionReqDocs",
+      "changeReqDocs",
+      "procedures",
+      "sourceManualStatus",
+      "manualRequiredDocAudit",
+      "documents_initial",
+      "documents_extension",
+      "hikorea_task_type",
+      "_source_notes",
+      "searchAliases",
+      "_searchAliasAudit",
+      "feeInfo",
+      "structuredRequirementsRef"
+    ],
+    "keySource": {
+      "code": "identity",
+      "name": "identity",
+      "cat": "identity",
+      "period": "identity",
+      "newReq": "compat",
+      "newReqDocs": "compat",
+      "extReq": "compat",
+      "extReqDocs": "compat",
+      "faq": "compat",
+      "subCodes": "subcodes",
+      "initialReqDocs": "compat",
+      "extensionReqDocs": "compat",
+      "changeReqDocs": "compat",
+      "procedures": "procedures",
+      "sourceManualStatus": "sourceManualStatus",
+      "manualRequiredDocAudit": "audit:manual_required_doc_audit",
+      "documents_initial": "compat",
+      "documents_extension": "compat",
+      "hikorea_task_type": "compat",
+      "_source_notes": "audit:source_notes",
+      "searchAliases": "identity",
+      "_searchAliasAudit": "audit:search_alias_audit",
+      "feeInfo": "feeRef",
+      "structuredRequirementsRef": "audit:structured_requirements_refs"
+    },
+    "procOrder": [
+      "extension",
+      "registration",
+      "statusChange"
+    ],
+    "procKeyOrder": {
+      "extension": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs",
+        "variants"
+      ],
+      "registration": [
+        "available",
+        "summary",
+        "requiredDocs",
+        "notes",
+        "manualRefs"
+      ],
+      "statusChange": [
+        "available",
+        "requiredDocs",
+        "notes",
+        "variants",
+        "summary",
+        "manualRefs"
+      ]
+    },
+    "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
+  }
+}
