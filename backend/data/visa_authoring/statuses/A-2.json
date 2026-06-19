@@ -15,7 +15,7 @@
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+        "2026.6 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
       ],
       "manualRefs": [
         {
@@ -24,27 +24,31 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "2. 공무(A-2)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 18-20",
+          "section": "공무(A-2)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
     "registration": {
       "available": true,
-      "summary": "외국인등록 외국인등록 면제 대상이나 본인이 원할 경우 외국인등록증 발급 - 기타 등록외국인에게 부여 되는 각종 의무(등록사항 변경신고, 체류지 변경 신고 등)도 적용 면제 ※인터넷 쇼핑 등 온라인 이용 시 본인 인증 곤란으로 국내생활 불편 해소 목적 제출서류 통합신청서(별지 제34호 서식), 여권 원본, 반명함판 천연색 사진(3.5×4.5㎝), 주한외국공관원 신분증 등 신분 입증서류",
+      "summary": "공무(A-2)는 외국인등록 면제 대상이나 본인이 원할 경우 외국인등록증 발급을 신청할 수 있습니다. 등록사항 변경신고, 체류지 변경신고 등 등록외국인 의무도 면제됩니다.",
       "summaryQuality": "source_backed",
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [
-          "통합신청서(별지 제34호 서식), 여권 원본, 반명함판 천연색 사진(3.5×4.5㎝), 주한외국공관원 신분증 등 신분 입증서류"
+          "신청서(별지 제34호)",
+          "여권 원본",
+          "반명함판 천연색 사진(3.5×4.5㎝)",
+          "주한외국공관원 신분증 등 신분 입증서류"
         ],
         "additionalDocs": [],
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+        "체류민원 매뉴얼 p.20의 공무(A-2) 외국인등록 제출서류를 항목별로 구조화했습니다.",
+        "인터넷 쇼핑 등 온라인 본인인증 곤란으로 인한 국내생활 불편 해소 목적의 발급 안내가 함께 기재되어 있습니다."
       ],
       "manualRefs": [
         {
@@ -53,10 +57,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "2. 공무(A-2)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 18-20",
+          "section": "공무(A-2)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -67,11 +71,11 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 18-20; visa manual evidence: pp. 10-12.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -89,10 +93,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "reviewStatus": "needs_review",
@@ -200,9 +205,20 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 2",
-      "section": "2. 공무(A-2)",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 18-20",
+      "section": "공무(A-2)",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "pp. 10-12",
+      "section": "공무(A-2)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     }
   ],

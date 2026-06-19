@@ -1,0 +1,19 @@
+{
+  "batchId": "batch_03_manual_review_reason_metadata",
+  "createdFor": "full-status-manual-reconcile-260617",
+  "sourceMap": "audits/manual-refresh-260617/status_source_map.json",
+  "scope": [
+    "subcodes[*].manualReviewReason where needsManualReview is true",
+    "sourceManualStatus.manualRefresh260617.reviewReason where needsManualReview is true"
+  ],
+  "reason": "The hard rule requires needsManualReview to carry a precise unresolved reason rather than a bare boolean.",
+  "expectedFieldChanges": [
+    "subcodes[*].manualReviewReason",
+    "sourceManualStatus.manualRefresh260617.reviewReason"
+  ],
+  "explicitNonGoals": [
+    "do not change needsManualReview values",
+    "do not set verified true",
+    "do not edit _generated or _authoring"
+  ]
+}

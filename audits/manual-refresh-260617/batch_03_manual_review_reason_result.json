@@ -1,0 +1,174 @@
+{
+  "batchId": "batch_03_manual_review_reason_metadata",
+  "filesChanged": 42,
+  "changes": [
+    {
+      "code": "A-1",
+      "file": "backend/data/visa_authoring/statuses/A-1.json"
+    },
+    {
+      "code": "A-2",
+      "file": "backend/data/visa_authoring/statuses/A-2.json"
+    },
+    {
+      "code": "A-3",
+      "file": "backend/data/visa_authoring/statuses/A-3.json"
+    },
+    {
+      "code": "B-1",
+      "file": "backend/data/visa_authoring/statuses/B-1.json"
+    },
+    {
+      "code": "B-2",
+      "file": "backend/data/visa_authoring/statuses/B-2.json"
+    },
+    {
+      "code": "C-1",
+      "file": "backend/data/visa_authoring/statuses/C-1.json"
+    },
+    {
+      "code": "C-3",
+      "file": "backend/data/visa_authoring/statuses/C-3.json"
+    },
+    {
+      "code": "C-4",
+      "file": "backend/data/visa_authoring/statuses/C-4.json"
+    },
+    {
+      "code": "D-1",
+      "file": "backend/data/visa_authoring/statuses/D-1.json"
+    },
+    {
+      "code": "D-10",
+      "file": "backend/data/visa_authoring/statuses/D-10.json"
+    },
+    {
+      "code": "D-2",
+      "file": "backend/data/visa_authoring/statuses/D-2.json"
+    },
+    {
+      "code": "D-3",
+      "file": "backend/data/visa_authoring/statuses/D-3.json"
+    },
+    {
+      "code": "D-4-1",
+      "file": "backend/data/visa_authoring/statuses/D-4-1.json"
+    },
+    {
+      "code": "D-4-2K",
+      "file": "backend/data/visa_authoring/statuses/D-4-2K.json"
+    },
+    {
+      "code": "D-4",
+      "file": "backend/data/visa_authoring/statuses/D-4.json"
+    },
+    {
+      "code": "D-5",
+      "file": "backend/data/visa_authoring/statuses/D-5.json"
+    },
+    {
+      "code": "D-6",
+      "file": "backend/data/visa_authoring/statuses/D-6.json"
+    },
+    {
+      "code": "D-7",
+      "file": "backend/data/visa_authoring/statuses/D-7.json"
+    },
+    {
+      "code": "D-8",
+      "file": "backend/data/visa_authoring/statuses/D-8.json"
+    },
+    {
+      "code": "D-9",
+      "file": "backend/data/visa_authoring/statuses/D-9.json"
+    },
+    {
+      "code": "E-1",
+      "file": "backend/data/visa_authoring/statuses/E-1.json"
+    },
+    {
+      "code": "E-10",
+      "file": "backend/data/visa_authoring/statuses/E-10.json"
+    },
+    {
+      "code": "E-2",
+      "file": "backend/data/visa_authoring/statuses/E-2.json"
+    },
+    {
+      "code": "E-3",
+      "file": "backend/data/visa_authoring/statuses/E-3.json"
+    },
+    {
+      "code": "E-4",
+      "file": "backend/data/visa_authoring/statuses/E-4.json"
+    },
+    {
+      "code": "E-5",
+      "file": "backend/data/visa_authoring/statuses/E-5.json"
+    },
+    {
+      "code": "E-6",
+      "file": "backend/data/visa_authoring/statuses/E-6.json"
+    },
+    {
+      "code": "E-7",
+      "file": "backend/data/visa_authoring/statuses/E-7.json"
+    },
+    {
+      "code": "E-8",
+      "file": "backend/data/visa_authoring/statuses/E-8.json"
+    },
+    {
+      "code": "E-9",
+      "file": "backend/data/visa_authoring/statuses/E-9.json"
+    },
+    {
+      "code": "F-1",
+      "file": "backend/data/visa_authoring/statuses/F-1.json"
+    },
+    {
+      "code": "F-2",
+      "file": "backend/data/visa_authoring/statuses/F-2.json"
+    },
+    {
+      "code": "F-3",
+      "file": "backend/data/visa_authoring/statuses/F-3.json"
+    },
+    {
+      "code": "F-4",
+      "file": "backend/data/visa_authoring/statuses/F-4.json"
+    },
+    {
+      "code": "F-5",
+      "file": "backend/data/visa_authoring/statuses/F-5.json"
+    },
+    {
+      "code": "F-6",
+      "file": "backend/data/visa_authoring/statuses/F-6.json"
+    },
+    {
+      "code": "G-1",
+      "file": "backend/data/visa_authoring/statuses/G-1.json"
+    },
+    {
+      "code": "H-1",
+      "file": "backend/data/visa_authoring/statuses/H-1.json"
+    },
+    {
+      "code": "H-2",
+      "file": "backend/data/visa_authoring/statuses/H-2.json"
+    },
+    {
+      "code": "K-STAR",
+      "file": "backend/data/visa_authoring/statuses/K-STAR.json"
+    },
+    {
+      "code": "REGION-S",
+      "file": "backend/data/visa_authoring/statuses/REGION-S.json"
+    },
+    {
+      "code": "YOUTH-STAY",
+      "file": "backend/data/visa_authoring/statuses/YOUTH-STAY.json"
+    }
+  ]
+}

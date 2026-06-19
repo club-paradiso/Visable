@@ -28,7 +28,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "☞ ‘11.12.15.부로 단기상용(C-2)와 단기종합(C-3) 체류자격을 통합",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -39,7 +39,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 18",
           "section": "(단, C-2, D-7, D-8, D-9에 한함)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -50,10 +50,11 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 41",
           "section": "※ 종전에 단기상용(C-2)자격과 단기방문(C-3)자격 복수 소지한 자 포함",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
-      ]
+      ],
+      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
     },
     {
       "code": "C-3-1",
@@ -78,7 +79,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -89,7 +90,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 474",
           "section": "※ ’22. 12. 31. 이전에 재외공관에서 C-3-1 사증을 발급받아 입국했어도, ‘22. 12.",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -100,7 +101,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -111,7 +112,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 29",
           "section": "1. 단기일반(C-3-1)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -139,7 +140,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "(C-3-2) ~ 동포방문(C-3-9)을 제외",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -150,7 +151,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-2",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -161,7 +162,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "순수관광(C-3-2) ~ 동포방문(C-3-9)을 제외",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -172,7 +173,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-2",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -201,7 +202,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-3",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -212,7 +213,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 133",
           "section": "(C-3-2), 의료관광 (C-3-3), 관광취업 (H-1)*, 방문취업 (H-2)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -223,7 +224,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-3",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -234,7 +235,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 36",
           "section": "※ 의료관광(C-3-3), 동포방문(C-3-8)은 해당 지침 적용",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -263,7 +264,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-4",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -274,7 +275,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 28",
           "section": "단기상용(C-3-4) 소지자로 91일 이상 체류하고자 하는 칠레 국민",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -285,7 +286,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 17",
           "section": "제한없음’70.09.01. ￮체류기간 59일이하의 일반상용(C-3-4),",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -296,7 +297,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-4",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -324,7 +325,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-5",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -335,7 +336,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-5",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -346,7 +347,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 31",
           "section": "4. 협정상 일반상용(C-3-5)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -374,7 +375,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-6",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -385,7 +386,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-6",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -396,7 +397,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 33",
           "section": "체류자격 단기일반(C-3-1~C-3-6), 체류기간 30일, 유효기간 6개월",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -423,20 +424,9 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "(C-3-8, F-1, H-2, F-4, F-5)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": false
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-8",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -447,7 +437,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 28",
           "section": "C-3-8",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -458,7 +448,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 34",
           "section": "- C-3-8 복수사증 소지자, 17세미만 55세 이상인 자, 우리나라 이외 국가 소재 4년제",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -486,7 +476,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "(C-3-2) ~ 동포방문(C-3-9)을 제외",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -497,7 +487,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-9",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -508,7 +498,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "순수관광(C-3-2) ~ 동포방문(C-3-9)을 제외",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -519,7 +509,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 28",
           "section": "C-3-9",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -547,7 +537,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-10",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -558,7 +548,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 28",
           "section": "C-3-10",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -569,7 +559,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 32",
           "section": "6. 순수환승 (C-3-10)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -604,7 +594,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-7",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -615,11 +605,12 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 27",
           "section": "C-3-7",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
-      "group": "관광"
+      "group": "관광",
+      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
     },
     {
       "code": "C-3-11",
@@ -644,7 +635,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 33",
           "section": "7. 교대선원 (C-3-11)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -673,10 +664,11 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 35",
           "section": "칭다오, 충칭 지역 호구자*(C-3-91)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
-      ]
+      ],
+      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
     }
   ],
   "nameKo": "단기방문",
@@ -713,26 +705,15 @@
       ],
       "manualRefs": [
         {
-          "manualName": "체류민원",
-          "manualType": "stay",
+          "manualName": "사증민원",
+          "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 27-50",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -753,7 +734,7 @@
       },
       "notes": [
         "다음 단계: ① 연장 필요성 소명자료 준비 → ② 하이코리아(HiKorea)에서 연장 신청 또는 방문 예약 → ③ 단기방문은 입국일로부터 90일 범위 내에서만 제한적으로 연장 가능하므로 가능 여부를 1345·관할 관서에서 확인.",
-        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+        "2026.6 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
       ],
       "manualRefs": [
         {
@@ -762,21 +743,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -798,21 +768,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -832,21 +791,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -869,7 +817,7 @@
       },
       "notes": [
         "대부분의 단기방문(C-3) 외국인은 외국인등록 대상이 아닙니다. 아래 안내는 91일 이상 체류가 허용되는 특정 사례에 한합니다.",
-        "2026.5 체류민원 매뉴얼 원문에서 대표 서류를 구조화했습니다. 세부약호·신청 이력별 예외는 수동 검토가 필요합니다."
+        "2026.6 체류민원 매뉴얼 원문에서 대표 서류를 구조화했습니다. 세부약호·신청 이력별 예외는 수동 검토가 필요합니다."
       ],
       "manualRefs": [
         {
@@ -878,21 +826,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -912,21 +849,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -946,21 +872,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -980,21 +895,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "7. 단기방문(C-3)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 27",
-          "section": "C-3-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -1006,20 +910,9 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 2",
-      "section": "7. 단기방문(C-3)",
-      "confidence": "manual_inventory_260617",
-      "needsManualReview": false
-    },
-    {
-      "manualName": "체류민원",
-      "manualType": "stay",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 27",
-      "section": "C-3-1",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 27-28",
+      "section": "단기방문(C-3)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     },
     {
@@ -1028,20 +921,9 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-      "pageRange": "p. 27",
-      "section": "C-3-1",
-      "confidence": "manual_inventory_260617",
-      "needsManualReview": false
-    },
-    {
-      "manualName": "사증민원",
-      "manualType": "visa",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-      "pageRange": "p. 17",
-      "section": "제한없음’70.09.01. ￮체류기간 59일이하의 일반상용(C-3-4),",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 27-50",
+      "section": "단기방문(C-3)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     }
   ],
@@ -1051,12 +933,11 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "C-3 representative hierarchy uses existing data; C-3-1 through C-3-10 labels still need 2026.5 manual page verification.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 27-28; visa manual evidence: pp. 27-50.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -1074,10 +955,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "searchAliases": [

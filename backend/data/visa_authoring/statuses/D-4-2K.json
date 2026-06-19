@@ -19,7 +19,7 @@
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 외국인체류 안내매뉴얼 pp.91-92 '기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간 연장 제출서류'에서 옮긴 제출서류입니다."
+        "2026.6 외국인체류 안내매뉴얼 pp.91-92 '기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간 연장 제출서류'에서 옮긴 제출서류입니다."
       ],
       "manualRefs": [
         {
@@ -28,43 +28,11 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 92",
-          "section": "2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간연장 제출서류",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 94",
-          "section": "4. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 76",
-          "section": "2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 자격 사증발급인정서 발급",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 76",
-          "section": "※ 상기 9개국에 대해서만 기업 맞춤형 인턴십(D-4-2K) 사증을 허용하며, 2년간 시범운영",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 92-94",
+          "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+          "note": "Special K-Trainee material embedded in the D-4 stay section.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -83,7 +51,7 @@
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 외국인체류 안내매뉴얼 p.94 '기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류'(외국인등록)에서 옮긴 제출서류입니다."
+        "2026.6 외국인체류 안내매뉴얼 p.94 '기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류'(외국인등록)에서 옮긴 제출서류입니다."
       ],
       "manualRefs": [
         {
@@ -92,43 +60,11 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 92",
-          "section": "2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간연장 제출서류",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 94",
-          "section": "4. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 76",
-          "section": "2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 자격 사증발급인정서 발급",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 76",
-          "section": "※ 상기 9개국에 대해서만 기업 맞춤형 인턴십(D-4-2K) 사증을 허용하며, 2년간 시범운영",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 92-94",
+          "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+          "note": "Special K-Trainee material embedded in the D-4 stay section.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -139,11 +75,12 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 92-94; visa manual evidence: pp. 76-78.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages.",
+      "Source-map note: Handled in an embedded/special section rather than as a simple standalone parent chapter."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -161,10 +98,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "searchAliases": [
@@ -316,5 +254,31 @@
       ]
     },
     "note": "GENERATED by extract_authoring_from_visa_data.py. Edit the human-editable top-level fields; do not hand-edit _generated/_authoring."
-  }
+  },
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "pp. 92-94",
+      "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+      "note": "Special K-Trainee material embedded in the D-4 stay section.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "pp. 76-78",
+      "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+      "note": "Special K-Trainee material embedded in the D-4 visa issuance section.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    }
+  ]
 }

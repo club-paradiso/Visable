@@ -17,7 +17,7 @@
       },
       "notes": [
         "다음 단계: ① 체류기간 만료 전 하이코리아(HiKorea)(hikorea.go.kr)에서 연장 신청 또는 방문 예약 → ② 자격별 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
-        "2026.5 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
+        "2026.6 체류민원 매뉴얼을 기준으로 정리한 제출서류입니다. 세부약호·국적·기관·체류 이력에 따라 가감될 수 있어 최종 확인이 필요합니다."
       ],
       "manualRefs": [
         {
@@ -26,21 +26,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "8. 단기취업(C-4)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "8. 단기취업(C-4)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 29-31",
+          "section": "단기취업(C-4)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -65,21 +54,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "8. 단기취업(C-4)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "8. 단기취업(C-4)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 29-31",
+          "section": "단기취업(C-4)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -90,11 +68,11 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 29-31; visa manual evidence: pp. 51-59.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -112,10 +90,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "subcodes": [
@@ -143,7 +122,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 12",
           "section": "- 단기체류자격 중 계절근로자(C-4-1~4) 및 국내 체류 중인 외국인 결핵환자가 가족 등",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -154,7 +133,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 29",
           "section": "람(C-4-1~4)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -165,7 +144,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 5",
           "section": "- 단기체류자격 중 계절근로자(C-4-1~4) 및 국내 체류 중인 외국인 결핵환자가 가족 등을",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -176,7 +155,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 51",
           "section": "□ 계절근로 단기취업(C-4-1~4)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -206,7 +185,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 59",
           "section": "C-4-2(단수)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -236,7 +215,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 59",
           "section": "C-4-3(단수)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -266,7 +245,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
           "pageRange": "p. 59",
           "section": "C-4-4(단수)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
@@ -302,7 +281,7 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 29",
           "section": "단기간 취업활동을 하려는 자(C-4-5)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         },
         {
@@ -313,11 +292,12 @@
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
           "pageRange": "p. 29",
           "section": "□ 계절근로외 단기취업(C-4-5)",
-          "confidence": "manual_inventory_260617",
+          "confidence": "manual_reconciled_260617",
           "needsManualReview": false
         }
       ],
-      "group": "기타"
+      "group": "기타",
+      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
     }
   ],
   "searchAliases": [
@@ -460,9 +440,9 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 2",
-      "section": "8. 단기취업(C-4)",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 29-31",
+      "section": "단기취업(C-4)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     },
     {
@@ -471,31 +451,9 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-      "pageRange": "p. 2",
-      "section": "8. 단기취업(C-4)",
-      "confidence": "manual_inventory_260617",
-      "needsManualReview": false
-    },
-    {
-      "manualName": "체류민원",
-      "manualType": "stay",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 12",
-      "section": "- 단기체류자격 중 계절근로자(C-4-1~4) 및 국내 체류 중인 외국인 결핵환자가 가족 등",
-      "confidence": "manual_inventory_260617",
-      "needsManualReview": false
-    },
-    {
-      "manualName": "사증민원",
-      "manualType": "visa",
-      "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
-      "pageRange": "p. 5",
-      "section": "- 단기체류자격 중 계절근로자(C-4-1~4) 및 국내 체류 중인 외국인 결핵환자가 가족 등을",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 51-59",
+      "section": "단기취업(C-4)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     }
   ]
