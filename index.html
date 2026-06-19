@@ -2014,7 +2014,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   top: calc(100% + 8px);
   left: 0;
   right: 0;
-  z-index: 500;
+  z-index: 1200;
   background: var(--bg1);
   border: 1.5px solid color-mix(in srgb, var(--ac) 40%, var(--bd2));
   border-radius: 16px;
@@ -2114,7 +2114,13 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
   z-index: 1100;
   -webkit-tap-highlight-color: transparent;
 }
-.scenario-picker-backdrop.is-active { display: block; }
+/* Mobile-only: the desktop picker is an anchored dropdown that needs no
+   backdrop. The fixed backdrop (z-index 1100) must never display on desktop —
+   the dropdown panel would sit behind it and darken the page with no visible
+   dialog. On mobile the panel is a bottom sheet (z-index 1200, above 1100). */
+@media (max-width: 540px) {
+  .scenario-picker-backdrop.is-active { display: block; }
+}
 @media (prefers-reduced-motion: reduce) {
   .scenario-picker-panel:not([hidden]) { animation: none; }
 }
@@ -18276,48 +18282,67 @@ function openScenarioPicker(trigger) {
     if (panel && !panel.hidden) { closeScenarioPicker(); return; }
     // 다른 열린 패널 먼저 닫기
     closeScenarioPicker();
-    scenarioPickerActiveSelector = selector;
     if (!panel) return;
-    scenarioPickerActivePanel = panel;
-    const selectedId = selector.getAttribute('data-selected-variant') || '';
-    const cards = Array.from(selector.querySelectorAll('[data-procedure-variant-card]'));
     const choicesHost = panel.querySelector('.scenario-picker-panel-choices');
     if (!choicesHost) return;
-    choicesHost.innerHTML = cards.map((card, i) => {
-        const id = card.getAttribute('data-procedure-variant-card') || '';
-        const label = (card.querySelector('.manual-subcode-name')?.textContent || '').trim();
-        const code = (card.querySelector('.manual-subcode-code')?.textContent || '').trim();
-        const preview = (card.querySelector('.manual-subcode-desc')?.textContent || '').trim();
-        const pressed = id === selectedId ? 'true' : 'false';
-        return `<button type="button" class="scenario-choice scenario-picker-choice" role="listitem" data-action="choose-scenario-variant" data-variant-id="${escapeHtml(id)}" aria-pressed="${pressed}">
-            <span class="scenario-choice-marker" aria-hidden="true"><span class="scenario-choice-num">${i + 1}</span></span>
-            <span class="scenario-choice-body">
-                <span class="scenario-choice-main"><span class="scenario-picker-choice-label">${escapeHtml(label)}</span>${code ? `<span class="manual-subcode-code">${escapeHtml(code)}</span>` : ''}</span>
-                ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 110))}</span>` : ''}
-            </span>
-            <span class="scenario-choice-go" aria-hidden="true">→</span>
-        </button>`;
-    }).join('');
-    panel.hidden = false;
-    trigger.setAttribute('aria-expanded', 'true');
-    // 모바일 백드롭 표시
-    const bd = document.getElementById('scenarioPickerBackdrop');
-    if (bd) bd.classList.add('is-active');
-    // 첫 번째 선택지로 포커스
-    const firstBtn = choicesHost.querySelector('button');
-    if (firstBtn) requestAnimationFrame(() => firstBtn.focus());
-    // Escape 키로 닫기
-    const escHandler = e => { if (e.key === 'Escape') { closeScenarioPicker(); trigger.focus(); } };
-    panel._escHandler = escHandler;
-    document.addEventListener('keydown', escHandler);
-    // 외부 클릭 시 닫기 (약간 지연해 현재 클릭 이벤트 제외)
-    const outsideHandler = e => {
-        if (!panel.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
-            closeScenarioPicker();
-        }
-    };
-    panel._outsideHandler = outsideHandler;
-    setTimeout(() => document.addEventListener('pointerdown', outsideHandler, true), 100);
+    // Track as active up-front so any failure path below routes through
+    // closeScenarioPicker(), which always clears the (mobile) backdrop and the
+    // trigger's expanded state — never leaving a dark overlay with no dialog.
+    scenarioPickerActiveSelector = selector;
+    scenarioPickerActivePanel = panel;
+    try {
+        const selectedId = selector.getAttribute('data-selected-variant') || '';
+        const cards = Array.from(selector.querySelectorAll('[data-procedure-variant-card]'));
+        // Build the dialog content FIRST. Only reveal the panel (and, on mobile,
+        // the backdrop) once content exists — so the dark overlay never precedes
+        // a rendered dialog.
+        choicesHost.innerHTML = cards.map((card, i) => {
+            const id = card.getAttribute('data-procedure-variant-card') || '';
+            const label = (card.querySelector('.manual-subcode-name')?.textContent || '').trim();
+            const code = (card.querySelector('.manual-subcode-code')?.textContent || '').trim();
+            const preview = (card.querySelector('.manual-subcode-desc')?.textContent || '').trim();
+            const pressed = id === selectedId ? 'true' : 'false';
+            return `<button type="button" class="scenario-choice scenario-picker-choice" role="listitem" data-action="choose-scenario-variant" data-variant-id="${escapeHtml(id)}" aria-pressed="${pressed}">
+                <span class="scenario-choice-marker" aria-hidden="true"><span class="scenario-choice-num">${i + 1}</span></span>
+                <span class="scenario-choice-body">
+                    <span class="scenario-choice-main"><span class="scenario-picker-choice-label">${escapeHtml(label)}</span>${code ? `<span class="manual-subcode-code">${escapeHtml(code)}</span>` : ''}</span>
+                    ${preview ? `<span class="scenario-choice-preview">${escapeHtml(makeManualPreview(preview, 110))}</span>` : ''}
+                </span>
+                <span class="scenario-choice-go" aria-hidden="true">→</span>
+            </button>`;
+        }).join('');
+        const firstBtn = choicesHost.querySelector('button');
+        if (!firstBtn) throw new Error('no scenario choices to render');
+        panel.hidden = false;
+        // Guard against a stranded dark overlay: if the panel has no layout box
+        // (e.g. its procedure tab is not the active/visible one), close instead
+        // of darkening the page behind an invisible dialog.
+        const rect = panel.getBoundingClientRect();
+        if (rect.width === 0 && rect.height === 0) throw new Error('scenario picker panel is not visible');
+        trigger.setAttribute('aria-expanded', 'true');
+        // 모바일 백드롭 표시 (CSS gates display to ≤540px; harmless on desktop).
+        const bd = document.getElementById('scenarioPickerBackdrop');
+        if (bd) bd.classList.add('is-active');
+        // 첫 번째 선택지로 포커스
+        requestAnimationFrame(() => firstBtn.focus());
+        // Escape 키로 닫기
+        const escHandler = e => { if (e.key === 'Escape') { closeScenarioPicker(); trigger.focus(); } };
+        panel._escHandler = escHandler;
+        document.addEventListener('keydown', escHandler);
+        // 외부 클릭 시 닫기 (약간 지연해 현재 클릭 이벤트 제외)
+        const outsideHandler = e => {
+            if (!panel.contains(e.target) && e.target !== trigger && !trigger.contains(e.target)) {
+                closeScenarioPicker();
+            }
+        };
+        panel._outsideHandler = outsideHandler;
+        setTimeout(() => document.addEventListener('pointerdown', outsideHandler, true), 100);
+    } catch (err) {
+        if (typeof console !== 'undefined' && console.warn) console.warn('[scenario-picker] open failed:', err && err.message);
+        // Reset all open/backdrop state so the page is never left dark.
+        closeScenarioPicker();
+        if (typeof showToast === 'function') showToast(tx('scenarioPickerOpenError'));
+    }
 }
 
 function chooseScenarioVariant(button) {

@@ -294,6 +294,7 @@
   "scenarioAskAi": "就此情形询问 AI",
   "scenarioSelectedContextLabel": "已选情形：",
   "scenarioAiOpenError": "打开 AI 助手时出现问题。请稍后重试或刷新页面。",
+  "scenarioPickerOpenError": "打开情形列表时出现问题。请重试。",
   "scenarioOfficialLabelsKoNote": "为与出入境手册一致，正式情形名称以韩文显示。",
   "officialDocumentNamesKoNote": "为与出入境手册一致，正式材料名称以韩文显示。",
   "selectedScenarioAiPrompt": "请根据所选情形（{label}）说明 {visaCode} 所需材料和注意事项。必要时请保留韩文正式材料名称。",
