@@ -2115,6 +2115,9 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-subcode-card.is-selected .scenario-selected-badge { display: inline-flex; }
 .scenario-selected-actions { display: none; margin-top: 0.72rem; border-top: 1px dashed var(--bd2); padding-top: 0.62rem; }
 .manual-subcode-card.is-selected .scenario-selected-actions { display: block; }
+.scenario-selected-context { display: flex; flex-wrap: wrap; gap: 0.3rem 0.5rem; align-items: baseline; margin-bottom: 0.55rem; border: 1px solid color-mix(in srgb, var(--ac) 32%, var(--bd2)); background: color-mix(in srgb, var(--ac) 7%, var(--bg1)); border-radius: 8px; padding: 0.42rem 0.6rem; font-size: 0.76rem; line-height: 1.5; word-break: keep-all; }
+.scenario-selected-context .ssc-label { color: var(--ac); font-weight: 900; }
+.scenario-selected-context .ssc-value { color: var(--t1); font-weight: 700; }
 .scenario-selected-note { color: var(--t3); font-size: 0.72rem; line-height: 1.55; word-break: keep-all; }
 .scenario-ai-handoff-btn { min-height: 36px; margin-top: 0.55rem; border: 1px solid var(--ac); background: var(--ac); color: #fff; border-radius: 8px; padding: 0.48rem 0.68rem; font: inherit; font-size: 0.76rem; font-weight: 900; cursor: pointer; }
 .scenario-ai-handoff-btn:hover, .scenario-ai-handoff-btn:focus-visible { filter: brightness(0.94); }
@@ -14536,7 +14539,7 @@ function findProcedureVariant(visa, procedureKey, variantId) {
 }
 function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVariantId = '', selectedVariantLabel = '', promptKey = 'selectedScenarioAiPrompt') {
     const visa = VISA_DATA.find(v => v.code === visaCode);
-    if (!visa) return;
+    if (!visa) return false;
     const selectedVariant = findProcedureVariant(visa, selectedProcedureKey, selectedProcedureVariantId);
     currentAiVisaCode = visaCode;
     currentAiSelectedProcedureKey = selectedVariant ? selectedProcedureKey : null;
@@ -14573,6 +14576,50 @@ function openAiModal(visaCode, selectedProcedureKey = '', selectedProcedureVaria
     document.getElementById('aiResult').style.display = 'none';
     document.getElementById('aiResult').innerHTML = '';
     openModal('aiModalOverlay');
+    return true;
+}
+
+// --- Waymaker (ai.html) selected-scenario handoff -------------------------
+// The floating Waymaker CTA (.ai-fab) is a global entry point. When the user
+// has selected a scenario, we carry ONLY safe identifiers + the public scenario
+// label to ai.html so Waymaker opens with the same context as the in-page modal.
+// Checklist/checkbox/reminder/localStorage state is NEVER included. Reflects the
+// most recently selected scenario; cleared when the selection is reset.
+let selectedScenarioHandoff = null;
+function buildWaymakerHandoffUrl(visaCode, procedureKey, variantId, label, lang) {
+    const params = new URLSearchParams();
+    if (visaCode) params.set('visa_code', visaCode);
+    if (procedureKey) params.set('selected_procedure_key', procedureKey);
+    if (variantId) params.set('selected_procedure_variant_id', variantId);
+    if (label) params.set('scenario_label', label);
+    params.set('lang', lang || currentLanguage || 'ko');
+    return 'ai.html?' + params.toString();
+}
+function syncWaymakerFab() {
+    const fab = document.querySelector('.ai-fab');
+    if (!fab) return;
+    if (selectedScenarioHandoff) {
+        const h = selectedScenarioHandoff;
+        fab.setAttribute('href', buildWaymakerHandoffUrl(h.visaCode, h.procedureKey, h.variantId, h.label));
+    } else {
+        fab.setAttribute('href', 'ai.html');
+    }
+}
+function setSelectedScenarioHandoff(visaCode, procedureKey, variantId, label) {
+    selectedScenarioHandoff = { visaCode, procedureKey, variantId, label };
+    syncWaymakerFab();
+}
+function clearSelectedScenarioHandoff() {
+    selectedScenarioHandoff = null;
+    syncWaymakerFab();
+}
+// Shared entry for the in-card scenario AI CTAs so a failed open never becomes a
+// silent no-op — the user always gets visible feedback.
+function handleScenarioAiHandoff(btn, promptKey = 'selectedScenarioAiPrompt') {
+    if (!btn) return false;
+    const opened = openAiModal(btn.dataset.visaCode, btn.dataset.procedureKey, btn.dataset.variantId, btn.dataset.variantLabel, promptKey);
+    if (!opened && typeof showToast === 'function') showToast(tx('scenarioAiOpenError'));
+    return opened;
 }
 
 // --- Doc Modal ---
@@ -18058,6 +18105,17 @@ function renderProcedureHeader(v, proc) {
     </div>`;
 }
 
+// Safe selected-context banner shown directly above the in-card AI CTA so the
+// user can see exactly which scenario the AI will receive. Renders only public
+// labels (visa code · procedure label · scenario label) — never checklist,
+// reminder, or any local/personal state.
+function renderScenarioSelectedContextBanner(visaCode, procedureKey, variantLabel) {
+    const procedureLabel = getProcedureLabelByKey(procedureKey, procedureKey);
+    const context = [visaCode, procedureLabel, variantLabel].filter(Boolean).map(escapeHtml).join(' · ');
+    if (!context) return '';
+    return `<div class="scenario-selected-context" role="note"><span class="ssc-label">${escapeHtml(tx('scenarioSelectedContextLabel'))}</span> <span class="ssc-value">${context}</span></div>`;
+}
+
 function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selectedByDefault = false, alreadyShownDocs = null) {
     const effectiveDocs = alreadyShownDocs
         ? subtractDocGroupsForRender(variant.docs, alreadyShownDocs)
@@ -18080,6 +18138,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
         ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>` : `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`}
         ${notes}${citations}
         <div class="scenario-selected-actions">
+            ${renderScenarioSelectedContextBanner(visaCode, procedureKey, variant.label)}
             ${renderScenarioChecklist(visaCode, procedureKey, checklistVariant)}
             <div class="scenario-selected-note">${escapeHtml(tx('scenarioSelectedReferenceNote'))}</div>
             <button type="button" class="scenario-ai-handoff-btn" data-action="ask-selected-procedure-variant" data-visa-code="${escapeHtml(visaCode)}" data-procedure-key="${escapeHtml(procedureKey)}" data-variant-id="${escapeHtml(variant.id)}" data-variant-label="${escapeHtml(variant.label)}">${escapeHtml(tx('scenarioAskAi'))}</button>
@@ -18189,11 +18248,19 @@ function applyScenarioSelection(selector, selectedId) {
     });
     const labelEl = selector.querySelector('.scenario-picker-trigger-label');
     const clearBtn = selector.querySelector('.scenario-picker-clear');
+    const picked = selectedCard ? (selectedCard.querySelector('.manual-subcode-name')?.textContent || '').trim() : '';
     if (labelEl) {
-        const picked = selectedCard ? (selectedCard.querySelector('.manual-subcode-name')?.textContent || '').trim() : '';
         labelEl.textContent = picked ? `✓ ${picked}` : tx('scenarioPickerTrigger');
     }
     if (clearBtn) clearBtn.hidden = !selectedId;
+    // Carry the same safe context to the floating Waymaker (ai.html) CTA.
+    if (selectedId && selectedCard) {
+        const visaCode = selector.getAttribute('data-visa-code') || '';
+        const procedureKey = selector.getAttribute('data-procedure-variant-selector') || '';
+        setSelectedScenarioHandoff(visaCode, procedureKey, selectedId, picked);
+    } else {
+        clearSelectedScenarioHandoff();
+    }
 }
 
 function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
@@ -21313,11 +21380,11 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'choose-scenario-variant': () => chooseScenarioVariant(actionBtn),
                 'clear-procedure-variant': () => clearScenarioSelection(actionBtn),
                 'close-scenario-picker': () => closeScenarioPicker(),
-                'ask-selected-procedure-variant': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel),
+                'ask-selected-procedure-variant': () => handleScenarioAiHandoff(actionBtn, 'selectedScenarioAiPrompt'),
                 'copy-scenario-checklist': () => copyScenarioChecklist(actionBtn),
                 'print-scenario-checklist': () => printScenarioChecklist(actionBtn),
                 'reset-scenario-checklist': () => resetScenarioChecklist(actionBtn),
-                'ask-checklist-missing': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel, 'scenarioChecklistMissingPrompt'),
+                'ask-checklist-missing': () => handleScenarioAiHandoff(actionBtn, 'scenarioChecklistMissingPrompt'),
                 'select-docs-tab': () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
