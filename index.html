@@ -14550,7 +14550,7 @@ function setupAiModeSelector() {
         btn.addEventListener('click', () => {
             const mode = btn.dataset.mode;
             if (mode === 'pro' || btn.classList.contains('is-disabled')) {
-                showToast('Pro 모드는 곧 제공될 예정입니다.');
+                showToast(currentLanguage === 'en' ? 'Pro mode is coming soon.' : 'Pro 모드는 곧 제공될 예정입니다.');
                 return;
             }
             currentAiAnswerMode = mode;
@@ -14832,7 +14832,9 @@ function renderModalFeeBox(visa, type) {
 window.verifyFaqWithAi = function(visaCode, question) {
     closeModal('faqModalOverlay');
     openAiModal(visaCode);
-    document.getElementById('aiInput').value = `[법령 진위여부 검증 요청]\n다음 상황/질문에 대한 2026년 출입국관리법 및 사증/체류 매뉴얼의 정확한 법적 근거와 원문 규정을 확인해 주십시오.\n\n검증 대상: ${question}`;
+    document.getElementById('aiInput').value = currentLanguage === 'en'
+        ? `[Legal fact-check request]\nPlease confirm the exact legal basis and original provisions in the 2026 Immigration Act and the visa/residence manuals for the situation/question below.\n\nItem to verify: ${question}`
+        : `[법령 진위여부 검증 요청]\n다음 상황/질문에 대한 2026년 출입국관리법 및 사증/체류 매뉴얼의 정확한 법적 근거와 원문 규정을 확인해 주십시오.\n\n검증 대상: ${question}`;
     setTimeout(() => { const btn = document.querySelector('.ai-action-btn[data-type="analyze"]'); if(btn) btn.click(); }, 150);
 };
 function openFaqModal(visaCode) {
@@ -14868,6 +14870,7 @@ const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람'
 // Terms that legitimately match BOTH a 직종(person's job) and 업종(employer activity).
 const JC_AMBIGUOUS_TERMS = new Set(['카페','커피','음식점','식당','레스토랑','학원','호텔','병원','미용실','농장','공장','마트','편의점','술집','주점']);
 const JC_TYPE_LABEL = { occupation: '직종', industry: '업종' };
+const JC_TYPE_LABEL_EN = { occupation: 'Occupation', industry: 'Industry' };
 const JOBCODE_QUERY_EXPANSIONS = [
     { needles: ['개발자','소프트웨어','프로그래머','코딩','웹개발','앱개발','it개발','developer','software','programmer','coding'], terms: ['개발자','소프트웨어','프로그래머','정보 통신','컴퓨터','it','개발','응용 소프트웨어','시스템 소프트웨어','웹'] },
     { needles: ['영어학원','어학원강사','학원강사','영어강사','영어선생','외국어강사','english teacher','language teacher'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학','외국어학원'] },
@@ -15056,17 +15059,20 @@ function jcCardHelp(type, isLeaf) {
 }
 // opts.conf = { key, cls } confidence band computed by renderJobcodeList.
 function renderJobcodeCard(row, query, terms, opts = {}) {
+    const en = currentLanguage === 'en';
     const type = jcType(row);
     const code = jcCode(row);
     const name = jcName(row);
-    const lvLabel = row.level_label_ko || ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level] || '';
+    const lvLabel = (en ? row.level_label_en : row.level_label_ko) || (en
+        ? ({ major:'Major group', middle:'Sub-major group', minor:'Minor group', unit:'Unit group', detailed_unit:'Detailed unit' })[row.level]
+        : ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level]) || '';
     const badge = type === 'occupation'
-        ? '<span class="jc2-tb jc2-tb--occ">직종</span>'
-        : '<span class="jc2-tb jc2-tb--ind">업종</span>';
+        ? `<span class="jc2-tb jc2-tb--occ">${en ? 'Occupation' : '직종'}</span>`
+        : `<span class="jc2-tb jc2-tb--ind">${en ? 'Industry' : '업종'}</span>`;
     const isLeaf = jcIsLeaf(row);
     const conf = opts.conf || jcConfLabel(row, row._score || 1);
     const confChip = `<span class="jc2-conf ${conf.cls}">${escapeHtml(jcChecklistCopy(conf.key))}</span>`;
-    const leafTag = isLeaf ? '<span class="jc2-lvl jc2-lvl--report" title="가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다">🎯 신고용 세부코드</span>' : '';
+    const leafTag = isLeaf ? `<span class="jc2-lvl jc2-lvl--report" title="${en ? 'Most specific level — the code actually used for HiKorea reporting' : '가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다'}">${en ? '🎯 Reporting sub-code' : '🎯 신고용 세부코드'}</span>` : '';
     const srcChip = `<span class="jc2-src">✓ ${escapeHtml(jcChecklistCopy('card.source'))}</span>`;
     const reason = jcMatchReason(row, query, terms);
     const why = reason ? `<div class="jc2-card-why">${reason}</div>` : '';
@@ -15082,16 +15088,16 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
         <div class="jc2-card-name">${hl(name, terms || [])}</div>
         <div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}</div>
         ${why}${fit}${details}
-        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? '✓ 선택됨' : '선택'}</button>
+        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? (en ? '✓ Selected' : '✓ 선택됨') : (en ? 'Select' : '선택')}</button>
     </div>`;
 }
 function jobcodeEmptyHtml(type) {
-    const label = JC_TYPE_LABEL[type];
+    const en = currentLanguage === 'en';
     return `<div class="jc2-empty"><b>${escapeHtml(tx('jobCodeEmptyTitle'))}</b>${escapeHtml(tx('jobCodeEmptyHint'))}
         <ul>
-            <li>${escapeHtml(type === 'occupation' ? '직무명으로 검색 (예: 강사, 요리사, 개발)' : '회사 업종으로 검색 (예: 교육, 음식점, 제조)')}</li>
-            <li>더 짧은 단어로 검색</li>
-            <li>추천 칩을 눌러보기</li>
+            <li>${escapeHtml(type === 'occupation' ? (en ? 'Search by job title (e.g. instructor, cook, developer)' : '직무명으로 검색 (예: 강사, 요리사, 개발)') : (en ? 'Search by company industry (e.g. education, restaurant, manufacturing)' : '회사 업종으로 검색 (예: 교육, 음식점, 제조)'))}</li>
+            <li>${en ? 'Search with shorter words' : '더 짧은 단어로 검색'}</li>
+            <li>${en ? 'Try the suggested chips' : '추천 칩을 눌러보기'}</li>
         </ul></div>`;
 }
 // opts: true (legacy) or { collapse, ambiguous }. collapse → guided AI layout
@@ -15137,7 +15143,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     }
     // Browse mode (direct keyword filter): flat list, capped.
     const html = rows.slice(0, MAX).map(card).join('');
-    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.</div>` : '');
+    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">${currentLanguage === 'en' ? `※ Showing top ${MAX} only. Enter a more specific search term.` : `※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.`}</div>` : '');
 }
 function setJobcodeFilter(filter) {
     _jcFilter = ['all', 'occupation', 'industry'].includes(filter) ? filter : 'all';
@@ -15195,15 +15201,20 @@ async function openJobCodeModal() {
         await loadJobcodeData();
         const coverageEl = document.getElementById('jcCoverageNote');
         if (coverageEl && _jobcodeData) {
+            const en = currentLanguage === 'en';
             const occ = (_jobcodeData.categories || {})['직종'] || 0;
             const ind = (_jobcodeData.categories || {})['업종'] || 0;
             const occFull = _jobcodeData.occupation_source && _jobcodeData.occupation_source.full_table_loaded;
-            const occNote = occFull ? '직종 전체표' : '직종 대·중분류(전체표 준비 중)';
-            coverageEl.textContent = `기준 KSCO8·KSIC11 · ${occNote} ${occ}건 · 업종 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
+            const occNote = en
+                ? (occFull ? 'occupation full table' : 'occupation major/sub groups (full table coming soon)')
+                : (occFull ? '직종 전체표' : '직종 대·중분류(전체표 준비 중)');
+            coverageEl.textContent = en
+                ? `Based on KSCO8·KSIC11 · ${occNote} ${occ} · industry ${ind} · always confirm the final code with HiKorea/1345`
+                : `기준 KSCO8·KSIC11 · ${occNote} ${occ}건 · 업종 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
         }
         renderJobcodeResults('');
     } catch (err) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>데이터 로드 실패</b><br><small>${escapeHtml(err.message)}</small></div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>${currentLanguage === 'en' ? 'Data load failed' : '데이터 로드 실패'}</b><br><small>${escapeHtml(err.message)}</small></div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     }
 }
@@ -15240,9 +15251,11 @@ function renderJobcodeResults(query) {
     renderJobcodeGuidance(q, jobRows, indRows);
     if (typeof clearEmploymentAnalysisUI === 'function') clearEmploymentAnalysisUI();
     if (badge) {
-        if (_jcFilter === 'occupation') badge.textContent = `직종 ${jobRows.length}`;
-        else if (_jcFilter === 'industry') badge.textContent = `업종 ${indRows.length}`;
-        else badge.textContent = q ? `직종 ${jobRows.length} · 업종 ${indRows.length}` : '전체 보기';
+        const en = currentLanguage === 'en';
+        const occL = en ? 'Occupation' : '직종', indL = en ? 'Industry' : '업종';
+        if (_jcFilter === 'occupation') badge.textContent = `${occL} ${jobRows.length}`;
+        else if (_jcFilter === 'industry') badge.textContent = `${indL} ${indRows.length}`;
+        else badge.textContent = q ? `${occL} ${jobRows.length} · ${indL} ${indRows.length}` : (en ? 'View all' : '전체 보기');
     }
     const hintEl = document.getElementById('jcAiHint');
     if (hintEl) {
@@ -15250,7 +15263,9 @@ function renderJobcodeResults(query) {
         const leafTotal = jobRows.filter(r => jcIsLeaf(r)).length + indRows.filter(r => jcIsLeaf(r)).length;
         if (q && q.length >= 2 && (total < 5 || leafTotal === 0)) {
             hintEl.hidden = false;
-            hintEl.innerHTML = `💡 <b>신고용 세부코드</b>를 못 찾으셨나요? ↓ <b>AI 검색</b> 버튼을 눌러 더 정확한 코드를 찾아보세요. (Enter 키도 됩니다)`;
+            hintEl.innerHTML = currentLanguage === 'en'
+                ? `💡 Can't find the <b>reporting sub-code</b>? Press the <b>AI search</b> button below to find a more accurate code. (Enter works too.)`
+                : `💡 <b>신고용 세부코드</b>를 못 찾으셨나요? ↓ <b>AI 검색</b> 버튼을 눌러 더 정확한 코드를 찾아보세요. (Enter 키도 됩니다)`;
             hintEl.onclick = () => searchJobcodeWithAI();
         } else {
             hintEl.hidden = true;
@@ -15271,16 +15286,17 @@ function selectJobcode(type, code) {
         const on = btn.dataset.code === code;
         btn.classList.toggle('is-sel', on);
         btn.setAttribute('aria-pressed', String(on));
-        btn.textContent = on ? '✓ 선택됨' : '선택';
+        btn.textContent = on ? (currentLanguage === 'en' ? '✓ Selected' : '✓ 선택됨') : (currentLanguage === 'en' ? 'Select' : '선택');
     });
-    showToast(`${JC_TYPE_LABEL[type]} 선택: ${code} ${jcName(row)}`, 'success');
+    const typeLabel = currentLanguage === 'en' ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
+    showToast(currentLanguage === 'en' ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`, 'success');
 }
 function renderJobcodeSelectedSummary() {
     const occEl = document.getElementById('jcSelOcc'), indEl = document.getElementById('jcSelInd');
     const setCell = (el, sel) => {
         if (!el) return;
         if (sel) { el.textContent = `${sel.code} · ${sel.name}`; el.classList.add('is-set'); }
-        else { el.textContent = '아직 선택 안 함'; el.classList.remove('is-set'); }
+        else { el.textContent = currentLanguage === 'en' ? 'Not selected yet' : '아직 선택 안 함'; el.classList.remove('is-set'); }
     };
     setCell(occEl, _jcSelected.occupation);
     setCell(indEl, _jcSelected.industry);
@@ -15300,7 +15316,7 @@ function copyJobcodeMemo() {
     const text = buildJobcodeMemo();
     const done = () => {
         if (!btn) return;
-        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = '✓ 복사됨';
+        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = currentLanguage === 'en' ? '✓ Copied' : '✓ 복사됨';
         setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
@@ -15364,6 +15380,13 @@ const JC_MODE_LABEL = {
     arts_entertainment_mode: '예술·공연 분석',
     ambiguous_mode: '추가 정보 필요'
 };
+const JC_MODE_LABEL_EN = {
+    field_labor_mode: 'Field/manual-work analysis',
+    professional_mode: 'Professional/office analysis',
+    service_mode: 'Service/hospitality analysis',
+    arts_entertainment_mode: 'Arts/performance analysis',
+    ambiguous_mode: 'More information needed'
+};
 function renderEmploymentInterpretation(analysis) {
     const el = document.getElementById('jcInterpret');
     if (!el) return;
@@ -15400,7 +15423,7 @@ function renderEmploymentInterpretation(analysis) {
     const allRows = [...fieldRows, ...rows];
     if (!allRows.length && !analysis.parsedInterpretation) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    const modeLabel = JC_MODE_LABEL[analysis.mode] || '';
+    const modeLabel = (currentLanguage === 'en' ? JC_MODE_LABEL_EN[analysis.mode] : JC_MODE_LABEL[analysis.mode]) || '';
     const interp = analysis.parsedInterpretation
         ? `<div class="jc2-interpret-sum">🔎 ${escapeHtml(analysis.parsedInterpretation)}</div>` : '';
     const needConfirm = analysis.sourceStatus === 'needs_confirmation'
@@ -15419,7 +15442,7 @@ function renderEmploymentFollowupChips(analysis) {
     const chips = analysis && Array.isArray(analysis.followUpChips) ? analysis.followUpChips : [];
     if (!chips.length) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-refine-h">➕ 후속 선택 — 눌러서 더 구체화</div>`
+    el.innerHTML = `<div class="jc2-refine-h">${currentLanguage === 'en' ? '➕ Follow-up — tap to narrow further' : '➕ 후속 선택 — 눌러서 더 구체화'}</div>`
         + `<div class="jc2-refine-chips">`
         + chips.slice(0, 14).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
         + `</div>`;
@@ -15516,12 +15539,13 @@ function renderEmploymentTips(analysis) {
     const isLegal = (w) => /문신|타투|연예|공연|별도 검토|별도 확인|허용되는 것은 아닙/.test(w);
     const legal = warns.filter(isLegal);
     const rest = warns.filter((w) => !isLegal(w));
+    const en = currentLanguage === 'en';
     let html = '';
     if (sens.length && legal.length) {
-        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다</div>`
+        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${en ? '⚠ Caution — having a code does not mean the job/procedure is permitted' : '⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</div>`
             + `<ul class="jc2-tips-list">` + legal.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></div>`;
     }
-    html += `<div class="jc2-tips-h">📌 하이코리아 입력 팁 · 공식 기준</div>`
+    html += `<div class="jc2-tips-h">${en ? '📌 HiKorea input tips · official standards' : '📌 하이코리아 입력 팁 · 공식 기준'}</div>`
         + `<ul class="jc2-tips-list">` + (sens.length && legal.length ? rest : warns).map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
     el.hidden = false;
     el.innerHTML = html;
@@ -15685,13 +15709,13 @@ async function searchJobcodeWithAI() {
         // Progressive flow: gate candidates behind a pending fork question.
         jcApplyFlow();
         const badge = document.getElementById('jcCountBadge');
-        if (badge) badge.textContent = `직종 ${jobRows.length} · 업종 ${indRows.length}`;
+        if (badge) badge.textContent = currentLanguage === 'en' ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {
             const noteHtml = `<div class="jc2-empty" style="color:var(--color-warning);padding:0.6rem;">${escapeHtml(fallbackNote)}</div>`;
             if (jobBox) jobBox.insertAdjacentHTML('afterbegin', noteHtml);
         }
     } catch (e) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">자연어 검색 오류: ${escapeHtml(e.message)}</div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'en' ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     } finally { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; }
 }
@@ -16543,7 +16567,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // rows even if an upstream path bypassed dedupeDocs().
     const dedupedSections = dedupeDocumentSectionsForDisplay([{ key: 'flat', docs: docKeys || [] }]);
     const cleanKeys = (dedupedSections[0]?.docs || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
-    if (!cleanKeys.length) return '<div class="text-desc" style="color:var(--t3);">요구되는 추가 서류가 없습니다.</div>';
+    if (!cleanKeys.length) return `<div class="text-desc" style="color:var(--t3);">${currentLanguage === 'en' ? 'No additional documents required.' : '요구되는 추가 서류가 없습니다.'}</div>`;
     // Explanatory prose that was authored inside a document array is relocated
     // here (rendered as a note) instead of being shown as a fake checklist tile.
     const relocatedNotes = [];
@@ -18362,7 +18386,7 @@ function renderProcedureVariants(v, proc, keywords, alreadyShownDocs = null) {
                 <div class="scenario-picker-panel-inner">
                     <div class="scenario-picker-panel-head">
                         <span class="scenario-picker-panel-title">${escapeHtml(title)}</span>
-                        <button type="button" class="scenario-picker-panel-x" data-action="close-scenario-picker" aria-label="닫기">✕</button>
+                        <button type="button" class="scenario-picker-panel-x" data-action="close-scenario-picker" aria-label="${escapeHtml(tx('closeModal'))}">✕</button>
                     </div>
                     <div class="scenario-picker-panel-choices" role="list"></div>
                 </div>
@@ -19109,14 +19133,21 @@ function renderSourceConfirmedRequirements(v) {
     const entries = Array.isArray(v.sourceConfirmedStructuredRequirements)
         ? v.sourceConfirmedStructuredRequirements : [];
     if (!entries.length) return '';
+    const en = currentLanguage === 'en';
     const PROC_KO = {
         extension: '체류기간 연장', registration: '외국인등록', visa_issuance: '사증발급',
         change_of_status: '체류자격 변경', status_grant: '체류자격 부여',
         reentry: '재입국', workplace_change_or_addition: '근무처 변경·추가',
         activity_outside_status: '체류자격외 활동', reporting_duty: '신고 의무', other: ''
     };
+    const PROC_EN = {
+        extension: 'Extension of stay', registration: 'Foreigner registration', visa_issuance: 'Visa issuance',
+        change_of_status: 'Change of status', status_grant: 'Grant of status',
+        reentry: 'Re-entry', workplace_change_or_addition: 'Change/add workplace',
+        activity_outside_status: 'Activities outside status', reporting_duty: 'Reporting duty', other: ''
+    };
     const cards = entries.map(e => {
-        const proc = PROC_KO[e.procedureType] || e.procedureType || '';
+        const proc = (en ? PROC_EN[e.procedureType] : PROC_KO[e.procedureType]) || e.procedureType || '';
         const cov = Array.isArray(e.subCodesCovered) && e.subCodesCovered.length
             ? e.subCodesCovered.join(', ') : (e.subCode || '');
         const scope = cov ? ` <span class="manual-subcode-code">${escapeHtml(cov)}</span>` : '';
@@ -19134,8 +19165,8 @@ function renderSourceConfirmedRequirements(v) {
         </div>`;
     }).join('');
     return `<div class="manual-section">
-        <h4 class="manual-section-title">출처 확인된 매뉴얼 요건 (Source-confirmed manual requirements)</h4>
-        <p class="manual-subcode-desc">2026.5 공식 매뉴얼에서 해당 페이지를 직접 확인한 항목입니다. 표시된 세부약호·절차 범위에 한합니다.</p>
+        <h4 class="manual-section-title">${en ? 'Source-confirmed manual requirements' : '출처 확인된 매뉴얼 요건 (Source-confirmed manual requirements)'}</h4>
+        <p class="manual-subcode-desc">${en ? 'Items verified directly against the relevant pages of the official 2026.5 manual. Limited to the sub-codes and procedure scope shown.' : '2026.5 공식 매뉴얼에서 해당 페이지를 직접 확인한 항목입니다. 표시된 세부약호·절차 범위에 한합니다.'}</p>
         <div class="manual-subcode-grid">${cards}</div>
     </div>`;
 }
@@ -19205,6 +19236,7 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const subs = getVisaSubcodes(v);
     if (!subs.length) return '';
     opts = opts || {};
+    const en = currentLanguage === 'en';
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
     const visaCode = v.code || '';
     const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
@@ -19217,7 +19249,7 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         const inactive = s.status && s.status !== 'active';
         const cleanStatusNote = paradisoStripInternalReviewArtifacts(s.statusNote);
         const statusNote = inactive && cleanStatusNote ? `<div class="manual-subcode-status">${escapeHtml(cleanStatusNote)}</div>` : '';
-        const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="내 상황과 관련 가능성 있는 세부코드">관련 가능</span>` : '';
+        const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="${en ? 'Sub-code possibly relevant to your situation' : '내 상황과 관련 가능성 있는 세부코드'}">${en ? 'May apply' : '관련 가능'}</span>` : '';
         return `<div id="${cardId(s)}" class="manual-subcode-card manual-subcode-card--interactive${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}" role="button" tabindex="0" data-action="open-subcode-detail" data-parent="${escapeHtml(visaCode)}" data-subcode="${escapeHtml(s.code)}" aria-label="${escapeHtml(tx('subcodeModalOpenAria', { code: s.code }))}">
             <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}<span class="manual-subcode-go" aria-hidden="true">›</span></div>
             <div class="manual-subcode-desc">${hl(desc, keywords)}</div>${statusNote}
@@ -19260,8 +19292,8 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
     if (matched.length) {
-        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">내 상황과 관련</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
-        if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">전체 세부코드</div>`;
+        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">${en ? 'Related to your situation' : '내 상황과 관련'}</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
+        if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">${en ? 'All sub-codes' : '전체 세부코드'}</div>`;
     }
     const restHtml = rest.length
         ? renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)
@@ -20346,7 +20378,7 @@ function renderResults(query){
     }
     let st=0; filtered.forEach(v=>{st += getVisaSubcodes(v).length;});
     if(!filtered.length){
-        box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">← 처음으로 돌아가기</button></div>`;
+        box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">${currentLanguage === 'en' ? '← Back to start' : '← 처음으로 돌아가기'}</button></div>`;
         rc.textContent=tx('resultCount', { count: 0 });
         renderCompactResults([], kw);
         document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
@@ -21911,33 +21943,34 @@ function resetReveal() {
 function startPreEntryTrack() {
   const dynamicEl = document.getElementById('visaManualDynamic');
   if (!dynamicEl) return;
+  const en = currentLanguage === 'en';
 
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <h3>입국 전 — 재외공관 사증(비자) 신청</h3>
-        <p>한국에 오시는 목적을 선택하세요. 맞춤형 체류자격을 추천해 드립니다.</p>
+        <h3>${en ? 'Before entry — consular visa issuance' : '입국 전 — 재외공관 사증(비자) 신청'}</h3>
+        <p>${en ? 'Choose your purpose for coming to Korea. We will suggest matching residence statuses.' : '한국에 오시는 목적을 선택하세요. 맞춤형 체류자격을 추천해 드립니다.'}</p>
       </div>
       <div class="visa-purpose-grid">
         <div class="visa-purpose-card" onclick="showVisaRecommendations('study')">
           <div class="visa-purpose-icon">📚</div>
-          <div>유학·연수</div>
-          <div class="visa-purpose-hint">대학, 어학연수, 전문교육</div>
+          <div>${en ? 'Study & training' : '유학·연수'}</div>
+          <div class="visa-purpose-hint">${en ? 'University, language study, professional training' : '대학, 어학연수, 전문교육'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('work')">
           <div class="visa-purpose-icon">💼</div>
-          <div>취업·사업</div>
-          <div class="visa-purpose-hint">전문직, 일반 취업, 투자</div>
+          <div>${en ? 'Work & business' : '취업·사업'}</div>
+          <div class="visa-purpose-hint">${en ? 'Professionals, general employment, investment' : '전문직, 일반 취업, 투자'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('family')">
           <div class="visa-purpose-icon">👨‍👩‍👧‍👦</div>
-          <div>가족·결혼</div>
-          <div class="visa-purpose-hint">동반, 결혼이민, 영주</div>
+          <div>${en ? 'Family & marriage' : '가족·결혼'}</div>
+          <div class="visa-purpose-hint">${en ? 'Accompanying family, marriage migration, permanent residence' : '동반, 결혼이민, 영주'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('visit')">
           <div class="visa-purpose-icon">✈️</div>
-          <div>방문·관광</div>
-          <div class="visa-purpose-hint">단기 방문, 친지 방문</div>
+          <div>${en ? 'Visit & tourism' : '방문·관광'}</div>
+          <div class="visa-purpose-hint">${en ? 'Short visits, visiting relatives' : '단기 방문, 친지 방문'}</div>
         </div>
       </div>
     </div>`;
@@ -21949,33 +21982,34 @@ function startPreEntryTrack() {
 function startInKoreaTrack() {
   const dynamicEl = document.getElementById('visaManualDynamic');
   if (!dynamicEl) return;
+  const en = currentLanguage === 'en';
 
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <h3>입국 후 — 국내 체류 민원 절차</h3>
-        <p>필요하신 절차를 선택하세요.</p>
+        <h3>${en ? 'After entry — in-Korea residence services' : '입국 후 — 국내 체류 민원 절차'}</h3>
+        <p>${en ? 'Choose the procedure you need.' : '필요하신 절차를 선택하세요.'}</p>
       </div>
       <div class="visa-purpose-grid">
         <div class="visa-purpose-card" onclick="selectInKoreaAction('register')">
           <div class="visa-purpose-icon">📝</div>
-          <div>외국인등록</div>
-          <div class="visa-purpose-hint">입국 후 90일 이내</div>
+          <div>${en ? 'Foreigner registration' : '외국인등록'}</div>
+          <div class="visa-purpose-hint">${en ? 'Within 90 days of entry' : '입국 후 90일 이내'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('extend')">
           <div class="visa-purpose-icon">⏳</div>
-          <div>체류기간 연장</div>
-          <div class="visa-purpose-hint">만료일 전 신청</div>
+          <div>${en ? 'Extension of stay' : '체류기간 연장'}</div>
+          <div class="visa-purpose-hint">${en ? 'Apply before expiry' : '만료일 전 신청'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('change')">
           <div class="visa-purpose-icon">🔄</div>
-          <div>체류자격 변경</div>
-          <div class="visa-purpose-hint">다른 자격으로 전환</div>
+          <div>${en ? 'Change of status' : '체류자격 변경'}</div>
+          <div class="visa-purpose-hint">${en ? 'Switch to another status' : '다른 자격으로 전환'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('workplace')">
           <div class="visa-purpose-icon">🏢</div>
-          <div>근무처 변경·추가</div>
-          <div class="visa-purpose-hint">취업 자격 소지자</div>
+          <div>${en ? 'Change/add workplace' : '근무처 변경·추가'}</div>
+          <div class="visa-purpose-hint">${en ? 'For work-status holders' : '취업 자격 소지자'}</div>
         </div>
       </div>
     </div>`;
@@ -21996,6 +22030,12 @@ const ACTION_CAT_LABELS = {
   family: '👨‍👩‍👧‍👦 가족·이민',
   visit:  '✈️ 단기 체류 / 기타'
 };
+const ACTION_CAT_LABELS_EN = {
+  study:  '📚 Study & training',
+  work:   '💼 Work & professional / investment & management',
+  family: '👨‍👩‍👧‍👦 Family & migration',
+  visit:  '✈️ Short stay / other'
+};
 const DOC_MODAL_ACTION_MAP = { register: 'new', extend: 'ext' };
 let _currentInKoreaAction = 'extend';
 
@@ -22004,6 +22044,7 @@ function showVisaRecommendations(purpose) {
   const dynamicEl = document.getElementById('visaManualDynamic');
   if (!dynamicEl || !dataReady) return;
 
+  const en = currentLanguage === 'en';
   const targetCats  = PURPOSE_TO_CAT[purpose] || [];
   const SKIP_CATS   = ['faq', 'scn', 'nhis'];
   const matchedVisas = VISA_DATA.filter(v => targetCats.includes(v.cat) && !SKIP_CATS.includes(v.cat));
@@ -22012,34 +22053,35 @@ function showVisaRecommendations(purpose) {
     dynamicEl.innerHTML = `
       <div class="visa-step-container">
         <div class="visa-step-header">
-          <h3>해당 목적에 맞는 체류자격이 없습니다.</h3>
-          <p>검색창을 이용해 보세요.</p>
+          <h3>${en ? 'No residence status matches this purpose.' : '해당 목적에 맞는 체류자격이 없습니다.'}</h3>
+          <p>${en ? 'Try the search box instead.' : '검색창을 이용해 보세요.'}</p>
         </div>
       </div>`;
     return;
   }
 
-  const label = ACTION_CAT_LABELS[purpose] || '추천';
+  const label = (en ? ACTION_CAT_LABELS_EN[purpose] : ACTION_CAT_LABELS[purpose]) || (en ? 'Suggested' : '추천');
+  const countLabel = en ? `${label} statuses (${matchedVisas.length})` : `${label} 체류자격 (${matchedVisas.length}건)`;
   const cardsHtml = matchedVisas.map(v => `
     <div class="visa-result-card">
       <div class="visa-result-header">
         <span class="bc">${escapeHtml(v.code)}</span>
-        <span class="vt">${escapeHtml(v.name)}</span>
+        <span class="vt">${escapeHtml(getLocalizedVisaName(v) || v.name)}</span>
         ${v.period ? `<span class="bp">${escapeHtml(v.period)}</span>` : ''}
       </div>
-      <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || '상세 정보를 확인하세요.')}</p>
+      <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || (en ? 'Check the detailed information.' : '상세 정보를 확인하세요.'))}</p>
       <div class="visa-result-actions">
-        <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">📝 신규 발급 서류</button>
-        <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">✨ AI 분석</button>
+        <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">${en ? '📝 New issuance documents' : '📝 신규 발급 서류'}</button>
+        <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">${en ? '✨ AI analysis' : '✨ AI 분석'}</button>
       </div>
     </div>`).join('');
 
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <h3>${label} 체류자격 (${matchedVisas.length}건)</h3>
-        <p>본인의 상황과 가장 일치하는 체류자격을 선택하세요.</p>
-        <button class="cb" style="margin-top:0.8rem;" onclick="startPreEntryTrack()">← 목적 다시 선택</button>
+        <h3>${countLabel}</h3>
+        <p>${en ? 'Choose the residence status that best fits your situation.' : '본인의 상황과 가장 일치하는 체류자격을 선택하세요.'}</p>
+        <button class="cb" style="margin-top:0.8rem;" onclick="startPreEntryTrack()">${en ? '← Choose purpose again' : '← 목적 다시 선택'}</button>
       </div>
       <div class="visa-results-grid">${cardsHtml}</div>
     </div>`;
@@ -22053,38 +22095,41 @@ function selectInKoreaAction(actionType) {
   if (!dynamicEl || !dataReady) return;
   _currentInKoreaAction = actionType;
 
+  const en = currentLanguage === 'en';
+  const hikoreaReqBtn = `<a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${en ? 'Check official requirements on HiKorea' : 'HiKorea에서 공식 요건 확인'}</a>`;
+  const docsVaryNote = `<p class="text-desc" style="margin-top:0.8rem;">${en ? 'The exact documents required can vary by residence status and personal circumstances. Check the latest guidance on HiKorea or at your competent immigration office.' : '구체적인 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다. HiKorea 또는 관할 출입국·외국인청에서 최신 안내를 확인하세요.'}</p>`;
   const CONFIG = {
     register: {
-      title: '📝 외국인등록',
-      desc:   '입국 후 90일 이내에 체류지 관할 출입국·외국인청에서 외국인등록을 해야 합니다.',
+      title: en ? '📝 Foreigner registration' : '📝 외국인등록',
+      desc:   en ? 'You must register as a foreigner at the immigration office for your area of residence within 90 days of entry.' : '입국 후 90일 이내에 체류지 관할 출입국·외국인청에서 외국인등록을 해야 합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ✅ <strong>안내:</strong> 외국인등록은 입국 후 90일 이내 신청이 원칙입니다.
+                 ✅ <strong>${en ? 'Notice:' : '안내:'}</strong> ${en ? 'As a rule, foreigner registration must be applied for within 90 days of entry.' : '외국인등록은 입국 후 90일 이내 신청이 원칙입니다.'}
                </div>
-               <p class="text-desc" style="margin-top:0.8rem;">구체적인 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다. HiKorea 또는 관할 출입국·외국인청에서 최신 안내를 확인하세요.</p>
-               <a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea에서 공식 요건 확인</a>`
+               ${docsVaryNote}
+               ${hikoreaReqBtn}`
     },
     extend: {
-      title: '⏳ 체류기간 연장',
-      desc:   '체류기간 만료일 전까지 연장 신청을 완료해야 합니다.',
+      title: en ? '⏳ Extension of stay' : '⏳ 체류기간 연장',
+      desc:   en ? 'You must complete the extension application before your period of stay expires.' : '체류기간 만료일 전까지 연장 신청을 완료해야 합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>주의:</strong> 만료 당일·이후 신청 시 불법체류로 간주될 수 있습니다.
+                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Applying on or after the expiry date may be treated as illegal stay.' : '만료 당일·이후 신청 시 불법체류로 간주될 수 있습니다.'}
                </div>`
     },
     change: {
-      title: '🔄 체류자격 변경',
-      desc:   '현재 체류자격에서 다른 체류자격으로 변경하려면 사전 허가가 필요합니다.',
+      title: en ? '🔄 Change of status' : '🔄 체류자격 변경',
+      desc:   en ? 'Changing from your current status of stay to a different one requires prior permission.' : '현재 체류자격에서 다른 체류자격으로 변경하려면 사전 허가가 필요합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>주의:</strong> 체류자격 변경 가능 여부는 현재 자격, 변경 목적, 제출서류 심사 결과에 따라 달라질 수 있습니다.
+                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Whether a change of status is possible depends on your current status, the purpose of the change, and the review of your submitted documents.' : '체류자격 변경 가능 여부는 현재 자격, 변경 목적, 제출서류 심사 결과에 따라 달라질 수 있습니다.'}
                </div>`
     },
     workplace: {
-      title: '🏢 근무처 변경·추가',
-      desc:   '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
+      title: en ? '🏢 Change/add workplace' : '🏢 근무처 변경·추가',
+      desc:   en ? 'In principle you must obtain prior permission to change or add a workplace; persons holding professional knowledge, skills, or expertise as prescribed by law may instead report within 15 days of the change/addition (Immigration Act Article 21).' : '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>주의:</strong> 근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.
+                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Workplace changes may require either a report or permission depending on the residence status.' : '근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.'}
                </div>
-               <p class="text-desc" style="margin-top:0.8rem;">구체적인 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다. HiKorea 또는 관할 출입국·외국인청에서 최신 안내를 확인하세요.</p>
-               <a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea에서 공식 요건 확인</a>`
+               ${docsVaryNote}
+               ${hikoreaReqBtn}`
     }
   };
 
@@ -22093,19 +22138,19 @@ function selectInKoreaAction(actionType) {
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <button class="cb" style="margin-bottom:0.8rem;" onclick="startInKoreaTrack()">← 절차 다시 선택</button>
+        <button class="cb" style="margin-bottom:0.8rem;" onclick="startInKoreaTrack()">${en ? '← Choose procedure again' : '← 절차 다시 선택'}</button>
         <h3>${title}</h3>
         <p>${desc}</p>
       </div>
       ${extra}
       <div class="visa-search-box" style="margin-top:1.5rem;">
-        <h4 style="font-size:1rem; font-weight:700; color:var(--t1); margin-bottom:0.5rem;">🔍 본인의 체류자격 검색</h4>
-        <p style="font-size:0.85rem; color:var(--t3); margin-bottom:1rem;">현재 체류자격 코드 또는 이름을 입력하세요.</p>
+        <h4 style="font-size:1rem; font-weight:700; color:var(--t1); margin-bottom:0.5rem;">${en ? '🔍 Search your residence status' : '🔍 본인의 체류자격 검색'}</h4>
+        <p style="font-size:0.85rem; color:var(--t3); margin-bottom:1rem;">${en ? 'Enter your current residence status code or name.' : '현재 체류자격 코드 또는 이름을 입력하세요.'}</p>
         <div style="display:flex; gap:0.5rem;">
           <input type="search" id="inKoreaVisaSearch" class="jc-search-input"
-            style="flex:1; min-width:200px; margin-bottom:0;" placeholder="예: F-6, E-9, D-2"
+            style="flex:1; min-width:200px; margin-bottom:0;" placeholder="${en ? 'e.g. F-6, E-9, D-2' : '예: F-6, E-9, D-2'}"
             onkeyup="filterInKoreaVisaList(this.value)">
-          <button class="visa-track-btn" style="width:auto;" onclick="searchInKoreaVisa()">검색</button>
+          <button class="visa-track-btn" style="width:auto;" onclick="searchInKoreaVisa()">${en ? 'Search' : '검색'}</button>
         </div>
         <div id="inKoreaVisaList" class="visa-results-grid" style="margin-top:1rem;"></div>
       </div>
@@ -22120,7 +22165,8 @@ function getCurrentInKoreaAction() { return _currentInKoreaAction; }
 function filterInKoreaVisaList(query) {
   const listEl = document.getElementById('inKoreaVisaList');
   if (!listEl) return;
-  if (!query || !query.trim()) { listEl.innerHTML = '<p style="font-size:0.85rem;color:var(--t3);padding:0.5rem 0;">코드 또는 이름을 입력하면 목록이 표시됩니다.</p>'; return; }
+  const en = currentLanguage === 'en';
+  if (!query || !query.trim()) { listEl.innerHTML = `<p style="font-size:0.85rem;color:var(--t3);padding:0.5rem 0;">${en ? 'Enter a code or name to see the list.' : '코드 또는 이름을 입력하면 목록이 표시됩니다.'}</p>`; return; }
 
   const q      = query.toLowerCase().trim();
   const SKIP   = ['faq', 'scn', 'nhis'];
@@ -22132,7 +22178,7 @@ function filterInKoreaVisaList(query) {
     <div class="visa-result-card" style="cursor:pointer;" onclick="showVisaDocForAction('${escapeHtml(v.code)}')">
       <div class="visa-result-header">
         <span class="bc">${escapeHtml(v.code)}</span>
-        <span class="vt">${escapeHtml(v.name)}</span>
+        <span class="vt">${escapeHtml(getLocalizedVisaName(v) || v.name)}</span>
         ${v.period ? `<span class="bp">${escapeHtml(v.period)}</span>` : ''}
       </div>
     </div>`).join('');

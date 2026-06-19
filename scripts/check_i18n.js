@@ -7,6 +7,7 @@ const path = require('path');
 const scripts = [
   'check_i18n_coverage.mjs',
   'check_index_hardcoded_text.mjs',
+  'check_popup_i18n.mjs',
   'check_official_terms.mjs',
 ];
 
