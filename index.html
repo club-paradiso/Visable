@@ -2376,6 +2376,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 
 /* Result card — short summary snippet */
 .vc-summary { padding: 0.68rem 0.85rem; font-size: 0.84rem; color: var(--t2); line-height: 1.55; word-break: keep-all; background: color-mix(in srgb, var(--bg2) 42%, white); border-radius: 9px; overflow-wrap: anywhere; }
+.vc-summary-detail { display: inline; }
+.vc-summary-detail > summary { display: inline; list-style: none; cursor: pointer; color: var(--ac); font-size: 0.8em; font-weight: 700; margin-left: 0.3em; user-select: none; }
+.vc-summary-detail > summary::-webkit-details-marker, .vc-summary-detail > summary::marker { display: none; content: none; }
+.vc-summary-rest { display: block; margin-top: 0.3rem; }
+.proc-notes-detail { margin-top: 0.6rem; }
 
 /* Compact caution strip */
 .vc-caution { font-size: 0.74rem; color: var(--t3); line-height: 1.55; padding: 0.45rem 0.8rem; border-left: 2px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 5%, transparent); border-radius: 0 6px 6px 0; word-break: keep-all; overflow-wrap: anywhere; }
@@ -18036,10 +18041,8 @@ function renderDocDiscretionaryNote(items, keywords) {
     </div>`;
 }
 
-/* Concise, non-alarming note that the on-screen grouping is Paradiso's reading
-   aid — original manual headings vary by status/procedure. */
 function renderDocGroupingSourceNote() {
-    return `<p class="doc-grouping-note">${escapeHtml(tx('docGroupingNote') || '화면의 묶음은 이해를 돕기 위한 Paradiso 분류이며, 원문 매뉴얼의 표현은 자격·절차별로 다를 수 있습니다.')}</p>`;
+    return '';
 }
 
 const PROCEDURE_EVIDENCE_TYPE_BY_KEY = {
@@ -18142,26 +18145,21 @@ function renderSourceBackedFields(fields) {
 
 function renderSourceLimitationExplanation(sourceState, fallbackRefs = []) {
     const level = sourceState && sourceState.evidenceLevel ? sourceState.evidenceLevel : 'limited';
-    // The "왜 제한인가요?" limitation disclosure was rendered on essentially every
-    // non-source-confirmed procedure and repeated a generic "국가·공관·개별 사정에
-    // 따라 … 확정 표시하지 않습니다" caveat plus a duplicated page-reference list
-    // (e.g. "p. 429 / p. 429 / p. 429"), which eroded user trust without adding
-    // actionable information. The evidence-level badge (procedure-source-badge)
-    // still communicates the source state, and the official-source / 관할 기관
-    // 확인 cautions remain in the notes and fee blocks. Only the positive
-    // "근거 보기" disclosure (source-confirmed: lists the real official manual
-    // references) is kept, with its references de-duplicated.
-    if (level !== 'source_confirmed') return '';
+    if (level === 'not_applicable') return '';
     const refs = [...new Set(getFormattedSourceRefs(sourceState, fallbackRefs))].slice(0, 4);
+    // Show "근거 보기" only when source is confirmed or when actual ref citations exist
+    if (level !== 'source_confirmed' && !refs.length) return '';
     const refsHtml = refs.length ? `<p>${escapeHtml(txAt('sourceFieldLabels', 8, '근거'))}: ${escapeHtml(refs.join(' / '))}</p>` : '';
-    const fieldsHtml = renderSourceBackedFields(sourceState && sourceState.sourceBackedFields);
-    const explanation = (currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
-        ? sourceState.userFacingExplanationEn
-        : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level);
+    const fieldsHtml = level === 'source_confirmed' ? renderSourceBackedFields(sourceState && sourceState.sourceBackedFields) : '';
+    const explanation = level === 'source_confirmed'
+        ? ((currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
+            ? sourceState.userFacingExplanationEn
+            : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level))
+        : '';
     const summary = txAt('sourceFieldLabels', 9, '근거 보기');
     return `<details class="source-limitation-detail">
         <summary>${escapeHtml(summary)}</summary>
-        <div class="source-limitation-body"><p>${escapeHtml(explanation)}</p>${refsHtml}${fieldsHtml}</div>
+        <div class="source-limitation-body">${explanation ? `<p>${escapeHtml(explanation)}</p>` : ''}${refsHtml}${fieldsHtml}</div>
     </details>`;
 }
 
@@ -18187,13 +18185,9 @@ function renderProcedureHeader(v, proc) {
         return `${title}${section}${sub}`.trim();
     }).filter(Boolean);
     const allRefBits = [...refBits, ...getFormattedSourceRefs(sourceState)].filter(Boolean);
-    const refHtml = refBits.length
-        ? `<div class="procedure-source-ref">${escapeHtml(refBits.slice(0, 3).join(' / '))}</div>`
-        : '';
     return `<div class="procedure-source-header">
         <div class="procedure-source-title"><span class="procedure-source-code">${escapeHtml(v.code || '')}</span><span>${escapeHtml(getProcedureDisplayLabel(v, proc))}</span></div>
         <span class="procedure-source-badge${badgeClass}">${escapeHtml(sourceLabel)}</span>
-        ${refHtml}
         ${renderSourceLimitationExplanation(sourceState, allRefBits)}
     </div>`;
 }
@@ -18229,7 +18223,7 @@ function renderProcedureVariant(visaCode, procedureKey, variant, keywords, selec
         ${scenario}
         <div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: docCount }))}</div>
         ${docsHtml ? `<div class="doc-group-grid">${docsHtml}</div>` : `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`}
-        ${notes}${citations}
+        ${(cleanNotes.length || refs.length) ? `<details class="source-limitation-detail" style="margin-top:0.5rem;"><summary>${escapeHtml(tx('procNotesToggle') || '세부 안내')}</summary><div class="source-limitation-body">${notes}${citations}</div></details>` : ''}
         <div class="scenario-selected-actions">
             ${renderScenarioSelectedContextBanner(visaCode, procedureKey, variant.label)}
             ${renderScenarioChecklist(visaCode, procedureKey, checklistVariant)}
@@ -18665,7 +18659,9 @@ function renderProcedurePanel(v, proc, keywords, isActive) {
     if (issuanceOwnsPanel) docsHtml = '';
     const reviewFallback = `<div class="doc-group-empty">${escapeHtml(tx('docReviewFallback'))}</div>`;
     const eligibilityHtml = proc.eligibility.length ? renderLabeledManualBlock(tx('eligibilityLabel'), proc.eligibility, keywords) : '';
-    const notesHtml = proc.notes.length ? renderLabeledManualBlock(tx('notesLabel'), proc.notes, keywords) : '';
+    const notesHtml = proc.notes.length
+        ? `<details class="source-limitation-detail proc-notes-detail"><summary>${escapeHtml(tx('procNotesToggle') || '세부 안내')}</summary><div class="source-limitation-body">${renderManualDetailBlock(proc.notes.filter(Boolean).join('\n'), keywords)}</div></details>`
+        : '';
     const summaryHtml = issuanceOwnsPanel ? '' : (renderProcedureSummaryBlock(proc.summary, keywords) || renderProcedureFallbackSummary(proc.key));
     const feeHtml = renderProcedureFeeBox(proc.feeInfo);
     const countHtml = (totalDocCount && !issuanceOwnsPanel) ? `<div class="procedure-doc-count">${escapeHtml(tx('documentCountLabel', { count: totalDocCount }))}</div>` : '';
@@ -19496,7 +19492,13 @@ function renderCardSummary(v, kw) {
     if (!raw) return '';
     const normalized = normalizeManualText(raw);
     if (!normalized) return '';
-    return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
+    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    if (sentences.length <= 2) {
+        return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
+    }
+    const preview = sentences.slice(0, 2).join(' ');
+    const rest = sentences.slice(2).join(' ');
+    return `<div class="vc-summary"><span class="vc-summary-preview">${hl(preview, kw)}</span><details class="vc-summary-detail"><summary>${escapeHtml(tx('manualDetailToggle') || '더 보기')}</summary><span class="vc-summary-rest">${hl(rest, kw)}</span></details></div>`;
 }
 
 function getVisaIssuanceRecord(code) {
@@ -19679,7 +19681,6 @@ function renderIssuanceModeCard(mode, record, binding, keywords, options = {}) {
         <div><h6 class="issuance-subtitle">${escapeHtml(txAt('issuanceUiLabels', 4, '절차'))}</h6>${renderIssuanceSteps(mode.steps, keywords)}</div>
         ${options.suppressDocuments ? '' : renderIssuanceDocGroups(mode.documents, keywords)}
         ${renderIssuanceWarnings(mode.warnings, keywords)}
-        ${sourceLine ? `<div class="issuance-source-line">${escapeHtml(sourceLine)}</div>` : ''}
         ${renderSourceLimitationExplanation(sourceState, sourceRefs)}
     </article>`;
 }
