@@ -1,0 +1,72 @@
+{
+  "batchId": "batch_02_targeted_content_cleanup",
+  "createdFor": "full-status-manual-reconcile-260617",
+  "sourceMap": "audits/manual-refresh-260617/status_source_map.json",
+  "manualEvidence": [
+    {
+      "status": "A-1",
+      "stayManualPages": "pp. 14-17",
+      "fields": [
+        "procedures.extension.summary",
+        "procedures.extension.notes",
+        "procedures.registration.summary",
+        "procedures.registration.requiredDocs.requiredDocs"
+      ],
+      "reason": "extension summary included adjacent re-entry text and registration docs were a comma-joined blob"
+    },
+    {
+      "status": "A-2",
+      "stayManualPages": "pp. 18-20",
+      "fields": [
+        "procedures.registration.requiredDocs.requiredDocs"
+      ],
+      "reason": "registration docs were a comma-joined blob"
+    },
+    {
+      "status": "A-3",
+      "stayManualPages": "pp. 21-23",
+      "fields": [
+        "procedures.extension.summary",
+        "procedures.extension.requiredDocs.requiredDocs",
+        "procedures.extension.notes",
+        "procedures.registration.requiredDocs.requiredDocs"
+      ],
+      "reason": "Fulbright extension docs and registration docs needed structured, non-OCR text"
+    },
+    {
+      "statuses": [
+        "D-4-1",
+        "E-8",
+        "F-6",
+        "K-STAR",
+        "REGION-S"
+      ],
+      "fields": [
+        "procedures.*.summary",
+        "procedures.*.requiredDocs.requiredDocs",
+        "procedures.*.notes"
+      ],
+      "reason": "replace vague 'manual check needed' placeholders with exact unresolved reasons and avoid inventing universal parent-record checklists for track-specific sections"
+    },
+    {
+      "statuses": [
+        "D-8",
+        "E-7",
+        "F-5",
+        "G-1",
+        "REGION-S"
+      ],
+      "fields": [
+        "subcodes[*].note",
+        "procedures.*.summary",
+        "procedures.*.notes"
+      ],
+      "reason": "replace lingering 2026-06-01 source-date text with the 2026-06-17 manual date"
+    }
+  ],
+  "explicitNonGoals": [
+    "do not mark sourceManualStatus.verified true",
+    "do not invent a universal checklist where the manual is track-specific",
+    "do not hand-edit _generated or _authoring"
+  ]
+}

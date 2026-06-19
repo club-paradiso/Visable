@@ -37,10 +37,35 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "pp. 134-135",
-          "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
-          "confidence": "legacy_ref_migrated_to_260617_needs_review",
-          "needsManualReview": true
+          "pageRange": "pp. 656-668",
+          "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도 알림",
+          "note": "Primary special stay-program section.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 145-159",
+          "section": "구직(D-10) 특례 중 국내 성장 기반 외국인 청소년 관련 항목",
+          "note": "Related D-10 pathway references.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 214, 234",
+          "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+          "note": "Related E-7-Y pathway references.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -54,7 +79,10 @@
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "verified": false,
     "reviewNotes": [
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 656-668, pp. 145-159, pp. 214, 234; visa manual evidence: pp. 171, 185-186.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages.",
+      "Source-map note: Visa issuance manual has no standalone chapter located; related visa-side references are recorded conservatively."
     ],
     "manualRefresh260617": {
       "reviewed": true,
@@ -70,11 +98,13 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
-    }
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
+    },
+    "stayManualSourceDate": "2026-06-17"
   },
   "manualRefs": [
     {
@@ -83,10 +113,47 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "pp. 134-135",
-      "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
-      "confidence": "legacy_ref_migrated_to_260617_needs_review",
-      "needsManualReview": true
+      "pageRange": "pp. 656-668",
+      "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도 알림",
+      "note": "Primary special stay-program section.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "pp. 145-159",
+      "section": "구직(D-10) 특례 중 국내 성장 기반 외국인 청소년 관련 항목",
+      "note": "Related D-10 pathway references.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "pp. 214, 234",
+      "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+      "note": "Related E-7-Y pathway references.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "pp. 171, 185-186",
+      "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+      "note": "No standalone YOUTH-STAY visa issuance chapter found; visa-side evidence is limited to related E-7-Y references.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
     }
   ],
   "reviewStatus": "needs_review",

@@ -27,7 +27,7 @@
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 외국인체류 안내매뉴얼 p.91 '어학연수생(D-4-1, D-4-7) 체류기간 연장허가 — 나. 제출서류'에서 옮긴 제출서류입니다. 세부 사정에 따라 가감될 수 있어 관할 출입국·외국인관서 확인이 필요합니다."
+        "2026.6 외국인체류 안내매뉴얼 p.91 '어학연수생(D-4-1, D-4-7) 체류기간 연장허가 — 나. 제출서류'에서 옮긴 제출서류입니다. 세부 사정에 따라 가감될 수 있어 관할 출입국·외국인관서 확인이 필요합니다."
       ],
       "manualRefs": [
         {
@@ -36,38 +36,26 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 35",
-          "section": "구를 하고자 하는 외국인으로서 유학(D-2) 및 어학연수(D-4-1, D-4-7)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 35",
-          "section": "D-4-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 83-94",
+          "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+          "note": "Embedded in the D-4 stay section, not a separate top-level stay chapter.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
     "registration": {
       "available": false,
-      "summary": "2026.5 체류민원 매뉴얼 pp. 83-101에서 외국인등록 제출서류를 보수적 자동 추출 규칙으로 확정하지 못했습니다.",
+      "summary": "D-4-1 별도 외국인등록 제출서류 표제가 pp.83-94에서 분리 확인되지 않아 부모 레코드에는 단일 체크리스트를 제공하지 않습니다.",
       "summaryQuality": "source_backed",
       "requiredDocs": {
         "commonDocs": [],
-        "requiredDocs": [
-          "매뉴얼 확인 필요"
-        ],
+        "requiredDocs": [],
         "additionalDocs": [],
         "conditionalDocs": []
       },
       "notes": [
-        "원문 섹션은 존재할 수 있으나 PDF 텍스트 구조상 자동 확정하지 않았습니다. 수동 대조 후 구조화해야 합니다."
+        "연장 제출서류는 p.91에서 확인되지만, 외국인등록 서류는 D-4 공통·세부유형별 등록 규칙과 구분 확인이 필요합니다."
       ],
       "manualRefs": [
         {
@@ -76,21 +64,11 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 35",
-          "section": "구를 하고자 하는 외국인으로서 유학(D-2) 및 어학연수(D-4-1, D-4-7)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 35",
-          "section": "D-4-1",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 83-94",
+          "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+          "note": "Embedded in the D-4 stay section, not a separate top-level stay chapter.",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     }
@@ -101,11 +79,12 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 83-94; visa manual evidence: pp. 73-75.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages.",
+      "Source-map note: Handled in an embedded/special section rather than as a simple standalone parent chapter."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -123,10 +102,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "reviewStatus": "needs_review",
@@ -307,5 +287,31 @@
   },
   "searchAliases": [
     "D-4-1"
+  ],
+  "manualRefs": [
+    {
+      "manualName": "체류민원",
+      "manualType": "stay",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "pageRange": "pp. 83-94",
+      "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+      "note": "Embedded in the D-4 stay section, not a separate top-level stay chapter.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "pp. 73-75",
+      "section": "일반연수(D-4) 중 한국어연수(D-4-1)",
+      "note": "Embedded in the D-4 visa issuance section.",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    }
   ]
 }

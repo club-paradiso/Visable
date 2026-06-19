@@ -1,0 +1,1409 @@
+{
+  "manualVersion": "2026.6",
+  "sourceDate": "2026-06-17",
+  "createdFor": "full-status-manual-reconcile-260617",
+  "policy": "Page ranges are substantive source sections; table-of-contents pages are excluded except where explicitly noted as not substantive. Common refs are listed separately and should only be attached to status records when the field being edited relies on them.",
+  "manuals": {
+    "stay": {
+      "title": "외국인체류 안내매뉴얼 2026.6",
+      "sourcePdf": "stay_manual_260617.pdf",
+      "pageCount": 778
+    },
+    "visa": {
+      "title": "사증발급 안내매뉴얼 2026.6",
+      "sourcePdf": "visa issue_manual_260617.pdf",
+      "pageCount": 487
+    }
+  },
+  "commonReferenceCatalog": {
+    "passportValidity": [
+      {
+        "manualName": "체류민원",
+        "manualType": "stay",
+        "manualVersion": "2026.6",
+        "sourceDate": "2026-06-17",
+        "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+        "pageRange": "p. 6",
+        "section": "여권 유효기간 범위 내 체류기간 부여 안내"
+      }
+    ],
+    "stayFees": [
+      {
+        "manualName": "체류민원",
+        "manualType": "stay",
+        "manualVersion": "2026.6",
+        "sourceDate": "2026-06-17",
+        "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+        "pageRange": "p. 5",
+        "section": "각종 체류허가 등에 관한 심사수수료"
+      }
+    ],
+    "tbCertificate": [
+      {
+        "manualName": "체류민원",
+        "manualType": "stay",
+        "manualVersion": "2026.6",
+        "sourceDate": "2026-06-17",
+        "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+        "pageRange": "pp. 12-13",
+        "section": "외국인 결핵진단서 제출 의무 관련 안내"
+      },
+      {
+        "manualName": "사증민원",
+        "manualType": "visa",
+        "manualVersion": "2026.6",
+        "sourceDate": "2026-06-17",
+        "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+        "pageRange": "pp. 5-6",
+        "section": "외국인 결핵진단서 제출 의무 관련 안내"
+      }
+    ]
+  },
+  "statusCount": 42,
+  "statuses": [
+    {
+      "code": "A-1",
+      "statusNameKo": "외교",
+      "file": "backend/data/visa_authoring/statuses/A-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 14-17",
+          "section": "외교(A-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 7-9",
+          "section": "외교(A-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "A-2",
+      "statusNameKo": "공무",
+      "file": "backend/data/visa_authoring/statuses/A-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 18-20",
+          "section": "공무(A-2)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 10-12",
+          "section": "공무(A-2)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "A-3",
+      "statusNameKo": "협정",
+      "file": "backend/data/visa_authoring/statuses/A-3.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 21-23",
+          "section": "협정(A-3)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "p. 13",
+          "section": "협정(A-3)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "B-1",
+      "statusNameKo": "사증면제협정",
+      "file": "backend/data/visa_authoring/statuses/B-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 24",
+          "section": "사증면제(B-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 14-21",
+          "section": "사증면제(B-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "B-2",
+      "statusNameKo": "관광통과·무사증",
+      "file": "backend/data/visa_authoring/statuses/B-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 25",
+          "section": "관광통과(B-2)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 22-24",
+          "section": "관광통과(B-2)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "C-1",
+      "statusNameKo": "일시취재",
+      "file": "backend/data/visa_authoring/statuses/C-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "p. 26",
+          "section": "일시취재(C-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 25-26",
+          "section": "일시취재(C-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "C-3",
+      "statusNameKo": "단기방문",
+      "file": "backend/data/visa_authoring/statuses/C-3.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 27-28",
+          "section": "단기방문(C-3)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 27-50",
+          "section": "단기방문(C-3)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "C-4",
+      "statusNameKo": "단기취업",
+      "file": "backend/data/visa_authoring/statuses/C-4.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 29-31",
+          "section": "단기취업(C-4)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 51-59",
+          "section": "단기취업(C-4)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-1",
+      "statusNameKo": "문화예술",
+      "file": "backend/data/visa_authoring/statuses/D-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 32-34",
+          "section": "문화예술(D-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 60-61",
+          "section": "문화예술(D-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-10",
+      "statusNameKo": "구직",
+      "file": "backend/data/visa_authoring/statuses/D-10.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 143-166",
+          "section": "구직(D-10)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 124-137",
+          "section": "구직(D-10)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-2",
+      "statusNameKo": "유학",
+      "file": "backend/data/visa_authoring/statuses/D-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 35-55",
+          "section": "유학(D-2)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 62-69",
+          "section": "유학(D-2)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-3",
+      "statusNameKo": "기술연수",
+      "file": "backend/data/visa_authoring/statuses/D-3.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 56-82",
+          "section": "기술연수(D-3)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 70-72",
+          "section": "기술연수(D-3)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-4-1",
+      "statusNameKo": "한국어연수 (대학부설어학원)",
+      "file": "backend/data/visa_authoring/statuses/D-4-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 83-94",
+          "section": "일반연수(D-4) 중 한국어연수(D-4-1) 관련 체류절차",
+          "note": "Embedded in the D-4 stay section, not a separate top-level stay chapter."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 73-75",
+          "section": "일반연수(D-4) 중 한국어연수(D-4-1)",
+          "note": "Embedded in the D-4 visa issuance section."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter."
+      ]
+    },
+    {
+      "code": "D-4-2K",
+      "statusNameKo": "기업맞춤형인턴십(K-Trainee)",
+      "file": "backend/data/visa_authoring/statuses/D-4-2K.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 92-94",
+          "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+          "note": "Special K-Trainee material embedded in the D-4 stay section."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 76-78",
+          "section": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)",
+          "note": "Special K-Trainee material embedded in the D-4 visa issuance section."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter."
+      ]
+    },
+    {
+      "code": "D-4",
+      "statusNameKo": "일반연수",
+      "file": "backend/data/visa_authoring/statuses/D-4.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 83-102",
+          "section": "일반연수(D-4)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 73-89",
+          "section": "일반연수(D-4)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-5",
+      "statusNameKo": "취재",
+      "file": "backend/data/visa_authoring/statuses/D-5.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 103-105",
+          "section": "취재(D-5)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 90-91",
+          "section": "취재(D-5)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-6",
+      "statusNameKo": "종교",
+      "file": "backend/data/visa_authoring/statuses/D-6.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 106-108",
+          "section": "종교(D-6)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 92-93",
+          "section": "종교(D-6)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-7",
+      "statusNameKo": "주재",
+      "file": "backend/data/visa_authoring/statuses/D-7.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 109-115",
+          "section": "주재(D-7)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 94-103",
+          "section": "주재(D-7)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-8",
+      "statusNameKo": "기업투자",
+      "file": "backend/data/visa_authoring/statuses/D-8.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 116-130",
+          "section": "기업투자(D-8)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 104-117",
+          "section": "기업투자(D-8)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "D-9",
+      "statusNameKo": "무역경영",
+      "file": "backend/data/visa_authoring/statuses/D-9.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 131-142",
+          "section": "무역경영(D-9)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 118-123",
+          "section": "무역경영(D-9)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-1",
+      "statusNameKo": "교수",
+      "file": "backend/data/visa_authoring/statuses/E-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 167-174",
+          "section": "교수(E-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 138-143",
+          "section": "교수(E-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-10",
+      "statusNameKo": "선원취업",
+      "file": "backend/data/visa_authoring/statuses/E-10.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 337-341",
+          "section": "선원취업(E-10)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 296-298",
+          "section": "선원취업(E-10)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-2",
+      "statusNameKo": "회화지도",
+      "file": "backend/data/visa_authoring/statuses/E-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 175-185",
+          "section": "회화지도(E-2)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 144-151",
+          "section": "회화지도(E-2)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-3",
+      "statusNameKo": "연구",
+      "file": "backend/data/visa_authoring/statuses/E-3.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 186-195",
+          "section": "연구(E-3)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 152-158",
+          "section": "연구(E-3)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-4",
+      "statusNameKo": "기술지도",
+      "file": "backend/data/visa_authoring/statuses/E-4.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 196-200",
+          "section": "기술지도(E-4)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 159-161",
+          "section": "기술지도(E-4)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-5",
+      "statusNameKo": "전문직업",
+      "file": "backend/data/visa_authoring/statuses/E-5.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 201-205",
+          "section": "전문직업(E-5)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 162-164",
+          "section": "전문직업(E-5)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-6",
+      "statusNameKo": "예술흥행",
+      "file": "backend/data/visa_authoring/statuses/E-6.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 206-212",
+          "section": "예술흥행(E-6)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 165-169",
+          "section": "예술흥행(E-6)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-7",
+      "statusNameKo": "특정활동",
+      "file": "backend/data/visa_authoring/statuses/E-7.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 213-324",
+          "section": "특정활동(E-7)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 170-279",
+          "section": "특정활동(E-7)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-8",
+      "statusNameKo": "계절근로",
+      "file": "backend/data/visa_authoring/statuses/E-8.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 325-326",
+          "section": "계절근로(E-8)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 280-285",
+          "section": "계절근로(E-8)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "E-9",
+      "statusNameKo": "비전문취업",
+      "file": "backend/data/visa_authoring/statuses/E-9.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 327-336",
+          "section": "비전문취업(E-9)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 286-295",
+          "section": "비전문취업(E-9)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "F-1",
+      "statusNameKo": "방문동거",
+      "file": "backend/data/visa_authoring/statuses/F-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 342-360",
+          "section": "방문동거(F-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 299-309",
+          "section": "방문동거(F-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "F-2",
+      "statusNameKo": "거주",
+      "file": "backend/data/visa_authoring/statuses/F-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 361-421",
+          "section": "거주(F-2)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 310-314",
+          "section": "거주(F-2)"
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 317-319",
+          "section": "점수제 우수인재(F-2-7)의 가족 관련 사증발급",
+          "note": "Related F-2 family issuance details embedded near F-3/F-5."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter."
+      ]
+    },
+    {
+      "code": "F-3",
+      "statusNameKo": "동반",
+      "file": "backend/data/visa_authoring/statuses/F-3.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 422-426",
+          "section": "동반(F-3)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 315-319",
+          "section": "동반(F-3)"
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 408-409",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 외국국적동포가족 동반(F-3) 및 방문동거(F-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "F-4",
+      "statusNameKo": "재외동포",
+      "file": "backend/data/visa_authoring/statuses/F-4.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 529-579",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+          "note": "Handled in the embedded diaspora manual rather than the ordinary status sequence."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 392-419",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 재외동포(F-4) 사증·체류관리",
+          "note": "Handled in the embedded diaspora manual."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter."
+      ]
+    },
+    {
+      "code": "F-5",
+      "statusNameKo": "영주",
+      "file": "backend/data/visa_authoring/statuses/F-5.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 427-474",
+          "section": "영주(F-5)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 539-544",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 외국국적동포 영주(F-5) 체류관리",
+          "note": "Additional diaspora-specific F-5 guidance."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 320-325",
+          "section": "영주(F-5)"
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 398-407",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 외국국적동포 영주(F-5) 체류관리",
+          "note": "Additional diaspora-specific F-5 guidance."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "F-6",
+      "statusNameKo": "결혼이민",
+      "file": "backend/data/visa_authoring/statuses/F-6.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 475-498",
+          "section": "결혼이민(F-6)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 326-337",
+          "section": "결혼이민(F-6)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "G-1",
+      "statusNameKo": "기타(난민등)",
+      "file": "backend/data/visa_authoring/statuses/G-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 499-514",
+          "section": "기타(G-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 338-345",
+          "section": "기타(G-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "H-1",
+      "statusNameKo": "관광취업",
+      "file": "backend/data/visa_authoring/statuses/H-1.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 515-518",
+          "section": "관광취업(H-1)"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 346-352",
+          "section": "관광취업(H-1)"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "H-2",
+      "statusNameKo": "방문취업 (신규발급 중단)",
+      "file": "backend/data/visa_authoring/statuses/H-2.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 525-528",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 체류관리",
+          "note": "Handled in the embedded diaspora manual; 신규 발급 중단 guidance is not an ordinary status chapter."
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 556-567",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식"
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 388-391",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 사증 및 체류관리",
+          "note": "Handled in the embedded diaspora manual; 신규 발급 중단 guidance is not an ordinary status chapter."
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 419-430",
+          "section": "알기쉬운 외국국적동포 업무 매뉴얼: 방문취업(H-2) 취업활동범위 및 건강상태 서식"
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter."
+      ]
+    },
+    {
+      "code": "K-STAR",
+      "statusNameKo": "K-STAR 비자트랙",
+      "file": "backend/data/visa_authoring/statuses/K-STAR.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 750-778",
+          "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
+          "note": "Special K-STAR/Top-Tier track appended to the stay manual."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 459-487",
+          "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
+          "note": "Special K-STAR/Top-Tier track appended to the visa issuance manual."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": []
+    },
+    {
+      "code": "REGION-S",
+      "statusNameKo": "지역특화·광역형 비자 시범사업",
+      "file": "backend/data/visa_authoring/statuses/REGION-S.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 586-642",
+          "section": "지역특화형비자 체류제도 주요내용 알림",
+          "note": "Embedded special regional visa program."
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 688-736",
+          "section": "광역형 비자 시범사업",
+          "note": "Embedded special metropolitan/regional pilot program."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 170, 174, 176",
+          "section": "특정활동(E-7) 지역특화발전특구 관련 언급",
+          "note": "No standalone REGION-S visa issuance chapter found; visa-side evidence is limited to related E-7/F-4/F-5 mentions."
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 393, 433, 442-443, 464",
+          "section": "재외동포/지역특화형 비자 관련 언급",
+          "note": "Related scattered references, not a standalone issuance section."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Handled in an embedded/special section rather than as a simple standalone parent chapter.",
+        "Visa issuance manual has no standalone chapter located; related visa-side references are recorded conservatively."
+      ]
+    },
+    {
+      "code": "YOUTH-STAY",
+      "statusNameKo": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+      "file": "backend/data/visa_authoring/statuses/YOUTH-STAY.json",
+      "stayManualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 656-668",
+          "section": "국내 성장 기반 외국인 청소년 취업·정주 체류제도 알림",
+          "note": "Primary special stay-program section."
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 145-159",
+          "section": "구직(D-10) 특례 중 국내 성장 기반 외국인 청소년 관련 항목",
+          "note": "Related D-10 pathway references."
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "pageRange": "pp. 214, 234",
+          "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+          "note": "Related E-7-Y pathway references."
+        }
+      ],
+      "visaManualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "pageRange": "pp. 171, 185-186",
+          "section": "특정활동(E-7) 국내성장인력(E-7-Y) 관련 항목",
+          "note": "No standalone YOUTH-STAY visa issuance chapter found; visa-side evidence is limited to related E-7-Y references."
+        }
+      ],
+      "commonRefsUsed": [],
+      "notes": [
+        "Visa issuance manual has no standalone chapter located; related visa-side references are recorded conservatively."
+      ]
+    }
+  ]
+}

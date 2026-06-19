@@ -1,0 +1,14 @@
+{
+  "batchId": "batch_04_subcode_source_gap_correction",
+  "createdFor": "full-status-manual-reconcile-260617",
+  "reason": "Batch 01 added parent-level fallback manualRefs to subcodes that lacked subcode-specific evidence. That removed the UI's honest source-gap state. Parent status refs remain intact; subcodes with only broad duplicated refs should carry no subcode manualRefs until specific pages are verified.",
+  "selectionRule": "for each subcode, remove manualRefs only when the list exactly duplicates the parent status manualRefs",
+  "expectedFieldChanges": [
+    "subcodes[*].manualRefs"
+  ],
+  "explicitNonGoals": [
+    "do not remove subcode-specific manualRefs",
+    "do not change parent manualRefs",
+    "do not edit _generated or _authoring"
+  ]
+}

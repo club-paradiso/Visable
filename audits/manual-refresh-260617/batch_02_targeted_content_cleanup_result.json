@@ -1,0 +1,66 @@
+{
+  "batchId": "batch_02_targeted_content_cleanup",
+  "filesChanged": 12,
+  "changes": [
+    {
+      "file": "backend/data/visa_authoring/statuses/A-1.json",
+      "code": "A-1",
+      "change": "cleaned A-1 extension summary and split registration documents"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/A-2.json",
+      "code": "A-2",
+      "change": "split A-2 registration documents"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/A-3.json",
+      "code": "A-3",
+      "change": "structured A-3 Fulbright extension and registration documents"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/D-4-1.json",
+      "code": "D-4-1",
+      "change": "replaced D-4-1 registration placeholder with precise unresolved reason"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/E-8.json",
+      "code": "E-8",
+      "change": "replaced E-8 registration placeholder with precise unresolved reason"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/F-6.json",
+      "code": "F-6",
+      "change": "replaced F-6 statusGrant manual-check placeholder"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/K-STAR.json",
+      "code": "K-STAR",
+      "change": "replaced K-STAR manual-check placeholders"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/REGION-S.json",
+      "code": "REGION-S",
+      "change": "replaced REGION-S placeholders and stale date notes"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/D-8.json",
+      "code": "D-8",
+      "change": "replaced lingering stale-date/vague-note text in D-8"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/E-7.json",
+      "code": "E-7",
+      "change": "replaced lingering stale-date/vague-note text in E-7"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/F-5.json",
+      "code": "F-5",
+      "change": "replaced lingering stale-date/vague-note text in F-5"
+    },
+    {
+      "file": "backend/data/visa_authoring/statuses/G-1.json",
+      "code": "G-1",
+      "change": "replaced lingering stale-date/vague-note text in G-1"
+    }
+  ]
+}

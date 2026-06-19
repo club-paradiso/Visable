@@ -1,0 +1,610 @@
+{
+  "batchId": "batch_01_all_status_source_metadata",
+  "sourceMap": "audits/manual-refresh-260617/status_source_map.json",
+  "files": [
+    {
+      "code": "A-1",
+      "file": "backend/data/visa_authoring/statuses/A-1.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 14-17",
+        "pp. 7-9"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "A-2",
+      "file": "backend/data/visa_authoring/statuses/A-2.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 18-20",
+        "pp. 10-12"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "A-3",
+      "file": "backend/data/visa_authoring/statuses/A-3.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 21-23",
+        "p. 13"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "B-1",
+      "file": "backend/data/visa_authoring/statuses/B-1.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 3,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "p. 24",
+        "pp. 14-21"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "B-2",
+      "file": "backend/data/visa_authoring/statuses/B-2.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 3,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "p. 25",
+        "pp. 22-24"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "C-1",
+      "file": "backend/data/visa_authoring/statuses/C-1.json",
+      "humanEditableTocRefsBefore": 6,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 3,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "p. 26",
+        "pp. 25-26"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "C-3",
+      "file": "backend/data/visa_authoring/statuses/C-3.json",
+      "humanEditableTocRefsBefore": 10,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 27-28",
+        "pp. 27-50"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "C-4",
+      "file": "backend/data/visa_authoring/statuses/C-4.json",
+      "humanEditableTocRefsBefore": 6,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 3,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 29-31",
+        "pp. 51-59"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-1",
+      "file": "backend/data/visa_authoring/statuses/D-1.json",
+      "humanEditableTocRefsBefore": 4,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 32-34",
+        "pp. 60-61"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-10",
+      "file": "backend/data/visa_authoring/statuses/D-10.json",
+      "humanEditableTocRefsBefore": 14,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 143-166",
+        "pp. 124-137"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-2",
+      "file": "backend/data/visa_authoring/statuses/D-2.json",
+      "humanEditableTocRefsBefore": 9,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 35-55",
+        "pp. 62-69"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-3",
+      "file": "backend/data/visa_authoring/statuses/D-3.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 56-82",
+        "pp. 70-72"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-4-1",
+      "file": "backend/data/visa_authoring/statuses/D-4-1.json",
+      "humanEditableTocRefsBefore": 0,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 83-94",
+        "pp. 73-75"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-4-2K",
+      "file": "backend/data/visa_authoring/statuses/D-4-2K.json",
+      "humanEditableTocRefsBefore": 0,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 92-94",
+        "pp. 76-78"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-4",
+      "file": "backend/data/visa_authoring/statuses/D-4.json",
+      "humanEditableTocRefsBefore": 8,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 83-102",
+        "pp. 73-89"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-5",
+      "file": "backend/data/visa_authoring/statuses/D-5.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 103-105",
+        "pp. 90-91"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-6",
+      "file": "backend/data/visa_authoring/statuses/D-6.json",
+      "humanEditableTocRefsBefore": 4,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 106-108",
+        "pp. 92-93"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-7",
+      "file": "backend/data/visa_authoring/statuses/D-7.json",
+      "humanEditableTocRefsBefore": 4,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 109-115",
+        "pp. 94-103"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-8",
+      "file": "backend/data/visa_authoring/statuses/D-8.json",
+      "humanEditableTocRefsBefore": 9,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 6,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 116-130",
+        "pp. 104-117"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "D-9",
+      "file": "backend/data/visa_authoring/statuses/D-9.json",
+      "humanEditableTocRefsBefore": 8,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 131-142",
+        "pp. 118-123"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-1",
+      "file": "backend/data/visa_authoring/statuses/E-1.json",
+      "humanEditableTocRefsBefore": 7,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 167-174",
+        "pp. 138-143"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-10",
+      "file": "backend/data/visa_authoring/statuses/E-10.json",
+      "humanEditableTocRefsBefore": 3,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 337-341",
+        "pp. 296-298"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-2",
+      "file": "backend/data/visa_authoring/statuses/E-2.json",
+      "humanEditableTocRefsBefore": 10,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 175-185",
+        "pp. 144-151"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-3",
+      "file": "backend/data/visa_authoring/statuses/E-3.json",
+      "humanEditableTocRefsBefore": 9,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 186-195",
+        "pp. 152-158"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-4",
+      "file": "backend/data/visa_authoring/statuses/E-4.json",
+      "humanEditableTocRefsBefore": 8,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 196-200",
+        "pp. 159-161"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-5",
+      "file": "backend/data/visa_authoring/statuses/E-5.json",
+      "humanEditableTocRefsBefore": 8,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 201-205",
+        "pp. 162-164"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-6",
+      "file": "backend/data/visa_authoring/statuses/E-6.json",
+      "humanEditableTocRefsBefore": 11,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 206-212",
+        "pp. 165-169"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-7",
+      "file": "backend/data/visa_authoring/statuses/E-7.json",
+      "humanEditableTocRefsBefore": 8,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 5,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 213-324",
+        "pp. 170-279"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-8",
+      "file": "backend/data/visa_authoring/statuses/E-8.json",
+      "humanEditableTocRefsBefore": 6,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 325-326",
+        "pp. 280-285"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "E-9",
+      "file": "backend/data/visa_authoring/statuses/E-9.json",
+      "humanEditableTocRefsBefore": 6,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 6,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 327-336",
+        "pp. 286-295"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-1",
+      "file": "backend/data/visa_authoring/statuses/F-1.json",
+      "humanEditableTocRefsBefore": 12,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 342-360",
+        "pp. 299-309"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-2",
+      "file": "backend/data/visa_authoring/statuses/F-2.json",
+      "humanEditableTocRefsBefore": 12,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 361-421",
+        "pp. 310-314",
+        "pp. 317-319"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-3",
+      "file": "backend/data/visa_authoring/statuses/F-3.json",
+      "humanEditableTocRefsBefore": 11,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 422-426",
+        "pp. 315-319",
+        "pp. 408-409"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-4",
+      "file": "backend/data/visa_authoring/statuses/F-4.json",
+      "humanEditableTocRefsBefore": 7,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 529-579",
+        "pp. 392-419"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-5",
+      "file": "backend/data/visa_authoring/statuses/F-5.json",
+      "humanEditableTocRefsBefore": 5,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 427-474",
+        "pp. 539-544",
+        "pp. 320-325",
+        "pp. 398-407"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "F-6",
+      "file": "backend/data/visa_authoring/statuses/F-6.json",
+      "humanEditableTocRefsBefore": 15,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 8,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 475-498",
+        "pp. 326-337"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "G-1",
+      "file": "backend/data/visa_authoring/statuses/G-1.json",
+      "humanEditableTocRefsBefore": 14,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 499-514",
+        "pp. 338-345"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "H-1",
+      "file": "backend/data/visa_authoring/statuses/H-1.json",
+      "humanEditableTocRefsBefore": 4,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 6,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 515-518",
+        "pp. 346-352"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "H-2",
+      "file": "backend/data/visa_authoring/statuses/H-2.json",
+      "humanEditableTocRefsBefore": 6,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 525-528",
+        "pp. 556-567",
+        "pp. 388-391",
+        "pp. 419-430"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "K-STAR",
+      "file": "backend/data/visa_authoring/statuses/K-STAR.json",
+      "humanEditableTocRefsBefore": 9,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 4,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 750-778",
+        "pp. 459-487"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "REGION-S",
+      "file": "backend/data/visa_authoring/statuses/REGION-S.json",
+      "humanEditableTocRefsBefore": 0,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 2,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 586-642",
+        "pp. 688-736",
+        "pp. 170, 174, 176",
+        "pp. 393, 433, 442-443, 464"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    },
+    {
+      "code": "YOUTH-STAY",
+      "file": "backend/data/visa_authoring/statuses/YOUTH-STAY.json",
+      "humanEditableTocRefsBefore": 0,
+      "humanEditableTocRefsAfter": 0,
+      "humanEditable2026_5StringsBefore": 0,
+      "humanEditable2026_5StringsAfter": 0,
+      "topLevelManualRefs": [
+        "pp. 656-668",
+        "pp. 145-159",
+        "pp. 214, 234",
+        "pp. 171, 185-186"
+      ],
+      "procedureRefPolicy": "visaIssuance uses visaManualRefs; all other procedure keys use stayManualRefs",
+      "changed": true
+    }
+  ],
+  "totals": {
+    "filesProcessed": 42,
+    "filesChanged": 42,
+    "humanEditableTocRefsRemoved": 274,
+    "humanEditable2026_5StringsRemoved": 182
+  }
+}

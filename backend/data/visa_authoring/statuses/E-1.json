@@ -23,7 +23,7 @@
         "conditionalDocs": []
       },
       "notes": [
-        "2026.5 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
+        "2026.6 체류민원 매뉴얼 PDF에서 보수적으로 자동 추출한 제출서류입니다. 세부약호·국적·기관·체류 이력별 예외가 있어 수동 검토가 필요합니다."
       ],
       "manualRefs": [
         {
@@ -32,10 +32,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "19. 교수(E-1)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 167-174",
+          "section": "교수(E-1)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -52,7 +52,7 @@
       },
       "notes": [
         "다음 단계: ① 하이코리아(HiKorea)(hikorea.go.kr)에서 방문 예약 → ② 체류지 관할 출입국·외국인관서 방문(입국 후 90일 이내) → ③ 정확한 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인.",
-        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.5 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
+        "외국인등록 공통서류(통합신청서 등)와 자격별 추가서류는 2026.6 체류민원 매뉴얼·하이코리아(HiKorea)에서 최종 확인이 필요합니다."
       ],
       "manualRefs": [
         {
@@ -61,10 +61,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "19. 교수(E-1)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 167-174",
+          "section": "교수(E-1)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ]
     },
@@ -105,10 +105,11 @@
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
               "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-              "pageRange": "p. 2",
-              "section": "19. 교수(E-1)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": true
+              "pageRange": "pp. 167-174",
+              "section": "교수(E-1)",
+              "confidence": "status_source_map_260617",
+              "needsManualReview": true,
+              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator."
             }
           ],
           "notes": [
@@ -141,10 +142,11 @@
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
               "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-              "pageRange": "p. 2",
-              "section": "19. 교수(E-1)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": true
+              "pageRange": "pp. 167-174",
+              "section": "교수(E-1)",
+              "confidence": "status_source_map_260617",
+              "needsManualReview": true,
+              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator."
             }
           ],
           "notes": [
@@ -176,10 +178,11 @@
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
               "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-              "pageRange": "p. 2",
-              "section": "19. 교수(E-1)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": true
+              "pageRange": "pp. 167-174",
+              "section": "교수(E-1)",
+              "confidence": "status_source_map_260617",
+              "needsManualReview": true,
+              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator."
             }
           ],
           "notes": [
@@ -195,10 +198,10 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-          "pageRange": "p. 2",
-          "section": "19. 교수(E-1)",
-          "confidence": "manual_inventory_260617",
-          "needsManualReview": true
+          "pageRange": "pp. 167-174",
+          "section": "교수(E-1)",
+          "confidence": "status_source_map_260617",
+          "needsManualReview": false
         }
       ],
       "notes": [
@@ -212,11 +215,11 @@
     "verified": false,
     "needsManualReview": true,
     "reviewNotes": [
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 자동 추출해 procedures에 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026.5 체류민원 매뉴얼에서 체류기간 연장/외국인등록 제출서류를 보수적 자동 추출로 반영했습니다. 수동 원문 대조가 필요합니다.",
-      "2026-06-17 official manual refresh: manual-derived codes and source locators were attached; legal/procedure/document wording remains conservatively marked for manual review where not field-confirmed."
+      "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
+      "Stay manual evidence: pp. 167-174; visa manual evidence: pp. 138-143.",
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
     ],
-    "stayManualSourceDate": "2026-06-01",
+    "stayManualSourceDate": "2026-06-17",
     "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
     "sourceDate": "2026-06-17",
     "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
@@ -234,10 +237,11 @@
         "sourceMetadata",
         "searchAliases"
       ],
-      "reviewMethod": "inventory_and_status_read_only_audit_plus_conservative_source_ref_refresh",
+      "reviewMethod": "status_source_map_reconcile_260617_batch_01",
       "needsManualReview": true,
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
-      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json"
+      "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
+      "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
     }
   },
   "reviewStatus": "needs_review",
@@ -420,9 +424,20 @@
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
       "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-      "pageRange": "p. 2",
-      "section": "19. 교수(E-1)",
-      "confidence": "manual_inventory_260617",
+      "pageRange": "pp. 167-174",
+      "section": "교수(E-1)",
+      "confidence": "status_source_map_260617",
+      "needsManualReview": false
+    },
+    {
+      "manualName": "사증민원",
+      "manualType": "visa",
+      "manualVersion": "2026.6",
+      "sourceDate": "2026-06-17",
+      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "pageRange": "pp. 138-143",
+      "section": "교수(E-1)",
+      "confidence": "status_source_map_260617",
       "needsManualReview": false
     }
   ],

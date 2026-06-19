@@ -1,0 +1,211 @@
+{
+  "batchId": "batch_04_subcode_source_gap_correction",
+  "filesChanged": 11,
+  "codes": [
+    "B-1",
+    "B-2",
+    "D-1",
+    "D-7",
+    "D-8",
+    "D-9",
+    "E-2",
+    "E-9",
+    "F-1",
+    "F-3",
+    "F-4"
+  ],
+  "removed": [
+    {
+      "parent": "B-1",
+      "subcode": "B-1-1",
+      "name": "B-1 일반여권 유효 67개국",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "B-1",
+      "subcode": "B-1-2",
+      "name": "B-1 일시정지 3개국",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "B-2",
+      "subcode": "B-2-1",
+      "name": "일반 무사증 (45개국·지역)",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "B-2",
+      "subcode": "B-2-2",
+      "name": "제주 무사증 입국",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-1",
+      "subcode": "D-1-00",
+      "name": "문화예술연수",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-7",
+      "subcode": "D-7-1",
+      "name": "외국기업 주재",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-7",
+      "subcode": "D-7-2",
+      "name": "내국기업 주재",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-7",
+      "subcode": "D-7-91",
+      "name": "FTA전근",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-7",
+      "subcode": "D-7-92",
+      "name": "FTA계약",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-8",
+      "subcode": "D-8-91",
+      "name": "FTA전근",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-9",
+      "subcode": "D-9-2",
+      "name": "수출설비",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "D-9",
+      "subcode": "D-9-3",
+      "name": "선박설비",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "E-2",
+      "subcode": "E-2-91",
+      "name": "FTA영어",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "E-9",
+      "subcode": "E-9-R",
+      "name": "외국인등록 제출서류",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "E-9",
+      "subcode": "E-9-JS",
+      "name": "구직신청자 특례",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-1",
+      "subcode": "F-1-9",
+      "name": "동포배우자 등",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-3",
+      "subcode": "F-3-1",
+      "name": "동반 기본",
+      "removedRefCount": 3
+    },
+    {
+      "parent": "F-3",
+      "subcode": "F-3-2",
+      "name": "소득요건(25.7.1 개편)",
+      "removedRefCount": 3
+    },
+    {
+      "parent": "F-3",
+      "subcode": "F-3-3",
+      "name": "소득요건 면제",
+      "removedRefCount": 3
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-11",
+      "name": "재외동포 본인",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-12",
+      "name": "직계비속",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-13",
+      "name": "D·E계열 6개월↑",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-14",
+      "name": "대학 졸업자",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-15",
+      "name": "OECD영주자",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-16",
+      "name": "법인대표 등",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-17",
+      "name": "10만불 기업가",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-18",
+      "name": "다국적기업 종사자",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-19",
+      "name": "동포단체대표",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-20",
+      "name": "공무원 등",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-21",
+      "name": "교원",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-25",
+      "name": "60세 이상자",
+      "removedRefCount": 2
+    },
+    {
+      "parent": "F-4",
+      "subcode": "F-4-30",
+      "name": "국내 초·중·고 재학 동포 자녀",
+      "removedRefCount": 2
+    }
+  ]
+}

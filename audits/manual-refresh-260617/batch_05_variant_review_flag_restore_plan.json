@@ -1,0 +1,18 @@
+{
+  "batchId": "batch_05_variant_review_flag_restore",
+  "createdFor": "full-status-manual-reconcile-260617",
+  "reason": "scripts/check_required_documents_coverage.py requires procedure variant manualRefs to remain needsManualReview=true because variant-specific document wording is not fully certified by parent procedure source ranges.",
+  "scope": [
+    "procedures.*.variants[*].manualRefs[*].needsManualReview",
+    "procedures.*.variants[*].manualRefs[*].reviewReason"
+  ],
+  "expectedFieldChanges": [
+    "set variant manualRefs needsManualReview back to true",
+    "add precise reviewReason to variant manualRefs"
+  ],
+  "explicitNonGoals": [
+    "do not change parent status manualRefs",
+    "do not change procedure-level manualRefs",
+    "do not edit _generated or _authoring"
+  ]
+}
