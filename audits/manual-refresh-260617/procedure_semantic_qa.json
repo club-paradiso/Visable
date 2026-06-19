@@ -1,0 +1,657 @@
+{
+  "generated": "2026-06-19",
+  "statuses_scanned": 42,
+  "statuses_changed": 19,
+  "items": [
+    {
+      "code": "C-3",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "단체관광(C-3-2)은 출국 항공기 부재, 영주·귀화신청 등 부득이한 사유가 있는 경우에 한해 제한적으로 검토",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "C-3",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "단기방문(C-3)은 입국일로부터 체류기간 90일 범위 내에서만 연장 가능",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "C-3",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "단체관광(C-3-2)은 출국 항공기 부재, 영주·귀화 신청 등 부득이한 사유가 있는 경우에 한해 제한적으로 연장이 검토됩니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-1",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-1",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-2",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "입국규제 등의 사유로 재입국허가를 받아야 하는 경우 체류지 관할 출입국·외국인관서에서 재입국허가 필요",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-2",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "체류기간 만료일이 2년 미만인 경우 잔여 체류기간 범위 내에서 복수재입국허가 부여",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-2",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "입국규제 등의 사유로 재입국허가를 받아야 하는 경우에는 체류지 관할 출입국·외국인관서에서 재입국허가를 받아야 합니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-2",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "체류기간 만료일이 2년 미만인 경우 잔여 체류기간 범위 내에서 복수재입국허가가 부여됩니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-2",
+      "proc": "extension",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "우수인증대학 및 인증대학 학위과정 재학생으로 전체 평균학점 C학점 이상인 사람은 일부 재정능력 입증서류가 생략될 수 있으나, 장관 고시국가 및 중점관리국가 국민은 예외가 있습니다.",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-2",
+      "proc": "extension",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "비자심사강화대학 학위과정 재학생으로 전체 평균 이수학점이 D학점 이하인 경우 심사가 강화될 수 있습니다.",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-2",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "우수인증대학·인증대학 학위과정 재학생으로 전체 평균학점이 C학점 이상인 경우 일부 재정능력 입증서류가 생략될 수 있으나, 장관 고시국가 및 중점관리국가 국민은 예외가 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-2",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "비자심사강화대학 학위과정 재학생으로 전체 평균 이수학점이 D학점 이하인 경우 심사가 강화될 수 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-3",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "연수기간 연장신청 사유서(별도서식) ‣해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 지침 (제5조) 기술연수생의 연수기간은 원칙적으로 입국한 날로부터 6개월을 초과할 수 없다. 다만, 청(사무소·출장소)장이 추가로 연수가 필요하다고 인정하는 경우 입국한 날부터 2년을 초과하지 않는 한도 내에서 그 연수기간을 연장할 수 있다.",
+      "after": "연수기간 연장신청 사유서(별도서식)",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-3",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "연수기간은 「해외투자기업 기술연수생 등에 대한 사증발급인정서 발급 및 관리에 관한 지침」 제5조에 따라 원칙적으로 입국일부터 6개월을 초과할 수 없으나, 청(사무소·출장소)장이 추가 연수가 필요하다고 인정하는 경우 입국일부터 2년을 초과하지 않는 범위에서 연장할 수 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-4",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)2. 기업 맞춤형 인턴십(K-Trainee, D 2K)의 체류기간 연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능",
+      "after": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-4",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "기간연장 사유서 및 인턴·연수 활동 계획서3. 고등학교 이하 교육기관 외국인유학생(D-4-3)의 체류기간 연장 제출서류",
+      "after": "기간연장 사유서 및 인턴·연수 활동 계획서",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-4",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국일부터 1년을 초과하지 않는 범위에서 연장할 수 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-4",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-4",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-6",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-6",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "영 별표 1의 16. 주재(D-7)란의 “가”목 해당자",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)영 별표 1의 16. 주재(D-7)란의 “나”목 해당자",
+      "after": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)외국법자문법률사무소의 구성원, 소속 자문사, 사무직원",
+      "after": "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-7",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "주재(D-7)는 외국기업 주재(가목), 내국기업 해외주재(나목), 외국법자문법률사무소 구성원·소속 자문사·사무직원 등 세부 유형별로 제출서류가 구분되며, 유형에 따라 적용 서류가 달라집니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-7",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-7",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-8",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "※ 외국인투자기업등록지위를 갖춘 금융지주회사에서 100%출자한 자회사의 필수전문인력인 경우 제출서류",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-8",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "외국인투자기업등록 지위를 갖춘 금융지주회사가 100% 출자한 자회사의 필수전문인력인 경우의 제출서류가 포함되어 있으며, 세부 유형에 따라 적용 서류가 달라질 수 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-8",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-8",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-9",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "한국무역협회장 또는 한국무역통계진흥원장44)이 발행하는 “수출입실적증명서”",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-9",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "납세실적은 국세청 발급 “소득세 납세사실증명” 제출2. 선박건조·설비제작 감독 또는 수출설비(기계)의 설치·운영·보수 업무를 하려는 경우",
+      "after": "납세실적은 국세청 발급 “소득세 납세사실증명” 제출",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "D-9",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "선박건조·설비제작 감독 또는 수출설비(기계)의 설치·운영·보수 업무를 하려는 경우 등 세부 유형에 따라 제출서류가 달라질 수 있습니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "D-9",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "D-9",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-2",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-2",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-3",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-3",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-4",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-4",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-5",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-5",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-6",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-6",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-6",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "고용추천서 또는 공연추천서 ※ 추천서 발행기관: 영상물등급위원회, 문화체육관광부, 방송통신위원회 등",
+      "after": "고용추천서 또는 공연추천서",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "E-6",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "기타 심사에 필요한 자료* (필요 시 1",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-6",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "2종 제출) * 재직증명서, 외국인 고용현황, 근로소득원천징수부 등",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-6",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "고용추천서·공연추천서 발행기관: 영상물등급위원회, 문화체육관광부, 방송통신위원회 등.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)2. 협정상 사증·체류허가 특례적용대상자에 대한 특례사항 규정 가. 한·인도 포괄적경제동반자협정(CEPA): 독립전문가(IP) 적용대상",
+      "after": "고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "E-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "국내법인 또는 개인사업자와 서비스공급계약을 체결한 전문가로서의 자격요건을 갖추고 해당 분야에서 1년 이상 경력이 있는 자* * 협정상 양허직종(162개)에서 서비스를 제공하기 위해 ‘서비스공급계약’을 체결한 독립전문가에게만 적용 (고용계약을 체결하고 E-7 허용직종에서 취업하는 전문인력에 대해서는 E-7지침 일반 적용) 사증특례",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "최대 1년의 범위 내에서 계약기간을 체류기간으로 하는 단수사증발급인정서 발급 (계약기간이 1년이 초과하는 경우에는 1년 부여) 체류특례",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-7",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "체류기간 연장허가,",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-7",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "한·인도 포괄적경제동반자협정(CEPA) 등 협정상 사증·체류 특례 적용대상(독립전문가 등)은 별도 기준이 적용되며, 사증발급·체류 특례 사항은 해당 협정 및 E-7 지침에 따라 별도로 확인해야 합니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "(수수료 면제)",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "truncated appended bleed",
+      "before": "거주/숙소 제공 확인서 ※ 고용주의 등기부등본, 임대차계약서 등 추가서류 불요",
+      "after": "거주/숙소 제공 확인서",
+      "cause": "valid document with adjacent section-heading or rule text concatenated by PDF extraction"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "통합신청서 ※ 지방자치단체 방문 시:",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "출입국·외국인관서 방문 시:",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "체류기간 연장 추천 단계의 수수료는 면제됩니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "거주/숙소 제공 확인서 제출 시 고용주의 등기부등본·임대차계약서 등 추가서류는 불요합니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "E-8",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "계절근로(E-8) 연장은 지방자치단체 방문 절차와 출입국·외국인관서 방문 절차로 구분됩니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "F-3",
+      "proc": "reentry",
+      "field": "requiredDocs.conditionalDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "F-3",
+      "proc": "reentry",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "사우디아라비아·이란·리비아 국적자는 복수재입국허가가 제한됩니다(단, 결혼이민(F-6)·유학(D-2)·일반연수(D-4) 국민은 가능).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "G-1",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "세부약호별(산업재해·질병치료·소송·임금체불·난민신청 관련 등) 추가 제출서류 및 허가기간은 사안마다 달라 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인 (G-1은 세부약호별로 요건이 상이)",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "G-1",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "세부약호별(산업재해·질병치료·소송·임금체불·난민신청 관련 등) 추가 제출서류 및 허가기간은 사안마다 달라, 관할 출입국·외국인관서 또는 체류민원 매뉴얼에서 확인해야 합니다(G-1은 세부약호별로 요건이 상이).",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    },
+    {
+      "code": "H-1",
+      "proc": "extension",
+      "field": "summary",
+      "action": "rewrote summary (removed bleed)",
+      "before": "체류기간 연장허가 입국한 날로부터 1년 범위 내에서 연장 - 단, 협정에 따라 미국 1년 6개월, 영국·캐나다는 2년까지 연장 가능 재입국허가1.",
+      "after": "입국한 날로부터 1년 범위 내에서 체류기간을 연장하며, 협정에 따라 미국은 1년 6개월, 영국·캐나다는 2년까지 연장할 수 있습니다.",
+      "cause": "procedure summary contained adjacent section heading (cross-procedure bleed)"
+    },
+    {
+      "code": "H-1",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "체류기간 연장허가 입국한 날로부터 1년 범위 내에서 연장",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "H-1",
+      "proc": "extension",
+      "field": "requiredDocs.requiredDocs",
+      "action": "removed (prose/heading) → notes/summary",
+      "before": "단, 협정에 따라 미국 1년 6개월, 영국·캐나다는 2년까지 연장 가능 재입국허가1.",
+      "after": null,
+      "cause": "auto-extracted non-document prose / adjacent section heading rendered as a document chip"
+    },
+    {
+      "code": "H-1",
+      "proc": "extension",
+      "field": "notes",
+      "action": "added note",
+      "before": null,
+      "after": "2026.6 체류민원 매뉴얼 관광취업(H-1) 항목은 체류기간 연장 기간 기준만 제시하고 별도 제출서류를 열거하지 않습니다. 일반 체류기간 연장 공통서류(통합신청서·여권·외국인등록증·수수료 등)가 적용되며, 세부 제출서류는 하이코리아(HiKorea)·1345 또는 관할 출입국·외국인관서에서 확인하시기 바랍니다.",
+      "cause": "explanatory rule/restriction relocated from a document array to notes"
+    }
+  ],
+  "known_caveat": {
+    "issue": "89 procedures have summaryHiddenInUi=true but build re-injects _generated.removedSummaries and renderer does not honor the flag; some legacy/ocr summaries still render",
+    "scope": "generator + renderer (systemic, pre-existing)",
+    "procedures_affected": 89,
+    "by_quality": {
+      "generated_legacy": 79,
+      "ocr_blob": 10
+    },
+    "recommendation": "honor summaryHiddenInUi end-to-end (build emits/skip + renderer fallback)",
+    "status": "out_of_scope_documented"
+  }
+}

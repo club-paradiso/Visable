@@ -293,6 +293,9 @@ python3 scripts/sync_visa_data.py --check
 echo "[12/14] Checking required-documents rendering coverage..."
 python3 scripts/check_required_documents_coverage.py
 
+echo "[12a/14] Checking procedure document/summary semantics (no extraction bleed in doc chips)..."
+python3 scripts/visa/check_procedure_doc_semantics.py
+
 echo "[12b/14] Checking duplicate / misclassified status-result rendering (SEVERE only)..."
 # Validation mode: fails only on SEVERE rendering issues that would reach the
 # user (identical tile repeated in a section, rendered doc tile >160 chars,
