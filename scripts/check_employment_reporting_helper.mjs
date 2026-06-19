@@ -32,7 +32,11 @@ has('최종 신고 전 HiKorea에서 재확인', 'caution badge missing');
 // plain-language pane labels before the official classification terms
 has('id="jcChecklist"', 'guided checklist container missing');
 has('내가 하는 일에 가까운 항목', 'occupation pane plain-language label missing');
-has('회사/사업장이 하는 일에 가까운 항목', 'industry pane plain-language label missing');
+has('회사나 사업장이 하는 일에 가까운 항목', 'industry pane plain-language label missing');
+// guided-flow: candidate gate + Step-5 final HiKorea checklist
+has('id="jcResultsGate"', 'candidate gate element missing');
+has('id="jcFinalCheck"', 'final HiKorea checklist card missing');
+has('하이코리아에서 마지막으로 확인할 것', 'final-check title missing');
 has('연간소득 구간', 'income step copy missing');
 // segmented filter
 has('data-jc-filter="all"', 'filter: all missing');

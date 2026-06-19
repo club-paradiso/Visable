@@ -22,7 +22,7 @@
  */
 import { createEmploymentAnalyzer } from './employment_code_analyzer.mjs';
 import { loadEmploymentAnalyzerDeps } from './employment_data_loader.mjs';
-import { buildEmploymentChecklistState, CHECKLIST_COPY, checklistCopy } from './employment_checklist.mjs';
+import { buildEmploymentChecklistState, CHECKLIST_COPY, checklistCopy, employmentFlowState } from './employment_checklist.mjs';
 
 const analyzer = createEmploymentAnalyzer(loadEmploymentAnalyzerDeps());
 const analyze = (text, locale) => analyzer.analyze({ text, locale });
@@ -193,6 +193,25 @@ function assertInvariants(id, st) {
   }
 }
 
+/* 11b · guided-flow state machine — progressive disclosure (one action at a time) */
+{
+  // idle before any search
+  expect('flow', employmentFlowState({ analyzerResult: null }) === 'idle', 'no result → idle');
+  expect('flow', employmentFlowState({ analyzing: true }) === 'analyzing', 'analyzing flag → analyzing');
+  // a fork with candidates is gated until answered/revealed
+  const golf = analyze('골프장 청소해요', 'ko');
+  expect('flow', golf.clarificationRequired === true, 'golf requires clarification');
+  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, clarificationAnswered: false, candidatesRevealed: false }) === 'needs_clarification', 'pending fork + candidates → gated');
+  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, clarificationAnswered: true }) === 'showing_candidates', 'answered → candidates show');
+  expect('flow', employmentFlowState({ analyzerResult: golf, hasCandidates: true, candidatesRevealed: true }) === 'showing_candidates', 'revealed → candidates show');
+  // weak input (no candidates) is NEVER gated — its examples are the action
+  const weak = analyze('일해요', 'ko');
+  expect('flow', employmentFlowState({ analyzerResult: weak, hasCandidates: false, clarificationAnswered: false, candidatesRevealed: false }) === 'showing_candidates', 'weak (no candidates) not gated');
+  // no-clarification query goes straight to candidates
+  const teach = analyze('English teacher at a hagwon', 'en');
+  expect('flow', employmentFlowState({ analyzerResult: teach, hasCandidates: true }) === 'showing_candidates', 'no clarification → candidates');
+}
+
 /* 12 · DOM render smoke — run the REAL renderEmploymentChecklist / weak-help from
  *      index.html in a vm sandbox to verify the rendered markup reflects state. */
 {
@@ -212,7 +231,7 @@ function assertInvariants(id, st) {
       classList: { add() {}, remove() {}, toggle() {} }, setAttribute() {}, querySelectorAll: () => [], querySelector: () => null, focus() {} });
     const sandbox = {
       document: { getElementById: mkEl, querySelector: () => null, querySelectorAll: () => [] },
-      window: { EmploymentChecklist: { STATUS: chk.STATUS, checklistCopy: chk.checklistCopy, buildEmploymentChecklistState: chk.buildEmploymentChecklistState } },
+      window: { EmploymentChecklist: { STATUS: chk.STATUS, checklistCopy: chk.checklistCopy, buildEmploymentChecklistState: chk.buildEmploymentChecklistState, employmentFlowState: chk.employmentFlowState } },
       navigator: {}, API_BASE: '', currentLanguage: 'ko',
       escapeHtml: (s) => String(s == null ? '' : s), hl: (s) => String(s == null ? '' : s),
       escapeRegExp: (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
@@ -225,9 +244,11 @@ function assertInvariants(id, st) {
 ;globalThis.__R = {
   renderEmploymentChecklist, renderEmploymentWeakHelp, renderEmploymentInterpretation,
   renderEmploymentRefine, renderJobcodeList, getScoredJobcodeRows, getJobcodeSearchTerms,
+  jcApplyFlow, jcDismissClarification,
   setData(d){ _jobcodeData=d; },
-  set(a, occ, ind){ _jcAnalysis=a; _jcResultCounts={occupation:occ, industry:ind}; _jcSelected={occupation:null,industry:null}; _jcClarificationAnswered=false; },
-  select(t,c){ _jcSelected[t]={code:c,name:'x'}; } };`;
+  set(a, occ, ind){ _jcAnalysis=a; _jcResultCounts={occupation:occ, industry:ind}; _jcSelected={occupation:null,industry:null}; _jcClarificationAnswered=false; _jcFlow={state:'analyzing',revealed:false}; },
+  select(t,c){ _jcSelected[t]={code:c,name:'x'}; },
+  flow(){ return _jcFlow.state; } };`;
     try {
       vm.runInContext(html.slice(start, end) + tail, sandbox, { filename: 'jc.js' });
       const R = sandbox.__R;
@@ -278,6 +299,23 @@ function assertInvariants(id, st) {
       // non-ambiguous → "가장 가까운 후보"
       R.renderJobcodeList(occRows, jb, 'occupation', '청소', R.getJobcodeSearchTerms('청소'), { collapse: true, ambiguous: false });
       expect('render', jb.innerHTML.includes('가장 가까운 후보'), 'high-confidence list shows "가장 가까운 후보"');
+
+      // --- guided flow: candidates GATED behind a pending fork, revealed on dismiss ---
+      R.set(rGolf, 5, 5);                 // golf requires clarification, has candidates
+      R.jcApplyFlow();
+      expect('flow-dom', R.flow() === 'needs_clarification', 'golf gates candidates');
+      expect('flow-dom', els['jcResults'].hidden === true, 'candidates hidden while gated');
+      expect('flow-dom', els['jcResultsGate'].hidden === false, 'gate shown while pending');
+      expect('flow-dom', els['jcResultsGate'].innerHTML.includes('그냥 후보 보기'), 'gate offers a reveal button');
+      expect('flow-dom', els['jcFinalCheck'].hidden === true, 'final checklist hidden while gated');
+      R.jcDismissClarification();         // 잘 모르겠어요 → reveal, keep both possibilities
+      expect('flow-dom', R.flow() === 'showing_candidates', 'dismiss reveals candidates');
+      expect('flow-dom', els['jcResults'].hidden === false, 'candidates shown after reveal');
+      expect('flow-dom', els['jcFinalCheck'].hidden === false, 'final checklist shown after reveal');
+      // no-clarification query shows candidates immediately
+      R.set(analyze('English teacher at a hagwon', 'en'), 5, 5);
+      R.jcApplyFlow();
+      expect('flow-dom', R.flow() === 'showing_candidates', 'no-clarification → candidates immediately');
     } catch (e) {
       fail('render', `helper region failed to evaluate: ${e.message}`);
     }

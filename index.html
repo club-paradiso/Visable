@@ -942,6 +942,22 @@ body.searched .ft { opacity: 1; }
 .jc2-income-ic { font-size: 1.05rem; flex: none; }
 .jc2-income-tx { font-size: 0.8rem; line-height: 1.5; color: var(--t2); }
 .jc2-income-tx b { display: block; color: var(--t1); font-weight: 800; font-size: 0.84rem; }
+/* guided-flow candidate gate (shown while a fork question is pending) */
+.jc2-gate { background: var(--bg2); border: 1px dashed var(--bd2); border-radius: var(--radius-md); padding: 0.85rem; text-align: center; }
+.jc2-gate[hidden] { display: none; }
+.jc2-gate-h { font-size: 0.86rem; font-weight: 800; color: var(--t1); }
+.jc2-gate-b { margin: 0.3rem 0 0.6rem; font-size: 0.8rem; color: var(--t2); line-height: 1.5; word-break: keep-all; }
+.jc2-gate-btn { min-height: 40px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); font: inherit; font-size: 0.8rem; font-weight: 700; padding: 0.4rem 0.9rem; border-radius: var(--radius-full); cursor: pointer; }
+.jc2-gate-btn:hover, .jc2-gate-btn:focus-visible { border-color: var(--ac); color: var(--ac); }
+.jc2-gate-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 55%, white); outline-offset: 1px; }
+/* Step 5 · final HiKorea checklist (plain reminder; never "completed") */
+.jc2-final { background: color-mix(in srgb, var(--ac) 5%, var(--bg1)); border: 1.5px solid color-mix(in srgb, var(--ac) 30%, var(--bd2)); border-radius: var(--radius-md); padding: 0.8rem 0.9rem; }
+.jc2-final[hidden] { display: none; }
+.jc2-final-h { margin: 0 0 0.55rem; font-size: 0.9rem; font-weight: 800; color: var(--t1); }
+.jc2-final-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+.jc2-final-list li { display: flex; gap: 0.5rem; align-items: flex-start; font-size: 0.82rem; line-height: 1.5; color: var(--t1); word-break: keep-all; }
+.jc2-final-ic { flex: none; }
+.jc2-final-list li:last-child { color: var(--t2); font-size: 0.78rem; }
 
 @media (max-width: 520px) {
   .jc2-interpret-grid { grid-template-columns: 1fr; gap: 0.15rem; }
@@ -13710,14 +13726,18 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <ol class="jc2-checklist" id="jcChecklist" aria-label="신고 준비 단계" aria-live="polite"></ol>
             </div>
 
-            <!-- 4 · Results -->
-            <div class="jc2-results">
+            <!-- 4.0 · Candidate gate — when a fork question is pending, candidates are
+                 held behind it so only one action shows at a time. Rendered by JS. -->
+            <div id="jcResultsGate" class="jc2-gate" role="status" hidden></div>
+
+            <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
+            <div class="jc2-results" id="jcResults">
                 <section class="jc2-pane" data-pane="occupation">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> <span class="jc2-pane-title">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ">이건 직종입니다</span><span class="jc2-pane-tag">KSCO8 · 표준직업분류</span></h3>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> <span class="jc2-pane-title">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ">이건 직종입니다</span><span class="jc2-pane-tag">KSCO8 · 표준직업분류</span></h3>
                     <div id="jcJobResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
                 <section class="jc2-pane" data-pane="industry">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title">업종 후보 <span class="jc2-pane-plain">회사/사업장이 하는 일에 가까운 항목</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind">이건 업종입니다</span><span class="jc2-pane-tag">KSIC11 · 표준산업분류</span></h3>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind">이건 업종입니다</span><span class="jc2-pane-tag">KSIC11 · 표준산업분류</span></h3>
                     <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
             </div>
@@ -13727,6 +13747,17 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <span class="jc2-income-ic" aria-hidden="true">💰</span>
                 <span class="jc2-income-tx"><b id="jcIncomeReminderTitle">연간소득 구간도 필요해요</b>
                 <span id="jcIncomeReminderBody">하이코리아 신고 화면에서 실제 연간소득 구간을 선택해야 합니다.</span></span>
+            </div>
+
+            <!-- 4.8 · Step 5 · Final HiKorea checklist (plain reminder; never "completed") -->
+            <div class="jc2-final" id="jcFinalCheck" hidden>
+                <p class="jc2-final-h" id="jcFinalCheckH">🏁 하이코리아에서 마지막으로 확인할 것</p>
+                <ul class="jc2-final-list">
+                    <li><span class="jc2-final-ic" aria-hidden="true">👔</span><span id="jcFinalOcc">직종 — 내가 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true">🏭</span><span id="jcFinalInd">업종 — 회사나 사업장이 하는 일</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true">💰</span><span id="jcFinalIncome">연간소득 구간 — 하이코리아에서 선택</span></li>
+                    <li><span class="jc2-final-ic" aria-hidden="true">✅</span><span id="jcFinalConfirm">최종 신고는 하이코리아에서 직접 — Paradiso는 신고를 대신 완료하지 않아요.</span></li>
+                </ul>
             </div>
 
             <!-- 5.5 · 하이코리아 입력 팁 + 공식 기준 (analyzer warnings + tips) -->
@@ -14783,6 +14814,8 @@ let _jcIncome = '';
 let _jcAnalysis = null;
 let _jcResultCounts = { occupation: null, industry: null };
 let _jcClarificationAnswered = false;
+// Guided-flow state: idle | analyzing | needs_clarification | showing_candidates.
+let _jcFlow = { state: 'idle', revealed: false };
 const JOBCODE_JSON_PATHS = ['./data/jobcode_master.json', './data/output.json', './jobcode_master.json', './output.json'];
 const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람','직원','알바','파트타임','업무','관련','분야','직무','job','work','worker','staff','person','employee','part','time']);
 // Terms that legitimately match BOTH a 직종(person's job) and 업종(employer activity).
@@ -15098,6 +15131,7 @@ async function openJobCodeModal() {
     updateJobcodeNaturalSearchLabel();
     _jcFilter = 'all'; _jcLevel = 'all'; _jcSelected = { occupation: null, industry: null }; _jcIncome = '';
     _jcAnalysis = null; _jcResultCounts = { occupation: null, industry: null }; _jcClarificationAnswered = false;
+    _jcFlow = { state: 'idle', revealed: false };
     setJobcodeFilter('all');
     setJobcodeLevel('all');
     const input = document.getElementById('jcSearchInput');
@@ -15106,6 +15140,7 @@ async function openJobCodeModal() {
     renderJobcodeSelectedSummary();
     clearEmploymentAnalysisUI();
     renderEmploymentChecklist();   // initial state: 4 steps, all pending
+    jcApplyFlow();                 // idle: hide gate / candidates-onward sections
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults');
     if (jobBox) jobBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoading'))}</div>`;
     if (indBox) indBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoading'))}</div>`;
@@ -15351,13 +15386,44 @@ function renderEmploymentFollowupChips(analysis) {
         };
     });
 }
-// User chose "잘 모르겠어요" — keep BOTH possibilities, stop blocking the
-// checklist, but never mark the fork resolved/complete. No re-search.
+// User chose "잘 모르겠어요" — keep BOTH possibilities, reveal candidates, stop
+// blocking the checklist, but never mark the fork resolved/complete. No re-search.
 function jcDismissClarification() {
     _jcClarificationAnswered = true;
+    _jcFlow.revealed = true;
     const el = document.getElementById('jcRefine');
     if (el) { el.hidden = true; el.innerHTML = ''; }
+    jcApplyFlow();
     renderEmploymentChecklist();
+}
+// --- Guided-flow controller: progressive disclosure (one action at a time) ---
+function jcShow(id, show) { const el = document.getElementById(id); if (el) el.hidden = !show; }
+function jcApplyFlow() {
+    const C = window.EmploymentChecklist;
+    const hasCandidates = (_jcResultCounts.occupation || 0) > 0 || (_jcResultCounts.industry || 0) > 0;
+    const state = (C && C.employmentFlowState)
+        ? C.employmentFlowState({ analyzerResult: _jcAnalysis, clarificationAnswered: _jcClarificationAnswered, candidatesRevealed: _jcFlow.revealed, hasCandidates })
+        : (_jcAnalysis ? 'showing_candidates' : 'idle');
+    _jcFlow.state = state;
+    const gated = state === 'needs_clarification';
+    const shown = state === 'showing_candidates';
+    // Candidates are hidden ONLY while a fork question is pending (gated). In idle
+    // they stay visible for the keyword-browse path; the income reminder + final
+    // checklist appear once the guided flow reaches candidates.
+    jcShow('jcResults', !gated);
+    jcShow('jcIncomeReminder', shown);
+    jcShow('jcFinalCheck', shown);
+    jcShow('jcResultsGate', gated);
+    if (gated) {
+        const gate = document.getElementById('jcResultsGate');
+        if (gate) {
+            gate.innerHTML = `<div class="jc2-gate-h">🔒 ${escapeHtml(jcChecklistCopy('flow.gateTitle'))}</div>`
+                + `<p class="jc2-gate-b">${escapeHtml(jcChecklistCopy('flow.gateBody'))}</p>`
+                + `<button type="button" class="jc2-gate-btn" id="jcRevealBtn">${escapeHtml(jcChecklistCopy('flow.reveal'))}</button>`;
+            const rb = gate.querySelector('#jcRevealBtn');
+            if (rb) rb.onclick = () => { _jcFlow.revealed = true; jcApplyFlow(); };
+        }
+    }
 }
 function renderEmploymentRefine(analysis) {
     const el = document.getElementById('jcRefine');
@@ -15514,6 +15580,7 @@ async function searchJobcodeWithAI() {
         _jcAnalysis = analysis;
         _jcSelected = { occupation: null, industry: null };
         _jcClarificationAnswered = false;
+        _jcFlow = { state: 'analyzing', revealed: false };
         renderJobcodeSelectedSummary();
         renderEmploymentInterpretation(analysis);
         renderEmploymentRefine(analysis);
@@ -15568,6 +15635,8 @@ async function searchJobcodeWithAI() {
         _jcResultCounts = { occupation: jobRows.length, industry: indRows.length };
         renderEmploymentChecklist();
         renderEmploymentWeakHelp(analysis, jobRows.length, indRows.length);
+        // Progressive flow: gate candidates behind a pending fork question.
+        jcApplyFlow();
         const badge = document.getElementById('jcCountBadge');
         if (badge) badge.textContent = `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {
@@ -20881,6 +20950,12 @@ function applyLanguage(code, options = {}) {
     setText('#jcConceptExplain', tx('jobCodeConceptExplain'));
     setText('#jcConceptExpand', tx('jobCodeConceptExpand'));
     setText('#jcExamplesLabel', tx('jobCodeExamplesLabel'));
+    setText('#jcStepperH', tx('jobCodeStepperTitle'));
+    setText('#jcFinalCheckH', tx('jobCodeFinalCheckTitle'));
+    setText('#jcFinalOcc', tx('jobCodeFinalOcc'));
+    setText('#jcFinalInd', tx('jobCodeFinalInd'));
+    setText('#jcFinalIncome', tx('jobCodeFinalIncome'));
+    setText('#jcFinalConfirm', tx('jobCodeFinalConfirm'));
     setText('#jcIncomeReminderTitle', tx('jobCodeIncomeReminderTitle'));
     setText('#jcIncomeReminderBody', tx('jobCodeIncomeNote'));
     updateJobcodeNaturalSearchLabel();
