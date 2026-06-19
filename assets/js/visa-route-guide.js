@@ -914,7 +914,23 @@
         if (d) { if ('open' in d) d.open = true; d.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
         else { (cardEl.querySelector('.vc-caution') || cardEl).scrollIntoView({ behavior: 'smooth', block: 'center' }); }
       } else if (act === 'waymaker') {
-        if (typeof openAiModal === 'function') openAiModal(code, camel || '', '', procLabel || '');
+        if (typeof openAiModal === 'function') {
+          // If the user has already picked a scenario in the active procedure
+          // panel, carry that selected variant into the AI handoff so the
+          // prominent summary CTA matches the in-card scenario CTA. Otherwise
+          // fall back to procedure-level context (unchanged behaviour).
+          var sel = cardEl.querySelector('.procedure-panel.active [data-procedure-variant-selector][data-selected-variant]')
+            || cardEl.querySelector('[data-procedure-variant-selector][data-selected-variant]');
+          var selVarId = sel ? sel.getAttribute('data-selected-variant') : '';
+          if (selVarId) {
+            var selKey = sel.getAttribute('data-procedure-variant-selector') || '';
+            var nameEl = sel.querySelector('.manual-subcode-card.is-selected .manual-subcode-name');
+            var selLabel = nameEl ? (nameEl.textContent || '').trim() : '';
+            openAiModal(code, selKey, selVarId, selLabel);
+          } else {
+            openAiModal(code, camel || '', '', procLabel || '');
+          }
+        }
       } else if (act === 'jump') {
         var panel = cardEl.querySelector('.procedure-panel.active') || (camel && cardEl.querySelector('.procedure-tab[data-procedure="' + camel + '"]'));
         if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });

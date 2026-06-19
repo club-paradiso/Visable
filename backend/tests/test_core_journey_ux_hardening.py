@@ -167,8 +167,11 @@ class CoreJourneyUxHardeningFrontendTests(unittest.TestCase):
         # The request body must still send the selected scenario identifiers...
         self.assertIn("selected_procedure_key: currentAiSelectedProcedureKey", self.html)
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", self.html)
-        # ...but never local checklist / reminder state.
-        body = self.html.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
+        # ...but never local checklist / reminder state. Anchor on the actual
+        # /api/ask fetch literal so other POSTs (e.g. the jobcode keyword helper)
+        # and the /api/ask comments are not picked up.
+        ask_region = self.html.split("${API_BASE}/api/ask`", 1)[1]
+        body = ask_region.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
         self.assertNotIn("checklist", body)
         self.assertNotIn("reminder", body)
         self.assertNotIn("scenario-checklist", body)

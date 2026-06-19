@@ -22,8 +22,18 @@
 
   var RULES_URL = 'data/short-stay/rules.json';
 
-  /* ---------------------------------------------------------------- strings */
-  var STR = {
+  /* ---------------------------------------------------------------- strings
+   * Chrome (form labels, buttons, options, states, result headings) resolves to
+   * the active UI language. The result-body eligibility phrasing built in
+   * computeShortStay() is legal/source content and stays Korean-canonical per
+   * the project i18n policy (manifest.json) — flagged for a dedicated review.
+   * STR stays accessed as STR.key; a Proxy resolves language at access time so
+   * reopening the popup after a language switch shows the right text. */
+  function sscLang() {
+    var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
+    return l === 'en' ? 'en' : 'ko';
+  }
+  var STR_KO = {
     title: '국적별 단기입국 경로 확인',
     titleEn: 'Short-stay entry checker',
     subtitle: '국적·여권·방문지역·목적을 기준으로 무사증, 제주 무사증, C-3 사증 가능성을 확인합니다.',
@@ -52,39 +62,126 @@
     sourceBadgeVerified: '공식 기준 확인됨',
     sourceBadgeNeedsRefresh: '공식 최신성 확인 필요',
     sourceBadgePartial: '일부 자료 기준',
-    sourceDatePrefix: '출처 기준일'
+    sourceDatePrefix: '출처 기준일',
+    statusLikely: '확인 가능 경로',
+    statusJejuFree: '제주 무사증 가능',
+    statusTransitNoVisa: '환승 사증 불요',
+    statusTransitVisa: '순수환승 사증 필요',
+    statusVisaRequired: '사증 필요',
+    statusNotAvailable: '불가',
+    statusCheck: '공식 확인 필요',
+    srcItemDate: '기준일',
+    srcItemConfidence: '신뢰도',
+    dataNote: '자료 유의',
+    srcDetailsSummary: '출처·자료 기준 자세히',
+    srcBasisLine: '이 답변이 근거한 공식 출처:',
+    srcMetaLine: '전체 출처 메타데이터: data/short-stay/sources.json',
+    srcLegalLine: '이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.',
+    countrySuggestAria: '국가 후보',
+    dataLoadFailBadge: '데이터 로드 실패 — 공식 누리집 직접 확인 필요',
+    ctaSuffix: ' — 내 국적으로 무사증·제주·C-3 가능성 확인하기',
+    similarCountry: '비슷한 국가',
+    notInListNote: '현재 반영된 목록 데이터에 없는 국가라면, 일반적으로 사증(C-3 등) 신청 또는 재외공관·1345 공식 확인이 필요합니다.',
+    linkKeta: 'K-ETA 확인하기',
+    linkVisaPortal: '비자포털 확인하기',
+    linkHikorea: 'HiKorea',
+    link1345: '1345 확인 권장',
+    linkMission: '재외공관 확인하기'
   };
+  var STR_EN = {
+    title: 'Short-stay entry route checker',
+    titleEn: 'Short-stay entry checker',
+    subtitle: 'Check visa-free entry, Jeju visa-free entry, and C-3 visa possibilities based on nationality, passport, destination, and purpose.',
+    eyebrow: 'Short-stay entry',
+    countryLabel: '1. Nationality (passport issuing country)',
+    countryPlaceholder: 'e.g. Vietnam, 베트남, Japan, United States',
+    countryHelper: 'Type a country name to see candidates.',
+    countryMissing: 'Please enter your nationality first.',
+    countryNotFound: 'Country not found. Try again with the English or Korean country name.',
+    passportLabel: '2. Passport type',
+    purposeLabel: '3. Purpose of visit',
+    destinationLabel: '4. Destination',
+    stayLabel: '5. Planned length of stay',
+    stayHelper: 'About how many days do you plan to stay?',
+    ageLabel: 'Age group (optional)',
+    submit: 'Check route',
+    reset: 'Start over',
+    loading: 'Loading official list data…',
+    fetchFail: 'Could not load the country list data. In this state we cannot tell you whether visa-free entry is possible. Please verify directly on the official K-ETA site, the Visa Portal, or with your competent Korean mission.',
+    resultPath: 'Recommended path',
+    resultWhy: 'Why this path?',
+    resultNext: 'What to do next',
+    resultWarn: 'Be sure to check',
+    resultOfficial: 'Official verification',
+    resultAlt: 'Other possibilities',
+    sourceBadgeVerified: 'Official standard verified',
+    sourceBadgeNeedsRefresh: 'Verify official currency',
+    sourceBadgePartial: 'Based on partial sources',
+    sourceDatePrefix: 'Source as of',
+    statusLikely: 'Possible route',
+    statusJejuFree: 'Jeju visa-free possible',
+    statusTransitNoVisa: 'Transit — no visa',
+    statusTransitVisa: 'Pure transit — visa required',
+    statusVisaRequired: 'Visa required',
+    statusNotAvailable: 'Not available',
+    statusCheck: 'Official check needed',
+    srcItemDate: 'as of',
+    srcItemConfidence: 'confidence',
+    dataNote: 'Data note',
+    srcDetailsSummary: 'Sources & data basis (details)',
+    srcBasisLine: 'Official sources this answer relies on:',
+    srcMetaLine: 'Full source metadata: data/short-stay/sources.json',
+    srcLegalLine: 'This guidance is reference information based on stored copies of official lists and has no legal effect. Confirm finally with K-ETA, the Visa Portal, a Korean mission, or 1345.',
+    countrySuggestAria: 'Country candidates',
+    dataLoadFailBadge: 'Data load failed — verify directly on the official site',
+    ctaSuffix: ' — check visa-free / Jeju / C-3 possibilities for your nationality',
+    similarCountry: 'Similar countries',
+    notInListNote: 'If a country is not in the currently loaded list data, you generally need to apply for a visa (such as C-3) or confirm officially with a Korean mission or 1345.',
+    linkKeta: 'Check K-ETA',
+    linkVisaPortal: 'Check the Visa Portal',
+    linkHikorea: 'HiKorea',
+    link1345: 'Verify via 1345',
+    linkMission: 'Check with a Korean mission'
+  };
+  var STR_PACKS = { ko: STR_KO, en: STR_EN };
+  var STR = (typeof Proxy === 'function')
+    ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[sscLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
+    : STR_KO;
+
+  // Option labels are chrome; data carries label (ko) + labelEn. optionHtml()
+  // picks the active-language label at render time.
+  function optLabel(o) { return (sscLang() === 'en' && o.labelEn) ? o.labelEn : o.label; }
 
   var PASSPORT_OPTIONS = [
-    { value: 'ordinary', label: '일반여권' },
-    { value: 'diplomatic', label: '외교여권' },
-    { value: 'official', label: '관용/공무여권' },
-    { value: 'special', label: '특별/서비스여권' },
-    { value: 'unknown', label: '잘 모르겠음' }
+    { value: 'ordinary', label: '일반여권', labelEn: 'Ordinary passport' },
+    { value: 'diplomatic', label: '외교여권', labelEn: 'Diplomatic passport' },
+    { value: 'official', label: '관용/공무여권', labelEn: 'Official/service passport' },
+    { value: 'special', label: '특별/서비스여권', labelEn: 'Special/service passport' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
   ];
   var PURPOSE_OPTIONS = [
-    { value: 'tourism', label: '관광' },
-    { value: 'family_visit', label: '가족·지인 방문' },
-    { value: 'transit', label: '환승' },
-    { value: 'business', label: '출장·상담·계약' },
-    { value: 'medical', label: '의료관광' },
-    { value: 'event', label: '행사·회의' },
-    { value: 'overseas_korean', label: '동포 방문' },
-    { value: 'work_or_profit', label: '취업·영리활동' },
-    { value: 'unknown', label: '잘 모르겠음' }
+    { value: 'tourism', label: '관광', labelEn: 'Tourism' },
+    { value: 'family_visit', label: '가족·지인 방문', labelEn: 'Visiting family/friends' },
+    { value: 'transit', label: '환승', labelEn: 'Transit' },
+    { value: 'business', label: '출장·상담·계약', labelEn: 'Business trip/consultation/contract' },
+    { value: 'medical', label: '의료관광', labelEn: 'Medical tourism' },
+    { value: 'event', label: '행사·회의', labelEn: 'Event/conference' },
+    { value: 'overseas_korean', label: '동포 방문', labelEn: 'Overseas Korean visit' },
+    { value: 'work_or_profit', label: '취업·영리활동', labelEn: 'Work/profit-making activity' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
   ];
   var DESTINATION_OPTIONS = [
-    { value: 'mainland', label: '한국 본토' },
-    { value: 'jeju_only', label: '제주만 방문' },
-    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망' },
-    { value: 'transit_only', label: '공항 환승만' },
-    { value: 'unknown', label: '잘 모르겠음' }
+    { value: 'mainland', label: '한국 본토', labelEn: 'Korean mainland' },
+    { value: 'jeju_only', label: '제주만 방문', labelEn: 'Jeju only' },
+    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망', labelEn: 'Enter via Jeju, then move to the mainland' },
+    { value: 'transit_only', label: '공항 환승만', labelEn: 'Airport transit only' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
   ];
   var AGE_OPTIONS = [
-    { value: 'unknown', label: '선택 안 함' },
-    { value: '17_or_younger', label: '만 17세 이하' },
-    { value: '18_to_64', label: '만 18~64세' },
-    { value: '65_or_older', label: '만 65세 이상' }
+    { value: 'unknown', label: '선택 안 함', labelEn: 'No selection' },
+    { value: '17_or_younger', label: '만 17세 이하', labelEn: '17 or younger' },
+    { value: '18_to_64', label: '만 18~64세', labelEn: '18 to 64' },
+    { value: '65_or_older', label: '만 65세 이상', labelEn: '65 or older' }
   ];
 
   /* ------------------------------------------------------------ pure utils */
@@ -638,11 +735,11 @@
   function addAlternative(r, path, note) { r.alternatives.push({ path: path, note: note }); }
   function defaultOfficialLinks() {
     return [
-      { label: 'K-ETA 확인하기', url: 'https://www.k-eta.go.kr' },
-      { label: '비자포털 확인하기', url: 'https://www.visa.go.kr' },
-      { label: 'HiKorea', url: 'https://www.hikorea.go.kr' },
-      { label: '1345 확인 권장', url: 'tel:1345' },
-      { label: '재외공관 확인하기', url: 'https://www.mofa.go.kr' }
+      { label: STR.linkKeta, url: 'https://www.k-eta.go.kr' },
+      { label: STR.linkVisaPortal, url: 'https://www.visa.go.kr' },
+      { label: STR.linkHikorea, url: 'https://www.hikorea.go.kr' },
+      { label: STR.link1345, url: 'tel:1345' },
+      { label: STR.linkMission, url: 'https://www.mofa.go.kr' }
     ];
   }
   /* Map the internal primary.status into a single, scannable top-line verdict.
@@ -863,7 +960,7 @@
 
   function optionHtml(opts, selected) {
     return opts.map(function (o) {
-      return '<option value="' + esc(o.value) + '"' + (o.value === selected ? ' selected' : '') + '>' + esc(o.label) + '</option>';
+      return '<option value="' + esc(o.value) + '"' + (o.value === selected ? ' selected' : '') + '>' + esc(optLabel(o)) + '</option>';
     }).join('');
   }
 
@@ -877,7 +974,7 @@
       '<div class="ssc-card' + (inModal ? ' ssc-card-modal' : '') + '">' +
         (inModal ? '' :
           '<p class="ssc-eyebrow">' + esc(STR.eyebrow) + '</p>' +
-          '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span></h2>') +
+          '<h2 class="ssc-title" id="shortStayCheckerTitle">' + esc(STR.title) + (sscLang() === 'en' ? '' : ' <span lang="en" style="font-weight:600;font-size:.8rem;color:var(--t3,#757a76);">' + esc(STR.titleEn) + '</span>') + '</h2>') +
         '<p class="ssc-sub">' + esc(STR.subtitle) + '</p>' +
         '<div class="ssc-badges" data-ssc-badges></div>' +
         '<form data-ssc-form novalidate>' +
@@ -886,7 +983,7 @@
               '<span>' + esc(STR.countryLabel) + '</span>' +
               '<input type="text" name="country" autocomplete="off" spellcheck="false" placeholder="' + esc(STR.countryPlaceholder) + '" aria-describedby="sscCountryHelp" role="combobox" aria-expanded="false" aria-autocomplete="list">' +
               '<span class="ssc-helper" id="sscCountryHelp">' + esc(STR.countryHelper) + '</span>' +
-              '<div class="ssc-sug" data-ssc-sug role="listbox" aria-label="국가 후보" hidden></div>' +
+              '<div class="ssc-sug" data-ssc-sug role="listbox" aria-label="' + esc(STR.countrySuggestAria) + '" hidden></div>' +
             '</label>' +
             '<label class="ssc-field"><span>' + esc(STR.passportLabel) + '</span><select name="passport">' + optionHtml(PASSPORT_OPTIONS, 'ordinary') + '</select></label>' +
             '<label class="ssc-field"><span>' + esc(STR.purposeLabel) + '</span><select name="purpose">' + optionHtml(PURPOSE_OPTIONS, 'tourism') + '</select></label>' +
@@ -905,13 +1002,13 @@
   }
 
   function statusBadge(status) {
-    if (status === 'likely_available') return '<span class="ssc-status ssc-status-likely">확인 가능 경로</span>';
-    if (status === 'jeju_visa_free') return '<span class="ssc-status ssc-status-jeju">제주 무사증 가능</span>';
-    if (status === 'transit_no_visa') return '<span class="ssc-status ssc-status-jeju">환승 사증 불요</span>';
-    if (status === 'transit_visa_required') return '<span class="ssc-status ssc-status-visa">순수환승 사증 필요</span>';
-    if (status === 'visa_required') return '<span class="ssc-status ssc-status-visa">사증 필요</span>';
-    if (status === 'not_available') return '<span class="ssc-status ssc-status-visa">불가</span>';
-    return '<span class="ssc-status ssc-status-check">공식 확인 필요</span>';
+    if (status === 'likely_available') return '<span class="ssc-status ssc-status-likely">' + esc(STR.statusLikely) + '</span>';
+    if (status === 'jeju_visa_free') return '<span class="ssc-status ssc-status-jeju">' + esc(STR.statusJejuFree) + '</span>';
+    if (status === 'transit_no_visa') return '<span class="ssc-status ssc-status-jeju">' + esc(STR.statusTransitNoVisa) + '</span>';
+    if (status === 'transit_visa_required') return '<span class="ssc-status ssc-status-visa">' + esc(STR.statusTransitVisa) + '</span>';
+    if (status === 'visa_required') return '<span class="ssc-status ssc-status-visa">' + esc(STR.statusVisaRequired) + '</span>';
+    if (status === 'not_available') return '<span class="ssc-status ssc-status-visa">' + esc(STR.statusNotAvailable) + '</span>';
+    return '<span class="ssc-status ssc-status-check">' + esc(STR.statusCheck) + '</span>';
   }
 
   function renderShortStayResult(result) {
@@ -925,7 +1022,7 @@
     catalog.forEach(function (s) { catById[s.id] = s; });
     var srcItems = (result.sourceRefs || []).map(function (id) {
       var s = catById[id];
-      return s ? (esc(s.title) + ' · 기준일 ' + esc(s.sourceDate) + ' · 신뢰도 ' + esc(s.confidence)) : esc(id);
+      return s ? (esc(s.title) + ' · ' + esc(STR.srcItemDate) + ' ' + esc(s.sourceDate) + ' · ' + esc(STR.srcItemConfidence) + ' ' + esc(s.confidence)) : esc(id);
     });
     var srcListHtml = srcItems.length
       ? '<ul class="ssc-srcrefs">' + srcItems.map(function (t) { return '<li>' + t + '</li>'; }).join('') + '</ul>'
@@ -934,7 +1031,7 @@
        recorded in rules.json; surface them so the basis/uncertainty is visible. */
     var countryNotes = (result.country && result.country.notes) || [];
     var notesHtml = countryNotes.length
-      ? '<div class="ssc-note"><strong>자료 유의</strong><ul>' +
+      ? '<div class="ssc-note"><strong>' + esc(STR.dataNote) + '</strong><ul>' +
         countryNotes.map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul></div>'
       : '';
     var v = result.verdict || { tone: 'check', headline: result.primary.path, summary: '' };
@@ -964,12 +1061,12 @@
         return '<a href="' + esc(l.url) + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + esc(l.label) + '</a>';
       }).join('') + '</div>' +
       (alt ? '<h4>' + esc(STR.resultAlt) + '</h4>' + alt : '') +
-      '<details class="ssc-details"><summary>출처·자료 기준 자세히</summary>' +
+      '<details class="ssc-details"><summary>' + esc(STR.srcDetailsSummary) + '</summary>' +
         '<p class="ssc-srcline">' + renderSourceFreshnessBadge(result.sourceStatus, result.sourceDate) + '</p>' +
-        '<p class="ssc-srcline">이 답변이 근거한 공식 출처:</p>' +
+        '<p class="ssc-srcline">' + esc(STR.srcBasisLine) + '</p>' +
         srcListHtml +
-        '<p class="ssc-srcline">전체 출처 메타데이터: data/short-stay/sources.json</p>' +
-        '<p class="ssc-srcline">이 안내는 저장된 공식 목록 사본 기준의 참고 정보이며 법적 효력이 없습니다. 최종 확인은 K-ETA·비자포털·재외공관·1345에서 하세요.</p>' +
+        '<p class="ssc-srcline">' + esc(STR.srcMetaLine) + '</p>' +
+        '<p class="ssc-srcline">' + esc(STR.srcLegalLine) + '</p>' +
       '</details>';
   }
 
@@ -1054,8 +1151,8 @@
         if (!res.country) {
           var sug = res.suggestions.map(function (c) { return c.nameKo + '(' + c.nameEn + ')'; }).join(', ');
           resultHost.innerHTML = '<div class="ssc-error">' + esc(STR.countryNotFound) +
-            (sug ? '<br>비슷한 국가: ' + esc(sug) : '') +
-            '<br>현재 반영된 목록 데이터에 없는 국가라면, 일반적으로 사증(C-3 등) 신청 또는 재외공관·1345 공식 확인이 필요합니다.</div>';
+            (sug ? '<br>' + esc(STR.similarCountry) + ': ' + esc(sug) : '') +
+            '<br>' + esc(STR.notInListNote) + '</div>';
           return;
         }
         var stayVal = parseInt(form.querySelector('input[name="stayDays"]').value, 10);
@@ -1083,7 +1180,7 @@
     var badgesEl = section && section.querySelector('[data-ssc-badges]');
     if (!badgesEl) return;
     if (state.loadError || !state.rules) {
-      badgesEl.innerHTML = '<span class="ssc-badge ssc-badge-refresh">데이터 로드 실패 — 공식 누리집 직접 확인 필요</span>';
+      badgesEl.innerHTML = '<span class="ssc-badge ssc-badge-refresh">' + esc(STR.dataLoadFailBadge) + '</span>';
     } else {
       badgesEl.innerHTML = renderSourceFreshnessBadge(state.rules.sourceStatus, state.rules.lastUpdated);
     }
@@ -1150,7 +1247,7 @@
       cta.type = 'button';
       cta.className = 'ssc-btn ssc-btn-ghost ssc-cta';
       cta.style.cssText = 'margin:.5rem 0;width:100%;text-align:left;';
-      cta.textContent = '🧭 ' + STR.title + ' — 내 국적으로 무사증·제주·C-3 가능성 확인하기';
+      cta.textContent = '🧭 ' + STR.title + STR.ctaSuffix;
       cta.addEventListener('click', openShortStayUI);
       slot.appendChild(cta);
     }
@@ -1208,6 +1305,19 @@
     injectCardCta(e.detail || {});
   });
   document.addEventListener('paradiso:landing-reset', closeShortStayUI);
+
+  // Live language switch: re-render the form chrome in the active language (the
+  // Proxy already keeps reopened popups correct). Re-rendering resets the form,
+  // which is acceptable on an explicit language switch. Existing CTAs update too.
+  window.addEventListener('paradiso-language-applied', function () {
+    var section = document.getElementById('shortStayChecker');
+    if (section && state.formRendered) {
+      try { renderShortStayChecker(section); } catch (e) { /* noop */ }
+    }
+    document.querySelectorAll('.ssc-cta').forEach(function (cta) {
+      cta.textContent = '🧭 ' + STR.title + STR.ctaSuffix;
+    });
+  });
 
   /* Public entry points: a landing-page button (data-action="open-short-stay")
      opens the popup directly, not only as a contextual panel after a search. */

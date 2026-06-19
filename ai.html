@@ -1795,6 +1795,32 @@ select:focus-visible {
             catch (e) { return ''; }
         })();
 
+        // Optional selected-scenario handoff forwarded from the visa detail page
+        // (index.html → the floating Waymaker CTA). Carries ONLY safe identifiers
+        // and the public scenario label — never checklist/checkbox/reminder or any
+        // local/personal state. When absent, behavior is byte-for-byte unchanged.
+        const AI_SCENARIO = (() => {
+            try {
+                const p = new URLSearchParams(location.search);
+                const visaCode = (p.get('visa_code') || '').trim();
+                const procedureKey = (p.get('selected_procedure_key') || '').trim();
+                const variantId = (p.get('selected_procedure_variant_id') || '').trim();
+                const label = (p.get('scenario_label') || '').trim();
+                const lang = (p.get('lang') || '').trim().toLowerCase();
+                if (!visaCode || !variantId) return null;
+                return { visaCode, procedureKey, variantId, label, lang };
+            } catch (e) { return null; }
+        })();
+
+        function scenarioContextLine(lang) {
+            if (!AI_SCENARIO) return '';
+            const s = AI_SCENARIO;
+            const ref = [s.visaCode, s.label].filter(Boolean).join(' · ');
+            return lang === 'en'
+                ? '[Selected scenario] The user opened Waymaker from a selected scenario on the visa detail page: ' + ref + ' (procedure key: ' + s.procedureKey + ', variant id: ' + s.variantId + '). Treat this as the most relevant scenario and tailor required documents and cautions to it. This is a needs-review reference selection, not an eligibility or approval determination; do not assert final sufficiency and recommend confirming with HiKorea, 1345, or the competent immigration office. Only these identifiers were shared — no checklist or personal data.'
+                : '[선택한 시나리오] 사용자가 비자 상세 페이지에서 선택한 시나리오로 Waymaker를 열었습니다: ' + ref + ' (절차 키: ' + s.procedureKey + ', 변형 ID: ' + s.variantId + '). 이 시나리오를 가장 관련성 높은 상황으로 보고 필요한 서류와 주의사항을 그에 맞게 정리하십시오. 단, 이는 참고용 선택이며 자격·허가 여부를 단정하는 것이 아닙니다. 최종 충족 여부를 단정하지 말고 HiKorea, 1345 또는 관할 출입국·외국인관서 확인을 안내하십시오. 식별 정보만 전달되었으며 체크리스트·개인정보는 포함되지 않았습니다.';
+        }
+
         function nationalityContextLine(lang) {
             if (AI_DOMAIN !== 'nationality') return '';
             return lang === 'en'
@@ -1808,14 +1834,16 @@ select:focus-visible {
                     '[Requirement] Diagnose the user\'s situation objectively based on the Korean Immigration Control Act and field manuals. Present required documents and procedures clearly.',
                     '[Language lock] The user wrote in English. Respond strictly in English. Do not use Chinese, Japanese, or any other language. Do not insert Chinese characters such as 您 or 您的.',
                     '[Fallback] If the provided reference data is insufficient, acknowledge the detected visa code or topic, do not pretend the question is unrecognized, do not invent legal rules or specific numbers, and recommend the user confirm with the 1345 immigration call center, HiKorea (hikorea.go.kr), or the nearest immigration office.',
-                    nationalityContextLine('en')
+                    nationalityContextLine('en'),
+                    scenarioContextLine('en')
                 ].filter(Boolean).join('\n');
             }
             return [
                 '[요구사항] 출입국관리법 및 실무 매뉴얼에 근거하여 사용자 상황을 객관적이고 논리적으로 진단하고, 필요한 구비서류와 절차를 명확히 제시하십시오.',
                 '[언어 고정] 사용자가 한국어로 질문했습니다. 답변은 반드시 한국어로 작성하고, 중국어/일본어/기타 언어 및 중국식 한자(您, 您的 등)는 사용하지 마십시오.',
                 '[데이터 부족 시] 참고 자료가 부족하더라도 감지된 비자 코드 또는 주제는 인지하고 있음을 밝히고, 질문 자체를 인식하지 못한 것처럼 응답하지 마십시오. 구체 수치나 법적 결론을 임의로 단정하지 말고, 1345 외국인종합안내센터, 하이코리아(hikorea.go.kr) 또는 관할 출입국·외국인청에서 최종 확인하도록 안내하십시오.',
-                nationalityContextLine('ko')
+                nationalityContextLine('ko'),
+                scenarioContextLine('ko')
             ].filter(Boolean).join('\n');
         }
 
@@ -3004,7 +3032,14 @@ select:focus-visible {
                         answer_mode: currentAiAnswerMode,
                         stream: true,
                         visa_data: visaPayload,
-                        history: recentChatHistory()
+                        history: recentChatHistory(),
+                        // Selected-scenario handoff: only safe identifiers so the
+                        // backend can narrow to the chosen variant. Never includes
+                        // checklist/checkbox/reminder or any personal state.
+                        ...(AI_SCENARIO ? {
+                            selected_procedure_key: AI_SCENARIO.procedureKey,
+                            selected_procedure_variant_id: AI_SCENARIO.variantId
+                        } : {})
                     }),
                     signal: _controller.signal
                 });
@@ -3139,10 +3174,28 @@ select:focus-visible {
             }
         }
 
+        // Prefill a cautious, scenario-specific question when Waymaker was opened
+        // from a selected scenario. Only the public label/identifiers are used;
+        // no checklist or personal data is read. Fully guarded so the default
+        // experience is untouched when no handoff params are present.
+        function applyScenarioHandoffHint() {
+            if (!AI_SCENARIO) return;
+            const ta = document.getElementById('aiQ');
+            if (!ta) return;
+            const s = AI_SCENARIO;
+            const ref = [s.visaCode, s.label].filter(Boolean).join(' ');
+            const isEn = s.lang === 'en';
+            ta.value = isEn
+                ? 'For ' + (ref || s.visaCode) + ', based on this selected scenario, what documents and cautions should I prepare? Please do not assert final eligibility or approval.'
+                : (ref || s.visaCode) + ' 시나리오 기준으로 준비해야 할 서류와 주의사항을 알려줘. 최종 적용 여부나 허가 여부는 단정하지 말고 확인이 필요한 부분을 짚어줘.';
+            if (typeof updateCharCounter === 'function') updateCharCounter();
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
             setupAiModeSelector();
             applyNationalityDomainHint();
+            applyScenarioHandoffHint();
 
             const qEl = document.getElementById('aiQ');
             if (qEl) {
