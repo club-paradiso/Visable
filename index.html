@@ -18007,9 +18007,20 @@ function renderLabeledManualBlock(label, value, keywords, threshold = MANUAL_LON
 
 function renderProcedureSummaryBlock(value, keywords) {
     if (!value) return '';
-    const inner = renderManualDetailBlock(value, keywords);
-    if (!inner) return '';
-    return `<div class="procedure-summary">${inner}</div>`;
+    // Toss-style concise default: expose at most the first 1-2 sentences; the
+    // remainder (longer manual prose / legacy extraction text) collapses behind
+    // a "상세 보기" toggle. Mirrors renderCardSummary so the card summary and the
+    // per-procedure summary read consistently. Full text is preserved, only the
+    // default exposure is trimmed.
+    const normalized = normalizeManualText(value);
+    if (!normalized) return '';
+    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    if (sentences.length <= 2) {
+        return `<div class="procedure-summary">${hl(normalized, keywords)}</div>`;
+    }
+    const preview = sentences.slice(0, 2).join(' ');
+    const rest = sentences.slice(2).join(' ');
+    return `<div class="procedure-summary"><span class="vc-summary-preview">${hl(preview, keywords)}</span><details class="vc-summary-detail"><summary>${escapeHtml(tx('manualDetailToggle') || '상세 보기')}</summary><span class="vc-summary-rest">${hl(rest, keywords)}</span></details></div>`;
 }
 
 /* Three reader-friendly display groups (Paradiso classification, NOT official
