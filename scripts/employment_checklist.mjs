@@ -23,6 +23,25 @@
 
 export const CHECKLIST_SCHEMA = '2026-06-employment-checklist';
 
+/**
+ * Guided-flow state machine for the employment finder. Drives PROGRESSIVE
+ * disclosure so only one major action shows at a time: after a search the user
+ * sees the interpretation first; when a fork question is pending AND there are
+ * candidates to gate, the candidate list is held behind the question until the
+ * user answers, picks "잘 모르겠어요", or explicitly reveals it. Weak inputs (no
+ * candidates) are never gated — their guided examples are the action.
+ *
+ * Returns: 'idle' | 'analyzing' | 'needs_clarification' | 'showing_candidates'.
+ */
+export function employmentFlowState(opts = {}) {
+  if (opts.analyzing) return 'analyzing';
+  const r = opts.analyzerResult;
+  if (!r) return 'idle';
+  const needsClar = !!r.clarificationRequired && !opts.clarificationAnswered;
+  if (needsClar && opts.hasCandidates && !opts.candidatesRevealed) return 'needs_clarification';
+  return 'showing_candidates';
+}
+
 // Status vocabulary. `text` is shown next to the icon so status is never
 // conveyed by colour alone (accessibility).
 export const STATUS = {
@@ -101,7 +120,11 @@ export const CHECKLIST_COPY = {
   'needcode.title': { ko: '공식 코드 확인 필요', en: 'Official code needs confirmation' },
   'needcode.body': { ko: '입력하신 업무는 해석할 수 있지만, 하이코리아에서 실제 선택할 공식 코드까지는 최종 확인이 필요해요.', en: 'Paradiso can read your work, but the exact official code to pick in HiKorea still needs a final check.' },
   'needcode.research': { ko: '다른 표현으로 다시 검색', en: 'Search with different words' },
-  'needcode.portal': { ko: '통계분류포털에서 확인', en: 'Check the classification portal' }
+  'needcode.portal': { ko: '통계분류포털에서 확인', en: 'Check the classification portal' },
+  // Guided-flow gate (candidates held behind the clarification question)
+  'flow.gateTitle': { ko: '후보는 잠시 후에 보여드릴게요', en: 'Candidates in just a moment' },
+  'flow.gateBody': { ko: '위 질문에 답하면 더 정확한 직종·업종 후보를 보여드려요.', en: 'Answer the question above and we’ll show more accurate occupation/industry candidates.' },
+  'flow.reveal': { ko: '그냥 후보 보기', en: 'Show candidates anyway' }
 };
 
 /** Resolve a copy key to a language (ko default; zh-CN falls back to ko). */
@@ -267,9 +290,9 @@ export function buildEmploymentChecklistState(opts = {}) {
   };
 }
 
-export default { CHECKLIST_SCHEMA, STATUS, CHECKLIST_COPY, checklistCopy, buildEmploymentChecklistState };
+export default { CHECKLIST_SCHEMA, STATUS, CHECKLIST_COPY, checklistCopy, buildEmploymentChecklistState, employmentFlowState };
 
 // Browser bridge for the inline UI in index.html (no build step).
 if (typeof window !== 'undefined') {
-  window.EmploymentChecklist = { CHECKLIST_SCHEMA, STATUS, CHECKLIST_COPY, checklistCopy, buildEmploymentChecklistState };
+  window.EmploymentChecklist = { CHECKLIST_SCHEMA, STATUS, CHECKLIST_COPY, checklistCopy, buildEmploymentChecklistState, employmentFlowState };
 }
