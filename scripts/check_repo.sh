@@ -205,6 +205,10 @@ echo "[9c/14] Validating F-4 (재외동포) global official-source hub..."
 if command -v node >/dev/null 2>&1; then
   node scripts/check_f4_route_guide.mjs
   node scripts/smoke_f4_hub.mjs
+  # Popup chrome i18n parity for the standalone guide modules (F-4 route hub,
+  # short-stay checker): KO/EN chrome packs paired, option labels carry labelEn,
+  # no hardcoded Korean in aria-label/title/placeholder literals.
+  node scripts/check_popup_i18n.mjs
 else
   echo "INFO: Node.js not found; skipping F-4 hub validation."
 fi

@@ -47,8 +47,18 @@
     });
   }
 
-  /* ---- UI strings (Korean-first; this subsystem is Korean-canonical) ------ */
-  var STR = {
+  /* ---- UI chrome strings (Korean canonical; English active) --------------
+   * Korean stays the source of truth. data/f4/*.json content (FAQ, country
+   * overlays, diagnostic Q&A, steps) is legal/source data and remains Korean
+   * per the project i18n policy (manifest.json). Only chrome resolves to the
+   * active UI language. STR/TAB_LABEL stay accessed as STR.key / TAB_LABEL[k];
+   * a Proxy resolves the active language at access time so reopening the popup
+   * after switching language shows the right text. */
+  function f4Lang() {
+    var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
+    return l === 'en' ? 'en' : 'ko';
+  }
+  var STR_KO = {
     loading: 'F-4 안내 데이터를 불러오는 중입니다…',
     fetchFail: 'F-4 안내 데이터를 불러오지 못했습니다. 이 안내 없이 진행하지 마시고, 관할 재외공관·하이코리아·1345에서 직접 확인해 주세요.',
     entryEyebrow: '재외동포 F-4 · 공식 출처 기반 안내',
@@ -83,10 +93,89 @@
     badgeRefresh: '공식 최신성 확인 필요',
     badgeOfficialCheck: '공식 확인 필요',
     badgeUnclear: '확인 자료 없음',
-    sourceDatePrefix: '기준일'
+    sourceDatePrefix: '기준일',
+    linkMissionPage: '공관 안내 페이지',
+    linkMissionFinder: '관할 재외공관 찾기',
+    linkVisaPortal: '비자포털 확인하기',
+    linkHikorea: 'HiKorea 확인하기',
+    link1345: '1345 확인 권장',
+    tagCountryVaries: '국가별 상이',
+    tagOfficialCheck: '공식 확인',
+    answerPrompt: '위 질문에 답하면 추천 경로가 나타납니다.',
+    ctaHelperFallback: '재외공관 신청, 국내거소신고, 자격변경 중 내 상황에 맞는 흐름을 확인합니다.',
+    conditionsHeading: '조건',
+    fieldCriminalRecord: '범죄경력증명서',
+    fieldAuthentication: '문서 인증(아포스티유/영사확인)',
+    fieldBooking: '예약',
+    fieldFee: '수수료(사증 수수료)',
+    fieldProcessingTime: '처리기간',
+    fieldMissionPractice: '공관 실무'
   };
+  var STR_EN = {
+    loading: 'Loading F-4 guidance data…',
+    fetchFail: 'Could not load F-4 guidance data. Do not proceed without it — please verify directly with your competent Korean mission, HiKorea, or 1345.',
+    entryEyebrow: 'Overseas Korean F-4 · Guidance based on official sources',
+    startCtaFallback: 'Check F-4 procedures',
+    modalAria: 'F-4 overseas Korean guidance',
+    close: 'Close',
+    back: '← Back',
+    restart: 'Start over',
+    seeResult: 'See result',
+    recommended: 'Recommended path',
+    why: 'Why this path?',
+    checkFirst: 'Check first',
+    nextStep: 'Next step',
+    cautions: 'Cautions',
+    officialWarn: 'Official verification notice',
+    countryGuide: 'Country-specific check',
+    openHub: 'View F-4 procedures in detail',
+    backToDiagnostic: '← Back to diagnostic',
+    hubTitle: 'F-4 procedure guide hub',
+    selectCountryLabel: 'Select your country of application or residence',
+    selectCountryHint: 'Consular procedures, criminal record certificates, authentication methods, booking, fees, and processing times can vary by country. For unverified countries, only the common F-4 standards are shown.',
+    selectCountryPlaceholder: '— Select a country (optional) —',
+    noCountrySelected: 'No country selected yet. Only the common F-4 standards are shown. Select a country to also see that country’s consular guidance (where verified).',
+    commonRulesHeading: 'Common F-4 standards (all countries)',
+    countryRulesHeading: 'Country-specific guidance',
+    docsHeading: 'Common required documents',
+    stepsHeading: 'Steps',
+    sourcesHeading: 'Sources',
+    notGuaranteeFootnote: 'This guidance does not guarantee eligibility or approval. Confirm actual application with your competent Korean mission, the immigration office, or HiKorea (1345).',
+    badgeVerified: 'Official standard verified',
+    badgePartial: 'Partial official sources',
+    badgeRefresh: 'Verify official currency',
+    badgeOfficialCheck: 'Official check needed',
+    badgeUnclear: 'No verification sources',
+    sourceDatePrefix: 'As of',
+    linkMissionPage: 'Mission information page',
+    linkMissionFinder: 'Find your Korean mission',
+    linkVisaPortal: 'Check the Visa Portal',
+    linkHikorea: 'Check on HiKorea',
+    link1345: 'Verify via 1345',
+    tagCountryVaries: 'Varies by country',
+    tagOfficialCheck: 'Official check',
+    answerPrompt: 'Answer the questions above to see your recommended path.',
+    ctaHelperFallback: 'Find the flow that fits you among consular application, domestic residence report, and status change.',
+    conditionsHeading: 'Conditions',
+    fieldCriminalRecord: 'Criminal record certificate',
+    fieldAuthentication: 'Document authentication (apostille / consular)',
+    fieldBooking: 'Booking',
+    fieldFee: 'Fees (visa fee)',
+    fieldProcessingTime: 'Processing time',
+    fieldMissionPractice: 'Mission practice'
+  };
+  var STR_PACKS = { ko: STR_KO, en: STR_EN };
+  var STR = (typeof Proxy === 'function')
+    ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[f4Lang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
+    : STR_KO;
 
-  var TAB_LABEL = {
+  // Country/overlay display label in the active language (data has labelKo/labelEn).
+  function clabel(c) {
+    if (!c) return '';
+    return (f4Lang() === 'en' && c.labelEn) ? c.labelEn : (c.labelKo || c.labelEn || '');
+  }
+
+  var TAB_LABEL_KO = {
     overview: 'F-4 한눈에 보기',
     overseasApplication: '재외공관 신청',
     residenceReport: '국내거소신고/거소증',
@@ -94,6 +183,18 @@
     country: '국가별 확인',
     faq: 'F-4 자주 묻는 질문'
   };
+  var TAB_LABEL_EN = {
+    overview: 'F-4 at a glance',
+    overseasApplication: 'Apply at a mission',
+    residenceReport: 'Domestic residence report / card',
+    statusChange: 'Status change in Korea',
+    country: 'Country-specific',
+    faq: 'F-4 FAQ'
+  };
+  var TAB_LABEL_PACKS = { ko: TAB_LABEL_KO, en: TAB_LABEL_EN };
+  var TAB_LABEL = (typeof Proxy === 'function')
+    ? new Proxy({}, { get: function (_t, k) { var p = TAB_LABEL_PACKS[f4Lang()] || TAB_LABEL_KO; return (p[k] != null) ? p[k] : TAB_LABEL_KO[k]; } })
+    : TAB_LABEL_KO;
   var HUB_TABS = ['overview', 'overseasApplication', 'residenceReport', 'statusChange', 'country', 'faq'];
 
   function stateBadge(status) {
@@ -285,7 +386,7 @@
     var panel = document.createElement('div');
     panel.className = 'f4h-card-panel';
     panel.innerHTML = '<p class="f4h-eyebrow">' + esc(STR.entryEyebrow) + '</p>' +
-      '<p class="f4h-card-line">' + esc(d.ctaHelper || '재외공관 신청, 국내거소신고, 자격변경 중 내 상황에 맞는 흐름을 확인합니다.') + '</p>';
+      '<p class="f4h-card-line">' + esc(d.ctaHelper || STR.ctaHelperFallback) + '</p>';
     var btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'f4h-card-cta';
@@ -357,11 +458,11 @@
     }).catch(function () {
       buildModalSkeleton();
       var body = state.modal.querySelector('#f4HubModalBody');
-      state.modal.querySelector('#f4HubModalTitle').textContent = 'F-4 안내';
+      state.modal.querySelector('#f4HubModalTitle').textContent = STR.modalAria;
       body.innerHTML = '<div class="f4h-error">' + esc(STR.fetchFail) + '</div>' +
-        '<div class="f4h-links"><a href="https://overseas.mofa.go.kr" target="_blank" rel="noopener noreferrer">관할 재외공관 찾기</a>' +
-        '<a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea 확인하기</a>' +
-        '<a href="tel:1345">1345 확인 권장</a></div>';
+        '<div class="f4h-links"><a href="https://overseas.mofa.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
+        '<a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.linkHikorea) + '</a>' +
+        '<a href="tel:1345">' + esc(STR.link1345) + '</a></div>';
       state.modal.classList.add('open');
       state.modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('f4h-modal-open');
@@ -460,7 +561,7 @@
       (state.answers.location || state.answers.visa_status));
     if (enough) { routeReady = true; html += renderResult(); }
     if (!routeReady) {
-      html += '<p class="f4h-cta-help">위 질문에 답하면 추천 경로가 나타납니다.</p>';
+      html += '<p class="f4h-cta-help">' + esc(STR.answerPrompt) + '</p>';
     }
     html += '<p class="f4h-foot">' + esc(STR.notGuaranteeFootnote) + '</p>';
     return html;
@@ -510,12 +611,12 @@
     var c = getCountry(state.selectedCountry);
     if (!c) return '';
     var ov = getOverlay(state.selectedCountry);
-    var html = '<p class="f4h-h4">' + esc(STR.countryGuide) + ' · ' + esc(c.labelKo) + '</p>';
+    var html = '<p class="f4h-h4">' + esc(STR.countryGuide) + ' · ' + esc(clabel(c)) + '</p>';
     if (!ov) {
       html += '<div class="f4h-note">' + stateBadge('official_check_required') + '<br>' + esc(state.data.base.fallbackUnverifiedCountry) + '</div>';
       return html;
     }
-    html += '<div class="f4h-note">' + stateBadge(ov.sourceStatus) + ' ' + esc(c.labelKo) + ' — ' + esc(ov.sourceStatusReason || '') + '</div>';
+    html += '<div class="f4h-note">' + stateBadge(ov.sourceStatus) + ' ' + esc(clabel(c)) + ' — ' + esc(ov.sourceStatusReason || '') + '</div>';
     return html;
   }
 
@@ -602,8 +703,8 @@
         '<p class="f4h-h4">' + esc(STR.stepsHeading) + '</p>' + listHtml(s.steps) +
         '<p class="f4h-h4">' + esc(STR.docsHeading) + '</p>' + listHtml(s.commonDocs) +
         '<div class="f4h-note">' + esc(s.note) + '</div>' +
-        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">관할 재외공관 찾기</a>' +
-        '<a href="' + esc(b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">비자포털 확인하기</a></div>' +
+        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
+        '<a href="' + esc(b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkVisaPortal) + '</a></div>' +
         srcLine(s.sourceRefs);
     }
     if (tab === 'residenceReport') {
@@ -613,20 +714,20 @@
         '<div class="f4h-warn"><p class="f4h-p">' + esc(rr.warning) + '</p></div>' +
         '<p class="f4h-h4">' + esc(STR.stepsHeading) + '</p>' + listHtml(rr.steps) +
         '<p class="f4h-h4">' + esc(STR.docsHeading) + '</p>' + listHtml(rr.docs) +
-        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">HiKorea 확인하기</a>' +
-        '<a href="tel:1345">1345 확인 권장</a></div>' +
+        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkHikorea) + '</a>' +
+        '<a href="tel:1345">' + esc(STR.link1345) + '</a></div>' +
         srcLine(rr.sourceRefs);
     }
     if (tab === 'statusChange') {
       var sc = b.hub.statusChange;
       return '<h3 style="margin:.1rem 0 .3rem;color:var(--ac,#2f5e67);">' + esc(sc.title) + '</h3>' +
         '<p class="f4h-p">' + esc(sc.intro) + '</p>' +
-        '<p class="f4h-h4">조건</p>' + listHtml(sc.conditions) +
+        '<p class="f4h-h4">' + esc(STR.conditionsHeading) + '</p>' + listHtml(sc.conditions) +
         '<p class="f4h-h4">' + esc(STR.docsHeading) + '</p>' + listHtml(sc.docs) +
         '<div class="f4h-note">' + esc(sc.h2Note) + '</div>' +
         '<div class="f4h-note">' + esc(sc.note) + '</div>' +
-        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">HiKorea 확인하기</a>' +
-        '<a href="tel:1345">1345 확인 권장</a></div>' +
+        '<div class="f4h-links"><a href="' + esc(b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkHikorea) + '</a>' +
+        '<a href="tel:1345">' + esc(STR.link1345) + '</a></div>' +
         srcLine(sc.sourceRefs);
     }
     if (tab === 'country') return renderCountryTab();
@@ -654,30 +755,30 @@
     }
     var c = getCountry(state.selectedCountry);
     var ov = getOverlay(state.selectedCountry);
-    html += '<p class="f4h-h4">' + esc(STR.countryRulesHeading) + ' · ' + esc(c ? c.labelKo : state.selectedCountry) + '</p>';
+    html += '<p class="f4h-h4">' + esc(STR.countryRulesHeading) + ' · ' + esc(c ? clabel(c) : state.selectedCountry) + '</p>';
     if (!ov) {
       html += '<div class="f4h-note">' + stateBadge('official_check_required') + '<br>' + esc(b.fallbackUnverifiedCountry) + '</div>';
-      html += '<div class="f4h-links"><a href="' + esc(b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">관할 재외공관 찾기</a>' +
-        '<a href="' + esc(b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">비자포털 확인하기</a>' +
-        '<a href="tel:1345">1345 확인 권장</a></div>';
+      html += '<div class="f4h-links"><a href="' + esc(b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
+        '<a href="' + esc(b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkVisaPortal) + '</a>' +
+        '<a href="tel:1345">' + esc(STR.link1345) + '</a></div>';
       return html;
     }
     html += '<div class="f4h-note">' + stateBadge(ov.sourceStatus) + ' ' + esc(ov.sourceStatusReason || '') + '</div>';
-    html += sectionFieldHtml('범죄경력증명서', ov.criminalRecord);
-    html += sectionFieldHtml('문서 인증(아포스티유/영사확인)', ov.authentication);
-    html += sectionFieldHtml('예약', ov.booking);
-    html += sectionFieldHtml('수수료(사증 수수료)', ov.fee);
-    html += sectionFieldHtml('처리기간', ov.processingTime);
-    html += sectionFieldHtml('공관 실무', ov.missionPractice);
+    html += sectionFieldHtml(STR.fieldCriminalRecord, ov.criminalRecord);
+    html += sectionFieldHtml(STR.fieldAuthentication, ov.authentication);
+    html += sectionFieldHtml(STR.fieldBooking, ov.booking);
+    html += sectionFieldHtml(STR.fieldFee, ov.fee);
+    html += sectionFieldHtml(STR.fieldProcessingTime, ov.processingTime);
+    html += sectionFieldHtml(STR.fieldMissionPractice, ov.missionPractice);
     if (ov.warnings && ov.warnings.length) {
       html += '<div class="f4h-warn"><p class="f4h-h4">' + esc(STR.cautions) + '</p>' + listHtml(ov.warnings) + '</div>';
     }
     var links = '<div class="f4h-links">';
-    if (ov.missionUrl) links += '<a href="' + esc(ov.missionUrl) + '" target="_blank" rel="noopener noreferrer">공관 안내 페이지</a>';
-    links += '<a href="' + esc(ov.missionFinderUrl || b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">관할 재외공관 찾기</a>' +
-      '<a href="' + esc(ov.visaPortalUrl || b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">비자포털 확인하기</a>' +
-      '<a href="' + esc(ov.hikoreaUrl || b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">HiKorea 확인하기</a>' +
-      '<a href="tel:1345">1345 확인 권장</a></div>';
+    if (ov.missionUrl) links += '<a href="' + esc(ov.missionUrl) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionPage) + '</a>';
+    links += '<a href="' + esc(ov.missionFinderUrl || b.ctaLinks.missionFinder.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
+      '<a href="' + esc(ov.visaPortalUrl || b.ctaLinks.visaPortal.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkVisaPortal) + '</a>' +
+      '<a href="' + esc(ov.hikoreaUrl || b.ctaLinks.hikorea.url) + '" target="_blank" rel="noopener noreferrer">' + esc(STR.linkHikorea) + '</a>' +
+      '<a href="tel:1345">' + esc(STR.link1345) + '</a></div>';
     html += links;
     html += srcLine(ov.sourceRefs);
     return html;
@@ -690,8 +791,8 @@
       html += '<p class="f4h-faq-group-title">' + esc(g.title) + '</p><div class="f4h-faq">';
       g.items.forEach(function (it) {
         var tags = '';
-        if (it.countryVaries) tags += '<span class="f4h-tag">국가별 상이</span>';
-        if (it.officialCheck) tags += '<span class="f4h-tag">공식 확인</span>';
+        if (it.countryVaries) tags += '<span class="f4h-tag">' + esc(STR.tagCountryVaries) + '</span>';
+        if (it.officialCheck) tags += '<span class="f4h-tag">' + esc(STR.tagOfficialCheck) + '</span>';
         html += '<details><summary>' + esc(it.q) + tags + '</summary>' +
           '<p class="f4h-p">' + esc(it.a) + '</p>' + srcLine(it.sourceRefs) + '</details>';
       });
@@ -767,9 +868,9 @@
       injectStyles();
       section.innerHTML = '<div class="f4h-entry"><div class="f4h-error">' + esc(STR.fetchFail) + '</div>' +
         '<div class="f4h-links" style="margin-top:.5rem;">' +
-          '<a href="https://overseas.mofa.go.kr" target="_blank" rel="noopener noreferrer">관할 재외공관 찾기</a>' +
-          '<a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea 확인하기</a>' +
-          '<a href="tel:1345">1345 확인 권장</a>' +
+          '<a href="https://overseas.mofa.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
+          '<a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.linkHikorea) + '</a>' +
+          '<a href="tel:1345">' + esc(STR.link1345) + '</a>' +
         '</div></div>';
     });
   });
@@ -778,5 +879,18 @@
     var section = document.getElementById('f4RouteGuide');
     if (section) section.hidden = true;
     if (state.modal && state.modal.classList.contains('open')) closeHubModal();
+  });
+
+  // Live language switch: re-render the open hub modal and the entry panel so
+  // chrome follows the active language without needing to reopen (the Proxy
+  // already keeps reopened popups correct).
+  window.addEventListener('paradiso-language-applied', function () {
+    if (state.modal && state.modal.classList.contains('open') && state.data) {
+      try { render(); } catch (e) { /* noop */ }
+    }
+    var section = document.getElementById('f4RouteGuide');
+    if (section && !section.hidden && state.data) {
+      try { mountEntryPanel(section, state.data, state.selectedCountry); } catch (e) { /* noop */ }
+    }
   });
 })();
