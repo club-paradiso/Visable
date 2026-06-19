@@ -215,6 +215,17 @@
         .error-card .answer-head { border-color: rgba(255,107,91,0.35); }
         .error-card .answer-kicker { color: #fecaca; }
         .error-card .answer-body { color: #fee2e2; }
+        /* Safety-guardrail card: calm and neutral (amber/sand), NOT an error/alarm.
+           A refused request is not a fault state — keep it informative, not scary. */
+        .safety-card { background: linear-gradient(180deg, rgba(54,46,28,0.96), rgba(40,34,22,0.96)); border-color: rgba(245,200,120,0.42); }
+        .safety-card .answer-head { border-color: rgba(245,200,120,0.26); }
+        .safety-card .answer-kicker { color: #f3d6a0; }
+        .safety-card .grounding-badge { border-color: rgba(245,200,120,0.55); color: #f3d6a0; background: rgba(245,200,120,0.12); }
+        .safety-alt { margin: 0 var(--sp-4) var(--sp-4); padding: 0.8rem 0.9rem; border: 1px solid rgba(245,200,120,0.28); border-radius: 10px; background: rgba(245,200,120,0.06); }
+        .safety-alt-title { display: block; color: #f3d6a0; font-size: 0.82rem; font-weight: 850; margin-bottom: 0.45rem; }
+        .safety-alt ul { margin: 0; padding-left: 1.1rem; color: var(--t1); font-size: 0.9rem; line-height: 1.7; }
+        .safety-alt li { margin: 0.25rem 0; }
+        .safety-notice { margin: 0 var(--sp-4) var(--sp-3); padding: 0.6rem 0.78rem; border: 1px solid rgba(245,200,120,0.3); border-radius: 9px; color: #f3d6a0; background: rgba(245,200,120,0.07); font-size: 0.8rem; line-height: 1.5; }
         .error-details { margin: 0 var(--sp-4) var(--sp-4); color: #fecaca; font-size: 0.8rem; }
         .error-details summary { min-height: 36px; cursor: pointer; font-weight: 800; }
         .error-details pre { margin-top: 0.5rem; max-height: 220px; overflow: auto; white-space: pre-wrap; word-break: break-word; border: 1px solid rgba(255,107,91,0.35); border-radius: 8px; padding: 0.75rem; background: rgba(0,0,0,0.2); }
@@ -2664,10 +2675,71 @@ select:focus-visible {
             }).filter(Boolean).join('\n\n');
         }
 
+        // Brief, calm caution shown on an otherwise-normal answer when the
+        // Trust & Safety guardrail returned "warn" (the request touched a
+        // sensitive enforcement theme but asked for the lawful route).
+        function buildSafetyNotice(result, lang) {
+            if (!result || result.safety_action !== 'warn') return '';
+            const notice = String(result.safety_notice || '').trim();
+            if (!notice) return '';
+            return `<div class="safety-notice" role="note">${escapeHtml(notice)}</div>`;
+        }
+
+        // Render a blocked/escalated/emergency safety response as a distinct but
+        // non-alarming card. No "reported"/"criminal" language is ever shown; the
+        // copy is the backend's neutral refusal plus the lawful topics we CAN help
+        // with. Mirrors appendAiAnswer's structure so chat history stays coherent.
+        function renderSafetyResponse(result, lang, hist) {
+            // The backend answer is "<refusal paragraph>\n\n<alt heading>\n- ...".
+            // Render only the refusal paragraph in the body; the alternatives are
+            // rendered as a structured list below so the two never duplicate.
+            const fullAnswer = String(result.copy_safe_answer || result.answer || '').trim();
+            const refusalBody = fullAnswer.split('\n\n')[0] || fullAnswer;
+            const alternatives = Array.isArray(result.safety_alternatives) ? result.safety_alternatives : [];
+            const kicker = t(lang, '안전상 답변할 수 없는 요청', "A request we can't help with for safety reasons");
+            const badge = t(lang, '안전 안내', 'Safety notice');
+            const altTitle = t(lang, '대신 안내할 수 있는 정보', 'What I can help with instead');
+            const altList = alternatives.length
+                ? `<div class="safety-alt"><span class="safety-alt-title">${escapeHtml(altTitle)}</span><ul>${
+                    alternatives.map(a => `<li>${escapeHtml(String(a))}</li>`).join('')
+                  }</ul></div>`
+                : '';
+            // Clipboard payload mirrors the full neutral text (refusal + options).
+            const copyId = getCopyId();
+            COPY_PAYLOADS[copyId] = { answer: fullAnswer, source: '' };
+            const row = document.createElement('div');
+            row.className = 'msg-row ai answer';
+            row.innerHTML = `
+                <article class="msg-bubble answer-card safety-card">
+                    <header class="answer-head">
+                        <div>
+                            <span class="answer-kicker">${escapeHtml(kicker)}</span>
+                            <span class="answer-model">Waymaker by Paradiso</span>
+                        </div>
+                        <span class="grounding-badge">${escapeHtml(badge)}</span>
+                    </header>
+                    <div class="answer-body">${formatAnswerText(refusalBody, lang)}</div>
+                    ${altList}
+                    ${buildAnswerActions(copyId, false, lang)}
+                </article>
+                <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
+            `;
+            hist.appendChild(row);
+            rememberTurn('assistant', refusalBody);
+            scrollConversationToEnd(row);
+        }
+
                 function appendAiAnswer(rawResult, lang) {
             const hist = document.getElementById('chatHistory');
             if (!hist) return;
             const result = normalizeAnswerMetadata(rawResult);
+            // Trust & Safety: a blocked / escalated / emergency request renders as
+            // a calm, visually distinct safety card — never an alarm, never an
+            // accusation. The backend already returned a neutral refusal.
+            if (result.safety_blocked) {
+                renderSafetyResponse(result, lang, hist);
+                return;
+            }
             // copy_safe_answer is the backend-sanitized, diagnostics-free answer
             // text. The clipboard payload only ever carries this (and the source
             // lines) — never the developer-diagnostics block (Part G copy-safe).
@@ -2699,6 +2771,7 @@ select:focus-visible {
                     </header>
                     ${buildContextRow(result, lang)}
                     ${buildDegradedStateBanner(result, lang)}
+                    ${buildSafetyNotice(result, lang)}
                     <div class="answer-body">${formatAnswerText(answer, lang)}</div>
                     ${generateBadges(answer, lang, result)}
                     ${sourcePanelHtml}

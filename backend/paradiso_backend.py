@@ -70,6 +70,13 @@ from services.model_policy import (
     sanitize_model_role_policy_for_public,
 )
 
+# First-stage Trust & Safety guardrail. Imported UNGUARDED on purpose: safety is
+# not an optional feature, so a broken safety module must fail the deploy (fail
+# closed) rather than silently let unsafe requests through (fail open). Both
+# modules are standard-library-only and have no heavy dependencies.
+import safety_guardrails
+import safety_events
+
 
 class UTF8JSONResponse(JSONResponse):
     # Starlette only auto-appends `charset=utf-8` to text/* media types,
@@ -593,6 +600,23 @@ class AskResponse(BaseModel):
     ollama_fallback_used: bool = False
     ollama_model: Optional[str] = None
     ollama_error_type: Optional[str] = None
+    # First-stage Trust & Safety guardrail (non-secret, coarse signals only).
+    #   safety_action: "allow" | "warn" | "block" | "escalate" | "emergency_review".
+    #   safety_blocked: True when the model was NOT called and a refusal is shown.
+    #   safety_category: coarse policy category (never an accusation about the user).
+    #   safety_notice: optional brief caution shown for "warn" answers.
+    #   safety_alternatives: lawful topics Waymaker CAN help with instead.
+    # Pattern labels / matched signals are intentionally NOT exposed to clients;
+    # they live only in the server-side safety event log.
+    safety_action: str = "allow"
+    safety_blocked: bool = False
+    safety_category: str = "SAFE_LEGAL_INFO"
+    safety_severity: int = 0
+    safety_reason: str = ""
+    safety_notice: str = ""
+    safety_alternatives: List[str] = Field(default_factory=list)
+    safety_event_id: str = ""
+    safety_version: str = safety_guardrails.SAFETY_VERSION
 
 
 SOURCE_PANEL_DIRECT_SOURCE_VERIFIED = "direct_source_verified"
@@ -4083,6 +4107,83 @@ def _render_legal_evidence_prompt(result) -> str:
     return "\n".join(lines)
 
 
+# ---------------------------------------------------------------------------
+# Trust & Safety guardrail integration helpers
+# ---------------------------------------------------------------------------
+def _safety_history_texts(req: "AskRequest") -> List[Any]:
+    """Best-effort extraction of recent turns for repeat-abuse detection.
+
+    The classifier itself defensively handles strings or {role, content} dicts;
+    here we just forward whatever the client sent without trusting its shape.
+    """
+    history = req.history if isinstance(req.history, list) else []
+    return history[-8:]
+
+
+def _build_safety_refusal_response(
+    decision: "safety_guardrails.SafetyDecision",
+    *,
+    lang: Optional[str],
+    event_id: str,
+) -> "AskResponse":
+    """Construct the user-facing refusal for a blocking safety decision.
+
+    No model is called. The copy is neutral and non-accusatory, and includes the
+    lawful topics Waymaker can still help with. The frontend renders this as a
+    visually distinct (but not alarming) safety card.
+    """
+    refusal_text, alternatives = safety_guardrails.refusal_copy(decision)
+    is_en = decision.language == "en"
+    alt_heading = "What I can help with instead:" if is_en else "대신 안내할 수 있는 정보:"
+    answer_text = refusal_text + "\n\n" + alt_heading + "\n" + "\n".join(
+        f"- {item}" for item in alternatives
+    )
+    return AskResponse(
+        answer=answer_text,
+        copy_safe_answer=answer_text,
+        provider="safety_guardrail",
+        model=safety_guardrails.SAFETY_VERSION,
+        llm_provider="safety_guardrail",
+        # Coarse, non-secret safety signals for the frontend.
+        safety_action=decision.action,
+        safety_blocked=True,
+        safety_category=decision.category,
+        safety_severity=decision.severity,
+        safety_reason=decision.reason,
+        safety_alternatives=alternatives,
+        safety_event_id=event_id,
+        # This answer is intentionally NOT a grounded legal answer; keep the
+        # source/quality contract honest so no "grounded" chip is shown.
+        answer_quality_mode="safety_refusal",
+        source_confidence_level="none",
+        requires_official_confirmation=False,
+        grounded_answer_limited=False,
+        question_type_detected="safety",
+    )
+
+
+def _evaluate_request_safety(
+    prompt: str, req: "AskRequest"
+) -> "safety_guardrails.SafetyDecision":
+    """Run the deterministic guardrail. Never raises — a guardrail crash must
+    not break /api/ask, but it also must not silently allow: on an unexpected
+    internal error we conservatively return a generic block."""
+    try:
+        return safety_guardrails.classify_request(
+            prompt, lang=req.lang, history=_safety_history_texts(req)
+        )
+    except Exception:  # pragma: no cover - defensive; classifier is pure/total
+        logger.exception("safety guardrail classifier raised; failing closed")
+        return safety_guardrails.SafetyDecision(
+            action=safety_guardrails.ACTION_BLOCK,
+            category=safety_guardrails.CAT_SAFE,
+            severity=3,
+            reason="guardrail_internal_error",
+            matched_signals=["guardrail.internal_error"],
+            language=safety_guardrails.detect_language(prompt, req.lang),
+        )
+
+
 @app.post("/api/ask", response_model=AskResponse)
 async def ask(req: AskRequest) -> AskResponse:
     prompt = (req.message or req.query or req.question or "").strip()
@@ -4094,6 +4195,44 @@ async def ask(req: AskRequest) -> AskResponse:
                 "message": "Provide a non-empty 'message', 'query', or 'question'.",
             },
         )
+
+    # ------------------------------------------------------------------
+    # First-stage Trust & Safety guardrail (deterministic, pre-generation).
+    # Runs BEFORE any grounding work or model call so blocked requests never
+    # reach an LLM provider. A "block"/"escalate"/"emergency_review" decision
+    # returns a neutral refusal + lawful alternatives; "escalate"/"emergency"
+    # additionally log a redacted, data-minimized safety event for manual
+    # review. "warn" and "allow" continue the normal flow.
+    # ------------------------------------------------------------------
+    safety_decision = _evaluate_request_safety(prompt, req)
+    if safety_decision.blocked:
+        safety_event_id = ""
+        if safety_decision.should_log:
+            safety_event_id = safety_events.log_safety_event(
+                action=safety_decision.action,
+                category=safety_decision.category,
+                severity=safety_decision.severity,
+                reason=safety_decision.reason,
+                matched_signals=safety_decision.matched_signals,
+                input_text=prompt,
+                language=safety_decision.language,
+                route="/api/ask",
+                request_id=req.selected_procedure_variant_id or None,
+            )
+        return _build_safety_refusal_response(
+            safety_decision, lang=req.lang, event_id=safety_event_id
+        )
+    # Non-blocking decisions ("allow"/"warn") carry coarse safety metadata
+    # through every downstream response path for transparency.
+    safety_meta: Dict[str, Any] = {
+        "safety_action": safety_decision.action,
+        "safety_blocked": False,
+        "safety_category": safety_decision.category,
+        "safety_severity": safety_decision.severity,
+        "safety_reason": safety_decision.reason,
+    }
+    if safety_decision.action == safety_guardrails.ACTION_WARN:
+        safety_meta["safety_notice"] = safety_guardrails.warn_caution(safety_decision)
 
     visa_code_detected, visa_sub_code_detected = _detect_visa_codes(
         req.visa_code, req.visa_data, prompt
@@ -4424,6 +4563,20 @@ async def ask(req: AskRequest) -> AskResponse:
             " issue is genuinely about study."
         )
 
+    # Trust & Safety "warn" steer: the request touched a sensitive enforcement
+    # theme but explicitly asked for the lawful route. Keep the answer strictly
+    # within lawful options and never provide evasion/concealment techniques.
+    if safety_decision.action == safety_guardrails.ACTION_WARN:
+        final_prompt += (
+            "\n\n[Trust & Safety directive]\n"
+            "- Answer ONLY with lawful, above-board options (correct visa/status,"
+            " official procedures, authorized-work rules).\n"
+            "- Do NOT provide any method to avoid inspections/enforcement, work"
+            " without authorization, or conceal status.\n"
+            "- If the lawful answer is 'this is not permitted', say so plainly and"
+            " point to official channels (1345 / HiKorea / competent immigration office)."
+        )
+
     llm = _resolve_llm_config()
 
     # Public detected-status display preserves an explicit sub-code the user typed
@@ -4565,6 +4718,9 @@ async def ask(req: AskRequest) -> AskResponse:
         response_shape_hint=(law_evidence_pack or {}).get("response_shape_hint", ""),
         source_panel_status=((law_evidence_pack or {}).get("citation_verification") or {}).get("status", ""),
         **source_panel_meta,
+        # Coarse, non-secret Trust & Safety signals ("allow"/"warn" here; blocked
+        # requests returned earlier and never reach this path).
+        **safety_meta,
     )
 
     # Resolve the answer-speed tier (Fast / Basic / Pro). Fast uses a smaller,
@@ -4666,6 +4822,27 @@ async def ask(req: AskRequest) -> AskResponse:
                 lang=req.lang,
             )
             response_meta.update(citation_guard_meta)
+            # Post-generation safety sanity check (defense-in-depth). Conservative
+            # and low-latency: only the most acute facilitation categories trip,
+            # which a compliant answer never matches. If it trips, withhold the
+            # model text and return the neutral refusal instead.
+            postgen = safety_guardrails.post_generation_review(answer_text)
+            if postgen is not None:
+                postgen.language = safety_guardrails.detect_language(prompt, req.lang)
+                postgen_event_id = safety_events.log_safety_event(
+                    action=safety_guardrails.ACTION_ESCALATE,
+                    category=postgen.category,
+                    severity=postgen.severity,
+                    reason=postgen.reason,
+                    matched_signals=postgen.matched_signals,
+                    input_text=prompt,
+                    language=postgen.language,
+                    route="/api/ask:post_generation",
+                    request_id=req.selected_procedure_variant_id or None,
+                )
+                return _build_safety_refusal_response(
+                    postgen, lang=req.lang, event_id=postgen_event_id
+                )
             response_meta["answer_first_sentence"] = (answer_text or "").strip().split(".", 1)[0].strip()
             response_meta["first_sentence_quality_warning"] = first_sentence_quality_warning(answer_text)
             return AskResponse(
