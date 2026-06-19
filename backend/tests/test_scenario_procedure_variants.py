@@ -220,6 +220,118 @@ class ScenarioProcedureVariantFrontendTests(unittest.TestCase):
         self.assertIn("--lang-gp-needs-review", html)
 
 
+class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
+    """Coverage for the selected-scenario AI handoff hardening.
+
+    Asserts the in-card selected-context banner, the no-silent-no-op guard, the
+    safe Waymaker (ai.html) handoff, and that no checklist/checkbox/personal
+    state ever reaches the AI/backend handoff.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.ai = (REPO_ROOT / "ai.html").read_text(encoding="utf-8")
+        cls.route = (REPO_ROOT / "assets" / "js" / "visa-route-guide.js").read_text(encoding="utf-8")
+        cls.blobs = pack_blobs()
+
+    # --- in-card selected-context banner -----------------------------------
+    def test_selected_context_banner_renderer_present(self):
+        self.assertIn("function renderScenarioSelectedContextBanner(", self.html)
+        # Banner is rendered inside the selected-scenario actions block.
+        self.assertIn("renderScenarioSelectedContextBanner(visaCode, procedureKey, variant.label)", self.html)
+        self.assertIn('class="scenario-selected-context"', self.html)
+
+    def test_selected_context_label_present_in_all_target_languages(self):
+        self.assertIn("선택한 시나리오:", self.blobs["ko"])
+        self.assertIn("Selected scenario:", self.blobs["en"])
+        self.assertIn("已选情形：", self.blobs["zh-CN"])
+
+    def test_banner_uses_only_safe_public_labels(self):
+        # The banner is built from visa code, procedure label, and scenario label
+        # — never checklist/checkbox/reminder/raw doc state.
+        renderer = self.html.split("function renderScenarioSelectedContextBanner(", 1)[1].split("function renderProcedureVariant(", 1)[0]
+        self.assertIn("getProcedureLabelByKey(procedureKey", renderer)
+        self.assertIn("[visaCode, procedureLabel, variantLabel]", renderer)
+        for forbidden in ("checklist", "checkbox", "requiredDocs", "localStorage", "reminder"):
+            self.assertNotIn(forbidden, renderer)
+
+    # --- no silent no-op ---------------------------------------------------
+    def test_handoff_handler_guards_against_silent_no_op(self):
+        # openAiModal now reports success/failure and the shared handler surfaces
+        # a visible error toast instead of silently doing nothing.
+        self.assertIn("function handleScenarioAiHandoff(", self.html)
+        self.assertIn("showToast(tx('scenarioAiOpenError'))", self.html)
+        self.assertIn("'ask-selected-procedure-variant': () => handleScenarioAiHandoff(actionBtn", self.html)
+        self.assertIn("'ask-checklist-missing': () => handleScenarioAiHandoff(actionBtn", self.html)
+        # openAiModal returns a truthy/falsy result so callers can detect failure.
+        self.assertIn("if (!visa) return false;", self.html)
+
+    def test_error_toast_copy_present_in_all_target_languages(self):
+        self.assertIn("AI 상담을 여는 중 문제가 발생했습니다", self.blobs["ko"])
+        self.assertIn("Something went wrong opening the AI assistant", self.blobs["en"])
+        self.assertIn("打开 AI 助手时出现问题", self.blobs["zh-CN"])
+
+    # --- Waymaker (ai.html) handoff carries only safe identifiers -----------
+    def test_waymaker_handoff_url_builder_uses_only_safe_identifiers(self):
+        self.assertIn("function buildWaymakerHandoffUrl(", self.html)
+        builder = self.html.split("function buildWaymakerHandoffUrl(", 1)[1].split("function syncWaymakerFab(", 1)[0]
+        for safe in ("visa_code", "selected_procedure_key", "selected_procedure_variant_id", "scenario_label", "lang"):
+            self.assertIn(safe, builder)
+        for forbidden in ("checklist", "checkbox", "requiredDocs", "localStorage", "reminder", "manualRefs"):
+            self.assertNotIn(forbidden, builder)
+
+    def test_floating_fab_synced_on_scenario_selection(self):
+        # Selecting a scenario updates the floating Waymaker CTA; clearing resets.
+        self.assertIn("function syncWaymakerFab(", self.html)
+        self.assertIn("setSelectedScenarioHandoff(visaCode, procedureKey, selectedId, picked)", self.html)
+        self.assertIn("clearSelectedScenarioHandoff()", self.html)
+        # Reset target is the plain Waymaker page, no leftover context.
+        self.assertIn("fab.setAttribute('href', 'ai.html')", self.html)
+
+    def test_route_summary_waymaker_carries_selected_variant(self):
+        # The prominent route-summary Waymaker button now forwards the selected
+        # variant when one is chosen, instead of only procedure-level context.
+        self.assertIn("[data-procedure-variant-selector][data-selected-variant]", self.route)
+        self.assertIn("openAiModal(code, selKey, selVarId, selLabel)", self.route)
+
+    # --- ai.html reads the handoff safely ----------------------------------
+    def test_ai_html_reads_selected_scenario_identifiers(self):
+        self.assertIn("const AI_SCENARIO", self.ai)
+        for safe in ("visa_code", "selected_procedure_key", "selected_procedure_variant_id", "scenario_label"):
+            self.assertIn(safe, self.ai)
+
+    def test_ai_html_prefills_cautious_scenario_prompt(self):
+        self.assertIn("function applyScenarioHandoffHint(", self.ai)
+        self.assertIn("applyScenarioHandoffHint();", self.ai)
+        self.assertIn("function scenarioContextLine(", self.ai)
+        # The cautious framing must not assert eligibility/approval.
+        self.assertIn("최종 적용 여부나 허가 여부는 단정하지", self.ai)
+        self.assertIn("do not assert final eligibility or approval", self.ai)
+
+    def test_ai_html_handoff_forwards_only_safe_fields(self):
+        # The /api/ask body forwards only the two selected identifiers from the
+        # handoff — never checklist/checkbox state.
+        body = self.ai.split("body: JSON.stringify({", 1)[1].split("})", 1)[0]
+        self.assertIn("selected_procedure_key: AI_SCENARIO.procedureKey", body)
+        self.assertIn("selected_procedure_variant_id: AI_SCENARIO.variantId", body)
+        # Strip comment lines before checking for forbidden payload fields, so
+        # the documentary comment ("never includes checklist…") is not flagged.
+        body_code = "\n".join(
+            line for line in body.splitlines() if not line.lstrip().startswith("//")
+        )
+        for forbidden in ("checklist", "checkbox", "requiredDocs"):
+            self.assertNotIn(forbidden, body_code)
+
+    def test_handoff_is_generic_across_variant_bearing_procedures(self):
+        # The banner + handoff use the data-driven renderProcedureVariant path,
+        # so any variant-bearing procedure (F-6, F-2, G-1, E-7/E-9) is covered by
+        # construction rather than per-code special casing.
+        self.assertNotIn("F-6", "".join(
+            self.html.split("function renderScenarioSelectedContextBanner(", 1)[1].split("function renderProcedureVariant(", 1)[0:1]
+        ))
+
+
 class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
     """Frontend coverage for the selected-scenario action checklist (PR #245)."""
 
@@ -284,10 +396,15 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
             localized(self.packs, "en", "scenarioChecklistMissingPrompt"),
         )
         self.assertNotIn("guarantee", localized(self.packs, "en", "scenarioChecklistMissingPrompt"))
-        # Wired through the existing handoff with the checklist prompt key.
+        # Wired through the shared guarded handoff with the checklist prompt key.
         self.assertIn("scenarioChecklistMissingPrompt", self.html)
         self.assertIn(
-            "'ask-checklist-missing': () => openAiModal(actionBtn.dataset.visaCode, actionBtn.dataset.procedureKey, actionBtn.dataset.variantId, actionBtn.dataset.variantLabel, 'scenarioChecklistMissingPrompt')",
+            "'ask-checklist-missing': () => handleScenarioAiHandoff(actionBtn, 'scenarioChecklistMissingPrompt')",
+            self.html,
+        )
+        # The shared handler still forwards exactly the four button data fields.
+        self.assertIn(
+            "openAiModal(btn.dataset.visaCode, btn.dataset.procedureKey, btn.dataset.variantId, btn.dataset.variantLabel, promptKey)",
             self.html,
         )
 
@@ -353,9 +470,9 @@ class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
         self.assertIn("function renderScenarioChecklist(visaCode, procedureKey, variant)", self.html)
         self.assertIn("renderScenarioChecklist(visaCode, procedureKey, variant)", self.html)
         # Grouped by the four localized document groups via existing labels.
-        self.assertIn("{ key: 'commonDocs', labelIndex: 0", self.html)
-        self.assertIn("{ key: 'conditionalDocs', labelIndex: 3", self.html)
-        self.assertIn("txAt('docGroupLabels', group.labelIndex, group.fallback)", self.html)
+        self.assertIn("{ key: 'basic', labelIndex: 0", self.html)
+        self.assertIn("{ key: 'situational', labelIndex: 1", self.html)
+        self.assertIn("txAt('docUxGroupLabels', group.labelIndex, group.fallback)", self.html)
         # Each checkbox sits inside a <label> (usable label) and is keyboard focusable.
         self.assertIn('<label class="scenario-checklist-label">', self.html)
         self.assertIn('class="scenario-checklist-checkbox"', self.html)

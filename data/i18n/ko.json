@@ -580,6 +580,8 @@
   "scenarioSelectedBadge": "선택됨",
   "scenarioSelectedReferenceNote": "선택한 시나리오는 참고용입니다. 실제 적용 여부는 HiKorea, 1345 또는 관할 출입국·외국인관서에서 확인하세요.",
   "scenarioAskAi": "이 시나리오로 AI에게 질문하기",
+  "scenarioSelectedContextLabel": "선택한 시나리오:",
+  "scenarioAiOpenError": "AI 상담을 여는 중 문제가 발생했습니다. 잠시 후 다시 시도하거나 새로고침해 주세요.",
   "scenarioOfficialLabelsKoNote": "공식 매뉴얼의 시나리오 명칭은 한국어로 표시됩니다.",
   "officialDocumentNamesKoNote": "공식 문서명은 출입국 매뉴얼과 일치하도록 한국어로 표시됩니다.",
   "selectedScenarioAiPrompt": "{visaCode} {label} 기준으로 필요한 서류와 주의사항 알려줘",

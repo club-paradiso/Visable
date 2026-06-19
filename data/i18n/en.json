@@ -580,6 +580,8 @@
   "scenarioSelectedBadge": "Selected",
   "scenarioSelectedReferenceNote": "The selected scenario is for reference only. Confirm applicability with HiKorea, 1345, or the competent immigration office.",
   "scenarioAskAi": "Ask AI about this scenario",
+  "scenarioSelectedContextLabel": "Selected scenario:",
+  "scenarioAiOpenError": "Something went wrong opening the AI assistant. Please try again in a moment or refresh the page.",
   "scenarioOfficialLabelsKoNote": "Official scenario labels are shown in Korean to match the immigration manual.",
   "officialDocumentNamesKoNote": "Official document names are shown in Korean to match the immigration manual.",
   "selectedScenarioAiPrompt": "For {visaCode}, based on this selected scenario ({label}), explain the required documents and key cautions. Keep official document names in Korean where relevant.",

@@ -226,7 +226,12 @@ class I18nSweepRouteWizardTests(unittest.TestCase):
         self.assertIn("selected_procedure_variant_id: currentAiSelectedProcedureVariantId", self.html)
 
     def test_checklist_reminder_state_not_sent_to_ai(self):
-        body = self.html.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
+        # Anchor on the actual /api/ask fetch literal specifically — other POSTs
+        # (e.g. the jobcode keyword helper) also use body: JSON.stringify({...})
+        # and the /api/ask comments would otherwise pull in unrelated code that
+        # mentions "checklist".
+        ask_region = self.html.split("${API_BASE}/api/ask`", 1)[1]
+        body = ask_region.split("body: JSON.stringify({", 1)[1].split("}),", 1)[0]
         self.assertNotIn("checklist", body)
         self.assertNotIn("reminder", body)
         self.assertNotIn("scenario-checklist", body)
