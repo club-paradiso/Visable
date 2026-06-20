@@ -14,3 +14,6 @@ tmp/
 __pycache__/
 *.pyc
 build/
+
+# Trust & Safety event logs (server-controlled, never committed)
+backend/var/
