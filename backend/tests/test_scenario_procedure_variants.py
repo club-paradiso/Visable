@@ -332,6 +332,79 @@ class SelectedScenarioAiHandoffHardeningTests(unittest.TestCase):
         ))
 
 
+class ScenarioPickerBackdropRegressionTests(unittest.TestCase):
+    """Regression coverage for the scenario picker dark-overlay-without-dialog bug.
+
+    The picker dropdown could be left behind a full-screen dark backdrop when the
+    selector was rendered outside the high-z visa drawer (e.g. inline on desktop):
+    the page darkened (backdrop z-index 1100) but the panel (z-index 500) sat
+    behind it, so no dialog was visible. The fixes: the backdrop is gated to
+    mobile only, and the panel z-index is raised above the backdrop.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        cls.html = (REPO_ROOT / "index.html").read_text(encoding="utf-8")
+        cls.blobs = pack_blobs()
+
+    def _css_block(self, selector):
+        # Return the declaration body for the first top-level rule matching selector.
+        start = self.html.index(selector)
+        open_brace = self.html.index("{", start)
+        close_brace = self.html.index("}", open_brace)
+        return self.html[open_brace + 1:close_brace]
+
+    def test_picker_panel_zindex_is_above_backdrop(self):
+        panel = self._css_block(".scenario-picker-panel {")
+        self.assertIn("z-index: 1200", panel)
+        # The backdrop sits at 1100; the dialog must paint above it.
+        backdrop = self._css_block(".scenario-picker-backdrop {")
+        self.assertIn("z-index: 1100", backdrop)
+
+    def test_backdrop_is_gated_to_mobile_only(self):
+        # The active backdrop must only display under the mobile media query, so a
+        # desktop dropdown never darkens the page behind an invisible dialog.
+        backdrop_rule = ".scenario-picker-backdrop.is-active { display: block; }"
+        # Exactly one such rule, and it lives inside a max-width:540px media query.
+        self.assertEqual(self.html.count(backdrop_rule), 1)
+        rule_idx = self.html.index(backdrop_rule)
+        preceding_media = self.html.rfind("@media", 0, rule_idx)
+        self.assertIn("max-width: 540px", self.html[preceding_media:rule_idx])
+        # And no media query was closed between that @media and the rule (i.e. the
+        # rule is genuinely nested inside the mobile block).
+        self.assertNotIn("}\n}", self.html[preceding_media:rule_idx])
+
+    def test_open_picker_renders_content_before_revealing_overlay(self):
+        # Defensive opener: build choices first, bail (and reset) if the panel is
+        # not actually visible, and surface a non-blocking error — never a
+        # stranded dark overlay.
+        opener = self.html.split("function openScenarioPicker(", 1)[1].split("function chooseScenarioVariant(", 1)[0]
+        self.assertIn("try {", opener)
+        self.assertIn("catch (err)", opener)
+        self.assertIn("closeScenarioPicker();", opener)
+        self.assertIn("getBoundingClientRect()", opener)
+        self.assertIn("scenarioPickerOpenError", opener)
+        # Backdrop is only activated after the panel is confirmed visible.
+        reveal = opener.index("bd.classList.add('is-active')")
+        guard = opener.index("rect.width === 0 && rect.height === 0")
+        self.assertLess(guard, reveal, "visibility guard must run before activating the backdrop")
+
+    def test_close_picker_clears_backdrop_and_expanded_state(self):
+        closer = self.html.split("function closeScenarioPicker(", 1)[1].split("function openScenarioPicker(", 1)[0]
+        self.assertIn("bd.classList.remove('is-active')", closer)
+        self.assertIn("aria-expanded", closer)
+
+    def test_picker_open_error_copy_present_in_all_target_languages(self):
+        self.assertIn("시나리오 목록을 여는 중 문제가 발생했습니다", self.blobs["ko"])
+        self.assertIn("Something went wrong opening the scenario list", self.blobs["en"])
+        self.assertIn("打开情形列表时出现问题", self.blobs["zh-CN"])
+
+    def test_escape_closes_scenario_picker(self):
+        opener = self.html.split("function openScenarioPicker(", 1)[1].split("function chooseScenarioVariant(", 1)[0]
+        self.assertIn("e.key === 'Escape'", opener)
+        self.assertIn("closeScenarioPicker(); trigger.focus();", opener)
+
+
 class SelectedScenarioActionChecklistFrontendTests(unittest.TestCase):
     """Frontend coverage for the selected-scenario action checklist (PR #245)."""
 
