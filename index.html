@@ -12997,8 +12997,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 
                 <button type="button" class="p-gw-card p-gw-card-hikorea" data-action="open-hikorea-guide">
                     <span class="p-gw-card-icon" aria-hidden="true">🏛</span>
-                    <span class="p-gw-card-label">HiKorea 방문예약 안내</span>
-                    <span class="p-gw-card-sub">방문 전 HiKorea 온라인 예약 절차를 확인합니다.</span>
+                    <span class="p-gw-card-label">하이코리아 예약 도우미</span>
+                    <span class="p-gw-card-sub">내 상황에 맞는 예약 목적과 준비물을 확인하세요.</span>
                 </button>
 
                 <a class="p-gw-card p-gw-card-ai" href="ai.html">
@@ -14067,13 +14067,13 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <div class="modal-box hikorea-modal">
         <div class="modal-header hikorea-modal-header">
             <div class="hikorea-header-stack">
-                <h2 id="hikoreaGuideTitle">HiKorea 방문예약 안내</h2>
-                <p class="hikorea-header-sub" id="hikoreaGuideSub">방문 전 온라인 예약과 준비사항을 정리합니다.</p>
+                <h2 id="hikoreaGuideTitle">하이코리아 예약 도우미</h2>
+                <p class="hikorea-header-sub" id="hikoreaGuideSub">출입국에 가기 전에, 내 상황에 맞는 예약 목적과 준비물을 확인하세요.</p>
                 <span class="hikorea-header-chip" id="hikoreaGuideChip">공식 서비스 아님</span>
             </div>
             <button type="button" class="modal-close close-btn" data-action="close-hikorea-guide" aria-label="닫기">✕</button>
         </div>
-        <div class="modal-body" id="hikoreaGuideBody"></div>
+        <div class="modal-body" id="hikoreaGuideBody" aria-live="polite"></div>
     </div>
 </div>
 
@@ -19363,136 +19363,23 @@ function renderSourceReferences(v) {
     return `<div class="manual-source-box"><div class="manual-source-title">${escapeHtml(tx('sourceTitleResult'))}</div><ul>${refItems}</ul><div style="margin-top:0.55rem;">${escapeHtml(reviewText)} ${escapeHtml(tx('sourceLegalNote'))}</div></div>`;
 }
 
-const hikoreaGuideState = { lang: 'ko', step: -1, visaCode: '', taskType: 'DATA_MISSING', expDate: '', emailOk: false, pwOk: false, expOk: false, savedOk: false };
-function hikoreaGtx(key) {
-    const koPack = UI_TRANSLATIONS.ko || BOOTSTRAP_KO_FALLBACK;
-    const p = UI_TRANSLATIONS[normalizeLocaleCode(hikoreaGuideState.lang)] || koPack;
-    return p[key] ?? koPack[key] ?? key;
-}
-/* Maps a hikorea_task_type data value (stored in Korean in visa_data) to its
-   localized display label; the underlying data value itself is never changed. */
-const HIKOREA_TASK_INDEX = { '체류기간 연장허가': 0, '체류자격 변경': 1, '외국인등록': 2 };
-function hikoreaTaskLabel(taskType) {
-    const idx = HIKOREA_TASK_INDEX[taskType];
-    const arr = hikoreaGtx('hkTaskBtnTitles');
-    return (idx !== undefined && Array.isArray(arr) && arr[idx]) ? arr[idx] : taskType;
-}
-function hikoreaHotlineStrip(hotlineText) {
-    return `<div class="hikorea-strip">${escapeHtml(hotlineText)} <a href="tel:1345">1345</a></div>`;
-}
+/* The HiKorea reservation guide was redesigned into the friendly, mobile-first
+   "하이코리아 예약 도우미 / HiKorea Reservation Helper". The flow + deterministic
+   logic now live in the standalone module assets/js/hikorea-reservation-helper.js
+   (window.ParadisoReservationHelper). index.html keeps only these thin shims: it
+   owns the modal shell (reusing openModal/closeModal focus-trap + Escape + focus
+   restore), the module owns the content + logic. */
 function openHikoreaGuide(vcode) {
-    const v = VISA_DATA.find(x => x.code === vcode) || {};
-    const normLang = normalizeLocaleCode(currentLanguage);
-    if (['ko', 'en', 'zh-CN'].includes(normLang)) hikoreaGuideState.lang = normLang;
-    hikoreaGuideState.step = -1; hikoreaGuideState.visaCode = vcode || ''; hikoreaGuideState.taskType = v.hikorea_task_type || 'DATA_MISSING';
-    hikoreaGuideState.expDate = ''; hikoreaGuideState.emailOk = false; hikoreaGuideState.pwOk = false; hikoreaGuideState.expOk = false; hikoreaGuideState.savedOk = false;
-    renderHikoreaGuide(); openModal('hikoreaGuideOverlay');
-}
-function hikoreaStepLabel(s) { return s === 1 ? '0-A' : s <= 1 ? String(s) : String(s - 1); }
-function hikoreaRandInt(max) {
-    /* rejection sampling to avoid modulo bias */
-    const limit = Math.floor(0x100000000 / max) * max;
-    const buf = new Uint32Array(1);
-    let x;
-    do { crypto.getRandomValues(buf); x = buf[0]; } while (x >= limit);
-    return x % max;
-}
-/* Client-side only: the generated value is never sent, logged, or persisted —
-   it exists only in the DOM of the current view. */
-function generateHikoreaPassword() {
-    const letters = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ'; /* ambiguous i/l/o/I/L/O excluded */
-    const digits = '23456789'; /* ambiguous 0/1 excluded */
-    const specials = '!@#$%';
-    const all = letters + digits + specials;
-    const len = 10 + hikoreaRandInt(3); /* 10–12, per stated rules */
-    const out = [letters[hikoreaRandInt(letters.length)], digits[hikoreaRandInt(digits.length)], specials[hikoreaRandInt(specials.length)]];
-    while (out.length < len) out.push(all[hikoreaRandInt(all.length)]);
-    for (let i = out.length - 1; i > 0; i--) {
-        const j = hikoreaRandInt(i + 1);
-        const tmp = out[i]; out[i] = out[j]; out[j] = tmp;
+    if (window.ParadisoReservationHelper && typeof window.ParadisoReservationHelper.open === 'function') {
+        const v = (typeof VISA_DATA !== 'undefined' && Array.isArray(VISA_DATA)) ? (VISA_DATA.find(x => x.code === vcode) || {}) : {};
+        window.ParadisoReservationHelper.open({ visaCode: vcode || '', taskType: v.hikorea_task_type || '' });
     }
-    return out.join('');
+    openModal('hikoreaGuideOverlay');
 }
 function renderHikoreaGuide() {
-    const b = document.getElementById('hikoreaGuideBody'); if (!b) return;
-    const langBtns = [['ko','한국어'],['en','English'],['zh-CN','中文']].map(([k,l]) => `<button type="button" class="hikorea-lang-btn ${hikoreaGuideState.lang===k?'active':''}" data-action="set-guide-lang" data-lang="${k}">${l}</button>`).join('');
-    const gtx = hikoreaGtx;
-    const gtxArr = (key) => { const v = gtx(key); return Array.isArray(v) ? v : []; };
-    const titleEl = document.getElementById('hikoreaGuideTitle');
-    const subEl = document.getElementById('hikoreaGuideSub');
-    const chipEl = document.getElementById('hikoreaGuideChip');
-    if (titleEl) titleEl.textContent = gtx('hkHeaderTitle');
-    if (subEl) subEl.textContent = gtx('hkHeaderSub');
-    if (chipEl) chipEl.textContent = gtx('hkHeaderChip');
-    const phases = [
-        { key: 'hkPhase1', steps: [-1, 0, 1] },
-        { key: 'hkPhase2', steps: [2, 3, 4] },
-        { key: 'hkPhase3', steps: [5] },
-        { key: 'hkPhase4', steps: [6] },
-        { key: 'hkPhase5', steps: [7] }
-    ];
-    const cur = hikoreaGuideState.step;
-    const stepperHtml = '<ol class="hikorea-stepper" aria-label="' + escapeHtml(gtx('hkStepperAria')) + '">' + phases.map((p, idx) => {
-        const isCurrent = p.steps.includes(cur);
-        const isDone = !isCurrent && cur > Math.max(...p.steps);
-        return '<li class="hikorea-stepper-pill' + (isCurrent ? ' is-current' : '') + (isDone ? ' is-done' : '') + '"' + (isCurrent ? ' aria-current="step"' : '') + '><span class="pill-index">' + (idx + 1) + '</span>' + escapeHtml(gtx(p.key)) + '</li>';
-    }).join('') + '</ol>';
-    const ctaRow = '<div class="hikorea-cta-row"><a class="hikorea-cta-primary" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + escapeHtml(gtx('hkPrimaryCta')) + '</a><a class="hikorea-cta-secondary" href="tel:1345">' + escapeHtml(gtx('hkSecondaryCta')) + '</a></div>';
-    const disclaimerPanel = '<div class="hikorea-disclaimer-panel" aria-label="' + escapeHtml(gtx('hkDisclaimerAria')) + '"><ul>' + ['hkDisc1', 'hkDisc2', 'hkDisc3', 'hkDisc4'].map(k => '<li>' + escapeHtml(gtx(k)) + '</li>').join('') + '</ul></div>';
-    if (hikoreaGuideState.step < 0) {
-        b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">${escapeHtml(gtx('hkProgressPrecheck'))}</div>
-        <div class="hikorea-precheck-caution" role="note">${escapeHtml(gtx('hkPreCheckCaution'))}</div>
-        <div class="hikorea-step-box"><label><input type="checkbox" id="hkEmailOk"> ${escapeHtml(gtx('hkPreEmailQ'))}</label><div class="hikorea-strip">${escapeHtml(gtx('hkPreEmailHint1'))} <a href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">https://accounts.google.com/signup</a><br>${escapeHtml(gtx('hkPreEmailHint2'))}</div></div>
-        <div class="hikorea-step-box"><label><input type="checkbox" id="hkPwOk"> ${escapeHtml(gtx('hkPrePwQ'))}</label><div class="hikorea-check-grid">${gtxArr('hkPwChecklist').map(r => '<div>' + escapeHtml(r) + '</div>').join('')}</div></div>
-        <div class="hikorea-step-box"><label for="hkExpDate">${escapeHtml(gtx('hkPreExpLabel'))}</label><input id="hkExpDate" type="date" style="display:block;margin-top:.45rem;"><div id="hkExpMsg" class="hikorea-strip">${escapeHtml(gtx('hkExpMsgEmpty'))}</div></div>
-        ${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="close-hikorea-guide">${escapeHtml(gtx('hkClose'))}</button><button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">${escapeHtml(gtx('hkStart'))}</button></div>`;
-        return;
+    if (window.ParadisoReservationHelper && typeof window.ParadisoReservationHelper.render === 'function') {
+        window.ParadisoReservationHelper.render();
     }
-    const step0aHtml = '<div class="step0a-section">'
-        + '<div class="step0a-block"><p class="step0a-block-title">A · ' + escapeHtml(gtx('step0aSecATitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecABody')) + '</p>'
-        + '<div class="step0a-check-row"><span class="step0a-checkbox">✓</span><span>' + escapeHtml(gtx('step0aNoEmail')) + ': ' + escapeHtml(gtx('step0aGmail')) + '</span></div>'
-        + '<a class="step0a-gmail-btn" href="https://accounts.google.com/signup" target="_blank" rel="noopener">📧 ' + escapeHtml(gtx('step0aGmailBtn')) + '</a>'
-        + '<p class="step0a-email-choice-note">' + escapeHtml(gtx('step0aEmailChoice')) + '</p>'
-        + '<a class="step0a-naver-btn" href="https://nid.naver.com/user2/join/agree" target="_blank" rel="noopener">📧 ' + escapeHtml(gtx('step0aNaverBtn')) + '</a>'
-        + '<div class="step0a-check-row"><span class="step0a-checkbox">✓</span><span>' + escapeHtml(gtx('step0aBorrow')) + '</span></div>'
-        + '<div class="step0a-warn"><span>ℹ️</span><span>' + escapeHtml(gtx('step0aHasEmail')) + '</span></div></div>'
-        + '<div class="step0a-block"><p class="step0a-block-title">B · ' + escapeHtml(gtx('step0aSecBTitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecBBody')) + '</p>'
-        + gtxArr('step0aIdRules').map(r => '<div class="step0a-check-row"><span class="step0a-checkbox"></span><span>' + escapeHtml(r) + '</span></div>').join('')
-        + '<p class="step0a-body" style="margin-top:.45rem;font-size:.88rem">' + escapeHtml(gtx('step0aIdNote')) + '</p></div>'
-        + '<div class="step0a-block"><p class="step0a-block-title">C · ' + escapeHtml(gtx('step0aSecCTitle')) + '</p><p class="step0a-body">' + escapeHtml(gtx('step0aSecCBody')) + '</p>'
-        + gtxArr('step0aPwRules').map(r => '<div class="step0a-check-row"><span class="step0a-checkbox"></span><span>' + escapeHtml(r) + '</span></div>').join('')
-        + '<div class="step0a-pw-gen" style="margin-top:.35rem"><button type="button" class="cb on" data-action="hikorea-gen-pw">🔐 ' + escapeHtml(gtx('step0aPwGenBtn')) + '</button> '
-        + '<input id="hkGenPw" class="step0a-example" type="text" readonly autocomplete="off" spellcheck="false" style="width:13ch;font-family:inherit;" aria-label="' + escapeHtml(gtx('step0aPwGenBtn')) + '" hidden> '
-        + '<button type="button" class="cb" id="hkGenPwCopy" data-action="hikorea-copy-pw" hidden>' + escapeHtml(gtx('step0aPwCopy')) + '</button>'
-        + '<p class="step0a-body" id="hkGenPwNotice" style="font-size:.85rem;margin-top:.35rem" hidden>' + escapeHtml(gtx('step0aPwNotice')) + '</p></div>'
-        + '<p class="step0a-body" style="font-size:.88rem">' + escapeHtml(gtx('step0aPwNote')) + '</p></div>'
-        + '<div class="step0a-block"><p class="step0a-block-title">D · ' + escapeHtml(gtx('step0aSecDTitle')) + '</p><ul>'
-        + '<li>' + escapeHtml(gtx('step0aEmailVerify1')) + '</li>'
-        + '<li>' + escapeHtml(gtx('step0aEmailVerify2')) + '</li>'
-        + '<li>' + escapeHtml(gtx('step0aEmailVerify3')) + '</li></ul></div>'
-        + '<div class="step0a-block"><p class="step0a-block-title">E · ' + escapeHtml(gtx('step0aSecETitle')) + '</p>'
-        + '<p class="step0a-body"><a href="tel:1345" style="color:var(--ac);font-weight:700">' + escapeHtml(gtx('step0aHelpLine')) + '</a></p></div>'
-        + '</div>';
-    /* Pack-sourced strings: list items may carry <br> (trusted repo content);
-       dynamic values (visa code, dates, task type) stay escaped. */
-    const li = (s) => '<li>' + s + '</li>';
-    // Real HiKorea screenshots are not bundled; render no empty placeholder box —
-    // each step's text guidance below stands on its own.
-    const screenshot = () => '';
-    const taskBtn = (idx, task) => `<button type="button" class="hikorea-task-btn" data-action="hikorea-pick-task" data-task="${task}"><strong>${escapeHtml(txAtArr(gtxArr('hkTaskBtnTitles'), idx))}</strong><small>${escapeHtml(txAtArr(gtxArr('hkTaskBtnDescs'), idx))}</small></button>`;
-    function txAtArr(arr, idx) { return arr[idx] !== undefined ? arr[idx] : ''; }
-    const stepContent = [
-    /*0*/`<ul>${gtxArr('hkStep0Items').map(li).join('')}</ul>`,
-    /*0-A*/step0aHtml,
-    /*1*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 0)))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikorea'))}</a></li>${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 1)))}${li(escapeHtml(txAtArr(gtxArr('hkStep1Items'), 2)))}</ul>`,
-    /*2*/`<ul>${li(escapeHtml(gtx('hkStep2Item')))}</ul>${screenshot(2)}`,
-    /* 기관별 방문예약 딥링크는 미제공 상태이므로 아래 링크는 HiKorea 메인으로 이동합니다. */
-    /*3*/`<ul>${li(escapeHtml(gtx('hkStep3Item')))}<li><a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${escapeHtml(gtx('hkLinkHikoreaMain'))}</a></li></ul>${screenshot(3)}`,
-    /*4*/`<ul><li>${escapeHtml(gtx('hkCurrentVisaCode'))} ${escapeHtml(hikoreaGuideState.visaCode || gtx('hkUnknown'))}</li>${hikoreaGuideState.taskType !== 'DATA_MISSING' ? `<li>${escapeHtml(gtx('hkSelectedTask'))} <strong>${escapeHtml(hikoreaTaskLabel(hikoreaGuideState.taskType))}</strong> <button type="button" class="hikorea-task-change" data-action="hikorea-clear-task">${escapeHtml(gtx('hkReselect'))}</button></li>` : ''}${gtxArr('hkTaskBullets').map(t => li(escapeHtml(t))).join('')}</ul>${hikoreaGuideState.taskType === 'DATA_MISSING' ? `<div class="hikorea-task-picker" role="group" aria-label="${escapeHtml(gtx('hkTaskPickerAria'))}"><p class="hikorea-task-picker-hint">${gtx('hkTaskPickerHint')}</p><div class="hikorea-task-buttons">${taskBtn(0, '체류기간 연장허가')}${taskBtn(1, '체류자격 변경')}${taskBtn(2, '외국인등록')}</div></div>` : ''}${screenshot(4)}`,
-    /*5*/`<ul>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 0)))}${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 1)))}<li>${escapeHtml(gtx('hkEnteredExp'))} ${escapeHtml(hikoreaGuideState.expDate || gtx('hkNotEntered'))}</li>${li(escapeHtml(txAtArr(gtxArr('hkStep5Items'), 2)))}</ul>${screenshot(5)}`,
-    /*6*/`<ul>${gtxArr('hkStep6Items').map(t => li(escapeHtml(t))).join('')}</ul><label><input id="hkSavedOk" type="checkbox"> ${escapeHtml(gtx('hkSavedLabel'))}</label>${screenshot(6)}`
-    ][hikoreaGuideState.step] || '';
-    b.innerHTML = `<div class="hikorea-lang-row">${langBtns}</div>${stepperHtml}<div class="hikorea-progress">${escapeHtml(gtx('hkProgressStep').replace('{step}', hikoreaStepLabel(hikoreaGuideState.step)))}</div><div class="hikorea-step-box">${stepContent}</div>${hikoreaHotlineStrip(gtx('hkHotline'))}${ctaRow}${disclaimerPanel}<div class="hikorea-footer-actions"><button type="button" class="cb" data-action="hikorea-prev" ${hikoreaGuideState.step===0?'disabled':''}>${escapeHtml(gtx('hkPrevBtn'))}</button><button type="button" class="cb on" data-action="hikorea-next" ${hikoreaGuideState.step===7?'disabled':''}>${escapeHtml(gtx('hkNextBtn'))}</button><button type="button" class="cb on" data-action="hikorea-complete" ${hikoreaGuideState.step===7 && hikoreaGuideState.savedOk ? '' : 'disabled'}>${escapeHtml(gtx('hkCompleteBtn'))}</button></div>`;
 }
 
 function renderManualActions(v, isVisaCode) {
@@ -21480,30 +21367,6 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'open-hikorea-guide': () => openHikoreaGuide(actionBtn.dataset.vcode),
                 'open-doc-modal': () => openDocModal(actionBtn.dataset.vcode, actionBtn.dataset.type, actionBtn.dataset.subidx),
                 'open-faq-modal': () => openFaqModal(actionBtn.dataset.vcode),
-                'set-guide-lang': () => { hikoreaGuideState.lang = actionBtn.dataset.lang || 'ko'; renderHikoreaGuide(); },
-                'start-hikorea-guide': () => { hikoreaGuideState.step = 0; renderHikoreaGuide(); },
-                'hikorea-prev': () => { hikoreaGuideState.step = Math.max(0, hikoreaGuideState.step - 1); renderHikoreaGuide(); },
-                'hikorea-next': () => { hikoreaGuideState.step = Math.min(7, hikoreaGuideState.step + 1); renderHikoreaGuide(); },
-                'hikorea-pick-task': () => { const t = actionBtn.dataset.task; if (t) { hikoreaGuideState.taskType = t; renderHikoreaGuide(); } },
-                'hikorea-clear-task': () => { hikoreaGuideState.taskType = 'DATA_MISSING'; renderHikoreaGuide(); },
-                'hikorea-gen-pw': () => {
-                    const f = document.getElementById('hkGenPw');
-                    if (!f || !window.crypto || !window.crypto.getRandomValues) return;
-                    f.value = generateHikoreaPassword();
-                    f.hidden = false;
-                    const c = document.getElementById('hkGenPwCopy'); if (c) c.hidden = false;
-                    const n = document.getElementById('hkGenPwNotice'); if (n) n.hidden = false;
-                },
-                'hikorea-copy-pw': () => {
-                    const f = document.getElementById('hkGenPw');
-                    if (!f || !f.value || !navigator.clipboard) return;
-                    navigator.clipboard.writeText(f.value).then(() => {
-                        const orig = actionBtn.textContent;
-                        actionBtn.textContent = '✓';
-                        setTimeout(() => { actionBtn.textContent = orig; }, 1500);
-                    }).catch(() => {});
-                },
-                'hikorea-complete': () => { if (hikoreaGuideState.step === 7 && hikoreaGuideState.savedOk) closeModal('hikoreaGuideOverlay'); },
                 'select-procedure': () => {
                     const card = actionBtn.closest('.manual-result');
                     if (!card || actionBtn.disabled) return;
@@ -21661,43 +21524,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             summary.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         });
     }, true);
-
-    document.addEventListener('change', (e) => {
-        const t = e.target;
-        if (!(t instanceof HTMLElement)) return;
-        if (t.id === 'hkEmailOk') hikoreaGuideState.emailOk = t.checked;
-        if (t.id === 'hkPwOk') hikoreaGuideState.pwOk = t.checked;
-        if (t.id === 'hkSavedOk') hikoreaGuideState.savedOk = t.checked;
-        if (t.id === 'hkExpDate') {
-            const val = t.value;
-            hikoreaGuideState.expDate = val;
-            const msg = document.getElementById('hkExpMsg');
-            const d = val ? new Date(`${val}T00:00:00`) : null;
-            const today = new Date(); today.setHours(0,0,0,0);
-            if (!d || Number.isNaN(d.getTime())) {
-                hikoreaGuideState.expOk = false;
-                if (msg) { msg.className = 'hikorea-strip'; msg.textContent = hikoreaGtx('hkExpMsgEmpty'); }
-            } else {
-                const diff = Math.floor((d - today) / 86400000);
-                hikoreaGuideState.expOk = true;
-                if (msg) {
-                    if (diff <= 0) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = hikoreaGtx('hkExpExpired'); }
-                    else if (diff <= 14) { msg.className = 'hikorea-strip hikorea-warning'; msg.textContent = hikoreaGtx('hkExpImminent'); }
-                    else { msg.className = 'hikorea-strip'; msg.textContent = hikoreaGtx('hkExpDaysLeft').replace('{days}', diff); }
-                }
-            }
-        }
-        // HiKorea guidance is no longer gated behind the preliminary checkboxes.
-        // The Start button is always available; the email/password/expiry inputs
-        // are optional preparation aids only (see hkPreCheckCaution). The expiry
-        // date still drives the days-to-expiry hint above when entered.
-        const startBtn = document.getElementById('hkStartBtn');
-        if (startBtn) startBtn.disabled = false;
-        if (hikoreaGuideState.step === 7) {
-            const completeBtn = document.querySelector('[data-action="hikorea-complete"]');
-            if (completeBtn) completeBtn.disabled = !hikoreaGuideState.savedOk;
-        }
-    });
 
     initScrollReveal();
 
@@ -23307,6 +23133,12 @@ function showVisaDocForAction(visaCode) {
      detail (ParadisoRoute) for the actual documents. Reuses the F-4 UX pattern
      without touching the F-4 reference module. (window.ParadisoStatusGuide) -->
 <script defer src="assets/js/complex-status-guide.js"></script>
+<!-- 하이코리아 예약 도우미 / HiKorea Reservation Helper: a friendly, mobile-first,
+     one-question-at-a-time flow (purpose → card → location → status → expiry) →
+     a single result card (what to click · prepare · check · if it fails).
+     Deterministic + testable (window.ParadisoReservationHelper.computeReservationPath);
+     never calls Waymaker/any LLM. (scripts/check_hikorea_reservation_helper.mjs) -->
+<script defer src="assets/js/hikorea-reservation-helper.js"></script>
 <!-- HiKorea 취업정보 신고용 직종·업종 자연어 분석기. Module sets window.EmploymentCodeAnalyzer;
      the job-code modal degrades gracefully if it fails to load. Single source of
      truth shared with the Node CLI/tests (scripts/check_employment_code_analyzer.mjs). -->

@@ -15,6 +15,7 @@
     "report:employment-failures": "node scripts/employment_failure_report.mjs",
     "test:employment-reporting-helper": "node scripts/check_employment_reporting_helper.mjs",
     "test:complex-guide-qa": "node scripts/check_complex_status_guide_qa.mjs",
+    "test:hikorea-reservation-helper": "node scripts/check_hikorea_reservation_helper.mjs",
     "test:e2e": "playwright test"
   },
   "devDependencies": {

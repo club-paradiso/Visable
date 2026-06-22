@@ -6,7 +6,7 @@ data-* hooks) and assert localized copy against the externalized locale packs in
 JSON files loaded at runtime). They guard:
   - the F-4 route-aware intake wizard (Part B),
   - the deadline / calendar calculator (Part C/I),
-  - the HiKorea pre-checkbox gate removal (Part D),
+  - the redesigned HiKorea Reservation Helper (no blocking gate; LLM-free),
   - procedure-description fallbacks (Part E),
   - site-wide localization coverage for the new surfaces (Part A).
 
@@ -218,39 +218,53 @@ class DeadlineCalculatorFrontendTests(_IndexHtml):
         self.assertIn('target="_blank" rel="noopener noreferrer"', fn)
 
 
-class HiKoreaGateRemovalFrontendTests(_IndexHtml):
-    def test_start_button_is_not_disabled(self):
-        self.assertIn(
-            '<button type="button" class="cb on" id="hkStartBtn" data-action="start-hikorea-guide">',
-            self.html,
-        )
-        self.assertNotIn(
-            'id="hkStartBtn" data-action="start-hikorea-guide" disabled',
-            self.html,
-        )
+class HiKoreaReservationHelperFrontendTests(_IndexHtml):
+    """The HiKorea visit-reservation guide was redesigned into the friendly,
+    mobile-first 하이코리아 예약 도우미 / HiKorea Reservation Helper. The flow and
+    its deterministic logic now live in the standalone module
+    assets/js/hikorea-reservation-helper.js (window.ParadisoReservationHelper);
+    index.html keeps thin shims and reuses the modal shell (openModal/closeModal
+    focus-trap + Escape + focus restore). These guards preserve the original
+    intent of this section — the reservation flow is never gated behind a
+    blocking checkbox, the official-source disclaimer is always present — and add
+    the redesign's new invariants (LLM-free, new feature name)."""
 
-    def test_start_handler_has_no_checkbox_gate(self):
-        self.assertIn(
-            "'start-hikorea-guide': () => { hikoreaGuideState.step = 0; renderHikoreaGuide(); },",
-            self.html,
-        )
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.helper = (REPO_ROOT / "assets/js/hikorea-reservation-helper.js").read_text(encoding="utf-8")
 
-    def test_change_listener_no_longer_blocks_start(self):
-        self.assertIn("if (startBtn) startBtn.disabled = false;", self.html)
-        self.assertNotIn(
-            "startBtn.disabled = !(hikoreaGuideState.emailOk && hikoreaGuideState.pwOk && hikoreaGuideState.expOk)",
-            self.html,
-        )
+    def test_helper_module_loaded_and_owns_the_flow(self):
+        self.assertIn("assets/js/hikorea-reservation-helper.js", self.html)
+        self.assertIn("window.ParadisoReservationHelper", self.helper)
+        self.assertIn("function computeReservationPath", self.helper)
 
-    def test_visible_caution_replaces_gate_in_all_languages(self):
-        self.assertIn('class="hikorea-precheck-caution"', self.html)
-        self.assertIn("아래 항목은 예약 준비를 돕기 위한 확인 사항입니다. 체크하지 않아도 다음 단계로 진행할 수 있습니다.", self.blobs["ko"])
-        self.assertIn("You can continue to the next step without checking them.", self.blobs["en"])
-        self.assertIn("即使不勾选也可继续下一步。", self.blobs["zh-CN"])
+    def test_opening_the_guide_has_no_acknowledgement_gate(self):
+        # The entry shim opens the modal directly — no acknowledgement/gate.
+        self.assertIn("openModal('hikoreaGuideOverlay')", self.html)
+        self.assertNotIn("hikoreaGate", self.html)
+        self.assertNotIn("hikoreaAck", self.html)
+        # The old blocking precheck scaffold (start button + password generator)
+        # is gone; the new flow lets users proceed one question at a time.
+        self.assertNotIn("hkStartBtn", self.html)
+        self.assertNotIn("generateHikoreaPassword", self.html)
 
-    def test_disclaimers_still_present(self):
-        self.assertIn("hkDisc1", self.html)
-        self.assertIn("Paradiso는 공식 정부 서비스가 아닙니다.", self.blobs["ko"])
+    def test_flow_is_deterministic_and_llm_free(self):
+        for forbidden in ("submitAiAnalysis", "/api/ask", "fetch("):
+            self.assertNotIn(forbidden, self.helper, f"reservation helper must not use {forbidden}")
+
+    def test_feature_uses_new_name_in_supported_languages(self):
+        self.assertIn("하이코리아 예약 도우미", self.helper)
+        self.assertIn("HiKorea Reservation Helper", self.helper)
+        # The gateway-card entry label was updated to the new feature name.
+        self.assertEqual(self.packs["ko"].get("gwHikoreaLabel"), "하이코리아 예약 도우미")
+        self.assertEqual(self.packs["en"].get("gwHikoreaLabel"), "HiKorea Reservation Helper")
+
+    def test_official_source_disclaimer_present(self):
+        self.assertIn("이 도우미는 예약 전에 필요한 정보를 정리해 주는 안내입니다.", self.helper)
+        self.assertIn("This helper organizes information before booking.", self.helper)
+        # Always points users to HiKorea / 1345 / 관할 출입국 for final confirmation.
+        self.assertIn("1345", self.helper)
 
 
 class ProcedureFallbackDescriptionFrontendTests(_IndexHtml):

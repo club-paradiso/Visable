@@ -211,9 +211,15 @@ if command -v node >/dev/null 2>&1; then
   # documents (uncertain items flagged "공식근거 확인 필요").
   node scripts/check_f4_guide_flow.mjs
   # Popup chrome i18n parity for the standalone guide modules (F-4 route hub,
-  # short-stay checker): KO/EN chrome packs paired, option labels carry labelEn,
-  # no hardcoded Korean in aria-label/title/placeholder literals.
+  # short-stay checker, HiKorea reservation helper): KO/EN chrome packs paired,
+  # option labels carry labelEn, no hardcoded Korean in aria-label/title/placeholder.
   node scripts/check_popup_i18n.mjs
+  # 하이코리아 예약 도우미 / HiKorea Reservation Helper: exercises the REAL pure
+  # logic (computeReservationPath) against the spec scenarios, the status-specific
+  # suggestions (incl. the F-5 specific-label rule), the friendly one-question flow
+  # + result sections, cautious-wording/disclaimer/same-day guarantees, the
+  # LLM-free guarantee, a11y/theme tokens, index wiring, and KO/EN pack parity.
+  node scripts/check_hikorea_reservation_helper.mjs
 else
   echo "INFO: Node.js not found; skipping F-4 hub validation."
 fi
