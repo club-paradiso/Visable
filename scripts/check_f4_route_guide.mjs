@@ -234,22 +234,84 @@ ok(indexHtml.includes('id="f4RouteGuide"'), 'index.html has the guide mount sect
 ok(/GENERIC_VISA_ISSUANCE_EXCLUDED_CODES\s*=\s*new Set\(\[\s*'F-4'/.test(indexHtml)
   && /function renderVisaIssuanceSection[\s\S]*?isGenericVisaIssuanceExcluded/.test(indexHtml),
   'F-4 is excluded from the generic visa-issuance renderer (keeps its dedicated route guide)');
-ok(guideJs.includes('mountEntryPanel') && guideJs.includes('entryPanelHtml'), 'compact diagnostic entry panel rendered (not full hub)');
-ok(guideJs.includes('F-4 절차 확인하기') || diagnostic.ctaLabel === 'F-4 절차 확인하기', 'primary CTA opens the modal');
-ok(guideJs.includes("d.title") || guideJs.includes('diagnostic.title'), 'entry panel shows the diagnostic title');
-ok(/aria-modal/.test(guideJs) && /role.{0,6}dialog/.test(guideJs), 'modal has aria-modal + role=dialog');
-ok(/Escape/.test(guideJs) && /onKeydown|keyHandler/.test(guideJs), 'modal supports Escape + focus trapping');
-ok(/lastFocus/.test(guideJs), 'modal restores focus to the trigger on close');
-ok(/Tab/.test(guideJs) && /shiftKey/.test(guideJs), 'modal traps Tab focus');
-ok(HUB_present(), 'hub exposes all five procedure tabs + FAQ');
+ok(guideJs.includes('mountEntryPanel') && guideJs.includes('entryPanelHtml'), 'single F-4 entry panel rendered');
+ok(guideJs.includes('F-4 절차 확인하기') || diagnostic.ctaLabel === 'F-4 절차 확인하기', 'F-4 procedure label preserved in data layer');
+ok(guideJs.includes("d.title") || guideJs.includes('diagnostic.title'), 'entry panel references the diagnostic pre-flight title');
+ok(/aria-modal/.test(guideJs) && /role.{0,6}dialog/.test(guideJs), 'overlay has aria-modal + role=dialog');
+ok(/Escape/.test(guideJs) && /onKeydown|keyHandler/.test(guideJs), 'overlay supports Escape + focus trapping');
+ok(/lastFocus/.test(guideJs), 'overlay restores focus to the trigger on close');
+ok(/Tab/.test(guideJs) && /shiftKey/.test(guideJs), 'overlay traps Tab focus');
+ok(HUB_present(), 'hub/reference views expose all five procedure tabs + FAQ');
 function HUB_present() {
   return ['overseasApplication', 'residenceReport', 'statusChange', 'country', 'faq'].every((t) => guideJs.includes(t)) &&
     guideJs.includes('재외공관 신청') && guideJs.includes('국가별 확인');
 }
-ok(!guideJs.includes('어떤 상황에 가까우신가요'), 'old wording "어떤 상황에 가까우신가요?" removed from F-4 UI');
-ok(!allDataText.includes('어떤 상황에 가까우신가요'), 'old wording removed from F-4 data');
 ok(guideJs.includes('selectedCountry') && guideJs.includes('renderCountryTab'), 'country selector only affects country-specific guidance');
 ok(guideJs.includes('commonRulesHtml'), 'common F-4 rules render separately from country overlays');
+
+/* -------- extract the NEW flow routing logic (computeF4Path) ------------- */
+let RG_computeF4Path = null;
+try {
+  const m2 = guideJs.match(/function computeF4Path\(a\)\s*\{[\s\S]*?\n  \}/);
+  // eslint-disable-next-line no-new-func
+  RG_computeF4Path = new Function(`${m2[0]}; return computeF4Path;`)();
+} catch (e) { /* asserted below */ }
+
+/* ----------------------------- unified complex-status guide (F-4 = Level A) */
+section('Unified complex-status guide (single CTA · full-screen · checklist-first)');
+// Exactly ONE dominant primary CTA, trilingual chrome via STR packs.
+ok(guideJs.includes('내 F-4 준비경로 확인하기') && guideJs.includes('Check My F-4 Preparation Path'),
+  'single primary CTA "내 F-4 준비경로 확인하기 / Check My F-4 Preparation Path"');
+ok(guideJs.includes('f4g-primary-cta'), 'primary CTA is a dedicated dominant control (f4g-primary-cta)');
+// The previous duplicate in-card "🧭" panel must be gone (one entry point).
+ok(!guideJs.includes('injectCardCta'), 'duplicate in-card F-4 CTA (injectCardCta) removed');
+// Reusable engine for other complex statuses.
+ok(/window\.ParadisoComplexGuide|globalThis\.ParadisoComplexGuide|var ParadisoComplexGuide/.test(guideJs) && /register:\s*function/.test(guideJs),
+  'reusable ParadisoComplexGuide engine exposed with register()');
+// Full-screen / wide overlay — not a tiny central modal.
+ok(/min\(960px/.test(guideJs) && /f4g-progress/.test(guideJs), 'overlay is a wide/full-screen flow with a progress indicator');
+ok(guideJs.includes('@media (max-width:640px)') && /height:100%/.test(guideJs), 'overlay goes full-screen on mobile widths');
+// One-question-per-step flow with the spec questions + an "I am not sure" path.
+const STEP_Q = ['현재 어떤 상황에 가까우신가요?', '본인 또는 가족의 대한민국 국적 이력이 있나요?', '현재 어디에 있나요?', '지금 필요한 절차는 무엇인가요?'];
+for (const q of STEP_Q) ok(guideJs.includes(q), `flow step question present: ${q}`);
+ok(guideJs.includes('잘 모르겠어요') && guideJs.includes('I am not sure'), '"잘 모르겠어요 / I am not sure" option present');
+ok(guideJs.includes('computeF4Path') && typeof RG_computeF4Path === 'function', 'computeF4Path maps flow answers → a route');
+// Checklist-first result with the spec sections.
+ok(/f4g-checklist/.test(guideJs) && guideJs.includes('당신에게 가까운 F-4 준비경로'), 'result is checklist-first with the spec title');
+for (const h of ['먼저 해야 할 일', '기본 준비서류', '내 상황에서 추가될 수 있는 서류', '신청 절차', '공식 근거']) {
+  ok(guideJs.includes(h), `result section present: ${h}`);
+}
+ok(guideJs.includes('체크리스트 복사') && guideJs.includes('Copy checklist'), 'result offers Copy checklist');
+ok(guideJs.includes('공식근거 확인 필요') && guideJs.includes('Official source needs confirmation'),
+  'uncertain items marked "공식근거 확인 필요" (never invented as certain)');
+ok(guideJs.includes('개별 사안, 관할 출입국기관 또는 재외공관 판단에 따라 추가서류가 요구될 수 있습니다.'),
+  'cautious safety note present (additional docs may be requested)');
+// Spec secondary actions are present (visually demoted in CSS).
+for (const s of ['전체 세부자격 보기', '공통서류 보기', '신청 절차 보기', '공식 근거 보기']) {
+  ok(guideJs.includes(s), `secondary action present: ${s}`);
+}
+// The unified situation wording lives in UI chrome only — never in legal data.
+ok(!allDataText.includes('어떤 상황에 가까우신가요'), 'situation wording stays in UI chrome, not F-4 legal data');
+
+/* -------- exercise the NEW flow routing logic (computeF4Path) ------------- */
+ok(typeof RG_computeF4Path === 'function', 'computeF4Path extracted from guide JS');
+if (typeof RG_computeF4Path === 'function') {
+  const flowCases = [
+    [{ procedure: 'visa_issuance' }, 'overseas_application'],
+    [{ procedure: 'change_of_status' }, 'status_change'],
+    [{ procedure: 'extension' }, 'extension'],
+    [{ procedure: 'residence_registration' }, 'residence_report'],
+    [{ situation: 'apply_abroad' }, 'overseas_application'],
+    [{ situation: 'residence_registration' }, 'residence_report'],
+    [{ situation: 'not_sure', procedure: 'not_sure' }, 'official_check']
+  ];
+  for (const [a, expect] of flowCases) {
+    ok(RG_computeF4Path(a) === expect, `computeF4Path ${JSON.stringify(a)} → ${expect}`, RG_computeF4Path(a));
+  }
+  // Korean-national safety intent: a foreign-national procedure path never
+  // routes to ordinary visa guidance when the procedure itself is unknown.
+  ok(RG_computeF4Path({}) === 'official_check', 'empty answers → official check (no eligibility guess)');
+}
 
 console.log(`\n${checks} checks, ${failures} failures`);
 if (failures) process.exit(1);
