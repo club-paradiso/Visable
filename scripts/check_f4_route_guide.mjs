@@ -259,12 +259,29 @@ try {
 
 /* ----------------------------- unified complex-status guide (F-4 = Level A) */
 section('Unified complex-status guide (single CTA · full-screen · checklist-first)');
-// Exactly ONE dominant primary CTA, trilingual chrome via STR packs.
-ok(guideJs.includes('내 F-4 준비경로 확인하기') && guideJs.includes('Check My F-4 Preparation Path'),
-  'single primary CTA "내 F-4 준비경로 확인하기 / Check My F-4 Preparation Path"');
+// Exactly ONE dominant primary CTA, document-checklist-focused copy (KO/EN).
+ok(guideJs.includes('내 상황에 맞는 F-4 준비서류 찾기') && guideJs.includes('Find My F-4 Document Checklist'),
+  'single primary CTA "내 상황에 맞는 F-4 준비서류 찾기 / Find My F-4 Document Checklist"');
+ok(!guideJs.includes('내 F-4 준비경로 확인하기') && !guideJs.includes('Check My F-4 Preparation Path'),
+  'old "preparation path" CTA copy removed');
 ok(guideJs.includes('f4g-primary-cta'), 'primary CTA is a dedicated dominant control (f4g-primary-cta)');
 // The previous duplicate in-card "🧭" panel must be gone (one entry point).
 ok(!guideJs.includes('injectCardCta'), 'duplicate in-card F-4 CTA (injectCardCta) removed');
+// --- CTA discoverability hotfix: recommended-start block, promoted above the fold ---
+ok(guideJs.includes('추천 시작점') && guideJs.includes('Recommended starting point'),
+  'recommended-start block title present (추천 시작점 / Recommended starting point)');
+ok(guideJs.includes('약 1분 · 4~5개 질문 · 세부코드를 몰라도 시작 가능') && guideJs.includes('About 1 minute'),
+  'CTA supporting microcopy present (≈1 min · 4–5 questions · no subcode needed)');
+ok(/injectRecStart/.test(guideJs) && /external-guide-slot\[data-guide-slot="F-4"\]/.test(guideJs),
+  'recommended-start block is promoted to the TOP of the F-4 result card (external-guide-slot)');
+ok(guideJs.includes('다른 방식으로 보기') && guideJs.includes('Other ways to view this status'),
+  'secondary actions demoted under "다른 방식으로 보기 / Other ways to view this status"');
+ok(!guideJs.includes("secondaryActionsLabel: '바로 자료 보기'") && !guideJs.includes("secondaryActionsLabel: 'Jump to reference'"),
+  'old secondary-actions label copy removed');
+ok(guideJs.includes('F-4 준비서류 찾기 시작') && guideJs.includes('Start F-4 Checklist'),
+  'mobile sticky CTA present (reinforces the same primary action)');
+ok(/@media \(min-width:641px\)\{\.f4g-sticky\{display:none/.test(guideJs) && /body\.f4h-modal-open \.f4g-sticky\{display:none/.test(guideJs),
+  'sticky CTA is mobile-only and hidden while the guide overlay is open');
 // Reusable engine for other complex statuses.
 ok(/window\.ParadisoComplexGuide|globalThis\.ParadisoComplexGuide|var ParadisoComplexGuide/.test(guideJs) && /register:\s*function/.test(guideJs),
   'reusable ParadisoComplexGuide engine exposed with register()');

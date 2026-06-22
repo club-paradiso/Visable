@@ -129,8 +129,12 @@
     /* ---- unified guide chrome (new) ---- */
     guideHeader: 'F-4 재외동포 체류자격 안내',
     guideIntro: '재외동포 유형, 국적 이력, 신청 절차에 따라 준비서류와 진행 방식이 달라질 수 있습니다. 몇 가지 질문에 답하면 내 상황에 가까운 준비경로를 확인할 수 있습니다.',
-    primaryCta: '내 F-4 준비경로 확인하기',
-    secondaryActionsLabel: '바로 자료 보기',
+    primaryCta: '내 상황에 맞는 F-4 준비서류 찾기',
+    recStartTitle: '추천 시작점',
+    recStartBody: 'F-4는 국적 이력, 신청 위치, 거소신고 여부에 따라 준비서류가 달라질 수 있습니다. 세부코드를 몰라도 몇 가지 질문에 답하면 내 상황에 가까운 준비서류와 절차를 확인할 수 있습니다.',
+    ctaMicrocopy: '약 1분 · 4~5개 질문 · 세부코드를 몰라도 시작 가능',
+    stickyCta: 'F-4 준비서류 찾기 시작',
+    secondaryActionsLabel: '다른 방식으로 보기',
     secViewSubcategories: '전체 세부자격 보기',
     secViewCommonDocs: '공통서류 보기',
     secViewProcedure: '신청 절차 보기',
@@ -256,8 +260,12 @@
     /* ---- unified guide chrome (new) ---- */
     guideHeader: 'F-4 Overseas Korean Status Guide',
     guideIntro: 'Required documents and procedures may vary depending on your overseas Korean category, nationality history, and application path. Answer a few questions to find the preparation path closest to your situation.',
-    primaryCta: 'Check My F-4 Preparation Path',
-    secondaryActionsLabel: 'Jump to reference',
+    primaryCta: 'Find My F-4 Document Checklist',
+    recStartTitle: 'Recommended starting point',
+    recStartBody: 'F-4 documents and procedures may vary depending on nationality history, application location, and residence registration needs. Even if you do not know your subcategory, answer a few questions to find the document checklist and procedure closest to your situation.',
+    ctaMicrocopy: 'About 1 minute · 4–5 questions · No subcategory knowledge needed',
+    stickyCta: 'Start F-4 Checklist',
+    secondaryActionsLabel: 'Other ways to view this status',
     secViewSubcategories: 'View All Subcategories',
     secViewCommonDocs: 'View Common Documents',
     secViewProcedure: 'View Application Procedure',
@@ -628,6 +636,22 @@
 '.f4h-tag{display:inline-block;font-size:.68rem;font-weight:700;padding:.1rem .45rem;border-radius:999px;border:1px solid var(--bd,#d1c6b4);color:var(--t3,#757a76);margin-left:.35rem;}' +
 '.f4h-error{background:var(--cyL,#FFE2DB);border:1px solid var(--cy,#FF6B5B);border-radius:10px;padding:.8rem;font-size:.88rem;color:var(--hlT,#8A3426);word-break:keep-all;}' +
 'body.f4h-modal-open{overflow:hidden;}' +
+/* recommended-start block (entry hero) */
+'.f4g-recstart{position:relative;}' +
+'.f4g-rec-title{font-size:1.18rem;font-weight:800;color:var(--t1,#202221);margin:.1rem 0 .4rem;display:flex;align-items:center;gap:.45rem;word-break:keep-all;line-height:1.35;}' +
+'.f4g-rec-title::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--ac,#2f5e67);display:inline-block;flex:0 0 auto;}' +
+'.f4g-rec-body{font-size:.9rem;line-height:1.65;color:var(--t2,#4f5552);margin:0 0 .9rem;word-break:keep-all;}' +
+'.f4g-rec-microcopy{font-size:.78rem;color:var(--t3,#757a76);margin:.5rem 0 0;text-align:center;word-break:keep-all;}' +
+/* in-card placement: visually distinct, theme-token accent */
+'.f4g-hero.f4g-hero-incard{margin:.5rem 0 .2rem;border-color:var(--ac,#2f5e67);border-left-width:4px;background:var(--bg2,#f7f3ea);}' +
+/* mobile-only sticky bottom CTA (reinforces the same primary action) */
+'.f4g-sticky{position:fixed;left:0;right:0;bottom:0;z-index:8000;padding:.6rem .8rem;padding-bottom:calc(.6rem + env(safe-area-inset-bottom,0px));background:var(--bg1,#fff);border-top:1px solid var(--bd,#d1c6b4);box-shadow:0 -4px 16px rgba(0,0,0,.12);}' +
+'.f4g-sticky[hidden]{display:none;}' +
+'.f4g-sticky-btn{display:block;width:100%;min-height:50px;font:inherit;font-weight:800;font-size:.95rem;border-radius:12px;border:1px solid var(--ac,#2f5e67);background:var(--ac,#2f5e67);color:#fff;cursor:pointer;}' +
+'.f4g-sticky-btn:hover{filter:brightness(1.05);}' +
+'.f4g-sticky-btn:focus-visible{outline:3px solid var(--ac,#2f5e67);outline-offset:2px;}' +
+'@media (min-width:641px){.f4g-sticky{display:none !important;}}' +
+'body.f4h-modal-open .f4g-sticky{display:none !important;}' +
 '@media (max-width:640px){.f4h-overlay{padding:0;align-items:stretch;}.f4h-box{width:100%;height:100%;max-height:100%;border-radius:0;}.f4g-opts{max-width:none;}.f4g-foot-btn{flex:1 1 auto;text-align:center;}}';
     var style = document.createElement('style');
     style.id = 'f4HubStyles';
@@ -636,9 +660,13 @@
   }
 
   /* --------------------------------------------------------- entry panel UI */
-  // The single, dominant F-4 entry: header + short description + ONE primary
-  // CTA, with visually weaker secondary "jump to reference" actions.
-  function entryPanelHtml(data) {
+  // "Recommended starting point" block — the single, dominant F-4 entry. Built
+  // as a self-contained block so it can be injected either at the TOP of the
+  // F-4 result card (immediately after the title + short summary, before the
+  // long subcode/procedure sections) or, as a fallback, into the #f4RouteGuide
+  // section. The primary CTA is the obvious recommended next step; the secondary
+  // "other ways to view" actions are visually weaker.
+  function recStartBlockHtml(data) {
     var d = data.diagnostic;
     var b = data.base;
     // d.title is the cautious pre-flight note kept from the data layer.
@@ -646,13 +674,13 @@
     var secBtn = function (ref, key) {
       return '<button type="button" class="f4g-secondary-btn" data-f4g-ref="' + ref + '">' + esc(STR[key]) + '</button>';
     };
-    return '<div class="f4g-hero">' +
+    return '<div class="f4g-recstart">' +
       '<p class="f4h-eyebrow">' + esc(STR.entryEyebrow) + '</p>' +
-      '<h2 class="f4g-hero-title" id="f4RouteGuideTitle">' + esc(STR.guideHeader) + '</h2>' +
+      '<h2 class="f4g-rec-title" id="f4RouteGuideTitle">' + esc(STR.recStartTitle) + '</h2>' +
       '<div class="f4h-badges">' + stateBadge(b.sourceStatus) + '<span class="f4h-badge">' + esc(STR.sourceDatePrefix + ': ' + b.lastUpdated) + '</span></div>' +
-      '<p class="f4g-hero-sub">' + esc(STR.guideIntro) + '</p>' +
+      '<p class="f4g-rec-body">' + esc(STR.recStartBody) + '</p>' +
       '<button type="button" class="f4g-primary-cta" data-f4g-start>' + esc(STR.primaryCta) + '<span class="f4g-cta-go" aria-hidden="true">→</span></button>' +
-      preflight +
+      '<p class="f4g-rec-microcopy">' + esc(STR.ctaMicrocopy) + '</p>' +
       '<div class="f4g-secondary">' +
         '<span class="f4g-secondary-label">' + esc(STR.secondaryActionsLabel) + '</span>' +
         '<div class="f4g-secondary-row">' +
@@ -662,19 +690,73 @@
           secBtn('sources', 'secViewSources') +
         '</div>' +
       '</div>' +
+      preflight +
     '</div>';
+  }
+
+  // Section-fallback wrapper (kept for the #f4RouteGuide mount + tests).
+  function entryPanelHtml(data) {
+    return '<div class="f4g-hero">' + recStartBlockHtml(data) + '</div>';
+  }
+
+  function wireEntry(container) {
+    var startBtn = container.querySelector('[data-f4g-start]');
+    if (startBtn) startBtn.addEventListener('click', function () { openGuide({ view: 'flow' }); });
+    container.querySelectorAll('[data-f4g-ref]').forEach(function (btn) {
+      btn.addEventListener('click', function () { openGuide({ view: 'ref', refId: btn.getAttribute('data-f4g-ref') }); });
+    });
   }
 
   function mountEntryPanel(section, data, preselectCountry) {
     injectStyles();
     section.innerHTML = entryPanelHtml(data);
+    section.hidden = false;
     if (preselectCountry) state.selectedCountry = preselectCountry;
-    var startBtn = section.querySelector('[data-f4g-start]');
-    if (startBtn) startBtn.addEventListener('click', function () { openGuide({ view: 'flow' }); });
-    section.querySelectorAll('[data-f4g-ref]').forEach(function (btn) {
-      btn.addEventListener('click', function () { openGuide({ view: 'ref', refId: btn.getAttribute('data-f4g-ref') }); });
-    });
+    wireEntry(section);
   }
+
+  // Promote the recommended-start block to the TOP of the F-4 result card via
+  // the card's .external-guide-slot (rendered right after the card summary), so
+  // the primary CTA is above the fold — never tucked at the bottom or in a
+  // corner. Returns true when a card slot was found and used.
+  function injectRecStart(data, preselectCountry) {
+    injectStyles();
+    var slot = document.querySelector('.external-guide-slot[data-guide-slot="F-4"]');
+    if (!slot) return false;
+    if (preselectCountry) state.selectedCountry = preselectCountry;
+    slot.innerHTML = '<div class="f4g-hero f4g-hero-incard">' + recStartBlockHtml(data) + '</div>';
+    wireEntry(slot);
+    return true;
+  }
+
+  /* --------------------------------------------- mobile-only sticky CTA */
+  // Reinforces the SAME primary action so the guide stays reachable on small
+  // screens without scrolling back up. Mobile-only (CSS) and hidden whenever the
+  // guide overlay itself is open, so it never creates a competing path.
+  var stickyEl = null;
+  function ensureSticky() {
+    if (stickyEl) return stickyEl;
+    injectStyles();
+    stickyEl = document.createElement('div');
+    stickyEl.className = 'f4g-sticky';
+    stickyEl.id = 'f4gStickyCta';
+    stickyEl.hidden = true;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'f4g-sticky-btn';
+    btn.textContent = STR.stickyCta;
+    btn.addEventListener('click', function () { openGuide({ view: 'flow' }); });
+    stickyEl.appendChild(btn);
+    document.body.appendChild(stickyEl);
+    return stickyEl;
+  }
+  function showStickyCta() {
+    ensureSticky();
+    var btn = stickyEl.querySelector('.f4g-sticky-btn');
+    if (btn) btn.textContent = STR.stickyCta;
+    stickyEl.hidden = false;
+  }
+  function hideStickyCta() { if (stickyEl) stickyEl.hidden = true; }
 
   /* --------------------------------------------------------------- overlay */
   function buildOverlay() {
@@ -1420,6 +1502,8 @@
     buildResultModel: buildResultModel,
     buildChecklistText: buildChecklistText,
     renderStepHtml: renderStepHtml,
+    recStartBlockHtml: recStartBlockHtml,
+    entryPanelHtml: entryPanelHtml,
     _state: state
   };
   if (typeof globalThis !== 'undefined') globalThis.ParadisoF4Guide = api;
@@ -1456,15 +1540,25 @@
 
   document.addEventListener('paradiso:results-rendered', function (e) {
     var section = document.getElementById('f4RouteGuide');
-    if (!section) return;
     var detail = e.detail || {};
-    if (!isF4Relevant(detail)) { section.hidden = true; return; }
-    section.hidden = false;
+    if (!isF4Relevant(detail)) {
+      if (section) { section.hidden = true; section.innerHTML = ''; }
+      hideStickyCta();
+      return;
+    }
     loadAll().then(function (data) {
       var preselect = detectCountry(detail.query);
-      mountEntryPanel(section, data, preselect);
+      // Prefer promoting the block to the TOP of the F-4 card; only fall back to
+      // the standalone section when no F-4 card is present in the results.
+      var injected = injectRecStart(data, preselect);
+      if (injected) { if (section) { section.hidden = true; section.innerHTML = ''; } }
+      else if (section) { mountEntryPanel(section, data, preselect); }
+      showStickyCta();
     }).catch(function () {
+      hideStickyCta();
+      if (!section) return;
       injectStyles();
+      section.hidden = false;
       section.innerHTML = '<div class="f4g-hero"><div class="f4h-error">' + esc(STR.fetchFail) + '</div>' +
         '<div class="f4h-links" style="margin-top:.5rem;">' +
           '<a href="https://overseas.mofa.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.linkMissionFinder) + '</a>' +
@@ -1476,20 +1570,26 @@
 
   document.addEventListener('paradiso:landing-reset', function () {
     var section = document.getElementById('f4RouteGuide');
-    if (section) section.hidden = true;
+    if (section) { section.hidden = true; section.innerHTML = ''; }
+    hideStickyCta();
     if (state.modal && state.modal.classList.contains('open')) closeGuide();
   });
 
-  // Live language switch: re-render the open guide and the entry panel so chrome
-  // follows the active language without needing to reopen (the Proxy already
-  // keeps reopened popups correct).
+  // Live language switch: re-render the open guide and whichever entry surface is
+  // active (in-card block or fallback section) so chrome follows the active
+  // language without needing to reopen (the Proxy already keeps reopened popups
+  // correct).
   window.addEventListener('paradiso-language-applied', function () {
     if (state.modal && state.modal.classList.contains('open') && state.data) {
       try { renderGuide(); } catch (e) { /* noop */ }
     }
-    var section = document.getElementById('f4RouteGuide');
-    if (section && !section.hidden && state.data) {
-      try { mountEntryPanel(section, state.data, state.selectedCountry); } catch (e) { /* noop */ }
-    }
+    if (!state.data) return;
+    try {
+      var inCard = document.querySelector('.external-guide-slot[data-guide-slot="F-4"] .f4g-hero-incard');
+      var section = document.getElementById('f4RouteGuide');
+      if (inCard) { injectRecStart(state.data, state.selectedCountry); if (section) { section.hidden = true; section.innerHTML = ''; } }
+      else if (section && !section.hidden) { mountEntryPanel(section, state.data, state.selectedCountry); }
+      if (stickyEl && !stickyEl.hidden) { var sb = stickyEl.querySelector('.f4g-sticky-btn'); if (sb) sb.textContent = STR.stickyCta; }
+    } catch (e) { /* noop */ }
   });
 })();
