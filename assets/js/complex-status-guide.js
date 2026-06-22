@@ -96,7 +96,11 @@
     noSubcodesNote: '이 체류자격은 공식 데이터에 정리된 선택 가능한 세부 유형이 없어, 바로 절차 안내로 진행합니다.',
     noteE7: 'E-7은 직종·직무에 따라 요건과 서류가 다릅니다. 정확한 직종 분류 확인이 필요할 수 있으며, 결과는 단정할 수 없습니다.',
     noteG1: 'G-1은 체류 사유별로 요건과 서류가 다르며, 다수 항목이 개별 심사·확인 대상입니다. 관할 기관 확인이 필요합니다.',
-    noteF5: 'F-5(영주)는 자격 기준과 절차가 까다롭고 개별 심사 비중이 큽니다. 구체적 요건은 공식 출처와 관할 기관에서 확인하세요.'
+    noteF5: 'F-5(영주)는 자격 기준과 절차가 까다롭고 개별 심사 비중이 큽니다. 구체적 요건은 공식 출처와 관할 기관에서 확인하세요.',
+    docChecklistIntro: '아래는 공식 매뉴얼에 정리된 준비서류입니다(참고용 체크리스트). 개별 사안에 따라 달라질 수 있습니다.',
+    docsInManualNote: '이 절차의 준비서류가 공식 매뉴얼에 정리되어 있습니다. "전체 준비서류·절차 보기"에서 전체 목록을 확인하세요.',
+    docsMoreInDetail: '그 밖의 항목은 상세 화면에서 전체 확인하세요.',
+    sourceManualLabel: '매뉴얼 근거'
   };
   var STR_EN = {
     eyebrow: 'Guidance based on official sources',
@@ -154,7 +158,11 @@
     noSubcodesNote: 'This status has no selectable subcategories recorded in the official data, so we go straight to the procedure step.',
     noteE7: 'E-7 requirements and documents depend on the occupation/job category. Confirming the exact job classification may be required, and outcomes cannot be guaranteed.',
     noteG1: 'G-1 requirements and documents vary by reason for stay, and many items are subject to individual review. Confirmation with the competent office is required.',
-    noteF5: 'F-5 (permanent residence) has strict criteria and significant individual review. Confirm specific requirements with official sources and the competent office.'
+    noteF5: 'F-5 (permanent residence) has strict criteria and significant individual review. Confirm specific requirements with official sources and the competent office.',
+    docChecklistIntro: 'The documents below are from the official manual (reference checklist). They may vary by individual case.',
+    docsInManualNote: 'This procedure’s documents are recorded in the official manual. Tap "View full documents & procedure" for the complete list.',
+    docsMoreInDetail: 'See the detail screen for the remaining items.',
+    sourceManualLabel: 'Manual reference'
   };
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
   function S(k) { var p = STR_PACKS[csgLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; }
@@ -203,6 +211,78 @@
     return null;
   }
 
+  /* ---------------------------------------------- source-backed documents ---
+   * Document data lives at the PARENT procedure level in visa_data.json
+   * (procedures.<camelKey>.requiredDocs grouped into common/required/additional/
+   * conditional). Most entries are prose (manual document names), but some are
+   * doc_master IDs. We render a checklist ONLY from resolvable doc_master IDs
+   * (short, clean, audit-safe names); prose/empty groups fall back to the
+   * existing audit-safe card renderer via the "view full detail" handoff, marked
+   * as needing confirmation. Subcodes carry no own documents, so we never invent
+   * subcode-specific requirements. */
+  var DOC_MASTER = null;        // id -> { ko_name, en_name }
+  var docMasterPromise = null;
+  function buildDocMasterMap(arr) {
+    var map = {};
+    (Array.isArray(arr) ? arr : []).forEach(function (d) { if (d && d.id) map[d.id] = d; });
+    return map;
+  }
+  function loadDocMaster() {
+    if (DOC_MASTER) return Promise.resolve(DOC_MASTER);
+    if (docMasterPromise) return docMasterPromise;
+    if (typeof fetch !== 'function') return Promise.resolve(null);
+    docMasterPromise = fetch('doc_master.json', { cache: 'no-cache' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (arr) { DOC_MASTER = buildDocMasterMap(arr); return DOC_MASTER; })
+      .catch(function () { docMasterPromise = null; return null; }); // graceful: fall back to handoff
+    return docMasterPromise;
+  }
+  function docName(id, docMaster) {
+    var e = docMaster && docMaster[id];
+    if (!e) return id;
+    return (csgLang() === 'en' && e.en_name) ? e.en_name : (e.ko_name || e.en_name || id);
+  }
+  function camelKeyOf(snakeKey) {
+    var map = (window.ParadisoRoute && window.ParadisoRoute.CAMEL_OF) || {};
+    return map[snakeKey] || snakeKey;
+  }
+  // Partition one procedure's doc groups into resolvable doc_master IDs vs prose.
+  // Pure given (groupArrays, docMaster). Returns {docs:[{id,name}], prose:Number}.
+  function partitionGroup(arrays, docMaster) {
+    var docs = [], prose = 0, seen = {};
+    (arrays || []).forEach(function (list) {
+      (Array.isArray(list) ? list : []).forEach(function (e) {
+        if (typeof e === 'string' && e.indexOf('doc_') === 0 && docMaster && docMaster[e]) {
+          if (!seen[e]) { seen[e] = 1; docs.push({ id: e, name: docName(e, docMaster) }); }
+        } else { prose += 1; }
+      });
+    });
+    return { docs: docs, prose: prose };
+  }
+  // Build source-backed doc + manual-ref info for a (code, snake procKey).
+  // record + docMaster are injected (browser: VISA_DATA + DOC_MASTER; tests pass
+  // them directly) so this stays unit-testable and never depends on globals.
+  function buildDocInfo(code, snakeProcKey, record, docMaster) {
+    var empty = { camelKey: '', basicDocs: [], basicProse: 0, sitDocs: [], sitProse: 0, docsAvailable: false, sourceRefs: [] };
+    if (!snakeProcKey || !record || !record.procedures) return empty;
+    var camelKey = camelKeyOf(snakeProcKey);
+    var proc = record.procedures[camelKey];
+    if (!proc) return empty;
+    var rd = proc.requiredDocs || {};
+    var basic = partitionGroup([rd.commonDocs, rd.requiredDocs], docMaster);
+    var sit = partitionGroup([rd.additionalDocs, rd.conditionalDocs], docMaster);
+    var sourceRefs = (Array.isArray(proc.manualRefs) ? proc.manualRefs : []).map(function (r) {
+      return { name: r.manualName || '', version: r.manualVersion || '', page: r.pageRange || '' };
+    }).filter(function (r) { return r.name || r.page; });
+    return {
+      camelKey: camelKey,
+      basicDocs: basic.docs, basicProse: basic.prose,
+      sitDocs: sit.docs, sitProse: sit.prose,
+      docsAvailable: (basic.docs.length + basic.prose + sit.docs.length + sit.prose) > 0,
+      sourceRefs: sourceRefs
+    };
+  }
+
   /* -------------------------------------------------- pure flow + result --- */
   // Steps are computed from the (source-backed) model. Pure → unit-testable.
   function buildSteps(model) {
@@ -224,23 +304,35 @@
     return steps;
   }
 
-  function buildResultModel(code, model, answers) {
+  // opts.record + opts.docMaster (optional) enable source-backed documents +
+  // manual references in the result. Without them the result degrades to the
+  // safe handoff (still useful, marked "공식근거 확인 필요").
+  function buildResultModel(code, model, answers, opts) {
     answers = answers || {};
+    opts = opts || {};
     var subCode = (answers.subcode && answers.subcode !== 'unsure') ? answers.subcode : '';
     var procKey = (answers.procedure && answers.procedure !== 'unsure') ? answers.procedure : '';
     var sub = subCode ? findSub(model, subCode) : null;
     var proc = procKey ? findProc(model, procKey) : null;
+    var di = buildDocInfo(code, procKey, opts.record || null, opts.docMaster || null);
     return {
       code: code,
       subCode: subCode,
       subLabel: sub ? subcodeLabel(sub) : '',
       procKey: procKey,
+      procCamelKey: di.camelKey,
       procLabel: proc ? procLabel(proc) : '',
       noteKey: STATUS_NOTE[code] || '',
       firstSteps: [S('firstStepConfirmType'), S('firstStepConfirmOffice'), S('firstStepPrepareDocs')],
-      procSteps: [S('procStepPrepare'), S('procStepReserve'), S('procStepSubmit'), S('procStepReview'), S('procStepResult'), S('procStepFollowup')]
+      procSteps: [S('procStepPrepare'), S('procStepReserve'), S('procStepSubmit'), S('procStepReview'), S('procStepResult'), S('procStepFollowup')],
+      basicDocs: di.basicDocs, basicProse: di.basicProse,
+      sitDocs: di.sitDocs, sitProse: di.sitProse,
+      docsAvailable: di.docsAvailable,
+      sourceRefs: di.sourceRefs
     };
   }
+
+  function sourceRefText(r) { return [r.name, r.version, r.page].filter(Boolean).join(' · '); }
 
   function checklistText(code, m) {
     var lines = [];
@@ -249,10 +341,22 @@
     lines.push(S('matchedProcedure') + ': ' + (m.procLabel || S('unsureProcedure')));
     lines.push(''); lines.push('[' + S('resFirstSteps') + ']');
     m.firstSteps.forEach(function (s) { lines.push('- ' + s); });
-    lines.push(''); lines.push('[' + S('resBasicDocs') + '] ' + S('officialSourceNeedsConfirm'));
-    lines.push('- ' + S('docsHandoffNote'));
+    lines.push(''); lines.push('[' + S('resBasicDocs') + ']');
+    if (m.basicDocs && m.basicDocs.length) {
+      m.basicDocs.forEach(function (d) { lines.push('[ ] ' + d.name); });
+      if (m.basicProse) lines.push('- ' + S('docsMoreInDetail'));
+    } else if (m.docsAvailable) { lines.push('- ' + S('docsInManualNote')); }
+    else { lines.push('- ' + S('officialSourceNeedsConfirm')); }
+    if (m.sitDocs && m.sitDocs.length) {
+      lines.push(''); lines.push('[' + S('resAddDocs') + ']');
+      m.sitDocs.forEach(function (d) { lines.push('[ ] ' + d.name); });
+    }
     lines.push(''); lines.push('[' + S('resProcedure') + ']');
     m.procSteps.forEach(function (s, i) { lines.push((i + 1) + '. ' + s); });
+    if (m.sourceRefs && m.sourceRefs.length) {
+      lines.push(''); lines.push('[' + S('resSources') + ']');
+      m.sourceRefs.forEach(function (r) { lines.push('- ' + sourceRefText(r)); });
+    }
     lines.push(''); lines.push(S('safetyNote'));
     return lines.join('\n');
   }
@@ -571,11 +675,27 @@
     });
   }
 
+  // Build the result model with source-backed docs/sources injected (browser:
+  // VISA_DATA record + the lazily-fetched doc_master map). Kicks off doc_master
+  // loading and re-renders once it arrives so the checklist upgrades in place.
+  function computeResult() {
+    state.result = buildResultModel(state.code, state.model, state.answers,
+      { record: getRecord(state.code), docMaster: DOC_MASTER });
+    if (!DOC_MASTER && typeof fetch === 'function') {
+      loadDocMaster().then(function (dm) {
+        if (dm && state.view === 'result' && state.modal && state.modal.classList.contains('open')) {
+          state.result = buildResultModel(state.code, state.model, state.answers, { record: getRecord(state.code), docMaster: dm });
+          renderResultView();
+        }
+      });
+    }
+  }
+
   function goNext() {
     var step = state.steps[state.stepIndex];
     if (!state.answers[step.id]) return;
     if (state.stepIndex < state.steps.length - 1) { state.stepIndex++; renderFlow(); focusFirst(); return; }
-    state.result = buildResultModel(state.code, state.model, state.answers);
+    computeResult();
     state.view = 'result';
     renderGuide();
     focusFirst();
@@ -587,6 +707,11 @@
 
   function numSection(n, titleStr, inner) {
     return '<div class="csg-section"><p class="csg-section-title"><span class="csg-num" aria-hidden="true">' + n + '</span>' + esc(titleStr) + '</p>' + inner + '</div>';
+  }
+  function docChecklistHtml(docs) {
+    return '<div class="csg-checklist">' + docs.map(function (d) {
+      return '<label class="csg-chk"><input type="checkbox"><span>' + esc(d.name) + '</span></label>';
+    }).join('') + '</div>';
   }
 
   function renderResultView() {
@@ -605,14 +730,41 @@
 
     // 1. First steps
     html += numSection('1', S('resFirstSteps'), '<ul class="csg-ul">' + m.firstSteps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul>');
-    // 2. Basic required documents → safe handoff (no protected data re-rendered)
-    html += numSection('2', S('resBasicDocs') + ' ', '<p class="csg-meta">' + esc(S('officialSourceNeedsConfirm')) + '<span class="csg-badge-confirm">' + esc(S('officialSourceNeedsConfirm')) + '</span></p><div class="csg-note">' + esc(S('docsHandoffNote')) + '</div><div class="csg-actions"><button type="button" class="csg-act-btn primary" data-csg-act="detail">' + esc(S('viewFullDetail')) + '</button></div>');
-    // 3. Documents that may be added
-    html += numSection('3', S('resAddDocs'), '<div class="csg-note">' + esc(S('addDocsNote')) + '</div>');
+    // 2. Basic required documents — render a checklist from resolvable doc_master
+    //    IDs; for prose/empty groups, point to the audit-safe detail (no raw
+    //    prose re-rendered here) and mark needing confirmation.
+    var detailBtn = '<div class="csg-actions"><button type="button" class="csg-act-btn primary" data-csg-act="detail">' + esc(S('viewFullDetail')) + '</button></div>';
+    var basicInner;
+    if (m.basicDocs && m.basicDocs.length) {
+      basicInner = '<p class="csg-meta">' + esc(S('docChecklistIntro')) + '</p>' + docChecklistHtml(m.basicDocs) +
+        (m.basicProse ? '<div class="csg-note">' + esc(S('docsMoreInDetail')) + '</div>' + detailBtn : '');
+    } else if (m.docsAvailable) {
+      basicInner = '<div class="csg-note">' + esc(S('docsInManualNote')) + '</div>' + detailBtn;
+    } else {
+      basicInner = '<p class="csg-meta"><span class="csg-badge-confirm">' + esc(S('officialSourceNeedsConfirm')) + '</span></p><div class="csg-note">' + esc(S('docsHandoffNote')) + '</div>' + detailBtn;
+    }
+    html += numSection('2', S('resBasicDocs'), basicInner);
+    // 3. Documents that may be added for your situation
+    var sitInner;
+    if (m.sitDocs && m.sitDocs.length) {
+      sitInner = docChecklistHtml(m.sitDocs) + (m.sitProse ? '<div class="csg-note">' + esc(S('docsMoreInDetail')) + '</div>' : '');
+    } else {
+      sitInner = '<div class="csg-note">' + esc(S('addDocsNote')) + '</div>';
+    }
+    html += numSection('3', S('resAddDocs'), sitInner);
     // 4. Procedure (generic process list)
     html += numSection('4', S('resProcedure'), '<ol class="csg-ul">' + m.procSteps.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ol>');
-    // 5. Official sources → on the detail screen / needs confirmation
-    html += numSection('5', S('resSources'), '<div class="csg-note">' + esc(S('sourcesHandoffNote')) + '</div>');
+    // 5. Official sources — source-backed manual references where present
+    var srcInner;
+    if (m.sourceRefs && m.sourceRefs.length) {
+      srcInner = '<ul class="csg-ul">' + m.sourceRefs.map(function (r) {
+        return '<li><strong>' + esc(S('sourceManualLabel')) + ':</strong> ' + esc(sourceRefText(r)) + '</li>';
+      }).join('') + '</ul>';
+    } else {
+      srcInner = '<p class="csg-meta"><span class="csg-badge-confirm">' + esc(S('officialSourceNeedsConfirm')) + '</span></p>';
+    }
+    srcInner += '<div class="csg-note">' + esc(S('sourcesHandoffNote')) + '</div>';
+    html += numSection('5', S('resSources'), srcInner);
     // 6. Next actions
     html += numSection('6', S('resNextActions'), '<div class="csg-actions">' +
       '<button type="button" class="csg-act-btn primary" data-csg-act="detail">' + esc(S('viewFullDetail')) + '</button>' +
@@ -654,11 +806,18 @@
     open: open,
     close: close,
     isOpen: function () { return !!(state.modal && state.modal.classList.contains('open')); },
+    // exposed for the offline contract test:
+    buildDocInfo: buildDocInfo,
+    buildDocMasterMap: buildDocMasterMap,
     S: S, _state: state
   };
   if (typeof globalThis !== 'undefined') globalThis.ParadisoStatusGuide = api;
 
   if (typeof document === 'undefined') return;
+
+  // Warm the doc_master cache so the result checklist is ready by the time the
+  // user finishes the flow (graceful: falls back to the handoff if it fails).
+  try { loadDocMaster(); } catch (e) { /* non-fatal */ }
 
   /* ----------------------------------------------- search-result integration */
   function injectAll() {

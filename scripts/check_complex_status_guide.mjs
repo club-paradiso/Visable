@@ -57,13 +57,15 @@ ok(CSG.TARGETS.indexOf('F-4') === -1, 'F-4 is NOT a target (reference impl untou
 ok(['buildSteps', 'buildResultModel', 'recStartBlockHtml', 'checklistText', 'open', 'close'].every((f) => typeof CSG[f] === 'function'),
   'pure + control functions exposed');
 
-/* ------------------------------------- never re-renders protected doc data */
-section('Source safety (no protected doc rendering, handoff present)');
-// Property-access only (e.g. rec.requiredDocs) — not UI ref-id string literals like 'commonDocs'.
-ok(!/\.(requiredDocs|commonDocs|manualRefs|docs)\b/.test(engineSrc), 'engine never reads/renders raw document fields from records');
+/* ------------------------------------- document safety (resolvable IDs only) */
+section('Source safety (checklist from doc_master IDs only; prose stays in handoff)');
 ok(/ParadisoRoute/.test(engineSrc) && /goToResult/.test(engineSrc), 'engine hands off to the source-backed detail (ParadisoRoute.goToResult)');
 ok(/공식근거 확인 필요/.test(engineSrc) && /Official source needs confirmation/.test(engineSrc), 'uncertain items marked needing official confirmation (KO/EN)');
 ok(!/KSCO|jobcode|job_code|industrycode/i.test(engineSrc), 'engine does not duplicate E-7 job/industry-code logic');
+// The engine reads doc fields only to render RESOLVABLE doc_master IDs as a
+// checklist; prose entries are counted and routed to the audit-safe handoff,
+// never rendered as tiles. (Behavioral assertions below verify this.)
+ok(/indexOf\('doc_'\) === 0 && docMaster && docMaster\[e\]/.test(engineSrc), 'only resolvable doc_master IDs become checklist items (prose excluded)');
 
 /* ------------------------------------------ full-screen / wide (not tiny) */
 section('Full-screen / wide overlay + a11y (not a tiny modal)');
@@ -145,6 +147,49 @@ for (const code of TARGETS) {
 // "unsure" answers never crash and produce a safe result.
 const us = CSG.buildResultModel('G-1', model('G-1'), { subcode: 'unsure', procedure: 'unsure' });
 ok(us && us.subLabel === '' && us.procLabel === '', 'unsure answers → empty selection, still a valid result model');
+
+/* ----------------------------- source-backed documents + manual references */
+section('Source-backed documents (doc_master IDs) + manual references');
+const docMaster = CSG.buildDocMasterMap(JSON.parse(read('doc_master.json')));
+const docMasterIds = new Set(Object.keys(docMaster));
+function resultWithDocs(code, snakeProc, subcode) {
+  return CSG.buildResultModel(code, model(code), { subcode: subcode || 'unsure', procedure: snakeProc }, { record: byCode(code), docMaster });
+}
+// F-6 visa issuance is the repo's ID-based procedure → a real, resolvable checklist (Level A).
+const f6 = resultWithDocs('F-6', 'visa_issuance');
+ok(f6.basicDocs.length >= 5, 'F-6 visa issuance renders a source-backed basic-document checklist', String(f6.basicDocs.length));
+ok(f6.basicDocs.every((d) => /^doc_/.test(d.id) && docMasterIds.has(d.id)), 'F-6 basic docs are ALL resolvable doc_master IDs (no prose leaked)');
+ok(f6.basicProse === 0, 'F-6 visa issuance has no unresolved prose in the rendered checklist');
+ok(f6.sourceRefs.length > 0 && f6.sourceRefs.every((r) => r.name), 'F-6 visa issuance shows source-backed manual references');
+const f6text = CSG.checklistText('F-6', f6);
+ok(/\[ \] /.test(f6text) && f6.basicDocs.some((d) => f6text.includes(d.name)), 'F-6 copy checklist includes the resolved document names');
+ok(!/공식근거 확인 필요/.test(f6text), 'F-6 (docs resolved) does not fall back to needs-confirmation for basic docs');
+// Prose-only procedures: NO invented docs in the checklist, but source-backed manual refs + handoff.
+for (const [code, proc] of [['D-2', 'status_change'], ['E-7', 'extension'], ['F-5', 'extension'], ['G-1', 'extension']]) {
+  const rm = resultWithDocs(code, proc);
+  ok(rm.basicDocs.length === 0, `${code}/${proc}: prose docs are NOT rendered as checklist tiles (handoff instead)`);
+  ok(rm.docsAvailable === true, `${code}/${proc}: detects source-backed docs exist (routes to detail)`);
+  ok(rm.sourceRefs.length > 0 && rm.sourceRefs.every((r) => r.name), `${code}/${proc}: shows source-backed manual references`);
+}
+// D-4 extension is MIXED (one resolvable doc_master ID + prose): the resolvable
+// ID renders, the prose stays in the handoff — both safe.
+const d4 = resultWithDocs('D-4', 'extension');
+ok(d4.basicDocs.every((d) => docMasterIds.has(d.id)) && d4.basicProse > 0 && d4.docsAvailable,
+  'D-4 extension (mixed): renders only resolvable IDs, routes prose to detail');
+// Across EVERY status+available-procedure: any rendered checklist item must resolve in doc_master (never prose).
+let leaked = 0;
+for (const code of TARGETS) {
+  const m = model(code);
+  for (const o of CSG.buildSteps(m).find((s) => s.id === 'procedure').options) {
+    if (o.id === 'unsure') continue;
+    const rm = CSG.buildResultModel(code, m, { subcode: 'unsure', procedure: o.id }, { record: byCode(code), docMaster });
+    for (const d of rm.basicDocs.concat(rm.sitDocs)) if (!(/^doc_/.test(d.id) && docMasterIds.has(d.id))) leaked++;
+  }
+}
+ok(leaked === 0, 'no prose/unresolved entry ever leaks into a rendered document checklist (all six statuses)');
+// buildDocInfo with no record/docMaster degrades safely (handoff path).
+const degraded = CSG.buildDocInfo('D-2', 'extension', null, null);
+ok(degraded.basicDocs.length === 0 && degraded.docsAvailable === false && degraded.sourceRefs.length === 0, 'buildDocInfo degrades safely without injected data');
 
 /* ------------------------------------------------------------- wiring */
 section('index.html + visa-route-guide wiring (single CTA, no competition)');
