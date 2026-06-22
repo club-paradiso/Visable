@@ -100,6 +100,7 @@ const targets = [
   { file: 'assets/js/f4-route-guide.js', packs: [['STR_KO', 'STR_EN'], ['TAB_LABEL_KO', 'TAB_LABEL_EN']] },
   { file: 'assets/js/short-stay-checker.js', packs: [['STR_KO', 'STR_EN']] },
   { file: 'assets/js/complex-status-guide.js', packs: [['STR_KO', 'STR_EN']] },
+  { file: 'assets/js/hikorea-reservation-helper.js', packs: [['STR_KO', 'STR_EN']] },
 ];
 
 for (const t of targets) {
