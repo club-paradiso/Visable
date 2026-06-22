@@ -1068,6 +1068,10 @@
       if (!code) return;
       var resolved = resolveCode(code);
       if (!resolved.code || !isGuidable(findRecord(resolved.code))) return;
+      // F-4 owns a dedicated full-screen complex-status guide (assets/js/
+      // f4-route-guide.js → #f4RouteGuide primary CTA). Suppress the generic
+      // in-card CTA for F-4 so it never competes with the single primary CTA.
+      if (resolved.code === 'F-4') return;
       var host = card.querySelector('.external-guide-slot[data-guide-slot="' + (window.CSS && CSS.escape ? CSS.escape(code) : code) + '"]')
         || card.querySelector('.external-guide-slot')
         || card.querySelector('.manual-layout') || card.querySelector('.vc-c');

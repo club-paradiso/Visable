@@ -205,6 +205,11 @@ echo "[9c/14] Validating F-4 (재외동포) global official-source hub..."
 if command -v node >/dev/null 2>&1; then
   node scripts/check_f4_route_guide.mjs
   node scripts/smoke_f4_hub.mjs
+  # End-to-end (offline) verification of the unified F-4 complex-status guide:
+  # drives the REAL step renderer + result-model builder against data/f4/*.json
+  # so every flow path is checklist-first, source-grounded, and never invents
+  # documents (uncertain items flagged "공식근거 확인 필요").
+  node scripts/check_f4_guide_flow.mjs
   # Popup chrome i18n parity for the standalone guide modules (F-4 route hub,
   # short-stay checker): KO/EN chrome packs paired, option labels carry labelEn,
   # no hardcoded Korean in aria-label/title/placeholder literals.
