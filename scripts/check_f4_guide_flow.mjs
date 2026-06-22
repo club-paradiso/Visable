@@ -58,6 +58,27 @@ const data = {
 F4._state.data = data;
 const srcIds = new Set((data.sources.sources || []).map((s) => s.id));
 
+/* ------------------------- recommended-start block (CTA discoverability) */
+section('Recommended-start block — dominant CTA, correct hierarchy');
+ok(typeof F4.recStartBlockHtml === 'function', 'recStartBlockHtml exposed');
+const rec = F4.recStartBlockHtml(data);
+ok(typeof rec === 'string' && rec.length > 0 && !/undefined/.test(rec), 'block renders with no undefined');
+ok(rec.includes('추천 시작점'), 'block shows the recommended-start title');
+ok(rec.includes('세부코드를 몰라도'), 'block body reassures users who do not know their subcategory');
+ok(rec.includes('내 상황에 맞는 F-4 준비서류 찾기'), 'block shows the document-checklist-focused primary CTA');
+ok(rec.includes('약 1분'), 'block shows the supporting microcopy (time / question count)');
+// Hierarchy: the primary CTA must appear BEFORE the secondary actions, and the
+// secondary actions must still be present (demoted, not removed).
+const iPrimary = rec.indexOf('f4g-primary-cta');
+const iSecondary = rec.indexOf('다른 방식으로 보기');
+ok(iPrimary !== -1 && iSecondary !== -1 && iPrimary < iSecondary,
+  'primary CTA precedes the demoted secondary actions');
+for (const s of ['전체 세부자격 보기', '공통서류 보기', '신청 절차 보기', '공식 근거 보기']) {
+  ok(rec.includes(s), `secondary action still available: ${s}`);
+}
+// Exactly one labelled heading id for the F-4 guide region (a11y / uniqueness).
+ok((rec.match(/id="f4RouteGuideTitle"/g) || []).length === 1, 'block exposes a single labelled title id');
+
 /* ----------------------------------------- one-question-per-step rendering */
 section('Flow steps (one question per step + "I am not sure")');
 const EXPECT_Q = {
