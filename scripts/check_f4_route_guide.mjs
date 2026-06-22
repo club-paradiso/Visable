@@ -274,6 +274,10 @@ ok(guideJs.includes('약 1분 · 4~5개 질문 · 세부코드를 몰라도 시�
   'CTA supporting microcopy present (≈1 min · 4–5 questions · no subcode needed)');
 ok(/injectRecStart/.test(guideJs) && /external-guide-slot\[data-guide-slot="F-4"\]/.test(guideJs),
   'recommended-start block is promoted to the TOP of the F-4 result card (external-guide-slot)');
+// In-card promotion must only "succeed" when the F-4 card is actually expanded;
+// a collapsed card keeps the standalone section visible (no hidden CTA).
+ok(/function isCardOpen/.test(guideJs) && /classList\.contains\('open'\)/.test(guideJs) && /!isCardOpen\(slot\)/.test(guideJs),
+  'in-card injection guards on card-open state (collapsed F-4 card → section fallback stays visible)');
 ok(guideJs.includes('다른 방식으로 보기') && guideJs.includes('Other ways to view this status'),
   'secondary actions demoted under "다른 방식으로 보기 / Other ways to view this status"');
 ok(!guideJs.includes("secondaryActionsLabel: '바로 자료 보기'") && !guideJs.includes("secondaryActionsLabel: 'Jump to reference'"),

@@ -715,14 +715,28 @@
     wireEntry(section);
   }
 
+  // True only when the F-4 card hosting the slot is actually expanded. A
+  // collapsed card (.vc without .open) keeps its body — including the slot — in
+  // the DOM but visually collapsed (grid-template-rows:0fr), so the slot exists
+  // yet the promoted CTA would be invisible. In that case we must NOT claim the
+  // in-card injection succeeded, or the standalone fallback gets hidden and the
+  // CTA disappears for keyword searches like "국내거소" where F-4 stays collapsed.
+  function isCardOpen(slot) {
+    var card = (slot && slot.closest) ? slot.closest('.vc') : null;
+    // No .vc wrapper (unexpected markup) → treat as visible rather than hide.
+    if (!card) return true;
+    return card.classList.contains('open');
+  }
+
   // Promote the recommended-start block to the TOP of the F-4 result card via
   // the card's .external-guide-slot (rendered right after the card summary), so
   // the primary CTA is above the fold — never tucked at the bottom or in a
-  // corner. Returns true when a card slot was found and used.
+  // corner. Returns true only when the slot exists AND its card is expanded;
+  // otherwise the caller keeps the standalone #f4RouteGuide section visible.
   function injectRecStart(data, preselectCountry) {
     injectStyles();
     var slot = document.querySelector('.external-guide-slot[data-guide-slot="F-4"]');
-    if (!slot) return false;
+    if (!slot || !isCardOpen(slot)) return false;
     if (preselectCountry) state.selectedCountry = preselectCountry;
     slot.innerHTML = '<div class="f4g-hero f4g-hero-incard">' + recStartBlockHtml(data) + '</div>';
     wireEntry(slot);
