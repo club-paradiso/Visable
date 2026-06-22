@@ -13,6 +13,11 @@
     "test:employment-guided-ux": "node scripts/check_employment_checklist.mjs",
     "audit:employment-sources": "node scripts/audit_employment_sources.mjs",
     "report:employment-failures": "node scripts/employment_failure_report.mjs",
-    "test:employment-reporting-helper": "node scripts/check_employment_reporting_helper.mjs"
+    "test:employment-reporting-helper": "node scripts/check_employment_reporting_helper.mjs",
+    "test:complex-guide-qa": "node scripts/check_complex_status_guide_qa.mjs",
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.61.0"
   }
 }
