@@ -1053,6 +1053,11 @@
   }
 
   /* ---------------------------------------- in-card CTA (results-rendered) */
+  // Statuses with a dedicated ComplexStatusGuide recommended-start CTA at the top
+  // of their card. The generic in-card CTA is suppressed for these to avoid
+  // competing guide buttons (the dedicated modules still call back into this
+  // module for their "view full detail" handoff).
+  var COMPLEX_GUIDE_OWNED = ['F-4', 'F-6', 'G-1', 'E-7', 'F-5', 'D-2', 'D-4'];
   // Surfaces the guided flow at the top of every guidable result card so an
   // exact-code search (which renders the full card inline, with no compact
   // show-detail card) still gets the journey. Reuses the already-wired
@@ -1068,10 +1073,12 @@
       if (!code) return;
       var resolved = resolveCode(code);
       if (!resolved.code || !isGuidable(findRecord(resolved.code))) return;
-      // F-4 owns a dedicated full-screen complex-status guide (assets/js/
-      // f4-route-guide.js → #f4RouteGuide primary CTA). Suppress the generic
-      // in-card CTA for F-4 so it never competes with the single primary CTA.
-      if (resolved.code === 'F-4') return;
+      // Statuses with a dedicated full-screen ComplexStatusGuide entry own their
+      // single primary CTA (F-4 → f4-route-guide.js; F-6/G-1/E-7/F-5/D-2/D-4 →
+      // complex-status-guide.js). Suppress the generic in-card CTA for them so it
+      // never competes with the recommended-start CTA. This module still powers
+      // those guides' "view full detail" handoff via ParadisoRoute.
+      if (COMPLEX_GUIDE_OWNED.indexOf(resolved.code) !== -1) return;
       var host = card.querySelector('.external-guide-slot[data-guide-slot="' + (window.CSS && CSS.escape ? CSS.escape(code) : code) + '"]')
         || card.querySelector('.external-guide-slot')
         || card.querySelector('.manual-layout') || card.querySelector('.vc-c');
