@@ -163,8 +163,9 @@ ok(!/undefined/.test(F4.buildChecklistText(f4rm)), 'F-4: copy-checklist text has
 
 /* ----------------------------------- 5. source safety (no overconfident wording) */
 section('Source safety — no overconfident claims; needs-confirmation present');
-const BANNED = ['you are eligible', 'you will be approved', 'always required', 'guarantees approval', 'guaranteed approval',
-  '반드시 발급', '무조건 가능', '승인됩니다', '항상 필요', '보장합니다'];
+const BANNED = ['you are eligible', 'you will be approved', 'always required', 'definitely required', 'must be approved',
+  'guarantees approval', 'guaranteed approval',
+  '반드시 발급', '무조건 가능', '승인됩니다', '항상 필요', '반드시 승인', '자격이 확정', '보장합니다'];
 // Collect user-facing rendered strings across all statuses + both languages.
 let corpus = '';
 for (const lang of ['ko', 'en']) {
@@ -246,6 +247,44 @@ for (const code of SIX) {
   }
 }
 ok(leaked === 0, 'no prose ever leaks into a rendered document checklist (all six)');
+
+/* ----------------------------------- 12. safe result for EVERY procedure (incl.
+ * procedures the data lacks, e.g. G-1/E-7/D-4 visa_issuance — the adapter reports
+ * them available but visa_data has no entry). Every such result must stay safe:
+ * no undefined, no overconfident wording, no prose leak, and a fully-empty
+ * procedure must still produce a non-empty needs-confirmation result (never an
+ * empty card or a fabricated source). This locks the post-merge audited state. */
+section('Every available procedure yields a safe result (no empty/broken/overconfident)');
+let unsafe = 0, emptyProcChecked = 0;
+for (const lang of ['ko', 'en']) {
+  setLang(lang);
+  const needsConfirm = CSG.S('officialSourceNeedsConfirm');
+  const safetyNote = CSG.S('safetyNote');
+  for (const code of SIX) {
+    const m = RG.buildGuidanceModel(byCode(code));
+    for (const o of CSG.buildSteps(m).find((s) => s.id === 'procedure').options) {
+      if (o.id === 'unsure') continue;
+      const rm = CSG.buildResultModel(code, m, { subcode: 'unsure', procedure: o.id }, { record: byCode(code), docMaster });
+      const text = CSG.checklistText(code, rm);
+      let bad = '';
+      if (/undefined/.test(text)) bad = 'undefined';
+      else if (rm.basicDocs.concat(rm.sitDocs).some((d) => !/^doc_/.test(d.id))) bad = 'prose-leak';
+      else if (BANNED.some((b) => text.toLowerCase().includes(b.toLowerCase()))) bad = 'overconfident';
+      else if (!Array.isArray(rm.sourceRefs)) bad = 'sourceRefs-not-array';
+      if (bad) { unsafe++; ok(false, `${code}/${o.id} (${lang}) safe result`, bad); }
+      // Fully-empty procedure (no docs, no source refs) → still a safe,
+      // non-empty needs-confirmation result with the safety note.
+      if (rm.basicDocs.length === 0 && rm.sitDocs.length === 0 && rm.sourceRefs.length === 0) {
+        emptyProcChecked++;
+        const okEmpty = text.length > 0 && text.includes(needsConfirm) && text.includes(safetyNote);
+        if (!okEmpty) { unsafe++; ok(false, `${code}/${o.id} (${lang}) empty procedure → safe needs-confirmation result`); }
+      }
+    }
+  }
+}
+setLang('ko');
+ok(unsafe === 0, 'every status × every available procedure renders a safe result (KO+EN)');
+ok(emptyProcChecked > 0, 'data-less procedures exercised → confirmed they degrade to a safe needs-confirmation result', String(emptyProcChecked));
 
 console.log(`\n${checks} checks, ${failures} failures`);
 if (failures) process.exit(1);
