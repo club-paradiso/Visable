@@ -257,6 +257,21 @@ else
   echo "INFO: Node.js not found; skipping ComplexStatusGuide validation."
 fi
 
+echo "[9d-4/14] Validating complex status guide QA regression matrix (F-4 + 6 statuses)..."
+# Stdlib/Node-only, offline stand-in for the real-browser QA suite (browser
+# automation can't run in CI). Loads the REAL guide modules and asserts, across
+# all seven statuses in KO + EN: recommended-start block + document-checklist CTA
+# copy, demoted secondary actions, one-question-per-step + "I am not sure",
+# checklist-first result section labels, full-screen/wide overlay + a11y
+# attributes, theme-token CSS, source-safety (no overconfident wording;
+# needs-confirmation present), F-4 regression, and the CTA-suppression wiring.
+# The real-browser Playwright suite (tests/e2e/) is run manually in a browser env.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_complex_status_guide_qa.mjs
+else
+  echo "INFO: Node.js not found; skipping complex status guide QA matrix."
+fi
+
 echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..."
 # Stdlib/Node-only, offline. check_visa_issuance_ui executes the real route-chip
 # derivation + F-4 exclusion guard for every record; validate_visa_issuance_enrichment
