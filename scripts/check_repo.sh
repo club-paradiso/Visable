@@ -243,6 +243,20 @@ else
   echo "INFO: Node.js not found; skipping visa route-guidance validation."
 fi
 
+echo "[9d-3/14] Validating multi-status ComplexStatusGuide (F-6/G-1/E-7/F-5/D-2/D-4)..."
+# Stdlib/Node-only, offline. Loads the real pure functions from
+# assets/js/complex-status-guide.js and exercises them against visa_data.json via
+# the ParadisoRoute adapter: recommended-start block + single CTA per status,
+# source-backed flow options only (active subcodes / available procedures), a
+# checklist-first result that never invents documents (hands off to the
+# source-backed detail, marks uncertain items 공식근거 확인 필요), and the
+# index.html / visa-route-guide CTA-suppression wiring. F-4 stays untouched.
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_complex_status_guide.mjs
+else
+  echo "INFO: Node.js not found; skipping ComplexStatusGuide validation."
+fi
+
 echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..."
 # Stdlib/Node-only, offline. check_visa_issuance_ui executes the real route-chip
 # derivation + F-4 exclusion guard for every record; validate_visa_issuance_enrichment

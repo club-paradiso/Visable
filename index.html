@@ -18870,11 +18870,14 @@ function isF4RouteWizardTarget(v) {
 function renderF4RouteChooser(v) {
     const cfg = getRouteWizardConfig(v);
     if (!cfg) return '';
-    // F-4 is served by its dedicated full-screen complex-status guide
-    // (assets/js/f4-route-guide.js → #f4RouteGuide single primary CTA). Suppress
-    // this in-card route-picker for F-4 so there is exactly one F-4 guide entry
-    // point. Other complex statuses keep the route wizard until migrated.
-    if (typeof v.code === 'string' && v.code.toUpperCase() === 'F-4') return '';
+    // Statuses migrated to a dedicated full-screen ComplexStatusGuide entry get
+    // their single recommended-start CTA from those modules instead of this
+    // in-card route-picker, so suppress the legacy wizard for them to avoid
+    // competing guide buttons. F-4 → assets/js/f4-route-guide.js; F-6/G-1/E-7/
+    // F-5/D-2/D-4 → assets/js/complex-status-guide.js. Remaining configured
+    // statuses keep the route wizard until migrated.
+    const COMPLEX_GUIDE_MIGRATED = ['F-4', 'F-6', 'G-1', 'E-7', 'F-5', 'D-2', 'D-4'];
+    if (typeof v.code === 'string' && COMPLEX_GUIDE_MIGRATED.indexOf(v.code.toUpperCase()) !== -1) return '';
     // Route selection happens in an in-screen popup (#routePickerOverlay). Nothing
     // is pre-selected: the trigger shows a neutral label and the explanation area
     // stays hidden until the user picks a route.
@@ -23298,6 +23301,12 @@ function showVisaDocForAction(visaCode) {
      (window.ParadisoRoute); degrades gracefully to the plain drawer if absent.
      Pure helpers shared with Node tests (scripts/check_visa_route_guide.mjs). -->
 <script defer src="assets/js/visa-route-guide.js"></script>
+<!-- Complex-status guide for F-6/G-1/E-7/F-5/D-2/D-4: recommended-start block at
+     the top of the card → one dominant CTA → full-screen guided flow (subcode →
+     procedure) → checklist-first result, then hands off to the source-backed
+     detail (ParadisoRoute) for the actual documents. Reuses the F-4 UX pattern
+     without touching the F-4 reference module. (window.ParadisoStatusGuide) -->
+<script defer src="assets/js/complex-status-guide.js"></script>
 <!-- HiKorea 취업정보 신고용 직종·업종 자연어 분석기. Module sets window.EmploymentCodeAnalyzer;
      the job-code modal degrades gracefully if it fails to load. Single source of
      truth shared with the Node CLI/tests (scripts/check_employment_code_analyzer.mjs). -->
