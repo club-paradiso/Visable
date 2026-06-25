@@ -238,10 +238,10 @@ class GroundingFixtureTests(unittest.TestCase):
     def test_fixture_metadata_is_korea_specific(self):
         import json as _json
         data = _json.loads(self.FIXTURE.read_text(encoding="utf-8"))
-        self.assertEqual(data.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
+        self.assertEqual(data.get("source_file"), "backend/data/sources/manuals/260623_stay_manual_exported.pdf")
         self.assertEqual(data.get("source_title"), "외국인체류 안내매뉴얼")
-        self.assertEqual(data.get("source_date"), "2026.5")
-        self.assertEqual(data.get("source_revision_date"), "2026-06-01")
+        self.assertEqual(data.get("source_date"), "2026.6")
+        self.assertEqual(data.get("source_revision_date"), "2026-06-23")
         self.assertEqual(data.get("issuing_body"), "법무부 출입국·외국인정책본부")
         groundings = data.get("groundings") or []
         self.assertTrue(groundings, "groundings list must not be empty")
@@ -313,10 +313,10 @@ class AskEndpointGroundingTests(unittest.TestCase):
         sources = detail.get("grounding_sources") or []
         self.assertEqual(len(sources), 1)
         src = sources[0]
-        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
+        self.assertEqual(src.get("source_file"), "backend/data/sources/manuals/260623_stay_manual_exported.pdf")
         self.assertEqual(src.get("source_title"), "외국인체류 안내매뉴얼")
-        self.assertEqual(src.get("source_date"), "2026.5")
-        self.assertEqual(src.get("source_revision_date"), "2026-06-01")
+        self.assertEqual(src.get("source_date"), "2026.6")
+        self.assertEqual(src.get("source_revision_date"), "2026-06-23")
         self.assertEqual(src.get("visa_code"), "D-2")
         self.assertEqual(src.get("procedure_type"), "체류기간 연장허가")
 
@@ -404,7 +404,7 @@ class ExpandedGroundingFixtureTests(unittest.TestCase):
 
     def test_e7_entry_metadata_verified(self):
         entry = self._entries()[("E-7", "체류기간 연장허가")]
-        self.assertEqual(entry.get("page_range"), "226")
+        self.assertEqual(entry.get("page_range"), "227")
         self.assertEqual(entry.get("source_verification_status"), "verified_locally")
         self.assertEqual(entry.get("source_confidence"), "high")
         self.assertTrue((entry.get("verification_note") or "").strip())
@@ -462,7 +462,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
         self.assertEqual(src.get("visa_code"), "D-4")
         self.assertEqual(src.get("procedure_type"), "체류기간 연장허가")
         self.assertEqual(src.get("page_range"), "90-91")
-        self.assertEqual(src.get("source_file"), "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf")
+        self.assertEqual(src.get("source_file"), "backend/data/sources/manuals/260623_stay_manual_exported.pdf")
 
     def test_d4_extension_english_question_selects_grounding(self):
         resp = self._post({
@@ -512,7 +512,7 @@ class AskEndpointExpandedGroundingTests(unittest.TestCase):
         src = (detail.get("grounding_sources") or [{}])[0]
         self.assertEqual(src.get("visa_code"), "E-7")
         self.assertEqual(src.get("procedure_type"), "체류기간 연장허가")
-        self.assertEqual(src.get("page_range"), "226")
+        self.assertEqual(src.get("page_range"), "227")
 
     def test_e7_extension_english_question_selects_grounding(self):
         resp = self._post({
@@ -600,7 +600,7 @@ class GroundingHelperTests(unittest.TestCase):
         built = mod._build_grounded_prompt(user_q, grounding, bundle)
         self.assertIn(user_q, built)
         self.assertIn("외국인체류 안내매뉴얼", built)
-        self.assertIn("2026.5", built)
+        self.assertIn("2026.6", built)
         self.assertIn("법무부 출입국·외국인정책본부", built)
         self.assertIn("유학(D-2)", built)
         self.assertIn("체류기간 연장허가", built)

@@ -1,5 +1,10 @@
 # Blocked extraction report — 260617 사증민원 자격별 안내 매뉴얼 (visa issuance manual)
 
+> Superseded on 2026-06-26 by the readable PDF refresh in
+> `backend/data/audits/full_2026_pdf_refresh_audit.md`. This report remains as a
+> historical record of the protected HWP/HWPX body-extraction blocker and should
+> not be read as the current active-source decision.
+
 **Date:** 2026-06-25
 **Branch:** claude/paradiso-submission-readiness-7xa5d5
 **Scope:** Submission-readiness source refresh. Document why the latest official

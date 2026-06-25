@@ -20,6 +20,46 @@
   ],
   "sources": [
     {
+      "id": "visa_manual_2026_06_17_pdf",
+      "type": "pdf_manual",
+      "title": "사증발급 안내매뉴얼 (2026.6; 2026-06-17 source PDF export)",
+      "title_en": "Visa Issuance Guide Manual (2026.6; 2026-06-17 source PDF export)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.6",
+      "source_date": "2026-06-17",
+      "local_path": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:c54e3b739b54e19e64e2ea6ee5bc49228194b5f164b51efa6b461534561e9fd1",
+      "last_checked_at": "2026-06-26T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (487 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+    },
+    {
+      "id": "stay_manual_2026_06_23_pdf",
+      "type": "pdf_manual",
+      "title": "외국인체류 안내매뉴얼 (2026.6; 2026-06-23 source PDF export)",
+      "title_en": "Foreigner Stay/Residence Guide Manual (2026.6; 2026-06-23 source PDF export)",
+      "authority": "법무부 출입국·외국인정책본부",
+      "version": "2026.6",
+      "source_date": "2026-06-23",
+      "local_path": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "last_known_hash": "sha256:00375f44b6245337813a5c36f53671f642b52c6006a65f1fcf3eb808f93fb51f",
+      "last_checked_at": "2026-06-26T00:00:00+09:00",
+      "language": [
+        "ko"
+      ],
+      "confidence": "high",
+      "update_frequency": "irregular",
+      "status": "active",
+      "notes": "Readable PDF export acquired from desktop Downloads and verified by file type, hash, pdfinfo page count (780 pages), rendered cover, and full text extraction. Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+    },
+    {
       "id": "stay_manual_2026_06_01_pdf",
       "type": "pdf_manual",
       "title": "외국인체류 안내매뉴얼 (2026.5; 2026-06-01 source file)",
@@ -32,8 +72,9 @@
       "last_known_hash": "sha256:1f21e193e9477f9d83263d37119dad7d68c5e785e41c589967fd463bfee13757",
       "last_checked_at": null,
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Primary source for stay/extension manual grounding; canonical PDF installed from user-provided 2026-06-01 source PDF, 777 pages. Companion HWP is stored-only because distribution-mode body extraction is blocked."
+      "status": "deprecated",
+      "notes": "Primary source for stay/extension manual grounding; canonical PDF installed from user-provided 2026-06-01 source PDF, 777 pages. Companion HWP is stored-only because distribution-mode body extraction is blocked. Superseded by stay_manual_2026_06_23_pdf after readable 2026.6 PDF exports were verified.",
+      "superseded_by": "stay_manual_2026_06_23_pdf"
     },
     {
       "id": "stay_manual_2026_05_pdf",
@@ -63,8 +104,9 @@
       "last_known_hash": "sha256:3052fa63d8aea37fb16cfec9923c2d3941c30b696ee907d7b2f77bf16cca555a",
       "last_checked_at": null,
       "update_frequency": "irregular",
-      "status": "active",
-      "notes": "Visa-issuance manual; not used for stay grounding today, monitored for change detection; canonical PDF installed from 2026-05-21 source PDF."
+      "status": "deprecated",
+      "notes": "Visa-issuance manual; not used for stay grounding today, monitored for change detection; canonical PDF installed from 2026-05-21 source PDF. Superseded by visa_manual_2026_06_17_pdf after readable 2026.6 PDF exports were verified.",
+      "superseded_by": "visa_manual_2026_06_17_pdf"
     },
     {
       "id": "stay_manual_2026_06_17_txt",
@@ -79,8 +121,9 @@
       "last_known_hash": "sha256:a7c650e7b57fb31e3269bd90ce333b0177a933f214fc548fca6c0aa3dfcdbb42",
       "last_checked_at": null,
       "update_frequency": "irregular",
-      "status": "not_configured",
-      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 외국인체류 안내매뉴얼 (778 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active stay manual remains stay_manual_2026_06_01_pdf (2026.5). A desktop Codex retry on 2026-06-25 acquired the official 260623 stay HWPX and companion change-log HWPX from the HiKorea attachment endpoint, but both packages are distribution/protected HWPX files with encrypted section bodies. This 260617 readable text remains reference-only and is not a verified substitute for 260623. Promotion of any 2026.6 content requires a separate human-reviewed PR. See backend/data/audits/full_official_source_audit_260623.md."
+      "status": "deprecated",
+      "notes": "Deprecated reference-only text route. The active source is now the readable PDF export stay_manual_2026_06_23_pdf; this text entry remains only for historical audit continuity.",
+      "superseded_by": "stay_manual_2026_06_23_pdf"
     },
     {
       "id": "visa_manual_2026_06_17_txt",
@@ -95,8 +138,9 @@
       "last_known_hash": "sha256:9c9412cade8bc6826444c77cabf01821a00545a4ec365dad32b223fbb8aa7d06",
       "last_checked_at": null,
       "update_frequency": "irregular",
-      "status": "not_configured",
-      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 사증발급 안내매뉴얼 (487 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active visa-issuance manual remains visa_manual_2026_05_pdf (2026.5). A desktop Codex retry on 2026-06-25 acquired the official 260617 HWP from the HiKorea attachment endpoint and hash-matched it to the local original, but direct HWP body extraction remains blocked by distribution-mode packaging in available tooling. Promotion requires a separate human-reviewed PR. See backend/data/audits/full_official_source_audit_260623.md."
+      "status": "deprecated",
+      "notes": "Deprecated reference-only text route. The active source is now the readable PDF export visa_manual_2026_06_17_pdf; this text entry remains only for historical audit continuity.",
+      "superseded_by": "visa_manual_2026_06_17_pdf"
     },
     {
       "id": "hikorea_latest_manual_notice_260623",
@@ -108,10 +152,10 @@
       "local_path": null,
       "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "last_known_hash": null,
-      "last_checked_at": null,
+      "last_checked_at": "2026-06-26T00:00:00+09:00",
       "update_frequency": "irregular",
       "status": "not_configured",
-      "notes": "Canonical HiKorea notice for the latest official manuals: '260623 체류민원 자격별 안내 매뉴얼.hwpx', '260617 사증민원 자격별 안내 매뉴얼.hwp', '260623 사증.체류 민원 자격별 안내 매뉴얼 수정 이력.hwpx'. This is the authoritative source the product links to from the landing 'Information & coverage' panel. Desktop Codex on 2026-06-25 confirmed the notice page and downloaded all three attachments through the normal public attachment endpoint; normalized copies and diagnostics are preserved under backend/data/sources/manuals. The 260623 stay manual and 260623 change log are valid distribution/protected HWPX packages with encrypted section bodies, so they remain unreadable for source-grounded data promotion. No scraping by default."
+      "notes": "Canonical HiKorea notice for the latest official manuals. Desktop-readable PDF exports of the 260617 visa manual and 260623 stay manual were acquired and installed as active PDF manual sources in this branch. HWP/HWPX body extraction is not used as production evidence."
     },
     {
       "id": "law_api_placeholder",

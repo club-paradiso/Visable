@@ -1,5 +1,10 @@
 # Blocked extraction report — 260623 체류민원 자격별 안내 매뉴얼 (stay manual)
 
+> Superseded on 2026-06-26 by the readable PDF refresh in
+> `backend/data/audits/full_2026_pdf_refresh_audit.md`. This report remains as a
+> historical record of the protected HWPX/HWP body-extraction blocker and should
+> not be read as the current active-source decision.
+
 **Date:** 2026-06-25
 **Branch:** claude/paradiso-submission-readiness-7xa5d5
 **Scope:** Submission-readiness source refresh. Document why the latest official

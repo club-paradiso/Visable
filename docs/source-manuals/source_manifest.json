@@ -3,106 +3,75 @@
     "visa_issuance_manual": {
       "title_ko": "사증발급 안내매뉴얼",
       "title_en": "Visa Issuance Guide Manual",
-      "version": "2026.5",
-      "source_date": "2026-05-21",
-      "source_label": "2026-05-21 사증발급 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
-      "supersedes": null,
+      "version": "2026.6",
+      "source_date": "2026-06-17",
+      "source_label": "2026-06-17 사증발급 안내매뉴얼 (2026.6; readable PDF export installed)",
+      "supersedes": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
       "authority": "법무부 출입국·외국인정책본부",
-      "pages": 484,
-      "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
-      "file_sha256": "3052fa63d8aea37fb16cfec9923c2d3941c30b696ee907d7b2f77bf16cca555a",
-      "file_size_bytes": 13194599,
-      "pdf_internal_creation_date": "2026-05-24T11:54:54Z",
+      "pages": 487,
+      "file": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "file_sha256": "c54e3b739b54e19e64e2ea6ee5bc49228194b5f164b51efa6b461534561e9fd1",
+      "file_size_bytes": 13189698,
+      "pdf_internal_creation_date": "2026-06-25T14:48:48Z",
       "pdf_internal_title": "무제",
       "pdf_internal_producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
+      "pdf_version": "1.3",
       "role": "visa_issuance_manual",
       "status": "current",
-      "verification_status": "source_file_compared",
-      "verification_note": "Incoming user-provided PDF docs/source-manuals/2026-05/incoming/visa_manual_2026_05_21_source.pdf was compared against prior canonical docs/source-manuals/2026-05/visa_manual_2026_05.pdf by SHA-256, page count, PDF metadata, cover/TOC text, and sampled page-level text extraction. Canonical replacement was performed on branch data/install-2026-05-21-source-pdfs. The source PDF filename contains 260521/2026-05-21 evidence, and PDF page-level extraction confirms the expected 사증발급 안내매뉴얼 manual structure. The cover label remains month-level '2026. 5.' and does not independently encode the day; HWP distribution-mode body extraction was not used as proof.",
-      "alternate_source_files": [
-        {
-          "file": "docs/source-manuals/2026-05/visa_manual_2026_05_21.hwp",
-          "format": "hwp",
-          "hwp_version": "5.1.0.1",
-          "hwp_flags_raw": "0x5",
-          "hwp_flags": {
-            "compressed": true,
-            "distribution_mode": true,
-            "encrypted": false,
-            "script_protected": false,
-            "drm": false
-          },
-          "source_date": "2026-05-21",
-          "source_date_evidence": "filename_only",
-          "source_date_evidence_note": "Upload filename contains '260521' (YYMMDD). HWP PrvText preview confirms cover label '2026. 5.' and TOC head matching the visa issuance manual, but does not encode a day-level date.",
-          "file_sha256": "635b8ede13218bb31a46d2993e8ab5efad211122bcfa6928a951d0fe5bae2ac4",
-          "file_size_bytes": 2170880,
-          "view_text_sections": 13,
-          "body_text_sections": 1,
-          "bindata_streams": 10,
-          "extraction_primary_format": "pdf",
-          "extraction_blocker": "hwp_distribution_mode_view_text_encrypted",
-          "extraction_blocker_detail": "ViewText sections start with HWPTAG_DISTRIBUTE_DOC_DATA (tag 0x1c, 256-byte payload) followed by an encrypted payload. Raw zlib deflate fails. LibreOffice 24.2.7 + libreoffice-h2orestart 0.6.1 returns 'source file could not be loaded'. pyhwp current releases require Python 2.7 only.",
-          "verification_status": "source_file_received_distribution_mode_blocks_text_extraction",
-          "verification_note": "HWP 배포용 (distribution-mode) file received via user upload on 2026-05-24 and installed at the repo path above. Filename-level evidence supports 2026-05-21 issuance, but page-level body extraction is blocked, so we do not promote this evidence to the PDF entry's 'source_date'. See docs/data/2026_05_21_SOURCE_FILE_INTAKE_REPORT.md and docs/data/2026_05_21_MANUAL_EXTRACTION_REPORT.md."
-        }
-      ]
+      "verification_status": "source_file_received_pdf_text_sampled",
+      "verification_note": "User-provided desktop PDF export was installed at backend/data/sources/manuals/260617_visa_manual_exported.pdf. Identity was checked by PDF file type, SHA-256 c54e3b739b54e19e64e2ea6ee5bc49228194b5f164b51efa6b461534561e9fd1, pdfinfo page count (487 pages), unencrypted status, rendered cover text, and full pypdf text extraction into backend/data/sources/manuals/260617_visa_manual_readable.txt with section inventory backend/data/sources/manuals/260617_visa_manual_sections.json. This promotes source metadata and readable extraction availability only; existing structured legal guidance remains marked for manual review where line-by-line field certification is incomplete.",
+      "extraction_primary_format": "pdf",
+      "extracted_text_file": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "sections_file": "backend/data/sources/manuals/260617_visa_manual_sections.json",
+      "extracted_text_sha256": "c4fa08b49350fc672176760868d68237d063abe03290dd490c10a28f495f6653",
+      "original_filename": "260617 사증민원 자격별 안내 매뉴얼.pdf",
+      "official_notice_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
+      "archived_previous_current": {
+        "version": "2026.5",
+        "source_date": "2026-05-21",
+        "source_label": "2026-05-21 사증발급 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
+        "file": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
+        "file_sha256": "3052fa63d8aea37fb16cfec9923c2d3941c30b696ee907d7b2f77bf16cca555a",
+        "file_size_bytes": 13194599,
+        "pages": 484,
+        "verification_status": "source_file_compared"
+      }
     },
     "stay_residence_manual": {
       "title_ko": "외국인체류 안내매뉴얼",
       "title_en": "Foreigner Stay/Residence Guide Manual",
-      "version": "2026.5",
-      "source_date": "2026-06-01",
-      "source_label": "2026-06-01 외국인체류 안내매뉴얼 (2026.5; 숙련기능인력 제도 개선사항 반영; user-provided source PDF installed)",
-      "supersedes": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+      "version": "2026.6",
+      "source_date": "2026-06-23",
+      "source_label": "2026-06-23 외국인체류 안내매뉴얼 (2026.6; readable PDF export installed)",
+      "supersedes": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
       "authority": "법무부 출입국·외국인정책본부",
-      "pages": 777,
-      "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
-      "file_sha256": "1f21e193e9477f9d83263d37119dad7d68c5e785e41c589967fd463bfee13757",
-      "file_size_bytes": 14894357,
-      "pdf_internal_creation_date": "2026-06-05T02:27:11Z",
+      "pages": 780,
+      "file": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "file_sha256": "00375f44b6245337813a5c36f53671f642b52c6006a65f1fcf3eb808f93fb51f",
+      "file_size_bytes": 14962255,
+      "pdf_internal_creation_date": "2026-06-25T14:47:44Z",
       "pdf_internal_title": "무제",
       "pdf_internal_producer": "macOS 버전 15.6.1(빌드 24G90) Quartz PDFContext",
+      "pdf_version": "1.4",
       "role": "stay_residence_manual",
       "status": "current",
       "verification_status": "source_file_received_pdf_text_sampled",
-      "verification_note": "User-provided PDF docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf was installed as the current stay/residence manual. The source filename contains 260601/2026-06-01 evidence, pypdf 6.10.0 reports 777 pages, PDF metadata was sampled, cover/TOC text extraction confirms the expected 외국인체류 안내매뉴얼 structure, and runtime-cited pages 43, 44, 90, 91, and 226 were compared against the prior May canonical PDF and matched by extracted text hash. The cover label remains month-level '2026. 5.' and does not independently encode the day; the companion HWP is stored-only because distribution-mode body extraction is blocked.",
-      "alternate_source_files": [
-        {
-          "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.hwp",
-          "format": "hwp",
-          "hwp_version": "5.x",
-          "hwp_flags_raw": "0x5",
-          "hwp_flags": {
-            "compressed": true,
-            "distribution_mode": true,
-            "encrypted": false,
-            "script_protected": false,
-            "drm": false
-          },
-          "source_date": "2026-06-01",
-          "source_date_evidence": "filename_user_provided",
-          "source_date_evidence_note": "Upload filename contains '260601' (YYMMDD). BodyText extraction returns only the distribution-mode notice, so filename-level evidence and the paired PDF are recorded without pretending HWP body text was indexed.",
-          "file_sha256": "9bba776083a1599a4fb7c6fc1c4452053652a1750ef6824de72e9e5bdffa297d",
-          "file_size_bytes": 3177472,
-          "view_text_sections": 23,
-          "body_text_sections": 1,
-          "bindata_streams": 16,
-          "extraction_primary_format": "pdf",
-          "extraction_blocker": "hwp_distribution_mode_body_text_placeholder",
-          "extraction_blocker_detail": "The HWP 5.x file is compressed distribution-mode (flags raw 0x5). Available local HWP inspection sees 1 BodyText stream and 23 ViewText sections, but BodyText extraction returns only the distribution-mode warning text rather than the manual body. Downstream extraction/indexing therefore uses the paired PDF only.",
-          "verification_status": "source_file_received_distribution_mode_blocks_text_extraction",
-          "verification_note": "HWP distribution-mode file received via user-provided local download path on 2026-06-05 and installed at the repo path above as an official artifact. It is not parsed, indexed, or used as the primary extraction source."
-        }
-      ],
+      "verification_note": "User-provided desktop PDF export was installed at backend/data/sources/manuals/260623_stay_manual_exported.pdf. Identity was checked by PDF file type, SHA-256 00375f44b6245337813a5c36f53671f642b52c6006a65f1fcf3eb808f93fb51f, pdfinfo page count (780 pages), unencrypted status, rendered cover text, and full pypdf text extraction into backend/data/sources/manuals/260623_stay_manual_readable.txt with section inventory backend/data/sources/manuals/260623_stay_manual_sections.json. This promotes source metadata and readable extraction availability only; existing structured legal guidance remains marked for manual review where line-by-line field certification is incomplete.",
+      "extraction_primary_format": "pdf",
+      "extracted_text_file": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "sections_file": "backend/data/sources/manuals/260623_stay_manual_sections.json",
+      "extracted_text_sha256": "18a754fe7aeba8f4701034b2818646ef631a8a7ea45d625996ad2b10ccef70da",
+      "original_filename": "260623 체류민원 자격별 안내 매뉴얼.pdf",
+      "official_notice_url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1",
       "archived_previous_current": {
-        "source_date": "2026-05-21",
-        "source_label": "2026-05-21 외국인체류 안내매뉴얼 (2026.5; user-provided source PDF installed after PDF-level comparison)",
-        "file": "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
-        "file_sha256": "dd0d2f101c893022f24233d746dd24fc6bd9432eef3ea135f173e54d25f9c3e1",
-        "file_size_bytes": 14884075,
-        "pdf_internal_creation_date": "2026-05-24T11:56:30Z",
-        "verification_status": "source_file_compared"
+        "version": "2026.5",
+        "source_date": "2026-06-01",
+        "source_label": "2026-06-01 외국인체류 안내매뉴얼 (2026.5; 숙련기능인력 제도 개선사항 반영; user-provided source PDF installed)",
+        "file": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
+        "file_sha256": "1f21e193e9477f9d83263d37119dad7d68c5e785e41c589967fd463bfee13757",
+        "file_size_bytes": 14894357,
+        "pages": 777,
+        "verification_status": "source_file_received_pdf_text_sampled"
       }
     }
   },
@@ -215,6 +184,25 @@
         "HWP not indexed or treated as parsed",
         "visa issuance manual remains 2026-05-21 current"
       ]
+    },
+    {
+      "audit_date": "2026-06-26",
+      "branch": "data/refresh-all-statuses-from-2026-pdf-manuals",
+      "scope": "Install readable desktop PDF exports for the 2026.6 visa and stay manuals; extract full page-level text and promote source metadata without claiming field-level legal certification for every structured record.",
+      "files_installed": [
+        "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+        "backend/data/sources/manuals/260623_stay_manual_exported.pdf"
+      ],
+      "extracted_text": [
+        "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+        "backend/data/sources/manuals/260623_stay_manual_readable.txt"
+      ],
+      "hashes": {
+        "visa_pdf": "c54e3b739b54e19e64e2ea6ee5bc49228194b5f164b51efa6b461534561e9fd1",
+        "stay_pdf": "00375f44b6245337813a5c36f53671f642b52c6006a65f1fcf3eb808f93fb51f"
+      },
+      "page_count_check": "passed (487 visa / 780 stay)",
+      "decision": "advance current manual source metadata to readable 2026.6 PDFs; preserve needsManualReview flags until line-by-line legal field certification."
     }
   ],
   "schema_notes": [
@@ -223,6 +211,7 @@
     "Do not advance 'source_date' to a specific day without either (a) byte-level identity with a dated source file or (b) explicit page-level evidence of a dated revision marker inside the manual.",
     "The optional 'alternate_source_files' array on each 'current' entry holds non-primary source artifacts (e.g., HWP, HWPX, archived PDF exports) with their own per-file 'source_date', 'source_date_evidence', 'file_sha256', 'extraction_primary_format', and 'verification_status'. Filename-level evidence on an alternate source file does not by itself promote the primary entry's 'source_date'.",
     "The 'source_date' and the 'pdf_internal_creation_date' fields encode different facts. 'source_date' is the source-file revision date as identified by filename, source-file manifest, or page-level evidence (e.g., '2026-05-21'). 'pdf_internal_creation_date' is the export timestamp recorded inside the PDF /Info dictionary by the PDF generator (e.g., macOS Quartz PDFContext writes the time at which the PDF was rendered from the HWP). They commonly differ when the source manual is authored in HWP and exported to PDF some days after the source revision; the manifest must record both honestly without conflating them.",
-    "The 'extraction_primary_format' field declares the format actually used for downstream text extraction (TOC, crosswalk, audit). The 'source_file_format_available' array lists every format committed under the canonical source-manual directory. For the 2026.5 manuals, 'pdf' is the primary extraction format; the matching HWP companion files are distribution-mode and their body text cannot be extracted by available tooling."
+    "The 'extraction_primary_format' field declares the format actually used for downstream text extraction (TOC, crosswalk, audit). The 'source_file_format_available' array lists every format committed under the canonical source-manual directory. For the 2026.5 manuals, 'pdf' is the primary extraction format; the matching HWP companion files are distribution-mode and their body text cannot be extracted by available tooling.",
+    "The 2026-06-26 PDF refresh uses readable desktop PDF exports as the primary extraction format; HWP/HWPX distribution-mode diagnostics are not used as readable production text."
   ]
 }

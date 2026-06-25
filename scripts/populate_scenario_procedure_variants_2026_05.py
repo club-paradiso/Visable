@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Populate page-confirmed scenario procedure variants from the 2026-05 stay manual.
+"""Populate page-confirmed scenario procedure variants from the 2026.6 stay manual.
 
 The curated records in this file are intentionally scenario- or sub-code-scoped.
 They must not be promoted into parent-level requiredDocs lists.
@@ -20,7 +20,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "visa_data.json"
 TARGET = ROOT / "backend" / "data" / "visas.json"
-SOURCE_FILE = "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
+SOURCE_FILE = "backend/data/sources/manuals/260623_stay_manual_readable.txt"
+SOURCE_PDF = "backend/data/sources/manuals/260623_stay_manual_exported.pdf"
+SOURCE_ID = "stay_manual_2026_06_23_pdf"
 SCOPE_NOTE = "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
 
 EMPTY_DOCS = {
@@ -76,9 +78,11 @@ def variant(
             "manualRefs": [
                 {
                     "manualName": "체류민원",
-                    "manualVersion": "2026.5",
+                    "manualVersion": "2026.6",
                     "pageRange": page_range,
                     "sourceFile": SOURCE_FILE,
+                    "sourcePdf": SOURCE_PDF,
+                    "sourceId": SOURCE_ID,
                     "confidence": "manual_extracted_needs_review",
                     "needsManualReview": True,
                 }
@@ -618,6 +622,30 @@ def _procedure_shell(procedure: str) -> dict[str, Any]:
     }
 
 
+def _compatible_existing_variant(existing: dict[str, Any], expected: dict[str, Any]) -> bool:
+    for key in ("id", "labelKo", "scenarioKo", "statusCode"):
+        if expected.get(key) != existing.get(key):
+            return False
+    groups = existing.get("requiredDocs")
+    if not isinstance(groups, dict) or not any(groups.get(key) for key in groups):
+        return False
+    refs = existing.get("manualRefs")
+    if not isinstance(refs, list) or not refs:
+        return False
+    for ref in refs:
+        if not isinstance(ref, dict):
+            return False
+        if ref.get("manualVersion") != "2026.6":
+            return False
+        if ref.get("sourceFile") != SOURCE_FILE:
+            return False
+        if ref.get("needsManualReview") is not True:
+            return False
+        if ref.get("verified") is True:
+            return False
+    return True
+
+
 def apply_variants(records: list[dict[str, Any]]) -> tuple[int, int]:
     by_code = {str(record.get("code")): record for record in records}
     added = 0
@@ -654,7 +682,7 @@ def apply_variants(records: list[dict[str, Any]]) -> tuple[int, int]:
         if existing is None:
             variants.append(copy.deepcopy(new_variant))
             added += 1
-        elif existing == new_variant:
+        elif existing == new_variant or _compatible_existing_variant(existing, new_variant):
             unchanged += 1
         else:
             raise RuntimeError(

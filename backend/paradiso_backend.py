@@ -3105,7 +3105,7 @@ def _build_grounded_prompt(
     caveats = grounding.get("caveats", []) or []
     excerpt = grounding.get("source_excerpt", "") or ""
     source_title = bundle.get("source_title", "외국인체류 안내매뉴얼")
-    source_date = bundle.get("source_date", "2026.5")
+    source_date = bundle.get("source_date", "2026.6")
     source_revision_date = bundle.get("source_revision_date")
     source_date_label = (
         f"{source_date}; source file {source_revision_date}"

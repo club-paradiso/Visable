@@ -12,8 +12,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MANIFEST_PATH = ROOT / "docs/source-manuals/source_manifest.json"
 REQUIRED_ROLES = {
-    "visa_issuance_manual": 484,
-    "stay_residence_manual": 777,
+    "visa_issuance_manual": 487,
+    "stay_residence_manual": 780,
 }
 REQUIRED_FIELDS = {
     "title_ko",

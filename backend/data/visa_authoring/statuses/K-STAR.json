@@ -27,23 +27,27 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 344",
           "section": "〇 점수제 우수인재(F-2-7 또는 F-2-7S) 체류자격으로 합법체류중일 것",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 345",
           "section": "3) 점수제 우수인재(F-2-7 또는 F-2-7S,)의 요건",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ],
       "group": "거주",
@@ -72,45 +76,53 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 751",
           "section": "⇨ ③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 751",
           "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 459",
           "section": "③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3호)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 460",
           "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "group": "영주",
@@ -138,23 +150,27 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 345",
           "section": "자의 소득요건과 무관하게 국내 출생 자녀는 F-2-71, 5년 경과 후 소득요건 심",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 347",
           "section": "ㅇ ‘점수제 우수인재의 배우자 또는 미성년 자녀’로서의 거주(F-2-71)자격",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ],
       "group": "동반가족",
@@ -181,45 +197,53 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 758",
           "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 758",
           "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 467",
           "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 467",
           "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "group": "동반가족",
@@ -258,12 +282,14 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "pp. 459-487",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the visa issuance manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ]
     },
@@ -296,13 +322,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -326,13 +354,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -350,13 +380,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -378,13 +410,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -402,13 +436,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -426,13 +462,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -454,13 +492,15 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 750-778",
           "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
           "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     }
@@ -470,25 +510,29 @@
       "manualName": "체류민원",
       "manualType": "stay",
       "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "sourceDate": "2026-06-23",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
       "pageRange": "pp. 750-778",
       "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
       "note": "Special K-STAR/Top-Tier track appended to the stay manual.",
-      "confidence": "status_source_map_260617",
-      "needsManualReview": false
+      "confidence": "status_source_map_260623_pdf",
+      "needsManualReview": false,
+      "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "sourceId": "stay_manual_2026_06_23_pdf"
     },
     {
       "manualName": "사증민원",
       "manualType": "visa",
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
       "pageRange": "pp. 459-487",
       "section": "K-STAR 비자트랙 제도 안내 매뉴얼",
       "note": "Special K-STAR/Top-Tier track appended to the visa issuance manual.",
-      "confidence": "status_source_map_260617",
-      "needsManualReview": false
+      "confidence": "status_source_map_260617_pdf",
+      "needsManualReview": false,
+      "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "sourceId": "visa_manual_2026_06_17_pdf"
     }
   ],
   "sourceManualStatus": {
@@ -499,12 +543,13 @@
     "reviewNotes": [
       "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
       "Stay manual evidence: pp. 750-778; visa manual evidence: pp. 459-487.",
-      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages.",
+      "2026-06-26 PDF refresh: readable 260617 visa and 260623 stay PDF exports are installed and full text/section inventories generated; legal fields remain needsManualReview unless separately line-by-line certified."
     ],
-    "stayManualSourceDate": "2026-06-17",
-    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-    "sourceDate": "2026-06-17",
-    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "stayManualSourceDate": "2026-06-23",
+    "stayManualSourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+    "sourceDate": "2026-06-23",
+    "visaManualSourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
     "manualRefresh260617": {
       "reviewed": true,
       "reviewedFields": [
@@ -524,6 +569,27 @@
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
       "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
       "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
+    },
+    "stayManualSourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+    "visaManualSourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+    "manualRefresh2026Pdf": {
+      "reviewed": true,
+      "reviewedAt": "2026-06-26T00:00:00+09:00",
+      "reviewMethod": "desktop_pdf_full_text_extraction_and_status_inventory",
+      "changedFields": [
+        "sourceMetadata",
+        "manualRefs.sourceFile",
+        "manualRefs.sourceDate"
+      ],
+      "manualRefsUpdated": 34,
+      "stayManualSourceId": "stay_manual_2026_06_23_pdf",
+      "visaManualSourceId": "visa_manual_2026_06_17_pdf",
+      "stayManualReadableText": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "visaManualReadableText": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "statusInventory": "backend/data/audits/manual_status_inventory_2026.json",
+      "statusMatrix": "backend/data/audits/status_matrix_2026_pdf_refresh.json",
+      "needsManualReview": true,
+      "reviewReason": "This refresh verifies readable source acquisition, extraction, and code inventory. It does not certify every structured eligibility/document/applicant-condition field."
     }
   },
   "searchAliases": [
@@ -592,23 +658,27 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 344",
               "section": "〇 점수제 우수인재(F-2-7 또는 F-2-7S) 체류자격으로 합법체류중일 것",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 345",
               "section": "3) 점수제 우수인재(F-2-7 또는 F-2-7S,)의 요건",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             }
           ],
           "group": "거주"
@@ -635,45 +705,53 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 751",
               "section": "⇨ ③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 751",
               "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "사증민원",
               "manualType": "visa",
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
               "pageRange": "p. 459",
               "section": "③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3호)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
             },
             {
               "manualName": "사증민원",
               "manualType": "visa",
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
               "pageRange": "p. 460",
               "section": "- (3단계 A : K-STAR 영주) 2단계 진입 후 3년 경과, K-STAR 영주(F-5-S1)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
             }
           ],
           "group": "영주"
@@ -699,23 +777,27 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 345",
               "section": "자의 소득요건과 무관하게 국내 출생 자녀는 F-2-71, 5년 경과 후 소득요건 심",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 347",
               "section": "ㅇ ‘점수제 우수인재의 배우자 또는 미성년 자녀’로서의 거주(F-2-71)자격",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             }
           ],
           "group": "동반가족"
@@ -741,45 +823,53 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 758",
               "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "p. 758",
               "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260623_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             },
             {
               "manualName": "사증민원",
               "manualType": "visa",
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
               "pageRange": "p. 467",
               "section": "Ⅳ. K-STAR의 동반가족(F-2-71, F-5-S2)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
             },
             {
               "manualName": "사증민원",
               "manualType": "visa",
               "manualVersion": "2026.6",
               "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+              "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
               "pageRange": "p. 467",
               "section": "- K-STAR 영주(F-5-S1)의 동반가족(F-5-S2)",
-              "confidence": "manual_inventory_260617",
-              "needsManualReview": false
+              "confidence": "manual_inventory_260617_pdf",
+              "needsManualReview": false,
+              "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+              "sourceId": "visa_manual_2026_06_17_pdf"
             }
           ],
           "group": "동반가족"

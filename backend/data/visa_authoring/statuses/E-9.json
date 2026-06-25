@@ -21,34 +21,40 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 397",
           "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 402",
           "section": " 제조업(E-9-1) → 숙련기능인력(E-7-4) → 기타 장기체류(F-2-99)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 286",
           "section": "E-9-1",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -72,11 +78,13 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 286",
           "section": "E-9-2",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -99,23 +107,27 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "p. 329",
           "section": "신청자격 : 작물재배업(계절적 농업)에 근무 중인 비전문취업(E-9-3)",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 286",
           "section": "E-9-3",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -139,22 +151,26 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 286",
           "section": "E-9-4",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         },
         {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 287",
           "section": "※ 비전문취업자 중 연근해어업(E-9-4)은 선원법 적용을 받지 않는 20톤 미만 어선",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -178,11 +194,13 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 287",
           "section": "E-9-5",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -206,11 +224,13 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 286",
           "section": "E-9-9",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -234,11 +254,13 @@
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
           "pageRange": "p. 287",
           "section": "E-9-10",
-          "confidence": "manual_reconciled_260617",
-          "needsManualReview": false
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf"
         }
       ],
       "status": "active",
@@ -319,12 +341,14 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 327-336",
           "section": "비전문취업(E-9)",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -348,12 +372,14 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 327-336",
           "section": "비전문취업(E-9)",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ]
     },
@@ -392,13 +418,15 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "pp. 327-336",
               "section": "비전문취업(E-9)",
-              "confidence": "status_source_map_260617",
+              "confidence": "status_source_map_260623_pdf",
               "needsManualReview": true,
-              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator."
+              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             }
           ],
           "notes": [
@@ -427,13 +455,15 @@
               "manualName": "체류민원",
               "manualType": "stay",
               "manualVersion": "2026.6",
-              "sourceDate": "2026-06-17",
-              "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+              "sourceDate": "2026-06-23",
+              "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
               "pageRange": "pp. 327-336",
               "section": "비전문취업(E-9)",
-              "confidence": "status_source_map_260617",
+              "confidence": "status_source_map_260623_pdf",
               "needsManualReview": true,
-              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator."
+              "reviewReason": "Variant-specific eligibility/document wording still requires line-by-line certification against the cited procedure section; parent procedure source range is attached only as the locator.",
+              "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+              "sourceId": "stay_manual_2026_06_23_pdf"
             }
           ],
           "notes": [
@@ -447,12 +477,14 @@
           "manualName": "체류민원",
           "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "pageRange": "pp. 327-336",
           "section": "비전문취업(E-9)",
-          "confidence": "status_source_map_260617",
-          "needsManualReview": false
+          "confidence": "status_source_map_260623_pdf",
+          "needsManualReview": false,
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf"
         }
       ],
       "notes": [
@@ -468,12 +500,13 @@
     "reviewNotes": [
       "2026.6 source ranges reconciled from audits/manual-refresh-260617/status_source_map.json; TOC-only page locators were removed from human-editable manualRefs.",
       "Stay manual evidence: pp. 327-336; visa manual evidence: pp. 286-295.",
-      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages."
+      "needsManualReview remains true until eligibility, document, fee, and applicant-condition wording is line-by-line certified against the cited manual pages.",
+      "2026-06-26 PDF refresh: readable 260617 visa and 260623 stay PDF exports are installed and full text/section inventories generated; legal fields remain needsManualReview unless separately line-by-line certified."
     ],
-    "stayManualSourceDate": "2026-06-17",
-    "stayManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-    "sourceDate": "2026-06-17",
-    "visaManualSourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "stayManualSourceDate": "2026-06-23",
+    "stayManualSourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+    "sourceDate": "2026-06-23",
+    "visaManualSourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
     "manualRefresh260617": {
       "reviewed": true,
       "reviewedFields": [
@@ -493,6 +526,27 @@
       "sourceInventory": "docs/data/2026_06_17_manual_code_inventory.json",
       "audit": "docs/data/2026_06_17_full_manual_refresh_audit.json",
       "reviewReason": "2026-06-17 source ranges were reconciled and TOC-only refs removed, but field-level eligibility, document, fee, and applicant-condition wording remains under review until line-by-line certification is complete."
+    },
+    "stayManualSourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+    "visaManualSourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+    "manualRefresh2026Pdf": {
+      "reviewed": true,
+      "reviewedAt": "2026-06-26T00:00:00+09:00",
+      "reviewMethod": "desktop_pdf_full_text_extraction_and_status_inventory",
+      "changedFields": [
+        "sourceMetadata",
+        "manualRefs.sourceFile",
+        "manualRefs.sourceDate"
+      ],
+      "manualRefsUpdated": 18,
+      "stayManualSourceId": "stay_manual_2026_06_23_pdf",
+      "visaManualSourceId": "visa_manual_2026_06_17_pdf",
+      "stayManualReadableText": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+      "visaManualReadableText": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+      "statusInventory": "backend/data/audits/manual_status_inventory_2026.json",
+      "statusMatrix": "backend/data/audits/status_matrix_2026_pdf_refresh.json",
+      "needsManualReview": true,
+      "reviewReason": "This refresh verifies readable source acquisition, extraction, and code inventory. It does not certify every structured eligibility/document/applicant-condition field."
     }
   },
   "searchAliases": [
@@ -701,23 +755,27 @@
       "manualName": "체류민원",
       "manualType": "stay",
       "manualVersion": "2026.6",
-      "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
+      "sourceDate": "2026-06-23",
+      "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
       "pageRange": "pp. 327-336",
       "section": "비전문취업(E-9)",
-      "confidence": "status_source_map_260617",
-      "needsManualReview": false
+      "confidence": "status_source_map_260623_pdf",
+      "needsManualReview": false,
+      "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "sourceId": "stay_manual_2026_06_23_pdf"
     },
     {
       "manualName": "사증민원",
       "manualType": "visa",
       "manualVersion": "2026.6",
       "sourceDate": "2026-06-17",
-      "sourceFile": "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+      "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
       "pageRange": "pp. 286-295",
       "section": "비전문취업(E-9)",
-      "confidence": "status_source_map_260617",
-      "needsManualReview": false
+      "confidence": "status_source_map_260617_pdf",
+      "needsManualReview": false,
+      "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "sourceId": "visa_manual_2026_06_17_pdf"
     }
   ]
 }

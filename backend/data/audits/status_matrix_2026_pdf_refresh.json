@@ -1,0 +1,2690 @@
+[
+  {
+    "code": "A-1",
+    "official_ko_name": "외교",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/A-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "目目 次 次‣ 각종 체류허가 신청 시 유의사항‣ 공통사항 (체류 일반)체류자격별 대상 및 제출서류 등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26."
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "22222 여권 유효기간 범위 내 체류기간 부여 안내▣ 적용대상 • 아래 외국인을 제외한 모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • ("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 13,
+        "heading": "",
+        "snippet": "- 13 - - 외교(A-1), 공무(A-2), 협정(A-3) 자격 소지자 - 만 6세 미만 소아(만 6세 이후 최초 체류허가 신청 시 제출) 및 임신부 - 고령 또는 질병으로 거동이 불가능한 사람 ▣ 결핵 고위험국가(35개국) • 네팔, 동티모르, 러시아, 말레이시아, 몽골, 미얀마, 방글라데시, 베트남, 태국, 스리랑카, 우즈베키스탄, 인도, 인도네시아, 중국, 캄보디아, 키르기스스탄,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "- 14 - 체류자격별 대상 및 제출서류 등 안내메뉴얼외교(A-1)자격 해당자 및 활동범위대한민국정부가 접수한 외국정부의 외교사절단이나 영사기관의 구성원, 조약 또는 국제관행에 따라 외교사절과 동등한 특권과 면제를 받는 자와 그 가족1회에 부여할 수 있는 체류기간 상한 재임기간체류자격외 활동 󰁾 목차 1. 외교(A-1) 자격을 소지한“주한외국공관원 가족”의 국내취업은 상호주의에 따라 외교부장"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 15,
+        "heading": "“해당사항 없음”체류자격부 여",
+        "snippet": "취업사실을 확인할 수 있는 서류 이외 취업분야에 따른 업체 요건, 학력, 경력, 범죄경력 등의 기타 서류 제출 불요2. 외교(A-1) 자격을 소지한 국제기구 직원의 동반가족에 대한 체류자격외 활동 허가(상호주의 비적용, 청장·사무소장·출장소장 위임) ◦ 적용대상 - 대한민국과 협정을 체결하여 국내에 주소지를 둔 국제기구에서 외교(A-1) 자격으로 근무 중인 직원의 배우자 및 미성년 자녀 ※"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 16,
+        "heading": "부양자의 외국공관원 신분증",
+        "snippet": "교사절과 동등한 특권과 면제를 받는 자, ③ ① 또는 ②에 해당하는 사람의 동반가족(동반가족의 범위는 아래 표 참고)이 외교(A-1) 자격 이외의 자격으로 입국 시 외교(A-1) 자격으로 체류자격 변경 허가(청장, 사무소장, 출장소장 위임)◦ 허가 내용 : 외교(A-1), 체류기간(재직기간 내) ◦ 제출 서류 - ① 대한민국 정부가 접수한 외국정부의 외교사절단이나 영사기관의 구성원 : 신청서"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "A-2",
+    "official_ko_name": "공무",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/A-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "유의사항‣ 공통사항 (체류 일반)체류자격별 대상 및 제출서류 등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "유효기간 범위 내 체류기간 부여 안내▣ 적용대상 • 아래 외국인을 제외한 모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 13,
+        "heading": "",
+        "snippet": "- 13 - - 외교(A-1), 공무(A-2), 협정(A-3) 자격 소지자 - 만 6세 미만 소아(만 6세 이후 최초 체류허가 신청 시 제출) 및 임신부 - 고령 또는 질병으로 거동이 불가능한 사람 ▣ 결핵 고위험국가(35개국) • 네팔, 동티모르, 러시아, 말레이시아, 몽골, 미얀마, 방글라데시, 베트남, 태국, 스리랑카, 우즈베키스탄, 인도, 인도네시아, 중국, 캄보디아, 키르기스스탄,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 16,
+        "heading": "부양자의 외국공관원 신분증",
+        "snippet": "족관계 입증서류, ①또는②에 해당하는 사람의 신분증 및 파견·재직을 증명하는 서류 주한 외국공관 등에 주재근무하는 자(A-1,A-2)의 동반가족 범위 【 외교(A-1)자격 부여 대상인 동반가족 범위 】 1. 법적 혼인관계의 배우자 (파견국 법령에 따라 법적 혼인관계에 있는 경우는 인정되나, 파견국에서 복수의 배우자가 법적 혼인관계에 있는 경우는 1명에 대해서만 인정) 2. 󰡔민법󰡕 제4조에"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "- 18 - 공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한 공무수행기간체류자격외 활동 󰁾 목차 1. 공무(A-2) 자격을 소지한“주한외국공관원 가족”의 국내취업은 상호주의에 따라 외교부장관(외교사절담당관)의 추천을 받은 자에 한하여 체류자격외 활동허가(청장·사무소장·출장소장 위임) ◦ 취업허"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 19,
+        "heading": "해당사항 없음",
+        "snippet": "취업사실을 확인할 수 있는 서류 이외 취업분야에 따른 업체 요건, 학력, 경력, 범죄경력 등의 기타 서류 제출 불요2. 공무(A-2) 자격을 소지한 국제기구 직원의 동반가족에 대한 체류자격외 활동 허가(상호주의 비적용, 청장·사무소장·출장소장 위임) ◦ 적용대상 - 대한민국과 협정을 체결하여 국내에 주소지를 둔 국제기구에서 공무(A-2) 자격으로 근무 중인 직원의 배우자 및 미성년 자녀 ※"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "A-3",
+    "official_ko_name": "협정",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/A-3.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "A-3-99"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "격별 대상 및 제출서류 등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "체류기간 부여 안내▣ 적용대상 • 아래 외국인을 제외한 모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효기간 범위 내에서"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 13,
+        "heading": "",
+        "snippet": "- 13 - - 외교(A-1), 공무(A-2), 협정(A-3) 자격 소지자 - 만 6세 미만 소아(만 6세 이후 최초 체류허가 신청 시 제출) 및 임신부 - 고령 또는 질병으로 거동이 불가능한 사람 ▣ 결핵 고위험국가(35개국) • 네팔, 동티모르, 러시아, 말레이시아, 몽골, 미얀마, 방글라데시, 베트남, 태국, 스리랑카, 우즈베키스탄, 인도, 인도네시아, 중국, 캄보디아, 키르기스스탄,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 17,
+        "heading": "재입국허가",
+        "snippet": "- 17 - 재입국허가 출국한 날로부터 1년 이내 재입국하려는 경우 면제 단수사증을 소지한 외교(A-1)~협정(A-3) 소지자 중 재임기간(공무수행기간,신분존속기간 또는 협정상의 체류기간)내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능 ※재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요 󰋻국내 재임기간 내에서 단‧복수재입국허가(공항만도 복수 가능) 󰋻제출서류 신청"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 20,
+        "heading": "변경허가",
+        "snippet": "경 또는 체류기간연장 허용 재입국허가 출국한 날로부터 1년 이내 재입국하려는 경우 면제 단수사증을 소지한 외교(A-1)~협정(A-3) 소지자 중 재임기간(공무수행기간,신분존속기간 또는 협정상의 체류기간)내에 재입국하고자 하는 경우 대상자의 요청이 있으면 재입국허가 가능 ※재임기간 중 유효한 복수사증이 있는 경우는 재입국이 불필요 󰋻국내 재임기간 내에서 단‧복수재입국허가(공항만도 복수 가능)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 21,
+        "heading": "신분존속기간 또는 협정상의 체류기간",
+        "snippet": "- 21 - 협정(A-3)자격 해당자 및 활동범위대한민국정부와 협정에 의하여 외국인등록이 면제되거나 이를 면제할 필요가 있다고 인정되는 자와 그 가족󰋯SOFA : 대한민국과 아메리카합중국간의 상호바위조약 제4조에 의한 시설과 구역 및 대한민국에서의 합중국 군대의 지위에 관한 협정󰋯(Fulbright 협정) 대한민국 정부와 미합중국 정부 간의 교육에 관한 양해각서(일명 풀브라이트 협정) (‘5"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "B-1",
+    "official_ko_name": "사증면제협정",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/B-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "B-1-1",
+      "B-1-2"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 24,
+        "heading": "사증면제(B-1)활동범위",
+        "snippet": "- 24 - 사증면제(B-1)활동범위 협정상의 체류활동해 당 자 대한민국과 사증면제협정을 체결한 국가의 국민으로서 그 협정에 의한 활동을 하려는 자1회에 부여할 수 있는 체류기간 상한 협정상의 체류기간체류자격변경 및체류기간연장 󰁾 목차 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 30,
+        "heading": "󰁾 목차",
+        "snippet": "류 ④ 고용추천서(해당자) ⑤ 기타 해당 분야 입증 서류 등 체류자격변경허가 □ 계절근로 외 단기취업(C-4-5)1. 무사증(B-1․B-2) 또는 단기방문(C-3) 입국자로 입단테스트 등을 위해 입국한 운동선수‧연주자‧무용가 및 상금이 걸린 국제대회참가자등의 경우 관련 입증자료제출 받아 청(사무소·출장소)장 재량으로 변경허가 불가피한 사유가 있거나 국익차원에서 필요시 자격변경 허용 허가 시"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "자격 변경허가 󰁾 목차 1. 문화예술(D-1) 체류자격변경이 가능한 경우 해외입양으로 외국국적을 취득한 자 독일인• 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 6개월 미만 체류하는 캐나다인•"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 90,
+        "heading": "6. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한",
+        "snippet": "- 90 - 6. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 준비서류재정능력 입증서류(잔고증명, 부모 재정능력 등)등록금 또는 교육비 납입증명서한국어 능력 입증서류(토픽 1급이상, 세종학"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 104,
+        "heading": "근무처의 변경․추가",
+        "snippet": ") 자격으로의 변경허가 ※ 허가 시에는 관계부처 협조공한 등 장기취재 필요성을 입증할 수 있는 서류를 징구할 것2. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한3. 제출서류 ①신청서 (별지 34"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "B-2",
+    "official_ko_name": "관광통과·무사증",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/B-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "B-2-1",
+      "B-2-2"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 25,
+        "heading": "관광통과(B-2)활동범위",
+        "snippet": "- 25 - 관광통과(B-2)활동범위 관광․통과해 당 자 관광․통과 등의 목적으로 대한민국에 사증 없이 입국하려는 자1회에 부여할 수 있는 체류기간 상한 법무부장관이 따로 정하는 기간체류자격변경 및체류기간연장 󰁾 목차 사증면제협정 또는 관광통과 목적으로 입국한 자에 대하여는 원칙적으로 체류기간 연장이나 체류자격 변경허가를 하지 아니하므로 체류기간이 협정기간 또는 법무부장관이 따로 정하는 기간"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 30,
+        "heading": "󰁾 목차",
+        "snippet": "고용추천서(해당자) ⑤ 기타 해당 분야 입증 서류 등 체류자격변경허가 □ 계절근로 외 단기취업(C-4-5)1. 무사증(B-1․B-2) 또는 단기방문(C-3) 입국자로 입단테스트 등을 위해 입국한 운동선수‧연주자‧무용가 및 상금이 걸린 국제대회참가자등의 경우 관련 입증자료제출 받아 청(사무소·출장소)장 재량으로 변경허가 불가피한 사유가 있거나 국익차원에서 필요시 자격변경 허용 허가 시 체류기간"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 145,
+        "heading": "체류자격 변경허가",
+        "snippet": "표에서 총 190점 중 기본항목이 20점 이상으로 총 득점이 60점 이상인자 - 단, 법무부장관 고시국가* 국민 중 B-1, B-2, C-1, C-3, C-4, D-3, E-9, E-10, G-1 자격에 대해서는 총 득점이 80점 이상인 경우에만 체류자격 변경 허용 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ❍ (국내 대학 졸업 후 최초 구직 자격 변경) ①국내 대학에서 ②전문학"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 346,
+        "heading": "5. 점수제 우수인재(F-2-7)의 국내 출생 미성년자녀에 대한 방문동거 자격 부여 ☞ 점수제 우수인제(F-2-7) 자격 부여 부분 참고 가. 체류허가 대상",
+        "snippet": "류자격(단기사증, 기타(G-1), 관광취업(H-1) 등)으로 체류 중일 경우 불충족 ※ 부 또는 모가 단기 체류자격(B-1, B-2, C-3) 으로 입국하여 국내에서 출생한 자녀는 장기 체류자격 부여를 허용하지 않고 출국하여 관련 비자를 받고 입국하여야 함 3) 점수제 우수인재(F-2-7 또는 F-2-7S,)의 요건 〇 주체류자의 연간소득이 최근 1인당 국민소득 미만인 경우(다른 모든 허가요"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 353,
+        "heading": "婚)관계 출생 친생 자녀로서 한국인 배우자에 의해 입양되지 않고 국내에 체류 중인 미성년 자녀 나. 체류허가 기간",
+        "snippet": "야 하고 발급일로부터 6개월간 유효함13. 디지털노마드(워케이션) 비자(F-1-D) 가. 체류허가 대상 단기체류자격(B-1, B-2, C-3)으로 국내 체류 중인 외국인 나. 체류허가 요건 (대상) 해외 사업체 소유자 또는 해외 기업에 소속된 외국인으로서 원격근무가 가능한 자 중 1년 이상 동일 업종에 근무한 자 및 그 가족 (연령) 만 18세 이상 (동반가족 자녀는 예외) (소득) 한국은행"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "C-1",
+    "official_ko_name": "일시취재",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/C-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "2. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 26,
+        "heading": "일시취재(C-1)자격 해당자 및 활동범위",
+        "snippet": "- 26 - 일시취재(C-1)자격 해당자 및 활동범위 외국의 신문,방송,잡지,기타 보도기관으로부터 파견되어 단기간 취재․보도활동을 하려는 자 외국의 보도기관과의 계약에 의하여 단기간 취재․보도활동을 하려는 자 외국 언론사의 지사설치 준비를 위해 단기간 취재․보도활동을 하려는 자1회에 부여할 수 있는 체류기간 상한 90일체류기간 연장허가 󰁾 목차 최장체류기간 : 90일 입국일로부터 90일 미만"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 104,
+        "heading": "근무처의 변경․추가",
+        "snippet": "조의 외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2)체류자격부 여 해당사항 없음 체류자격 변경허가 1. 일시취재(C-1) 자격 소지자에 대하여 국내 장기취재 필요성이 입증될 경우 장기취재(D-5) 자격으로의 변경허가 ※ 허가 시에는 관계부처 협조공한 등 장기취재 필요성을 입증할 수 있는 서류를 징구할 것2. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 145,
+        "heading": "체류자격 변경허가",
+        "snippet": "190점 중 기본항목이 20점 이상으로 총 득점이 60점 이상인자 - 단, 법무부장관 고시국가* 국민 중 B-1, B-2, C-1, C-3, C-4, D-3, E-9, E-10, G-1 자격에 대해서는 총 득점이 80점 이상인 경우에만 체류자격 변경 허용 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ❍ (국내 대학 졸업 후 최초 구직 자격 변경) ①국내 대학에서 ②전문학사 이상"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 478,
+        "heading": "1. 국내 체류 중 대한민국 국적을 상실한 사람에 대해 체류목적에 따라 결혼이민(F-6) 체류자격 부여2. 주한미군 현지 제대자에 대해 체류목적에 따라 결혼이민(F-6) 체류자격 부여 ※ 제출서류 및 체류허가 기간은 체류자격변경허가와 준함",
+        "snippet": "기타(G-1) 자격을 받은 자(G-1) 자격을 받은 자※ 단기사증 입국자 : 사증면제(B-1)․관광통과(B-2) 및 일시취재(C-1)부터 ※ 단기사증 입국자 : 사증면제(B-1)․관광통과(B-2) 및 일시취재(C-1)부터 단기취업단기취업((C-4)까지의 사증 소지자C-4)까지의 사증 소지자※ ※ 단, 사증면제(B-1) 자격으로 입국한 독일인은 결혼이민(F-6) 체류자격 변경 가능단, 사증면제"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "(E-10)5. 관광통과(B-2) ‣무사증입국 허가대상 국가일람표17. 무역경영(D-9)29. 방문동거(F-1)6. 일시취재(C-1)18. 구직(D-10)30. 거주(F-2)7. 단기방문(C-3)19. 교수(E-1)31. 동반(F-3)8. 단기취업(C-4)20. 회화지도(E-2)32. 재외동포(F-4)※ 38.번 참조9. 문화예술(D-1)21. 연구(E-3)33. 영주(F-5)※ 동포는 38"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "C-2",
+    "official_ko_name": "",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/C-3.json",
+    "canonical_status": "scenario_help",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "C-2"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 27,
+        "heading": "단기방문(C-3)",
+        "snippet": "술자료 수집, 그 밖에 이와 유사한 목적으로 90일을 넘지 않는 기간 동안 체류하려는 자 ☞ ‘11.12.15.부로 단기상용(C-2)와 단기종합(C-3) 체류자격을 통합 ☞ 단기방문(C-3) 자격은 영리를 목적으로 하는 사람에게 발급할 수 없음 체류자격 약호세부약호구 분대 상C-3-1단기일반단기방문(C-3) 활동범위 내에 있는 모든 자 중, 아래 순수관광(C-3-2) ~ 동포방문(C-3-9)"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 18,
+        "heading": "주별국 가 명적용 대상여권협정상의체류기간발효일자참 고 사 항",
+        "snippet": "함)자메이카외교, 관용, 일반90일’93.11.27.선원수첩15일칠레외교, 관용90일’00.07.18.￮재입국허가 면제(단, C-2, D-7, D-8, D-9에 한함)일반90일’04.10.20.코스타리카외교, 관용, 일반90일’81.10.22.선원수첩15일"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 41,
+        "heading": "1회 이상 입국자 등도 복수사증 발급 대상 (별첨1 24쪽 자료 참조)",
+        "snippet": "활동을 하려는 자 단기방문(C-3-1, C-3-4, C-3-9) 복수사증 소지자의 배우자 및 미성년 자녀 ※ 종전에 단기상용(C-2)자격과 단기방문(C-3)자격 복수 소지한 자 포함 의사, 변호사, 교수 등 전문직 종사자 기자, PD, 편집인 등 공관장이 인정하는 언론기관에서 1년 이상 재직 중인 사람 납세실적 100대 우수기업에서 과장급 이상으로 1년 이상 재직 중인 사람 대한민국 4년제"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 117,
+        "heading": "참고사항",
+        "snippet": "개인사업자에 대한 기업투자(D-8) 자격관련(대구지법 2010구합4034)1. 처분의 경위 원고는 스리랑카 국적으로 단기상용(C-2) 자격으로 입국하여 기업투자(D-8) 자격으로 체류자격 변경허가 신청을 하였으나, 피고는 외국인투자기업의 경영․관리 또는 생산․기술분야에 종사하려는 필수전문인력으로 볼 수 없다는 이유로 불허처분2. 원고의 주장 원고는 5,000만원을 실제로 투자하여 자동차 부품"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "preserve"
+  },
+  {
+    "code": "C-3",
+    "official_ko_name": "단기방문",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/C-3.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "C-3-1",
+      "C-3-2",
+      "C-3-3",
+      "C-3-4",
+      "C-3-5",
+      "C-3-6",
+      "C-3-7",
+      "C-3-8",
+      "C-3-9",
+      "C-3-10",
+      "C-3-11",
+      "C-3-91"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "3. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 27,
+        "heading": "단기방문(C-3)",
+        "snippet": "- 27 - 단기방문(C-3) 자격 해당자 및 활동범위 시장조사, 업무연락, 상담, 계약 등의 상용활동 관광, 통과, 요양, 친지방문, 친선경기, 각종 행사나 회의 참가 또는 참관, 문화예술, 일반연수, 강습, 종교의식 참석, 학술자료 수집, 그 밖에 이와 유사한 목적으로 90일을 넘지 않는 기간 동안 체류하려는 자 ☞ ‘11.12.15.부로 단기상용(C-2)와 단기종합(C-3) 체류자격을"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 30,
+        "heading": "󰁾 목차",
+        "snippet": "기타 해당 분야 입증 서류 등 체류자격변경허가 □ 계절근로 외 단기취업(C-4-5)1. 무사증(B-1․B-2) 또는 단기방문(C-3) 입국자로 입단테스트 등을 위해 입국한 운동선수‧연주자‧무용가 및 상금이 걸린 국제대회참가자등의 경우 관련 입증자료제출 받아 청(사무소·출장소)장 재량으로 변경허가 불가피한 사유가 있거나 국익차원에서 필요시 자격변경 허용 허가 시 체류기간은 입국일로부터 기산,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 41,
+        "heading": "체류자격 변경허가",
+        "snippet": "<단기 체류자격 소지자 유학 자격변경 일람표>국적현 체류자격일반국가고시 21개 국가 + 중점관리 5개 국가단기B1/ B2 ○×C-3 C31/C34인증대○×(‘19.6.11 변경)비인증대○×C38○○C32~C33/C35~7,C39~10××나. (허가권한) 체류지 관할 또는 대학 소재지 관할 출입국외국인관서장다. 제출서류 ❍ 신청서, 여권 및 사본 1부, 표준규격사진 1매, 수수료 ※ GKS 장"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 145,
+        "heading": "체류자격 변경허가",
+        "snippet": "중 기본항목이 20점 이상으로 총 득점이 60점 이상인자 - 단, 법무부장관 고시국가* 국민 중 B-1, B-2, C-1, C-3, C-4, D-3, E-9, E-10, G-1 자격에 대해서는 총 득점이 80점 이상인 경우에만 체류자격 변경 허용 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ❍ (국내 대학 졸업 후 최초 구직 자격 변경) ①국내 대학에서 ②전문학사 이상 학위과정"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 345,
+        "heading": "근무처의 변경․추가",
+        "snippet": "출생일로부터 90일 이내에 자격부여를 받아야 함1. 주한미군 현지제대자에 대하여는 체류목적에 따라 협정(A-3), 단기방문(C-3), 방문동거(F-1), 거주(F-2), 기타(G-1)자격의 범위내에서 체류자격 부여2. 거주(F-2)자격 소지자의 한국출생 자녀에 대한 방문동거(F-1) 체류자격 부여 ① 신청서(별지 34호 서식), 여권, 표준규격사진 1매, 수수료 ② 출생증명서 ③가족관계기록"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "C-4",
+    "official_ko_name": "단기취업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/C-4.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "C-4-1",
+      "C-4-2",
+      "C-4-3",
+      "C-4-4",
+      "C-4-5"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "4. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14."
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 29,
+        "heading": "단기취업(C-4)자격 해당자 및 활동범위",
+        "snippet": "- 29 - 단기취업(C-4)자격 해당자 및 활동범위 법무부장관이 관계 중앙행정기관의 장과 협의하여 정하는 농작물 재배·수확(재배·수확과 연계된 원시가공 분야를 포함한다) 및 수산물 원시가공 분야에서 취업 활동을 하려는 사람으로서 법무부장관이 인정하는 사람(C-4-1~4) 일시흥행, 광고․패션모델, 강의․강연, 연구, 기술지도 등 수익을 목적으로 단기간 취업활동을 하려는 자(C-4-5)1회에"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 30,
+        "heading": "󰁾 목차",
+        "snippet": "가 필수로 되어 있는 업종은 고용추천서 징구) - 여권에 근무처변경 허가인을 찍고 변경된 근무처와 체류기간을 적거나 단기취업(C-4) 자격 근무처변경 허가 스티커 부착 근무처 추가 시 근무처 추가 횟수 제한 없음 ※ 소속사의 지시에 따라 E-6-1자격에 해당하는 공연을 하기 위해 공연장소를 변경하는 경우 별도의 허가나 신고 절차 없이 활동 가능 (E-6-2에 해당하는 활동은 고용주의 변동신고"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 145,
+        "heading": "체류자격 변경허가",
+        "snippet": "항목이 20점 이상으로 총 득점이 60점 이상인자 - 단, 법무부장관 고시국가* 국민 중 B-1, B-2, C-1, C-3, C-4, D-3, E-9, E-10, G-1 자격에 대해서는 총 득점이 80점 이상인 경우에만 체류자격 변경 허용 1-2) 일반 구직(D-10-1): 점수제 면제 특례자 ❍ (국내 대학 졸업 후 최초 구직 자격 변경) ①국내 대학에서 ②전문학사 이상 학위과정 유학생(D"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 326,
+        "heading": "⑦ 외국인등록 전 합의 변경 시 : ①~⑥ 제출서류 + 마약검사 확인서 자격외활동허가",
+        "snippet": "신청 입증서류(해당자만 제출) ⑦ 계절근로자 배치 대상 고용주 확인서 ⑧ 거주/숙소 제공 확인서(해당자만 제출)□ 계절근로자(C-4, E-8)는 계절근로 이외의 다른 활동을 위한 체류자격외 활동허가를 허용하지 않음체류기간연장허가 󰁾 목차 절차① 계절근로자 체류기간 만료일 60일 ~ 40일 전 : 관할 지방자치단체로 신청 → 지방자치단체에서 관할 출입국‧외국인관서로 일괄 신청② 계절근로자 체류"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 364,
+        "heading": "5년",
+        "snippet": "따라 체류자격외 활동허가를 받아야 하는 경우와 받지 않은 경우로 구분 * ｢출입국관리법 시행령｣ 별표 1 중 5. 단기취업(C-4), 별표 1의2 중 14. 교수(E-1)부터 22. 선원취업(E-10), 29. 방문취업(H-2) 체류자격상의 취업활동 **출입국관리법 시행령」 제23조에 따르면 거주자격 ‘바’목(기타 장기거주)에 해당하는 사람은 종전 체류자격에 해당하는 동일 분야 활동을 계속"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-1",
+    "official_ko_name": "문화예술",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-1-00"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": ". 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "일랜드,호주,파키스탄,인도,싱가폴, 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "일랜드,호주,파키스탄,인도,싱가폴, 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 32,
+        "heading": "2년",
+        "snippet": "- 32 - 문화예술(D-1)자격 해당자 및 활동범위수익을 목적으로 하지 아니하는 학술 또는 예술상의 활동을 하려고 하는 자(대한민국의 고유문화 또는 예술에 대하여 전문적인 연구를 하거나 전문가의 지도를 받으려는 자 포함※ 일반 태권도학원, 무용 학원 등 영리단체의 초청은 해당되지 않음1회에 부여할 수 있는 체류기간 상한 2년 체류자격외 활동 󰁾 목차 1. 체류 외국인이 대한민국의 고유문화"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "아래 체류자격 소지자는 근무처의 변경․추가 신고가 아닌외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2) 󰋻문화예술(D-1), 유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가 󰋻구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 󰋻방문취업(H-2) 자격 소지자는 개인․기관․단"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "여할 수 있는 체류기간 상한 2년별도 허가 없이유학활동이 가능한 체류자격 󰁾 목차 ❍ 외교(A-1)~협정(A-3), 문화예술(D-1), 일반연수(D-4-2), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13,"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-2",
+    "official_ko_name": "유학",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-2-1",
+      "D-2-2",
+      "D-2-3",
+      "D-2-4",
+      "D-2-5",
+      "D-2-6",
+      "D-2-7",
+      "D-2-8"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": ". 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "지자는 근무처의 변경․추가 신고가 아닌외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2) 󰋻문화예술(D-1), 유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가 󰋻구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 󰋻방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "- 35 - 유 학(D-2)자격 해당자 및 활동범위❍ (교육기관) 「고등교육법」 및 특별법에 따라 설립된 전문대학 이상의 교육기관이나 학술 연구기관으로서 법무부장관이 정하는 요건을 갖춘 대학 또는 부설 어학원❍ (제외) 다음 대상은 유학 체류자격 대상 교육기관에서 제외 - (원격대학) 「고등교육법」제2조제5호에 따른 방송대학‧통신대학‧방송통신대학 및 사이버대학(이하 ‘원격대학’) - (평생교"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 36,
+        "heading": "󰁾 목차",
+        "snippet": "10), 난민신청자(G-1-5)의 경우 별도의 허가 없이 유학 활동이 가능하나, 현 체류기간 종료 후 유학활동을 사유로 유학(D-2)자격으로의 체류자격 변경은 불가, 출국 후 사증(사증발급인정서) 발급 받아 입국 가능❍ 관광취업(H-1) 자격은 학원수강, 어학연수 등 학업 활동은 허용되나, 유학(D-2)활동에 해당하는 정규 학업 과정은 제한. 단, 호주, 대만, 아일랜드, 덴마크, 캐나다,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 37,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "대 상 ❍ 일정 수준의 한국어 능력을 보유하고 유학 본연의 활동에 전념하며, 대학 유학생 담당자의 확인을 받은 사람 - 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해당자 - 어학연수(D-4-1, D-4-7)자격 및 방문학생(D-2-8)자격은 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람 ❍ 유학과정 종료(전문학사 2년, 학사 4년) 후 학"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 39,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "벌받은 경력이 있는 사람 ❍ 기간 및 장소 - 어학연수생(D-4): 체류기간 내에서 최장 6개월, 장소 1곳 한정 - 유학생(D-2): 체류기간 내에서 최장 1년, 시간제 취업허가 허용 시간 범위 내 동시에 취업할 수 있는 장소 2곳으로 한정마. 신청서류 ❍ 신청서, 여권, 외국인등록증 ※ 수수료 면제 ❍ 성적 또는 출석 증명서(유학생정보시스템으로 확인이 될 경우 생략) ❍ 한국어 능력(영어"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-3",
+    "official_ko_name": "기술연수",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-3.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-3-1",
+      "D-3-11",
+      "D-3-12",
+      "D-3-13"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 -"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 15,
+        "heading": "“해당사항 없음”체류자격부 여",
+        "snippet": "자녀 외에 사무국 직원이 경제적으로 부양하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 ("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 -"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 19,
+        "heading": "해당사항 없음",
+        "snippet": "자녀 외에 사무국 직원이 경제적으로 부양하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 ("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "적을 취득한 자 독일인• 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 6개월 미만 체류하는 캐나다인• 6월 미만 체류하려는 캐나다국민 중 다음 체류자격에 해당하는 활동을 하려는 자에 대한 체류자"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-4",
+    "official_ko_name": "일반연수",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-4.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-4-1",
+      "D-4-2",
+      "D-4-2K",
+      "D-4-3",
+      "D-4-5",
+      "D-4-6",
+      "D-4-7"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "8. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "․추가 신고가 아닌외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2) 󰋻문화예술(D-1), 유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가 󰋻구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 󰋻방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "(외국인 유학생) 위 교육기관에서 정규과정의 교육을 받거나 특정 연구를 하고자 하는 외국인으로서 유학(D-2) 및 어학연수(D-4-1, D-4-7)❍ 적용대상별 세부약호약 호약 호대 상 자학위과정(D-2)D-2-1전문학사과정 D-2-2학사과정 D-2-3석사과정 D-2-4박사과정 D-2-5연구과정 D-2-6교환학생D-2-7일-학습연계 유학D-2-8방문학생어학연수(D-4)D-4-1한국어 연수D"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 39,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "개월 이내 시간제 취업 허가를 받지 않았거나 허가 조건을 위반하여 처벌받은 경력이 있는 사람 ❍ 기간 및 장소 - 어학연수생(D-4): 체류기간 내에서 최장 6개월, 장소 1곳 한정 - 유학생(D-2): 체류기간 내에서 최장 1년, 시간제 취업허가 허용 시간 범위 내 동시에 취업할 수 있는 장소 2곳으로 한정마. 신청서류 ❍ 신청서, 여권, 외국인등록증 ※ 수수료 면제 ❍ 성적 또는 출석 증"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "은 시간제 취업허가 필요)근무처의 변경․추가❍ 해당사항 없음 ※ 영리목적이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고(시행규칙 제49조의 2"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 41,
+        "heading": "체류자격 변경허가",
+        "snippet": "수수료 면제 ❍ 교육기관 사업자등록증(또는 고유번호증) 사본 ❍ 표준입학허가서 ❍ 학력요건 및 재정능력 입증서류 ❶ 어학연수(D-4) 자격 → 유학(D-2)자격으로 변경하는 경우 - 이전 과정의 성적(출석/연수)증명서 제출(유학생정보시스템에서 확인되지 않는 경우) ❷ 정부초청장학생이 체류자격 변경허가를 신청한 경우 - 학력증명서는 유학생 국적에 관계없이 국립국제교육원 또는 대학에서 발행한 사"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-4-1",
+    "official_ko_name": "한국어연수 (대학부설어학원)",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-4-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "(외국인 유학생) 위 교육기관에서 정규과정의 교육을 받거나 특정 연구를 하고자 하는 외국인으로서 유학(D-2) 및 어학연수(D-4-1, D-4-7)❍ 적용대상별 세부약호약 호약 호대 상 자학위과정(D-2)D-2-1전문학사과정 D-2-2학사과정 D-2-3석사과정 D-2-4박사과정 D-2-5연구과정 D-2-6교환학생D-2-7일-학습연계 유학D-2-8방문학생어학연수(D-4)D-4-1한국어 연수D"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 37,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "을 받은 사람 - 유학(D-2) 체류자격 중 세부 체류자격 D-2-1~D-2-4, D-2-6, D-2-7 해당자 - 어학연수(D-4-1, D-4-7)자격 및 방문학생(D-2-8)자격은 변경일(사증소지자는 입국일)로부터 6개월이 경과된 사람 ❍ 유학과정 종료(전문학사 2년, 학사 4년) 후 학점미달 등으로 졸업요건을 갖추지 못하여 예외적으로 체류허가를 받은 자는 제외 - 다만, 석․박사과정 종"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "류자격외 활동 원칙적으로 체류자격외 활동 억제(확인 필요)1. “유학(D-2) 자격 체류자격외 활동 허가” 참조2. 일반연수(D-4-1) 자격소지자의 회화지도(E-2) 자격외 활동 ※ 어학연수(D-4-1)자격 소지자는 어학연수(D-4-1)자격 취득일부터 6개월 경과된 경우 체류자격외 활동 가능근무처의 변경․추가 해당사항 없음 ※ 영리목적이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 88,
+        "heading": "체류자격 변경허가",
+        "snippet": "세 이하로, 고등학교 이상의 학력소지자 ② (체류경비) 연수기간동안의 국내 체재비를 입증하는 자 - 국내 체재비는 어학연수생(D-4-1) 자격 체류경비 기준을 준용"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 90,
+        "heading": "6. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한",
+        "snippet": "정성, 초청자 및 피초청자의 자격 확인 등을 심사하기 위해 첨부서류의 일부를 가감할 수 있음 체류기간 연장허가1. 어학연수생(D-4-1, D-4-7)에 대한 체류기간 연장허가 가. 기본원칙"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 153,
+        "heading": "2. 선택",
+        "snippet": "교환학생 (D-2-6), 국공립기관 연수(D-4-2), 사설 기관 연수 (D-4-6)12개월~18개월319개월이상5어학연수 (D-4-1)12개월~3④ 한국어능력한국어능력시험(TOPIK) / 사회통합프로그램(KIIP)5급/5단계 상당204급/4단계 상당153급/3단계 상당102급/2단계 상당53. 가점① 관계 중앙행정기관장, 재외공관장 구직비자 발급 추천2070점② - 세계 우수대학 졸업자(T"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-4-2K",
+    "official_ko_name": "기업맞춤형인턴십(K-Trainee)",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-4-2K.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 92,
+        "heading": "󰁾 목차",
+        "snippet": "확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K)의 체류기간연장 제출서류 ※ 인턴기간은 원칙적으로 6개월을 초과할 수 없으나, 추가로 필요하다고 인정되는 경우 입국한 날부터 1년을 초과하지 않는 한도 내에서 기간 연장 가능 ① 신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 ② 체류지 입증서류"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 94,
+        "heading": "- 신청서류 : 신청서(별지 34호서식), 여권 원본, 외국인등록증, 수수료외국인등록",
+        "snippet": "대체 가능 ③ 장학생 입증서류 (해당자, 기관·단체의 공문) ④ 체류지 입증서류4. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 제출서류 ① 신청서(별지34호 서식), 여권, 사진(6개월 내 촬영 반명함) 1장, 수수료 ② 체류지 입증서류 ※ 기업 맞춤형 인턴십(D-4-2K) 자격 소지자는 아래 붙임 1,2 안내문 참고5. 외국인등록사항 변경신고 가. 신고사항 : 성명, 성별, 생"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 76,
+        "heading": "발급대상",
+        "snippet": "인정서 발급 내용 - 체류기간 6개월 이하 단수 일반연수(D-4) 사증발급인정서 2. 기업 맞춤형 인턴십(K-Trainee, D-4-2K) 자격 사증발급인정서 발급 ❖ 대상 국가 : 베트남, 중국, 태국, 일본, 인도, 인도네시아, 말레이시아, 싱가포르, 필리핀 < 대한무역투자진흥공사 발표 기준 아시아권 진출 기업 수 를 참고하여 선정 > ※ 상기 9개국에 대해서만 기업 맞춤형 인턴십(D-4"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 77,
+        "heading": "사증발급인정서 발급대상",
+        "snippet": "수대학생과 전문인력을 모두 합산한 인원 ❍ (초청제한) 사증발급인정서 발급 신청일 기준, 과거 1년 이내 기업 맞춤형 인턴십(D-4-2K) 참여자 중 10% 이상 불법체류자 발생 시 최종 발생일로부터 1년간 신규 초청 제한나. 피초청자(외국인) ❍ 맞춤형 우수대학생❖ 기업이 현지 대학과 산학협력을 체결하고 후원·양성하는 학사과정 3학년 이상 재학생으로 토픽 2급 이상 소지하고 아래 ①~③ 요"
+      },
+      {
+        "source_id": "visa_manual_2026_06_17_pdf",
+        "page": 78,
+        "heading": "사증발급인정서 발급대상",
+        "snippet": "신청 장소 : 초청기업 소재지 관할 출입국·외국인관서 ❍ 발급 내용 : 체류기간 6개월 이내, 단수 ※ 기업 맞춤형 인턴십(D-4-2K) 자격 소지자는 아래 붙임 1, 2 안내문 참고마. 발급 절차 ❍ 맞춤형 우수대학생현지 대학 연계맞춤형 인재 양성▶사증발급인정서 신청‧발급 ▶사증발급신청‧발급(사증발급인정번호 제출)▶입국현지 대학·기업(신청) 초청자(발급) 출입국‧외국인관서 (신청) 피초청"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-5",
+    "official_ko_name": "취재",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-5.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "가 없이유학활동이 가능한 체류자격 󰁾 목차 ❍ 외교(A-1)~협정(A-3), 문화예술(D-1), 일반연수(D-4-2), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고(시행규칙 제49조의 2)체류자격부 여❍ 해당사항 없음체류자격 변경허가 󰁾 목차 1. 유학(D-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2)체류자격부 여 해당사항 없음체류자격 변경허가 󰁾 목차 1."
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 103,
+        "heading": "취 재(D-5)자격 해당자 및 활동범위",
+        "snippet": "- 103 - 취 재(D-5)자격 해당자 및 활동범위 외국인 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 국내에 주재하면서 취재․보도 활동을 하는 자 외국의 보도기관과의 계약에 의하여 국내에서 주재하면서 취재․보도 활동을 하는 자 국내에 지사나 지국이 이미 개설된 외국의 신문, 방송, 잡지, 기타 보도기관으로부터 파견되어 국내에서 취재․보도활동을 하는 자1회에 부여할 수 있는 체류기간"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 104,
+        "heading": "근무처의 변경․추가",
+        "snippet": "이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2)체류자격부 여 해당사항 없음 체류자격 변경허가 1. 일시취"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-6",
+    "official_ko_name": "종교",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-6.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "스탄,인도,싱가폴, 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "스탄,인도,싱가폴, 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "다국민 중 다음 체류자격에 해당하는 활동을 하려는 자에 대한 체류자격 변경허가 가. 대상체류자격 : 문화예술(D-1). 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) 나. 체류기간 : 입국일로부터 6개월 미만2. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 수수료 ②연수기관이 작성한 연수일정표 ③문화예술단체 입증서류(사업자등록증 사본 등)심사에 필요한 추가서"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고(시행규칙 제49조의 2)체류자격부 여❍ 해당사항 없음체류자격 변경허가 󰁾 목차 1. 유학(D-2) 체류자격 변"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2)체류자격부 여 해당사항 없음체류자격 변경허가 󰁾 목차 1. 어학연수(한국어"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-7",
+    "official_ko_name": "주재",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-7.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-7-1",
+      "D-7-2",
+      "D-7-91",
+      "D-7-92"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "을 아래와 같이 관할 출입국·외국인관서에 신고하여야 합니다. 󰊱 신고대상 • 취업이 가능한 체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 28,
+        "heading": "󰁾 목차",
+        "snippet": "출받아 C-3로 등록※ 단기방문(C-3-4, 6M)소지 칠레국민은 6개월 이상 체류불가하고 6개월 이상 체류하고자 하는 자는 D-7, D-8, D-9 으로 체류자격 변경허가를 받아야 함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 34,
+        "heading": "연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
+        "snippet": "스, 스웨덴, 스위스, 네덜란드, 노르웨이, 덴마크, 핀란드, 벨기에, 룩셈부르크, 리히텐슈타인, 수리남, 칠레(C-3-4, D-7, D-8, D-9)외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 사업자등록증 등 문화예술 단체입증 서류, ③ 체류지 입증서류2. 외국인등록사항 변경신고 신고사항 : 성명, 성별, 생년월일 및 국"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고(시행규칙 제49조의 2)체류자격부 여❍ 해당사항 없음체류자격 변경허가 󰁾 목차 1. 유학(D-2) 체류자격 변경허가가. 기본원"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 66,
+        "heading": "",
+        "snippet": "산시설이 없으나 현지법인의 가동을 위해 기술연수가 불가피하다고 인정되는 경우에 동일 업종 지사, 자회사, 특정 계열회사(주재(D-7)관련 사증발급지침에서 정하는 계열회사)36) 내에서의 연수를 허용할 수 있다.35) 「산업집적활성화 및 공장설립에 관한 법률」에 의해 공장건축면적이 500제곱미터 이상인 공장의 경우 공장설립 승인을 받아야 함36) 사증발급편람 규정상 특정 계열회사의 개념: 특정"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-8",
+    "official_ko_name": "기업투자",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-8.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-8-1",
+      "D-8-2",
+      "D-8-3",
+      "D-8-4",
+      "D-8-4S",
+      "D-8-91"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Ti"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "출입국·외국인관서에 신고하여야 합니다. 󰊱 신고대상 • 취업이 가능한 체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 28,
+        "heading": "󰁾 목차",
+        "snippet": "-3로 등록※ 단기방문(C-3-4, 6M)소지 칠레국민은 6개월 이상 체류불가하고 6개월 이상 체류하고자 하는 자는 D-7, D-8, D-9 으로 체류자격 변경허가를 받아야 함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 34,
+        "heading": "연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
+        "snippet": "덴, 스위스, 네덜란드, 노르웨이, 덴마크, 핀란드, 벨기에, 룩셈부르크, 리히텐슈타인, 수리남, 칠레(C-3-4, D-7, D-8, D-9)외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 사업자등록증 등 문화예술 단체입증 서류, ③ 체류지 입증서류2. 외국인등록사항 변경신고 신고사항 : 성명, 성별, 생년월일 및 국적, 여권"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고(시행규칙 제49조의 2)체류자격부 여❍ 해당사항 없음체류자격 변경허가 󰁾 목차 1. 유학(D-2) 체류자격 변경허가가. 기본원칙 ❍ 외국인 등록"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "(D-4) 자격소지자의 소속기관 또는 단체의 변경(명칭변경 포함)과 취재(D-5), 종교(D-6), 주재(D-7), 기업투자(D-8), 무역경영(D-9)자격소지자의 소속기관 또는 단체의 명칭이 변경되는 경우에는 법 제35조의 외국인등록사항 변경신고를 받아 처리(시행규칙 제49조의 2)체류자격부 여 해당사항 없음체류자격 변경허가 󰁾 목차 1. 어학연수(한국어연수: D-4-1, 외국어연수: D-"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-9",
+    "official_ko_name": "무역경영",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-9.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-9-1",
+      "D-9-2",
+      "D-9-3",
+      "D-9-4",
+      "D-9-5"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "신고하여야 합니다. 󰊱 신고대상 • 취업이 가능한 체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 28,
+        "heading": "󰁾 목차",
+        "snippet": "록※ 단기방문(C-3-4, 6M)소지 칠레국민은 6개월 이상 체류불가하고 6개월 이상 체류하고자 하는 자는 D-7, D-8, D-9 으로 체류자격 변경허가를 받아야 함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "등록사항 변경신고를 받아 처리(시행규칙 제49조의 2) 󰋻문화예술(D-1), 유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가 󰋻구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 󰋻방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에는 그 취업개시 사실,"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 34,
+        "heading": "연수기관이 작성한 연수일정표 ③부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류 ④체류지 입증서류(임대차계약서, 숙소제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 등)추가서류①연수증명서",
+        "snippet": "스, 네덜란드, 노르웨이, 덴마크, 핀란드, 벨기에, 룩셈부르크, 리히텐슈타인, 수리남, 칠레(C-3-4, D-7, D-8, D-9)외국인등록 󰁾 목차 1. 외국인등록 신청서류 ① 신청서(별지34호 서식), 여권원본, 표준규격사진1장, 수수료 ② 사업자등록증 등 문화예술 단체입증 서류, ③ 체류지 입증서류2. 외국인등록사항 변경신고 신고사항 : 성명, 성별, 생년월일 및 국적, 여권의 번호‧"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "가능한 체류자격 󰁾 목차 ❍ 외교(A-1)~협정(A-3), 문화예술(D-1), 일반연수(D-4-2), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및 다른 체류자격 소"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "D-10",
+    "official_ko_name": "구직",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/D-10.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "D-10-1",
+      "D-10-2",
+      "D-10-3",
+      "D-10-T"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T)40. 광역형 비자 시범사업41. K-STAR 비자트랙 제도"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함)이나 추가 󰋻구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 󰋻방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에는 그 취업개시 사실, 이미 고용되어 있는 경우에는 그 개인․기관․단체 또는 업체의 변경(명칭변경 포함)되"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 111,
+        "heading": "해당사항 없음체류자격 변경허가",
+        "snippet": "유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함) 나. 구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 다. 방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에는 그 취업개시 사실, 이미 고용되어 있는 경우에는 그 개인․기관․단체 또는 업체의 변경(명칭변경 포함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 117,
+        "heading": "근무처의 변경․추가",
+        "snippet": "유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함) 나. 구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 다. 방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에는 그 취업개시 사실, 이미 고용되어 있는 경우에는 그 개인․기관․단체 또는 업체의 변경(명칭변경 포함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 132,
+        "heading": "변경․추가",
+        "snippet": "유학(D-2), 일반연수(D-4) 내지 무역경영(D-9) 자격 소지자는 소속기관 또는 단체의 변경(명칭변경 포함) 나. 구직(D-10) 자격 소지자는 연수 개시 사실 또는 연수기관의 변경(명칭 변경 포함) 다. 방문취업(H-2) 자격 소지자는 개인․기관․단체 또는 업체에 최초로 고용된 경우에는 그 취업개시 사실, 이미 고용되어 있는 경우에는 그 개인․기관․단체 또는 업체의 변경(명칭변경 포함"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 133,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": "투자하고 투자기업등록증을 발급받은 개인사업자 - 국내 대학에서 석사 이상 학위를 취득(예정자 포함)한 유학(D-2) 및 구직(D-10) 자격자로 1억원 이상을 투자(투자금 중 최대 5,000만원까지는 국내에서 조성된 자금을 인정하나, 나머지 자금은 반드시 「외국환거래법」및「외국환거래규정」에 따른 외자이어야 함)한 후「부가가치세법」에 의한 사업자등록을 필하고 국내에서 회사를 경영하거나 영리사업"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-1",
+    "official_ko_name": "교수",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "다. 󰊱 신고대상 • 취업이 가능한 체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": ", 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": ", 포르투갈, 스위스, 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 21,
+        "heading": "신분존속기간 또는 협정상의 체류기간",
+        "snippet": "으로 입국하지 아니하고 입국 후 A-3자격변경을 받은 경우에도 체류자격외 활동 허용(‘07.2.9.시행) 허가 대상 : 교수(E-1) 내지 특정활동(E-7) 제출서류 ①신청서(별지34호), 여권, 수수료 ②복무확인서 ③ S.O.F.A ID 카드 ④해당 자격 관련 서류 ⑤SPONSOR인 경우 소속 기관장(고용주)의 동의서 ※ 자격외 활동 중인 근무처를 변경하려는 경우 새로운 근무처로 자격외 활"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "󰁾 목차 ❍ 외교(A-1)~협정(A-3), 문화예술(D-1), 일반연수(D-4-2), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및 다른 체류자격 소지자 중 유학(D"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-2",
+    "official_ko_name": "회화지도",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-2-1",
+      "E-2-2",
+      "E-2-91"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "체류허가 신청 시 유의사항‣ 공통사항 (체류 일반)체류자격별 대상 및 제출서류 등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8."
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": ", 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": ", 에콰도르, 콜롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 38,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "❍ 전문 분야(E-1~E-7) 활동범위(자격외 활동 허가 대상) 󰃚 미성년 학생 대상 외국어 교육 유관 시설에서의 회화지도(E-2) 활동 등 ❍ 비전문취업(E-9)의 제조업*, 건설업 및 선원취업(E-10) 업종 * 한국어능력 4급 이상인 경우 허용 ❍ (특수형태근로종사자의 활동) 택배기사, 배달대행업체 라이더, 대리기사, 보험설계사, 학습지 교사, 방문판매원 등 ❍ 파견, 도급, 알선*"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "활동 억제(확인 필요)1. “유학(D-2) 자격 체류자격외 활동 허가” 참조2. 일반연수(D-4-1) 자격소지자의 회화지도(E-2) 자격외 활동 ※ 어학연수(D-4-1)자격 소지자는 어학연수(D-4-1)자격 취득일부터 6개월 경과된 경우 체류자격외 활동 가능근무처의 변경․추가 해당사항 없음 ※ 영리목적이 아닌 문화예술(D-1), 유학(D-2), 일반연수(D-4) 자격소지자의 소속기관 또는"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 103,
+        "heading": "취 재(D-5)자격 해당자 및 활동범위",
+        "snippet": "의 교육을 받고자 하는 때는 체류기간 범위 내에서 별도의 허가 절차 불요2. 체류자격외 활동 허가(신고)대상이 아닌 회화지도(E-2) 활동체류자격외 활동 허가(신고)대상이 아닌 회화지도(E-2) 활동 (회화지도 강사에 대한 사증발급 및 체류관리에 관한 통합지침)(회화지도 강사에 대한 사증발급 및 체류관리에 관한 통합지침) 가. 직장 내에서 동료직원 등을 대상으로 하는 회화지도 활동적용대상교수"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-3",
+    "official_ko_name": "연구",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-3.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "(체류 일반)체류자격별 대상 및 제출서류 등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "롬비아, 페루(‘23.4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "경우로서, ⅰ) 학업과 연계된 연구·인턴 참여: 시간제취업허가 필요 ⅱ) 학업과 무관한 연구·인턴 참여: 체류자격외활동허가(E-3) 필요자. 현장실습학기제 운영에 따른 현장실습 활동 ❍ (대상활동) 「대학생 현장실습학기제 운영규정」(교육부고시 제2022-1호) 제2조에서 규정한 ‘표준 현장실습학기제’ 및 동 고시 제3조에서 규정한 ‘필수적으로 이수하여야 하는 실습형태 교육과정’은 시간제 취"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 110,
+        "heading": "󰁾 목차",
+        "snippet": "D-7, D-8, D-9)의 자격 소지자 중 국내기업(투자기업포함)에서 상근이사 이상의 직으로 근무하는 자②전문인력(E-1, E-3 ~ E-5, E-7) 자격소지자제출서류①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총(학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서 근무처의 변경․추가➠ 근무처 변경․추가 허가(신고) 대상 아님 :"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 116,
+        "heading": "기업투자(D-8)",
+        "snippet": "3) 자격요건을 갖춘 등록외국인 - 벤처투자(D-8-2) 및 기술창업(D-8-4(S)) 자격요건을 갖춘 교수(E-1), 연구(E-3), 기술지도(E-4), 전문직업(E-5) 자격 등록외국인 * 본인의 연구·종사 분야 등 관련 벤처투자(D-8-2)·기술창업(D-8-4(S)) 활동만 허용❍ 제출서류세부 약호제출 서류① 법인에 투자(D-8-1)사증발급 및 체류자격 변경 신청 시 제출서류 기준 준용"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-4",
+    "official_ko_name": "기술지도",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-4.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "등 안내메뉴얼1. 외교(A-1)20. 회화지도(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": ".4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": ".4.) ◦ 취업허용 범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 116,
+        "heading": "기업투자(D-8)",
+        "snippet": "등록외국인 - 벤처투자(D-8-2) 및 기술창업(D-8-4(S)) 자격요건을 갖춘 교수(E-1), 연구(E-3), 기술지도(E-4), 전문직업(E-5) 자격 등록외국인 * 본인의 연구·종사 분야 등 관련 벤처투자(D-8-2)·기술창업(D-8-4(S)) 활동만 허용❍ 제출서류세부 약호제출 서류① 법인에 투자(D-8-1)사증발급 및 체류자격 변경 신청 시 제출서류 기준 준용※ 단, “④-1 기"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 143,
+        "heading": "구 직(D-10)활동범위",
+        "snippet": "관)과의 인턴 근로계약에 따른 첨단기술 분야 인턴 활동 해 당 자 ❍ 교수(E-1)ㆍ회화지도(E-2)ㆍ연구(E-3)ㆍ기술지도(E-4)ㆍ전문직업(E-5)ㆍ예술흥행(E-6)*․ 특정활동(E-7) 자격에 해당하는 분야에 취업하기 위해 연수나 구직활동을 하려는 사람 * 단, 예술흥행(E-6) 자격 중 유흥업소 등의 흥행활동(E-6-2)은 제외하고, 순수예술 및 스포츠분야만 허용, E-7 자격 중 준"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 168,
+        "heading": "활동",
+        "snippet": "C-4-5) 특정활동(E-7) 자격을 소지한 외국첨단기술 인력이 유사첨단 기술분야인 교수(E-1), 연구(E-3), 기술지도(E-4) 자격으로의 활동"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-5",
+    "official_ko_name": "전문직업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-5.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "(E-2)2. 공무(A-2)21. 연구(E-3)3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "범위 󰋻문화예술(D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 110,
+        "heading": "󰁾 목차",
+        "snippet": "-8, D-9)의 자격 소지자 중 국내기업(투자기업포함)에서 상근이사 이상의 직으로 근무하는 자②전문인력(E-1, E-3 ~ E-5, E-7) 자격소지자제출서류①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총(학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서 근무처의 변경․추가➠ 근무처 변경․추가 허가(신고) 대상 아님 : 외국인등록"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 116,
+        "heading": "기업투자(D-8)",
+        "snippet": "투자(D-8-2) 및 기술창업(D-8-4(S)) 자격요건을 갖춘 교수(E-1), 연구(E-3), 기술지도(E-4), 전문직업(E-5) 자격 등록외국인 * 본인의 연구·종사 분야 등 관련 벤처투자(D-8-2)·기술창업(D-8-4(S)) 활동만 허용❍ 제출서류세부 약호제출 서류① 법인에 투자(D-8-1)사증발급 및 체류자격 변경 신청 시 제출서류 기준 준용※ 단, “④-1 기술창업(D-8-4)-"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 117,
+        "heading": "근무처의 변경․추가",
+        "snippet": "-8, D-9)의 자격 소지자 중 국내기업(투자기업포함)에서 상근이사 이상의 직으로 근무하는 자②전문인력(E-1, E-3 ~ E-5, E-7) 자격소지자제출서류①신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ②총(학)장의 추천서 ③고유번호증(사업자등록증)사본 ④고용계약서원본 및 사본 ⑤원근무처장의 동의서※ 90일을 초과하여 정기적으로 대학에서 강의활동을 하고자 하는 자는 본부 승"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-6",
+    "official_ko_name": "예술흥행",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-6.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-6-1",
+      "E-6-2",
+      "E-6-3"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": ")3. 협정(A-3)22. 기술지도(E-4)4. 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "D-1), 종교(D-6), 교수(E-1), 회화지도(E-2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 30,
+        "heading": "󰁾 목차",
+        "snippet": "나 단기취업(C-4) 자격 근무처변경 허가 스티커 부착 근무처 추가 시 근무처 추가 횟수 제한 없음 ※ 소속사의 지시에 따라 E-6-1자격에 해당하는 공연을 하기 위해 공연장소를 변경하는 경우 별도의 허가나 신고 절차 없이 활동 가능 (E-6-2에 해당하는 활동은 고용주의 변동신고 필요) ※ 단기사증 발급 시 허용된 범위가 아닌 다른 활동을 위한 근무처 변경 신청시 활동 상호간의 관련성이 높"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 143,
+        "heading": "구 직(D-10)활동범위",
+        "snippet": "술 분야 인턴 활동 해 당 자 ❍ 교수(E-1)ㆍ회화지도(E-2)ㆍ연구(E-3)ㆍ기술지도(E-4)ㆍ전문직업(E-5)ㆍ예술흥행(E-6)*․ 특정활동(E-7) 자격에 해당하는 분야에 취업하기 위해 연수나 구직활동을 하려는 사람 * 단, 예술흥행(E-6) 자격 중 유흥업소 등의 흥행활동(E-6-2)은 제외하고, 순수예술 및 스포츠분야만 허용, E-7 자격 중 준전문인력과 숙련기능인력은 해외신청 불"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 170,
+        "heading": "󰁾 목차",
+        "snippet": "화 50만불 이상 투자(법인포함)한 투자자격 소지자의 배우자 전문 외국 인력자격(E-1, E-2, E-3, E-4, E-5, E-6-2를 제외한 E-6, E-7)소지자의 배우자 나. 허용분야 단순노무(D-3, E-9) 등을 제외한 모든 직종에 대한 체류자격외 활동허가 다. 허가기간 : 배우자의 체류기간까지(계속연장 가능) 라. 제출서류 : 규칙 제76조에 의한 체류자격별 첨부서류(신원보증서"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-7",
+    "official_ko_name": "특정활동",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-7.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-7-1",
+      "E-7-2",
+      "E-7-3",
+      "E-7-4",
+      "E-7-4R",
+      "E-7-91",
+      "E-7-91FTA",
+      "E-7-H",
+      "E-7-S",
+      "E-7-S1",
+      "E-7-S2",
+      "E-7-T",
+      "E-7-Y"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": ". 사증면제(B-1)23. 전문직업(E-5)5. 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "2), 연구(E-3), 기술지도(E-4), 전문직업(E-5)󰋻예술흥행(E-6) [단, 호텔·유흥(E-6-2) 제외]󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 21,
+        "heading": "신분존속기간 또는 협정상의 체류기간",
+        "snippet": "입국 후 A-3자격변경을 받은 경우에도 체류자격외 활동 허용(‘07.2.9.시행) 허가 대상 : 교수(E-1) 내지 특정활동(E-7) 제출서류 ①신청서(별지34호), 여권, 수수료 ②복무확인서 ③ S.O.F.A ID 카드 ④해당 자격 관련 서류 ⑤SPONSOR인 경우 소속 기관장(고용주)의 동의서 ※ 자격외 활동 중인 근무처를 변경하려는 경우 새로운 근무처로 자격외 활동을 다시 신청근무처의"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "A-1)~협정(A-3), 문화예술(D-1), 일반연수(D-4-2), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및 다른 체류자격 소지자 중 유학(D-2) 체류자격외"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 38,
+        "heading": "시간제취업 활동 허가",
+        "snippet": "한 풍속이나 그 밖의 사회질서에 반하는 행위(출입국관리법 시행규칙 제27조의2 제2항)에 해당하는 활동 ❍ 전문 분야(E-1~E-7) 활동범위(자격외 활동 허가 대상) 󰃚 미성년 학생 대상 외국어 교육 유관 시설에서의 회화지도(E-2) 활동 등 ❍ 비전문취업(E-9)의 제조업*, 건설업 및 선원취업(E-10) 업종 * 한국어능력 4급 이상인 경우 허용 ❍ (특수형태근로종사자의 활동) 택배기사"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-8",
+    "official_ko_name": "계절근로",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-8.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-8-1",
+      "E-8-2",
+      "E-8-3",
+      "E-8-4",
+      "E-8-5",
+      "E-8-6",
+      "E-8-7",
+      "E-8-8",
+      "E-8-99"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": ". 관광통과(B-2)24. 예술흥행(E-6)6. 일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "❍ 외국인 등록 후 국내에서 합법적으로 체류 중인 장기체류자에 대해서는 자격변경 허용 - 단, 기술연수(D-3), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 인도적체류허가자(G-1-6), 장기체류 아동(G-1-8, 13, 14)을 제외한 기타(G-1)자격 소지자는 자격변경 제한 ❍ 단기체류자(B, C 계열 자격)에 대해서는 원칙적으로 자격변경 제한. 다만, 아래의 경우"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 224,
+        "heading": "체류자격부 여",
+        "snippet": "상 - 특정활동(E-7) 자격 허용직종별 요건을 갖춘 체류외국인 ※ 단기체류(B계열, C계열), 기술연수(D-3), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 기타(G-1) 체류자격은 자격변경 제한 첨부서류 및 확인사항, 심사기준 등 - 사증발급인정서 신청 시 첨부서류 및 심사기준 등을 준용 국민대체성, 국익, 업체운영 실태 및 국민고용 등과 연계하여 고용의 필요성과 신청"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 230,
+        "heading": "",
+        "snippet": "국민고용 보호 직종은 원칙적으로 국민고용자의 20% 범위 내에서 외국인 고용을 허용 ※ 숙련기능인력(E-7-4), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 거주(F-2), 재외동포(F-4), 영주(F-5), 결혼이민(F-6)은 외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등 취업 가능 체류자격은 외국인 고용인원에 포함하"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 325,
+        "heading": "계절근로(E-8)자격 해당자 및 활동범위",
+        "snippet": "- 325 - 계절근로(E-8)자격 해당자 및 활동범위 법무부장관이 관계 중앙행정기관의 장과 협의하여 정하는 농작물 재배·수확(재배·수확과 연계된 원시가공 분야를 포함한다) 및 수산물 원시가공 분야에서 취업 활동을 하려는 사람으로서 법무부장관이 인정하는 사람1회에 부여할 수 있는 체류기간 상한 8개월(총 체류기간 8개월을 초과할 수 없음) 외국인등록 제출서류① 통합신청서, 여권, 사진(35m"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 326,
+        "heading": "⑦ 외국인등록 전 합의 변경 시 : ①~⑥ 제출서류 + 마약검사 확인서 자격외활동허가",
+        "snippet": "서류(해당자만 제출) ⑦ 계절근로자 배치 대상 고용주 확인서 ⑧ 거주/숙소 제공 확인서(해당자만 제출)□ 계절근로자(C-4, E-8)는 계절근로 이외의 다른 활동을 위한 체류자격외 활동허가를 허용하지 않음체류기간연장허가 󰁾 목차 절차① 계절근로자 체류기간 만료일 60일 ~ 40일 전 : 관할 지방자치단체로 신청 → 지방자치단체에서 관할 출입국‧외국인관서로 일괄 신청② 계절근로자 체류기간 만료"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-9",
+    "official_ko_name": "비전문취업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-9.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-9-1",
+      "E-9-2",
+      "E-9-3",
+      "E-9-4",
+      "E-9-5",
+      "E-9-9",
+      "E-9-10",
+      "E-9-JS",
+      "E-9-R"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "일시취재(C-1)25. 특정활동(E-7)7. 단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 15,
+        "heading": "“해당사항 없음”체류자격부 여",
+        "snippet": "원이 경제적으로 부양하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "제(E-7-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 19,
+        "heading": "해당사항 없음",
+        "snippet": "원이 경제적으로 부양하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "• 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 6개월 미만 체류하는 캐나다인• 6월 미만 체류하려는 캐나다국민 중 다음 체류자격에 해당하는 활동을 하려는 자에 대한 체류자격 변경허가 가. 대상"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "E-10",
+    "official_ko_name": "선원취업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/E-10.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "E-10-1",
+      "E-10-2",
+      "E-10-3"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "단기방문(C-3)26. 계절근로(E-8)8. 단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "• 취업이 가능한 체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시󰊳 신고방법 • 직"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한외국공관)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 15,
+        "heading": "“해당사항 없음”체류자격부 여",
+        "snippet": "하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일반원칙에 따름) ◦"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "-4) 제외] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한외국공관)"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 19,
+        "heading": "해당사항 없음",
+        "snippet": "하고 있는 가계 구성원인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일반원칙에 따름) ◦"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-1",
+    "official_ko_name": "방문동거",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-1-1",
+      "F-1-3",
+      "F-1-4",
+      "F-1-5",
+      "F-1-6",
+      "F-1-9",
+      "F-1-11",
+      "F-1-12",
+      "F-1-13",
+      "F-1-15",
+      "F-1-16",
+      "F-1-21",
+      "F-1-22",
+      "F-1-23",
+      "F-1-24",
+      "F-1-28",
+      "F-1-51",
+      "F-1-52",
+      "F-1-72",
+      "F-1-D"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "단기취업(C-4)27. 비전문취업(E-9)9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효기간 범위 내에서 체류기간 부여 • (`22.6.30.까지) 잔여 여권"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "자격에 해당하는 활동을 하려는 자에 대한 체류자격 변경허가 가. 대상체류자격 : 문화예술(D-1). 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) 나. 체류기간 : 입국일로부터 6개월 미만2. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 수수료 ②연수기관이 작성한 연수일정표 ③문화예술단체 입증서류(사업자등록증 사본 등)심사에 필요한 추가서류①초청사유서 ②연수"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "), 취재(D-5)~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및 다른 체류자격 소지자 중 유학(D-2) 체류자격외 활동허가를 받은 자 ※ 원래의 체류목적을 침해하지 않은 범위 내"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 108,
+        "heading": "재입국허가",
+        "snippet": "- 108 - ☞ 대상체류자격 : 문화예술(D-1), 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) ☞ 체류기간 : 입국일로부터 6개월 미만3. 제출서류 ①신청서(별지34호 서식), 여권, 표준규격사진1장, 수수료 ②파송명령서(파송단체 발행) ③해당 단체 설립허가서 ④사업자등록증 사본 또는 고유번호증 사본체류기간 연장허가1. 제출서류 ①신청서(별지34호 서식), 여권 및"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 220,
+        "heading": "󰁾 목차체류자격외 활동",
+        "snippet": "서류(신원보증서 생략) ※ 특정활동(E-7)에 종사하고자 하는 경우에는 E-7자격 사증발급인정서 발급 지침 준용6. 방문동거(F-1) 자격을 소지한 중국동포 중 취업자격 구비 등 일정요건에 해당하는 자에 대한 유학(D-2), 일반연수(D-4) 및 교수(E-1) 내지 특정활동(E-7)으로의 자격외 활동 ① 신청서(별지 34호 서식), 여권 및 외국인등록증, 수수료 ② 주무부처 장의 고용추천서"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-2",
+    "official_ko_name": "거주",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-2-1",
+      "F-2-2",
+      "F-2-3",
+      "F-2-4",
+      "F-2-5",
+      "F-2-6",
+      "F-2-7",
+      "F-2-7S",
+      "F-2-8",
+      "F-2-10",
+      "F-2-12",
+      "F-2-13",
+      "F-2-16",
+      "F-2-71",
+      "F-2-81",
+      "F-2-99",
+      "F-2-R",
+      "F-2-T"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "9. 문화예술(D-1)28. 선원취업(E-10)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "래 외국인을 제외한 모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효기간 범위 내에서 체류기간 부여 • (`22.6.30."
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "체류자격*을 가진 외국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시󰊳 신고방법 • 직업 : 각종 체류허"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 210,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": "간 방송출연 또는 모델활동 등을 하려는 경우 예술흥행(E-6) 체류자격 변경허가 * E-6 또는 취업에 제한이 없는 체류자격(F-2, F-4, F-5 등) 소지자 제외4. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 230,
+        "heading": "",
+        "snippet": "허용 ※ 숙련기능인력(E-7-4), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 거주(F-2), 재외동포(F-4), 영주(F-5), 결혼이민(F-6)은 외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등 취업 가능 체류자격은 외국인 고용인원에 포함하여 비율 산정 ※ 내국인 고용 입증은 고용보험관련 서류 제출(정규직으로 3개월"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 295,
+        "heading": "",
+        "snippet": "한정 ※필요 시 산업통상자원부의 ‘첨단기술‧제품 확인서’ 보유 여부 확인 - (국민고용 보호 심사 기준) 비적용 3. 거주(F-2) 및 영주(F-5) 자격 취득에 대한 특례 ❍ 점수제 거주(F-2-7) 자격변경에 대한 특례 - (대상) 네거티브 방식의 전문인력(E-7-S) 자젹으로 국내에서 1년 이상 체류했으며, 현재 정상적으로 취업 활동 중인 자 - (요건) ①E-7-S2 점수제 요건(6"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-3",
+    "official_ko_name": "동반",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-3.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-3-1",
+      "F-3-1R",
+      "F-3-2",
+      "F-3-2R",
+      "F-3-3",
+      "F-3-3R",
+      "F-3-18",
+      "F-3-19",
+      "F-3-20"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "0)10. 유학(D-2)29. 방문동거(F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "활동을 하려는 자에 대한 체류자격 변경허가 가. 대상체류자격 : 문화예술(D-1). 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) 나. 체류기간 : 입국일로부터 6개월 미만2. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 수수료 ②연수기관이 작성한 연수일정표 ③문화예술단체 입증서류(사업자등록증 사본 등)심사에 필요한 추가서류①초청사유서 ②연수증명서 ③재정관계"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 36,
+        "heading": "󰁾 목차",
+        "snippet": "을 통해서만 취업이 가능함 - 소속 대학이 아닌 외부 연구소로의 파견, 지원 근무는 엄격히 금지됨3. 유학생(D-2) 배우자(F-3) 체류자격외 활동 허가 ❍ 동반(F-3)자격 사증발급 및 체류관리 지침에 따름"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 108,
+        "heading": "재입국허가",
+        "snippet": "- 108 - ☞ 대상체류자격 : 문화예술(D-1), 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) ☞ 체류기간 : 입국일로부터 6개월 미만3. 제출서류 ①신청서(별지34호 서식), 여권, 표준규격사진1장, 수수료 ②파송명령서(파송단체 발행) ③해당 단체 설립허가서 ④사업자등록증 사본 또는 고유번호증 사본체류기간 연장허가1. 제출서류 ①신청서(별지34호 서식), 여권 및"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 172,
+        "heading": "체류자격 변경허가",
+        "snippet": "의 변경허가 가. 허가대상 전문외국인력《E-1 내지 E-5, E-6(E-6-2는 제외), E-7》자격소지자의 배우자로서 동반(F-3)자격 소지자 나. 허가분야 전문직 《E-1 내지 E-5, E-6(E-6-2는 제외), E-7》에 해당하는 모든 직종에 대한 체류자격 변경허가 다. 제출서류 ① 신청서(별지 34호서식), 여권 및 외국인등록증, 표준규격사진1장, 수수료 ② 사업자등록증 ③학위증(원"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 199,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": "의 변경허가 가. 허가대상 전문외국인력《E-1 내지 E-5, E-6(E-6-2는 제외), E-7》자격소지자의 배우자로서 동반(F-3)자격 소지자 나. 허가분야"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-4",
+    "official_ko_name": "재외동포",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-4.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-4-11",
+      "F-4-12",
+      "F-4-13",
+      "F-4-14",
+      "F-4-15",
+      "F-4-16",
+      "F-4-17",
+      "F-4-18",
+      "F-4-19",
+      "F-4-20",
+      "F-4-21",
+      "F-4-25",
+      "F-4-30",
+      "F-4-41",
+      "F-4-42",
+      "F-4-R"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "6. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T)40. 광역형 비자 시범사업41. K-STAR 비"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "국인 * 주재(D-7), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시󰊳 신고방법 • 직업 : 각종 체류허가 신청 시 「외국인"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 210,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": "연 또는 모델활동 등을 하려는 경우 예술흥행(E-6) 체류자격 변경허가 * E-6 또는 취업에 제한이 없는 체류자격(F-2, F-4, F-5 등) 소지자 제외4. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 230,
+        "heading": "",
+        "snippet": "력(E-7-4), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 거주(F-2), 재외동포(F-4), 영주(F-5), 결혼이민(F-6)은 외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등 취업 가능 체류자격은 외국인 고용인원에 포함하여 비율 산정 ※ 내국인 고용 입증은 고용보험관련 서류 제출(정규직으로 3개월 이상 계속 고용,신설"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 303,
+        "heading": "",
+        "snippet": "내 - (다른 자격 외국인 고용인원 포함 여부) E-7-4 및 E-7-4R 이외의 E-7·E-9·E-10·H-2 및 F-2, F-4, F-5, F-6는 외국인 고용인원에서 제외"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 368,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": ") 사증․체류지침관련 업무지시 ◦국민의 미성년 외국인자녀에 대한 거주(F-2-2)사증발급 및 자격변경 제외대상자 - 재외동포(F-4) 자격부여 제한 대상자 ◦ 국민과의 혼인관계(사실상의 혼인관계 포함)에서 출생한 자녀 ※ 국민과 혼인관계에서 출생한 자녀에 대한 거주(F-2) 사증발급 제외 대상자 - 병역 이행 또는 면제처분을 받지 않은 상태에서 대한민국 국적을 이탈 또는 상실하여 외국인이 된"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-5",
+    "official_ko_name": "영주",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-5.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-5-1",
+      "F-5-2",
+      "F-5-3",
+      "F-5-4",
+      "F-5-5",
+      "F-5-6",
+      "F-5-6R",
+      "F-5-7",
+      "F-5-8",
+      "F-5-9",
+      "F-5-10",
+      "F-5-11",
+      "F-5-12",
+      "F-5-13",
+      "F-5-14",
+      "F-5-15",
+      "F-5-16",
+      "F-5-17",
+      "F-5-18",
+      "F-5-19",
+      "F-5-20",
+      "F-5-21",
+      "F-5-22",
+      "F-5-23",
+      "F-5-24",
+      "F-5-25",
+      "F-5-26",
+      "F-5-S1",
+      "F-5-S2",
+      "F-5-T"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "F-1)11. 기술연수(D-3)30. 거주(F-2)12. 일반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 5,
+        "heading": "111111111111111 각종 체류허가 등에 관한 심사수수료근거업무명수수료",
+        "snippet": "2조 체류자격 외 활동허가12만원근무처의 변경․추가12만원체류자격 부여8만원결혼이민(F-6)4만원체류자격 변경허가10만원영주(F-5)자격 변경허가20만원체류기간 연장허가6만원결혼이민(F-6)3만원단수재입국허가3만원복수재입국허가5만원외국인등록증 발급 및 재발급3만 5천원거소등록증 발급 및 재발급3만 5천원출입국에 관한 사실증명2천원외국인등록 사실증명2천원국내거소신고 사실증명2천원"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "안내▣ 적용대상 • 아래 외국인을 제외한 모든 장기 체류자격 외국인 - 외교(A-1), 공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효기간 범위 내에서 체류기간 부여"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 210,
+        "heading": "󰁾 목차체류자격 변경허가",
+        "snippet": "모델활동 등을 하려는 경우 예술흥행(E-6) 체류자격 변경허가 * E-6 또는 취업에 제한이 없는 체류자격(F-2, F-4, F-5 등) 소지자 제외4. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 230,
+        "heading": "",
+        "snippet": "계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 거주(F-2), 재외동포(F-4), 영주(F-5), 결혼이민(F-6)은 외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등 취업 가능 체류자격은 외국인 고용인원에 포함하여 비율 산정 ※ 내국인 고용 입증은 고용보험관련 서류 제출(정규직으로 3개월 이상 계속 고용,신설 기업이라도 내국"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 295,
+        "heading": "",
+        "snippet": "산업통상자원부의 ‘첨단기술‧제품 확인서’ 보유 여부 확인 - (국민고용 보호 심사 기준) 비적용 3. 거주(F-2) 및 영주(F-5) 자격 취득에 대한 특례 ❍ 점수제 거주(F-2-7) 자격변경에 대한 특례 - (대상) 네거티브 방식의 전문인력(E-7-S) 자젹으로 국내에서 1년 이상 체류했으며, 현재 정상적으로 취업 활동 중인 자 - (요건) ①E-7-S2 점수제 요건(60점 이상)을 충족"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "F-6",
+    "official_ko_name": "결혼이민",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/F-6.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "F-6-1",
+      "F-6-2",
+      "F-6-3"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "반연수(D-4)31. 동반(F-3)13. 취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 5,
+        "heading": "111111111111111 각종 체류허가 등에 관한 심사수수료근거업무명수수료",
+        "snippet": "국과 법적 지위에 관한 법률 시행규칙 제12조 체류자격 외 활동허가12만원근무처의 변경․추가12만원체류자격 부여8만원결혼이민(F-6)4만원체류자격 변경허가10만원영주(F-5)자격 변경허가20만원체류기간 연장허가6만원결혼이민(F-6)3만원단수재입국허가3만원복수재입국허가5만원외국인등록증 발급 및 재발급3만 5천원거소등록증 발급 및 재발급3만 5천원출입국에 관한 사실증명2천원외국인등록 사실증명2천"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "), 기업투자(D-8), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시󰊳 신고방법 • 직업 : 각종 체류허가 신청 시 「외국인 직업 신고서」작성하"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 35,
+        "heading": "󰁾 목차",
+        "snippet": "~무역경영(D-9), 교수(E-1)~특정활동(E-7), 비전문취업(E-9), 선원취업(E-10), 방문동거(F-1)~결혼이민(F-6), 난민신청자(G-1-5), 인도적체류허가(G-1-6), 장기체류 아동(G-1-8, 13, 14), 방문취업(H-2)자격소지자 및 다른 체류자격 소지자 중 유학(D-2) 체류자격외 활동허가를 받은 자 ※ 원래의 체류목적을 침해하지 않은 범위 내에서 유학활동을 하"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 230,
+        "heading": "",
+        "snippet": "비전문취업(E-9), 선원취업(E-10), 방문취업(H-2), 거주(F-2), 재외동포(F-4), 영주(F-5), 결혼이민(F-6)은 외국인 고용인원에서 제외하되, 교수(E-1) 내지 특정활동(E-7-1~3) 등 취업 가능 체류자격은 외국인 고용인원에 포함하여 비율 산정 ※ 내국인 고용 입증은 고용보험관련 서류 제출(정규직으로 3개월 이상 계속 고용,신설 기업이라도 내국인 고용비율이 적용되"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 349,
+        "heading": "대한민국 국적인 혼외 미성년 자녀를 양육하는 부 또는 모인 외국인으로서 결혼이민(F-6) 등 다른 자격으로 체류할 수 없는 사람 나. 권한 위임",
+        "snippet": "2026.01.07.) 가. 체류허가 대상 대한민국 국적인 혼외 미성년 자녀를 양육하는 부 또는 모인 외국인으로서 결혼이민(F-6) 등 다른 자격으로 체류할 수 없는 사람 나. 권한 위임 체류지 관할 청(사무소·출장소) 다. 제출서류 ① 신청서(별지 34호서식), 여권, 표준규격사진 1매, 수수료 ② 국민인 자녀의 주민등록등본, 기본증명서(상세), 가족관계증명서(상세) ③ 체류지 입증서류"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "G-1",
+    "official_ko_name": "기타(난민등)",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/G-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "G-1-1",
+      "G-1-2",
+      "G-1-3",
+      "G-1-4",
+      "G-1-5",
+      "G-1-6",
+      "G-1-7",
+      "G-1-8",
+      "G-1-9",
+      "G-1-10",
+      "G-1-11",
+      "G-1-12",
+      "G-1-13",
+      "G-1-14",
+      "G-1-19",
+      "G-1-99"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "취재(D-5)32. 영주(F-5):동포,난민제외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도3"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 6,
+        "heading": "",
+        "snippet": "공무(A-2), 협정(A-3), 영주(F-5), 난민인정자(F-2)·그 가족(F-1), 인도적체류허가자·난민신청자·그 가족(G-1), 무국적자 • 체류자격 부여, 체류기간 연장 , 체류자격 변경, 근무처 변경·추가 민원업무에 적용▣ 체류기간 부여 기준 • (원칙) 여권 유효기간 범위 내에서 체류기간 부여 • (`22.6.30.까지) 잔여 여권 유효기간이 1년 미만이라 하더라도 유효기간을 1"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "에 대한 체류자격 변경허가 가. 대상체류자격 : 문화예술(D-1). 종교(D-6), 방문동거(F-1), 동반(F-3), 기타(G-1) 나. 체류기간 : 입국일로부터 6개월 미만2. 제출 서류필수서류①신청서(별지 제34호서식), 여권 원본, 수수료 ②연수기관이 작성한 연수일정표 ③문화예술단체 입증서류(사업자등록증 사본 등)심사에 필요한 추가서류①초청사유서 ②연수증명서 ③재정관계(학비,체재비)입"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 40,
+        "heading": "󰁾 목차",
+        "snippet": "는 자격변경 허용 - 단, 기술연수(D-3), 계절근로(E-8), 비전문취업(E-9), 선원취업(E-10), 인도적체류허가자(G-1-6), 장기체류 아동(G-1-8, 13, 14)을 제외한 기타(G-1)자격 소지자는 자격변경 제한 ❍ 단기체류자(B, C 계열 자격)에 대해서는 원칙적으로 자격변경 제한. 다만, 아래의 경우 예외적용 - ①단기 합법체류자로서 ②본인의 체류기간 만료일 내 진학 예"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 83,
+        "heading": "󰁾 목차",
+        "snippet": "원칙적으로 자격변경 제한. 단, 등록외국인중 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 인도적체류허가자(G-1-6)를 제외한 기타(G-1)자격 소지자는 자격변경 제한 ※ 고등학교 졸업 이상 학력 소지자만 어학연수 체류자격 변경허가 가능(단, 외국어 연수(D-4-7)는 고등학교 이하의 학교 재학생도 가능) ※ 학력입증 절차는 유학(D-2) 비자 신청 시와 동일"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 85,
+        "heading": "체류자격 변경허가",
+        "snippet": "외국인 등록을 하고 장기체류하고 있는 자로서 아래 교육기관의 입학허가를 받은 자비 부담 유학생(단, 단기체류자격 소지자 및 G-1 자격 소지자는 불가) 나. 교육기관 ❍ (교육기관) 다음 어느 하나에 해당하여야 함 - ｢초‧중등교육법｣ 제2조 제1호 내지 제3호에 따른 초·중·고등학교(공민학교, 고등공민학교, 방송통신중·고등학교, 고등기술학교는 제외) - ｢초‧중등교육법｣ 제2조 제5호 각"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "H-1",
+    "official_ko_name": "관광취업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/H-1.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "외 14. 종교(D-6)33. 결혼이민(F-6)15. 주재(D-7)34. 기타(G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Tier) 비자(D-10-T"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 33,
+        "heading": "변경․추가",
+        "snippet": "자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 6개월 미만 체류하는 캐나다인• 6월 미만 체류하려는 캐나다국민 중 다음 체류자격에 해당하는 활동을 하려는 자에 대한 체류자격 변경허가 가. 대상체류자격 : 문화예술("
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 36,
+        "heading": "󰁾 목차",
+        "snippet": "학활동을 사유로 유학(D-2)자격으로의 체류자격 변경은 불가, 출국 후 사증(사증발급인정서) 발급 받아 입국 가능❍ 관광취업(H-1) 자격은 학원수강, 어학연수 등 학업 활동은 허용되나, 유학(D-2)활동에 해당하는 정규 학업 과정은 제한. 단, 호주, 대만, 아일랜드, 덴마크, 캐나다, 홍콩 국민은 협정상 허용되는 범위 내에서 별도 허가 없이 연수 가능(협정내용의 범위를 넘는 경우 허가 필"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 90,
+        "heading": "6. 사증면제(B-1) 자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한",
+        "snippet": "자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한 준비서류재정능력 입증서류(잔고증명, 부모 재정능력 등)등록금 또는 교육비 납입증명서한국어 능력 입증서류(토픽 1급이상, 세종학당 초급1 과정 이상 수료증) ※ 2"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 104,
+        "heading": "근무처의 변경․추가",
+        "snippet": "자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한3. 제출서류 ①신청서 (별지 34호 서식), 여권, 수수료 ② 파견명령서(본사 발행) ③ 지국․지사의 설치허가증(문화체육관광부에서 발행) 또는 사업자등록증 사본 ※ 국"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 107,
+        "heading": "해당사항 없음체류자격 변경허가󰁾 목차",
+        "snippet": "자격으로 입국한 독일인에 대한 장기체류자격으로 변경 가. 허가체류자격 : 기술연수(D-3), 비전문취업(E-9) 및 관광취업(H-1)을 제외한 모든 장기체류자격 나. 허가기간 : 체류자격별 1회 부여할 수 있는 체류기간의 상한2. 사증면제(B-1) 자격으로 입국한 캐나다 국민에 대한 장기체류자격으로 변경"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "H-2",
+    "official_ko_name": "방문취업 (신규발급 중단)",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/H-2.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [
+      "H-2-7"
+    ],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "G-1)16. 기업투자(D-8)35. 관광취업(H-1)17. 무역경영(D-9)36. 외국국적동포 관련 (C-3-8, F-1, H-2, F-4, F-5)18. 구직(D-10)37. 지역특화형비자19. 교수(E-1)38. 국내 성장 기반 외국인 청소년 취업‧정주 체류제도39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T)40. 광역형 비자 시범사업41. K-S"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 7,
+        "heading": "",
+        "snippet": "), 무역경영(D-9), 교수(E-1)~선원취업(E-10), 거주(F-2), 재외동포(F-4), 결혼이민(F-6), 방문취업(H-2)󰊲 신고시기 • 외국인등록 시 • 체류자격 변경허가, 체류자격외 활동허가, 근무처변경·추가허가(신고), 체류자격 부여허가, 체류기간 연장허가 신청 시 • 직업 변경 시󰊳 신고방법 • 직업 : 각종 체류허가 신청 시 「외국인 직업 신고서」작성하여 제출 • 연간 소"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 14,
+        "heading": "재임기간체류자격외 활동",
+        "snippet": "] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한외국공관) 외교부 외"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 15,
+        "heading": "“해당사항 없음”체류자격부 여",
+        "snippet": "인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일반원칙에 따름) ◦ 제출서류 - 여권, 통"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 18,
+        "heading": "공무(A-2)자격 해당자 및 활동범위대한민국정부가 승인한 외국정부 또는 국제기구의 공무를 수행하는 자와 그 가족1회에 부여할 수 있는 체류기간 상한",
+        "snippet": "] ※ 주한캐나다대사관 공관원가족에 대한 자격외활동허용범위 확대(‘09.3.9) - 단순노무분야(D-3, E-9, E-10, H-2 등)을 제외한 모든 체류자격(기준충족자)※ 주한미국대사관 공관원가족에 대한 자격외활동허용범위 확대(‘22.1.17.) - 「출입국관리법시행령」 별표1 및 별표1의2의 체류자격 구분에 따른 취업활동의 제한을 받지 않음 ◦ 신청절차 - ① (주한외국공관) 외교부 외"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 19,
+        "heading": "해당사항 없음",
+        "snippet": "인 자녀도 체류자격외 활동 허용 ◦ 취업허용 범위 - 기술연수(D-3), 비전문취업(E-9), 선원취업(E-10), 방문취업(H-2) 등 단순노무 분야를 제외한 모든 체류자격에 해당하는 활동 ◦ 신청절차 - 활동하고자 하는 체류자격에 해당하는 자격 등 입증서류 제출(외교부 고용추천서 제출 불요) ◦ 1회 최대 허가기간 : 1년 (체류자격외 활동허가 일반원칙에 따름) ◦ 제출서류 - 여권, 통"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "K-STAR",
+    "official_ko_name": "K-STAR 비자트랙",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/K-STAR.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "both",
+    "stay_manual_presence": "present",
+    "visa_manual_presence": "present",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 2,
+        "heading": "",
+        "snippet": "제도39. 탑티어(Top-Tier) 비자(D-10-T, E-7-T, F-2-T, F-5-T)40. 광역형 비자 시범사업41. K-STAR 비자트랙 제도"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 752,
+        "heading": "",
+        "snippet": "1 「K-STAR* 비자트랙」 제도 안내 매뉴얼* Korea-Science & Technology Advanced Human-Resources Visa TrackⅠ. 제도 개요1. 목적 ❍ 국가 재정으로 양성한 해외 과학기술분야 우수인재 유치와 유출방지를 위해 대학과 협력 체계를 구축하는 제도 운영 ❍ 과학기술 우수인재(K-STAR)가 안정적으로 정착할 수 있도록 맞춤형 지원 서비스를 제공하"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 753,
+        "heading": "⇨ ③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3호)【 ‘K-STAR 비자트랙’ 제도 절차 】",
+        "snippet": "2 ⇨ ③단계 : K-STAR 영주(F-5-S1) 또는 우수인재 특별귀화(국적법 제7조제1항3호)【 ‘K-STAR 비자트랙’ 제도 절차 】 - (1단계 : 석·박사 유학생 등) 선정대학의 과학기술분야 학위 취득, 총장추천서 발급 - (2단계 : K-STAR 거주) 선정대학의 과학기술분야 석·박사 취득자 등에 대해 취업하지 않은 때에도 거주 자격 先 부여(최장 5년) - (3단계 A : K-S"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 755,
+        "heading": "",
+        "snippet": "체류가 곤란한 자에 대해서도 사증발급 및 체류 억제3. 체류자격 및 기간 부여 (※사증발급 신청 대상 아님) ❍ (체류자격) K-STAR 거주(F-2-7S) ❍ (체류기간) 1회 3년 이내 부여(최장 5년 이내)4. 제출서류 ❍ (공통서류) 신청서, 여권, 외국인등록증, 사진, 수수료, 체류지 입증서류, 해외범죄경력증명서*(연장은 6개월 이상 해외 체류 시에만 제출), 결핵진단서(해당자),"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 756,
+        "heading": "",
+        "snippet": "과정 학위취득증명서 또는 졸업증명서, 지정대학의 공식 자격으로 박사후연구원으로서 연구에 참여 중임을 입증할 수 있는 서류Ⅲ. K-STAR 영주(F-5-S1)1. 신청 대상 ❍ 법무부장관 선정한 대학의 과학기술분야 석·박사 학위 소지자로서 아래의 요건 중 어느 하나에 해당하고 【붙임 5】 점수제 요건을 충족하는 사람(90/200점) - K-STAR 거주(F-2-7S) 자격으로 3년 이상 국내에"
+      },
+      {
+        "source_id": "stay_manual_2026_06_23_pdf",
+        "page": 759,
+        "heading": "",
+        "snippet": "서 금고 이상의 형에 준하는 형을 선고받은 사실이 해외범죄경력증명서 등을 통하여 확인된 사람 󰊲 (생계유지능력 및 기본소양) K-STAR 영주 점수제 항목 및 점수표[붙임 5]‘(라) 한국어능력’ 및 ‘(마) 연간 소득’ 항목 심사로 대체󰊳 (준법시민교육) 법 위반자 대상 시행 ❍ (대상) 영주(F-5) 자격 취득 예정자 중 국내법 위반 사실이 확인된 자(품행단정 요건 결격사유 해당되는 자"
+      }
+    ],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "REGION-S",
+    "official_ko_name": "지역특화·광역형 비자 시범사업",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/REGION-S.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "existing_paradiso",
+    "stay_manual_presence": "absent",
+    "visa_manual_presence": "absent",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  },
+  {
+    "code": "YOUTH-STAY",
+    "official_ko_name": "국내 성장 기반 외국인 청소년 취업·정주 체류제도",
+    "paradiso_record_path": "backend/data/visa_authoring/statuses/YOUTH-STAY.json",
+    "canonical_status": "canonical",
+    "manual_discovery": "existing_paradiso",
+    "stay_manual_presence": "absent",
+    "visa_manual_presence": "absent",
+    "subcodes_found": [],
+    "stay_guidance_changed": false,
+    "visa_guidance_changed": false,
+    "subcode_detail_changed": false,
+    "documents_changed": false,
+    "notes_changed": false,
+    "source_metadata_changed": true,
+    "removed_legacy_claims": [],
+    "source_evidence": [],
+    "online_supplement_sources": [],
+    "ui_impact": "Source badges and subcode disclosure use PDF-derived source metadata; no broad redesign.",
+    "waymaker_impact": "Manual source metadata points to readable PDF-derived text; visa and stay domains remain separated.",
+    "recommended_action": "update"
+  }
+]

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Populate remaining complex-subtype procedure variants from the 2026-05 manual.
+"""Populate remaining complex-subtype procedure variants from the 2026 PDF manual.
 
 This batch is additive and deliberately conservative. It keeps the existing
 parent procedures intact while adding labeled needs-review scenario cards.
@@ -12,15 +12,19 @@ from __future__ import annotations
 import argparse
 import copy
 import json
+import re
 import sys
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGETS = (ROOT / "visa_data.json", ROOT / "backend" / "data" / "visas.json")
-SOURCE_FILE = "docs/source-manuals/2026-05/stay_manual_2026_05.pdf"
+SOURCE_FILE = "backend/data/sources/manuals/260623_stay_manual_readable.txt"
+SOURCE_PDF = "backend/data/sources/manuals/260623_stay_manual_exported.pdf"
+SOURCE_ID = "stay_manual_2026_06_23_pdf"
+SOURCE_DATE = "2026-06-23"
 MANUAL_NAME = "체류민원"
-MANUAL_VERSION = "2026.5"
+MANUAL_VERSION = "2026.6"
 SCOPE_NOTE = (
     "이 항목은 안내된 세부 상황에만 적용됩니다. 실제 제출 범위와 허가 여부는 "
     "관할 출입국·외국인관서가 신청인의 구체적 사정에 따라 최종 확인합니다."
@@ -74,11 +78,15 @@ def variant(
         "manualRefs": [
             {
                 "manualName": MANUAL_NAME,
+                "manualType": "stay",
                 "manualVersion": MANUAL_VERSION,
+                "sourceDate": SOURCE_DATE,
                 "pageRange": page_range,
                 "sourceFile": SOURCE_FILE,
-                "confidence": "manual_extracted_needs_review",
+                "confidence": "manual_extracted_needs_review_260623_pdf",
                 "needsManualReview": True,
+                "sourcePdf": SOURCE_PDF,
+                "sourceId": SOURCE_ID,
             }
         ],
         "notes": [SCOPE_NOTE, *(notes or [])],
@@ -529,6 +537,62 @@ def _procedure_shell(procedure_key: str) -> dict[str, Any]:
     }
 
 
+def _has_any_docs(value: Any) -> bool:
+    if not isinstance(value, dict):
+        return False
+    for key in ("commonDocs", "requiredDocs", "additionalDocs", "conditionalDocs"):
+        if value.get(key):
+            return True
+    return False
+
+
+def _has_current_review_gated_ref(value: Any) -> bool:
+    if not isinstance(value, list):
+        return False
+    for ref in value:
+        if not isinstance(ref, dict):
+            continue
+        if (
+            ref.get("manualVersion") == MANUAL_VERSION
+            and ref.get("sourceFile") == SOURCE_FILE
+            and ref.get("sourceDate") == SOURCE_DATE
+            and ref.get("needsManualReview") is True
+            and ref.get("verified") is not True
+        ):
+            return True
+    return False
+
+
+def _has_scope_caution(notes: Any) -> bool:
+    if not isinstance(notes, list):
+        return False
+    for note in notes:
+        text = str(note or "")
+        if text == SCOPE_NOTE:
+            return True
+        if "관할 출입국" in text and "최종 확인" in text:
+            return True
+        if "하이코리아" in text and "최종 확인" in text:
+            return True
+    return False
+
+
+def _compact_text(value: Any) -> str:
+    return re.sub(r"\s+", "", str(value or ""))
+
+
+def _compatible_existing_variant(current: Any, expected: dict[str, Any]) -> bool:
+    if not isinstance(current, dict):
+        return False
+    for key in ("id", "statusCode"):
+        if expected.get(key) != current.get(key):
+            return False
+    for key in ("labelKo", "scenarioKo"):
+        if _compact_text(expected.get(key)) != _compact_text(current.get(key)):
+            return False
+    return _has_any_docs(current.get("requiredDocs")) and _has_current_review_gated_ref(current.get("manualRefs"))
+
+
 def apply_variants(data: list[dict[str, Any]]) -> list[dict[str, Any]]:
     updated = copy.deepcopy(data)
     by_code = {record.get("code"): record for record in updated}
@@ -555,7 +619,7 @@ def apply_variants(data: list[dict[str, Any]]) -> list[dict[str, Any]]:
         procedure_notes = procedure.setdefault("notes", [])
         if not isinstance(procedure_notes, list):
             raise ValueError(f"{status_code}.procedures.{procedure_key}.notes must be a list")
-        if SCOPE_NOTE not in procedure_notes:
+        if not _has_scope_caution(procedure_notes):
             procedure_notes.append(SCOPE_NOTE)
 
         existing = {item.get("id"): item for item in procedure.setdefault("variants", [])}
@@ -565,7 +629,7 @@ def apply_variants(data: list[dict[str, Any]]) -> list[dict[str, Any]]:
             if current is None:
                 procedure["variants"].append(copy.deepcopy(item))
                 continue
-            if current != item:
+            if current != item and not _compatible_existing_variant(current, item):
                 raise ValueError(
                     f"refusing to overwrite existing variant {status_code}/{procedure_key}/{item['id']}"
                 )
