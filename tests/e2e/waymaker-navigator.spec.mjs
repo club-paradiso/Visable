@@ -117,6 +117,7 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
     await expect(page.locator('.chat-input-area')).toBeHidden();
     await expect(page.locator('#aiModeSelector')).toBeHidden(); // Fast/Basic/Pro hidden
     await expect(page.locator('.quota-badge')).toBeHidden();    // quota hidden
+    await expect(page.locator('.ai-title')).toBeHidden();       // legacy "AI 도우미" title hidden
     await noHorizontalOverflow(page);
   });
 
@@ -126,6 +127,9 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
     await expect(page.locator('.wm-packet-title')).toContainText('체류기간 연장허가');
     await expect(page.locator('.wm-next-list li').first()).toBeVisible();
     await expect(page.locator('.wm-cov-badge').first()).toBeVisible();
+    // a source_confirmed (full) packet must show the confirmed coverage label on
+    // the hero badge — NOT the limited "관할기관 확인 필요" fallback.
+    await expect(page.locator('.wm-card-hero .wm-cov-badge')).toHaveText('공식 원문 확인');
     await expect(page.locator('.wm-doc-check').first()).toBeVisible();          // checklist
     await expect(page.locator('button', { hasText: 'HiKorea 예약 경로 확인' })).toBeVisible();
     await expect(page.locator('button', { hasText: '이 패킷에서 헷갈리는 점 묻기' })).toBeVisible();
@@ -150,7 +154,7 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
     await noHorizontalOverflow(page);
   });
 
-  test('AI follow-up only after packet, then calls /api/ask', async ({ page }) => {
+  test('AI follow-up only after packet, gated on consent, then calls /api/ask', async ({ page }) => {
     const start = await mountAndStart(page);
     await driveToD2Extension(page, start);
     expect(askCalled).toBe(false);
@@ -159,6 +163,14 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
     await expect(input).toBeVisible();
     expect(askCalled, 'opening follow-up does not call /api/ask').toBe(false);
     await input.fill('재정서류가 면제될 수 있나요?');
+    // First submit WITHOUT consent → must NOT call /api/ask; the consent modal appears.
+    await page.locator('.wm-ai button', { hasText: '질문하기' }).click();
+    await page.waitForTimeout(400);
+    expect(askCalled, '/api/ask gated until consent accepted').toBe(false);
+    await expect(page.locator('#consentModal.active')).toBeVisible();
+    // Accept consent via the real modal, then submit again → now it sends.
+    await page.locator('#consentModal .btn-agree').click();
+    await expect(page.locator('#consentModal.active')).toHaveCount(0);
     await page.locator('.wm-ai button', { hasText: '질문하기' }).click();
     await expect.poll(() => askCalled, { timeout: 10_000 }).toBe(true);
   });

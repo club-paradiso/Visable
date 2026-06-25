@@ -135,6 +135,15 @@ ok(WM.sourceCoverageLabel('limited', 'ko') === '관할기관 확인 필요', 'KO
     ok(label.indexOf(raw) === -1, `confirmed label does not leak raw code ${raw}`);
   });
 });
+// coverageSummary vocabulary (full/partial) must map to the SAME labels as the
+// lens vocabulary (source_confirmed/contextual) — the hero/section badges pass
+// deriveCoverage().level (full/partial), which must NOT fall through to limited.
+ok(WM.sourceCoverageLabel('full', 'ko') === WM.sourceCoverageLabel('source_confirmed', 'ko'), "'full' maps to confirmed label (KO)");
+ok(WM.sourceCoverageLabel('full', 'en') === 'Confirmed in official source', "'full' maps to confirmed label (EN)");
+ok(WM.sourceCoverageLabel('partial', 'en') === 'Partially covered by official sources', "'partial' maps to contextual label (EN)");
+ok(WM.sourceCoverageLabel('partial', 'ko') === WM.sourceCoverageLabel('contextual', 'ko'), "'partial' maps to contextual label (KO)");
+ok(WM.sourceCoverageClass('full') === WM.sourceCoverageClass('source_confirmed'), "'full' maps to confirmed class");
+ok(WM.sourceCoverageLabel('full', 'ko') !== WM.sourceCoverageLabel('limited', 'ko'), "'full' does NOT fall through to limited");
 
 // ---------------------------------------------------------------------------
 section('KO/EN navigator string parity');

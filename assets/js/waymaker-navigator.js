@@ -282,13 +282,24 @@
     return String(s).toLowerCase().replace(/[^a-z0-9가-힣]+/gi, '-').replace(/^-+|-+$/g, '').slice(0, 40);
   }
 
+  // The badge accepts BOTH vocabularies: the source-lens level
+  // (source_confirmed/contextual/limited/unavailable) AND the coverageSummary
+  // level (full/partial/limited/unavailable). 'full'/'partial' are aliased to
+  // their lens equivalents so a fully source-confirmed packet shows "공식 원문 확인"
+  // / "Confirmed in official source" rather than falling through to the limited
+  // fallback. (Without this, deriveCoverage().level='full' rendered as "Official
+  // confirmation required".)
+  var COVERAGE_LEVEL_ALIAS = { full: 'source_confirmed', partial: 'contextual' };
+  function _covEntry(level) {
+    var key = COVERAGE_LEVEL_ALIAS[level] || level;
+    return SOURCE_COVERAGE[key] || SOURCE_COVERAGE.limited;
+  }
   function sourceCoverageLabel(level, locale) {
-    var c = SOURCE_COVERAGE[level] || SOURCE_COVERAGE.limited;
+    var c = _covEntry(level);
     return (locale === 'en') ? c.en : c.ko;
   }
   function sourceCoverageClass(level) {
-    var c = SOURCE_COVERAGE[level] || SOURCE_COVERAGE.limited;
-    return c.cls;
+    return _covEntry(level).cls;
   }
 
   /*

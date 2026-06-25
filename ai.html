@@ -22,10 +22,10 @@
       body.wm-active #referenceDisclaimer,
       body.wm-active .quota-badge,
       body.wm-active #aiModeSelector,
-      body.wm-active .ai-title-sub,
-      body.wm-active .ai-status,
-      body.wm-active .ai-ref-chip { display: none !important; }
-      body.wm-active .ai-title-main { font-size: 1rem; }
+      body.wm-active .ai-title { display: none !important; }
+      /* The legacy "비자·체류 정보 AI 도우미" title block is hidden; the navigator
+         renders its own "Waymaker - 한국 체류 절차 길찾기" title, so the app bar keeps
+         only the back link + Paradiso wordmark. */
       #waymakerNavigatorRoot { display: none; }
       body.wm-active #waymakerNavigatorRoot { display: block; }
     </style>
@@ -3364,10 +3364,27 @@ select:focus-visible {
                 });
         }
 
+        // Consent state mirrors the legacy chat: the user must accept the
+        // 개인정보·면책 modal before any free-text question is sent to /api/ask.
+        function isWaymakerConsentGranted() {
+            try {
+                var p = JSON.parse(localStorage.getItem('paradiso_ai_consent') || 'null');
+                return !!(p && p.agreed && (Date.now() - (p.at || 0)) < 24 * 60 * 60 * 1000);
+            } catch (e) { return false; }
+        }
+
         // AI follow-up — SECONDARY support. Sends ONLY safe categorical identifiers
         // + the user's typed question. No checklist, no personal identifiers, and
         // ALWAYS stream:false so the buffered, fully-gated path runs (Phase 10).
         function onAskFollowup(context, question) {
+            // Gate on the existing consent modal — never post the user's question
+            // to /api/ask before they have accepted the privacy/disclaimer notice.
+            if (!isWaymakerConsentGranted()) {
+                try { if (typeof showConsent === 'function') showConsent(); } catch (e) {}
+                return Promise.resolve(context && context.locale === 'en'
+                    ? 'Please accept the privacy & disclaimer notice, then tap “Ask” again.'
+                    : '개인정보·면책 동의 후 ‘질문하기’를 다시 눌러 주세요.');
+            }
             var body = {
                 question: question,
                 consent: true,
