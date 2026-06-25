@@ -210,6 +210,19 @@ async function run() {
   ok([...root2.querySelectorAll('.wm-doc-row')].length === 0, 'coverage-limited packet fabricates no documents');
   ok(/HiKorea|1345/.test(warn.textContent), 'coverage-limited points to official channels');
 
+  // 12. ?lang=en deep-link is honored (preserves the legacy ai.html URL param).
+  const domEn = new JSDOM('<!doctype html><html lang="ko"><body><section id="r3"></section></body></html>', { url: 'https://example.test/ai.html?lang=en' });
+  global.window = domEn.window; global.document = domEn.window.document;
+  delete require.cache[require.resolve(join(ROOT, 'assets/js/waymaker-navigator.js'))];
+  const WM2 = require(join(ROOT, 'assets/js/waymaker-navigator.js'));
+  const r3 = domEn.window.document.getElementById('r3');
+  WM2.createNavigator({ root: r3, apiBase: '', getRecords: () => Promise.resolve(records) }).mount();
+  await sleep(20);
+  const enStart = [...r3.querySelectorAll('button')].find((b) => /Choose my situation/.test(b.textContent));
+  ok(!!enStart, '?lang=en deep-link renders English intake (Choose my situation)');
+  // restore globals for any later assertions
+  global.window = window; global.document = window.document;
+
   console.log('\n' + (failures === 0
     ? `✓ Waymaker navigator DOM smoke: all ${checks} checks passed.`
     : `✗ Waymaker navigator DOM smoke: ${failures}/${checks} checks FAILED.`));

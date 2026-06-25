@@ -515,6 +515,14 @@
     };
 
     function resolveInitialLocale() {
+      // Honor a ?lang=ko|en deep-link first (preserves the legacy ai.html URL
+      // parameter — e.g. index.html's handoff FAB passes &lang=en).
+      try {
+        if (global.location && global.URLSearchParams) {
+          var urlLang = (new global.URLSearchParams(global.location.search).get('lang') || '').toLowerCase().slice(0, 2);
+          if (urlLang === 'ko' || urlLang === 'en') return urlLang;
+        }
+      } catch (e) {}
       try {
         var stored = global.localStorage && global.localStorage.getItem(LOCALE_KEY);
         if (stored === 'ko' || stored === 'en') return stored;
