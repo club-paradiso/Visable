@@ -17,3 +17,5 @@ build/
 
 # Trust & Safety event logs (server-controlled, never committed)
 backend/var/
+test-results/
+playwright-report/

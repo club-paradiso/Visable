@@ -108,12 +108,37 @@ SOURCE_LENS_LABELS_KO: Dict[str, str] = {
     "unavailable": "공식근거 확인 불가",
     "final_agency_discretion": "관할기관 최종심사 필요",
 }
+# Human-authored, public-safe EN labels (navigator chrome only — NOT a
+# translation of any official/legal content). Mirrors SOURCE_LENS_LABELS_KO so
+# the all-status navigator can render source coverage in English without an LLM.
+SOURCE_LENS_LABELS_EN: Dict[str, str] = {
+    "source_confirmed": "Confirmed in official source",
+    "contextual": "Partially covered by official sources",
+    "limited": "Official confirmation required",
+    "unavailable": "No current source coverage",
+    "final_agency_discretion": "Subject to competent authority's final review",
+}
 
 # Required safety note (verbatim per product spec).
 FINAL_AGENCY_NOTE_KO = (
     "이 패킷과 통합신청서 작성 도우미는 신청 준비를 돕는 안내이며, 실제 허가 여부와 "
     "제출 가능 여부는 관할 출입국·외국인관서 및 공식 신청서 기준에 따릅니다."
 )
+FINAL_AGENCY_NOTE_EN = (
+    "This packet and the application-form typing helper are preparation guidance "
+    "only. Whether your application is accepted or approved is decided by the "
+    "competent immigration office and the official application standards."
+)
+
+# Public-safe coverage levels (derived from the source lens + document presence)
+# so the front-end can deterministically decide between a full Action Packet and
+# a coverage-limited packet without re-deriving the rule.
+_COVERAGE_LEVEL_BY_LENS: Dict[str, str] = {
+    "source_confirmed": "full",
+    "contextual": "partial",
+    "limited": "limited",
+    "unavailable": "unavailable",
+}
 
 # Universal "common" documents (regrouping existing doc text, never invented).
 _COMMON_DOC_MARKERS = ("통합신청서", "신청서", "여권", "외국인등록증", "수수료", "표준규격사진", "사진")
@@ -686,12 +711,17 @@ def build_procedure_packet(
             "exactStatusCode": exact_code,
             "parentStatusCode": parent,
             "titleKo": "지원하지 않는 절차",
+            "titleEn": "Unsupported procedure",
             "applicability": {"summaryKo": "", "conditions": [], "limitations": ["요청한 절차 유형을 인식할 수 없습니다."]},
             "documents": {**_empty_doc_groups(), "sourceBacked": False, "limitationKo": "요청한 절차 유형을 인식할 수 없어 서류 안내를 제공할 수 없습니다."},
             "fees": {"items": [], "sourceBacked": False, "limitationKo": "수수료 정보를 제공할 수 없습니다."},
             "sourceLens": _source_lens("unavailable", []),
+            "coverageSummary": _coverage_summary(
+                overall_level="unavailable", doc_count=0, procedure_available=False
+            ),
             "nextActions": ["1345 또는 HiKorea에서 해당 절차를 확인하세요."],
             "finalAgencyNoteKo": FINAL_AGENCY_NOTE_KO,
+            "finalAgencyNoteEn": FINAL_AGENCY_NOTE_EN,
             "version": PROCEDURE_PACKET_VERSION,
         }
 
@@ -827,9 +857,15 @@ def build_procedure_packet(
         },
         "riskFlags": _risk_flags(packet_type),
         "sourceLens": source_lens,
+        "coverageSummary": _coverage_summary(
+            overall_level=overall,
+            doc_count=_doc_count(doc_groups),
+            procedure_available=procedure_available,
+        ),
         "applicationTypingHelper": helper,
         "nextActions": _next_actions(packet_type, _doc_count(doc_groups) > 0),
         "finalAgencyNoteKo": FINAL_AGENCY_NOTE_KO,
+        "finalAgencyNoteEn": FINAL_AGENCY_NOTE_EN,
         "version": PROCEDURE_PACKET_VERSION,
     }
 
@@ -839,13 +875,36 @@ def _source_lens(overall_level: str, sources: List[Dict[str, Any]], *, limitatio
     lens: Dict[str, Any] = {
         "overallLevel": level,
         "overallLabelKo": SOURCE_LENS_LABELS_KO[level],
+        "overallLabelEn": SOURCE_LENS_LABELS_EN[level],
         "sources": list(sources or []),
         # Every packet carries the final-agency caveat as part of the lens.
         "finalAgencyDiscretionKo": SOURCE_LENS_LABELS_KO["final_agency_discretion"],
+        "finalAgencyDiscretionEn": SOURCE_LENS_LABELS_EN["final_agency_discretion"],
     }
     if limitation_ko:
         lens["limitationKo"] = limitation_ko
     return lens
+
+
+def _coverage_summary(
+    *, overall_level: str, doc_count: int, procedure_available: bool
+) -> Dict[str, Any]:
+    """Deterministic, public-safe coverage signal for the navigator.
+
+    ``isLimited`` is the single source of truth the front-end uses to choose
+    between a full Action Packet and a coverage-limited packet. It is True
+    whenever the source lens is not source-grounded/contextual OR no documents
+    were surfaced — so the UI can never render an empty packet as if complete.
+    """
+    level = _COVERAGE_LEVEL_BY_LENS.get(overall_level, "limited")
+    has_docs = doc_count > 0
+    is_limited = level in ("limited", "unavailable") or not has_docs
+    return {
+        "level": level,
+        "isLimited": is_limited,
+        "hasDocuments": has_docs,
+        "procedureAvailable": bool(procedure_available),
+    }
 
 
 def build_available_packets_for_status(status_code: str, locale: str = "ko") -> List[Dict[str, Any]]:
@@ -864,9 +923,14 @@ def build_available_packets_for_status(status_code: str, locale: str = "ko") -> 
         packet = build_procedure_packet(status_code, packet_type, locale=locale)
         summaries.append({
             "packetType": packet_type,
+            "procedureKey": vd_key,
             "titleKo": packet["titleKo"],
+            "titleEn": packet.get("titleEn", ""),
             "sourceLensLevel": packet["sourceLens"]["overallLevel"],
             "sourceLensLabelKo": packet["sourceLens"]["overallLabelKo"],
+            "sourceLensLabelEn": packet["sourceLens"].get("overallLabelEn", ""),
+            "coverageLevel": packet.get("coverageSummary", {}).get("level", "limited"),
+            "isLimited": packet.get("coverageSummary", {}).get("isLimited", True),
             "documentGroupCounts": {
                 k: len(packet["documents"][k])
                 for k in ("commonDocs", "requiredDocs", "conditionalDocs", "additionalDocs")

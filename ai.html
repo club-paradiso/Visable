@@ -2,11 +2,33 @@
 <html lang="ko" data-theme="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Waymaker by Paradiso — 비자·체류 정보 AI 도우미</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Waymaker — 한국 체류 절차 길찾기 | Paradiso</title>
     <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
     <link rel="icon" href="assets/brand/paradiso-favicon-o.png?v=2" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+    <!-- Waymaker procedure navigator (default surface). The legacy AI chat is
+         demoted to an operator-only diagnostics surface; see waymaker-navigator.js. -->
+    <link rel="stylesheet" href="assets/css/waymaker-navigator.css">
+    <style>
+      /* When the navigator is the active surface (default), the legacy chat-first
+         chrome — model tiers, quota merchandising, "AI 도우미" subtitle, the chat
+         transcript and composer — is hidden. It remains in the DOM (operator flag
+         ?legacyChat=1 or localStorage paradisoDevDiagnostics='1' keeps it visible). */
+      body.wm-active { display: block; overflow-y: auto; height: auto; min-height: 100vh; background: var(--bg0); }
+      body.wm-active .chat-header { position: sticky; top: 0; z-index: 20; }
+      body.wm-active #chatHistory,
+      body.wm-active .chat-input-area,
+      body.wm-active #referenceDisclaimer,
+      body.wm-active .quota-badge,
+      body.wm-active #aiModeSelector,
+      body.wm-active .ai-title-sub,
+      body.wm-active .ai-status,
+      body.wm-active .ai-ref-chip { display: none !important; }
+      body.wm-active .ai-title-main { font-size: 1rem; }
+      #waymakerNavigatorRoot { display: none; }
+      body.wm-active #waymakerNavigatorRoot { display: block; }
+    </style>
     <!-- Editorial interface theme parity with index.html. Reads the SAME
          persistence key (paradiso:editorial-theme) and exposes the choice as
          data-editorial-theme so the chat console can restyle for Kitsch
@@ -1280,7 +1302,10 @@ select:focus-visible {
         </div>
     </header>
 
-    <!-- Chat Area -->
+    <!-- Waymaker procedure navigator (default surface) -->
+    <section id="waymakerNavigatorRoot" class="wm-root" aria-live="polite"></section>
+
+    <!-- Chat Area (legacy AI chat — demoted to operator-only diagnostics surface) -->
     <main class="chat-history" id="chatHistory" aria-live="polite" aria-atomic="false">
         <!-- Initial Message -->
         <div class="msg-row ai" id="welcomeMessage">
@@ -3303,6 +3328,103 @@ select:focus-visible {
             }
         });
     /* Legacy friendly technical-issue copy retained for tests: Legal source lookup returned an unsupported response format. Paradiso is using limited guidance until this is fixed. 법령 출처 조회가 지원되지 않는 응답 형식을 반환했습니다. 수정 전까지 Paradiso는 제한적 안내를 사용합니다. */
+    </script>
+
+    <!-- Waymaker procedure navigator: deterministic, official-source-grounded.
+         The authoritative result is the backend Procedure Packet (no LLM). The AI
+         follow-up below is SECONDARY and uses the buffered (fully-gated) /api/ask
+         path (stream:false) so the answer-shape / citation / safety gates run. -->
+    <script src="assets/js/waymaker-navigator.js"></script>
+    <script>
+    (function () {
+        'use strict';
+        if (!window.WaymakerNavigator) return;
+
+        // Operator escape hatch: keep the legacy chat-first surface visible.
+        var params = new URLSearchParams(location.search);
+        var legacy = params.get('legacyChat') === '1';
+        try { if (localStorage.getItem('paradisoDevDiagnostics') === '1' && params.get('nav') !== '1') legacy = true; } catch (e) {}
+        if (legacy) return; // leave the legacy chat as-is; do not mount the navigator
+
+        // Mirror ai.html's API base resolution (the const is module-scoped above).
+        var DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
+        var apiBase = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
+            || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? "" : DEFAULT_API_BASE);
+
+        function getRecords() {
+            // Reuse the same source ai.html uses: live /api/visas, else local file.
+            return fetch(apiBase + '/api/visas', { cache: 'no-store' })
+                .then(function (r) { if (!r.ok) throw new Error('api'); return r.json(); })
+                .then(function (d) { return (d && d.visas) ? d.visas : (Array.isArray(d) ? d : []); })
+                .catch(function () {
+                    return fetch('./visa_data.json', { cache: 'no-store' })
+                        .then(function (r) { return r.json(); })
+                        .then(function (d) { return Array.isArray(d) ? d : (d.visas || []); })
+                        .catch(function () { return []; });
+                });
+        }
+
+        // AI follow-up — SECONDARY support. Sends ONLY safe categorical identifiers
+        // + the user's typed question. No checklist, no personal identifiers, and
+        // ALWAYS stream:false so the buffered, fully-gated path runs (Phase 10).
+        function onAskFollowup(context, question) {
+            var body = {
+                question: question,
+                consent: true,
+                stream: false,                              // force buffered/gated path
+                answer_mode: 'basic',
+                lang: context.locale === 'en' ? 'en' : 'ko',
+                visa_code: context.exactStatusCode || context.statusCode || undefined,
+                selected_procedure_key: context.procedureKey || undefined,
+                context: 'Waymaker procedure-packet follow-up (' + (context.packetType || '') +
+                         '). Explain the already-generated deterministic packet only; do not invent ' +
+                         'documents, fees, deadlines, citations, or HiKorea tasks; recommend official confirmation.'
+            };
+            return fetch(apiBase + '/api/ask', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+            }).then(function (r) { return r.json().catch(function () { return {}; }); })
+              .then(function (res) {
+                  if (!res) return '';
+                  // Prefer the copy-safe, gate-approved answer fields.
+                  return res.copy_safe_answer || res.answer || (res.safety_notice || '');
+              }).catch(function () { return ''; });
+        }
+
+        // HiKorea handoff — reuse the deterministic helper's pure logic if present;
+        // always preserve the official HiKorea link + 1345 fallback. Never automate
+        // login/booking/payment, never fabricate a reservation category.
+        function openHiKorea(statusCode, procedureKey, packetType, isLimited) {
+            try {
+                if (window.ParadisoReservationHelper && typeof window.ParadisoReservationHelper.open === 'function'
+                    && document.getElementById('hikoreaGuideOverlay')) {
+                    window.ParadisoReservationHelper.open({ visaCode: statusCode });
+                    return;
+                }
+            } catch (e) {}
+            window.open('https://www.hikorea.go.kr', '_blank', 'noopener');
+        }
+
+        function analytics(event, props) {
+            // Privacy-safe sink: forward to a global analytics layer if present,
+            // else no-op. (The module already strips to categorical props.)
+            try { if (window.PARADISO_ANALYTICS && window.PARADISO_ANALYTICS.track) window.PARADISO_ANALYTICS.track(event, props); } catch (e) {}
+        }
+
+        var root = document.getElementById('waymakerNavigatorRoot');
+        if (!root) return;
+        document.body.classList.add('wm-active');
+        try {
+            window.__waymakerNav = window.WaymakerNavigator.createNavigator({
+                root: root, apiBase: apiBase, getRecords: getRecords,
+                onAskFollowup: onAskFollowup, openHiKorea: openHiKorea, analytics: analytics
+            }).mount();
+        } catch (e) {
+            // If the navigator fails to mount, fall back to the legacy chat surface
+            // rather than showing a blank page.
+            document.body.classList.remove('wm-active');
+            if (window.console && console.error) console.error('Waymaker navigator failed to mount:', e);
+        }
+    })();
     </script>
 </body>
 </html>

@@ -16,9 +16,11 @@
     "test:employment-reporting-helper": "node scripts/check_employment_reporting_helper.mjs",
     "test:complex-guide-qa": "node scripts/check_complex_status_guide_qa.mjs",
     "test:hikorea-reservation-helper": "node scripts/check_hikorea_reservation_helper.mjs",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:waymaker-navigator": "node scripts/check_waymaker_navigator.mjs && node scripts/check_waymaker_navigator_dom.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.61.0"
+    "@playwright/test": "^1.61.0",
+    "jsdom": "^24.1.0"
   }
 }

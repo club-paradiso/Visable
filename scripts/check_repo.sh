@@ -291,6 +291,21 @@ else
   echo "INFO: Node.js not found; skipping visa-issuance UI/scenario-guide validation."
 fi
 
+echo "[9f/14] Validating Waymaker procedure navigator (all-status + adapter parity + coverage-limited)..."
+# Stdlib/Node-only, offline. check_waymaker_navigator exercises the REAL adapter /
+# catalog / coverage / checklist / AI-context-safety logic against visa_data.json;
+# the DOM smoke test self-skips when jsdom is not installed. The Python contract
+# tests bind the navigator to the deterministic packet builder (coverageSummary,
+# EN labels, no-fabrication invariant, and the JS<->backend taxonomy drift guard).
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_waymaker_navigator.mjs
+  node scripts/check_waymaker_navigator_dom.mjs
+else
+  echo "INFO: Node.js not found; skipping Waymaker navigator JS validation."
+fi
+python3 -m unittest backend.tests.test_procedure_packet_builder
+python3 -m unittest backend.tests.test_waymaker_navigator_contract
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"
