@@ -29,7 +29,7 @@
       "source_date": "2026-06-01",
       "local_path": "docs/source-manuals/2026-06/stay_manual_2026_06_01.pdf",
       "url": null,
-      "last_known_hash": "sha256:e25e97c3c2a05b5676ca3648a04226dcdc2433ab7c89a2f5105e6f8be49778b0",
+      "last_known_hash": "sha256:1f21e193e9477f9d83263d37119dad7d68c5e785e41c589967fd463bfee13757",
       "last_checked_at": null,
       "update_frequency": "irregular",
       "status": "active",
@@ -60,7 +60,7 @@
       "version": "2026.5",
       "local_path": "docs/source-manuals/2026-05/visa_manual_2026_05.pdf",
       "url": null,
-      "last_known_hash": "sha256:7fd79509c8c92ccd5e3b026d83f6884d69d3e0dcbcdf8c2936daf886a92ae11c",
+      "last_known_hash": "sha256:3052fa63d8aea37fb16cfec9923c2d3941c30b696ee907d7b2f77bf16cca555a",
       "last_checked_at": null,
       "update_frequency": "irregular",
       "status": "active",
@@ -80,7 +80,7 @@
       "last_checked_at": null,
       "update_frequency": "irregular",
       "status": "not_configured",
-      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 외국인체류 안내매뉴얼 (778 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active stay manual remains stay_manual_2026_06_01_pdf (2026.5). Direct download of the latest HiKorea HWPX (260623 체류민원 자격별 안내 매뉴얼) is blocked by this environment's network policy (HTTP 403 CONNECT). Promotion of any 2026.6 content requires a separate human-reviewed PR. See backend/data/audits/stay_manual_260623_blocked.md."
+      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 외국인체류 안내매뉴얼 (778 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active stay manual remains stay_manual_2026_06_01_pdf (2026.5). A desktop Codex retry on 2026-06-25 acquired the official 260623 stay HWPX and companion change-log HWPX from the HiKorea attachment endpoint, but both packages are distribution/protected HWPX files with encrypted section bodies. This 260617 readable text remains reference-only and is not a verified substitute for 260623. Promotion of any 2026.6 content requires a separate human-reviewed PR. See backend/data/audits/full_official_source_audit_260623.md."
     },
     {
       "id": "visa_manual_2026_06_17_txt",
@@ -96,7 +96,7 @@
       "last_checked_at": null,
       "update_frequency": "irregular",
       "status": "not_configured",
-      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 사증발급 안내매뉴얼 (487 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active visa-issuance manual remains visa_manual_2026_05_pdf (2026.5). Direct download of the latest HiKorea HWP (260617 사증민원 자격별 안내 매뉴얼) is blocked by this environment's network policy (HTTP 403 CONNECT). Promotion requires a separate human-reviewed PR. See backend/data/audits/visa_manual_260617_blocked.md."
+      "notes": "REFERENCE-ONLY page-text extraction of the 2026.6 사증발급 안내매뉴얼 (487 PDF pages). Registered as a reference source, NOT promoted to the active grounding manual: the active visa-issuance manual remains visa_manual_2026_05_pdf (2026.5). A desktop Codex retry on 2026-06-25 acquired the official 260617 HWP from the HiKorea attachment endpoint and hash-matched it to the local original, but direct HWP body extraction remains blocked by distribution-mode packaging in available tooling. Promotion requires a separate human-reviewed PR. See backend/data/audits/full_official_source_audit_260623.md."
     },
     {
       "id": "hikorea_latest_manual_notice_260623",
@@ -111,7 +111,7 @@
       "last_checked_at": null,
       "update_frequency": "irregular",
       "status": "not_configured",
-      "notes": "Canonical HiKorea notice for the latest official manuals: '260623 체류민원 자격별 안내 매뉴얼.hwpx', '260617 사증민원 자격별 안내 매뉴얼.hwp', '260623 사증.체류 민원 자격별 안내 매뉴얼 수정 이력.hwpx'. This is the authoritative source the product links to from the landing 'Information & coverage' panel. The attachment files could not be auto-downloaded here (network policy returns HTTP 403 on *.go.kr CONNECT); the readable 2026.6 page-text extraction already in the repo (stay_manual_2026_06_17_txt / visa_manual_2026_06_17_txt) is the closest available official-text reference. No scraping by default."
+      "notes": "Canonical HiKorea notice for the latest official manuals: '260623 체류민원 자격별 안내 매뉴얼.hwpx', '260617 사증민원 자격별 안내 매뉴얼.hwp', '260623 사증.체류 민원 자격별 안내 매뉴얼 수정 이력.hwpx'. This is the authoritative source the product links to from the landing 'Information & coverage' panel. Desktop Codex on 2026-06-25 confirmed the notice page and downloaded all three attachments through the normal public attachment endpoint; normalized copies and diagnostics are preserved under backend/data/sources/manuals. The 260623 stay manual and 260623 change log are valid distribution/protected HWPX packages with encrypted section bodies, so they remain unreadable for source-grounded data promotion. No scraping by default."
     },
     {
       "id": "law_api_placeholder",
