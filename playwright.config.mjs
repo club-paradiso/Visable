@@ -25,7 +25,14 @@ export default defineConfig({
   use: {
     baseURL: `http://127.0.0.1:${PORT}`,
     headless: true,
-    screenshot: 'only-on-failure'
+    screenshot: 'only-on-failure',
+    // In environments that ship a pre-installed Chromium whose build differs from
+    // the @playwright/test pin, point at it via PARADISO_PW_EXECUTABLE instead of
+    // downloading (e.g. /opt/pw-browsers/chromium-XXXX/chrome-linux/chrome). When
+    // the env var is unset, Playwright uses its own managed browser as usual.
+    launchOptions: process.env.PARADISO_PW_EXECUTABLE
+      ? { executablePath: process.env.PARADISO_PW_EXECUTABLE }
+      : {}
   },
   webServer: {
     command: `python3 -m http.server ${PORT}`,

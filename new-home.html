@@ -642,6 +642,21 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     if (langBtn) langBtn.textContent = pick(content.ui.langToggle);
     var themeLabel = document.getElementById('themeBtnLabel');
     if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
+    // Locale-aware accessibility labels. These are attributes, so applyStatic's
+    // [data-c] textContent pass does not reach them — they must be swapped here so
+    // English-mode screen-reader users do not hear Korean labels.
+    var a11y = {
+      themeBtn: { ko: '테마 전환', en: 'Toggle theme' },
+      brightBtn: { ko: '밝기 전환', en: 'Toggle brightness' },
+      close: { ko: '닫기', en: 'Close' }
+    };
+    var themeBtnEl = document.getElementById('themeBtn');
+    if (themeBtnEl) themeBtnEl.setAttribute('aria-label', pick(a11y.themeBtn));
+    var brightBtnEl = document.getElementById('brightBtn');
+    if (brightBtnEl) brightBtnEl.setAttribute('aria-label', pick(a11y.brightBtn));
+    document.querySelectorAll('[data-action="close-modal"]').forEach(function (n) {
+      n.setAttribute('aria-label', pick(a11y.close));
+    });
   }
 
   // ── Renderers ────────────────────────────────────────────────────────────

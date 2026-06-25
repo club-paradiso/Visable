@@ -1,0 +1,327 @@
+/*
+ * Waymaker Navigator — mobile-first styles.
+ *
+ * Scoped under .wm-root. Inherits the host page's theme tokens (--bg*, --t*,
+ * --ac*, --bd, --sp-*, --ff) with safe fallbacks so the module also renders
+ * standalone (tests/preview). Targets 360 / 390 / 430 / 768 / desktop with no
+ * horizontal overflow, >=44px touch targets, a safe-area-aware sticky action
+ * bar, archive_diary (light) contrast overrides, and reduced-motion support.
+ *
+ * Source coverage is NEVER indicated by color alone — every coverage badge
+ * pairs an icon glyph + text label with its color.
+ */
+
+.wm-root {
+  --wm-bg: var(--bg0, #0B2A24);
+  --wm-card: var(--bg1, #113B32);
+  --wm-card2: var(--bg2, #184B40);
+  --wm-bd: var(--bd, #2D5A50);
+  --wm-t1: var(--t1, #F3EEDF);
+  --wm-t2: var(--t2, #C7BFA8);
+  --wm-t3: var(--t3, #8C8572);
+  --wm-ac: var(--ac, #34D4A8);
+  --wm-ac2: var(--ac2, #17B388);
+  --wm-acL: var(--acL, #163E36);
+  --wm-radius: 14px;
+  --wm-radius-sm: 10px;
+  --wm-gap: 0.75rem;
+  --wm-touch: 48px;            /* >=44px target */
+  --wm-pad: 1rem;
+  --wm-ff: var(--ff, "Pretendard Variable", -apple-system, BlinkMacSystemFont, system-ui, sans-serif);
+
+  /* coverage colors */
+  --wm-cov-confirmed: #34D4A8;
+  --wm-cov-partial: #F2C879;
+  --wm-cov-verify: #E6A157;
+  --wm-cov-none: #C98B8B;
+
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--wm-pad) calc(var(--wm-pad) + env(safe-area-inset-bottom, 0px));
+  color: var(--wm-t1);
+  font-family: var(--wm-ff);
+  font-size: 16px;            /* prevents iOS input zoom */
+  line-height: 1.6;
+}
+.wm-root *, .wm-root *::before, .wm-root *::after { box-sizing: border-box; }
+
+/* ---------- header ---------- */
+.wm-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--wm-gap);
+  padding: var(--wm-pad) 0 0.6rem;
+  position: relative;
+}
+.wm-head-titles { min-width: 0; }
+.wm-title { font-weight: 850; font-size: 1.05rem; color: var(--wm-ac); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.wm-subtitle { margin-top: 0.25rem; font-size: 0.82rem; color: var(--wm-t2); line-height: 1.4; overflow-wrap: anywhere; }
+.wm-lang-toggle {
+  flex-shrink: 0; min-width: 44px; min-height: 44px; padding: 0 0.7rem;
+  border: 1px solid var(--wm-bd); border-radius: 999px; background: var(--wm-card2);
+  color: var(--wm-t2); font: 800 0.8rem/1 var(--wm-ff); cursor: pointer;
+}
+.wm-lang-toggle:hover { color: var(--wm-t1); border-color: var(--wm-ac); }
+.wm-progress {
+  position: absolute; left: 0; right: 0; bottom: -2px; height: 3px;
+  background: var(--wm-bd); border-radius: 999px; overflow: hidden;
+}
+.wm-progress-bar { display: block; height: 100%; background: var(--wm-ac); transition: width 0.25s ease; }
+
+/* ---------- generic ---------- */
+.wm-body { padding-top: 0.5rem; }
+.wm-step { display: flex; flex-direction: column; gap: var(--wm-gap); padding: 0.5rem 0 1rem; }
+.wm-step-heading { font-size: 1.15rem; font-weight: 800; color: var(--wm-t1); margin: 0.4rem 0 0.2rem; outline: none; }
+.wm-step-heading:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 3px; }
+.wm-empty { font-size: 1.02rem; color: var(--wm-t1); line-height: 1.6; }
+.wm-muted { color: var(--wm-t2); font-size: 0.9rem; line-height: 1.55; }
+.wm-context-line { color: var(--wm-ac); font-weight: 750; font-size: 0.9rem; }
+.wm-group-label { margin-top: 0.6rem; color: var(--wm-t3); font-size: 0.74rem; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+
+/* ---------- buttons ---------- */
+.wm-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
+  min-height: var(--wm-touch); padding: 0 1rem;
+  border: 1px solid var(--wm-bd); border-radius: var(--wm-radius-sm);
+  background: var(--wm-card2); color: var(--wm-t1);
+  font: 800 0.95rem/1.2 var(--wm-ff); cursor: pointer; transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  text-align: center;
+}
+.wm-btn:hover { border-color: var(--wm-ac); }
+.wm-btn:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 2px; }
+.wm-btn-primary { background: var(--wm-ac); border-color: var(--wm-ac); color: #06231C; }
+.wm-btn-primary:hover { background: var(--wm-ac2); border-color: var(--wm-ac2); }
+.wm-btn-secondary { background: var(--wm-acL); border-color: var(--wm-ac2); color: var(--wm-t1); }
+.wm-btn-ghost { background: transparent; color: var(--wm-t2); }
+.wm-btn-block { width: 100%; }
+.wm-btn-lg { min-height: 52px; font-size: 1.02rem; }
+.wm-btn-sm { min-height: 44px; padding: 0 0.8rem; font-size: 0.82rem; }
+.wm-btn-restart { margin-left: auto; }
+
+.wm-step-nav { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+
+/* ---------- chips (language / location) ---------- */
+.wm-chip-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
+.wm-chip {
+  display: flex; align-items: center; min-height: 56px; padding: 0.7rem 1rem;
+  border: 1.5px solid var(--wm-bd); border-radius: var(--wm-radius);
+  background: var(--wm-card); color: var(--wm-t1);
+  font: 750 1rem/1.3 var(--wm-ff); cursor: pointer; text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+}
+.wm-chip:hover { border-color: var(--wm-ac); background: var(--wm-card2); }
+.wm-chip:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 2px; }
+.wm-chip-on { border-color: var(--wm-ac); background: var(--wm-acL); }
+
+/* ---------- status search ---------- */
+.wm-search {
+  width: 100%; min-height: var(--wm-touch); padding: 0.6rem 0.9rem;
+  border: 1.5px solid var(--wm-bd); border-radius: var(--wm-radius-sm);
+  background: var(--wm-card); color: var(--wm-t1); font: 600 16px/1.3 var(--wm-ff);
+}
+.wm-search:focus { outline: 2px solid var(--wm-ac); outline-offset: 1px; border-color: var(--wm-ac); }
+.wm-status-results { display: flex; flex-direction: column; gap: 0.4rem; max-height: 56vh; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 0.2rem; margin: 0 -0.2rem; }
+.wm-status-row {
+  display: flex; align-items: center; gap: 0.7rem; min-height: var(--wm-touch);
+  padding: 0.55rem 0.8rem; border: 1px solid var(--wm-bd); border-radius: var(--wm-radius-sm);
+  background: var(--wm-card); color: var(--wm-t1); font: 650 0.95rem/1.3 var(--wm-ff);
+  cursor: pointer; text-align: left; width: 100%;
+}
+.wm-status-row:hover { border-color: var(--wm-ac); background: var(--wm-card2); }
+.wm-status-row:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 2px; }
+.wm-status-code { flex-shrink: 0; min-width: 3.6rem; font-weight: 850; color: var(--wm-ac); font-variant-numeric: tabular-nums; }
+.wm-status-name { overflow-wrap: anywhere; }
+.wm-status-special { border-style: dashed; color: var(--wm-t2); }
+
+/* ---------- procedure list ---------- */
+.wm-proc-list { display: flex; flex-direction: column; gap: 0.5rem; }
+.wm-proc-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.6rem;
+  min-height: var(--wm-touch); padding: 0.7rem 1rem;
+  border: 1.5px solid var(--wm-bd); border-radius: var(--wm-radius);
+  background: var(--wm-card); color: var(--wm-t1); font: 750 1rem/1.3 var(--wm-ff);
+  cursor: pointer; text-align: left; width: 100%;
+}
+.wm-proc-row:hover { border-color: var(--wm-ac); background: var(--wm-card2); }
+.wm-proc-row:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 2px; }
+.wm-proc-name { overflow-wrap: anywhere; }
+.wm-proc-hint { flex-shrink: 0; font-size: 0.72rem; font-weight: 800; color: var(--wm-cov-verify); }
+.wm-proc-limited { opacity: 0.92; }
+
+/* ---------- loading ---------- */
+.wm-loading { align-items: center; text-align: center; padding: 2.5rem 0; }
+.wm-spinner { width: 36px; height: 36px; border: 3px solid var(--wm-bd); border-top-color: var(--wm-ac); border-radius: 50%; animation: wm-spin 0.8s linear infinite; }
+@keyframes wm-spin { to { transform: rotate(360deg); } }
+
+/* ---------- packet ---------- */
+.wm-packet { display: flex; flex-direction: column; gap: var(--wm-gap); padding-bottom: 1rem; }
+.wm-card { border: 1px solid var(--wm-bd); border-radius: var(--wm-radius); background: var(--wm-card); padding: var(--wm-pad); }
+.wm-card-hero { background: linear-gradient(180deg, var(--wm-card2), var(--wm-card)); border-color: var(--wm-ac2); }
+.wm-kicker { font-size: 0.74rem; font-weight: 850; letter-spacing: 0.04em; text-transform: uppercase; color: var(--wm-ac); margin-bottom: 0.35rem; }
+.wm-packet-title { font-size: 1.2rem; font-weight: 850; color: var(--wm-t1); display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; outline: none; }
+.wm-packet-title:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 3px; }
+.wm-code-chip { display: inline-flex; align-items: center; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--wm-acL); border: 1px solid var(--wm-ac2); color: var(--wm-ac); font-size: 0.85rem; font-weight: 850; }
+.wm-hero-summary { margin-top: 0.5rem; font-size: 0.92rem; color: var(--wm-t2); line-height: 1.55; }
+
+.wm-next-list { margin: 0.4rem 0 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
+.wm-next-list li { color: var(--wm-t1); font-size: 0.95rem; line-height: 1.55; }
+
+/* ---------- coverage badge (icon + label, never color-only) ---------- */
+.wm-cov-badge {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  padding: 0.22rem 0.6rem; border-radius: 999px; border: 1px solid currentColor;
+  font-size: 0.76rem; font-weight: 800; line-height: 1.3; white-space: normal; overflow-wrap: anywhere;
+}
+.wm-cov-badge::before { font-size: 0.85em; }
+.wm-cov-confirmed { color: var(--wm-cov-confirmed); background: rgba(52,212,168,0.12); }
+.wm-cov-confirmed::before { content: "✓"; }
+.wm-cov-partial { color: var(--wm-cov-partial); background: rgba(242,200,121,0.14); }
+.wm-cov-partial::before { content: "◐"; }
+.wm-cov-verify { color: var(--wm-cov-verify); background: rgba(230,161,87,0.14); }
+.wm-cov-verify::before { content: "!"; }
+.wm-cov-none { color: var(--wm-cov-none); background: rgba(201,139,139,0.14); }
+.wm-cov-none::before { content: "—"; }
+
+/* ---------- coverage-limited warn card ---------- */
+.wm-card-warn { border: 1px solid var(--wm-cov-verify); background: rgba(230,161,87,0.08); }
+.wm-warn-title { font-weight: 850; color: var(--wm-cov-verify); margin-bottom: 0.4rem; font-size: 0.98rem; }
+.wm-warn-body { color: var(--wm-t1); font-size: 0.92rem; line-height: 1.6; }
+.wm-warn-channels { margin-top: 0.7rem; }
+.wm-subhead { font-size: 0.76rem; font-weight: 800; color: var(--wm-t2); text-transform: uppercase; letter-spacing: 0.03em; margin-bottom: 0.3rem; }
+.wm-channel-list { margin: 0; padding-left: 1.1rem; }
+.wm-channel-list li { color: var(--wm-t1); font-size: 0.9rem; margin: 0.2rem 0; overflow-wrap: anywhere; }
+.wm-channel-list a { color: var(--wm-ac); }
+
+/* ---------- accordions ---------- */
+.wm-accordions { display: flex; flex-direction: column; gap: 0.55rem; }
+.wm-acc { border: 1px solid var(--wm-bd); border-radius: var(--wm-radius); background: var(--wm-card); overflow: hidden; }
+.wm-acc-head {
+  display: flex; align-items: center; gap: 0.55rem; width: 100%;
+  min-height: var(--wm-touch); padding: 0.7rem 0.9rem;
+  background: transparent; border: 0; color: var(--wm-t1);
+  font: 800 0.98rem/1.3 var(--wm-ff); cursor: pointer; text-align: left;
+}
+.wm-acc-head:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: -2px; }
+.wm-acc-title { flex: 1; overflow-wrap: anywhere; }
+.wm-acc-chev { flex-shrink: 0; color: var(--wm-t2); transition: transform 0.2s; }
+.wm-acc-open .wm-acc-chev { transform: rotate(180deg); }
+.wm-acc-body { display: none; padding: 0 0.9rem 0.9rem; color: var(--wm-t1); font-size: 0.92rem; line-height: 1.6; }
+.wm-acc-open .wm-acc-body { display: block; }
+.wm-acc-body p { margin: 0.4rem 0; overflow-wrap: anywhere; }
+
+/* ---------- documents / checklist ---------- */
+.wm-doc-group-label { margin: 0.7rem 0 0.3rem; color: var(--wm-ac); font-size: 0.78rem; font-weight: 850; letter-spacing: 0.02em; }
+.wm-doc-row { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.45rem 0; min-height: 44px; border-bottom: 1px dashed var(--wm-bd); }
+.wm-doc-check { flex-shrink: 0; width: 24px; height: 24px; margin-top: 0.45rem; accent-color: var(--wm-ac); cursor: pointer; }
+.wm-doc-main { min-width: 0; flex: 1; }
+/* The label (clickable via for=) is the real tap target — keep it >=44px tall. */
+.wm-doc-label { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; min-height: 44px; cursor: pointer; }
+.wm-doc-name { font-weight: 650; color: var(--wm-t1); overflow-wrap: anywhere; }
+.wm-tag { font-size: 0.7rem; font-weight: 800; padding: 0.1rem 0.45rem; border-radius: 999px; }
+.wm-tag-form { background: var(--wm-acL); color: var(--wm-ac); border: 1px solid var(--wm-ac2); }
+.wm-doc-cond { margin-top: 0.25rem; font-size: 0.82rem; color: var(--wm-t2); overflow-wrap: anywhere; }
+.wm-doc-where { margin-top: 0.25rem; font-size: 0.8rem; color: var(--wm-t3); overflow-wrap: anywhere; }
+.wm-doc-where-label { font-weight: 800; color: var(--wm-t2); }
+
+.wm-checklist-foot { margin-top: 0.8rem; }
+.wm-checklist-hint { margin-bottom: 0.5rem; }
+.wm-checklist-btns { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.wm-checklist-status { display: block; margin-top: 0.4rem; font-size: 0.8rem; color: var(--wm-ac); }
+
+/* ---------- timing / fees / risk / source ---------- */
+.wm-risk { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.5rem 0.65rem; margin: 0.4rem 0; border-left: 3px solid var(--wm-cov-verify); background: rgba(230,161,87,0.07); border-radius: 6px; }
+.wm-risk-flag { font-weight: 800; color: var(--wm-cov-verify); font-size: 0.85rem; }
+.wm-risk-detail { color: var(--wm-t1); font-size: 0.88rem; }
+.wm-fee { display: flex; justify-content: space-between; gap: 0.6rem; padding: 0.35rem 0; border-bottom: 1px dashed var(--wm-bd); }
+.wm-fee-label { color: var(--wm-t2); overflow-wrap: anywhere; }
+.wm-fee-amount { font-weight: 800; color: var(--wm-t1); text-align: right; white-space: nowrap; }
+.wm-source-row { padding: 0.3rem 0; border-bottom: 1px dashed var(--wm-bd); }
+.wm-source-name { color: var(--wm-t2); font-size: 0.85rem; overflow-wrap: anywhere; }
+.wm-final-note { margin-top: 0.6rem; font-size: 0.82rem; color: var(--wm-t3); line-height: 1.5; }
+.wm-verify-list { margin: 0.4rem 0 0; padding-left: 1.2rem; }
+.wm-verify-list li { color: var(--wm-t1); font-size: 0.9rem; margin: 0.2rem 0; }
+
+/* ---------- bottom action bar (sticky, safe-area) ---------- */
+.wm-actionbar {
+  position: sticky; bottom: 0; z-index: 5;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  margin: 0.5rem calc(-1 * var(--wm-pad)) 0; padding: 0.75rem var(--wm-pad) calc(0.75rem + env(safe-area-inset-bottom, 0px));
+  background: linear-gradient(180deg, transparent, var(--wm-bg) 28%);
+  backdrop-filter: blur(6px);
+}
+
+/* ---------- AI follow-up (secondary) ---------- */
+.wm-ai-wrap { display: flex; flex-direction: column; gap: 0.5rem; }
+.wm-ai { display: flex; flex-direction: column; gap: 0.5rem; padding: 0.8rem; border: 1px solid var(--wm-bd); border-radius: var(--wm-radius); background: var(--wm-card); }
+.wm-ai[hidden] { display: none; }
+.wm-ai-note { font-size: 0.78rem; color: var(--wm-t3); line-height: 1.5; }
+.wm-ai-input { width: 100%; min-height: 72px; padding: 0.6rem 0.8rem; border: 1.5px solid var(--wm-bd); border-radius: var(--wm-radius-sm); background: var(--wm-bg); color: var(--wm-t1); font: 600 16px/1.5 var(--wm-ff); resize: vertical; }
+.wm-ai-input:focus { outline: 2px solid var(--wm-ac); outline-offset: 1px; border-color: var(--wm-ac); }
+.wm-ai-out { font-size: 0.92rem; color: var(--wm-t1); line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* =====================================================================
+ * archive_diary (light) theme contrast overrides — chips/badges must stay
+ * readable on the light paper background.
+ * ===================================================================== */
+html[data-editorial-theme="archive_diary"] .wm-root {
+  --wm-bg: #FBF6E9;
+  --wm-card: #FFFFFF;
+  --wm-card2: #FFF6DE;
+  --wm-bd: #141414;
+  --wm-t1: #141414;
+  --wm-t2: #44423B;
+  --wm-t3: #6B6760;
+  --wm-ac: #0E7C5A;
+  --wm-ac2: #0A5E44;
+  --wm-acL: #E7F4EE;
+  --wm-cov-confirmed: #0A6B4A;
+  --wm-cov-partial: #8A5A00;
+  --wm-cov-verify: #9A4A12;
+  --wm-cov-none: #8A2F2F;
+}
+html[data-editorial-theme="archive_diary"] .wm-btn-primary { color: #FFFFFF; }
+html[data-editorial-theme="archive_diary"] .wm-cov-confirmed { background: rgba(10,107,74,0.10); }
+html[data-editorial-theme="archive_diary"] .wm-cov-partial { background: rgba(138,90,0,0.12); }
+html[data-editorial-theme="archive_diary"] .wm-cov-verify { background: rgba(154,74,18,0.12); }
+html[data-editorial-theme="archive_diary"] .wm-cov-none { background: rgba(138,47,47,0.12); }
+
+/* =====================================================================
+ * Responsive — explicit behavior at 430 / 390 / 360.
+ * ===================================================================== */
+@media (min-width: 600px) {
+  .wm-chip-grid { grid-template-columns: 1fr 1fr; }
+  .wm-actionbar { flex-direction: row; flex-wrap: wrap; }
+  .wm-actionbar .wm-btn-block { width: auto; flex: 1 1 12rem; }
+}
+@media (max-width: 430px) {
+  /* Override the padding TOKEN (not padding directly) so the sticky action bar's
+     negative margin (calc(-1 * var(--wm-pad))) stays edge-aligned with the root
+     padding — otherwise the bar overhangs and forces horizontal scroll. */
+  .wm-root { --wm-pad: 0.85rem; }
+  .wm-packet-title { font-size: 1.12rem; }
+}
+@media (max-width: 390px) {
+  .wm-title { font-size: 1rem; }
+  .wm-subtitle { font-size: 0.78rem; }
+  .wm-status-code { min-width: 3.2rem; }
+}
+@media (max-width: 360px) {
+  .wm-root { --wm-pad: 0.7rem; }
+  .wm-btn { font-size: 0.9rem; }
+  .wm-chip { min-height: 52px; }
+}
+
+/* =====================================================================
+ * Reduced motion — blanket neutralization.
+ * ===================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .wm-root *, .wm-root *::before, .wm-root *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .wm-spinner { animation: none !important; border-top-color: var(--wm-ac); }
+}

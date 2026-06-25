@@ -31,7 +31,7 @@
     "verifyBadge": { "ko": "확인 필요", "en": "Verify on site" },
     "visitOfficial": { "ko": "공식 사이트", "en": "Official site" },
     "navLabel": { "ko": "경로", "en": "Path" },
-    "openWaymaker": { "ko": "Waymaker 국적 상담", "en": "Waymaker for Nationality" },
+    "openWaymaker": { "ko": "내 절차 찾기 (Waymaker)", "en": "Find my procedure (Waymaker)" },
     "loadError": { "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Paradiso 메인에서 접속해 주세요.", "en": "Content could not be loaded. Please try again shortly or return via the Paradiso main page." }
   },
 
@@ -77,9 +77,9 @@
       "desc": { "ko": "귀화·국적회복·국적판정·국적선택·복수국적·외국국적불행사서약 등 국적 업무 전반을 한곳에서 살펴봅니다.", "en": "Browse the whole field — naturalization, restoration, determination, choice, dual nationality, the pledge, and more." },
       "cta": { "ko": "허브 열기", "en": "Open center" } },
     { "id": "waymaker", "icon": "✦", "action": "open-waymaker",
-      "label": { "ko": "Waymaker 국적 상담 모드", "en": "Waymaker for Nationality" },
-      "desc": { "ko": "공식 근거 기반으로 국적·귀화 질문을 단계별로 정리하고, 현재 상황에 맞는 확인 항목을 안내합니다.", "en": "Organize nationality questions step by step on an official-source-grounded basis, with checks tailored to your situation." },
-      "cta": { "ko": "Waymaker 열기", "en": "Open Waymaker" } }
+      "label": { "ko": "Waymaker — 내 절차 찾기", "en": "Waymaker — Find my procedure" },
+      "desc": { "ko": "체류자격과 상황을 선택해 준비할 일과 공식 근거를 확인하세요. 국적·귀화 영역도 함께 안내합니다.", "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included." },
+      "cta": { "ko": "내 절차 찾기", "en": "Find my procedure" } }
   ],
 
   "pathwayPreview": {
@@ -263,15 +263,15 @@
   },
 
   "waymaker": {
-    "title": { "ko": "Waymaker 국적 상담 모드", "en": "Waymaker for Nationality" },
+    "title": { "ko": "Waymaker — 내 절차 찾기", "en": "Waymaker — Find my immigration procedure" },
     "desc": {
-      "ko": "공식 근거 기반으로 국적·귀화 관련 질문을 단계별로 정리하고, 사용자의 현재 상황에 맞는 확인 항목을 안내합니다.",
-      "en": "Organize nationality and naturalization questions step by step on an official-source-grounded basis, and surface checks tailored to your current situation."
+      "ko": "체류자격과 상황을 선택해 준비할 일과 공식 근거를 확인하세요. 국적·귀화 영역도 함께 안내합니다.",
+      "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included."
     },
-    "cta": { "ko": "국적 상담 모드로 Waymaker 열기", "en": "Open Waymaker in nationality mode" },
+    "cta": { "ko": "내 절차 찾기", "en": "Find my immigration procedure" },
     "note": {
-      "ko": "Waymaker는 기존 Paradiso AI 도우미와 동일한 엔진을 사용하며, 국적 영역 맥락을 함께 전달합니다. 답변은 참고용이며 최종 판단은 관할기관 확인이 필요합니다.",
-      "en": "Waymaker uses the same engine as the existing Paradiso AI assistant, with nationality-domain context attached. Answers are for reference; final decisions require confirmation with the competent authority."
+      "ko": "Waymaker는 공식 출처를 바탕으로 내 절차, 서류, 예약, 다음 행동을 정리하는 절차 길찾기입니다. AI는 생성된 안내를 설명하는 보조 역할만 하며, 서류·수수료·기한을 새로 만들지 않습니다. 최종 확인은 HiKorea·1345·관할 출입국기관에서 하세요.",
+      "en": "Waymaker is a procedure navigator that turns your status and situation into a source-backed procedure, checklist, booking path, and next action. AI only helps explain what was generated and never invents documents, fees, or deadlines. Confirm finally with HiKorea, 1345, or the competent immigration office."
     }
   },
 
