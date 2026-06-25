@@ -117,7 +117,7 @@ def _good_record():
                         "manualRefs": [
                             {
                                 "manualName": "체류민원",
-                                "manualVersion": "2026.5",
+                                "manualVersion": "2026.6",
                                 "pageRange": "p. 1",
                                 "confidence": "manual_extracted_needs_review",
                                 "needsManualReview": True,
@@ -156,7 +156,8 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
                 self.assertTrue(any(groups[group] for group in groups), variant_id)
                 self.assertTrue(variant["manualRefs"], variant_id)
                 for manual_ref in variant["manualRefs"]:
-                    self.assertEqual(manual_ref["sourceFile"], "docs/source-manuals/2026-05/stay_manual_2026_05.pdf")
+                    self.assertEqual(manual_ref["sourceFile"], "backend/data/sources/manuals/260623_stay_manual_readable.txt")
+                    self.assertEqual(manual_ref["manualVersion"], "2026.6")
                     self.assertTrue(manual_ref["needsManualReview"])
                     self.assertIsNot(manual_ref.get("verified"), True)
                 exposed_count += 1
@@ -173,7 +174,7 @@ class ScenarioProcedureVariantApiTests(unittest.TestCase):
         d9_reentry = records["D-9"]["procedures"]["reentry"]
         self.assertEqual(
             d9_reentry["requiredDocs"]["requiredDocs"],
-            ["신청서(별지 34호서식)", "여권 원본", "외국인등록증", "수수료"],
+            ["통합신청서(별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
         )
 
 
@@ -1066,7 +1067,7 @@ class AiVariantGroundingPostMergeSmokeTests(unittest.TestCase):
         d9_reentry = records["D-9"]["procedures"]["reentry"]
         self.assertEqual(
             d9_reentry["requiredDocs"]["requiredDocs"],
-            ["신청서(별지 34호서식)", "여권 원본", "외국인등록증", "수수료"],
+            ["통합신청서(별지 제34호 서식)", "여권 원본", "외국인등록증", "doc_fee_generic"],
         )
 
 
@@ -1099,7 +1100,7 @@ class StatusGrantAliasRoutingHotfixTests(unittest.TestCase):
         )
 
 
-# Batch-2 scenario variants added from the 2026-05 stay manual
+# Batch-2 scenario variants added from the 2026.6 stay manual
 # (scripts/populate_scenario_procedure_variants_batch2_2026_05.py). Every id
 # here must be exposed through /api/visas, carry non-empty grouped
 # requiredDocs and source manualRefs, and remain needs-review.
@@ -1162,10 +1163,10 @@ class ScenarioProcedureVariantBatch2Tests(unittest.TestCase):
                 for manual_ref in variant["manualRefs"]:
                     self.assertEqual(
                         manual_ref["sourceFile"],
-                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
                         variant_id,
                     )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     # Never source-confirmed: verified must not be true.
@@ -1263,10 +1264,10 @@ class HardCaseScenarioVariantTests(unittest.TestCase):
                 for manual_ref in variant["manualRefs"]:
                     self.assertEqual(
                         manual_ref["sourceFile"],
-                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
                         variant_id,
                     )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     # Never source-confirmed: verified must not be true.
@@ -1277,7 +1278,7 @@ class HardCaseScenarioVariantTests(unittest.TestCase):
         # not overwritten, when variants are layered on.
         records = _records()
         f6 = records["F-6"]["procedures"]["statusChange"]
-        self.assertIn("매뉴얼 확인 필요", json.dumps(f6, ensure_ascii=False))
+        self.assertIn("공식 확인이 필요", json.dumps(f6, ensure_ascii=False))
         self.assertEqual(f6["requiredDocs"]["requiredDocs"], [])
 
     def test_prior_batch_variants_unchanged(self):
@@ -1418,10 +1419,10 @@ class RemainingComplexSubtypeScenarioVariantTests(unittest.TestCase):
                 for manual_ref in variant["manualRefs"]:
                     self.assertEqual(
                         manual_ref["sourceFile"],
-                        "docs/source-manuals/2026-05/stay_manual_2026_05.pdf",
+                        "backend/data/sources/manuals/260623_stay_manual_readable.txt",
                         variant_id,
                     )
-                    self.assertEqual(manual_ref["manualVersion"], "2026.5", variant_id)
+                    self.assertEqual(manual_ref["manualVersion"], "2026.6", variant_id)
                     self.assertTrue(manual_ref.get("pageRange"), variant_id)
                     self.assertTrue(manual_ref["needsManualReview"], variant_id)
                     self.assertIsNot(manual_ref.get("verified"), True, variant_id)

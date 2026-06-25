@@ -59,8 +59,8 @@ class SchemaShapeTests(unittest.TestCase):
         inv = self.schema.get("manual_version_invariants") or {}
         self.assertIn("visa_issuance_manual", inv)
         self.assertIn("stay_residence_manual", inv)
-        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-05-21")
-        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-06-01")
+        self.assertEqual(inv["visa_issuance_manual"]["published_or_updated_at"], "2026-06-17")
+        self.assertEqual(inv["stay_residence_manual"]["published_or_updated_at"], "2026-06-23")
 
 
 class RegistryConsistencyTests(unittest.TestCase):
@@ -84,9 +84,10 @@ class RegistryConsistencyTests(unittest.TestCase):
                     by_kw["visa"] = src
         self.assertIn("stay", by_kw, "active stay manual must be registered")
         self.assertIn("visa", by_kw, "active visa manual must be registered")
-        self.assertEqual(by_kw["stay"]["version"], "2026.5")
-        self.assertEqual(by_kw["stay"]["source_date"], "2026-06-01")
-        self.assertEqual(by_kw["visa"]["version"], "2026.5")
+        self.assertEqual(by_kw["stay"]["version"], "2026.6")
+        self.assertEqual(by_kw["stay"]["source_date"], "2026-06-23")
+        self.assertEqual(by_kw["visa"]["version"], "2026.6")
+        self.assertEqual(by_kw["visa"]["source_date"], "2026-06-17")
 
 
 class AnswerGroundingFieldTests(unittest.TestCase):
