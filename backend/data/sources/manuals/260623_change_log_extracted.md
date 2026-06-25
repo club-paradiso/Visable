@@ -1,0 +1,4 @@
+# HWPX extraction diagnostics
+
+## Contents/section0.xml (section 0)
+UNREADABLE: manifest marks this section as encrypted
