@@ -180,6 +180,51 @@ ok(fastHtml.indexOf('위험 신호') === -1, 'fast render omits risk-flag sectio
 ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('API 설정이 필요합니다') !== -1, 'research missing-key → config state');
 ok(L.buildResearchHtml({ ok: false, error: 'search_failed' }, 'ko').indexOf('검색에 실패했습니다') !== -1, 'research failure → error state');
 
+section('AI synthesis — labels, status badges, synthesis render');
+const synthRequired = {
+  synthToggle: ['AI 리서치 요약 사용', 'Use AI research synthesis'],
+  badgeStandard: ['기본 리서치 결과', 'Standard research result'],
+  badgeAI: ['AI 리서치 요약', 'AI research synthesis'],
+  badgeFailed: ['AI 요약 검증 실패: 기본 결과 표시', 'AI synthesis validation failed: showing standard result'],
+};
+for (const [key, [ko, en]] of Object.entries(synthRequired)) {
+  ok(L.STR_KO[key] === ko, `KO label "${key}" = "${ko}"`, `got "${L.STR_KO[key]}"`);
+  ok(L.STR_EN[key] === en, `EN label "${key}" = "${en}"`, `got "${L.STR_EN[key]}"`);
+}
+ok(typeof L.buildSynthesisHtml === 'function', 'exposes buildSynthesisHtml()');
+// deterministic status → standard badge
+ok(L.buildResearchHtml({ ok: true, depth: 'basic', issues: ['x'], laws: [], precedents: [], limitations: ['l'], disclaimer: 'd', synthesisStatus: 'deterministic' }, 'ko').indexOf('기본 리서치 결과') !== -1, 'deterministic status → 기본 리서치 결과 badge');
+// validation_failed → failed badge + warning + deterministic content
+const vf = L.buildResearchHtml({ ok: true, depth: 'pro', issues: ['쟁점x'], laws: [], precedents: [], riskFlags: ['위험'], missingFacts: ['사실'], limitations: ['l'], disclaimer: 'd', synthesisStatus: 'validation_failed', synthesisWarning: 'AI 요약 검증 실패: 기본 결과 표시' }, 'ko');
+ok(vf.indexOf('AI 요약 검증 실패: 기본 결과 표시') !== -1, 'validation_failed shows failed badge + warning');
+ok(vf.indexOf('쟁점x') !== -1, 'validation_failed still shows deterministic content');
+// llm status → AI synthesis view
+const synthResult = {
+  ok: true, depth: 'pro', depthLabel: '심층 리서치', synthesisStatus: 'llm',
+  laws: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }],
+  precedents: [{ title: '취소', caseNumber: '2020두1', sourceUrl: 'https://www.law.go.kr/p', strengthLabel: '관련 근거' }],
+  sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }] }, { group: 'precedent', label: '판례', cards: [{ title: '취소', caseNumber: '2020두1', sourceUrl: 'https://www.law.go.kr/p' }] }],
+  synthesisSources: [{ sourceId: 's1', title: '출입국관리법' }, { sourceId: 's2', title: '강제퇴거명령취소' }],
+  synthesis: {
+    summary: '출처 기반 정리 <img src=x>', issues: ['강제퇴거 쟁점'],
+    sourceBackedRules: [{ text: '출입국관리법 관련 근거', sourceIds: ['s1'] }],
+    analysis: [{ text: '재량 일탈 여부 검토', sourceIds: ['s2'], confidence: 'medium' }],
+    riskFlags: ['재입국 제한'], missingFacts: ['송달일'], nextQuestions: ['질문1'], nextDocuments: ['서류1'],
+    limitations: ['참고용'], caution: '최종 판단은 관할기관'
+  }
+};
+const sh = L.buildResearchHtml(synthResult, 'ko');
+ok(sh.indexOf('AI 리서치 요약') !== -1, 'llm status → AI 리서치 요약 badge');
+ok(sh.indexOf('리서치 메모') !== -1, 'pro synthesis shows memo title');
+ok(sh.indexOf('강제퇴거 쟁점') !== -1, 'synthesis issues rendered');
+ok(sh.indexOf('출입국관리법 관련 근거') !== -1 && sh.indexOf('[근거: 출입국관리법]') !== -1, 'source-backed rules + basis tags rendered');
+ok(sh.indexOf('재량 일탈 여부 검토') !== -1 && sh.indexOf('lss-conf-medium') !== -1, 'analysis + confidence rendered');
+ok(sh.indexOf('재입국 제한') !== -1 && sh.indexOf('송달일') !== -1, 'risk flags + missing facts rendered');
+ok(sh.indexOf('질문1') !== -1 && sh.indexOf('서류1') !== -1, 'next questions + documents rendered');
+ok(sh.indexOf('최종 판단은 관할기관') !== -1, 'synthesis caution rendered');
+ok(sh.indexOf('<img src=x') === -1 && sh.indexOf('&lt;img') !== -1, 'synthesis escapes malicious summary');
+ok(sh.indexOf('lss-rgroup-title') !== -1, 'synthesis still shows source cards (always)');
+
 section('no dummy / fake-professional strings');
 const src = readFileSync(join(ROOT, 'assets/js/legal-source-search.js'), 'utf8');
 for (const bad of ['Mr.Visa', 'Mr Visa', 'lorem ipsum', '행정사 검토', '법무법인']) {

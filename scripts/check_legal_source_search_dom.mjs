@@ -165,6 +165,53 @@ async function run() {
   ok(root.querySelectorAll('img').length === 0, 'research law snippet HTML rendered inert (no <img>)');
   ok(outText.indexOf('변호사·행정사의 법률 자문이나 최종 판단을 대체하지 않습니다') !== -1, 'research disclaimer shown');
 
+  // --- AI synthesis layer ---
+  ok(root.querySelector('[data-lss-synth-toggle]'), 'AI synthesis toggle rendered');
+  ok(root.querySelector('[data-lss-synth-toggle]').checked, 'synthesis toggle on by default');
+  ok(!root.querySelector('[data-lss-synth-wrap]').hidden, 'synthesis toggle visible for basic/pro depth');
+
+  // source-grounded LLM synthesis result
+  nextResponse = {
+    ok: true, depth: 'pro', depthLabel: '심층 리서치', synthesisStatus: 'llm', providerConfigured: true, mode: 'memo', locale: 'ko',
+    laws: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }],
+    precedents: [{ title: '취소', caseNumber: '2020두1', sourceUrl: 'https://www.law.go.kr/p', strengthLabel: '관련 근거' }],
+    sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }] }],
+    synthesisSources: [{ sourceId: 's1', title: '출입국관리법' }],
+    synthesis: { summary: '출처 기반 정리 <img src=x>', issues: ['강제퇴거 쟁점'], sourceBackedRules: [{ text: '출입국관리법 관련 근거', sourceIds: ['s1'] }], analysis: [{ text: '재량 검토', sourceIds: ['s1'], confidence: 'medium' }], riskFlags: ['재입국 제한'], missingFacts: ['송달일'], nextQuestions: ['질문1'], nextDocuments: ['서류1'], limitations: ['참고용'], caution: '최종 판단은 관할기관' }
+  };
+  L.doResearch('강제퇴거 쟁점 정리해줘');
+  await sleep(25);
+  const sout = root.querySelector('[data-lss-out]').textContent;
+  ok(sout.indexOf('AI 리서치 요약') !== -1, 'AI synthesis badge shown');
+  ok(root.querySelector('.lss-synth'), 'synthesis view rendered');
+  ok(sout.indexOf('강제퇴거 쟁점') !== -1, 'synthesis issues rendered');
+  ok(sout.indexOf('[근거: 출입국관리법]') !== -1, 'source-basis tags rendered');
+  ok(root.querySelectorAll('img').length === 0, 'synthesis escapes malicious summary (no <img>)');
+  ok(root.querySelector('.lss-rgroup-title') || root.querySelector('.lss-card'), 'source cards still shown under synthesis');
+
+  // validation_failed → failed badge + warning + deterministic content
+  nextResponse = {
+    ok: true, depth: 'pro', depthLabel: '심층 리서치', synthesisStatus: 'validation_failed', synthesisWarning: 'AI 요약 검증 실패: 기본 결과 표시', providerConfigured: true,
+    issues: ['쟁점det'], laws: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }], precedents: [], riskFlags: ['위험'], missingFacts: ['사실'], nextChecks: ['확인'], limitations: ['l'], disclaimer: 'd', sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }] }]
+  };
+  L.doResearch('강제퇴거 쟁점 다시 정리');
+  await sleep(25);
+  const vout = root.querySelector('[data-lss-out]').textContent;
+  ok(vout.indexOf('AI 요약 검증 실패: 기본 결과 표시') !== -1, 'validation-failed badge + warning shown');
+  ok(vout.indexOf('쟁점det') !== -1, 'deterministic content shown on validation failure');
+
+  // provider not configured → toggle disabled + standard badge
+  nextResponse = { ok: true, depth: 'basic', depthLabel: '기본 리서치', synthesisStatus: 'deterministic', providerConfigured: false, issues: ['x'], laws: [], precedents: [], limitations: ['l'], disclaimer: 'd' };
+  L.doResearch('간단히 확인할 것 하나');
+  await sleep(25);
+  ok(root.querySelector('[data-lss-synth-toggle]').disabled, 'toggle disabled when provider not configured');
+  ok(root.querySelector('[data-lss-out]').textContent.indexOf('기본 리서치 결과') !== -1, 'standard badge when provider not configured');
+
+  // Fast depth hides the synthesis toggle
+  const fastBtn = root.querySelector('[data-lss-depth="fast"]');
+  fastBtn.dispatchEvent(new dom.window.Event('click'));
+  ok(root.querySelector('[data-lss-synth-wrap]').hidden, 'synthesis toggle hidden for Fast depth');
+
   console.log(`\n${failures ? 'FAIL' : 'OK'} — ${checks - failures}/${checks} checks passed`);
   process.exit(failures ? 1 : 0);
 }

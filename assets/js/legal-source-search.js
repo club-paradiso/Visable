@@ -93,7 +93,18 @@
     secSources: '출처',
     secLimits: '한계',
     applyNote: '아래 근거를 본인 사실관계에 직접 대입해 확인하세요. 이 정리는 결론이 아닙니다.',
-    proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중']
+    proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중'],
+    synthToggle: 'AI 리서치 요약 사용',
+    badgeStandard: '기본 리서치 결과',
+    badgeAI: 'AI 리서치 요약',
+    badgeFailed: 'AI 요약 검증 실패: 기본 결과 표시',
+    synthMemoTitle: '리서치 메모',
+    synthSummary: '요약',
+    synthRules: '확인된 법령·자료',
+    synthAnalysis: '사실관계에 비추어 볼 때의 검토 포인트',
+    synthNextQ: '다음 질문',
+    synthNextDocs: '다음 서류',
+    synthBasis: '근거'
   };
   var STR_EN = {
     title: 'Legal source search',
@@ -151,7 +162,18 @@
     secSources: 'Sources',
     secLimits: 'Limitations',
     applyNote: 'Apply the sources below to your own facts and verify. This is not a conclusion.',
-    proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo']
+    proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo'],
+    synthToggle: 'Use AI research synthesis',
+    badgeStandard: 'Standard research result',
+    badgeAI: 'AI research synthesis',
+    badgeFailed: 'AI synthesis validation failed: showing standard result',
+    synthMemoTitle: 'Research memo',
+    synthSummary: 'Summary',
+    synthRules: 'Confirmed statutes and materials',
+    synthAnalysis: 'Application points based on the facts provided',
+    synthNextQ: 'Next questions',
+    synthNextDocs: 'Next documents',
+    synthBasis: 'basis'
   };
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
   function S(k, lang) {
@@ -333,14 +355,82 @@
     return '<section class="lss-rsec"><h4 class="lss-rsec-title">' + escapeHtml(title) + '</h4>' + inner + '</section>';
   }
 
+  // Status badge (기본 리서치 결과 / AI 리서치 요약 / 검증 실패).
+  function _badgeHtml(status, lang, warning) {
+    var cls = 'lss-badge', label;
+    if (status === 'llm') { cls += ' lss-badge-ai'; label = S('badgeAI', lang); }
+    else if (status === 'validation_failed') { cls += ' lss-badge-fail'; label = S('badgeFailed', lang); }
+    else { label = S('badgeStandard', lang); }
+    var warn = (status === 'validation_failed' && warning)
+      ? '<p class="lss-badge-warn">' + escapeHtml(warning) + '</p>' : '';
+    return '<div class="lss-badge-row"><span class="' + cls + '">' + escapeHtml(label) + '</span></div>' + warn;
+  }
+
+  // Source cards (always shown): grouped by type for pro, flat otherwise.
+  function _sourceCardsHtml(result, lang) {
+    if (result.depth === 'pro' && result.sourceGroups && result.sourceGroups.length) {
+      return result.sourceGroups.map(function (g) {
+        var cards = (g.cards || []).map(function (c) {
+          if (g.group === 'precedent') return buildPrecedentCardHtml(c, lang);
+          if (g.group === 'paradiso') return '<article class="lss-card"><h4 class="lss-card-title">' + escapeHtml(c.title || '') + '</h4>'
+            + (c.note ? '<p class="lss-card-sub">' + escapeHtml(c.note) + '</p>' : '') + '</article>';
+          return buildLawCardHtml(c, lang);
+        }).join('');
+        return '<div class="lss-rgroup"><h5 class="lss-rgroup-title">' + escapeHtml(g.label) + '</h5><div class="lss-results">' + cards + '</div></div>';
+      }).join('');
+    }
+    return _cards(result.laws, 'laws', lang) + _cards(result.precedents, 'precedents', lang);
+  }
+
+  // Render the validated source-grounded LLM synthesis. Pure → unit-testable.
+  // Every dynamic string is escaped; sourceId references resolve to source titles.
+  function buildSynthesisHtml(result, lang) {
+    var syn = result.synthesis || {};
+    var depth = result.depth || 'basic';
+    var cautionLabel = lang === 'en' ? 'Caution' : '주의';
+    var srcMap = {};
+    (result.synthesisSources || []).forEach(function (s) { srcMap[s.sourceId] = s.title || s.sourceId; });
+    function basis(ids) {
+      if (!ids || !ids.length) return '';
+      return ' <span class="lss-basis">' + ids.map(function (id) {
+        return '[' + escapeHtml(S('synthBasis', lang)) + ': ' + escapeHtml(srcMap[id] || id) + ']';
+      }).join(' ') + '</span>';
+    }
+    function rules(items) {
+      if (!items || !items.length) return '';
+      return '<ul class="lss-rlist">' + items.map(function (it) {
+        return '<li>' + escapeHtml(it.text || '') + basis(it.sourceIds) + '</li>';
+      }).join('') + '</ul>';
+    }
+    function analysis(items) {
+      if (!items || !items.length) return '';
+      return '<ul class="lss-rlist">' + items.map(function (it) {
+        var conf = it.confidence || 'low';
+        return '<li>' + escapeHtml(it.text || '') + ' <span class="lss-conf lss-conf-' + escapeHtml(conf) + '">' + escapeHtml(conf) + '</span>' + basis(it.sourceIds) + '</li>';
+      }).join('') + '</ul>';
+    }
+    var html = '<div class="lss-research lss-synth" role="status" aria-live="polite">';
+    html += '<div class="lss-rhead"><span class="lss-rdepth">' + escapeHtml(result.depthLabel || S(DEPTH_KEY[depth], lang)) + '</span></div>';
+    if (depth === 'pro') html += '<p class="lss-rmemo">' + escapeHtml(S('synthMemoTitle', lang)) + '</p>';
+    if (syn.summary) html += _sec(S('synthSummary', lang), '<p class="lss-rnote">' + escapeHtml(syn.summary) + '</p>');
+    html += _sec(S('secIssues', lang), _ul(syn.issues));
+    html += _sec(S('synthRules', lang), rules(syn.sourceBackedRules));
+    html += _sec(S('synthAnalysis', lang), analysis(syn.analysis));
+    html += _sec(S('secRisks', lang), _ul(syn.riskFlags));
+    html += _sec(S('secMissing', lang), _ul(syn.missingFacts));
+    html += _sec(S('synthNextQ', lang), _ul(syn.nextQuestions));
+    html += _sec(S('synthNextDocs', lang), _ul(syn.nextDocuments));
+    html += _sec(S('secLimits', lang), _ul(syn.limitations));
+    html += _sec(S('secSources', lang), _sourceCardsHtml(result, lang)); // always show source cards
+    var caution = syn.caution || result.disclaimer || S('disclaimer', lang);
+    html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(caution) + '</div>';
+    html += '</div>';
+    return html;
+  }
+
   // Render the deterministic backend research result into depth-structured,
   // escaped HTML. Pure → unit-testable.
-  function buildResearchHtml(result, lang) {
-    if (!result || result.ok === false) {
-      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'missing-key'
-        : (result && result.error === 'empty_question') ? 'idle' : 'error';
-      return buildResultsHtml(st, 'laws', [], lang);
-    }
+  function buildDeterministicResearchHtml(result, lang) {
     var depth = result.depth || 'basic';
     var cautionLabel = lang === 'en' ? 'Caution' : '주의';
     var html = '<div class="lss-research" role="status" aria-live="polite">';
@@ -362,24 +452,27 @@
       if (depth === 'pro') html += _sec(S('secApply', lang), '<p class="lss-rnote">' + escapeHtml(S('applyNote', lang)) + '</p>');
       html += _sec(S('secRisks', lang), _ul(result.riskFlags));
       html += _sec(S('secNext', lang), _ul(result.nextChecks));
-      // Pro groups sources by type; basic shows a flat source list.
       if (depth === 'pro' && result.sourceGroups && result.sourceGroups.length) {
-        var groups = result.sourceGroups.map(function (g) {
-          var cards = (g.cards || []).map(function (c) {
-            if (g.group === 'precedent') return buildPrecedentCardHtml(c, lang);
-            if (g.group === 'paradiso') return '<article class="lss-card"><h4 class="lss-card-title">' + escapeHtml(c.title || '') + '</h4>'
-              + (c.note ? '<p class="lss-card-sub">' + escapeHtml(c.note) + '</p>' : '') + '</article>';
-            return buildLawCardHtml(c, lang);
-          }).join('');
-          return '<div class="lss-rgroup"><h5 class="lss-rgroup-title">' + escapeHtml(g.label) + '</h5><div class="lss-results">' + cards + '</div></div>';
-        }).join('');
-        html += _sec(S('secSources', lang), groups);
+        html += _sec(S('secSources', lang), _sourceCardsHtml(result, lang));
       }
     }
     html += _sec(S('secLimits', lang), _ul(result.limitations));
     html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(result.disclaimer || S('disclaimer', lang)) + '</div>';
     html += '</div>';
     return html;
+  }
+
+  // Top-level research render: status badge + (synthesis | deterministic) view.
+  function buildResearchHtml(result, lang) {
+    if (!result || result.ok === false) {
+      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'missing-key'
+        : (result && result.error === 'empty_question') ? 'idle' : 'error';
+      return buildResultsHtml(st, 'laws', [], lang);
+    }
+    var status = result.synthesisStatus || 'deterministic';
+    var badge = _badgeHtml(status, lang, result.synthesisWarning);
+    if (status === 'llm' && result.synthesis) return badge + buildSynthesisHtml(result, lang);
+    return badge + buildDeterministicResearchHtml(result, lang);
   }
 
   /* ------------------------------------------------------ panel markup ---- */
@@ -412,6 +505,10 @@
       // Research area (Research tab) — depth selector + question + run
       + '<div class="lss-research-area" data-lss-area="research" hidden>'
       + buildDepthSelectorHtml('basic', lang)
+      + '<label class="lss-synth-toggle" data-lss-synth-wrap>'
+      + '<input type="checkbox" data-lss-synth-toggle checked>'
+      + '<span>' + escapeHtml(S('synthToggle', lang)) + '</span>'
+      + '</label>'
       + '<div class="lss-searchbar">'
       + '<textarea class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="2"></textarea>'
       + '<button type="button" class="lss-search-btn" data-lss-run>' + escapeHtml(S('researchRun', lang)) + '</button>'
@@ -433,6 +530,7 @@
     panelHtml: panelHtml,
     buildDepthSelectorHtml: buildDepthSelectorHtml,
     buildResearchHtml: buildResearchHtml,
+    buildSynthesisHtml: buildSynthesisHtml,
     clientAutoDepth: clientAutoDepth,
     DEPTHS: DEPTHS,
     CHIPS: CHIPS,
@@ -547,6 +645,21 @@
       + '.lss-rgroup-title{font-size:.78rem;font-weight:800;color:var(--ac,#34D4A8);margin:.2rem 0 .35rem;}'
       + '.lss-rcaution{margin:.6rem 0 .2rem;font-size:.8rem;line-height:1.6;color:var(--t2,#C7BFA8);background:rgba(0,0,0,.12);'
       + 'border:1px solid var(--bd2,#224A41);border-left:3px solid var(--warning,#E68A3A);border-radius:8px;padding:.55rem .7rem;word-break:keep-all;}'
+      // synthesis: status badge, toggle, basis tags, confidence
+      + '.lss-badge-row{margin:.2rem 0 .5rem;}'
+      + '.lss-badge{display:inline-block;font-size:.74rem;font-weight:850;padding:.2rem .6rem;border-radius:999px;border:1px solid var(--bd,#2D5A50);color:var(--t2,#C7BFA8);}'
+      + '.lss-badge-ai{color:var(--ac,#34D4A8);background:var(--acL,#163E36);border-color:var(--ac2,#17B388);}'
+      + '.lss-badge-fail{color:var(--warning,#E68A3A);border-color:var(--warning,#E68A3A);}'
+      + '.lss-badge-warn{margin:.35rem 0 0;font-size:.78rem;line-height:1.5;color:var(--warning,#E68A3A);word-break:keep-all;}'
+      + '.lss-synth-toggle{display:flex;align-items:center;gap:.45rem;margin:0 0 .7rem;font-size:.85rem;font-weight:650;color:var(--t1,#F3EEDF);cursor:pointer;}'
+      + '.lss-synth-toggle[hidden]{display:none;}'
+      + '.lss-synth-toggle input{width:18px;height:18px;accent-color:var(--ac,#34D4A8);cursor:pointer;}'
+      + '.lss-synth-off{opacity:.55;}'
+      + '.lss-basis{font-size:.74rem;font-weight:700;color:var(--t3,#8C8572);}'
+      + '.lss-conf{font-size:.68rem;font-weight:850;padding:.05rem .4rem;border-radius:999px;border:1px solid currentColor;}'
+      + '.lss-conf-high{color:var(--cov-confirmed,#34D4A8);}'
+      + '.lss-conf-medium{color:var(--wm-cov-partial,#F2C879);}'
+      + '.lss-conf-low{color:var(--t3,#8C8572);}'
       + '.lss-state{text-align:center;padding:1.6rem 1rem;color:var(--t2,#C7BFA8);}'
       + '.lss-state-ic{font-size:1.6rem;margin-bottom:.4rem;}'
       + '.lss-state-title{font-size:.92rem;font-weight:750;color:var(--t1,#F3EEDF);margin:0 0 .25rem;word-break:keep-all;}'
@@ -569,7 +682,7 @@
   }
 
   /* ----------------------------------------------------------- runtime ---- */
-  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '' };
+  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null };
   var root = null;
 
   function out() { return root && root.querySelector('[data-lss-out]'); }
@@ -626,6 +739,26 @@
     });
     var desc = row.querySelector('.lss-depth-desc');
     if (desc) desc.textContent = S(DEPTH_DESC_KEY[state.researchDepth] || 'depthBasicDesc', lssLang());
+    syncSynthToggle();
+  }
+
+  function syncSynthToggle() {
+    if (!root) return;
+    var wrap = root.querySelector('[data-lss-synth-wrap]');
+    var box = root.querySelector('[data-lss-synth-toggle]');
+    if (!wrap || !box) return;
+    // Hidden for Fast (lightweight, deterministic); shown for Basic/Pro.
+    wrap.hidden = (state.researchDepth === 'fast');
+    if (state.providerConfigured === false) {
+      box.checked = false;
+      box.disabled = true;
+      state.useSynthesis = false;
+      wrap.classList.add('lss-synth-off');
+    } else {
+      box.disabled = false;
+      box.checked = !!state.useSynthesis;
+      wrap.classList.remove('lss-synth-off');
+    }
   }
 
   function researchIdleHtml(lang) {
@@ -652,6 +785,8 @@
     // Only pin depth when the user manually chose one; otherwise let the backend
     // auto-select and reflect its choice back into the selector.
     if (state.depthManual) payload.depth = state.researchDepth;
+    // Request AI synthesis per the toggle (fast stays deterministic anyway).
+    payload.synthesis = (state.useSynthesis && effectiveDepth !== 'fast') ? 'source_grounded_llm' : 'deterministic';
     fetch(apiBase() + '/api/legal/research', {
       method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(payload)
@@ -660,6 +795,11 @@
       .then(function (json) {
         if (state.lastResearch !== q) return;
         if (json && json.ok && !state.depthManual && json.depth) { state.researchDepth = json.depth; syncDepthUI(); }
+        // Reflect provider availability: disable the toggle if no provider.
+        if (json && typeof json.providerConfigured === 'boolean') {
+          state.providerConfigured = json.providerConfigured;
+          syncSynthToggle();
+        }
         setOut(buildResearchHtml(json, lssLang()));
       })
       .catch(function () {
@@ -740,6 +880,11 @@
         var suggested = clientAutoDepth(rinput.value);
         if (suggested !== state.researchDepth) { state.researchDepth = suggested; syncDepthUI(); }
       });
+    }
+    // research: AI synthesis toggle
+    var synthBox = root.querySelector('[data-lss-synth-toggle]');
+    if (synthBox) {
+      synthBox.addEventListener('change', function () { state.useSynthesis = !!synthBox.checked; });
     }
   }
 

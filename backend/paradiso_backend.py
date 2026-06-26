@@ -49,6 +49,7 @@ from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack, search_laws
 from services import precedent_sources
 from services import legal_research
+from services import legal_synthesis
 from services.citation_verifier import verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
@@ -5126,6 +5127,8 @@ class LegalResearchRequest(BaseModel):
     visaStatusHint: Optional[str] = None
     includePrecedents: Optional[bool] = None
     includeManuals: Optional[bool] = None
+    # "deterministic" (scaffold only) | "source_grounded_llm" (optional synthesis).
+    synthesis: Optional[str] = None
 
 
 _LEGAL_RESEARCH_MAX_QUESTION = 800
@@ -5218,10 +5221,65 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
             "note": "Paradiso 구조화 데이터" if plan.get("locale") == "ko" else "Paradiso structured data",
         })
 
-    return legal_research.build_research_result(
+    result = legal_research.build_research_result(
         plan, law_results=laws, precedent_results=precs,
         paradiso_sources=paradiso_sources, retrieval_available=retrieval_available,
     )
+
+    # ---- Optional source-grounded LLM synthesis (strictly after retrieval) ----
+    # The deterministic result above is always the fallback. Synthesis runs only
+    # for basic/pro when a provider is configured AND sources exist; the model
+    # may synthesize ONLY from the retrieved-source packet, and the output is
+    # validated (no phantom sources, no fabricated statute/case numbers, no
+    # final-advice/guarantee/impersonation, no raw HTML) before being shown.
+    depth = result.get("depth", "basic")
+    locale = plan.get("locale", "ko")
+    provider_configured = bool(OPENROUTER_API_KEY)
+    res_laws = result.get("laws") or []
+    res_precs = result.get("precedents") or []
+    has_sources = bool(res_laws or res_precs)
+    effective = legal_synthesis.resolve_synthesis_mode(
+        req.synthesis, depth, provider_configured=provider_configured, has_sources=has_sources,
+    )
+    result["providerConfigured"] = provider_configured
+    result["synthesis"] = None
+    result["synthesisStatus"] = "deterministic"
+
+    if effective == "source_grounded_llm":
+        packet, _used = legal_synthesis.build_source_packet(
+            question, mode=result.get("mode") or "memo", depth=depth, locale=locale,
+            laws=res_laws, precedents=res_precs, paradiso=paradiso_sources,
+        )
+        prompt = legal_synthesis.build_synthesis_prompt(packet, depth=depth, locale=locale)
+        candidates = (resolve_answer_mode_models(depth) or {}).get("candidates")
+        max_tok = 1800 if depth == "pro" else 1200
+        try:
+            llm = await _openrouter_complete_with_candidates(
+                prompt, requested_model=None, candidate_models=candidates, max_tokens=max_tok,
+            )
+        except Exception:  # provider/network failure → silent deterministic fallback
+            llm = {"ok": False, "answer": None}
+
+        if llm and llm.get("ok") and llm.get("answer"):
+            parsed = legal_synthesis.parse_synthesis_json(llm.get("answer"))
+            if parsed is None:
+                ok_syn, reason, cleaned = False, "parse_failed", None
+            else:
+                ok_syn, reason, cleaned = legal_synthesis.validate_synthesis(parsed, packet=packet, locale=locale)
+            if ok_syn:
+                result["synthesis"] = cleaned
+                result["synthesisStatus"] = "llm"
+                result["synthesisModel"] = llm.get("final_model")
+                result["synthesisSources"] = packet.get("sources")
+            else:
+                # Unsafe / unparseable synthesis → keep deterministic + warn.
+                result["synthesisStatus"] = "validation_failed"
+                result["synthesisWarning"] = legal_synthesis.VALIDATION_FAILED_MESSAGE.get(
+                    locale, legal_synthesis.VALIDATION_FAILED_MESSAGE["ko"])
+                result["synthesisFailureReason"] = reason
+        # else: LLM unavailable/failed → leave synthesisStatus = "deterministic".
+
+    return result
 
 
 @app.get("/api/debug/law-grounding/preflight")

@@ -384,6 +384,11 @@ if ensure_backend_test_runtime; then
   # auto-selection, the §7 sophisticated questions, source-strength labels, pro
   # grouping, safe missing-OC scaffold, and the no-credential-leak invariant.
   $TEST_PYTHON backend/tests/test_legal_research.py
+  # Optional source-grounded LLM synthesis: mode gating (provider+sources),
+  # source packet, citation/safety validator (phantom source / fabricated
+  # statute+case / forbidden phrase / raw HTML), and the deterministic fallback
+  # on missing provider / no sources / LLM failure / validation failure (mocked).
+  $TEST_PYTHON backend/tests/test_legal_synthesis.py
 else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
