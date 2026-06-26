@@ -320,6 +320,9 @@
         .modal-title { margin: 0; font-size: 1.15rem; font-weight: 800; color: var(--ac); }
         
         .modal-body { padding: 1.5rem; font-size: 0.9rem; color: var(--t2); line-height: 1.6; max-height: 60vh; overflow-y: auto; }
+        /* Landscape phones / short viewports: allow a taller scroll area so disclaimers
+           and source panels are not squeezed into a tiny window. */
+        @media (max-height: 500px) { .modal-body { max-height: 78vh; } }
         .modal-body p { margin-bottom: 0.8rem; word-break: keep-all; }
         .modal-body ul { margin-left: 1.2rem; margin-bottom: 1rem; color: var(--t1); }
         .modal-body li { margin-bottom: 0.4rem; }

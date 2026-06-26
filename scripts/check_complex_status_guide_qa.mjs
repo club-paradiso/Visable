@@ -9,7 +9,7 @@
  * their pure render/result functions across all seven statuses, in BOTH Korean
  * and English, asserting the QA contract that future PRs must not silently break:
  *   - recommended-start block + the document-checklist primary CTA copy
- *   - secondary actions grouped + demoted under "다른 방식으로 보기"
+ *   - secondary actions grouped + demoted under "다른 방법으로 찾아보기"
  *   - one-question-per-step flow with an "I am not sure" path
  *   - checklist-first result section labels
  *   - full-screen / wide overlay (never a tiny modal) + a11y attributes
@@ -90,8 +90,8 @@ function sectionValues(code) {
 for (const lang of ['ko', 'en']) {
   setLang(lang);
   section(`Recommended-start block + dominant CTA (${lang})`);
-  const recTitle = lang === 'en' ? 'Recommended starting point' : '추천 시작점';
-  const secLabel = lang === 'en' ? 'Other ways to view this status' : '다른 방식으로 보기';
+  const recTitle = lang === 'en' ? 'Guided steps for your situation' : '상황에 맞는 절차 안내';
+  const secLabel = lang === 'en' ? 'Other ways to explore' : '다른 방법으로 찾아보기';
   for (const code of STATUSES) {
     const html = blockHtml(code);
     ok(typeof html === 'string' && html.length > 0 && !/undefined/.test(html), `${code} (${lang}): block renders, no undefined`);

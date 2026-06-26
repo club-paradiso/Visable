@@ -232,6 +232,10 @@ echo "[9d/14] Validating subcode detail modal + scanning user-facing data for du
 if command -v node >/dev/null 2>&1; then
   node scripts/check_subcode_modal.mjs
   node scripts/check_dummy_text.mjs
+  # Wider public-surface guard: scans all shipped HTML entry files + assets/js|css
+  # for forbidden dummy/professional-name/legacy wording. Rendered-surface scan
+  # self-skips when jsdom is absent; the raw unambiguous-term scan always runs.
+  node scripts/check_public_dummy_text.mjs
 else
   echo "INFO: Node.js not found; skipping subcode-modal and dummy-text checks."
 fi

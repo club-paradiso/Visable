@@ -268,8 +268,8 @@ ok(guideJs.includes('f4g-primary-cta'), 'primary CTA is a dedicated dominant con
 // The previous duplicate in-card "🧭" panel must be gone (one entry point).
 ok(!guideJs.includes('injectCardCta'), 'duplicate in-card F-4 CTA (injectCardCta) removed');
 // --- CTA discoverability hotfix: recommended-start block, promoted above the fold ---
-ok(guideJs.includes('추천 시작점') && guideJs.includes('Recommended starting point'),
-  'recommended-start block title present (추천 시작점 / Recommended starting point)');
+ok(guideJs.includes('상황에 맞는 절차 안내') && guideJs.includes('Guided steps for your situation'),
+  'recommended-start block title present (상황에 맞는 절차 안내 / Guided steps for your situation)');
 ok(guideJs.includes('약 1분 · 4~5개 질문 · 세부코드를 몰라도 시작 가능') && guideJs.includes('About 1 minute'),
   'CTA supporting microcopy present (≈1 min · 4–5 questions · no subcode needed)');
 ok(/injectRecStart/.test(guideJs) && /external-guide-slot\[data-guide-slot="F-4"\]/.test(guideJs),
@@ -278,8 +278,8 @@ ok(/injectRecStart/.test(guideJs) && /external-guide-slot\[data-guide-slot="F-4"
 // a collapsed card keeps the standalone section visible (no hidden CTA).
 ok(/function isCardOpen/.test(guideJs) && /classList\.contains\('open'\)/.test(guideJs) && /!isCardOpen\(slot\)/.test(guideJs),
   'in-card injection guards on card-open state (collapsed F-4 card → section fallback stays visible)');
-ok(guideJs.includes('다른 방식으로 보기') && guideJs.includes('Other ways to view this status'),
-  'secondary actions demoted under "다른 방식으로 보기 / Other ways to view this status"');
+ok(guideJs.includes('다른 방법으로 찾아보기') && guideJs.includes('Other ways to explore'),
+  'secondary actions demoted under "다른 방법으로 찾아보기 / Other ways to explore"');
 ok(!guideJs.includes("secondaryActionsLabel: '바로 자료 보기'") && !guideJs.includes("secondaryActionsLabel: 'Jump to reference'"),
   'old secondary-actions label copy removed');
 ok(guideJs.includes('F-4 준비서류 찾기 시작') && guideJs.includes('Start F-4 Checklist'),
