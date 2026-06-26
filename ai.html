@@ -28,6 +28,9 @@
          only the back link + Paradiso wordmark. */
       #waymakerNavigatorRoot { display: none; }
       body.wm-active #waymakerNavigatorRoot { display: block; }
+      /* Legal source search rides the Waymaker surface (hidden in legacy chat). */
+      #legalSourceSearchRoot { display: none; }
+      body.wm-active #legalSourceSearchRoot { display: block; }
     </style>
     <!-- Editorial interface theme parity with index.html. Reads the SAME
          persistence key (paradiso:editorial-theme) and exposes the choice as
@@ -1307,6 +1310,10 @@ select:focus-visible {
 
     <!-- Waymaker procedure navigator (default surface) -->
     <section id="waymakerNavigatorRoot" class="wm-root" aria-live="polite"></section>
+
+    <!-- Legal source search (법령·판례 근거 검색) — supporting source-checking layer.
+         Self-mounted by assets/js/legal-source-search.js; collapsed by default. -->
+    <section id="legalSourceSearchRoot" class="lss-root" aria-live="polite"></section>
 
     <!-- Chat Area (legacy AI chat — demoted to operator-only diagnostics surface) -->
     <main class="chat-history" id="chatHistory" aria-live="polite" aria-atomic="false">
@@ -3334,6 +3341,7 @@ select:focus-visible {
          follow-up below is SECONDARY and uses the buffered (fully-gated) /api/ask
          path (stream:false) so the answer-shape / citation / safety gates run. -->
     <script src="assets/js/waymaker-navigator.js"></script>
+    <script defer src="assets/js/legal-source-search.js"></script>
     <script>
     (function () {
         'use strict';

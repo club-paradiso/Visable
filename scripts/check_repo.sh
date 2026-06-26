@@ -304,6 +304,12 @@ echo "[9f/14] Validating Waymaker procedure navigator (all-status + adapter pari
 if command -v node >/dev/null 2>&1; then
   node scripts/check_waymaker_navigator.mjs
   node scripts/check_waymaker_navigator_dom.mjs
+  # Waymaker "법령·판례 근거 검색 / Legal source search" module: pure builders
+  # (HTML escaping + law.go.kr URL allow-listing + state machine + KO/EN parity)
+  # and a jsdom DOM smoke test (self-skips without jsdom) proving malicious
+  # upstream law/precedent HTML is rendered inert.
+  node scripts/check_legal_source_search.mjs
+  node scripts/check_legal_source_search_dom.mjs
 else
   echo "INFO: Node.js not found; skipping Waymaker navigator JS validation."
 fi
@@ -370,6 +376,19 @@ if ensure_backend_test_runtime; then
   # E-7 workplace-change / law-grounding-safety regression suite (intent triggers,
   # status-detail contract, unverified-citation guardrail, Fast/Basic routing).
   $TEST_PYTHON backend/tests/test_e7_workplace_change_law_grounding.py
+  # Legal source search proxy (/api/legal/laws|precedents/search): empty-query
+  # rejection, missing-LAW_API_OC safe envelope, upstream-failure safety, result
+  # normalization, and the no-credential-leak invariant (mocked transport).
+  $TEST_PYTHON backend/tests/test_legal_source_search_api.py
+  # Legal research depth layer (fast/basic/pro) + /api/legal/research: depth
+  # auto-selection, the §7 sophisticated questions, source-strength labels, pro
+  # grouping, safe missing-OC scaffold, and the no-credential-leak invariant.
+  $TEST_PYTHON backend/tests/test_legal_research.py
+  # Optional source-grounded LLM synthesis: mode gating (provider+sources),
+  # source packet, citation/safety validator (phantom source / fabricated
+  # statute+case / forbidden phrase / raw HTML), and the deterministic fallback
+  # on missing provider / no sources / LLM failure / validation failure (mocked).
+  $TEST_PYTHON backend/tests/test_legal_synthesis.py
 else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
