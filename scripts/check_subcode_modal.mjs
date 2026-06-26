@@ -33,14 +33,31 @@ check('keyboard activation for role=button cards', /open-subcode-detail[\s\S]{0,
 check('subcode cards are interactive', /data-action="open-subcode-detail" data-parent=/.test(html));
 check('subcode cards expose role=button + tabindex', /manual-subcode-card--interactive[\s\S]{0,140}role="button" tabindex="0"/.test(html));
 check('subcodes remain collapsed-by-default (expand group + toggle)', /renderExpandableSubcodeGroup/.test(html) && /'toggle-subcode-group'/.test(html));
-check('mobile bottom-sheet styling present', /\.subcode-modal-overlay\s*\{[^}]*align-items:\s*flex-end/.test(html));
-// Readability regression guard (2026-06 final professionalism pass): the subcode
-// detail surface is a primary guidance screen, so it must not regress to a cramped
-// narrow modal with a multi-column doc grid ("tiny cards within tiny cards").
-const subModalWidthMatch = html.match(/subcode-modal-box"\s+style="max-width:\s*(\d+)px/);
-check('subcode modal result surface is not cramped (>=660px desktop cap)',
-  Boolean(subModalWidthMatch) && Number(subModalWidthMatch[1]) >= 660,
-  subModalWidthMatch ? `${subModalWidthMatch[1]}px` : 'no inline max-width found');
+// Full-screen detail-view regression guard (2026-06 redesign): the subcode result
+// detail is a PRIMARY guidance surface and must render as a page-level / full-screen
+// detail view — NOT a small centred modal, narrow side panel, or cramped card whose
+// content scrolls inside a tiny box. The dialog/aria wiring above still applies.
+check('subcode detail overlay carries the full-screen detail-view class',
+  /<div[^>]*\bsubcode-detailview\b[^>]*id="subcodeDetailOverlay"|id="subcodeDetailOverlay"[^>]*\bsubcode-detailview\b/.test(html));
+check('subcode detail box is NOT capped to a narrow modal width (no small inline max-width)',
+  !/subcode-modal-box"\s+style="max-width:\s*\d+px/.test(html));
+// The detail-view box must fill the viewport (full width + full height), so it can
+// never read as a small popup on a laptop/desktop.
+const fsBoxMatch = html.match(/\.subcode-detailview\s+\.subcode-modal-box\s*\{([^}]*)\}/);
+check('full-screen detail box CSS present (fills viewport width + height)',
+  Boolean(fsBoxMatch)
+  && /max-width:\s*100%/.test(fsBoxMatch[1])
+  && /height:\s*100(vh|dvh)/.test(fsBoxMatch[1]),
+  fsBoxMatch ? fsBoxMatch[1].trim() : 'no .subcode-detailview .subcode-modal-box rule');
+// The body content is width-limited for readable line length even though the panel
+// spans the full viewport (avoids edge-to-edge unreadable lines).
+check('detail body content is width-limited for readability',
+  /\.subcode-detail-scroll\s*>\s*\*\s*\{[^}]*max-width:\s*var\(--detail-content-max\)/.test(html));
+// A clear back/close control sits in the top action bar.
+check('detail view has a top back control', /class="subcode-detail-back"[\s\S]{0,120}data-action="close-subcode-modal"/.test(html));
+// Entering the detail view moves focus to its heading (accessible entry point).
+check('detail view moves focus to its heading on open',
+  /titleEl\.focus\(\)/.test(html) && /id="subcodeModalTitle"[^>]*tabindex="-1"/.test(html));
 check('subcode modal doc checklist renders single-column (no tiny-cards-in-cards)',
   /#subcodeModalBody\s+\.doc-checklist\s*\{[^}]*grid-template-columns:\s*1fr/.test(html));
 
