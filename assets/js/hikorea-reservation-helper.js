@@ -1,18 +1,24 @@
 /* ============================================================================
- * Paradiso — 하이코리아 예약 도우미 / HiKorea Reservation Helper
+ * Paradiso — 하이코리아 방문예약 도우미 / HiKorea Reservation Helper
  * ----------------------------------------------------------------------------
- * A friendly, mobile-first, step-by-step helper that answers the question a
- * user actually has before going to immigration:
+ * A friendly, mobile-first, photo/screenshot-based step-by-step guide that takes
+ * a first-time user all the way from "do I even need an account?" to a confirmed
+ * visit reservation — without needing any external explanation.
  *
- *   "그래서 무슨 버튼을 어떻게 눌러야 하는데?"
- *   ("So which button do I actually press, and how?")
+ * It is organized as a tabbed guide rendered inside the existing
+ * #hikoreaGuideOverlay modal shell (index.html owns the shell + focus trap /
+ * Escape / focus restore; this module owns the content + logic):
  *
- * It replaces the previous static, government-PDF-style modal guide with a
- * one-question-at-a-time flow:
+ *   처음 이용하기 (overview + quick-path selector)
+ *   회원가입       (account sign-up, photo step cards)
+ *   로그인         (login, photo step cards)
+ *   방문예약 잡기   (booking photo steps + the interactive "예약 목적 찾기" wizard)
+ *   예약 확인·변경  (check / change a reservation)
+ *   문제 해결       (troubleshooting accordion)
  *
- *   purpose → registration-card status → location → status code →
- *   (expiry, only when relevant) → a single result card with four compact
- *   sections (what to click · what to prepare · what to check · if it fails).
+ * The interactive reservation-purpose finder (one-question-at-a-time flow built
+ * on computeReservationPath) is preserved unchanged and now lives inside the
+ * 방문예약 잡기 tab.
  *
  * Design contract (do not weaken):
  *  - Deterministic + testable: computeReservationPath() is a pure function with
@@ -20,17 +26,15 @@
  *    never calls any language model. (scripts/check_hikorea_reservation_helper.mjs)
  *  - Cautious wording only. Recommendations are framed as "likely", never as
  *    official rules. The result and footer always carry the official-source
- *    disclaimer (HiKorea / 1345 / 관할 출입국).
+ *    disclaimer (HiKorea / 1345 / 관할 출입국), plus a clear non-affiliation note.
  *  - No invented immigration-law claims; no document requirements beyond the
  *    generic preparation reminders below.
  *  - Korean is canonical; English chrome is paired 1:1 (STR_KO/STR_EN — checked
  *    by scripts/check_popup_i18n.mjs). Per the repo i18n fallback policy, locales
  *    other than en resolve to Korean canonical chrome rather than machine text.
- *
- * The module renders into the existing #hikoreaGuideBody inside the
- * #hikoreaGuideOverlay modal shell so it reuses the page's proven modal focus
- * trap / Escape / focus-restore (openModal/closeModal in index.html). index.html
- * owns the modal shell; this module owns the content + logic.
+ *  - Screenshots are a navigation aid only, never Paradiso branding. No HiKorea
+ *    logos/marks. No personal information in bundled assets. See
+ *    assets/hikorea-guide/README.md for the naming + privacy-masking process.
  * ========================================================================== */
 (function () {
   'use strict';
@@ -167,9 +171,9 @@
   }
 
   var STR_KO = {
-    modalAria: '하이코리아 예약 도우미',
+    modalAria: '하이코리아 방문예약 도우미',
     headerTitle: '하이코리아 예약 도우미',
-    headerSub: '출입국에 가기 전에, 내 상황에 맞는 예약 목적과 준비물을 확인하세요.',
+    headerSub: '하이코리아 회원가입부터 방문예약 확인까지, 화면을 보며 순서대로 따라 하는 안내입니다.',
     notOfficialChip: '공식 서비스 아님',
     progressAria: '진행 단계',
     next: '다음',
@@ -279,13 +283,139 @@
     statusSuggTitle: '이 체류자격에서 많이 찾는 예약 목적',
     statusSuggCaution: '아래 항목은 이 체류자격에서 자주 이어지는 예약 목적입니다. 실제로 어떤 업무를 선택해야 하는지는 본인 상황에 따라 달라질 수 있어요.',
 
-    disclaimer: '이 도우미는 예약 전에 필요한 정보를 정리해 주는 안내입니다. 실제 신청 가능 여부와 처리 기준은 하이코리아, 1345, 또는 관할 출입국에서 최종 확인하세요.'
+    disclaimer: '이 도우미는 예약 전에 필요한 정보를 정리해 주는 안내입니다. 실제 신청 가능 여부와 처리 기준은 하이코리아, 1345, 또는 관할 출입국에서 최종 확인하세요.',
+
+    /* ---- tabbed photo guide chrome (added 2026-06) ---- */
+    tablistAria: '하이코리아 안내 단계',
+    tabOverview: '처음 이용하기',
+    tabSignup: '회원가입',
+    tabLogin: '로그인',
+    tabReservation: '방문예약 잡기',
+    tabManage: '예약 확인·변경',
+    tabTrouble: '문제 해결',
+
+    ovTitle: '하이코리아 방문예약 도우미',
+    ovLead: '처음 하이코리아를 쓰는 분도 이 순서대로 따라오면 됩니다. 회원가입부터 방문예약 확인까지, 화면을 보면서 차근차근 안내해 드려요.',
+    ovStart: '안내 시작하기',
+    ovScreensWarn: '실제 하이코리아 화면은 수시로 바뀔 수 있어요. 버튼 이름이나 위치가 안내와 다르면, 비슷한 메뉴를 찾아보거나 하이코리아 공식 안내를 확인하세요.',
+    quickTitle: '어떤 도움이 필요하세요?',
+    qp1Title: '회원가입부터 필요해요',
+    qp1Sub: '하이코리아 계정 만들기부터 시작합니다.',
+    qp2Title: '이미 계정이 있어요',
+    qp2Sub: '로그인하고 바로 방문예약을 잡습니다.',
+    qp3Title: '예약만 확인하고 싶어요',
+    qp3Sub: '잡아둔 예약을 확인하거나 변경합니다.',
+    qp4Title: '문제가 생겼어요',
+    qp4Sub: '예약이 안 되거나 막혔을 때 해결 방법을 봅니다.',
+    affiliation: 'Paradiso는 하이코리아나 법무부와 제휴된 서비스가 아닙니다. 이 안내의 화면 설명은 길찾기용 참고 자료일 뿐이며, 실제 신청 내용은 하이코리아 공식 사이트에서 최종 확인하세요.',
+
+    stepDoLabel: '여기서 할 일',
+    stepCautionLabel: '주의할 점',
+    stepEnLabel: '영어로 보면',
+    stepNext: '다음 단계',
+    stepDone: '체크 완료',
+    stepDoneOn: '완료됨',
+    progressDoneOf: '단계 완료',
+    shotPending: '스크린샷 준비 중',
+    shotPendingSub: '실제 화면 캡처는 곧 추가될 예정이에요. 아래 설명을 먼저 참고하세요.',
+    guideProgressAria: '안내 진행률',
+    prevTab: '이전',
+    nextTab: '다음',
+    openFinder: '내 상황에 맞는 예약 목적 찾기',
+    openFinderSub: '체류자격과 상황을 몇 가지만 고르면 어떤 민원으로 예약할지 정리해 드려요.',
+    backToPhotos: '사진 안내로 돌아가기',
+    enlarge: '크게 보기',
+    closeImage: '닫기',
+
+    sgIntro: '하이코리아 계정을 만드는 과정이에요. 외국인은 보통 본인인증을 거쳐 가입합니다.',
+    sgT1: '언어 선택하고 회원가입 시작',
+    sgD1: '하이코리아 첫 화면에서 언어를 고르고, 상단 또는 메뉴의 회원가입을 누르세요.',
+    sgC1: '언어를 영어로 바꿔도 일부 화면은 한국어로 나올 수 있어요.',
+    sgE1: 'Pick your language, then tap “Sign Up / 회원가입” at the top.',
+    sgT2: '약관 동의',
+    sgD2: '이용약관과 개인정보 수집 항목을 읽고 동의에 체크한 뒤 다음으로 넘어가세요.',
+    sgC2: '필수 항목에 동의하지 않으면 가입이 진행되지 않아요.',
+    sgT3: '본인인증',
+    sgD3: '외국인등록번호나 여권 정보, 휴대폰 등으로 본인인증을 합니다. 안내에 나온 인증 방법 중 가능한 것을 고르세요.',
+    sgC3: '이름과 생년월일은 여권·등록증과 똑같이 입력해야 인증이 됩니다.',
+    sgE3: 'Verify your identity with your ARC or passport details. Names must match your documents exactly.',
+    sgT4: '아이디·비밀번호 등 계정 정보 입력',
+    sgD4: '아이디, 비밀번호, 연락처 등 계정 정보를 입력하고 가입을 완료하세요.',
+    sgC4: '비밀번호는 안전하게 보관하고, 가입에 쓴 이메일·전화번호를 기억해 두세요.',
+
+    lgIntro: '계정이 있다면 로그인한 뒤 방문예약 메뉴로 이동합니다.',
+    lgT1: '로그인 화면 열기',
+    lgD1: '하이코리아 첫 화면에서 로그인을 누르고, 아이디와 비밀번호를 입력하세요.',
+    lgC1: '비밀번호를 잊었다면 아이디·비밀번호 찾기를 이용하세요.',
+    lgE1: 'Tap “Login”, then enter your ID and password.',
+    lgT2: '간편인증 또는 비회원 인증 확인',
+    lgD2: '회원 로그인이 어려우면 간편인증이나 비회원 인증으로 진행할 수 있는지 확인하세요.',
+    lgC2: '인증서가 필요할 수 있으니 미리 준비해 두면 편해요.',
+
+    resIntro: '로그인한 다음, 방문예약을 잡는 과정이에요. 화면 순서대로 따라오세요.',
+    rsT1: '방문예약 메뉴 들어가기',
+    rsD1: '민원신청 → 방문예약 → 방문예약 신청 순서로 들어갑니다.',
+    rsC1: '당일 예약은 어려울 수 있어요. 보통 다음 날부터 예약할 수 있습니다.',
+    rsE1: 'Go to Civil Petitions → Visit Reservation → Apply.',
+    rsT2: '방문할 출입국관서 선택',
+    rsD2: '이 화면에서는 방문할 출입국관서를 고릅니다. 보통 현재 사는 곳을 관할하는 관서를 선택해요.',
+    rsC2: '관할 관서를 모르면 주소를 기준으로 확인하거나 1345에 문의하세요.',
+    rsT3: '민원(예약 목적) 선택',
+    rsD3: '외국인등록, 체류기간 연장 같은 민원 종류를 고릅니다. 본인이 하려는 업무를 선택하세요.',
+    rsC3: '민원 종류 이름은 체류자격과 상황에 따라 다르게 보일 수 있어요.',
+    rsE3: 'Choose your civil-service purpose (for example, registration or extension).',
+    rsT4: '날짜와 시간 선택',
+    rsD4: '달력에서 예약 가능한 날짜와 시간을 고릅니다.',
+    rsC4: '예약 가능한 시간이 보이지 않으면 다른 날짜를 먼저 확인해 보세요.',
+    rsT5: '예약 내용 확인하고 저장',
+    rsD5: '선택한 관서·날짜·민원을 확인한 뒤 예약을 완료하고, 예약 확인증을 저장하거나 캡처하세요.',
+    rsC5: '예약은 실제 방문하는 사람 이름으로 해야 합니다.',
+
+    mngIntro: '잡아둔 예약을 확인하거나 변경·취소하는 방법이에요.',
+    mgT1: '예약 내역 확인',
+    mgD1: '로그인 후 방문예약 메뉴에서 내 예약 내역을 확인할 수 있어요.',
+    mgC1: '예약 확인증은 방문 전에 저장해 두면 편해요.',
+    mgE1: 'Check your reservation under the Visit Reservation menu.',
+    mgT2: '예약 변경·취소',
+    mgD2: '날짜를 바꾸려면 기존 예약을 취소하고 다시 예약하거나, 변경 메뉴가 있으면 그 안내를 따르세요.',
+    mgC2: '방문이 어려우면 미리 취소해서 다른 사람이 예약할 수 있게 해주세요.',
+
+    purposeGuideTitle: '예약 목적(민원 종류) 고르기',
+    purposeGuideBody: '체류자격과 민원 유형에 따라 선택지가 달라질 수 있습니다. Paradiso의 체류자격별 안내와 하이코리아의 현재 선택지를 함께 확인하세요.',
+
+    troubleIntro: '자주 막히는 상황과 안전한 해결 방법이에요. 해결되지 않으면 하이코리아 공식 안내나 1345를 이용하세요.',
+    troubleCauseLabel: '왜 이런가요',
+    troubleFixLabel: '이렇게 해보세요',
+    t1t: '예약 가능한 날짜·시간이 보이지 않아요',
+    t1c: '예약 가능한 자리가 이미 다 찼거나, 당일·임박한 날짜라 예약이 막혔을 수 있어요.',
+    t1f: '다른 날짜를 먼저 확인하고, 며칠 뒤 날짜로 다시 시도해 보세요. 계속 안 되면 관할 출입국이나 1345에 문의하세요.',
+    t2t: '본인인증이 되지 않아요',
+    t2c: '이름·생년월일·등록번호가 여권이나 등록증과 다르게 입력됐을 수 있어요.',
+    t2f: '문서에 적힌 그대로 다시 입력해 보세요. 그래도 안 되면 다른 인증 방법을 시도하거나 1345에 문의하세요.',
+    t3t: '공동인증서·간편인증이 안 돼요',
+    t3c: '인증서가 만료됐거나, 브라우저·앱에서 인증 프로그램이 제대로 동작하지 않을 수 있어요.',
+    t3f: '인증서 유효기간을 확인하고, 다른 브라우저나 휴대폰 간편인증을 시도해 보세요. 인증 자체 문제는 해당 인증기관 안내를 따르세요.',
+    t4t: '관할 출입국관서를 모르겠어요',
+    t4c: '보통 현재 사는 곳(주소지)을 기준으로 관할 관서가 정해집니다.',
+    t4f: '현재 주소를 기준으로 관할 관서를 확인하세요. 주소가 애매하면 1345에 문의하면 알려줍니다.',
+    t5t: '어떤 민원 목적을 골라야 할지 모르겠어요',
+    t5c: '같은 업무라도 체류자격과 상황에 따라 민원 이름이 다르게 보일 수 있어요.',
+    t5f: 'Paradiso의 체류자격별 안내로 내 상황을 먼저 정리하고, 헷갈리면 1345나 관할 출입국에 정확한 민원 종류를 확인하세요.',
+    t6t: '예약 완료 후 예약증을 저장하지 못했어요',
+    t6c: '저장 버튼을 누르기 전에 화면을 닫았거나, 캡처를 못 했을 수 있어요.',
+    t6f: '다시 로그인해 방문예약 내역에서 예약을 확인하고, 화면을 캡처하거나 예약번호를 메모해 두세요.',
+    t7t: '모바일에서 화면이 잘려서 보여요',
+    t7c: '작은 화면에서는 표나 달력이 가로로 넘칠 수 있어요.',
+    t7f: '화면을 가로로 돌리거나, 확대·축소해서 보세요. 가능하면 PC에서 진행하면 더 편합니다.',
+    t8t: '한국어 화면 때문에 막혀요 (외국어 사용자)',
+    t8c: '언어를 바꿔도 일부 화면은 한국어로만 나올 수 있어요.',
+    t8f: '이 안내의 화면 설명과 “영어로 보면” 메모를 참고하세요. 그래도 막히면 1345는 외국어 상담도 제공합니다.'
   };
 
   var STR_EN = {
-    modalAria: 'HiKorea Reservation Helper',
+    modalAria: 'HiKorea Visit Reservation Helper',
     headerTitle: 'HiKorea Reservation Helper',
-    headerSub: 'Find the right visit reservation path before going to immigration.',
+    headerSub: 'From signing up to checking your reservation — a screen-by-screen HiKorea guide.',
     notOfficialChip: 'Not an official service',
     progressAria: 'Progress',
     next: 'Next',
@@ -395,7 +525,133 @@
     statusSuggTitle: 'Common reservation purposes for this status',
     statusSuggCaution: 'These are common reservation purposes for this status. The exact purpose may differ depending on your situation.',
 
-    disclaimer: 'This helper organizes information before booking. Final availability and processing standards should be confirmed with HiKorea, 1345, or your immigration office.'
+    disclaimer: 'This helper organizes information before booking. Final availability and processing standards should be confirmed with HiKorea, 1345, or your immigration office.',
+
+    /* ---- tabbed photo guide chrome (added 2026-06) ---- */
+    tablistAria: 'HiKorea guide sections',
+    tabOverview: 'Getting started',
+    tabSignup: 'Sign up',
+    tabLogin: 'Log in',
+    tabReservation: 'Book a visit',
+    tabManage: 'Check / change',
+    tabTrouble: 'Troubleshooting',
+
+    ovTitle: 'HiKorea Visit Reservation Guide',
+    ovLead: 'New to HiKorea? Just follow these steps in order. From creating an account to checking your reservation, this guide walks you through each screen.',
+    ovStart: 'Start the guide',
+    ovScreensWarn: 'The real HiKorea screens can change at any time. If a button name or location differs from this guide, look for a similar menu or check the official HiKorea site.',
+    quickTitle: 'What do you need help with?',
+    qp1Title: 'I need to sign up first',
+    qp1Sub: 'Start by creating a HiKorea account.',
+    qp2Title: 'I already have an account',
+    qp2Sub: 'Log in and book a visit reservation.',
+    qp3Title: 'I just want to check a reservation',
+    qp3Sub: 'View or change a reservation you already made.',
+    qp4Title: 'Something went wrong',
+    qp4Sub: 'See fixes for booking problems.',
+    affiliation: 'Paradiso is not affiliated with HiKorea or the Ministry of Justice. The screen descriptions here are only a navigation aid; always confirm the final details on the official HiKorea website.',
+
+    stepDoLabel: 'What to do here',
+    stepCautionLabel: 'Watch out for',
+    stepEnLabel: 'In English',
+    stepNext: 'Next step',
+    stepDone: 'Mark done',
+    stepDoneOn: 'Done',
+    progressDoneOf: 'steps done',
+    shotPending: 'Screenshot coming soon',
+    shotPendingSub: 'A real screen capture will be added here. Follow the text below for now.',
+    guideProgressAria: 'Guide progress',
+    prevTab: 'Back',
+    nextTab: 'Next',
+    openFinder: 'Find the right reservation purpose for me',
+    openFinderSub: 'Answer a few questions about your status and situation to see which civil-service purpose to book.',
+    backToPhotos: 'Back to the photo guide',
+    enlarge: 'View larger',
+    closeImage: 'Close',
+
+    sgIntro: 'This is how to create a HiKorea account. Foreign residents usually sign up after identity verification.',
+    sgT1: 'Choose a language and start sign-up',
+    sgD1: 'On the HiKorea home screen, choose your language and tap Sign Up.',
+    sgC1: 'Even in English, some screens may still appear in Korean.',
+    sgE1: 'Pick your language, then tap Sign Up at the top.',
+    sgT2: 'Agree to the terms',
+    sgD2: 'Read the terms and the personal-data items, check the boxes, then continue.',
+    sgC2: 'If you do not agree to the required items, sign-up will not continue.',
+    sgT3: 'Verify your identity',
+    sgD3: 'Verify with your alien registration number, passport details, or phone. Choose an available method from the options shown.',
+    sgC3: 'Enter your name and date of birth exactly as on your passport or card, or verification will fail.',
+    sgE3: 'Verify your identity with your ARC or passport details. Names must match your documents exactly.',
+    sgT4: 'Enter your account details',
+    sgD4: 'Enter your ID, password, and contact details, then finish signing up.',
+    sgC4: 'Keep your password safe and remember the email and phone you used.',
+
+    lgIntro: 'If you have an account, log in and go to the visit reservation menu.',
+    lgT1: 'Open the login screen',
+    lgD1: 'On the HiKorea home screen, tap Login and enter your ID and password.',
+    lgC1: 'If you forgot your password, use the find ID / password option.',
+    lgE1: 'Tap Login, then enter your ID and password.',
+    lgT2: 'Check simple or non-member verification',
+    lgD2: 'If member login is hard, check whether simple verification or non-member verification is available.',
+    lgC2: 'You may need a certificate, so prepare it in advance.',
+
+    resIntro: 'After logging in, this is how to book a visit. Follow the screens in order.',
+    rsT1: 'Enter the visit reservation menu',
+    rsD1: 'Go to Civil Petitions, then Visit Reservation, then Apply.',
+    rsC1: 'Same-day reservations may not be possible. Booking is usually available from the next day.',
+    rsE1: 'Go to Civil Petitions, then Visit Reservation, then Apply.',
+    rsT2: 'Select the immigration office',
+    rsD2: 'On this screen you choose the immigration office to visit. Usually pick the office for the area where you live.',
+    rsC2: 'If you do not know your office, check by address or call 1345.',
+    rsT3: 'Select the civil service (purpose)',
+    rsD3: 'Choose the type of service, such as registration or extension of stay. Pick the task you want to do.',
+    rsC3: 'The purpose names can look different depending on your status and situation.',
+    rsE3: 'Choose your civil-service purpose (for example, registration or extension).',
+    rsT4: 'Select a date and time',
+    rsD4: 'Choose an available date and time on the calendar.',
+    rsC4: 'If no times appear, check another date first.',
+    rsT5: 'Review and save your reservation',
+    rsD5: 'Check the office, date, and purpose, finish the reservation, and save or screenshot the confirmation.',
+    rsC5: 'The reservation must be under the name of the person who will actually visit.',
+
+    mngIntro: 'This is how to check, change, or cancel a reservation you already made.',
+    mgT1: 'Check your reservation',
+    mgD1: 'After logging in, view your reservations in the Visit Reservation menu.',
+    mgC1: 'Save the confirmation before your visit so it is handy.',
+    mgE1: 'Check your reservation under the Visit Reservation menu.',
+    mgT2: 'Change or cancel',
+    mgD2: 'To change the date, cancel and rebook, or follow the change menu if one is available.',
+    mgC2: 'If you cannot make it, cancel early so someone else can book.',
+
+    purposeGuideTitle: 'Choosing the reservation purpose',
+    purposeGuideBody: 'The options can differ by status and civil-service type. Check Paradiso status guidance together with the current options on HiKorea.',
+
+    troubleIntro: 'Common sticking points and safe fixes. If a problem is not solved, use the official HiKorea help or call 1345.',
+    troubleCauseLabel: 'Why this happens',
+    troubleFixLabel: 'Try this',
+    t1t: 'No available dates or times appear',
+    t1c: 'Slots may already be full, or booking is blocked because the date is today or too soon.',
+    t1f: 'Check another date first and try again a few days out. If it keeps failing, contact your immigration office or 1345.',
+    t2t: 'Identity verification fails',
+    t2c: 'Your name, date of birth, or registration number may not match your documents.',
+    t2f: 'Re-enter the details exactly as written on your documents. If it still fails, try another method or call 1345.',
+    t3t: 'Joint certificate or simple verification fails',
+    t3c: 'Your certificate may be expired, or the verification program may not run in your browser or app.',
+    t3f: 'Check the certificate expiry, and try another browser or phone-based simple verification. For certificate issues, follow your certificate provider guidance.',
+    t4t: 'I do not know my immigration office',
+    t4c: 'Your office is usually decided by where you currently live (your address).',
+    t4f: 'Check the office by your current address. If your address is unclear, 1345 can help you find it.',
+    t5t: 'I do not know which purpose to choose',
+    t5c: 'The same task can appear under different names depending on your status and situation.',
+    t5f: 'Sort out your situation with Paradiso status guidance first, and if unsure, confirm the exact service type with 1345 or your immigration office.',
+    t6t: 'I could not save the confirmation after booking',
+    t6c: 'You may have closed the screen before saving, or missed the screenshot.',
+    t6f: 'Log in again, find the booking in your reservation list, and screenshot it or note the reservation number.',
+    t7t: 'The screen is cut off on mobile',
+    t7c: 'On small screens, tables or calendars can overflow sideways.',
+    t7f: 'Rotate your screen to landscape, or zoom in and out. If you can, a PC is more comfortable.',
+    t8t: 'The Korean screens block me (for non-Korean speakers)',
+    t8c: 'Even after changing the language, some screens may appear only in Korean.',
+    t8f: 'Use the screen descriptions and the In English notes in this guide. If still stuck, 1345 offers foreign-language support.'
   };
 
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
@@ -457,11 +713,65 @@
     return k ? STR[k] : id;
   }
 
+  /* --------------------------------------------------- screenshot manifest */
+  // Where sanitized screenshots live. See assets/hikorea-guide/README.md for the
+  // naming convention + privacy-masking process. Each entry has available:false
+  // until a real, sanitized capture is dropped in (flip to true — that is the
+  // ONLY edit needed). While unavailable an accessible placeholder renders, so
+  // there is never a broken image path or a 404.
+  var SHOT_DIR = 'assets/hikorea-guide/';
+  var GUIDE_STEPS = {
+    signup: [
+      { id: 'sg1', file: 'hikorea-signup-01-language.png', available: false, titleKey: 'sgT1', doKey: 'sgD1', cautionKey: 'sgC1', enKey: 'sgE1' },
+      { id: 'sg2', file: 'hikorea-signup-02-terms.png', available: false, titleKey: 'sgT2', doKey: 'sgD2', cautionKey: 'sgC2' },
+      { id: 'sg3', file: 'hikorea-signup-03-identity-verification.png', available: false, titleKey: 'sgT3', doKey: 'sgD3', cautionKey: 'sgC3', enKey: 'sgE3' },
+      { id: 'sg4', file: 'hikorea-signup-04-account-info.png', available: false, titleKey: 'sgT4', doKey: 'sgD4', cautionKey: 'sgC4' }
+    ],
+    login: [
+      { id: 'lg1', file: 'hikorea-login-01-login-page.png', available: false, titleKey: 'lgT1', doKey: 'lgD1', cautionKey: 'lgC1', enKey: 'lgE1' },
+      { id: 'lg2', file: 'hikorea-login-02-verification.png', available: false, titleKey: 'lgT2', doKey: 'lgD2', cautionKey: 'lgC2' }
+    ],
+    reservation: [
+      { id: 'rs1', file: 'hikorea-reservation-01-entry.png', available: false, titleKey: 'rsT1', doKey: 'rsD1', cautionKey: 'rsC1', enKey: 'rsE1' },
+      { id: 'rs2', file: 'hikorea-reservation-02-office-select.png', available: false, titleKey: 'rsT2', doKey: 'rsD2', cautionKey: 'rsC2' },
+      { id: 'rs3', file: 'hikorea-reservation-03-purpose-select.png', available: false, titleKey: 'rsT3', doKey: 'rsD3', cautionKey: 'rsC3', enKey: 'rsE3' },
+      { id: 'rs4', file: 'hikorea-reservation-04-date-time.png', available: false, titleKey: 'rsT4', doKey: 'rsD4', cautionKey: 'rsC4' },
+      { id: 'rs5', file: 'hikorea-reservation-05-confirmation.png', available: false, titleKey: 'rsT5', doKey: 'rsD5', cautionKey: 'rsC5' }
+    ],
+    manage: [
+      { id: 'mg1', file: 'hikorea-reservation-06-reservation-check.png', available: false, titleKey: 'mgT1', doKey: 'mgD1', cautionKey: 'mgC1', enKey: 'mgE1' },
+      { id: 'mg2', file: 'hikorea-reservation-07-change-cancel.png', available: false, titleKey: 'mgT2', doKey: 'mgD2', cautionKey: 'mgC2' }
+    ]
+  };
+
+  var TROUBLE_ITEMS = [
+    { id: 't1', titleKey: 't1t', causeKey: 't1c', fixKey: 't1f' },
+    { id: 't2', titleKey: 't2t', causeKey: 't2c', fixKey: 't2f' },
+    { id: 't3', titleKey: 't3t', causeKey: 't3c', fixKey: 't3f' },
+    { id: 't4', titleKey: 't4t', causeKey: 't4c', fixKey: 't4f' },
+    { id: 't5', titleKey: 't5t', causeKey: 't5c', fixKey: 't5f' },
+    { id: 't6', titleKey: 't6t', causeKey: 't6c', fixKey: 't6f' },
+    { id: 't7', titleKey: 't7t', causeKey: 't7c', fixKey: 't7f' },
+    { id: 't8', titleKey: 't8t', causeKey: 't8c', fixKey: 't8f' }
+  ];
+
+  // Tab order drives both the tablist and the prev/next tab navigation.
+  var TAB_ORDER = ['overview', 'signup', 'login', 'reservation', 'manage', 'trouble'];
+  var TAB_LABEL_KEY = {
+    overview: 'tabOverview', signup: 'tabSignup', login: 'tabLogin',
+    reservation: 'tabReservation', manage: 'tabManage', trouble: 'tabTrouble'
+  };
+  var GUIDE_INTRO_KEY = { signup: 'sgIntro', login: 'lgIntro', reservation: 'resIntro', manage: 'mngIntro' };
+
   /* --------------------------------------------------------------- styles */
   var STYLE_ID = 'prh-styles';
   function ensureStyles() {
     if (document.getElementById(STYLE_ID)) return;
     var css = [
+      // Spacious, mobile-first panel (avoid the tiny-modal feel). Override the
+      // shell's 760px cap from here so index.html stays untouched.
+      '#hikoreaGuideOverlay .hikorea-modal{width:min(96vw,1040px);max-width:1040px;max-height:92vh;}',
+      '@media (max-width:680px){#hikoreaGuideOverlay .hikorea-modal{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0;}}',
       '#hikoreaGuideBody .prh-root{display:flex;flex-direction:column;gap:1rem;color:var(--t1);font-family:var(--ff,inherit);}',
       '#hikoreaGuideBody .prh-progress{display:flex;align-items:center;gap:.6rem;}',
       '#hikoreaGuideBody .prh-progress-track{flex:1;height:8px;border-radius:999px;background:var(--bg2);overflow:hidden;}',
@@ -524,8 +834,84 @@
       '#hikoreaGuideBody .prh-cta.prh-cta-secondary{flex:1;min-width:160px;background:var(--ac);border-color:var(--ac);color:#fff;}',
       '#hikoreaGuideBody .prh-disclaimer{font-size:.78rem;line-height:1.55;color:var(--t3);border-top:1px dashed var(--bd2);padding-top:.7rem;margin:0;}',
       '#hikoreaGuideBody .prh-section-full{grid-column:1/-1;}',
+
+      /* ---- tabbed photo guide ---- */
+      '#hikoreaGuideBody .prh-tabs{position:sticky;top:0;z-index:4;display:flex;gap:.35rem;flex-wrap:wrap;background:var(--bg1);padding:.15rem 0 .55rem;margin:-.25rem 0 0;border-bottom:1px solid var(--bd2);}',
+      '#hikoreaGuideBody .prh-tab{appearance:none;border:1.5px solid var(--bd2);background:var(--bg0);color:var(--t2);font-family:inherit;font-size:.82rem;font-weight:800;padding:.5rem .8rem;border-radius:999px;cursor:pointer;min-height:40px;white-space:nowrap;transition:border-color .15s,color .15s,background .15s;}',
+      '#hikoreaGuideBody .prh-tab:hover{border-color:var(--ac);color:var(--ac);}',
+      '#hikoreaGuideBody .prh-tab:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-tab.is-active{background:color-mix(in srgb,var(--ac) 14%,var(--bg1));border-color:var(--ac);color:var(--ac2,var(--ac));}',
+      '#hikoreaGuideBody .prh-hero{border:1.5px solid var(--ac);border-radius:var(--radius-lg,14px);background:color-mix(in srgb,var(--ac) 7%,var(--bg1));padding:1.1rem 1.15rem;display:flex;flex-direction:column;gap:.6rem;}',
+      '#hikoreaGuideBody .prh-hero-kicker{align-self:flex-start;font-size:.7rem;font-weight:800;letter-spacing:.02em;padding:.2rem .55rem;border-radius:999px;border:1px solid color-mix(in srgb,var(--ac) 32%,transparent);color:var(--ac2,var(--ac));background:var(--bg1);}',
+      '#hikoreaGuideBody .prh-hero-title{font-size:1.5rem;font-weight:900;line-height:1.25;margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-hero-lead{font-size:.94rem;line-height:1.6;color:var(--t2);margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-hero-actions{display:flex;flex-wrap:wrap;gap:.5rem;}',
+      '#hikoreaGuideBody .prh-hero-actions .prh-primary{margin-left:0;}',
+      '#hikoreaGuideBody .prh-hero-warn{font-size:.8rem;line-height:1.55;color:var(--t2);margin:0;padding:.6rem .7rem;border-radius:var(--radius-md,10px);background:color-mix(in srgb,var(--color-warning,#b88600) 10%,var(--bg1));border:1px solid color-mix(in srgb,var(--color-warning,#b88600) 32%,transparent);}',
+      '#hikoreaGuideBody .prh-section-h{font-size:1.02rem;font-weight:800;margin:.2rem 0 0;}',
+      '#hikoreaGuideBody .prh-quick{display:grid;gap:.6rem;grid-template-columns:1fr;}',
+      '@media (min-width:560px){#hikoreaGuideBody .prh-quick{grid-template-columns:1fr 1fr;}}',
+      '#hikoreaGuideBody .prh-qp{display:flex;flex-direction:column;gap:.25rem;text-align:left;width:100%;padding:.9rem 1rem;border:1.5px solid var(--bd);border-radius:var(--radius-md,10px);background:var(--bg1);color:var(--t1);font-family:inherit;cursor:pointer;min-height:72px;transition:border-color .15s,transform .15s,box-shadow .15s;}',
+      '#hikoreaGuideBody .prh-qp:hover{border-color:var(--ac);transform:translateY(-1px);box-shadow:0 2px 10px color-mix(in srgb,var(--ac) 14%,transparent);}',
+      '#hikoreaGuideBody .prh-qp:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-qp strong{font-size:.98rem;font-weight:800;line-height:1.3;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-qp small{font-size:.8rem;color:var(--t3);line-height:1.45;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-affiliation{font-size:.78rem;line-height:1.6;color:var(--t2);background:var(--bg0);border:1px solid var(--bd2);border-left:3px solid color-mix(in srgb,var(--ac) 55%,var(--bd2));border-radius:var(--radius-md,10px);padding:.75rem .85rem;margin:0;}',
+      '#hikoreaGuideBody .prh-guide-head{display:flex;flex-direction:column;gap:.55rem;}',
+      '#hikoreaGuideBody .prh-guide-intro{font-size:.92rem;line-height:1.6;color:var(--t2);margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-steps{display:flex;flex-direction:column;gap:.85rem;}',
+      '#hikoreaGuideBody .prh-step{border:1px solid var(--bd2);border-radius:var(--radius-lg,14px);background:var(--bg1);padding:.95rem 1rem;display:flex;flex-direction:column;gap:.6rem;scroll-margin-top:64px;}',
+      '#hikoreaGuideBody .prh-step.is-done{border-color:var(--ac);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ac) 35%,transparent);}',
+      '#hikoreaGuideBody .prh-step-head{display:flex;align-items:center;gap:.6rem;}',
+      '#hikoreaGuideBody .prh-step-num{flex:none;width:1.85rem;height:1.85rem;border-radius:999px;background:var(--ac);color:#fff;font-weight:900;font-size:.92rem;display:flex;align-items:center;justify-content:center;}',
+      '#hikoreaGuideBody .prh-step.is-done .prh-step-num{background:var(--ac2,var(--ac));}',
+      '#hikoreaGuideBody .prh-step-title{font-size:1.04rem;font-weight:800;line-height:1.35;margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-shot{margin:0;border:1px solid var(--bd2);border-radius:var(--radius-md,10px);overflow:hidden;background:var(--bg0);}',
+      '#hikoreaGuideBody .prh-shot-img{display:block;width:100%;height:auto;cursor:zoom-in;}',
+      '#hikoreaGuideBody .prh-shot-ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.35rem;min-height:170px;padding:1.2rem 1rem;text-align:center;border:2px dashed var(--bd3);border-radius:var(--radius-md,10px);background:repeating-linear-gradient(45deg,var(--bg0),var(--bg0) 10px,var(--bg2) 10px,var(--bg2) 20px);}',
+      '#hikoreaGuideBody .prh-shot-ph-icon{font-size:1.7rem;line-height:1;}',
+      '#hikoreaGuideBody .prh-shot-ph-title{font-size:.86rem;font-weight:800;color:var(--t2);}',
+      '#hikoreaGuideBody .prh-shot-ph-sub{font-size:.76rem;color:var(--t3);line-height:1.5;max-width:34ch;}',
+      '#hikoreaGuideBody .prh-shot-ph-file{font-size:.7rem;color:var(--t3);background:var(--bg1);border:1px solid var(--bd2);border-radius:6px;padding:.15rem .4rem;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;}',
+      '#hikoreaGuideBody .prh-step-block{display:flex;flex-direction:column;gap:.2rem;}',
+      '#hikoreaGuideBody .prh-step-label{font-size:.74rem;font-weight:800;letter-spacing:.01em;text-transform:uppercase;color:var(--t3);}',
+      '#hikoreaGuideBody .prh-step-do p,#hikoreaGuideBody .prh-step-caution p{margin:0;font-size:.9rem;line-height:1.6;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-step-caution{border-left:3px solid var(--color-warning,#b88600);padding:.1rem 0 .1rem .7rem;}',
+      '#hikoreaGuideBody .prh-step-caution .prh-step-label{color:var(--color-warning,#b88600);}',
+      '#hikoreaGuideBody .prh-step-en{border:1px dashed var(--bd2);border-radius:var(--radius-md,10px);padding:.1rem .2rem;}',
+      '#hikoreaGuideBody .prh-step-en summary{cursor:pointer;font-size:.82rem;font-weight:700;color:var(--t2);padding:.5rem .6rem;list-style:none;}',
+      '#hikoreaGuideBody .prh-step-en summary::-webkit-details-marker{display:none;}',
+      '#hikoreaGuideBody .prh-step-en summary::before{content:"EN  ";font-weight:900;color:var(--ac);}',
+      '#hikoreaGuideBody .prh-step-en p{margin:0;font-size:.86rem;line-height:1.55;color:var(--t2);padding:0 .6rem .6rem;}',
+      '#hikoreaGuideBody .prh-step-foot{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:.1rem;}',
+      '#hikoreaGuideBody .prh-check{display:inline-flex;align-items:center;gap:.45rem;min-height:42px;padding:.5rem .85rem;border:1.5px solid var(--bd);border-radius:999px;background:var(--bg1);color:var(--t2);font-family:inherit;font-weight:800;font-size:.82rem;cursor:pointer;}',
+      '#hikoreaGuideBody .prh-check:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-check.is-on{border-color:var(--ac);background:color-mix(in srgb,var(--ac) 14%,var(--bg1));color:var(--ac2,var(--ac));}',
+      '#hikoreaGuideBody .prh-check-box{width:1.05rem;height:1.05rem;border-radius:5px;border:1.5px solid currentColor;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;}',
+      '#hikoreaGuideBody .prh-step-next{margin-left:auto;appearance:none;border:1.5px solid var(--bd);background:var(--bg1);color:var(--t1);font-family:inherit;font-weight:800;font-size:.82rem;min-height:42px;padding:.5rem .85rem;border-radius:999px;cursor:pointer;}',
+      '#hikoreaGuideBody .prh-step-next:hover{border-color:var(--ac);color:var(--ac);}',
+      '#hikoreaGuideBody .prh-step-next:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-finder{display:flex;flex-direction:column;gap:.45rem;border:1.5px solid var(--ac);border-radius:var(--radius-lg,14px);background:color-mix(in srgb,var(--ac) 6%,var(--bg1));padding:.95rem 1rem;}',
+      '#hikoreaGuideBody .prh-finder-title{font-size:1rem;font-weight:800;margin:0;}',
+      '#hikoreaGuideBody .prh-finder-sub{font-size:.84rem;line-height:1.55;color:var(--t2);margin:0;}',
+      '#hikoreaGuideBody .prh-finder button{align-self:flex-start;}',
+      '#hikoreaGuideBody .prh-tabnav{display:flex;gap:.6rem;align-items:center;justify-content:space-between;margin-top:.2rem;}',
+      '#hikoreaGuideBody .prh-tabnav .prh-spacer{flex:1;}',
+      '#hikoreaGuideBody .prh-tx details{border:1px solid var(--bd2);border-radius:var(--radius-md,10px);background:var(--bg1);margin-bottom:.5rem;overflow:hidden;}',
+      '#hikoreaGuideBody .prh-tx summary{cursor:pointer;font-size:.92rem;font-weight:800;padding:.8rem .9rem;list-style:none;display:flex;align-items:center;gap:.5rem;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-tx summary::-webkit-details-marker{display:none;}',
+      '#hikoreaGuideBody .prh-tx summary::after{content:"+";margin-left:auto;font-weight:900;color:var(--t3);}',
+      '#hikoreaGuideBody .prh-tx details[open] summary::after{content:"–";}',
+      '#hikoreaGuideBody .prh-tx-body{padding:0 .9rem .85rem;display:flex;flex-direction:column;gap:.5rem;}',
+      '#hikoreaGuideBody .prh-tx-block{display:flex;flex-direction:column;gap:.15rem;}',
+      '#hikoreaGuideBody .prh-tx-block p{margin:0;font-size:.86rem;line-height:1.6;color:var(--t2);word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-tx-block .prh-step-label{color:var(--t3);}',
+      '#hikoreaGuideBody .prh-tx-block.is-fix .prh-step-label{color:var(--ac2,var(--ac));}',
+      '#hikoreaGuideBody .prh-lightbox{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(0,0,0,.78);}',
+      '#hikoreaGuideBody .prh-lightbox img{max-width:96vw;max-height:84vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5);}',
+      '#hikoreaGuideBody .prh-lightbox-close{position:absolute;top:1rem;right:1rem;min-height:44px;padding:.55rem 1rem;border-radius:999px;border:1.5px solid #fff;background:rgba(0,0,0,.5);color:#fff;font-family:inherit;font-weight:800;cursor:pointer;}',
       // Mobile sticky action bar keeps the primary control reachable.
-      '@media (max-width:560px){#hikoreaGuideBody .prh-nav{position:sticky;bottom:0;background:var(--bg0);padding:.6rem 0 .2rem;border-top:1px solid var(--bd2);z-index:2;}#hikoreaGuideBody .prh-ctas .prh-cta{flex:1 1 100%;}}'
+      '@media (max-width:560px){#hikoreaGuideBody .prh-nav{position:sticky;bottom:0;background:var(--bg0);padding:.6rem 0 .2rem;border-top:1px solid var(--bd2);z-index:2;}#hikoreaGuideBody .prh-ctas .prh-cta{flex:1 1 100%;}#hikoreaGuideBody .prh-tabs{gap:.3rem;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;}#hikoreaGuideBody .prh-tab{flex:0 0 auto;}}'
     ].join('\n');
     var el = document.createElement('style');
     el.id = STYLE_ID;
@@ -534,6 +920,7 @@
   }
 
   /* ----------------------------------------------------------------- state */
+  var DONE_KEY = 'paradiso_hikorea_steps_done';
   var state = {
     visaCode: '',
     purpose: '',
@@ -542,8 +929,21 @@
     code: '',
     expiry: '',
     step: 1,
-    view: 'wizard'
+    tab: 'overview',
+    view: 'guide',     // reservation tab sub-view: 'guide' | 'wizard' | 'result'
+    done: {},
+    zoom: ''
   };
+
+  function loadDone() {
+    try {
+      var raw = window.localStorage && window.localStorage.getItem(DONE_KEY);
+      state.done = raw ? (JSON.parse(raw) || {}) : {};
+    } catch (e) { state.done = {}; }
+  }
+  function persistDone() {
+    try { if (window.localStorage) window.localStorage.setItem(DONE_KEY, JSON.stringify(state.done)); } catch (e) { /* noop */ }
+  }
 
   function needsExpiry() { return state.purpose === 'extension'; }
   function totalSteps() { return needsExpiry() ? 5 : 4; }
@@ -578,7 +978,7 @@
     opts = opts || {};
     var back = state.step > 1
       ? '<button type="button" class="prh-btn" data-prh-action="back">' + esc(STR.back) + '</button>'
-      : '';
+      : '<button type="button" class="prh-btn" data-prh-action="back-to-photos">' + esc(STR.backToPhotos) + '</button>';
     var nextLabel = opts.last ? STR.findPath : STR.next;
     var nextDisabled = opts.nextDisabled ? ' disabled' : '';
     var next = '<button type="button" class="prh-btn prh-primary" data-prh-action="next"' + nextDisabled + '>' + esc(nextLabel) + '</button>';
@@ -587,6 +987,10 @@
 
   function hotlineHtml() {
     return '<div class="prh-strip">' + esc(STR.hotline) + ' <a href="tel:1345">' + esc(STR.call1345) + '</a></div>';
+  }
+
+  function disclaimerHtml() {
+    return '<p class="prh-disclaimer">' + esc(STR.disclaimer) + '</p>';
   }
 
   function suggestionPanelHtml() {
@@ -600,10 +1004,167 @@
       '<p class="prh-sugg-caution">' + esc(STR.statusSuggCaution) + '</p></div>';
   }
 
-  function renderStep() {
-    var body = getBody();
-    if (!body) return;
-    var html = progressHtml();
+  /* ----------------------------------------------------------- tab chrome */
+  function tabBarHtml() {
+    return '<div class="prh-tabs" role="tablist" aria-label="' + esc(STR.tablistAria) + '">' +
+      TAB_ORDER.map(function (id) {
+        var sel = state.tab === id;
+        return '<button type="button" role="tab" id="prhtab-' + id + '" aria-selected="' + (sel ? 'true' : 'false') +
+          '" tabindex="' + (sel ? '0' : '-1') + '" class="prh-tab' + (sel ? ' is-active' : '') +
+          '" data-prh-action="go-tab" data-prh-tab="' + id + '">' + esc(STR[TAB_LABEL_KEY[id]]) + '</button>';
+      }).join('') + '</div>';
+  }
+
+  function tabNavHtml(tabId) {
+    var idx = TAB_ORDER.indexOf(tabId);
+    var prev = idx > 0 ? TAB_ORDER[idx - 1] : null;
+    var next = idx < TAB_ORDER.length - 1 ? TAB_ORDER[idx + 1] : null;
+    var html = '<div class="prh-tabnav">';
+    html += prev
+      ? '<button type="button" class="prh-btn" data-prh-action="go-tab" data-prh-tab="' + prev + '">‹ ' + esc(STR.prevTab) + '</button>'
+      : '<span class="prh-spacer"></span>';
+    html += next
+      ? '<button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="' + next + '">' + esc(STR.nextTab) + ' ›</button>'
+      : '<span class="prh-spacer"></span>';
+    html += '</div>';
+    return html;
+  }
+
+  /* ------------------------------------------------------ overview (tab 1) */
+  function quickCard(tab, titleKey, subKey) {
+    return '<button type="button" class="prh-qp" data-prh-action="go-tab" data-prh-tab="' + tab + '">' +
+      '<strong>' + esc(STR[titleKey]) + '</strong><small>' + esc(STR[subKey]) + '</small></button>';
+  }
+
+  function overviewHtml() {
+    var html = '<section class="prh-hero">' +
+      '<span class="prh-hero-kicker">' + esc(STR.notOfficialChip) + '</span>' +
+      '<h3 class="prh-hero-title">' + esc(STR.ovTitle) + '</h3>' +
+      '<p class="prh-hero-lead">' + esc(STR.ovLead) + '</p>' +
+      '<div class="prh-hero-actions"><button type="button" class="prh-btn prh-primary" data-prh-action="go-tab" data-prh-tab="signup">' + esc(STR.ovStart) + '</button>' +
+      '<a class="prh-cta" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.goHikorea) + '</a></div>' +
+      '<p class="prh-hero-warn">' + esc(STR.ovScreensWarn) + '</p>' +
+      '</section>';
+    html += '<h4 class="prh-section-h">' + esc(STR.quickTitle) + '</h4>';
+    html += '<div class="prh-quick">' +
+      quickCard('signup', 'qp1Title', 'qp1Sub') +
+      quickCard('reservation', 'qp2Title', 'qp2Sub') +
+      quickCard('manage', 'qp3Title', 'qp3Sub') +
+      quickCard('trouble', 'qp4Title', 'qp4Sub') +
+      '</div>';
+    html += '<p class="prh-affiliation">' + esc(STR.affiliation) + '</p>';
+    html += hotlineHtml();
+    html += disclaimerHtml();
+    return html;
+  }
+
+  /* -------------------------------------------------- photo step guide tab */
+  function shotFigureHtml(shot) {
+    var alt = STR[shot.titleKey];
+    if (shot.available) {
+      return '<figure class="prh-shot"><img class="prh-shot-img" loading="lazy" decoding="async" src="' +
+        esc(SHOT_DIR + shot.file) + '" alt="' + esc(alt) + '" data-prh-action="zoom" data-prh-src="' + esc(SHOT_DIR + shot.file) +
+        '"></figure>';
+    }
+    // Accessible placeholder — no <img>, so no network request / no broken path.
+    // The full instruction is still conveyed by the do/caution text below.
+    return '<figure class="prh-shot"><div class="prh-shot-ph" role="img" aria-label="' +
+      esc(alt + ' — ' + STR.shotPending) + '">' +
+      '<span class="prh-shot-ph-icon" aria-hidden="true">🖼️</span>' +
+      '<span class="prh-shot-ph-title">' + esc(STR.shotPending) + '</span>' +
+      '<span class="prh-shot-ph-sub">' + esc(STR.shotPendingSub) + '</span>' +
+      '<code class="prh-shot-ph-file">' + esc(shot.file) + '</code>' +
+      '</div></figure>';
+  }
+
+  function stepCardHtml(shot, idx, total, nextShot) {
+    var done = !!state.done[shot.id];
+    var n = idx + 1;
+    var html = '<article class="prh-step' + (done ? ' is-done' : '') + '" id="prhstep-' + esc(shot.id) + '">';
+    html += '<div class="prh-step-head"><span class="prh-step-num">' + n + '</span>' +
+      '<h4 class="prh-step-title">' + esc(STR[shot.titleKey]) + '</h4></div>';
+    html += shotFigureHtml(shot);
+    html += '<div class="prh-step-block prh-step-do"><span class="prh-step-label">' + esc(STR.stepDoLabel) +
+      '</span><p>' + esc(STR[shot.doKey]) + '</p></div>';
+    if (shot.cautionKey) {
+      html += '<div class="prh-step-block prh-step-caution"><span class="prh-step-label">' + esc(STR.stepCautionLabel) +
+        '</span><p>' + esc(STR[shot.cautionKey]) + '</p></div>';
+    }
+    if (shot.enKey) {
+      html += '<details class="prh-step-en"><summary>' + esc(STR.stepEnLabel) + '</summary><p>' + esc(STR[shot.enKey]) + '</p></details>';
+    }
+    html += '<div class="prh-step-foot">';
+    html += '<button type="button" class="prh-check' + (done ? ' is-on' : '') + '" data-prh-action="toggle-done" data-prh-step="' +
+      esc(shot.id) + '" aria-pressed="' + (done ? 'true' : 'false') + '"><span class="prh-check-box" aria-hidden="true">' +
+      (done ? '✓' : '') + '</span>' + esc(done ? STR.stepDoneOn : STR.stepDone) + '</button>';
+    if (nextShot) {
+      html += '<button type="button" class="prh-step-next" data-prh-action="goto-step" data-prh-target="prhstep-' +
+        esc(nextShot.id) + '">' + esc(STR.stepNext) + ' ↓</button>';
+    }
+    html += '</div></article>';
+    return html;
+  }
+
+  function guideProgressHtml(steps) {
+    var total = steps.length;
+    var doneCount = steps.filter(function (s) { return state.done[s.id]; }).length;
+    var pct = total ? Math.round((doneCount / total) * 100) : 0;
+    return '<div class="prh-progress" role="progressbar" aria-label="' + esc(STR.guideProgressAria) +
+      '" aria-valuemin="0" aria-valuemax="' + total + '" aria-valuenow="' + doneCount + '">' +
+      '<div class="prh-progress-track"><div class="prh-progress-fill" style="width:' + pct + '%"></div></div>' +
+      '<span class="prh-progress-label">' + doneCount + ' / ' + total + ' ' + esc(STR.progressDoneOf) + '</span></div>';
+  }
+
+  function guideTabHtml(tabId) {
+    var steps = GUIDE_STEPS[tabId] || [];
+    var html = '<div class="prh-guide-head">';
+    if (GUIDE_INTRO_KEY[tabId]) html += '<p class="prh-guide-intro">' + esc(STR[GUIDE_INTRO_KEY[tabId]]) + '</p>';
+    html += guideProgressHtml(steps);
+    html += '</div>';
+
+    if (tabId === 'reservation') {
+      html += '<div class="prh-finder">' +
+        '<p class="prh-finder-title">' + esc(STR.openFinder) + '</p>' +
+        '<p class="prh-finder-sub">' + esc(STR.openFinderSub) + '</p>' +
+        '<button type="button" class="prh-btn prh-primary" data-prh-action="start-finder">' + esc(STR.findPath) + '</button>' +
+        '</div>';
+    }
+
+    html += '<div class="prh-steps">' + steps.map(function (s, i) {
+      return stepCardHtml(s, i, steps.length, steps[i + 1]);
+    }).join('') + '</div>';
+
+    if (tabId === 'reservation') {
+      html += '<div class="prh-sugg"><p class="prh-sugg-title">' + esc(STR.purposeGuideTitle) + '</p>' +
+        '<p class="prh-sugg-caution">' + esc(STR.purposeGuideBody) + '</p></div>';
+    }
+
+    html += tabNavHtml(tabId);
+    html += hotlineHtml();
+    html += disclaimerHtml();
+    return html;
+  }
+
+  /* --------------------------------------------------- troubleshooting tab */
+  function troubleHtml() {
+    var html = '<p class="prh-guide-intro">' + esc(STR.troubleIntro) + '</p>';
+    html += '<div class="prh-tx">' + TROUBLE_ITEMS.map(function (t) {
+      return '<details><summary>' + esc(STR[t.titleKey]) + '</summary><div class="prh-tx-body">' +
+        '<div class="prh-tx-block"><span class="prh-step-label">' + esc(STR.troubleCauseLabel) + '</span><p>' + esc(STR[t.causeKey]) + '</p></div>' +
+        '<div class="prh-tx-block is-fix"><span class="prh-step-label">' + esc(STR.troubleFixLabel) + '</span><p>' + esc(STR[t.fixKey]) + '</p></div>' +
+        '</div></details>';
+    }).join('') + '</div>';
+    html += tabNavHtml('trouble');
+    html += hotlineHtml();
+    html += disclaimerHtml();
+    return html;
+  }
+
+  /* ----------------------------------------------- reservation purpose wizard */
+  // The interactive one-question-per-step finder (preserved). Returns HTML.
+  function wizardStepHtml() {
+    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.backToPhotos) + '</button></div>';
+    html += progressHtml();
 
     if (state.step === 1) {
       html += '<h3 class="prh-q">' + esc(STR.q1) + '</h3><p class="prh-help">' + esc(STR.q1Help) + '</p>';
@@ -639,8 +1200,8 @@
     }
 
     html += hotlineHtml();
-    html += '<p class="prh-disclaimer">' + esc(STR.disclaimer) + '</p>';
-    body.innerHTML = '<div class="prh-root" data-prh-root>' + html + '</div>';
+    html += disclaimerHtml();
+    return html;
   }
 
   function warningText(key) {
@@ -653,9 +1214,7 @@
     return map[key] ? STR[map[key]] : '';
   }
 
-  function renderResult() {
-    var body = getBody();
-    if (!body) return;
+  function wizardResultHtml() {
     var model = computeReservationPath({
       reservationPurpose: state.purpose,
       hasRegistrationCard: state.card,
@@ -669,7 +1228,7 @@
     var confKey = model.confidence === 'high' ? 'confHigh' : (model.confidence === 'low' ? 'confLow' : 'confMedium');
     var confCls = model.confidence === 'high' ? ' is-high' : (model.confidence === 'low' ? ' is-low' : '');
 
-    var html = '';
+    var html = '<div class="prh-nav" style="margin-top:0"><button type="button" class="prh-btn" data-prh-action="back-to-photos">‹ ' + esc(STR.backToPhotos) + '</button></div>';
 
     // Result card
     html += '<div class="prh-result-card">';
@@ -739,16 +1298,41 @@
     html += '</div>';
 
     html += hotlineHtml();
-    html += '<p class="prh-disclaimer">' + esc(STR.disclaimer) + '</p>';
+    html += disclaimerHtml();
+    return html;
+  }
 
-    body.innerHTML = '<div class="prh-root" data-prh-root>' + html + '</div>';
+  /* ---------------------------------------------------------- lightbox */
+  function lightboxHtml() {
+    if (!state.zoom) return '';
+    return '<div class="prh-lightbox" data-prh-action="close-zoom">' +
+      '<button type="button" class="prh-lightbox-close" data-prh-action="close-zoom">' + esc(STR.closeImage) + '</button>' +
+      '<img src="' + esc(state.zoom) + '" alt="' + esc(STR.enlarge) + '"></div>';
+}
+
+  /* ------------------------------------------------------------- compose */
+  function tabPanelHtml() {
+    switch (state.tab) {
+      case 'overview': return overviewHtml();
+      case 'signup': return guideTabHtml('signup');
+      case 'login': return guideTabHtml('login');
+      case 'reservation':
+        if (state.view === 'wizard') return wizardStepHtml();
+        if (state.view === 'result') return wizardResultHtml();
+        return guideTabHtml('reservation');
+      case 'manage': return guideTabHtml('manage');
+      case 'trouble': return troubleHtml();
+      default: return overviewHtml();
+    }
   }
 
   function render() {
     ensureStyles();
     header();
-    if (state.view === 'result') renderResult();
-    else renderStep();
+    var body = getBody();
+    if (!body) return;
+    var inner = tabBarHtml() + '<div class="prh-tabpanel" id="prhTabPanel">' + tabPanelHtml() + '</div>' + lightboxHtml();
+    body.innerHTML = '<div class="prh-root" data-prh-root>' + inner + '</div>';
   }
 
   /* ---------------------------------------------------------- transitions */
@@ -785,7 +1369,9 @@
       render();
       return;
     }
-    if (state.step > 1) state.step -= 1;
+    if (state.step > 1) { state.step -= 1; render(); return; }
+    // step 1 → leave the wizard back to the photo guide
+    state.view = 'guide';
     render();
   }
 
@@ -846,8 +1432,44 @@
       goNext();
     } else if (action === 'back') {
       goBack();
+    } else if (action === 'go-tab') {
+      var tab = actionEl.getAttribute('data-prh-tab');
+      if (tab && TAB_ORDER.indexOf(tab) !== -1) {
+        state.tab = tab;
+        state.view = 'guide';
+        render();
+        // Move focus to the newly active tab for keyboard users.
+        var t = document.getElementById('prhtab-' + tab);
+        if (t && typeof t.focus === 'function') t.focus();
+      }
+    } else if (action === 'start-finder') {
+      state.tab = 'reservation';
+      state.view = 'wizard';
+      state.step = 1;
+      render();
+    } else if (action === 'back-to-photos') {
+      state.tab = 'reservation';
+      state.view = 'guide';
+      render();
+    } else if (action === 'toggle-done') {
+      var sid = actionEl.getAttribute('data-prh-step');
+      if (sid) { if (state.done[sid]) delete state.done[sid]; else state.done[sid] = true; persistDone(); render(); }
+    } else if (action === 'goto-step') {
+      var target = actionEl.getAttribute('data-prh-target');
+      var el = target && document.getElementById(target);
+      if (el && typeof el.scrollIntoView === 'function') el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else if (action === 'zoom') {
+      var src = actionEl.getAttribute('data-prh-src');
+      if (src) { state.zoom = src; render(); }
+    } else if (action === 'close-zoom') {
+      state.zoom = '';
+      render();
     } else if (action === 'restart') {
-      reset({ visaCode: state.visaCode });
+      // Restart the finder only — stay inside the reservation tab.
+      state.purpose = ''; state.card = ''; state.loc = '';
+      state.code = state.visaCode ? normalizeCode(state.visaCode) : '';
+      state.expiry = ''; state.step = 1; state.lastModel = null;
+      state.tab = 'reservation'; state.view = 'wizard';
       render();
     } else if (action === 'save-result') {
       saveResult(actionEl);
@@ -863,9 +1485,39 @@
     else if (field === 'expiry') { state.expiry = t.value; }
   }
 
+  // Roving-tabindex arrow-key navigation across the tablist.
+  function onKeydown(e) {
+    var t = e.target;
+    if (!t || !t.getAttribute || t.getAttribute('role') !== 'tab') return;
+    var key = e.key;
+    if (key !== 'ArrowLeft' && key !== 'ArrowRight' && key !== 'Home' && key !== 'End') return;
+    e.preventDefault();
+    var idx = TAB_ORDER.indexOf(state.tab);
+    var nextIdx = idx;
+    if (key === 'ArrowLeft') nextIdx = (idx - 1 + TAB_ORDER.length) % TAB_ORDER.length;
+    else if (key === 'ArrowRight') nextIdx = (idx + 1) % TAB_ORDER.length;
+    else if (key === 'Home') nextIdx = 0;
+    else if (key === 'End') nextIdx = TAB_ORDER.length - 1;
+    state.tab = TAB_ORDER[nextIdx];
+    state.view = 'guide';
+    render();
+    var el = document.getElementById('prhtab-' + state.tab);
+    if (el && typeof el.focus === 'function') el.focus();
+  }
+
+  // Escape closes the lightbox first (without closing the whole modal).
+  function onKeyup(e) {
+    if (e.key === 'Escape' && state.zoom) {
+      e.stopPropagation();
+      state.zoom = '';
+      render();
+    }
+  }
+
   /* ---------------------------------------------------------- public API */
   function reset(opts) {
     opts = opts || {};
+    loadDone();
     state.visaCode = opts.visaCode || '';
     state.purpose = '';
     state.card = '';
@@ -873,7 +1525,16 @@
     state.code = opts.visaCode ? normalizeCode(opts.visaCode) : '';
     state.expiry = '';
     state.step = 1;
-    state.view = 'wizard';
+    state.zoom = '';
+    // Opened from a specific visa → jump straight to the reservation finder,
+    // prefilled. Opened from the gateway card → start on the overview.
+    if (opts.visaCode) {
+      state.tab = 'reservation';
+      state.view = 'wizard';
+    } else {
+      state.tab = 'overview';
+      state.view = 'guide';
+    }
     state.lastModel = null;
     // Optional prefill of the most-likely purpose from a status' hikorea task
     // type (e.g. visa_data hikorea_task_type "체류기간 연장허가" → extension).
@@ -890,6 +1551,8 @@
   // (this script is deferred), so document-level delegation is timing-safe.
   document.addEventListener('click', onClick);
   document.addEventListener('change', onChange);
+  document.addEventListener('keydown', onKeydown);
+  document.addEventListener('keyup', onKeyup, true);
 
   // Live language switch: re-render whatever view is open.
   window.addEventListener('paradiso-language-applied', function () {
@@ -900,7 +1563,7 @@
   });
 
   window.ParadisoReservationHelper = {
-    version: 1,
+    version: 2,
     open: open,
     render: render,
     reset: reset,
