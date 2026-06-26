@@ -225,6 +225,95 @@ ok(sh.indexOf('최종 판단은 관할기관') !== -1, 'synthesis caution render
 ok(sh.indexOf('<img src=x') === -1 && sh.indexOf('&lt;img') !== -1, 'synthesis escapes malicious summary');
 ok(sh.indexOf('lss-rgroup-title') !== -1, 'synthesis still shows source cards (always)');
 
+section('i18n UX/i18n keys — positioning, examples, options, source-language, sections');
+const uxRequired = {
+  positioning: ['공식 법령·판례·출입국 자료를 바탕으로 쟁점을 정리하는 리서치 도구입니다. 법률 자문이나 합격·승소 예측이 아닙니다.',
+    'A research tool that organizes immigration issues based on official statutes, precedents, and immigration materials. It is not legal advice or a prediction of approval or lawsuit outcomes.'],
+  examplesLabel: ['예시 질문', 'Example questions'],
+  optPrecedents: ['판례도 함께 검색', 'Search precedents too'],
+  optShowOriginal: ['공식 원문 함께 보기', 'Show official source text'],
+  srcKoBadge: ['한국어 원문', 'Korean source'],
+  srcShowOriginal: ['원문 보기', 'Show original Korean'],
+  secIssueMap: ['주요 쟁점', 'Key issues'],
+  secApplyPoints: ['적용 포인트', 'Application points'],
+  secDocsToCheck: ['확인할 서류', 'Documents to check'],
+  whyItMattersLabel: ['왜 중요한가', 'Why it matters'],
+  handoffToResearch: ['법령·판례 기준으로 더 분석하기', 'Analyze with legal sources'],
+  researchRun: ['분석 시작하기', 'Start analysis'],
+};
+for (const [key, [ko, en]] of Object.entries(uxRequired)) {
+  ok(L.STR_KO[key] === ko, `KO label "${key}" = "${ko}"`, `got "${L.STR_KO[key]}"`);
+  ok(L.STR_EN[key] === en, `EN label "${key}" = "${en}"`, `got "${L.STR_EN[key]}"`);
+}
+// EN-only honesty notices (KO intentionally empty so nothing renders in KO).
+ok(L.STR_KO.officialKoNotice === '' && /Korean/.test(L.STR_EN.officialKoNotice), 'officialKoNotice EN-only');
+ok(L.STR_KO.translatedSummaryNotice === '' && /unofficial/i.test(L.STR_EN.translatedSummaryNotice), 'translatedSummaryNotice EN-only + marked unofficial');
+
+section('research examples');
+ok(Array.isArray(L.RESEARCH_EXAMPLES) && L.RESEARCH_EXAMPLES.length >= 4, 'research examples defined (>=4)');
+ok(L.RESEARCH_EXAMPLES.every(e => e.ko && e.en && e.depth), 'every example has ko + en + depth');
+ok(L.RESEARCH_EXAMPLES.some(e => e.ko.includes('F-6') && e.ko.includes('소득요건')), 'example: F-6 income requirement present');
+ok(L.RESEARCH_EXAMPLES.some(e => e.ko.includes('강제퇴거명령') && e.ko.includes('출국명령')), 'example: deportation vs departure order present');
+
+section('panel — positioning, example chips, options row, renamed CTA');
+const rpanel = L.panelHtml('ko');
+ok(rpanel.indexOf('lss-positioning') !== -1 && rpanel.indexOf('리서치 도구입니다') !== -1, 'panel shows positioning text');
+ok((rpanel.match(/data-lss-example=/g) || []).length === L.RESEARCH_EXAMPLES.length, 'panel renders all example chips');
+ok(rpanel.indexOf('data-lss-opt-prec') !== -1 && rpanel.indexOf('판례도 함께 검색') !== -1, 'panel renders "search precedents too" option');
+ok(rpanel.indexOf('data-lss-opt-orig') !== -1 && rpanel.indexOf('공식 원문 함께 보기') !== -1, 'panel renders "show official source text" option');
+ok(rpanel.indexOf('data-lss-run') !== -1 && rpanel.indexOf('분석 시작하기') !== -1, 'CTA renamed to 분석 시작하기');
+ok((rpanel.match(/data-lss-chip=/g) || []).length === 10, 'quick chips still 10 (unaffected by example chips)');
+
+section('normalizeSynthesis — old + new shapes → canonical rich shape');
+ok(typeof L.normalizeSynthesis === 'function', 'exposes normalizeSynthesis()');
+const nOld = L.normalizeSynthesis({ issues: ['쟁점A'], sourceBackedRules: [{ text: '근거1', sourceIds: ['s1'] }], analysis: [{ text: '검토1', sourceIds: ['s2'], confidence: 'medium' }], riskFlags: ['위험1'], nextDocuments: ['서류1'] });
+ok(nOld.issueMap.length === 1 && nOld.issueMap[0].issue === '쟁점A', 'old issues → issueMap');
+ok(nOld.sourceBackedRules[0].rule === '근거1', 'old rule.text → rule');
+ok(nOld.applicationPoints[0].point === '검토1' && nOld.applicationPoints[0].confidence === 'medium', 'old analysis → applicationPoints');
+ok(nOld.riskFlags[0].risk === '위험1' && nOld.riskFlags[0].why === '', 'old string riskFlags → object');
+ok(nOld.documentsToCheck[0] === '서류1', 'old nextDocuments → documentsToCheck');
+const nNew = L.normalizeSynthesis({ issueMap: [{ issue: '쟁점B', whyItMatters: '중요한 이유', sourceIds: ['s1'] }], sourceBackedRules: [{ rule: '규칙1', sourceIds: ['s1'] }], applicationPoints: [{ point: '적용1', confidence: 'high', sourceIds: ['s2'] }], riskFlags: [{ risk: '위험2', why: '근거 때문', sourceIds: ['s1'] }], documentsToCheck: ['서류2'] });
+ok(nNew.issueMap[0].whyItMatters === '중요한 이유', 'new issueMap.whyItMatters preserved');
+ok(nNew.riskFlags[0].why === '근거 때문', 'new riskFlags.why preserved');
+ok(nNew.applicationPoints[0].confidence === 'high', 'new applicationPoints.confidence preserved');
+
+section('buildSynthesisHtml — rich shape rendering');
+const richResult = {
+  ok: true, depth: 'pro', depthLabel: '심층 리서치', synthesisStatus: 'llm',
+  laws: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }], precedents: [],
+  sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x' }] }],
+  synthesisSources: [{ sourceId: 's1', title: '출입국관리법' }, { sourceId: 's2', title: '강제퇴거명령취소' }],
+  synthesis: {
+    summary: '핵심 요약', issueMap: [{ issue: '재량 일탈 쟁점', whyItMatters: '처분의 적법성', sourceIds: ['s1'] }],
+    sourceBackedRules: [{ rule: '출입국관리법 제46조 강제퇴거 대상', sourceIds: ['s1'] }],
+    applicationPoints: [{ point: '재량권 일탈·남용 검토', confidence: 'medium', sourceIds: ['s2'] }],
+    riskFlags: [{ risk: '재입국 제한', why: '강제퇴거 시 입국금지', sourceIds: ['s1'] }],
+    missingFacts: ['송달일'], nextQuestions: ['이의신청 기한?'], documentsToCheck: ['처분서'],
+    limitations: ['참고용'], caution: '최종 판단은 관할기관'
+  }
+};
+const rich = L.buildResearchHtml(richResult, 'ko');
+ok(rich.indexOf('재량 일탈 쟁점') !== -1 && rich.indexOf('왜 중요한가') !== -1 && rich.indexOf('처분의 적법성') !== -1, 'issueMap renders issue + whyItMatters');
+ok(rich.indexOf('출입국관리법 제46조 강제퇴거 대상') !== -1 && rich.indexOf('[근거: 출입국관리법]') !== -1, 'sourceBackedRules.rule + basis rendered');
+ok(rich.indexOf('재량권 일탈·남용 검토') !== -1 && rich.indexOf('lss-conf-medium') !== -1, 'applicationPoints.point + confidence rendered');
+ok(rich.indexOf('재입국 제한') !== -1 && rich.indexOf('강제퇴거 시 입국금지') !== -1, 'object riskFlags risk + why rendered');
+ok(rich.indexOf('확인할 서류') !== -1 && rich.indexOf('처분서') !== -1, 'documentsToCheck rendered');
+ok(rich.indexOf('lss-rdrawer') !== -1, 'sources rendered in a collapsible drawer');
+
+section('source-language delivery — EN card badge / original toggle / notice');
+const enCard = L.buildLawCardHtml({ title: '출입국관리법', snippet: '외국인의 입국과 체류', sourceUrl: 'https://www.law.go.kr/법령/x', translationNotice: 'Official source text may be in Korean' }, 'en');
+ok(enCard.indexOf('lss-langbadge') !== -1 && enCard.indexOf('Korean source') !== -1, 'EN law card shows Korean-source badge');
+ok(enCard.indexOf('lss-orig') !== -1 && enCard.indexOf('Show original Korean') !== -1, 'EN law card keeps Korean original behind a toggle');
+ok(enCard.indexOf('Official source text may be in Korean') !== -1, 'EN law card shows the official-Korean notice');
+ok(enCard.indexOf('외국인의 입국과 체류') !== -1, 'EN law card still contains the Korean original text (escaped, accessible)');
+const koCard = L.buildLawCardHtml({ title: '출입국관리법', snippet: '외국인의 입국과 체류', sourceUrl: 'https://www.law.go.kr/법령/x' }, 'ko');
+ok(koCard.indexOf('lss-langbadge') === -1 && koCard.indexOf('lss-orig') === -1, 'KO law card shows neither badge nor original toggle (Korean is the source language)');
+
+section('EN synthesis — unofficial/translated-summary notice');
+const enSynth = L.buildResearchHtml(richResult, 'en');
+ok(enSynth.indexOf('lss-synth-notice') !== -1 && /unofficial/i.test(enSynth), 'EN synthesis shows the unofficial-summary notice');
+ok(L.buildResearchHtml(richResult, 'ko').indexOf('lss-synth-notice') === -1, 'KO synthesis omits the EN-only notice');
+
 section('no dummy / fake-professional strings');
 const src = readFileSync(join(ROOT, 'assets/js/legal-source-search.js'), 'utf8');
 for (const bad of ['Mr.Visa', 'Mr Visa', 'lorem ipsum', '행정사 검토', '법무법인']) {

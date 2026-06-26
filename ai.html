@@ -1522,6 +1522,7 @@ select:focus-visible {
         let CHAT_TURNS = [];
         let _abortController = null;
         let _isConsentGranted = false;
+        let _lastUserQuestion = '';
         const COPY_PAYLOADS = {};
 
         function rememberTurn(role, content) {
@@ -2779,7 +2780,8 @@ select:focus-visible {
             const answer = result.copy_safe_answer || result.fallback_answer || result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
             const copyId = getCopyId();
             const sourceCopy = sourceTextForCopy(result.grounding_sources);
-            COPY_PAYLOADS[copyId] = { answer, source: sourceCopy };
+            const handoffStatus = (result && (result.visa_sub_code_detected || result.visa_code_detected)) || '';
+            COPY_PAYLOADS[copyId] = { answer, source: sourceCopy, handoff: { question: _lastUserQuestion || '', visaCode: handoffStatus } };
             const grounded = Boolean(result.grounding_used);
             const modelLabel = getModelLabel(result.model, result.provider, result.model_resolved);
             // Warning de-duplication (Part D). The source panel carries the one
@@ -2809,7 +2811,7 @@ select:focus-visible {
                     ${generateBadges(answer, lang, result)}
                     ${sourcePanelHtml}
                     ${groundingNoteHtml}
-                    ${buildAnswerActions(copyId, Boolean(sourceCopy), lang)}
+                    ${buildAnswerActions(copyId, Boolean(sourceCopy), lang, true)}
                     ${trailingDisc}
                 </article>
                 <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
@@ -3129,6 +3131,7 @@ select:focus-visible {
             // Append User Msg
             appendMsg(escapeHtml(text).replace(/\n/g, '<br>'), 'user');
             rememberTurn('user', text);
+            _lastUserQuestion = text;
             inp.value = '';
             updateCharCounter();
 

@@ -158,6 +158,84 @@ class ValidatorTests(unittest.TestCase):
         self.assertTrue(ok, "plain dates must not be flagged as fabricated cases: " + reason)
 
 
+# Richer "BetterLegalResearchAnswer" shape (task §3).
+GOOD_RICH = {
+    "summary": "출처 기반 정리",
+    "issueMap": [{"issue": "강제퇴거 재량 일탈", "whyItMatters": "처분의 적법성", "sourceIds": ["s1"]}],
+    "sourceBackedRules": [{"rule": "출입국관리법 제46조 강제퇴거 대상", "sourceIds": ["s1"]}],
+    "applicationPoints": [{"point": "2020두12345 재량 일탈 검토", "confidence": "medium", "sourceIds": ["s2"]}],
+    "riskFlags": [{"risk": "재입국 제한", "why": "강제퇴거 시 입국금지", "sourceIds": ["s1"]}],
+    "missingFacts": ["송달일"], "nextQuestions": ["이의신청 기한?"], "documentsToCheck": ["처분서"],
+    "limitations": ["참고용"], "caution": "최종 판단은 기관",
+}
+
+
+class RichSchemaTests(unittest.TestCase):
+    def setUp(self):
+        self.packet, _ = _packet()
+
+    def test_rich_shape_validates_and_normalizes(self):
+        ok, reason, cleaned = LS.validate_synthesis(GOOD_RICH, packet=self.packet, locale="ko")
+        self.assertTrue(ok, reason)
+        self.assertEqual(cleaned["issueMap"][0]["whyItMatters"], "처분의 적법성")
+        self.assertEqual(cleaned["sourceBackedRules"][0]["rule"], "출입국관리법 제46조 강제퇴거 대상")
+        self.assertEqual(cleaned["applicationPoints"][0]["confidence"], "medium")
+        self.assertEqual(cleaned["riskFlags"][0]["why"], "강제퇴거 시 입국금지")
+        self.assertEqual(cleaned["documentsToCheck"], ["처분서"])
+
+    def test_old_shape_still_normalizes_into_rich(self):
+        ok, reason, cleaned = LS.validate_synthesis(GOOD_SYN, packet=self.packet, locale="ko")
+        self.assertTrue(ok, reason)
+        # legacy issues/analysis/nextDocuments → issueMap/applicationPoints/documentsToCheck
+        self.assertEqual(cleaned["issueMap"][0]["issue"], "강제퇴거 쟁점")
+        self.assertEqual(cleaned["sourceBackedRules"][0]["rule"], "출입국관리법 제46조 관련")
+        self.assertTrue(cleaned["applicationPoints"])
+        self.assertEqual(cleaned["documentsToCheck"], ["d"])
+
+    def test_rich_shape_phantom_source_rejected(self):
+        bad = json.loads(json.dumps(GOOD_RICH))
+        bad["issueMap"][0]["sourceIds"] = ["s9"]
+        ok, reason, _ = LS.validate_synthesis(bad, packet=self.packet, locale="ko")
+        self.assertFalse(ok)
+        self.assertTrue(reason.startswith("unsupported_source_id"))
+
+
+class QualityRubricTests(unittest.TestCase):
+    def setUp(self):
+        self.packet, _ = _packet()  # depth="pro"
+
+    def test_no_sources_cited_rejected(self):
+        bad = json.loads(json.dumps(GOOD_RICH))
+        for f in ("issueMap", "sourceBackedRules", "applicationPoints", "riskFlags"):
+            for item in bad[f]:
+                item["sourceIds"] = []
+        ok, reason, _ = LS.validate_synthesis(bad, packet=self.packet, locale="ko")
+        self.assertFalse(ok)
+        self.assertEqual(reason, "quality:no_sources_cited")
+
+    def test_no_limitations_rejected(self):
+        bad = {**GOOD_RICH, "limitations": []}
+        ok, reason, _ = LS.validate_synthesis(bad, packet=self.packet, locale="ko")
+        self.assertFalse(ok)
+        self.assertEqual(reason, "quality:no_limitations")
+
+    def test_pro_requires_next_checks(self):
+        bad = {**GOOD_RICH, "nextQuestions": [], "documentsToCheck": []}
+        ok, reason, _ = LS.validate_synthesis(bad, packet=self.packet, locale="ko")
+        self.assertFalse(ok)
+        self.assertEqual(reason, "quality:no_next_checks")
+
+    def test_basic_does_not_require_next_checks(self):
+        basic_packet, _ = LS.build_source_packet(
+            "강제퇴거 쟁점", mode="issue_spotting", depth="basic", locale="ko",
+            laws=[{"title": "출입국관리법", "articleNo": "제46조", "snippet": "강제퇴거 대상", "strength": "direct"}],
+        )
+        good = {**GOOD_RICH, "nextQuestions": [], "documentsToCheck": [],
+                "applicationPoints": [{"point": "검토", "confidence": "low", "sourceIds": ["s1"]}]}
+        ok, reason, _ = LS.validate_synthesis(good, packet=basic_packet, locale="ko")
+        self.assertTrue(ok, reason)
+
+
 class SynthesisEndpointTests(unittest.TestCase):
     def setUp(self):
         self._oc = os.environ.get("LAW_API_OC")
@@ -249,6 +327,18 @@ class SynthesisEndpointTests(unittest.TestCase):
         P._openrouter_complete_with_candidates = self._spy(answer=json.dumps(GOOD_SYN))
         r = self.client.post("/api/legal/research", json={"question": "강제퇴거 다툴 쟁점 정리", "depth": "pro"})
         self.assertNotIn("test-oc", r.text)
+
+    def test_rich_synthesis_returned_through_endpoint(self):
+        P.OPENROUTER_API_KEY = "k"
+        P._openrouter_complete_with_candidates = self._spy(answer=json.dumps(GOOD_RICH))
+        r = self.client.post("/api/legal/research", json={"question": "강제퇴거 다툴 쟁점 정리", "depth": "pro"})
+        body = r.json()
+        self.assertEqual(body["synthesisStatus"], "llm")
+        syn = body["synthesis"]
+        self.assertTrue(syn["issueMap"] and syn["issueMap"][0]["whyItMatters"])
+        self.assertTrue(syn["applicationPoints"] and syn["applicationPoints"][0]["point"])
+        self.assertTrue(syn["documentsToCheck"])
+        self.assertTrue(body.get("extractedFacts") is not None, "extractedFacts flows to the client")
 
 
 if __name__ == "__main__":
