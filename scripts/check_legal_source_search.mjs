@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * check_legal_source_search.mjs — offline validation of the Waymaker
- * "법령·판례 근거 검색 / Legal source search" module (assets/js/legal-source-search.js).
+ * "Waymaker 리걸 리서치 / Waymaker Legal Research" module (assets/js/legal-source-search.js).
  *
  * Loads the module's REAL pure functions (no jsdom needed) and asserts:
  *  - HTML escaping + official-source-URL allow-listing (no XSS injection vector);
@@ -92,7 +92,7 @@ const enKeys = Object.keys(L.STR_EN).sort();
 ok(JSON.stringify(koKeys) === JSON.stringify(enKeys), 'KO and EN packs have identical key sets',
   `missing in EN: ${koKeys.filter(k => !enKeys.includes(k))}; missing in KO: ${enKeys.filter(k => !koKeys.includes(k))}`);
 const required = {
-  title: ['법령·판례 근거 검색', 'Legal source search'],
+  title: ['Waymaker 리걸 리서치', 'Waymaker Legal Research'],
   tabLaws: ['법령', 'Laws'],
   tabPrec: ['판례', 'Precedents'],
   inputPlaceholder: ['검색어 입력', 'Enter a search term'],
@@ -110,7 +110,7 @@ for (const [key, [ko, en]] of Object.entries(required)) {
   ok(L.STR_EN[key] === en, `EN label "${key}" = "${en}"`, `got "${L.STR_EN[key]}"`);
 }
 ok(L.STR_KO.disclaimer.includes('변호사·행정사의 법률 자문을 대체하지 않으며'), 'KO disclaimer present & cautious');
-ok(L.STR_EN.disclaimer.includes('does not replace legal advice'), 'EN disclaimer present & cautious');
+ok(L.STR_EN.disclaimer.includes('does not replace advice from a qualified professional'), 'EN disclaimer present & cautious');
 
 section('quick chips');
 ok(Array.isArray(L.CHIPS) && L.CHIPS.length === 10, 'ten quick chips defined');
@@ -127,13 +127,13 @@ ok(panel.indexOf('data-lss-input') !== -1 && panel.indexOf('data-lss-search') !=
 ok(panel.indexOf('lss-disclaimer') !== -1, 'panel shows the disclaimer');
 ok((panel.match(/data-lss-chip=/g) || []).length === 10, 'panel renders all 10 chips');
 const panelEn = L.panelHtml('en');
-ok(panelEn.indexOf('Legal source search') !== -1 && panelEn.indexOf('Immigration Act') !== -1, 'EN panel uses English labels + chip glosses');
+ok(panelEn.indexOf('Waymaker Legal Research') !== -1 && panelEn.indexOf('Immigration Act') !== -1, 'EN panel uses English labels + chip glosses');
 
 section('research depth — labels, selector, auto-select');
 ok(Array.isArray(L.DEPTHS) && L.DEPTHS.join(',') === 'fast,basic,pro', 'DEPTHS = fast/basic/pro (internal names)');
 const depthRequired = {
   depthFast: ['빠른 확인', 'Quick check'], depthBasic: ['기본 리서치', 'Standard research'], depthPro: ['심층 리서치', 'Deep research'],
-  researchDepthLabel: ['리서치 깊이', 'Research depth'], tabResearch: ['리서치', 'Research'],
+  researchDepthLabel: ['리서치 깊이', 'Research depth'], tabResearch: ['리걸 리서치', 'Legal Research'],
 };
 for (const [key, [ko, en]] of Object.entries(depthRequired)) {
   ok(L.STR_KO[key] === ko, `KO label "${key}" = "${ko}"`, `got "${L.STR_KO[key]}"`);
