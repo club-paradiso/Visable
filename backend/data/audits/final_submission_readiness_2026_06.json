@@ -1,0 +1,487 @@
+{
+  "schema_version": "1.0",
+  "branch": "final/all-status-manual-refresh-and-submission-polish-2026-06",
+  "base": "main",
+  "date": "2026-06-26",
+  "scope": "Substantive line-by-line comparison of all 42 visa/status authoring records against the readable 2026.6 HiKorea manuals; verified conservative corrections; data-shape fix; honest review-gated backlog.",
+  "sources": {
+    "visa_issuance": {
+      "id": "visa_manual_2026_06_17_pdf",
+      "file": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "date": "2026-06-17",
+      "pages": 487,
+      "domain": "pre_entry_visa"
+    },
+    "stay_residence": {
+      "id": "stay_manual_2026_06_23_pdf",
+      "file": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "date": "2026-06-23",
+      "pages": 780,
+      "domain": "post_entry_stay"
+    }
+  },
+  "coverage": {
+    "statuses_reviewed": 42,
+    "overall": {
+      "consistent": 4,
+      "minor_issues": 34,
+      "no_manual_evidence": 4
+    },
+    "field_verdicts": {
+      "confirmed_by_manual": 296,
+      "contradicted_by_manual": 14,
+      "not_found_in_evidence": 173
+    },
+    "high_risk_reviewed": [
+      "B-1",
+      "B-2",
+      "C-3",
+      "D-10",
+      "D-2",
+      "D-4",
+      "E-7",
+      "F-2",
+      "F-4",
+      "F-5",
+      "F-6",
+      "G-1",
+      "H-2"
+    ],
+    "no_manual_evidence": [
+      "E-9",
+      "E-10",
+      "REGION-S",
+      "YOUTH-STAY"
+    ]
+  },
+  "substantive_changes": [
+    {
+      "code": "D-2",
+      "field": "procedures.extension.requiredDocs",
+      "change": "moved 재정능력 입증서류 from requiredDocs to conditionalDocs (reclassification; no doc added/removed)",
+      "grounding": "260623 stay p.44; 외국인등록 '재정능력 입증서류 제출 불요'; existing 우수인증대학 caveat",
+      "effect": "fixes D-2 golden-path + 4 chained journey checks"
+    },
+    {
+      "code": "D-4",
+      "field": "subcodes[].note",
+      "change": "source label 2026.04 -> 2026.6",
+      "grounding": "'주 15시간 이하 시간제 취업' verbatim in 260623 stay"
+    },
+    {
+      "code": "D-10",
+      "field": "subcodes[0].note",
+      "change": "source label 2026.04 -> 2026.6",
+      "grounding": "190점/60점 verbatim on 260617 visa p.125"
+    },
+    {
+      "code": "F-2",
+      "field": "subcodes[F-2-T].note",
+      "change": "source label 2026년 5월 -> 2026.6",
+      "grounding": "최우수인재 거주(F-2) verbatim on 260617 visa p.455"
+    },
+    {
+      "code": "F-5",
+      "field": "subcodes[F-5-T].note",
+      "change": "source label 2026년 5월 -> 2026.6",
+      "grounding": "F-5-T/최우수인재/탑티어 verbatim in 260617 visa and 260623 stay"
+    },
+    {
+      "code": "F-6",
+      "field": "income-table citation x3",
+      "change": "2026.5(2026-05-21)/2026.6(2026-06-17) p.478 -> 2026.6(2026-06-23) p.481",
+      "grounding": "2026 income table verbatim on 260623 stay p.481, absent on p.478"
+    },
+    {
+      "code": "B-1",
+      "field": "period",
+      "change": "3개월, 연장불가 -> 협정상의 체류기간(통상 3개월)",
+      "grounding": "260617 visa p.15; 260623 stay p.24"
+    },
+    {
+      "code": "B-2",
+      "field": "period",
+      "change": "90일 이내 -> 법무부장관이 따로 정하는 기간(국가·지역별 30일/90일/6개월 등)",
+      "grounding": "260617 visa p.22; 260623 stay p.25"
+    },
+    {
+      "code": "C-1",
+      "field": "period",
+      "change": "absolute 연장불가 wording -> 90일(입국일부터 최장 90일까지 제한적 연장 가능)",
+      "grounding": "260623 stay p.26"
+    },
+    {
+      "code": "C-3",
+      "field": "subcodes[C-3-6].name",
+      "change": "단기상용 -> 우대기업초청 단기상용; aliases preserved",
+      "grounding": "260617 visa p.27; 260623 stay p.27"
+    },
+    {
+      "code": "D-2",
+      "field": "subcodes[D-2-4].note",
+      "change": "removed unsupported 2년제 박사 7년 clause; retained 입학 후 최대 8년",
+      "grounding": "260623 stay p.46"
+    },
+    {
+      "code": "E-8",
+      "field": "period + procedures.registration",
+      "change": "clarified total 8-month cap and added E-8 foreigner-registration document block",
+      "grounding": "260617 visa p.284; 260623 stay p.325"
+    },
+    {
+      "code": "F-3",
+      "field": "subcodes[F-3-1/F-3-3]",
+      "change": "expanded dependent-family scope and income/residence-proof exemption note conservatively",
+      "grounding": "260617 visa pp.315-316"
+    },
+    {
+      "code": "F-5",
+      "field": "subcodes[F-5-2/F-5-3]",
+      "change": "corrected subcode identities: F-5-2 국민의 배우자, F-5-3 국민의 미성년 자녀; details remain review-gated",
+      "grounding": "260623 stay pp.431, 450"
+    },
+    {
+      "code": "H-1",
+      "field": "period",
+      "change": "1년, 연장불가 -> 협정상의 체류기간(국가별 1년, 미국 1년 6개월, 캐나다·영국 2년 등)",
+      "grounding": "260617 visa p.346"
+    },
+    {
+      "code": "UI",
+      "field": "index.html renderSubcodes",
+      "change": "broad parent-code summaries fall back to review-gated names and suppress placeholder-like manual-review labels",
+      "grounding": "Browser check on F-3 mobile result; static result-card check updated",
+      "effect": "removes empty/internal-sounding F-3 summary without changing legal data"
+    }
+  ],
+  "regenerated": [
+    "visa_data.json",
+    "backend/data/visas.json"
+  ],
+  "human_review_backlog": {
+    "original_contradictions_logged": 14,
+    "remaining_items_after_codex_desktop_follow_up": 8,
+    "resolved_in_codex_desktop_follow_up": [
+      {
+        "code": "B-1",
+        "field": "period",
+        "resolution": "safe period wording correction"
+      },
+      {
+        "code": "B-2",
+        "field": "period",
+        "resolution": "safe period wording correction"
+      },
+      {
+        "code": "C-1",
+        "field": "period",
+        "resolution": "safe limited-extension wording correction"
+      },
+      {
+        "code": "C-3",
+        "field": "subcodes[C-3-6].name",
+        "resolution": "safe label correction"
+      },
+      {
+        "code": "D-1",
+        "field": "procedures.extension.requiredDocs",
+        "resolution": "manual p.34 confirms current placement; no data edit"
+      },
+      {
+        "code": "D-2",
+        "field": "subcodes[D-2-4].note",
+        "resolution": "removed unsupported 7-year clause"
+      },
+      {
+        "code": "E-8",
+        "field": "period + registration",
+        "resolution": "safe cap and registration correction"
+      },
+      {
+        "code": "F-3",
+        "field": "eligibility/exemption notes",
+        "resolution": "safe conservative expansion"
+      },
+      {
+        "code": "F-5",
+        "field": "F-5-2/F-5-3 identity",
+        "resolution": "safe identity correction only; details gated"
+      },
+      {
+        "code": "H-1",
+        "field": "period",
+        "resolution": "safe treaty-period wording correction"
+      }
+    ],
+    "items": [
+      {
+        "area": "D-5 residence-proof wording",
+        "decision": "remain_review_gated",
+        "reason": "260623 stay p.104 is terse; current expanded examples need human certification before narrowing or rewriting."
+      },
+      {
+        "area": "E-5 status-change document set",
+        "decision": "remain_review_gated",
+        "reason": "Evidence does not cleanly certify current 고용추천서 placement for every scenario; automatic removal could under-inform applicants."
+      },
+      {
+        "area": "E-9/E-10",
+        "decision": "remain_review_gated",
+        "reason": "2026.6 manuals contain E-9/E-10 sections, but Codex did not line-by-line certify those large sections in this follow-up."
+      },
+      {
+        "area": "REGION-S/YOUTH-STAY",
+        "decision": "preserve_program_statuses",
+        "reason": "Paradiso program statuses, not canonical official manual status rows."
+      },
+      {
+        "area": "F-4 age-expansion stamp",
+        "decision": "do_not_relabel_as_2026_6_manual_certified",
+        "reason": "Exact policy stamp is not verbatim-certified in the 2026.6 manual bundle."
+      },
+      {
+        "area": "D-4-2K unofficial source stamp",
+        "decision": "do_not_relabel_as_2026_6_manual_certified",
+        "reason": "Current provenance cites press/private-review path; relabelling as manual-certified would misattribute source."
+      },
+      {
+        "area": "F-6 display-suppressed placeholders",
+        "decision": "retain_internal_review_notes",
+        "reason": "Renderer suppresses these from user-facing UI; they still mark needed page/field review."
+      },
+      {
+        "area": "F-5 spouse/minor-child details",
+        "decision": "identity_corrected_details_review_gated",
+        "reason": "Manual distinguishes F-5-2/F-5-3, but detailed eligibility/documents need separate legal review."
+      }
+    ]
+  },
+  "needs_manual_review_gates_preserved": 343,
+  "ci_gate": {
+    "workflow": "repo-validation.yml",
+    "command": "bash scripts/check_repo.sh",
+    "result": "green_before_codex_desktop_follow_up; pending_post_push_check"
+  },
+  "local_check_repo_follow_up": {
+    "command": "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh",
+    "result": "partial_attempt",
+    "completed": [
+      "json format",
+      "utf8 replacement check",
+      "representative schema",
+      "source manuals",
+      "source monitoring local-only",
+      "source-grounding metadata",
+      "manual-grounding candidates",
+      "coverage matrix"
+    ],
+    "blocked_at": "internal git diff --check stalled in local Codex Desktop checkout",
+    "remaining_constituent_checks": "run individually; route guides, visa issuance UI, issuance enrichment, scenario guide, procedure packet/unit contracts, required-doc coverage, duplicate-render audit, E-7 law grounding, and golden AI eval passed",
+    "git_diff_check": "git diff --cached --check passed for the staged follow-up commit; working-tree status/full-wrapper Git step stalled locally, so GitHub CI should be treated as authoritative full-wrapper gate"
+  },
+  "non_ci_check_health": {
+    "before": "6 failing (pre-existing on main)",
+    "after": "1 failing (short-stay freshness; scheduled-only, genuinely stale external notices)"
+  },
+  "certification_level": "review_gated_submission_platform_not_full_legal_certification",
+  "verdict": "ready_only_as_review_gated_information_platform",
+  "labels_left_unrelabelled": [
+    {
+      "code": "F-4",
+      "reason": "age-expansion policy framing not verbatim-verifiable in 2026.6 bundle"
+    },
+    {
+      "code": "D-4-2K",
+      "reason": "stamp cites press release + private third-party reviewer, not the official manual"
+    },
+    {
+      "code": "F-6",
+      "reason": "display-suppressed 'needs manual review' placeholders; 2026.5 honestly records last-reviewed version"
+    }
+  ],
+  "test_fixes": [
+    {
+      "file": "tests/e2e/complex-status-guide.spec.mjs",
+      "change": "getByText('공식 근거') -> .first() to resolve a pre-existing strict-mode collision with an explanatory note; test-only, no product change"
+    }
+  ],
+  "browser_e2e": {
+    "original_pr_claim": "Playwright e2e checked before Codex follow-up",
+    "codex_desktop_follow_up_status": "attempted_but_blocked_by_local_browser_runtime",
+    "details": [
+      "npm install installed declared devDependencies @playwright/test and jsdom",
+      "check_waymaker_navigator_dom.mjs passed once after jsdom install; a later bounded rerun stalled and was not counted as stable CI-equivalent evidence",
+      "npm run test:e2e failed with missing managed Chromium/headless-shell",
+      "PARADISO_PW_EXECUTABLE=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome launched the web server but hung before executing tests; run was interrupted and reported 80 did not run",
+      "in-app Browser smoke covered 1280px and 390px high-risk result-card/search paths with no page-level overflow"
+    ],
+    "passed_in_follow_up": [
+      "in_app_browser_desktop_mobile_smoke",
+      "check_waymaker_navigator.mjs"
+    ],
+    "not_claimed_passed": [
+      "tests/e2e/*.spec.mjs"
+    ]
+  },
+  "files_changed": [
+    "backend/data/audits/final_submission_readiness_2026_06.json",
+    "backend/data/audits/final_submission_readiness_2026_06.md",
+    "backend/data/visa_authoring/statuses/B-1.json",
+    "backend/data/visa_authoring/statuses/B-2.json",
+    "backend/data/visa_authoring/statuses/C-1.json",
+    "backend/data/visa_authoring/statuses/C-3.json",
+    "backend/data/visa_authoring/statuses/D-10.json",
+    "backend/data/visa_authoring/statuses/D-2.json",
+    "backend/data/visa_authoring/statuses/D-4.json",
+    "backend/data/visa_authoring/statuses/E-8.json",
+    "backend/data/visa_authoring/statuses/F-2.json",
+    "backend/data/visa_authoring/statuses/F-3.json",
+    "backend/data/visa_authoring/statuses/F-5.json",
+    "backend/data/visa_authoring/statuses/F-6.json",
+    "backend/data/visa_authoring/statuses/H-1.json",
+    "backend/data/visas.json",
+    "index.html",
+    "scripts/check_static_visa_result_cards.js",
+    "tests/e2e/complex-status-guide.spec.mjs",
+    "visa_data.json"
+  ],
+  "codex_desktop_follow_up": {
+    "performed_at": "2026-06-26",
+    "pr_reviewed": 471,
+    "branch": "final/all-status-manual-refresh-and-submission-polish-2026-06",
+    "original_claims_reviewed": [
+      "all 42 records reviewed",
+      "D-2/D-4/D-10/F-2/F-5/F-6 corrected",
+      "generated data rebuilt",
+      "UI/e2e stability checked",
+      "remaining uncertainty logged",
+      "canonical records review-gated"
+    ],
+    "independently_verified": [
+      "PR retained review-gated posture",
+      "source domains remained separated",
+      "generated files can be rebuilt from authoring",
+      "exact-code and browser result-card flows render the corrected records"
+    ],
+    "changed": [
+      "B-1",
+      "B-2",
+      "C-1",
+      "C-3-6",
+      "D-2 doctoral note",
+      "E-8",
+      "F-3",
+      "F-5-2/F-5-3",
+      "H-1",
+      "index.html subcode summary rendering",
+      "scripts/check_static_visa_result_cards.js",
+      "visa_data.json",
+      "backend/data/visas.json"
+    ],
+    "manual_pages_used": {
+      "visa": [
+        15,
+        22,
+        27,
+        284,
+        315,
+        316,
+        346
+      ],
+      "stay": [
+        24,
+        25,
+        26,
+        27,
+        34,
+        46,
+        325,
+        431,
+        450
+      ]
+    },
+    "ui_polish": [
+      "F-3 broad subcode summary no longer renders empty/internal placeholder text",
+      "browser checks at 1280px and 390px found no page-level horizontal overflow",
+      "C-3-6 exact search shows corrected matched subcode after data load"
+    ],
+    "pm_developer_findings": [
+      "Product remains mergeable only as review-gated information platform",
+      "Source/review uncertainty is visible without exposing raw TODO artifacts",
+      "No broad redesign applied"
+    ],
+    "tests_run_follow_up": [
+      "python3 scripts/visa/validate_visa_authoring.py",
+      "python3 scripts/visa/build_visa_data.py --check",
+      "python3 scripts/check_visa_data_domain_classification.py",
+      "python3 scripts/sync_visa_data.py --check",
+      "python3 scripts/check_source_grounding_metadata.py",
+      "python3 scripts/check_source_updates.py --local-only",
+      "backend Python suites (251 + 105 + 26 + 8 tests)",
+      "node static/i18n/Waymaker/journey checks",
+      "node scripts/check_waymaker_navigator_dom.mjs (one pass, later bounded hang)",
+      "node scripts/smoke_f4_hub.mjs",
+      "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh (partial; stalled at git diff --check)",
+      "repo-script constituent checks run individually",
+      "in-app browser desktop/mobile smoke"
+    ],
+    "ci_status": "pending_post_push_check",
+    "final_merge_recommendation": "mergeable_only_as_review_gated_submission_platform",
+    "playwright_e2e_follow_up": "attempted_but_blocked_by_local_browser_runtime; not counted as passed"
+  },
+  "claude_code_final_professionalism_pass": {
+    "performed_at": "2026-06-26",
+    "method": "adversarially_verified_multi_agent_workflow (18 agents: investigator + independent skeptic per item) + surgical UI polish + guard tests + executed playwright e2e",
+    "residual_risk_decisions": [
+      { "item": "D-5", "decision": "review_gated_logged_no_edit", "reason": "over-broad 체류지 입증서류 clause absent from 260623 stay manual (D-5 연장 p.104), but pervasive shared boilerplate in 29 of 42 files; renderer collapses >150-char strings to a 상세 보기 details; CLAUDE.md forbids deleting content not preserved elsewhere; flagged for holistic human review" },
+      { "item": "E-5", "decision": "no_change", "reason": "소관부처 장관의 고용추천서 verbatim-faithful: stay p.204 flat-required (D-2/D-10->E-5), stay p.203 conditional (※) for workplace-change; variants already needsManualReview:true" },
+      { "item": "E-9_E-10", "decision": "no_change_audit_label_corrected", "reason": "manuals DO contain evidence (visa pp.286-287 E-9; visa pp.296-297 + stay pp.333-339 E-10); records correctly needsManualReview:true; stale 'no_manual_evidence' label corrected to review-gated-with-evidence" },
+      { "item": "REGION-S_YOUTH-STAY", "decision": "no_change", "reason": "already labelled 시범사업 / 매뉴얼 프로그램 with needsManualReview:true; UI does not imply canonical certified 체류자격" },
+      { "item": "F-4", "decision": "fixed_track2", "reason": "'만 18세 미만 신청 연령 확대' not verbatim in either installed 2026.6 manual; removed false '(사증민원 매뉴얼 2026.04 기준)' certification stamp; manual-confirmed H-2 일원화 + doc requirements preserved" },
+      { "item": "D-4-2K", "decision": "fixed_track1", "reason": "removed private third-party reviewer stamp 'Mr. Visa Korea 행정사 검토'; conservative official-source wording" },
+      { "item": "F-6", "decision": "no_change", "reason": "수동 검토 필요 placeholders provably display-suppressed (PARADISO_MANUAL_REVIEW_TODO_RE), never rendered" },
+      { "item": "F-5", "decision": "no_change", "reason": "F-5-2/F-5-3 identities verbatim-correct vs stay p.431 약호 table; no remaining mislabel" },
+      { "item": "UI_leakage", "decision": "fixed_track2", "reason": "F-3 extReq raw auto-extraction diagnostic (shielded at render but present in data) reworded to professional guidance" }
+    ],
+    "track1_private_provenance_removed": {
+      "files_edited": ["backend/data/visa_authoring/statuses/D-4-2K.json (_generated.compat.note)"],
+      "regenerated": ["visa_data.json", "backend/data/visas.json"],
+      "post_fix_scan": { "Mr. Visa / 행정사 검토 in visa_data.json": 0, "in backend/data/visas.json": 0, "in index.html": 0, "in ai.html": 0, "in i18n": 0 },
+      "retained_only_in": "internal historical audit (.md/.json), explicitly marked removed/not-public/not-official"
+    },
+    "track2_professionalism_cleanup": {
+      "F-4.newReq": "removed false '(사증민원 매뉴얼 2026.04 기준)' stamp; honest policy-notice attribution",
+      "F-3.extReq": "removed raw '보수적 자동 추출 … 확정하지 못했습니다' diagnostic; extReqDocs unchanged",
+      "post_fix_generated": { "2026.04 기준": 0, "보수적 자동 추출": 0, "확정하지 못했습니다": 0 },
+      "retained_by_design": "14 '…수동 검토 필요.' display-suppressed review-gate notes (not removed; honest gates)"
+    },
+    "track3_4_ui_readability": [
+      "subcode detail modal: max-width 620->680px; #subcodeModalBody .doc-checklist single-column; variant padding/gap + ; body/source type +",
+      "in-result .manual-subcode-card: flattened nested .doc-group/.doc-chk-item (borderless rows + left rule)",
+      "complex-status-guide.js: de-boxed .csg-chk to list rows; +.csg-section padding; .csg-result max-width 680px; larger result title",
+      "f4-route-guide.js: .f4g-result max-width 680px"
+    ],
+    "track5_guard_tests": [
+      "scripts/check_dummy_text.mjs: PROVENANCE_DIAGNOSTIC list (private reviewer + raw auto-extraction diagnostics) scanned in JSON data + index.html/ai.html; negative-tested",
+      "scripts/check_subcode_modal.mjs: readability regression guards (modal >=660px; single-column doc checklist)"
+    ],
+    "files_changed": [
+      "backend/data/visa_authoring/statuses/D-4-2K.json",
+      "backend/data/visa_authoring/statuses/F-4.json",
+      "backend/data/visa_authoring/statuses/F-3.json",
+      "visa_data.json",
+      "backend/data/visas.json",
+      "index.html",
+      "assets/js/complex-status-guide.js",
+      "assets/js/f4-route-guide.js",
+      "scripts/check_dummy_text.mjs",
+      "scripts/check_subcode_modal.mjs",
+      "backend/data/audits/final_submission_readiness_2026_06.md",
+      "backend/data/audits/final_submission_readiness_2026_06.json"
+    ],
+    "playwright_e2e": "EXECUTED via pre-installed /opt/pw-browsers/chromium-1194 (PARADISO_PW_EXECUTABLE); 80 passed, 0 failed across 5 viewports + 2 themes",
+    "needs_manual_review_gates_preserved": true,
+    "ci_status": "pending_post_push_check",
+    "final_merge_recommendation": "safe_to_merge_as_review_gated_competition_submission"
+  }
+}

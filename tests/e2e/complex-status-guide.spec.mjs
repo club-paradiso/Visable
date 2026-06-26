@@ -91,7 +91,12 @@ test.describe('guided flow opens wide, one question per step, checklist result',
       await expect(overlay.getByText('먼저 해야 할 일')).toBeVisible();
       await expect(overlay.getByText('기본 준비서류')).toBeVisible();
       await expect(overlay.getByText('신청 절차')).toBeVisible();
-      await expect(overlay.getByText('공식 근거')).toBeVisible();
+      // Use .first(): the result's section title is "공식 근거", but an explanatory
+      // note also contains the substring "공식 근거(매뉴얼·출처)…", so a bare
+      // getByText matches 2 elements and trips strict mode. .first() (the title,
+      // which renders before the note) is template-agnostic across the CSG and
+      // F-4 hub result layouts.
+      await expect(overlay.getByText('공식 근거').first()).toBeVisible();
       // ESC closes + focus returns to the trigger CTA.
       await page.keyboard.press('Escape');
       await expect(overlay).toBeHidden();

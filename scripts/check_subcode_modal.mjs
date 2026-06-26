@@ -34,6 +34,15 @@ check('subcode cards are interactive', /data-action="open-subcode-detail" data-p
 check('subcode cards expose role=button + tabindex', /manual-subcode-card--interactive[\s\S]{0,140}role="button" tabindex="0"/.test(html));
 check('subcodes remain collapsed-by-default (expand group + toggle)', /renderExpandableSubcodeGroup/.test(html) && /'toggle-subcode-group'/.test(html));
 check('mobile bottom-sheet styling present', /\.subcode-modal-overlay\s*\{[^}]*align-items:\s*flex-end/.test(html));
+// Readability regression guard (2026-06 final professionalism pass): the subcode
+// detail surface is a primary guidance screen, so it must not regress to a cramped
+// narrow modal with a multi-column doc grid ("tiny cards within tiny cards").
+const subModalWidthMatch = html.match(/subcode-modal-box"\s+style="max-width:\s*(\d+)px/);
+check('subcode modal result surface is not cramped (>=660px desktop cap)',
+  Boolean(subModalWidthMatch) && Number(subModalWidthMatch[1]) >= 660,
+  subModalWidthMatch ? `${subModalWidthMatch[1]}px` : 'no inline max-width found');
+check('subcode modal doc checklist renders single-column (no tiny-cards-in-cards)',
+  /#subcodeModalBody\s+\.doc-checklist\s*\{[^}]*grid-template-columns:\s*1fr/.test(html));
 
 const i18nKeys = ['subcodeModalEyebrow', 'subcodeModalParentLabel', 'subcodeModalAbout', 'subcodeModalDocsTitle', 'subcodeModalProcTitle', 'subcodeModalWarnTitle', 'subcodeModalSourceTitle', 'subcodeModalNoDocs', 'subcodeModalSourceGap', 'subcodeModalParentCta', 'subcodeModalOpenAria'];
 for (const loc of ['ko', 'en', 'zh-CN']) {
