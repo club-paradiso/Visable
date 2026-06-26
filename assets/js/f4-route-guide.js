@@ -584,6 +584,7 @@
 '.f4g-opt-multi .f4g-opt-mark{border-radius:6px;}' +
 '.f4g-opt-unsure{color:var(--t2,#4f5552);font-style:italic;}' +
 /* result */
+'.f4g-result{max-width:680px;}' +
 '.f4g-result-title{font-size:.82rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--t3,#757a76);margin:0 0 .35rem;}' +
 '.f4g-route-chip{display:inline-block;font-size:1.02rem;font-weight:800;color:var(--ac,#2f5e67);background:var(--acG,rgba(47,94,103,.1));border:1px solid var(--ac,#2f5e67);border-radius:12px;padding:.5rem .85rem;margin:0 0 .9rem;word-break:keep-all;}' +
 '.f4g-section{border:1px solid var(--bd2,#e5dccb);border-radius:14px;padding:.85rem 1rem;margin:0 0 .8rem;background:var(--bg1,#fff);}' +

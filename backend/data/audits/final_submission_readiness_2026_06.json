@@ -428,5 +428,60 @@
     "ci_status": "pending_post_push_check",
     "final_merge_recommendation": "mergeable_only_as_review_gated_submission_platform",
     "playwright_e2e_follow_up": "attempted_but_blocked_by_local_browser_runtime; not counted as passed"
+  },
+  "claude_code_final_professionalism_pass": {
+    "performed_at": "2026-06-26",
+    "method": "adversarially_verified_multi_agent_workflow (18 agents: investigator + independent skeptic per item) + surgical UI polish + guard tests + executed playwright e2e",
+    "residual_risk_decisions": [
+      { "item": "D-5", "decision": "review_gated_logged_no_edit", "reason": "over-broad 체류지 입증서류 clause absent from 260623 stay manual (D-5 연장 p.104), but pervasive shared boilerplate in 29 of 42 files; renderer collapses >150-char strings to a 상세 보기 details; CLAUDE.md forbids deleting content not preserved elsewhere; flagged for holistic human review" },
+      { "item": "E-5", "decision": "no_change", "reason": "소관부처 장관의 고용추천서 verbatim-faithful: stay p.204 flat-required (D-2/D-10->E-5), stay p.203 conditional (※) for workplace-change; variants already needsManualReview:true" },
+      { "item": "E-9_E-10", "decision": "no_change_audit_label_corrected", "reason": "manuals DO contain evidence (visa pp.286-287 E-9; visa pp.296-297 + stay pp.333-339 E-10); records correctly needsManualReview:true; stale 'no_manual_evidence' label corrected to review-gated-with-evidence" },
+      { "item": "REGION-S_YOUTH-STAY", "decision": "no_change", "reason": "already labelled 시범사업 / 매뉴얼 프로그램 with needsManualReview:true; UI does not imply canonical certified 체류자격" },
+      { "item": "F-4", "decision": "fixed_track2", "reason": "'만 18세 미만 신청 연령 확대' not verbatim in either installed 2026.6 manual; removed false '(사증민원 매뉴얼 2026.04 기준)' certification stamp; manual-confirmed H-2 일원화 + doc requirements preserved" },
+      { "item": "D-4-2K", "decision": "fixed_track1", "reason": "removed private third-party reviewer stamp 'Mr. Visa Korea 행정사 검토'; conservative official-source wording" },
+      { "item": "F-6", "decision": "no_change", "reason": "수동 검토 필요 placeholders provably display-suppressed (PARADISO_MANUAL_REVIEW_TODO_RE), never rendered" },
+      { "item": "F-5", "decision": "no_change", "reason": "F-5-2/F-5-3 identities verbatim-correct vs stay p.431 약호 table; no remaining mislabel" },
+      { "item": "UI_leakage", "decision": "fixed_track2", "reason": "F-3 extReq raw auto-extraction diagnostic (shielded at render but present in data) reworded to professional guidance" }
+    ],
+    "track1_private_provenance_removed": {
+      "files_edited": ["backend/data/visa_authoring/statuses/D-4-2K.json (_generated.compat.note)"],
+      "regenerated": ["visa_data.json", "backend/data/visas.json"],
+      "post_fix_scan": { "Mr. Visa / 행정사 검토 in visa_data.json": 0, "in backend/data/visas.json": 0, "in index.html": 0, "in ai.html": 0, "in i18n": 0 },
+      "retained_only_in": "internal historical audit (.md/.json), explicitly marked removed/not-public/not-official"
+    },
+    "track2_professionalism_cleanup": {
+      "F-4.newReq": "removed false '(사증민원 매뉴얼 2026.04 기준)' stamp; honest policy-notice attribution",
+      "F-3.extReq": "removed raw '보수적 자동 추출 … 확정하지 못했습니다' diagnostic; extReqDocs unchanged",
+      "post_fix_generated": { "2026.04 기준": 0, "보수적 자동 추출": 0, "확정하지 못했습니다": 0 },
+      "retained_by_design": "14 '…수동 검토 필요.' display-suppressed review-gate notes (not removed; honest gates)"
+    },
+    "track3_4_ui_readability": [
+      "subcode detail modal: max-width 620->680px; #subcodeModalBody .doc-checklist single-column; variant padding/gap + ; body/source type +",
+      "in-result .manual-subcode-card: flattened nested .doc-group/.doc-chk-item (borderless rows + left rule)",
+      "complex-status-guide.js: de-boxed .csg-chk to list rows; +.csg-section padding; .csg-result max-width 680px; larger result title",
+      "f4-route-guide.js: .f4g-result max-width 680px"
+    ],
+    "track5_guard_tests": [
+      "scripts/check_dummy_text.mjs: PROVENANCE_DIAGNOSTIC list (private reviewer + raw auto-extraction diagnostics) scanned in JSON data + index.html/ai.html; negative-tested",
+      "scripts/check_subcode_modal.mjs: readability regression guards (modal >=660px; single-column doc checklist)"
+    ],
+    "files_changed": [
+      "backend/data/visa_authoring/statuses/D-4-2K.json",
+      "backend/data/visa_authoring/statuses/F-4.json",
+      "backend/data/visa_authoring/statuses/F-3.json",
+      "visa_data.json",
+      "backend/data/visas.json",
+      "index.html",
+      "assets/js/complex-status-guide.js",
+      "assets/js/f4-route-guide.js",
+      "scripts/check_dummy_text.mjs",
+      "scripts/check_subcode_modal.mjs",
+      "backend/data/audits/final_submission_readiness_2026_06.md",
+      "backend/data/audits/final_submission_readiness_2026_06.json"
+    ],
+    "playwright_e2e": "EXECUTED via pre-installed /opt/pw-browsers/chromium-1194 (PARADISO_PW_EXECUTABLE); 80 passed, 0 failed across 5 viewports + 2 themes",
+    "needs_manual_review_gates_preserved": true,
+    "ci_status": "pending_post_push_check",
+    "final_merge_recommendation": "safe_to_merge_as_review_gated_competition_submission"
   }
 }

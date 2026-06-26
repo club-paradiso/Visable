@@ -412,12 +412,14 @@
 '.csg-opt-mark{flex:0 0 auto;width:22px;height:22px;border-radius:50%;border:2px solid var(--bd,#9b9384);display:inline-flex;align-items:center;justify-content:center;font-size:.8rem;color:#fff;}' +
 '.csg-opt[aria-checked="true"] .csg-opt-mark{background:var(--ac,#2f5e67);border-color:var(--ac,#2f5e67);}' +
 '.csg-opt-unsure{color:var(--t2,#4f5552);font-style:italic;}' +
-'.csg-result-title{font-size:.82rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--t3,#757a76);margin:0 0 .35rem;}' +
+'.csg-result{max-width:680px;margin:0 auto;}' +
+'.csg-result-title{font-size:.9rem;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--t3,#757a76);margin:0 0 .4rem;}' +
 '.csg-route-chip{display:inline-block;font-size:1rem;font-weight:800;color:var(--ac,#2f5e67);background:var(--acG,rgba(47,94,103,.1));border:1px solid var(--ac,#2f5e67);border-radius:12px;padding:.45rem .8rem;margin:0 0 .85rem;word-break:keep-all;}' +
-'.csg-section{border:1px solid var(--bd2,#e5dccb);border-radius:14px;padding:.8rem .95rem;margin:0 0 .8rem;background:var(--bg1,#fff);}' +
+'.csg-section{border:1px solid var(--bd2,#e5dccb);border-radius:14px;padding:1rem 1.05rem;margin:0 0 1rem;background:var(--bg1,#fff);}' +
 '.csg-section-title{font-size:.95rem;font-weight:800;color:var(--t1,#202221);margin:0 0 .5rem;word-break:keep-all;display:flex;align-items:center;gap:.4rem;}' +
 '.csg-section-title .csg-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--ac,#2f5e67);color:#fff;font-size:.78rem;font-weight:800;flex:0 0 auto;}' +
-'.csg-chk{display:flex;align-items:flex-start;gap:.55rem;padding:.5rem .65rem;border:1px solid var(--bd,#d1c6b4);border-radius:10px;background:var(--bgI,#fff);font-size:.88rem;line-height:1.55;color:var(--t1,#202221);word-break:keep-all;margin:.3rem 0;}' +
+'.csg-chk{display:flex;align-items:flex-start;gap:.6rem;padding:.55rem .1rem;border:0;border-bottom:1px solid var(--bd2,#e5dccb);border-radius:0;background:transparent;font-size:.92rem;line-height:1.6;color:var(--t1,#202221);word-break:keep-all;margin:0;}' +
+'.csg-checklist .csg-chk:last-child{border-bottom:0;}' +
 '.csg-chk input{margin-top:.18rem;width:18px;height:18px;flex:0 0 auto;accent-color:var(--ac,#2f5e67);}' +
 '.csg-ul{margin:.2rem 0;padding-left:1.15rem;}' +
 '.csg-ul li{font-size:.86rem;line-height:1.6;color:var(--t1,#202221);margin:.15rem 0;word-break:keep-all;}' +

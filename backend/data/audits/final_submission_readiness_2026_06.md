@@ -316,3 +316,116 @@ This branch does **not** claim full legal certification of every guidance field 
 2026 PDFs. It claims: a complete line-by-line *comparison*, verified conservative
 corrections, a concrete data-shape fix, preserved honesty gates, and a precise,
 page-cited human-review backlog.
+
+## 14. Claude Code final targeted follow-up + public-facing professionalism pass (2026-06-26)
+
+A final pre-merge pass that (a) independently re-checked the nine residual PR #471 risk
+items against the **installed** 2026.6 manuals with an adversarially-verified multi-agent
+workflow (18 agents: one investigator + one independent skeptic per item), (b) removed
+public-facing professionalism blockers, (c) improved scenario/subcode result readability
+with surgical CSS, (d) added deterministic guard tests, and (e) **executed Playwright e2e
+for real** in this environment (the prior Codex pass could not). No broad rewrite; all
+canonical `needsManualReview: true` gates preserved.
+
+### 14.1 Residual risk items — adversarially-verified decisions
+
+| Item | Decision | Basis (manual page / behaviour) |
+|---|---|---|
+| **D-5** doc wording | review-gated / logged (no edit) | The expansive `체류지 입증서류 (…타인이 제공하는 주소지…부동산등기사항전부증명서…)` clause is **absent** from the 260623 stay manual (D-5 연장 p.104 lists only the short example list), but it is **shared boilerplate in 29 of 42 files**. Narrowing one file is inconsistent; narrowing all 29 is a broad rewrite, and CLAUDE.md forbids deleting content not preserved elsewhere. The renderer already collapses >150-char doc strings into a "상세 보기" `<details>` and the variability caveat note frames it as non-exhaustive. **Flagged for a holistic human decision.** |
+| **E-5** status-change docs | no change | `소관부처 장관의 고용추천서` is verbatim-faithful: stay **p.204** lists it as a flat required doc in the D-2/D-10→E-5 change; stay **p.203** marks it conditional (※) for workplace-change. Both variants already carry `needsManualReview: true`. |
+| **E-9 / E-10** | no change (+ audit label corrected) | The installed manuals **do** contain direct evidence (visa **pp.286-287** E-9 EPS/고용허가; visa **pp.296-297** + stay **pp.333-339** E-10 선원취업). Record-level `needsManualReview: true` makes the card badge render "2026.6 매뉴얼 확인 필요". The earlier "no_manual_evidence" label was stale and is corrected to *review-gated, manual evidence present*. |
+| **REGION-S / YOUTH-STAY** | no change | Already honestly self-labelled (`지역특화·광역형 비자 시범사업` / `매뉴얼 프로그램`, period badges, and a note "독립적인 체류자격 코드가 아니라 … 매뉴얼 프로그램"). `needsManualReview: true` throughout. |
+| **F-4** age-expansion | **fixed (Track 2)** | "만 18세 미만 신청 연령 확대" is **not** verbatim in either installed 2026.6 manual ("연령 확대" appears nowhere; every "18세 미만" hit is unrelated 아동복지법/입양). The `(사증민원 매뉴얼 2026.04 기준)` stamp falsely implied 2026.04 manual certification → reworded to honest policy-notice attribution + official-confirmation pointer. The manual-confirmed H-2 일원화 content and all document requirements were preserved. |
+| **D-4-2K** provenance | **fixed (Track 1)** | Private third-party reviewer stamp removed (see §14.2). |
+| **F-6** placeholders | no change | The "…수동 검토 필요." review notes are provably display-suppressed by `PARADISO_MANUAL_REVIEW_TODO_RE` (verified by `check_placeholder_suppression.js`); never rendered. |
+| **F-5** subcode labels | no change | F-5-2 (국민의 배우자) / F-5-3 (국민의 미성년 자녀) identities verbatim-correct vs stay **p.431** 약호 table; no remaining mislabel or absolute legal claim. |
+| **UI leakage** | **fixed (Track 2)** | F-3's `extReq` raw auto-extraction diagnostic (shielded at render but present in generated data) reworded to professional guidance (see §14.3). |
+
+### 14.2 Track 1 — private / third-party provenance removed
+
+- **`backend/data/visa_authoring/statuses/D-4-2K.json`** `_generated.compat.note`: removed
+  `(법무부 공식 보도자료·Mr. Visa Korea 행정사 검토 2026.04 기준)` → conservative official-source
+  wording (`… 등 다른 경로 검토가 필요할 수 있습니다. 세부 요건은 공식 보도자료 및 향후 매뉴얼 반영 여부를
+  기준으로 재확인하세요.`). Generated `visa_data.json` / `backend/data/visas.json` regenerated.
+- **Repo scan after fix:** `Mr. Visa` / `행정사 검토` = **0** in `visa_data.json`,
+  `backend/data/visas.json`, `index.html`, `ai.html`, and all i18n packs. The only surviving
+  references are in this internal historical audit (`.md` + `.json`), explicitly recording
+  *what was removed*; they are **not public-facing and not official provenance**.
+
+### 14.3 Track 2 — dummy / stale / internal text cleanup
+
+- **F-4** `newReq`: dropped the false `(사증민원 매뉴얼 2026.04 기준)` certification stamp.
+- **F-3** `extReq`: replaced the raw `2026.5 체류민원 매뉴얼 pp. 421-425에서 … 보수적 자동 추출
+  규칙으로 확정하지 못했습니다.` diagnostic with professional honest guidance; the underlying
+  `extReqDocs` document IDs are unchanged (no requirement lost).
+- **Generated data after fix:** `2026.04 기준` = 0, `보수적 자동 추출` / `확정하지 못했습니다` = 0;
+  every source label now reads `2026.6 기준`.
+- **Deliberately retained:** the 14 "…수동 검토 필요." review-gate notes are honest review gates
+  that the renderer display-suppresses (verified) — removing them would erase a gate, contrary
+  to CLAUDE.md and the task's "do not remove review gates from internal data".
+
+### 14.4 Track 3 / 4 — scenario & subcode result readability (surgical CSS, no redesign)
+
+- **Subcode detail modal** (the reported "tiny panel after selecting a subcode"):
+  `index.html` `.subcode-modal-box` `max-width` 620 → **680px** (parity with the doc modal);
+  new scoped `#subcodeModalBody .doc-checklist { grid-template-columns: 1fr; }` removes the
+  desktop 2-column "tiny cards within tiny cards"; `.subcode-modal-variant` padding/gap bump;
+  `#subcodeModalBody` body/source type bump. Mobile bottom-sheet was already full-width.
+- **In-result scenario-variant cards** (`.manual-subcode-card`): flattened the nested
+  `.doc-group` / `.doc-chk-item` (borderless rows + a subtle left rule), removing the
+  card-in-card-in-card nesting. Scoped so the doc modal and main checklist are untouched.
+- **Complex status guide result** (`assets/js/complex-status-guide.js`): de-boxed `.csg-chk`
+  tiles into clean list rows, increased `.csg-section` padding, added a 680px readable measure
+  cap on `.csg-result`, and enlarged the result title.
+- **F-4 route result** (`assets/js/f4-route-guide.js`): 680px readable measure cap.
+- Mobile (390/360) and tablet (768) remain overflow-free with ≥44px tap targets — confirmed by
+  the executed Playwright suite (§14.6), not asserted on faith.
+
+### 14.5 Track 5 — deterministic guard tests added
+
+- **`scripts/check_dummy_text.mjs`** (CI-registered via `check_repo.sh`): added a
+  `PROVENANCE_DIAGNOSTIC` list (private-reviewer credits — `Mr. Visa`, `행정사 검토`,
+  `사설/민간 검토`, `private/third-party reviewer` — and raw auto-extraction diagnostics —
+  `보수적 자동 추출`, `확정하지 못했습니다`, `not found in evidence`) scanned in **both** the JSON
+  data files **and** `index.html` / `ai.html`. The honest "…수동 검토 필요." review gate is
+  intentionally **not** banned (it is display-suppressed, not user-facing). Negative-tested.
+- **`scripts/check_subcode_modal.mjs`**: added two readability regression guards — the subcode
+  modal desktop cap must stay ≥ 660px, and the in-modal doc checklist must render single-column.
+
+### 14.6 Validation (run fresh in this container)
+
+- **Data/grounding:** `validate_visa_authoring`, `build_visa_data --check`,
+  `check_visa_data_domain_classification`, `sync_visa_data --check`,
+  `check_source_grounding_metadata`, `check_source_updates --local-only` — all OK.
+- **Backend suites** (deps installed from `backend/requirements.txt`): `test_paradiso_backend`
+  (251), `test_scenario_procedure_variants` (105), `test_structured_requirements` (26),
+  `test_source_grounding_metadata_schema` (8), `test_e7_workplace_change_law_grounding` — all OK.
+- **Node/UI:** subcode-modal (now incl. readability guards), dummy-text (now incl. provenance
+  guard), placeholder-suppression (19), static cards, exact-code (20), D-2 & priority & remaining
+  journeys, f4 hub/route/flow, visa route guide, complex status guide (160) + QA, index
+  hardcoded-text, i18n (1,076 keys) + smoke, Waymaker (382) + DOM (33), required-doc coverage,
+  duplicate-render audit (0 issues) — all OK.
+- **Playwright e2e — EXECUTED for real** with the pre-installed `/opt/pw-browsers/chromium-1194`
+  build via `PARADISO_PW_EXECUTABLE`: **80 passed, 0 failed** across desktop-1280 / tablet-768 /
+  mobile-430 / mobile-390 / mobile-360, both themes, including the UI changes above. This closes
+  the prior pass's "Playwright not counted as passed" limitation.
+- `git diff --check` clean; full `ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh` — OK.
+
+### 14.7 Remaining review-gated / human-review items (unchanged posture)
+
+1. All canonical records remain `needsManualReview: true`; this is a review-gated information
+   platform, not a legal certification.
+2. **D-5 + 28 other files** share the over-broad `체류지 입증서류` boilerplate (broader than the
+   manual). Flagged for a single holistic human decision rather than a piecemeal edit.
+3. Two stale Jeju short-stay notices (scheduled-only `short-stay-freshness.yml`, not a PR gate).
+4. E-9/E-10 large sections and F-5 detailed spouse/minor-child requirements not line-by-line
+   certified.
+
+### 14.8 Final recommendation
+
+**Safe to merge as a review-gated competition submission.** The public surface carries no
+private third-party provenance, no over-certification stamps, and no raw internal diagnostics;
+uncertainty is presented professionally (calm review chips, honest pointers) and remains
+gated in the data; scenario/subcode results read as proper guidance screens; and the full
+deterministic + real-browser test suite is green. Do **not** represent the data as fully
+legally certified.

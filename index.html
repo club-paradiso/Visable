@@ -643,7 +643,7 @@ body.searched .ft { opacity: 1; }
 .subcode-modal-gap { margin: 0; font-size: 0.84rem; line-height: 1.6; color: var(--t3); background: var(--bg2); border: 1px dashed var(--bd2); border-radius: 8px; padding: 0.7rem 0.85rem; word-break: keep-all; }
 .subcode-modal-warn { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.84rem; line-height: 1.55; color: var(--t2); }
 .subcode-modal-source { margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; font-size: 0.78rem; line-height: 1.5; color: var(--t3); }
-.subcode-modal-variant { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.8rem; background: var(--bg0); display: flex; flex-direction: column; gap: 0.5rem; }
+.subcode-modal-variant { border: 1px solid var(--bd2); border-radius: 10px; padding: 0.9rem 1rem; background: var(--bg0); display: flex; flex-direction: column; gap: 0.65rem; }
 .subcode-modal-variant + .subcode-modal-variant { margin-top: 0.55rem; }
 .subcode-modal-variant-head { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
 .subcode-modal-variant-proc { font-size: 0.72rem; font-weight: 900; color: var(--ac); background: var(--acG); border-radius: 999px; padding: 0.1rem 0.5rem; }
@@ -654,6 +654,13 @@ body.searched .ft { opacity: 1; }
 .subcode-modal-cta-btn:hover { background: var(--acG); }
 .subcode-modal-cta-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
 
+/* Subcode detail modal readability: this is a primary guidance surface, so its
+   document checklist renders one full-width tile per document (not the global
+   2-up grid that cramps inside the ~620-680px modal), with slightly larger body
+   type. Scoped by #subcodeModalBody so the main results grid is unaffected. */
+#subcodeModalBody .doc-checklist { grid-template-columns: 1fr; }
+#subcodeModalBody .subcode-modal-text { font-size: 0.9rem; }
+#subcodeModalBody .subcode-modal-source { font-size: 0.8rem; }
 /* Mobile: subcode detail modal becomes a full-width bottom sheet. */
 @media (max-width: 540px) {
   .subcode-modal-overlay { align-items: flex-end; padding: 0; }
@@ -10750,6 +10757,29 @@ button[data-keyword]:focus-visible {
   line-height: 1.55;
 }
 
+/* In-result scenario-variant cards (.manual-subcode-card) already sit inside a
+   bordered result card, so their inner document groups/tiles do not need their
+   own boxes too — that "tiny cards within tiny cards" nesting reads as cramped.
+   Flatten one level: keep a subtle left rule on each group for scanning, and let
+   the document rows be borderless lines. Scoped to .manual-subcode-card so the
+   standalone document modal / main checklist are unaffected. Placed after the
+   .manual-result .doc-group overrides so it wins on source order at equal
+   specificity. */
+.manual-subcode-card .doc-group-grid { gap: 0.55rem; }
+.manual-subcode-card .doc-group {
+  border: 0;
+  border-left: 3px solid var(--bd2);
+  border-radius: 0;
+  background: transparent;
+  padding: 0.1rem 0 0.1rem 0.7rem;
+}
+.manual-subcode-card .doc-chk-item {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  padding: 4px 0;
+}
+
 /* 3 · Top locale/theme controls must not float over scrolling content on
        tablet/mobile. On the searched view they scroll with the page (absolute)
        instead of permanently covering procedure tabs / section headers. The
@@ -13995,7 +14025,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 </div>
 
 <div class="modal-overlay subcode-modal-overlay" id="subcodeDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="subcodeModalTitle" aria-hidden="true">
-    <div class="modal-box subcode-modal-box" style="max-width: 620px;">
+    <div class="modal-box subcode-modal-box" style="max-width: 680px;">
         <div class="modal-header">
             <div class="subcode-modal-head-stack">
                 <span class="subcode-modal-eyebrow" id="subcodeModalEyebrow"></span>
