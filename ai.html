@@ -2674,11 +2674,13 @@ select:focus-visible {
             return `copy-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         }
 
-        function buildAnswerActions(copyId, hasSource, lang) {
+        function buildAnswerActions(copyId, hasSource, lang, showResearch) {
+            const shouldResearch = showResearch !== false;
             return `
                 <div class="answer-actions">
                     <button type="button" class="answer-action" data-copy-id="${copyId}" data-copy-kind="answer" aria-label="${t(lang, '답변 복사', 'Copy answer')}">${t(lang, '답변 복사', 'Copy answer')}</button>
                     ${hasSource ? `<button type="button" class="answer-action" data-copy-id="${copyId}" data-copy-kind="source" aria-label="${t(lang, '출처 복사', 'Copy source')}">${t(lang, '출처 복사', 'Copy source')}</button>` : ''}
+                    ${shouldResearch ? `<button type="button" class="answer-action" data-legal-research-id="${copyId}" aria-label="${t(lang, '법령·판례 기준으로 더 분석하기', 'Analyze with legal sources')}">${t(lang, '법령·판례 기준으로 더 분석하기', 'Analyze with legal sources')}</button>` : ''}
                 </div>
             `;
         }
@@ -2751,7 +2753,7 @@ select:focus-visible {
                     </header>
                     <div class="answer-body">${formatAnswerText(refusalBody, lang)}</div>
                     ${altList}
-                    ${buildAnswerActions(copyId, false, lang)}
+                    ${buildAnswerActions(copyId, false, lang, false)}
                 </article>
                 <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
             `;
@@ -2943,7 +2945,7 @@ select:focus-visible {
                     ${fallbackAnswer ? buildDegradedStateBanner(grounding, lang) : ''}
                     <div class="answer-body">${fallbackAnswer ? formatAnswerText(userMessage, lang) : `<p>${escapeHtml(userMessage)}</p>`}</div>
                     ${renderGroundingSourcePanel(grounding, lang)}
-                    ${fallbackAnswer ? buildAnswerActions(copyId, false, lang) : ''}
+                    ${fallbackAnswer ? buildAnswerActions(copyId, false, lang, false) : ''}
                     ${details ? `<details class="error-details" data-diagnostics="developer"><summary>${tt(lang, { ko: '개발자 진단 정보 보기', en: 'Show developer diagnostics', zh: '查看开发者诊断信息', zhHant: '查看開發者診斷資訊' })}<span class="source-subnote">${tt(lang, { ko: '일반 사용자는 확인하지 않아도 됩니다.', en: 'Most users do not need this.', zh: '一般用户无需查看。', zhHant: '一般使用者無需查看。' })}</span></summary><pre>${escapeHtml(details)}</pre></details>` : ''}
                     <span class="msg-disc">${escapeHtml(answerDisclaimer(grounding, lang))}</span>
                 </article>
@@ -2971,6 +2973,33 @@ select:focus-visible {
                 button.textContent = button.textContent.includes('Copy') ? 'Copy failed' : '복사 실패';
                 setTimeout(() => { button.textContent = original; }, 1400);
             }
+        }
+
+        function latestUserQuestion() {
+            for (let i = CHAT_TURNS.length - 1; i >= 0; i -= 1) {
+                if (CHAT_TURNS[i] && CHAT_TURNS[i].role === 'user') return String(CHAT_TURNS[i].content || '').trim();
+            }
+            return '';
+        }
+
+        function legalResearchHandoffDetail(copyId, lang) {
+            const payload = COPY_PAYLOADS[copyId] || {};
+            const userQuestion = latestUserQuestion();
+            const answer = String(payload.answer || '').trim();
+            const source = String(payload.source || '').trim();
+            const basis = userQuestion || answer;
+            const visaMatch = basis.match(/\b[A-HJ-Z]-\d+(?:-\d+)?\b/i);
+            const hint = visaMatch ? visaMatch[0].toUpperCase() : '';
+            const complex = /(판례|불허|취소소송|행정심판|강제퇴거|출국명령|난민|귀화 불허|소송|appeal|precedent|refusal|denial|deportation)/i.test(basis);
+            const query = [
+                userQuestion,
+                hint ? (lang === 'en' ? `Status hint: ${hint}` : `체류자격 힌트: ${hint}`) : '',
+                lang === 'en'
+                    ? 'Analyze this with official statutes, precedents, and immigration materials. Do not make a final eligibility conclusion.'
+                    : '공식 법령·판례·출입국 자료 기준으로 쟁점과 다음 확인사항을 정리해줘. 최종 자격·허가 여부는 단정하지 마.',
+                source ? (lang === 'en' ? 'Known source context:\n' + source : '현재 답변의 출처 맥락:\n' + source) : ''
+            ].filter(Boolean).join('\n\n').slice(0, 800);
+            return { query: query || answer.slice(0, 800), depth: complex ? 'pro' : 'basic', visaStatusHint: hint, includePrecedents: true, showOriginals: true, autorun: false };
         }
 
         // Read a Server-Sent Events answer stream, render deltas live, then
@@ -3312,6 +3341,12 @@ select:focus-visible {
                 });
             }
             document.addEventListener('click', (e) => {
+                const researchButton = e.target.closest('.answer-action[data-legal-research-id]');
+                if (researchButton) {
+                    const detail = legalResearchHandoffDetail(researchButton.getAttribute('data-legal-research-id'), currentLanguage === 'en' ? 'en' : 'ko');
+                    window.dispatchEvent(new CustomEvent('paradiso:legal-research', { detail }));
+                    return;
+                }
                 const copyButton = e.target.closest('.answer-action[data-copy-id]');
                 if (copyButton) copyPayload(copyButton);
                 const chip = e.target.closest('.ai-welcome-chip');
