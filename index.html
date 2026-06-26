@@ -654,17 +654,62 @@ body.searched .ft { opacity: 1; }
 .subcode-modal-cta-btn:hover { background: var(--acG); }
 .subcode-modal-cta-btn:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
 
-/* Subcode detail modal readability: this is a primary guidance surface, so its
-   document checklist renders one full-width tile per document (not the global
-   2-up grid that cramps inside the ~620-680px modal), with slightly larger body
-   type. Scoped by #subcodeModalBody so the main results grid is unaffected. */
+/* === Subcode detail: full-screen, page-level detail view ===
+   The subcode search result detail is a PRIMARY guidance surface, not a small
+   popup. On every viewport (laptop, desktop, tablet, mobile) it fills the
+   screen as a page-level overlay with a fixed action bar (back + close) and a
+   naturally-scrolling body whose content is width-limited for readable line
+   lengths. All rules are scoped to .subcode-detailview / #subcodeModalBody so
+   no other modal or dialog is affected. */
+.subcode-detailview { --detail-content-max: 880px; align-items: stretch; justify-content: center; padding: 0; background: rgba(0,0,0,0.5); }
+.subcode-detailview .subcode-modal-box {
+  width: 100%; max-width: 100%; height: 100vh; height: 100dvh; max-height: 100vh; max-height: 100dvh;
+  border: none; border-radius: 0; box-shadow: none; transform: none;
+}
+.subcode-detailview.active .subcode-modal-box { transform: none; }
+
+/* Fixed action bar — back + title + close stay put while the body scrolls.
+   Inner content is width-limited and centred so it lines up with the body. */
+.subcode-detail-bar { padding: 0; border-bottom: 1px solid var(--bd2); background: var(--bg1); flex: none; }
+.subcode-detail-bar-inner {
+  width: 100%; max-width: var(--detail-content-max); margin: 0 auto;
+  padding: 0.9rem clamp(1rem, 4vw, 2rem);
+  display: flex; align-items: flex-start; gap: 0.9rem;
+}
+.subcode-detail-bar-inner .subcode-modal-head-stack { flex: 1 1 auto; min-width: 0; }
+.subcode-detailview .modal-title { font-size: clamp(1.15rem, 1rem + 0.9vw, 1.5rem); }
+/* The heading receives focus on open (screen-reader entry point), but it is not a
+   keyboard-navigable control, so suppress the input-like focus ring it would draw. */
+.subcode-detailview .modal-title:focus { outline: none; }
+
+.subcode-detail-back {
+  display: inline-flex; align-items: center; gap: 0.4rem; flex: none;
+  min-height: 44px; padding: 0.4rem 0.85rem 0.4rem 0.65rem;
+  font: inherit; font-size: 0.86rem; font-weight: 800; color: var(--ac);
+  background: transparent; border: 1.5px solid var(--bd); border-radius: 999px;
+  cursor: pointer; touch-action: manipulation; transition: background 0.18s ease, border-color 0.18s ease;
+}
+.subcode-detail-back:hover { background: var(--acG); border-color: var(--ac); }
+.subcode-detail-back:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+.subcode-detail-back-icon { font-size: 1.1rem; line-height: 1; }
+.subcode-detail-close { align-self: flex-start; flex: none; }
+
+/* Scrolling body: width-limited, centred content for comfortable line lengths
+   even though the panel itself spans the full viewport. */
+.subcode-detail-scroll { align-items: center; padding: clamp(1.2rem, 3vw, 2rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 6vh, 4rem); gap: 1.25rem; }
+.subcode-detail-scroll > * { width: 100%; max-width: var(--detail-content-max); margin-inline: auto; }
+
+/* Document checklist stays single-column (no tiny-cards-in-cards) and body type
+   stays comfortably large on this primary surface. */
 #subcodeModalBody .doc-checklist { grid-template-columns: 1fr; }
-#subcodeModalBody .subcode-modal-text { font-size: 0.9rem; }
-#subcodeModalBody .subcode-modal-source { font-size: 0.8rem; }
-/* Mobile: subcode detail modal becomes a full-width bottom sheet. */
+#subcodeModalBody .subcode-modal-text { font-size: 0.95rem; }
+#subcodeModalBody .subcode-modal-source { font-size: 0.82rem; }
+
+/* Small screens: drop the redundant text label on the back button (arrow +
+   aria-label remain); tighten the bar. The view is already full-screen. */
 @media (max-width: 540px) {
-  .subcode-modal-overlay { align-items: flex-end; padding: 0; }
-  .subcode-modal-overlay .subcode-modal-box { max-width: 100%; max-height: 92vh; border-radius: 18px 18px 0 0; border-bottom: none; }
+  .subcode-detail-back-text { display: none; }
+  .subcode-detail-bar-inner { padding: 0.75rem 1rem; gap: 0.6rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .manual-subcode-card--interactive, .manual-subcode-card--interactive .manual-subcode-go, .subcode-modal-cta-btn { transition: none; }
@@ -12480,6 +12525,9 @@ body.searched .hero-container::before {
   transition: transform 0.3s var(--k-spring), box-shadow 0.3s var(--k-spring), background 0.2s ease;
 }
 :root[data-theme="archive_diary"] .modal-close:hover { transform: rotate(90deg) scale(1.08); background: var(--k-blue-1) !important; }
+/* Subcode detail is full-screen: neutralise the kitsch rounded corners / offset
+   shadow / heavy border that suit a centred card but not an edge-to-edge view. */
+:root[data-theme="archive_diary"] .subcode-detailview .subcode-modal-box { border: none !important; border-radius: 0 !important; box-shadow: none !important; }
 /* Toast → ink bubble with blue offset */
 :root[data-theme="archive_diary"] .toast {
   background: var(--k-ink) !important; color: #fff !important;
@@ -14024,17 +14072,23 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </div>
 
-<div class="modal-overlay subcode-modal-overlay" id="subcodeDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="subcodeModalTitle" aria-hidden="true">
-    <div class="modal-box subcode-modal-box" style="max-width: 680px;">
-        <div class="modal-header">
-            <div class="subcode-modal-head-stack">
-                <span class="subcode-modal-eyebrow" id="subcodeModalEyebrow"></span>
-                <h2 id="subcodeModalTitle" class="modal-title"></h2>
-                <div class="subcode-modal-parent" id="subcodeModalParent"></div>
+<div class="modal-overlay subcode-modal-overlay subcode-detailview" id="subcodeDetailOverlay" role="dialog" aria-modal="true" aria-labelledby="subcodeModalTitle" aria-hidden="true">
+    <div class="modal-box subcode-modal-box">
+        <div class="modal-header subcode-detail-bar">
+            <div class="subcode-detail-bar-inner">
+                <button type="button" class="subcode-detail-back" data-action="close-subcode-modal" aria-label="닫기">
+                    <span class="subcode-detail-back-icon" aria-hidden="true">←</span>
+                    <span class="subcode-detail-back-text" id="subcodeModalBackLabel"></span>
+                </button>
+                <div class="subcode-modal-head-stack">
+                    <span class="subcode-modal-eyebrow" id="subcodeModalEyebrow"></span>
+                    <h2 id="subcodeModalTitle" class="modal-title" tabindex="-1"></h2>
+                    <div class="subcode-modal-parent" id="subcodeModalParent"></div>
+                </div>
+                <button type="button" class="modal-close subcode-detail-close" data-action="close-subcode-modal" aria-label="닫기">✕</button>
             </div>
-            <button type="button" class="modal-close" data-action="close-subcode-modal" aria-label="닫기">✕</button>
         </div>
-        <div class="modal-body" id="subcodeModalBody" aria-live="polite"></div>
+        <div class="modal-body subcode-detail-scroll" id="subcodeModalBody" aria-live="polite"></div>
     </div>
 </div>
 
@@ -14831,11 +14885,16 @@ function openSubcodeModal(parentCode, subCode) {
     const titleEl = document.getElementById('subcodeModalTitle');
     const parentEl = document.getElementById('subcodeModalParent');
     const bodyEl = document.getElementById('subcodeModalBody');
+    const backEl = document.getElementById('subcodeModalBackLabel');
     if (eyebrowEl) eyebrowEl.textContent = view.eyebrow;
     if (titleEl) titleEl.innerHTML = view.title;
     if (parentEl) parentEl.innerHTML = view.parentHtml;
-    if (bodyEl) bodyEl.innerHTML = view.body;
+    if (bodyEl) { bodyEl.innerHTML = view.body; bodyEl.scrollTop = 0; }
+    if (backEl) backEl.textContent = tx('subcodeModalBack');
     openModal('subcodeDetailOverlay');
+    // This is a page-level detail view, so move focus to its heading (rather than
+    // the first control) for an accessible "you are now reading X" entry point.
+    if (titleEl) titleEl.focus();
 }
 
 function renderModalFeeBox(visa, type) {
