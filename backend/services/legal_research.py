@@ -23,6 +23,7 @@ retrieval is layered on top by the endpoint via the existing OC-safe adapters.
 """
 from __future__ import annotations
 
+import re
 from typing import Any, Dict, List, Optional, Sequence
 
 RESEARCH_DEPTHS = ("fast", "basic", "pro")
@@ -313,6 +314,133 @@ def depth_budget(depth: str) -> Dict[str, Any]:
             "precedentDefault": False, "precedentCap": 2}
 
 
+# ---------------------------------------------------------------------------
+# Fact extraction + query localization (English question -> Korean queries)
+# ---------------------------------------------------------------------------
+# Korea uses uppercase status codes like F-6, D-2, D-10, E-7, G-1, H-2, plus the
+# K-STAR/REGION-S pilots. Match those, not arbitrary letter-number pairs.
+_VISA_CODE_RE = re.compile(r"\b([A-H]-\d{1,2}(?:-\d{1,2}[A-Z]?)?)\b")
+
+# English (or romanized) legal phrasing -> Korean Open-Law search anchors. Korean
+# law APIs match Korean statutory terms far better than English, so an English
+# question still gets Korean queries. Order: most specific phrases first.
+_EN_KO_QUERY_TERMS = (
+    ("deportation order", ["강제퇴거명령", "출입국관리법 강제퇴거"]),
+    ("departure order", ["출국명령", "출입국관리법 출국명령"]),
+    ("change of status", ["체류자격 변경", "출입국관리법 체류자격 변경허가"]),
+    ("status change", ["체류자격 변경"]),
+    ("extension of stay", ["체류기간 연장", "출입국관리법 체류기간 연장허가"]),
+    ("good conduct", ["품행 단정", "국적법 귀화 품행"]),
+    ("genuine marriage", ["혼인의 진정성", "결혼이민 체류자격"]),
+    ("income requirement", ["결혼이민 소득요건"]),
+    ("deportation", ["강제퇴거"]),
+    ("naturalization", ["국적법 귀화", "귀화 요건"]),
+    ("refugee", ["난민법", "난민 인정"]),
+    ("marriage", ["결혼이민"]),
+    ("graduation", ["유학 졸업 체류자격"]),
+    ("student", ["유학 체류자격"]),
+    ("extension", ["체류기간 연장"]),
+    ("employment", ["취업활동", "고용"]),
+    ("permanent resid", ["영주 F-5", "영주자격"]),
+    ("appeal", ["행정심판 행정소송"]),
+    ("lawsuit", ["행정소송"]),
+)
+
+# Procedure-type detection for extracted facts (KO + EN keywords -> a KO label).
+_PROCEDURE_KEYWORDS = (
+    (("체류자격 변경", "변경허가", "change of status", "status change"), "체류자격 변경허가"),
+    (("체류기간 연장", "연장", "extension"), "체류기간 연장허가"),
+    (("불허", "취소", "refusal", "denial", "revocation"), "불허·취소 처분 대응"),
+    (("강제퇴거", "deportation"), "강제퇴거"),
+    (("출국명령", "departure order"), "출국명령"),
+    (("귀화", "국적취득", "naturalization"), "귀화"),
+    (("거소", "거소신고", "residence registration"), "국내거소신고"),
+    (("취업", "고용", "employment"), "취업·고용 활동"),
+    (("사증", "비자 발급", "visa issuance"), "사증발급"),
+    (("행정심판", "행정소송", "소송", "appeal", "lawsuit", "litigation"), "불복(행정심판·행정소송)"),
+)
+
+
+def english_korean_queries(question: str) -> List[str]:
+    """Korean Open-Law search anchors derived from English/romanized phrasing.
+
+    Returns [] for a Korean-only question (the concept map already covers it).
+    """
+    low = (question or "").lower()
+    out: List[str] = []
+    for needle, terms in _EN_KO_QUERY_TERMS:
+        if needle in low:
+            out.extend(terms)
+    return out
+
+
+def extract_facts(question: str, visa_hint: Optional[str] = None) -> Dict[str, Any]:
+    """Deterministically extract structured research facts from a question.
+
+    Pure. Used to enrich query generation + the research plan. Never infers facts
+    the user did not state — it only surfaces what the text explicitly contains.
+    """
+    text = (question or "") + " " + (visa_hint or "")
+    low = text.lower()
+    visa_statuses = _dedupe(_VISA_CODE_RE.findall(text), 8)
+    concepts = _match_concepts(question, visa_hint)
+
+    procedure_types: List[str] = []
+    for needles, label in _PROCEDURE_KEYWORDS:
+        for nd in needles:
+            hit = (nd.lower() in low) if nd.isascii() else (nd in text)
+            if hit:
+                procedure_types.append(label)
+                break
+
+    legal_issues: List[str] = []
+    factual_risk: List[str] = []
+    for c in concepts:
+        legal_issues += c["issues_ko"]
+        factual_risk += c["risk_ko"]
+
+    likely_needs = ["law", "regulation", "manual", "precedent"] if concepts else ["law", "manual"]
+
+    return {
+        "visaStatuses": visa_statuses,
+        "procedureTypes": _dedupe(procedure_types, 6),
+        "legalIssues": _dedupe(legal_issues, 8),
+        "factualRiskSignals": _dedupe(factual_risk, 6),
+        "likelySourceNeeds": likely_needs,
+    }
+
+
+# ---------------------------------------------------------------------------
+# Source language metadata (official Korean text is never disguised as English)
+# ---------------------------------------------------------------------------
+def _source_notice(locale_raw: Any) -> str:
+    """Per-UI-language notice that an official source is Korean (not machine-translated)."""
+    l = str(locale_raw or "").strip().lower()
+    if l == "en":
+        return "Official source text may be in Korean"
+    if l.startswith("zh"):
+        return "官方原文可能为韩语"
+    return ""  # Korean UI: the original Korean source is shown as-is.
+
+
+def localize_sources(cards: List[Dict[str, Any]], locale_raw: Any) -> None:
+    """Tag each retrieved source card (in place) with honest language metadata.
+
+    law.go.kr text is Korean-only, so we mark ``language='ko'`` and, in a non-KO
+    UI, attach a clear ``translationNotice`` — we never fabricate a machine
+    translation of the legal text or pretend it is an official English version.
+    """
+    notice = _source_notice(locale_raw)
+    for c in (cards or []):
+        if not isinstance(c, dict):
+            continue
+        c["language"] = "ko"
+        c["originalLanguage"] = "ko"
+        c["isMachineTranslated"] = False
+        if notice:
+            c["translationNotice"] = notice
+
+
 def build_research_plan(
     question: str,
     *,
@@ -353,15 +481,18 @@ def build_research_plan(
         risk_ko += c["risk_ko"]; risk_en += c["risk_en"]
         facts_ko += c["facts_ko"]; facts_en += c["facts_en"]
 
-    if not law_terms:
-        # Fallback to the existing conservative law-search anchor (never invents
-        # article numbers; just statutory keywords).
-        try:
-            from services.law_grounding import build_law_search_query  # local import to avoid cycle
-            base = build_law_search_query(q) or "출입국관리법"
-        except Exception:
-            base = "출입국관리법"
-        law_terms = [base]
+    # English / romanized phrasing -> Korean Open-Law anchors, so an English
+    # question still retrieves Korean law text (Korean APIs match Korean terms).
+    law_terms += english_korean_queries(q)
+
+    if not concepts:
+        # No concept matched — still produce a Korean query + generic issues.
+        if not law_terms:
+            try:
+                from services.law_grounding import build_law_search_query  # local import to avoid cycle
+                law_terms = [build_law_search_query(q) or "출입국관리법"]
+            except Exception:
+                law_terms = ["출입국관리법"]
         issues_ko = _GENERIC_ISSUE["ko"][:]; issues_en = _GENERIC_ISSUE["en"][:]
         facts_ko = _GENERIC_FACTS["ko"][:]; facts_en = _GENERIC_FACTS["en"][:]
 
@@ -377,6 +508,8 @@ def build_research_plan(
         "depthAutoSelected": auto,
         "mode": chosen_mode,
         "locale": lang,
+        "localeRaw": str(locale or "ko"),
+        "extractedFacts": extract_facts(q, visa_status_hint),
         "budget": budget,
         "lawTerms": _dedupe(law_terms, budget["lawCap"]),
         "precedentTerms": _dedupe(prec_terms or law_terms, budget["precedentCap"]),
@@ -456,6 +589,11 @@ def build_research_result(
         s = classify_precedent_strength(c)
         c["strength"] = s
         c["strengthLabel"] = strength_labels[s]
+    # Honest language metadata: law.go.kr text is Korean; in a non-KO UI attach a
+    # clear "official source may be in Korean" notice (never a fake translation).
+    locale_raw = plan.get("localeRaw", lang)
+    localize_sources(laws, locale_raw)
+    localize_sources(precs, locale_raw)
 
     issues = plan.get("issuesKo") if lang == "ko" else plan.get("issuesEn")
     risks = plan.get("riskKo") if lang == "ko" else plan.get("riskEn")
@@ -509,6 +647,8 @@ def build_research_result(
         "nextChecks": next_checks,
         "limitations": limitations,
         "sourceGroups": pro_groups,
+        "extractedFacts": plan.get("extractedFacts") or {},
+        "sourceLanguageNotice": _source_notice(locale_raw),
         "disclaimer": DISCLAIMER[lang],
         "retrievalAvailable": retrieval_available,
     }
