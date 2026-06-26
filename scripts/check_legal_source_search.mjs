@@ -129,6 +129,57 @@ ok((panel.match(/data-lss-chip=/g) || []).length === 10, 'panel renders all 10 c
 const panelEn = L.panelHtml('en');
 ok(panelEn.indexOf('Legal source search') !== -1 && panelEn.indexOf('Immigration Act') !== -1, 'EN panel uses English labels + chip glosses');
 
+section('research depth — labels, selector, auto-select');
+ok(Array.isArray(L.DEPTHS) && L.DEPTHS.join(',') === 'fast,basic,pro', 'DEPTHS = fast/basic/pro (internal names)');
+const depthRequired = {
+  depthFast: ['빠른 확인', 'Quick check'], depthBasic: ['기본 리서치', 'Standard research'], depthPro: ['심층 리서치', 'Deep research'],
+  researchDepthLabel: ['리서치 깊이', 'Research depth'], tabResearch: ['리서치', 'Research'],
+};
+for (const [key, [ko, en]] of Object.entries(depthRequired)) {
+  ok(L.STR_KO[key] === ko, `KO label "${key}" = "${ko}"`, `got "${L.STR_KO[key]}"`);
+  ok(L.STR_EN[key] === en, `EN label "${key}" = "${en}"`, `got "${L.STR_EN[key]}"`);
+}
+ok(L.STR_KO.depthFastDesc === '빠른 확인: 핵심 경로와 근거 후보를 짧게 확인합니다.', 'KO fast description exact');
+ok(L.STR_KO.depthBasicDesc === '기본 리서치: 공식자료 기반으로 쟁점과 다음 확인사항을 정리합니다.', 'KO basic description exact');
+ok(L.STR_KO.depthProDesc === '심층 리서치: 법령·판례·실무자료를 함께 검토해 리서치 메모 형태로 정리합니다.', 'KO pro description exact');
+ok(L.STR_EN.depthFastDesc === 'Quick check: Quickly identifies key routes and source candidates.', 'EN fast description exact');
+const depthSel = L.buildDepthSelectorHtml('basic', 'ko');
+ok((depthSel.match(/data-lss-depth=/g) || []).length === 3, 'depth selector renders 3 options');
+ok(depthSel.indexOf('aria-checked="true"') !== -1 && depthSel.indexOf('빠른 확인') !== -1, 'depth selector marks current + shows labels');
+ok(L.clientAutoDepth('F-4?') === 'fast', 'auto-depth: short → fast');
+ok(L.clientAutoDepth('강제퇴거 다툴 수 있어?') === 'pro', 'auto-depth: keyword → pro');
+ok(L.clientAutoDepth('귀화 불허 어떻게 다퉈?') === 'pro', 'auto-depth: 불허 → pro');
+ok(L.clientAutoDepth('D-2에서 D-10으로 바꾸려면 서류가 뭐가 필요한가요') === 'basic', 'auto-depth: normal → basic');
+
+section('research result render (deterministic backend envelope)');
+const proResult = {
+  ok: true, depth: 'pro', depthLabel: '심층 리서치', depthAutoSelected: true, mode: 'memo', locale: 'ko',
+  headings: ['리서치 메모', '1. 쟁점', '2. 사실관계에서 중요한 부분', '3. 관련 법령', '4. 관련 판례 또는 판례 검색 결과', '5. 출입국 실무상 확인할 자료', '6. 적용 가능성', '7. 위험 신호', '8. 부족한 사실관계', '9. 다음 확인사항', '10. 출처', '주의'],
+  issues: ['강제퇴거명령과 출국명령의 요건·효과 구분'], lawSearchTerms: ['출입국관리법 강제퇴거'], precedentSearchTerms: ['강제퇴거명령 취소'],
+  laws: [{ title: '출입국관리법', type: '법률', snippet: '<img src=x onerror=alert(1)>', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }],
+  precedents: [{ title: '취소', caseNumber: '2020두1', summary: 'y', sourceUrl: 'https://www.law.go.kr/precInfoP.do?precSeq=1', strengthLabel: '관련 근거' }],
+  riskFlags: ['입국금지·재입국 제한 가능성'], missingFacts: ['처분서 송달일'], nextChecks: ['1345에 사실관계 확인'],
+  limitations: ['이 정리는 검색·구조화 결과이며 법적 결론이 아닙니다.'],
+  sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }] }],
+  disclaimer: '법령·판례 리서치는 공식 원문 확인을 돕기 위한 정리이며, 변호사·행정사의 법률 자문이나 최종 판단을 대체하지 않습니다.'
+};
+const proHtml = L.buildResearchHtml(proResult, 'ko');
+ok(proHtml.indexOf('심층 리서치') !== -1, 'pro render shows depth label');
+ok(proHtml.indexOf('리서치 메모') !== -1, 'pro render shows memo title');
+ok(proHtml.indexOf('강제퇴거명령과 출국명령의 요건') !== -1, 'pro render shows issues');
+ok(proHtml.indexOf('입국금지') !== -1, 'pro render shows risk flags');
+ok(proHtml.indexOf('처분서 송달일') !== -1, 'pro render shows missing facts');
+ok(proHtml.indexOf('직접 근거') !== -1, 'pro render shows source-strength label');
+ok(proHtml.indexOf('lss-rgroup-title') !== -1, 'pro render groups sources by type');
+ok(proHtml.indexOf('<img src=x') === -1 && proHtml.indexOf('&lt;img') !== -1, 'pro render escapes malicious law snippet');
+ok(proHtml.indexOf('대체하지 않습니다') !== -1, 'pro render shows disclaimer');
+const fastResult = { ok: true, depth: 'fast', depthLabel: '빠른 확인', locale: 'ko', headings: ['빠른 요약', '관련 경로', '확인할 근거', '주의'], issues: ['경로'], lawSearchTerms: ['출입국관리법'], laws: [], precedents: [], riskFlags: [], missingFacts: [], nextChecks: [], limitations: ['x'], disclaimer: 'd' };
+const fastHtml = L.buildResearchHtml(fastResult, 'ko');
+ok(fastHtml.indexOf('리서치 메모') === -1, 'fast render omits the memo title');
+ok(fastHtml.indexOf('위험 신호') === -1, 'fast render omits risk-flag section');
+ok(L.buildResearchHtml({ ok: false, error: 'LAW_API_OC is not configured' }, 'ko').indexOf('API 설정이 필요합니다') !== -1, 'research missing-key → config state');
+ok(L.buildResearchHtml({ ok: false, error: 'search_failed' }, 'ko').indexOf('검색에 실패했습니다') !== -1, 'research failure → error state');
+
 section('no dummy / fake-professional strings');
 const src = readFileSync(join(ROOT, 'assets/js/legal-source-search.js'), 'utf8');
 for (const bad of ['Mr.Visa', 'Mr Visa', 'lorem ipsum', '행정사 검토', '법무법인']) {

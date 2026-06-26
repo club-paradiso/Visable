@@ -48,6 +48,7 @@ from services.law_citation_guard import (
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack, search_laws
 from services import precedent_sources
+from services import legal_research
 from services.citation_verifier import verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
@@ -5113,6 +5114,113 @@ async def legal_precedents_search(q: str = "") -> Any:
     return UTF8JSONResponse(
         content={"ok": False, "error": "search_failed",
                  "reason": env.get("errorType") or status or "unknown", "query": query, "results": []},
+    )
+
+
+class LegalResearchRequest(BaseModel):
+    question: str = ""
+    locale: Optional[str] = "ko"
+    # mode controls the task shape; depth controls retrieval + answer depth.
+    mode: Optional[str] = None
+    depth: Optional[str] = None
+    visaStatusHint: Optional[str] = None
+    includePrecedents: Optional[bool] = None
+    includeManuals: Optional[bool] = None
+
+
+_LEGAL_RESEARCH_MAX_QUESTION = 800
+
+
+def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
+    """Run the budgeted law searches for a plan and return deduped law cards."""
+    laws: List[Dict[str, Any]] = []
+    seen = set()
+    for term in plan.get("lawTerms", []):
+        outcome = search_laws(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        if outcome.get("status") != "ok":
+            continue
+        for r in (outcome.get("results") or []):
+            if not isinstance(r, dict):
+                continue
+            card = _map_law_result(r)
+            key = (card.get("id"), card.get("title"))
+            if key in seen:
+                continue
+            seen.add(key)
+            laws.append(card)
+        if len(laws) >= 12:
+            break
+    return laws[:12]
+
+
+def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
+    """Run the budgeted precedent searches for a plan and return deduped cards."""
+    out: List[Dict[str, Any]] = []
+    seen = set()
+    for term in plan.get("precedentTerms", []):
+        env = precedent_sources.search_precedents(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        if env.get("status") != "results_found":
+            continue
+        for it in (env.get("items") or []):
+            if not isinstance(it, dict) or it.get("publicStatus") == "unavailable":
+                continue
+            card = _map_precedent_item(it, term)
+            key = (card.get("id"), card.get("title"))
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append(card)
+        if len(out) >= 8:
+            break
+    return out[:8]
+
+
+@app.post("/api/legal/research")
+async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
+    """Deterministic, source-grounded legal research scaffold (no LLM).
+
+    Plans retrieval by research depth (fast / basic / pro), runs the budgeted
+    law/precedent searches via the OC-safe adapters, and returns a depth-
+    structured result: issues to verify, source-strength-labelled cards (grouped
+    by source type in pro), risk flags, missing facts, next checks, limitations,
+    and a disclaimer. It never fabricates citations, never states a legal
+    conclusion, and never infers facts the user did not provide.
+    """
+    question = (req.question or "").strip()[:_LEGAL_RESEARCH_MAX_QUESTION]
+    if not question:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_question"})
+
+    plan = legal_research.build_research_plan(
+        question,
+        depth=req.depth,
+        mode=req.mode,
+        visa_status_hint=req.visaStatusHint,
+        include_precedents=req.includePrecedents,
+        include_manuals=req.includeManuals,
+        locale=req.locale,
+    )
+
+    cfg = load_grounding_config()
+    retrieval_available = bool(cfg.law_api_configured)
+    laws: List[Dict[str, Any]] = []
+    precs: List[Dict[str, Any]] = []
+    if retrieval_available:
+        laws = _run_research_law_retrieval(plan, cfg)
+        if plan.get("runPrecedents"):
+            precs = _run_research_precedent_retrieval(plan, cfg)
+
+    paradiso_sources: List[Dict[str, Any]] = []
+    hint = (req.visaStatusHint or "").strip()
+    if hint:
+        paradiso_sources.append({
+            "title": hint, "type": "paradiso",
+            "strength": "background",
+            "note": "Paradiso 구조화 데이터" if plan.get("locale") == "ko" else "Paradiso structured data",
+        })
+
+    return legal_research.build_research_result(
+        plan, law_results=laws, precedent_results=precs,
+        paradiso_sources=paradiso_sources, retrieval_available=retrieval_available,
     )
 
 

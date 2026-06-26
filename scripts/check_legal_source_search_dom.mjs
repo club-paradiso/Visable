@@ -70,7 +70,7 @@ async function run() {
   L.mount();
   ok(!!root && root.querySelector('.lss-panel'), 'panel mounted into #legalSourceSearchRoot');
   ok(root.textContent.indexOf('법령·판례 근거 검색') !== -1, 'panel shows the KO title');
-  ok(root.querySelectorAll('[data-lss-tab]').length === 2, 'two tabs rendered');
+  ok(root.querySelectorAll('[data-lss-tab]').length === 3, 'three tabs rendered (Laws / Precedents / Research)');
   ok(root.querySelectorAll('[data-lss-chip]').length === 10, 'ten quick chips rendered');
   ok(!!root.querySelector('.lss-disclaimer'), 'disclaimer rendered');
 
@@ -130,6 +130,40 @@ async function run() {
   await sleep(25);
   ok(lastUrl.indexOf('/api/legal/precedents/search?q=') !== -1, 'precedent tab + prior query hit the precedents endpoint');
   ok(root.querySelector('.lss-prec-flag') && root.querySelector('[data-lss-out]').textContent.indexOf('원문 확인 필요') !== -1, 'precedent card shows "원문 확인 필요"');
+
+  // --- Research (depth) tab ---
+  const researchTab = root.querySelector('[data-lss-tab="research"]');
+  researchTab.dispatchEvent(new dom.window.Event('click'));
+  ok(root.querySelector('.lss-research-area') && !root.querySelector('.lss-research-area').hidden, 'research tab reveals the research area');
+  ok(root.querySelector('.lss-search-area').hidden, 'term-search area hidden on research tab');
+  ok(root.querySelectorAll('[data-lss-depth]').length === 3, 'depth selector has 3 options (fast/basic/pro)');
+  ok(root.querySelector('[data-lss-rinput]'), 'research question input rendered');
+
+  // run a Pro research; backend returns the structured envelope
+  nextResponse = {
+    ok: true, depth: 'pro', depthLabel: '심층 리서치', depthAutoSelected: true, mode: 'memo', locale: 'ko',
+    headings: ['리서치 메모', '1. 쟁점', '2. 사실관계에서 중요한 부분', '3. 관련 법령', '4. 관련 판례 또는 판례 검색 결과', '5. 출입국 실무상 확인할 자료', '6. 적용 가능성', '7. 위험 신호', '8. 부족한 사실관계', '9. 다음 확인사항', '10. 출처', '주의'],
+    issues: ['강제퇴거명령과 출국명령의 요건·효과 구분'],
+    lawSearchTerms: ['출입국관리법 강제퇴거'], precedentSearchTerms: ['강제퇴거명령 취소'],
+    laws: [{ title: '출입국관리법', type: '법률', snippet: '<b>x</b>', sourceUrl: 'https://www.law.go.kr/법령/x', strength: 'direct', strengthLabel: '직접 근거' }],
+    precedents: [{ title: '취소', caseNumber: '2020두1', summary: 'y', sourceUrl: 'https://www.law.go.kr/precInfoP.do?precSeq=1', strength: 'related', strengthLabel: '관련 근거' }],
+    riskFlags: ['입국금지·재입국 제한 가능성'], missingFacts: ['처분서 송달일'], nextChecks: ['1345에 사실관계 확인'],
+    limitations: ['이 정리는 검색·구조화 결과이며 법적 결론이 아닙니다.'],
+    sourceGroups: [{ group: 'law', label: '법령', cards: [{ title: '출입국관리법', sourceUrl: 'https://www.law.go.kr/법령/x', strengthLabel: '직접 근거' }] }, { group: 'precedent', label: '판례', cards: [{ title: '취소', caseNumber: '2020두1', sourceUrl: 'https://www.law.go.kr/precInfoP.do?precSeq=1' }] }],
+    disclaimer: '법령·판례 리서치는 공식 원문 확인을 돕기 위한 정리이며, 변호사·행정사의 법률 자문이나 최종 판단을 대체하지 않습니다.'
+  };
+  L.doResearch('강제퇴거명령과 출국명령을 비교하고 다툴 쟁점을 정리해줘');
+  await sleep(25);
+  ok(lastUrl.indexOf('/api/legal/research') !== -1, 'research run hit the /api/legal/research endpoint');
+  const outText = root.querySelector('[data-lss-out]').textContent;
+  ok(root.querySelector('.lss-research'), 'structured research result rendered');
+  ok(outText.indexOf('심층 리서치') !== -1, 'depth label shown');
+  ok(outText.indexOf('강제퇴거명령과 출국명령의 요건') !== -1, 'issues rendered');
+  ok(outText.indexOf('입국금지') !== -1, 'risk flags rendered');
+  ok(outText.indexOf('처분서 송달일') !== -1, 'missing facts rendered');
+  ok(root.querySelector('.lss-rgroup-title'), 'pro source groups rendered');
+  ok(root.querySelectorAll('img').length === 0, 'research law snippet HTML rendered inert (no <img>)');
+  ok(outText.indexOf('변호사·행정사의 법률 자문이나 최종 판단을 대체하지 않습니다') !== -1, 'research disclaimer shown');
 
   console.log(`\n${failures ? 'FAIL' : 'OK'} — ${checks - failures}/${checks} checks passed`);
   process.exit(failures ? 1 : 0);

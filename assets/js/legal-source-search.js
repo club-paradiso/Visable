@@ -65,7 +65,35 @@
     errorBody: '잠시 후 다시 시도하거나, 하이코리아·1345 또는 공식 자료에서 확인하세요.',
     missingKeyTitle: 'API 설정이 필요합니다',
     missingKeyBody: '법령 검색 서비스가 아직 설정되지 않았습니다. 공식 자료(law.go.kr·하이코리아·1345)에서 직접 확인하세요.',
-    precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.'
+    precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.',
+    tabResearch: '리서치',
+    researchDepthLabel: '리서치 깊이',
+    depthFast: '빠른 확인',
+    depthBasic: '기본 리서치',
+    depthPro: '심층 리서치',
+    depthFastDesc: '빠른 확인: 핵심 경로와 근거 후보를 짧게 확인합니다.',
+    depthBasicDesc: '기본 리서치: 공식자료 기반으로 쟁점과 다음 확인사항을 정리합니다.',
+    depthProDesc: '심층 리서치: 법령·판례·실무자료를 함께 검토해 리서치 메모 형태로 정리합니다.',
+    researchPlaceholder: '상황이나 질문을 적어주세요 (예: 강제퇴거명령과 출국명령의 차이와 다툴 쟁점)',
+    researchInputAria: '리서치 질문',
+    researchRun: '리서치 실행',
+    researchIdleTitle: '상황을 적으면 쟁점과 확인할 근거를 정리해 드립니다',
+    researchIdleBody: '깊이를 고르고 질문을 입력하세요. 질문에 따라 깊이를 자동으로 제안합니다.',
+    researchLoading: '리서치 준비 중입니다',
+    autoSuggested: '질문에 맞춰 자동 선택됨',
+    secIssues: '쟁점',
+    secLawTerms: '법령 검색어',
+    secPrecTerms: '판례 검색어',
+    secLaws: '관련 법령·자료',
+    secPrecedents: '관련 판례',
+    secApply: '적용 가능성',
+    secRisks: '위험 신호',
+    secMissing: '부족한 사실관계',
+    secNext: '다음 확인사항',
+    secSources: '출처',
+    secLimits: '한계',
+    applyNote: '아래 근거를 본인 사실관계에 직접 대입해 확인하세요. 이 정리는 결론이 아닙니다.',
+    proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중']
   };
   var STR_EN = {
     title: 'Legal source search',
@@ -95,7 +123,35 @@
     errorBody: 'Please try again shortly, or check with HiKorea / 1345 or the official source.',
     missingKeyTitle: 'API configuration required',
     missingKeyBody: 'The legal search service is not configured yet. Please check official sources (law.go.kr / HiKorea / 1345) directly.',
-    precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.'
+    precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.',
+    tabResearch: 'Research',
+    researchDepthLabel: 'Research depth',
+    depthFast: 'Quick check',
+    depthBasic: 'Standard research',
+    depthPro: 'Deep research',
+    depthFastDesc: 'Quick check: Quickly identifies key routes and source candidates.',
+    depthBasicDesc: 'Standard research: Organizes issues and next checks based on official materials.',
+    depthProDesc: 'Deep research: Reviews laws, precedents, and practice materials in a research memo format.',
+    researchPlaceholder: 'Describe your situation or question (e.g. difference between a deportation order and a departure order and how to challenge each)',
+    researchInputAria: 'Research question',
+    researchRun: 'Run research',
+    researchIdleTitle: 'Describe your situation and we will organize the issues and sources to check',
+    researchIdleBody: 'Choose a depth and enter your question. Depth is auto-suggested based on the question.',
+    researchLoading: 'Preparing research',
+    autoSuggested: 'Auto-selected for this question',
+    secIssues: 'Issues',
+    secLawTerms: 'Law search terms',
+    secPrecTerms: 'Precedent search terms',
+    secLaws: 'Relevant laws & materials',
+    secPrecedents: 'Relevant precedents',
+    secApply: 'Possible application',
+    secRisks: 'Risk flags',
+    secMissing: 'Missing facts',
+    secNext: 'Next checks',
+    secSources: 'Sources',
+    secLimits: 'Limitations',
+    applyNote: 'Apply the sources below to your own facts and verify. This is not a conclusion.',
+    proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo']
   };
   var STR_PACKS = { ko: STR_KO, en: STR_EN };
   function S(k, lang) {
@@ -157,11 +213,12 @@
     if (r.effectiveDate) dates.push(S('effective', lang) + ' ' + r.effectiveDate);
     var sub = metaLine([r.type, r.articleNo].concat(dates));
     var snippet = r.snippet ? '<p class="lss-snip">' + escapeHtml(r.snippet) + '</p>' : '';
+    var strength = r.strengthLabel ? '<span class="lss-strength">' + escapeHtml(r.strengthLabel) + '</span>' : '';
     return '<article class="lss-card">'
       + '<h4 class="lss-card-title">' + title + '</h4>'
       + (sub ? '<p class="lss-card-sub">' + sub + '</p>' : '')
       + snippet
-      + '<div class="lss-card-foot">' + sourceLinkHtml(r.sourceUrl, lang) + '</div>'
+      + '<div class="lss-card-foot">' + strength + sourceLinkHtml(r.sourceUrl, lang) + '</div>'
       + '</article>';
   }
   function buildPrecedentCardHtml(r, lang) {
@@ -169,11 +226,13 @@
     var title = r.title ? escapeHtml(r.title) : escapeHtml(S('untitled', lang));
     var sub = metaLine([r.court, r.caseNumber, r.decisionDate]);
     var snippet = r.summary ? '<p class="lss-snip">' + escapeHtml(r.summary) + '</p>' : '';
+    var strength = r.strengthLabel ? '<span class="lss-strength">' + escapeHtml(r.strengthLabel) + '</span>' : '';
     return '<article class="lss-card lss-card-prec">'
       + '<h4 class="lss-card-title">' + title + '</h4>'
       + (sub ? '<p class="lss-card-sub">' + sub + '</p>' : '')
       + snippet
       + '<div class="lss-card-foot">'
+      + strength
       + sourceLinkHtml(r.sourceUrl, lang)
       + '<span class="lss-prec-flag">' + escapeHtml(S('checkOfficial', lang)) + '</span>'
       + '</div>'
@@ -220,6 +279,109 @@
     return { state: 'error', results: [] };
   }
 
+  /* --------------------------------------------------- research (depth) --- */
+  var DEPTHS = ['fast', 'basic', 'pro'];
+  var DEPTH_KEY = { fast: 'depthFast', basic: 'depthBasic', pro: 'depthPro' };
+  var DEPTH_DESC_KEY = { fast: 'depthFastDesc', basic: 'depthBasicDesc', pro: 'depthProDesc' };
+  // Client-side mirror of the backend auto-selector (UI suggestion only; the
+  // backend decides authoritatively). Keep the heuristics in sync.
+  var PRO_TRIGGERS = ['판례', '불허', '취소소송', '강제퇴거', '출국명령', '난민', '귀화 불허', '행정심판', '소송', 'appeal', 'precedent', 'refusal', 'denial', 'deportation'];
+  function clientAutoDepth(question) {
+    var t = String(question == null ? '' : question).trim();
+    var low = t.toLowerCase();
+    for (var i = 0; i < PRO_TRIGGERS.length; i++) {
+      var kw = PRO_TRIGGERS[i];
+      if (/^[\x00-\x7F]*$/.test(kw)) { if (low.indexOf(kw) !== -1) return 'pro'; }
+      else if (t.indexOf(kw) !== -1) return 'pro';
+    }
+    var clauses = (t.split('?').length - 1) + (t.split('，').length - 1) + (t.split(',').length - 1);
+    if (t.length >= 90 || clauses >= 3) return 'pro';
+    if (t.length <= 22) return 'fast';
+    return 'basic';
+  }
+  function buildDepthSelectorHtml(depth, lang) {
+    var cur = DEPTHS.indexOf(depth) === -1 ? 'basic' : depth;
+    var btns = DEPTHS.map(function (d) {
+      var on = d === cur;
+      return '<button type="button" class="lss-depth-btn' + (on ? ' lss-depth-on' : '') + '" role="radio" aria-checked="' + (on ? 'true' : 'false') + '" data-lss-depth="' + d + '">' + escapeHtml(S(DEPTH_KEY[d], lang)) + '</button>';
+    }).join('');
+    return '<div class="lss-depth">'
+      + '<span class="lss-depth-label">' + escapeHtml(S('researchDepthLabel', lang)) + '</span>'
+      + '<div class="lss-depth-row" role="radiogroup" aria-label="' + escapeHtml(S('researchDepthLabel', lang)) + '">' + btns + '</div>'
+      + '<p class="lss-depth-desc">' + escapeHtml(S(DEPTH_DESC_KEY[cur], lang)) + '</p>'
+      + '</div>';
+  }
+
+  function _ul(items) {
+    if (!items || !items.length) return '';
+    return '<ul class="lss-rlist">' + items.map(function (i) { return '<li>' + escapeHtml(i) + '</li>'; }).join('') + '</ul>';
+  }
+  function _termChips(terms, kind) {
+    if (!terms || !terms.length) return '';
+    return '<div class="lss-rterms">' + terms.map(function (t) {
+      return '<button type="button" class="lss-rterm" data-lss-rterm-kind="' + escapeHtml(kind) + '" data-lss-rterm="' + escapeHtml(t) + '">' + escapeHtml(t) + ' ↗</button>';
+    }).join('') + '</div>';
+  }
+  function _cards(list, kind, lang) {
+    if (!list || !list.length) return '';
+    return '<div class="lss-results">' + list.map(function (r) {
+      return kind === 'precedents' ? buildPrecedentCardHtml(r, lang) : buildLawCardHtml(r, lang);
+    }).join('') + '</div>';
+  }
+  function _sec(title, inner) {
+    if (!inner) return '';
+    return '<section class="lss-rsec"><h4 class="lss-rsec-title">' + escapeHtml(title) + '</h4>' + inner + '</section>';
+  }
+
+  // Render the deterministic backend research result into depth-structured,
+  // escaped HTML. Pure → unit-testable.
+  function buildResearchHtml(result, lang) {
+    if (!result || result.ok === false) {
+      var st = (result && result.error === 'LAW_API_OC is not configured') ? 'missing-key'
+        : (result && result.error === 'empty_question') ? 'idle' : 'error';
+      return buildResultsHtml(st, 'laws', [], lang);
+    }
+    var depth = result.depth || 'basic';
+    var cautionLabel = lang === 'en' ? 'Caution' : '주의';
+    var html = '<div class="lss-research" role="status" aria-live="polite">';
+    html += '<div class="lss-rhead"><span class="lss-rdepth">' + escapeHtml(result.depthLabel || S(DEPTH_KEY[depth], lang)) + '</span>'
+      + (result.depthAutoSelected ? '<span class="lss-rauto">' + escapeHtml(S('autoSuggested', lang)) + '</span>' : '') + '</div>';
+
+    if (depth === 'fast') {
+      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
+      html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
+    } else {
+      if (depth === 'pro') html += '<p class="lss-rmemo">' + escapeHtml((result.headings && result.headings[0]) || '') + '</p>';
+      html += _sec(S('secIssues', lang), _ul(result.issues));
+      html += _sec(S('secMissing', lang), _ul(result.missingFacts));
+      html += _sec(S('secLawTerms', lang), _termChips(result.lawSearchTerms, 'laws'));
+      html += _sec(S('secLaws', lang), _cards(result.laws, 'laws', lang));
+      var precInner = _termChips(result.precedentSearchTerms, 'precedents') + _cards(result.precedents, 'precedents', lang);
+      html += _sec(S('secPrecedents', lang), precInner);
+      if (depth === 'pro') html += _sec(S('secApply', lang), '<p class="lss-rnote">' + escapeHtml(S('applyNote', lang)) + '</p>');
+      html += _sec(S('secRisks', lang), _ul(result.riskFlags));
+      html += _sec(S('secNext', lang), _ul(result.nextChecks));
+      // Pro groups sources by type; basic shows a flat source list.
+      if (depth === 'pro' && result.sourceGroups && result.sourceGroups.length) {
+        var groups = result.sourceGroups.map(function (g) {
+          var cards = (g.cards || []).map(function (c) {
+            if (g.group === 'precedent') return buildPrecedentCardHtml(c, lang);
+            if (g.group === 'paradiso') return '<article class="lss-card"><h4 class="lss-card-title">' + escapeHtml(c.title || '') + '</h4>'
+              + (c.note ? '<p class="lss-card-sub">' + escapeHtml(c.note) + '</p>' : '') + '</article>';
+            return buildLawCardHtml(c, lang);
+          }).join('');
+          return '<div class="lss-rgroup"><h5 class="lss-rgroup-title">' + escapeHtml(g.label) + '</h5><div class="lss-results">' + cards + '</div></div>';
+        }).join('');
+        html += _sec(S('secSources', lang), groups);
+      }
+    }
+    html += _sec(S('secLimits', lang), _ul(result.limitations));
+    html += '<div class="lss-rcaution"><strong>' + escapeHtml(cautionLabel) + '</strong> ' + escapeHtml(result.disclaimer || S('disclaimer', lang)) + '</div>';
+    html += '</div>';
+    return html;
+  }
+
   /* ------------------------------------------------------ panel markup ---- */
   function panelHtml(lang) {
     var chips = CHIPS.map(function (c, i) {
@@ -237,12 +399,24 @@
       + '<div class="lss-tabs" role="tablist" aria-label="' + escapeHtml(S('title', lang)) + '">'
       + '<button type="button" class="lss-tab lss-tab-on" role="tab" aria-selected="true" data-lss-tab="laws">' + escapeHtml(S('tabLaws', lang)) + '</button>'
       + '<button type="button" class="lss-tab" role="tab" aria-selected="false" data-lss-tab="precedents">' + escapeHtml(S('tabPrec', lang)) + '</button>'
+      + '<button type="button" class="lss-tab" role="tab" aria-selected="false" data-lss-tab="research">' + escapeHtml(S('tabResearch', lang)) + '</button>'
       + '</div>'
+      // Term-search area (Laws / Precedents tabs)
+      + '<div class="lss-search-area" data-lss-area="search">'
       + '<div class="lss-searchbar">'
       + '<input type="search" class="lss-input" data-lss-input placeholder="' + escapeHtml(S('inputPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('inputAria', lang)) + '" maxlength="' + MAX_QUERY + '">'
       + '<button type="button" class="lss-search-btn" data-lss-search>' + escapeHtml(S('searchBtn', lang)) + '</button>'
       + '</div>'
       + '<div class="lss-chips" aria-label="' + escapeHtml(S('chipsLabel', lang)) + '">' + chips + '</div>'
+      + '</div>'
+      // Research area (Research tab) — depth selector + question + run
+      + '<div class="lss-research-area" data-lss-area="research" hidden>'
+      + buildDepthSelectorHtml('basic', lang)
+      + '<div class="lss-searchbar">'
+      + '<textarea class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="2"></textarea>'
+      + '<button type="button" class="lss-search-btn" data-lss-run>' + escapeHtml(S('researchRun', lang)) + '</button>'
+      + '</div>'
+      + '</div>'
       + '<div class="lss-out" data-lss-out aria-live="polite">' + buildResultsHtml('idle', 'laws', [], lang) + '</div>'
       + '</div>'
       + '</div>';
@@ -257,6 +431,10 @@
     buildResultsHtml: buildResultsHtml,
     classifyResponse: classifyResponse,
     panelHtml: panelHtml,
+    buildDepthSelectorHtml: buildDepthSelectorHtml,
+    buildResearchHtml: buildResearchHtml,
+    clientAutoDepth: clientAutoDepth,
+    DEPTHS: DEPTHS,
     CHIPS: CHIPS,
     STR_KO: STR_KO,
     STR_EN: STR_EN,
@@ -335,11 +513,48 @@
       + '.lss-src:hover{text-decoration:underline;}'
       + '.lss-src:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-needsrc,.lss-prec-flag{font-size:.74rem;font-weight:700;color:var(--warning,#E68A3A);}'
+      + '.lss-strength{font-size:.7rem;font-weight:800;padding:.1rem .45rem;border-radius:999px;border:1px solid var(--bd,#2D5A50);color:var(--t2,#C7BFA8);}'
+      // depth selector
+      + '.lss-depth{margin:0 0 .7rem;}'
+      + '.lss-depth-label{display:block;font-size:.74rem;font-weight:800;color:var(--t2,#C7BFA8);letter-spacing:.03em;margin:0 0 .4rem;}'
+      + '.lss-depth-row{display:flex;gap:.4rem;flex-wrap:wrap;}'
+      + '.lss-depth-btn{flex:1 1 auto;min-height:42px;padding:.4rem .7rem;border-radius:10px;cursor:pointer;font:inherit;font-size:.85rem;font-weight:750;'
+      + 'border:1.5px solid var(--bd,#2D5A50);background:transparent;color:var(--t2,#C7BFA8);}'
+      + '.lss-depth-btn:hover{border-color:var(--ac,#34D4A8);}'
+      + '.lss-depth-btn:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
+      + '.lss-depth-on{background:var(--acL,#163E36);border-color:var(--ac2,#17B388);color:var(--t1,#F3EEDF);}'
+      + '.lss-depth-desc{font-size:.78rem;line-height:1.55;color:var(--t3,#8C8572);margin:.5rem 0 0;word-break:keep-all;}'
+      + '.lss-rinput{flex:1 1 auto;min-width:0;min-height:48px;padding:.6rem .85rem;border-radius:10px;resize:vertical;'
+      + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.45 inherit;}'
+      + '.lss-rinput:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
+      // research result
+      + '.lss-research{display:flex;flex-direction:column;gap:.2rem;}'
+      + '.lss-rhead{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.2rem 0 .4rem;}'
+      + '.lss-rdepth{font-size:.78rem;font-weight:850;color:var(--ac,#34D4A8);background:var(--acL,#163E36);border:1px solid var(--ac2,#17B388);border-radius:999px;padding:.18rem .6rem;}'
+      + '.lss-rauto{font-size:.72rem;font-weight:700;color:var(--t3,#8C8572);}'
+      + '.lss-rmemo{font-size:1rem;font-weight:850;color:var(--t1,#F3EEDF);margin:.2rem 0 .3rem;}'
+      + '.lss-rsec{border-top:1px solid var(--bd2,#224A41);padding:.6rem 0 .2rem;}'
+      + '.lss-rsec-title{font-size:.86rem;font-weight:800;color:var(--t1,#F3EEDF);margin:0 0 .4rem;}'
+      + '.lss-rlist{margin:.1rem 0 .3rem;padding-left:1.15rem;}'
+      + '.lss-rlist li{font-size:.86rem;line-height:1.6;color:var(--t1,#F3EEDF);margin:.15rem 0;word-break:keep-all;}'
+      + '.lss-rnote{font-size:.83rem;line-height:1.6;color:var(--t2,#C7BFA8);margin:.1rem 0;word-break:keep-all;}'
+      + '.lss-rterms{display:flex;flex-wrap:wrap;gap:.4rem;margin:.1rem 0 .4rem;}'
+      + '.lss-rterm{min-height:34px;padding:.25rem .65rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.8rem;font-weight:650;'
+      + 'border:1px dashed var(--bd,#2D5A50);background:transparent;color:var(--ac,#34D4A8);}'
+      + '.lss-rterm:hover{border-style:solid;}'
+      + '.lss-rterm:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
+      + '.lss-rgroup{margin:.3rem 0 .5rem;}'
+      + '.lss-rgroup-title{font-size:.78rem;font-weight:800;color:var(--ac,#34D4A8);margin:.2rem 0 .35rem;}'
+      + '.lss-rcaution{margin:.6rem 0 .2rem;font-size:.8rem;line-height:1.6;color:var(--t2,#C7BFA8);background:rgba(0,0,0,.12);'
+      + 'border:1px solid var(--bd2,#224A41);border-left:3px solid var(--warning,#E68A3A);border-radius:8px;padding:.55rem .7rem;word-break:keep-all;}'
       + '.lss-state{text-align:center;padding:1.6rem 1rem;color:var(--t2,#C7BFA8);}'
       + '.lss-state-ic{font-size:1.6rem;margin-bottom:.4rem;}'
       + '.lss-state-title{font-size:.92rem;font-weight:750;color:var(--t1,#F3EEDF);margin:0 0 .25rem;word-break:keep-all;}'
       + '.lss-state-body{font-size:.8rem;line-height:1.55;color:var(--t2,#C7BFA8);margin:0;word-break:keep-all;}'
       + '.lss-spinner{width:30px;height:30px;margin:.2rem auto .5rem;border:3px solid var(--bd,#2D5A50);border-top-color:var(--ac,#34D4A8);border-radius:50%;animation:lss-spin .8s linear infinite;}'
+      + '.lss-rsteps{list-style:none;margin:.4rem 0 0;padding:0;display:inline-block;text-align:left;}'
+      + '.lss-rsteps li{font-size:.8rem;color:var(--t2,#C7BFA8);margin:.2rem 0;}'
+      + '.lss-rsteps li::before{content:"· ";color:var(--ac,#34D4A8);}'
       + '@keyframes lss-spin{to{transform:rotate(360deg);}}'
       + '@media (max-width:480px){.lss-head-title{font-size:.95rem;}.lss-searchbar{flex-wrap:wrap;}.lss-search-btn{flex:1 1 auto;}}'
       + '@media (prefers-reduced-motion:reduce){.lss-spinner{animation:none;}}'
@@ -354,11 +569,27 @@
   }
 
   /* ----------------------------------------------------------- runtime ---- */
-  var state = { kind: 'laws', lastQuery: '' };
+  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '' };
   var root = null;
 
   function out() { return root && root.querySelector('[data-lss-out]'); }
-  function setOut(html) { var o = out(); if (o) o.innerHTML = html; }
+  function setOut(html) { var o = out(); if (o) { o.innerHTML = html; wireOut(); } }
+
+  // (Re)wire dynamic controls inside the output area (research term chips).
+  function wireOut() {
+    var o = out();
+    if (!o) return;
+    o.querySelectorAll('[data-lss-rterm]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var term = btn.getAttribute('data-lss-rterm');
+        var kind = btn.getAttribute('data-lss-rterm-kind') === 'precedents' ? 'precedents' : 'laws';
+        setTab(kind);
+        var input = root.querySelector('[data-lss-input]');
+        if (input) input.value = term;
+        doSearch(term);
+      });
+    });
+  }
 
   function doSearch(query) {
     var q = String(query == null ? '' : query).trim().slice(0, MAX_QUERY);
@@ -385,15 +616,80 @@
       });
   }
 
+  function syncDepthUI() {
+    var row = root.querySelector('.lss-depth');
+    if (!row) return;
+    row.querySelectorAll('[data-lss-depth]').forEach(function (btn) {
+      var on = btn.getAttribute('data-lss-depth') === state.researchDepth;
+      btn.classList.toggle('lss-depth-on', on);
+      btn.setAttribute('aria-checked', on ? 'true' : 'false');
+    });
+    var desc = row.querySelector('.lss-depth-desc');
+    if (desc) desc.textContent = S(DEPTH_DESC_KEY[state.researchDepth] || 'depthBasicDesc', lssLang());
+  }
+
+  function researchIdleHtml(lang) {
+    return '<div class="lss-state"><div class="lss-state-ic" aria-hidden="true">🔬</div>'
+      + '<p class="lss-state-title">' + escapeHtml(S('researchIdleTitle', lang)) + '</p>'
+      + '<p class="lss-state-body">' + escapeHtml(S('researchIdleBody', lang)) + '</p></div>';
+  }
+
+  function doResearch(question) {
+    var q = String(question == null ? '' : question).trim().slice(0, 800);
+    if (!q) return;
+    state.lastResearch = q;
+    var lang = lssLang();
+    // Deep research can take longer (multiple source searches) — surface the
+    // staged work so the wait is legible (§8).
+    var effectiveDepth = state.depthManual ? state.researchDepth : clientAutoDepth(q);
+    var steps = (effectiveDepth === 'pro') ? (S('proSteps', lang) || []) : [];
+    var stepsHtml = steps.length
+      ? '<ul class="lss-rsteps">' + steps.map(function (s) { return '<li>' + escapeHtml(s) + '</li>'; }).join('') + '</ul>'
+      : '';
+    setOut('<div class="lss-state lss-loading"><div class="lss-spinner" aria-hidden="true"></div>'
+      + '<p class="lss-state-title">' + escapeHtml(S('researchLoading', lang)) + '</p>' + stepsHtml + '</div>');
+    var payload = { question: q, locale: lang };
+    // Only pin depth when the user manually chose one; otherwise let the backend
+    // auto-select and reflect its choice back into the selector.
+    if (state.depthManual) payload.depth = state.researchDepth;
+    fetch(apiBase() + '/api/legal/research', {
+      method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+      .then(function (r) { return r.json().catch(function () { return null; }); })
+      .then(function (json) {
+        if (state.lastResearch !== q) return;
+        if (json && json.ok && !state.depthManual && json.depth) { state.researchDepth = json.depth; syncDepthUI(); }
+        setOut(buildResearchHtml(json, lssLang()));
+      })
+      .catch(function () {
+        if (state.lastResearch !== q) return;
+        setOut(buildResearchHtml({ ok: false, error: 'search_failed' }, lssLang()));
+      });
+  }
+
   function setTab(kind) {
-    state.kind = (kind === 'precedents') ? 'precedents' : 'laws';
+    var valid = (kind === 'precedents' || kind === 'research') ? kind : 'laws';
+    state.kind = valid;
     root.querySelectorAll('[data-lss-tab]').forEach(function (btn) {
-      var on = btn.getAttribute('data-lss-tab') === state.kind;
+      var on = btn.getAttribute('data-lss-tab') === valid;
       btn.classList.toggle('lss-tab-on', on);
       btn.setAttribute('aria-selected', on ? 'true' : 'false');
     });
-    if (state.lastQuery) doSearch(state.lastQuery);
-    else setOut(buildResultsHtml('idle', state.kind, [], lssLang()));
+    var isResearch = valid === 'research';
+    var searchArea = root.querySelector('.lss-search-area');
+    var researchArea = root.querySelector('.lss-research-area');
+    if (searchArea) searchArea.hidden = isResearch;
+    if (researchArea) researchArea.hidden = !isResearch;
+    var lang = lssLang();
+    if (isResearch) {
+      if (state.lastResearch) doResearch(state.lastResearch);
+      else setOut(researchIdleHtml(lang));
+    } else if (state.lastQuery) {
+      doSearch(state.lastQuery);
+    } else {
+      setOut(buildResultsHtml('idle', valid, [], lang));
+    }
   }
 
   function wire() {
@@ -422,6 +718,29 @@
         if (chip) doSearch(chip.query);
       });
     });
+    // research: depth selector
+    root.querySelectorAll('[data-lss-depth]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.researchDepth = btn.getAttribute('data-lss-depth');
+        state.depthManual = true;
+        syncDepthUI();
+      });
+    });
+    // research: question + run
+    var runBtn = root.querySelector('[data-lss-run]');
+    var rinput = root.querySelector('[data-lss-rinput]');
+    if (runBtn && rinput) {
+      runBtn.addEventListener('click', function () { doResearch(rinput.value); });
+      rinput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); doResearch(rinput.value); }
+      });
+      // Live depth suggestion until the user manually overrides.
+      rinput.addEventListener('input', function () {
+        if (state.depthManual) return;
+        var suggested = clientAutoDepth(rinput.value);
+        if (suggested !== state.researchDepth) { state.researchDepth = suggested; syncDepthUI(); }
+      });
+    }
   }
 
   function render() {
@@ -429,8 +748,9 @@
     var lang = lssLang();
     root.innerHTML = panelHtml(lang);
     wire();
-    // Re-open + re-run if we already had a query (e.g. language switch).
-    if (state.lastQuery) {
+    syncDepthUI();
+    // Re-open + re-run if we already had a query/research (e.g. language switch).
+    if (state.lastQuery || state.lastResearch) {
       var body = root.querySelector('#lssBody');
       var toggle = root.querySelector('[data-lss-toggle]');
       if (body) body.removeAttribute('hidden');
@@ -451,6 +771,7 @@
   // Expose a tiny runtime surface for the DOM smoke test + future integrations.
   api.mount = mount;
   api.doSearch = function (q) { if (root) doSearch(q); };
+  api.doResearch = function (q) { if (!root && !mount()) return; setTab('research'); doResearch(q); };
   api.openWith = function (q, kind) { if (!root && !mount()) return; if (kind) state.kind = kind; doSearch(q); };
 
   if (document.readyState === 'loading') {

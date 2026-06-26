@@ -380,6 +380,10 @@ if ensure_backend_test_runtime; then
   # rejection, missing-LAW_API_OC safe envelope, upstream-failure safety, result
   # normalization, and the no-credential-leak invariant (mocked transport).
   $TEST_PYTHON backend/tests/test_legal_source_search_api.py
+  # Legal research depth layer (fast/basic/pro) + /api/legal/research: depth
+  # auto-selection, the §7 sophisticated questions, source-strength labels, pro
+  # grouping, safe missing-OC scaffold, and the no-credential-leak invariant.
+  $TEST_PYTHON backend/tests/test_legal_research.py
 else
   run_offline_backend_checks
   if [[ "$ALLOW_BACKEND_TEST_SKIP" == "1" ]]; then
