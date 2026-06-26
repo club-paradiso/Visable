@@ -100,6 +100,14 @@ check(
   /통합신청서\(별지 제34호 서식\)/.test(html),
   'domestic procedure application form canonical label must be preserved'
 );
+check(
+  /const\s+summarySubs\s*=\s*activeSubs\.length\s*\?\s*activeSubs\s*:\s*subs;/.test(html),
+  'broad subcode summaries must fall back to review-gated subcode names instead of rendering an empty name list'
+);
+check(
+  /매뉴얼\\s\*참조\\s\*코드\|manual\\s\*review\\s\*code/.test(html),
+  'broad subcode summaries must suppress placeholder-like manual-review subcode labels'
+);
 
 const visaDataText = read(VISA_DATA);
 const backendVisasText = read(BACKEND_VISAS);

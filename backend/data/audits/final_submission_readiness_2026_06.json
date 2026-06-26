@@ -91,6 +91,67 @@
       "field": "income-table citation x3",
       "change": "2026.5(2026-05-21)/2026.6(2026-06-17) p.478 -> 2026.6(2026-06-23) p.481",
       "grounding": "2026 income table verbatim on 260623 stay p.481, absent on p.478"
+    },
+    {
+      "code": "B-1",
+      "field": "period",
+      "change": "3개월, 연장불가 -> 협정상의 체류기간(통상 3개월)",
+      "grounding": "260617 visa p.15; 260623 stay p.24"
+    },
+    {
+      "code": "B-2",
+      "field": "period",
+      "change": "90일 이내 -> 법무부장관이 따로 정하는 기간(국가·지역별 30일/90일/6개월 등)",
+      "grounding": "260617 visa p.22; 260623 stay p.25"
+    },
+    {
+      "code": "C-1",
+      "field": "period",
+      "change": "absolute 연장불가 wording -> 90일(입국일부터 최장 90일까지 제한적 연장 가능)",
+      "grounding": "260623 stay p.26"
+    },
+    {
+      "code": "C-3",
+      "field": "subcodes[C-3-6].name",
+      "change": "단기상용 -> 우대기업초청 단기상용; aliases preserved",
+      "grounding": "260617 visa p.27; 260623 stay p.27"
+    },
+    {
+      "code": "D-2",
+      "field": "subcodes[D-2-4].note",
+      "change": "removed unsupported 2년제 박사 7년 clause; retained 입학 후 최대 8년",
+      "grounding": "260623 stay p.46"
+    },
+    {
+      "code": "E-8",
+      "field": "period + procedures.registration",
+      "change": "clarified total 8-month cap and added E-8 foreigner-registration document block",
+      "grounding": "260617 visa p.284; 260623 stay p.325"
+    },
+    {
+      "code": "F-3",
+      "field": "subcodes[F-3-1/F-3-3]",
+      "change": "expanded dependent-family scope and income/residence-proof exemption note conservatively",
+      "grounding": "260617 visa pp.315-316"
+    },
+    {
+      "code": "F-5",
+      "field": "subcodes[F-5-2/F-5-3]",
+      "change": "corrected subcode identities: F-5-2 국민의 배우자, F-5-3 국민의 미성년 자녀; details remain review-gated",
+      "grounding": "260623 stay pp.431, 450"
+    },
+    {
+      "code": "H-1",
+      "field": "period",
+      "change": "1년, 연장불가 -> 협정상의 체류기간(국가별 1년, 미국 1년 6개월, 캐나다·영국 2년 등)",
+      "grounding": "260617 visa p.346"
+    },
+    {
+      "code": "UI",
+      "field": "index.html renderSubcodes",
+      "change": "broad parent-code summaries fall back to review-gated names and suppress placeholder-like manual-review labels",
+      "grounding": "Browser check on F-3 mobile result; static result-card check updated",
+      "effect": "removes empty/internal-sounding F-3 summary without changing legal data"
     }
   ],
   "regenerated": [
@@ -98,128 +159,132 @@
     "backend/data/visas.json"
   ],
   "human_review_backlog": {
-    "contradictions_logged": 14,
-    "items": [
+    "original_contradictions_logged": 14,
+    "remaining_items_after_codex_desktop_follow_up": 8,
+    "resolved_in_codex_desktop_follow_up": [
       {
         "code": "B-1",
         "field": "period",
-        "conf": "medium",
-        "page": 15,
-        "rec": "Reframe the duration to match the manual's canonical value. The manual gives the 1회 부여 체류기간 상한 as '협정상의 체류기간' (treaty-defined), with 3개월 only as '통상 3월'. The flat '3개월' is misleading because the file'"
+        "resolution": "safe period wording correction"
       },
       {
         "code": "B-2",
         "field": "period",
-        "conf": "low",
-        "page": 22,
-        "rec": "Do not auto-change. The 2026.6 manual (visa p.22, stay p.25) states the B-2 stay-period cap as '법무부장관이 따로 정하는 기간' (period separately set by the Minister), not a fixed '90일 이내'. The authoring value ove"
+        "resolution": "safe period wording correction"
       },
       {
         "code": "C-1",
         "field": "period",
-        "conf": "medium",
-        "page": 26,
-        "rec": "Reconsider the absolute '연장불가' (extension impossible) label. The 2026.6 stay manual p.26 does provide a 체류기간 연장허가 path for C-1: those who entered on a sub-90-day visa or received a sub-90-day stay per"
+        "resolution": "safe limited-extension wording correction"
       },
       {
         "code": "C-3",
-        "field": "subcodes[7].name (C-3-6)",
-        "conf": "medium",
-        "page": 27,
-        "rec": "Manual review: both the visa 약호표 (p.27) and stay 약호표 (p.27) label C-3-6 as '우대기업초청 단기상용', not bare '단기상용'. The bare label collides with the stay-manual 구분 for C-3-4 ('단기상용') and understates the prefer"
+        "field": "subcodes[C-3-6].name",
+        "resolution": "safe label correction"
       },
       {
         "code": "D-1",
-        "field": "procedures.extension.requiredDocs[1]",
-        "conf": "medium",
-        "page": 33,
-        "rec": "Flag for manual review. On stay manual p.33 '연수기관이 작성한 연수일정표' appears under 체류자격 변경허가 필수서류, NOT under 체류기간 연장허가. The 연장허가 필수서류 list on p.33 is cut off after '②', so this item being placed in the exten"
+        "field": "procedures.extension.requiredDocs",
+        "resolution": "manual p.34 confirms current placement; no data edit"
       },
       {
         "code": "D-2",
-        "field": "subcodes[3].note (D-2-4 박사)",
-        "conf": "medium",
-        "page": 46,
-        "rec": "Keep the '입학 후 최대 8년' clause (manual-confirmed). Flag the '2년제 박사는 최대 7년' clause for manual review: the bundle (stay p.46) only states '(박사) 입학 후 8년' and gives no shorter-program박사 cap; the asserted 7"
-      },
-      {
-        "code": "D-5",
-        "field": "procedures.extension.requiredDocs.requiredDocs[2]",
-        "conf": "medium",
-        "page": 104,
-        "rec": "Flag for manual review: the residence-proof item carries an expanded clause (거주/숙소 제공 확인서, 부동산등기사항전부증명서/등기부등본, 제공자 주거지 사용권한 입증자료) that exceeds the 2026.6 manual's listed examples on p.104. Do not dele"
-      },
-      {
-        "code": "E-5",
-        "field": "procedures.statusChange.variants[0].requiredDocs",
-        "conf": "low",
-        "page": null,
-        "rec": "Do NOT auto-change. Page 173 item 3 (D-2/D-10 → E-1 family, which includes E-5 as an eligible target) lists a document set that does NOT include '소관부처 장관의 고용추천서' and frames 학위증/경력증명서 as alternatives. "
+        "field": "subcodes[D-2-4].note",
+        "resolution": "removed unsupported 7-year clause"
       },
       {
         "code": "E-8",
-        "field": "period",
-        "conf": "medium",
-        "page": 284,
-        "rec": "Manual states the period with a hard total-stay cap: '8개월(총 체류기간 8개월을 초과할 수 없음)' on both visa p.284 and stay p.325. The bare '8개월' is not wrong but omits the cap qualifier. Consider clarifying period "
-      },
-      {
-        "code": "E-8",
-        "field": "procedures.registration.summary",
-        "conf": "high",
-        "page": 325,
-        "rec": "The summary claims an 외국인등록 제출서류 표제 was 'not separately identified', but stay p.325 contains an explicit '외국인등록 / 제출서류 ①~⑥' block (통합신청서·여권·사진·수수료, 거주/숙소 확인서, 산재보험, 여행자보험, 마약검사 확인서, 숙소점검 확인서). The sum"
+        "field": "period + registration",
+        "resolution": "safe cap and registration correction"
       },
       {
         "code": "F-3",
-        "field": "subcodes[0].addReq (F-3-1)",
-        "conf": "high",
-        "page": 315,
-        "rec": "Manual scope is broader than 'D-1~E-7': it explicitly includes 거주(F-2), 재외동포(F-4), 방문취업(H-2) and excludes 기술연수(D-3). Flag for manual review before correcting eligibility wording."
-      },
-      {
-        "code": "F-3",
-        "field": "subcodes[2].addReq / subcodes[2].note (F-3-3 소득요건 면제 list)",
-        "conf": "high",
-        "page": 316,
-        "rec": "Manual exemption list (③·⑤ 제출면제) also includes 재외동포(F-4), 방문취업(H-2), E-7-T, E-7-S1 — not only E-1/E-3/E-4/E-5/D-8. Flag for manual review before adjusting the exemption roster."
+        "field": "eligibility/exemption notes",
+        "resolution": "safe conservative expansion"
       },
       {
         "code": "F-5",
-        "field": "subcodes[F-5-3].name / subcodes[F-5-3].addReq",
-        "conf": "medium",
-        "page": 431,
-        "rec": "Flag for manual review: the 2026.6 약호 table defines F-5-3 as '국민의 미성년 자녀' (a Korean national's minor child) and F-5-2 as '국민의 배우자' (the spouse / marriage-immigrant track). The authoring record labels "
+        "field": "F-5-2/F-5-3 identity",
+        "resolution": "safe identity correction only; details gated"
       },
       {
         "code": "H-1",
         "field": "period",
-        "conf": "medium",
-        "page": 346,
-        "rec": "Review: the visa manual states H-1 '1회 부여 체류기간의 상한 = 협정상의 체류기간' (not a flat 1년), and the table shows 미국 1년6개월, 캐나다·영국 2년 — the authoring extension.summary itself asserts extension to 1년6개월/2년. The fla"
+        "resolution": "safe treaty-period wording correction"
       }
     ],
-    "stale_external_notices": [
-      "moj_jeju_notice_2022_189 (2022-06-01)",
-      "mofa_jeju_notice_copy_2023_09_18 (2023-09-18)"
-    ],
-    "review_gated_no_evidence": [
-      "E-9",
-      "E-10"
+    "items": [
+      {
+        "area": "D-5 residence-proof wording",
+        "decision": "remain_review_gated",
+        "reason": "260623 stay p.104 is terse; current expanded examples need human certification before narrowing or rewriting."
+      },
+      {
+        "area": "E-5 status-change document set",
+        "decision": "remain_review_gated",
+        "reason": "Evidence does not cleanly certify current 고용추천서 placement for every scenario; automatic removal could under-inform applicants."
+      },
+      {
+        "area": "E-9/E-10",
+        "decision": "remain_review_gated",
+        "reason": "2026.6 manuals contain E-9/E-10 sections, but Codex did not line-by-line certify those large sections in this follow-up."
+      },
+      {
+        "area": "REGION-S/YOUTH-STAY",
+        "decision": "preserve_program_statuses",
+        "reason": "Paradiso program statuses, not canonical official manual status rows."
+      },
+      {
+        "area": "F-4 age-expansion stamp",
+        "decision": "do_not_relabel_as_2026_6_manual_certified",
+        "reason": "Exact policy stamp is not verbatim-certified in the 2026.6 manual bundle."
+      },
+      {
+        "area": "D-4-2K unofficial source stamp",
+        "decision": "do_not_relabel_as_2026_6_manual_certified",
+        "reason": "Current provenance cites press/private-review path; relabelling as manual-certified would misattribute source."
+      },
+      {
+        "area": "F-6 display-suppressed placeholders",
+        "decision": "retain_internal_review_notes",
+        "reason": "Renderer suppresses these from user-facing UI; they still mark needed page/field review."
+      },
+      {
+        "area": "F-5 spouse/minor-child details",
+        "decision": "identity_corrected_details_review_gated",
+        "reason": "Manual distinguishes F-5-2/F-5-3, but detailed eligibility/documents need separate legal review."
+      }
     ]
   },
-  "needs_manual_review_gates_preserved": 342,
+  "needs_manual_review_gates_preserved": 343,
   "ci_gate": {
     "workflow": "repo-validation.yml",
     "command": "bash scripts/check_repo.sh",
-    "result": "pass"
+    "result": "green_before_codex_desktop_follow_up; pending_post_push_check"
+  },
+  "local_check_repo_follow_up": {
+    "command": "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh",
+    "result": "partial_attempt",
+    "completed": [
+      "json format",
+      "utf8 replacement check",
+      "representative schema",
+      "source manuals",
+      "source monitoring local-only",
+      "source-grounding metadata",
+      "manual-grounding candidates",
+      "coverage matrix"
+    ],
+    "blocked_at": "internal git diff --check stalled in local Codex Desktop checkout",
+    "remaining_constituent_checks": "run individually; route guides, visa issuance UI, issuance enrichment, scenario guide, procedure packet/unit contracts, required-doc coverage, duplicate-render audit, E-7 law grounding, and golden AI eval passed",
+    "git_diff_check": "git diff --cached --check passed for the staged follow-up commit; working-tree status/full-wrapper Git step stalled locally, so GitHub CI should be treated as authoritative full-wrapper gate"
   },
   "non_ci_check_health": {
     "before": "6 failing (pre-existing on main)",
     "after": "1 failing (short-stay freshness; scheduled-only, genuinely stale external notices)"
   },
-  "certification_level": "source_provenance_refreshed_and_verified_corrections_applied; field_level_legal_certification_incomplete; all canonical records remain needsManualReview=true",
-  "verdict": "READY as honestly review-gated information platform; no false certainty claims",
+  "certification_level": "review_gated_submission_platform_not_full_legal_certification",
+  "verdict": "ready_only_as_review_gated_information_platform",
   "labels_left_unrelabelled": [
     {
       "code": "F-4",
@@ -241,28 +306,127 @@
     }
   ],
   "browser_e2e": {
-    "runner": "playwright + pre-installed chromium",
-    "viewports": [
-      "desktop-1280",
-      "mobile-390"
+    "original_pr_claim": "Playwright e2e checked before Codex follow-up",
+    "codex_desktop_follow_up_status": "attempted_but_blocked_by_local_browser_runtime",
+    "details": [
+      "npm install installed declared devDependencies @playwright/test and jsdom",
+      "check_waymaker_navigator_dom.mjs passed once after jsdom install; a later bounded rerun stalled and was not counted as stable CI-equivalent evidence",
+      "npm run test:e2e failed with missing managed Chromium/headless-shell",
+      "PARADISO_PW_EXECUTABLE=/Applications/Google Chrome.app/Contents/MacOS/Google Chrome launched the web server but hung before executing tests; run was interrupted and reported 80 did not run",
+      "in-app Browser smoke covered 1280px and 390px high-risk result-card/search paths with no page-level overflow"
     ],
-    "specs": [
-      "waymaker-navigator.spec.mjs",
-      "complex-status-guide.spec.mjs"
+    "passed_in_follow_up": [
+      "in_app_browser_desktop_mobile_smoke",
+      "check_waymaker_navigator.mjs"
     ],
-    "result": "all pass after test-harness fix"
+    "not_claimed_passed": [
+      "tests/e2e/*.spec.mjs"
+    ]
   },
   "files_changed": [
+    "backend/data/audits/final_submission_readiness_2026_06.json",
+    "backend/data/audits/final_submission_readiness_2026_06.md",
+    "backend/data/visa_authoring/statuses/B-1.json",
+    "backend/data/visa_authoring/statuses/B-2.json",
+    "backend/data/visa_authoring/statuses/C-1.json",
+    "backend/data/visa_authoring/statuses/C-3.json",
+    "backend/data/visa_authoring/statuses/D-10.json",
     "backend/data/visa_authoring/statuses/D-2.json",
     "backend/data/visa_authoring/statuses/D-4.json",
-    "backend/data/visa_authoring/statuses/D-10.json",
+    "backend/data/visa_authoring/statuses/E-8.json",
     "backend/data/visa_authoring/statuses/F-2.json",
+    "backend/data/visa_authoring/statuses/F-3.json",
     "backend/data/visa_authoring/statuses/F-5.json",
     "backend/data/visa_authoring/statuses/F-6.json",
-    "visa_data.json",
+    "backend/data/visa_authoring/statuses/H-1.json",
     "backend/data/visas.json",
+    "index.html",
+    "scripts/check_static_visa_result_cards.js",
     "tests/e2e/complex-status-guide.spec.mjs",
-    "backend/data/audits/final_submission_readiness_2026_06.md",
-    "backend/data/audits/final_submission_readiness_2026_06.json"
-  ]
+    "visa_data.json"
+  ],
+  "codex_desktop_follow_up": {
+    "performed_at": "2026-06-26",
+    "pr_reviewed": 471,
+    "branch": "final/all-status-manual-refresh-and-submission-polish-2026-06",
+    "original_claims_reviewed": [
+      "all 42 records reviewed",
+      "D-2/D-4/D-10/F-2/F-5/F-6 corrected",
+      "generated data rebuilt",
+      "UI/e2e stability checked",
+      "remaining uncertainty logged",
+      "canonical records review-gated"
+    ],
+    "independently_verified": [
+      "PR retained review-gated posture",
+      "source domains remained separated",
+      "generated files can be rebuilt from authoring",
+      "exact-code and browser result-card flows render the corrected records"
+    ],
+    "changed": [
+      "B-1",
+      "B-2",
+      "C-1",
+      "C-3-6",
+      "D-2 doctoral note",
+      "E-8",
+      "F-3",
+      "F-5-2/F-5-3",
+      "H-1",
+      "index.html subcode summary rendering",
+      "scripts/check_static_visa_result_cards.js",
+      "visa_data.json",
+      "backend/data/visas.json"
+    ],
+    "manual_pages_used": {
+      "visa": [
+        15,
+        22,
+        27,
+        284,
+        315,
+        316,
+        346
+      ],
+      "stay": [
+        24,
+        25,
+        26,
+        27,
+        34,
+        46,
+        325,
+        431,
+        450
+      ]
+    },
+    "ui_polish": [
+      "F-3 broad subcode summary no longer renders empty/internal placeholder text",
+      "browser checks at 1280px and 390px found no page-level horizontal overflow",
+      "C-3-6 exact search shows corrected matched subcode after data load"
+    ],
+    "pm_developer_findings": [
+      "Product remains mergeable only as review-gated information platform",
+      "Source/review uncertainty is visible without exposing raw TODO artifacts",
+      "No broad redesign applied"
+    ],
+    "tests_run_follow_up": [
+      "python3 scripts/visa/validate_visa_authoring.py",
+      "python3 scripts/visa/build_visa_data.py --check",
+      "python3 scripts/check_visa_data_domain_classification.py",
+      "python3 scripts/sync_visa_data.py --check",
+      "python3 scripts/check_source_grounding_metadata.py",
+      "python3 scripts/check_source_updates.py --local-only",
+      "backend Python suites (251 + 105 + 26 + 8 tests)",
+      "node static/i18n/Waymaker/journey checks",
+      "node scripts/check_waymaker_navigator_dom.mjs (one pass, later bounded hang)",
+      "node scripts/smoke_f4_hub.mjs",
+      "ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh (partial; stalled at git diff --check)",
+      "repo-script constituent checks run individually",
+      "in-app browser desktop/mobile smoke"
+    ],
+    "ci_status": "pending_post_push_check",
+    "final_merge_recommendation": "mergeable_only_as_review_gated_submission_platform",
+    "playwright_e2e_follow_up": "attempted_but_blocked_by_local_browser_runtime; not counted as passed"
+  }
 }

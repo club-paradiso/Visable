@@ -19310,7 +19310,12 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     //    expand/collapse group instead of a wall of full subcode cards.
     if (opts.broadParentQuery && subs.length > 5) {
         const activeSubs = subs.filter(s => !s.status || s.status === 'active');
-        const names = activeSubs.slice(0, 4).map(s => getLocalizedSubcodeName(s)).filter(Boolean).join(', ');
+        const summarySubs = activeSubs.length ? activeSubs : subs;
+        const summaryNames = summarySubs
+            .map(s => getLocalizedSubcodeName(s))
+            .filter(name => name && !/매뉴얼\s*참조\s*코드|manual\s*review\s*code/i.test(name));
+        const names = summaryNames.slice(0, 4).join(', ')
+            || summarySubs.slice(0, 4).map(s => s.code).filter(Boolean).join(', ');
         const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: subs.length, names }))}</p>`;
         const hint = `<p class="subcode-group-hint">${escapeHtml(tx('subcodeGroupHint', { example: (activeSubs[0] && activeSubs[0].code) || `${visaCode}-1` }))}</p>`;
         return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode, v.code)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;

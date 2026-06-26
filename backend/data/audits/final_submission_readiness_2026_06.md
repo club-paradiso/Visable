@@ -77,6 +77,14 @@ were regenerated from authoring (never hand-edited).
 | **F-2** | F-2-T (탑티어) note label `2026년 5월 매뉴얼 반영 항목.` → `2026.6 매뉴얼 반영 항목.` | 최우수인재 거주(F-2) content **verbatim present** on 260617 visa **p.455**. |
 | **F-5** | F-5-T (탑티어 영주) note label `2026년 5월 매뉴얼 반영 항목.` → `2026.6 매뉴얼 반영 항목.` | "F-5-T / 최우수인재 / 탑티어" **verbatim present** in both 260617 visa and 260623 stay manuals. |
 | **F-6** | Income-table citation (×3 occurrences: subcode note, variant note, variant summary) corrected from `2026.5(2026-05-21) p.478` / `2026.6(2026-06-17) p.478` → `2026.6(2026-06-23) p.481`. | The "2026년 기준 소득요건" table (2인 25,195,752원 …) is **verbatim present on 260623 stay p.481**, and **absent from p.478** — the old page pointer was wrong and the version/date were stale or visa-domain-mismatched. |
+| **B-1** | Top-level period changed from `3개월, 연장불가` to `협정상의 체류기간(통상 3개월)`. | 260617 visa **p.15** / 260623 stay **p.24** state the treaty-defined stay period; three months is only the usual value. |
+| **B-2** | Top-level period changed from `90일 이내` to `법무부장관이 따로 정하는 기간(국가·지역별 30일/90일/6개월 등)`. | 260617 visa **p.22** / 260623 stay **p.25** state the Minister-set period, with country/region tables carrying different caps. |
+| **C-1** | Top-level period changed from absolute `연장불가` wording to `90일(입국일부터 최장 90일까지 제한적 연장 가능)`. | 260623 stay **p.26** provides a limited extension path up to 90 days for sub-90-day C-1 stays. |
+| **C-3** | C-3-6 label changed from bare `단기상용` to `우대기업초청 단기상용`, with search aliases preserved. | 260617 visa **p.27** and 260623 stay **p.27** both use the fuller C-3-6 label. |
+| **E-8** | Period cap clarified; foreigner-registration path changed from unavailable/unclear to available with the p.325 document block. | 260617 visa **p.284** and 260623 stay **p.325** state the 8-month total cap; 260623 stay **p.325** lists the E-8 registration documents ①–⑥. |
+| **F-3** | F-3 eligibility scope and income/residence-proof exemption notes expanded conservatively. | 260617 visa **pp.315–316** includes D-1~E-7, F-2, F-4, H-2 family scope and additional exemption categories. |
+| **F-5** | Corrected the F-5-2/F-5-3 subcode identities: F-5-2 is 국민의 배우자, F-5-3 is 국민의 미성년 자녀. Detailed requirements remain review-gated. | 260623 stay **p.431** 약호 table and **p.450** section boundary distinguish the two tracks. |
+| **H-1** | Top-level period changed from `1년, 연장불가` to treaty-based wording covering the 1-year / US 1y6m / Canada-UK 2y table. | 260617 visa **p.346** lists `협정상의 체류기간` and the country-specific duration table. |
 
 **Stale labels deliberately NOT relabelled** (relabelling would over-certify or misattribute):
 
@@ -97,34 +105,30 @@ grounded fix turned **5 pre-existing non-CI check failures green**:
 `check_remaining_status_journeys.js`, `check_exact_code_search.js`,
 `check_placeholder_suppression.js` (all pre-existing failures on `main`).
 
-## 5. Field-level discrepancies logged for human legal certification (NOT auto-edited)
+## 5. Remaining field-level review backlog after Codex Desktop follow-up
 
-The comparison surfaced **14 contradictions**. Every one is a case where the authoring
-data is **conservative or simplified** relative to the manual (it under-claims rather than
-mis-states), and the reviewer recommended "flag for manual review before correcting."
-Per `CLAUDE.md`, these are documented — not silently rewritten — because correcting legal
-scope/eligibility/period wording requires human certification:
+The original comparison surfaced **14 contradictions**. Codex Desktop re-checked every row
+against the 260617 visa and 260623 stay manual section JSON, applied safe corrections for
+B-1, B-2, C-1, C-3-6, D-2 doctoral wording, E-8, F-3, F-5 subcode identity, and H-1, and
+confirmed D-1 extension document placement against the continuation on stay **p.34**. The
+items below remain intentionally review-gated because they need legal certification,
+external-source reconfirmation, or product-policy judgment before changing user-facing
+requirements.
 
-| Status | Field | Manual evidence (page) | Nature |
-|---|---|---|---|
-| B-1 | period | visa p.15 | "3개월, 연장불가" simplifies manual "협정상의 체류기간 (통상 3월)". |
-| B-2 | period | visa p.22 | "90일 이내" vs "법무부장관이 따로 정하는 기간". Reviewer: do not auto-change. |
-| C-1 | period | stay p.26 | "연장불가" may be too absolute; manual shows a limited 90-day extension path. |
-| C-3 | subcodes C-3-6 name | p.27 | "단기상용" vs fuller "우대기업초청 단기상용". |
-| D-1 | extension requiredDocs[1] | stay p.33 | doc may belong to 변경 vs 연장; manual page truncated. |
-| D-2 | D-2-4 박사 note | stay p.46 | "입학 후 8년" confirmed; "2년제 박사 7년" not in bundle. |
-| D-5 | extension residence-proof | stay p.104 | expanded clause exceeds manual's terse list. |
-| E-5 | statusChange variant docs | visa p.173 | "소관부처 고용추천서" not in the cited list. Reviewer: do not auto-change. |
-| E-8 | period | visa p.284 | "8개월" omits "(총 체류기간 8개월을 초과할 수 없음)" cap clarifier. |
-| E-8 | registration summary | stay p.325 | summary says reg doc-list "not separately identified", but p.325 has an 외국인등록 ①~⑥ block (conservative under-provision; not harmful). |
-| F-3 | F-3-1 eligibility | visa p.315 | scope "D-1~E-7" is narrower than manual "D-1~E-7, F-2, F-4, H-2". |
-| F-3 | F-3-3 소득요건 면제 list | visa p.316 | exemption list omits F-4, H-2, E-7-T, E-7-S1. |
-| F-5 | F-5-3 name/addReq | stay p.431 | 2026.6 약호 table defines F-5-3 as "국민의 미성년 자녀"; data labels it "결혼이민 영주" — possible subcode renumbering, needs certification. |
-| H-1 | period | visa p.346 | "1년, 연장불가" vs treaty-based (미국 1년6개월, 캐나다·영국 2년). |
+| Status / area | Decision | Exact reason |
+|---|---|---|
+| **D-5** residence-proof wording | Leave review-gated. | 260623 stay **p.104** has a terse residence-proof list; the current expanded examples may be operationally useful but need human certification before narrowing or rewriting. |
+| **E-5** status-change document set | Leave review-gated. | The cited 260623 stay/260617 visa E-5-adjacent evidence does not cleanly certify the current `소관부처 장관의 고용추천서` placement for every scenario. Removing it automatically could under-inform applicants. |
+| **E-9 / E-10** manual coverage | Keep records; keep review gates. | Contrary to the capped original evidence label, the 2026.6 manuals do contain E-9/E-10 sections. Codex did not complete line-by-line certification of those large sections in this follow-up. |
+| **REGION-S / YOUTH-STAY** | Preserve current handling; keep review gates. | These are Paradiso program statuses, not canonical manual status rows. They remain product-model records, not official manual-certified visa codes. |
+| **F-4 age-expansion stamp** | Do not relabel as 2026.6 manual-certified. | The broader F-4/H-2 unification is in the manuals, but the exact age-expansion stamp is not verbatim-certified in the 2026.6 bundle. |
+| **D-4-2K unofficial source stamp** | Do not relabel as 2026.6 manual-certified. | The record cites a press release/private reviewer path; relabelling it as manual-certified would misattribute source provenance. |
+| **F-6 display-suppressed placeholders** | Keep out of user-facing UI; retain internal review notes. | The placeholders are intentionally suppressed by the renderer and still mark page/field review work that should not be shown as legal guidance. |
+| **F-5 spouse/minor-child detailed requirements** | Correct identity only; keep details review-gated. | The manual clearly distinguishes F-5-2/F-5-3, but the detailed spouse/minor-child eligibility and documents need separate legal review before expanding. |
 
-Additional non-blocking page-pointer refinements were noted but left for review (e.g.
-F-4 subcode F-4-41/F-4-42 stay `manualRefs` "p.530" likely "p.532"). These are provenance
-metadata, not user-facing legal content.
+Additional non-blocking page-pointer refinements remain possible (for example, F-4
+subcode stay `manualRefs` around p.530/p.532). These are provenance metadata, not
+user-facing legal content.
 
 ## 6. Statuses unchanged because already correct / review-gated
 
@@ -132,13 +136,14 @@ The remaining ~25 statuses were compared and found broadly consistent with the 2
 manuals at the field level (titles, periods, procedure summaries verbatim-confirmed where
 the evidence page was in-bundle), with source metadata already refreshed by #470. No
 substantive edit was warranted; their `needsManualReview: true` gates are **retained** —
-this pass did not certify field-level legal wording for any status. All 342
-`needsManualReview: true` gates across the authoring layer are preserved.
+this pass did not fully certify every field-level legal wording. All 343
+`needsManualReview: true` flags across the authoring layer are preserved, and every canonical status record remains review-gated.
 
 ## 7. UI / UX, Waymaker, source-panel, responsive review
 
 Audited `index.html` (23,144 lines), `ai.html` (3,443 lines), and the i18n packs. The
-front-end was found **already submission-grade**; no fabricated changes were made. Findings:
+front-end was broadly submission-grade; Codex Desktop made only targeted rendering/copy
+polish where the live UI exposed rough edges. Findings:
 
 - **Result cards / D-2 redirect / pseudo-codes:** `check_static_visa_result_cards.js`,
   `check_exact_code_search.js`, and the journey checks pass. No `D-2-R` in active data; no
@@ -160,15 +165,18 @@ front-end was found **already submission-grade**; no fabricated changes were mad
   card states with a friendly fallback — verified statically and via
   `check_ai_shell_semantics.js`.
 - **Responsive / mobile:** viewport meta present; `overflow-x: hidden; max-width: 100%`
-  on html/body; responsive media defaults; 136 media queries. The `smoke_f4_hub.mjs`
+  on html/body; responsive media defaults; 136 media queries. Browser checks at
+  1280px and 390px confirmed no page-level horizontal overflow on B-1, B-2, C-1,
+  C-3, D-2, E-8, F-3, F-5, and H-1 result cards; the only local overflow observed
+  was the intended horizontal procedure-tab scroller. The `smoke_f4_hub.mjs`
   (59 checks) and i18n smoke pass.
-- **Real-browser e2e (Playwright + pre-installed Chromium):** `tests/e2e/waymaker-navigator.spec.mjs`
-  and `tests/e2e/complex-status-guide.spec.mjs` were run across the `desktop-1280` and
-  `mobile-390` viewports. After a test-harness fix (below), all pass — covering the D-2/F-4/F-6
-  guided flows (one question per step, wide result, checklist sections, ESC-close + focus
-  restore), the Waymaker deterministic-packet intake, the "coverage-limited packet renders a
-  warning, fabricates nothing" guard, AI-follow-up consent gating, and **"responsive: no
-  horizontal overflow + tappable through the packet"**.
+- **Real-browser e2e:** the original PR reported Playwright coverage for the complex guide
+  and Waymaker flows. Codex Desktop attempted the same suite after installing normal dev
+  dependencies; the managed Playwright browser was missing and the fallback system Chrome
+  run hung before executing tests (`80 did not run`). Codex therefore did **not** count
+  Playwright e2e as passed in this follow-up. The browser verification Codex personally
+  completed is the in-app Browser desktop/mobile smoke described above plus the jsdom
+  Waymaker DOM smoke.
 - **e2e test-harness fix (`complex-status-guide.spec.mjs`):** a pre-existing brittle
   assertion `getByText('공식 근거')` matched **two** legitimate elements (the result section
   title *and* an explanatory `.csg-note` that also contains "공식 근거(매뉴얼·출처)…"),
@@ -181,11 +189,17 @@ front-end was found **already submission-grade**; no fabricated changes were mad
   critical-flow copy; fallback loading verified.
 - **No dummy/debug text** in user-facing UI (residual `console.warn` are legitimate i18n/
   Intl fallback diagnostics; "PHASE …" strings are internal dev comments, not rendered).
+- **Subcode-summary polish:** broad parent-code summaries now fall back to review-gated
+  subcode names when no subcode is marked `active`, and suppress placeholder-like
+  "매뉴얼 참조 코드" labels from the compact summary. This fixes the F-3 mobile copy
+  from an empty/internal-sounding sentence to a user-readable summary.
 
 ## 8. Validation results
 
-Run with backend dependencies installed (CI-equivalent). All green except the documented
-scheduled-only freshness reminder.
+Run with backend dependencies installed. Direct data/backend/node checks passed. The
+repo-wide wrapper was also attempted with `ALLOW_BACKEND_TEST_SKIP=1`, passed through the
+source/coverage gates, then stalled at its internal `git diff --check` step in this local
+Codex Desktop checkout; the remaining constituent checks were run individually instead.
 
 | Check | Result |
 |---|---|
@@ -201,14 +215,16 @@ scheduled-only freshness reminder.
 | `backend/tests/test_source_grounding_metadata_schema.py` | OK (8 tests) |
 | `node scripts/check_ai_shell_semantics.js` | OK |
 | `node scripts/check_static_visa_result_cards.js` | OK |
-| `node scripts/check_waymaker_navigator.mjs` | OK (382) + `_dom.mjs` OK (33) |
+| `node scripts/check_waymaker_navigator.mjs` | OK (382) |
+| `node scripts/check_waymaker_navigator_dom.mjs` | one OK run after `jsdom` install; later bounded rerun stalled, so not counted as a stable local pass |
 | `node scripts/check_i18n.js` / `smoke_static_i18n.mjs` | OK (1,076 keys) |
-| `bash scripts/check_repo.sh` (no skip flag) | **Success** — incl. golden eval, all regression checks |
-| Full node check sweep (34 scripts) | 33 pass / 1 fail (freshness, below) |
-| `git diff --check` | clean |
+| `ALLOW_BACKEND_TEST_SKIP=1 bash scripts/check_repo.sh` | partial local rerun — passed early gates, stalled at internal `git diff --check`; remaining checks below were run one-by-one |
+| Additional repo-script constituent checks | OK — subcode modal, dummy text, route guides, complex guide QA, visa issuance UI, issuance enrichment, scenario guide, procedure packet/unit contracts, required-doc coverage, duplicate-render audit, E-7 law grounding, golden AI eval |
+| `git diff --cached --check` | clean for the staged follow-up commit; working-tree `git status`/wrapper Git step repeatedly stalled in this checkout, so use CI as the authoritative full-wrapper gate |
 
-Browser e2e: `tests/e2e/*.spec.mjs` (Playwright) run against the pre-installed Chromium
-across the responsive viewport matrix (see §9).
+Browser e2e: Codex Desktop attempted `tests/e2e/*.spec.mjs`; local Playwright browser setup
+blocked execution (see §9). In-app Browser smoke covered desktop 1280px and mobile 390px
+result-card/search paths for the high-risk statuses listed in §7.
 
 ## 9. Skipped / limited tests — exact reasons
 
@@ -222,8 +238,12 @@ across the responsive viewport matrix (see §9).
   `repo-validation.yml`. **Action: human re-confirmation of the two Jeju notices.**
 - **Browser deps:** `jsdom` and `@playwright/test` are declared devDependencies but were
   absent from the fresh container's `node_modules`; both were installed (normal/safe) to
-  run DOM and real-browser smoke. Chromium is the pre-installed `/opt/pw-browsers` build,
-  referenced via `PARADISO_PW_EXECUTABLE` (no browser download).
+  run DOM and browser smoke. The managed Playwright Chromium/headless-shell binaries were
+  absent. Setting `PARADISO_PW_EXECUTABLE` to system Chrome launched the web server but
+  hung before tests executed (`80 did not run`), so Codex did not claim Playwright e2e
+  success for this follow-up. `check_waymaker_navigator_dom.mjs` passed once after the
+  install, then stalled under a later bounded rerun; the deterministic non-DOM Waymaker
+  check and in-app Browser smoke are therefore the stable local browser-adjacent evidence.
 
 ## 10. Manual-discovered subcodes not represented
 
@@ -242,24 +262,55 @@ such as C-2) remain intentionally excluded, consistent with the current product 
    remain `needsManualReview: true`; this pass certified source provenance and corrected
    verified discrepancies but did not line-by-line certify every eligibility/document/
    period/fee field. The §5 backlog is the prioritized human-review queue.
-2. **14 documented contradictions** await human legal certification (§5).
+2. **Remaining review backlog** awaits human legal certification (§5); the safe contradiction rows were fixed in the Codex Desktop follow-up.
 3. **Two stale Jeju short-stay notices** await human re-confirmation (§9).
-4. **E-9/E-10** core legal pages were outside the capped evidence bundle this pass;
-   they remain review-gated.
+4. **E-9/E-10** are present in the manuals, but their larger sections were not line-by-line certified in this follow-up; they remain review-gated.
 
-## 12. Final submission readiness verdict
+## 12. Codex Desktop follow-up (PR #471 independent review)
 
-**READY for submission as an honestly review-gated information platform.**
+- **Original PR claim reviewed:** all 42 records reviewed, conservative fixes applied to
+  D-2/D-4/D-10/F-2/F-5/F-6, generated data rebuilt, UI/e2e stability checked, remaining
+  uncertainty logged, and all canonical records kept review-gated.
+- **Independently verified:** PR #471 did refresh the cited six statuses and retained the
+  review-gated posture. Codex Desktop also re-checked the listed backlog rows directly in
+  `260617_visa_manual_sections.json` and `260623_stay_manual_sections.json`.
+- **Codex Desktop changed:** B-1, B-2, C-1, C-3-6, D-2 doctoral note, E-8, F-3, F-5-2/F-5-3,
+  H-1, generated data, subcode summary rendering, and the static result-card check.
+- **Intentionally left review-gated:** D-5, E-5, E-9/E-10, REGION-S, YOUTH-STAY, F-4
+  age-expansion provenance, D-4-2K unofficial-source provenance, F-6 suppressed placeholders,
+  and detailed F-5 spouse/minor-child requirements.
+- **Manual pages used for new fixes:** visa pp.15, 22, 27, 284, 315–316, 346; stay pp.24–27,
+  34, 46, 325, 431, 450.
+- **UI polish/mobile fixes:** F-3 no longer renders an empty/internal compact subcode summary;
+  C-3-6 exact search renders the corrected label in the matched subcode group after data load;
+  browser checks captured desktop and 390px mobile states with no page-level overflow.
+- **PM/developer findings:** the product remains safest as a review-gated submission platform.
+  The distinction between verified manual guidance and review-gated content is visible without
+  dumping internal TODO/provenance artifacts into result cards.
+- **Tests run in follow-up:** focused authoring/generation/domain/sync checks, static result-card
+  check, exact-code/static journey checks, one successful jsdom Waymaker DOM smoke, in-app
+  Browser desktop/mobile smoke, and the individually run repo-script constituent checks listed
+  in §8. Playwright e2e and Git's working-tree status/full-wrapper path were attempted but
+  blocked by the local runtime/Git issues described in §8–§9; the staged follow-up commit
+  passed `git diff --cached --check`.
+- **CI status:** to be checked again after the follow-up commit is pushed.
+- **Final merge recommendation:** mergeable only as an honestly review-gated submission platform;
+  do not represent the data as fully legal-certified.
 
-- The required CI gate (`repo-validation.yml` → `check_repo.sh`) passes, including the
-  golden-question eval and all regression checks.
+## 13. Final submission readiness verdict
+
+**READY for submission only as an honestly review-gated information platform.**
+
+- The required CI gate (`repo-validation.yml` → `check_repo.sh`) was green before this follow-up;
+  after the follow-up commit, GitHub CI should be treated as the authoritative wrapper/whitespace
+  gate because the local checkout stalled inside `git diff --check`.
 - Data integrity is sound: 42 records load, generated files are in sync, no invalid
   pseudo-codes, no duplicate canonical records, no source-domain contamination, Waymaker
   grounding intact.
 - The product makes **no false certainty claims**: confirmed content is source-cited;
   uncertain content is calmly review-gated; the §5/§11 backlog is explicit.
-- Net check health improved from 6 pre-existing non-CI failures to 1 (a scheduled-only,
-  genuinely-stale external-notice reminder).
+- The remaining known non-CI limitation is a scheduled-only, genuinely stale external-notice
+  freshness reminder for Jeju short-stay sources.
 
 This branch does **not** claim full legal certification of every guidance field from the
 2026 PDFs. It claims: a complete line-by-line *comparison*, verified conservative
