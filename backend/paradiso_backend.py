@@ -24,6 +24,7 @@ import time
 import dataclasses
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional
+from urllib.parse import quote
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,6 +47,7 @@ from services.law_citation_guard import (
 )
 from services.grounding_config import load_grounding_config
 from services.law_tools import build_law_evidence_pack, search_laws
+from services import precedent_sources
 from services.citation_verifier import verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
@@ -4971,6 +4973,147 @@ async def ask(req: AskRequest) -> AskResponse:
 async def job_code_keywords(req: JobCodeKeywordsRequest) -> JobCodeKeywordsResponse:
     keywords = _extract_keywords(req.query)
     return JobCodeKeywordsResponse(query=req.query, keywords=keywords)
+
+
+# ---------------------------------------------------------------------------
+# Public legal source search — Waymaker "법령·판례 근거 검색" / "Legal source search"
+# ---------------------------------------------------------------------------
+# Thin, read-only proxy over the Open Law API (law.go.kr), reusing the TESTED
+# adapters law_tools.search_laws / precedent_sources.search_precedents. Design:
+#   * The OC credential (LAW_API_OC, or legacy LAW_API_KEY fallback) is read
+#     server-side via load_grounding_config() and NEVER returned to the client;
+#     the adapters already OC-redact every upstream URL (_sanitize_url).
+#   * This is a source-CHECKING layer: it returns pointers to official text and
+#     short snippets, never a legal conclusion or eligibility judgement.
+#   * Detail/body lookup is intentionally deferred to the official source link
+#     (no raw upstream HTML is fetched or rendered) — see PR notes.
+#   * Both endpoints never raise to the client: upstream/timeout failures and a
+#     missing credential degrade to a safe JSON envelope.
+_LEGAL_SEARCH_MAX_QUERY = 150
+_LEGAL_SEARCH_MAX_RESULTS = 10
+_LAW_API_NOT_CONFIGURED_MESSAGE = "LAW_API_OC is not configured"
+
+
+def _legal_search_clean_query(raw: Optional[str]) -> str:
+    """Trim and length-cap a user query (defensive; adapters also guard)."""
+    return (raw or "").strip()[:_LEGAL_SEARCH_MAX_QUERY]
+
+
+def _public_law_url(law_name: str) -> str:
+    """Build a clean, secret-free public law.go.kr link for a statute name."""
+    name = (law_name or "").strip()
+    if not name or name.startswith("("):
+        return "https://www.law.go.kr/LSW/lsAstSc.do?menuId=1"
+    return "https://www.law.go.kr/법령/" + quote(name, safe="")
+
+
+def _public_precedent_url(item: Dict[str, Any], query: str) -> str:
+    """Prefer the API-provided (already OC-redacted) detail link; else a search link."""
+    url = (item.get("url") or "").strip()
+    if url:
+        return url
+    return "https://www.law.go.kr/LSW/precSc.do?menuId=7&query=" + quote((query or "").strip(), safe="")
+
+
+def _map_law_result(r: Dict[str, Any]) -> Dict[str, Any]:
+    """Normalize one law_tools candidate into the frontend LegalLawResult shape."""
+    title = r.get("title") or r.get("law_name") or ""
+    return {
+        "id": str(r.get("law_serial_no") or r.get("law_id") or r.get("reference") or ""),
+        "title": title,
+        "type": r.get("law_division") or r.get("source_type") or "",
+        "articleNo": r.get("article") or "",
+        "articleTitle": "",
+        "snippet": (r.get("summary") or "")[:300],
+        "promulgationDate": r.get("promulgation_date") or "",
+        "effectiveDate": r.get("enforcement_date") or "",
+        "sourceUrl": _public_law_url(title),
+        "rawSource": "law.go.kr",
+    }
+
+
+def _map_precedent_item(item: Dict[str, Any], query: str) -> Dict[str, Any]:
+    """Normalize one precedent_sources item into the frontend LegalPrecedentResult shape."""
+    return {
+        "id": str(item.get("serialNumber") or item.get("caseNumber") or item.get("decisionNumber") or ""),
+        "title": item.get("title") or "",
+        "court": item.get("courtOrAgency") or item.get("sourceName") or "",
+        "decisionDate": item.get("decisionDate") or "",
+        "caseNumber": item.get("caseNumber") or "",
+        "summary": (item.get("holdingSummary") or item.get("snippet") or "")[:500],
+        "sourceUrl": _public_precedent_url(item, query),
+        "rawSource": "law.go.kr",
+    }
+
+
+def _legal_not_configured_response() -> JSONResponse:
+    return UTF8JSONResponse(
+        content={"ok": False, "error": _LAW_API_NOT_CONFIGURED_MESSAGE,
+                 "reason": "not_configured", "results": []},
+    )
+
+
+@app.get("/api/legal/laws/search")
+async def legal_laws_search(q: str = "") -> Any:
+    """Search immigration-related statutes / decrees / rules on the Open Law API.
+
+    Read-only proxy. Returns ``{ok, kind, query, count, results}`` (results are
+    LegalLawResult objects) or a safe ``{ok:false, error}`` envelope. The OC
+    credential is never exposed; upstream URLs are OC-redacted by the adapter.
+    """
+    cfg = load_grounding_config()
+    if not cfg.law_api_configured:
+        return _legal_not_configured_response()
+    query = _legal_search_clean_query(q)
+    if not query:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_query", "results": []})
+    outcome = search_laws(query, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+    if outcome.get("status") != "ok":
+        error_type = outcome.get("error_type") or "search_failed"
+        if error_type == "law_api_not_configured":
+            return _legal_not_configured_response()
+        if error_type == "law_api_no_results":
+            return {"ok": True, "kind": "laws", "query": query, "count": 0, "results": [], "rawSource": "law.go.kr"}
+        return UTF8JSONResponse(
+            content={"ok": False, "error": "search_failed", "reason": error_type, "query": query, "results": []},
+        )
+    results = [_map_law_result(r) for r in (outcome.get("results") or []) if isinstance(r, dict)]
+    return {"ok": True, "kind": "laws", "query": query, "count": len(results), "results": results, "rawSource": "law.go.kr"}
+
+
+@app.get("/api/legal/precedents/search")
+async def legal_precedents_search(q: str = "") -> Any:
+    """Search court precedent (판례) on the Open Law API (``target=prec``).
+
+    Read-only list search. Returns ``{ok, kind, query, count, results}``
+    (LegalPrecedentResult objects) or a safe ``{ok:false, error}`` envelope.
+    Body/detail lookup is deferred to the official source link by design.
+    """
+    cfg = load_grounding_config()
+    if not cfg.law_api_configured:
+        return _legal_not_configured_response()
+    query = _legal_search_clean_query(q)
+    if not query:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_query", "results": []})
+    env = precedent_sources.search_precedents(query, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+    status = env.get("status")
+    if status == "not_configured":
+        return _legal_not_configured_response()
+    if status == "results_found":
+        items = env.get("items") or []
+        results = [
+            _map_precedent_item(it, query)
+            for it in items
+            if isinstance(it, dict) and it.get("publicStatus") != "unavailable"
+        ]
+        return {"ok": True, "kind": "precedents", "query": query, "count": len(results), "results": results, "rawSource": "law.go.kr"}
+    if status == "no_results":
+        return {"ok": True, "kind": "precedents", "query": query, "count": 0, "results": [], "rawSource": "law.go.kr"}
+    # http_error / timeout / bad_response / official_error → graceful, no crash.
+    return UTF8JSONResponse(
+        content={"ok": False, "error": "search_failed",
+                 "reason": env.get("errorType") or status or "unknown", "query": query, "results": []},
+    )
 
 
 @app.get("/api/debug/law-grounding/preflight")
