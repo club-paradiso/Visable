@@ -122,6 +122,70 @@ class ResearchResultTests(unittest.TestCase):
         self.assertIn("loadingSteps", res)
 
 
+class LanguageAwareTests(unittest.TestCase):
+    """§1 language-aware delivery: EN→KO query generation + honest source labels."""
+
+    def test_english_question_generates_korean_queries(self):
+        qs = LR.english_korean_queries("What about a deportation order and a departure order?")
+        self.assertIn("강제퇴거명령", qs)
+        self.assertIn("출국명령", qs)
+
+    def test_korean_question_needs_no_english_bridge(self):
+        self.assertEqual(LR.english_korean_queries("강제퇴거명령 다툴 쟁점"), [])
+
+    def test_english_plan_has_korean_law_terms(self):
+        plan = LR.build_research_plan(
+            "Can I change my marriage-migrant status if my income requirement is borderline?",
+            depth="basic", locale="en")
+        self.assertEqual(plan["localeRaw"], "en")
+        self.assertTrue(plan["lawTerms"], "english question still yields korean law terms")
+        self.assertTrue(any(any(ord(ch) > 0x3130 for ch in term) for term in plan["lawTerms"]),
+                        "law terms are Korean statutory anchors")
+
+    def test_source_notice_by_locale(self):
+        self.assertEqual(LR._source_notice("ko"), "")
+        self.assertEqual(LR._source_notice("en"), "Official source text may be in Korean")
+        self.assertTrue(LR._source_notice("zh-CN"))
+
+    def test_localize_sources_tags_metadata(self):
+        cards = [{"title": "출입국관리법", "snippet": "x"}]
+        LR.localize_sources(cards, "en")
+        self.assertEqual(cards[0]["language"], "ko")
+        self.assertEqual(cards[0]["originalLanguage"], "ko")
+        self.assertFalse(cards[0]["isMachineTranslated"])
+        self.assertEqual(cards[0]["translationNotice"], "Official source text may be in Korean")
+        # KO UI: no translation notice (Korean source shown as-is).
+        ko_cards = [{"title": "출입국관리법", "snippet": "x"}]
+        LR.localize_sources(ko_cards, "ko")
+        self.assertNotIn("translationNotice", ko_cards[0])
+
+    def test_result_carries_facts_and_source_language_notice(self):
+        plan = LR.build_research_plan("F-6 변경허가 소득요건", depth="basic", locale="en")
+        res = LR.build_research_result(plan, law_results=[], precedent_results=[])
+        self.assertIn("extractedFacts", res)
+        self.assertEqual(res["sourceLanguageNotice"], "Official source text may be in Korean")
+
+
+class FactExtractionTests(unittest.TestCase):
+    """§3 extract_facts: surfaces only what the text states (never invents)."""
+
+    def test_extracts_visa_and_procedure(self):
+        facts = LR.extract_facts("F-6 결혼이민 체류자격 변경에서 소득요건과 혼인의 진정성", visa_hint=None)
+        self.assertIn("F-6", facts["visaStatuses"])
+        self.assertIn("체류자격 변경허가", facts["procedureTypes"])
+        self.assertTrue(facts["legalIssues"])
+        self.assertIn("law", facts["likelySourceNeeds"])
+
+    def test_no_visa_no_hallucination(self):
+        facts = LR.extract_facts("이 제도는 어떻게 운영되나요?")
+        self.assertEqual(facts["visaStatuses"], [])
+
+    def test_deportation_procedure_detected(self):
+        facts = LR.extract_facts("강제퇴거명령과 출국명령의 차이")
+        self.assertIn("강제퇴거", facts["procedureTypes"])
+        self.assertIn("출국명령", facts["procedureTypes"])
+
+
 class ResearchEndpointTests(unittest.TestCase):
     def setUp(self):
         self._oc = os.environ.get("LAW_API_OC")

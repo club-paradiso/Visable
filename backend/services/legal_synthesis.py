@@ -90,9 +90,11 @@ VALIDATION_FAILED_MESSAGE = {
     "en": "Waymaker could not safely validate the AI research synthesis, so it is showing the standard research result instead.",
 }
 
-# Expected synthesis JSON keys.
-_LIST_STR_FIELDS = ("issues", "riskFlags", "missingFacts", "nextQuestions", "nextDocuments", "limitations")
-_OBJ_FIELDS = ("sourceBackedRules", "analysis")
+# Expected synthesis JSON keys. The richer "BetterLegalResearchAnswer" shape
+# (task §3) is canonical; the normalizer below also accepts the original flatter
+# shape (issues / analysis / text / nextDocuments / string riskFlags) additively
+# so previously-valid synthesis output keeps validating.
+_PLAIN_LIST_FIELDS = ("missingFacts", "nextQuestions", "documentsToCheck", "limitations")
 _CONFIDENCE = ("high", "medium", "low")
 
 _HTML_TAG_RE = re.compile(r"<\s*/?\s*[a-zA-Z][^>]*>")
@@ -233,13 +235,13 @@ def packet_evidence_texts(packet: Dict[str, Any]) -> List[str]:
 _JSON_SCHEMA_HINT = (
     '{\n'
     '  "summary": string,\n'
-    '  "issues": string[],\n'
-    '  "sourceBackedRules": [{"text": string, "sourceIds": string[]}],\n'
-    '  "analysis": [{"text": string, "sourceIds": string[], "confidence": "high"|"medium"|"low"}],\n'
-    '  "riskFlags": string[],\n'
+    '  "issueMap": [{"issue": string, "whyItMatters": string, "sourceIds": string[]}],\n'
+    '  "sourceBackedRules": [{"rule": string, "sourceIds": string[]}],\n'
+    '  "applicationPoints": [{"point": string, "confidence": "high"|"medium"|"low", "sourceIds": string[]}],\n'
+    '  "riskFlags": [{"risk": string, "why": string, "sourceIds": string[]}],\n'
     '  "missingFacts": string[],\n'
     '  "nextQuestions": string[],\n'
-    '  "nextDocuments": string[],\n'
+    '  "documentsToCheck": string[],\n'
     '  "limitations": string[],\n'
     '  "caution": string\n'
     '}'
@@ -273,7 +275,10 @@ def build_synthesis_prompt(packet: Dict[str, Any], *, depth: str, locale: str) -
             "- 패킷에 없는 법령·조문·판례·사건번호를 인용하거나 만들어내지 마세요.\n"
             "- 조문번호·사건번호는 패킷에 실제로 있을 때만 사용하세요.\n"
             "- 출처가 부족하면 부족하다고 말하세요.\n"
-            "- 출처로 뒷받침되는 내용과 조심스러운 추론을 구분하세요(sourceBackedRules vs analysis).\n"
+            "- 출처로 뒷받침되는 내용(sourceBackedRules)과 사실관계에 비춘 조심스러운 검토(applicationPoints)를 구분하세요.\n"
+            "- sourceBackedRules·applicationPoints·issueMap·riskFlags 의 각 항목에는 근거가 된 sourceIds 를 최소 하나 이상 붙이세요.\n"
+            "- limitations(한계)는 반드시 한 개 이상 적으세요. nextQuestions 또는 documentsToCheck 로 다음 확인사항을 제시하세요.\n"
+            "- 사용자가 주지 않은 사실관계를 지어내지 말고, 모르는 부분은 missingFacts 에 적으세요.\n"
             "- 허가 여부, 승인, 소송 결과, 기관의 최종 판단을 보장하지 마세요.\n"
             "- 변호사·행정사·공무원을 사칭하지 마세요. 법률 자문이 아닙니다.\n"
             "- 모든 sourceIds 는 패킷의 sourceId 중에서만 사용하세요.\n"
@@ -290,7 +295,10 @@ def build_synthesis_prompt(packet: Dict[str, Any], *, depth: str, locale: str) -
             "- Do not cite or invent any statute/article/precedent/case number not in the packet.\n"
             "- Use article/case numbers only when they actually appear in the packet.\n"
             "- If the sources are insufficient, say so.\n"
-            "- Separate source-backed points from cautious inference (sourceBackedRules vs analysis).\n"
+            "- Separate source-backed rules (sourceBackedRules) from cautious, fact-relative reasoning (applicationPoints).\n"
+            "- Attach at least one supporting sourceId to every sourceBackedRules / applicationPoints / issueMap / riskFlags item.\n"
+            "- Always include at least one limitations entry, and give next checks via nextQuestions or documentsToCheck.\n"
+            "- Do not invent facts the user did not provide; put unknowns in missingFacts.\n"
             "- Never guarantee eligibility, approval, lawsuit outcome, or an agency's final decision.\n"
             "- Do not impersonate a lawyer, administrative agent, or government officer. This is not legal advice.\n"
             "- Every sourceIds value must be one of the packet sourceId values.\n"
@@ -347,44 +355,116 @@ def _as_str_list(value: Any) -> List[str]:
 
 
 def _normalize_synthesis(obj: Dict[str, Any]) -> Dict[str, Any]:
-    out: Dict[str, Any] = {"summary": str(obj.get("summary") or "").strip(), "caution": str(obj.get("caution") or "").strip()}
-    for f in _LIST_STR_FIELDS:
-        out[f] = _as_str_list(obj.get(f))
+    """Normalize a parsed synthesis object into the canonical rich shape.
+
+    Accepts BOTH the richer ``BetterLegalResearchAnswer`` shape (issueMap /
+    applicationPoints / object riskFlags / documentsToCheck / rule) AND the
+    original flatter shape (issues / analysis / string riskFlags / nextDocuments /
+    text) so older valid output keeps validating. Output is always the rich shape.
+    """
+    out: Dict[str, Any] = {
+        "summary": str(obj.get("summary") or "").strip(),
+        "caution": str(obj.get("caution") or "").strip(),
+    }
+
+    # issueMap (new) or issues (legacy string[]) -> [{issue, whyItMatters, sourceIds}]
+    issue_map: List[Dict[str, Any]] = []
+    raw_issue_map = obj.get("issueMap")
+    if isinstance(raw_issue_map, list) and raw_issue_map:
+        for item in raw_issue_map:
+            if isinstance(item, dict):
+                issue = str(item.get("issue") or item.get("text") or "").strip()
+                if issue:
+                    issue_map.append({
+                        "issue": issue,
+                        "whyItMatters": str(item.get("whyItMatters") or "").strip(),
+                        "sourceIds": _as_str_list(item.get("sourceIds")),
+                    })
+            elif str(item or "").strip():
+                issue_map.append({"issue": str(item).strip(), "whyItMatters": "", "sourceIds": []})
+    else:
+        for s in _as_str_list(obj.get("issues")):
+            issue_map.append({"issue": s, "whyItMatters": "", "sourceIds": []})
+    out["issueMap"] = issue_map
+
+    # sourceBackedRules: {rule|text, sourceIds}
     rules: List[Dict[str, Any]] = []
     for item in (obj.get("sourceBackedRules") or []):
-        if isinstance(item, dict) and str(item.get("text") or "").strip():
-            rules.append({"text": str(item["text"]).strip(), "sourceIds": _as_str_list(item.get("sourceIds"))})
+        if isinstance(item, dict):
+            rule = str(item.get("rule") or item.get("text") or "").strip()
+            if rule:
+                rules.append({"rule": rule, "sourceIds": _as_str_list(item.get("sourceIds"))})
+        elif str(item or "").strip():
+            rules.append({"rule": str(item).strip(), "sourceIds": []})
     out["sourceBackedRules"] = rules
-    analysis: List[Dict[str, Any]] = []
-    for item in (obj.get("analysis") or []):
-        if isinstance(item, dict) and str(item.get("text") or "").strip():
-            conf = str(item.get("confidence") or "").strip().lower()
-            analysis.append({
-                "text": str(item["text"]).strip(),
-                "sourceIds": _as_str_list(item.get("sourceIds")),
-                "confidence": conf if conf in _CONFIDENCE else "low",
-            })
-    out["analysis"] = analysis
+
+    # applicationPoints (new) or analysis (legacy) -> [{point, confidence, sourceIds}]
+    points: List[Dict[str, Any]] = []
+    raw_points = obj.get("applicationPoints")
+    if not (isinstance(raw_points, list) and raw_points):
+        raw_points = obj.get("analysis")
+    for item in (raw_points or []):
+        if isinstance(item, dict):
+            point = str(item.get("point") or item.get("text") or "").strip()
+            if point:
+                conf = str(item.get("confidence") or "").strip().lower()
+                points.append({
+                    "point": point,
+                    "confidence": conf if conf in _CONFIDENCE else "low",
+                    "sourceIds": _as_str_list(item.get("sourceIds")),
+                })
+        elif str(item or "").strip():
+            points.append({"point": str(item).strip(), "confidence": "low", "sourceIds": []})
+    out["applicationPoints"] = points
+
+    # riskFlags: object {risk, why, sourceIds} (new) or plain string (legacy)
+    risks: List[Dict[str, Any]] = []
+    for item in (obj.get("riskFlags") or []):
+        if isinstance(item, dict):
+            risk = str(item.get("risk") or item.get("text") or "").strip()
+            if risk:
+                risks.append({
+                    "risk": risk,
+                    "why": str(item.get("why") or "").strip(),
+                    "sourceIds": _as_str_list(item.get("sourceIds")),
+                })
+        elif str(item or "").strip():
+            risks.append({"risk": str(item).strip(), "why": "", "sourceIds": []})
+    out["riskFlags"] = risks
+
+    # plain string lists; documentsToCheck (new) falls back to nextDocuments (legacy)
+    out["missingFacts"] = _as_str_list(obj.get("missingFacts"))
+    out["nextQuestions"] = _as_str_list(obj.get("nextQuestions"))
+    docs = obj.get("documentsToCheck")
+    if not (isinstance(docs, list) and docs):
+        docs = obj.get("nextDocuments")
+    out["documentsToCheck"] = _as_str_list(docs)
+    out["limitations"] = _as_str_list(obj.get("limitations"))
     return out
 
 
 def _collect_text(syn: Dict[str, Any]) -> str:
     parts: List[str] = [syn.get("summary", ""), syn.get("caution", "")]
-    for f in _LIST_STR_FIELDS:
-        parts.extend(syn.get(f, []))
+    for item in syn.get("issueMap", []):
+        parts.append(item.get("issue", ""))
+        parts.append(item.get("whyItMatters", ""))
     for item in syn.get("sourceBackedRules", []):
-        parts.append(item.get("text", ""))
-    for item in syn.get("analysis", []):
-        parts.append(item.get("text", ""))
+        parts.append(item.get("rule", ""))
+    for item in syn.get("applicationPoints", []):
+        parts.append(item.get("point", ""))
+    for item in syn.get("riskFlags", []):
+        parts.append(item.get("risk", ""))
+        parts.append(item.get("why", ""))
+    for f in _PLAIN_LIST_FIELDS:
+        parts.extend(syn.get(f, []))
     return "\n".join(p for p in parts if p)
 
 
 def _referenced_source_ids(syn: Dict[str, Any]) -> List[str]:
     ids: List[str] = []
-    for item in syn.get("sourceBackedRules", []):
-        ids.extend(item.get("sourceIds", []))
-    for item in syn.get("analysis", []):
-        ids.extend(item.get("sourceIds", []))
+    for field in ("issueMap", "sourceBackedRules", "applicationPoints", "riskFlags"):
+        for item in syn.get(field, []):
+            ids.extend(item.get("sourceIds", []))
     return ids
 
 
@@ -453,5 +533,21 @@ def validate_synthesis(
     for pat in FORBIDDEN_PATTERNS:
         if pat.search(text) or pat.search(compact) or pat.search(compact_low):
             return False, "forbidden_pattern:%s" % pat.pattern, None
+
+    # 6. Quality rubric (task §3). Citation fabrication and guarantee/advice
+    #    language are already rejected above; these checks cover structural answer
+    #    quality so a thin or unsourced AI summary falls back to the deterministic
+    #    result instead of being shown. (Inventing user facts is mitigated by the
+    #    prompt + missingFacts framing; fabricated citations are caught above.)
+    refs = _referenced_source_ids(syn) + _BRACKET_SID_RE.findall(text)
+    if not refs:
+        return False, "quality:no_sources_cited", None
+    if not syn.get("summary"):
+        return False, "quality:no_summary", None
+    if not syn.get("limitations"):
+        return False, "quality:no_limitations", None
+    depth = str(packet.get("depth") or "").strip().lower()
+    if depth == "pro" and not (syn.get("nextQuestions") or syn.get("documentsToCheck")):
+        return False, "quality:no_next_checks", None
 
     return True, "ok", syn

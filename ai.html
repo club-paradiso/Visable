@@ -1522,6 +1522,7 @@ select:focus-visible {
         let CHAT_TURNS = [];
         let _abortController = null;
         let _isConsentGranted = false;
+        let _lastUserQuestion = '';
         const COPY_PAYLOADS = {};
 
         function rememberTurn(role, content) {
@@ -2674,11 +2675,19 @@ select:focus-visible {
             return `copy-${Date.now()}-${Math.random().toString(16).slice(2)}`;
         }
 
-        function buildAnswerActions(copyId, hasSource, lang) {
+        function buildAnswerActions(copyId, hasSource, lang, withHandoff) {
+            // Optional handoff to Legal Research (§6): prefills the Legal Research
+            // tab with this question + detected visa code. Source-grounded research
+            // tool — clearly distinct from this general guidance answer.
+            const handoffLabel = t(lang, '법령·판례 기준으로 더 분석하기', 'Analyze with legal sources');
+            const handoffBtn = withHandoff
+                ? `<button type="button" class="answer-action wm-handoff-action" data-wm-handoff data-copy-id="${copyId}" aria-label="${handoffLabel}">${handoffLabel}</button>`
+                : '';
             return `
                 <div class="answer-actions">
                     <button type="button" class="answer-action" data-copy-id="${copyId}" data-copy-kind="answer" aria-label="${t(lang, '답변 복사', 'Copy answer')}">${t(lang, '답변 복사', 'Copy answer')}</button>
                     ${hasSource ? `<button type="button" class="answer-action" data-copy-id="${copyId}" data-copy-kind="source" aria-label="${t(lang, '출처 복사', 'Copy source')}">${t(lang, '출처 복사', 'Copy source')}</button>` : ''}
+                    ${handoffBtn}
                 </div>
             `;
         }
@@ -2777,7 +2786,8 @@ select:focus-visible {
             const answer = result.copy_safe_answer || result.fallback_answer || result.answer || t(lang, '매뉴얼 내에서 분석 가능한 데이터를 찾지 못했습니다.', 'No answer could be generated from the available manual data.');
             const copyId = getCopyId();
             const sourceCopy = sourceTextForCopy(result.grounding_sources);
-            COPY_PAYLOADS[copyId] = { answer, source: sourceCopy };
+            const handoffStatus = (result && (result.visa_sub_code_detected || result.visa_code_detected)) || '';
+            COPY_PAYLOADS[copyId] = { answer, source: sourceCopy, handoff: { question: _lastUserQuestion || '', visaCode: handoffStatus } };
             const grounded = Boolean(result.grounding_used);
             const modelLabel = getModelLabel(result.model, result.provider, result.model_resolved);
             // Warning de-duplication (Part D). The source panel carries the one
@@ -2807,7 +2817,7 @@ select:focus-visible {
                     ${generateBadges(answer, lang, result)}
                     ${sourcePanelHtml}
                     ${groundingNoteHtml}
-                    ${buildAnswerActions(copyId, Boolean(sourceCopy), lang)}
+                    ${buildAnswerActions(copyId, Boolean(sourceCopy), lang, true)}
                     ${trailingDisc}
                 </article>
                 <div class="msg-time">Waymaker by Paradiso · ${formatTime()}</div>
@@ -3100,6 +3110,7 @@ select:focus-visible {
             // Append User Msg
             appendMsg(escapeHtml(text).replace(/\n/g, '<br>'), 'user');
             rememberTurn('user', text);
+            _lastUserQuestion = text;
             inp.value = '';
             updateCharCounter();
 
@@ -3312,6 +3323,22 @@ select:focus-visible {
                 });
             }
             document.addEventListener('click', (e) => {
+                const handoffButton = e.target.closest('[data-wm-handoff]');
+                if (handoffButton) {
+                    const id = handoffButton.getAttribute('data-copy-id');
+                    const ctx = (COPY_PAYLOADS[id] && COPY_PAYLOADS[id].handoff) || {};
+                    // The Legal Research panel is hidden outside Waymaker mode; force
+                    // it visible (inline style beats the stylesheet's display:none)
+                    // before handing off so the prefilled research is shown.
+                    const lssRoot = document.getElementById('legalSourceSearchRoot');
+                    if (lssRoot) lssRoot.style.display = 'block';
+                    try {
+                        window.dispatchEvent(new CustomEvent('paradiso:legal-research', {
+                            detail: { question: ctx.question || '', visaCode: ctx.visaCode || '', depth: ctx.depth || '' }
+                        }));
+                    } catch (err) { /* non-fatal */ }
+                    return;
+                }
                 const copyButton = e.target.closest('.answer-action[data-copy-id]');
                 if (copyButton) copyPayload(copyButton);
                 const chip = e.target.closest('.ai-welcome-chip');
