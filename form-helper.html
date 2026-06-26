@@ -576,6 +576,53 @@ main{flex:1;padding:0 1rem 3rem}
 .f6-grouptitle.f6-tag-p{background:none;border:none;color:var(--p-coral-deep)}
 .f6-opt{flex:1 1 150px}
 
+/* ── F06 A4 canvas preview ── */
+.f06-preview-section{margin:0 0 1.5rem}
+.f06-preview-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:.5rem;
+}
+.f06-preview-head-label{font-size:var(--p-fs-sm);font-weight:700;color:var(--p-ink-3)}
+.f06-preview-toggle{
+  background:transparent;border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-sm);padding:.2rem .55rem;
+  font-size:.75rem;font-family:var(--ff);color:var(--p-ink-3);cursor:pointer;
+}
+.f06-preview-toggle:hover{color:var(--p-green);border-color:var(--p-green)}
+.f06-preview-scroll{
+  overflow-x:auto;
+  border:1px solid var(--p-line-2);border-radius:var(--p-r-md);
+  background:#f9f9f9;
+  max-height:78vh;
+}
+.f06-preview-canvas{
+  display:block;width:100%;height:auto;
+  max-width:100%;
+}
+@media(min-width:900px){
+  .f06-preview-scroll{max-height:72vh}
+  .f06-preview-canvas{max-width:680px;margin:0 auto}
+}
+
+/* ── F06 format selector ── */
+.f6-format-row{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:.6rem;flex-wrap:wrap;
+}
+.f6-format-label{font-size:var(--p-fs-sm);color:var(--p-ink-3);white-space:nowrap}
+.f6-format-opts{display:flex;gap:.35rem}
+.f6-fmt-btn{
+  background:transparent;
+  border:1px solid var(--p-line);border-radius:var(--p-r-sm);
+  padding:.3rem .85rem;
+  font-size:var(--p-fs-sm);font-family:var(--ff);
+  color:var(--p-ink-3);cursor:pointer;
+  transition:all var(--p-dur-1);
+}
+.f6-fmt-btn:hover{border-color:var(--p-coral);color:var(--p-coral)}
+.f6-fmt-btn.selected{background:var(--p-coral);border-color:var(--p-coral);color:#fff}
+.f6-fmt-btn.selected:hover{background:var(--p-coral-deep);border-color:var(--p-coral-deep)}
+
 /* ── Print mode ── */
 @media print{
   .fh-header,.fh-stepper,.fh-nav,.fh-aside,.fh-step-panel:not(.visible),
@@ -697,8 +744,28 @@ main{flex:1;padding:0 1rem 3rem}
       <section class="fh-step-panel" id="fhStep6" aria-labelledby="fhStep6Heading">
         <h2 class="fh-step-heading" id="fhStep6Heading">작성 가이드</h2>
         <p class="fh-step-subheading">아래 내용을 참고하여 통합신청서를 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.</p>
+
+        <!-- F06 A4 canvas preview (shown only for 거주/숙소제공확인서) -->
+        <div id="fhF06PreviewWrap" class="f06-preview-section" hidden>
+          <div class="f06-preview-head">
+            <span class="f06-preview-head-label">문서 미리보기 (A4)</span>
+            <button type="button" class="f06-preview-toggle" id="fhF06PreviewToggle">숨기기</button>
+          </div>
+          <div class="f06-preview-scroll" id="fhF06PreviewScroll">
+            <canvas id="fhF06Canvas" class="f06-preview-canvas" aria-label="거주/숙소제공확인서 A4 미리보기"></canvas>
+          </div>
+        </div>
+
         <div id="fhOutputContent"></div>
         <div class="fh-output-actions" id="fhOutputActions">
+          <!-- F06 format selector -->
+          <div id="fhF06FormatRow" class="f6-format-row" hidden>
+            <span class="f6-format-label">출력 형식</span>
+            <div class="f6-format-opts" role="group" aria-label="출력 형식 선택">
+              <button type="button" class="f6-fmt-btn selected" data-fmt="pdf" aria-pressed="true">PDF</button>
+              <button type="button" class="f6-fmt-btn" data-fmt="png" aria-pressed="false">PNG</button>
+            </div>
+          </div>
           <button type="button" class="fh-btn fh-btn-download" id="fhDownloadBtn">⬇ 정본 PDF 다운로드</button>
           <button type="button" class="fh-btn fh-btn-download" id="fhDownloadCnBtn" hidden>⬇ 중문 병기본 PDF 다운로드</button>
           <button type="button" class="fh-btn fh-btn-secondary" id="fhCopyBtn">📋 작성 가이드 복사</button>
@@ -1195,6 +1262,7 @@ const state = {
   f6_rName: '', f6_rNat: '', f6_rReg: '', f6_rPhone: '', f6_rAddr: '',
   f6_pName: '', f6_pNat: '', f6_pReg: '', f6_pPhone: '', f6_pCompany: '',
   f6_startDate: '', f6_confirmDate: '',
+  f6ExportFormat: 'pdf', // 'pdf' | 'png'
   // F07 신원보증서 — questionnaire + two-party fields (memory only)
   f7_role: '', f7_rel: '', f7_relOther: '',
   f7_aSurname: '', f7_aGiven: '', f7_aDob: '', f7_aSex: '', f7_aNat: '', f7_aPassport: '', f7_aAddr: '', f7_aPhone: '', f7_aPurpose: '',
@@ -2073,6 +2141,22 @@ function renderF06Output() {
     </div>
   </div>`;
   el.innerHTML = html;
+
+  // Show A4 canvas preview
+  const pw = document.getElementById('fhF06PreviewWrap');
+  if (pw) {
+    pw.hidden = false;
+    const canvas = document.getElementById('fhF06Canvas');
+    if (canvas) {
+      drawF06OnCanvas(canvas, overlayValuesF06(), 1.5).catch(function() {});
+    }
+  }
+
+  // Show format selector + update download button
+  const fmtRow = document.getElementById('fhF06FormatRow');
+  if (fmtRow) fmtRow.hidden = false;
+  const dlBtn = document.getElementById('fhDownloadBtn');
+  if (dlBtn) dlBtn.textContent = state.f6ExportFormat === 'png' ? '⬇ PNG로 저장' : '⬇ PDF로 저장';
 }
 function updateF06Preview() {
   const body = document.getElementById('fhPreviewBody'), badge = document.getElementById('fhPreviewBadge');
@@ -2214,6 +2298,473 @@ function buildF07CopyText() {
   L.push('출처: 신원보증서 출입국관리법 시행규칙 별지 제129호서식 (2022. 2. 7.)');
   return L.join('\n');
 }
+
+/* ════════════════════════════════════════════════════════════════
+   F06 CANVAS RENDERER
+   Draws a clean A4 거주/숙소제공확인서 on a <canvas> element.
+   Base size: 794×1123 px (A4 at 96dpi). Pass scale>1 for export.
+   No external library needed — uses Canvas 2D API + local font.
+   ════════════════════════════════════════════════════════════════ */
+async function ensureNanumFont() {
+  if (ensureNanumFont._done) return;
+  try {
+    const ff = new FontFace('NanumGothicF06', 'url(assets/forms/fonts/NanumGothic-Regular.ttf)');
+    await ff.load();
+    document.fonts.add(ff);
+  } catch(e) { /* falls back to system Korean fonts */ }
+  ensureNanumFont._done = true;
+}
+
+async function drawF06OnCanvas(canvas, vals, scale) {
+  await ensureNanumFont();
+  const s = scale || 1;
+  const W = Math.round(794 * s);
+  const H = Math.round(1123 * s);
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0, 0, W, H);
+
+  const ML = 36, MT = 36, CW = 722;
+  const INK = '#0c1260';
+  const LINE = '#888888';
+  const LBGR = '#eff1f5';
+  const LBGP = '#f8eeec';
+  const CELLBG = '#f2f2f2';
+  const FF = '"NanumGothicF06","나눔고딕","Malgun Gothic","Apple SD Gothic Neo",sans-serif';
+
+  const p = n => n * s;
+
+  function cellBg(x, y, w, h, col) {
+    ctx.fillStyle = col;
+    ctx.fillRect(p(x), p(y), p(w), p(h));
+  }
+
+  function cellBorder(x, y, w, h) {
+    ctx.save();
+    ctx.strokeStyle = LINE;
+    ctx.lineWidth = p(0.55);
+    ctx.strokeRect(p(x) + p(0.28), p(y) + p(0.28), p(w) - p(0.55), p(h) - p(0.55));
+    ctx.restore();
+  }
+
+  function labelTxt(x, y, text, size) {
+    ctx.save();
+    ctx.font = `${p(size || 7)}px ${FF}`;
+    ctx.fillStyle = '#555555';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(text, p(x), p(y));
+    ctx.restore();
+  }
+
+  function valueTxt(x, y, text, maxW, size) {
+    if (!text) return;
+    let sz = size || 9;
+    ctx.save();
+    ctx.textBaseline = 'top';
+    ctx.font = `${p(sz)}px ${FF}`;
+    while (sz > 6.5 && ctx.measureText(text).width > p(maxW)) sz -= 0.5;
+    ctx.font = `${p(sz)}px ${FF}`;
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'left';
+    ctx.fillText(text, p(x), p(y));
+    ctx.restore();
+  }
+
+  function multiLineTxt(x, y, text, maxW, maxH, baseSize) {
+    if (!text) return;
+    ctx.save();
+    let sz = baseSize || 9;
+    const LH = sz * 1.4;
+    ctx.font = `${p(sz)}px ${FF}`;
+    // Try single line with shrink first
+    while (sz > 7.5 && ctx.measureText(text).width > p(maxW)) sz -= 0.5;
+    ctx.font = `${p(sz)}px ${FF}`;
+    if (ctx.measureText(text).width <= p(maxW)) {
+      ctx.fillStyle = INK;
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      ctx.fillText(text, p(x), p(y));
+      ctx.restore();
+      return;
+    }
+    // Word wrap (works for Korean/mixed with spaces)
+    const maxLines = Math.max(1, Math.floor(maxH / (sz * 1.4)));
+    const words = text.split(/\s+/);
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      const t = cur ? cur + ' ' + w : w;
+      if (ctx.measureText(t).width > p(maxW) && cur) { lines.push(cur); cur = w; }
+      else cur = t;
+    }
+    if (cur) lines.push(cur);
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    lines.slice(0, maxLines).forEach((ln, i) => ctx.fillText(ln, p(x), p(y + i * sz * 1.4)));
+    ctx.restore();
+  }
+
+  function drawCheckbox(cx, cy, checked) {
+    const r = 3.5;
+    ctx.save();
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = p(0.75);
+    ctx.strokeRect(p(cx - r), p(cy - r), p(r * 2), p(r * 2));
+    if (checked) {
+      ctx.strokeStyle = INK;
+      ctx.lineWidth = p(1.3);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.beginPath();
+      ctx.moveTo(p(cx - r + 1.3), p(cy + 0.3));
+      ctx.lineTo(p(cx - 0.3), p(cy + r - 1.3));
+      ctx.lineTo(p(cx + r - 0.8), p(cy - r + 1.3));
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function cbItem(cx, cy, label, checked) {
+    drawCheckbox(cx, cy, checked);
+    ctx.save();
+    ctx.font = `${p(8)}px ${FF}`;
+    ctx.fillStyle = checked ? INK : '#444';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, p(cx + 5.5), p(cy));
+    const tw = ctx.measureText(label).width / s;
+    ctx.restore();
+    return tw + 14;
+  }
+
+  function inlineVal(x, y, text, maxW) {
+    if (!text) return;
+    ctx.save();
+    let sz = 8;
+    ctx.font = `${p(sz)}px ${FF}`;
+    while (sz > 6.5 && ctx.measureText(text).width > p(maxW)) sz -= 0.5;
+    ctx.font = `${p(sz)}px ${FF}`;
+    ctx.fillStyle = INK;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, p(x), p(y));
+    ctx.restore();
+  }
+
+  function sectionHeader(x, y, w, h, bg, textColor, label) {
+    cellBg(x, y, w, h, bg);
+    cellBorder(x, y, w, h);
+    ctx.save();
+    ctx.font = `bold ${p(8.5)}px ${FF}`;
+    ctx.fillStyle = textColor;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, p(x + 7), p(y + h / 2));
+    ctx.restore();
+  }
+
+  // ── TITLE ────────────────────────────────────────────────────
+  let Y = MT;
+
+  ctx.save();
+  ctx.font = `bold ${p(15.5)}px ${FF}`;
+  ctx.fillStyle = '#0c1a3a';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('거주/숙소 제공 확인서', p(W / s / 2), p(Y));
+  Y += 19;
+
+  ctx.font = `${p(9)}px ${FF}`;
+  ctx.fillStyle = '#666';
+  ctx.fillText('Confirmation of Residence / Accommodation', p(W / s / 2), p(Y));
+  Y += 13;
+
+  ctx.font = `${p(7)}px ${FF}`;
+  ctx.fillStyle = '#aaa';
+  ctx.textAlign = 'right';
+  ctx.fillText('(HiKorea 민원서식, 개정 2024. 5.)', p(ML + CW), p(Y));
+  ctx.restore();
+  Y += 10;
+
+  // ── SECTION ① ────────────────────────────────────────────────
+  const SH = 19, RH = 30, HALF = CW / 2;
+
+  sectionHeader(ML, Y, CW, SH, LBGR, '#1a2e5a', '① 제공받는 외국인(거주자) 관련 사항');
+  Y += SH;
+
+  // Row 1: 국적 | 외국인등록번호
+  cellBorder(ML, Y, HALF, RH);
+  labelTxt(ML + 4, Y + 3, '국    적', 7);
+  valueTxt(ML + 4, Y + 13, vals.rcpt_nationality, HALF - 9, 9);
+  cellBorder(ML + HALF, Y, HALF, RH);
+  labelTxt(ML + HALF + 4, Y + 3, '외국인등록(거소)번호', 7);
+  valueTxt(ML + HALF + 4, Y + 13, vals.rcpt_regno, HALF - 9, 8.5);
+  Y += RH;
+
+  // Row 2: 성명 | 연락처
+  cellBorder(ML, Y, HALF, RH);
+  labelTxt(ML + 4, Y + 3, '성    명', 7);
+  valueTxt(ML + 4, Y + 13, vals.rcpt_name, HALF - 9, 9);
+  cellBorder(ML + HALF, Y, HALF, RH);
+  labelTxt(ML + HALF + 4, Y + 3, '연  락  처', 7);
+  valueTxt(ML + HALF + 4, Y + 13, vals.rcpt_phone, HALF - 9, 9);
+  Y += RH;
+
+  // Row 3: 주소 (full width, taller)
+  const ADDR_H = 42;
+  cellBorder(ML, Y, CW, ADDR_H);
+  labelTxt(ML + 4, Y + 3, '거주자 주소 (제공받는 숙소)', 7);
+  multiLineTxt(ML + 4, Y + 14, vals.rcpt_address, CW - 10, ADDR_H - 17, 9);
+  Y += ADDR_H + 6;
+
+  // ── SECTION ② ────────────────────────────────────────────────
+  sectionHeader(ML, Y, CW, SH, LBGP, '#5a1a2e', '② 숙소 제공자 관련 사항');
+  Y += SH;
+
+  // Row 1: 국적 | 등록번호
+  cellBorder(ML, Y, HALF, RH);
+  labelTxt(ML + 4, Y + 3, '국    적', 7);
+  valueTxt(ML + 4, Y + 13, vals.prov_nationality, HALF - 9, 9);
+  cellBorder(ML + HALF, Y, HALF, RH);
+  labelTxt(ML + HALF + 4, Y + 3, '주민(외국인)등록번호', 7);
+  valueTxt(ML + HALF + 4, Y + 13, vals.prov_regno, HALF - 9, 8.5);
+  Y += RH;
+
+  // Row 2: 성명 | 연락처
+  cellBorder(ML, Y, HALF, RH);
+  labelTxt(ML + 4, Y + 3, '성    명', 7);
+  valueTxt(ML + 4, Y + 13, vals.prov_name, HALF - 9, 9);
+  cellBorder(ML + HALF, Y, HALF, RH);
+  labelTxt(ML + HALF + 4, Y + 3, '연  락  처', 7);
+  valueTxt(ML + HALF + 4, Y + 13, vals.prov_phone, HALF - 9, 9);
+  Y += RH;
+
+  // Checkbox rows
+  const LBW = 95, CBH = 31, DX = ML + LBW, DW = CW - LBW;
+
+  function labelCell(y, h, txt) {
+    cellBg(ML, y, LBW, h, CELLBG);
+    cellBorder(ML, y, LBW, h);
+    ctx.save();
+    ctx.font = `${p(7.5)}px ${FF}`;
+    ctx.fillStyle = '#444';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(txt, p(ML + LBW / 2), p(y + h / 2));
+    ctx.restore();
+  }
+
+  // 외국인과의 관계
+  labelCell(Y, CBH, '외국인과의 관계');
+  cellBorder(DX, Y, DW, CBH);
+  {
+    const mid = Y + CBH / 2;
+    let cx = DX + 11;
+    cx += cbItem(cx, mid, '가족 및 친척', !!vals.rel_family) + 12;
+    cx += cbItem(cx, mid, '고용주', !!vals.rel_employer) + 12;
+    cbItem(cx, mid, '기타', !!vals.rel_other);
+    if (vals.rel_other_text) inlineVal(cx + 25, mid, '(' + vals.rel_other_text + ')', DW - (cx + 28 - DX));
+  }
+  Y += CBH;
+
+  // 소유형태
+  labelCell(Y, CBH, '소  유  형  태');
+  cellBorder(DX, Y, DW, CBH);
+  {
+    const mid = Y + CBH / 2;
+    let cx = DX + 11;
+    cx += cbItem(cx, mid, '자  가', !!vals.own_self) + 16;
+    cx += cbItem(cx, mid, '임  대', !!vals.own_rent) + 16;
+    cbItem(cx, mid, '기  타', !!vals.own_other);
+    if (vals.own_other_text) inlineVal(cx + 27, mid, '(' + vals.own_other_text + ')', DW - (cx + 30 - DX));
+  }
+  Y += CBH;
+
+  // 주거형태 (2 lines)
+  const RH2 = 42;
+  labelCell(Y, RH2, '주  거  형  태');
+  cellBorder(DX, Y, DW, RH2);
+  {
+    const y1 = Y + 13, y2 = Y + 29;
+    let cx1 = DX + 11;
+    cx1 += cbItem(cx1, y1, '개인주택 등', !!vals.res_house) + 14;
+    cbItem(cx1, y1, '기  숙  사', !!vals.res_dorm);
+    let cx2 = DX + 11;
+    cx2 += cbItem(cx2, y2, '숙  박  시  설', !!vals.res_lodging) + 14;
+    cbItem(cx2, y2, '기     타', !!vals.res_other);
+    if (vals.res_other_text) inlineVal(cx2 + 30, y2, '(' + vals.res_other_text + ')', DW - (cx2 + 33 - DX));
+  }
+  Y += RH2;
+
+  // 거주/숙소 제공일
+  const DTH = 28;
+  labelCell(Y, DTH, '거주/숙소 제공일');
+  cellBorder(DX, Y, DW, DTH);
+  if (vals.start_y || vals.start_m || vals.start_d) {
+    const my = Y + DTH / 2;
+    ctx.save();
+    ctx.font = `${p(9)}px ${FF}`;
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.start_y || '', p(DX + 75), p(my));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('년', p(DX + 77), p(my));
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.start_m || '', p(DX + 140), p(my));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('월', p(DX + 142), p(my));
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.start_d || '', p(DX + 200), p(my));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('일부터', p(DX + 202), p(my));
+    ctx.restore();
+  }
+  Y += DTH;
+
+  // ── CONFIRMATION ─────────────────────────────────────────────
+  Y += 18;
+  ctx.save();
+  ctx.font = `${p(9.5)}px ${FF}`;
+  ctx.fillStyle = '#222';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'top';
+  ctx.fillText('위의 내용이 사실임을 확인합니다.', p(W / s / 2), p(Y));
+  ctx.restore();
+  Y += 22;
+
+  // Confirmation date
+  ctx.save();
+  ctx.font = `${p(9)}px ${FF}`;
+  ctx.textBaseline = 'top';
+  const cDateX = W / s / 2 - 100;
+  if (vals.conf_y || vals.conf_m || vals.conf_d) {
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.conf_y || '', p(cDateX + 45), p(Y));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('년', p(cDateX + 47), p(Y));
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.conf_m || '', p(cDateX + 107), p(Y));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('월', p(cDateX + 109), p(Y));
+    ctx.fillStyle = INK; ctx.textAlign = 'right';
+    ctx.fillText(vals.conf_d || '', p(cDateX + 165), p(Y));
+    ctx.fillStyle = '#555'; ctx.textAlign = 'left';
+    ctx.fillText('일', p(cDateX + 167), p(Y));
+  } else {
+    ctx.fillStyle = '#bbb'; ctx.textAlign = 'center';
+    ctx.fillText('________년   ____월   ____일', p(W / s / 2), p(Y));
+  }
+  ctx.restore();
+  Y += 24;
+
+  // Signature box
+  const SIGW = 320, SIGH = 58, SIGX = (W / s - SIGW) / 2;
+  cellBorder(SIGX, Y, SIGW, SIGH);
+  // Divider line inside box
+  ctx.save();
+  ctx.strokeStyle = '#ccc'; ctx.lineWidth = p(0.4);
+  ctx.beginPath();
+  ctx.moveTo(p(SIGX + 1), p(Y + SIGH / 2));
+  ctx.lineTo(p(SIGX + SIGW - 1), p(Y + SIGH / 2));
+  ctx.stroke();
+  ctx.restore();
+  // Stamp circle
+  const STCX = SIGX + SIGW - 20, STCY = Y + SIGH / 4;
+  ctx.save();
+  ctx.strokeStyle = '#ddd'; ctx.lineWidth = p(0.6);
+  ctx.beginPath(); ctx.arc(p(STCX), p(STCY), p(11), 0, Math.PI * 2); ctx.stroke();
+  ctx.font = `${p(7)}px ${FF}`; ctx.fillStyle = '#bbb';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText('인', p(STCX), p(STCY));
+  ctx.restore();
+  // Lines 1&2
+  labelTxt(SIGX + 7, Y + 5, '성명 (서명 또는 인):', 7.5);
+  valueTxt(SIGX + 100, Y + 5, vals.prov_sign_name, SIGW - 130, 9);
+  labelTxt(SIGX + 7, Y + SIGH / 2 + 5, '업체명 (직인):', 7.5);
+  valueTxt(SIGX + 82, Y + SIGH / 2 + 5, vals.prov_company, SIGW - 110, 9);
+  Y += SIGH + 16;
+
+  // ── BOTTOM NOTE ──────────────────────────────────────────────
+  ctx.save();
+  ctx.font = `${p(6.5)}px ${FF}`;
+  ctx.fillStyle = '#bbb';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'bottom';
+  ctx.fillText('※ Paradiso 참고용 초안. 제출 전 HiKorea(www.hikorea.go.kr)에서 최신 공식 서식을 확인하세요.', p(ML), p(1123 - 14));
+  ctx.restore();
+}
+
+/* ─── F06 export: PNG or PDF from canvas ─────────────────────── */
+async function generateF06Output(format) {
+  const btns = ['fhDownloadBtn'].map(id => document.getElementById(id)).filter(Boolean);
+  btns.forEach(b => b.disabled = true);
+  try {
+    dlStatus(format === 'png' ? 'PNG 이미지를 생성하는 중…' : 'PDF 문서를 생성하는 중…', '', true);
+    const vals = overlayValuesF06();
+    const exportScale = 3;
+    const canvas = document.createElement('canvas');
+    await drawF06OnCanvas(canvas, vals, exportScale);
+
+    const nm = (state.f6_rName || '작성본').replace(/[\\/:*?"<>|]+/g, '').replace(/\s+/g, ' ').trim();
+
+    if (format === 'png') {
+      await new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (!blob) { reject(new Error('PNG 생성 실패')); return; }
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = nm + '_거주숙소제공확인서.png';
+          document.body.appendChild(a); a.click(); document.body.removeChild(a);
+          setTimeout(() => URL.revokeObjectURL(url), 4000);
+          resolve();
+        }, 'image/png');
+      });
+      dlStatus('PNG 이미지가 생성되었습니다. 다운로드 폴더를 확인하세요.', 'ok');
+    } else {
+      // PDF: embed canvas image into A4 pdf-lib document
+      dlStatus('PDF로 변환하는 중… (라이브러리 로드 중)', '', true);
+      const schema = await loadSchema();
+      await Promise.all([loadScript(schema.vendor.pdfLib), loadScript(schema.vendor.fontkit)]);
+      const PDFLib = window.PDFLib;
+
+      const pngBytes = await new Promise((resolve, reject) => {
+        canvas.toBlob(blob => {
+          if (!blob) { reject(new Error('이미지 변환 실패')); return; }
+          blob.arrayBuffer().then(resolve).catch(reject);
+        }, 'image/png');
+      });
+
+      const pdfDoc = await PDFLib.PDFDocument.create();
+      const page = pdfDoc.addPage([595, 841]);
+      const img = await pdfDoc.embedPng(pngBytes);
+      page.drawImage(img, { x: 0, y: 0, width: 595, height: 841 });
+
+      const out = await pdfDoc.save();
+      const blob = new Blob([out], { type: 'application/pdf' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = nm + '_거주숙소제공확인서.pdf';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+
+      const errs = f06Issues().filter(i => i.type === 'error').length;
+      dlStatus(errs
+        ? `PDF가 생성되었습니다. 미입력 필수항목 ${errs}건은 출력 후 현장에서 보완하세요.`
+        : 'PDF가 생성되었습니다. 다운로드 폴더를 확인하세요. 서명/날인은 제출 시 직접 하세요.', 'ok');
+    }
+  } catch(e) {
+    dlStatus('문서 생성 중 오류: ' + (e && e.message ? e.message : String(e)), 'err');
+  } finally {
+    btns.forEach(b => b.disabled = false);
+  }
+}
+
 function setStepHeadings() {
   const APP = {
     1: ['신청/신고 유형 선택', '어떤 신청 또는 신고를 하려 하십니까? 통합신청서에서 체크할 항목이 결정됩니다.'],
@@ -2295,9 +2846,16 @@ function updateDocChrome() {
   document.getElementById('fhSourceMeta').innerHTML =
     `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Paradiso 참고용 도구 · 법적 효력 없음</span>`;
   const dlBtn = document.getElementById('fhDownloadBtn');
-  if (dlBtn) dlBtn.textContent = `⬇ ${f.dlNoun} 작성본 PDF 다운로드`;
+  if (dlBtn) dlBtn.textContent = f.id === 'F06'
+    ? (state.f6ExportFormat === 'png' ? '⬇ PNG로 저장' : '⬇ PDF로 저장')
+    : `⬇ ${f.dlNoun} 작성본 PDF 다운로드`;
   const cnBtn = document.getElementById('fhDownloadCnBtn');
   if (cnBtn) { cnBtn.hidden = !f.cnVariant; cnBtn.textContent = '⬇ 중문 병기본 PDF 다운로드'; }
+  // For non-F06 forms, hide F06-specific UI just in case
+  if (f.id !== 'F06') {
+    var pw = document.getElementById('fhF06PreviewWrap'); if (pw) pw.hidden = true;
+    var fr = document.getElementById('fhF06FormatRow'); if (fr) fr.hidden = true;
+  }
 }
 
 function selectForm(formId) {
@@ -2323,6 +2881,11 @@ function showPicker() {
   document.getElementById('fhBranch').hidden = true;
   document.getElementById('fhBranch').innerHTML = '';
   document.getElementById('fhPicker').hidden = false;
+  // Hide F06-specific UI
+  var pw = document.getElementById('fhF06PreviewWrap');
+  if (pw) pw.hidden = true;
+  var fr = document.getElementById('fhF06FormatRow');
+  if (fr) fr.hidden = true;
   renderPicker();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -2488,8 +3051,37 @@ document.addEventListener('DOMContentLoaded', function () {
   if (!autoSelected) showPicker();
 
   document.getElementById('fhDocChange').addEventListener('click', showPicker);
-  document.getElementById('fhDownloadBtn').addEventListener('click', () => generateOfficialPdf());
+  document.getElementById('fhDownloadBtn').addEventListener('click', () => {
+    if (state.formId === 'F06') {
+      generateF06Output(state.f6ExportFormat || 'pdf');
+    } else {
+      generateOfficialPdf();
+    }
+  });
   document.getElementById('fhDownloadCnBtn').addEventListener('click', () => { const f = currentForm(); if (f && f.cnVariant) generateOfficialPdf(f.cnVariant); });
+
+  // F06 format selector buttons
+  document.querySelectorAll('.f6-fmt-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const fmt = btn.dataset.fmt;
+      state.f6ExportFormat = fmt;
+      document.querySelectorAll('.f6-fmt-btn').forEach(function(b) {
+        b.classList.toggle('selected', b.dataset.fmt === fmt);
+        b.setAttribute('aria-pressed', String(b.dataset.fmt === fmt));
+      });
+      const dlBtn = document.getElementById('fhDownloadBtn');
+      if (dlBtn) dlBtn.textContent = fmt === 'png' ? '⬇ PNG로 저장' : '⬇ PDF로 저장';
+    });
+  });
+
+  // F06 preview toggle
+  document.getElementById('fhF06PreviewToggle').addEventListener('click', function() {
+    const scroll = document.getElementById('fhF06PreviewScroll');
+    if (!scroll) return;
+    const hidden = scroll.style.display === 'none';
+    scroll.style.display = hidden ? '' : 'none';
+    this.textContent = hidden ? '숨기기' : '보이기';
+  });
 
   document.getElementById('fhPrevBtn').addEventListener('click', () => {
     const p = adjacentStep(-1); if (p !== null) goToStep(p);
