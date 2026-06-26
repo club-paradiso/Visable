@@ -130,11 +130,11 @@
     guideHeader: 'F-4 재외동포 체류자격 안내',
     guideIntro: '재외동포 유형, 국적 이력, 신청 절차에 따라 준비서류와 진행 방식이 달라질 수 있습니다. 몇 가지 질문에 답하면 내 상황에 가까운 준비경로를 확인할 수 있습니다.',
     primaryCta: '내 상황에 맞는 F-4 준비서류 찾기',
-    recStartTitle: '추천 시작점',
+    recStartTitle: '상황에 맞는 절차 안내',
     recStartBody: 'F-4는 국적 이력, 신청 위치, 거소신고 여부에 따라 준비서류가 달라질 수 있습니다. 세부코드를 몰라도 몇 가지 질문에 답하면 내 상황에 가까운 준비서류와 절차를 확인할 수 있습니다.',
     ctaMicrocopy: '약 1분 · 4~5개 질문 · 세부코드를 몰라도 시작 가능',
     stickyCta: 'F-4 준비서류 찾기 시작',
-    secondaryActionsLabel: '다른 방식으로 보기',
+    secondaryActionsLabel: '다른 방법으로 찾아보기',
     secViewSubcategories: '전체 세부자격 보기',
     secViewCommonDocs: '공통서류 보기',
     secViewProcedure: '신청 절차 보기',
@@ -261,11 +261,11 @@
     guideHeader: 'F-4 Overseas Korean Status Guide',
     guideIntro: 'Required documents and procedures may vary depending on your overseas Korean category, nationality history, and application path. Answer a few questions to find the preparation path closest to your situation.',
     primaryCta: 'Find My F-4 Document Checklist',
-    recStartTitle: 'Recommended starting point',
+    recStartTitle: 'Guided steps for your situation',
     recStartBody: 'F-4 documents and procedures may vary depending on nationality history, application location, and residence registration needs. Even if you do not know your subcategory, answer a few questions to find the document checklist and procedure closest to your situation.',
     ctaMicrocopy: 'About 1 minute · 4–5 questions · No subcategory knowledge needed',
     stickyCta: 'Start F-4 Checklist',
-    secondaryActionsLabel: 'Other ways to view this status',
+    secondaryActionsLabel: 'Other ways to explore',
     secViewSubcategories: 'View All Subcategories',
     secViewCommonDocs: 'View Common Documents',
     secViewProcedure: 'View Application Procedure',
@@ -661,7 +661,7 @@
   }
 
   /* --------------------------------------------------------- entry panel UI */
-  // "Recommended starting point" block — the single, dominant F-4 entry. Built
+  // "Guided steps for your situation" block — the single, dominant F-4 entry. Built
   // as a self-contained block so it can be injected either at the TOP of the
   // F-4 result card (immediately after the title + short summary, before the
   // long subcode/procedure sections) or, as a fallback, into the #f4RouteGuide

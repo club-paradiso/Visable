@@ -1,4 +1,6 @@
 node_modules
+# Lockfile is intentionally not tracked: no-build static site; deps are test-only tooling.
+package-lock.json
 
 # Temporary audit/extraction scratch files
 tmp/

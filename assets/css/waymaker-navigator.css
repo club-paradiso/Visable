@@ -162,7 +162,7 @@
 .wm-kicker { font-size: 0.74rem; font-weight: 850; letter-spacing: 0.04em; text-transform: uppercase; color: var(--wm-ac); margin-bottom: 0.35rem; }
 .wm-packet-title { font-size: 1.2rem; font-weight: 850; color: var(--wm-t1); display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; outline: none; }
 .wm-packet-title:focus-visible { outline: 2px solid var(--wm-ac); outline-offset: 3px; }
-.wm-code-chip { display: inline-flex; align-items: center; padding: 0.1rem 0.5rem; border-radius: 999px; background: var(--wm-acL); border: 1px solid var(--wm-ac2); color: var(--wm-ac); font-size: 0.85rem; font-weight: 850; }
+.wm-code-chip { display: inline-flex; align-items: center; padding: 0.25rem 0.5rem; border-radius: 999px; background: var(--wm-acL); border: 1px solid var(--wm-ac2); color: var(--wm-ac); font-size: 0.85rem; font-weight: 850; }
 .wm-hero-summary { margin-top: 0.5rem; font-size: 0.92rem; color: var(--wm-t2); line-height: 1.55; }
 
 .wm-next-list { margin: 0.4rem 0 0; padding-left: 1.25rem; display: flex; flex-direction: column; gap: 0.4rem; }
@@ -219,7 +219,7 @@
 /* The label (clickable via for=) is the real tap target — keep it >=44px tall. */
 .wm-doc-label { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; min-height: 44px; cursor: pointer; }
 .wm-doc-name { font-weight: 650; color: var(--wm-t1); overflow-wrap: anywhere; }
-.wm-tag { font-size: 0.7rem; font-weight: 800; padding: 0.1rem 0.45rem; border-radius: 999px; }
+.wm-tag { font-size: 0.7rem; font-weight: 800; padding: 0.2rem 0.45rem; border-radius: 999px; }
 .wm-tag-form { background: var(--wm-acL); color: var(--wm-ac); border: 1px solid var(--wm-ac2); }
 .wm-doc-cond { margin-top: 0.25rem; font-size: 0.82rem; color: var(--wm-t2); overflow-wrap: anywhere; }
 .wm-doc-where { margin-top: 0.25rem; font-size: 0.8rem; color: var(--wm-t3); overflow-wrap: anywhere; }
@@ -311,6 +311,7 @@ html[data-editorial-theme="archive_diary"] .wm-cov-none { background: rgba(138,4
   .wm-root { --wm-pad: 0.7rem; }
   .wm-btn { font-size: 0.9rem; }
   .wm-chip { min-height: 52px; }
+  .wm-cov-badge { font-size: 0.82rem; }
 }
 
 /* =====================================================================

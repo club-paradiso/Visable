@@ -81,12 +81,12 @@ section('Recommended-start block + dominant CTA + demoted secondary (per status)
 for (const code of TARGETS) {
   const html = CSG.recStartBlockHtml(code);
   ok(typeof html === 'string' && html.length > 0 && !/undefined/.test(html), `${code}: block renders, no undefined`);
-  ok(html.includes('추천 시작점'), `${code}: shows 추천 시작점`);
+  ok(html.includes('상황에 맞는 절차 안내'), `${code}: shows 상황에 맞는 절차 안내`);
   ok(html.includes(`내 상황에 맞는 ${code} 준비서류 찾기`), `${code}: KO primary CTA copy`);
-  ok(html.includes('다른 방식으로 보기'), `${code}: secondary actions grouped under 다른 방식으로 보기`);
+  ok(html.includes('다른 방법으로 찾아보기'), `${code}: secondary actions grouped under 다른 방법으로 찾아보기`);
   for (const s of ['전체 세부자격 보기', '공통서류 보기', '신청 절차 보기', '공식 근거 보기']) ok(html.includes(s), `${code}: secondary action ${s}`);
   const iCta = html.indexOf('csg-primary-cta');
-  const iSec = html.indexOf('다른 방식으로 보기');
+  const iSec = html.indexOf('다른 방법으로 찾아보기');
   ok(iCta !== -1 && iSec !== -1 && iCta < iSec, `${code}: primary CTA precedes demoted secondary actions`);
 }
 // English copy present too
