@@ -12960,8 +12960,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <div class="p-reminder-banner__inner">
         <span class="p-reminder-banner__icon" aria-hidden="true">⏰</span>
         <div class="p-reminder-banner__text" id="reminderBannerText"></div>
-        <a href="#reminderSection" class="p-reminder-banner__cta">알림 보기</a>
-        <button type="button" id="reminderBannerClose" class="p-reminder-banner__close" aria-label="오늘은 그만 보기">✕</button>
+        <a href="#reminderSection" class="p-reminder-banner__cta" data-i18n="reminderBannerCta">알림 보기</a>
+        <button type="button" id="reminderBannerClose" class="p-reminder-banner__close" data-i18n-attr="aria-label:reminderBannerCloseAria" aria-label="오늘은 그만 보기">✕</button>
     </div>
 </div>
 
@@ -13047,8 +13047,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <!-- Kitsch-only zine marquee tape (decorative) -->
         <div class="k-marquee" aria-hidden="true">
             <div class="k-marquee-track">
-                <span>PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
-                <span>PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
+                <span data-i18n="heroMarquee">PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
+                <span data-i18n="heroMarquee">PARADISO ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
             </div>
         </div>
 
@@ -13179,7 +13179,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <!-- Coverage Section (Figma direction) -->
     <section id="brandHero" class="brand-hero figma-brand-bridge" aria-labelledby="brandHeroTitle">
         <div class="brand-hero-text" data-reveal="fade-up">
-            <p class="brand-hero-kicker">Coverage · 체류자격 분류</p>
+            <p class="brand-hero-kicker" data-i18n="brandHeroKicker">Coverage · 체류자격 분류</p>
             <h2 id="brandHeroTitle" class="brand-hero-headline">
                 복잡한 체류자격을<br>
                 한 눈에 확인해보세요.
@@ -13330,7 +13330,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <span class="p-manual-ext" aria-hidden="true">↗</span>
             </a>
         </div>
-        <p class="p-manual-note">
+        <p class="p-manual-note" id="pManualNote" data-i18n="manualNote">
             위 매뉴얼 링크는 HiKorea가 공개한 최신본(사증발급 2026-06-17, 외국인체류 2026-06-23 안내매뉴얼)으로 연결됩니다. 화면의 구조화된 안내는 읽을 수 있는 2026.6 공식 PDF 추출본으로 출처를 갱신했으며, 세부 제출서류와 절차는 관할기관 안내에 따라 달라질 수 있습니다. Paradiso는 공식 정부 서비스가 아니며 제공 정보는 참고용입니다.
         </p>
     </section>
@@ -13474,46 +13474,46 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <section class="p-section p-reminder-section" id="reminderSection" aria-labelledby="pReminderTitle">
         <div class="p-section-head">
             <div>
-                <p class="p-kicker">기한 알림</p>
-                <h2 class="p-section-title" id="pReminderTitle">중요한 날짜를 미리 알려드립니다.</h2>
+                <p class="p-kicker" data-i18n="reminderKicker">기한 알림</p>
+                <h2 class="p-section-title" id="pReminderTitle" data-i18n="reminderSectionTitle">중요한 날짜를 미리 알려드립니다.</h2>
             </div>
-            <p class="p-section-copy">날짜를 저장하면 이 사이트에 방문할 때마다 남은 일수를 보여드리고, 휴대폰 캘린더에 저장해 알림을 받을 수 있습니다.</p>
+            <p class="p-section-copy" data-i18n="reminderSectionCopy">날짜를 저장하면 이 사이트에 방문할 때마다 남은 일수를 보여드리고, 휴대폰 캘린더에 저장해 알림을 받을 수 있습니다.</p>
         </div>
 
         <form id="reminderForm" class="p-reminder-form" novalidate>
             <div class="p-reminder-field">
-                <label for="reminderType">어떤 기한입니까?</label>
+                <label for="reminderType" data-i18n="reminderTypeQuestion">어떤 기한입니까?</label>
                 <select id="reminderType" required>
-                    <option value="">선택하세요</option>
-                    <option value="visa">체류기간 만료일</option>
-                    <option value="arc">외국인등록증 갱신일</option>
-                    <option value="appointment">방문 예약 날짜</option>
+                    <option value="" data-i18n="reminderTypePlaceholder">선택하세요</option>
+                    <option value="visa" data-i18n="reminderTypeVisa">체류기간 만료일</option>
+                    <option value="arc" data-i18n="reminderTypeArc">외국인등록증 갱신일</option>
+                    <option value="appointment" data-i18n="reminderTypeAppointment">방문 예약 날짜</option>
                 </select>
             </div>
             <div class="p-reminder-field">
-                <label for="reminderDate">날짜</label>
+                <label for="reminderDate" data-i18n="reminderDateLabel">날짜</label>
                 <input type="date" id="reminderDate" required>
-                <span class="p-reminder-help">예: 2026-12-31</span>
+                <span class="p-reminder-help" data-i18n="reminderDateHelp">예: 2026-12-31</span>
             </div>
             <div class="p-reminder-field">
-                <label for="reminderMemo">메모 <span class="p-reminder-optional">(선택)</span></label>
-                <input type="text" id="reminderMemo" maxlength="40" placeholder="예: 김민수 비자">
+                <label for="reminderMemo" data-i18n-html="reminderMemoLabel">메모 <span class="p-reminder-optional">(선택)</span></label>
+                <input type="text" id="reminderMemo" maxlength="40" placeholder="예: 김민수 비자" data-i18n-attr="placeholder:reminderMemoPlaceholder">
             </div>
-            <button type="submit" class="p-reminder-submit">알림 저장</button>
+            <button type="submit" class="p-reminder-submit" data-i18n="reminderSubmit">알림 저장</button>
             <p id="reminderFormError" class="p-reminder-error" role="alert" hidden></p>
         </form>
 
         <div id="reminderSaveStatus" class="p-reminder-success" role="status" aria-live="polite" hidden>
-            <span aria-hidden="true">✅</span> 저장되었습니다.
+            <span aria-hidden="true">✅</span> <span data-i18n="reminderSaved">저장되었습니다.</span>
         </div>
 
         <div class="p-reminder-saved">
-            <h3 class="p-reminder-listtitle">저장된 기한</h3>
-            <p id="reminderEmpty" class="p-reminder-empty">아직 저장된 기한이 없습니다. 위에서 추가해 보세요.</p>
+            <h3 class="p-reminder-listtitle" data-i18n="reminderSavedListTitle">저장된 기한</h3>
+            <p id="reminderEmpty" class="p-reminder-empty" data-i18n="reminderEmptyState">아직 저장된 기한이 없습니다. 위에서 추가해 보세요.</p>
             <ul id="reminderItems" class="p-reminder-items" aria-live="polite"></ul>
         </div>
 
-        <p class="p-reminder-foot">저장된 기한은 이 기기·브라우저에만 저장됩니다. 다른 기기에 옮기려면 캘린더에 저장하세요.</p>
+        <p class="p-reminder-foot" data-i18n="reminderFootNote">저장된 기한은 이 기기·브라우저에만 저장됩니다. 다른 기기에 옮기려면 캘린더에 저장하세요.</p>
     </section>
 
     <div class="section-divider" aria-hidden="true"></div>
@@ -13671,7 +13671,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 <div class="modal-overlay" id="shortStayModalOverlay" role="dialog" aria-modal="true" aria-labelledby="shortStayModalTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 720px;">
         <div class="modal-header">
-            <h2 id="shortStayModalTitle" class="modal-title">🛂 국적별 단기입국 경로 확인</h2>
+            <h2 id="shortStayModalTitle" class="modal-title" data-i18n="shortStayModalTitle">🛂 국적별 단기입국 경로 확인</h2>
             <button type="button" class="modal-close" data-action="close-short-stay-modal" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
@@ -13691,14 +13691,14 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <label for="aiInput" class="sr-only">상황 입력</label>
             <textarea id="aiInput" class="ai-textarea" placeholder="예: 미국 국적이며 현재 이태원에 거주 중입니다. 한국 대학교 4년제 학사를 졸업했고 D-10 구직 비자 상태인데 E-7으로 취업하고 싶습니다."></textarea>
 
-            <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector">
+            <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector" data-i18n-attr="aria-label:aiModeSelectorAria">
                 <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
                     <span class="ai-mode-title">⚡ Fast</span>
-                    <span class="ai-mode-sub">빠른 답변</span>
+                    <span class="ai-mode-sub" data-i18n="aiModeFastSub">빠른 답변</span>
                 </button>
                 <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true">
                     <span class="ai-mode-title">⚖️ Basic</span>
-                    <span class="ai-mode-sub">기본(권장)</span>
+                    <span class="ai-mode-sub" data-i18n="aiModeBasicSub">기본(권장)</span>
                 </button>
             </div>
 
@@ -13735,10 +13735,10 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <h3 class="jc2-ask" id="jcAskHeading">어떤 일을 하나요?</h3>
                 <p class="jc2-ask-help" id="jcAskHelper">예시처럼 편하게 적어주세요. Paradiso가 직종과 업종 후보로 나눠서 찾아드릴게요.</p>
                 <div class="jc2-badges">
-                    <span class="jc2-badge jc2-badge--trust" id="jcBadgeTrust">✓ 기준: KSCO8 · KSIC11</span>
-                    <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
+                    <span class="jc2-badge jc2-badge--trust" id="jcBadgeTrust" data-i18n="jobCodeBadgeTrust">✓ 기준: KSCO8 · KSIC11</span>
+                    <span class="jc2-badge jc2-badge--caution" id="jcBadgeCaution" data-i18n="jobCodeBadgeCaution">⚠ 최종 신고 전 HiKorea에서 재확인</span>
                 </div>
-                <p class="jc2-hero-sub" id="jcHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
+                <p class="jc2-hero-sub" id="jcHeroSub" data-i18n="jobCodeHeroSub" hidden>HiKorea 신고 전에 내 일과 사업장 분야를 미리 정리해보세요.</p>
             </div>
 
             <!-- 3 · Search panel -->
@@ -13747,7 +13747,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <svg class="jc2-search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
                     <label for="jcSearchInput" class="sr-only">직종 또는 업종 검색</label>
                     <input type="search" id="jcSearchInput" class="jc2-search-input" placeholder="예: 골프장 청소해요 / 한치잡이 배에서 일해요 / English teacher at a hagwon" autocomplete="off" aria-describedby="jcCountBadge">
-                    <span id="jcCountBadge" class="jc2-count" aria-live="polite">전체 보기</span>
+                    <span id="jcCountBadge" class="jc2-count" aria-live="polite" data-i18n="jobCodeViewAll">전체 보기</span>
                 </div>
                 <!-- Plain-language concept explainer (expandable, not a giant legal note) -->
                 <details class="jc2-explain" id="jcExplain">
@@ -13756,15 +13756,15 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </details>
                 <!-- Friendly natural-language example chips (run the analyzer) -->
                 <p class="jc2-examples-label" id="jcExamplesLabel">이렇게 적어보세요</p>
-                <div class="jc2-chips" id="jcChips" aria-label="입력 예시">
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="골프장 청소해요">골프장 청소해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="한치잡이 배에서 일해요">한치잡이 배에서 일해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="공장에서 박스 포장해요">공장에서 박스 포장해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="학원에서 영어 가르쳐요">학원에서 영어 가르쳐요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영상 편집하고 유튜브 콘텐츠 만들어요">영상 편집하고 유튜브 콘텐츠 만들어요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페에서 음료 만들어요">카페에서 음료 만들어요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="아이돌 연습생">아이돌 연습생</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투이스트">타투이스트</button>
+                <div class="jc2-chips" id="jcChips" aria-label="입력 예시" data-i18n-attr="aria-label:jobCodeChipsAria">
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="골프장 청소해요" data-i18n="jobCodeChip1">골프장 청소해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="한치잡이 배에서 일해요" data-i18n="jobCodeChip2">한치잡이 배에서 일해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="공장에서 박스 포장해요" data-i18n="jobCodeChip3">공장에서 박스 포장해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="학원에서 영어 가르쳐요" data-i18n="jobCodeChip4">학원에서 영어 가르쳐요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영상 편집하고 유튜브 콘텐츠 만들어요" data-i18n="jobCodeChip5">영상 편집하고 유튜브 콘텐츠 만들어요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페에서 음료 만들어요" data-i18n="jobCodeChip6">카페에서 음료 만들어요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="아이돌 연습생" data-i18n="jobCodeChip7">아이돌 연습생</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투이스트" data-i18n="jobCodeChip8">타투이스트</button>
                 </div>
                 <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
                     <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
@@ -13772,19 +13772,19 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </button>
                 <!-- Advanced: direct code browsing (collapsed to reduce cognitive load) -->
                 <details class="jc2-advanced">
-                    <summary class="jc2-advanced-sum">🔧 직접 코드 찾기 · 검색 옵션</summary>
+                    <summary class="jc2-advanced-sum" data-i18n="jobCodeAdvancedSummary">🔧 직접 코드 찾기 · 검색 옵션</summary>
                     <div class="jc2-filters-row">
-                        <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택">
-                            <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all">전체</button>
-                            <button type="button" role="tab" class="jc2-seg" id="jcFilterOcc" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="occupation">직종만</button>
-                            <button type="button" role="tab" class="jc2-seg" id="jcFilterInd" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="industry">업종만</button>
+                        <div class="jc2-filter" role="tablist" aria-label="검색 범위 선택" data-i18n-attr="aria-label:jobCodeScopeAria">
+                            <button type="button" role="tab" class="jc2-seg is-on" id="jcFilterAll" aria-selected="true" data-action="set-jobcode-filter" data-jc-filter="all" data-i18n="jobCodeFilterAll">전체</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcFilterOcc" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="occupation" data-i18n="jobCodeFilterOcc">직종만</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcFilterInd" aria-selected="false" data-action="set-jobcode-filter" data-jc-filter="industry" data-i18n="jobCodeFilterInd">업종만</button>
                         </div>
-                        <div class="jc2-filter jc2-filter--level" role="tablist" aria-label="분류 단계 선택">
-                            <button type="button" role="tab" class="jc2-seg is-on" id="jcLevelAll" aria-selected="true" data-action="set-jobcode-level" data-jc-level="all">전체 단계</button>
-                            <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시">🎯 세부코드만</button>
+                        <div class="jc2-filter jc2-filter--level" role="tablist" aria-label="분류 단계 선택" data-i18n-attr="aria-label:jobCodeLevelAria">
+                            <button type="button" role="tab" class="jc2-seg is-on" id="jcLevelAll" aria-selected="true" data-action="set-jobcode-level" data-jc-level="all" data-i18n="jobCodeLevelAll">전체 단계</button>
+                            <button type="button" role="tab" class="jc2-seg" id="jcLevelLeaf" aria-selected="false" data-action="set-jobcode-level" data-jc-level="leaf" title="실제 신고에 쓰는 가장 구체적인 분류(세세분류·세분류)만 표시" data-i18n="jobCodeLevelLeaf" data-i18n-attr="title:jobCodeLevelLeafTitle">🎯 세부코드만</button>
                         </div>
                     </div>
-                    <p class="jc2-level-hint" id="jcLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
+                    <p class="jc2-level-hint" id="jcLevelHint" data-i18n-html="jobCodeLevelHint">💡 검색하면 가장 구체적인 <b>세세분류(신고용 세부코드)</b>가 먼저 표시됩니다. 큰 분류부터 보려면 단계 필터를 조정하세요.</p>
                 </details>
             </div>
 
@@ -13821,12 +13821,12 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <!-- 4 · Results (Step 4: candidates, shown after interpretation/clarification) -->
             <div class="jc2-results" id="jcResults">
                 <section class="jc2-pane" data-pane="occupation">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> <span class="jc2-pane-title">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ">이건 직종입니다</span><span class="jc2-pane-tag">KSCO8 · 표준직업분류</span></h3>
-                    <div id="jcJobResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">👔</span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneOcc">직종 후보 <span class="jc2-pane-plain">내가 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--occ" data-i18n="jobCodePaneOccBadge">이건 직종입니다</span><span class="jc2-pane-tag" data-i18n="jobCodePaneOccTag">KSCO8 · 표준직업분류</span></h3>
+                    <div id="jcJobResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty" data-i18n="jobCodeStartHint">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
                 <section class="jc2-pane" data-pane="industry">
-                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind">이건 업종입니다</span><span class="jc2-pane-tag">KSIC11 · 표준산업분류</span></h3>
-                    <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
+                    <h3 class="jc2-pane-h"><span class="jc2-pane-ic" aria-hidden="true">🏭</span> <span class="jc2-pane-title" data-i18n-html="jobCodePaneInd">업종 후보 <span class="jc2-pane-plain">회사나 사업장이 하는 일에 가까운 항목이에요</span></span> <span class="jc2-pane-badge jc2-pane-badge--ind" data-i18n="jobCodePaneIndBadge">이건 업종입니다</span><span class="jc2-pane-tag" data-i18n="jobCodePaneIndTag">KSIC11 · 표준산업분류</span></h3>
+                    <div id="jcIndResults" class="jc2-list" role="list" aria-live="polite"><div class="jc2-empty" data-i18n="jobCodeStartHint">검색어를 입력하거나 추천 칩을 눌러 시작하세요.</div></div>
                 </section>
             </div>
 
@@ -13852,7 +13852,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <div id="jcTips" class="jc2-tips" role="note" hidden></div>
 
             <!-- 6 · Warnings -->
-            <div class="jc2-disclaimer">
+            <div class="jc2-disclaimer" data-i18n-html="jobCodeDisclaimer">
                 <p>⚠ 이 검색은 <b>취업정보 신고용 분류 참고</b>입니다. 체류자격 허가 가능성, E-7 직종 적합성, 자격외활동 허가 여부를 판단하지 않습니다.</p>
                 <p>📌 최종 신고 코드는 <b>HiKorea 신고 화면 또는 1345</b>에서 반드시 확인하세요.</p>
                 <p>📚 직종·업종 공식 목록은 <b>국가데이터처 통계분류포털</b>에서 확인할 수 있습니다 → <a href="https://kssc.mods.go.kr" target="_blank" rel="noopener">kssc.mods.go.kr</a></p>
@@ -13860,25 +13860,27 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             </div>
 
             <!-- 5 · Selected summary (sticky) -->
-            <div class="jc2-summary" id="jcSummary" aria-label="선택 요약">
+            <div class="jc2-summary" id="jcSummary" aria-label="선택 요약" data-i18n-attr="aria-label:jobCodeSummaryAria">
                 <div class="jc2-sum-grid">
-                    <div class="jc2-sum-row"><span class="jc2-sum-k">선택한 직종</span><span class="jc2-sum-v" id="jcSelOcc">아직 선택 안 함</span></div>
-                    <div class="jc2-sum-row"><span class="jc2-sum-k">선택한 업종</span><span class="jc2-sum-v" id="jcSelInd">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row"><span class="jc2-sum-k" data-i18n="jobCodeSelectedOcc">선택한 직종</span><span class="jc2-sum-v" id="jcSelOcc" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
+                    <div class="jc2-sum-row"><span class="jc2-sum-k" data-i18n="jobCodeSelectedInd">선택한 업종</span><span class="jc2-sum-v" id="jcSelInd" data-i18n="jobCodeNotSelected">아직 선택 안 함</span></div>
                     <div class="jc2-sum-row">
-                        <label class="jc2-sum-k" for="jcIncome">연간소득 구간</label>
+                        <label class="jc2-sum-k" for="jcIncome" data-i18n="jobCodeIncomeLabel">연간소득 구간</label>
+                        <!-- Explicit Korean value="" so localizing the visible label never
+                             changes the option value the HiKorea memo/checklist read. -->
                         <select id="jcIncome" class="jc2-income">
-                            <option value="">선택 안 함</option>
-                            <option>소득없음</option>
-                            <option>연간 1천만 원 미만</option>
-                            <option>1천만~2천만 원 미만</option>
-                            <option>2천만~3천만 원 미만</option>
-                            <option>3천만~4천만 원 미만</option>
-                            <option>4천만~5천만 원 미만</option>
-                            <option>5천만 원 이상</option>
+                            <option value="" data-i18n="jobCodeIncomeNone">선택 안 함</option>
+                            <option value="소득없음" data-i18n="jobCodeIncome0">소득없음</option>
+                            <option value="연간 1천만 원 미만" data-i18n="jobCodeIncome1">연간 1천만 원 미만</option>
+                            <option value="1천만~2천만 원 미만" data-i18n="jobCodeIncome2">1천만~2천만 원 미만</option>
+                            <option value="2천만~3천만 원 미만" data-i18n="jobCodeIncome3">2천만~3천만 원 미만</option>
+                            <option value="3천만~4천만 원 미만" data-i18n="jobCodeIncome4">3천만~4천만 원 미만</option>
+                            <option value="4천만~5천만 원 미만" data-i18n="jobCodeIncome5">4천만~5천만 원 미만</option>
+                            <option value="5천만 원 이상" data-i18n="jobCodeIncome6">5천만 원 이상</option>
                         </select>
                     </div>
                 </div>
-                <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo">📋 HiKorea 입력용 메모 복사</button>
+                <button type="button" class="jc2-copy" id="jcCopyBtn" data-action="copy-jobcode-memo" data-i18n="jobCodeCopyMemo">📋 HiKorea 입력용 메모 복사</button>
             </div>
         </div>
     </div>
@@ -13892,16 +13894,16 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
         <div class="modal-body">
             <div class="jur-search-box">
-                <div class="jur-label-accent">🔍 나의 관할 출입국관서 정확히 찾기</div>
-                <div class="jur-sub jur-sub-margin">현재 거주 중인 체류지(외국인등록증 상의 주소)를 선택하십시오.</div>
+                <div class="jur-label-accent" data-i18n="jurSearchHeading">🔍 나의 관할 출입국관서 정확히 찾기</div>
+                <div class="jur-sub jur-sub-margin" data-i18n="jurSearchSub">현재 거주 중인 체류지(외국인등록증 상의 주소)를 선택하십시오.</div>
                 <div class="jur-select-group">
-                    <label for="jurSido" class="sr-only">시·도 선택</label>
+                    <label for="jurSido" class="sr-only" data-i18n="jurSidoLabel">시·도 선택</label>
                     <select id="jurSido" class="jur-select">
-                        <option value="">시/도 선택</option>
+                        <option value="" data-i18n="jurSidoPlaceholder">시/도 선택</option>
                     </select>
-                    <label for="jurSigungu" class="sr-only">시·군·구 선택</label>
+                    <label for="jurSigungu" class="sr-only" data-i18n="jurSigunguLabel">시·군·구 선택</label>
                     <select id="jurSigungu" class="jur-select" disabled>
-                        <option value="">시/군/구 선택</option>
+                        <option value="" data-i18n="jurSigunguPlaceholder">시/군/구 선택</option>
                     </select>
                 </div>
                 <div id="jurResultCard" class="jur-result-card" aria-live="polite">
@@ -13910,37 +13912,37 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <div class="jur-office-addr" id="jurOfficeAddr"></div>
                     <div class="jur-map-btns">
                         <a href="#" id="jurNaver" target="_blank" rel="noopener" class="jur-map-btn btn-naver">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.08 11.25L7.92 1.34H1.4v21.32h6.53v-9.91l8.16 9.91h6.51V1.34h-6.52v9.91z"/></svg> 네이버 지도
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.08 11.25L7.92 1.34H1.4v21.32h6.53v-9.91l8.16 9.91h6.51V1.34h-6.52v9.91z"/></svg> <span data-i18n="jurNaverMap">네이버 지도</span>
                         </a>
                         <a href="#" id="jurKakao" target="_blank" rel="noopener" class="jur-map-btn btn-kakao">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-5.52 0-10 3.58-10 8 0 2.87 1.84 5.4 4.67 6.84-.44 1.63-1.6 5.86-1.63 5.96-.05.18.06.33.22.36.13.02.26-.03.35-.13.1-.11 4.54-3.08 6.03-4.13.12.01.24.01.36.01 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg> 카카오맵
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3c-5.52 0-10 3.58-10 8 0 2.87 1.84 5.4 4.67 6.84-.44 1.63-1.6 5.86-1.63 5.96-.05.18.06.33.22.36.13.02.26-.03.35-.13.1-.11 4.54-3.08 6.03-4.13.12.01.24.01.36.01 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/></svg> <span data-i18n="jurKakaoMap">카카오맵</span>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="jur-section">
-                <div class="jur-label">📞 외국인종합안내센터</div>
+                <div class="jur-label" data-i18n="jurCenterLabel">📞 외국인종합안내센터</div>
                 <div class="jur-big">1345</div>
-                <div class="jur-sub">평일 09:00~18:00 · 20개 언어 지원 · 무료</div>
+                <div class="jur-sub" data-i18n="jurCenterHours">평일 09:00~18:00 · 20개 언어 지원 · 무료</div>
             </div>
             <div class="jur-section">
-                <div class="jur-label">🌐 HiKorea 관할관서 조회 & 방문 예약</div>
-                <a href="https://www.hikorea.go.kr/Main.pt" target="_blank" rel="noopener" class="jur-btn-primary">
+                <div class="jur-label" data-i18n="jurHikoreaLabel">🌐 HiKorea 관할관서 조회 & 방문 예약</div>
+                <a href="https://www.hikorea.go.kr/Main.pt" target="_blank" rel="noopener" class="jur-btn-primary" data-i18n="jurHikoreaBtn">
                     HiKorea 바로가기 →
                 </a>
-                <div class="jur-sub">체류지 주소로 관할관서 확인 · 방문 예약 가능</div>
+                <div class="jur-sub" data-i18n="jurHikoreaSub">체류지 주소로 관할관서 확인 · 방문 예약 가능</div>
             </div>
             <div class="jur-section">
-                <div class="jur-label">📅 방문 전 예약 안내</div>
-                <ul class="jur-list">
+                <div class="jur-label" data-i18n="jurBookingLabel">📅 방문 전 예약 안내</div>
+                <ul class="jur-list" data-i18n-html="jurBookingList">
                     <li>자격 변경·연장·외국인등록 같은 체류 민원은 보통 사전 예약이 필요해요.</li>
                     <li>일부 업무는 예약 없이 방문하면 처리되지 않을 수 있어요. 방문 전에 하이코리아에서 예약 가능 여부를 확인하세요.</li>
                     <li>예약 시간에 늦으면 접수가 어려울 수 있으니, 여유 있게 도착하세요.</li>
                 </ul>
             </div>
             <div class="jur-section jur-exception">
-                <div class="jur-label">✅ 비예약 방문 가능 업무</div>
-                <ul class="jur-list">
+                <div class="jur-label" data-i18n="jurWalkinLabel">✅ 비예약 방문 가능 업무</div>
+                <ul class="jur-list" data-i18n-html="jurWalkinList">
                     <li>체류지 변경 신고 (시·군·구청·읍면동 주민센터에서도 가능)</li>
                     <li>등록외국인 여권 변경 신고</li>
                     <li>외국인등록증 분실·훼손 재발급</li>
@@ -13968,10 +13970,10 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </p>
                 <p class="p-agent-finder__disclaimer" id="agentFinderDisclaimer">
                     <span id="agentFinderDisclaimerText">Paradiso는 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다. 방문 또는 의뢰 전 전화 확인, 상담 범위 및 수수료 확인을 권장합니다.</span>
-                    <a class="p-agent-finder__official-link" href="https://www.hikorea.go.kr/cvlappl/CvlapplAgentInfo.pt" target="_blank" rel="noopener noreferrer">하이코리아 공식 조회</a>
+                    <a class="p-agent-finder__official-link" href="https://www.hikorea.go.kr/cvlappl/CvlapplAgentInfo.pt" target="_blank" rel="noopener noreferrer" data-i18n="agentOfficialLink">하이코리아 공식 조회</a>
                 </p>
                 <!-- TASK 2: 전국 광역자치단체 region filter pills -->
-                <div class="jeju-region-filter" id="jejuRegionFilter" role="group" aria-label="광역자치단체 지역 필터">
+                <div class="jeju-region-filter" id="jejuRegionFilter" role="group" aria-label="광역자치단체 지역 필터" data-i18n-attr="aria-label:agentRegionFilterAria">
                     <button type="button" class="jeju-region-pill jeju-pill-active" data-region="" aria-pressed="true">전체</button>
                     <button type="button" class="jeju-region-pill" data-region="서울특별시" aria-pressed="false">서울</button>
                     <button type="button" class="jeju-region-pill" data-region="부산광역시" aria-pressed="false">부산</button>
@@ -14005,7 +14007,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <p class="p-agent-finder__count" id="agentFinderCount" aria-live="polite"></p>
                 <ul class="p-agent-finder__list" id="agentFinderList" aria-label="등록 대행기관 목록"></ul>
                 <p class="p-agent-finder__empty" id="agentFinderEmpty" hidden>검색 결과가 없습니다. 지역 필터를 "전체 지역"으로 바꾸거나 키워드를 줄여 다시 확인해 주세요.</p>
-                <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
+                <div class="p-agent-finder__error" id="agentFinderError" role="alert" hidden><span id="agentFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하거나 하이코리아 공식 조회를 이용하세요.</span> <button type="button" class="cb" id="agentFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;" data-i18n="retryButton">다시 시도</button></div>
                 <div class="p-agent-finder__more" id="agentFinderMore" hidden>
                     <button type="button" id="agentFinderShowMore" class="p-agent-finder__show-more">더 보기</button>
                 </div>
@@ -14050,7 +14052,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <p class="p-med-finder__count" id="medFinderCount" aria-live="polite"></p>
                 <ul class="p-med-finder__list" id="medFinderList" aria-label="법무부지정 의료기관 목록"></ul>
                 <p class="p-med-finder__empty" id="medFinderEmpty" hidden>검색 결과가 없습니다. 다른 키워드나 지역을 시도해 보세요.</p>
-                <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;">다시 시도</button></div>
+                <div class="p-med-finder__error" id="medFinderError" role="alert" hidden><span id="medFinderErrorText">데이터를 불러오지 못했습니다. 잠시 후 다시 시도하세요.</span> <button type="button" class="cb" id="medFinderRetry" style="margin-left:0.5rem; padding:0.25rem 0.6rem;" data-i18n="retryButton">다시 시도</button></div>
                 <div class="p-med-finder__more" id="medFinderMore" hidden>
                     <button type="button" id="medFinderShowMore" class="p-med-finder__show-more">더 보기</button>
                 </div>
@@ -14095,7 +14097,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 <div class="modal-overlay" id="scenarioPickerOverlay" role="dialog" aria-modal="true" aria-labelledby="scenarioPickerTitle" aria-hidden="true" style="display:none!important">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
-            <h2 id="scenarioPickerTitle" class="modal-title">내 상황에 맞는 시나리오 선택</h2>
+            <h2 id="scenarioPickerTitle" class="modal-title" data-i18n="scenarioPickerTitle">내 상황에 맞는 시나리오 선택</h2>
             <button type="button" class="modal-close" data-action="close-scenario-picker" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
@@ -14109,7 +14111,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 <div class="modal-overlay" id="routePickerOverlay" role="dialog" aria-modal="true" aria-labelledby="routePickerTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
-            <h2 id="routePickerTitle" class="modal-title">경로 선택</h2>
+            <h2 id="routePickerTitle" class="modal-title" data-i18n="routePickerTitle">경로 선택</h2>
             <button type="button" class="modal-close" data-action="close-route-picker" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
@@ -14123,7 +14125,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 <div class="modal-overlay" id="issuanceGuideOverlay" role="dialog" aria-modal="true" aria-labelledby="issuanceGuideTitle" aria-hidden="true">
     <div class="modal-box" style="max-width: 560px;">
         <div class="modal-header">
-            <h2 id="issuanceGuideTitle" class="modal-title">사증발급 시나리오 선택</h2>
+            <h2 id="issuanceGuideTitle" class="modal-title" data-i18n="issuanceGuideTitle">사증발급 시나리오 선택</h2>
             <button type="button" class="modal-close" data-action="close-issuance-guide" aria-label="닫기">✕</button>
         </div>
         <div class="modal-body">
@@ -14147,9 +14149,9 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <div class="modal-box hikorea-modal">
         <div class="modal-header hikorea-modal-header">
             <div class="hikorea-header-stack">
-                <h2 id="hikoreaGuideTitle">하이코리아 예약 도우미</h2>
-                <p class="hikorea-header-sub" id="hikoreaGuideSub">출입국에 가기 전에, 내 상황에 맞는 예약 목적과 준비물을 확인하세요.</p>
-                <span class="hikorea-header-chip" id="hikoreaGuideChip">공식 서비스 아님</span>
+                <h2 id="hikoreaGuideTitle" data-i18n="hikoreaGuideTitle">하이코리아 예약 도우미</h2>
+                <p class="hikorea-header-sub" id="hikoreaGuideSub" data-i18n="hikoreaGuideSub">출입국에 가기 전에, 내 상황에 맞는 예약 목적과 준비물을 확인하세요.</p>
+                <span class="hikorea-header-chip" id="hikoreaGuideChip" data-i18n="hikoreaGuideChip">공식 서비스 아님</span>
             </div>
             <button type="button" class="modal-close close-btn" data-action="close-hikorea-guide" aria-label="닫기">✕</button>
         </div>
@@ -14164,7 +14166,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <header class="visa-drawer-header">
             <div class="visa-drawer-title-stack">
                 <span class="visa-drawer-eyebrow" id="visaDrawerEyebrow">검색 결과 상세</span>
-                <h2 class="visa-drawer-title" id="visaDrawerTitle">비자 상세</h2>
+                <h2 class="visa-drawer-title" id="visaDrawerTitle" data-i18n="visaDrawerDefaultTitle">비자 상세</h2>
             </div>
             <button type="button" class="visa-drawer-close" data-action="close-visa-drawer" aria-label="닫기">✕</button>
         </header>
@@ -15036,6 +15038,14 @@ function getJobcodeSearchTerms(query, extraTerms = []) {
 }
 // new-schema field accessors (type/code/name_ko/search_terms_ko)
 function jcName(r) { return r.name_ko || r.상세설명 || ''; }
+// Display-only name: prefer the dataset's verified English label (name_en) in
+// English mode, falling back to the Korean canonical when no English exists
+// (KSCO8/KSIC11 taxonomy is only partially translated upstream). Search/matching
+// and the HiKorea memo keep using jcName() so behaviour is unchanged.
+function jcDisplayName(r) {
+    if (currentLanguage === 'en' && r && typeof r.name_en === 'string' && r.name_en.trim()) return r.name_en.trim();
+    return jcName(r);
+}
 function jcCode(r) { return r.code || r.코드값 || ''; }
 function jcType(r) { return r.type || (r.분류 === '산업' ? 'industry' : 'occupation'); }
 function jcTerms(r) { return Array.isArray(r.search_terms_ko) ? r.search_terms_ko : []; }
@@ -15155,7 +15165,7 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
     const en = currentLanguage === 'en';
     const type = jcType(row);
     const code = jcCode(row);
-    const name = jcName(row);
+    const name = jcDisplayName(row);
     const lvLabel = (en ? row.level_label_en : row.level_label_ko) || (en
         ? ({ major:'Major group', middle:'Sub-major group', minor:'Minor group', unit:'Unit group', detailed_unit:'Detailed unit' })[row.level]
         : ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level]) || '';
@@ -20748,6 +20758,40 @@ function setIndexedAttr(selector, attr, values) {
     });
 }
 
+/* Declarative static-markup localizer. The HTML is authored in Korean (the
+   no-JS fallback); elements that carry one of these attributes get their text
+   swapped to the active language pack on load and on every language change:
+     data-i18n="key"            → textContent  = tx(key)
+     data-i18n-html="key"       → innerHTML     = tx(key)   (allows inline tags)
+     data-i18n-attr="attr:key;…"→ setAttribute(attr, tx(key))   (placeholders/aria)
+   Fail-safe: when a key is missing the pack, tx() returns the key itself, so we
+   leave the authored Korean untouched rather than printing a raw key. This is
+   the single mechanism that prevents Korean leaking through surfaces that were
+   never wired into the explicit setText() calls below. */
+function localizeStaticDom(root = document) {
+    root.querySelectorAll('[data-i18n]').forEach((el) => {
+        const key = el.getAttribute('data-i18n');
+        const value = tx(key);
+        if (typeof value === 'string' && value !== key) el.textContent = value;
+    });
+    root.querySelectorAll('[data-i18n-html]').forEach((el) => {
+        const key = el.getAttribute('data-i18n-html');
+        const value = tx(key);
+        if (typeof value === 'string' && value !== key) el.innerHTML = value;
+    });
+    root.querySelectorAll('[data-i18n-attr]').forEach((el) => {
+        el.getAttribute('data-i18n-attr').split(';').forEach((pair) => {
+            const sep = pair.indexOf(':');
+            if (sep === -1) return;
+            const attr = pair.slice(0, sep).trim();
+            const key = pair.slice(sep + 1).trim();
+            if (!attr || !key) return;
+            const value = tx(key);
+            if (typeof value === 'string' && value !== key) el.setAttribute(attr, value);
+        });
+    });
+}
+
 function txArray(key) {
     const value = tx(key);
     return Array.isArray(value) ? value : [];
@@ -20966,7 +21010,9 @@ function applyLanguage(code, options = {}) {
     setText('.p-manual-section .p-section-copy', tx('manualCopy'));
     setIndexedText('.p-manual-card h3', txArray('manualCardTitles'));
     setIndexedText('.p-manual-card p', txArray('manualCardDescs'));
-    setText('.p-manual-note', tx('manualNote'));
+    // NOTE: the manual-section note (#pManualNote) is localized via data-i18n in
+    // markup. A bare '.p-manual-note' selector here would hit #docComposerNote
+    // first (it shares the class) and never reach the real note.
     setHtml('#docComposerTitle', tx('docComposerTitle'));
     setText('#docComposerCopy', tx('docComposerCopy'));
     setText('#docComposerFormTitle', tx('docComposerFormTitle'));
@@ -21078,6 +21124,13 @@ function applyLanguage(code, options = {}) {
     setText('#jcIncomeReminderBody', tx('jobCodeIncomeNote'));
     updateJobcodeNaturalSearchLabel();
     setHtml('#jurisdictionModalTitle', tx('jurisdictionTitle'));
+    // Every modal/drawer close control carries the same Korean aria-label in
+    // markup; setAttr() only hits the first, so localize them all here.
+    document.querySelectorAll('.modal-close, .visa-drawer-close, .subcode-detail-back, .subcode-detail-close').forEach((el) => {
+        if (!el.hasAttribute('data-i18n-attr')) el.setAttribute('aria-label', tx('closeModal'));
+    });
+    localizeStaticDom();
+    localizeFinderRegions();
     if (typeof updateAgentFinderLanguage === 'function') updateAgentFinderLanguage();
     setDirectSearchToggleState(document.getElementById('searchToggleBtn')?.getAttribute('aria-expanded') === 'true');
     if (document.body.classList.contains('searched') && dataReady) renderResults(qEl?.value || '');
@@ -21103,6 +21156,53 @@ function toggleTheme(){
     document.body.setAttribute('data-theme', newTheme);
     updateThemeLabel();
     updateThemeColorMeta();
+}
+
+/* Administrative region display names for the agency/medical finders. The data
+   (and the finder filters) stay keyed on the Korean canonical name; only the
+   visible label is localized so a non-Korean UI never shows a Korean region
+   chip. Both the full (서울특별시) and short (서울) forms map to one label.
+   Kept outside the i18n-scan window above on purpose: the keys are Korean by
+   design, not stray UI text. */
+const REGION_I18N = {
+    '전체': { en: 'All', 'zh-CN': '全部' },
+    '서울': { en: 'Seoul', 'zh-CN': '首尔' }, '서울특별시': { en: 'Seoul', 'zh-CN': '首尔' },
+    '부산': { en: 'Busan', 'zh-CN': '釜山' }, '부산광역시': { en: 'Busan', 'zh-CN': '釜山' },
+    '대구': { en: 'Daegu', 'zh-CN': '大邱' }, '대구광역시': { en: 'Daegu', 'zh-CN': '大邱' },
+    '인천': { en: 'Incheon', 'zh-CN': '仁川' }, '인천광역시': { en: 'Incheon', 'zh-CN': '仁川' },
+    '광주': { en: 'Gwangju', 'zh-CN': '光州' }, '광주광역시': { en: 'Gwangju', 'zh-CN': '光州' },
+    '대전': { en: 'Daejeon', 'zh-CN': '大田' }, '대전광역시': { en: 'Daejeon', 'zh-CN': '大田' },
+    '울산': { en: 'Ulsan', 'zh-CN': '蔚山' }, '울산광역시': { en: 'Ulsan', 'zh-CN': '蔚山' },
+    '세종': { en: 'Sejong', 'zh-CN': '世宗' }, '세종특별자치시': { en: 'Sejong', 'zh-CN': '世宗' },
+    '경기': { en: 'Gyeonggi', 'zh-CN': '京畿道' }, '경기도': { en: 'Gyeonggi', 'zh-CN': '京畿道' },
+    '강원': { en: 'Gangwon', 'zh-CN': '江原道' }, '강원특별자치도': { en: 'Gangwon', 'zh-CN': '江原道' },
+    '충북': { en: 'Chungbuk', 'zh-CN': '忠清北道' }, '충청북도': { en: 'Chungbuk', 'zh-CN': '忠清北道' },
+    '충남': { en: 'Chungnam', 'zh-CN': '忠清南道' }, '충청남도': { en: 'Chungnam', 'zh-CN': '忠清南道' },
+    '전북': { en: 'Jeonbuk', 'zh-CN': '全北' }, '전북특별자치도': { en: 'Jeonbuk', 'zh-CN': '全北' },
+    '전남': { en: 'Jeonnam', 'zh-CN': '全南' }, '전라남도': { en: 'Jeonnam', 'zh-CN': '全南' },
+    '경북': { en: 'Gyeongbuk', 'zh-CN': '庆北' }, '경상북도': { en: 'Gyeongbuk', 'zh-CN': '庆北' },
+    '경남': { en: 'Gyeongnam', 'zh-CN': '庆南' }, '경상남도': { en: 'Gyeongnam', 'zh-CN': '庆南' },
+    '제주': { en: 'Jeju', 'zh-CN': '济州' }, '제주특별자치도': { en: 'Jeju', 'zh-CN': '济州' }
+};
+function localizeRegion(koName) {
+    const name = (koName == null ? '' : String(koName)).trim();
+    const code = normalizeLocaleCode(currentLanguage);
+    if (!name) return code === 'ko' ? '전체' : (REGION_I18N['전체'][code] || 'All');
+    if (code === 'ko') return name;
+    const entry = REGION_I18N[name];
+    return (entry && entry[code]) || name;
+}
+function localizeFinderRegions() {
+    document.querySelectorAll('#jejuRegionFilter .jeju-region-pill').forEach((p) => {
+        p.textContent = localizeRegion(p.dataset.region || '전체');
+    });
+    document.querySelectorAll('#medFinderChips .p-med-finder__chip').forEach((c) => {
+        if (c.dataset.medRegion) c.textContent = localizeRegion(c.dataset.medRegion);
+    });
+    const agentSel = document.getElementById('agentFinderRegion');
+    if (agentSel) agentSel.querySelectorAll('option').forEach((o) => {
+        if (o.value) o.textContent = localizeRegion(o.value);
+    });
 }
 
 /* ── Editorial style theme (civic_editorial / archive_diary) ──────────────
@@ -22277,8 +22377,10 @@ function showVisaDocForAction(visaCode) {
   }
   function populateRegions(regions) {
     regionSel.querySelectorAll('option:not([value=""])').forEach(function (opt) { opt.remove(); });
+    const localize = (typeof localizeRegion === 'function') ? localizeRegion : function (r) { return r; };
     const opts = regions.map(function (r) {
-      return '<option value="' + escapeText(r) + '">' + escapeText(r) + '</option>';
+      // Value stays the Korean canonical (filtering keys on it); only the label localizes.
+      return '<option value="' + escapeText(r) + '">' + escapeText(localize(r)) + '</option>';
     }).join('');
     regionSel.insertAdjacentHTML('beforeend', opts);
   }
@@ -22287,6 +22389,7 @@ function showVisaDocForAction(visaCode) {
       const allOption = regionSel.querySelector('option[value=""]');
       if (allOption) allOption.textContent = tx('agentRegionAll');
     }
+    if (typeof localizeFinderRegions === 'function') localizeFinderRegions();
     if (dataset.agencies.length) applyFilter();
   };
   function showError() {
