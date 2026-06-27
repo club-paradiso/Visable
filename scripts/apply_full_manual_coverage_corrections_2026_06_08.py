@@ -555,7 +555,7 @@ def patch_e7(data):
     r.setdefault("_quarantineNotes", {})
     r["_quarantineNotes"]["E-7-H"] = (
         "내부 전산기호: 기타(G-1) 등에 대한 체류자격외활동 허가를 출입국관리시스템에 "
-        "입력할 때 사용하는 전산기호이며(체류민원 p. 499), 사용자 안내용 체류자격 코드가 "
+        "입력할 때 사용하는 전산기호이며(체류민원 p. 502), 사용자 안내용 체류자격 코드가 "
         "아니므로 검색/표시 대상에서 제외(internal_system_marker)."
     )
     return len(subs)

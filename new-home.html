@@ -6,6 +6,7 @@
 <meta name="theme-color" content="#f5f2ea">
 <meta name="description" content="Paradiso: New Home — 귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램(KIIP), 면접, 귀화 후 절차까지 단계별 안내. Step-by-step guidance for Korean nationality and naturalization.">
 <title>Paradiso: New Home — 국적·귀화 안내</title>
+<link rel="icon" type="image/png" href="assets/brand/paradiso-favicon-o.png?v=2">
 
 <!-- Editorial theme bootstrap (shared with the Paradiso main page). Runs before
      paint so the page never flashes the wrong palette. -->
@@ -114,6 +115,23 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 }
 .nh-ctl:hover { border-color: var(--ac); color: var(--t1); }
 
+.nh-section-nav {
+  position: sticky; top: 64px; z-index: 45;
+  display: flex; justify-content: center; gap: 0.35rem;
+  padding: 0.45rem clamp(1rem, 4vw, 2rem);
+  overflow-x: auto; scrollbar-width: none;
+  background: color-mix(in srgb, var(--bg0) 92%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--bd2);
+}
+.nh-section-nav::-webkit-scrollbar { display: none; }
+.nh-section-nav a {
+  flex: 0 0 auto; padding: 0.42rem 0.72rem; border-radius: 999px;
+  color: var(--t2); text-decoration: none; font-size: 0.78rem; font-weight: 800;
+  border: 1px solid transparent;
+}
+.nh-section-nav a:hover, .nh-section-nav a:focus-visible { color: var(--t1); border-color: var(--bd); background: var(--bg1); }
+
 main { display: block; }
 .nh-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 clamp(1rem, 4vw, 2rem); }
 
@@ -127,12 +145,8 @@ main { display: block; }
     var(--bg1);
   border-bottom: 1px solid var(--bd2);
 }
-.nh-hero-inner { max-width: var(--maxw); margin: 0 auto; position: relative; z-index: 1; }
-.nh-hero-motif {
-  position: absolute; right: clamp(-40px, -2vw, 0px); top: 50%; transform: translateY(-50%);
-  width: clamp(180px, 30vw, 320px); height: auto; opacity: 0.16; color: var(--ac);
-  pointer-events: none; z-index: 0;
-}
+.nh-hero-inner { max-width: var(--maxw); margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(250px, 0.7fr); gap: clamp(1.4rem, 4vw, 3rem); align-items: center; }
+.nh-hero-copy { min-width: 0; }
 .nh-kicker {
   display: inline-block; margin: 0 0 0.8rem;
   font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase;
@@ -153,13 +167,24 @@ main { display: block; }
 .nh-btn-primary:hover { transform: translateY(-2px); }
 .nh-btn-secondary { background: var(--bg1); color: var(--t1); border-color: var(--bd); }
 .nh-btn-secondary:hover { border-color: var(--ac); transform: translateY(-2px); }
+.nh-proof-row { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.85rem; }
+.nh-proof-row span { padding: 0.28rem 0.62rem; border-radius: 999px; border: 1px solid var(--bd); background: color-mix(in srgb, var(--bg1) 86%, transparent); color: var(--t2); font-size: 0.76rem; font-weight: 750; }
+.nh-hero-guide { padding: 1.1rem; border: 1px solid var(--bd); border-radius: var(--r-lg); background: color-mix(in srgb, var(--bg1) 88%, transparent); box-shadow: var(--shCard); }
+.nh-hero-guide h2 { margin: 0 0 0.25rem; font-size: 1rem; }
+.nh-hero-guide p { margin: 0 0 0.75rem; color: var(--t2); font-size: 0.82rem; }
+.nh-guide-link { width: 100%; display: grid; grid-template-columns: 2rem 1fr auto; align-items: center; gap: 0.55rem; padding: 0.68rem 0.72rem; margin-top: 0.45rem; border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg1); color: var(--t1); font-family: var(--ff); text-align: left; text-decoration: none; cursor: pointer; }
+.nh-guide-link:hover { border-color: var(--ac); }
+.nh-guide-num, .nh-card-icon, .nh-path-icon { font-variant-numeric: tabular-nums; letter-spacing: 0.04em; }
+.nh-guide-num { font-size: 0.72rem; font-weight: 900; color: var(--ac); }
+.nh-guide-link strong { font-size: 0.86rem; }
+.nh-guide-arrow { color: var(--ac); font-weight: 900; }
 .nh-notice {
   display: flex; gap: 0.6rem; align-items: flex-start;
   margin-top: 1.6rem; max-width: 72ch; padding: 0.85rem 1rem;
   background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 28%, transparent);
   border-radius: var(--r-md); color: var(--t2); font-size: 0.88rem;
 }
-.nh-notice-icon { flex-shrink: 0; }
+.nh-notice-icon { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 1.25rem; height: 1.25rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--ac); font-size: 0.72rem; font-weight: 900; font-family: ui-serif, Georgia, serif; }
 
 /* ── Sections ── */
 section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding: clamp(2rem, 5vw, 3rem) 0; }
@@ -179,7 +204,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-card:hover, .nh-card:focus-visible { transform: translateY(-3px); border-color: var(--ac); }
 .nh-card-icon {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; border-radius: 12px; font-size: 1.35rem;
+  width: 44px; height: 44px; border-radius: 12px; font-size: 0.78rem; font-weight: 900;
   background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 24%, transparent);
 }
 .nh-card-label { font-size: 1.08rem; font-weight: 800; }
@@ -316,7 +341,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-path-card { border: 1px solid var(--bd); border-radius: var(--r-md); background: var(--bg2); margin-bottom: 0.7rem; overflow: hidden; }
 .nh-path-head { width: 100%; display: flex; align-items: center; gap: 0.6rem; padding: 0.85rem 1rem; background: transparent; border: 0; cursor: pointer; font-family: var(--ff); text-align: left; color: var(--t1); }
 .nh-path-head:hover { background: var(--acG); }
-.nh-path-icon { font-size: 1.2rem; }
+.nh-path-icon { display: inline-flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; flex: 0 0 2rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--ac); background: var(--bg1); font-size: 0.72rem; font-weight: 900; }
 .nh-path-head-text { flex: 1; min-width: 0; }
 .nh-path-head-text strong { display: block; font-size: 0.98rem; }
 .nh-path-head-text span { font-size: 0.82rem; color: var(--t2); }
@@ -413,7 +438,15 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
 /* ── Responsive ── */
 @media (max-width: 720px) {
+  .nh-section-nav { top: 65px; justify-content: flex-start; }
+  .nh-hero { padding-top: 2rem; }
+  .nh-hero-inner { grid-template-columns: 1fr; gap: 1rem; }
   .nh-cta-row .nh-btn { flex: 1 1 100%; }
+  .nh-path-head { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: start; gap: 0.55rem; }
+  .nh-path-head .nh-chip { grid-column: 2; justify-self: start; }
+  .nh-path-toggle { grid-column: 3; grid-row: 1; }
+  .nh-path-head-text strong { line-height: 1.35; }
+  .nh-path-head-text span { display: block; margin-top: 0.16rem; line-height: 1.45; }
   .nh-modal { max-height: 94vh; }
   .nh-modal-overlay { padding: 0.5rem; align-items: flex-end; }
   .nh-modal { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
@@ -435,26 +468,41 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   </div>
 </header>
 
+<nav class="nh-section-nav" aria-label="New Home">
+  <a href="#dashboard" data-c="nav.start"></a>
+  <a href="#kiip" data-c="nav.kiip"></a>
+  <a href="#after" data-c="nav.after"></a>
+  <a href="#hub" data-c="nav.hub"></a>
+  <a href="#sources" data-c="nav.sources"></a>
+</nav>
+
 <main id="nhMain">
   <section class="nh-hero">
-    <svg class="nh-hero-motif" viewBox="0 0 120 90" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-      <path d="M10 80 Q40 60 60 70 T110 55" stroke-dasharray="2 6"/>
-      <path d="M38 78 V50 L62 32 L86 50 V78 Z"/>
-      <path d="M54 78 V62 H70 V78"/>
-    </svg>
     <div class="nh-hero-inner">
-      <span class="nh-kicker" data-c="hero.kicker">Paradiso 국적·귀화 플랫폼</span>
-      <h1 class="nh-title">Paradiso: New Home</h1>
-      <p class="nh-tagline">You Belong Here.</p>
-      <p class="nh-lead" data-c="hero.lead"></p>
-      <div class="nh-cta-row">
-        <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness" data-c="hero.ctaPrimary"></button>
-        <button type="button" class="nh-btn nh-btn-secondary" data-action="open-pathfinder" data-c="hero.ctaSecondary"></button>
+      <div class="nh-hero-copy">
+        <span class="nh-kicker" data-c="hero.kicker">Paradiso 국적·귀화 플랫폼</span>
+        <h1 class="nh-title" data-c="hero.title">Paradiso: New Home</h1>
+        <p class="nh-tagline">You Belong Here.</p>
+        <p class="nh-lead" data-c="hero.lead"></p>
+        <div class="nh-cta-row">
+          <button type="button" class="nh-btn nh-btn-primary" data-action="open-readiness" data-c="hero.ctaPrimary"></button>
+          <button type="button" class="nh-btn nh-btn-secondary" data-action="open-pathfinder" data-c="hero.ctaSecondary"></button>
+        </div>
+        <div class="nh-proof-row" aria-label="Service details">
+          <span data-c="hero.proofTime"></span><span data-c="hero.proofLogin"></span><span data-c="hero.proofSource"></span>
+        </div>
+        <div class="nh-notice" role="note">
+          <span class="nh-notice-icon" aria-hidden="true">i</span>
+          <span data-c="notice"></span>
+        </div>
       </div>
-      <div class="nh-notice" role="note">
-        <span class="nh-notice-icon" aria-hidden="true">ℹ️</span>
-        <span data-c="notice"></span>
-      </div>
+      <aside class="nh-hero-guide" aria-labelledby="nhGuideTitle">
+        <h2 id="nhGuideTitle" data-c="hero.guideTitle"></h2>
+        <p data-c="hero.guideIntro"></p>
+        <button type="button" class="nh-guide-link" data-action="open-readiness"><span class="nh-guide-num">01</span><strong data-c="hero.guideCheck"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
+        <button type="button" class="nh-guide-link" data-action="open-pathfinder"><span class="nh-guide-num">02</span><strong data-c="hero.guidePath"></strong><span class="nh-guide-arrow" aria-hidden="true">→</span></button>
+        <a class="nh-guide-link" href="#sources"><span class="nh-guide-num">03</span><strong data-c="hero.guideSource"></strong><span class="nh-guide-arrow" aria-hidden="true">↓</span></a>
+      </aside>
     </div>
   </section>
 
@@ -663,13 +711,13 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   function renderFeatures() {
     var grid = document.getElementById('featureGrid');
     grid.innerHTML = '';
-    content.features.forEach(function (f) {
+    content.features.forEach(function (f, index) {
       var card = el('button', 'nh-card');
       card.type = 'button';
       card.setAttribute('data-action', f.action);
       card.setAttribute('data-variant', f.id);
       card.innerHTML =
-        '<span class="nh-card-icon" aria-hidden="true">' + esc(f.icon) + '</span>' +
+        '<span class="nh-card-icon" aria-hidden="true">' + String(index + 1).padStart(2, '0') + '</span>' +
         '<span class="nh-card-label">' + esc(pick(f.label)) + '</span>' +
         '<span class="nh-card-desc">' + esc(pick(f.desc)) + '</span>' +
         '<span class="nh-card-cta">' + esc(pick(f.cta)) + '</span>';
@@ -717,9 +765,11 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var kc = fldArr(p, 'keyChecks').map(li).join('');
     var ev = fldArr(p, 'requiredEvidenceGroups').map(li).join('');
     var ns = fldArr(p, 'nextSteps').map(li).join('');
+    var pathIndex = (paths.paths || []).findIndex(function (item) { return item.id === p.id; });
+    var pathNumber = String(pathIndex >= 0 ? pathIndex + 1 : 1).padStart(2, '0');
     return '<div class="nh-path-card" data-path="' + esc(p.id) + '">' +
       '<button type="button" class="nh-path-head" aria-expanded="false">' +
-      '<span class="nh-path-icon" aria-hidden="true">' + esc(p.icon) + '</span>' +
+      '<span class="nh-path-icon" aria-hidden="true">' + pathNumber + '</span>' +
       '<span class="nh-path-head-text"><strong>' + esc(fld(p, 'title')) + '</strong>' +
       '<span>' + esc(fld(p, 'summary')) + '</span></span>' +
       chipHtml(p.chip) +
@@ -871,8 +921,10 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     ov.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     document.addEventListener('keydown', trap);
+    var preferred = ov.querySelector('legend[tabindex="-1"], [data-nh-result] h3[tabindex="-1"]');
     var f = focusables(ov);
-    if (f.length) f[0].focus();
+    if (preferred) preferred.focus();
+    else if (f.length) f[0].focus();
   }
 
   function closeOverlay() {
@@ -909,7 +961,14 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var foot = document.getElementById('readinessFoot');
 
     body.innerHTML = '';
-    body.appendChild(el('p', 'nh-progress', esc(fillTemplate(pick(r.progressLabel), { current: readinessStep + 1, total: qs.length }))));
+    var progressText = fillTemplate(pick(r.progressLabel), { current: readinessStep + 1, total: qs.length });
+    var progress = el('p', 'nh-progress', esc(progressText));
+    progress.setAttribute('role', 'progressbar');
+    progress.setAttribute('aria-valuemin', '1');
+    progress.setAttribute('aria-valuemax', String(qs.length));
+    progress.setAttribute('aria-valuenow', String(readinessStep + 1));
+    progress.setAttribute('aria-valuetext', progressText);
+    body.appendChild(progress);
     if (readinessStep === 0) body.appendChild(el('p', 'nh-section-intro', esc(pick(r.intro))));
 
     var fs = el('fieldset', 'nh-q');
@@ -997,7 +1056,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     body.innerHTML = '';
     var head = el('div', null, '');
     head.setAttribute('data-nh-result', '1');
-    head.appendChild(el('h3', null, esc(pick(r.resultTitle))));
+    var resultHeading = el('h3', null, esc(pick(r.resultTitle)));
+    resultHeading.setAttribute('tabindex', '-1');
+    head.appendChild(resultHeading);
     head.appendChild(el('p', 'nh-section-intro', esc(pick(r.resultIntro))));
     body.appendChild(head);
 
@@ -1035,6 +1096,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     pf.addEventListener('click', function () { closeOverlay(); openPathfinder(); });
     foot.appendChild(again);
     foot.appendChild(pf);
+    body.scrollTop = 0;
+    requestAnimationFrame(function () { resultHeading.focus(); });
   }
 
   function openReadiness() {
@@ -1077,7 +1140,14 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var foot = document.getElementById('pathfinderFoot');
 
     body.innerHTML = '';
-    body.appendChild(el('p', 'nh-progress', esc(fillTemplate(pick(pf.progressLabel), { current: pfStep + 1, total: steps.length }))));
+    var progressText = fillTemplate(pick(pf.progressLabel), { current: pfStep + 1, total: steps.length });
+    var progress = el('p', 'nh-progress', esc(progressText));
+    progress.setAttribute('role', 'progressbar');
+    progress.setAttribute('aria-valuemin', '1');
+    progress.setAttribute('aria-valuemax', String(steps.length));
+    progress.setAttribute('aria-valuenow', String(pfStep + 1));
+    progress.setAttribute('aria-valuetext', progressText);
+    body.appendChild(progress);
     if (pfStep === 0) body.appendChild(el('p', 'nh-section-intro', esc(pick(pf.intro))));
     var fs = el('fieldset', 'nh-q');
     var legend = el('legend', null, esc(pick(step.q)));
@@ -1138,7 +1208,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     body.innerHTML = '';
     var head = el('div', null, '');
     head.setAttribute('data-nh-result', '1');
-    head.appendChild(el('h3', null, esc(pick(pf.resultTitle))));
+    var resultHeading = el('h3', null, esc(pick(pf.resultTitle)));
+    resultHeading.setAttribute('tabindex', '-1');
+    head.appendChild(resultHeading);
     head.appendChild(el('p', 'nh-section-intro', esc(pick(pf.resultIntro))));
     body.appendChild(head);
     pfRoutes(pfAnswers).forEach(function (id) {
@@ -1158,6 +1230,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     wm.href = 'ai.html?domain=nationality';
     foot.appendChild(again);
     foot.appendChild(wm);
+    body.scrollTop = 0;
+    requestAnimationFrame(function () { resultHeading.focus(); });
   }
 
   function openPathfinder() {

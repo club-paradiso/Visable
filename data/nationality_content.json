@@ -35,14 +35,31 @@
     "loadError": { "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Paradiso 메인에서 접속해 주세요.", "en": "Content could not be loaded. Please try again shortly or return via the Paradiso main page." }
   },
 
+  "nav": {
+    "start": { "ko": "시작하기", "en": "Start" },
+    "kiip": { "ko": "KIIP·면접", "en": "KIIP & interview" },
+    "after": { "ko": "허가 후", "en": "After approval" },
+    "hub": { "ko": "국적업무", "en": "Nationality center" },
+    "sources": { "ko": "공식 출처", "en": "Official sources" }
+  },
+
   "hero": {
     "kicker": { "ko": "Paradiso 국적·귀화 플랫폼", "en": "Paradiso nationality platform" },
+    "title": { "ko": "나에게 맞는 국적·귀화 경로를 찾으세요", "en": "Find your nationality and citizenship path" },
     "lead": {
       "ko": "귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램, 면접, 귀화 후 절차까지 단계별로 안내합니다.",
       "en": "Step-by-step guidance for Korean naturalization, nationality restoration, nationality determination, dual nationality, KIIP, interviews, and post-approval steps."
     },
-    "ctaPrimary": { "ko": "귀화 가능성 진단", "en": "Naturalization Readiness Check" },
-    "ctaSecondary": { "ko": "귀화 경로 찾기", "en": "Find Your Path to Korean Citizenship" }
+    "ctaPrimary": { "ko": "2분 귀화 진단 시작", "en": "Start the 2-minute readiness check" },
+    "ctaSecondary": { "ko": "상황별 경로 찾기", "en": "Find a path for my situation" },
+    "proofTime": { "ko": "약 2분", "en": "About 2 minutes" },
+    "proofLogin": { "ko": "로그인 불필요", "en": "No login required" },
+    "proofSource": { "ko": "공식 출처 연결", "en": "Linked to official sources" },
+    "guideTitle": { "ko": "지금 필요한 것부터", "en": "Start with what you need" },
+    "guideIntro": { "ko": "법률 용어를 몰라도 현재 상황에서 시작할 수 있습니다.", "en": "Start from your current situation — no legal terms required." },
+    "guideCheck": { "ko": "가능한 귀화 경로 빠르게 점검", "en": "Quickly review possible paths" },
+    "guidePath": { "ko": "내 상황을 단계별로 분류", "en": "Classify my situation step by step" },
+    "guideSource": { "ko": "공식 근거와 확인 창구 보기", "en": "Open official sources and contacts" }
   },
 
   "notice": {
