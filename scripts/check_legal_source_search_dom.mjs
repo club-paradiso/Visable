@@ -51,10 +51,10 @@ global.currentLanguage = 'ko';
 let nextResponse = { ok: true, results: [] };
 let nextReject = false;
 let lastUrl = '';
-let lastBody = null;
-function fakeFetch(url, opts) {
+let lastFetchOptions = null;
+function fakeFetch(url, options) {
   lastUrl = String(url);
-  lastBody = (opts && opts.body) ? (() => { try { return JSON.parse(opts.body); } catch (e) { return null; } })() : null;
+  lastFetchOptions = options || null;
   if (nextReject) return Promise.reject(new Error('network'));
   const body = nextResponse;
   return Promise.resolve({ json: () => Promise.resolve(body) });
@@ -71,7 +71,7 @@ async function run() {
   // fires on a later tick), so mount explicitly for a deterministic test.
   L.mount();
   ok(!!root && root.querySelector('.lss-panel'), 'panel mounted into #legalSourceSearchRoot');
-  ok(root.textContent.indexOf('법령·판례 근거 검색') !== -1, 'panel shows the KO title');
+  ok(root.textContent.indexOf('Waymaker 리걸 리서치') !== -1, 'panel shows the KO Legal Research product title');
   ok(root.querySelectorAll('[data-lss-tab]').length === 3, 'three tabs rendered (Laws / Precedents / Research)');
   ok(root.querySelectorAll('[data-lss-chip]').length === 10, 'ten quick chips rendered');
   ok(!!root.querySelector('.lss-disclaimer'), 'disclaimer rendered');
@@ -140,6 +140,12 @@ async function run() {
   ok(root.querySelector('.lss-search-area').hidden, 'term-search area hidden on research tab');
   ok(root.querySelectorAll('[data-lss-depth]').length === 3, 'depth selector has 3 options (fast/basic/pro)');
   ok(root.querySelector('[data-lss-rinput]'), 'research question input rendered');
+  ok(root.querySelectorAll('[data-lss-example]').length === 7, 'research example chips rendered');
+  ok(root.querySelector('[data-lss-prec-toggle]') && root.querySelector('[data-lss-prec-toggle]').checked, 'precedent option is visible and checked');
+  ok(root.querySelector('[data-lss-originals-toggle]') && root.querySelector('[data-lss-originals-toggle]').checked, 'official-original option is visible and checked');
+  const firstExample = root.querySelector('[data-lss-example]');
+  firstExample.dispatchEvent(new dom.window.Event('click'));
+  ok(root.querySelector('[data-lss-rinput]').value.indexOf('D-2') !== -1, 'example chip fills the research textarea');
 
   // run a Pro research; backend returns the structured envelope
   nextResponse = {
@@ -157,6 +163,9 @@ async function run() {
   L.doResearch('강제퇴거명령과 출국명령을 비교하고 다툴 쟁점을 정리해줘');
   await sleep(25);
   ok(lastUrl.indexOf('/api/legal/research') !== -1, 'research run hit the /api/legal/research endpoint');
+  const researchPayload = JSON.parse(lastFetchOptions.body);
+  ok(researchPayload.includePrecedents === true, 'research payload includes the precedent-search option');
+  ok(root.querySelector('[data-lss-out]').getAttribute('aria-busy') === 'false', 'research output clears aria-busy after response');
   const outText = root.querySelector('[data-lss-out]').textContent;
   ok(root.querySelector('.lss-research'), 'structured research result rendered');
   ok(outText.indexOf('심층 리서치') !== -1, 'depth label shown');
@@ -214,34 +223,32 @@ async function run() {
   fastBtn.dispatchEvent(new dom.window.Event('click'));
   ok(root.querySelector('[data-lss-synth-wrap]').hidden, 'synthesis toggle hidden for Fast depth');
 
-  // --- professional UX redesign (positioning / examples / options) ---
-  ok(root.querySelector('.lss-positioning') && root.querySelector('.lss-positioning').textContent.indexOf('리서치 도구') !== -1, 'research area shows positioning text');
-  const exampleBtns = root.querySelectorAll('[data-lss-example]');
-  ok(exampleBtns.length >= 4, 'example question chips rendered');
-  ok(!!root.querySelector('[data-lss-opt-prec]') && !!root.querySelector('[data-lss-opt-orig]'), 'precedents + show-original options rendered');
-  ok(root.querySelector('[data-lss-run]').textContent.indexOf('분석 시작하기') !== -1, 'CTA labelled 분석 시작하기');
-
-  // clicking an example chip prefills the question textarea
-  exampleBtns[0].dispatchEvent(new dom.window.Event('click'));
-  ok(root.querySelector('[data-lss-rinput]').value.length > 0, 'example chip prefills the question input');
-
-  // unchecking "search precedents too" is reflected in the request payload
-  const precOpt = root.querySelector('[data-lss-opt-prec]');
-  precOpt.checked = false;
-  precOpt.dispatchEvent(new dom.window.Event('change'));
-  nextResponse = { ok: true, depth: 'basic', depthLabel: '기본 리서치', synthesisStatus: 'deterministic', providerConfigured: false, issues: ['x'], laws: [], precedents: [], limitations: ['l'], disclaimer: 'd' };
-  L.doResearch('판례 제외하고 확인할 사항');
+  // English UI: language change updates title and marks Korean official sources.
+  global.currentLanguage = 'en';
+  dom.window.currentLanguage = 'en';
+  dom.window.dispatchEvent(new dom.window.Event('paradiso-language-applied'));
+  await sleep(10);
+  ok(root.textContent.indexOf('Waymaker Legal Research') !== -1, 'language switch updates the Legal Research title');
+  nextResponse = {
+    ok: true, kind: 'laws',
+    results: [{ title: '출입국관리법', type: '법률', snippet: '외국인의 입국과 체류', sourceUrl: 'https://www.law.go.kr/법령/출입국관리법', strengthLabel: 'Direct source' }]
+  };
+  L.doSearch('출입국관리법');
   await sleep(25);
-  ok(lastBody && lastBody.includePrecedents === false, 'includePrecedents:false sent when option unchecked');
+  const enText = root.querySelector('[data-lss-out]').textContent;
+  ok(enText.indexOf('Official Korean source') !== -1, 'English source card marks Korean official source language');
+  ok(enText.indexOf('This translation is not an official translation') !== -1, 'English source card shows unofficial translation notice');
+  ok(root.querySelector('.lss-original-ko summary').textContent.indexOf('Show original Korean') !== -1, 'English source card exposes original Korean details');
 
-  // --- Waymaker → Legal Research handoff event (§6) ---
-  nextResponse = { ok: true, depth: 'pro', depthLabel: '심층 리서치', synthesisStatus: 'deterministic', providerConfigured: false, issues: ['핸드오프 쟁점'], laws: [], precedents: [], riskFlags: [], missingFacts: [], nextChecks: [], limitations: ['l'], disclaimer: 'd' };
-  lastUrl = '';
-  dom.window.dispatchEvent(new dom.window.CustomEvent('paradiso:legal-research', { detail: { question: '변경허가에서 다툴 쟁점', visaCode: 'F-6', depth: 'pro' } }));
-  await sleep(25);
-  ok(lastUrl.indexOf('/api/legal/research') !== -1, 'handoff event runs a research request');
-  ok(lastBody && typeof lastBody.question === 'string' && lastBody.question.indexOf('F-6') !== -1, 'handoff prefills the visa code into the question');
-  ok(root.querySelector('[data-lss-rinput]').value.indexOf('변경허가에서 다툴 쟁점') !== -1, 'handoff prefills the question text');
+  // Handoff event opens/prefills the research workspace without submitting.
+  const beforeHandoffUrl = lastUrl;
+  dom.window.dispatchEvent(new dom.window.CustomEvent('paradiso:legal-research', {
+    detail: { query: 'F-6 변경허가에서 소득요건과 혼인의 진정성', depth: 'pro', visaStatusHint: 'F-6', autorun: false }
+  }));
+  await sleep(10);
+  ok(root.querySelector('[data-lss-tab="research"]').getAttribute('aria-selected') === 'true', 'legal-research handoff opens the research tab');
+  ok(root.querySelector('[data-lss-rinput]').value.indexOf('F-6') !== -1, 'legal-research handoff prefills the textarea');
+  ok(lastUrl === beforeHandoffUrl, 'legal-research handoff does not auto-submit when autorun is false');
 
   console.log(`\n${failures ? 'FAIL' : 'OK'} — ${checks - failures}/${checks} checks passed`);
   process.exit(failures ? 1 : 0);
