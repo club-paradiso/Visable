@@ -136,6 +136,11 @@
       "reason": "Code matches a canonical parent status file."
     },
     {
+      "classification": "manual_reference_only",
+      "code": "E-7-H",
+      "reason": "The stay manual identifies E-7-H only as an internal immigration-system marker, not a public status-of-stay code."
+    },
+    {
       "classification": "parent_status",
       "code": "E-8",
       "reason": "Code matches a canonical parent status file."
@@ -168,7 +173,7 @@
     {
       "classification": "abolished_subcode",
       "code": "F-2-6",
-      "reason": "Manual context contains abolition/폐지 language."
+      "reason": "Current authoring marks this code as deprecated or abolished."
     },
     {
       "classification": "parent_status",
@@ -233,13 +238,9 @@
     "C-3-4",
     "C-3-5",
     "C-3-6",
-    "C-3-7",
     "C-3-8",
     "C-3-9",
     "C-4-1",
-    "C-4-2",
-    "C-4-3",
-    "C-4-4",
     "C-4-5",
     "D-10-1",
     "D-10-2",
@@ -255,8 +256,6 @@
     "D-2-8",
     "D-3-1",
     "D-3-11",
-    "D-3-12",
-    "D-3-13",
     "D-4-1",
     "D-4-2",
     "D-4-2K",
@@ -279,14 +278,12 @@
     "E-2-2",
     "E-6-1",
     "E-6-2",
-    "E-6-3",
     "E-7-1",
     "E-7-2",
     "E-7-3",
     "E-7-4",
     "E-7-4R",
-    "E-7-91",
-    "E-7-H",
+    "E-7-91FTA",
     "E-7-S",
     "E-7-S1",
     "E-7-S2",
@@ -302,12 +299,8 @@
     "E-8-8",
     "E-8-99",
     "E-9-1",
-    "E-9-10",
-    "E-9-2",
     "E-9-3",
     "E-9-4",
-    "E-9-5",
-    "E-9-9",
     "F-1-1",
     "F-1-11",
     "F-1-12",
@@ -320,6 +313,7 @@
     "F-1-24",
     "F-1-28",
     "F-1-3",
+    "F-1-4",
     "F-1-5",
     "F-1-51",
     "F-1-52",
@@ -374,7 +368,6 @@
     "F-5-4",
     "F-5-5",
     "F-5-6",
-    "F-5-6R",
     "F-5-7",
     "F-5-8",
     "F-5-9",
@@ -402,8 +395,12 @@
     "K-STAR"
   ],
   "sourceDate": "2026-06-17",
+  "sourceDates": {
+    "stay": "2026-06-23",
+    "visa": "2026-06-17"
+  },
   "summary": {
-    "explicitExclusions": 41,
+    "explicitExclusions": 42,
     "issueCounts": {
       "authoringSubcodesWithoutSourceOrReviewFlag": 0,
       "deprecatedOrAbolishedShownActive": 0,
@@ -414,8 +411,8 @@
       "missingActiveSubcodes": 0,
       "unrepresentedSpecialTracks": 0
     },
-    "manualCodes": 217,
+    "manualCodes": 206,
     "passes": true,
-    "representedManualActiveOrSpecialCodes": 176
+    "representedManualActiveOrSpecialCodes": 164
   }
 }

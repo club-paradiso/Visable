@@ -9,8 +9,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE_FILES = {
-    "stay": ROOT / "docs/source-manuals/2026-06-17/extracted/full_text/stay_manual_260617.txt",
-    "visa": ROOT / "docs/source-manuals/2026-06-17/extracted/full_text/visa_issue_manual_260617.txt",
+    "stay": ROOT / "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+    "visa": ROOT / "backend/data/sources/manuals/260617_visa_manual_readable.txt",
 }
 STATUSES_DIR = ROOT / "backend/data/visa_authoring/statuses"
 OUTPUT = ROOT / "docs/data/2026_06_17_manual_code_inventory.json"
@@ -24,6 +24,7 @@ MULTIPLE_ENTRY_WORDS = ("복수사증", "복수비자", "multiple")
 SPECIAL_SUFFIX_RE = re.compile(r"-(?:T|S\d*|R|H|Y|[0-9]+[A-Z]+)$")
 TOP_TIER_CODES = {"D-10-T", "E-7-T", "F-2-T", "F-5-T"}
 POLICY_OR_MULTIPLE_ENTRY_CODES = {"C-3-91"}
+INTERNAL_SYSTEM_MARKERS = {"E-7-H"}
 
 
 def load_json(path: Path) -> dict:
@@ -241,6 +242,15 @@ def classify(code: str, refs: list[dict], status_files: dict, subcodes: dict) ->
             "Code appears in multiple-entry/policy context rather than a normal canonical subcode table.",
         )
 
+    if code in INTERNAL_SYSTEM_MARKERS:
+        return (
+            "manual_reference_only",
+            "internal_system_marker",
+            False,
+            False,
+            "The stay manual identifies E-7-H only as an internal immigration-system marker, not a public status-of-stay code.",
+        )
+
     if code == "K-STAR" or code in TOP_TIER_CODES or SPECIAL_SUFFIX_RE.search(code):
         return (
             "special_track",
@@ -383,6 +393,7 @@ def main() -> int:
     output = {
         "manualVersion": "2026.6",
         "sourceDate": "2026-06-17",
+        "sourceDates": {"visa": "2026-06-17", "stay": "2026-06-23"},
         "sourceFiles": {manual: str(path.relative_to(ROOT)) for manual, path in SOURCE_FILES.items()},
         "regex": CODE_RE.pattern,
         "classificationRules": {

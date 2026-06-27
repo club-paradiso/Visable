@@ -237,6 +237,7 @@ def main() -> int:
     report = {
         "manualVersion": inventory["manualVersion"],
         "sourceDate": inventory["sourceDate"],
+        "sourceDates": inventory.get("sourceDates", {"visa": inventory["sourceDate"]}),
         "inputs": {
             "inventory": rel(INVENTORY),
             "authoringStatuses": rel(STATUSES_DIR),

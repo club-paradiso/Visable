@@ -20223,6 +20223,7 @@ function executeSearch() {
     if (!dataReady) return;
     document.getElementById('auto-list').classList.remove('active');
     const query = qEl.value.trim(); if (!query) return;
+    closeSearchBlockingSurfaces();
     if(/scn/i.test(query)) showToast(tx('scenarioToastWarning'), "warning");
 
     if (document.body.classList.contains('landing')) {
@@ -20239,14 +20240,18 @@ function executeSearch() {
                 document.body.classList.add('anagram-run');
             }
         } catch(e) {}
-        setTimeout(() => document.body.classList.add('launching'), 2200);
+        document.body.classList.add('launching');
         setTimeout(() => {
             document.body.classList.remove('landing', 'launching', 'anagram-run', 'searching');
             document.body.setAttribute('data-scene', 'searched');
             document.querySelectorAll('.logo-brand .al').forEach(el => { el.style.transitionDelay = ''; el.style.removeProperty('--ax'); });
+            closeSearchBlockingSurfaces();
             document.body.classList.add('searched'); renderResults(query); window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 1200);
-    } else renderResults(query);
+    } else {
+        closeSearchBlockingSurfaces();
+        renderResults(query);
+    }
 }
 function setDirectSearchToggleState(isOpen){
     const stb = document.getElementById('searchToggleBtn');
