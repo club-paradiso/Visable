@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * check_legal_source_search_dom.mjs — jsdom DOM smoke test for the Waymaker
- * Legal source search module (assets/js/legal-source-search.js).
+ * Legal Research module (assets/js/legal-source-search.js).
  *
  * Drives the REAL module against a stubbed fetch and asserts the load-bearing
  * UI guarantees:
@@ -71,7 +71,7 @@ async function run() {
   // fires on a later tick), so mount explicitly for a deterministic test.
   L.mount();
   ok(!!root && root.querySelector('.lss-panel'), 'panel mounted into #legalSourceSearchRoot');
-  ok(root.textContent.indexOf('법령·판례 근거 검색') !== -1, 'panel shows the KO title');
+  ok(root.textContent.indexOf('Waymaker 리걸 리서치') !== -1, 'panel shows the KO Legal Research product title');
   ok(root.querySelectorAll('[data-lss-tab]').length === 3, 'three tabs rendered (Laws / Precedents / Research)');
   ok(root.querySelectorAll('[data-lss-chip]').length === 10, 'ten quick chips rendered');
   ok(!!root.querySelector('.lss-disclaimer'), 'disclaimer rendered');

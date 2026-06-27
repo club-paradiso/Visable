@@ -1,5 +1,5 @@
 /* ============================================================================
- * Waymaker by Paradiso — 법령·판례 근거 검색 / Legal source search
+ * Waymaker by Paradiso — Waymaker 리걸 리서치 / Waymaker Legal Research
  * ----------------------------------------------------------------------------
  * A source-CHECKING layer inside Waymaker. Lets users look up immigration-
  * related statutes (법령) and court precedents (판례) from the official Open Law
@@ -38,12 +38,12 @@
 
   /* ------------------------------------------------ strings (KO + EN) ------ */
   var STR_KO = {
-    title: '법령·판례 근거 검색',
-    subtitle: '공식 법령·판례 원문을 직접 확인할 수 있도록 도와드립니다.',
+    title: 'Waymaker 리걸 리서치',
+    subtitle: '공식 법령·판례·출입국 자료를 바탕으로 쟁점을 정리합니다.',
     refChip: '참고용',
-    toggleOpen: '법령·판례 근거 검색 열기',
+    toggleOpen: 'Waymaker 리걸 리서치 열기',
     toggleClose: '접기',
-    disclaimer: '법령·판례 검색은 공식 원문 확인을 돕기 위한 기능입니다. Waymaker는 변호사·행정사의 법률 자문을 대체하지 않으며, 실제 허가 여부와 최종 판단은 관계 기관의 심사에 따릅니다.',
+    disclaimer: 'Waymaker 리걸 리서치는 검색된 공식 법령·판례·출입국 자료를 바탕으로 쟁점을 정리하는 참고용 도구입니다. 변호사·행정사의 법률 자문을 대체하지 않으며, 실제 허가 여부와 최종 판단은 관계 기관의 심사에 따릅니다.',
     tabLaws: '법령',
     tabPrec: '판례',
     inputPlaceholder: '검색어 입력',
@@ -66,7 +66,7 @@
     missingKeyTitle: 'API 설정이 필요합니다',
     missingKeyBody: '법령 검색 서비스가 아직 설정되지 않았습니다. 공식 자료(law.go.kr·하이코리아·1345)에서 직접 확인하세요.',
     precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.',
-    tabResearch: '리서치',
+    tabResearch: '리걸 리서치',
     researchDepthLabel: '리서치 깊이',
     depthFast: '빠른 확인',
     depthBasic: '기본 리서치',
@@ -125,12 +125,12 @@
     handoffToResearch: '법령·판례 기준으로 더 분석하기'
   };
   var STR_EN = {
-    title: 'Legal source search',
-    subtitle: 'Helps you check official statutes and court precedents for yourself.',
+    title: 'Waymaker Legal Research',
+    subtitle: 'A research tool that organizes immigration issues based on official statutes, precedents, and immigration materials.',
     refChip: 'Reference',
-    toggleOpen: 'Open legal source search',
+    toggleOpen: 'Open Waymaker Legal Research',
     toggleClose: 'Collapse',
-    disclaimer: 'Legal source search helps you check official source materials. Waymaker does not replace legal advice from a qualified professional, and final decisions are made by the competent authorities.',
+    disclaimer: 'Waymaker Legal Research is a reference tool that organizes issues based on retrieved official statutes, precedents, and immigration materials. It does not replace advice from a qualified professional, and final decisions are made by the competent authorities.',
     tabLaws: 'Laws',
     tabPrec: 'Precedents',
     inputPlaceholder: 'Enter a search term',
@@ -153,7 +153,7 @@
     missingKeyTitle: 'API configuration required',
     missingKeyBody: 'The legal search service is not configured yet. Please check official sources (law.go.kr / HiKorea / 1345) directly.',
     precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.',
-    tabResearch: 'Research',
+    tabResearch: 'Legal Research',
     researchDepthLabel: 'Research depth',
     depthFast: 'Quick check',
     depthBasic: 'Standard research',
