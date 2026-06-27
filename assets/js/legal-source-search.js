@@ -46,7 +46,6 @@
     disclaimer: 'Waymaker 리걸 리서치는 검색된 공식 법령·판례·출입국 자료를 바탕으로 쟁점을 정리하는 참고용 도구입니다. 변호사·행정사의 법률 자문을 대체하지 않으며, 실제 허가 여부와 최종 판단은 관계 기관의 심사에 따릅니다.',
     tabLaws: '법령',
     tabPrec: '판례',
-    tabResearch: '리걸 리서치',
     inputPlaceholder: '검색어 입력',
     inputAria: '법령·판례 검색어',
     searchBtn: '검색',
@@ -67,8 +66,7 @@
     missingKeyTitle: 'API 설정이 필요합니다',
     missingKeyBody: '법령 검색 서비스가 아직 설정되지 않았습니다. 공식 자료(law.go.kr·하이코리아·1345)에서 직접 확인하세요.',
     precNote: '판례는 개별 사건 판단이며 결과를 보장하지 않습니다. 자세한 내용은 공식 원문을 확인하세요.',
-    researchQuestionLabel: '무엇을 확인하고 싶나요?',
-    researchExamplesLabel: '예시 질문',
+    tabResearch: '리걸 리서치',
     researchDepthLabel: '리서치 깊이',
     depthFast: '빠른 확인',
     depthBasic: '기본 리서치',
@@ -81,7 +79,7 @@
     researchRun: '분석 시작하기',
     researchIdleTitle: '상황을 적으면 쟁점과 확인할 근거를 정리해 드립니다',
     researchIdleBody: '깊이를 고르고 질문을 입력하세요. 질문에 따라 깊이를 자동으로 제안합니다.',
-    researchLoading: '공식자료 기준으로 확인하는 중입니다',
+    researchLoading: '리서치 준비 중입니다',
     autoSuggested: '질문에 맞춰 자동 선택됨',
     secIssues: '쟁점',
     secLawTerms: '법령 검색어',
@@ -95,15 +93,8 @@
     secSources: '출처',
     secLimits: '한계',
     applyNote: '아래 근거를 본인 사실관계에 직접 대입해 확인하세요. 이 정리는 결론이 아닙니다.',
-    proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '출입국 자료 대조 중', '출처 검증 중', '리서치 메모 작성 중'],
-    optionPrecedents: '판례도 함께 검색',
-    optionOriginals: '공식 원문 함께 보기',
+    proSteps: ['쟁점 추출 중', '법령 검색 중', '판례 검색 중', '공식자료 대조 중', '리서치 메모 작성 중'],
     synthToggle: 'AI 리서치 요약 사용',
-    sourceLangKo: '공식 한국어 원문',
-    translatedSummary: 'Translated summary',
-    sourceMayBeKorean: 'Official source text may be in Korean',
-    unofficialTranslation: 'This translation is not an official translation',
-    showOriginalKo: '원문 한국어 보기',
     badgeStandard: '기본 리서치 결과',
     badgeAI: 'AI 리서치 요약',
     badgeFailed: 'AI 요약 검증 실패: 기본 결과 표시',
@@ -142,7 +133,6 @@
     disclaimer: 'Waymaker Legal Research is a reference tool that organizes issues based on retrieved official statutes, precedents, and immigration materials. It does not replace advice from a qualified professional, and final decisions are made by the competent authorities.',
     tabLaws: 'Laws',
     tabPrec: 'Precedents',
-    tabResearch: 'Legal Research',
     inputPlaceholder: 'Enter a search term',
     inputAria: 'Legal source search term',
     searchBtn: 'Search',
@@ -163,8 +153,7 @@
     missingKeyTitle: 'API configuration required',
     missingKeyBody: 'The legal search service is not configured yet. Please check official sources (law.go.kr / HiKorea / 1345) directly.',
     precNote: 'Precedents are individual case decisions and do not guarantee any outcome. See the official text for details.',
-    researchQuestionLabel: 'What do you want to check?',
-    researchExamplesLabel: 'Example questions',
+    tabResearch: 'Legal Research',
     researchDepthLabel: 'Research depth',
     depthFast: 'Quick check',
     depthBasic: 'Standard research',
@@ -177,7 +166,7 @@
     researchRun: 'Start analysis',
     researchIdleTitle: 'Describe your situation and we will organize the issues and sources to check',
     researchIdleBody: 'Choose a depth and enter your question. Depth is auto-suggested based on the question.',
-    researchLoading: 'Checking against official materials',
+    researchLoading: 'Preparing research',
     autoSuggested: 'Auto-selected for this question',
     secIssues: 'Issues',
     secLawTerms: 'Law search terms',
@@ -191,15 +180,8 @@
     secSources: 'Sources',
     secLimits: 'Limitations',
     applyNote: 'Apply the sources below to your own facts and verify. This is not a conclusion.',
-    proSteps: ['Identifying legal issues', 'Searching statutes', 'Searching precedents', 'Checking immigration materials', 'Verifying sources', 'Drafting research memo'],
-    optionPrecedents: 'Search precedents too',
-    optionOriginals: 'Show official originals',
+    proSteps: ['Spotting issues', 'Searching laws', 'Searching precedents', 'Cross-checking official materials', 'Drafting research memo'],
     synthToggle: 'Use AI research synthesis',
-    sourceLangKo: 'Official Korean source',
-    translatedSummary: 'Translated summary',
-    sourceMayBeKorean: 'Official source text may be in Korean',
-    unofficialTranslation: 'This translation is not an official translation',
-    showOriginalKo: 'Show original Korean',
     badgeStandard: 'Standard research result',
     badgeAI: 'AI research synthesis',
     badgeFailed: 'AI synthesis validation failed: showing standard result',
@@ -253,18 +235,23 @@
   ];
   function chipLabel(c, lang) { return (lang || lssLang()) === 'en' ? c.labelEn : c.label; }
 
+  /* ------------------------------------------------ research examples ------ */
+  // Realistic, non-expert starting questions (foreign residents, students,
+  // marriage migrants, refugee applicants). `depth` is only a UI suggestion; the
+  // backend still auto-selects authoritatively.
   var RESEARCH_EXAMPLES = [
-    { ko: 'D-2 졸업 후 D-10 변경 쟁점', en: 'D-2 to D-10 after graduation' },
-    { ko: 'F-6 변경허가에서 소득요건과 혼인의 진정성', en: 'F-6 income requirement and genuine marriage' },
-    { ko: 'G-1 난민신청자의 체류기간 연장 불허', en: 'G-1 refugee applicant extension refusal' },
-    { ko: '강제퇴거명령과 출국명령 차이', en: 'Deportation order vs departure order' },
-    { ko: 'E-7 직종 적합성과 고용 필요성', en: 'E-7 job fit and employment necessity' },
-    { ko: 'F-4 재외동포 취업 제한', en: 'F-4 employment restrictions' },
-    { ko: '귀화 불허 처분의 품행단정 쟁점', en: 'Naturalization refusal and good conduct requirement' }
+    { ko: 'F-6 결혼이민 체류자격 변경에서 소득요건과 혼인의 진정성은 어떻게 보나요?',
+      en: 'For an F-6 marriage-migrant status change, how are the income requirement and genuineness of marriage assessed?', depth: 'basic' },
+    { ko: '유학생인데 졸업 후 D-2에서 E-7으로 바꾸려면 무엇을 확인해야 하나요?',
+      en: 'I am a student — what should I check to change from D-2 to E-7 after graduation?', depth: 'basic' },
+    { ko: '강제퇴거명령과 출국명령의 차이와 다툴 수 있는 쟁점은 무엇인가요?',
+      en: 'What is the difference between a deportation order and a departure order, and what issues can be challenged?', depth: 'pro' },
+    { ko: '난민 불인정 결정에 대한 이의신청과 행정소송 절차는 어떻게 되나요?',
+      en: 'What are the objection and administrative-litigation procedures against a refugee non-recognition decision?', depth: 'pro' },
+    { ko: '귀화 신청에서 품행 단정 요건은 어떻게 판단되나요?',
+      en: 'How is the "good conduct" requirement assessed in a naturalization application?', depth: 'pro' }
   ];
-  function researchExampleText(example, lang) {
-    return (lang || lssLang()) === 'en' ? example.en : example.ko;
-  }
+  function exampleText(e, lang) { return (lang || lssLang()) === 'en' ? e.en : e.ko; }
 
   /* --------------------------------------------------- pure helpers ------- */
   function escapeHtml(s) {
@@ -292,27 +279,6 @@
     if (!safe) return '<span class="lss-needsrc">' + escapeHtml(S('checkOfficial', lang)) + '</span>';
     return '<a class="lss-src" href="' + escapeHtml(safe) + '" target="_blank" rel="noopener noreferrer">'
       + escapeHtml(S('viewSource', lang)) + ' ↗</a>';
-  }
-  function hasHangul(s) { return /[가-힣]/.test(String(s == null ? '' : s)); }
-  function englishSourceNoticeHtml(r, lang) {
-    if ((lang || lssLang()) !== 'en') return '';
-    var blob = [r && r.title, r && r.snippet, r && r.summary].join(' ');
-    if (!hasHangul(blob)) return '';
-    return '<p class="lss-translation-note">'
-      + '<span>' + escapeHtml(S('translatedSummary', lang)) + '</span>'
-      + '<span>' + escapeHtml(S('sourceMayBeKorean', lang)) + '</span>'
-      + '<span>' + escapeHtml(S('unofficialTranslation', lang)) + '</span>'
-      + '</p>';
-  }
-  function sourceLanguageBadgeHtml(r, lang) {
-    var blob = [r && r.title, r && r.snippet, r && r.summary].join(' ');
-    if (!hasHangul(blob)) return '';
-    return '<span class="lss-source-lang">' + escapeHtml(S('sourceLangKo', lang)) + '</span>';
-  }
-  function originalKoreanHtml(r, text, lang) {
-    if ((lang || lssLang()) !== 'en' || !hasHangul(text)) return '';
-    return '<details class="lss-original-ko"><summary>' + escapeHtml(S('showOriginalKo', lang)) + '</summary>'
-      + '<p>' + escapeHtml(text) + '</p></details>';
   }
 
   // When true, the original Korean source snippet is shown expanded in a non-KO
@@ -351,7 +317,6 @@
 
   function buildLawCardHtml(r, lang) {
     r = r || {};
-    lang = lang || lssLang();
     var title = r.title ? escapeHtml(r.title) : escapeHtml(S('untitled', lang));
     var dates = [];
     if (r.promulgationDate) dates.push(S('promulgated', lang) + ' ' + r.promulgationDate);
@@ -359,34 +324,25 @@
     var sub = metaLine([r.type, r.articleNo].concat(dates));
     var snippet = _snippetHtml(r.snippet, lang);
     var strength = r.strengthLabel ? '<span class="lss-strength">' + escapeHtml(r.strengthLabel) + '</span>' : '';
-    var original = originalKoreanHtml(r, [r.title, r.snippet].filter(Boolean).join('\n\n'), lang);
     return '<article class="lss-card">'
       + '<h4 class="lss-card-title">' + title + '</h4>'
-      + sourceLanguageBadgeHtml(r, lang)
       + (sub ? '<p class="lss-card-sub">' + sub + '</p>' : '')
       + _noticeHtml(r, lang)
       + snippet
-      + englishSourceNoticeHtml(r, lang)
-      + original
-      + '<div class="lss-card-foot">' + strength + sourceLinkHtml(r.sourceUrl, lang) + '</div>'
+      + '<div class="lss-card-foot">' + strength + _langBadgeHtml(lang) + sourceLinkHtml(r.sourceUrl, lang) + '</div>'
       + '</article>';
   }
   function buildPrecedentCardHtml(r, lang) {
     r = r || {};
-    lang = lang || lssLang();
     var title = r.title ? escapeHtml(r.title) : escapeHtml(S('untitled', lang));
     var sub = metaLine([r.court, r.caseNumber, r.decisionDate]);
     var snippet = _snippetHtml(r.summary, lang);
     var strength = r.strengthLabel ? '<span class="lss-strength">' + escapeHtml(r.strengthLabel) + '</span>' : '';
-    var original = originalKoreanHtml(r, [r.title, r.summary].filter(Boolean).join('\n\n'), lang);
     return '<article class="lss-card lss-card-prec">'
       + '<h4 class="lss-card-title">' + title + '</h4>'
-      + sourceLanguageBadgeHtml(r, lang)
       + (sub ? '<p class="lss-card-sub">' + sub + '</p>' : '')
       + _noticeHtml(r, lang)
       + snippet
-      + englishSourceNoticeHtml(r, lang)
-      + original
       + '<div class="lss-card-foot">'
       + strength
       + _langBadgeHtml(lang)
@@ -691,8 +647,8 @@
     var chips = CHIPS.map(function (c, i) {
       return '<button type="button" class="lss-chip" data-lss-chip="' + i + '">' + escapeHtml(chipLabel(c, lang)) + '</button>';
     }).join('');
-    var researchExamples = RESEARCH_EXAMPLES.map(function (ex, i) {
-      return '<button type="button" class="lss-example-chip" data-lss-example="' + i + '">' + escapeHtml(researchExampleText(ex, lang)) + '</button>';
+    var examples = RESEARCH_EXAMPLES.map(function (e, i) {
+      return '<button type="button" class="lss-example" data-lss-example="' + i + '">' + escapeHtml(exampleText(e, lang)) + '</button>';
     }).join('');
     return '<div class="lss-panel">'
       + '<button type="button" class="lss-head" data-lss-toggle aria-expanded="false" aria-controls="lssBody">'
@@ -718,24 +674,21 @@
       + '</div>'
       // Research area (Research tab) — positioning + examples + depth + options + question + run
       + '<div class="lss-research-area" data-lss-area="research" hidden>'
-      + '<div class="lss-question-card">'
-      + '<label class="lss-question-label" for="lssResearchQuestion">' + escapeHtml(S('researchQuestionLabel', lang)) + '</label>'
-      + '<textarea id="lssResearchQuestion" class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="4"></textarea>'
-      + '<div class="lss-examples" aria-label="' + escapeHtml(S('researchExamplesLabel', lang)) + '">'
-      + '<span class="lss-examples-label">' + escapeHtml(S('researchExamplesLabel', lang)) + '</span>' + researchExamples
-      + '</div>'
-      + '</div>'
+      + '<p class="lss-positioning">' + escapeHtml(S('positioning', lang)) + '</p>'
+      + '<div class="lss-examples"><span class="lss-examples-label">' + escapeHtml(S('examplesLabel', lang)) + '</span>'
+      + '<div class="lss-examples-row">' + examples + '</div></div>'
       + buildDepthSelectorHtml('basic', lang)
-      + '<div class="lss-options-row">'
-      + '<label class="lss-option-toggle"><input type="checkbox" data-lss-prec-toggle checked><span>' + escapeHtml(S('optionPrecedents', lang)) + '</span></label>'
-      + '<label class="lss-option-toggle"><input type="checkbox" data-lss-originals-toggle checked><span>' + escapeHtml(S('optionOriginals', lang)) + '</span></label>'
-      + '<label class="lss-option-toggle" data-lss-synth-wrap><input type="checkbox" data-lss-synth-toggle checked><span>' + escapeHtml(S('synthToggle', lang)) + '</span></label>'
+      + '<div class="lss-options" role="group" aria-label="' + escapeHtml(S('examplesLabel', lang)) + '">'
+      + '<label class="lss-opt"><input type="checkbox" data-lss-opt-prec checked><span>' + escapeHtml(S('optPrecedents', lang)) + '</span></label>'
+      + '<label class="lss-opt"><input type="checkbox" data-lss-opt-orig><span>' + escapeHtml(S('optShowOriginal', lang)) + '</span></label>'
+      + '<label class="lss-synth-toggle lss-opt" data-lss-synth-wrap><input type="checkbox" data-lss-synth-toggle checked><span>' + escapeHtml(S('synthToggle', lang)) + '</span></label>'
       + '</div>'
-      + '<div class="lss-action-row">'
+      + '<div class="lss-searchbar">'
+      + '<textarea class="lss-rinput" data-lss-rinput placeholder="' + escapeHtml(S('researchPlaceholder', lang)) + '" aria-label="' + escapeHtml(S('researchInputAria', lang)) + '" maxlength="800" rows="2"></textarea>'
       + '<button type="button" class="lss-search-btn" data-lss-run>' + escapeHtml(S('researchRun', lang)) + '</button>'
       + '</div>'
       + '</div>'
-      + '<div class="lss-out" data-lss-out aria-live="polite" aria-busy="false">' + buildResultsHtml('idle', 'laws', [], lang) + '</div>'
+      + '<div class="lss-out" data-lss-out aria-live="polite">' + buildResultsHtml('idle', 'laws', [], lang) + '</div>'
       + '</div>'
       + '</div>';
   }
@@ -784,7 +737,7 @@
   function injectStyles() {
     if (document.getElementById('lssStyles')) return;
     var css = ''
-      + '.lss-root{display:block;width:100%;max-width:920px;margin:1rem auto 0;padding:0 1rem;'
+      + '.lss-root{display:block;width:100%;max-width:720px;margin:1rem auto 0;padding:0 1rem;'
       + 'font-family:var(--ff,"Pretendard Variable",-apple-system,BlinkMacSystemFont,system-ui,sans-serif);box-sizing:border-box;}'
       + '.lss-root *,.lss-root *::before,.lss-root *::after{box-sizing:border-box;}'
       + '.lss-panel{border:1px solid var(--bd,#2D5A50);border-radius:var(--btn-r-lg,14px);background:var(--bg1,#113B32);overflow:hidden;}'
@@ -835,15 +788,6 @@
       + '.lss-src:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
       + '.lss-needsrc,.lss-prec-flag{font-size:.74rem;font-weight:700;color:var(--warning,#E68A3A);}'
       + '.lss-strength{font-size:.7rem;font-weight:800;padding:.1rem .45rem;border-radius:999px;border:1px solid var(--bd,#2D5A50);color:var(--t2,#C7BFA8);}'
-      + '.lss-source-lang{display:inline-flex;margin:0 0 .35rem;font-size:.68rem;font-weight:850;padding:.1rem .45rem;border-radius:999px;'
-      + 'border:1px solid var(--bd,#2D5A50);color:var(--warning,#E68A3A);}'
-      + '.lss-translation-note{display:flex;flex-wrap:wrap;gap:.25rem .45rem;margin:.35rem 0;font-size:.72rem;line-height:1.45;color:var(--t2,#C7BFA8);}'
-      + '.lss-translation-note span{padding:.08rem .38rem;border-radius:999px;background:rgba(0,0,0,.14);border:1px solid var(--bd2,#224A41);}'
-      + '.lss-original-ko{margin:.35rem 0 .45rem;font-size:.78rem;color:var(--t2,#C7BFA8);}'
-      + '.lss-original-ko summary{cursor:pointer;min-height:32px;display:inline-flex;align-items:center;font-weight:750;color:var(--ac,#34D4A8);}'
-      + '.lss-original-ko summary:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
-      + '.lss-original-ko p{margin:.25rem 0 0;white-space:pre-wrap;line-height:1.55;}'
-      + '.lss-hide-originals .lss-original-ko{display:none;}'
       // depth selector
       + '.lss-depth{margin:0 0 .7rem;}'
       + '.lss-depth-label{display:block;font-size:.74rem;font-weight:800;color:var(--t2,#C7BFA8);letter-spacing:.03em;margin:0 0 .4rem;}'
@@ -857,21 +801,6 @@
       + '.lss-rinput{flex:1 1 auto;min-width:0;min-height:48px;padding:.6rem .85rem;border-radius:10px;resize:vertical;'
       + 'border:1.5px solid var(--bd,#2D5A50);background:var(--bg0,#0B2A24);color:var(--t1,#F3EEDF);font:600 16px/1.45 inherit;}'
       + '.lss-rinput:focus{outline:2px solid var(--ac,#34D4A8);outline-offset:1px;border-color:var(--ac,#34D4A8);}'
-      + '.lss-question-card{border:1px solid var(--bd2,#224A41);background:rgba(0,0,0,.10);border-radius:10px;padding:.8rem;margin:0 0 .8rem;}'
-      + '.lss-question-label{display:block;font-size:.9rem;font-weight:850;color:var(--t1,#F3EEDF);margin:0 0 .45rem;}'
-      + '.lss-question-card .lss-rinput{display:block;width:100%;min-height:118px;margin:0 0 .65rem;}'
-      + '.lss-examples{display:flex;flex-wrap:wrap;gap:.4rem;align-items:center;}'
-      + '.lss-examples-label{font-size:.72rem;font-weight:850;color:var(--t3,#8C8572);margin-right:.1rem;}'
-      + '.lss-example-chip{min-height:34px;padding:.25rem .62rem;border-radius:999px;cursor:pointer;font:inherit;font-size:.76rem;font-weight:650;'
-      + 'border:1px solid var(--bd,#2D5A50);background:transparent;color:var(--t1,#F3EEDF);}'
-      + '.lss-example-chip:hover{border-color:var(--ac,#34D4A8);color:var(--ac,#34D4A8);}'
-      + '.lss-example-chip:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
-      + '.lss-options-row{display:flex;flex-wrap:wrap;gap:.5rem .8rem;align-items:center;margin:0 0 .75rem;}'
-      + '.lss-option-toggle{display:inline-flex;align-items:center;gap:.4rem;min-height:34px;font-size:.82rem;font-weight:700;color:var(--t1,#F3EEDF);cursor:pointer;}'
-      + '.lss-option-toggle[hidden]{display:none;}'
-      + '.lss-option-toggle input{width:18px;height:18px;accent-color:var(--ac,#34D4A8);cursor:pointer;}'
-      + '.lss-option-toggle input:focus-visible{outline:2px solid var(--ac,#34D4A8);outline-offset:2px;}'
-      + '.lss-action-row{display:flex;justify-content:flex-end;margin:0 0 .8rem;}'
       // research result
       + '.lss-research{display:flex;flex-direction:column;gap:.2rem;}'
       + '.lss-rhead{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;margin:.2rem 0 .4rem;}'
@@ -898,6 +827,9 @@
       + '.lss-badge-ai{color:var(--ac,#34D4A8);background:var(--acL,#163E36);border-color:var(--ac2,#17B388);}'
       + '.lss-badge-fail{color:var(--warning,#E68A3A);border-color:var(--warning,#E68A3A);}'
       + '.lss-badge-warn{margin:.35rem 0 0;font-size:.78rem;line-height:1.5;color:var(--warning,#E68A3A);word-break:keep-all;}'
+      + '.lss-synth-toggle{display:flex;align-items:center;gap:.45rem;margin:0 0 .7rem;font-size:.85rem;font-weight:650;color:var(--t1,#F3EEDF);cursor:pointer;}'
+      + '.lss-synth-toggle[hidden]{display:none;}'
+      + '.lss-synth-toggle input{width:18px;height:18px;accent-color:var(--ac,#34D4A8);cursor:pointer;}'
       + '.lss-synth-off{opacity:.55;}'
       + '.lss-basis{font-size:.74rem;font-weight:700;color:var(--t3,#8C8572);}'
       + '.lss-conf{font-size:.68rem;font-weight:850;padding:.05rem .4rem;border-radius:999px;border:1px solid currentColor;}'
@@ -939,7 +871,7 @@
       + '.lss-rsteps li{font-size:.8rem;color:var(--t2,#C7BFA8);margin:.2rem 0;}'
       + '.lss-rsteps li::before{content:"· ";color:var(--ac,#34D4A8);}'
       + '@keyframes lss-spin{to{transform:rotate(360deg);}}'
-      + '@media (max-width:480px){.lss-head-title{font-size:.95rem;}.lss-searchbar{flex-wrap:wrap;}.lss-search-btn{flex:1 1 auto;}.lss-action-row{justify-content:stretch;}.lss-action-row .lss-search-btn{width:100%;}}'
+      + '@media (max-width:480px){.lss-head-title{font-size:.95rem;}.lss-searchbar{flex-wrap:wrap;}.lss-search-btn{flex:1 1 auto;}}'
       + '@media (prefers-reduced-motion:reduce){.lss-spinner{animation:none;}}'
       // archive_diary (light) theme contrast — mirror the navigator's overrides.
       + 'html[data-editorial-theme="archive_diary"] .lss-input{background:#FFFFFF;}'
@@ -952,26 +884,11 @@
   }
 
   /* ----------------------------------------------------------- runtime ---- */
-  var state = {
-    kind: 'laws',
-    lastQuery: '',
-    researchDepth: 'basic',
-    depthManual: false,
-    lastResearch: '',
-    useSynthesis: true,
-    includePrecedents: true,
-    showOriginals: true,
-    providerConfigured: null,
-    visaStatusHint: ''
-  };
+  var state = { kind: 'laws', lastQuery: '', researchDepth: 'basic', depthManual: false, lastResearch: '', useSynthesis: true, providerConfigured: null, includePrecedents: true, showOriginal: false, lastResearchJson: null };
   var root = null;
 
   function out() { return root && root.querySelector('[data-lss-out]'); }
   function setOut(html) { var o = out(); if (o) { o.innerHTML = html; wireOut(); } }
-  function setBusy(busy) {
-    var o = out();
-    if (o) o.setAttribute('aria-busy', busy ? 'true' : 'false');
-  }
 
   // (Re)wire dynamic controls inside the output area (research term chips).
   function wireOut() {
@@ -997,7 +914,6 @@
     if (input && input.value !== q) input.value = q;
     var kind = state.kind;
     var lang = lssLang();
-    setBusy(true);
     setOut(buildResultsHtml('loading', kind, [], lang));
     var path = kind === 'precedents' ? '/api/legal/precedents/search' : '/api/legal/laws/search';
     var url = apiBase() + path + '?q=' + encodeURIComponent(q);
@@ -1008,12 +924,10 @@
         if (state.lastQuery !== q) return;
         var c = classifyResponse(json);
         setOut(buildResultsHtml(c.state, kind, c.results, lssLang()));
-        setBusy(false);
       })
       .catch(function () {
         if (state.lastQuery !== q) return;
         setOut(buildResultsHtml('error', kind, [], lssLang()));
-        setBusy(false);
       });
   }
 
@@ -1027,17 +941,7 @@
     });
     var desc = row.querySelector('.lss-depth-desc');
     if (desc) desc.textContent = S(DEPTH_DESC_KEY[state.researchDepth] || 'depthBasicDesc', lssLang());
-    syncResearchOptions();
     syncSynthToggle();
-  }
-
-  function syncResearchOptions() {
-    if (!root) return;
-    root.classList.toggle('lss-hide-originals', !state.showOriginals);
-    var prec = root.querySelector('[data-lss-prec-toggle]');
-    if (prec) prec.checked = !!state.includePrecedents;
-    var originals = root.querySelector('[data-lss-originals-toggle]');
-    if (originals) originals.checked = !!state.showOriginals;
   }
 
   function syncSynthToggle() {
@@ -1080,12 +984,10 @@
       : '';
     setOut('<div class="lss-state lss-loading" aria-busy="true"><div class="lss-spinner" aria-hidden="true"></div>'
       + '<p class="lss-state-title">' + escapeHtml(S('researchLoading', lang)) + '</p>' + stepsHtml + '</div>');
-    setBusy(true);
-    var payload = { question: q, locale: lang, includePrecedents: !!state.includePrecedents, includeManuals: true };
+    var payload = { question: q, locale: lang, includePrecedents: !!state.includePrecedents };
     // Only pin depth when the user manually chose one; otherwise let the backend
     // auto-select and reflect its choice back into the selector.
     if (state.depthManual) payload.depth = state.researchDepth;
-    if (state.visaStatusHint) payload.visaStatusHint = state.visaStatusHint;
     // Request AI synthesis per the toggle (fast stays deterministic anyway).
     payload.synthesis = (state.useSynthesis && effectiveDepth !== 'fast') ? 'source_grounded_llm' : 'deterministic';
     fetch(apiBase() + '/api/legal/research', {
@@ -1103,12 +1005,10 @@
           syncSynthToggle();
         }
         setOut(buildResearchHtml(json, lssLang()));
-        setBusy(false);
       })
       .catch(function () {
         if (state.lastResearch !== q) return;
         setOut(buildResearchHtml({ ok: false, error: 'search_failed' }, lssLang()));
-        setBusy(false);
       });
   }
 
@@ -1162,20 +1062,6 @@
         if (chip) doSearch(chip.query);
       });
     });
-    root.querySelectorAll('[data-lss-example]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var idx = parseInt(btn.getAttribute('data-lss-example'), 10);
-        var ex = RESEARCH_EXAMPLES[idx];
-        var rinput = root.querySelector('[data-lss-rinput]');
-        if (!ex || !rinput) return;
-        rinput.value = researchExampleText(ex, lssLang());
-        if (!state.depthManual) {
-          state.researchDepth = clientAutoDepth(rinput.value);
-          syncDepthUI();
-        }
-        rinput.focus();
-      });
-    });
     // research: depth selector
     root.querySelectorAll('[data-lss-depth]').forEach(function (btn) {
       btn.addEventListener('click', function () {
@@ -1217,13 +1103,20 @@
     if (synthBox) {
       synthBox.addEventListener('change', function () { state.useSynthesis = !!synthBox.checked; });
     }
-    var precBox = root.querySelector('[data-lss-prec-toggle]');
+    // research: "search precedents too" option
+    var precBox = root.querySelector('[data-lss-opt-prec]');
     if (precBox) {
-      precBox.addEventListener('change', function () { state.includePrecedents = !!precBox.checked; syncResearchOptions(); });
+      precBox.addEventListener('change', function () { state.includePrecedents = !!precBox.checked; });
     }
-    var originalsBox = root.querySelector('[data-lss-originals-toggle]');
-    if (originalsBox) {
-      originalsBox.addEventListener('change', function () { state.showOriginals = !!originalsBox.checked; syncResearchOptions(); });
+    // research: "show official source text" option → re-render last result with
+    // the Korean original expanded (never machine-translated, just made visible).
+    var origBox = root.querySelector('[data-lss-opt-orig]');
+    if (origBox) {
+      origBox.addEventListener('change', function () {
+        state.showOriginal = !!origBox.checked;
+        setShowOriginal(state.showOriginal);
+        if (state.lastResearchJson) setOut(buildResearchHtml(state.lastResearchJson, lssLang()));
+      });
     }
   }
 
@@ -1232,7 +1125,6 @@
     var lang = lssLang();
     root.innerHTML = panelHtml(lang);
     wire();
-    syncResearchOptions();
     syncDepthUI();
     // Re-open + re-run if we already had a query/research (e.g. language switch).
     if (state.lastQuery || state.lastResearch) {
@@ -1257,36 +1149,27 @@
   api.mount = mount;
   api.setShowOriginal = setShowOriginal;
   api.doSearch = function (q) { if (root) doSearch(q); };
-  api.doResearch = function (q, opts) {
-    if (!root && !mount()) return;
-    opts = opts || {};
-    if (opts.depth) { state.researchDepth = opts.depth; state.depthManual = true; }
-    if (typeof opts.includePrecedents === 'boolean') state.includePrecedents = opts.includePrecedents;
-    if (typeof opts.showOriginals === 'boolean') state.showOriginals = opts.showOriginals;
-    if (opts.visaStatusHint) state.visaStatusHint = String(opts.visaStatusHint);
-    syncResearchOptions();
-    syncDepthUI();
-    setTab('research');
-    doResearch(q);
-  };
+  api.doResearch = function (q) { if (!root && !mount()) return; setTab('research'); doResearch(q); };
   api.openWith = function (q, kind) { if (!root && !mount()) return; if (kind) state.kind = kind; doSearch(q); };
-  api.openResearchWith = function (q, opts) {
-    if (!root && !mount()) return;
+  // Waymaker → Legal Research handoff (§6): open the Research tab prefilled with
+  // the visa code + question + suggested depth, then run.
+  api.openResearch = function (opts) {
     opts = opts || {};
-    var body = root.querySelector('#lssBody');
-    var toggle = root.querySelector('[data-lss-toggle]');
-    if (body) body.removeAttribute('hidden');
-    if (toggle) toggle.setAttribute('aria-expanded', 'true');
-    if (opts.depth) { state.researchDepth = opts.depth; state.depthManual = true; }
-    if (typeof opts.includePrecedents === 'boolean') state.includePrecedents = opts.includePrecedents;
-    if (typeof opts.showOriginals === 'boolean') state.showOriginals = opts.showOriginals;
-    if (opts.visaStatusHint) state.visaStatusHint = String(opts.visaStatusHint);
-    syncResearchOptions();
-    syncDepthUI();
+    if (!root && !mount()) return;
+    var bodyEl = root.querySelector('#lssBody');
+    var toggleEl = root.querySelector('[data-lss-toggle]');
+    if (bodyEl) bodyEl.removeAttribute('hidden');
+    if (toggleEl) toggleEl.setAttribute('aria-expanded', 'true');
+    var q = String(opts.question || opts.query || '').trim();
+    var code = String(opts.visaCode || '').trim();
+    if (code && q.indexOf(code) === -1) q = code + ' ' + q;
+    if (opts.depth && DEPTHS.indexOf(opts.depth) !== -1) { state.researchDepth = opts.depth; state.depthManual = true; }
     setTab('research');
-    var input = root.querySelector('[data-lss-rinput]');
-    if (input) { input.value = q || ''; input.focus(); }
-    if (opts.autorun && q) doResearch(q);
+    var ri = root.querySelector('[data-lss-rinput]');
+    if (ri) ri.value = q;
+    syncDepthUI();
+    if (q) doResearch(q);
+    try { if (root.scrollIntoView) root.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (e) { /* non-fatal */ }
   };
 
   if (document.readyState === 'loading') {
@@ -1305,8 +1188,17 @@
     var d = (e && e.detail) || {};
     if (d && d.query) { try { api.openWith(d.query, d.kind); } catch (err) { /* non-fatal */ } }
   });
+
+  // Richer handoff: open the Legal Research tab prefilled (visa code + question +
+  // depth). Dispatched by Waymaker answers via the "법령·판례 기준으로 더 분석하기 /
+  // Analyze with legal sources" action.
+  //   window.dispatchEvent(new CustomEvent('paradiso:legal-research',
+  //     {detail:{question:'...', visaCode:'F-6', depth:'pro'}}))
   window.addEventListener('paradiso:legal-research', function (e) {
     var d = (e && e.detail) || {};
-    if (d && d.query) { try { api.openResearchWith(d.query, d); } catch (err) { /* non-fatal */ } }
+    if (d && (d.question || d.query)) {
+      try { api.openResearch({ question: d.question || d.query, visaCode: d.visaCode, depth: d.depth }); }
+      catch (err) { /* non-fatal */ }
+    }
   });
 })();
