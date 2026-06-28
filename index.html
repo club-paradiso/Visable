@@ -14947,7 +14947,9 @@ function openDocModal(visaCode, type, subIdx) {
     }
     document.getElementById('docModalTitle').innerHTML = `${escapeHtml(visa.code)} - ${escapeHtml(title)}${stageNote ? ` <span style="font-size:0.8em;color:var(--color-warning);">(${escapeHtml(tx('docStageReference'))})</span>` : ''}`;
     const descEl = document.getElementById('docModalDesc');
-    const docDisclaimer = currentLanguage === 'en'
+    const docDisclaimer = currentLanguage === 'zh-CN'
+        ? `🚨 <strong>实务注意事项</strong>：本清单为法令中明示的基本通用材料。审查官可依裁量判断，在出入境实务现场要求补充额外的证明材料。<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);">🤝 <strong>代理人（家属、雇主等）代为访问申请须知</strong><br>• <strong>代理资格：</strong>仅限因疾病、未满 17 周岁等不得已事由者，或配偶/直系亲属、邀请人/雇主（含所属员工）。（※ 永住（F-5）等必须本人出席的民愿除外）<br>• <strong>必备携带：</strong>除上述基本材料外，须务必携带 <strong>① 委托书（指定格式）② 代理人身份证（核对原件及复印件）③ 关系证明材料（家庭关系证明书、在职证明书等）</strong>，且综合申请书下方须有代理人签名。</div>`
+        : currentLanguage === 'en'
         ? `<strong>Practice note</strong>: This checklist covers basic common documents stated in laws and manuals. Immigration reviewers may request additional supporting materials in practice.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);"><strong>Proxy visit note</strong><br>Proxy filing is limited to permitted cases such as unavoidable illness, minors under 17, spouse/direct relatives, inviter/employer, or employees of the employer. Bring the required base documents plus a power of attorney, proxy ID, and relationship proof where applicable.</div>`
         : `🚨 <strong>실무 주의사항</strong>: 본 체크리스트는 법령에 명시된 기본 공통 서류입니다. 심사관의 재량적 판단에 따라 출입국 실무 현장에서 추가 소명 자료가 징구될 수 있습니다.<br><div style="margin-top:0.6rem; padding-top:0.6rem; border-top:1px dashed var(--bd); color:var(--t2);">🤝 <strong>대리인(가족, 고용주 등) 방문 대리 신청 안내</strong><br>• <strong>대리 자격:</strong> 질병, 만 17세 미만 등 부득이한 사유가 있거나, 배우자/직계친족, 초청자/고용주(소속 직원 포함)에 한함. (※ 영주(F-5) 등 본인 출석 필수 민원은 예외)<br>• <strong>필수 지참:</strong> 위 기본 서류 외에 <strong>① 위임장(소정 양식) ② 대리인 신분증(원본 대조 및 사본) ③ 관계 입증 서류(가족관계증명서, 재직증명서 등)</strong>를 반드시 지참해야 하며, 통합신청서 하단에 대리인 서명이 필수입니다.</div>`;
     descEl.innerHTML = `${stageNote ? `<div class="text-desc" style="margin-bottom:0.6rem;">${stageNote}</div>` : ''}${renderModalFeeBox(visa, type)}${docDisclaimer}`;
@@ -15073,10 +15075,14 @@ function renderModalFeeBox(visa, type) {
     if (key) return renderProcedureFeeBox(getProcedureFeeInfo(visa, key));
     if (type === 'new') {
         return renderProcedureFeeBox({
-            label: currentLanguage === 'en' ? 'New status-related fees' : '신규 체류자격 관련 수수료',
+            label: currentLanguage === 'zh-CN' ? '新申请居留资格相关手续费' : currentLanguage === 'en' ? 'New status-related fees' : '신규 체류자격 관련 수수료',
             revenueStamp: null,
             cardIssueFee: 35000,
-            notes: currentLanguage === 'en' ? [
+            notes: currentLanguage === 'zh-CN' ? [
+                '在韩国境内申请赋予居留资格时，政府收入印花 80,000 韩元为基本标准。',
+                '入境后属于外国人登录对象者，另需缴纳外国人登录证发放手续费 35,000 韩元。',
+                '驻外公馆的签证签发手续费可能因国籍·签证种类·公馆标准而有所不同。'
+            ] : currentLanguage === 'en' ? [
                 'When applying for grant of status in Korea, a KRW 80,000 revenue stamp is the usual baseline.',
                 'People subject to foreigner registration after entry have a separate KRW 35,000 registration card fee.',
                 'Consular visa issuance fees may vary by nationality, visa type, and mission.'
@@ -15095,7 +15101,9 @@ function renderModalFeeBox(visa, type) {
 window.verifyFaqWithAi = function(visaCode, question) {
     closeModal('faqModalOverlay');
     openAiModal(visaCode);
-    document.getElementById('aiInput').value = currentLanguage === 'en'
+    document.getElementById('aiInput').value = currentLanguage === 'zh-CN'
+        ? `[法令真伪核验请求]\n请就以下情况/问题，确认 2026 年《出入境管理法》及签证/居留手册中准确的法律依据和原文规定。\n\n核验对象：${question}`
+        : currentLanguage === 'en'
         ? `[Legal fact-check request]\nPlease confirm the exact legal basis and original provisions in the 2026 Immigration Act and the visa/residence manuals for the situation/question below.\n\nItem to verify: ${question}`
         : `[법령 진위여부 검증 요청]\n다음 상황/질문에 대한 2026년 출입국관리법 및 사증/체류 매뉴얼의 정확한 법적 근거와 원문 규정을 확인해 주십시오.\n\n검증 대상: ${question}`;
     setTimeout(() => { const btn = document.querySelector('.ai-action-btn[data-type="analyze"]'); if(btn) btn.click(); }, 150);
@@ -15103,14 +15111,14 @@ window.verifyFaqWithAi = function(visaCode, question) {
 function openFaqModal(visaCode) {
     const visa = VISA_DATA.find(v => v.code === visaCode);
     if (!visa || !visa.faq) return;
-    document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'en' ? `💡 ${escapeHtml(visa.code)} FAQ` : `💡 ${escapeHtml(visa.code)} 자주 묻는 질문`;
+    document.getElementById('faqModalTitle').innerHTML = currentLanguage === 'zh-CN' ? `💡 ${escapeHtml(visa.code)} 常见问题` : currentLanguage === 'en' ? `💡 ${escapeHtml(visa.code)} FAQ` : `💡 ${escapeHtml(visa.code)} 자주 묻는 질문`;
     const pairs = visa.faq.split(/Q:\s*/).filter(Boolean);
     const html = pairs.map(p => {
         const parts = p.split(/A:\s*/); const q = parts[0].trim(); const a = (parts[1] || '').trim();
-        const verifyLabel = currentLanguage === 'en' ? 'AI fact-check with legal/manual sources' : 'AI 팩트체크 (법령/매뉴얼 근거 확인)';
+        const verifyLabel = currentLanguage === 'zh-CN' ? 'AI 事实核查（核对法令/手册依据）' : currentLanguage === 'en' ? 'AI fact-check with legal/manual sources' : 'AI 팩트체크 (법령/매뉴얼 근거 확인)';
         return `<div class="faq-item"><div class="faq-q">Q. ${escapeHtml(q)}</div><div class="faq-a">${escapeHtml(a).replace(/\n/g, '<br>')}<div style="margin-top:0.85rem; text-align:right; border-top:1px dashed var(--bd2); padding-top:0.6rem;"><button type="button" class="cb" style="color:var(--ac); border-color:var(--ac);" data-action="verify-faq" data-vcode="${escapeHtml(visa.code)}" data-q="${escapeHtml(q).replace(/'/g,"\\'").replace(/"/g,"&quot;")}">🤖 ${escapeHtml(verifyLabel)}</button></div></div></div>`;
     }).join('');
-    document.getElementById('faqModalBody').innerHTML = html || `<div class="text-desc">${currentLanguage === 'en' ? 'No registered FAQ entries.' : '등록된 자주 묻는 질문이 없습니다.'}</div>`;
+    document.getElementById('faqModalBody').innerHTML = html || `<div class="text-desc">${currentLanguage === 'zh-CN' ? '暂无已登记的常见问题。' : currentLanguage === 'en' ? 'No registered FAQ entries.' : '등록된 자주 묻는 질문이 없습니다.'}</div>`;
     openModal('faqModalOverlay');
 }
 
@@ -15134,6 +15142,7 @@ const JOBCODE_STOP_TERMS = new Set(['일','일함','일하는','하는','사람'
 const JC_AMBIGUOUS_TERMS = new Set(['카페','커피','음식점','식당','레스토랑','학원','호텔','병원','미용실','농장','공장','마트','편의점','술집','주점']);
 const JC_TYPE_LABEL = { occupation: '직종', industry: '업종' };
 const JC_TYPE_LABEL_EN = { occupation: 'Occupation', industry: 'Industry' };
+const JC_TYPE_LABEL_ZH = { occupation: '职业', industry: '行业' };
 const JOBCODE_QUERY_EXPANSIONS = [
     { needles: ['개발자','소프트웨어','프로그래머','코딩','웹개발','앱개발','it개발','developer','software','programmer','coding'], terms: ['개발자','소프트웨어','프로그래머','정보 통신','컴퓨터','it','개발','응용 소프트웨어','시스템 소프트웨어','웹'] },
     { needles: ['영어학원','어학원강사','학원강사','영어강사','영어선생','외국어강사','english teacher','language teacher'], terms: ['영어','영어강사','강사','교사','선생','학원','어학원','교육','회화','외국어','어학','외국어학원'] },
@@ -15317,33 +15326,37 @@ function jcConfLabel(row, top) {
 // Plain-language "this may fit when / another may fit when" parts for a card.
 function jcCardHelp(type, isLeaf) {
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     return {
         fitLabel: jcChecklistCopy('card.fit'),
         fitText: type === 'occupation'
-            ? (en ? 'this is close to what you actually do' : '내가 실제로 하는 일과 비슷할 때')
-            : (en ? 'this is close to your employer/business activity' : '회사·사업장이 하는 일과 비슷할 때'),
+            ? (zh ? '与你实际所做的工作相近时' : en ? 'this is close to what you actually do' : '내가 실제로 하는 일과 비슷할 때')
+            : (zh ? '与公司·营业场所所做的业务相近时' : en ? 'this is close to your employer/business activity' : '회사·사업장이 하는 일과 비슷할 때'),
         otherLabel: jcChecklistCopy('card.other'),
         otherText: isLeaf
-            ? (en ? 'a similar item fits better — compare them' : '아래 비슷한 항목이 더 맞으면 비교해서 고르기')
-            : (en ? 'a more specific (detailed) code exists — pick that' : '더 구체적인 세부코드가 있으면 그걸 고르기')
+            ? (zh ? '若下方相似项目更合适，请比较后选择' : en ? 'a similar item fits better — compare them' : '아래 비슷한 항목이 더 맞으면 비교해서 고르기')
+            : (zh ? '若有更具体的细分代码，请选择那个' : en ? 'a more specific (detailed) code exists — pick that' : '더 구체적인 세부코드가 있으면 그걸 고르기')
     };
 }
 // opts.conf = { key, cls } confidence band computed by renderJobcodeList.
 function renderJobcodeCard(row, query, terms, opts = {}) {
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     const type = jcType(row);
     const code = jcCode(row);
     const name = jcDisplayName(row);
-    const lvLabel = (en ? row.level_label_en : row.level_label_ko) || (en
-        ? ({ major:'Major group', middle:'Sub-major group', minor:'Minor group', unit:'Unit group', detailed_unit:'Detailed unit' })[row.level]
-        : ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level]) || '';
+    const lvLabel = (zh
+        ? ({ major:'大分类', middle:'中分类', minor:'小分类', unit:'细分类', detailed_unit:'细细分类' })[row.level]
+        : (en ? row.level_label_en : row.level_label_ko) || (en
+            ? ({ major:'Major group', middle:'Sub-major group', minor:'Minor group', unit:'Unit group', detailed_unit:'Detailed unit' })[row.level]
+            : ({ major:'대분류', middle:'중분류', minor:'소분류', unit:'세분류', detailed_unit:'세세분류' })[row.level])) || '';
     const badge = type === 'occupation'
-        ? `<span class="jc2-tb jc2-tb--occ">${en ? 'Occupation' : '직종'}</span>`
-        : `<span class="jc2-tb jc2-tb--ind">${en ? 'Industry' : '업종'}</span>`;
+        ? `<span class="jc2-tb jc2-tb--occ">${zh ? '职业' : en ? 'Occupation' : '직종'}</span>`
+        : `<span class="jc2-tb jc2-tb--ind">${zh ? '行业' : en ? 'Industry' : '업종'}</span>`;
     const isLeaf = jcIsLeaf(row);
     const conf = opts.conf || jcConfLabel(row, row._score || 1);
     const confChip = `<span class="jc2-conf ${conf.cls}">${escapeHtml(jcChecklistCopy(conf.key))}</span>`;
-    const leafTag = isLeaf ? `<span class="jc2-lvl jc2-lvl--report" title="${en ? 'Most specific level — the code actually used for HiKorea reporting' : '가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다'}">${en ? '🎯 Reporting sub-code' : '🎯 신고용 세부코드'}</span>` : '';
+    const leafTag = isLeaf ? `<span class="jc2-lvl jc2-lvl--report" title="${zh ? '最具体的层级 — HiKorea 申报时实际使用的代码' : en ? 'Most specific level — the code actually used for HiKorea reporting' : '가장 구체적인 단계 — HiKorea 신고에 실제로 쓰는 코드입니다'}">${zh ? '🎯 申报用细分代码' : en ? '🎯 Reporting sub-code' : '🎯 신고용 세부코드'}</span>` : '';
     const srcChip = `<span class="jc2-src">✓ ${escapeHtml(jcChecklistCopy('card.source'))}</span>`;
     const reason = jcMatchReason(row, query, terms);
     const why = reason ? `<div class="jc2-card-why">${reason}</div>` : '';
@@ -15359,16 +15372,17 @@ function renderJobcodeCard(row, query, terms, opts = {}) {
         <div class="jc2-card-name">${hl(name, terms || [])}</div>
         <div class="jc2-card-meta">${escapeHtml(lvLabel)} · ${srcChip}</div>
         ${why}${fit}${details}
-        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? (en ? '✓ Selected' : '✓ 선택됨') : (en ? 'Select' : '선택')}</button>
+        <button type="button" class="jc2-select${isSel ? ' is-sel' : ''}" data-action="select-jobcode" data-type="${type}" data-code="${escapeHtml(code)}" aria-pressed="${isSel}">${isSel ? (zh ? '✓ 已选择' : en ? '✓ Selected' : '✓ 선택됨') : (zh ? '选择' : en ? 'Select' : '선택')}</button>
     </div>`;
 }
 function jobcodeEmptyHtml(type) {
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     return `<div class="jc2-empty"><b>${escapeHtml(tx('jobCodeEmptyTitle'))}</b>${escapeHtml(tx('jobCodeEmptyHint'))}
         <ul>
-            <li>${escapeHtml(type === 'occupation' ? (en ? 'Search by job title (e.g. instructor, cook, developer)' : '직무명으로 검색 (예: 강사, 요리사, 개발)') : (en ? 'Search by company industry (e.g. education, restaurant, manufacturing)' : '회사 업종으로 검색 (예: 교육, 음식점, 제조)'))}</li>
-            <li>${en ? 'Search with shorter words' : '더 짧은 단어로 검색'}</li>
-            <li>${en ? 'Try the suggested chips' : '추천 칩을 눌러보기'}</li>
+            <li>${escapeHtml(type === 'occupation' ? (zh ? '按职务名称搜索（例：讲师、厨师、开发）' : en ? 'Search by job title (e.g. instructor, cook, developer)' : '직무명으로 검색 (예: 강사, 요리사, 개발)') : (zh ? '按公司行业搜索（例：教育、餐饮、制造）' : en ? 'Search by company industry (e.g. education, restaurant, manufacturing)' : '회사 업종으로 검색 (예: 교육, 음식점, 제조)'))}</li>
+            <li>${zh ? '用更短的词搜索' : en ? 'Search with shorter words' : '더 짧은 단어로 검색'}</li>
+            <li>${zh ? '点击推荐标签试试' : en ? 'Try the suggested chips' : '추천 칩을 눌러보기'}</li>
         </ul></div>`;
 }
 // opts: true (legacy) or { collapse, ambiguous }. collapse → guided AI layout
@@ -15414,7 +15428,7 @@ function renderJobcodeList(rows, box, type, query, terms, opts = {}) {
     }
     // Browse mode (direct keyword filter): flat list, capped.
     const html = rows.slice(0, MAX).map(card).join('');
-    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">${currentLanguage === 'en' ? `※ Showing top ${MAX} only. Enter a more specific search term.` : `※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.`}</div>` : '');
+    box.innerHTML = html + (rows.length > MAX ? `<div class="jc2-empty" style="padding:0.7rem;">${currentLanguage === 'zh-CN' ? `※ 仅显示前 ${MAX} 项。请输入更具体的搜索词。` : currentLanguage === 'en' ? `※ Showing top ${MAX} only. Enter a more specific search term.` : `※ 상위 ${MAX}건만 표시. 검색어를 더 구체적으로 입력하세요.`}</div>` : '');
 }
 function setJobcodeFilter(filter) {
     _jcFilter = ['all', 'occupation', 'industry'].includes(filter) ? filter : 'all';
@@ -15473,19 +15487,24 @@ async function openJobCodeModal() {
         const coverageEl = document.getElementById('jcCoverageNote');
         if (coverageEl && _jobcodeData) {
             const en = currentLanguage === 'en';
+            const zh = currentLanguage === 'zh-CN';
             const occ = (_jobcodeData.categories || {})['직종'] || 0;
             const ind = (_jobcodeData.categories || {})['업종'] || 0;
             const occFull = _jobcodeData.occupation_source && _jobcodeData.occupation_source.full_table_loaded;
-            const occNote = en
+            const occNote = zh
+                ? (occFull ? '职业完整表' : '职业大·中分类')
+                : en
                 ? (occFull ? 'occupation full table' : 'occupation major/sub groups')
                 : (occFull ? '직종 전체표' : '직종 대·중분류');
-            coverageEl.textContent = en
+            coverageEl.textContent = zh
+                ? `依据 KSCO8·KSIC11 · ${occNote} ${occ} 项 · 行业 ${ind} 项 · 最终代码务必在 HiKorea/1345 确认`
+                : en
                 ? `Based on KSCO8·KSIC11 · ${occNote} ${occ} · industry ${ind} · always confirm the final code with HiKorea/1345`
                 : `기준 KSCO8·KSIC11 · ${occNote} ${occ}건 · 업종 ${ind}건 · 최종 코드는 HiKorea/1345 확인 필수`;
         }
         renderJobcodeResults('');
     } catch (err) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>${currentLanguage === 'en' ? 'Data load failed' : '데이터 로드 실패'}</b><br><small>${escapeHtml(err.message)}</small></div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">⚠ <b>${currentLanguage === 'zh-CN' ? '数据加载失败' : currentLanguage === 'en' ? 'Data load failed' : '데이터 로드 실패'}</b><br><small>${escapeHtml(err.message)}</small></div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     }
 }
@@ -15523,10 +15542,11 @@ function renderJobcodeResults(query) {
     if (typeof clearEmploymentAnalysisUI === 'function') clearEmploymentAnalysisUI();
     if (badge) {
         const en = currentLanguage === 'en';
-        const occL = en ? 'Occupation' : '직종', indL = en ? 'Industry' : '업종';
+        const zh = currentLanguage === 'zh-CN';
+        const occL = zh ? '职业' : en ? 'Occupation' : '직종', indL = zh ? '行业' : en ? 'Industry' : '업종';
         if (_jcFilter === 'occupation') badge.textContent = `${occL} ${jobRows.length}`;
         else if (_jcFilter === 'industry') badge.textContent = `${indL} ${indRows.length}`;
-        else badge.textContent = q ? `${occL} ${jobRows.length} · ${indL} ${indRows.length}` : (en ? 'View all' : '전체 보기');
+        else badge.textContent = q ? `${occL} ${jobRows.length} · ${indL} ${indRows.length}` : (zh ? '查看全部' : en ? 'View all' : '전체 보기');
     }
     const hintEl = document.getElementById('jcAiHint');
     if (hintEl) {
@@ -15534,7 +15554,9 @@ function renderJobcodeResults(query) {
         const leafTotal = jobRows.filter(r => jcIsLeaf(r)).length + indRows.filter(r => jcIsLeaf(r)).length;
         if (q && q.length >= 2 && (total < 5 || leafTotal === 0)) {
             hintEl.hidden = false;
-            hintEl.innerHTML = currentLanguage === 'en'
+            hintEl.innerHTML = currentLanguage === 'zh-CN'
+                ? `💡 找不到<b>申报用细分代码</b>？请点击下方的 <b>AI 搜索</b> 按钮查找更准确的代码。（按 Enter 键也可以）`
+                : currentLanguage === 'en'
                 ? `💡 Can't find the <b>reporting sub-code</b>? Press the <b>AI search</b> button below to find a more accurate code. (Enter works too.)`
                 : `💡 <b>신고용 세부코드</b>를 못 찾으셨나요? ↓ <b>AI 검색</b> 버튼을 눌러 더 정확한 코드를 찾아보세요. (Enter 키도 됩니다)`;
             hintEl.onclick = () => searchJobcodeWithAI();
@@ -15557,17 +15579,17 @@ function selectJobcode(type, code) {
         const on = btn.dataset.code === code;
         btn.classList.toggle('is-sel', on);
         btn.setAttribute('aria-pressed', String(on));
-        btn.textContent = on ? (currentLanguage === 'en' ? '✓ Selected' : '✓ 선택됨') : (currentLanguage === 'en' ? 'Select' : '선택');
+        btn.textContent = on ? (currentLanguage === 'zh-CN' ? '✓ 已选择' : currentLanguage === 'en' ? '✓ Selected' : '✓ 선택됨') : (currentLanguage === 'zh-CN' ? '选择' : currentLanguage === 'en' ? 'Select' : '선택');
     });
-    const typeLabel = currentLanguage === 'en' ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
-    showToast(currentLanguage === 'en' ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`, 'success');
+    const typeLabel = currentLanguage === 'zh-CN' ? (JC_TYPE_LABEL_ZH[type] || type) : currentLanguage === 'en' ? (JC_TYPE_LABEL_EN[type] || type) : JC_TYPE_LABEL[type];
+    showToast(currentLanguage === 'zh-CN' ? `已选择${typeLabel}：${code} ${jcName(row)}` : currentLanguage === 'en' ? `${typeLabel} selected: ${code} ${jcName(row)}` : `${typeLabel} 선택: ${code} ${jcName(row)}`, 'success');
 }
 function renderJobcodeSelectedSummary() {
     const occEl = document.getElementById('jcSelOcc'), indEl = document.getElementById('jcSelInd');
     const setCell = (el, sel) => {
         if (!el) return;
         if (sel) { el.textContent = `${sel.code} · ${sel.name}`; el.classList.add('is-set'); }
-        else { el.textContent = currentLanguage === 'en' ? 'Not selected yet' : '아직 선택 안 함'; el.classList.remove('is-set'); }
+        else { el.textContent = currentLanguage === 'zh-CN' ? '尚未选择' : currentLanguage === 'en' ? 'Not selected yet' : '아직 선택 안 함'; el.classList.remove('is-set'); }
     };
     setCell(occEl, _jcSelected.occupation);
     setCell(indEl, _jcSelected.industry);
@@ -15587,7 +15609,7 @@ function copyJobcodeMemo() {
     const text = buildJobcodeMemo();
     const done = () => {
         if (!btn) return;
-        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = currentLanguage === 'en' ? '✓ Copied' : '✓ 복사됨';
+        btn.classList.add('copied'); const original = btn.textContent; btn.textContent = currentLanguage === 'zh-CN' ? '✓ 已复制' : currentLanguage === 'en' ? '✓ Copied' : '✓ 복사됨';
         setTimeout(() => { btn.classList.remove('copied'); btn.textContent = original; }, 1600);
     };
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(() => { fallbackCopy(text); done(); });
@@ -15658,6 +15680,13 @@ const JC_MODE_LABEL_EN = {
     arts_entertainment_mode: 'Arts/performance analysis',
     ambiguous_mode: 'More information needed'
 };
+const JC_MODE_LABEL_ZH = {
+    field_labor_mode: '现场·作业类分析',
+    professional_mode: '专业·办公职分析',
+    service_mode: '服务·接待类分析',
+    arts_entertainment_mode: '艺术·演出类分析',
+    ambiguous_mode: '需要补充信息'
+};
 function renderEmploymentInterpretation(analysis) {
     const el = document.getElementById('jcInterpret');
     if (!el) return;
@@ -15665,7 +15694,10 @@ function renderEmploymentInterpretation(analysis) {
     const e = analysis.extracted || {};
     const ps = analysis.parsedSignals || {};
     const en = (analysis.detectedLanguage === 'en');
-    const SENS_LABEL = { tattoo: '문신·타투(법적 민감)', entertainment: '연예·공연(별도 검토)' };
+    const zh = currentLanguage === 'zh-CN';
+    const SENS_LABEL = zh
+        ? { tattoo: '纹身·刺青（法律敏感）', entertainment: '演艺·演出（需另行审查）' }
+        : { tattoo: '문신·타투(법적 민감)', entertainment: '연예·공연(별도 검토)' };
     const sens = (e.legalSensitivity || []).map(s => SENS_LABEL[s] || s).join(', ');
     const sigLine = (arr) => (Array.isArray(arr) ? arr.map(x => x && (x.label || x)).filter(Boolean).join(', ') : '');
     const isField = analysis.mode === 'field_labor_mode';
@@ -15677,13 +15709,13 @@ function renderEmploymentInterpretation(analysis) {
         ['🛠 ' + jcChecklistCopy('interpret.action'), sigLine(ps.actions)]
     ].filter(([, v]) => v) : [];
     const rows = [
-        ['🙋 ' + (en ? 'Your work' : '하는 일(직종)'), e.jobRole],
-        ['🏢 ' + (en ? 'Workplace' : '근무처'), e.workplaceType],
-        ['🏭 ' + (en ? 'Business activity' : '사업 활동(업종)'), e.businessActivity],
-        ['📄 ' + (en ? 'Employment type' : '고용형태'), e.employmentTypeLabel || e.employmentType],
-        ['🎭 ' + (en ? 'Activity type' : '활동 유형'), e.performanceType],
-        ['⚖ ' + (en ? 'Sensitive area' : '법적 민감도'), sens || null],
-        ['🪪 ' + (en ? 'Status' : '체류자격'), e.visaStatus]
+        ['🙋 ' + (zh ? '所做工作（职业）' : en ? 'Your work' : '하는 일(직종)'), e.jobRole],
+        ['🏢 ' + (zh ? '工作单位' : en ? 'Workplace' : '근무처'), e.workplaceType],
+        ['🏭 ' + (zh ? '经营活动（行业）' : en ? 'Business activity' : '사업 활동(업종)'), e.businessActivity],
+        ['📄 ' + (zh ? '雇佣形态' : en ? 'Employment type' : '고용형태'), e.employmentTypeLabel || e.employmentType],
+        ['🎭 ' + (zh ? '活动类型' : en ? 'Activity type' : '활동 유형'), e.performanceType],
+        ['⚖ ' + (zh ? '法律敏感度' : en ? 'Sensitive area' : '법적 민감도'), sens || null],
+        ['🪪 ' + (zh ? '居留资格' : en ? 'Status' : '체류자격'), e.visaStatus]
     ].filter(([, v]) => v);
     // "더 확인할 점" — built from the top clarification's answer options so the
     // uncertainty is shown gently and concretely (not a scary warning).
@@ -15694,7 +15726,7 @@ function renderEmploymentInterpretation(analysis) {
     const allRows = [...fieldRows, ...rows];
     if (!allRows.length && !analysis.parsedInterpretation) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    const modeLabel = (currentLanguage === 'en' ? JC_MODE_LABEL_EN[analysis.mode] : JC_MODE_LABEL[analysis.mode]) || '';
+    const modeLabel = (currentLanguage === 'zh-CN' ? JC_MODE_LABEL_ZH[analysis.mode] : currentLanguage === 'en' ? JC_MODE_LABEL_EN[analysis.mode] : JC_MODE_LABEL[analysis.mode]) || '';
     const interp = analysis.parsedInterpretation
         ? `<div class="jc2-interpret-sum">🔎 ${escapeHtml(analysis.parsedInterpretation)}</div>` : '';
     const needConfirm = analysis.sourceStatus === 'needs_confirmation'
@@ -15713,7 +15745,7 @@ function renderEmploymentFollowupChips(analysis) {
     const chips = analysis && Array.isArray(analysis.followUpChips) ? analysis.followUpChips : [];
     if (!chips.length) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
-    el.innerHTML = `<div class="jc2-refine-h">${currentLanguage === 'en' ? '➕ Follow-up — tap to narrow further' : '➕ 후속 선택 — 눌러서 더 구체화'}</div>`
+    el.innerHTML = `<div class="jc2-refine-h">${currentLanguage === 'zh-CN' ? '➕ 后续选择 — 点击以进一步细化' : currentLanguage === 'en' ? '➕ Follow-up — tap to narrow further' : '➕ 후속 선택 — 눌러서 더 구체화'}</div>`
         + `<div class="jc2-refine-chips">`
         + chips.slice(0, 14).map((c) => `<button type="button" class="jc2-refine-chip" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c)}</button>`).join('')
         + `</div>`;
@@ -15773,12 +15805,13 @@ function renderEmploymentRefine(analysis) {
     if (!qs.length || _jcClarificationAnswered) { el.hidden = true; el.innerHTML = ''; return; }
     el.hidden = false;
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     // ONE question at a time: the single most relevant fork. Answering it re-runs
     // the analyzer, which surfaces the next question only if still needed.
     const q = qs[0];
     const lead = jcChecklistCopy('clarify.lead');
     const remaining = qs.length > 1
-        ? `<span class="jc2-refine-more">${escapeHtml(en ? `+${qs.length - 1} more after this` : `답하면 ${qs.length - 1}개 더 확인할 수 있어요`)}</span>` : '';
+        ? `<span class="jc2-refine-more">${escapeHtml(zh ? `回答后还可再确认 ${qs.length - 1} 项` : en ? `+${qs.length - 1} more after this` : `답하면 ${qs.length - 1}개 더 확인할 수 있어요`)}</span>` : '';
     // Large, tap-friendly answer buttons; the analyzer chips are the real options.
     const answers = (q.chips || []).map((c) =>
         `<button type="button" class="jc2-answer" data-jc-refine="${escapeHtml(c)}">${escapeHtml(c.replace(/\([^)]*\)/g, '').trim())}</button>`).join('');
@@ -15811,18 +15844,19 @@ function renderEmploymentTips(analysis) {
     const legal = warns.filter(isLegal);
     const rest = warns.filter((w) => !isLegal(w));
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     let html = '';
     if (sens.length && legal.length) {
-        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${en ? '⚠ Caution — having a code does not mean the job/procedure is permitted' : '⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</div>`
+        html += `<div class="jc2-legal-banner"><div class="jc2-legal-h">${zh ? '⚠ 注意 — 有代码并不代表该工作·施术被许可' : en ? '⚠ Caution — having a code does not mean the job/procedure is permitted' : '⚠ 주의사항 — 코드가 있다고 취업·시술이 허용되는 것은 아닙니다'}</div>`
             + `<ul class="jc2-tips-list">` + legal.map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul></div>`;
     }
-    html += `<div class="jc2-tips-h">${en ? '📌 HiKorea input tips · official standards' : '📌 하이코리아 입력 팁 · 공식 기준'}</div>`
+    html += `<div class="jc2-tips-h">${zh ? '📌 HiKorea 录入提示 · 官方标准' : en ? '📌 HiKorea input tips · official standards' : '📌 하이코리아 입력 팁 · 공식 기준'}</div>`
         + `<ul class="jc2-tips-list">` + (sens.length && legal.length ? rest : warns).map((w) => `<li>${escapeHtml(w)}</li>`).join('') + `</ul>`;
     el.hidden = false;
     el.innerHTML = html;
 }
 // --- Guided checklist (직종 → 업종 → 연간소득 → 하이코리아 최종 확인) -------------
-function jcLang() { return currentLanguage === 'en' ? 'en' : 'ko'; }
+function jcLang() { return currentLanguage === 'en' ? 'en' : currentLanguage === 'zh-CN' ? 'zh-CN' : 'ko'; }
 function jcChecklistCopy(key) {
     const C = window.EmploymentChecklist;
     return C && C.checklistCopy ? C.checklistCopy(key, jcLang()) : '';
@@ -15898,7 +15932,7 @@ function clearEmploymentAnalysisUI() {
 async function searchJobcodeWithAI() {
     const inputEl = document.getElementById('jcSearchInput');
     const input = inputEl ? inputEl.value.trim() : '';
-    if (!input) { showToast("검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
+    if (!input) { showToast(currentLanguage === 'zh-CN' ? '请在搜索框中填写您的工作或营业场所（例：中餐厅厨师长）。' : currentLanguage === 'en' ? 'Please describe your job or workplace in the search box (e.g. Chinese-restaurant head chef).' : "검색창에 본인의 일이나 사업장을 적어주세요 (예: 중식당 주방장)."); return; }
     const jobBox = document.getElementById('jcJobResults'), indBox = document.getElementById('jcIndResults'), spinner = document.getElementById('jcAiSpinner');
     const btn = spinner ? spinner.parentElement : null;
     if (btn) btn.disabled = true; if (spinner) spinner.style.display = 'inline-block';
@@ -15906,7 +15940,7 @@ async function searchJobcodeWithAI() {
     if (indBox) indBox.innerHTML = `<div class="jc2-loading">${escapeHtml(tx('jobCodeLoadingNatural'))}</div>`;
     try {
         if (!_jobcodeData) { try { await loadJobcodeData(); } catch (_) {
-            const msg = currentLanguage === 'en' ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
+            const msg = currentLanguage === 'zh-CN' ? '当前无法使用分析功能。请填写得更具体一些，或稍后再试。' : currentLanguage === 'en' ? 'The lookup tool is unavailable right now. Try a more specific description or try again later.' : '지금은 분석 기능을 사용할 수 없어요. 더 구체적으로 적거나 잠시 후 다시 시도해 주세요.';
             const html = `<div class="jc2-empty">${escapeHtml(msg)}</div>`;
             if (jobBox) jobBox.innerHTML = html; if (indBox) indBox.innerHTML = html; return;
         } }
@@ -15941,7 +15975,7 @@ async function searchJobcodeWithAI() {
                 jobKw = getJobcodeSearchTerms(input, [...occExtra, ...(data.job_keywords || data.keywords || []), ...(data.korean_keywords || []), ...(data.english_keywords || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
                 indKw = getJobcodeSearchTerms(input, [...indExtra, ...(data.industry_keywords || []), ...(data.related_domains || [])].filter(k => k !== '...' && !String(k).startsWith('kw')));
             } catch (_) {
-                fallbackNote = currentLanguage === 'en' ? 'Keyword expansion is unavailable. Showing local matches only.' : '키워드 확장을 사용할 수 없어 자연어 직접 매칭으로 표시합니다.';
+                fallbackNote = currentLanguage === 'zh-CN' ? '关键词扩展暂不可用，仅显示本地直接匹配结果。' : currentLanguage === 'en' ? 'Keyword expansion is unavailable. Showing local matches only.' : '키워드 확장을 사용할 수 없어 자연어 직접 매칭으로 표시합니다.';
             }
         }
         const jobRows = getScoredJobcodeRows('occupation', '', jobKw, 60), indRows = getScoredJobcodeRows('industry', '', indKw, 60);
@@ -15980,13 +16014,13 @@ async function searchJobcodeWithAI() {
         // Progressive flow: gate candidates behind a pending fork question.
         jcApplyFlow();
         const badge = document.getElementById('jcCountBadge');
-        if (badge) badge.textContent = currentLanguage === 'en' ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
+        if (badge) badge.textContent = currentLanguage === 'zh-CN' ? `职业 ${jobRows.length} · 行业 ${indRows.length}` : currentLanguage === 'en' ? `Occupation ${jobRows.length} · Industry ${indRows.length}` : `직종 ${jobRows.length} · 업종 ${indRows.length}`;
         if (fallbackNote) {
             const noteHtml = `<div class="jc2-empty" style="color:var(--color-warning);padding:0.6rem;">${escapeHtml(fallbackNote)}</div>`;
             if (jobBox) jobBox.insertAdjacentHTML('afterbegin', noteHtml);
         }
     } catch (e) {
-        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'en' ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
+        const errorHtml = `<div class="jc2-empty" style="color:var(--color-error);">${currentLanguage === 'zh-CN' ? '自然语言搜索出错' : currentLanguage === 'en' ? 'Natural-language search error' : '자연어 검색 오류'}: ${escapeHtml(e.message)}</div>`;
         if (jobBox) jobBox.innerHTML = errorHtml; if (indBox) indBox.innerHTML = errorHtml;
     } finally { if (btn) btn.disabled = false; if (spinner) spinner.style.display = 'none'; }
 }
@@ -16790,7 +16824,7 @@ function buildDocGuideApplicability(g, en) {
         ? `<ul class="doc-guide-country-list" data-doc-countries>${countries.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>`
         : '<ul class="doc-guide-country-list" data-doc-countries hidden></ul>';
     return `<div class="doc-guide-applicability">
-        <p class="doc-guide-conditional">${escapeHtml(en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>
+        <p class="doc-guide-conditional">${escapeHtml(currentLanguage === 'zh-CN' ? '有条件提交：' : en ? 'Conditional: ' : '조건부 제출: ')}${escapeHtml(g.conditional)}</p>
         ${listHtml}
     </div>`;
 }
@@ -16799,6 +16833,7 @@ function buildDocGuideDrawer(docId, visaCode = '') {
     const g = docGuideData && docGuideData[docId];
     if (!g) return '';
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     const chip = (txt, cls, mark) => `<span class="doc-guide-chip ${cls}"><b aria-hidden="true">${mark}</b>${escapeHtml(txt)}</span>`;
     const accepts = Array.isArray(g.accept) ? g.accept.map(a => chip(a, 'doc-guide-chip--ok', '✓')).join('') : '';
     const rejects = Array.isArray(g.reject) ? g.reject.map(r => chip(r, 'doc-guide-chip--no', '✗')).join('') : '';
@@ -16808,18 +16843,18 @@ function buildDocGuideDrawer(docId, visaCode = '') {
     // render only on E-2; other statuses keep the textual health guidance.
     const imageScopedOut = docId === 'doc_health' && normalizeVisaCode(visaCode) !== 'E-2';
     const img = (g.image_url && !imageScopedOut)
-        ? `<figure class="doc-guide-figure"><img src="${escapeHtml(g.image_url)}" alt="${escapeHtml((en ? 'Official form example' : '공식 서식 예시'))}" loading="lazy"><figcaption>${escapeHtml(en ? 'Official statutory form (Enforcement Rule annex)' : '출입국관리법 시행규칙 별지 서식 (진본)')}</figcaption></figure>`
+        ? `<figure class="doc-guide-figure"><img src="${escapeHtml(g.image_url)}" alt="${escapeHtml((zh ? '官方表格示例' : en ? 'Official form example' : '공식 서식 예시'))}" loading="lazy"><figcaption>${escapeHtml(zh ? '出入境管理法施行规则别纸表格（真本）' : en ? 'Official statutory form (Enforcement Rule annex)' : '출입국관리법 시행규칙 별지 서식 (진본)')}</figcaption></figure>`
         : '';
     // Source line renders unconditionally — a guide without provenance must
     // surface as "needs verification" rather than silently looking authoritative.
-    const sourceText = g.source || (en ? 'Source pending manual verification' : '출처 확인 필요 (사람 검수 대상)');
+    const sourceText = g.source || (zh ? '出处待人工核实' : en ? 'Source pending manual verification' : '출처 확인 필요 (사람 검수 대상)');
     return `<div class="doc-guide-drawer" data-doc-guide="${escapeHtml(docId)}" hidden>
         ${g.spec ? `<p class="doc-guide-spec">${escapeHtml(g.spec)}</p>` : ''}
         ${(accepts || rejects) ? `<div class="doc-guide-chips">${accepts}${rejects}</div>` : ''}
         ${g.tip ? `<p class="doc-guide-tip">💡 ${escapeHtml(g.tip)}</p>` : ''}
         ${g.conditional ? buildDocGuideApplicability(g, en) : ''}
         ${img}
-        <p class="doc-guide-source">${escapeHtml(en ? 'Source: ' : '출처: ')}${escapeHtml(sourceText)}</p>
+        <p class="doc-guide-source">${escapeHtml(zh ? '出处：' : en ? 'Source: ' : '출처: ')}${escapeHtml(sourceText)}</p>
     </div>`;
 }
 
@@ -16838,7 +16873,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
     // rows even if an upstream path bypassed dedupeDocs().
     const dedupedSections = dedupeDocumentSectionsForDisplay([{ key: 'flat', docs: docKeys || [] }]);
     const cleanKeys = (dedupedSections[0]?.docs || []).filter(key => String(key || '').trim() && !isDocPlaceholder(key));
-    if (!cleanKeys.length) return `<div class="text-desc" style="color:var(--t3);">${currentLanguage === 'en' ? 'No additional documents required.' : '요구되는 추가 서류가 없습니다.'}</div>`;
+    if (!cleanKeys.length) return `<div class="text-desc" style="color:var(--t3);">${currentLanguage === 'zh-CN' ? '无需额外材料。' : currentLanguage === 'en' ? 'No additional documents required.' : '요구되는 추가 서류가 없습니다.'}</div>`;
     // Explanatory prose that was authored inside a document array is relocated
     // here (rendered as a note) instead of being shown as a fake checklist tile.
     const relocatedNotes = [];
@@ -16873,7 +16908,9 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         // 시범운영 ~2026.6, then online-only — 법무부 2025-12-16 보도). Surface
         // that as a checklist note wherever the 직업 신고서 tile renders.
         if (/직업\s*신고서/.test(String(officialName))) {
-            relocatedNotes.push(currentLanguage === 'en'
+            relocatedNotes.push(currentLanguage === 'zh-CN'
+                ? '外国人职业·年收入申报通过 HiKorea（hikorea.go.kr）线上办理（外国人就业信息线上申报制）。'
+                : currentLanguage === 'en'
                 ? 'The foreign-resident occupation/income report is filed online via HiKorea (hikorea.go.kr).'
                 : '외국인 직업·연간소득 신고는 하이코리아(hikorea.go.kr) 온라인으로 처리합니다 (외국인 취업정보 온라인 신고제).');
         }
@@ -16885,7 +16922,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
         const guideAvailable = !isUnresolvedId && docGuideData && docGuideData[key];
-        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
+        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'zh-CN' ? '指南' : currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
         const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key, visaCode) : '';
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
@@ -16901,7 +16938,7 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         return true;
     });
     const notesHtml = noteItems.length
-        ? `<ul class="doc-checklist-notes" aria-label="${escapeHtml(currentLanguage === 'en' ? 'Notes' : '참고 사항')}">${noteItems.map(n => `<li>${hl(escapeHtml(n), keywords)}</li>`).join('')}</ul>`
+        ? `<ul class="doc-checklist-notes" aria-label="${escapeHtml(currentLanguage === 'zh-CN' ? '参考事项' : currentLanguage === 'en' ? 'Notes' : '참고 사항')}">${noteItems.map(n => `<li>${hl(escapeHtml(n), keywords)}</li>`).join('')}</ul>`
         : '';
     const checklistHtml = tagsHtml ? `<div class="doc-checklist">${tagsHtml}</div>` : '';
     return `<div class="doc-req-box" style="margin-top:0; padding:0; border:none; background:transparent;">${warningHtml}${checklistHtml}${notesHtml}</div>`;
@@ -16980,7 +17017,7 @@ const DEFAULT_PROCEDURE_FEES = {
 
 function formatWon(amount) {
     if (typeof amount !== 'number') return '';
-    return currentLanguage === 'en' ? `KRW ${amount.toLocaleString('en-US')}` : `${amount.toLocaleString('ko-KR')}원`;
+    return currentLanguage === 'zh-CN' ? `${amount.toLocaleString('en-US')} 韩元` : currentLanguage === 'en' ? `KRW ${amount.toLocaleString('en-US')}` : `${amount.toLocaleString('ko-KR')}원`;
 }
 
 function getProcedureFeeInfo(v, procedureKey) {
@@ -17010,10 +17047,16 @@ function getProcedureFeeInfo(v, procedureKey) {
     // 대상이 아닙니다. 기본 연장 수수료가 오인되지 않도록, 영주증(영주카드) 재발급
     // 수수료(시행규칙 제72조제10의2호, 35,000원)로 정정합니다.
     if (procedureKey === 'extension' && v.code === 'F-5') {
-        fee.label = currentLanguage === 'en' ? 'Permanent residence card reissuance' : '영주증 재발급';
+        fee.label = currentLanguage === 'zh-CN' ? '永住证补发' : currentLanguage === 'en' ? 'Permanent residence card reissuance' : '영주증 재발급';
         fee.revenueStamp = 0;
         fee.cardIssueFee = 35000;
-        fee.notes = currentLanguage === 'en'
+        fee.notes = currentLanguage === 'zh-CN'
+            ? [
+                '永住（F-5）没有居留期限上限，因此不属于“居留期限延长”对象。',
+                '永住证（永住卡）有效期为 10 年，须在到期前补发（逾期可能被处以罚款）。',
+                '永住证补发手续费 35,000 韩元（出入境管理法施行规则第 72 条第 10 之 2 号）。'
+            ]
+            : currentLanguage === 'en'
             ? [
                 'Permanent residence (F-5) has no stay-period limit, so it is not subject to "extension of stay".',
                 'The permanent residence card is valid for 10 years and must be reissued before it expires (a late reissuance may incur a fine).',
@@ -17032,21 +17075,25 @@ function getProcedureFeeInfo(v, procedureKey) {
 function renderProcedureFeeBox(feeInfo) {
     if (!feeInfo) return '';
     const amountBits = [];
-    if (typeof feeInfo.revenueStamp === 'number' && feeInfo.revenueStamp > 0) amountBits.push(`${currentLanguage === 'en' ? 'revenue stamp' : '수입인지'} ${formatWon(feeInfo.revenueStamp)}`);
-    if (feeInfo.revenueStamp === 0) amountBits.push(currentLanguage === 'en' ? 'no revenue stamp' : '수입인지 없음');
+    if (typeof feeInfo.revenueStamp === 'number' && feeInfo.revenueStamp > 0) amountBits.push(`${currentLanguage === 'zh-CN' ? '收入印花' : currentLanguage === 'en' ? 'revenue stamp' : '수입인지'} ${formatWon(feeInfo.revenueStamp)}`);
+    if (feeInfo.revenueStamp === 0) amountBits.push(currentLanguage === 'zh-CN' ? '无收入印花' : currentLanguage === 'en' ? 'no revenue stamp' : '수입인지 없음');
     const hasCardFee = typeof feeInfo.cardIssueFee === 'number' && feeInfo.cardIssueFee > 0;
     if (hasCardFee) {
         const visitFee = formatWon(feeInfo.cardIssueFee);
         const mailFee = formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE);
-        amountBits.push(currentLanguage === 'en'
+        amountBits.push(currentLanguage === 'zh-CN'
+            ? `登录证 ${visitFee}（挂号邮寄领取时 ${mailFee}）`
+            : currentLanguage === 'en'
             ? `card ${visitFee} (${mailFee} by registered mail)`
             : `등록증 ${visitFee} (등기우편 수령 시 ${mailFee})`);
     }
-    const amountText = amountBits.length ? amountBits.join(' · ') : (currentLanguage === 'en' ? 'Amount needs confirmation' : '금액 확인 필요');
+    const amountText = amountBits.length ? amountBits.join(' · ') : (currentLanguage === 'zh-CN' ? '金额需确认' : currentLanguage === 'en' ? 'Amount needs confirmation' : '금액 확인 필요');
     const baseNotes = Array.isArray(feeInfo.notes) ? feeInfo.notes : [];
     // 등기우편 수령 우편요금 안내는 카드 수수료가 있는 모든 절차/자격에 공통 부가.
     const cardDeliveryNote = hasCardFee
-        ? (currentLanguage === 'en'
+        ? (currentLanguage === 'zh-CN'
+            ? `登录证·永住证现场领取时为 ${formatWon(feeInfo.cardIssueFee)}；若选择挂号邮寄领取，则另加邮费 ${formatWon(CARD_DELIVERY_SURCHARGE)}，合计 ${formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE)}。`
+            : currentLanguage === 'en'
             ? `The registration/permanent-residence card costs ${formatWon(feeInfo.cardIssueFee)} for in-person pickup; choosing registered-mail delivery adds a ${formatWon(CARD_DELIVERY_SURCHARGE)} postage fee (${formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE)} total).`
             : `등록증·영주증은 방문 수령 시 ${formatWon(feeInfo.cardIssueFee)}이며, 등기우편 수령을 선택하면 우편요금 ${formatWon(CARD_DELIVERY_SURCHARGE)}이 추가되어 ${formatWon(feeInfo.cardIssueFee + CARD_DELIVERY_SURCHARGE)}입니다.`)
         : '';
@@ -17056,12 +17103,12 @@ function renderProcedureFeeBox(feeInfo) {
     // doc_guide doc_fee.conditional (시행규칙 제74조) — not invented.
     const feeExemption = (typeof docGuideData === 'object' && docGuideData && docGuideData.doc_fee && docGuideData.doc_fee.conditional) || '';
     const title = feeInfo.commonReference
-        ? (currentLanguage === 'en' ? 'Common fee reference' : '공통 수수료 참고')
-        : (currentLanguage === 'en' ? 'Fee' : (feeInfo.label || '수수료'));
+        ? (currentLanguage === 'zh-CN' ? '通用手续费参考' : currentLanguage === 'en' ? 'Common fee reference' : '공통 수수료 참고')
+        : (currentLanguage === 'zh-CN' ? (feeInfo.label || '手续费') : currentLanguage === 'en' ? 'Fee' : (feeInfo.label || '수수료'));
     return `<div class="procedure-fee-box">
         <div class="procedure-fee-title"><span>${escapeHtml(title)}</span><span class="procedure-fee-amount">${escapeHtml(amountText)}</span></div>
         ${notes.length ? `<ul class="procedure-fee-list">${notes.map(note => `<li>${escapeHtml(note)}</li>`).join('')}</ul>` : ''}
-        ${feeExemption ? `<div class="procedure-fee-exemption">${escapeHtml((currentLanguage === 'en' ? 'Exemption: ' : '면제: ') + feeExemption)}</div>` : ''}
+        ${feeExemption ? `<div class="procedure-fee-exemption">${escapeHtml((currentLanguage === 'zh-CN' ? '减免：' : currentLanguage === 'en' ? 'Exemption: ' : '면제: ') + feeExemption)}</div>` : ''}
         <div class="procedure-fee-note">${escapeHtml(feeInfo.sourceNote || STAY_FEE_SOURCE_NOTE)}</div>
     </div>`;
 }
@@ -18350,11 +18397,18 @@ const SOURCE_EVIDENCE_LABELS = {
         limited: 'Official source limited',
         unavailable: 'Official source unavailable',
         not_applicable: 'Not applicable'
+    },
+    'zh-CN': {
+        source_confirmed: '已直接核实官方依据',
+        contextual: '有相关官方依据',
+        limited: '官方依据有限',
+        unavailable: '无法确认官方依据',
+        not_applicable: '不适用'
     }
 };
 
 function getSourceEvidenceLabel(level) {
-    const lang = currentLanguage === 'en' ? 'en' : 'ko';
+    const lang = currentLanguage === 'zh-CN' ? 'zh-CN' : currentLanguage === 'en' ? 'en' : 'ko';
     return SOURCE_EVIDENCE_LABELS[lang][level] || SOURCE_EVIDENCE_LABELS[lang].limited;
 }
 
@@ -18386,6 +18440,13 @@ function getFormattedSourceRefs(sourceState, fallbackRefs = []) {
 }
 
 function getDefaultLimitationExplanation(level) {
+    if (currentLanguage === 'zh-CN') {
+        if (level === 'not_applicable') return '此路径未作为该居留资格的申请程序显示。';
+        if (level === 'unavailable') return '目前尚未对该项整理出可直接连接的官方依据。';
+        if (level === 'contextual') return '虽有相关官方依据，但部分要件仍可能因居留资格、公馆或个案审查而有所不同。';
+        if (level === 'source_confirmed') return '所显示的摘要已与官方手册依据相连接。但处理时间、手续费及受理渠道仍可能因主管机关而异，需另行确认。';
+        return '由于公馆、国家、时间、手续费或渠道细节可能有所不同，官方依据有限。';
+    }
     if (currentLanguage === 'en') {
         if (level === 'not_applicable') return 'This route is not shown as an application procedure for this status.';
         if (level === 'unavailable') return 'No direct official source binding has been structured yet.';
@@ -18429,7 +18490,9 @@ function renderSourceLimitationExplanation(sourceState, fallbackRefs = []) {
     const refsHtml = refs.length ? `<p>${escapeHtml(txAt('sourceFieldLabels', 8, '근거'))}: ${escapeHtml(refs.join(' / '))}</p>` : '';
     const fieldsHtml = level === 'source_confirmed' ? renderSourceBackedFields(sourceState && sourceState.sourceBackedFields) : '';
     const explanation = level === 'source_confirmed'
-        ? ((currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
+        ? (currentLanguage === 'zh-CN'
+            ? getDefaultLimitationExplanation(level)
+            : (currentLanguage === 'en' && sourceState && sourceState.userFacingExplanationEn)
             ? sourceState.userFacingExplanationEn
             : (sourceState && (sourceState.userFacingExplanationKo || sourceState.limitationReasonKo)) || getDefaultLimitationExplanation(level))
         : '';
@@ -19434,6 +19497,7 @@ function renderSourceConfirmedRequirements(v) {
         ? v.sourceConfirmedStructuredRequirements : [];
     if (!entries.length) return '';
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     const PROC_KO = {
         extension: '체류기간 연장', registration: '외국인등록', visa_issuance: '사증발급',
         change_of_status: '체류자격 변경', status_grant: '체류자격 부여',
@@ -19446,8 +19510,14 @@ function renderSourceConfirmedRequirements(v) {
         reentry: 'Re-entry', workplace_change_or_addition: 'Change/add workplace',
         activity_outside_status: 'Activities outside status', reporting_duty: 'Reporting duty', other: ''
     };
+    const PROC_ZH = {
+        extension: '居留期限延长', registration: '外国人登录', visa_issuance: '签证签发',
+        change_of_status: '居留资格变更', status_grant: '居留资格赋予',
+        reentry: '再入境', workplace_change_or_addition: '工作单位变更·追加',
+        activity_outside_status: '居留资格外活动', reporting_duty: '申报义务', other: ''
+    };
     const cards = entries.map(e => {
-        const proc = (en ? PROC_EN[e.procedureType] : PROC_KO[e.procedureType]) || e.procedureType || '';
+        const proc = (zh ? PROC_ZH[e.procedureType] : en ? PROC_EN[e.procedureType] : PROC_KO[e.procedureType]) || e.procedureType || '';
         const cov = Array.isArray(e.subCodesCovered) && e.subCodesCovered.length
             ? e.subCodesCovered.join(', ') : (e.subCode || '');
         const scope = cov ? ` <span class="manual-subcode-code">${escapeHtml(cov)}</span>` : '';
@@ -19465,8 +19535,8 @@ function renderSourceConfirmedRequirements(v) {
         </div>`;
     }).join('');
     return `<div class="manual-section">
-        <h4 class="manual-section-title">${en ? 'Source-confirmed manual requirements' : '출처 확인된 매뉴얼 요건 (Source-confirmed manual requirements)'}</h4>
-        <p class="manual-subcode-desc">${en ? 'Items verified directly against the relevant pages of the official 2026.6 manual. Limited to the sub-codes and procedure scope shown.' : '2026.6 공식 매뉴얼에서 해당 페이지를 직접 확인한 항목입니다. 표시된 세부약호·절차 범위에 한합니다.'}</p>
+        <h4 class="manual-section-title">${zh ? '已核实出处的手册要件' : en ? 'Source-confirmed manual requirements' : '출처 확인된 매뉴얼 요건 (Source-confirmed manual requirements)'}</h4>
+        <p class="manual-subcode-desc">${zh ? '已对照 2026.6 官方手册相关页面直接核实的项目。仅限于所显示的细分约号·程序范围。' : en ? 'Items verified directly against the relevant pages of the official 2026.6 manual. Limited to the sub-codes and procedure scope shown.' : '2026.6 공식 매뉴얼에서 해당 페이지를 직접 확인한 항목입니다. 표시된 세부약호·절차 범위에 한합니다.'}</p>
         <div class="manual-subcode-grid">${cards}</div>
     </div>`;
 }
@@ -19537,6 +19607,7 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     if (!subs.length) return '';
     opts = opts || {};
     const en = currentLanguage === 'en';
+    const zh = currentLanguage === 'zh-CN';
     const matchSet = new Set((matchingSubcodes || []).map(s => s.code));
     const visaCode = v.code || '';
     const cardId = (s) => `subcode-${normalizeVisaCode(visaCode)}-${normalizeVisaCode(s.code)}`;
@@ -19549,7 +19620,7 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         const inactive = s.status && s.status !== 'active';
         const cleanStatusNote = paradisoStripInternalReviewArtifacts(s.statusNote);
         const statusNote = inactive && cleanStatusNote ? `<div class="manual-subcode-status">${escapeHtml(cleanStatusNote)}</div>` : '';
-        const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="${en ? 'Sub-code possibly relevant to your situation' : '내 상황과 관련 가능성 있는 세부코드'}">${en ? 'May apply' : '관련 가능'}</span>` : '';
+        const matchBadge = matchSet.has(s.code) ? `<span class="subcode-match-badge" aria-label="${zh ? '可能与您情况相关的细分代码' : en ? 'Sub-code possibly relevant to your situation' : '내 상황과 관련 가능성 있는 세부코드'}">${zh ? '可能相关' : en ? 'May apply' : '관련 가능'}</span>` : '';
         return `<div id="${cardId(s)}" class="manual-subcode-card manual-subcode-card--interactive${matchSet.has(s.code) ? ' match' : ''}${inactive ? ' is-inactive' : ''}" role="button" tabindex="0" data-action="open-subcode-detail" data-parent="${escapeHtml(visaCode)}" data-subcode="${escapeHtml(s.code)}" aria-label="${escapeHtml(tx('subcodeModalOpenAria', { code: s.code }))}">
             <div class="manual-subcode-top"><span class="manual-subcode-code">${hl(s.code, keywords)}</span><span class="manual-subcode-name">${hl(label, keywords)}</span>${subcodeSourceChip(s)}${matchBadge}<span class="manual-subcode-go" aria-hidden="true">›</span></div>
             <div class="manual-subcode-desc">${hl(desc, keywords)}</div>${statusNote}
@@ -19597,8 +19668,8 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
     const rest = matched.length ? subs.filter(s => !matchSet.has(s.code)) : subs;
     let matchedHtml = '';
     if (matched.length) {
-        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">${en ? 'Related to your situation' : '내 상황과 관련'}</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
-        if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">${en ? 'All sub-codes' : '전체 세부코드'}</div>`;
+        matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">${zh ? '与您情况相关' : en ? 'Related to your situation' : '내 상황과 관련'}</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
+        if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">${zh ? '全部细分代码' : en ? 'All sub-codes' : '전체 세부코드'}</div>`;
     }
     const restHtml = rest.length
         ? renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)
@@ -20602,7 +20673,7 @@ function renderResults(query){
     }
     let st=0; filtered.forEach(v=>{st += getVisaSubcodes(v).length;});
     if(!filtered.length){
-        box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">${currentLanguage === 'en' ? '← Back to start' : '← 처음으로 돌아가기'}</button></div>`;
+        box.innerHTML=`<div class="es"><div class="es-t">${escapeHtml(tx('resultEmptyTitle'))}</div><div class="es-d">${tx('resultEmptyDesc', { query: escapeHtml(query) })}</div><button type="button" class="cb" style="margin-top:1rem;" data-action="reset-to-landing">${currentLanguage === 'zh-CN' ? '← 返回开始' : currentLanguage === 'en' ? '← Back to start' : '← 처음으로 돌아가기'}</button></div>`;
         rc.textContent=tx('resultCount', { count: 0 });
         renderCompactResults([], kw);
         document.dispatchEvent(new CustomEvent('paradiso:results-rendered', { detail: { query: rawQuery, primaryCode: primaryCodeQuery, codes: [] } }));
@@ -20724,7 +20795,7 @@ let currentLanguage = 'ko';
 // surfaces; every other selectable language is treated as `partial` (some text
 // still falls back to Korean). Drives the partial-language notice + selector
 // badge so users are told transparently rather than silently shown Korean.
-const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'preparing' };
+const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full' };
 function languageSupportLevel(code) {
     const normalized = normalizeLocaleCode(code);
     const level = LANGUAGE_SUPPORT[normalized];
@@ -22199,33 +22270,34 @@ function startPreEntryTrack() {
   const dynamicEl = document.getElementById('visaManualDynamic');
   if (!dynamicEl) return;
   const en = currentLanguage === 'en';
+  const zh = currentLanguage === 'zh-CN';
 
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <h3>${en ? 'Before entry — consular visa issuance' : '입국 전 — 재외공관 사증(비자) 신청'}</h3>
-        <p>${en ? 'Choose your purpose for coming to Korea. We will suggest matching residence statuses.' : '한국에 오시는 목적을 선택하세요. 맞춤형 체류자격을 추천해 드립니다.'}</p>
+        <h3>${zh ? '入境前 — 驻外公馆签证申请' : en ? 'Before entry — consular visa issuance' : '입국 전 — 재외공관 사증(비자) 신청'}</h3>
+        <p>${zh ? '请选择您来韩国的目的，我们会为您推荐匹配的居留资格。' : en ? 'Choose your purpose for coming to Korea. We will suggest matching residence statuses.' : '한국에 오시는 목적을 선택하세요. 맞춤형 체류자격을 추천해 드립니다.'}</p>
       </div>
       <div class="visa-purpose-grid">
         <div class="visa-purpose-card" onclick="showVisaRecommendations('study')">
           <div class="visa-purpose-icon">📚</div>
-          <div>${en ? 'Study & training' : '유학·연수'}</div>
-          <div class="visa-purpose-hint">${en ? 'University, language study, professional training' : '대학, 어학연수, 전문교육'}</div>
+          <div>${zh ? '留学·研修' : en ? 'Study & training' : '유학·연수'}</div>
+          <div class="visa-purpose-hint">${zh ? '大学、语言研修、专业教育' : en ? 'University, language study, professional training' : '대학, 어학연수, 전문교육'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('work')">
           <div class="visa-purpose-icon">💼</div>
-          <div>${en ? 'Work & business' : '취업·사업'}</div>
-          <div class="visa-purpose-hint">${en ? 'Professionals, general employment, investment' : '전문직, 일반 취업, 투자'}</div>
+          <div>${zh ? '就业·事业' : en ? 'Work & business' : '취업·사업'}</div>
+          <div class="visa-purpose-hint">${zh ? '专业职、一般就业、投资' : en ? 'Professionals, general employment, investment' : '전문직, 일반 취업, 투자'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('family')">
           <div class="visa-purpose-icon">👨‍👩‍👧‍👦</div>
-          <div>${en ? 'Family & marriage' : '가족·결혼'}</div>
-          <div class="visa-purpose-hint">${en ? 'Accompanying family, marriage migration, permanent residence' : '동반, 결혼이민, 영주'}</div>
+          <div>${zh ? '家庭·婚姻' : en ? 'Family & marriage' : '가족·결혼'}</div>
+          <div class="visa-purpose-hint">${zh ? '随行、婚姻移民、永住' : en ? 'Accompanying family, marriage migration, permanent residence' : '동반, 결혼이민, 영주'}</div>
         </div>
         <div class="visa-purpose-card" onclick="showVisaRecommendations('visit')">
           <div class="visa-purpose-icon">✈️</div>
-          <div>${en ? 'Visit & tourism' : '방문·관광'}</div>
-          <div class="visa-purpose-hint">${en ? 'Short visits, visiting relatives' : '단기 방문, 친지 방문'}</div>
+          <div>${zh ? '访问·旅游' : en ? 'Visit & tourism' : '방문·관광'}</div>
+          <div class="visa-purpose-hint">${zh ? '短期访问、探亲' : en ? 'Short visits, visiting relatives' : '단기 방문, 친지 방문'}</div>
         </div>
       </div>
     </div>`;
@@ -22238,33 +22310,34 @@ function startInKoreaTrack() {
   const dynamicEl = document.getElementById('visaManualDynamic');
   if (!dynamicEl) return;
   const en = currentLanguage === 'en';
+  const zh = currentLanguage === 'zh-CN';
 
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <h3>${en ? 'After entry — in-Korea residence services' : '입국 후 — 국내 체류 민원 절차'}</h3>
-        <p>${en ? 'Choose the procedure you need.' : '필요하신 절차를 선택하세요.'}</p>
+        <h3>${zh ? '入境后 — 国内居留民愿程序' : en ? 'After entry — in-Korea residence services' : '입국 후 — 국내 체류 민원 절차'}</h3>
+        <p>${zh ? '请选择您需要的程序。' : en ? 'Choose the procedure you need.' : '필요하신 절차를 선택하세요.'}</p>
       </div>
       <div class="visa-purpose-grid">
         <div class="visa-purpose-card" onclick="selectInKoreaAction('register')">
           <div class="visa-purpose-icon">📝</div>
-          <div>${en ? 'Foreigner registration' : '외국인등록'}</div>
-          <div class="visa-purpose-hint">${en ? 'Within 90 days of entry' : '입국 후 90일 이내'}</div>
+          <div>${zh ? '外国人登录' : en ? 'Foreigner registration' : '외국인등록'}</div>
+          <div class="visa-purpose-hint">${zh ? '入境后 90 天以内' : en ? 'Within 90 days of entry' : '입국 후 90일 이내'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('extend')">
           <div class="visa-purpose-icon">⏳</div>
-          <div>${en ? 'Extension of stay' : '체류기간 연장'}</div>
-          <div class="visa-purpose-hint">${en ? 'Apply before expiry' : '만료일 전 신청'}</div>
+          <div>${zh ? '居留期限延长' : en ? 'Extension of stay' : '체류기간 연장'}</div>
+          <div class="visa-purpose-hint">${zh ? '到期日前申请' : en ? 'Apply before expiry' : '만료일 전 신청'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('change')">
           <div class="visa-purpose-icon">🔄</div>
-          <div>${en ? 'Change of status' : '체류자격 변경'}</div>
-          <div class="visa-purpose-hint">${en ? 'Switch to another status' : '다른 자격으로 전환'}</div>
+          <div>${zh ? '居留资格变更' : en ? 'Change of status' : '체류자격 변경'}</div>
+          <div class="visa-purpose-hint">${zh ? '转为其他资格' : en ? 'Switch to another status' : '다른 자격으로 전환'}</div>
         </div>
         <div class="visa-purpose-card" onclick="selectInKoreaAction('workplace')">
           <div class="visa-purpose-icon">🏢</div>
-          <div>${en ? 'Change/add workplace' : '근무처 변경·추가'}</div>
-          <div class="visa-purpose-hint">${en ? 'For work-status holders' : '취업 자격 소지자'}</div>
+          <div>${zh ? '工作单位变更·追加' : en ? 'Change/add workplace' : '근무처 변경·추가'}</div>
+          <div class="visa-purpose-hint">${zh ? '持就业资格者' : en ? 'For work-status holders' : '취업 자격 소지자'}</div>
         </div>
       </div>
     </div>`;
@@ -22291,6 +22364,12 @@ const ACTION_CAT_LABELS_EN = {
   family: '👨‍👩‍👧‍👦 Family & migration',
   visit:  '✈️ Short stay / other'
 };
+const ACTION_CAT_LABELS_ZH = {
+  study:  '📚 留学·研修',
+  work:   '💼 就业·专业职 / 投资·经营',
+  family: '👨‍👩‍👧‍👦 家庭·移民',
+  visit:  '✈️ 短期居留 / 其他'
+};
 const DOC_MODAL_ACTION_MAP = { register: 'new', extend: 'ext' };
 let _currentInKoreaAction = 'extend';
 
@@ -22300,6 +22379,7 @@ function showVisaRecommendations(purpose) {
   if (!dynamicEl || !dataReady) return;
 
   const en = currentLanguage === 'en';
+  const zh = currentLanguage === 'zh-CN';
   const targetCats  = PURPOSE_TO_CAT[purpose] || [];
   const SKIP_CATS   = ['faq', 'scn', 'nhis'];
   const matchedVisas = VISA_DATA.filter(v => targetCats.includes(v.cat) && !SKIP_CATS.includes(v.cat));
@@ -22308,15 +22388,15 @@ function showVisaRecommendations(purpose) {
     dynamicEl.innerHTML = `
       <div class="visa-step-container">
         <div class="visa-step-header">
-          <h3>${en ? 'No residence status matches this purpose.' : '해당 목적에 맞는 체류자격이 없습니다.'}</h3>
-          <p>${en ? 'Try the search box instead.' : '검색창을 이용해 보세요.'}</p>
+          <h3>${zh ? '没有符合该目的的居留资格。' : en ? 'No residence status matches this purpose.' : '해당 목적에 맞는 체류자격이 없습니다.'}</h3>
+          <p>${zh ? '请改用搜索框查找。' : en ? 'Try the search box instead.' : '검색창을 이용해 보세요.'}</p>
         </div>
       </div>`;
     return;
   }
 
-  const label = (en ? ACTION_CAT_LABELS_EN[purpose] : ACTION_CAT_LABELS[purpose]) || (en ? 'Suggested' : '추천');
-  const countLabel = en ? `${label} statuses (${matchedVisas.length})` : `${label} 체류자격 (${matchedVisas.length}건)`;
+  const label = (zh ? ACTION_CAT_LABELS_ZH[purpose] : en ? ACTION_CAT_LABELS_EN[purpose] : ACTION_CAT_LABELS[purpose]) || (zh ? '推荐' : en ? 'Suggested' : '추천');
+  const countLabel = zh ? `${label} 居留资格（${matchedVisas.length} 项）` : en ? `${label} statuses (${matchedVisas.length})` : `${label} 체류자격 (${matchedVisas.length}건)`;
   const cardsHtml = matchedVisas.map(v => `
     <div class="visa-result-card">
       <div class="visa-result-header">
@@ -22324,10 +22404,10 @@ function showVisaRecommendations(purpose) {
         <span class="vt">${escapeHtml(getLocalizedVisaName(v) || v.name)}</span>
         ${v.period ? `<span class="bp">${escapeHtml(v.period)}</span>` : ''}
       </div>
-      <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || (en ? 'Check the detailed information.' : '상세 정보를 확인하세요.'))}</p>
+      <p class="visa-result-desc">${escapeHtml(makeManualPreview(v.newReq, 100) || (zh ? '请查看详细信息。' : en ? 'Check the detailed information.' : '상세 정보를 확인하세요.'))}</p>
       <div class="visa-result-actions">
-        <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">${en ? '📝 New issuance documents' : '📝 신규 발급 서류'}</button>
-        <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">${en ? '✨ AI analysis' : '✨ AI 분석'}</button>
+        <button class="visa-track-btn" onclick="openDocModal('${escapeHtml(v.code)}', 'new')">${zh ? '📝 新申请发放材料' : en ? '📝 New issuance documents' : '📝 신규 발급 서류'}</button>
+        <button class="visa-track-btn visa-track-btn-secondary" onclick="openAiModal('${escapeHtml(v.code)}')">${zh ? '✨ AI 分析' : en ? '✨ AI analysis' : '✨ AI 분석'}</button>
       </div>
     </div>`).join('');
 
@@ -22335,8 +22415,8 @@ function showVisaRecommendations(purpose) {
     <div class="visa-step-container">
       <div class="visa-step-header">
         <h3>${countLabel}</h3>
-        <p>${en ? 'Choose the residence status that best fits your situation.' : '본인의 상황과 가장 일치하는 체류자격을 선택하세요.'}</p>
-        <button class="cb" style="margin-top:0.8rem;" onclick="startPreEntryTrack()">${en ? '← Choose purpose again' : '← 목적 다시 선택'}</button>
+        <p>${zh ? '请选择与您情况最匹配的居留资格。' : en ? 'Choose the residence status that best fits your situation.' : '본인의 상황과 가장 일치하는 체류자격을 선택하세요.'}</p>
+        <button class="cb" style="margin-top:0.8rem;" onclick="startPreEntryTrack()">${zh ? '← 重新选择目的' : en ? '← Choose purpose again' : '← 목적 다시 선택'}</button>
       </div>
       <div class="visa-results-grid">${cardsHtml}</div>
     </div>`;
@@ -22351,37 +22431,38 @@ function selectInKoreaAction(actionType) {
   _currentInKoreaAction = actionType;
 
   const en = currentLanguage === 'en';
-  const hikoreaReqBtn = `<a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${en ? 'Check official requirements on HiKorea' : 'HiKorea에서 공식 요건 확인'}</a>`;
-  const docsVaryNote = `<p class="text-desc" style="margin-top:0.8rem;">${en ? 'The exact documents required can vary by residence status and personal circumstances. Check the latest guidance on HiKorea or at your competent immigration office.' : '구체적인 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다. HiKorea 또는 관할 출입국·외국인청에서 최신 안내를 확인하세요.'}</p>`;
+  const zh = currentLanguage === 'zh-CN';
+  const hikoreaReqBtn = `<a class="doc-trigger-btn" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">${zh ? '在 HiKorea 确认官方要件' : en ? 'Check official requirements on HiKorea' : 'HiKorea에서 공식 요건 확인'}</a>`;
+  const docsVaryNote = `<p class="text-desc" style="margin-top:0.8rem;">${zh ? '具体的提交材料可能因居留资格和个人情况而异。请在 HiKorea 或管辖出入境·外国人厅确认最新指引。' : en ? 'The exact documents required can vary by residence status and personal circumstances. Check the latest guidance on HiKorea or at your competent immigration office.' : '구체적인 제출서류는 체류자격과 개인 상황에 따라 달라질 수 있습니다. HiKorea 또는 관할 출입국·외국인청에서 최신 안내를 확인하세요.'}</p>`;
   const CONFIG = {
     register: {
-      title: en ? '📝 Foreigner registration' : '📝 외국인등록',
-      desc:   en ? 'You must register as a foreigner at the immigration office for your area of residence within 90 days of entry.' : '입국 후 90일 이내에 체류지 관할 출입국·외국인청에서 외국인등록을 해야 합니다.',
+      title: zh ? '📝 外国人登录' : en ? '📝 Foreigner registration' : '📝 외국인등록',
+      desc:   zh ? '入境后 90 天以内，须在居留地管辖的出入境·外国人厅办理外国人登录。' : en ? 'You must register as a foreigner at the immigration office for your area of residence within 90 days of entry.' : '입국 후 90일 이내에 체류지 관할 출입국·외국인청에서 외국인등록을 해야 합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ✅ <strong>${en ? 'Notice:' : '안내:'}</strong> ${en ? 'As a rule, foreigner registration must be applied for within 90 days of entry.' : '외국인등록은 입국 후 90일 이내 신청이 원칙입니다.'}
+                 ✅ <strong>${zh ? '提示：' : en ? 'Notice:' : '안내:'}</strong> ${zh ? '外国人登录原则上须在入境后 90 天以内申请。' : en ? 'As a rule, foreigner registration must be applied for within 90 days of entry.' : '외국인등록은 입국 후 90일 이내 신청이 원칙입니다.'}
                </div>
                ${docsVaryNote}
                ${hikoreaReqBtn}`
     },
     extend: {
-      title: en ? '⏳ Extension of stay' : '⏳ 체류기간 연장',
-      desc:   en ? 'You must complete the extension application before your period of stay expires.' : '체류기간 만료일 전까지 연장 신청을 완료해야 합니다.',
+      title: zh ? '⏳ 居留期限延长' : en ? '⏳ Extension of stay' : '⏳ 체류기간 연장',
+      desc:   zh ? '须在居留期限到期日之前完成延长申请。' : en ? 'You must complete the extension application before your period of stay expires.' : '체류기간 만료일 전까지 연장 신청을 완료해야 합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Applying on or after the expiry date may be treated as illegal stay.' : '만료 당일·이후 신청 시 불법체류로 간주될 수 있습니다.'}
+                 ⚠️ <strong>${zh ? '注意：' : en ? 'Caution:' : '주의:'}</strong> ${zh ? '在到期当日或之后申请，可能被视为非法滞留。' : en ? 'Applying on or after the expiry date may be treated as illegal stay.' : '만료 당일·이후 신청 시 불법체류로 간주될 수 있습니다.'}
                </div>`
     },
     change: {
-      title: en ? '🔄 Change of status' : '🔄 체류자격 변경',
-      desc:   en ? 'Changing from your current status of stay to a different one requires prior permission.' : '현재 체류자격에서 다른 체류자격으로 변경하려면 사전 허가가 필요합니다.',
+      title: zh ? '🔄 居留资格变更' : en ? '🔄 Change of status' : '🔄 체류자격 변경',
+      desc:   zh ? '从当前居留资格变更为其他居留资格，须事先取得许可。' : en ? 'Changing from your current status of stay to a different one requires prior permission.' : '현재 체류자격에서 다른 체류자격으로 변경하려면 사전 허가가 필요합니다.',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Whether a change of status is possible depends on your current status, the purpose of the change, and the review of your submitted documents.' : '체류자격 변경 가능 여부는 현재 자격, 변경 목적, 제출서류 심사 결과에 따라 달라질 수 있습니다.'}
+                 ⚠️ <strong>${zh ? '注意：' : en ? 'Caution:' : '주의:'}</strong> ${zh ? '能否变更居留资格，取决于当前资格、变更目的及提交材料的审查结果。' : en ? 'Whether a change of status is possible depends on your current status, the purpose of the change, and the review of your submitted documents.' : '체류자격 변경 가능 여부는 현재 자격, 변경 목적, 제출서류 심사 결과에 따라 달라질 수 있습니다.'}
                </div>`
     },
     workplace: {
-      title: en ? '🏢 Change/add workplace' : '🏢 근무처 변경·추가',
-      desc:   en ? 'In principle you must obtain prior permission to change or add a workplace; persons holding professional knowledge, skills, or expertise as prescribed by law may instead report within 15 days of the change/addition (Immigration Act Article 21).' : '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
+      title: zh ? '🏢 工作单位变更·追加' : en ? '🏢 Change/add workplace' : '🏢 근무처 변경·추가',
+      desc:   zh ? '变更·追加工作单位，原则上须事先取得许可；持有法令所定专业知识·技术·技能者，可改以变更·追加之日起 15 日内的申报代替（出入境管理法第 21 条）。' : en ? 'In principle you must obtain prior permission to change or add a workplace; persons holding professional knowledge, skills, or expertise as prescribed by law may instead report within 15 days of the change/addition (Immigration Act Article 21).' : '근무처를 변경·추가하려면 원칙적으로 사전에 허가를 받아야 하며, 전문 지식·기술·기능 보유자로서 법령이 정하는 사람은 변경·추가한 날부터 15일 이내 신고로 갈음합니다(출입국관리법 제21조).',
       extra:  `<div class="subcode-warning" style="margin-top:0.8rem;">
-                 ⚠️ <strong>${en ? 'Caution:' : '주의:'}</strong> ${en ? 'Workplace changes may require either a report or permission depending on the residence status.' : '근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.'}
+                 ⚠️ <strong>${zh ? '注意：' : en ? 'Caution:' : '주의:'}</strong> ${zh ? '工作单位变更可能因居留资格不同而采取申报或许可的不同类型。' : en ? 'Workplace changes may require either a report or permission depending on the residence status.' : '근무처 변경은 체류자격별로 신고/허가 유형이 다를 수 있습니다.'}
                </div>
                ${docsVaryNote}
                ${hikoreaReqBtn}`
@@ -22393,19 +22474,19 @@ function selectInKoreaAction(actionType) {
   dynamicEl.innerHTML = `
     <div class="visa-step-container">
       <div class="visa-step-header">
-        <button class="cb" style="margin-bottom:0.8rem;" onclick="startInKoreaTrack()">${en ? '← Choose procedure again' : '← 절차 다시 선택'}</button>
+        <button class="cb" style="margin-bottom:0.8rem;" onclick="startInKoreaTrack()">${zh ? '← 重新选择程序' : en ? '← Choose procedure again' : '← 절차 다시 선택'}</button>
         <h3>${title}</h3>
         <p>${desc}</p>
       </div>
       ${extra}
       <div class="visa-search-box" style="margin-top:1.5rem;">
-        <h4 style="font-size:1rem; font-weight:700; color:var(--t1); margin-bottom:0.5rem;">${en ? '🔍 Search your residence status' : '🔍 본인의 체류자격 검색'}</h4>
-        <p style="font-size:0.85rem; color:var(--t3); margin-bottom:1rem;">${en ? 'Enter your current residence status code or name.' : '현재 체류자격 코드 또는 이름을 입력하세요.'}</p>
+        <h4 style="font-size:1rem; font-weight:700; color:var(--t1); margin-bottom:0.5rem;">${zh ? '🔍 搜索您的居留资格' : en ? '🔍 Search your residence status' : '🔍 본인의 체류자격 검색'}</h4>
+        <p style="font-size:0.85rem; color:var(--t3); margin-bottom:1rem;">${zh ? '请输入当前居留资格代码或名称。' : en ? 'Enter your current residence status code or name.' : '현재 체류자격 코드 또는 이름을 입력하세요.'}</p>
         <div style="display:flex; gap:0.5rem;">
           <input type="search" id="inKoreaVisaSearch" class="jc-search-input"
-            style="flex:1; min-width:200px; margin-bottom:0;" placeholder="${en ? 'e.g. F-6, E-9, D-2' : '예: F-6, E-9, D-2'}"
+            style="flex:1; min-width:200px; margin-bottom:0;" placeholder="${zh ? '例：F-6, E-9, D-2' : en ? 'e.g. F-6, E-9, D-2' : '예: F-6, E-9, D-2'}"
             onkeyup="filterInKoreaVisaList(this.value)">
-          <button class="visa-track-btn" style="width:auto;" onclick="searchInKoreaVisa()">${en ? 'Search' : '검색'}</button>
+          <button class="visa-track-btn" style="width:auto;" onclick="searchInKoreaVisa()">${zh ? '搜索' : en ? 'Search' : '검색'}</button>
         </div>
         <div id="inKoreaVisaList" class="visa-results-grid" style="margin-top:1rem;"></div>
       </div>
@@ -22421,7 +22502,8 @@ function filterInKoreaVisaList(query) {
   const listEl = document.getElementById('inKoreaVisaList');
   if (!listEl) return;
   const en = currentLanguage === 'en';
-  if (!query || !query.trim()) { listEl.innerHTML = `<p style="font-size:0.85rem;color:var(--t3);padding:0.5rem 0;">${en ? 'Enter a code or name to see the list.' : '코드 또는 이름을 입력하면 목록이 표시됩니다.'}</p>`; return; }
+  const zh = currentLanguage === 'zh-CN';
+  if (!query || !query.trim()) { listEl.innerHTML = `<p style="font-size:0.85rem;color:var(--t3);padding:0.5rem 0;">${zh ? '输入代码或名称即可显示列表。' : en ? 'Enter a code or name to see the list.' : '코드 또는 이름을 입력하면 목록이 표시됩니다.'}</p>`; return; }
 
   const q      = query.toLowerCase().trim();
   const SKIP   = ['faq', 'scn', 'nhis'];
