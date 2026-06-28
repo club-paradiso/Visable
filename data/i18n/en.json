@@ -160,15 +160,27 @@
     "Stay procedures manual",
     "Visa procedures manual",
     "Related statutes & forms",
-    "HiKorea · 1345 confirmation"
+    "HiKorea",
+    "Korea Visa Portal",
+    "Immigration Contact Center 1345"
+  ],
+  "manualCardKinds": [
+    "Central manual · 2026-06-23",
+    "Central manual · 2026-06-17",
+    "Law · Korean Law Information Center",
+    "Central government portal",
+    "Central government portal",
+    "Official contact channel"
   ],
   "manualCardDescs": [
     "The public manual for residence procedures: foreigner registration, stay extension, status change, and more.",
     "The public manual for visa procedures at Korean missions abroad.",
     "Cross-checked against the Immigration Act, Enforcement Decree, Enforcement Rules, and public forms.",
-    "Confirm final decisions with HiKorea, 1345, or the competent immigration office."
+    "Use HiKorea for post-entry stay guidance, e-petitions, and visit reservations.",
+    "Check pre-entry visa categories, eligible e-application routes, and application status on the official portal.",
+    "Use the official multilingual contact center for immigration/stay questions and competent-authority routing."
   ],
-  "manualNote": "The manual links above point to the latest versions HiKorea has published (visa issuance 2026-06-17, foreigner stay 2026-06-23 guidance manuals). The structured guidance on screen has had its sources refreshed from the readable June 2026 official PDF extracts; detailed required documents and procedures may vary according to the competent authority’s guidance. Paradiso is not an official government service, and the information provided is for reference only.",
+  "manualNote": "The manual links above point to the latest versions HiKorea has published (visa issuance 2026-06-17 and foreigner stay 2026-06-23). The structured guidance uses readable June 2026 official PDF extracts. Extra documents and submission methods can differ by diplomatic mission, so check the notice from your competent Korean mission before applying. Paradiso is an independent reference service and is not affiliated with the Ministry of Justice, HiKorea, the Korea Visa Portal, or any overseas mission.",
   "toolsTitle": "Useful tools stay close to the workflow.",
   "toolsCopy": "Implemented tools connect to the existing modals and search. Features still in preparation are marked as planned.",
   "toolCards": [

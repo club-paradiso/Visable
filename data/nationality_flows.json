@@ -24,9 +24,9 @@
   ],
 
   "readiness": {
-    "title": { "ko": "귀화 가능성 진단", "en": "Naturalization Readiness Check" },
+    "title": { "ko": "귀화 준비 점검", "en": "Naturalization Readiness Check" },
     "intro": {
-      "ko": "여덟 개의 질문에 한 번에 하나씩 답하면, 어떤 귀화 경로를 검토할 수 있는지 방향을 정리해 드립니다. 이 진단은 허가 여부를 결정하지 않으며, 입력하신 정보 기준의 참고 안내입니다.",
+      "ko": "여덟 개의 질문에 한 번에 하나씩 답하면, 어떤 귀화 경로를 검토할 수 있는지 방향을 정리해 드립니다. 이 준비 점검은 허가 여부를 결정하지 않으며, 입력하신 정보 기준의 참고 안내입니다.",
       "en": "Answer eight questions, one at a time, and we will organize which naturalization paths may be worth reviewing. This check does not decide approval — it is reference guidance based on what you enter."
     },
     "progressLabel": { "ko": "{current} / {total}", "en": "{current} / {total}" },
@@ -148,7 +148,7 @@
       "riskTax": { "ko": "세금·소득 증빙은 생계유지능력 확인과 관련될 수 있어 미리 점검이 필요합니다.", "en": "Tax/income evidence can relate to livelihood checks — review it in advance." },
       "riskCriminal": { "ko": "범죄·수사·행정처분 이력은 품행 관련 심사와 연결될 수 있어 사전 확인이 중요합니다.", "en": "Criminal/investigation/administrative history can relate to conduct review — check it in advance." },
       "riskComplexFamily": { "ko": "혼인·가족관계 증빙이 복잡한 경우 해외 서류 준비에 시간이 걸릴 수 있습니다.", "en": "Complex marriage/family evidence (esp. overseas documents) can take time to prepare." },
-      "limited": { "ko": "입력하신 정보만으로는 방향을 충분히 좁히기 어렵습니다. 체류자격·거주기간·가족관계를 확인한 뒤 다시 진단하거나, Waymaker 국적 상담 모드를 이용해 보세요.", "en": "The information entered isn't enough to narrow a direction. Confirm your status, residence period, and family ties, then run the check again, or try Waymaker in nationality mode." }
+      "limited": { "ko": "입력하신 정보만으로는 방향을 충분히 좁히기 어렵습니다. 체류자격·거주기간·가족관계를 확인한 뒤 다시 점검하거나, Waymaker 국적 상담 모드를 이용해 보세요.", "en": "The information entered isn't enough to narrow a direction. Confirm your status, residence period, and family ties, then run the check again, or try Waymaker in nationality mode." }
     }
   },
 

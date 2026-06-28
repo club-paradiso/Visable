@@ -2,7 +2,7 @@
   "_meta": {
     "schemaVersion": "2.0",
     "title": "Paradiso: New Home — nationality path catalog",
-    "generatedAt": "2026-06-16",
+    "generatedAt": "2026-06-28",
     "purpose": "Catalog of nationality/naturalization path types referenced by the readiness check and path finder wizards and by the Nationality Center.",
     "note": "Cautious and category-level by design. keyChecks and evidence groups describe WHAT to confirm and WHERE, not specific statutory thresholds, document lists, fees, or outcomes. Specifics must be confirmed against the cited official sources (국적법령·법무부·하이코리아).",
     "verificationStatus": "structure + orientation only — specific legal requirements not asserted; see sourceIds and confirm officially."
@@ -21,12 +21,12 @@
       "whoKo": "장기 거주 중이며 영주(F-5) 등 안정적 체류 기반을 갖추어 가는 분.",
       "whoEn": "People in long-term residence who are building a stable basis such as F-5.",
       "keyChecks": {
-        "ko": ["법정 거주 기간 요건 충족 여부", "영주자격 등 체류 기반", "생계 유지 능력", "사회통합프로그램(KIIP) 이수 또는 종합평가", "품행 등 결격사유 해당 여부"],
-        "en": ["Whether the statutory residence period is met", "Residence basis such as F-5", "Capacity to maintain livelihood", "KIIP completion or the comprehensive assessment", "Whether any disqualifying conduct applies"]
+        "ko": ["법정 거주 기간 요건 충족 여부", "영주자격 등 체류 기반", "생계 유지 능력", "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지", "품행 등 결격사유 해당 여부"],
+        "en": ["Whether the statutory residence period is met", "Residence basis such as F-5", "Capacity to maintain livelihood", "How KIIP/evaluation history is treated in this procedure", "Whether any disqualifying conduct applies"]
       },
       "requiredEvidenceGroups": {
-        "ko": ["신원·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "사회통합프로그램/평가 이수 증명", "품행 관련 확인 자료"],
-        "en": ["Identity & family-relation proof", "Proof of residence/stay in Korea", "Proof related to livelihood", "KIIP/assessment completion proof", "Conduct-related confirmation"]
+        "ko": ["신원·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "해당하는 경우 KIIP·평가 관련 자료", "품행 관련 확인 자료"],
+        "en": ["Identity & family-relation proof", "Proof of residence/stay in Korea", "Proof related to livelihood", "KIIP/evaluation records, if relevant", "Conduct-related confirmation"]
       },
       "riskFlags": {
         "ko": ["장기출국·체류 공백", "세금·소득 증빙 어려움", "범죄·수사·행정처분 이력"],
@@ -52,12 +52,12 @@
       "whoKo": "한국 국민 배우자와 혼인 관계에 있거나, 이혼·사별 등 변동이 있는 분.",
       "whoEn": "People married to a Korean citizen, or who have had changes such as divorce or bereavement.",
       "keyChecks": {
-        "ko": ["혼인·거주 관련 기간 요건", "혼인의 진정성·유지 상태", "생계 유지 능력", "사회통합프로그램(KIIP) 또는 평가", "이혼·사별·자녀 양육 등 예외 상황 해당 여부"],
-        "en": ["Marriage/residence period requirements", "Genuineness and status of the marriage", "Capacity to maintain livelihood", "KIIP or the assessment", "Exceptional situations such as divorce, bereavement, or child-rearing"]
+        "ko": ["혼인·거주 관련 기간 요건", "혼인의 진정성·유지 상태", "생계 유지 능력", "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지", "이혼·사별·자녀 양육 등 예외 상황 해당 여부"],
+        "en": ["Marriage/residence period requirements", "Genuineness and status of the marriage", "Capacity to maintain livelihood", "How KIIP/evaluation history is treated in this procedure", "Exceptional situations such as divorce, bereavement, or child-rearing"]
       },
       "requiredEvidenceGroups": {
-        "ko": ["혼인·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "사회통합프로그램/평가 이수 증명"],
-        "en": ["Marriage & family-relation proof", "Proof of residence/stay", "Proof related to livelihood", "KIIP/assessment completion proof"]
+        "ko": ["혼인·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "해당하는 경우 KIIP·평가 관련 자료"],
+        "en": ["Marriage & family-relation proof", "Proof of residence/stay", "Proof related to livelihood", "KIIP/evaluation records, if relevant"]
       },
       "riskFlags": {
         "ko": ["혼인관계 증빙이 복잡한 경우", "이혼·별거·사별 등 신분 변동", "체류 공백"],
@@ -225,6 +225,68 @@
       "sourceIds": ["law-nationality-act", "law-nationality-decree", "moj-nationality"],
       "cautionKo": "복수국적·서약·국적선택은 기한과 의무가 따를 수 있어 시기 확인이 중요합니다. 본인 사례는 관할기관 확인이 필요합니다.",
       "cautionEn": "Dual nationality, the pledge, and nationality choice can carry deadlines and duties — timing matters. Your case needs official confirmation."
+    },
+    {
+      "id": "loss",
+      "category": "loss",
+      "icon": "🪪",
+      "chip": "review",
+      "titleKo": "국적상실",
+      "titleEn": "Loss of Nationality",
+      "summaryKo": "외국국적 취득 등 국적상실과 관련된 사실관계와 신고·후속 절차를 확인하는 안내입니다. Paradiso는 상실 여부를 판정하지 않습니다.",
+      "summaryEn": "Orientation for checking facts, reporting, and follow-up related to loss of nationality, including after acquiring a foreign nationality. Paradiso does not determine whether loss occurred.",
+      "whoKo": "국적상실 여부나 관련 신고·후속 절차를 공식적으로 확인해야 하는 분.",
+      "whoEn": "People who need official confirmation about possible nationality loss, reporting, or follow-up.",
+      "keyChecks": {
+        "ko": ["국적 취득·변동 이력", "상실과 신고 절차의 구분", "가족관계·등록 관련 후속 확인", "본인 사실관계에 맞는 관할기관"],
+        "en": ["Nationality acquisition/change history", "The distinction between loss and reporting", "Family/registration follow-up", "The authority competent for your facts"]
+      },
+      "requiredEvidenceGroups": {
+        "ko": ["한국·외국 국적 취득 및 변동 관련 자료", "신원·가족관계 관련 자료"],
+        "en": ["Korean/foreign nationality acquisition and change records", "Identity and family-relation records"]
+      },
+      "riskFlags": {
+        "ko": ["국적상실 시점·사유를 단정하기 어려운 경우", "해외 기록 또는 가족관계 기록이 복잡한 경우"],
+        "en": ["Uncertainty about the timing or ground for loss", "Complex overseas or family records"]
+      },
+      "nextSteps": {
+        "ko": ["국적 변동 이력과 관련 자료 정리", "법무부 국적업무 안내에서 해당 업무 확인", "관할기관 또는 1345에서 확인 창구 문의"],
+        "en": ["Organize nationality-change records", "Find the relevant service on the MOJ nationality pages", "Ask the competent authority or 1345 where to confirm"]
+      },
+      "sourceIds": ["law-nationality-act", "minwon-moj", "moj-nationality", "immigration-1345"],
+      "cautionKo": "국적상실은 개인의 취득 시점·방식과 사실관계에 따라 달라질 수 있습니다. 신고 안내만으로 상실 여부를 추정하지 말고 관할기관에서 확인하세요.",
+      "cautionEn": "Loss can depend on the timing, method, and facts of nationality acquisition. Do not infer loss from reporting guidance alone; confirm with the competent authority."
+    },
+    {
+      "id": "renunciation",
+      "category": "renunciation",
+      "icon": "🔎",
+      "chip": "review",
+      "titleKo": "국적이탈",
+      "titleEn": "Renunciation of Nationality",
+      "summaryKo": "복수국적자가 대한민국 국적이탈 절차를 검토할 때 공식 법령과 국적업무 안내로 연결하는 경로입니다.",
+      "summaryEn": "A route to official law and nationality-service guidance for a multiple national considering renunciation of Korean nationality.",
+      "whoKo": "복수국적 상태에서 국적이탈의 절차·시기·관할을 확인하려는 분.",
+      "whoEn": "Multiple nationals checking the procedure, timing, and competent authority for renunciation.",
+      "keyChecks": {
+        "ko": ["복수국적 취득 경위", "해외 거주·신고 관할 관련 확인", "신청 가능 시기와 현재 법령", "병역 등 별도 의무와의 관계"],
+        "en": ["How multiple nationality was acquired", "Overseas residence and filing jurisdiction", "Applicable timing under current law", "Relationship to separate duties such as military service"]
+      },
+      "requiredEvidenceGroups": {
+        "ko": ["국적 취득·보유 관련 자료", "거주 및 가족관계 관련 자료", "관할기관이 안내하는 추가 자료"],
+        "en": ["Nationality acquisition/holding records", "Residence and family-relation records", "Additional records requested by the competent authority"]
+      },
+      "riskFlags": {
+        "ko": ["기간·거주·병역 관련 법적 판단이 필요한 경우", "현재 시행 법령과 향후 개정 내용을 혼동하는 경우"],
+        "en": ["Cases requiring legal judgment on timing, residence, or military service", "Confusing current law with a future amendment"]
+      },
+      "nextSteps": {
+        "ko": ["현재 시행 중인 국적법령 확인", "법무부 국적업무 안내에서 국적이탈 절차 확인", "재외공관 또는 관할기관에 본인 사례 문의"],
+        "en": ["Check the law currently in force", "Review the MOJ renunciation service page", "Ask the competent mission or authority about your case"]
+      },
+      "sourceIds": ["law-nationality-act", "law-nationality-decree", "minwon-moj", "moj-nationality", "immigration-1345"],
+      "cautionKo": "국적이탈은 시기·거주·병역 등 법적 쟁점이 결합될 수 있습니다. Paradiso는 가능 여부를 판정하지 않으며, 현재 시행 법령과 관할기관의 확인이 필요합니다.",
+      "cautionEn": "Renunciation can combine legal issues involving timing, residence, and military service. Paradiso does not determine availability; check the law currently in force and the competent authority."
     },
     {
       "id": "after",

@@ -38,6 +38,28 @@ test('New Home exposes a useful entry point and an accessible readiness dialog',
   expect(consoleErrors).toEqual([]);
 });
 
+test('New Home explains nationality and KIIP routes with scoped official sources', async ({ page }) => {
+  const consoleErrors = [];
+  page.on('console', (message) => {
+    if (message.type() === 'error') consoleErrors.push(message.text());
+  });
+
+  await page.goto('/new-home.html');
+  const pathIds = await page.evaluate(() => fetch('/data/nationality_paths.json').then((response) => response.json()).then((data) => data.paths.map((item) => item.id)));
+  expect(pathIds).toEqual(expect.arrayContaining(['general', 'marriage', 'family', 'special', 'restoration', 'determination', 'dual', 'loss', 'renunciation', 'after']));
+  await expect(page.locator('.nh-hub-item[data-id="loss"]')).toBeVisible();
+  await expect(page.locator('.nh-hub-item[data-id="renunciation"]')).toBeVisible();
+  await expect(page.locator('#kiip')).toContainText(/자동으로 보장하지 않습니다|do not automatically establish eligibility/);
+  await expect(page.locator('.nh-source-disclaimer')).toContainText(/제휴 또는 소속 관계가 없습니다|is not affiliated/);
+  await expect(page.locator('.nh-source-card')).toHaveCount(16);
+  await expect(page.locator('.nh-source-scope').first()).toBeVisible();
+  await expect(page.locator('.nh-source-meta').first()).toContainText(/확인일|Accessed/);
+  await expect(page.locator('.nh-source-link[href="https://mojminwon.moj.go.kr/minwon/2014/subview.do"]')).toBeVisible();
+  await expect(page.getByText(/향후 시행 — 현재 기준 아님|Future effective date — not current law/)).toBeVisible();
+  await expectNoHorizontalOverflow(page);
+  expect(consoleErrors).toEqual([]);
+});
+
 test('homepage visa search settles without reopening blocking menus', async ({ page }) => {
   test.skip(page.viewportSize().width < 1000, 'The gateway search transition is a desktop homepage flow.');
   await page.goto('/index.html');
@@ -51,5 +73,10 @@ test('homepage visa search settles without reopening blocking menus', async ({ p
   await expect(page.locator('body')).not.toHaveClass(/launching/);
   await expect(page.locator('#cityMenu')).toBeHidden();
   await expect(page.locator('.vc[data-code="D-2"]')).toBeVisible();
+  const missionSources = page.locator('.vc[data-code="D-2"] details.issuance-mission-sources').first();
+  await expect(missionSources).toBeVisible();
+  await missionSources.locator('summary').click();
+  await expect(missionSources.locator('a.issuance-mission-link').first()).toHaveAttribute('href', /overseas\.mofa\.go\.kr/);
+  await expect(missionSources).toContainText('해당 공관 범위만 적용');
   await expectNoHorizontalOverflow(page);
 });
