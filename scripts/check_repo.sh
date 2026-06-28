@@ -317,6 +317,20 @@ fi
 python3 -m unittest backend.tests.test_procedure_packet_builder
 python3 -m unittest backend.tests.test_waymaker_navigator_contract
 
+echo "[9g/14] Validating 국적민원·귀화면접 준비 data (source registry + guides + interview/video safety)..."
+# Stdlib/Node-only, offline. check_nationality_services_data validates the
+# task-schema source registry + guide dataset (enum/field/reference integrity,
+# official-host rule for primary sources, local-notice non-generalization, no
+# copied long text). check_naturalization_interview_data validates the 50+
+# practice questions + video sources (no fabricated official-past-question
+# claims, YouTube no-transcript guarantee, permission_status enum).
+if command -v node >/dev/null 2>&1; then
+  node scripts/check_nationality_services_data.mjs
+  node scripts/check_naturalization_interview_data.mjs
+else
+  echo "INFO: Node.js not found; skipping nationality-services data validation."
+fi
+
 echo "[10/14] Scanning key user-facing files for forbidden branding strings..."
 KEY_FILES=(
   "index.html"

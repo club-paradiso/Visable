@@ -305,6 +305,19 @@
     }
   },
 
+  "interviewBridge": {
+    "title": { "ko": "국적민원·귀화면접 준비", "en": "Nationality services & interview prep" },
+    "desc": {
+      "ko": "귀화, 국적회복, 국적상실·이탈, 복수국적, 국민선서와 귀화면접 준비까지 한곳에서 확인하세요. 공식 법령과 안내를 바탕으로 내 상황에 가까운 흐름을 살펴볼 수 있습니다.",
+      "en": "Naturalization, nationality restoration, loss/renunciation, multiple nationality, the citizen oath and interview prep — all in one place, based on official law and guidance for a flow close to your situation."
+    },
+    "bullets": {
+      "ko": "예상 질문 카드 · 모의면접 연습 · 참고 영상 · Waymaker 코치",
+      "en": "Practice questions · mock interview · reference videos · Waymaker coach"
+    },
+    "cta": { "ko": "준비 시작하기", "en": "Start preparing" }
+  },
+
   "caution": {
     "title": { "ko": "꼭 확인하세요", "en": "Please keep in mind" },
     "body": {

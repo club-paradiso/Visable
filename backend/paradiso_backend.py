@@ -5609,6 +5609,218 @@ async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
+# Nationality services / naturalization interview coach (text-first Waymaker)
+#
+# Isolated, additive endpoint for the 국적민원·귀화면접 준비 hub. It does NOT
+# touch the /api/ask pipeline. Provider routing for this endpoint is Groq-first
+# (fast short feedback) then OpenRouter (quality/fallback); when neither is
+# configured it raises a 503 so the frontend falls back to local heuristic
+# feedback. It never predicts pass/fail, never invents official sources, and
+# never handles audio.
+# ---------------------------------------------------------------------------
+
+NATIONALITY_SERVICES_SYSTEM_PROMPT = (
+    "You are Waymaker by Paradiso, acting as a source-aware Korean nationality "
+    "civil affairs guide. You explain nationality-related procedures such as "
+    "naturalization, nationality restoration, nationality loss, nationality "
+    "renunciation, nationality retention, multiple nationality, oath and "
+    "certificate issuance, review periods, interview preparation, and "
+    "KIIP/evaluation relationships. You do not provide legal guarantees. You do "
+    "not invent sources. You distinguish primary law, administrative rules, "
+    "official notices, local notices, practice content, and secondary "
+    "explainers. You give practical, natural Korean guidance and tell users when "
+    "competent immigration office confirmation is needed. Reply with a single "
+    "valid JSON object only (no prose, no markdown fences)."
+)
+
+NATURALIZATION_INTERVIEW_PREP_SYSTEM_PROMPT = (
+    "You are Waymaker by Paradiso, acting as a text-first Korean naturalization "
+    "interview preparation coach. You help users practice interview-style answers "
+    "and pre-evaluation study flow. You do not provide legal guarantees, do not "
+    "predict approval or failure, and do not claim unofficial content is "
+    "official. You distinguish official-source-based guidance from practice "
+    "questions and video reference topics. You give concise, natural Korean "
+    "feedback unless the user requests another language. Never sound machine-"
+    "translated, never over-flatter, never scare the user. Reply with a single "
+    "valid JSON object only (no prose, no markdown fences)."
+)
+
+
+class NationalityCoachRequest(BaseModel):
+    mode: Optional[str] = None
+    lang: Optional[str] = None
+    question: Optional[str] = None
+    answer: Optional[str] = None
+    message: Optional[str] = None
+    category: Optional[str] = None
+    difficulty: Optional[str] = None
+
+
+def _coach_extract_json(text: Optional[str]) -> Optional[Dict[str, Any]]:
+    """Best-effort extraction of the first JSON object from a model reply."""
+    if not text:
+        return None
+    cleaned = text.strip()
+    if cleaned.startswith("```"):
+        cleaned = re.sub(r"^```[a-zA-Z]*\n?", "", cleaned)
+        cleaned = re.sub(r"\n?```$", "", cleaned).strip()
+    match = re.search(r"\{.*\}", cleaned, re.S)
+    if not match:
+        return None
+    try:
+        parsed = json.loads(match.group(0))
+        return parsed if isinstance(parsed, dict) else None
+    except (ValueError, TypeError):
+        return None
+
+
+async def _coach_complete(system_prompt: str, user_prompt: str) -> Dict[str, str]:
+    """Groq-first, then OpenRouter. Bounded timeout. Raises 503 if no provider
+    is configured or all providers fail — the caller turns that into the
+    frontend's local-feedback fallback (never an infinite spinner)."""
+    if httpx is None:
+        raise HTTPException(
+            status_code=503,
+            detail={"error": "httpx_missing", "message": "httpx is not installed."},
+        )
+    messages = [
+        {"role": "system", "content": system_prompt},
+        {"role": "user", "content": user_prompt},
+    ]
+    timeout = min(float(OPENROUTER_TIMEOUT_SECONDS), 20.0)
+    providers: List[Dict[str, str]] = []
+    if GROQ_API_KEY:
+        providers.append({
+            "name": "groq",
+            "url": "https://api.groq.com/openai/v1/chat/completions",
+            "key": GROQ_API_KEY,
+            "model": GROQ_MODEL,
+        })
+    if OPENROUTER_API_KEY:
+        providers.append({
+            "name": "openrouter",
+            "url": "https://openrouter.ai/api/v1/chat/completions",
+            "key": OPENROUTER_API_KEY,
+            "model": OPENROUTER_MODEL,
+        })
+    if not providers:
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "error": "coach_no_provider",
+                "message": "No GROQ_API_KEY or OPENROUTER_API_KEY configured.",
+            },
+        )
+    last_error: Optional[str] = None
+    for prov in providers:
+        payload = {
+            "model": prov["model"],
+            "messages": messages,
+            "temperature": 0.4,
+            "max_tokens": 700,
+        }
+        headers = {
+            "Authorization": f"Bearer {prov['key']}",
+            "Content-Type": "application/json",
+        }
+        if prov["name"] == "openrouter":
+            if SITE_URL:
+                headers["HTTP-Referer"] = SITE_URL
+            if SITE_TITLE:
+                headers["X-Title"] = SITE_TITLE
+        try:
+            async with httpx.AsyncClient(timeout=timeout) as client:
+                resp = await client.post(prov["url"], headers=headers, json=payload)
+            if resp.status_code >= 400:
+                last_error = f"{prov['name']} HTTP {resp.status_code}"
+                continue
+            data = resp.json()
+            content = data["choices"][0]["message"]["content"]
+            return {"content": content, "provider": prov["name"], "model": prov["model"]}
+        except Exception as exc:  # noqa: BLE001 — any provider failure → next/fallback
+            last_error = f"{prov['name']}: {str(exc)[:120]}"
+            continue
+    raise HTTPException(
+        status_code=503,
+        detail={"error": "coach_unavailable", "message": last_error or "all providers failed"},
+    )
+
+
+@app.post("/api/nationality-coach")
+async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
+    mode = (req.mode or "naturalization_interview_prep").strip()
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+    lang_line = (
+        "Write all string values in natural English."
+        if lang == "en"
+        else "Write all string values in natural Korean (자연스러운 한국어)."
+    )
+
+    if mode == "nationality_services":
+        system_prompt = NATIONALITY_SERVICES_SYSTEM_PROMPT
+        question = (req.message or req.question or "").strip()
+        user_prompt = (
+            f"{lang_line}\n"
+            "The user asks about Korean nationality civil affairs. Give general, "
+            "source-aware guidance. Do not state final eligibility. Prefer hedged "
+            "phrasing (일반적으로는 / 공식 안내 기준으로는 / 개별 사안은 관할 "
+            "출입국외국인관서 확인이 필요합니다). Do not invent article numbers or "
+            "source URLs.\n\n"
+            f"User question: {question}\n\n"
+            "Return ONLY this JSON object:\n"
+            "{\n"
+            '  "summary": "",\n'
+            '  "relevantCategory": "",\n'
+            '  "generalFlow": [],\n'
+            '  "documentsNote": "",\n'
+            '  "sourceBasedPoints": [],\n'
+            '  "cautions": [],\n'
+            '  "relatedSources": [],\n'
+            '  "nextBestAction": ""\n'
+            "}"
+        )
+    else:
+        mode = "naturalization_interview_prep"
+        system_prompt = NATURALIZATION_INTERVIEW_PREP_SYSTEM_PROMPT
+        question = (req.question or "").strip()
+        answer = (req.answer or "").strip()
+        user_prompt = (
+            f"{lang_line}\n"
+            "This is naturalization-interview PRACTICE, not official adjudication. "
+            "The question is practice material, not an official past question. "
+            "Review the user's typed answer. Never predict pass/fail, never say "
+            "the answer guarantees approval, never claim the question is official.\n\n"
+            f"Practice question (category={req.category or ''}, difficulty={req.difficulty or ''}):\n{question}\n\n"
+            f"User's typed answer:\n{answer}\n\n"
+            "Return ONLY this JSON object:\n"
+            "{\n"
+            '  "strengths": [],\n'
+            '  "improvements": [],\n'
+            '  "revisedAnswer": "",\n'
+            '  "riskyExpressions": [],\n'
+            '  "followUpQuestion": "",\n'
+            '  "studyTip": "",\n'
+            '  "caution": "이 피드백은 연습용이며 실제 심사 결과를 보장하지 않습니다."\n'
+            "}"
+        )
+
+    result = await _coach_complete(system_prompt, user_prompt)
+    parsed = _coach_extract_json(result["content"])
+    if not isinstance(parsed, dict):
+        raise HTTPException(
+            status_code=502,
+            detail={"error": "coach_unparseable", "message": "Model did not return valid JSON."},
+        )
+    if mode == "naturalization_interview_prep":
+        if not parsed.get("caution"):
+            parsed["caution"] = "이 피드백은 연습용이며 실제 심사 결과를 보장하지 않습니다."
+    parsed["mode"] = mode
+    parsed["provider"] = result["provider"]
+    parsed["ai_available"] = True
+    return parsed
+
+
+# ---------------------------------------------------------------------------
 # Entrypoint helper for local runs
 # ---------------------------------------------------------------------------
 
