@@ -134,17 +134,89 @@
       'rubric.structure': 'Reason & structure', 'rubric.length': 'Adequate length', 'rubric.attitude': 'Safe wording',
       'rubric.ok': 'Good', 'rubric.improve': 'Improve',
       'cautionCoach': 'This feedback is for practice and does not guarantee any review outcome.'
+    },
+    'zh-CN': {
+      'hero.kicker': '国籍民愿·归化面试准备',
+      'hero.title': '国籍民愿与归化面试准备，集于一处',
+      'hero.lead': '从归化、国籍恢复、国籍丧失·脱离、复数国籍、国民宣誓到归化面试准备 —— 以官方法令和指引为基础，查看与您情况相近的流程，并通过练习题和模拟面试进行准备。',
+      'hero.ctaPrimary': '开始归化面试学习', 'hero.ctaSecondary': '浏览国籍民愿',
+      'global.disclaimer': '本功能是帮助确认国籍民愿、准备归化面试及基本素养的学习工具，不保证实际审查结果。官方指引和个别通知请优先确认法务部·出入境外国人机关的指引。',
+      'about.title': '了解国籍民愿',
+      'about.intro': '选择您感兴趣的国籍民愿类型，确认它是什么民愿、面向谁、一般流程、材料注意事项、相关法令与官方出处。个别情形可能有所不同。',
+      'laws.title': '相关法令·指针',
+      'laws.intro': '请按类别查看作为国籍业务依据的官方出处。地区公告或辅助说明资料会另行标示。可通过外部链接直接查看原文。',
+      'flow.title': '程序·材料流程',
+      'flow.intro': '选择类型后可查看一般流程和材料相关注意事项。准确的顺序·材料·标准以管辖出入境外国人机关的指引为准，并可能因个别情形而不同。',
+      'interview.title': '归化面试备考学习室',
+      'interview.intro': '从理解程序、学习核心主题、预想问题卡片、模拟面试练习到参考视频，分阶段进行准备。所有问题均为学习用练习题，并非实际面试题或官方历年真题。',
+      'kiip.title': '事前评价/综合评价学习流程',
+      'kiip.intro': '社会融合项目（KIIP）通过事前评价分配阶段，经过分阶段学习后进入综合评价（含归化用）。修完·评价结果并不等同于获得归化许可。',
+      'videos.title': '参考视频/资料',
+      'videos.intro': '已将用户提供的播放列表·频道整理为参考。不保存视频字幕·脚本，且非官方资料。',
+      'waymaker.title': 'Waymaker 国籍民愿教练',
+      'waymaker.heading': '提问并练习',
+      'waymaker.desc': '国籍民愿指引教练会区分法令·指引进行说明；归化面试教练会检查您输入的答复，并建议更自然的示例和后续问题。全程以文字进行，无语音。',
+      'waymaker.note': '不预测是否合格，个别通知和出入境外国人机关的指引始终优先。',
+      'waymaker.ctaGuide': '打开国籍民愿指引教练', 'waymaker.ctaInterview': '用归化面试教练模拟面试',
+      'badge.official': '基于官方资料', 'badge.notOfficial': '非官方真题', 'badge.unofficialVideo': '非官方参考资料',
+      'footer.note': 'Paradiso 与官方机关无合作或隶属关系。所有指引仅供学习参考，最终确认请通过法务部·出入境外国人机关·HiKorea·1345 进行。',
+      'footer.back': '← 返回国籍·归化主页',
+      'filter.all': '全部', 'who': '适合这些人', 'flowLabel': '一般流程', 'docNote': '材料相关注意事项',
+      'relatedLaws': '相关法令', 'relatedSources': '官方出处', 'caution': '注意', 'confirmNeeded': '需确认',
+      'caseVaries': '可能因个别情形而不同', 'viewFlow': '查看答复流程', 'guidance': '答复指南',
+      'goodStructure': '良好的答复结构', 'riskyPatterns': '应避免的答复', 'practiceWaymaker': '用 Waymaker 练习',
+      'rooms.understand': '理解程序', 'rooms.topics': '核心主题学习', 'rooms.questions': '预想问题卡片',
+      'rooms.mock': '模拟面试练习', 'rooms.videos': '参考视频/资料',
+      'randomQ': '随机问题', 'searchQ': '搜索问题', 'allCats': '全部主题', 'allDiffs': '全部难度',
+      'mock.todayQ': '今日练习题', 'mock.next': '下一题', 'mock.placeholder': '请在此用韩语输入答复。一并写上理由和经历会更好。',
+      'mock.checkLocal': '检查我的答复', 'mock.startWaymaker': '开始 Waymaker 模拟面试', 'mock.retry': '重新作答',
+      'mock.strengths': '做得好的地方', 'mock.improvements': '需补充的地方', 'mock.risky': '需注意的表述',
+      'mock.revised': '更自然的答复示例', 'mock.followup': '下一道练习题', 'mock.tip': '学习提示',
+      'mock.loading': 'Waymaker 正在审阅答复…',
+      'mock.aiFail': '无法加载 AI 反馈。请先查看基本检查结果。',
+      'mock.localTitle': '基本检查结果（离线）', 'mock.noAnswer': '请先输入答复。',
+      'understand.heading': '归化面试·基本素养的准备是怎样衔接的？',
+      'understand.body': '归化准备通常衔接社会融合项目（KIIP）学习与事前评价·综合评价，以及归化适格审查过程中的面试。面试并非背诵标准答案的场合，而更接近确认基本素养与沟通能力的场合。',
+      'understand.warn': '面试对象·内容·是否免除会因个别情形和通知而不同。此处内容仅供学习参考，个别通知和管辖出入境外国人机关的指引始终优先。',
+      'understand.steps': '准备流程示例',
+      'sourceLabel.official_kiip': 'KIIP 学习衔接', 'sourceLabel.official_socinet': '评价指引衔接',
+      'sourceLabel.practice': '练习题', 'sourceLabel.internal_guidance': '面试态度指南',
+      'sourceLabel.official_law': '法令参考', 'sourceLabel.official_notice': '官方指引参考', 'sourceLabel.video_reference_topic': '视频参考主题',
+      'studyFocus': '学习要点', 'noResults': '没有符合条件的结果。',
+      'videoDisclaimer': '视频资料为非官方参考资料，并不代表实际面试题或法务部官方历年真题。',
+      'openLink': '前往', 'difficulty.easy': '简单', 'difficulty.medium': '中等', 'difficulty.hard': '困难',
+      'localCheck.tooShort': '答复太短。请逐句补充理由和具体经历。',
+      'localCheck.direct': '先给出对问题的直接答复会更稳妥。',
+      'localCheck.vague': '内容略显笼统。请再补充一个具体的例子或经历。',
+      'localCheck.structure': '有理由和示例，答复结构很好。',
+      'localCheck.length': '篇幅适当。请清晰地传达要点。',
+      'localCheck.specific': '包含具体的经历·示例，很有说服力。',
+      'localCheck.risky': '只强调福利·金钱·逃避义务的表述，最好避免以策安全。',
+      'localCheck.okStart': '已明确给出对问题的答复。',
+      'rubric.title': '答复检查项目', 'rubric.direct': '直接答复', 'rubric.specific': '具体经历·示例',
+      'rubric.structure': '理由·结构', 'rubric.length': '适当篇幅', 'rubric.attitude': '安全的表述',
+      'rubric.ok': '充分', 'rubric.improve': '补充',
+      'cautionCoach': '此反馈仅供练习，不保证实际审查结果。'
     }
   };
 
+  // Traditional Chinese is a display layer over zh-CN (assets/js/zh-traditional.js).
+  // `lang` is the content locale; `langTrad` activates the converter.
+  var langTrad = false;
   var lang = (function () {
     try {
-      var s = (localStorage.getItem('paradiso:language') || '').toLowerCase();
-      if (s.indexOf('en') === 0) return 'en';
-      if (s.indexOf('ko') === 0) return 'ko';
+      var s = (localStorage.getItem('paradiso:language') || '');
+      if (s === 'zh-TW') { langTrad = true; return 'zh-CN'; }
+      if (s === 'zh-CN') return 'zh-CN';
+      var low = s.toLowerCase();
+      if (low.indexOf('en') === 0) return 'en';
+      if (low.indexOf('ko') === 0) return 'ko';
     } catch (e) {}
     return (navigator.language || '').toLowerCase().indexOf('en') === 0 ? 'en' : 'ko';
   })();
+  function applyTradLayer(on) {
+    try { var zt = window.ParadisoZhT; if (!zt) return; if (on) { if (!zt.isActive()) zt.start(); } else if (zt.isActive()) { zt.stop(); } } catch (e) {}
+  }
   function t(key) { return (I18N[lang] && I18N[lang][key]) || (I18N.ko[key]) || key; }
 
   /* ----------------------------------------------------------- utilities */
@@ -170,42 +242,46 @@
     || ((location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:') ? '' : DEFAULT_API_BASE);
 
   var CATEGORY_LABELS = {
-    korean_language: { ko: '한국어 의사소통', en: 'Korean communication' },
-    reason_for_naturalization: { ko: '귀화 동기', en: 'Reason for naturalization' },
-    life_in_korea: { ko: '한국 생활 경험', en: 'Life in Korea' },
-    korean_society: { ko: '대한민국 사회 기본 이해', en: 'Korean society' },
-    democratic_order: { ko: '자유민주적 기본질서', en: 'Democratic order' },
-    rights_and_duties: { ko: '권리와 의무', en: 'Rights & duties' },
-    interview_attitude: { ko: '면접 태도', en: 'Interview attitude' },
-    pre_evaluation_study: { ko: '사전평가/종합평가', en: 'Pre/comprehensive evaluation' }
+    korean_language: { ko: '한국어 의사소통', en: 'Korean communication', 'zh-CN': '韩语沟通' },
+    reason_for_naturalization: { ko: '귀화 동기', en: 'Reason for naturalization', 'zh-CN': '归化动机' },
+    life_in_korea: { ko: '한국 생활 경험', en: 'Life in Korea', 'zh-CN': '韩国生活经历' },
+    korean_society: { ko: '대한민국 사회 기본 이해', en: 'Korean society', 'zh-CN': '韩国社会基本了解' },
+    democratic_order: { ko: '자유민주적 기본질서', en: 'Democratic order', 'zh-CN': '自由民主基本秩序' },
+    rights_and_duties: { ko: '권리와 의무', en: 'Rights & duties', 'zh-CN': '权利与义务' },
+    interview_attitude: { ko: '면접 태도', en: 'Interview attitude', 'zh-CN': '面试态度' },
+    pre_evaluation_study: { ko: '사전평가/종합평가', en: 'Pre/comprehensive evaluation', 'zh-CN': '事前评价/综合评价' }
   };
-  function catLabel(c) { return (CATEGORY_LABELS[c] && CATEGORY_LABELS[c][lang]) || c; }
+  function catLabel(c) { return (CATEGORY_LABELS[c] && (CATEGORY_LABELS[c][lang] || CATEGORY_LABELS[c].ko)) || c; }
 
   var DATA = { guides: [], sources: [], questions: [], videos: [], topics: [] };
   var sourceById = {};
 
   /* ----------------------------------------------------------- i18n apply */
+  var LANG_TOGGLE_NEXT = { ko: 'en', en: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
+  var LANG_TOGGLE_LABEL = { ko: 'EN', en: '简', 'zh-CN': '繁', 'zh-TW': '한국어' };
   function applyStatic() {
-    document.documentElement.lang = lang;
+    document.documentElement.lang = langTrad ? 'zh-TW' : lang;
+    applyTradLayer(langTrad);
     var nodes = document.querySelectorAll('[data-i18n]');
     for (var i = 0; i < nodes.length; i++) {
       var key = nodes[i].getAttribute('data-i18n');
       var val = t(key);
       if (val != null) nodes[i].textContent = val;
     }
-    var lt = el('langToggle'); if (lt) { lt.textContent = lang === 'ko' ? 'EN' : '한국어'; }
+    var cur = langTrad ? 'zh-TW' : lang;
+    var lt = el('langToggle'); if (lt) { lt.textContent = LANG_TOGGLE_LABEL[cur] || 'EN'; lt.setAttribute('data-s2t', 'off'); }
   }
 
   /* --------------------------------------------------- 1. guide browsing */
   var guideFilter = 'all';
   var GUIDE_GROUPS = [
-    { id: 'all', ko: '전체', en: 'All' },
-    { id: 'naturalization', ko: '귀화', en: 'Naturalization', cats: ['naturalization_general', 'naturalization_simplified', 'naturalization_special', 'naturalization_marriage'] },
-    { id: 'restoration', ko: '국적회복', en: 'Restoration', cats: ['nationality_restoration'] },
-    { id: 'lossleave', ko: '국적상실/이탈', en: 'Loss / renunciation', cats: ['nationality_loss_report', 'nationality_renunciation', 'nationality_acquisition_report', 'nationality_retention'] },
-    { id: 'multiple', ko: '복수국적', en: 'Multiple nationality', cats: ['multiple_nationality', 'foreign_nationality_non_exercise_pledge'] },
-    { id: 'oath', ko: '국민선서', en: 'Oath', cats: ['oath_and_certificate'] },
-    { id: 'interview', ko: '면접/평가', en: 'Interview / evaluation', cats: ['interview_review', 'kiip_evaluation', 'review_period_status'] }
+    { id: 'all', ko: '전체', en: 'All', 'zh-CN': '全部' },
+    { id: 'naturalization', ko: '귀화', en: 'Naturalization', 'zh-CN': '归化', cats: ['naturalization_general', 'naturalization_simplified', 'naturalization_special', 'naturalization_marriage'] },
+    { id: 'restoration', ko: '국적회복', en: 'Restoration', 'zh-CN': '国籍恢复', cats: ['nationality_restoration'] },
+    { id: 'lossleave', ko: '국적상실/이탈', en: 'Loss / renunciation', 'zh-CN': '国籍丧失/脱离', cats: ['nationality_loss_report', 'nationality_renunciation', 'nationality_acquisition_report', 'nationality_retention'] },
+    { id: 'multiple', ko: '복수국적', en: 'Multiple nationality', 'zh-CN': '复数国籍', cats: ['multiple_nationality', 'foreign_nationality_non_exercise_pledge'] },
+    { id: 'oath', ko: '국민선서', en: 'Oath', 'zh-CN': '国民宣誓', cats: ['oath_and_certificate'] },
+    { id: 'interview', ko: '면접/평가', en: 'Interview / evaluation', 'zh-CN': '面试/评价', cats: ['interview_review', 'kiip_evaluation', 'review_period_status'] }
   ];
   function groupOf(cat) {
     for (var i = 1; i < GUIDE_GROUPS.length; i++) if (GUIDE_GROUPS[i].cats.indexOf(cat) >= 0) return GUIDE_GROUPS[i].id;
@@ -377,7 +453,9 @@
   }
 
   function renderUnderstand() {
-    var steps = lang === 'en'
+    var steps = lang === 'zh-CN'
+      ? ['社会融合项目（KIIP）·自主学习', '事前评价分配阶段', '分阶段学习', '综合评价（含归化用）', '归化适格审查过程中的面试', '作为整体审查的一部分反映结果']
+      : lang === 'en'
       ? ['Study with KIIP / self-study', 'Pre-evaluation assigns a level', 'Step-by-step learning', 'Comprehensive evaluation (incl. naturalization)', 'Interview within the naturalization review', 'Result reflected as part of the whole review']
       : ['사회통합프로그램(KIIP)·자율 학습', '사전평가로 단계 배정', '단계별 학습', '종합평가(귀화용 포함)', '귀화적격심사 과정의 면접', '전체 심사의 일부로 결과 반영'];
     el('panel-understand').innerHTML =
@@ -654,8 +732,12 @@
   /* --------------------------------------------------------- bootstrapping */
   function wireGlobal() {
     el('langToggle').addEventListener('click', function () {
-      lang = (lang === 'ko') ? 'en' : 'ko';
-      try { localStorage.setItem('paradiso:language', lang); } catch (e) {}
+      var cur = langTrad ? 'zh-TW' : lang;
+      var nextSel = LANG_TOGGLE_NEXT[cur] || 'en';
+      langTrad = (nextSel === 'zh-TW');
+      lang = (nextSel === 'zh-TW' || nextSel === 'zh-CN') ? 'zh-CN' : nextSel;
+      try { localStorage.setItem('paradiso:language', nextSel); } catch (e) {}
+      applyTradLayer(langTrad);
       renderAll();
     });
     el('brightToggle').addEventListener('click', function () {
