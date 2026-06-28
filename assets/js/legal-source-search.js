@@ -14,8 +14,9 @@
  *    opened with rel="noopener noreferrer".
  *  - The backend never returns the LAW_API_OC credential; this module never
  *    sees or stores it. A missing credential renders a friendly config state.
- *  - Precedent body/detail is intentionally not rendered; each precedent card
- *    points to the official text with "원문 확인 필요 / Check official text".
+ *  - Precedent list cards intentionally render metadata only; each card points
+ *    to the official text with "원문 확인 필요 / Check official text". Bounded
+ *    body fields are available only through the separate backend detail path.
  *
  * The pure builders (escapeHtml, safeSourceUrl, buildLawCardHtml,
  * buildPrecedentCardHtml, buildResultsHtml, classifyResponse) are exposed on
@@ -264,11 +265,24 @@
   // "check official text" hint instead of a link.
   function safeSourceUrl(url) {
     var u = String(url == null ? '' : url).trim();
+    if (!u || /[\u0000-\u001F\u007F]/.test(u) || /^\/\//.test(u)) return '';
+    var decodedPath;
+    if (u.charAt(0) === '/') {
+      var relPath = u.split('?')[0].split('#')[0];
+      try { decodedPath = decodeURIComponent(relPath); } catch (_) { return ''; }
+      if (decodedPath !== '/DRF/lawService.do' || decodedPath.split('/').indexOf('..') !== -1) return '';
+      return 'https://www.law.go.kr' + u;
+    }
     if (!/^https?:\/\//i.test(u)) return '';
-    var rest = u.replace(/^https?:\/\//i, '');
-    var host = rest.split('/')[0].split('?')[0].toLowerCase();
-    if (host === 'law.go.kr' || /(^|\.)law\.go\.kr$/.test(host)) return u;
-    return '';
+    var parsed;
+    try { parsed = new URL(u); } catch (_) { return ''; }
+    var host = String(parsed.hostname || '').toLowerCase().replace(/\.$/, '');
+    if (!(host === 'law.go.kr' || /\.law\.go\.kr$/.test(host))) return '';
+    if (parsed.username || parsed.password) return '';
+    var rawPath = u.replace(/^https?:\/\/[^/]+/i, '').split('?')[0].split('#')[0];
+    try { decodedPath = decodeURIComponent(rawPath || parsed.pathname || ''); } catch (_) { return ''; }
+    if (decodedPath.split('/').indexOf('..') !== -1) return '';
+    return u;
   }
   function metaLine(parts) {
     return parts.filter(function (p) { return p != null && String(p).trim() !== ''; })
