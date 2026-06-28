@@ -165,9 +165,11 @@
   }
 
   /* ------------------------------------------------------------------ i18n */
+  // Locales with a full chrome pack below. Anything not listed falls back to ko.
+  var PRH_SUPPORTED = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
   function prhLang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
-    return l === 'en' ? 'en' : l === 'zh-CN' ? 'zh-CN' : 'ko';
+    return PRH_SUPPORTED.indexOf(l) !== -1 ? l : 'ko';
   }
 
   var STR_KO = {
@@ -894,7 +896,11 @@
     t8c: '即使切换语言，部分界面仍可能仅显示韩文。',
     t8f: '请参考本指引的屏幕说明和“英文界面对照”备注。若仍受阻，1345 也提供外语咨询。'
   };
-  var STR_PACKS = { ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH };
+  var STR_PACKS = {
+    ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH,
+    ja: STR_JA, vi: STR_VI, tl: STR_TL, id: STR_ID, ru: STR_RU,
+    fr: STR_FR, es: STR_ES, ar: STR_AR, de: STR_DE
+  };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[prhLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
     : STR_KO;
