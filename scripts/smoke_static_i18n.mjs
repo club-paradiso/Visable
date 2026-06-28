@@ -25,7 +25,7 @@ function tx(locale, key, vars = {}) {
 }
 
 assert(manifest.defaultLocale === 'ko', 'default locale must be ko');
-assert(manifest.supportedLocales.join(',') === 'ko,en,zh-CN', 'supported locales must be ko/en/zh-CN only');
+assert(manifest.supportedLocales.slice(0, 3).join(',') === 'ko,en,zh-CN', 'supported locales must begin with ko,en,zh-CN');
 assert(tx('ko', 'heroTitle') !== tx('en', 'heroTitle'), 'hero title should change between ko and en');
 assert(tx('en', 'heroTitle') !== tx('zh-CN', 'heroTitle'), 'hero title should change between en and zh-CN');
 assert(tx('en', 'dataReady', { count: 39, source: 'static' }).includes('39'), 'interpolation should substitute {count}');

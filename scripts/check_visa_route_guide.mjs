@@ -37,7 +37,7 @@ const byCode = (c) => visas.find((v) => v.code === c);
 const subsOf = (v) => (Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []));
 
 const ALLOWED_STATUS = ['available', 'conditional', 'not_applicable', 'source_limited'];
-const LOCALES = ['ko', 'en', 'zh-CN'];
+const LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
 const DUMMY_RE = /(lorem ipsum|\bTODO\b|\bFIXME\b|placeholder|dummy|샘플텍스트|테스트텍스트|xxxxx|#####|\bTBD\b)/i;
 
 /* -------------------------------------------------------------- 1. module API */
@@ -188,7 +188,7 @@ for (const key of Object.keys(RG.STR)) {
     if (DUMMY_RE.test(entry[loc] || '')) { strDummy++; ok(false, `STR.${key}.${loc} has no dummy text`); }
   }
 }
-ok(strMissing === 0, 'every UI string has ko/en/zh-CN');
+ok(strMissing === 0, 'every UI string has all 12 UI locales');
 ok(strDummy === 0, 'no dummy/placeholder text in UI strings');
 // Curated subcode user labels are trilingual.
 for (const code of Object.keys(RG.STR.summaryEyebrow ? {} : {})) { /* no-op guard */ }

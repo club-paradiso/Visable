@@ -65,11 +65,41 @@
   // These are the Phase-7 user-facing labels (intentionally plainer than the
   // backend's internal KO labels). Color is NEVER the only indicator.
   var SOURCE_COVERAGE = {
-    source_confirmed: { ko: '공식 원문 확인', en: 'Confirmed in official source', 'zh-CN': '已确认官方原文', cls: 'wm-cov-confirmed' },
-    contextual:       { ko: '일부 항목만 공식 확인', en: 'Partially covered by official sources', 'zh-CN': '仅部分项目经官方确认', cls: 'wm-cov-partial' },
-    limited:          { ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认', cls: 'wm-cov-verify' },
-    final_agency_discretion: { ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认', cls: 'wm-cov-verify' },
-    unavailable:      { ko: '현재 근거 미확보', en: 'No current source coverage', 'zh-CN': '目前尚无依据', cls: 'wm-cov-none' }
+    source_confirmed: {
+      ko: '공식 원문 확인', en: 'Confirmed in official source', 'zh-CN': '已确认官方原文',
+      ja: '公式原文で確認済み', vi: 'Đã xác nhận trong nguồn chính thức', tl: 'Nakumpirma sa opisyal na pinagmulan',
+      id: 'Dikonfirmasi dalam sumber resmi', ru: 'Подтверждено в официальном источнике', fr: 'Confirmé dans la source officielle',
+      es: 'Confirmado en la fuente oficial', ar: 'مؤكَّد في المصدر الرسمي', de: 'In offizieller Quelle bestätigt',
+      cls: 'wm-cov-confirmed'
+    },
+    contextual: {
+      ko: '일부 항목만 공식 확인', en: 'Partially covered by official sources', 'zh-CN': '仅部分项目经官方确认',
+      ja: '一部の項目のみ公式に確認', vi: 'Chỉ một phần được nguồn chính thức bao quát', tl: 'Bahagyang saklaw ng opisyal na pinagmulan',
+      id: 'Hanya sebagian dikonfirmasi sumber resmi', ru: 'Частично подтверждено официальными источниками', fr: 'Partiellement couvert par les sources officielles',
+      es: 'Cubierto parcialmente por fuentes oficiales', ar: 'مغطّى جزئيًا بمصادر رسمية', de: 'Teilweise durch offizielle Quellen abgedeckt',
+      cls: 'wm-cov-partial'
+    },
+    limited: {
+      ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认',
+      ja: '管轄機関での確認が必要', vi: 'Cần xác nhận chính thức', tl: 'Kailangan ng opisyal na kumpirmasyon',
+      id: 'Perlu konfirmasi resmi', ru: 'Требуется официальное подтверждение', fr: 'Confirmation officielle requise',
+      es: 'Se requiere confirmación oficial', ar: 'يلزم التأكيد الرسمي', de: 'Offizielle Bestätigung erforderlich',
+      cls: 'wm-cov-verify'
+    },
+    final_agency_discretion: {
+      ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认',
+      ja: '管轄機関での確認が必要', vi: 'Cần xác nhận chính thức', tl: 'Kailangan ng opisyal na kumpirmasyon',
+      id: 'Perlu konfirmasi resmi', ru: 'Требуется официальное подтверждение', fr: 'Confirmation officielle requise',
+      es: 'Se requiere confirmación oficial', ar: 'يلزم التأكيد الرسمي', de: 'Offizielle Bestätigung erforderlich',
+      cls: 'wm-cov-verify'
+    },
+    unavailable: {
+      ko: '현재 근거 미확보', en: 'No current source coverage', 'zh-CN': '目前尚无依据',
+      ja: '現時点で根拠なし', vi: 'Hiện chưa có nguồn căn cứ', tl: 'Walang kasalukuyang saklaw ng pinagmulan',
+      id: 'Belum ada dasar sumber saat ini', ru: 'Сейчас нет подтверждающих источников', fr: 'Aucune source disponible actuellement',
+      es: 'Sin cobertura de fuentes por ahora', ar: 'لا يوجد سند حاليًا', de: 'Derzeit keine Quellengrundlage',
+      cls: 'wm-cov-none'
+    }
   };
 
   // Statuses whose sub-status materially changes the procedure/documents, so the
@@ -486,18 +516,526 @@
       disclaimerPrint: '最终确认须向 HiKorea、1345 或管辖出入境·外国人机关进行。',
       langName: '简体中文',
       operatorDiag: '诊断（运营者）'
+    },
+    ja: {
+      title: 'Waymaker - 韓国滞在手続きの道案内',
+      subtitle: '公式の出典をもとに、あなたの手続き・書類・予約・次の行動を整理します。',
+      empty: '最初に質問を書く必要はありません。現在の滞在資格と、これからやりたいことを選んでください。',
+      start: '自分の状況を選ぶ',
+      back: '戻る',
+      next: '次へ',
+      restart: '最初から',
+      dontKnow: 'よくわかりません',
+      stepLanguage: '言語を選択してください',
+      stepLocation: '今どちらにいますか？',
+      locIn: '韓国国内', locOut: '韓国国外', locUnsure: 'よくわかりません / 状況によります',
+      stepStatus: '現在の滞在資格を選択してください',
+      statusSearchPlaceholder: '滞在資格コードまたは名称で検索（例：D-2、留学、E-7）',
+      statusUnknown: '自分の滞在資格がわかりません',
+      statusFirstEntry: 'まだビザがありません / 海外から初回入国・査証発給を準備中',
+      noStatusResults: '検索結果がありません。コード（D-2 など）または韓国語の名称で再検索してください。',
+      programGroup: 'プログラム / 試験事業（公式根拠は限定的）',
+      stepProcedure: 'どの手続きが必要ですか？',
+      procedureLimitedHint: '公式根拠が限定的',
+      stepSubStatus: 'どの細分類型に該当しますか？',
+      subStatusHelp: '細分類型によって書類や基準が異なる場合があります。確実でなければ「よくわかりません」を選んでください。',
+      generating: '公式根拠に基づく手続きパケットを準備中…',
+      secProcedure: '私の手続き', secNext: '今やること', secApplicability: '適用可能性',
+      secDocs: '準備する書類', secConditional: '状況別の追加書類', secWhere: '取得先・準備方法',
+      secTiming: '期限・注意事項', secFees: '手数料', secChannel: 'HiKorea / 訪問経路',
+      secJurisdiction: '管轄', secCoverage: '公式根拠の範囲', secVerify: '確認が必要な項目',
+      grpCommon: '共通書類', grpRequired: '必須書類', grpConditional: '状況別書類',
+      grpAdditional: '追加書類', grpVerify: '管轄機関で確認', grpNone: '根拠が未確保',
+      checklistTitle: '書類チェックリスト', checklistHint: 'チェック状態はこのブラウザにのみ保存されます。',
+      checklistReset: 'リセット', checklistCopy: 'コピー', checklistPrint: '印刷／書き出し',
+      checklistCopied: 'チェックリストをクリップボードにコピーしました。',
+      officialForm: '公式様式',
+      coverageLimitedTitle: '公式根拠が限定的な手続きです',
+      coverageLimited: '現在この手続きについて、公式根拠が十分に構造化されていません。確認されていない書類・手数料・期限・予約経路を勝手に案内することはありません。HiKorea、1345、または管轄の出入国機関で最終確認してください。',
+      whatWeCanSay: 'Paradiso が安全に案内できる情報',
+      whatWeCannot: 'Paradiso が確認できない情報',
+      officialChannels: '公式の確認経路',
+      call1345: '1345（外国人総合案内センター）',
+      hikoreaCta: 'HiKorea の予約経路を確認',
+      aiFollowupCta: 'このパケットで分かりにくい点を質問する',
+      aiFollowupPlaceholder: 'このパケットで理解できない点を質問してください。例：財政書類は免除されることがありますか？',
+      aiPrivacyNote: '個人情報（氏名、パスポート・外国人登録番号、住所、電話番号など）は入力しないでください。このアシスタントはパケットを説明するだけで、新しい公式要件を作ることはありません。',
+      aiSend: '質問する',
+      noDocs: 'この手続きの公式書類リストはまだ構造化されていません。',
+      verifyIntro: '以下の項目は公式根拠で確定表示できないため、管轄機関／1345／HiKorea で確認してください。',
+      generatedOn: '作成日',
+      sourceVersion: '根拠バージョン',
+      disclaimerPrint: '最終確認は HiKorea、1345、または管轄の出入国・外国人官署で行ってください。',
+      langName: '日本語',
+      operatorDiag: '診断（運営者）'
+    },
+    vi: {
+      title: 'Waymaker - Tìm đường thủ tục cư trú Hàn Quốc',
+      subtitle: 'Dựa trên nguồn chính thức, sắp xếp thủ tục, giấy tờ, đặt hẹn và hành động tiếp theo của bạn.',
+      empty: 'Bạn không cần phải viết câu hỏi trước. Hãy chọn tư cách cư trú hiện tại và việc bạn muốn làm.',
+      start: 'Chọn tình huống của tôi',
+      back: 'Quay lại',
+      next: 'Tiếp theo',
+      restart: 'Bắt đầu lại',
+      dontKnow: 'Tôi không chắc',
+      stepLanguage: 'Hãy chọn ngôn ngữ',
+      stepLocation: 'Bạn đang ở đâu?',
+      locIn: 'Trong Hàn Quốc', locOut: 'Ngoài Hàn Quốc', locUnsure: 'Không chắc / tùy trường hợp',
+      stepStatus: 'Hãy chọn tư cách cư trú hiện tại của bạn',
+      statusSearchPlaceholder: 'Tìm theo mã hoặc tên tư cách cư trú (ví dụ: D-2, du học, E-7)',
+      statusUnknown: 'Tôi không biết tư cách cư trú của mình',
+      statusFirstEntry: 'Tôi chưa có visa / đang chuẩn bị nhập cảnh lần đầu·cấp visa từ nước ngoài',
+      noStatusResults: 'Không có kết quả. Hãy thử mã (ví dụ D-2) hoặc tên tư cách bằng tiếng Hàn.',
+      programGroup: 'Chương trình / thí điểm (nguồn chính thức còn hạn chế)',
+      stepProcedure: 'Bạn cần làm thủ tục gì?',
+      procedureLimitedHint: 'Nguồn chính thức hạn chế',
+      stepSubStatus: 'Bạn thuộc loại chi tiết nào?',
+      subStatusHelp: 'Giấy tờ và tiêu chí có thể khác nhau tùy loại chi tiết. Nếu không chắc, hãy chọn "Tôi không chắc".',
+      generating: 'Đang chuẩn bị gói thủ tục dựa trên nguồn chính thức…',
+      secProcedure: 'Thủ tục của tôi', secNext: 'Việc cần làm ngay', secApplicability: 'Khả năng áp dụng',
+      secDocs: 'Giấy tờ cần chuẩn bị', secConditional: 'Giấy tờ bổ sung theo tình huống', secWhere: 'Nơi cấp·cách chuẩn bị',
+      secTiming: 'Thời hạn·lưu ý', secFees: 'Lệ phí', secChannel: 'HiKorea / lối đến trực tiếp',
+      secJurisdiction: 'Cơ quan có thẩm quyền', secCoverage: 'Phạm vi nguồn chính thức', secVerify: 'Mục cần xác nhận',
+      grpCommon: 'Giấy tờ chung', grpRequired: 'Giấy tờ bắt buộc', grpConditional: 'Giấy tờ theo tình huống',
+      grpAdditional: 'Giấy tờ bổ sung', grpVerify: 'Xác nhận với cơ quan', grpNone: 'Chưa đủ căn cứ',
+      checklistTitle: 'Danh mục giấy tờ', checklistHint: 'Trạng thái đánh dấu chỉ được lưu trong trình duyệt này.',
+      checklistReset: 'Đặt lại', checklistCopy: 'Sao chép', checklistPrint: 'In / xuất',
+      checklistCopied: 'Đã sao chép danh mục vào bộ nhớ tạm.',
+      officialForm: 'Mẫu chính thức',
+      coverageLimitedTitle: 'Thủ tục này có nguồn chính thức hạn chế',
+      coverageLimited: 'Hiện chưa có đủ nguồn chính thức được cấu trúc cho thủ tục này. Sẽ không tự ý hướng dẫn các giấy tờ, lệ phí, thời hạn hay lối đặt hẹn chưa được xác nhận. Vui lòng xác nhận cuối cùng với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
+      whatWeCanSay: 'Thông tin Paradiso có thể cung cấp an toàn',
+      whatWeCannot: 'Thông tin Paradiso không thể xác nhận',
+      officialChannels: 'Kênh xác nhận chính thức',
+      call1345: '1345 (Trung tâm tư vấn tổng hợp cho người nước ngoài)',
+      hikoreaCta: 'Kiểm tra lối đặt hẹn HiKorea của tôi',
+      aiFollowupCta: 'Hỏi về điều chưa rõ trong gói này',
+      aiFollowupPlaceholder: 'Hãy hỏi về điều bạn chưa hiểu trong gói này. Ví dụ: Giấy tờ chứng minh tài chính có thể được miễn không?',
+      aiPrivacyNote: 'Đừng nhập thông tin cá nhân (họ tên, số hộ chiếu·số đăng ký người nước ngoài, địa chỉ, số điện thoại, v.v.). Trợ lý này chỉ giải thích gói thủ tục, không tạo ra yêu cầu chính thức mới.',
+      aiSend: 'Hỏi',
+      noDocs: 'Danh mục giấy tờ chính thức của thủ tục này chưa được cấu trúc.',
+      verifyIntro: 'Các mục dưới đây không thể xác định bằng nguồn chính thức tại đây, hãy xác nhận với cơ quan có thẩm quyền/1345/HiKorea.',
+      generatedOn: 'Ngày tạo',
+      sourceVersion: 'Phiên bản căn cứ',
+      disclaimerPrint: 'Việc xác nhận cuối cùng phải thực hiện với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh·người nước ngoài có thẩm quyền.',
+      langName: 'Tiếng Việt',
+      operatorDiag: 'Chẩn đoán (người vận hành)'
+    },
+    tl: {
+      title: 'Waymaker - Gabay sa Proseso ng Pananatili sa Korea',
+      subtitle: 'Batay sa opisyal na pinagmulan, inaayos namin ang iyong proseso, dokumento, booking, at susunod na hakbang.',
+      empty: 'Hindi mo kailangang magsulat muna ng tanong. Piliin ang iyong kasalukuyang status of stay at ang gusto mong gawin.',
+      start: 'Piliin ang aking sitwasyon',
+      back: 'Bumalik',
+      next: 'Susunod',
+      restart: 'Magsimula muli',
+      dontKnow: 'Hindi ako sigurado',
+      stepLanguage: 'Piliin ang iyong wika',
+      stepLocation: 'Nasaan ka ngayon?',
+      locIn: 'Nasa Korea', locOut: 'Nasa labas ng Korea', locUnsure: 'Hindi sigurado / depende',
+      stepStatus: 'Piliin ang iyong kasalukuyang status of stay',
+      statusSearchPlaceholder: 'Maghanap ayon sa code o pangalan (hal. D-2, pag-aaral, E-7)',
+      statusUnknown: 'Hindi ko alam ang aking status of stay',
+      statusFirstEntry: 'Wala pa akong visa / naghahanda ng unang pagpasok·pag-isyu ng visa mula sa ibang bansa',
+      noStatusResults: 'Walang tugma. Subukan ang code (hal. D-2) o ang pangalan ng status sa Korean.',
+      programGroup: 'Mga programa / pilot (limitado ang opisyal na saklaw)',
+      stepProcedure: 'Anong proseso ang kailangan mo?',
+      procedureLimitedHint: 'Limitado ang opisyal na saklaw',
+      stepSubStatus: 'Aling sub-type ang naaangkop sa iyo?',
+      subStatusHelp: 'Maaaring mag-iba ang dokumento at pamantayan ayon sa sub-type. Kung hindi sigurado, piliin ang "Hindi ako sigurado".',
+      generating: 'Inihahanda ang procedure packet na batay sa opisyal na pinagmulan…',
+      secProcedure: 'Ang aking proseso', secNext: 'Susunod na gagawin', secApplicability: 'Pagkaaplikable',
+      secDocs: 'Mga dokumentong ihahanda', secConditional: 'Karagdagang dokumento ayon sa sitwasyon', secWhere: 'Saan kukunin·paano ihahanda',
+      secTiming: 'Takdang panahon·babala', secFees: 'Bayad', secChannel: 'HiKorea / daan sa pagbisita',
+      secJurisdiction: 'Hurisdiksiyon', secCoverage: 'Saklaw ng opisyal na pinagmulan', secVerify: 'Mga aytem na dapat tiyakin',
+      grpCommon: 'Karaniwang dokumento', grpRequired: 'Kailangang dokumento', grpConditional: 'Dokumento ayon sa sitwasyon',
+      grpAdditional: 'Karagdagang dokumento', grpVerify: 'Tiyakin sa tanggapan', grpNone: 'Hindi sapat ang batayan',
+      checklistTitle: 'Checklist ng dokumento', checklistHint: 'Ang iyong mga tsek ay naka-save lamang sa browser na ito.',
+      checklistReset: 'I-reset', checklistCopy: 'Kopyahin', checklistPrint: 'I-print / i-export',
+      checklistCopied: 'Nakopya ang checklist sa clipboard.',
+      officialForm: 'Opisyal na form',
+      coverageLimitedTitle: 'Limitado ang opisyal na saklaw ng prosesong ito',
+      coverageLimited: 'Wala pang sapat na nakaayos na opisyal na pinagmulan para sa prosesong ito. Hindi maghuhula ng dokumento, bayad, deadline, o daan sa booking. Mangyaring tiyakin sa HiKorea, 1345, o sa may hurisdiksyong opisina ng imigrasyon.',
+      whatWeCanSay: 'Ang ligtas na masasabi ng Paradiso',
+      whatWeCannot: 'Ang hindi makukumpirma ng Paradiso',
+      officialChannels: 'Saan tiyakin nang opisyal',
+      call1345: '1345 (Immigration Contact Center)',
+      hikoreaCta: 'Tingnan ang aking daan sa booking ng HiKorea',
+      aiFollowupCta: 'Magtanong tungkol sa packet na ito',
+      aiFollowupPlaceholder: 'Magtanong tungkol sa packet na ito. Halimbawa: Maaari bang i-waive ang aytem ng pagpapatunay ng pananalapi?',
+      aiPrivacyNote: 'Huwag maglagay ng personal na impormasyon (pangalan, numero ng pasaporte·ARC, address, telepono). Ipinapaliwanag lamang ng tulong na ito ang packet; hindi ito lumilikha ng bagong opisyal na kahilingan.',
+      aiSend: 'Magtanong',
+      noDocs: 'Hindi pa nakaayos ang opisyal na listahan ng dokumento para sa prosesong ito.',
+      verifyIntro: 'Ang mga aytem sa ibaba ay hindi makukumpirma mula sa opisyal na pinagmulan dito. Tiyakin sa may hurisdiksyong tanggapan, 1345, o HiKorea.',
+      generatedOn: 'Nalikha',
+      sourceVersion: 'Bersyon ng batayan',
+      disclaimerPrint: 'Ang huling kumpirmasyon ay dapat gawin sa HiKorea, 1345, o sa may hurisdiksyong tanggapan ng imigrasyon·dayuhan.',
+      langName: 'Filipino',
+      operatorDiag: 'Diagnostics (operator)'
+    },
+    id: {
+      title: 'Waymaker - Penunjuk Jalan Prosedur Tinggal di Korea',
+      subtitle: 'Berdasarkan sumber resmi, kami merapikan prosedur, dokumen, pemesanan, dan langkah berikutnya Anda.',
+      empty: 'Anda tidak perlu menulis pertanyaan dulu. Pilih status tinggal Anda saat ini dan apa yang ingin Anda lakukan.',
+      start: 'Pilih situasi saya',
+      back: 'Kembali',
+      next: 'Berikutnya',
+      restart: 'Mulai dari awal',
+      dontKnow: 'Saya tidak yakin',
+      stepLanguage: 'Pilih bahasa Anda',
+      stepLocation: 'Di mana Anda sekarang?',
+      locIn: 'Di Korea', locOut: 'Di luar Korea', locUnsure: 'Tidak yakin / tergantung situasi',
+      stepStatus: 'Pilih status tinggal Anda saat ini',
+      statusSearchPlaceholder: 'Cari berdasarkan kode atau nama (mis. D-2, studi, E-7)',
+      statusUnknown: 'Saya tidak tahu status tinggal saya',
+      statusFirstEntry: 'Saya belum punya visa / sedang menyiapkan masuk pertama·penerbitan visa dari luar negeri',
+      noStatusResults: 'Tidak ada hasil. Coba kode (mis. D-2) atau nama status dalam bahasa Korea.',
+      programGroup: 'Program / uji coba (cakupan resmi terbatas)',
+      stepProcedure: 'Prosedur apa yang Anda butuhkan?',
+      procedureLimitedHint: 'Cakupan sumber resmi terbatas',
+      stepSubStatus: 'Sub-tipe mana yang berlaku untuk Anda?',
+      subStatusHelp: 'Dokumen dan kriteria dapat berbeda menurut sub-tipe. Jika tidak yakin, pilih "Saya tidak yakin".',
+      generating: 'Menyiapkan paket prosedur berbasis sumber resmi…',
+      secProcedure: 'Prosedur saya', secNext: 'Yang harus dilakukan sekarang', secApplicability: 'Keberlakuan',
+      secDocs: 'Dokumen yang disiapkan', secConditional: 'Dokumen tambahan menurut situasi', secWhere: 'Tempat memperoleh·cara menyiapkan',
+      secTiming: 'Tenggat·peringatan', secFees: 'Biaya', secChannel: 'HiKorea / jalur kunjungan',
+      secJurisdiction: 'Yurisdiksi', secCoverage: 'Cakupan sumber resmi', secVerify: 'Item yang perlu dipastikan',
+      grpCommon: 'Dokumen umum', grpRequired: 'Dokumen wajib', grpConditional: 'Dokumen menurut situasi',
+      grpAdditional: 'Dokumen tambahan', grpVerify: 'Pastikan ke kantor', grpNone: 'Dasar belum cukup',
+      checklistTitle: 'Daftar periksa dokumen', checklistHint: 'Status centang hanya disimpan di browser ini.',
+      checklistReset: 'Atur ulang', checklistCopy: 'Salin', checklistPrint: 'Cetak / ekspor',
+      checklistCopied: 'Daftar periksa disalin ke papan klip.',
+      officialForm: 'Formulir resmi',
+      coverageLimitedTitle: 'Prosedur ini memiliki cakupan sumber resmi yang terbatas',
+      coverageLimited: 'Saat ini belum ada cukup cakupan sumber resmi yang terstruktur untuk prosedur ini. Dokumen, biaya, tenggat, atau jalur pemesanan yang belum terkonfirmasi tidak akan dipandu sembarangan. Mohon konfirmasi terakhir ke HiKorea, 1345, atau kantor imigrasi yang berwenang.',
+      whatWeCanSay: 'Informasi yang dapat diberikan Paradiso dengan aman',
+      whatWeCannot: 'Informasi yang tidak dapat dikonfirmasi Paradiso',
+      officialChannels: 'Saluran konfirmasi resmi',
+      call1345: '1345 (Pusat Layanan Terpadu untuk Orang Asing)',
+      hikoreaCta: 'Periksa jalur pemesanan HiKorea saya',
+      aiFollowupCta: 'Tanyakan hal yang belum jelas pada paket ini',
+      aiFollowupPlaceholder: 'Tanyakan hal yang belum Anda pahami pada paket ini. Contoh: Apakah dokumen bukti keuangan bisa dibebaskan?',
+      aiPrivacyNote: 'Jangan masukkan data pribadi (nama, nomor paspor·nomor registrasi orang asing, alamat, nomor telepon, dll.). Asisten ini hanya menjelaskan paket; ia tidak membuat persyaratan resmi baru.',
+      aiSend: 'Tanya',
+      noDocs: 'Daftar dokumen resmi untuk prosedur ini belum terstruktur.',
+      verifyIntro: 'Item di bawah ini tidak dapat ditentukan dari sumber resmi di sini, mohon konfirmasi ke kantor yang berwenang/1345/HiKorea.',
+      generatedOn: 'Dibuat',
+      sourceVersion: 'Versi dasar',
+      disclaimerPrint: 'Konfirmasi akhir harus dilakukan ke HiKorea, 1345, atau kantor imigrasi·orang asing yang berwenang.',
+      langName: 'Bahasa Indonesia',
+      operatorDiag: 'Diagnostik (operator)'
+    },
+    ru: {
+      title: 'Waymaker - Навигатор по процедурам пребывания в Корее',
+      subtitle: 'На основе официальных источников упорядочиваем вашу процедуру, документы, запись и следующее действие.',
+      empty: 'Вам не нужно сначала писать вопрос. Выберите свой текущий статус пребывания и то, что вы хотите сделать.',
+      start: 'Выбрать мою ситуацию',
+      back: 'Назад',
+      next: 'Далее',
+      restart: 'Начать заново',
+      dontKnow: 'Я не уверен(а)',
+      stepLanguage: 'Выберите язык',
+      stepLocation: 'Где вы сейчас находитесь?',
+      locIn: 'В Корее', locOut: 'За пределами Кореи', locUnsure: 'Не уверен(а) / зависит от ситуации',
+      stepStatus: 'Выберите ваш текущий статус пребывания',
+      statusSearchPlaceholder: 'Поиск по коду или названию (например, D-2, учёба, E-7)',
+      statusUnknown: 'Я не знаю свой статус пребывания',
+      statusFirstEntry: 'У меня ещё нет визы / готовлюсь к первому въезду·выдаче визы из-за рубежа',
+      noStatusResults: 'Совпадений нет. Попробуйте код (например, D-2) или название статуса на корейском.',
+      programGroup: 'Программы / пилотные проекты (официальная база ограничена)',
+      stepProcedure: 'Какая процедура вам нужна?',
+      procedureLimitedHint: 'Ограниченная официальная база',
+      stepSubStatus: 'Какой подтип вам подходит?',
+      subStatusHelp: 'Документы и критерии могут различаться по подтипу. Если не уверены, выберите «Я не уверен(а)».',
+      generating: 'Готовим пакет процедуры на основе официальных источников…',
+      secProcedure: 'Моя процедура', secNext: 'Что делать сейчас', secApplicability: 'Применимость',
+      secDocs: 'Документы для подготовки', secConditional: 'Дополнительные документы по ситуации', secWhere: 'Где получить·как подготовить',
+      secTiming: 'Сроки·предупреждения', secFees: 'Сборы', secChannel: 'HiKorea / путь визита',
+      secJurisdiction: 'Компетентный орган', secCoverage: 'Охват официальных источников', secVerify: 'Пункты для проверки',
+      grpCommon: 'Общие документы', grpRequired: 'Обязательные документы', grpConditional: 'Документы по ситуации',
+      grpAdditional: 'Дополнительные документы', grpVerify: 'Уточнить в учреждении', grpNone: 'Недостаточно оснований',
+      checklistTitle: 'Чек-лист документов', checklistHint: 'Отметки сохраняются только в этом браузере.',
+      checklistReset: 'Сбросить', checklistCopy: 'Копировать', checklistPrint: 'Печать / экспорт',
+      checklistCopied: 'Чек-лист скопирован в буфер обмена.',
+      officialForm: 'Официальная форма',
+      coverageLimitedTitle: 'У этой процедуры ограниченная база официальных источников',
+      coverageLimited: 'Сейчас для этой процедуры недостаточно структурированной официальной базы. Неподтверждённые документы, сборы, сроки и пути записи не будут указываться произвольно. Пожалуйста, окончательно уточните в HiKorea, по телефону 1345 или в компетентном иммиграционном органе.',
+      whatWeCanSay: 'Что Paradiso может безопасно сообщить',
+      whatWeCannot: 'Что Paradiso не может подтвердить',
+      officialChannels: 'Официальные каналы для уточнения',
+      call1345: '1345 (Центр поддержки иностранцев)',
+      hikoreaCta: 'Проверить мой путь записи в HiKorea',
+      aiFollowupCta: 'Спросить о неясном в этом пакете',
+      aiFollowupPlaceholder: 'Спросите о том, что вам непонятно в этом пакете. Например: можно ли освободить от пункта о подтверждении финансов?',
+      aiPrivacyNote: 'Не вводите личные данные (имя, номер паспорта·карты иностранца, адрес, телефон и т. п.). Этот помощник только разъясняет пакет; он не создаёт новых официальных требований.',
+      aiSend: 'Спросить',
+      noDocs: 'Официальный список документов для этой процедуры ещё не структурирован.',
+      verifyIntro: 'Пункты ниже здесь нельзя подтвердить по официальным источникам, уточните в компетентном органе/по телефону 1345/в HiKorea.',
+      generatedOn: 'Создано',
+      sourceVersion: 'Версия источника',
+      disclaimerPrint: 'Окончательное подтверждение необходимо получить в HiKorea, по телефону 1345 или в компетентном органе по делам иммиграции·иностранцев.',
+      langName: 'Русский',
+      operatorDiag: 'Диагностика (оператор)'
+    },
+    fr: {
+      title: 'Waymaker - Guide des procédures de séjour en Corée',
+      subtitle: 'À partir de sources officielles, nous organisons votre procédure, vos documents, votre rendez-vous et votre prochaine action.',
+      empty: "Vous n'avez pas besoin d'écrire une question d'abord. Choisissez votre statut de séjour actuel et ce que vous voulez faire.",
+      start: 'Choisir ma situation',
+      back: 'Retour',
+      next: 'Suivant',
+      restart: 'Recommencer',
+      dontKnow: 'Je ne suis pas sûr(e)',
+      stepLanguage: 'Choisissez votre langue',
+      stepLocation: 'Où êtes-vous en ce moment ?',
+      locIn: 'En Corée', locOut: 'Hors de Corée', locUnsure: 'Pas sûr(e) / cela dépend',
+      stepStatus: 'Choisissez votre statut de séjour actuel',
+      statusSearchPlaceholder: 'Rechercher par code ou nom (ex. : D-2, études, E-7)',
+      statusUnknown: 'Je ne connais pas mon statut de séjour',
+      statusFirstEntry: "Je n'ai pas encore de visa / je prépare une première entrée·délivrance de visa depuis l'étranger",
+      noStatusResults: 'Aucun résultat. Essayez un code (ex. : D-2) ou le nom du statut en coréen.',
+      programGroup: 'Programmes / projets pilotes (couverture officielle limitée)',
+      stepProcedure: 'Quelle procédure vous faut-il ?',
+      procedureLimitedHint: 'Couverture officielle limitée',
+      stepSubStatus: 'Quel sous-type vous concerne ?',
+      subStatusHelp: 'Les documents et critères peuvent varier selon le sous-type. En cas de doute, choisissez « Je ne suis pas sûr(e) ».',
+      generating: 'Préparation de votre dossier de procédure fondé sur des sources officielles…',
+      secProcedure: 'Ma procédure', secNext: 'Ce qu’il faut faire maintenant', secApplicability: 'Applicabilité',
+      secDocs: 'Documents à préparer', secConditional: 'Documents supplémentaires selon la situation', secWhere: 'Où l’obtenir·comment préparer',
+      secTiming: 'Délais·avertissements', secFees: 'Frais', secChannel: 'HiKorea / parcours de visite',
+      secJurisdiction: 'Autorité compétente', secCoverage: 'Couverture des sources officielles', secVerify: 'Éléments à vérifier',
+      grpCommon: 'Documents communs', grpRequired: 'Documents obligatoires', grpConditional: 'Documents selon la situation',
+      grpAdditional: 'Documents supplémentaires', grpVerify: 'Vérifier auprès du bureau', grpNone: 'Base insuffisante',
+      checklistTitle: 'Liste de contrôle des documents', checklistHint: 'Vos coches sont enregistrées uniquement dans ce navigateur.',
+      checklistReset: 'Réinitialiser', checklistCopy: 'Copier', checklistPrint: 'Imprimer / exporter',
+      checklistCopied: 'Liste de contrôle copiée dans le presse-papiers.',
+      officialForm: 'Formulaire officiel',
+      coverageLimitedTitle: 'Cette procédure a une couverture de sources officielles limitée',
+      coverageLimited: "Paradiso ne dispose pas encore d'une couverture officielle structurée suffisante pour cette procédure. Il ne devinera ni documents, ni frais, ni délais, ni parcours de rendez-vous. Veuillez confirmer auprès de HiKorea, du 1345 ou du bureau d'immigration compétent.",
+      whatWeCanSay: 'Ce que Paradiso peut dire en toute sécurité',
+      whatWeCannot: 'Ce que Paradiso ne peut pas confirmer',
+      officialChannels: 'Où confirmer officiellement',
+      call1345: '1345 (Centre d’information pour les étrangers)',
+      hikoreaCta: 'Vérifier mon parcours de rendez-vous HiKorea',
+      aiFollowupCta: 'Poser une question sur ce dossier',
+      aiFollowupPlaceholder: 'Posez une question sur ce dossier. Exemple : l’élément de preuve financière peut-il être dispensé ?',
+      aiPrivacyNote: 'N’entrez pas d’identifiants personnels (nom, numéro de passeport·de carte d’étranger, adresse, téléphone). Cet assistant ne fait qu’expliquer le dossier ; il ne crée pas de nouvelles exigences officielles.',
+      aiSend: 'Demander',
+      noDocs: "La liste officielle des documents pour cette procédure n'est pas encore structurée.",
+      verifyIntro: 'Les éléments ci-dessous ne peuvent pas être confirmés ici à partir de sources officielles. Confirmez auprès du bureau compétent, du 1345 ou de HiKorea.',
+      generatedOn: 'Généré',
+      sourceVersion: 'Version de la source',
+      disclaimerPrint: 'La confirmation finale doit être faite auprès de HiKorea, du 1345 ou du bureau d’immigration·des étrangers compétent.',
+      langName: 'Français',
+      operatorDiag: 'Diagnostic (opérateur)'
+    },
+    es: {
+      title: 'Waymaker - Guía de procedimientos de estancia en Corea',
+      subtitle: 'A partir de fuentes oficiales, organizamos su procedimiento, documentos, cita y siguiente acción.',
+      empty: 'No necesita escribir una pregunta primero. Elija su estatus de estancia actual y lo que quiere hacer.',
+      start: 'Elegir mi situación',
+      back: 'Atrás',
+      next: 'Siguiente',
+      restart: 'Empezar de nuevo',
+      dontKnow: 'No estoy seguro/a',
+      stepLanguage: 'Elija su idioma',
+      stepLocation: '¿Dónde está ahora?',
+      locIn: 'En Corea', locOut: 'Fuera de Corea', locUnsure: 'No estoy seguro/a / depende',
+      stepStatus: 'Elija su estatus de estancia actual',
+      statusSearchPlaceholder: 'Buscar por código o nombre (p. ej. D-2, estudios, E-7)',
+      statusUnknown: 'No conozco mi estatus de estancia',
+      statusFirstEntry: 'Todavía no tengo visado / estoy preparando la primera entrada·emisión de visado desde el extranjero',
+      noStatusResults: 'Sin resultados. Pruebe con un código (p. ej. D-2) o el nombre del estatus en coreano.',
+      programGroup: 'Programas / proyectos piloto (cobertura oficial limitada)',
+      stepProcedure: '¿Qué procedimiento necesita?',
+      procedureLimitedHint: 'Cobertura oficial limitada',
+      stepSubStatus: '¿Qué subtipo le corresponde?',
+      subStatusHelp: 'Los documentos y criterios pueden variar según el subtipo. Si no está seguro/a, elija «No estoy seguro/a».',
+      generating: 'Preparando su paquete de procedimiento basado en fuentes oficiales…',
+      secProcedure: 'Mi procedimiento', secNext: 'Qué hacer ahora', secApplicability: 'Aplicabilidad',
+      secDocs: 'Documentos a preparar', secConditional: 'Documentos adicionales según la situación', secWhere: 'Dónde obtenerlo·cómo prepararlo',
+      secTiming: 'Plazos·avisos', secFees: 'Tasas', secChannel: 'HiKorea / vía de visita',
+      secJurisdiction: 'Autoridad competente', secCoverage: 'Cobertura de fuentes oficiales', secVerify: 'Elementos a verificar',
+      grpCommon: 'Documentos comunes', grpRequired: 'Documentos obligatorios', grpConditional: 'Documentos según la situación',
+      grpAdditional: 'Documentos adicionales', grpVerify: 'Verificar con la oficina', grpNone: 'Base insuficiente',
+      checklistTitle: 'Lista de verificación de documentos', checklistHint: 'Sus marcas se guardan solo en este navegador.',
+      checklistReset: 'Restablecer', checklistCopy: 'Copiar', checklistPrint: 'Imprimir / exportar',
+      checklistCopied: 'Lista de verificación copiada al portapapeles.',
+      officialForm: 'Formulario oficial',
+      coverageLimitedTitle: 'Este procedimiento tiene una cobertura de fuentes oficiales limitada',
+      coverageLimited: 'Paradiso aún no dispone de suficiente cobertura oficial estructurada para este procedimiento. No adivinará documentos, tasas, plazos ni vías de cita. Confirme con HiKorea, el 1345 o la oficina de inmigración competente.',
+      whatWeCanSay: 'Lo que Paradiso puede decir con seguridad',
+      whatWeCannot: 'Lo que Paradiso no puede confirmar',
+      officialChannels: 'Dónde confirmar oficialmente',
+      call1345: '1345 (Centro de Atención al Extranjero)',
+      hikoreaCta: 'Comprobar mi vía de cita en HiKorea',
+      aiFollowupCta: 'Preguntar sobre este paquete',
+      aiFollowupPlaceholder: 'Pregunte sobre este paquete. Ejemplo: ¿podría eximirse el elemento de prueba financiera?',
+      aiPrivacyNote: 'No introduzca datos personales (nombre, número de pasaporte·de tarjeta de extranjero, dirección, teléfono). Este asistente solo explica el paquete; no crea nuevos requisitos oficiales.',
+      aiSend: 'Preguntar',
+      noDocs: 'La lista oficial de documentos para este procedimiento aún no está estructurada.',
+      verifyIntro: 'Los elementos siguientes no pueden confirmarse aquí a partir de fuentes oficiales. Confirme con la oficina competente, el 1345 o HiKorea.',
+      generatedOn: 'Generado',
+      sourceVersion: 'Versión de la fuente',
+      disclaimerPrint: 'La confirmación final debe realizarse en HiKorea, el 1345 o la oficina de inmigración·extranjería competente.',
+      langName: 'Español',
+      operatorDiag: 'Diagnóstico (operador)'
+    },
+    ar: {
+      title: 'Waymaker - دليل إجراءات الإقامة في كوريا',
+      subtitle: 'استنادًا إلى المصادر الرسمية، ننظّم إجراءك ومستنداتك وحجزك وخطوتك التالية.',
+      empty: 'لا حاجة لكتابة سؤال أولًا. اختر وضع إقامتك الحالي وما تريد فعله.',
+      start: 'اختيار حالتي',
+      back: 'رجوع',
+      next: 'التالي',
+      restart: 'البدء من جديد',
+      dontKnow: 'لست متأكدًا',
+      stepLanguage: 'اختر لغتك',
+      stepLocation: 'أين أنت الآن؟',
+      locIn: 'داخل كوريا', locOut: 'خارج كوريا', locUnsure: 'لست متأكدًا / حسب الحالة',
+      stepStatus: 'اختر وضع إقامتك الحالي',
+      statusSearchPlaceholder: 'ابحث بالرمز أو الاسم (مثل D-2، دراسة، E-7)',
+      statusUnknown: 'لا أعرف وضع إقامتي',
+      statusFirstEntry: 'ليس لديّ تأشيرة بعد / أُحضّر لأول دخول·إصدار تأشيرة من الخارج',
+      noStatusResults: 'لا توجد نتائج. جرّب رمزًا (مثل D-2) أو اسم الوضع بالكورية.',
+      programGroup: 'برامج / مشاريع تجريبية (السند الرسمي محدود)',
+      stepProcedure: 'ما الإجراء الذي تحتاجه؟',
+      procedureLimitedHint: 'السند الرسمي محدود',
+      stepSubStatus: 'أي نوع فرعي ينطبق عليك؟',
+      subStatusHelp: 'قد تختلف المستندات والمعايير حسب النوع الفرعي. إن لم تكن متأكدًا فاختر «لست متأكدًا».',
+      generating: 'يجري إعداد حزمة الإجراء المستندة إلى المصادر الرسمية…',
+      secProcedure: 'إجرائي', secNext: 'ما يجب فعله الآن', secApplicability: 'مدى الانطباق',
+      secDocs: 'المستندات المطلوب تجهيزها', secConditional: 'مستندات إضافية حسب الحالة', secWhere: 'جهة الإصدار·طريقة التجهيز',
+      secTiming: 'المواعيد·تنبيهات', secFees: 'الرسوم', secChannel: 'HiKorea / مسار الزيارة',
+      secJurisdiction: 'الجهة المختصة', secCoverage: 'نطاق المصادر الرسمية', secVerify: 'بنود يلزم التأكد منها',
+      grpCommon: 'مستندات مشتركة', grpRequired: 'مستندات إلزامية', grpConditional: 'مستندات حسب الحالة',
+      grpAdditional: 'مستندات إضافية', grpVerify: 'التأكد لدى المكتب', grpNone: 'السند غير كافٍ',
+      checklistTitle: 'قائمة مراجعة المستندات', checklistHint: 'تُحفظ علامات التحديد في هذا المتصفح فقط.',
+      checklistReset: 'إعادة ضبط', checklistCopy: 'نسخ', checklistPrint: 'طباعة / تصدير',
+      checklistCopied: 'تم نسخ قائمة المراجعة إلى الحافظة.',
+      officialForm: 'نموذج رسمي',
+      coverageLimitedTitle: 'هذا الإجراء له نطاق مصادر رسمية محدود',
+      coverageLimited: 'لا يتوفر حتى الآن سند رسمي مُنظَّم كافٍ لهذا الإجراء. ولن يتم تخمين المستندات أو الرسوم أو المواعيد النهائية أو مسارات الحجز. يُرجى التأكيد النهائي لدى HiKorea أو 1345 أو مكتب الهجرة المختص.',
+      whatWeCanSay: 'ما يمكن لـ Paradiso قوله بأمان',
+      whatWeCannot: 'ما لا يمكن لـ Paradiso تأكيده',
+      officialChannels: 'قنوات التأكيد الرسمية',
+      call1345: '1345 (مركز الاستعلامات الشامل للأجانب)',
+      hikoreaCta: 'تحقق من مسار حجز HiKorea الخاص بي',
+      aiFollowupCta: 'اسأل عما يلتبس عليك في هذه الحزمة',
+      aiFollowupPlaceholder: 'اسأل عما لا تفهمه في هذه الحزمة. مثال: هل يمكن إعفاء بند إثبات القدرة المالية؟',
+      aiPrivacyNote: 'لا تُدخل معلومات شخصية (الاسم، رقم جواز السفر·رقم تسجيل الأجانب، العنوان، الهاتف). يشرح هذا المساعد الحزمة فقط ولا ينشئ متطلبات رسمية جديدة.',
+      aiSend: 'اسأل',
+      noDocs: 'لم تُنظَّم بعد قائمة المستندات الرسمية لهذا الإجراء.',
+      verifyIntro: 'لا يمكن تأكيد البنود التالية من مصادر رسمية هنا، تأكّد لدى الجهة المختصة/1345/HiKorea.',
+      generatedOn: 'تاريخ الإنشاء',
+      sourceVersion: 'إصدار السند',
+      disclaimerPrint: 'يجب إجراء التأكيد النهائي لدى HiKorea أو 1345 أو مكتب الهجرة·شؤون الأجانب المختص.',
+      langName: 'العربية',
+      operatorDiag: 'تشخيص (المشغّل)'
+    },
+    de: {
+      title: 'Waymaker - Wegweiser für Aufenthaltsverfahren in Korea',
+      subtitle: 'Auf Grundlage offizieller Quellen ordnen wir Ihr Verfahren, Ihre Unterlagen, Ihren Termin und Ihren nächsten Schritt.',
+      empty: 'Sie müssen nicht zuerst eine Frage schreiben. Wählen Sie Ihren aktuellen Aufenthaltstitel und das, was Sie tun möchten.',
+      start: 'Meine Situation wählen',
+      back: 'Zurück',
+      next: 'Weiter',
+      restart: 'Von vorn beginnen',
+      dontKnow: 'Ich bin nicht sicher',
+      stepLanguage: 'Wählen Sie Ihre Sprache',
+      stepLocation: 'Wo befinden Sie sich gerade?',
+      locIn: 'In Korea', locOut: 'Außerhalb Koreas', locUnsure: 'Nicht sicher / kommt darauf an',
+      stepStatus: 'Wählen Sie Ihren aktuellen Aufenthaltstitel',
+      statusSearchPlaceholder: 'Nach Code oder Name suchen (z. B. D-2, Studium, E-7)',
+      statusUnknown: 'Ich kenne meinen Aufenthaltstitel nicht',
+      statusFirstEntry: 'Ich habe noch kein Visum / bereite die erste Einreise·Visumerteilung aus dem Ausland vor',
+      noStatusResults: 'Keine Treffer. Versuchen Sie einen Code (z. B. D-2) oder den koreanischen Statusnamen.',
+      programGroup: 'Programme / Pilotprojekte (begrenzte offizielle Grundlage)',
+      stepProcedure: 'Welches Verfahren benötigen Sie?',
+      procedureLimitedHint: 'Begrenzte offizielle Grundlage',
+      stepSubStatus: 'Welcher Untertyp trifft auf Sie zu?',
+      subStatusHelp: 'Unterlagen und Kriterien können je nach Untertyp unterschiedlich sein. Wenn Sie unsicher sind, wählen Sie „Ich bin nicht sicher“.',
+      generating: 'Ihr auf offiziellen Quellen basierendes Verfahrenspaket wird vorbereitet…',
+      secProcedure: 'Mein Verfahren', secNext: 'Was jetzt zu tun ist', secApplicability: 'Anwendbarkeit',
+      secDocs: 'Vorzubereitende Unterlagen', secConditional: 'Zusätzliche Unterlagen je nach Situation', secWhere: 'Wo erhältlich·wie vorzubereiten',
+      secTiming: 'Fristen·Hinweise', secFees: 'Gebühren', secChannel: 'HiKorea / Besuchsweg',
+      secJurisdiction: 'Zuständige Behörde', secCoverage: 'Abdeckung durch offizielle Quellen', secVerify: 'Zu prüfende Punkte',
+      grpCommon: 'Allgemeine Unterlagen', grpRequired: 'Erforderliche Unterlagen', grpConditional: 'Unterlagen je nach Situation',
+      grpAdditional: 'Zusätzliche Unterlagen', grpVerify: 'Bei der Behörde prüfen', grpNone: 'Grundlage nicht ausreichend',
+      checklistTitle: 'Unterlagen-Checkliste', checklistHint: 'Ihre Markierungen werden nur in diesem Browser gespeichert.',
+      checklistReset: 'Zurücksetzen', checklistCopy: 'Kopieren', checklistPrint: 'Drucken / exportieren',
+      checklistCopied: 'Checkliste in die Zwischenablage kopiert.',
+      officialForm: 'Amtliches Formular',
+      coverageLimitedTitle: 'Dieses Verfahren hat eine begrenzte Abdeckung durch offizielle Quellen',
+      coverageLimited: 'Paradiso verfügt für dieses Verfahren noch nicht über genügend strukturierte offizielle Quellengrundlage. Es errät keine Unterlagen, Gebühren, Fristen oder Terminwege. Bitte bestätigen Sie dies bei HiKorea, unter 1345 oder bei der zuständigen Einwanderungsbehörde.',
+      whatWeCanSay: 'Was Paradiso sicher sagen kann',
+      whatWeCannot: 'Was Paradiso nicht bestätigen kann',
+      officialChannels: 'Wo offiziell zu bestätigen',
+      call1345: '1345 (Beratungszentrum für Ausländer)',
+      hikoreaCta: 'Meinen HiKorea-Terminweg prüfen',
+      aiFollowupCta: 'Zu diesem Paket nachfragen',
+      aiFollowupPlaceholder: 'Fragen Sie zu diesem Paket. Beispiel: Kann der Nachweis der finanziellen Mittel erlassen werden?',
+      aiPrivacyNote: 'Geben Sie keine persönlichen Daten ein (Name, Pass-·Ausländerregisternummer, Adresse, Telefon). Dieser Helfer erklärt nur das Paket; er erstellt keine neuen offiziellen Anforderungen.',
+      aiSend: 'Fragen',
+      noDocs: 'Die offizielle Unterlagenliste für dieses Verfahren ist noch nicht strukturiert.',
+      verifyIntro: 'Die folgenden Punkte können hier nicht aus offiziellen Quellen bestätigt werden. Bestätigen Sie sie bei der zuständigen Behörde, unter 1345 oder bei HiKorea.',
+      generatedOn: 'Erstellt',
+      sourceVersion: 'Quellenversion',
+      disclaimerPrint: 'Die endgültige Bestätigung muss bei HiKorea, unter 1345 oder bei der zuständigen Einwanderungs-·Ausländerbehörde erfolgen.',
+      langName: 'Deutsch',
+      operatorDiag: 'Diagnose (Betreiber)'
     }
   };
 
   var PROCEDURE_LABELS = {
-    visaIssuance:           { ko: '사증발급 / 최초 입국', en: 'Visa issuance / first entry', 'zh-CN': '签证签发 / 首次入境' },
-    registration:           { ko: '외국인등록', en: 'Alien registration', 'zh-CN': '外国人登录' },
-    extension:              { ko: '체류기간 연장', en: 'Extension of stay', 'zh-CN': '居留期限延长' },
-    statusChange:           { ko: '체류자격 변경', en: 'Change of status', 'zh-CN': '居留资格变更' },
-    statusGrant:            { ko: '체류자격 부여', en: 'Grant of status', 'zh-CN': '居留资格赋予' },
-    workplaceChange:        { ko: '근무처 변경·추가', en: 'Workplace change / addition', 'zh-CN': '工作单位变更·追加' },
-    activitiesOutsideStatus:{ ko: '체류자격외 활동', en: 'Activities outside status', 'zh-CN': '资格外活动' },
-    reentry:                { ko: '재입국허가', en: 'Re-entry permit', 'zh-CN': '再入境许可' }
+    visaIssuance: {
+      ko: '사증발급 / 최초 입국', en: 'Visa issuance / first entry', 'zh-CN': '签证签发 / 首次入境',
+      ja: '査証発給 / 初回入国', vi: 'Cấp visa / nhập cảnh lần đầu', tl: 'Pag-isyu ng visa / unang pagpasok',
+      id: 'Penerbitan visa / masuk pertama', ru: 'Выдача визы / первый въезд', fr: 'Délivrance de visa / première entrée',
+      es: 'Emisión de visado / primera entrada', ar: 'إصدار التأشيرة / أول دخول', de: 'Visumerteilung / Ersteinreise'
+    },
+    registration: {
+      ko: '외국인등록', en: 'Alien registration', 'zh-CN': '外国人登录',
+      ja: '外国人登録', vi: 'Đăng ký người nước ngoài', tl: 'Pagpaparehistro ng dayuhan',
+      id: 'Registrasi orang asing', ru: 'Регистрация иностранца', fr: 'Enregistrement des étrangers',
+      es: 'Registro de extranjero', ar: 'تسجيل الأجانب', de: 'Ausländerregistrierung'
+    },
+    extension: {
+      ko: '체류기간 연장', en: 'Extension of stay', 'zh-CN': '居留期限延长',
+      ja: '滞在期間の延長', vi: 'Gia hạn thời gian cư trú', tl: 'Pagpapahaba ng pananatili',
+      id: 'Perpanjangan masa tinggal', ru: 'Продление срока пребывания', fr: 'Prolongation de séjour',
+      es: 'Prórroga de estancia', ar: 'تمديد مدة الإقامة', de: 'Verlängerung des Aufenthalts'
+    },
+    statusChange: {
+      ko: '체류자격 변경', en: 'Change of status', 'zh-CN': '居留资格变更',
+      ja: '滞在資格の変更', vi: 'Thay đổi tư cách cư trú', tl: 'Pagbabago ng status',
+      id: 'Perubahan status tinggal', ru: 'Изменение статуса пребывания', fr: 'Changement de statut',
+      es: 'Cambio de estatus', ar: 'تغيير وضع الإقامة', de: 'Änderung des Aufenthaltstitels'
+    },
+    statusGrant: {
+      ko: '체류자격 부여', en: 'Grant of status', 'zh-CN': '居留资格赋予',
+      ja: '滞在資格の付与', vi: 'Cấp tư cách cư trú', tl: 'Pagkakaloob ng status',
+      id: 'Pemberian status tinggal', ru: 'Предоставление статуса пребывания', fr: 'Octroi du statut',
+      es: 'Concesión de estatus', ar: 'منح وضع الإقامة', de: 'Erteilung des Aufenthaltstitels'
+    },
+    workplaceChange: {
+      ko: '근무처 변경·추가', en: 'Workplace change / addition', 'zh-CN': '工作单位变更·追加',
+      ja: '勤務先の変更・追加', vi: 'Thay đổi·bổ sung nơi làm việc', tl: 'Pagbabago / pagdaragdag ng pinagtatrabahuhan',
+      id: 'Perubahan·penambahan tempat kerja', ru: 'Изменение·добавление места работы', fr: 'Changement / ajout de lieu de travail',
+      es: 'Cambio / adición de centro de trabajo', ar: 'تغيير·إضافة جهة العمل', de: 'Wechsel / Hinzufügung des Arbeitsplatzes'
+    },
+    activitiesOutsideStatus: {
+      ko: '체류자격외 활동', en: 'Activities outside status', 'zh-CN': '资格外活动',
+      ja: '資格外活動', vi: 'Hoạt động ngoài tư cách', tl: 'Mga aktibidad na labas sa status',
+      id: 'Kegiatan di luar status', ru: 'Деятельность вне статуса', fr: 'Activités hors statut',
+      es: 'Actividades fuera del estatus', ar: 'نشاط خارج وضع الإقامة', de: 'Tätigkeiten außerhalb des Status'
+    },
+    reentry: {
+      ko: '재입국허가', en: 'Re-entry permit', 'zh-CN': '再入境许可',
+      ja: '再入国許可', vi: 'Giấy phép tái nhập cảnh', tl: 'Re-entry permit',
+      id: 'Izin masuk kembali', ru: 'Разрешение на повторный въезд', fr: 'Permis de réadmission',
+      es: 'Permiso de reingreso', ar: 'تصريح إعادة الدخول', de: 'Wiedereinreisegenehmigung'
+    }
   };
 
   function t(locale, key) {
@@ -563,6 +1101,14 @@
     var track = makeAnalytics(options.analytics);
     var CHECKLIST_NS = 'paradiso_waymaker_checklist_v1';
     var LOCALE_KEY = 'paradiso_waymaker_locale';
+    // Content locales the navigator can render (ko is the fallback). zh-TW is a
+    // display layer over zh-CN, not its own content pack — handled separately.
+    var CONTENT_LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+    // All raw selections that may flow in from URL / localStorage / global / html
+    // lang (includes the zh-TW display variant).
+    var RAW_LOCALES = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+    function isContentLocale(x) { return CONTENT_LOCALES.indexOf(x) !== -1; }
+    function isRawLocale(x) { return RAW_LOCALES.indexOf(x) !== -1; }
 
     var catalog = null;
     var state = {
@@ -586,25 +1132,30 @@
           var ul = (new global.URLSearchParams(global.location.search).get('lang') || '');
           if (ul === 'zh-CN' || ul === 'zh-TW') return ul;
           var two = ul.toLowerCase().slice(0, 2);
-          if (two === 'ko' || two === 'en') return two;
+          if (isRawLocale(two)) return two;
         }
       } catch (e) {}
       try {
         var wmStored = global.localStorage && global.localStorage.getItem(LOCALE_KEY);
-        if (wmStored === 'ko' || wmStored === 'en' || wmStored === 'zh-CN' || wmStored === 'zh-TW') return wmStored;
+        if (isRawLocale(wmStored)) return wmStored;
         var g = global.localStorage && global.localStorage.getItem('paradiso:language');
-        if (g === 'ko' || g === 'en' || g === 'zh-CN' || g === 'zh-TW') return g;
+        if (isRawLocale(g)) return g;
       } catch (e) {}
-      if (['ko', 'en', 'zh-CN', 'zh-TW'].indexOf(global.PARADISO_LANG) !== -1) return global.PARADISO_LANG;
+      if (isRawLocale(global.PARADISO_LANG)) return global.PARADISO_LANG;
       var htmlLang = (doc.documentElement.getAttribute('lang') || '');
       if (htmlLang === 'zh-TW') return 'zh-TW';
       if (htmlLang.slice(0, 2) === 'zh') return 'zh-CN';
-      if (htmlLang.slice(0, 2) === 'en') return 'en';
+      var htmlTwo = htmlLang.toLowerCase().slice(0, 2);
+      if (isRawLocale(htmlTwo)) return htmlTwo;
       return 'ko';
     }
     // Traditional Chinese is a display layer over the zh-CN content (same as
     // index.html). Content always renders in one of ko/en/zh-CN.
-    function contentLocale(raw) { return (raw === 'zh-TW' || raw === 'zh-CN') ? 'zh-CN' : (raw === 'en' ? 'en' : 'ko'); }
+    function contentLocale(raw) {
+      // zh-TW renders zh-CN content with a Traditional display layer on top.
+      if (raw === 'zh-TW' || raw === 'zh-CN') return 'zh-CN';
+      return isContentLocale(raw) ? raw : 'ko';
+    }
     function resolveInitialLocale() { return contentLocale(rawSelection()); }
     function applyTradLayer(on) {
       try {
@@ -717,9 +1268,16 @@
       var steps = ['language', 'location', 'status', 'procedure', 'subStatus'];
       var idx = steps.indexOf(state.step);
       var showProgress = idx !== -1;
-      var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW'];
-      var LANG_SHORT = { ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁' };
-      var LANG_ARIA = { ko: '언어: 한국어', en: 'Language: English', 'zh-CN': '语言：简体中文', 'zh-TW': '語言：繁體中文' };
+      var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+      var LANG_SHORT = {
+        ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
+        tl: 'TL', id: 'ID', ru: 'RU', fr: 'FR', es: 'ES', ar: 'ع', de: 'DE'
+      };
+      var LANG_ARIA = {
+        ko: '언어: 한국어', en: 'Language: English', 'zh-CN': '语言：简体中文', 'zh-TW': '語言：繁體中文',
+        ja: '言語：日本語', vi: 'Ngôn ngữ: Tiếng Việt', tl: 'Wika: Filipino', id: 'Bahasa: Bahasa Indonesia',
+        ru: 'Язык: Русский', fr: 'Langue : Français', es: 'Idioma: Español', ar: 'اللغة: العربية', de: 'Sprache: Deutsch'
+      };
       var curLang = state.tradCN ? 'zh-TW' : state.locale;
       var nextLang = LANG_ORDER[(LANG_ORDER.indexOf(curLang) + 1) % LANG_ORDER.length];
       var langBtn = h('button', {
@@ -767,8 +1325,16 @@
       // active Traditional display layer.
       var zhCN = langChip('简体中文', 'zh-CN'); zhCN.setAttribute('data-s2t', 'off');
       var zhTW = langChip('繁體中文', 'zh-TW'); zhTW.setAttribute('data-s2t', 'off');
+      // Each additional content locale, labelled in its own script via langName.
+      // data-s2t=off keeps the Traditional layer from mangling these scripts.
+      var more = ['ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'].map(function (loc) {
+        var c = langChip(t(loc, 'langName'), loc);
+        c.setAttribute('data-s2t', 'off');
+        if (loc === 'ar') c.setAttribute('dir', 'rtl');
+        return c;
+      });
       return stepShell('language', L('stepLanguage'), [
-        chipGrid([ko, en, zhCN, zhTW])
+        chipGrid([ko, en, zhCN, zhTW].concat(more))
       ], null);
     }
 

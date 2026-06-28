@@ -20792,7 +20792,16 @@ const LANGUAGE_OPTIONS = [
     // renders the Simplified content paths and the zh-traditional.js layer
     // converts the displayed text to Traditional. It therefore needs no separate
     // i18n pack — see selectedLocale / contentLocaleFor() below.
-    { code: 'zh-TW', html: 'zh-TW', short: '繁', name: '繁體中文', local: 'Chinese (Traditional)' }
+    { code: 'zh-TW', html: 'zh-TW', short: '繁', name: '繁體中文', local: 'Chinese (Traditional)' },
+    { code: 'ja', html: 'ja', short: '日', name: '日本語', local: 'Japanese' },
+    { code: 'vi', html: 'vi', short: 'VI', name: 'Tiếng Việt', local: 'Vietnamese' },
+    { code: 'tl', html: 'tl', short: 'TL', name: 'Tagalog', local: 'Tagalog' },
+    { code: 'id', html: 'id', short: 'ID', name: 'Bahasa Indonesia', local: 'Indonesian' },
+    { code: 'ru', html: 'ru', short: 'RU', name: 'Русский', local: 'Russian' },
+    { code: 'fr', html: 'fr', short: 'FR', name: 'Français', local: 'French' },
+    { code: 'es', html: 'es', short: 'ES', name: 'Español', local: 'Spanish' },
+    { code: 'ar', html: 'ar', short: 'ع', name: 'العربية', local: 'Arabic', dir: 'rtl' },
+    { code: 'de', html: 'de', short: 'DE', name: 'Deutsch', local: 'German' }
 ];
 // The user's actual selection (drives the selector + persistence). For zh-TW
 // this differs from currentLanguage, which holds the *content* locale used by
@@ -20806,7 +20815,7 @@ function contentLocaleFor(code) { return code === 'zh-TW' ? 'zh-CN' : code; }
 // surfaces; every other selectable language is treated as `partial` (some text
 // still falls back to Korean). Drives the partial-language notice + selector
 // badge so users are told transparently rather than silently shown Korean.
-const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full', 'zh-TW': 'full' };
+const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full', 'zh-TW': 'full', ja: 'full', vi: 'full', tl: 'full', id: 'full', ru: 'full', fr: 'full', es: 'full', ar: 'full', de: 'full' };
 function languageSupportLevel(code) {
     const normalized = normalizeLocaleCode(code);
     const level = LANGUAGE_SUPPORT[normalized];
@@ -20857,7 +20866,13 @@ const BOOTSTRAP_KO_FALLBACK = {
     editorialThemeKitsch: '팝',
     editorialThemeAria: '인터페이스 테마 변경'
 };
-let I18N_MANIFEST = { defaultLocale: 'ko', canonicalLocale: 'ko', supportedLocales: ['ko', 'en', 'zh-CN'], localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' }, pendingLocales: [] };
+let I18N_MANIFEST = {
+    defaultLocale: 'ko', canonicalLocale: 'ko',
+    supportedLocales: ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'],
+    files: { ko: 'ko.json', en: 'en.json', 'zh-CN': 'zh-CN.json', ja: 'ja.json', vi: 'vi.json', tl: 'tl.json', id: 'id.json', ru: 'ru.json', fr: 'fr.json', es: 'es.json', ar: 'ar.json', de: 'de.json' },
+    localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' },
+    pendingLocales: []
+};
 
 function normalizeLocaleCode(code) {
     if (!code) return 'ko';
@@ -21213,6 +21228,8 @@ function applyLanguage(code, options = {}) {
     document.documentElement.dir = lang.dir || 'ltr';
     try { localStorage.setItem(LANGUAGE_STORAGE_KEY, code); } catch (e) {}
     applyTraditionalChineseMode(code === 'zh-TW');
+    // Supplementary leak fallback for the 9 non-ko/en/zh locales (inactive otherwise).
+    if (typeof window !== 'undefined' && window.ParadisoIndexFallback) window.ParadisoIndexFallback.setLang(currentLanguage);
 
     setAttr('#languageBtn', 'aria-label', tx('languageButton'));
     setAttr('#languageBtn', 'title', tx('languageButton'));
@@ -23624,6 +23641,10 @@ function showVisaDocForAction(visaCode) {
      DOM to Traditional. `defer` guarantees it runs before the DOMContentLoaded
      init that first calls applyLanguage(). -->
 <script defer src="assets/js/zh-traditional.js"></script>
+<!-- Supplementary Korean->target fallback for the few inline-ternary feature
+     surfaces (job-code analyzer, fees, doc guide, form checklist) that would
+     otherwise leak Korean for the 9 non-ko/en/zh locales. -->
+<script defer src="assets/js/index-i18n-fallback.js"></script>
 <!-- Guided tools: country data + route data stay in external JSON (data/short-stay/,
      data/f4/) and load lazily — index.html never embeds country lists. -->
 <script defer src="assets/js/short-stay-checker.js"></script>

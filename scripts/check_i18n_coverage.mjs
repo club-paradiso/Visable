@@ -6,7 +6,10 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..');
 const i18nDir = path.join(repoRoot, 'data', 'i18n');
-const requiredLocales = ['ko', 'en', 'zh-CN'];
+// Locales validated for full key/shape parity are derived from the manifest's
+// supportedLocales so new full packs are gated automatically. ko/en/zh-CN must
+// always remain present (core guard below).
+const CORE_LOCALES = ['ko', 'en', 'zh-CN'];
 
 function fail(message) {
   console.error(`[check_i18n_coverage] ${message}`);
@@ -42,10 +45,14 @@ function getByPath(root, flatPath) {
 }
 
 const manifest = readJson('manifest.json');
+const supported = Array.isArray(manifest.supportedLocales) ? manifest.supportedLocales : [];
+for (const locale of CORE_LOCALES) {
+  if (!supported.includes(locale)) fail(`manifest.supportedLocales is missing core locale ${locale}`);
+}
+// Validate every supported locale (ko first as canonical), so each registered pack
+// gets full coverage + shape gating.
+const requiredLocales = supported.length ? ['ko', ...supported.filter((l) => l !== 'ko')] : CORE_LOCALES;
 for (const locale of requiredLocales) {
-  if (!manifest.supportedLocales?.includes(locale)) {
-    fail(`manifest.supportedLocales is missing ${locale}`);
-  }
   const file = manifest.files?.[locale];
   if (!file || !fs.existsSync(path.join(i18nDir, file))) {
     fail(`manifest file entry for ${locale} is missing or unreadable`);
