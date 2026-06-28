@@ -5,45 +5,66 @@
   "supportedLocales": [
     "ko",
     "en",
-    "zh-CN"
+    "zh-CN",
+    "ja",
+    "vi",
+    "tl",
+    "id",
+    "ru",
+    "fr",
+    "es",
+    "ar",
+    "de"
   ],
   "localeLabels": {
     "ko": "한국어",
     "en": "English",
     "zh-CN": "简体中文",
-    "zh-TW": "繁體中文"
+    "zh-TW": "繁體中文",
+    "ja": "日本語",
+    "vi": "Tiếng Việt",
+    "tl": "Tagalog",
+    "id": "Bahasa Indonesia",
+    "ru": "Русский",
+    "fr": "Français",
+    "es": "Español",
+    "ar": "العربية",
+    "de": "Deutsch"
   },
-  "policy": "Korean is canonical. English and Simplified Chinese are active display languages. Traditional Chinese (zh-TW) is a display variant of zh-CN: the UI renders the zh-CN pack and assets/js/zh-traditional.js converts the displayed text to Traditional (OpenCC s2t), so it has no separate pack. Official legal, immigration, agency, and document terms must be resolved through data/i18n/official-terms.json when available; unverified official names render Korean.",
+  "policy": "Korean is canonical. English, Simplified Chinese, Japanese, Vietnamese, Tagalog, Indonesian, Russian, French, Spanish, Arabic, and German are active display languages with full UI packs. Traditional Chinese (zh-TW) is a display variant of zh-CN: the UI renders the zh-CN pack and assets/js/zh-traditional.js converts the displayed text to Traditional (OpenCC s2t), so it has no separate pack. Official legal, immigration, agency, and document terms must be resolved through data/i18n/official-terms.json when available; the glossary is maintained for en and zh-CN, and unverified official names render the Korean canonical for every other locale.",
   "localeAliases": {
     "zh": "zh-CN",
     "zhHans": "zh-CN",
     "zhHant": "zh-TW",
     "zh-Hant": "zh-TW",
-    "zh-TW": "zh-TW"
+    "zh-TW": "zh-TW",
+    "fil": "tl",
+    "in": "id"
   },
   "pendingLocales": [
-    "ja",
     "af",
-    "fr",
-    "id",
     "it",
     "hi",
     "ne",
-    "es",
     "esLatam",
     "th",
-    "tl",
-    "vi",
     "km",
-    "ar",
     "mn",
-    "fa",
-    "ru"
+    "fa"
   ],
   "files": {
     "ko": "ko.json",
     "en": "en.json",
-    "zh-CN": "zh-CN.json"
+    "zh-CN": "zh-CN.json",
+    "ja": "ja.json",
+    "vi": "vi.json",
+    "tl": "tl.json",
+    "id": "id.json",
+    "ru": "ru.json",
+    "fr": "fr.json",
+    "es": "es.json",
+    "ar": "ar.json",
+    "de": "de.json"
   },
-  "notes": "PR A supports ko, en, and zh-CN first. Older locale codes remain selectable as pending/partial and fall back to Korean until validated packs are added."
+  "notes": "Korean canonical; en/zh-CN/ja/vi/tl/id/ru/fr/es/ar/de are full display packs. zh-TW is a runtime Traditional conversion of zh-CN. Remaining pendingLocales fall back to Korean until validated packs are added."
 }

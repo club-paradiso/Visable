@@ -54,8 +54,10 @@ const manifest = readJson('data/i18n/manifest.json') || {};
 if (manifest.defaultLocale !== 'ko') fail('manifest.defaultLocale must be ko');
 if ((manifest.fallbackLocale || 'ko') !== 'ko') fail('manifest.fallbackLocale must be ko');
 const supported = manifest.supportedLocales || [];
-if (supported.join(',') !== 'ko,en,zh-CN') {
-  fail(`manifest.supportedLocales must be exactly ko,en,zh-CN (got: ${supported.join(',')})`);
+// ko,en,zh-CN must always remain and stay first (zh-CN not removed, ko canonical);
+// additional fully-translated locale packs may be appended after them.
+if (supported.slice(0, 3).join(',') !== 'ko,en,zh-CN') {
+  fail(`manifest.supportedLocales must begin with ko,en,zh-CN (got: ${supported.join(',')})`);
 }
 for (const locale of supported) {
   if (!manifest.localeLabels?.[locale]) fail(`manifest.localeLabels missing ${locale}`);
@@ -86,7 +88,11 @@ const glossary = readJson('data/i18n/official-terms.json') || {};
 const CONFIDENCE = new Set(['canonical', 'official', 'manual-derived', 'curated', 'fallback', 'needs-verification']);
 const DISPLAYABLE = new Set(['canonical', 'official', 'manual-derived', 'curated']);
 const SOURCE_TYPES = new Set(['law-api', 'english-law', 'manual-derived', 'hikorea', 'visa-portal', 'mofa', 'curated', 'unknown']);
-const LOCALES = ['en', 'zh-CN'];
+// The official-terms glossary is maintained for en + zh-CN (other locales fall back
+// to the Korean canonical name per policy). Visa/status-code preservation, however,
+// is enforced across EVERY supported locale pack.
+const GLOSSARY_LOCALES = ['en', 'zh-CN'];
+const PACK_LOCALES = supported.filter((l) => l !== 'ko');
 
 const docDictBlock = html.match(/const DOC_DICT = \{([\s\S]*?)\n\};/);
 const docDictIds = new Set();
@@ -107,7 +113,7 @@ for (const [termId, entry] of Object.entries(terms)) {
   if (entry.confidence?.ko && entry.confidence.ko !== 'canonical') {
     fail(`${where}: confidence.ko must be 'canonical'`);
   }
-  for (const locale of LOCALES) {
+  for (const locale of GLOSSARY_LOCALES) {
     const value = entry[locale];
     if (value !== null && typeof value !== 'string') {
       fail(`${where}: ${locale} must be a string or null`);
@@ -146,11 +152,11 @@ function flatten(value, prefix = '') {
   return [[prefix, value]];
 }
 const packs = {};
-for (const locale of ['ko', ...LOCALES]) {
+for (const locale of ['ko', ...PACK_LOCALES]) {
   packs[locale] = readJson(path.join('data/i18n', manifest.files?.[locale] || `${locale}.json`)) || {};
 }
 const koFlat = new Map(flatten(packs.ko));
-for (const locale of LOCALES) {
+for (const locale of PACK_LOCALES) {
   const localeFlat = new Map(flatten(packs[locale]));
   for (const [key, koValue] of koFlat) {
     const koCodes = codesIn(koValue);
@@ -166,7 +172,7 @@ for (const locale of LOCALES) {
 }
 for (const [termId, entry] of Object.entries(terms)) {
   const koCodes = new Set(codesIn(entry.ko));
-  for (const locale of LOCALES) {
+  for (const locale of GLOSSARY_LOCALES) {
     if (typeof entry[locale] !== 'string') continue;
     for (const code of koCodes) {
       if (!entry[locale].includes(code)) {
