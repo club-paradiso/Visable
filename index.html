@@ -13124,12 +13124,12 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
     </div>
     <div class="language-wrap" id="languageWrap">
-        <button id="languageBtn" class="theme-btn language-btn" data-action="toggle-language-menu" aria-label="언어 설정" aria-expanded="false" aria-haspopup="listbox">
+        <button id="languageBtn" class="theme-btn language-btn" data-action="toggle-language-menu" aria-label="언어 설정" aria-expanded="false" aria-haspopup="listbox" data-s2t="off">
             <span aria-hidden="true">🌐</span>
             <span id="languageBtnCode" class="language-btn-code">KO</span>
             <span id="languageBtnNative" class="language-btn-native">한국어</span>
         </button>
-        <div id="languageMenu" class="language-menu" role="listbox" aria-label="언어 선택"></div>
+        <div id="languageMenu" class="language-menu" role="listbox" aria-label="언어 선택" data-s2t="off"></div>
     </div>
     <button id="editorialThemeBtn" class="theme-btn" data-action="toggle-editorial-theme" aria-label="인터페이스 테마">
         <span aria-hidden="true">🗂</span> <span class="editorial-theme-btn-text">모던</span>
@@ -20787,15 +20787,26 @@ const LANGUAGE_STORAGE_KEY = 'paradiso:language';
 const LANGUAGE_OPTIONS = [
     { code: 'ko', html: 'ko', short: 'KO', name: '한국어', local: '한국어' },
     { code: 'en', html: 'en', short: 'EN', name: 'English', local: 'English' },
-    { code: 'zh-CN', html: 'zh-CN', short: '简', name: '简体中文', local: 'Chinese (Simplified)' }
+    { code: 'zh-CN', html: 'zh-CN', short: '简', name: '简体中文', local: 'Chinese (Simplified)' },
+    // Traditional Chinese is a display variant of zh-CN: in zh-TW mode the app
+    // renders the Simplified content paths and the zh-traditional.js layer
+    // converts the displayed text to Traditional. It therefore needs no separate
+    // i18n pack — see selectedLocale / contentLocaleFor() below.
+    { code: 'zh-TW', html: 'zh-TW', short: '繁', name: '繁體中文', local: 'Chinese (Traditional)' }
 ];
+// The user's actual selection (drives the selector + persistence). For zh-TW
+// this differs from currentLanguage, which holds the *content* locale used by
+// tx() and the inline render ternaries (zh-CN, then converted to Traditional).
+let selectedLocale = 'ko';
 let currentLanguage = 'ko';
+// Map a selectable locale to the content locale that actually renders.
+function contentLocaleFor(code) { return code === 'zh-TW' ? 'zh-CN' : code; }
 
 // Language support level. `full` packs are actively maintained for the main UI
 // surfaces; every other selectable language is treated as `partial` (some text
 // still falls back to Korean). Drives the partial-language notice + selector
 // badge so users are told transparently rather than silently shown Korean.
-const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full' };
+const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full', 'zh-TW': 'full' };
 function languageSupportLevel(code) {
     const normalized = normalizeLocaleCode(code);
     const level = LANGUAGE_SUPPORT[normalized];
@@ -21084,8 +21095,14 @@ function getStoredLanguage() {
 
 function getInitialLanguage() {
     try {
-        const requested = normalizeLocaleCode(new URLSearchParams(window.location.search).get('lang'));
-        if (isLanguageSelectable(requested)) return requested;
+        // Only honor an explicit ?lang= override when one is actually present.
+        // (normalizeLocaleCode(null) resolves to 'ko', so without this guard the
+        // stored language is never restored — persistence would silently break.)
+        const raw = new URLSearchParams(window.location.search).get('lang');
+        if (raw) {
+            const requested = normalizeLocaleCode(raw);
+            if (isLanguageSelectable(requested)) return requested;
+        }
     } catch (e) {}
     return getStoredLanguage();
 }
@@ -21110,10 +21127,10 @@ function renderLanguageMenu() {
         const partial = level === 'partial';
         const badge = partial ? `<span class="language-option-badge">${escapeHtml(tx('languagePartialBadge'))}</span>` : '';
         return `
-        <button type="button" class="language-option" role="option" aria-selected="${lang.code === currentLanguage ? 'true' : 'false'}" data-action="apply-language" data-lang="${lang.code}">
+        <button type="button" class="language-option" role="option" aria-selected="${lang.code === selectedLocale ? 'true' : 'false'}" data-action="apply-language" data-lang="${lang.code}">
             <span class="language-option-code">${lang.short}</span>
             <span><span class="language-option-name">${lang.name}${badge}</span><br><span class="language-option-local">${lang.local}</span></span>
-            <span class="language-option-check" aria-hidden="true">${lang.code === currentLanguage ? '✓' : ''}</span>
+            <span class="language-option-check" aria-hidden="true">${lang.code === selectedLocale ? '✓' : ''}</span>
         </button>
     `;
     }).join('');
@@ -21169,17 +21186,33 @@ function updateSearchMetaText() {
     }
 }
 
+// Turn the Traditional-Chinese display layer on/off. In zh-TW mode the app
+// still renders Simplified (currentLanguage === 'zh-CN'); zh-traditional.js
+// converts the rendered DOM text to Traditional and keeps converting as new
+// content is rendered. Switching away re-renders chrome back to the target
+// language; the observer is stopped so nothing is re-converted.
+function applyTraditionalChineseMode(on) {
+    const zt = (typeof window !== 'undefined') && window.ParadisoZhT;
+    if (!zt) return;
+    if (on) { if (!zt.isActive()) zt.start(); }
+    else if (zt.isActive()) { zt.stop(); }
+}
+
 function applyLanguage(code, options = {}) {
     if (!hasFullKoI18nPack()) code = 'ko';
     code = normalizeLocaleCode(code);
     // Never activate a non-selectable (preparing) or unknown language; keep the
     // current language if it is valid, otherwise fall back to Korean.
-    if (!isLanguageSelectable(code)) code = isLanguageSelectable(currentLanguage) ? currentLanguage : 'ko';
-    currentLanguage = code;
+    if (!isLanguageSelectable(code)) code = isLanguageSelectable(selectedLocale) ? selectedLocale : 'ko';
+    selectedLocale = code;
+    // Content renders in the content locale (zh-TW → zh-CN); the Traditional
+    // script conversion is applied to the rendered DOM by zh-traditional.js.
+    currentLanguage = contentLocaleFor(code);
     const lang = getLanguageOption(code);
     document.documentElement.lang = lang.html;
     document.documentElement.dir = lang.dir || 'ltr';
     try { localStorage.setItem(LANGUAGE_STORAGE_KEY, code); } catch (e) {}
+    applyTraditionalChineseMode(code === 'zh-TW');
 
     setAttr('#languageBtn', 'aria-label', tx('languageButton'));
     setAttr('#languageBtn', 'title', tx('languageButton'));
@@ -23587,6 +23620,10 @@ function showVisaDocForAction(visaCode) {
 })();
 </script>
 
+<!-- Traditional Chinese (zh-TW) display layer: converts the rendered Simplified
+     DOM to Traditional. `defer` guarantees it runs before the DOMContentLoaded
+     init that first calls applyLanguage(). -->
+<script defer src="assets/js/zh-traditional.js"></script>
 <!-- Guided tools: country data + route data stay in external JSON (data/short-stay/,
      data/f4/) and load lazily — index.html never embeds country lists. -->
 <script defer src="assets/js/short-stay-checker.js"></script>
