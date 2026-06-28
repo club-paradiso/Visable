@@ -1847,11 +1847,29 @@ select:focus-visible {
             return findVisaRecordForQuestion(detectedCode || '', dataset);
         }
 
+        // The language the user chose in the Paradiso shell (index.html / New
+        // Home). Lets a Simplified/Traditional Chinese selection drive the answer
+        // language and resolve the Simplified-vs-Traditional ambiguity that short
+        // Chinese text cannot. 'zh-CN' | 'zh-TW' | 'en' | 'ko' | ''.
+        function getChosenLang() {
+            try {
+                const u = (new URLSearchParams(location.search).get('lang') || '').trim();
+                if (u === 'zh-CN' || u === 'zh-TW' || u === 'en' || u === 'ko') return u;
+                const s = (localStorage.getItem('paradiso:language') || '').trim();
+                if (s === 'zh-CN' || s === 'zh-TW' || s === 'en' || s === 'ko') return s;
+            } catch (e) {}
+            return '';
+        }
         function detectUserLang(text) {
-            if (!text) return 'ko';
+            const chosen = getChosenLang();
+            const chosenZh = chosen === 'zh-TW' ? 'zh-TW' : 'zh-CN';
+            if (!text) return chosen || 'ko';
+            // Hangul wins first (Korean text often mixes in Han/Hanja).
             if (/[가-힯ᄀ-ᇿ㄰-㆏]/.test(text)) return 'ko';
+            // Han ideographs without Hangul → Chinese; honor the chosen variant.
+            if (/[一-鿿]/.test(text)) return chosen && chosen.indexOf('zh') === 0 ? chosen : chosenZh;
             if (/[A-Za-z]/.test(text)) return 'en';
-            return 'ko';
+            return chosen || 'ko';
         }
 
         // Optional domain hint forwarded from the Paradiso New Home platform
@@ -1893,6 +1911,8 @@ select:focus-visible {
             if (!AI_SCENARIO) return '';
             const s = AI_SCENARIO;
             const ref = [s.visaCode, s.label].filter(Boolean).join(' · ');
+            if (String(lang).indexOf('zh') === 0)
+                return '[已选情景] 用户在签证详情页选择某一情景后打开了 Waymaker：' + ref + '（程序键：' + s.procedureKey + '，变体 ID：' + s.variantId + '）。请将其视为最相关的情景，并据此整理所需材料和注意事项。但这只是供参考的选择，并非对资格·许可的认定；请勿断定是否最终满足条件，并建议向 HiKorea、1345 或管辖出入境·外国人机关确认。仅传递了识别信息，不包含清单·个人信息。';
             return lang === 'en'
                 ? '[Selected scenario] The user opened Waymaker from a selected scenario on the visa detail page: ' + ref + ' (procedure key: ' + s.procedureKey + ', variant id: ' + s.variantId + '). Treat this as the most relevant scenario and tailor required documents and cautions to it. This is a needs-review reference selection, not an eligibility or approval determination; do not assert final sufficiency and recommend confirming with HiKorea, 1345, or the competent immigration office. Only these identifiers were shared — no checklist or personal data.'
                 : '[선택한 시나리오] 사용자가 비자 상세 페이지에서 선택한 시나리오로 Waymaker를 열었습니다: ' + ref + ' (절차 키: ' + s.procedureKey + ', 변형 ID: ' + s.variantId + '). 이 시나리오를 가장 관련성 높은 상황으로 보고 필요한 서류와 주의사항을 그에 맞게 정리하십시오. 단, 이는 참고용 선택이며 자격·허가 여부를 단정하는 것이 아닙니다. 최종 충족 여부를 단정하지 말고 HiKorea, 1345 또는 관할 출입국·외국인관서 확인을 안내하십시오. 식별 정보만 전달되었으며 체크리스트·개인정보는 포함되지 않았습니다.';
@@ -1900,6 +1920,8 @@ select:focus-visible {
 
         function nationalityContextLine(lang) {
             if (AI_DOMAIN !== 'nationality') return '';
+            if (String(lang).indexOf('zh') === 0)
+                return '[咨询领域：国籍·归化] 用户来自 Paradiso New Home 国籍平台。请聚焦韩国国籍相关主题（一般/婚姻/家庭关系/特别归化、国籍恢复、国籍判定、复数国籍及不行使外国国籍宣誓、社会融合项目（KIIP）·面试、归化后行政程序），并注意不要将国籍业务与居留资格（签证）程序混淆。请勿断定最终是否许可，并建议向管辖机关确认。';
             return lang === 'en'
                 ? '[Domain: nationality] The user arrived from the Paradiso New Home nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.'
                 : '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
@@ -1907,12 +1929,28 @@ select:focus-visible {
 
         function interviewPrepContextLine(lang) {
             if (AI_MODE !== 'naturalization_interview_prep') return '';
+            if (String(lang).indexOf('zh') === 0)
+                return '[模式：归化面试准备] 用户前来练习归化面试与基本素养学习。请作为以文字为主的面试教练：审阅练习答复，提出一个更自然的示例答复、一个后续问题和一条学习提示。这是练习，并非实际审查 —— 切勿预测合格·不合格，切勿保证许可，也切勿声称练习题是官方历年真题。';
             return lang === 'en'
                 ? '[Mode: naturalization interview prep] The user arrived to practice for the naturalization interview and basic-knowledge study. Act as a text-first interview coach: review practice answers, suggest a more natural example answer, give one follow-up question and a study tip. This is practice, not official adjudication — never predict pass/fail, never guarantee approval, and never claim a practice question is an official past question.'
                 : '[모드: 귀화면접 준비] 사용자는 귀화면접과 기본소양 학습을 연습하러 왔습니다. 텍스트 기반 면접 코치로서 연습 답변을 검토하고, 더 자연스러운 예시 답변과 후속 질문 하나, 학습 팁을 제시하십시오. 이는 연습이며 실제 심사가 아닙니다. 합격·불합격을 예측하지 말고, 허가를 보장하지 말며, 연습 질문을 공식 기출문제라고 말하지 마십시오.';
         }
 
         function buildAskContext(lang) {
+            if (lang === 'zh-CN' || lang === 'zh-TW') {
+                const trad = lang === 'zh-TW';
+                const scriptLock = trad
+                    ? '[语言锁定] 用户使用中文提问。请务必只用【繁体中文】作答，不要使用简体字、韩文、日文、英文或其他语言（专有名词、机关名称、法令名称、签证代码可保留原文）。'
+                    : '[语言锁定] 用户使用中文提问。请务必只用【简体中文】作答，不要使用繁体字、韩文、日文、英文或其他语言（专有名词、机关名称、法令名称、签证代码可保留原文）。';
+                return [
+                    '[要求] 请根据韩国《出入境管理法》及实务手册，客观、有条理地诊断用户情况，并清晰列出所需材料和办理程序。',
+                    scriptLock,
+                    '[资料不足时] 即使参考资料不足，也要表明已识别到检测出的签证代码或主题，不要假装无法理解问题；不要擅自编造法律规则或具体数字，并建议用户向 1345 外国人综合服务中心、HiKorea（hikorea.go.kr）或就近的出入境·外国人机关最终确认。',
+                    nationalityContextLine(lang),
+                    interviewPrepContextLine(lang),
+                    scenarioContextLine(lang)
+                ].filter(Boolean).join('\n');
+            }
             if (lang === 'en') {
                 return [
                     '[Requirement] Diagnose the user\'s situation objectively based on the Korean Immigration Control Act and field manuals. Present required documents and procedures clearly.',
@@ -3420,6 +3458,7 @@ select:focus-visible {
          The authoritative result is the backend Procedure Packet (no LLM). The AI
          follow-up below is SECONDARY and uses the buffered (fully-gated) /api/ask
          path (stream:false) so the answer-shape / citation / safety gates run. -->
+    <script src="assets/js/zh-traditional.js"></script>
     <script src="assets/js/waymaker-navigator.js"></script>
     <script defer src="assets/js/legal-source-search.js?v=20260628-mobile"></script>
     <script>
