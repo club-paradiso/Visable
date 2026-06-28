@@ -18,10 +18,24 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
 
 const failures = [];
+const warnings = [];
 let passes = 0;
 const check = (label, condition, detail = '') => {
   if (condition) passes++;
   else failures.push(`${label}${detail ? `: ${detail}` : ''}`);
+};
+
+// Non-failing freshness audit: official sources drift, so flag (but do not fail
+// on) records whose checked_at / last_reviewed_at is older than this many days.
+const FRESHNESS_DAYS = 180;
+const daysSince = (iso) => {
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return Infinity;
+  return Math.floor((Date.now() - t) / 86400000);
+};
+const freshness = (label, iso) => {
+  const d = daysSince(iso);
+  if (d > FRESHNESS_DAYS) warnings.push(`${label} not re-checked in ${d} days (${iso}) — consider re-verifying`);
 };
 
 const sourcesDoc = readJson('data/nationality_service_sources.json');
@@ -77,6 +91,7 @@ for (const s of sources) {
   check(`${label}.source_kind is valid`, SOURCE_KINDS.has(s.source_kind), s.source_kind);
   check(`${label}.official_level is valid`, OFFICIAL_LEVELS.has(s.official_level), s.official_level);
   check(`${label} has checked_at`, !!s.checked_at);
+  freshness(`source ${label}`, s.checked_at);
   check(`${label}.id is unique`, !sourceIds.has(s.id), s.id);
   sourceIds.add(s.id);
 
@@ -125,6 +140,7 @@ for (const g of guides) {
   check(`${label}.source_confidence is valid`, SOURCE_CONFIDENCE.has(g.source_confidence), g.source_confidence);
   check(`${label} has caution text`, typeof g.caution_ko === 'string' && g.caution_ko.trim().length > 0);
   check(`${label} has last_reviewed_at`, !!g.last_reviewed_at);
+  freshness(`guide ${label}`, g.last_reviewed_at);
   check(`${label}.id is unique`, !guideIds.has(g.id), g.id);
   guideIds.add(g.id);
 
@@ -143,6 +159,10 @@ if (failures.length) {
   console.error(`Nationality-services data validation FAILED (${failures.length} issue(s)):`);
   for (const f of failures) console.error(`  ✗ ${f}`);
   process.exit(1);
+}
+if (warnings.length) {
+  console.log(`Freshness warnings (non-blocking, ${warnings.length}):`);
+  for (const w of warnings) console.log(`  ⚠ ${w}`);
 }
 console.log(`Nationality-services data validation passed: ${passes} checks, ${sources.length} sources, ${guides.length} guides.`);
 process.exit(0);

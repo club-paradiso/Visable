@@ -268,7 +268,7 @@
       ],
       "key_documents_note_ko": "면접 준비물·면제 여부는 개별 통지에 안내됩니다. 사회통합프로그램 이수 여부에 따라 다르게 적용될 수 있습니다.",
       "related_laws": ["law-nationality-act"],
-      "related_sources": ["moj-nationality", "kiiptest", "local-notice-example"],
+      "related_sources": ["moj-nationality", "kiiptest", "kiip-comprehensive-eval", "local-notice-example"],
       "caution_ko": "면접 대상·내용·면제는 개별 사안별로 달라집니다. 합격 여부를 예측하지 않으며, 개별 통지와 관할 관서 안내가 우선입니다.",
       "source_confidence": "needs_review",
       "last_reviewed_at": "2026-06-28"
@@ -288,7 +288,7 @@
       ],
       "key_documents_note_ko": "신청·평가에는 본인 확인 정보가 필요합니다. 평가 구성과 일정은 공지에 따라 달라질 수 있습니다.",
       "related_laws": [],
-      "related_sources": ["socinet", "kiiptest", "moj-socinet-prog"],
+      "related_sources": ["socinet", "socinet-application", "kiiptest", "kiip-comprehensive-eval", "moj-socinet-prog"],
       "caution_ko": "이수·평가 결과가 곧 귀화 허가를 의미하지 않습니다. 반영 방식은 절차와 개별 사안에 따라 다릅니다.",
       "source_confidence": "medium",
       "last_reviewed_at": "2026-06-28"

@@ -64,8 +64,12 @@
       'localCheck.vague': '내용이 다소 막연합니다. 구체적인 예나 경험을 한 가지 더해보세요.',
       'localCheck.structure': '이유와 예시가 있어 답변 구조가 좋습니다.',
       'localCheck.length': '분량이 적절합니다. 핵심을 또박또박 전달하세요.',
+      'localCheck.specific': '구체적인 경험·예시가 담겨 있어 설득력이 있습니다.',
       'localCheck.risky': '혜택·금전·의무 회피만 강조하는 표현은 피하는 편이 안전합니다.',
       'localCheck.okStart': '질문에 대한 답을 분명히 제시했습니다.',
+      'rubric.title': '답변 점검 항목', 'rubric.direct': '직접 답변', 'rubric.specific': '구체적 경험·예시',
+      'rubric.structure': '이유·구조', 'rubric.length': '적절한 분량', 'rubric.attitude': '안전한 표현',
+      'rubric.ok': '충분', 'rubric.improve': '보완',
       'cautionCoach': '이 피드백은 연습용이며 실제 심사 결과를 보장하지 않습니다.'
     },
     en: {
@@ -123,8 +127,12 @@
       'localCheck.vague': 'It reads a little vague. Add one concrete example or experience.',
       'localCheck.structure': 'A reason and an example give your answer good structure.',
       'localCheck.length': 'The length is appropriate. Deliver the key point clearly.',
+      'localCheck.specific': 'It includes a concrete experience or example, which is persuasive.',
       'localCheck.risky': 'It is safer to avoid emphasizing only benefits, money, or avoiding duties.',
       'localCheck.okStart': 'You stated a clear answer to the question.',
+      'rubric.title': 'Answer rubric', 'rubric.direct': 'Direct answer', 'rubric.specific': 'Concrete example',
+      'rubric.structure': 'Reason & structure', 'rubric.length': 'Adequate length', 'rubric.attitude': 'Safe wording',
+      'rubric.ok': 'Good', 'rubric.improve': 'Improve',
       'cautionCoach': 'This feedback is for practice and does not guarantee any review outcome.'
     }
   };
@@ -512,33 +520,63 @@
   // Conservative risky-wording detector: only benefit/money/duty-avoidance framing.
   var RISKY = ['혜택만', '돈 때문', '돈을 벌', '공짜', '복지 때문', '병역 피', '병역을 피', '세금 안', '세금을 안', '의무는 싫', '편하게 살려'];
   var STRUCTURE = ['왜냐하면', '때문', '예를 들어', '그래서', '첫째', '먼저', '예를들어'];
+  // Concrete-experience markers — used by the richer rubric (구체성 dimension).
+  var SPECIFIC = ['예를 들어', '예를들어', '제가', '저는', '경험', '때', '에서', '함께', '직접', '실제'];
   function analyzeAnswer(answer) {
     var a = (answer || '').trim();
     var len = a.replace(/\s/g, '').length;
     var risky = RISKY.filter(function (w) { return a.indexOf(w) >= 0; });
     var hasStructure = STRUCTURE.some(function (w) { return a.indexOf(w) >= 0; });
+    var specificHits = SPECIFIC.filter(function (w) { return a.indexOf(w) >= 0; }).length;
+    var hasSpecific = specificHits >= 2 || /\d/.test(a);
     var sentences = a.split(/[.!?。\n]/).filter(function (s) { return s.trim().length > 0; });
+    var direct = len >= 25 && sentences.length >= 1;
     return {
       empty: len === 0, tooShort: len > 0 && len < 25, vague: len >= 25 && sentences.length < 2 && !hasStructure,
-      hasStructure: hasStructure, risky: risky, len: len
+      hasStructure: hasStructure, hasSpecific: hasSpecific, direct: direct, risky: risky, len: len,
+      adequateLength: len >= 40
     };
+  }
+  // Score-free rubric: each dimension is 충분(ok) or 보완(improve). Never pass/fail.
+  function rubricRows(r) {
+    return [
+      { key: 'rubric.direct', ok: r.direct },
+      { key: 'rubric.specific', ok: r.hasSpecific },
+      { key: 'rubric.structure', ok: r.hasStructure },
+      { key: 'rubric.length', ok: r.adequateLength },
+      { key: 'rubric.attitude', ok: r.risky.length === 0 }
+    ];
+  }
+  function rubricHtml(r) {
+    var rows = rubricRows(r).map(function (row) {
+      var mark = row.ok ? '✓' : '△';
+      var tag = row.ok ? t('rubric.ok') : t('rubric.improve');
+      var cls = row.ok ? 'ni-badge-easy' : 'ni-badge-medium';
+      return '<li style="display:flex;justify-content:space-between;gap:0.5rem;align-items:center;">' +
+        '<span>' + mark + ' ' + esc(t(row.key)) + '</span>' +
+        '<span class="ni-badge ni-badge-diff ' + cls + '">' + esc(tag) + '</span></li>';
+    }).join('');
+    return '<div class="ni-fb-card"><h4>' + esc(t('rubric.title')) + '</h4><ul style="list-style:none;padding:0;margin:0;display:grid;gap:0.35rem;">' + rows + '</ul></div>';
+  }
+  function buildLocalFeedback(r) {
+    var strengths = [], improvements = [], risky = [];
+    if (r.adequateLength) strengths.push(t('localCheck.length')); else if (r.tooShort) improvements.push(t('localCheck.tooShort'));
+    if (r.hasSpecific) strengths.push(t('localCheck.specific')); else improvements.push(t('localCheck.vague'));
+    if (r.hasStructure) strengths.push(t('localCheck.structure')); else improvements.push(t('localCheck.direct'));
+    if (r.risky.length) risky.push(t('localCheck.risky') + ' (' + r.risky.join(', ') + ')');
+    return { strengths: strengths, improvements: improvements, risky: risky };
   }
   function showLocalFeedback() {
     var ans = el('mockAnswer').value;
     var box = el('mockFeedback');
     var r = analyzeAnswer(ans);
     if (r.empty) { box.innerHTML = '<div class="ni-fb-card ni-fb-improve">' + esc(t('mock.noAnswer')) + '</div>'; return; }
-    var strengths = [], improvements = [], risky = [];
-    if (r.tooShort) improvements.push(t('localCheck.tooShort'));
-    else strengths.push(t('localCheck.length'));
-    if (r.vague) improvements.push(t('localCheck.vague'));
-    if (r.hasStructure) strengths.push(t('localCheck.structure'));
-    else improvements.push(t('localCheck.direct'));
-    if (r.risky.length) risky.push(t('localCheck.risky') + ' (' + r.risky.join(', ') + ')');
-    box.innerHTML = localFeedbackHtml(strengths, improvements, risky);
+    var fb = buildLocalFeedback(r);
+    box.innerHTML = localFeedbackHtml(fb.strengths, fb.improvements, fb.risky, r);
   }
-  function localFeedbackHtml(strengths, improvements, risky) {
+  function localFeedbackHtml(strengths, improvements, risky, r) {
     var html = '<div class="ni-fb-card"><h4>' + esc(t('mock.localTitle')) + '</h4></div>';
+    if (r) html += rubricHtml(r);
     if (strengths.length) html += '<div class="ni-fb-card ni-fb-good"><h4>' + esc(t('mock.strengths')) + '</h4><ul>' + strengths.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div>';
     if (improvements.length) html += '<div class="ni-fb-card ni-fb-improve"><h4>' + esc(t('mock.improvements')) + '</h4><ul>' + improvements.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div>';
     if (risky.length) html += '<div class="ni-fb-card ni-fb-risk"><h4>' + esc(t('mock.risky')) + '</h4><ul>' + risky.map(function (s) { return '<li>' + esc(s) + '</li>'; }).join('') + '</ul></div>';
@@ -586,17 +624,12 @@
     box.innerHTML = html;
   }
   function renderCoachFallback() {
-    // Backend unavailable: never infinite-load. Show notice + local feedback.
-    var ans = el('mockAnswer').value;
-    var r = analyzeAnswer(ans);
-    var strengths = [], improvements = [], risky = [];
-    if (r.tooShort) improvements.push(t('localCheck.tooShort')); else strengths.push(t('localCheck.length'));
-    if (r.vague) improvements.push(t('localCheck.vague'));
-    if (r.hasStructure) strengths.push(t('localCheck.structure')); else improvements.push(t('localCheck.direct'));
-    if (r.risky.length) risky.push(t('localCheck.risky') + ' (' + r.risky.join(', ') + ')');
+    // Backend unavailable: never infinite-load. Show notice + local rubric feedback.
+    var r = analyzeAnswer(el('mockAnswer').value);
+    var fb = buildLocalFeedback(r);
     el('mockFeedback').innerHTML =
       '<div class="ni-fb-card ni-fb-improve">' + esc(t('mock.aiFail')) + '</div>' +
-      localFeedbackHtml(strengths, improvements, risky);
+      localFeedbackHtml(fb.strengths, fb.improvements, fb.risky, r);
   }
 
   /* practice CTA from question cards -> open mock tab seeded with the question */

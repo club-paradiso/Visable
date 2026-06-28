@@ -260,6 +260,38 @@
       "use_in_ui": true
     },
     {
+      "id": "socinet-application",
+      "title_ko": "사회통합프로그램 신청·과정 안내 (Soci-Net)",
+      "title_en": "KIIP application & course guidance (Soci-Net)",
+      "publisher": "법무부",
+      "source_kind": "evaluation_guide",
+      "group": "services",
+      "url": "https://www.socinet.go.kr/soci/main/main.jsp?MENU_TYPE=S_TOP_SY",
+      "official_level": "primary",
+      "topic_tags": ["사회통합프로그램", "신청", "단계", "이수"],
+      "nationality_categories": ["kiip_evaluation"],
+      "checked_at": "2026-06-28",
+      "summary_ko": "사회통합프로그램 신청 방법과 단계별 과정(0~5단계) 운영을 안내하는 공식 정보망 영역입니다. 신청·배정 절차는 사이트 안내를 따르세요.",
+      "caution_ko": "신청 자격·일정·정원은 공지에 따라 달라질 수 있습니다. 공식 공지를 우선 확인하세요.",
+      "use_in_ui": true
+    },
+    {
+      "id": "kiip-comprehensive-eval",
+      "title_ko": "귀화용 종합평가 안내 (KIIPtest)",
+      "title_en": "Naturalization comprehensive evaluation (KIIPtest)",
+      "publisher": "법무부 사회통합프로그램",
+      "source_kind": "evaluation_guide",
+      "group": "services",
+      "url": "https://www.kiiptest.org/",
+      "official_level": "primary",
+      "topic_tags": ["귀화용 종합평가", "종합평가", "기본소양"],
+      "nationality_categories": ["kiip_evaluation", "interview_review"],
+      "checked_at": "2026-06-28",
+      "summary_ko": "종합평가 중 귀화용 평가의 운영·신청 정보를 제공하는 공식 페이지입니다. 평가 구성·일정은 본문 공지에서 확인하세요.",
+      "caution_ko": "평가 합격이 곧 귀화 허가를 의미하지 않습니다. 반영 방식은 절차와 개별 사안에 따라 다릅니다.",
+      "use_in_ui": true
+    },
+    {
       "id": "local-notice-example",
       "title_ko": "지역 출입국외국인관서 귀화면접 대상자 알림 (지역 공지 예시)",
       "title_en": "Local office naturalization interview notice (example only)",

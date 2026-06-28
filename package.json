@@ -21,7 +21,8 @@
     "test:official-sources": "node scripts/check_official_external_sources.mjs && node scripts/validate_visa_issuance_enrichment.js",
     "test:e2e": "playwright test",
     "test:waymaker-navigator": "node scripts/check_waymaker_navigator.mjs && node scripts/check_waymaker_navigator_dom.mjs",
-    "test:nationality-services": "node scripts/check_nationality_services_data.mjs && node scripts/check_naturalization_interview_data.mjs"
+    "test:nationality-services": "node scripts/check_nationality_services_data.mjs && node scripts/check_naturalization_interview_data.mjs",
+    "import:naturalization-videos": "node scripts/import_naturalization_video_metadata.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.0",
