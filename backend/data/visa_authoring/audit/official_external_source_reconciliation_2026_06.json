@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "1.0",
+  "auditId": "official-external-source-reconciliation-2026-06",
+  "accessedAt": "2026-06-28",
+  "purpose": "Bounded official-source reconciliation beyond the registered 2026-06 visa and stay manuals.",
+  "sourceHierarchy": [
+    "Tier 1: law.go.kr statutes, decrees, rules, notices, and official legal text",
+    "Tier 2: MOJ, Korea Immigration Service, HiKorea, Korea Visa Portal, Socinet/KIIP, and 1345",
+    "Tier 3: overseas.mofa.go.kr mission pages for local filing differences only",
+    "Tier 4: government-affiliated explainers and official downloadable resources"
+  ],
+  "conflictPolicy": {
+    "manualArchitecturePreserved": true,
+    "missionSourceMayOverrideCentralManual": false,
+    "globalRulePromotionRequiresCentralAuthority": true,
+    "futureLawAppliedBeforeEffectiveDate": false,
+    "requiredUserCautionKo": "재외공관별 추가서류와 접수 방식은 공관마다 다를 수 있으므로, 실제 신청 전 관할 재외공관 공지를 확인하세요."
+  },
+  "manualBaseline": {
+    "visaManual": {
+      "repoPath": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+      "sourceDate": "2026-06-17",
+      "pages": 487,
+      "contentChangedByThisAudit": false
+    },
+    "stayManual": {
+      "repoPath": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+      "sourceDate": "2026-06-23",
+      "pages": 780,
+      "contentChangedByThisAudit": false
+    }
+  },
+  "centralSources": [
+    {
+      "title": "출입국·외국인정책본부 국적과 업무 범위",
+      "url": "https://www.immigration.go.kr/immigration/1550/subview.do",
+      "tier": 2,
+      "decision": "supporting evidence and official handoff"
+    },
+    {
+      "title": "법무부 온라인민원서비스 국적업무 유형별 안내",
+      "url": "https://mojminwon.moj.go.kr/minwon/2014/subview.do",
+      "tier": 2,
+      "decision": "nationality service index and official handoff"
+    },
+    {
+      "title": "사회통합정보망",
+      "url": "https://www.socinet.go.kr/soci/main/main.jsp?MENU_TYPE=S_TOP_SY",
+      "tier": 2,
+      "decision": "KIIP application, schedule, and status handoff"
+    },
+    {
+      "title": "출입국·외국인정책본부 이민자 사회통합",
+      "url": "https://www.immigration.go.kr/immigration/1518/subview.do",
+      "tier": 2,
+      "decision": "supports cautious KIIP relationship wording; no automatic eligibility claim"
+    },
+    {
+      "title": "대한민국 비자포털",
+      "url": "https://www.visa.go.kr/",
+      "tier": 2,
+      "decision": "pre-entry visa and application-status handoff"
+    },
+    {
+      "title": "HiKorea",
+      "url": "https://www.hikorea.go.kr/",
+      "tier": 2,
+      "decision": "post-entry stay, e-petition, and visit-reservation handoff"
+    },
+    {
+      "title": "외국인종합안내센터 1345",
+      "url": "https://www.immigration.go.kr/moj/196/subview.do",
+      "tier": 2,
+      "decision": "multilingual official contact and competent-authority routing"
+    },
+    {
+      "title": "국적법 current text",
+      "url": "https://www.law.go.kr/LSW/LsiJoLinkP.do?languageType=KO&lsNm=%EA%B5%AD%EC%A0%81%EB%B2%95&paras=1",
+      "tier": 1,
+      "decision": "current legal authority handoff"
+    },
+    {
+      "title": "국적법 2026-06-02 promulgated amendment",
+      "url": "https://www.law.go.kr/lsInfoP.do?lsiSeq=286415&viewCls=lsRvsDocInfoR",
+      "tier": 1,
+      "effectiveDate": "2026-12-03",
+      "decision": "correction signal only; not applied as current law"
+    }
+  ],
+  "missionReview": {
+    "registryPath": "data/official_web_overlays.json",
+    "countries": [
+      "United States",
+      "China",
+      "Japan",
+      "Vietnam",
+      "Philippines",
+      "Thailand",
+      "Mongolia",
+      "Uzbekistan",
+      "Canada",
+      "Australia"
+    ],
+    "recordCount": 10,
+    "globalRulesAdded": 0,
+    "ambiguousSources": [
+      "Mongolia list title/date mismatch - handoff only",
+      "Canada page has no visible source date - accessed date shown",
+      "Australia page has no visible source date - accessed date shown"
+    ]
+  },
+  "staticAudit": [
+    {
+      "cluster": "backend/data/visa_authoring and generated visa data",
+      "terms": "재외공관, consulate, embassy, visa.go.kr, hikorea",
+      "classification": "already source-grounded / no canonical rewrite",
+      "action": "preserved manual review flags; mission differences added only through overlay registry"
+    },
+    {
+      "cluster": "data/nationality_content.json and data/nationality_paths.json",
+      "terms": "nationality, naturalization, 귀화, 국적회복, 국적판정, 국적상실, 국적이탈, 복수국적",
+      "classification": "needs wording improvement and official source metadata",
+      "action": "orientation wording tightened; loss and renunciation routes added; official handoffs attached"
+    },
+    {
+      "cluster": "New Home KIIP content",
+      "terms": "KIIP, 사회통합, Socinet",
+      "classification": "needs cautious disclaimer",
+      "action": "course/evaluation/nationality distinctions added; automatic eligibility and exemption implications removed"
+    },
+    {
+      "cluster": "New Home source panel",
+      "terms": "moj.go.kr, immigration.go.kr, law.go.kr, hikorea",
+      "classification": "needs official source metadata",
+      "action": "source class, scope, source/effective/update/access dates, and non-affiliation language added"
+    },
+    {
+      "cluster": "Waymaker and Legal Research",
+      "terms": "official external source grounding",
+      "classification": "no action needed",
+      "action": "no uncaptured page or external prose injected into AI packets; existing source-safety guardrails unchanged"
+    }
+  ],
+  "safeNonChanges": [
+    "No consular checklist was copied into a global required-document list.",
+    "No manual-grounded visa or stay rule was replaced.",
+    "No personal nationality eligibility determination was added.",
+    "No future Nationality Act amendment was applied before its effective date.",
+    "No external page was added directly to Waymaker or Legal Research AI context."
+  ]
+}

@@ -377,7 +377,6 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   font-size: 0.72rem; font-weight: 800; letter-spacing: 0.01em;
   color: var(--ac2); background: var(--acG); border: 1px solid color-mix(in srgb, var(--ac) 30%, transparent);
 }
-.nh-official-badge::before { content: "✓"; font-size: 0.7rem; }
 
 /* ── KIIP rich block ── */
 .nh-kiip-card { padding: 1rem 1.1rem; background: var(--bg1); border: 1px solid var(--bd); border-radius: var(--r-md); margin-bottom: 0.8rem; }
@@ -430,6 +429,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 .nh-source-type { font-size: 0.68rem; font-weight: 800; color: var(--t3); border: 1px solid var(--bd); border-radius: 999px; padding: 0.05rem 0.45rem; }
 .nh-source-nav { font-size: 0.8rem; color: var(--t2); }
 .nh-source-flag { font-size: 0.68rem; font-weight: 800; color: var(--warn); border: 1px dashed color-mix(in srgb, var(--warn) 50%, var(--bd)); border-radius: 999px; padding: 0.05rem 0.45rem; }
+.nh-source-scope { margin: 0; font-size: 0.84rem; line-height: 1.55; color: var(--t1); }
+.nh-source-meta { display: flex; flex-wrap: wrap; gap: 0.35rem 0.8rem; font-size: 0.74rem; color: var(--t3); }
+.nh-source-disclaimer { margin: 0.85rem 0 1rem; padding: 0.8rem 0.95rem; border: 1px solid var(--bd); border-left: 3px solid var(--ac); border-radius: var(--r-sm); background: var(--bg1); color: var(--t2); font-size: 0.82rem; line-height: 1.55; }
 
 /* ── Detail modal rows ── */
 .nh-detail-row { margin-bottom: 0.8rem; }
@@ -562,6 +564,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     <section class="nh-sources" id="sources">
       <div class="nh-section-h"><h2 data-c="sourcesPanel.title"></h2><span class="nh-official-badge" data-c="ui.officialSourceBadge"></span></div>
       <p class="nh-section-intro" data-c="sourcesPanel.intro"></p>
+      <p class="nh-source-disclaimer" data-c="sourcesPanel.disclaimer"></p>
       <div id="sourcePanel"></div>
     </section>
   </div>
@@ -750,6 +753,10 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   }
   function srcTitle(s) { return (lang === 'en' && s.titleEn) ? s.titleEn : s.title; }
   function sourceById(id) { return srcMap[id]; }
+  function sourceClassLabel(s) {
+    var labels = content && content.ui && content.ui.sourceClassLabels;
+    return labels && labels[s.sourceClass] ? pick(labels[s.sourceClass]) : (s.sourceType || '');
+  }
   function srcChipsHtml(ids) {
     if (!ids || !ids.length) return '';
     var chips = ids.map(function (id) {
@@ -873,12 +880,24 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       wrap.appendChild(el('p', 'nh-source-group-title', esc(pick(grp))));
       items.forEach(function (s) {
         var flag = s.contentVerified ? '' : '<span class="nh-source-flag">' + esc(verify) + '</span>';
+        if (s.reflection === 'correction_signal_only') flag += '<span class="nh-source-flag">' + esc(pick(content.ui.futureEffectiveBadge)) + '</span>';
         var nav = (lang === 'en' ? s.navHintEn : s.navHintKo) || '';
+        var scope = (lang === 'en' ? s.scopeEn : s.scopeKo) || '';
+        var jurisdiction = (lang === 'en' ? s.jurisdictionEn : s.jurisdictionKo) || '';
+        var meta = [];
+        if (s.publisher) meta.push(esc(s.publisher));
+        if (jurisdiction) meta.push(esc(jurisdiction));
+        if (s.sourceDate) meta.push(esc(pick(content.ui.sourceDateLabel)) + ' ' + esc(s.sourceDate));
+        if (s.lastUpdated) meta.push(esc(pick(content.ui.sourceUpdatedLabel)) + ' ' + esc(s.lastUpdated));
+        if (s.effectiveDate) meta.push(esc(pick(content.ui.sourceEffectiveLabel)) + ' ' + esc(s.effectiveDate));
+        if (s.accessedAt) meta.push(esc(pick(content.ui.sourceAccessedLabel)) + ' ' + esc(s.accessedAt));
         wrap.appendChild(el('div', 'nh-source-card',
           '<div class="nh-source-card-top">' +
           '<a class="nh-source-link" href="' + esc(s.url) + '" target="_blank" rel="noopener noreferrer">' + esc(srcTitle(s)) + '</a>' +
-          '<span class="nh-source-type">' + esc(s.publisher) + '</span>' + flag + '</div>' +
-          (nav ? '<div class="nh-source-nav">' + esc(pick(content.ui.navLabel)) + ': ' + esc(nav) + '</div>' : '')));
+          '<span class="nh-source-type">' + esc(sourceClassLabel(s)) + '</span>' + flag + '</div>' +
+          (scope ? '<p class="nh-source-scope"><strong>' + esc(pick(content.ui.sourceScopeLabel)) + ':</strong> ' + esc(scope) + '</p>' : '') +
+          (nav ? '<div class="nh-source-nav">' + esc(pick(content.ui.navLabel)) + ': ' + esc(nav) + '</div>' : '') +
+          (meta.length ? '<div class="nh-source-meta">' + meta.map(function (item) { return '<span>' + item + '</span>'; }).join('') + '</div>' : '')));
       });
       panel.appendChild(wrap);
     });

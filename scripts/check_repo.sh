@@ -289,6 +289,7 @@ echo "[9e/14] Validating 사증발급(visa issuance) UI + scenario-guide popup..
 # the E-8/E-9/E-10 scenario-guide popup contract and the E-9 wrong-document fix.
 if command -v node >/dev/null 2>&1; then
   node scripts/check_visa_issuance_ui.mjs
+  node scripts/check_official_external_sources.mjs
   node scripts/validate_visa_issuance_enrichment.js
   node scripts/check_visa_issuance_scenario_guide.mjs
 else

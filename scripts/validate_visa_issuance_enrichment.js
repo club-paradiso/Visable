@@ -18,6 +18,7 @@ const PRIORITY_CODES = [
 const ALLOWED_OVERLAY_DOMAINS = new Set([
   'visa.go.kr',
   'hikorea.go.kr',
+  'immigration.go.kr',
   'mofa.go.kr',
   'overseas.mofa.go.kr',
   'law.go.kr'
@@ -38,6 +39,10 @@ const VALID_REVIEW_STATUSES = new Set([
   'should_remain_limited',
   'not_applicable'
 ]);
+const REQUIRED_MISSION_COUNTRIES = [
+  'United States', 'China', 'Japan', 'Vietnam', 'Philippines',
+  'Thailand', 'Mongolia', 'Uzbekistan', 'Canada', 'Australia'
+];
 
 const failures = [];
 const warnings = [];
@@ -168,20 +173,44 @@ for (const record of visaIssuanceBindings) {
 }
 
 for (const record of overlayRecords) {
+  const label = record.id || record.country || '(overlay)';
   const url = String(record.sourceUrl || '');
   let domain = '';
   try { domain = new URL(url).hostname.replace(/^www\./, ''); } catch (e) { domain = ''; }
-  check(`${record.code || '(overlay)'} overlay uses allowed domain`, ALLOWED_OVERLAY_DOMAINS.has(domain), url);
-  check(`${record.code || '(overlay)'} overlay does not conflict silently`, record.conflictsWithManual !== true || !!record.conflictNoteKo);
+  check(`${label} has a stable id`, !!record.id);
+  check(`${label} is a Tier 3 mission source`, record.sourceTier === 3 && record.sourceClass === 'consular_mission_notice');
+  check(`${label} has complete source identity`, !!(record.country && record.post && record.sourceTitle && record.sourceUrl));
+  check(`${label} has access metadata`, /^\d{4}-\d{2}-\d{2}$/.test(String(record.accessedAt || '')));
+  check(`${label} has status coverage`, Array.isArray(record.coveredCodes) && record.coveredCodes.length > 0);
+  check(`${label} overlay uses allowed domain`, ALLOWED_OVERLAY_DOMAINS.has(domain), url);
+  check(`${label} remains mission-specific`, record.globalRuleEligible === false && record.reflection !== 'global_rule');
+  check(`${label} overlay does not conflict silently`, record.conflictsWithManual !== true || !!record.conflictNoteKo);
+}
+
+for (const source of Array.isArray(overlays.centralHandoffs) ? overlays.centralHandoffs : []) {
+  let domain = '';
+  try { domain = new URL(source.url).hostname.replace(/^www\./, ''); } catch (e) { domain = ''; }
+  check(`${source.id || '(central handoff)'} has Tier 2 metadata`, source.sourceTier === 2 && !!source.sourceClass);
+  check(`${source.id || '(central handoff)'} uses an official domain`, ALLOWED_OVERLAY_DOMAINS.has(domain), source.url);
+  check(`${source.id || '(central handoff)'} has access date and scope`, !!(source.accessedAt && source.scopeKo && source.scopeEn));
 }
 
 const overlayDomains = Array.isArray(overlays.allowedDomains) ? overlays.allowedDomains : [];
 check('overlay allowed domains are restricted to official list',
   overlayDomains.every(domain => ALLOWED_OVERLAY_DOMAINS.has(domain)));
-check('overlay seed manifest includes 11 countries/posts',
-  Array.isArray(overlays.seedManifest) && overlays.seedManifest.length === 11);
+check('overlay seed manifest includes all 10 required jurisdictions',
+  Array.isArray(overlays.seedManifest)
+    && REQUIRED_MISSION_COUNTRIES.every(country => overlays.seedManifest.some(item => item.country === country && item.status === 'inspected')));
+check('overlay records include all 10 required jurisdictions',
+  REQUIRED_MISSION_COUNTRIES.every(country => overlayRecords.some(item => item.country === country)));
+check('overlay policy prohibits manual override and requires central authority for global promotion',
+  overlays.policy?.manualRecordOverrideAllowed === false && overlays.policy?.globalPromotionRequiresCentralAuthority === true);
+check('overlay policy includes the required consular caution',
+  String(overlays.policy?.consularCautionKo || '').includes('재외공관별 추가서류와 접수 방식은 공관마다 다를 수 있으므로'));
 
 check('UI renders visa issuance section', indexHtml.includes('function renderVisaIssuanceSection') && indexHtml.includes('visa-issuance-section'));
+check('UI renders actionable mission-specific source links',
+  indexHtml.includes('issuance-mission-sources') && indexHtml.includes('record.sourceUrl') && !indexHtml.includes('<select>${options}</select>'));
 check('UI renders source limitation explanation', indexHtml.includes('function renderSourceLimitationExplanation'));
 check('UI avoids stale exact-rank 6/5 filters',
   !indexHtml.includes('v._exactRank === 6') && !indexHtml.includes('v._exactRank === 5'));

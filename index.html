@@ -2480,6 +2480,15 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .issuance-warning-list li { position: relative; padding-left: 1rem; }
 .issuance-warning-list li::before { content: '※'; position: absolute; left: 0; color: var(--color-warning); }
 .issuance-source-line { font-size: 0.7rem; color: var(--t3); line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
+.issuance-mission-sources { margin-top: 0.85rem; border: 1px solid var(--bd); border-radius: 12px; background: var(--bg2); }
+.issuance-mission-sources > summary { cursor: pointer; padding: 0.75rem 0.85rem; color: var(--t1); font-size: 0.82rem; font-weight: 800; }
+.issuance-mission-list { list-style: none; margin: 0; padding: 0 0.85rem 0.75rem; display: grid; gap: 0.65rem; }
+.issuance-mission-item { padding-top: 0.65rem; border-top: 1px solid var(--bd2); }
+.issuance-mission-link { color: var(--ac); font-size: 0.82rem; font-weight: 800; text-decoration: none; }
+.issuance-mission-link:hover { text-decoration: underline; }
+.issuance-mission-scope { margin: 0.25rem 0 0; color: var(--t2); font-size: 0.76rem; line-height: 1.5; }
+.issuance-mission-meta { margin: 0.2rem 0 0; color: var(--t3); font-size: 0.7rem; }
+.issuance-mission-caution { margin: 0 0.85rem 0.85rem; padding: 0.65rem 0.75rem; border-left: 3px solid var(--warn); background: color-mix(in srgb, var(--warn) 7%, transparent); color: var(--t2); font-size: 0.76rem; line-height: 1.55; }
 .issuance-variance-note, .issuance-disclaimer { margin: 0; font-size: 0.72rem; color: var(--t3); line-height: 1.52; word-break: keep-all; overflow-wrap: anywhere; }
 .issuance-variance-note { padding: 0.5rem 0.65rem; border-radius: 8px; background: color-mix(in srgb, var(--color-warning) 6%, transparent); border: 1px solid color-mix(in srgb, var(--color-warning) 20%, var(--bd)); }
 .source-limitation-detail { margin-top: 0.42rem; border: 1px solid var(--bd2); border-radius: 8px; background: color-mix(in srgb, var(--bg0) 74%, white); overflow: hidden; }
@@ -12828,6 +12837,7 @@ a.p-manual-card { text-decoration: none; color: inherit; cursor: pointer; grid-t
 a.p-manual-card:hover .p-manual-ext,
 a.p-manual-card:focus-visible .p-manual-ext { opacity: 1; transform: translate(2px, -2px); }
 a.p-manual-card:focus-visible { outline: 2px solid var(--p-green, #1F4F3D); outline-offset: 3px; }
+.p-manual-kind { display: inline-flex; width: fit-content; margin-bottom: 0.28rem; padding: 0.1rem 0.48rem; border: 1px solid var(--bd); border-radius: 999px; color: var(--t3); font-size: 0.67rem; font-weight: 800; letter-spacing: 0.02em; }
 [data-theme="dark"] .p-manual-ext { color: var(--ac, #6ee7b7); }
 :root[data-theme="archive_diary"] .p-manual-ext { color: var(--k-blue, #2B50C8); }
 
@@ -13300,6 +13310,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📘</span>
                 <div class="p-manual-body">
+                    <span class="p-manual-kind">중앙 매뉴얼 · 2026-06-23</span>
                     <h3>체류민원 안내 매뉴얼</h3>
                     <p>외국인 등록, 체류기간 연장, 자격 변경 등 국내 체류 절차의 공개 매뉴얼.</p>
                 </div>
@@ -13308,14 +13319,16 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&amp;BBS_GB_CD=BS10&amp;NTCCTT_SEQ=1062&amp;page=1" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📗</span>
                 <div class="p-manual-body">
+                    <span class="p-manual-kind">중앙 매뉴얼 · 2026-06-17</span>
                     <h3>사증 민원 안내 매뉴얼</h3>
                     <p>재외공관 사증 발급, 비자 신청 절차 안내의 공개 매뉴얼.</p>
                 </div>
                 <span class="p-manual-ext" aria-hidden="true">↗</span>
             </a>
-            <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr/guide/LawLink.pt" target="_blank" rel="noopener noreferrer">
+            <a class="p-manual-card" role="listitem" href="https://www.law.go.kr/" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📑</span>
                 <div class="p-manual-body">
+                    <span class="p-manual-kind">법령 · 국가법령정보센터</span>
                     <h3>관련 법령·서식 참고</h3>
                     <p>출입국관리법, 시행령, 시행규칙과 공개 서식을 교차 확인합니다.</p>
                 </div>
@@ -13324,14 +13337,33 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
             <a class="p-manual-card" role="listitem" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">
                 <span class="p-manual-icon" aria-hidden="true">📞</span>
                 <div class="p-manual-body">
-                    <h3>HiKorea · 1345 확인</h3>
-                    <p>최종 판단은 HiKorea, 1345, 관할 출입국기관에서 확인하세요.</p>
+                    <span class="p-manual-kind">중앙정부 포털</span>
+                    <h3>HiKorea</h3>
+                    <p>입국 후 체류 안내, 전자민원과 방문예약은 HiKorea에서 확인하세요.</p>
+                </div>
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
+            <a class="p-manual-card" role="listitem" href="https://www.visa.go.kr/" target="_blank" rel="noopener noreferrer">
+                <span class="p-manual-icon" aria-hidden="true">📗</span>
+                <div class="p-manual-body">
+                    <span class="p-manual-kind">중앙정부 포털</span>
+                    <h3>대한민국 비자포털</h3>
+                    <p>입국 전 사증 유형, 가능한 전자신청 경로와 신청현황을 공식 포털에서 확인하세요.</p>
+                </div>
+                <span class="p-manual-ext" aria-hidden="true">↗</span>
+            </a>
+            <a class="p-manual-card" role="listitem" href="https://www.immigration.go.kr/moj/196/subview.do" target="_blank" rel="noopener noreferrer">
+                <span class="p-manual-icon" aria-hidden="true">📞</span>
+                <div class="p-manual-body">
+                    <span class="p-manual-kind">공식 상담 창구</span>
+                    <h3>외국인종합안내센터 1345</h3>
+                    <p>출입국·체류 민원과 관할기관 연결이 필요할 때 공식 다국어 상담 창구를 확인하세요.</p>
                 </div>
                 <span class="p-manual-ext" aria-hidden="true">↗</span>
             </a>
         </div>
         <p class="p-manual-note" id="pManualNote" data-i18n="manualNote">
-            위 매뉴얼 링크는 HiKorea가 공개한 최신본(사증발급 2026-06-17, 외국인체류 2026-06-23 안내매뉴얼)으로 연결됩니다. 화면의 구조화된 안내는 읽을 수 있는 2026.6 공식 PDF 추출본으로 출처를 갱신했으며, 세부 제출서류와 절차는 관할기관 안내에 따라 달라질 수 있습니다. Paradiso는 공식 정부 서비스가 아니며 제공 정보는 참고용입니다.
+            위 매뉴얼 링크는 HiKorea가 공개한 최신본(사증발급 2026-06-17, 외국인체류 2026-06-23 안내매뉴얼)으로 연결됩니다. 화면의 구조화된 안내는 읽을 수 있는 2026.6 공식 PDF 추출본으로 출처를 갱신했습니다. 재외공관별 추가서류와 접수 방식은 공관마다 다를 수 있으므로 실제 신청 전 관할 재외공관 공지를 확인하세요. Paradiso는 법무부·HiKorea·비자포털·재외공관과 제휴 또는 소속 관계가 없는 참고 서비스입니다.
         </p>
     </section>
 
@@ -14446,6 +14478,7 @@ let VISA_ISSUANCE_BY_CODE = new Map();
 let PROCEDURE_EVIDENCE_BINDINGS = [];
 let PROCEDURE_EVIDENCE_BY_KEY = new Map();
 let OFFICIAL_WEB_OVERLAYS = [];
+let OFFICIAL_WEB_OVERLAY_POLICY = {};
 let dataReady = false;
 const qEl = document.getElementById('q');
 const SEARCH_DEBUG_ENABLED = (() => {
@@ -19539,7 +19572,10 @@ function getVisaIssuanceBinding(code) {
 
 function getVisaIssuanceOverlays(code) {
     const codeNorm = normalizeVisaCode(code);
-    return OFFICIAL_WEB_OVERLAYS.filter(record => normalizeVisaCode(record.code) === codeNorm);
+    return OFFICIAL_WEB_OVERLAYS.filter(record => {
+        if (normalizeVisaCode(record.code) === codeNorm) return true;
+        return Array.isArray(record.coveredCodes) && record.coveredCodes.some(item => normalizeVisaCode(item) === codeNorm);
+    });
 }
 
 /* Locale-chain text picker for {ko, en, ...} objects coming from data files.
@@ -19593,11 +19629,30 @@ function renderIssuanceWarnings(warnings, keywords) {
 function renderIssuanceOverlaySelector(code) {
     const overlays = getVisaIssuanceOverlays(code);
     if (!overlays.length) return '';
-    const options = overlays.map(record => {
-        const label = [record.country, record.post, record.sourceTitle].filter(Boolean).join(' · ');
-        return `<option value="${escapeHtml(record.sourceUrl || label)}">${escapeHtml(label)}</option>`;
+    const isEnglish = normalizeLocaleCode(currentLanguage) === 'en';
+    const title = isEnglish ? 'Official mission-specific application guidance' : '재외공관별 공식 접수 안내';
+    const caution = isEnglish
+        ? OFFICIAL_WEB_OVERLAY_POLICY.consularCautionEn
+        : OFFICIAL_WEB_OVERLAY_POLICY.consularCautionKo;
+    const list = overlays.map(record => {
+        const sourceTitle = [record.country, record.post, record.sourceTitle].filter(Boolean).join(' · ');
+        const scope = isEnglish ? record.localOnlySummaryEn : record.localOnlySummaryKo;
+        const appointment = isEnglish ? record.appointmentMethodEn : record.appointmentMethodKo;
+        const date = record.lastUpdated || record.sourceDate || '';
+        const dateLabel = date ? `${isEnglish ? 'Source date' : '자료일'} ${date}` : `${isEnglish ? 'No visible source date' : '공개된 자료일 없음'}`;
+        const accessed = record.accessedAt ? ` · ${isEnglish ? 'Accessed' : '확인일'} ${record.accessedAt}` : '';
+        return `<li class="issuance-mission-item">
+            <a class="issuance-mission-link" href="${escapeHtml(record.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(sourceTitle)}</a>
+            ${scope ? `<p class="issuance-mission-scope">${escapeHtml(scope)}</p>` : ''}
+            ${appointment ? `<p class="issuance-mission-scope">${escapeHtml(appointment)}</p>` : ''}
+            <p class="issuance-mission-meta">${escapeHtml(dateLabel + accessed)} · ${isEnglish ? 'Mission-specific only' : '해당 공관 범위만 적용'}</p>
+        </li>`;
     }).join('');
-    return `<label class="issuance-source-line">${escapeHtml(txAt('issuanceUiLabels', 8, '국가·공관별 공식 오버레이'))} <select>${options}</select></label>`;
+    return `<details class="issuance-mission-sources">
+        <summary>${escapeHtml(title)} (${overlays.length})</summary>
+        <ul class="issuance-mission-list">${list}</ul>
+        ${caution ? `<p class="issuance-mission-caution">${escapeHtml(caution)}</p>` : ''}
+    </details>`;
 }
 
 // F-4 (재외동포) is intentionally excluded from the generic 사증발급 issuance
@@ -21013,6 +21068,7 @@ function applyLanguage(code, options = {}) {
     setIndexedHtml('.brand-hero-stats .stat-label', txArray('brandHeroStats'));
     setHtml('#pManualTitle', tx('manualTitle'));
     setText('.p-manual-section .p-section-copy', tx('manualCopy'));
+    setIndexedText('.p-manual-kind', txArray('manualCardKinds'));
     setIndexedText('.p-manual-card h3', txArray('manualCardTitles'));
     setIndexedText('.p-manual-card p', txArray('manualCardDescs'));
     // NOTE: the manual-section note (#pManualNote) is localized via data-i18n in
@@ -21437,6 +21493,7 @@ async function loadVisaIssuanceData() {
     PROCEDURE_EVIDENCE_BINDINGS = Array.isArray(evidence?.records) ? evidence.records : [];
     PROCEDURE_EVIDENCE_BY_KEY = buildProcedureEvidenceIndex(PROCEDURE_EVIDENCE_BINDINGS);
     OFFICIAL_WEB_OVERLAYS = Array.isArray(overlays?.records) ? overlays.records : [];
+    OFFICIAL_WEB_OVERLAY_POLICY = overlays?.policy && typeof overlays.policy === 'object' ? overlays.policy : {};
 }
 
 async function loadVisaData() {
