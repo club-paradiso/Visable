@@ -72,7 +72,7 @@
    * machine text (see f4Lang). */
   function f4Lang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
-    return l === 'en' ? 'en' : 'ko';
+    return l === 'en' ? 'en' : l === 'zh-CN' ? 'zh-CN' : 'ko';
   }
   var STR_KO = {
     loading: 'F-4 안내 데이터를 불러오는 중입니다…',
@@ -336,7 +336,137 @@
     officialCheckDocsNote: 'Because your eligibility/nationality should be resolved first, we do not state a definite document list here. Confirm with your competent mission or the Ministry of Justice (HiKorea / 1345).',
     subcatHeading: 'F-4 sub-categories'
   };
-  var STR_PACKS = { ko: STR_KO, en: STR_EN };
+  var STR_ZH = {
+    loading: '正在加载 F-4 指引数据…',
+    fetchFail: '无法加载 F-4 指引数据。请勿在没有此指引的情况下办理，请直接向管辖驻外公馆·HiKorea·1345 确认。',
+    entryEyebrow: '在外同胞 F-4 · 基于官方依据的指引',
+    startCtaFallback: '确认 F-4 手续',
+    modalAria: 'F-4 在外同胞指引',
+    close: '关闭',
+    back: '← 上一步',
+    restart: '从头开始',
+    seeResult: '查看结果',
+    recommended: '推荐路径',
+    why: '为什么是这条路径？',
+    checkFirst: '首先要确认的事',
+    nextStep: '下一步',
+    cautions: '注意',
+    officialWarn: '官方确认提示',
+    countryGuide: '按国家确认',
+    openHub: '查看 F-4 手续详情',
+    backToDiagnostic: '← 返回诊断',
+    hubTitle: 'F-4 手续指引中心',
+    selectCountryLabel: '请选择申请国家或居住国家',
+    selectCountryHint: '各国公馆手续、犯罪记录证明、认证方式、预约、手续费、处理时间可能不同。未经核实的国家仅提供通用 F-4 标准。',
+    selectCountryPlaceholder: '— 选择国家（选填）—',
+    noCountrySelected: '尚未选择国家，仅显示通用 F-4 标准。选择国家后，将一并显示该国公馆指引（如已核实）。',
+    commonRulesHeading: '通用 F-4 标准（所有国家通用）',
+    countryRulesHeading: '按国家指引',
+    docsHeading: '通用提交材料',
+    stepsHeading: '步骤',
+    sourcesHeading: '出处',
+    notGuaranteeFootnote: '本指引不保证资格或许可。实际是否适用，请向管辖驻外公馆·出入境·外国人机关·HiKorea（1345）确认。',
+    badgeVerified: '已确认官方标准',
+    badgePartial: '部分官方资料',
+    badgeRefresh: '需确认官方最新性',
+    badgeOfficialCheck: '需官方确认',
+    badgeUnclear: '无确认资料',
+    sourceDatePrefix: '基准日',
+    linkMissionPage: '公馆指引页面',
+    linkMissionFinder: '查找管辖驻外公馆',
+    linkVisaPortal: '确认签证门户',
+    linkHikorea: '确认 HiKorea',
+    link1345: '建议向 1345 确认',
+    tagCountryVaries: '各国不同',
+    tagOfficialCheck: '官方确认',
+    answerPrompt: '回答上述问题后，将显示推荐路径。',
+    ctaHelperFallback: '在驻外公馆申请、国内居所申报、资格变更中，确认符合我情况的流程。',
+    conditionsHeading: '条件',
+    fieldCriminalRecord: '犯罪记录证明',
+    fieldAuthentication: '文件认证（海牙认证/领事认证）',
+    fieldBooking: '预约',
+    fieldFee: '手续费（签证手续费）',
+    fieldProcessingTime: '处理时间',
+    fieldMissionPractice: '公馆实务',
+    guideHeader: 'F-4 在外同胞居留资格指引',
+    guideIntro: '准备材料和办理方式会因在外同胞类型、国籍经历、申请手续而不同。回答几个问题，即可确认与您情况相近的准备路径。',
+    primaryCta: '查找符合我情况的 F-4 准备材料',
+    recStartTitle: '符合您情况的手续指引',
+    recStartBody: 'F-4 的准备材料会因国籍经历、申请地点、是否居所申报而不同。即使不知道子代码，回答几个问题，即可确认与您情况相近的准备材料和手续。',
+    ctaMicrocopy: '约 1 分钟 · 4~5 个问题 · 不知道子代码也能开始',
+    stickyCta: '开始查找 F-4 准备材料',
+    secondaryActionsLabel: '用其他方式查找',
+    secViewSubcategories: '查看全部细分资格',
+    secViewCommonDocs: '查看通用材料',
+    secViewProcedure: '查看申请手续',
+    secViewSources: '查看官方依据',
+    stepWord: '步骤',
+    next: '下一步',
+    restartShort: '重新开始',
+    backToGuide: '← 返回指引',
+    startGuideShort: '开始指引',
+    progressAria: '进度',
+    stepSituationQ: '您目前更接近哪种情况？',
+    stepNationalityQ: '您本人或家人是否有大韩民国国籍经历？',
+    stepLocationQ: '您现在在哪里？',
+    stepProcedureQ: '您现在需要办理哪项手续？',
+    stepConfirmQ: '可能需要额外确认的项目',
+    stepConfirmHelp: '以下项目可能依个别情况需要额外确认。选择相关项目后将一并在结果中说明。此选择为选填。',
+    optUnsure: '不太清楚',
+    optSitApplyAbroad: '我想在海外申请 F-4 签证',
+    optSitChangeInKorea: '我想在韩国把居留资格变更为 F-4',
+    optSitExtension: '我已是 F-4，需要延期/变更',
+    optSitResidence: '我需要办理居所申报',
+    optNatSelfHeld: '我曾经持有过大韩民国国籍',
+    optNatAncestor: '我的父母或祖父母曾持有大韩民国国籍',
+    optNatNone: '不适用',
+    optLocInKorea: '在韩国停留中',
+    optLocOverseas: '在海外停留中',
+    optProcVisa: '签证签发',
+    optProcChange: '居留资格变更',
+    optProcExtension: '期限延长',
+    optProcResidence: '居所申报',
+    confNationalityLoss: '国籍丧失·脱离相关事项',
+    confFamilyProof: '家庭关系证明',
+    confCriminalRecord: '犯罪记录证明',
+    confMilitary: '兵役相关事项',
+    confApostille: '海牙认证·领事认证',
+    confTranslation: '翻译·公证',
+    mayRequireConfirm: '可能需要额外确认',
+    officialSourceNeedsConfirm: '需确认官方依据',
+    resultTitle: '与您情况相近的 F-4 准备路径',
+    resWhy: '为什么是这条路径？',
+    resFirstSteps: '首先要做的事',
+    resBasicDocs: '基本准备材料',
+    resAdditionalDocs: '依您情况可能追加的材料',
+    resProcedure: '申请手续',
+    resSources: '官方依据',
+    resNextActions: '下一步行动',
+    checklistIntro: '以下准备材料是整理官方手册而成的参考用清单。请点击各项目自行确认并准备。',
+    copyChecklist: '复制清单',
+    copied: '已复制',
+    copyFail: '复制失败',
+    viewDocDetails: '查看材料详情',
+    viewHikoreaGuide: 'HiKorea 预约指引',
+    checkJurisdiction: '确认管辖机关',
+    safetyNote: '依个别情形及管辖出入境机关或驻外公馆的判断，可能要求追加材料。',
+    routeLabelOverseas: '海外 F-4 签证申请审查路径',
+    routeLabelStatusChange: '韩国境内 F-4 居留资格变更审查路径',
+    routeLabelExtension: 'F-4 期限延长/变更准备路径',
+    routeLabelResidence: '居所申报准备路径',
+    routeLabelOfficialCheck: '需要官方确认的路径',
+    procStepPrepare: '准备材料',
+    procStepReserve: '如需则预约访问',
+    procStepSubmit: '提交申请书',
+    procStepReview: '审查',
+    procStepResult: '确认结果',
+    procStepFollowup: '如需则后续登录·发证',
+    noAdditionalDocsNote: '未选择任何追加项目。依个别情况可能要求追加材料，请向管辖机关确认。',
+    extensionDocsNote: '期限延长的具体提交材料因个人情况和管辖机关而异。请结合下方指引，向管辖出入境·外国人机关或 HiKorea（1345）确认。',
+    officialCheckDocsNote: '由于须先理清资格·国籍事项，故不对一般准备材料清单作出断定式指引。请向管辖公馆·法务部（HiKorea·1345）确认。',
+    subcatHeading: 'F-4 细分类型'
+  };
+  var STR_PACKS = { ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[f4Lang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
     : STR_KO;
@@ -344,7 +474,9 @@
   // Country/overlay display label in the active language (data has labelKo/labelEn).
   function clabel(c) {
     if (!c) return '';
-    return (f4Lang() === 'en' && c.labelEn) ? c.labelEn : (c.labelKo || c.labelEn || '');
+    var lg = f4Lang();
+    if (lg === 'zh-CN') return c.labelZh || c.labelKo || c.labelEn || '';
+    return (lg === 'en' && c.labelEn) ? c.labelEn : (c.labelKo || c.labelEn || '');
   }
 
   var TAB_LABEL_KO = {
@@ -363,7 +495,15 @@
     country: 'Country-specific',
     faq: 'F-4 FAQ'
   };
-  var TAB_LABEL_PACKS = { ko: TAB_LABEL_KO, en: TAB_LABEL_EN };
+  var TAB_LABEL_ZH = {
+    overview: 'F-4 一览',
+    overseasApplication: '在驻外公馆申请',
+    residenceReport: '国内居所申报/居所证',
+    statusChange: '在韩国变更资格',
+    country: '按国家确认',
+    faq: 'F-4 常见问题'
+  };
+  var TAB_LABEL_PACKS = { ko: TAB_LABEL_KO, en: TAB_LABEL_EN, 'zh-CN': TAB_LABEL_ZH };
   var TAB_LABEL = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = TAB_LABEL_PACKS[f4Lang()] || TAB_LABEL_KO; return (p[k] != null) ? p[k] : TAB_LABEL_KO[k]; } })
     : TAB_LABEL_KO;
@@ -923,7 +1063,7 @@
     var step = steps[state.stepIndex];
     titleEl.textContent = STR.guideHeader;
     var n = state.stepIndex + 1, total = steps.length;
-    setStepCount(f4Lang() === 'en' ? (STR.stepWord + ' ' + n + ' / ' + total) : (n + ' / ' + total + ' ' + STR.stepWord));
+    setStepCount((f4Lang() === 'en' || f4Lang() === 'zh-CN') ? (STR.stepWord + ' ' + n + ' / ' + total) : (n + ' / ' + total + ' ' + STR.stepWord));
     setProgress((n / total) * 100);
     body.innerHTML = renderStepHtml(step);
     body.scrollTop = 0;
