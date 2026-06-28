@@ -29,7 +29,7 @@ from typing import Any, Dict, List, Optional, Sequence
 # Bumped whenever the answer contract / prompt directives change in a way the
 # frontend or smoke harness should be able to detect. Surfaced as
 # ``answer_style_version`` in the response metadata.
-ANSWER_STYLE_VERSION = "2026-05-quality-v3-confidence-gated"
+ANSWER_STYLE_VERSION = "2026-06-quality-v4-evidence-invariants"
 
 # ---------------------------------------------------------------------------
 # Answer quality modes (source state)
@@ -426,6 +426,68 @@ def classify_answer_quality(
         "answer_style_version": ANSWER_STYLE_VERSION,
         "question_type": question_type,
     }
+
+
+def enforce_source_confidence_invariants(
+    quality: Dict[str, Any],
+    *,
+    prompt: str,
+    visa_code: Optional[str],
+    task_type: Optional[str],
+    direct_evidence_count: int,
+    related_evidence_count: int = 0,
+    missing_direct_authority: bool,
+    law_lookup_failed: bool = False,
+    citation_specific: bool = False,
+    citation_verification_status: str = "",
+    structured_procedure_mismatch: bool = False,
+) -> Dict[str, Any]:
+    """Apply non-negotiable confidence downgrades after evidence scoring.
+
+    Classification happens before the complete evidence pack exists. This
+    deterministic second pass prevents an optimistic local/manual signal from
+    surviving when the finished pack shows no direct authority, a failed law
+    lookup, an unverified article citation, or a procedure mismatch.
+    """
+    result = dict(quality or {})
+    blockers: List[str] = []
+    if int(direct_evidence_count or 0) <= 0:
+        blockers.append("DIRECT_EVIDENCE_MISSING")
+    if missing_direct_authority:
+        blockers.append("MISSING_DIRECT_AUTHORITY")
+    if law_lookup_failed:
+        blockers.append("LAW_LOOKUP_FAILED")
+    if citation_specific and citation_verification_status != "verified":
+        blockers.append("CITATION_NOT_VERIFIED")
+    if structured_procedure_mismatch:
+        blockers.append("STRUCTURED_PROCEDURE_MISMATCH")
+    blockers = list(dict.fromkeys(blockers))
+    if not blockers:
+        result["source_confidence_invariant_reasons"] = []
+        return result
+
+    # Related/background material is useful context but never a direct source.
+    mode = (
+        SOURCE_LIMITED
+        if int(related_evidence_count or 0) > 0 or result.get("answer_quality_mode") == SOURCE_LIMITED
+        else SOURCE_UNAVAILABLE
+    )
+    result.update({
+        "answer_quality_mode": mode,
+        "source_confidence_level": "low",
+        "requires_official_confirmation": True,
+        "grounded_answer_limited": True,
+        "source_confidence_invariant_reasons": blockers,
+    })
+    if not result.get("official_confirmation_questions"):
+        qtype = result.get("question_type") or classify_question_type(prompt, task_type)
+        result["official_confirmation_questions"] = official_confirmation_questions(
+            qtype,
+            visa_code,
+            prompt,
+            result.get("related_statuses_not_sources") or [],
+        )
+    return result
 
 
 # ---------------------------------------------------------------------------
