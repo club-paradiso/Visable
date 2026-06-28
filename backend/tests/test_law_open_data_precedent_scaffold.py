@@ -284,6 +284,31 @@ class NormalizerTests(unittest.TestCase):
         # A list result (no body) is contextual, never a direct citation.
         self.assertEqual(item["citationGrade"], "contextual")
         self.assertFalse(item["quoteSafe"])
+        self.assertNotIn("holdingSummary", item, "list metadata must not expose a generated holding")
+
+    def test_relative_official_url_is_normalized_and_unsafe_urls_rejected(self):
+        relative = ps.normalize_precedent_list_item({
+            "사건명": "출입국관리법위반", "사건번호": "2021도1", "법원명": "대법원",
+            "선고일자": "20210101", "판례일련번호": "123",
+            "판례상세링크": "/DRF/lawService.do?target=prec&ID=123",
+        })
+        self.assertEqual(
+            relative["url"],
+            "https://www.law.go.kr/DRF/lawService.do?target=prec&ID=123",
+        )
+        for unsafe in (
+            "https://evil.com/x", "javascript:alert(1)", "data:text/html,x",
+            "//evil.com/x", "/DRF/../lawService.do?target=prec",
+        ):
+            self.assertEqual(ps.normalize_law_go_kr_url(unsafe), "", unsafe)
+
+    def test_duplicate_cases_are_removed_by_case_court_date_or_source_id(self):
+        items = [
+            {"serialNumber": "1", "caseNumber": "2021도1", "courtOrAgency": "대법원", "decisionDate": "20210101"},
+            {"serialNumber": "2", "caseNumber": "2021도1", "courtOrAgency": "대법원", "decisionDate": "2021.01.01"},
+            {"serialNumber": "1", "caseNumber": "different", "courtOrAgency": "다른 법원", "decisionDate": "20220101"},
+        ]
+        self.assertEqual(len(ps.dedupe_precedent_items(items)), 1)
 
     def test_precedent_body_fixture_is_direct_and_quotable(self):
         env = ps.normalize_precedent_body_response(fixture("precedent_body.json"))

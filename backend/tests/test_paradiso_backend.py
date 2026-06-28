@@ -2905,8 +2905,11 @@ class AnswerQualityGoldenSuiteTests(unittest.TestCase):
     def test_d2_part_time_outside_status_activity(self):
         d = self._ask("D-2 비자로 아르바이트(시간제 취업)를 할 수 있나요?", lang="ko", code="D-2")
         self.assertEqual(d["question_type_detected"], "activity_on_status")
-        # D-2 has manual grounding, so this is source_confirmed.
-        self.assertEqual(d["answer_quality_mode"], "source_confirmed")
+        # D-2 extension/registration material does not directly support a
+        # time-part work / activities-outside-status question.
+        self.assertNotEqual(d["answer_quality_mode"], "source_confirmed")
+        self.assertNotEqual(d["source_confidence_level"], "high")
+        self.assertTrue(d["requires_official_confirmation"])
 
     def test_general_documents_f6_extension(self):
         d = self._ask("What documents do I need for F-6 extension?", lang="en", code="F-6")
