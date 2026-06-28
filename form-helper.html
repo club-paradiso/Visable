@@ -813,6 +813,8 @@ main{flex:1;padding:0 1rem 3rem}
   <p class="fh-non-print">입력값은 브라우저 메모리에만 저장되며 서버로 전송되지 않습니다(localStorage 미사용). 최신 공식 서식은 <a href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">HiKorea</a> 또는 1345에서 확인하세요.</p>
 </footer>
 
+<script src="assets/js/zh-traditional.js"></script>
+<script src="assets/js/form-helper-i18n.js"></script>
 <script>
 'use strict';
 
@@ -3019,10 +3021,26 @@ function initTheme() {
 
 function initLang() {
   const btn = document.getElementById('fhLangBtn');
-  btn.addEventListener('click', () => {
-    state.lang = state.lang === 'ko' ? 'en' : 'ko';
-    document.getElementById('fhLangLabel').textContent = state.lang === 'ko' ? '한국어 · EN' : 'EN · 한국어';
-    // Language toggle is cosmetic in MVP; full i18n is Phase 2
+  const label = document.getElementById('fhLangLabel');
+  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文' };
+  function readSel() {
+    try { var s = localStorage.getItem('paradiso:language') || ''; if (s === 'zh-CN' || s === 'zh-TW') return s; } catch (e) {}
+    return 'ko';
+  }
+  function apply(sel) {
+    state.lang = sel;
+    document.documentElement.lang = sel === 'zh-TW' ? 'zh-TW' : (sel === 'zh-CN' ? 'zh-CN' : 'ko');
+    if (label) { label.textContent = LABEL[sel] || LABEL.ko; label.setAttribute('data-s2t', 'off'); }
+    // Korean → Chinese display layer (assets/js/form-helper-i18n.js). The wizard
+    // renderer stays Korean-only; this translates the displayed text instead.
+    if (window.ParadisoFormI18n) window.ParadisoFormI18n.setMode(sel);
+  }
+  apply(readSel());
+  if (btn) btn.addEventListener('click', () => {
+    var cyc = { ko: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
+    var next = cyc[state.lang] || 'zh-CN';
+    try { localStorage.setItem('paradiso:language', next); } catch (e) {}
+    apply(next);
   });
 }
 

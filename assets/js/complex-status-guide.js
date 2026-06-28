@@ -35,11 +35,12 @@
   }
   function csgLang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
-    return l === 'en' ? 'en' : 'ko';
+    return l === 'en' ? 'en' : l === 'zh-CN' ? 'zh-CN' : 'ko';
   }
 
-  /* ---- chrome strings (Korean canonical; English active; zh-CN → ko fallback
-   * per the repo policy — no low-quality machine Chinese in this flow). ------ */
+  /* ---- chrome strings (Korean canonical; English + Simplified Chinese active.
+   * Per-status data (subcode/doc names) falls back to Korean when no localized
+   * value exists — official names are never invented). --------------------- */
   var STR_KO = {
     eyebrow: '공식 출처 기반 안내',
     recStartTitle: '상황에 맞는 절차 안내',
@@ -164,7 +165,69 @@
     docsMoreInDetail: 'See the detail screen for the remaining items.',
     sourceManualLabel: 'Manual reference'
   };
-  var STR_PACKS = { ko: STR_KO, en: STR_EN };
+  var STR_ZH = {
+    eyebrow: '基于官方依据的指引',
+    recStartTitle: '符合您情况的手续指引',
+    recStartBody: '该居留资格的准备材料和办理方式，会因细分类型、申请手续及当前情况而不同。回答几个问题，即可确认与您情况相近的准备材料和手续。',
+    ctaMicrocopy: '约 1 分钟 · 不知道子代码也能开始',
+    primaryCtaTpl: '查找符合我情况的 {code} 准备材料',
+    secondaryActionsLabel: '用其他方式查找',
+    secViewSubcategories: '查看全部细分资格',
+    secViewCommonDocs: '查看通用材料',
+    secViewProcedure: '查看申请手续',
+    secViewSources: '查看官方依据',
+    modalAria: '居留资格准备指引',
+    close: '关闭',
+    back: '← 上一步',
+    next: '下一步',
+    seeResult: '查看结果',
+    restartShort: '重新开始',
+    stepWord: '步骤',
+    progressAria: '进度',
+    optUnsure: '不太清楚',
+    stepSubcodeQ: '您更接近哪种类型？',
+    stepSubcodeHelp: '请在下列类型中选择最接近的一项（以官方数据为准）。即使不确定，也可以选择“不太清楚”。',
+    stepProcedureQ: '您现在需要办理哪项手续？',
+    stepProcedureHelp: '仅显示当前数据中可提供指引的手续。',
+    resultTitleTpl: '与您情况相近的 {code} 准备路径',
+    matchedType: '已选类型',
+    matchedProcedure: '已选手续',
+    unsureType: '类型未定',
+    unsureProcedure: '手续未定',
+    resFirstSteps: '首先要做的事',
+    resBasicDocs: '基本准备材料',
+    resAddDocs: '依您情况可能追加的材料',
+    resProcedure: '申请手续',
+    resSources: '官方依据',
+    resNextActions: '下一步行动',
+    officialSourceNeedsConfirm: '需确认官方依据',
+    firstStepConfirmType: '确认我的细分类型是否正确',
+    firstStepConfirmOffice: '向管辖出入境·外国人机关或驻外公馆确认',
+    firstStepPrepareDocs: '准备符合所选手续的材料',
+    docsHandoffNote: '具体准备材料请在基于官方依据的详情页确认。点击下方“查看全部准备材料·手续”，即可查看该子代码·手续的材料。',
+    addDocsNote: '依个别情况可能要求追加材料。准确清单请在详情页和管辖机关确认。',
+    sourcesHandoffNote: '官方依据（手册·出处）会一并显示在详情页。未连接出处的项目将标记为“需确认官方依据”。',
+    viewFullDetail: '查看全部准备材料·手续',
+    copyChecklist: '复制清单',
+    copied: '已复制',
+    copyFail: '复制失败',
+    safetyNote: '依个别情形及管辖出入境机关或驻外公馆的判断，可能要求追加材料。',
+    procStepPrepare: '准备材料',
+    procStepReserve: '如需则预约访问',
+    procStepSubmit: '提交申请书',
+    procStepReview: '审查',
+    procStepResult: '确认结果',
+    procStepFollowup: '如需则后续登录·发证',
+    noSubcodesNote: '该居留资格在官方数据中没有可选择的细分类型，因此将直接进入手续指引。',
+    noteE7: 'E-7 的要件和材料会因职业·职务而不同。可能需要确认准确的职业分类，结果无法一概而定。',
+    noteG1: 'G-1 的要件和材料因停留事由而异，多数项目属于个别审查·确认对象。需向管辖机关确认。',
+    noteF5: 'F-5（永住）的资格标准和手续较为严格，个别审查比重大。具体要件请在官方出处和管辖机关确认。',
+    docChecklistIntro: '以下是官方手册中整理的准备材料（参考用清单）。依个别情形可能有所不同。',
+    docsInManualNote: '此手续的准备材料已整理在官方手册中。请在“查看全部准备材料·手续”中查看完整清单。',
+    docsMoreInDetail: '其他项目请在详情页查看完整内容。',
+    sourceManualLabel: '手册依据'
+  };
+  var STR_PACKS = { ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH };
   function S(k) { var p = STR_PACKS[csgLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; }
   function tpl(k, code) { return String(S(k)).replace('{code}', code); }
 
@@ -641,7 +704,7 @@
     var step = state.steps[state.stepIndex];
     titleEl.textContent = state.code + ' · ' + S('recStartTitle');
     var n = state.stepIndex + 1, total = state.steps.length;
-    setStepCount(csgLang() === 'en' ? (S('stepWord') + ' ' + n + ' / ' + total) : (n + ' / ' + total + ' ' + S('stepWord')));
+    setStepCount((csgLang() === 'en' || csgLang() === 'zh-CN') ? (S('stepWord') + ' ' + n + ' / ' + total) : (n + ' / ' + total + ' ' + S('stepWord')));
     setProgress((n / total) * 100);
     body.innerHTML = renderStepHtml(step);
     body.scrollTop = 0;

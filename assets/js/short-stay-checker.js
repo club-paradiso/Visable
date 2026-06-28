@@ -31,7 +31,7 @@
    * reopening the popup after a language switch shows the right text. */
   function sscLang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
-    return l === 'en' ? 'en' : 'ko';
+    return l === 'en' ? 'en' : l === 'zh-CN' ? 'zh-CN' : 'ko';
   }
   var STR_KO = {
     title: '국적별 단기입국 경로 확인',
@@ -143,45 +143,100 @@
     link1345: 'Verify via 1345',
     linkMission: 'Check with a Korean mission'
   };
-  var STR_PACKS = { ko: STR_KO, en: STR_EN };
+  var STR_ZH = {
+    title: '按国籍查看短期入境路径',
+    titleEn: 'Short-stay entry checker',
+    subtitle: '根据国籍·护照·访问地区·目的，确认免签、济州免签及 C-3 签证的可能性。',
+    eyebrow: 'Short-stay entry',
+    countryLabel: '1. 国籍（护照签发国）',
+    countryPlaceholder: '例：越南、Vietnam、日本、United States',
+    countryHelper: '输入国家名称后会显示候选。',
+    countryMissing: '请先输入国籍。',
+    countryNotFound: '未找到该国家名称。请用英文名或中文/韩文国家名重新输入。',
+    passportLabel: '2. 护照种类',
+    purposeLabel: '3. 访问目的',
+    destinationLabel: '4. 访问地区',
+    stayLabel: '5. 预计停留天数',
+    stayHelper: '您预计停留几天左右？',
+    ageLabel: '年龄段（选填）',
+    submit: '确认路径',
+    reset: '重新输入',
+    loading: '正在加载官方列表数据…',
+    fetchFail: '无法加载各国列表数据。在此状态下无法为您说明是否可免签入境。请直接在 K-ETA 官方网站、签证门户或管辖驻外公馆确认。',
+    resultPath: '推荐路径',
+    resultWhy: '为什么是这条路径？',
+    resultNext: '接下来要做的事',
+    resultWarn: '务必确认的事项',
+    resultOfficial: '官方确认',
+    resultAlt: '其他可能',
+    sourceBadgeVerified: '已确认官方标准',
+    sourceBadgeNeedsRefresh: '需确认官方最新性',
+    sourceBadgePartial: '基于部分资料',
+    sourceDatePrefix: '出处基准日',
+    statusLikely: '可确认路径',
+    statusJejuFree: '可济州免签',
+    statusTransitNoVisa: '过境免签证',
+    statusTransitVisa: '纯过境需签证',
+    statusVisaRequired: '需要签证',
+    statusNotAvailable: '不可',
+    statusCheck: '需官方确认',
+    srcItemDate: '基准日',
+    srcItemConfidence: '可信度',
+    dataNote: '资料注意',
+    srcDetailsSummary: '出处·资料依据详情',
+    srcBasisLine: '本答复所依据的官方出处：',
+    srcMetaLine: '完整出处元数据：data/short-stay/sources.json',
+    srcLegalLine: '本指引为基于所存官方列表副本的参考信息，不具法律效力。最终请在 K-ETA·签证门户·驻外公馆·1345 确认。',
+    countrySuggestAria: '国家候选',
+    dataLoadFailBadge: '数据加载失败 — 需直接在官方网站确认',
+    ctaSuffix: ' — 用我的国籍确认免签·济州·C-3 的可能性',
+    similarCountry: '相似国家',
+    notInListNote: '如果某国家不在当前已载入的列表数据中，通常需要申请签证（如 C-3），或向驻外公馆·1345 进行官方确认。',
+    linkKeta: '确认 K-ETA',
+    linkVisaPortal: '确认签证门户',
+    linkHikorea: 'HiKorea',
+    link1345: '建议向 1345 确认',
+    linkMission: '向驻外公馆确认'
+  };
+  var STR_PACKS = { ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[sscLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
     : STR_KO;
 
   // Option labels are chrome; data carries label (ko) + labelEn. optionHtml()
   // picks the active-language label at render time.
-  function optLabel(o) { return (sscLang() === 'en' && o.labelEn) ? o.labelEn : o.label; }
+  function optLabel(o) { var lg = sscLang(); return (lg === 'zh-CN' && o.labelZh) ? o.labelZh : (lg === 'en' && o.labelEn) ? o.labelEn : o.label; }
 
   var PASSPORT_OPTIONS = [
-    { value: 'ordinary', label: '일반여권', labelEn: 'Ordinary passport' },
-    { value: 'diplomatic', label: '외교여권', labelEn: 'Diplomatic passport' },
-    { value: 'official', label: '관용/공무여권', labelEn: 'Official/service passport' },
-    { value: 'special', label: '특별/서비스여권', labelEn: 'Special/service passport' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
+    { value: 'ordinary', label: '일반여권', labelEn: 'Ordinary passport', labelZh: '普通护照' },
+    { value: 'diplomatic', label: '외교여권', labelEn: 'Diplomatic passport', labelZh: '外交护照' },
+    { value: 'official', label: '관용/공무여권', labelEn: 'Official/service passport', labelZh: '公务护照' },
+    { value: 'special', label: '특별/서비스여권', labelEn: 'Special/service passport', labelZh: '特别/服务护照' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚' }
   ];
   var PURPOSE_OPTIONS = [
-    { value: 'tourism', label: '관광', labelEn: 'Tourism' },
-    { value: 'family_visit', label: '가족·지인 방문', labelEn: 'Visiting family/friends' },
-    { value: 'transit', label: '환승', labelEn: 'Transit' },
-    { value: 'business', label: '출장·상담·계약', labelEn: 'Business trip/consultation/contract' },
-    { value: 'medical', label: '의료관광', labelEn: 'Medical tourism' },
-    { value: 'event', label: '행사·회의', labelEn: 'Event/conference' },
-    { value: 'overseas_korean', label: '동포 방문', labelEn: 'Overseas Korean visit' },
-    { value: 'work_or_profit', label: '취업·영리활동', labelEn: 'Work/profit-making activity' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
+    { value: 'tourism', label: '관광', labelEn: 'Tourism', labelZh: '观光' },
+    { value: 'family_visit', label: '가족·지인 방문', labelEn: 'Visiting family/friends', labelZh: '探访家人·熟人' },
+    { value: 'transit', label: '환승', labelEn: 'Transit', labelZh: '过境' },
+    { value: 'business', label: '출장·상담·계약', labelEn: 'Business trip/consultation/contract', labelZh: '出差·洽谈·签约' },
+    { value: 'medical', label: '의료관광', labelEn: 'Medical tourism', labelZh: '医疗观光' },
+    { value: 'event', label: '행사·회의', labelEn: 'Event/conference', labelZh: '活动·会议' },
+    { value: 'overseas_korean', label: '동포 방문', labelEn: 'Overseas Korean visit', labelZh: '同胞探访' },
+    { value: 'work_or_profit', label: '취업·영리활동', labelEn: 'Work/profit-making activity', labelZh: '就业·营利活动' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚' }
   ];
   var DESTINATION_OPTIONS = [
-    { value: 'mainland', label: '한국 본토', labelEn: 'Korean mainland' },
-    { value: 'jeju_only', label: '제주만 방문', labelEn: 'Jeju only' },
-    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망', labelEn: 'Enter via Jeju, then move to the mainland' },
-    { value: 'transit_only', label: '공항 환승만', labelEn: 'Airport transit only' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure' }
+    { value: 'mainland', label: '한국 본토', labelEn: 'Korean mainland', labelZh: '韩国本土' },
+    { value: 'jeju_only', label: '제주만 방문', labelEn: 'Jeju only', labelZh: '仅访问济州' },
+    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망', labelEn: 'Enter via Jeju, then move to the mainland', labelZh: '经济州入境后希望前往本土' },
+    { value: 'transit_only', label: '공항 환승만', labelEn: 'Airport transit only', labelZh: '仅机场过境' },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚' }
   ];
   var AGE_OPTIONS = [
-    { value: 'unknown', label: '선택 안 함', labelEn: 'No selection' },
-    { value: '17_or_younger', label: '만 17세 이하', labelEn: '17 or younger' },
-    { value: '18_to_64', label: '만 18~64세', labelEn: '18 to 64' },
-    { value: '65_or_older', label: '만 65세 이상', labelEn: '65 or older' }
+    { value: 'unknown', label: '선택 안 함', labelEn: 'No selection', labelZh: '不选择' },
+    { value: '17_or_younger', label: '만 17세 이하', labelEn: '17 or younger', labelZh: '17 周岁以下' },
+    { value: '18_to_64', label: '만 18~64세', labelEn: '18 to 64', labelZh: '18~64 周岁' },
+    { value: '65_or_older', label: '만 65세 이상', labelEn: '65 or older', labelZh: '65 周岁以上' }
   ];
 
   /* ------------------------------------------------------------ pure utils */

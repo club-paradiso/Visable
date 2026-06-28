@@ -65,11 +65,11 @@
   // These are the Phase-7 user-facing labels (intentionally plainer than the
   // backend's internal KO labels). Color is NEVER the only indicator.
   var SOURCE_COVERAGE = {
-    source_confirmed: { ko: '공식 원문 확인', en: 'Confirmed in official source', cls: 'wm-cov-confirmed' },
-    contextual:       { ko: '일부 항목만 공식 확인', en: 'Partially covered by official sources', cls: 'wm-cov-partial' },
-    limited:          { ko: '관할기관 확인 필요', en: 'Official confirmation required', cls: 'wm-cov-verify' },
-    final_agency_discretion: { ko: '관할기관 확인 필요', en: 'Official confirmation required', cls: 'wm-cov-verify' },
-    unavailable:      { ko: '현재 근거 미확보', en: 'No current source coverage', cls: 'wm-cov-none' }
+    source_confirmed: { ko: '공식 원문 확인', en: 'Confirmed in official source', 'zh-CN': '已确认官方原文', cls: 'wm-cov-confirmed' },
+    contextual:       { ko: '일부 항목만 공식 확인', en: 'Partially covered by official sources', 'zh-CN': '仅部分项目经官方确认', cls: 'wm-cov-partial' },
+    limited:          { ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认', cls: 'wm-cov-verify' },
+    final_agency_discretion: { ko: '관할기관 확인 필요', en: 'Official confirmation required', 'zh-CN': '需向管辖机关确认', cls: 'wm-cov-verify' },
+    unavailable:      { ko: '현재 근거 미확보', en: 'No current source coverage', 'zh-CN': '目前尚无依据', cls: 'wm-cov-none' }
   };
 
   // Statuses whose sub-status materially changes the procedure/documents, so the
@@ -296,7 +296,7 @@
   }
   function sourceCoverageLabel(level, locale) {
     var c = _covEntry(level);
-    return (locale === 'en') ? c.en : c.ko;
+    return c[locale] || ((locale === 'en') ? c.en : c.ko);
   }
   function sourceCoverageClass(level) {
     return _covEntry(level).cls;
@@ -434,18 +434,70 @@
       disclaimerPrint: 'Final confirmation must be made with HiKorea, 1345, or the competent immigration office.',
       langName: 'English',
       operatorDiag: 'Diagnostics (operator)'
+    },
+    'zh-CN': {
+      title: 'Waymaker - 韩国停留手续路径向导',
+      subtitle: '以官方依据为基础，梳理您的手续、材料、预约和下一步行动。',
+      empty: '不必先写问题。请选择您当前的居留资格和要办理的事项。',
+      start: '选择我的情况',
+      back: '上一步',
+      next: '下一步',
+      restart: '从头开始',
+      dontKnow: '不太清楚',
+      stepLanguage: '请选择语言',
+      stepLocation: '您现在在哪里？',
+      locIn: '在韩国', locOut: '在韩国境外', locUnsure: '不太清楚 / 视情况而定',
+      stepStatus: '请选择您当前的居留资格',
+      statusSearchPlaceholder: '按居留资格代码或名称搜索（例：D-2、留学、E-7）',
+      statusUnknown: '我不知道自己的居留资格',
+      statusFirstEntry: '我还没有签证 / 正在海外准备首次入境·签证签发',
+      noStatusResults: '没有搜索结果。请用代码（如 D-2）或中文/韩文名称重新搜索。',
+      programGroup: '项目 / 试点事业（官方依据有限）',
+      stepProcedure: '您需要办理哪项手续？',
+      procedureLimitedHint: '官方依据有限',
+      stepSubStatus: '您属于哪种细分类型？',
+      subStatusHelp: '材料和标准会因细分类型而不同。如不确定，请选择“不太清楚”。',
+      generating: '正在准备基于官方依据的手续清单…',
+      secProcedure: '我的手续', secNext: '现在要做的事', secApplicability: '适用可能性',
+      secDocs: '准备材料', secConditional: '按情况追加的材料', secWhere: '办理处·准备方法',
+      secTiming: '期限·注意事项', secFees: '手续费', secChannel: 'HiKorea / 访问路径',
+      secJurisdiction: '管辖', secCoverage: '官方依据范围', secVerify: '需确认项目',
+      grpCommon: '通用材料', grpRequired: '必备材料', grpConditional: '按情况材料',
+      grpAdditional: '追加材料', grpVerify: '向机关确认', grpNone: '依据不足',
+      checklistTitle: '材料清单', checklistHint: '勾选状态仅保存在本浏览器中。',
+      checklistReset: '重置', checklistCopy: '复制', checklistPrint: '打印/导出',
+      checklistCopied: '已将清单复制到剪贴板。',
+      officialForm: '官方表格',
+      coverageLimitedTitle: '此手续的官方依据有限',
+      coverageLimited: '目前对此手续的官方依据尚未充分结构化。对于未经确认的材料、手续费、期限和预约路径，不会擅自指引。请向 HiKorea、1345 或管辖出入境机关最终确认。',
+      whatWeCanSay: 'Paradiso 可安全提供的信息',
+      whatWeCannot: 'Paradiso 无法确认的信息',
+      officialChannels: '官方确认渠道',
+      call1345: '1345（外国人综合服务中心）',
+      hikoreaCta: '确认我的 HiKorea 预约路径',
+      aiFollowupCta: '询问此清单中不清楚的地方',
+      aiFollowupPlaceholder: '请询问此清单中不理解的地方。例如：财力材料可以被免除吗？',
+      aiPrivacyNote: '请勿输入个人信息（姓名、护照·外国人登录号、地址、电话号码等）。本助手只解释清单内容，不会创建新的官方要件。',
+      aiSend: '提问',
+      noDocs: '此手续的官方材料清单尚未结构化。',
+      verifyIntro: '以下项目无法以官方依据确定显示，请向管辖机关/1345/HiKorea 确认。',
+      generatedOn: '生成日',
+      sourceVersion: '依据版本',
+      disclaimerPrint: '最终确认须向 HiKorea、1345 或管辖出入境·外国人机关进行。',
+      langName: '简体中文',
+      operatorDiag: '诊断（运营者）'
     }
   };
 
   var PROCEDURE_LABELS = {
-    visaIssuance:           { ko: '사증발급 / 최초 입국', en: 'Visa issuance / first entry' },
-    registration:           { ko: '외국인등록', en: 'Alien registration' },
-    extension:              { ko: '체류기간 연장', en: 'Extension of stay' },
-    statusChange:           { ko: '체류자격 변경', en: 'Change of status' },
-    statusGrant:            { ko: '체류자격 부여', en: 'Grant of status' },
-    workplaceChange:        { ko: '근무처 변경·추가', en: 'Workplace change / addition' },
-    activitiesOutsideStatus:{ ko: '체류자격외 활동', en: 'Activities outside status' },
-    reentry:                { ko: '재입국허가', en: 'Re-entry permit' }
+    visaIssuance:           { ko: '사증발급 / 최초 입국', en: 'Visa issuance / first entry', 'zh-CN': '签证签发 / 首次入境' },
+    registration:           { ko: '외국인등록', en: 'Alien registration', 'zh-CN': '外国人登录' },
+    extension:              { ko: '체류기간 연장', en: 'Extension of stay', 'zh-CN': '居留期限延长' },
+    statusChange:           { ko: '체류자격 변경', en: 'Change of status', 'zh-CN': '居留资格变更' },
+    statusGrant:            { ko: '체류자격 부여', en: 'Grant of status', 'zh-CN': '居留资格赋予' },
+    workplaceChange:        { ko: '근무처 변경·추가', en: 'Workplace change / addition', 'zh-CN': '工作单位变更·追加' },
+    activitiesOutsideStatus:{ ko: '체류자격외 활동', en: 'Activities outside status', 'zh-CN': '资格外活动' },
+    reentry:                { ko: '재입국허가', en: 'Re-entry permit', 'zh-CN': '再入境许可' }
   };
 
   function t(locale, key) {
@@ -455,7 +507,7 @@
   function procedureLabel(key, locale) {
     var l = PROCEDURE_LABELS[key];
     if (!l) return key;
-    return (locale === 'en') ? l.en : l.ko;
+    return l[locale] || ((locale === 'en') ? l.en : l.ko);
   }
 
   // =========================================================================
@@ -516,6 +568,7 @@
     var state = {
       step: 'intro',
       locale: resolveInitialLocale(),
+      tradCN: rawSelection() === 'zh-TW',
       location: null,
       statusEntry: null,
       statusCode: null,
@@ -525,26 +578,44 @@
       packet: null
     };
 
-    function resolveInitialLocale() {
-      // Honor a ?lang=ko|en deep-link first (preserves the legacy ai.html URL
-      // parameter — e.g. index.html's handoff FAB passes &lang=en).
+    // Raw selection across all sources, including the global Paradiso language
+    // key shared with index.html. May be 'ko' | 'en' | 'zh-CN' | 'zh-TW'.
+    function rawSelection() {
       try {
         if (global.location && global.URLSearchParams) {
-          var urlLang = (new global.URLSearchParams(global.location.search).get('lang') || '').toLowerCase().slice(0, 2);
-          if (urlLang === 'ko' || urlLang === 'en') return urlLang;
+          var ul = (new global.URLSearchParams(global.location.search).get('lang') || '');
+          if (ul === 'zh-CN' || ul === 'zh-TW') return ul;
+          var two = ul.toLowerCase().slice(0, 2);
+          if (two === 'ko' || two === 'en') return two;
         }
       } catch (e) {}
       try {
-        var stored = global.localStorage && global.localStorage.getItem(LOCALE_KEY);
-        if (stored === 'ko' || stored === 'en') return stored;
+        var wmStored = global.localStorage && global.localStorage.getItem(LOCALE_KEY);
+        if (wmStored === 'ko' || wmStored === 'en' || wmStored === 'zh-CN' || wmStored === 'zh-TW') return wmStored;
+        var g = global.localStorage && global.localStorage.getItem('paradiso:language');
+        if (g === 'ko' || g === 'en' || g === 'zh-CN' || g === 'zh-TW') return g;
       } catch (e) {}
-      if (global.PARADISO_LANG === 'en' || global.PARADISO_LANG === 'ko') return global.PARADISO_LANG;
-      var htmlLang = (doc.documentElement.getAttribute('lang') || '').slice(0, 2);
-      if (htmlLang === 'en') return 'en';
+      if (['ko', 'en', 'zh-CN', 'zh-TW'].indexOf(global.PARADISO_LANG) !== -1) return global.PARADISO_LANG;
+      var htmlLang = (doc.documentElement.getAttribute('lang') || '');
+      if (htmlLang === 'zh-TW') return 'zh-TW';
+      if (htmlLang.slice(0, 2) === 'zh') return 'zh-CN';
+      if (htmlLang.slice(0, 2) === 'en') return 'en';
       return 'ko';
     }
+    // Traditional Chinese is a display layer over the zh-CN content (same as
+    // index.html). Content always renders in one of ko/en/zh-CN.
+    function contentLocale(raw) { return (raw === 'zh-TW' || raw === 'zh-CN') ? 'zh-CN' : (raw === 'en' ? 'en' : 'ko'); }
+    function resolveInitialLocale() { return contentLocale(rawSelection()); }
+    function applyTradLayer(on) {
+      try {
+        var zt = global.ParadisoZhT;
+        if (!zt) return;
+        if (on) { if (!zt.isActive()) zt.start(); }
+        else if (zt.isActive()) { zt.stop(); }
+      } catch (e) {}
+    }
     function persistLocale() {
-      try { global.localStorage && global.localStorage.setItem(LOCALE_KEY, state.locale); } catch (e) {}
+      try { global.localStorage && global.localStorage.setItem(LOCALE_KEY, state.tradCN ? 'zh-TW' : state.locale); } catch (e) {}
     }
     function L(key) { return t(state.locale, key); }
 
@@ -646,11 +717,16 @@
       var steps = ['language', 'location', 'status', 'procedure', 'subStatus'];
       var idx = steps.indexOf(state.step);
       var showProgress = idx !== -1;
+      var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW'];
+      var LANG_SHORT = { ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁' };
+      var LANG_ARIA = { ko: '언어: 한국어', en: 'Language: English', 'zh-CN': '语言：简体中文', 'zh-TW': '語言：繁體中文' };
+      var curLang = state.tradCN ? 'zh-TW' : state.locale;
+      var nextLang = LANG_ORDER[(LANG_ORDER.indexOf(curLang) + 1) % LANG_ORDER.length];
       var langBtn = h('button', {
-        class: 'wm-lang-toggle', type: 'button',
-        aria: { label: state.locale === 'en' ? 'Language: English' : '언어: 한국어' },
-        onclick: function () { setLocale(state.locale === 'en' ? 'ko' : 'en'); }
-      }, [state.locale === 'en' ? 'EN' : '한']);
+        class: 'wm-lang-toggle', type: 'button', 'data-s2t': 'off',
+        aria: { label: LANG_ARIA[curLang] || LANG_ARIA.ko },
+        onclick: function () { setLocale(nextLang); }
+      }, [LANG_SHORT[curLang] || '한']);
       var head = h('div', { class: 'wm-head' }, [
         h('div', { class: 'wm-head-titles' }, [
           h('div', { class: 'wm-title', text: L('title') }),
@@ -681,11 +757,18 @@
     }
 
     function renderLanguage() {
+      var curLang = state.tradCN ? 'zh-TW' : state.locale;
+      function langChip(label, loc) {
+        return chip(label, curLang === loc, function () { setLocale(loc); track('waymaker_language_selected', { locale: loc }); goto('location'); });
+      }
+      var ko = langChip('한국어', 'ko');
+      var en = langChip('English', 'en');
+      // The two Chinese chips must keep their own script regardless of the
+      // active Traditional display layer.
+      var zhCN = langChip('简体中文', 'zh-CN'); zhCN.setAttribute('data-s2t', 'off');
+      var zhTW = langChip('繁體中文', 'zh-TW'); zhTW.setAttribute('data-s2t', 'off');
       return stepShell('language', L('stepLanguage'), [
-        chipGrid([
-          chip('한국어', state.locale === 'ko', function () { setLocale('ko'); track('waymaker_language_selected', { locale: 'ko' }); goto('location'); }),
-          chip('English', state.locale === 'en', function () { setLocale('en'); track('waymaker_language_selected', { locale: 'en' }); goto('location'); })
-        ])
+        chipGrid([ko, en, zhCN, zhTW])
       ], null);
     }
 
@@ -820,7 +903,13 @@
     // =====================================================================
     // Transitions
     // =====================================================================
-    function setLocale(loc) { state.locale = loc; persistLocale(); render(); }
+    function setLocale(loc) {
+      state.tradCN = (loc === 'zh-TW');
+      state.locale = contentLocale(loc);
+      persistLocale();
+      applyTradLayer(state.tradCN);
+      render();
+    }
     function goto(step) { state.step = step; render(); }
     function restart() {
       state.location = null; state.statusEntry = null; state.statusCode = null;
@@ -905,6 +994,7 @@
 
     // ---- boot ------------------------------------------------------------
     function mount() {
+      applyTradLayer(state.tradCN);
       Promise.resolve(typeof getRecords === 'function' ? getRecords() : []).then(function (records) {
         catalog = buildStatusCatalog(records || []);
         render();

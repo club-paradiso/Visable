@@ -7,7 +7,6 @@
     "note": "Cautious and category-level by design. keyChecks and evidence groups describe WHAT to confirm and WHERE, not specific statutory thresholds, document lists, fees, or outcomes. Specifics must be confirmed against the cited official sources (국적법령·법무부·하이코리아).",
     "verificationStatus": "structure + orientation only — specific legal requirements not asserted; see sourceIds and confirm officially."
   },
-
   "paths": [
     {
       "id": "general",
@@ -21,22 +20,67 @@
       "whoKo": "장기 거주 중이며 영주(F-5) 등 안정적 체류 기반을 갖추어 가는 분.",
       "whoEn": "People in long-term residence who are building a stable basis such as F-5.",
       "keyChecks": {
-        "ko": ["법정 거주 기간 요건 충족 여부", "영주자격 등 체류 기반", "생계 유지 능력", "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지", "품행 등 결격사유 해당 여부"],
-        "en": ["Whether the statutory residence period is met", "Residence basis such as F-5", "Capacity to maintain livelihood", "How KIIP/evaluation history is treated in this procedure", "Whether any disqualifying conduct applies"]
+        "ko": [
+          "법정 거주 기간 요건 충족 여부",
+          "영주자격 등 체류 기반",
+          "생계 유지 능력",
+          "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지",
+          "품행 등 결격사유 해당 여부"
+        ],
+        "en": [
+          "Whether the statutory residence period is met",
+          "Residence basis such as F-5",
+          "Capacity to maintain livelihood",
+          "How KIIP/evaluation history is treated in this procedure",
+          "Whether any disqualifying conduct applies"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["신원·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "해당하는 경우 KIIP·평가 관련 자료", "품행 관련 확인 자료"],
-        "en": ["Identity & family-relation proof", "Proof of residence/stay in Korea", "Proof related to livelihood", "KIIP/evaluation records, if relevant", "Conduct-related confirmation"]
+        "ko": [
+          "신원·가족관계 증명",
+          "국내 거주·체류 증명",
+          "생계유지능력 관련 증명",
+          "해당하는 경우 KIIP·평가 관련 자료",
+          "품행 관련 확인 자료"
+        ],
+        "en": [
+          "Identity & family-relation proof",
+          "Proof of residence/stay in Korea",
+          "Proof related to livelihood",
+          "KIIP/evaluation records, if relevant",
+          "Conduct-related confirmation"
+        ]
       },
       "riskFlags": {
-        "ko": ["장기출국·체류 공백", "세금·소득 증빙 어려움", "범죄·수사·행정처분 이력"],
-        "en": ["Long absences / gaps in stay", "Difficulty proving taxes/income", "Criminal/investigation/administrative history"]
+        "ko": [
+          "장기출국·체류 공백",
+          "세금·소득 증빙 어려움",
+          "범죄·수사·행정처분 이력"
+        ],
+        "en": [
+          "Long absences / gaps in stay",
+          "Difficulty proving taxes/income",
+          "Criminal/investigation/administrative history"
+        ]
       },
       "nextSteps": {
-        "ko": ["국적법령과 하이코리아에서 본인 요건 확인", "사회통합프로그램/평가 이수 상태 확인", "방문예약 후 관할기관 상담"],
-        "en": ["Confirm your requirements via the Nationality Act and HiKorea", "Check your KIIP/assessment status", "Book a visit and consult the competent authority"]
+        "ko": [
+          "국적법령과 하이코리아에서 본인 요건 확인",
+          "사회통합프로그램/평가 이수 상태 확인",
+          "방문예약 후 관할기관 상담"
+        ],
+        "en": [
+          "Confirm your requirements via the Nationality Act and HiKorea",
+          "Check your KIIP/assessment status",
+          "Book a visit and consult the competent authority"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "hikorea-nationality", "moj-nationality", "minwon-moj"],
+      "sourceIds": [
+        "law-nationality-act",
+        "hikorea-nationality",
+        "moj-nationality",
+        "minwon-moj"
+      ],
       "cautionKo": "구체적 거주 기간·서류·기준은 국적법령과 관할기관 안내에서 반드시 확인하세요. 요건 충족 여부와 허가는 심사로 결정됩니다.",
       "cautionEn": "Confirm the exact residence period, documents, and criteria via the Nationality Act and the competent authority. Meeting requirements and approval are decided by review."
     },
@@ -52,22 +96,64 @@
       "whoKo": "한국 국민 배우자와 혼인 관계에 있거나, 이혼·사별 등 변동이 있는 분.",
       "whoEn": "People married to a Korean citizen, or who have had changes such as divorce or bereavement.",
       "keyChecks": {
-        "ko": ["혼인·거주 관련 기간 요건", "혼인의 진정성·유지 상태", "생계 유지 능력", "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지", "이혼·사별·자녀 양육 등 예외 상황 해당 여부"],
-        "en": ["Marriage/residence period requirements", "Genuineness and status of the marriage", "Capacity to maintain livelihood", "How KIIP/evaluation history is treated in this procedure", "Exceptional situations such as divorce, bereavement, or child-rearing"]
+        "ko": [
+          "혼인·거주 관련 기간 요건",
+          "혼인의 진정성·유지 상태",
+          "생계 유지 능력",
+          "KIIP·평가 이력이 해당 절차에서 어떻게 반영되는지",
+          "이혼·사별·자녀 양육 등 예외 상황 해당 여부"
+        ],
+        "en": [
+          "Marriage/residence period requirements",
+          "Genuineness and status of the marriage",
+          "Capacity to maintain livelihood",
+          "How KIIP/evaluation history is treated in this procedure",
+          "Exceptional situations such as divorce, bereavement, or child-rearing"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["혼인·가족관계 증명", "국내 거주·체류 증명", "생계유지능력 관련 증명", "해당하는 경우 KIIP·평가 관련 자료"],
-        "en": ["Marriage & family-relation proof", "Proof of residence/stay", "Proof related to livelihood", "KIIP/evaluation records, if relevant"]
+        "ko": [
+          "혼인·가족관계 증명",
+          "국내 거주·체류 증명",
+          "생계유지능력 관련 증명",
+          "해당하는 경우 KIIP·평가 관련 자료"
+        ],
+        "en": [
+          "Marriage & family-relation proof",
+          "Proof of residence/stay",
+          "Proof related to livelihood",
+          "KIIP/evaluation records, if relevant"
+        ]
       },
       "riskFlags": {
-        "ko": ["혼인관계 증빙이 복잡한 경우", "이혼·별거·사별 등 신분 변동", "체류 공백"],
-        "en": ["Complex marriage evidence", "Status changes such as divorce/separation/bereavement", "Gaps in stay"]
+        "ko": [
+          "혼인관계 증빙이 복잡한 경우",
+          "이혼·별거·사별 등 신분 변동",
+          "체류 공백"
+        ],
+        "en": [
+          "Complex marriage evidence",
+          "Status changes such as divorce/separation/bereavement",
+          "Gaps in stay"
+        ]
       },
       "nextSteps": {
-        "ko": ["혼인 상태에 맞는 요건 유형 확인", "필요 증빙 범위 확인", "방문예약 후 관할기관 상담"],
-        "en": ["Identify the requirement type matching your marital status", "Confirm the scope of needed evidence", "Book a visit and consult the competent authority"]
+        "ko": [
+          "혼인 상태에 맞는 요건 유형 확인",
+          "필요 증빙 범위 확인",
+          "방문예약 후 관할기관 상담"
+        ],
+        "en": [
+          "Identify the requirement type matching your marital status",
+          "Confirm the scope of needed evidence",
+          "Book a visit and consult the competent authority"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "hikorea-nationality", "minwon-moj"],
+      "sourceIds": [
+        "law-nationality-act",
+        "hikorea-nationality",
+        "minwon-moj"
+      ],
       "cautionKo": "혼인 상태(유지·이혼·사별·양육 등)에 따라 적용 요건이 달라집니다. 본인 사례는 관할기관 확인이 필요합니다.",
       "cautionEn": "Applicable requirements differ by marital situation (intact/divorced/bereaved/child-rearing). Your case needs confirmation with the competent authority."
     },
@@ -83,22 +169,58 @@
       "whoKo": "부 또는 모가 한국 국민(또는 과거 한국 국민)이거나, 출생·입양 등 관련 사유가 있는 분.",
       "whoEn": "People whose parent is/was Korean, or who have birth/adoption-related grounds.",
       "keyChecks": {
-        "ko": ["가족관계·국적 이력 확인", "본인에게 적용되는 사유", "거주 관련 요건", "필요 증빙 범위"],
-        "en": ["Family relations & nationality history", "Which ground applies to you", "Residence-related requirements", "Scope of required evidence"]
+        "ko": [
+          "가족관계·국적 이력 확인",
+          "본인에게 적용되는 사유",
+          "거주 관련 요건",
+          "필요 증빙 범위"
+        ],
+        "en": [
+          "Family relations & nationality history",
+          "Which ground applies to you",
+          "Residence-related requirements",
+          "Scope of required evidence"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["가족관계·출생 관련 증명", "국적 이력 관련 자료", "국내 거주·체류 증명"],
-        "en": ["Family-relation/birth proof", "Nationality-history materials", "Proof of residence/stay"]
+        "ko": [
+          "가족관계·출생 관련 증명",
+          "국적 이력 관련 자료",
+          "국내 거주·체류 증명"
+        ],
+        "en": [
+          "Family-relation/birth proof",
+          "Nationality-history materials",
+          "Proof of residence/stay"
+        ]
       },
       "riskFlags": {
-        "ko": ["가족관계 증빙이 해외 서류로 복잡한 경우", "국적 이력 확인이 어려운 경우"],
-        "en": ["Complex overseas family documents", "Difficulty confirming nationality history"]
+        "ko": [
+          "가족관계 증빙이 해외 서류로 복잡한 경우",
+          "국적 이력 확인이 어려운 경우"
+        ],
+        "en": [
+          "Complex overseas family documents",
+          "Difficulty confirming nationality history"
+        ]
       },
       "nextSteps": {
-        "ko": ["가족의 한국 국적 이력 정리", "본인 사유 유형 확인", "관할기관 상담"],
-        "en": ["Organize the family's Korean-nationality history", "Identify your ground type", "Consult the competent authority"]
+        "ko": [
+          "가족의 한국 국적 이력 정리",
+          "본인 사유 유형 확인",
+          "관할기관 상담"
+        ],
+        "en": [
+          "Organize the family's Korean-nationality history",
+          "Identify your ground type",
+          "Consult the competent authority"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "hikorea-nationality", "minwon-moj"],
+      "sourceIds": [
+        "law-nationality-act",
+        "hikorea-nationality",
+        "minwon-moj"
+      ],
       "cautionKo": "가족관계·출생·입양 등 사유 유형에 따라 적용이 달라집니다. 사실관계 확인이 우선입니다.",
       "cautionEn": "Application differs by ground type (family/birth/adoption). Establishing the facts comes first."
     },
@@ -114,22 +236,54 @@
       "whoKo": "공로·능력 등 특별 인정 사유가 있을 수 있는 분, 또는 우수인재 특별귀화를 검토하는 분.",
       "whoEn": "People who may have special grounds, or who are considering outstanding-talent special naturalization.",
       "keyChecks": {
-        "ko": ["인정 사유 해당 여부", "추천·증빙 요건", "분야별 공식 기준"],
-        "en": ["Whether a recognized ground applies", "Recommendation/evidence requirements", "Field-specific official criteria"]
+        "ko": [
+          "인정 사유 해당 여부",
+          "추천·증빙 요건",
+          "분야별 공식 기준"
+        ],
+        "en": [
+          "Whether a recognized ground applies",
+          "Recommendation/evidence requirements",
+          "Field-specific official criteria"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["자격·경력·공로 관련 증명", "추천 관련 자료", "신원·가족관계 증명"],
-        "en": ["Qualification/career/merit proof", "Recommendation materials", "Identity & family-relation proof"]
+        "ko": [
+          "자격·경력·공로 관련 증명",
+          "추천 관련 자료",
+          "신원·가족관계 증명"
+        ],
+        "en": [
+          "Qualification/career/merit proof",
+          "Recommendation materials",
+          "Identity & family-relation proof"
+        ]
       },
       "riskFlags": {
-        "ko": ["인정 기준이 분야별로 다르고 복잡함", "증빙 준비 난이도"],
-        "en": ["Criteria vary by field and are complex", "Evidence preparation can be demanding"]
+        "ko": [
+          "인정 기준이 분야별로 다르고 복잡함",
+          "증빙 준비 난이도"
+        ],
+        "en": [
+          "Criteria vary by field and are complex",
+          "Evidence preparation can be demanding"
+        ]
       },
       "nextSteps": {
-        "ko": ["해당 분야의 공식 기준 확인", "관할기관·추천 경로 문의"],
-        "en": ["Check official criteria for your field", "Ask the competent authority about recommendation routes"]
+        "ko": [
+          "해당 분야의 공식 기준 확인",
+          "관할기관·추천 경로 문의"
+        ],
+        "en": [
+          "Check official criteria for your field",
+          "Ask the competent authority about recommendation routes"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "moj-nationality", "hikorea-nationality"],
+      "sourceIds": [
+        "law-nationality-act",
+        "moj-nationality",
+        "hikorea-nationality"
+      ],
       "cautionKo": "특별귀화·우수인재 기준은 분야와 정책에 따라 다르고 자주 갱신됩니다. 반드시 공식 기준을 확인하세요.",
       "cautionEn": "Special/outstanding-talent criteria vary by field and policy and update often. Always confirm official criteria."
     },
@@ -145,22 +299,58 @@
       "whoKo": "과거 한국 국적 보유 후 상실·이탈한 이력이 있는 분.",
       "whoEn": "People who previously held Korean nationality and then lost or renounced it.",
       "keyChecks": {
-        "ko": ["과거 국적 보유·상실 경위", "결격사유 해당 여부", "복수국적·국적선택 관련 영향", "필요 증빙 범위"],
-        "en": ["History of holding and losing nationality", "Whether disqualifying factors apply", "Dual-nationality / nationality-choice implications", "Scope of required evidence"]
+        "ko": [
+          "과거 국적 보유·상실 경위",
+          "결격사유 해당 여부",
+          "복수국적·국적선택 관련 영향",
+          "필요 증빙 범위"
+        ],
+        "en": [
+          "History of holding and losing nationality",
+          "Whether disqualifying factors apply",
+          "Dual-nationality / nationality-choice implications",
+          "Scope of required evidence"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["과거 국적·제적 관련 자료", "신원·가족관계 증명", "현재 외국국적 관련 자료"],
-        "en": ["Past nationality / removal records", "Identity & family-relation proof", "Current foreign-nationality materials"]
+        "ko": [
+          "과거 국적·제적 관련 자료",
+          "신원·가족관계 증명",
+          "현재 외국국적 관련 자료"
+        ],
+        "en": [
+          "Past nationality / removal records",
+          "Identity & family-relation proof",
+          "Current foreign-nationality materials"
+        ]
       },
       "riskFlags": {
-        "ko": ["상실·이탈 경위 확인이 어려운 경우", "복수국적 의무가 따르는 경우"],
-        "en": ["Difficulty confirming how nationality was lost", "Cases where dual-nationality duties apply"]
+        "ko": [
+          "상실·이탈 경위 확인이 어려운 경우",
+          "복수국적 의무가 따르는 경우"
+        ],
+        "en": [
+          "Difficulty confirming how nationality was lost",
+          "Cases where dual-nationality duties apply"
+        ]
       },
       "nextSteps": {
-        "ko": ["국적회복과 귀화 중 본인에 맞는 절차 확인", "과거 국적 자료 정리", "관할기관 상담"],
-        "en": ["Determine whether restoration or naturalization fits you", "Organize past-nationality records", "Consult the competent authority"]
+        "ko": [
+          "국적회복과 귀화 중 본인에 맞는 절차 확인",
+          "과거 국적 자료 정리",
+          "관할기관 상담"
+        ],
+        "en": [
+          "Determine whether restoration or naturalization fits you",
+          "Organize past-nationality records",
+          "Consult the competent authority"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "hikorea-nationality", "minwon-moj"],
+      "sourceIds": [
+        "law-nationality-act",
+        "hikorea-nationality",
+        "minwon-moj"
+      ],
       "cautionKo": "국적회복은 귀화와 요건·절차가 다릅니다. 본인 이력에 맞는 절차는 관할기관 확인이 필요합니다.",
       "cautionEn": "Restoration differs from naturalization in requirements and procedure. The right route for your history needs official confirmation."
     },
@@ -176,22 +366,52 @@
       "whoKo": "출생·가족관계·국적 변동 이력이 복잡해 한국 국적 보유 여부가 불분명한 분.",
       "whoEn": "People for whom it is unclear whether they hold Korean nationality due to complex birth/family/nationality history.",
       "keyChecks": {
-        "ko": ["출생·가족관계 기록", "국적 변동 이력", "판정에 필요한 자료 범위"],
-        "en": ["Birth & family-relation records", "History of nationality changes", "Scope of materials needed for determination"]
+        "ko": [
+          "출생·가족관계 기록",
+          "국적 변동 이력",
+          "판정에 필요한 자료 범위"
+        ],
+        "en": [
+          "Birth & family-relation records",
+          "History of nationality changes",
+          "Scope of materials needed for determination"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["출생·가족관계 관련 자료", "과거 국적 변동 관련 자료"],
-        "en": ["Birth/family-relation records", "Records of past nationality changes"]
+        "ko": [
+          "출생·가족관계 관련 자료",
+          "과거 국적 변동 관련 자료"
+        ],
+        "en": [
+          "Birth/family-relation records",
+          "Records of past nationality changes"
+        ]
       },
       "riskFlags": {
-        "ko": ["해외 기록 확보가 어려운 경우", "사실관계가 복잡한 경우"],
-        "en": ["Difficulty obtaining overseas records", "Complex factual history"]
+        "ko": [
+          "해외 기록 확보가 어려운 경우",
+          "사실관계가 복잡한 경우"
+        ],
+        "en": [
+          "Difficulty obtaining overseas records",
+          "Complex factual history"
+        ]
       },
       "nextSteps": {
-        "ko": ["보유 가능성 관련 기록 수집", "관할기관에 판정 절차 문의"],
-        "en": ["Gather records on possible nationality", "Ask the competent authority about the determination procedure"]
+        "ko": [
+          "보유 가능성 관련 기록 수집",
+          "관할기관에 판정 절차 문의"
+        ],
+        "en": [
+          "Gather records on possible nationality",
+          "Ask the competent authority about the determination procedure"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "moj-nationality", "minwon-moj"],
+      "sourceIds": [
+        "law-nationality-act",
+        "moj-nationality",
+        "minwon-moj"
+      ],
       "cautionKo": "국적판정은 사실관계 확인이 핵심입니다. 결과는 제출 자료와 심사에 따라 달라집니다.",
       "cautionEn": "Determination hinges on the established facts. The outcome depends on submitted records and review."
     },
@@ -207,22 +427,56 @@
       "whoKo": "복수국적 유지 가능 여부, 외국국적불행사 서약, 국적선택 기간 등이 궁금한 분.",
       "whoEn": "People wondering about keeping dual nationality, the non-exercise pledge, or the nationality-choice period.",
       "keyChecks": {
-        "ko": ["복수국적 허용·제한 대상 여부", "외국국적불행사 서약 적용 여부", "국적선택 기간", "병역 등 관련 의무"],
-        "en": ["Whether you may keep or are restricted from dual nationality", "Whether the non-exercise pledge applies", "The nationality-choice period", "Related duties such as military service"]
+        "ko": [
+          "복수국적 허용·제한 대상 여부",
+          "외국국적불행사 서약 적용 여부",
+          "국적선택 기간",
+          "병역 등 관련 의무"
+        ],
+        "en": [
+          "Whether you may keep or are restricted from dual nationality",
+          "Whether the non-exercise pledge applies",
+          "The nationality-choice period",
+          "Related duties such as military service"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["국적 취득·보유 관련 자료", "외국국적 관련 자료"],
-        "en": ["Nationality acquisition/holding records", "Foreign-nationality records"]
+        "ko": [
+          "국적 취득·보유 관련 자료",
+          "외국국적 관련 자료"
+        ],
+        "en": [
+          "Nationality acquisition/holding records",
+          "Foreign-nationality records"
+        ]
       },
       "riskFlags": {
-        "ko": ["국적선택 기간 경과 위험", "병역 관련 영향"],
-        "en": ["Risk of missing the nationality-choice period", "Military-service implications"]
+        "ko": [
+          "국적선택 기간 경과 위험",
+          "병역 관련 영향"
+        ],
+        "en": [
+          "Risk of missing the nationality-choice period",
+          "Military-service implications"
+        ]
       },
       "nextSteps": {
-        "ko": ["본인 유형의 복수국적 허용 여부 확인", "서약·선택 기한 확인", "관할기관 상담"],
-        "en": ["Check whether dual nationality is allowed for your type", "Confirm pledge/choice deadlines", "Consult the competent authority"]
+        "ko": [
+          "본인 유형의 복수국적 허용 여부 확인",
+          "서약·선택 기한 확인",
+          "관할기관 상담"
+        ],
+        "en": [
+          "Check whether dual nationality is allowed for your type",
+          "Confirm pledge/choice deadlines",
+          "Consult the competent authority"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "law-nationality-decree", "moj-nationality"],
+      "sourceIds": [
+        "law-nationality-act",
+        "law-nationality-decree",
+        "moj-nationality"
+      ],
       "cautionKo": "복수국적·서약·국적선택은 기한과 의무가 따를 수 있어 시기 확인이 중요합니다. 본인 사례는 관할기관 확인이 필요합니다.",
       "cautionEn": "Dual nationality, the pledge, and nationality choice can carry deadlines and duties — timing matters. Your case needs official confirmation."
     },
@@ -238,22 +492,57 @@
       "whoKo": "국적상실 여부나 관련 신고·후속 절차를 공식적으로 확인해야 하는 분.",
       "whoEn": "People who need official confirmation about possible nationality loss, reporting, or follow-up.",
       "keyChecks": {
-        "ko": ["국적 취득·변동 이력", "상실과 신고 절차의 구분", "가족관계·등록 관련 후속 확인", "본인 사실관계에 맞는 관할기관"],
-        "en": ["Nationality acquisition/change history", "The distinction between loss and reporting", "Family/registration follow-up", "The authority competent for your facts"]
+        "ko": [
+          "국적 취득·변동 이력",
+          "상실과 신고 절차의 구분",
+          "가족관계·등록 관련 후속 확인",
+          "본인 사실관계에 맞는 관할기관"
+        ],
+        "en": [
+          "Nationality acquisition/change history",
+          "The distinction between loss and reporting",
+          "Family/registration follow-up",
+          "The authority competent for your facts"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["한국·외국 국적 취득 및 변동 관련 자료", "신원·가족관계 관련 자료"],
-        "en": ["Korean/foreign nationality acquisition and change records", "Identity and family-relation records"]
+        "ko": [
+          "한국·외국 국적 취득 및 변동 관련 자료",
+          "신원·가족관계 관련 자료"
+        ],
+        "en": [
+          "Korean/foreign nationality acquisition and change records",
+          "Identity and family-relation records"
+        ]
       },
       "riskFlags": {
-        "ko": ["국적상실 시점·사유를 단정하기 어려운 경우", "해외 기록 또는 가족관계 기록이 복잡한 경우"],
-        "en": ["Uncertainty about the timing or ground for loss", "Complex overseas or family records"]
+        "ko": [
+          "국적상실 시점·사유를 단정하기 어려운 경우",
+          "해외 기록 또는 가족관계 기록이 복잡한 경우"
+        ],
+        "en": [
+          "Uncertainty about the timing or ground for loss",
+          "Complex overseas or family records"
+        ]
       },
       "nextSteps": {
-        "ko": ["국적 변동 이력과 관련 자료 정리", "법무부 국적업무 안내에서 해당 업무 확인", "관할기관 또는 1345에서 확인 창구 문의"],
-        "en": ["Organize nationality-change records", "Find the relevant service on the MOJ nationality pages", "Ask the competent authority or 1345 where to confirm"]
+        "ko": [
+          "국적 변동 이력과 관련 자료 정리",
+          "법무부 국적업무 안내에서 해당 업무 확인",
+          "관할기관 또는 1345에서 확인 창구 문의"
+        ],
+        "en": [
+          "Organize nationality-change records",
+          "Find the relevant service on the MOJ nationality pages",
+          "Ask the competent authority or 1345 where to confirm"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "minwon-moj", "moj-nationality", "immigration-1345"],
+      "sourceIds": [
+        "law-nationality-act",
+        "minwon-moj",
+        "moj-nationality",
+        "immigration-1345"
+      ],
       "cautionKo": "국적상실은 개인의 취득 시점·방식과 사실관계에 따라 달라질 수 있습니다. 신고 안내만으로 상실 여부를 추정하지 말고 관할기관에서 확인하세요.",
       "cautionEn": "Loss can depend on the timing, method, and facts of nationality acquisition. Do not infer loss from reporting guidance alone; confirm with the competent authority."
     },
@@ -269,22 +558,60 @@
       "whoKo": "복수국적 상태에서 국적이탈의 절차·시기·관할을 확인하려는 분.",
       "whoEn": "Multiple nationals checking the procedure, timing, and competent authority for renunciation.",
       "keyChecks": {
-        "ko": ["복수국적 취득 경위", "해외 거주·신고 관할 관련 확인", "신청 가능 시기와 현재 법령", "병역 등 별도 의무와의 관계"],
-        "en": ["How multiple nationality was acquired", "Overseas residence and filing jurisdiction", "Applicable timing under current law", "Relationship to separate duties such as military service"]
+        "ko": [
+          "복수국적 취득 경위",
+          "해외 거주·신고 관할 관련 확인",
+          "신청 가능 시기와 현재 법령",
+          "병역 등 별도 의무와의 관계"
+        ],
+        "en": [
+          "How multiple nationality was acquired",
+          "Overseas residence and filing jurisdiction",
+          "Applicable timing under current law",
+          "Relationship to separate duties such as military service"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["국적 취득·보유 관련 자료", "거주 및 가족관계 관련 자료", "관할기관이 안내하는 추가 자료"],
-        "en": ["Nationality acquisition/holding records", "Residence and family-relation records", "Additional records requested by the competent authority"]
+        "ko": [
+          "국적 취득·보유 관련 자료",
+          "거주 및 가족관계 관련 자료",
+          "관할기관이 안내하는 추가 자료"
+        ],
+        "en": [
+          "Nationality acquisition/holding records",
+          "Residence and family-relation records",
+          "Additional records requested by the competent authority"
+        ]
       },
       "riskFlags": {
-        "ko": ["기간·거주·병역 관련 법적 판단이 필요한 경우", "현재 시행 법령과 향후 개정 내용을 혼동하는 경우"],
-        "en": ["Cases requiring legal judgment on timing, residence, or military service", "Confusing current law with a future amendment"]
+        "ko": [
+          "기간·거주·병역 관련 법적 판단이 필요한 경우",
+          "현재 시행 법령과 향후 개정 내용을 혼동하는 경우"
+        ],
+        "en": [
+          "Cases requiring legal judgment on timing, residence, or military service",
+          "Confusing current law with a future amendment"
+        ]
       },
       "nextSteps": {
-        "ko": ["현재 시행 중인 국적법령 확인", "법무부 국적업무 안내에서 국적이탈 절차 확인", "재외공관 또는 관할기관에 본인 사례 문의"],
-        "en": ["Check the law currently in force", "Review the MOJ renunciation service page", "Ask the competent mission or authority about your case"]
+        "ko": [
+          "현재 시행 중인 국적법령 확인",
+          "법무부 국적업무 안내에서 국적이탈 절차 확인",
+          "재외공관 또는 관할기관에 본인 사례 문의"
+        ],
+        "en": [
+          "Check the law currently in force",
+          "Review the MOJ renunciation service page",
+          "Ask the competent mission or authority about your case"
+        ]
       },
-      "sourceIds": ["law-nationality-act", "law-nationality-decree", "minwon-moj", "moj-nationality", "immigration-1345"],
+      "sourceIds": [
+        "law-nationality-act",
+        "law-nationality-decree",
+        "minwon-moj",
+        "moj-nationality",
+        "immigration-1345"
+      ],
       "cautionKo": "국적이탈은 시기·거주·병역 등 법적 쟁점이 결합될 수 있습니다. Paradiso는 가능 여부를 판정하지 않으며, 현재 시행 법령과 관할기관의 확인이 필요합니다.",
       "cautionEn": "Renunciation can combine legal issues involving timing, residence, and military service. Paradiso does not determine availability; check the law currently in force and the competent authority."
     },
@@ -300,22 +627,54 @@
       "whoKo": "이미 신청했거나, 허가 후 행정절차를 준비하는 분.",
       "whoEn": "People who have applied or are preparing post-approval steps.",
       "keyChecks": {
-        "ko": ["관보 고시 확인", "가족관계등록·주민등록", "신분증·여권 발급", "외국국적 정리 또는 서약"],
-        "en": ["Confirm the official gazette notice", "Family-relation & resident registration", "ID & passport issuance", "Resolving foreign nationality or the pledge"]
+        "ko": [
+          "관보 고시 확인",
+          "가족관계등록·주민등록",
+          "신분증·여권 발급",
+          "외국국적 정리 또는 서약"
+        ],
+        "en": [
+          "Confirm the official gazette notice",
+          "Family-relation & resident registration",
+          "ID & passport issuance",
+          "Resolving foreign nationality or the pledge"
+        ]
       },
       "requiredEvidenceGroups": {
-        "ko": ["허가·고시 확인 자료", "신분·가족관계 등록 관련 자료"],
-        "en": ["Approval/gazette confirmation", "Registration-related materials"]
+        "ko": [
+          "허가·고시 확인 자료",
+          "신분·가족관계 등록 관련 자료"
+        ],
+        "en": [
+          "Approval/gazette confirmation",
+          "Registration-related materials"
+        ]
       },
       "riskFlags": {
-        "ko": ["기관별 절차 차이", "외국국적 정리 기한"],
-        "en": ["Procedures differ by office", "Deadlines for resolving foreign nationality"]
+        "ko": [
+          "기관별 절차 차이",
+          "외국국적 정리 기한"
+        ],
+        "en": [
+          "Procedures differ by office",
+          "Deadlines for resolving foreign nationality"
+        ]
       },
       "nextSteps": {
-        "ko": ["관보 고시 확인 후 등록 절차 진행", "외국국적 관련 후속 의무 확인"],
-        "en": ["Proceed with registration after confirming the gazette", "Check follow-up duties on foreign nationality"]
+        "ko": [
+          "관보 고시 확인 후 등록 절차 진행",
+          "외국국적 관련 후속 의무 확인"
+        ],
+        "en": [
+          "Proceed with registration after confirming the gazette",
+          "Check follow-up duties on foreign nationality"
+        ]
       },
-      "sourceIds": ["gwanbo", "moj-nationality", "hikorea-nationality"],
+      "sourceIds": [
+        "gwanbo",
+        "moj-nationality",
+        "hikorea-nationality"
+      ],
       "cautionKo": "후속 절차는 기관·개인 상황에 따라 다릅니다. 완전한 목록이 아니므로 각 기관에서 확인하세요.",
       "cautionEn": "Follow-up steps vary by office and situation. This is not exhaustive — confirm with each office."
     }

@@ -729,6 +729,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   </div>
 </div>
 
+<script src="assets/js/zh-traditional.js"></script>
 <script>
 (function () {
   "use strict";
@@ -737,8 +738,12 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   var LANG_KEY = 'paradiso:language';
   var THEME_KEY = 'paradiso:editorial-theme';
   var BRIGHT_KEY = 'paradiso:nh-brightness';
-  var SUPPORTED = ['ko', 'en'];
-  var lang = initialLang();
+  var SUPPORTED = ['ko', 'en', 'zh-CN', 'zh-TW'];
+  // Traditional Chinese is a display layer over zh-CN content (zh-traditional.js).
+  // `lang` is the content locale; `tradTW` activates the converter.
+  var selectedLocale = initialSelection();
+  var tradTW = (selectedLocale === 'zh-TW');
+  var lang = (selectedLocale === 'zh-TW' || selectedLocale === 'zh-CN') ? 'zh-CN' : (selectedLocale === 'en' ? 'en' : 'ko');
   var content = null;     // nationality_content.json
   var paths = null;       // nationality_paths.json (path catalog)
   var flows = null;       // nationality_flows.json (wizards)
@@ -750,16 +755,21 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   var activeOverlay = null;
   var activeRebuild = null; // re-render hook for the open modal on language switch
 
-  function initialLang() {
+  function initialSelection() {
     try {
-      var stored = (localStorage.getItem(LANG_KEY) || '').toLowerCase();
-      if (stored.indexOf('en') === 0) return 'en';
-      if (stored.indexOf('ko') === 0) return 'ko';
+      var raw = (localStorage.getItem(LANG_KEY) || '');
+      if (raw === 'zh-CN' || raw === 'zh-TW') return raw;
+      var s = raw.toLowerCase();
+      if (s.indexOf('en') === 0) return 'en';
+      if (s.indexOf('ko') === 0) return 'ko';
     } catch (e) {}
     try {
       if ((navigator.language || '').toLowerCase().indexOf('en') === 0) return 'en';
     } catch (e) {}
     return 'ko';
+  }
+  function applyTradLayer(on) {
+    try { var zt = window.ParadisoZhT; if (!zt) return; if (on) { if (!zt.isActive()) zt.start(); } else if (zt.isActive()) { zt.stop(); } } catch (e) {}
   }
 
   function pick(node) {
@@ -800,13 +810,15 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
   // ── Static text binding: elements carry a dotted content path attribute ──
   function applyStatic() {
-    document.documentElement.lang = lang;
+    document.documentElement.lang = tradTW ? 'zh-TW' : lang;
+    applyTradLayer(tradTW);
     document.querySelectorAll('[data-c]').forEach(function (node) {
       var val = resolve(content, node.getAttribute('data-c'));
       if (val != null) node.textContent = pick(val);
     });
     var langBtn = document.getElementById('langBtn');
-    if (langBtn) langBtn.textContent = pick(content.ui.langToggle);
+    // The cycle button shows a per-script indicator (kept in its own script).
+    if (langBtn) { langBtn.textContent = LANG_BTN_LABEL[tradTW ? 'zh-TW' : lang] || 'EN'; langBtn.setAttribute('data-s2t', 'off'); }
     var themeLabel = document.getElementById('themeBtnLabel');
     if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
     // Locale-aware accessibility labels. These are attributes, so applyStatic's
@@ -933,8 +945,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     html += '</div>';
     var helps = (pick(k.helps) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
     var nots = (pick(k.notClaims) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
-    var helpsTitle = lang === 'en' ? 'What Paradiso helps with' : 'Paradiso가 돕는 것';
-    var notsTitle = lang === 'en' ? "What Paradiso won't claim" : 'Paradiso가 단정하지 않는 것';
+    var helpsTitle = lang === 'zh-CN' ? 'Paradiso 能帮的' : lang === 'en' ? 'What Paradiso helps with' : 'Paradiso가 돕는 것';
+    var notsTitle = lang === 'zh-CN' ? 'Paradiso 不会断定的' : lang === 'en' ? "What Paradiso won't claim" : 'Paradiso가 단정하지 않는 것';
     html += '<div class="nh-cols">' +
       '<div class="nh-pill-card"><h4>' + esc(helpsTitle) + '</h4><ul class="nh-pill-list yes">' + helps + '</ul></div>' +
       '<div class="nh-pill-card"><h4>' + esc(notsTitle) + '</h4><ul class="nh-pill-list no">' + nots + '</ul></div>' +
@@ -1421,9 +1433,15 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     try { localStorage.setItem(BRIGHT_KEY, dark ? 'light' : 'dark'); } catch (e) {}
     syncMeta();
   }
+  var LANG_CYCLE = { ko: 'en', en: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
+  var LANG_BTN_LABEL = { ko: 'EN', en: '简', 'zh-CN': '繁', 'zh-TW': '한' };
   function toggleLang() {
-    lang = lang === 'ko' ? 'en' : 'ko';
-    try { localStorage.setItem(LANG_KEY, lang); } catch (e) {}
+    var cur = tradTW ? 'zh-TW' : lang;
+    selectedLocale = LANG_CYCLE[cur] || 'en';
+    tradTW = (selectedLocale === 'zh-TW');
+    lang = (selectedLocale === 'zh-TW' || selectedLocale === 'zh-CN') ? 'zh-CN' : (selectedLocale === 'en' ? 'en' : 'ko');
+    try { localStorage.setItem(LANG_KEY, selectedLocale); } catch (e) {}
+    applyTradLayer(tradTW);
     renderAll();
   }
   function syncMeta() {
