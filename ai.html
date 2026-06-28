@@ -1863,6 +1863,15 @@ select:focus-visible {
             catch (e) { return ''; }
         })();
 
+        // Optional Waymaker mode forwarded from the 국적민원·귀화면접 준비 hub
+        // (ai.html?domain=nationality&mode=naturalization_interview_prep). Like the
+        // domain hint, it only adjusts framing through the existing context channel;
+        // when absent, behavior is byte-for-byte unchanged.
+        const AI_MODE = (() => {
+            try { return (new URLSearchParams(location.search).get('mode') || '').toLowerCase(); }
+            catch (e) { return ''; }
+        })();
+
         // Optional selected-scenario handoff forwarded from the visa detail page
         // (index.html → the floating Waymaker CTA). Carries ONLY safe identifiers
         // and the public scenario label — never checklist/checkbox/reminder or any
@@ -1896,6 +1905,13 @@ select:focus-visible {
                 : '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
         }
 
+        function interviewPrepContextLine(lang) {
+            if (AI_MODE !== 'naturalization_interview_prep') return '';
+            return lang === 'en'
+                ? '[Mode: naturalization interview prep] The user arrived to practice for the naturalization interview and basic-knowledge study. Act as a text-first interview coach: review practice answers, suggest a more natural example answer, give one follow-up question and a study tip. This is practice, not official adjudication — never predict pass/fail, never guarantee approval, and never claim a practice question is an official past question.'
+                : '[모드: 귀화면접 준비] 사용자는 귀화면접과 기본소양 학습을 연습하러 왔습니다. 텍스트 기반 면접 코치로서 연습 답변을 검토하고, 더 자연스러운 예시 답변과 후속 질문 하나, 학습 팁을 제시하십시오. 이는 연습이며 실제 심사가 아닙니다. 합격·불합격을 예측하지 말고, 허가를 보장하지 말며, 연습 질문을 공식 기출문제라고 말하지 마십시오.';
+        }
+
         function buildAskContext(lang) {
             if (lang === 'en') {
                 return [
@@ -1903,6 +1919,7 @@ select:focus-visible {
                     '[Language lock] The user wrote in English. Respond strictly in English. Do not use Chinese, Japanese, or any other language. Do not insert Chinese characters such as 您 or 您的.',
                     '[Fallback] If the provided reference data is insufficient, acknowledge the detected visa code or topic, do not pretend the question is unrecognized, do not invent legal rules or specific numbers, and recommend the user confirm with the 1345 immigration call center, HiKorea (hikorea.go.kr), or the nearest immigration office.',
                     nationalityContextLine('en'),
+                    interviewPrepContextLine('en'),
                     scenarioContextLine('en')
                 ].filter(Boolean).join('\n');
             }
@@ -1911,6 +1928,7 @@ select:focus-visible {
                 '[언어 고정] 사용자가 한국어로 질문했습니다. 답변은 반드시 한국어로 작성하고, 중국어/일본어/기타 언어 및 중국식 한자(您, 您的 등)는 사용하지 마십시오.',
                 '[데이터 부족 시] 참고 자료가 부족하더라도 감지된 비자 코드 또는 주제는 인지하고 있음을 밝히고, 질문 자체를 인식하지 못한 것처럼 응답하지 마십시오. 구체 수치나 법적 결론을 임의로 단정하지 말고, 1345 외국인종합안내센터, 하이코리아(hikorea.go.kr) 또는 관할 출입국·외국인청에서 최종 확인하도록 안내하십시오.',
                 nationalityContextLine('ko'),
+                interviewPrepContextLine('ko'),
                 scenarioContextLine('ko')
             ].filter(Boolean).join('\n');
         }
@@ -3296,13 +3314,23 @@ select:focus-visible {
         // target elements exist, so the default visa experience is never altered.
         function applyNationalityDomainHint() {
             if (AI_DOMAIN !== 'nationality') return;
+            const interview = AI_MODE === 'naturalization_interview_prep';
             const sub = document.querySelector('.ai-title-sub');
-            if (sub) sub.textContent = '국적·귀화 상담 모드 · 공개 법령·매뉴얼 기반 안내 · 최종 판단은 관할기관·HiKorea·1345';
+            if (sub) sub.textContent = interview
+                ? '귀화면접 코치 모드 · 연습용 답변 점검 · 합격 여부를 예측하지 않습니다 · 개별 통지·관할기관 우선'
+                : '국적·귀화 상담 모드 · 공개 법령·매뉴얼 기반 안내 · 최종 판단은 관할기관·HiKorea·1345';
             const ta = document.getElementById('aiQ');
-            if (ta) ta.placeholder = '예: F-2 영주 상태인데 일반귀화 요건을 어떻게 확인하나요?';
+            if (ta) ta.placeholder = interview
+                ? '예: "왜 한국 국민이 되고 싶나요?"라는 질문에 이렇게 답해봤어요: … 제 답변을 점검해 주세요.'
+                : '예: F-2 영주 상태인데 일반귀화 요건을 어떻게 확인하나요?';
             const chips = document.querySelector('.ai-welcome-chips');
             if (chips) {
-                const starters = [
+                const starters = interview ? [
+                    ['모의면접 시작', '귀화면접 연습을 시작하고 싶어요. 연습 질문을 하나 내주세요.'],
+                    ['내 답변 점검', '"한국에서 가장 좋아하는 점"이라는 질문에 이렇게 답했어요: … 점검해 주세요.'],
+                    ['답변 다듬기', '제 답변을 더 자연스러운 한국어로 다듬어 주세요.'],
+                    ['핵심 주제', '귀화면접에서 자주 다루는 핵심 주제를 알려주세요.']
+                ] : [
                     ['귀화 경로 분류', '제 상황에서 어떤 귀화 경로를 검토할 수 있는지 궁금합니다.'],
                     ['혼인 간이귀화', '한국 국민과 혼인한 경우 간이귀화는 어떻게 확인하나요?'],
                     ['국적회복', '과거 한국 국적이 있었던 경우 국적회복 절차가 궁금합니다.'],

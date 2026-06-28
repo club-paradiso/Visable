@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "schemaVersion": "1.0",
+    "title": "Paradiso — 귀화면접 참고 영상/자료 (비공식)",
+    "generatedAt": "2026-06-28",
+    "purpose": "Seed registry of user-provided reference playlists/channels for the 참고 영상/자료 section. Metadata-only by design.",
+    "youtubePolicy": "No transcripts, captions, or full lesson text are scraped or stored. transcript_stored is always false. Titles are not fabricated: where a playlist/channel title was not retrieved through permitted metadata, the title field is an explicit human-written placeholder noting the title is unconfirmed. If a YouTube Data API key becomes available, only official metadata endpoints (playlistItems/list, videos/list) may be used to enrich this seed.",
+    "requiredCardLabelKo": "영상 자료는 비공식 참고자료이며, 실제 면접 질문 또는 법무부 공식 기출문제를 의미하지 않습니다.",
+    "permissionStatusEnum": ["metadata_only", "creator_permission_required", "permission_granted"],
+    "sourceKindEnum": ["playlist", "channel", "video"]
+  },
+  "videos": [
+    {
+      "id": "vid-playlist-1",
+      "source_kind": "playlist",
+      "title": "귀화·사회통합 학습 참고 재생목록 1 (제목 미확인)",
+      "channel": "",
+      "url": "https://youtube.com/playlist?list=PLJR0gsT9-dNYW1juUXiFDZEwsS2GZb9q_",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 재생목록입니다. 귀화·사회통합 관련 학습 흐름을 폭넓게 살펴보는 용도로만 참고하세요.",
+      "derived_topics": ["귀화면접", "사회통합", "기본소양"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    },
+    {
+      "id": "vid-playlist-2",
+      "source_kind": "playlist",
+      "title": "귀화·사회통합 학습 참고 재생목록 2 (제목 미확인)",
+      "channel": "",
+      "url": "https://youtube.com/playlist?list=PLJR0gsT9-dNbHclYSRrd78lgshaigZyC-",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 재생목록입니다. 학습 주제별 흐름을 참고하는 용도이며 공식 자료가 아닙니다.",
+      "derived_topics": ["귀화면접", "한국어", "사회 이해"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    },
+    {
+      "id": "vid-playlist-3",
+      "source_kind": "playlist",
+      "title": "귀화·사회통합 학습 참고 재생목록 3 (제목 미확인)",
+      "channel": "",
+      "url": "https://youtube.com/playlist?list=PLJR0gsT9-dNZt1GE42tpohJ-9KJNDhsTX",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 재생목록입니다. 면접·평가 준비의 분위기를 익히는 보조 자료로만 활용하세요.",
+      "derived_topics": ["귀화면접", "사전평가", "종합평가"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    },
+    {
+      "id": "vid-playlist-4",
+      "source_kind": "playlist",
+      "title": "귀화·사회통합 학습 참고 재생목록 4 (제목 미확인)",
+      "channel": "",
+      "url": "https://youtube.com/playlist?list=PLJR0gsT9-dNblDDIw2IBpW5OHWcx3DCKj",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 재생목록입니다. 생활 한국어·사회 이해 주제를 참고하는 용도입니다.",
+      "derived_topics": ["한국어", "한국 생활", "사회 이해"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    },
+    {
+      "id": "vid-channel-kiip8",
+      "source_kind": "channel",
+      "title": "유튜브 채널 @kiip8 (제목 미확인)",
+      "channel": "@kiip8",
+      "url": "https://youtube.com/@kiip8",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 채널입니다. 사회통합프로그램 학습 분위기를 살펴보는 보조 참고용이며 공식 채널이 아닙니다.",
+      "derived_topics": ["사회통합", "KIIP", "기본소양"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    },
+    {
+      "id": "vid-channel-ahininkorea97",
+      "source_kind": "channel",
+      "title": "유튜브 채널 @ahininkorea97 (제목 미확인)",
+      "channel": "@ahininkorea97",
+      "url": "https://youtube.com/@ahininkorea97",
+      "language": "ko",
+      "notes_ko": "사용자가 제공한 참고 채널입니다. 귀화·한국 생활 관련 경험담을 참고하는 보조 자료이며 공식 자료가 아닙니다.",
+      "derived_topics": ["귀화 경험", "한국 생활"],
+      "transcript_stored": false,
+      "permission_status": "metadata_only",
+      "is_official": false
+    }
+  ]
+}

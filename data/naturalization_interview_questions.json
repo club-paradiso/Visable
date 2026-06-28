@@ -1,0 +1,541 @@
+{
+  "_meta": {
+    "schemaVersion": "1.0",
+    "title": "Paradiso — 귀화면접 예상 질문 카드 (연습문제)",
+    "generatedAt": "2026-06-28",
+    "purpose": "Practice question bank for the 예상 질문 카드 / 모의면접 연습 sections. Every record is practice material written for study, NOT an official past question.",
+    "safety": "is_official_past_question is false for every record. No item claims to be a 법무부 공식 기출문제. answer_guidance_ko offers structure tips only and never predicts pass/fail. source_refs reference ids in data/nationality_service_sources.json.",
+    "categoryEnum": ["korean_language", "reason_for_naturalization", "life_in_korea", "korean_society", "democratic_order", "rights_and_duties", "interview_attitude", "pre_evaluation_study"],
+    "difficultyEnum": ["easy", "medium", "hard"],
+    "sourceTypeEnum": ["official_law", "official_notice", "official_kiip", "official_socinet", "practice", "video_reference_topic", "internal_guidance"]
+  },
+  "questions": [
+    {
+      "id": "q-kl-01", "category": "korean_language", "difficulty": "easy",
+      "question_ko": "본인의 이름과 어느 나라에서 왔는지 한국어로 말해 주세요.",
+      "question_en": "Please tell me your name and which country you are from, in Korean.",
+      "answer_guidance_ko": "긴장하지 말고 또박또박 천천히 말하면 됩니다. 이름·출신·현재 거주 지역 정도를 짧게 정리하세요.",
+      "good_answer_structure_ko": "이름 → 출신 국가 → 현재 거주 지역 순으로 한 문장씩.",
+      "bad_answer_patterns": ["너무 작게 말해 알아듣기 어려움", "외운 문장을 빠르게 읊기"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-kl-02", "category": "korean_language", "difficulty": "easy",
+      "question_ko": "오늘 여기까지 어떻게 오셨나요?",
+      "question_en": "How did you get here today?",
+      "answer_guidance_ko": "교통수단과 걸린 시간 정도를 자연스럽게 말하면 됩니다. 일상 대화 능력을 보는 가벼운 질문입니다.",
+      "good_answer_structure_ko": "교통수단 → 소요 시간 → (가능하면) 한마디 소감.",
+      "bad_answer_patterns": ["질문과 무관한 답", "단답 후 침묵"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-kl-03", "category": "korean_language", "difficulty": "medium",
+      "question_ko": "최근에 본 한국 뉴스나 소식 중 기억에 남는 것을 이야기해 주세요.",
+      "question_en": "Tell me about a recent Korean news item that stayed with you.",
+      "answer_guidance_ko": "정치적으로 민감한 주제보다 생활·문화·날씨처럼 편한 소재가 좋습니다. 사실 + 내 생각을 한 문장씩.",
+      "good_answer_structure_ko": "어떤 소식 → 간단한 내용 → 내가 느낀 점.",
+      "bad_answer_patterns": ["과도하게 민감한 정치적 단정", "내용 없이 '모르겠다'로 끝맺음"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-kl-04", "category": "korean_language", "difficulty": "medium",
+      "question_ko": "질문이 잘 이해되지 않을 때는 어떻게 하시겠어요?",
+      "question_en": "What will you do if you don't understand a question?",
+      "answer_guidance_ko": "모르면 정중히 다시 여쭙는 태도 자체가 좋은 답입니다. '다시 한 번 말씀해 주시겠어요?'를 연습하세요.",
+      "good_answer_structure_ko": "정중한 재요청 표현 → 천천히 다시 듣고 답하기.",
+      "bad_answer_patterns": ["못 알아듣고 아무 말이나 답하기", "무응답"],
+      "source_type": "internal_guidance", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-kl-05", "category": "korean_language", "difficulty": "hard",
+      "question_ko": "본인이 가장 자신 있게 설명할 수 있는 한국 음식 하나를 골라 만드는 방법을 말해 주세요.",
+      "question_en": "Pick a Korean dish you can explain confidently and describe how it is made.",
+      "answer_guidance_ko": "순서를 나타내는 표현(먼저, 그다음에, 마지막으로)을 쓰면 설명이 또렷해집니다.",
+      "good_answer_structure_ko": "음식 이름 → 재료 → 순서대로 조리 과정 → 마무리.",
+      "bad_answer_patterns": ["순서 없이 단어만 나열", "재료만 말하고 과정 생략"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-kl-06", "category": "korean_language", "difficulty": "easy",
+      "question_ko": "가족을 한국어로 소개해 주세요.",
+      "question_en": "Please introduce your family in Korean.",
+      "answer_guidance_ko": "가족 구성과 함께 사는지 여부 정도를 간단히 말하면 됩니다.",
+      "good_answer_structure_ko": "구성원 → 관계 → 함께/따로 거주 여부.",
+      "bad_answer_patterns": ["관계 호칭 혼동", "지나치게 사적인 사정 장황하게 설명"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-kl-07", "category": "korean_language", "difficulty": "hard",
+      "question_ko": "한국에서 살면서 한국어 때문에 어려웠던 경험과 어떻게 극복했는지 말해 주세요.",
+      "question_en": "Describe a time Korean was difficult for you and how you overcame it.",
+      "answer_guidance_ko": "어려움 → 노력 → 변화의 흐름으로 말하면 진솔하게 들립니다. 솔직한 경험이 좋습니다.",
+      "good_answer_structure_ko": "구체적 상황 → 내가 한 노력 → 지금의 변화.",
+      "bad_answer_patterns": ["어려움만 말하고 노력은 빠짐", "추상적이고 막연한 답"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-rn-01", "category": "reason_for_naturalization", "difficulty": "easy",
+      "question_ko": "왜 대한민국 국민이 되고 싶으신가요?",
+      "question_en": "Why do you want to become a citizen of the Republic of Korea?",
+      "answer_guidance_ko": "솔직한 이유를 구체적인 생활 경험과 연결하면 좋습니다. 혜택만 강조하는 답은 피하는 편이 안전합니다.",
+      "good_answer_structure_ko": "핵심 이유 → 한국 생활 경험 → 앞으로의 계획.",
+      "bad_answer_patterns": ["혜택·편의만 강조", "막연하게 '좋아서'로만 답"],
+      "source_type": "practice", "source_refs": ["moj-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rn-02", "category": "reason_for_naturalization", "difficulty": "medium",
+      "question_ko": "한국에서 앞으로 어떤 삶을 살고 싶으신가요?",
+      "question_en": "What kind of life do you want to build in Korea?",
+      "answer_guidance_ko": "일·가족·지역사회 안에서의 구체적 계획을 담으면 진정성이 느껴집니다.",
+      "good_answer_structure_ko": "현재 생활 → 앞으로의 목표 → 사회 구성원으로서의 다짐.",
+      "bad_answer_patterns": ["현실과 동떨어진 막연한 포부", "계획 없이 추상적 표현만"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rn-03", "category": "reason_for_naturalization", "difficulty": "medium",
+      "question_ko": "본국 국적을 정리하고 한국 국적을 선택하려는 이유가 있으신가요?",
+      "question_en": "Is there a reason you choose Korean nationality over your original one?",
+      "answer_guidance_ko": "민감할 수 있는 주제이니 차분하게, 본인의 생활 기반이 한국에 있다는 점을 중심으로 말하세요.",
+      "good_answer_structure_ko": "생활 기반의 변화 → 한국에서의 관계·정착 → 선택의 의미.",
+      "bad_answer_patterns": ["본국을 비하하는 표현", "오직 경제적 이유만 강조"],
+      "source_type": "internal_guidance", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-rn-04", "category": "reason_for_naturalization", "difficulty": "easy",
+      "question_ko": "한국에서 가장 좋아하는 점은 무엇인가요?",
+      "question_en": "What do you like most about Korea?",
+      "answer_guidance_ko": "사람·문화·안전·자연 등 본인에게 진짜 와닿은 점을 한 가지 골라 이유와 함께 말하세요.",
+      "good_answer_structure_ko": "좋아하는 점 → 그 이유 → 관련 경험.",
+      "bad_answer_patterns": ["이유 없이 좋다고만 함", "외운 듯한 상투적 답"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rn-05", "category": "reason_for_naturalization", "difficulty": "hard",
+      "question_ko": "국민이 된 후 사회에 어떤 기여를 할 수 있다고 생각하시나요?",
+      "question_en": "How do you think you can contribute to society after naturalization?",
+      "answer_guidance_ko": "거창하지 않아도 됩니다. 본인의 일·이웃·지역에서 할 수 있는 작은 기여를 구체적으로 말하세요.",
+      "good_answer_structure_ko": "본인의 강점·상황 → 가능한 기여 → 실천 의지.",
+      "bad_answer_patterns": ["실현 불가능한 과장", "권리만 말하고 책임은 빠짐"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rn-06", "category": "reason_for_naturalization", "difficulty": "medium",
+      "question_ko": "귀화를 결심하기까지 가장 영향을 준 사람이나 계기가 있나요?",
+      "question_en": "Was there a person or moment that most influenced your decision to naturalize?",
+      "answer_guidance_ko": "진솔한 개인적 이야기가 좋습니다. 한 가지 계기를 골라 그 의미를 설명하세요.",
+      "good_answer_structure_ko": "계기/사람 → 그때의 상황 → 결심으로 이어진 흐름.",
+      "bad_answer_patterns": ["계기 없이 추상적", "여러 이야기를 두서없이 나열"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rn-07", "category": "reason_for_naturalization", "difficulty": "hard",
+      "question_ko": "대한민국 국민으로서 지켜야 할 것은 무엇이라고 생각하시나요?",
+      "question_en": "What do you think you must uphold as a Korean citizen?",
+      "answer_guidance_ko": "권리와 함께 의무·책임을 균형 있게 언급하면 안정적입니다. 법 준수, 이웃 존중 등을 예로 들 수 있습니다.",
+      "good_answer_structure_ko": "지켜야 할 핵심 가치 → 이유 → 생활 속 실천 예시.",
+      "bad_answer_patterns": ["권리만 강조", "의무를 부담으로만 표현"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-lk-01", "category": "life_in_korea", "difficulty": "easy",
+      "question_ko": "한국에 언제, 어떤 이유로 오게 되셨나요?",
+      "question_en": "When and why did you come to Korea?",
+      "answer_guidance_ko": "입국 시기와 계기를 사실대로 간단히 말하면 됩니다.",
+      "good_answer_structure_ko": "입국 시기 → 계기 → 이후 생활 한마디.",
+      "bad_answer_patterns": ["시기·사실 혼동", "장황한 사연"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-02", "category": "life_in_korea", "difficulty": "easy",
+      "question_ko": "지금 어떤 일을 하고 계신가요?",
+      "question_en": "What work do you do now?",
+      "answer_guidance_ko": "직업·하는 일·근무 형태 정도를 간단히 말하세요. 생계 기반을 보여주는 질문입니다.",
+      "good_answer_structure_ko": "직업/하는 일 → 근무 형태 → 기간.",
+      "bad_answer_patterns": ["모호하게 '그냥 일한다'", "사실과 다른 과장"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-03", "category": "life_in_korea", "difficulty": "medium",
+      "question_ko": "한국에서 이웃이나 동료와 지내며 기억에 남는 일이 있나요?",
+      "question_en": "Is there a memorable experience with neighbors or coworkers in Korea?",
+      "answer_guidance_ko": "작고 구체적인 경험이 진솔하게 들립니다. 관계 속에서의 한 장면을 떠올리세요.",
+      "good_answer_structure_ko": "상황 → 있었던 일 → 느낀 점.",
+      "bad_answer_patterns": ["일반론만 말함", "부정적 갈등만 강조"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-04", "category": "life_in_korea", "difficulty": "medium",
+      "question_ko": "한국 생활에서 가장 적응하기 어려웠던 점은 무엇이었나요?",
+      "question_en": "What was hardest to adapt to in life in Korea?",
+      "answer_guidance_ko": "어려움 → 어떻게 적응했는지로 마무리하면 긍정적으로 들립니다.",
+      "good_answer_structure_ko": "어려웠던 점 → 노력 → 지금은 어떤지.",
+      "bad_answer_patterns": ["불평으로만 끝맺음", "적응 노력 언급 없음"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-05", "category": "life_in_korea", "difficulty": "hard",
+      "question_ko": "한국의 명절이나 행사에 참여해 본 경험을 이야기해 주세요.",
+      "question_en": "Tell me about taking part in a Korean holiday or event.",
+      "answer_guidance_ko": "어떤 명절·행사였고 무엇을 했는지 구체적으로. 문화 이해와 생활 경험을 함께 보여줄 수 있습니다.",
+      "good_answer_structure_ko": "명절/행사 → 한 일 → 느낀 점이나 배운 점.",
+      "bad_answer_patterns": ["참여 경험 없이 지식만 나열", "이름만 알고 내용은 모름"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-06", "category": "life_in_korea", "difficulty": "easy",
+      "question_ko": "지금 살고 있는 동네에 대해 소개해 주세요.",
+      "question_en": "Tell me about the neighborhood you live in.",
+      "answer_guidance_ko": "지역명, 분위기, 좋아하는 장소 정도를 간단히 말하세요.",
+      "good_answer_structure_ko": "동네 → 특징 → 좋아하는 점.",
+      "bad_answer_patterns": ["지역을 정확히 모름", "단답 후 멈춤"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-lk-07", "category": "life_in_korea", "difficulty": "hard",
+      "question_ko": "한국 생활 중 도움을 받았던 공공 서비스나 제도가 있나요?",
+      "question_en": "Was there a public service or system in Korea that helped you?",
+      "answer_guidance_ko": "의료·교육·행정 등 실제 이용한 경험을 구체적으로. 생활 속 제도 이해를 보여줄 수 있습니다.",
+      "good_answer_structure_ko": "이용한 서비스 → 상황 → 도움이 된 점.",
+      "bad_answer_patterns": ["이용 경험 없이 추측", "제도명 혼동"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-ks-01", "category": "korean_society", "difficulty": "easy",
+      "question_ko": "대한민국의 수도는 어디인가요?",
+      "question_en": "What is the capital of the Republic of Korea?",
+      "answer_guidance_ko": "기본 상식 질문입니다. 정확히 한마디로 답하면 됩니다.",
+      "good_answer_structure_ko": "정답을 분명하게.",
+      "bad_answer_patterns": ["자신 없이 얼버무림"],
+      "source_type": "official_kiip", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-ks-02", "category": "korean_society", "difficulty": "easy",
+      "question_ko": "태극기에 대해 아는 대로 말해 주세요.",
+      "question_en": "Tell me what you know about the Taegukgi (national flag).",
+      "answer_guidance_ko": "국기의 이름과 기본 구성 정도를 아는 만큼 말하면 됩니다. 모르면 솔직하게 아는 부분만.",
+      "good_answer_structure_ko": "이름 → 기본 구성 요소 → 의미(아는 만큼).",
+      "bad_answer_patterns": ["사실과 다른 내용 단정", "전혀 모른다고만 함"],
+      "source_type": "official_kiip", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-ks-03", "category": "korean_society", "difficulty": "medium",
+      "question_ko": "한국의 대표적인 명절 두 가지와 그 의미를 말해 주세요.",
+      "question_en": "Name two major Korean holidays and their meaning.",
+      "answer_guidance_ko": "설날·추석 같은 대표 명절과 가족이 모이는 의미 등을 간단히 설명하세요.",
+      "good_answer_structure_ko": "명절 이름 → 시기 → 의미·풍습.",
+      "bad_answer_patterns": ["이름만 말하고 의미 생략", "명절 혼동"],
+      "source_type": "official_kiip", "source_refs": ["socinet", "moj-socinet-prog"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-ks-04", "category": "korean_society", "difficulty": "medium",
+      "question_ko": "한국의 국경일 중 하나를 골라 그 의미를 설명해 주세요.",
+      "question_en": "Pick one Korean national holiday and explain its meaning.",
+      "answer_guidance_ko": "삼일절·광복절 등 하나를 골라 어떤 날인지 핵심만 설명하세요.",
+      "good_answer_structure_ko": "국경일 이름 → 날짜 → 기념하는 의미.",
+      "bad_answer_patterns": ["날짜·의미를 잘못 연결", "지나치게 길고 부정확한 설명"],
+      "source_type": "official_kiip", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-ks-05", "category": "korean_society", "difficulty": "hard",
+      "question_ko": "한국 사회에서 '빨리빨리' 문화처럼 인상 깊었던 생활 문화가 있나요?",
+      "question_en": "Is there a Korean everyday culture, like the 'ppalli-ppalli' habit, that struck you?",
+      "answer_guidance_ko": "한 가지 문화를 골라 어떻게 느꼈는지, 적응했는지 솔직히 말하세요.",
+      "good_answer_structure_ko": "문화 현상 → 내가 겪은 예 → 느낀 점.",
+      "bad_answer_patterns": ["문화를 비하하는 표현", "현상만 말하고 경험 없음"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-ks-06", "category": "korean_society", "difficulty": "medium",
+      "question_ko": "한국의 사계절 중 가장 좋아하는 계절과 이유를 말해 주세요.",
+      "question_en": "Which of Korea's four seasons do you like most, and why?",
+      "answer_guidance_ko": "계절 + 이유 + 관련 경험으로 자연스럽게 답하세요. 생활 한국어 표현 연습에도 좋습니다.",
+      "good_answer_structure_ko": "좋아하는 계절 → 이유 → 그 계절의 경험.",
+      "bad_answer_patterns": ["이유 없이 계절만", "계절 표현 혼동"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-ks-07", "category": "korean_society", "difficulty": "hard",
+      "question_ko": "한국의 역사 인물 중 존경하는 사람과 그 이유를 말해 주세요.",
+      "question_en": "Name a Korean historical figure you respect and explain why.",
+      "answer_guidance_ko": "한 인물을 골라 한 일과 존경 이유를 간단히. 정확히 아는 인물을 고르는 게 안전합니다.",
+      "good_answer_structure_ko": "인물 → 한 일 → 존경하는 이유.",
+      "bad_answer_patterns": ["인물 업적을 잘못 설명", "이름만 알고 이유 없음"],
+      "source_type": "official_kiip", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+
+    {
+      "id": "q-do-01", "category": "democratic_order", "difficulty": "easy",
+      "question_ko": "한국에서 대통령이나 국회의원은 어떻게 정해지나요?",
+      "question_en": "How are the president and lawmakers chosen in Korea?",
+      "answer_guidance_ko": "국민이 선거로 뽑는다는 핵심을 분명히 말하면 됩니다.",
+      "good_answer_structure_ko": "국민 → 선거 → 선출.",
+      "bad_answer_patterns": ["선출 방식 혼동", "근거 없이 단정"],
+      "source_type": "official_kiip", "source_refs": ["socinet", "easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-do-02", "category": "democratic_order", "difficulty": "medium",
+      "question_ko": "'민주주의'가 무엇이라고 생각하는지 본인의 말로 설명해 주세요.",
+      "question_en": "In your own words, what is democracy?",
+      "answer_guidance_ko": "어려운 정의보다, 국민이 주인이고 다 같이 결정에 참여한다는 정도로 쉽게 풀어 말하세요.",
+      "good_answer_structure_ko": "핵심 개념(국민이 주인) → 쉬운 예 → 한 줄 정리.",
+      "bad_answer_patterns": ["외운 정의를 부정확하게 암송", "개념과 무관한 답"],
+      "source_type": "official_kiip", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-do-03", "category": "democratic_order", "difficulty": "medium",
+      "question_ko": "사람마다 생각이 다를 때 사회는 어떻게 해결해야 한다고 생각하시나요?",
+      "question_en": "When people disagree, how should society resolve it?",
+      "answer_guidance_ko": "대화·존중·법과 절차에 따른 해결 같은 가치를 담으면 좋습니다.",
+      "good_answer_structure_ko": "차이 인정 → 대화·절차 → 결과 존중.",
+      "bad_answer_patterns": ["힘으로 해결해야 한다는 식", "극단적 단정"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-do-04", "category": "democratic_order", "difficulty": "easy",
+      "question_ko": "투표는 왜 중요하다고 생각하시나요?",
+      "question_en": "Why do you think voting is important?",
+      "answer_guidance_ko": "국민의 의사를 전하는 방법이라는 점을 본인 말로 설명하세요.",
+      "good_answer_structure_ko": "투표의 의미 → 왜 중요한지 → 한 줄 정리.",
+      "bad_answer_patterns": ["관심 없다는 식의 답", "이유 없이 중요하다고만"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-do-05", "category": "democratic_order", "difficulty": "hard",
+      "question_ko": "표현의 자유가 보장되어도 지켜야 할 선이 있다면 무엇일까요?",
+      "question_en": "Even with freedom of expression, what limits should be respected?",
+      "answer_guidance_ko": "자유와 함께 타인의 권리·법 준수를 균형 있게 말하면 안정적입니다.",
+      "good_answer_structure_ko": "자유의 가치 → 타인 존중·법의 한계 → 균형의 필요.",
+      "bad_answer_patterns": ["무제한 자유만 강조", "자유 자체를 부정"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-do-06", "category": "democratic_order", "difficulty": "medium",
+      "question_ko": "법을 지키는 것이 왜 필요하다고 생각하시나요?",
+      "question_en": "Why do you think it is necessary to obey the law?",
+      "answer_guidance_ko": "함께 사는 사회의 안전·질서를 위해서라는 점을 생활 예와 함께 말하세요.",
+      "good_answer_structure_ko": "법의 역할 → 안 지키면 생기는 문제 → 생활 속 예.",
+      "bad_answer_patterns": ["처벌이 무서워서라는 식만", "법을 부정적으로만 표현"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-rd-01", "category": "rights_and_duties", "difficulty": "easy",
+      "question_ko": "대한민국 국민의 의무 중 아는 것을 말해 주세요.",
+      "question_en": "Name some duties of a Korean citizen that you know.",
+      "answer_guidance_ko": "납세·법 준수 등 아는 것을 분명히 말하면 됩니다. 권리와 함께 의무도 안다는 점을 보여주세요.",
+      "good_answer_structure_ko": "의무 1~2가지 → 간단한 설명.",
+      "bad_answer_patterns": ["권리와 의무 혼동", "전혀 모른다고만 함"],
+      "source_type": "official_kiip", "source_refs": ["socinet", "easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-rd-02", "category": "rights_and_duties", "difficulty": "easy",
+      "question_ko": "국민으로서 누릴 수 있는 권리에는 어떤 것이 있을까요?",
+      "question_en": "What rights can a citizen enjoy?",
+      "answer_guidance_ko": "선거권, 교육, 보호받을 권리 등 아는 것을 한두 가지 말하세요.",
+      "good_answer_structure_ko": "권리 1~2가지 → 간단한 설명.",
+      "bad_answer_patterns": ["권리만 끝없이 나열", "의무는 무시하는 태도"],
+      "source_type": "official_kiip", "source_refs": ["socinet", "easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-rd-03", "category": "rights_and_duties", "difficulty": "medium",
+      "question_ko": "세금을 내는 것이 왜 필요하다고 생각하시나요?",
+      "question_en": "Why do you think paying taxes is necessary?",
+      "answer_guidance_ko": "세금이 공공 서비스로 돌아온다는 점을 생활 예와 함께 말하면 좋습니다.",
+      "good_answer_structure_ko": "세금의 쓰임 → 사회에 주는 이익 → 생활 속 예.",
+      "bad_answer_patterns": ["내기 싫다는 식의 답", "쓰임을 모른다고만"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rd-04", "category": "rights_and_duties", "difficulty": "medium",
+      "question_ko": "권리와 의무 중 무엇이 더 중요하다고 생각하시나요?",
+      "question_en": "Which is more important, rights or duties?",
+      "answer_guidance_ko": "둘 다 함께 중요하다는 균형 잡힌 답이 안전합니다. 한쪽만 고르기보다 관계를 설명하세요.",
+      "good_answer_structure_ko": "둘의 관계 → 균형의 필요 → 본인 생각.",
+      "bad_answer_patterns": ["권리만 중요하다고 단정", "질문 회피"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rd-05", "category": "rights_and_duties", "difficulty": "hard",
+      "question_ko": "이웃의 권리와 나의 권리가 부딪힐 때 어떻게 하시겠어요?",
+      "question_en": "What will you do when a neighbor's rights conflict with yours?",
+      "answer_guidance_ko": "대화와 배려, 필요한 경우 정해진 절차로 해결한다는 식의 성숙한 태도를 보여주세요.",
+      "good_answer_structure_ko": "상황 인정 → 대화·배려 → 절차적 해결.",
+      "bad_answer_patterns": ["내 권리만 주장", "감정적 대응 강조"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-rd-06", "category": "rights_and_duties", "difficulty": "hard",
+      "question_ko": "병역이나 교육처럼 국민의 의무가 사회에 주는 의미는 무엇이라고 생각하시나요?",
+      "question_en": "What does a duty like national service or education mean for society?",
+      "answer_guidance_ko": "의무를 부담이 아니라 함께 사는 사회를 위한 것으로 설명하면 좋습니다. 단정적 법 해석은 피하세요.",
+      "good_answer_structure_ko": "의무의 취지 → 사회적 의미 → 본인 생각.",
+      "bad_answer_patterns": ["의무를 부정적으로만", "구체 법 기준을 잘못 단정"],
+      "source_type": "practice", "source_refs": ["easylaw-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-ia-01", "category": "interview_attitude", "difficulty": "easy",
+      "question_ko": "면접에서 모르는 질문을 받으면 어떻게 하시겠어요?",
+      "question_en": "How will you respond to a question you don't know?",
+      "answer_guidance_ko": "모르면 솔직하게 모른다고 말하고, 아는 부분까지 차분히 답하는 태도가 좋습니다.",
+      "good_answer_structure_ko": "솔직한 인정 → 아는 만큼 답 → 정중한 마무리.",
+      "bad_answer_patterns": ["아무 말이나 지어내기", "당황해 침묵"],
+      "source_type": "internal_guidance", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-ia-02", "category": "interview_attitude", "difficulty": "easy",
+      "question_ko": "긴장될 때 본인은 어떻게 마음을 가라앉히나요?",
+      "question_en": "How do you calm yourself when nervous?",
+      "answer_guidance_ko": "가벼운 질문입니다. 심호흡 등 본인의 방법을 자연스럽게 말하세요.",
+      "good_answer_structure_ko": "긴장 인정 → 나의 방법 → 한마디 다짐.",
+      "bad_answer_patterns": ["질문 회피", "과도하게 길게 설명"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-ia-03", "category": "interview_attitude", "difficulty": "medium",
+      "question_ko": "답을 잘못 말했다는 것을 깨달으면 어떻게 하시겠어요?",
+      "question_en": "What will you do if you realize you answered wrong?",
+      "answer_guidance_ko": "정중히 정정하면 됩니다. '죄송합니다, 다시 말씀드리겠습니다' 같은 표현을 연습하세요.",
+      "good_answer_structure_ko": "정정 요청 표현 → 올바른 답 → 차분한 마무리.",
+      "bad_answer_patterns": ["틀린 답 고집", "당황해 흐지부지"],
+      "source_type": "internal_guidance", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-ia-04", "category": "interview_attitude", "difficulty": "medium",
+      "question_ko": "면접관에게 좋은 인상을 주려면 무엇이 중요하다고 생각하시나요?",
+      "question_en": "What matters most for making a good impression in an interview?",
+      "answer_guidance_ko": "정직함·예의·또박또박한 말하기 같은 태도를 강조하세요. 정답을 외우는 것보다 태도가 중요합니다.",
+      "good_answer_structure_ko": "핵심 태도 → 이유 → 실천 다짐.",
+      "bad_answer_patterns": ["외모·재치만 강조", "정직함을 가볍게 봄"],
+      "source_type": "internal_guidance", "source_refs": ["moj-nationality"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-ia-05", "category": "interview_attitude", "difficulty": "hard",
+      "question_ko": "예상하지 못한 질문을 받았을 때 답을 구성하는 본인만의 방법이 있나요?",
+      "question_en": "Do you have a way to structure an answer to an unexpected question?",
+      "answer_guidance_ko": "결론 먼저 말하고 이유·예시를 붙이는 구조를 연습해 두면 어떤 질문에도 안정적입니다.",
+      "good_answer_structure_ko": "결론 먼저 → 이유 → 예시 → 마무리.",
+      "bad_answer_patterns": ["두서없이 길게", "결론을 끝까지 미룸"],
+      "source_type": "internal_guidance", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "면접 태도"]
+    },
+    {
+      "id": "q-ia-06", "category": "interview_attitude", "difficulty": "easy",
+      "question_ko": "면접을 위해 오늘 어떤 준비를 해 오셨나요?",
+      "question_en": "How did you prepare for today's interview?",
+      "answer_guidance_ko": "어떤 부분을 공부했고 무엇을 연습했는지 솔직히 말하면 됩니다.",
+      "good_answer_structure_ko": "준비한 내용 → 방법 → 한마디 다짐.",
+      "bad_answer_patterns": ["준비 안 했다고만", "과장된 준비 주장"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+
+    {
+      "id": "q-pe-01", "category": "pre_evaluation_study", "difficulty": "easy",
+      "question_ko": "사회통합프로그램(KIIP)에 대해 들어보거나 참여해 본 적이 있나요?",
+      "question_en": "Have you heard of or joined the KIIP (Social Integration Program)?",
+      "answer_guidance_ko": "참여 경험이나 알고 있는 정도를 솔직히 말하세요. KIIP는 단계별 학습과 평가로 이어집니다.",
+      "good_answer_structure_ko": "알고 있는지/참여 여부 → 어떤 단계인지 → 느낀 점.",
+      "bad_answer_patterns": ["사실과 다른 이수 주장", "전혀 모른다고만"],
+      "source_type": "official_socinet", "source_refs": ["socinet", "moj-socinet-prog"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고"]
+    },
+    {
+      "id": "q-pe-02", "category": "pre_evaluation_study", "difficulty": "medium",
+      "question_ko": "사전평가와 종합평가가 어떻게 다른지 아는 대로 말해 주세요.",
+      "question_en": "Explain, as far as you know, how the pre-evaluation differs from the comprehensive evaluation.",
+      "answer_guidance_ko": "사전평가는 단계 배정을 위한 것, 종합평가는 과정 이수 후 평가라는 큰 흐름 정도로 말하면 됩니다. 정확한 기준은 공식 안내로 확인하세요.",
+      "good_answer_structure_ko": "사전평가 역할 → 종합평가 역할 → 둘의 흐름.",
+      "bad_answer_patterns": ["둘을 뒤섞어 설명", "세부 점수 기준을 임의 단정"],
+      "source_type": "official_socinet", "source_refs": ["socinet", "kiiptest"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고", "확인 필요"]
+    },
+    {
+      "id": "q-pe-03", "category": "pre_evaluation_study", "difficulty": "medium",
+      "question_ko": "평가나 면접을 준비하면서 가장 도움이 된 학습 방법은 무엇이었나요?",
+      "question_en": "What study method helped you most while preparing?",
+      "answer_guidance_ko": "본인의 학습 경험을 구체적으로. 꾸준함·반복·생활 속 연습 등을 예로 들 수 있습니다.",
+      "good_answer_structure_ko": "학습 방법 → 어떻게 했는지 → 효과.",
+      "bad_answer_patterns": ["방법 없이 막연하게", "남의 방법만 인용"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-pe-04", "category": "pre_evaluation_study", "difficulty": "easy",
+      "question_ko": "한국어와 한국 사회를 공부할 때 주로 어떤 자료를 활용하시나요?",
+      "question_en": "What materials do you usually use to study Korean and Korean society?",
+      "answer_guidance_ko": "교재·수업·영상 등 본인이 쓰는 자료를 솔직히 말하면 됩니다.",
+      "good_answer_structure_ko": "활용 자료 → 활용 방법 → 도움이 된 점.",
+      "bad_answer_patterns": ["전혀 공부 안 한다고만", "출처 불분명한 과장"],
+      "source_type": "practice", "source_refs": [], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-pe-05", "category": "pre_evaluation_study", "difficulty": "hard",
+      "question_ko": "평가 준비와 실제 면접 준비를 어떻게 연결해서 공부하면 좋을까요?",
+      "question_en": "How can study for the evaluation connect with preparing for the real interview?",
+      "answer_guidance_ko": "평가에서 익힌 사회 이해를 면접에서 본인 말로 풀어내는 연습으로 잇는다는 식으로 설명하면 좋습니다.",
+      "good_answer_structure_ko": "평가 학습 내용 → 면접에서의 활용 → 연결 연습 방법.",
+      "bad_answer_patterns": ["둘을 무관하게 봄", "암기만 강조"],
+      "source_type": "internal_guidance", "source_refs": ["socinet"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "연습문제"]
+    },
+    {
+      "id": "q-pe-06", "category": "pre_evaluation_study", "difficulty": "medium",
+      "question_ko": "귀화용 종합평가가 귀화 준비와 어떤 관계가 있다고 이해하고 계신가요?",
+      "question_en": "How do you understand the relation between the naturalization comprehensive evaluation and naturalization preparation?",
+      "answer_guidance_ko": "기본소양을 준비하는 한 방법으로 이해한다는 정도면 충분합니다. 이수·평가가 곧 허가를 뜻하지는 않는다는 점을 함께 말하면 안정적입니다.",
+      "good_answer_structure_ko": "종합평가의 역할 → 준비와의 관계 → 한계(허가 보장 아님) 인식.",
+      "bad_answer_patterns": ["평가 합격이 곧 귀화라고 단정", "관계를 모른다고만"],
+      "source_type": "official_socinet", "source_refs": ["socinet", "kiiptest", "moj-socinet-prog"], "is_official_past_question": false,
+      "labels": ["공식 기출 아님", "공식 기준 참고", "확인 필요"]
+    }
+  ]
+}

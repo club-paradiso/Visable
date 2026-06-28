@@ -1,0 +1,297 @@
+{
+  "_meta": {
+    "schemaVersion": "1.0",
+    "title": "Paradiso — 국적민원 안내 가이드 데이터셋",
+    "generatedAt": "2026-06-28",
+    "purpose": "Orientation-level civil-affairs guides for the 국적민원 알아보기 section. Category-level only: describes WHAT to confirm and WHERE, never specific statutory thresholds, fees, schedules, or outcomes.",
+    "note": "related_laws and related_sources reference ids in data/nationality_service_sources.json. typical_flow_ko is a general flow, not a guaranteed sequence. key_documents_note_ko is a cautionary note, never a complete checklist.",
+    "categoryEnum": ["naturalization_general", "naturalization_simplified", "naturalization_special", "naturalization_marriage", "nationality_restoration", "nationality_acquisition_report", "nationality_loss_report", "nationality_renunciation", "nationality_retention", "multiple_nationality", "foreign_nationality_non_exercise_pledge", "oath_and_certificate", "review_period_status", "interview_review", "kiip_evaluation"],
+    "sourceConfidenceEnum": ["high", "medium", "needs_review"]
+  },
+  "guides": [
+    {
+      "id": "guide-naturalization-general",
+      "category": "naturalization_general",
+      "title_ko": "일반귀화",
+      "short_summary_ko": "특별한 혼인·가족 사유 없이 일정 기간 이상 한국에 거주하며 안정적 생활 기반을 갖춘 분이 검토하는 기본 귀화 경로입니다.",
+      "who_it_is_for_ko": "장기 거주 중이고 영주(F-5) 등 안정적 체류 기반을 갖추어 가는 분.",
+      "typical_flow_ko": [
+        "국적법령·법무부 안내에서 본인 요건 확인",
+        "사회통합프로그램(KIIP)·평가 이수 상태 확인",
+        "필요 서류 준비 및 신청",
+        "귀화적격심사·면접",
+        "결과 통지 및 국민선서·국적증서 수여"
+      ],
+      "key_documents_note_ko": "신원·가족관계, 국내 거주, 생계유지능력, 품행 관련 자료 등이 일반적으로 요구되지만, 정확한 목록은 신청 유형과 관할 관서 안내에 따라 달라질 수 있습니다.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["moj-nationality", "hikorea-nationality", "minwon-moj"],
+      "caution_ko": "거주 기간·서류·기준의 구체 수치는 단정하지 마세요. 개별 사안별로 달라질 수 있으며 관할 출입국외국인관서 안내가 우선입니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-naturalization-simplified",
+      "category": "naturalization_simplified",
+      "title_ko": "간이귀화",
+      "short_summary_ko": "한국과 일정한 연고(혼인·출생·과거 국적 등)가 있는 경우 일반귀화보다 완화된 기준으로 검토될 수 있는 경로입니다.",
+      "who_it_is_for_ko": "한국 국민과의 혼인, 국내 출생 연고, 부모의 국적 등 한국과의 연고를 가진 분.",
+      "typical_flow_ko": [
+        "본인 연고 유형이 간이귀화에 해당하는지 확인",
+        "국적법령·하이코리아에서 세부 요건 확인",
+        "연고 관계 증명 자료 준비 및 신청",
+        "심사·면접",
+        "결과 통지 및 국민선서"
+      ],
+      "key_documents_note_ko": "연고 유형(혼인·출생·국적 등)에 따라 요구 자료가 크게 다릅니다. 본인 유형에 맞는 안내를 관할 관서에서 확인하세요.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["moj-nationality", "hikorea-nationality"],
+      "caution_ko": "간이귀화 해당 여부는 연고 사실관계에 따라 달라집니다. 해당 여부를 스스로 단정하지 말고 공식 확인이 필요합니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-naturalization-special",
+      "category": "naturalization_special",
+      "title_ko": "특별귀화",
+      "short_summary_ko": "부 또는 모가 대한민국 국민이거나 국가에 특별한 공로가 있는 경우 등 법이 정한 사유에 해당할 때 검토되는 경로입니다.",
+      "who_it_is_for_ko": "한국인 부모를 둔 경우나 법령이 정한 특별 사유에 해당하는 분.",
+      "typical_flow_ko": [
+        "특별귀화 해당 사유인지 법령에서 확인",
+        "법무부·하이코리아 안내 확인",
+        "관계 증명 자료 준비 및 신청",
+        "심사",
+        "결과 통지 및 국민선서"
+      ],
+      "key_documents_note_ko": "해당 사유를 증명하는 자료가 핵심입니다. 사유별 요구 자료는 공식 안내로 확인하세요.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["moj-nationality", "hikorea-nationality"],
+      "caution_ko": "특별귀화 사유 해당 여부는 엄격히 판단됩니다. 개별 사안별로 달라질 수 있으므로 공식 확인이 필요합니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-naturalization-marriage",
+      "category": "naturalization_marriage",
+      "title_ko": "혼인귀화 (혼인에 의한 간이귀화)",
+      "short_summary_ko": "대한민국 국민과 혼인한 외국인이 일정 요건을 갖춘 경우 검토하는 간이귀화의 한 유형입니다.",
+      "who_it_is_for_ko": "한국 국민과 혼인하여 국내에 거주 중이거나 혼인 관계가 유지되는 분.",
+      "typical_flow_ko": [
+        "혼인·거주 관련 요건을 국적법령에서 확인",
+        "하이코리아·법무부 안내 확인",
+        "혼인·거주 증명 자료 준비 및 신청",
+        "심사·면접",
+        "결과 통지 및 국민선서"
+      ],
+      "key_documents_note_ko": "혼인 관계와 국내 거주를 증명하는 자료가 중요합니다. 혼인 단절·사별 등 사정에 따라 다른 안내가 적용될 수 있습니다.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["moj-nationality", "hikorea-nationality", "minwon-moj"],
+      "caution_ko": "혼인 상태·기간에 대한 구체 기준은 단정하지 마세요. 개별 사안별로 달라질 수 있습니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-nationality-restoration",
+      "category": "nationality_restoration",
+      "title_ko": "국적회복",
+      "short_summary_ko": "과거 대한민국 국적을 가졌다가 상실·이탈한 분이 다시 국적을 회복하는 절차입니다.",
+      "who_it_is_for_ko": "예전에 한국 국적이 있었으나 현재는 외국 국적인 분.",
+      "typical_flow_ko": [
+        "과거 국적 보유·상실 사실 확인",
+        "국적법령·법무부 안내에서 회복 요건 확인",
+        "관련 증명 자료 준비 및 신청",
+        "심사",
+        "결과 통지"
+      ],
+      "key_documents_note_ko": "과거 국적 보유와 상실 경위를 확인할 수 있는 자료가 필요합니다. 사안별 요구 자료는 공식 안내로 확인하세요.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["moj-nationality", "minwon-moj"],
+      "caution_ko": "회복 가능 여부는 상실 경위와 결격사유 등에 따라 달라집니다. 공식 확인이 필요합니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-nationality-acquisition-report",
+      "category": "nationality_acquisition_report",
+      "title_ko": "국적취득 신고",
+      "short_summary_ko": "법이 정한 사유로 대한민국 국적을 취득한 경우 이를 신고하는 절차입니다.",
+      "who_it_is_for_ko": "법령에 따라 국적을 취득하게 된 분.",
+      "typical_flow_ko": [
+        "취득 사유 및 신고 대상 여부 확인",
+        "법무부·민원 안내에서 신고 방법 확인",
+        "필요 자료 준비 및 신고"
+      ],
+      "key_documents_note_ko": "취득 사유에 따라 신고 자료가 다릅니다. 본인 유형에 맞는 안내를 확인하세요.",
+      "related_laws": ["law-nationality-act", "law-nationality-rule"],
+      "related_sources": ["minwon-moj", "moj-nationality"],
+      "caution_ko": "신고 대상·기한은 사안에 따라 달라질 수 있습니다. 공식 안내 확인이 필요합니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-nationality-loss-report",
+      "category": "nationality_loss_report",
+      "title_ko": "국적상실 신고",
+      "short_summary_ko": "외국 국적 취득 등으로 대한민국 국적을 상실하게 된 경우 이를 신고하는 절차입니다.",
+      "who_it_is_for_ko": "외국 국적 취득 등으로 한국 국적을 상실하게 된 분.",
+      "typical_flow_ko": [
+        "상실 사유 및 신고 대상 여부 확인",
+        "법무부·민원 안내에서 신고 방법 확인",
+        "필요 자료 준비 및 신고"
+      ],
+      "key_documents_note_ko": "상실 사유를 증명하는 자료가 필요합니다. 가족관계등록 등 후속 처리는 별도 기관 안내를 확인하세요.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["minwon-moj", "moj-nationality"],
+      "caution_ko": "상실 시점·효과는 사안에 따라 다릅니다. 후속 행정처리를 포함해 공식 확인이 필요합니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-nationality-renunciation",
+      "category": "nationality_renunciation",
+      "title_ko": "국적이탈 신고",
+      "short_summary_ko": "복수국적자 등이 정해진 절차에 따라 대한민국 국적을 이탈하는 신고 절차입니다.",
+      "who_it_is_for_ko": "복수국적 상태에서 한국 국적을 이탈하려는 분(특히 병역 등과 관련해 기한 확인 필요).",
+      "typical_flow_ko": [
+        "이탈 가능 시기·요건을 법령에서 확인",
+        "재외공관·법무부 안내에서 신고 방법 확인",
+        "필요 자료 준비 및 신고"
+      ],
+      "key_documents_note_ko": "이탈 신고는 시기 요건이 까다로울 수 있습니다. 특히 병역 관련 기한은 반드시 공식 안내로 확인하세요.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["minwon-moj", "moj-nationality"],
+      "caution_ko": "이탈 가능 시기를 놓치면 제한이 생길 수 있습니다. 기한·요건은 개별 사안별로 달라지므로 공식 확인이 필수입니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-nationality-retention",
+      "category": "nationality_retention",
+      "title_ko": "국적보유 신고",
+      "short_summary_ko": "법이 정한 사유로 복수국적이 된 경우 일정 기간 내에 한국 국적 보유 의사를 밝히는 신고입니다.",
+      "who_it_is_for_ko": "출생 등으로 복수국적이 되어 국적 보유 의사를 신고해야 하는 분.",
+      "typical_flow_ko": [
+        "보유 신고 대상·기한 확인",
+        "재외공관·법무부 안내에서 방법 확인",
+        "필요 자료 준비 및 신고"
+      ],
+      "key_documents_note_ko": "신고 기한이 핵심입니다. 대상 여부와 기한을 공식 안내로 확인하세요.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["minwon-moj", "moj-nationality"],
+      "caution_ko": "보유 신고 기한을 놓치면 불이익이 생길 수 있습니다. 공식 확인이 필요합니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-multiple-nationality",
+      "category": "multiple_nationality",
+      "title_ko": "복수국적",
+      "short_summary_ko": "법이 정한 범위에서 둘 이상의 국적을 함께 가질 수 있는 경우와 그에 따른 의무를 다루는 주제입니다.",
+      "who_it_is_for_ko": "복수국적에 해당하거나 해당 가능성을 확인하려는 분.",
+      "typical_flow_ko": [
+        "복수국적 허용 범위와 본인 해당 여부 확인",
+        "외국국적불행사 서약 등 의무 확인",
+        "필요 신고·서약 이행"
+      ],
+      "key_documents_note_ko": "복수국적 유지 조건과 외국국적불행사 서약 등 의무가 함께 따릅니다. 본인 유형에 맞는 안내를 확인하세요.",
+      "related_laws": ["law-nationality-act", "law-nationality-decree"],
+      "related_sources": ["moj-nationality", "easylaw-nationality"],
+      "caution_ko": "복수국적 허용 범위는 좁고 사안마다 다릅니다. 개별 사안별로 공식 확인이 필요합니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-foreign-nationality-non-exercise-pledge",
+      "category": "foreign_nationality_non_exercise_pledge",
+      "title_ko": "외국국적불행사 서약",
+      "short_summary_ko": "복수국적을 유지하기 위해 국내에서 외국 국적을 행사하지 않겠다고 서약하는 절차입니다.",
+      "who_it_is_for_ko": "법이 정한 복수국적 유지 대상으로서 서약이 필요한 분.",
+      "typical_flow_ko": [
+        "서약 대상·기한 확인",
+        "법무부·하이코리아 안내 확인",
+        "서약 이행 및 관련 신고"
+      ],
+      "key_documents_note_ko": "서약 대상 여부와 기한 확인이 핵심입니다. 본인 유형에 맞는 안내를 확인하세요.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["moj-nationality", "hikorea-nationality"],
+      "caution_ko": "서약 대상·기한은 사안에 따라 다릅니다. 공식 확인이 필요합니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-oath-and-certificate",
+      "category": "oath_and_certificate",
+      "title_ko": "국민선서 및 국적증서 수여",
+      "short_summary_ko": "귀화·국적회복 등이 허가된 후 국민선서를 하고 국적증서를 받는 마무리 단계입니다.",
+      "who_it_is_for_ko": "국적 취득이 허가되어 마무리 절차를 앞둔 분.",
+      "typical_flow_ko": [
+        "허가 통지 확인",
+        "국민선서 일정 안내 확인",
+        "국민선서 및 국적증서 수여",
+        "가족관계등록 등 후속 절차 확인"
+      ],
+      "key_documents_note_ko": "통지에 안내된 준비물과 일정을 따르세요. 후속 행정처리(등록·주민등록 등)는 별도 안내를 확인합니다.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["moj-nationality", "gwanbo"],
+      "caution_ko": "일정·절차는 개별 통지에 따릅니다. 통지 내용과 관할 관서 안내가 우선입니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-review-period-status",
+      "category": "review_period_status",
+      "title_ko": "국적 심사기간 및 진행상황 조회",
+      "short_summary_ko": "접수한 국적 민원의 처리 기간 안내와 진행상황 조회 방법을 다룹니다.",
+      "who_it_is_for_ko": "국적 민원을 접수하고 진행 상황을 확인하려는 분.",
+      "typical_flow_ko": [
+        "공식 안내의 처리 기간(참고값) 확인",
+        "하이코리아 등에서 진행상황 조회",
+        "개별 통지 수신 시 통지 내용 우선 확인"
+      ],
+      "key_documents_note_ko": "조회에는 접수번호 등 본인 확인 정보가 필요할 수 있습니다. 조회 항목은 시스템 안내를 따르세요.",
+      "related_laws": [],
+      "related_sources": ["moj-status-inquiry", "hikorea-nationality", "immigration-1345"],
+      "caution_ko": "처리 기간은 공식 참고값일 뿐 보장되지 않습니다. 개별 통지와 관할 관서 안내가 항상 우선합니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-interview-review",
+      "category": "interview_review",
+      "title_ko": "귀화면접 (귀화적격심사 면접)",
+      "short_summary_ko": "귀화 심사 과정에서 기본소양과 의사소통 등을 확인하는 면접 단계로, 대상·면제 여부는 사안에 따라 다릅니다.",
+      "who_it_is_for_ko": "귀화 심사를 진행 중이며 면접 대상일 수 있는 분.",
+      "typical_flow_ko": [
+        "본인이 면접 대상인지 개별 통지·공식 안내로 확인",
+        "기본소양·의사소통·생활 이해 등 준비",
+        "통지된 일정에 면접 응시",
+        "결과는 전체 심사의 일부로 반영"
+      ],
+      "key_documents_note_ko": "면접 준비물·면제 여부는 개별 통지에 안내됩니다. 사회통합프로그램 이수 여부에 따라 다르게 적용될 수 있습니다.",
+      "related_laws": ["law-nationality-act"],
+      "related_sources": ["moj-nationality", "kiiptest", "kiip-comprehensive-eval", "local-notice-example"],
+      "caution_ko": "면접 대상·내용·면제는 개별 사안별로 달라집니다. 합격 여부를 예측하지 않으며, 개별 통지와 관할 관서 안내가 우선입니다.",
+      "source_confidence": "needs_review",
+      "last_reviewed_at": "2026-06-28"
+    },
+    {
+      "id": "guide-kiip-evaluation",
+      "category": "kiip_evaluation",
+      "title_ko": "사회통합프로그램(KIIP)·평가",
+      "short_summary_ko": "사회통합프로그램과 사전평가·종합평가가 국적·귀화 준비와 어떻게 연결되는지 안내합니다.",
+      "who_it_is_for_ko": "KIIP 이수나 평가를 통해 기본소양을 준비하려는 분.",
+      "typical_flow_ko": [
+        "Soci-Net에서 프로그램·평가 정보 확인",
+        "사전평가로 단계 배정",
+        "단계별 교육 이수",
+        "종합평가(귀화용 포함) 응시",
+        "이수·평가 결과가 절차에서 어떻게 반영되는지 확인"
+      ],
+      "key_documents_note_ko": "신청·평가에는 본인 확인 정보가 필요합니다. 평가 구성과 일정은 공지에 따라 달라질 수 있습니다.",
+      "related_laws": [],
+      "related_sources": ["socinet", "socinet-application", "kiiptest", "kiip-comprehensive-eval", "moj-socinet-prog"],
+      "caution_ko": "이수·평가 결과가 곧 귀화 허가를 의미하지 않습니다. 반영 방식은 절차와 개별 사안에 따라 다릅니다.",
+      "source_confidence": "medium",
+      "last_reviewed_at": "2026-06-28"
+    }
+  ]
+}
