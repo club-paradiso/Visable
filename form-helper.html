@@ -3022,23 +3022,28 @@ function initTheme() {
 function initLang() {
   const btn = document.getElementById('fhLangBtn');
   const label = document.getElementById('fhLangLabel');
-  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文' };
+  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch' };
+  // Locales the ko→target display overlay (form-helper-i18n.js) can render. The
+  // wizard renderer is Korean-only; for these, the overlay translates the shown
+  // text. ko = native; en has no overlay map yet, so it falls back to Korean.
+  const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
   function readSel() {
-    try { var s = localStorage.getItem('paradiso:language') || ''; if (s === 'zh-CN' || s === 'zh-TW') return s; } catch (e) {}
+    try { var s = localStorage.getItem('paradiso:language') || ''; if (OVERLAY.indexOf(s) >= 0) return s; } catch (e) {}
     return 'ko';
   }
   function apply(sel) {
     state.lang = sel;
-    document.documentElement.lang = sel === 'zh-TW' ? 'zh-TW' : (sel === 'zh-CN' ? 'zh-CN' : 'ko');
+    document.documentElement.lang = sel;
+    document.documentElement.dir = sel === 'ar' ? 'rtl' : 'ltr';
     if (label) { label.textContent = LABEL[sel] || LABEL.ko; label.setAttribute('data-s2t', 'off'); }
-    // Korean → Chinese display layer (assets/js/form-helper-i18n.js). The wizard
+    // Korean → target display layer (assets/js/form-helper-i18n.js). The wizard
     // renderer stays Korean-only; this translates the displayed text instead.
     if (window.ParadisoFormI18n) window.ParadisoFormI18n.setMode(sel);
   }
   apply(readSel());
   if (btn) btn.addEventListener('click', () => {
-    var cyc = { ko: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
-    var next = cyc[state.lang] || 'zh-CN';
+    var next = ORDER[(ORDER.indexOf(state.lang) + 1) % ORDER.length];
     try { localStorage.setItem('paradiso:language', next); } catch (e) {}
     apply(next);
   });
