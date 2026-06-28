@@ -5,7 +5,8 @@ from dataclasses import dataclass, asdict, field
 from typing import Any, Dict, List, Optional
 
 _CITATION_PATTERN = re.compile(
-    r"(?P<law_name>[가-힣]+법(?:\s시행령)?)\s*제\s*(?P<article>\d+)\s*조"
+    r"(?P<law_name>[가-힣]+법(?:\s*시행(?:령|규칙))?)"
+    r"\s*제\s*(?P<article>\d+)\s*조(?:\s*의\s*(?P<branch>\d+))?"
 )
 
 
@@ -25,7 +26,10 @@ def extract_korean_legal_citations(text: str) -> Dict[str, Any]:
         citations.append(
             {
                 "law_name": match.group("law_name"),
-                "article": f"제{match.group('article')}조",
+                "article": (
+                    f"제{match.group('article')}조"
+                    + (f"의{match.group('branch')}" if match.group("branch") else "")
+                ),
                 "matched_text": match.group(0),
             }
         )
