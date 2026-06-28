@@ -1580,9 +1580,26 @@ select:focus-visible {
             return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
         }
 
+        // Status strings are emitted in Korean throughout; translate them at the
+        // sink so Chinese/English shells don't show Korean status text. zh-TW
+        // reuses zh and is converted by zh-traditional.js.
+        const STATUS_I18N = {
+            '시스템 대기 중': { en: 'System ready', zh: '系统待机中' },
+            '매뉴얼 DB 로딩 중...': { en: 'Loading manual DB...', zh: '正在加载手册数据库…' },
+            '분석 준비 완료': { en: 'Ready to analyze', zh: '分析准备完成' },
+            '답변 생성 중...': { en: 'Generating answer...', zh: '正在生成答复…' },
+            '분석 완료': { en: 'Analysis complete', zh: '分析完成' },
+            '표시 오류 — 재시도 요망': { en: 'Display error — please retry', zh: '显示错误 — 请重试' },
+            '응답 없음 — 재시도 요망': { en: 'No response — please retry', zh: '无响应 — 请重试' },
+            '법령 분석 및 데이터 맵핑 중...': { en: 'Analyzing law and mapping data...', zh: '正在进行法令分析与数据映射…' },
+            '오류 발생 — 재시도 요망': { en: 'An error occurred — please retry', zh: '发生错误 — 请重试' }
+        };
         function setStatus(msg) {
             const statusEl = document.getElementById('systemStatus');
-            if (statusEl) statusEl.textContent = msg;
+            if (!statusEl) return;
+            const m = STATUS_I18N[msg];
+            const lang = (typeof getChosenLang === 'function' && getChosenLang()) || 'ko';
+            statusEl.textContent = m ? tt(lang, { ko: msg, en: m.en, zh: m.zh }) : msg;
         }
 
         function showToast(message) {
@@ -2153,11 +2170,73 @@ select:focus-visible {
             zhHant: 'Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
         };
 
-        // Apply the detected UI language to static shell chrome (currently the
-        // footer disclaimer). Keeps English mode from leaking Korean footer text.
+        // Static chat-shell chrome in four languages. Traditional (zh-TW) reuses
+        // the zh (Simplified) text and is converted to Traditional by
+        // zh-traditional.js (activated on load for zh-TW), matching index.html.
+        const SHELL_CHROME = {
+            titleSub: { ko: '공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345', en: 'Guidance based on public law/manuals · Confirm finally with HiKorea·1345', zh: '基于公开法令·手册的指引 · 最终判断请向 HiKorea·1345 确认' },
+            refChip: { ko: '참고용', en: 'Reference', zh: '仅供参考' },
+            systemStatus: { ko: '시스템 대기 중', en: 'System ready', zh: '系统待机中' },
+            welcome: {
+                ko: '안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.<br><br>답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.',
+                en: 'Hello. <strong>Waymaker by Paradiso</strong> is a reference helper that organizes visa/residence procedures based on public law and manuals.<br><br>Describe your nationality, current status, and situation in as much detail as possible, and we will point you to the relevant sources.<br><br>Answers have no legal effect; confirm final decisions with HiKorea, 1345, or the competent immigration office.',
+                zh: '您好。<strong>Waymaker by Paradiso</strong> 是一款基于公开法令·手册、为您梳理签证·居留程序的参考助手。<br><br>请尽可能详细地写明您的国籍、当前居留资格和情况，我们会一并为您指引相关出处。<br><br>答复不具法律效力，最终判断请向 HiKorea·1345·管辖出入境机关确认。'
+            },
+            welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题' },
+            msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。' },
+            modeFastSub: { ko: '빠른 답변', en: 'Fast answer', zh: '快速答复' },
+            modeBasicSub: { ko: '기본(권장)', en: 'Standard (recommended)', zh: '标准（推荐）' },
+            inputLabel: { ko: '상황 분석 요청 입력창', en: 'Situation analysis request input', zh: '情况分析请求输入框' },
+            placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……' },
+            sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求' },
+            send: { ko: '전송', en: 'Send', zh: '发送' },
+            quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' }
+        };
+        const SHELL_CHIPS = {
+            ko: [['D-2 연장 서류', 'D-2 연장에 필요한 서류는?'], ['E-7 근무처 변경', 'E-7 근무처 변경은 어떻게 확인하나요?'], ['F-6 연장 준비', 'F-6 체류기간 연장 전에 무엇을 준비해야 하나요?'], ['HiKorea 예약 전 체크', 'HiKorea 예약 전에 무엇을 확인해야 하나요?']],
+            en: [['D-2 extension docs', 'What documents do I need to extend a D-2?'], ['E-7 workplace change', 'How do I check an E-7 workplace change?'], ['F-6 extension prep', 'What should I prepare before extending an F-6 stay?'], ['Before a HiKorea booking', 'What should I check before a HiKorea reservation?']],
+            zh: [['D-2 延期材料', 'D-2 延期需要哪些材料？'], ['E-7 工作单位变更', 'E-7 工作单位变更该如何确认？'], ['F-6 延期准备', 'F-6 居留期限延长前要准备什么？'], ['HiKorea 预约前检查', 'HiKorea 预约前应确认什么？']]
+        };
+        function pickChips(lang) {
+            const n = String(lang || '').toLowerCase();
+            if (n === 'en') return SHELL_CHIPS.en;
+            if (n.indexOf('zh') === 0) return SHELL_CHIPS.zh;
+            return SHELL_CHIPS.ko;
+        }
+        // Apply the active UI language to the static chat-shell chrome.
         function applyShellLanguage(lang) {
+            const set = (id, key, html) => { const el = document.getElementById(id); if (!el) return; const v = tt(lang, SHELL_CHROME[key]); if (html) el.innerHTML = v; else el.textContent = v; };
             const footer = document.getElementById('referenceDisclaimer');
             if (footer) footer.textContent = tt(lang, SHELL_FOOTER_DISCLAIMER);
+            set('systemStatus', 'systemStatus');
+            const sub = document.querySelector('.ai-title-sub'); if (sub) sub.textContent = tt(lang, SHELL_CHROME.titleSub);
+            const refChip = document.querySelector('.ai-ref-chip'); if (refChip) refChip.textContent = tt(lang, SHELL_CHROME.refChip);
+            const welcome = document.querySelector('#welcomeMessage .msg-bubble');
+            if (welcome) {
+                // Preserve the chips container; only swap the intro text + rebuild chips.
+                const chipsBox = welcome.querySelector('.ai-welcome-chips');
+                welcome.innerHTML = tt(lang, SHELL_CHROME.welcome);
+                const box = document.createElement('div');
+                box.className = 'ai-welcome-chips'; box.setAttribute('role', 'group');
+                box.setAttribute('aria-label', tt(lang, SHELL_CHROME.welcomeAria));
+                pickChips(lang).forEach(([label, q]) => {
+                    const btn = document.createElement('button');
+                    btn.type = 'button'; btn.className = 'ai-welcome-chip';
+                    btn.setAttribute('data-chip-text', q); btn.textContent = label;
+                    box.appendChild(btn);
+                });
+                welcome.appendChild(box);
+                if (chipsBox) { /* old node replaced */ }
+            }
+            const msgTime = document.querySelector('#welcomeMessage .msg-time'); if (msgTime) msgTime.textContent = tt(lang, SHELL_CHROME.msgTime);
+            const fastSub = document.querySelector('.ai-mode-btn[data-mode="fast"] .ai-mode-sub'); if (fastSub) fastSub.textContent = tt(lang, SHELL_CHROME.modeFastSub);
+            const basicSub = document.querySelector('.ai-mode-btn[data-mode="basic"] .ai-mode-sub'); if (basicSub) basicSub.textContent = tt(lang, SHELL_CHROME.modeBasicSub);
+            const inputLabel = document.querySelector('label[for="aiQ"]'); if (inputLabel) inputLabel.textContent = tt(lang, SHELL_CHROME.inputLabel);
+            const ta = document.getElementById('aiQ'); if (ta) ta.setAttribute('placeholder', tt(lang, SHELL_CHROME.placeholder));
+            const sendBtn = document.getElementById('sendBtn'); if (sendBtn) { sendBtn.setAttribute('aria-label', tt(lang, SHELL_CHROME.sendAria)); sendBtn.textContent = tt(lang, SHELL_CHROME.send); }
+            const quota = document.querySelector('.quota-badge'); if (quota) quota.setAttribute('aria-label', tt(lang, SHELL_CHROME.quotaLabel));
+            // Traditional Chinese: convert the freshly-set Simplified chrome.
+            try { if (String(lang).toLowerCase() === 'zh-tw' && window.ParadisoZhT && !window.ParadisoZhT.isActive()) window.ParadisoZhT.start(); } catch (e) {}
         }
 
         function getModelLabel(model, provider, modelResolved) {
@@ -3314,7 +3393,7 @@ select:focus-visible {
             } finally {
                 clearTimeout(_timeoutId);
                 inp.disabled = false;
-                btn.textContent = detectUserLang(inp.value) === 'en' ? 'Send' : '전송';
+                btn.textContent = tt(detectUserLang(inp.value), SHELL_CHROME.send);
                 updateCharCounter();
                 inp.focus();
                 _abortController = null;
@@ -3400,6 +3479,13 @@ select:focus-visible {
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
             setupAiModeSelector();
+            // Apply the chosen UI language to the static chat shell on load so a
+            // Chinese (or English) selection isn't left behind a Korean shell.
+            try {
+                const chosen = getChosenLang() || 'ko';
+                document.documentElement.lang = (chosen === 'zh-TW') ? 'zh-TW' : (chosen === 'zh-CN') ? 'zh-CN' : chosen;
+                applyShellLanguage(chosen);
+            } catch (e) {}
             applyNationalityDomainHint();
             applyScenarioHandoffHint();
 
