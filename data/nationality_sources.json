@@ -9,10 +9,30 @@
     "sourceHierarchy": "Tier 1 law/statute; Tier 2 central MOJ/Korea Immigration/HiKorea/Socinet services; Tier 3 mission notices; Tier 4 government explainers."
   },
   "groups": [
-    { "id": "moj", "ko": "법무부·출입국", "en": "Ministry of Justice / Immigration" },
-    { "id": "services", "ko": "공식 확인·민원 창구", "en": "Official service handoffs" },
-    { "id": "socinet", "ko": "사회통합·평가", "en": "Social Integration / KIIP" },
-    { "id": "law", "ko": "법령·관보", "en": "Law & Official Gazette" }
+    {
+      "id": "moj",
+      "ko": "법무부·출입국",
+      "en": "Ministry of Justice / Immigration",
+      "zh-CN": "法务部·出入境"
+    },
+    {
+      "id": "services",
+      "ko": "공식 확인·민원 창구",
+      "en": "Official service handoffs",
+      "zh-CN": "官方确认·民愿窗口"
+    },
+    {
+      "id": "socinet",
+      "ko": "사회통합·평가",
+      "en": "Social Integration / KIIP",
+      "zh-CN": "社会融合·评价"
+    },
+    {
+      "id": "law",
+      "ko": "법령·관보",
+      "en": "Law & Official Gazette",
+      "zh-CN": "法令·官报"
+    }
   ],
   "sources": [
     {

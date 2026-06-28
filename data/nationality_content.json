@@ -6,343 +6,1459 @@
     "purpose": "User-facing copy for the dedicated nationality/citizenship platform. References sourceIds in data/nationality_sources.json. Cautious, orientation-level content — no statutory thresholds, fees, schedules, or approval claims.",
     "note": "Where specifics are needed, content points users to official sources rather than asserting them. Deeper legal content is marked for future official-source expansion."
   },
-
-  "brand": { "title": "Paradiso: New Home", "tagline": "You Belong Here." },
-
+  "brand": {
+    "title": "Paradiso: New Home",
+    "tagline": "You Belong Here."
+  },
   "ui": {
-    "backToParadiso": { "ko": "Paradiso로 돌아가기", "en": "Back to Paradiso" },
-    "langToggle": { "ko": "English", "en": "한국어" },
-    "themeToggle": { "ko": "테마 전환", "en": "Switch theme" },
-    "brightnessToggle": { "ko": "밝기 전환", "en": "Toggle brightness" },
-    "modalClose": { "ko": "닫기", "en": "Close" },
-    "openTool": { "ko": "열기", "en": "Open" },
-    "next": { "ko": "다음", "en": "Next" },
-    "back": { "ko": "이전", "en": "Back" },
-    "restart": { "ko": "처음부터", "en": "Start over" },
-    "viewResult": { "ko": "결과 보기", "en": "View result" },
-    "viewDetail": { "ko": "자세히 보기", "en": "View details" },
-    "whoLabel": { "ko": "이런 분께", "en": "Who this is for" },
-    "firstCheckLabel": { "ko": "먼저 확인하세요", "en": "Check this first" },
-    "keyChecksLabel": { "ko": "확인할 항목", "en": "Things to check" },
-    "evidenceLabel": { "ko": "준비 자료(범주)", "en": "Evidence to prepare (by category)" },
-    "nextStepsLabel": { "ko": "다음 단계", "en": "Next steps" },
-    "sourcesLabel": { "ko": "공식 출처", "en": "Official sources" },
-    "officialSourceBadge": { "ko": "공식 출처로 확인", "en": "Check official sources" },
-    "verifyBadge": { "ko": "공식 사이트에서 최신 내용 확인", "en": "Check current details on the official site" },
-    "sourceScopeLabel": { "ko": "적용 범위", "en": "Scope" },
-    "sourceAccessedLabel": { "ko": "확인일", "en": "Accessed" },
-    "sourceDateLabel": { "ko": "자료일", "en": "Source date" },
-    "sourceUpdatedLabel": { "ko": "수정일", "en": "Updated" },
-    "sourceEffectiveLabel": { "ko": "시행일", "en": "Effective" },
-    "futureEffectiveBadge": { "ko": "향후 시행 — 현재 기준 아님", "en": "Future effective date — not current law" },
+    "backToParadiso": {
+      "ko": "Paradiso로 돌아가기",
+      "en": "Back to Paradiso",
+      "zh-CN": "返回 Paradiso"
+    },
+    "langToggle": {
+      "ko": "English",
+      "en": "한국어"
+    },
+    "themeToggle": {
+      "ko": "테마 전환",
+      "en": "Switch theme",
+      "zh-CN": "切换主题"
+    },
+    "brightnessToggle": {
+      "ko": "밝기 전환",
+      "en": "Toggle brightness",
+      "zh-CN": "切换亮度"
+    },
+    "modalClose": {
+      "ko": "닫기",
+      "en": "Close",
+      "zh-CN": "关闭"
+    },
+    "openTool": {
+      "ko": "열기",
+      "en": "Open",
+      "zh-CN": "打开"
+    },
+    "next": {
+      "ko": "다음",
+      "en": "Next",
+      "zh-CN": "下一步"
+    },
+    "back": {
+      "ko": "이전",
+      "en": "Back",
+      "zh-CN": "上一步"
+    },
+    "restart": {
+      "ko": "처음부터",
+      "en": "Start over",
+      "zh-CN": "从头开始"
+    },
+    "viewResult": {
+      "ko": "결과 보기",
+      "en": "View result",
+      "zh-CN": "查看结果"
+    },
+    "viewDetail": {
+      "ko": "자세히 보기",
+      "en": "View details",
+      "zh-CN": "查看详情"
+    },
+    "whoLabel": {
+      "ko": "이런 분께",
+      "en": "Who this is for",
+      "zh-CN": "适合这些人"
+    },
+    "firstCheckLabel": {
+      "ko": "먼저 확인하세요",
+      "en": "Check this first",
+      "zh-CN": "请先确认"
+    },
+    "keyChecksLabel": {
+      "ko": "확인할 항목",
+      "en": "Things to check",
+      "zh-CN": "需确认的项目"
+    },
+    "evidenceLabel": {
+      "ko": "준비 자료(범주)",
+      "en": "Evidence to prepare (by category)",
+      "zh-CN": "需准备的材料（按类别）"
+    },
+    "nextStepsLabel": {
+      "ko": "다음 단계",
+      "en": "Next steps",
+      "zh-CN": "下一步"
+    },
+    "sourcesLabel": {
+      "ko": "공식 출처",
+      "en": "Official sources",
+      "zh-CN": "官方出处"
+    },
+    "officialSourceBadge": {
+      "ko": "공식 출처로 확인",
+      "en": "Check official sources",
+      "zh-CN": "通过官方出处确认"
+    },
+    "verifyBadge": {
+      "ko": "공식 사이트에서 최신 내용 확인",
+      "en": "Check current details on the official site",
+      "zh-CN": "在官方网站确认最新内容"
+    },
+    "sourceScopeLabel": {
+      "ko": "적용 범위",
+      "en": "Scope",
+      "zh-CN": "适用范围"
+    },
+    "sourceAccessedLabel": {
+      "ko": "확인일",
+      "en": "Accessed",
+      "zh-CN": "确认日"
+    },
+    "sourceDateLabel": {
+      "ko": "자료일",
+      "en": "Source date",
+      "zh-CN": "资料日期"
+    },
+    "sourceUpdatedLabel": {
+      "ko": "수정일",
+      "en": "Updated",
+      "zh-CN": "修订日"
+    },
+    "sourceEffectiveLabel": {
+      "ko": "시행일",
+      "en": "Effective",
+      "zh-CN": "施行日"
+    },
+    "futureEffectiveBadge": {
+      "ko": "향후 시행 — 현재 기준 아님",
+      "en": "Future effective date — not current law",
+      "zh-CN": "将来施行 — 非现行标准"
+    },
     "sourceClassLabels": {
-      "law_statute": { "ko": "법령", "en": "Law / statute" },
-      "central_government_portal": { "ko": "중앙정부 안내", "en": "Central government portal" },
-      "official_service_handoff": { "ko": "공식 서비스", "en": "Official service" },
-      "kiip_socinet": { "ko": "KIIP·Socinet", "en": "KIIP / Soci-Net" },
-      "government_reference": { "ko": "정부 참고자료", "en": "Government reference" }
+      "law_statute": {
+        "ko": "법령",
+        "en": "Law / statute",
+        "zh-CN": "法令"
+      },
+      "central_government_portal": {
+        "ko": "중앙정부 안내",
+        "en": "Central government portal",
+        "zh-CN": "中央政府门户"
+      },
+      "official_service_handoff": {
+        "ko": "공식 서비스",
+        "en": "Official service",
+        "zh-CN": "官方服务"
+      },
+      "kiip_socinet": {
+        "ko": "KIIP·Socinet",
+        "en": "KIIP / Soci-Net",
+        "zh-CN": "KIIP·Socinet"
+      },
+      "government_reference": {
+        "ko": "정부 참고자료",
+        "en": "Government reference",
+        "zh-CN": "政府参考资料"
+      }
     },
-    "visitOfficial": { "ko": "공식 사이트", "en": "Official site" },
-    "navLabel": { "ko": "경로", "en": "Path" },
-    "openWaymaker": { "ko": "내 절차 찾기 (Waymaker)", "en": "Find my procedure (Waymaker)" },
-    "loadError": { "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Paradiso 메인에서 접속해 주세요.", "en": "Content could not be loaded. Please try again shortly or return via the Paradiso main page." }
-  },
-
-  "nav": {
-    "start": { "ko": "시작하기", "en": "Start" },
-    "kiip": { "ko": "KIIP·평가", "en": "KIIP & evaluation" },
-    "after": { "ko": "허가 후", "en": "After approval" },
-    "hub": { "ko": "국적업무", "en": "Nationality center" },
-    "sources": { "ko": "공식 출처", "en": "Official sources" }
-  },
-
-  "hero": {
-    "kicker": { "ko": "Paradiso 국적·귀화 플랫폼", "en": "Paradiso nationality platform" },
-    "title": { "ko": "나에게 맞는 국적·귀화 경로를 찾으세요", "en": "Find your nationality and citizenship path" },
-    "lead": {
-      "ko": "귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램, 면접, 귀화 후 절차까지 단계별로 안내합니다.",
-      "en": "Step-by-step guidance for Korean naturalization, nationality restoration, nationality determination, dual nationality, KIIP, interviews, and post-approval steps."
+    "visitOfficial": {
+      "ko": "공식 사이트",
+      "en": "Official site",
+      "zh-CN": "官方网站"
     },
-    "ctaPrimary": { "ko": "2분 준비 점검 시작", "en": "Start the 2-minute readiness check" },
-    "ctaSecondary": { "ko": "상황별 경로 찾기", "en": "Find a path for my situation" },
-    "proofTime": { "ko": "약 2분", "en": "About 2 minutes" },
-    "proofLogin": { "ko": "로그인 불필요", "en": "No login required" },
-    "proofSource": { "ko": "공식 출처 연결", "en": "Linked to official sources" },
-    "guideTitle": { "ko": "지금 필요한 것부터", "en": "Start with what you need" },
-    "guideIntro": { "ko": "법률 용어를 몰라도 현재 상황에서 시작할 수 있습니다.", "en": "Start from your current situation — no legal terms required." },
-    "guideCheck": { "ko": "귀화 준비 항목 빠르게 점검", "en": "Quickly review preparation items" },
-    "guidePath": { "ko": "내 상황을 단계별로 분류", "en": "Classify my situation step by step" },
-    "guideSource": { "ko": "공식 근거와 확인 창구 보기", "en": "Open official sources and contacts" }
-  },
-
-  "notice": {
-    "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
-    "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority."
-  },
-
-  "dashboard": {
-    "title": { "ko": "무엇을 도와드릴까요?", "en": "What would you like to do?" },
-    "intro": { "ko": "상황에 맞는 카드를 선택해 시작하세요. 각 도구는 입력하신 정보를 바탕으로 검토 방향을 정리할 뿐, 허가 여부를 결정하지 않습니다.", "en": "Pick the card that fits your situation. Each tool organizes a direction to review from what you share — it does not decide approval." }
-  },
-
-  "features": [
-    { "id": "readiness", "icon": "🧭", "action": "open-readiness",
-      "label": { "ko": "귀화 준비 점검", "en": "Naturalization Readiness Check" },
-      "desc": { "ko": "체류, 가족관계, KIIP·평가 등 준비할 확인 항목을 한 질문씩 정리하고 해당 공식 경로로 연결합니다.", "en": "Organize preparation checks on residence, family relationships, and KIIP/evaluations, then continue to the relevant official source." },
-      "cta": { "ko": "준비 점검 시작", "en": "Start check" } },
-    { "id": "pathfinder", "icon": "🛤️", "action": "open-pathfinder",
-      "label": { "ko": "귀화 경로 찾기", "en": "Find Your Path to Korean Citizenship" },
-      "desc": { "ko": "법률 용어를 먼저 몰라도 됩니다. 지금 상황을 한 단계씩 고르면 검토할 수 있는 경로로 안내합니다.", "en": "No legal terms needed first — choose your situation step by step and we point you to paths worth reviewing." },
-      "cta": { "ko": "경로 찾기", "en": "Find path" } },
-    { "id": "kiip", "icon": "📚", "action": "scroll-kiip",
-      "label": { "ko": "KIIP·평가 확인", "en": "KIIP & Evaluation Guide" },
-      "desc": { "ko": "사회통합프로그램의 교육·평가와 국적 절차가 서로 다른 점을 확인하고, Socinet과 법무부 공식 안내로 연결합니다.", "en": "Understand how KIIP education, evaluations, and nationality procedures differ, then continue to Soci-Net and Ministry of Justice guidance." },
-      "cta": { "ko": "준비 항목 보기", "en": "View prep" } },
-    { "id": "after", "icon": "✅", "action": "scroll-after",
-      "label": { "ko": "귀화 후 절차", "en": "After Approval Checklist" },
-      "desc": { "ko": "관보 고시 확인부터 가족관계등록, 주민등록, 외국국적 정리까지 허가 후 행정절차를 체크리스트로 짚어봅니다.", "en": "A checklist of post-approval steps — from the official gazette to registration and resolving foreign nationality." },
-      "cta": { "ko": "체크리스트 보기", "en": "View checklist" } },
-    { "id": "hub", "icon": "🗂️", "action": "scroll-hub",
-      "label": { "ko": "국적업무 허브", "en": "Nationality Center" },
-      "desc": { "ko": "귀화·국적회복·국적판정·국적선택·복수국적·외국국적불행사서약 등 국적 업무 전반을 한곳에서 살펴봅니다.", "en": "Browse the whole field — naturalization, restoration, determination, choice, dual nationality, the pledge, and more." },
-      "cta": { "ko": "허브 열기", "en": "Open center" } },
-    { "id": "waymaker", "icon": "✦", "action": "open-waymaker",
-      "label": { "ko": "Waymaker — 내 절차 찾기", "en": "Waymaker — Find my procedure" },
-      "desc": { "ko": "체류자격과 상황을 선택해 준비할 일과 공식 근거를 확인하세요. 국적·귀화 영역도 함께 안내합니다.", "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included." },
-      "cta": { "ko": "내 절차 찾기", "en": "Find my procedure" } }
-  ],
-
-  "pathwayPreview": {
-    "title": { "ko": "전체 흐름 미리보기", "en": "How the journey flows" },
-    "steps": {
-      "ko": ["현재 체류상태 확인", "귀화/국적 경로 분류", "준비서류·평가·면접 확인", "신청 후 절차", "허가 후 행정절차"],
-      "en": ["Check your current status", "Classify your path", "Review documents, evaluation & interview", "Steps after applying", "Administrative steps after approval"]
+    "navLabel": {
+      "ko": "경로",
+      "en": "Path",
+      "zh-CN": "路径"
+    },
+    "openWaymaker": {
+      "ko": "내 절차 찾기 (Waymaker)",
+      "en": "Find my procedure (Waymaker)",
+      "zh-CN": "查找我的手续（Waymaker）"
+    },
+    "loadError": {
+      "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Paradiso 메인에서 접속해 주세요.",
+      "en": "Content could not be loaded. Please try again shortly or return via the Paradiso main page.",
+      "zh-CN": "无法加载内容。请稍后重试，或从 Paradiso 主页进入。"
     }
   },
-
+  "nav": {
+    "start": {
+      "ko": "시작하기",
+      "en": "Start",
+      "zh-CN": "开始"
+    },
+    "kiip": {
+      "ko": "KIIP·평가",
+      "en": "KIIP & evaluation",
+      "zh-CN": "KIIP·评价"
+    },
+    "after": {
+      "ko": "허가 후",
+      "en": "After approval",
+      "zh-CN": "许可后"
+    },
+    "hub": {
+      "ko": "국적업무",
+      "en": "Nationality center",
+      "zh-CN": "国籍业务中心"
+    },
+    "sources": {
+      "ko": "공식 출처",
+      "en": "Official sources",
+      "zh-CN": "官方出处"
+    }
+  },
+  "hero": {
+    "kicker": {
+      "ko": "Paradiso 국적·귀화 플랫폼",
+      "en": "Paradiso nationality platform",
+      "zh-CN": "Paradiso 国籍·归化平台"
+    },
+    "title": {
+      "ko": "나에게 맞는 국적·귀화 경로를 찾으세요",
+      "en": "Find your nationality and citizenship path",
+      "zh-CN": "找到适合您的国籍·归化路径"
+    },
+    "lead": {
+      "ko": "귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램, 면접, 귀화 후 절차까지 단계별로 안내합니다.",
+      "en": "Step-by-step guidance for Korean naturalization, nationality restoration, nationality determination, dual nationality, KIIP, interviews, and post-approval steps.",
+      "zh-CN": "从归化、国籍恢复、国籍判定、复数国籍、社会融合项目、面试到归化后程序，分阶段为您指引。"
+    },
+    "ctaPrimary": {
+      "ko": "2분 준비 점검 시작",
+      "en": "Start the 2-minute readiness check",
+      "zh-CN": "开始 2 分钟准备检查"
+    },
+    "ctaSecondary": {
+      "ko": "상황별 경로 찾기",
+      "en": "Find a path for my situation",
+      "zh-CN": "按情况查找路径"
+    },
+    "proofTime": {
+      "ko": "약 2분",
+      "en": "About 2 minutes",
+      "zh-CN": "约 2 分钟"
+    },
+    "proofLogin": {
+      "ko": "로그인 불필요",
+      "en": "No login required",
+      "zh-CN": "无需登录"
+    },
+    "proofSource": {
+      "ko": "공식 출처 연결",
+      "en": "Linked to official sources",
+      "zh-CN": "连接官方出处"
+    },
+    "guideTitle": {
+      "ko": "지금 필요한 것부터",
+      "en": "Start with what you need",
+      "zh-CN": "从当下所需开始"
+    },
+    "guideIntro": {
+      "ko": "법률 용어를 몰라도 현재 상황에서 시작할 수 있습니다.",
+      "en": "Start from your current situation — no legal terms required.",
+      "zh-CN": "即使不懂法律术语，也可以从当前情况开始。"
+    },
+    "guideCheck": {
+      "ko": "귀화 준비 항목 빠르게 점검",
+      "en": "Quickly review preparation items",
+      "zh-CN": "快速检查归化准备项目"
+    },
+    "guidePath": {
+      "ko": "내 상황을 단계별로 분류",
+      "en": "Classify my situation step by step",
+      "zh-CN": "分阶段归类我的情况"
+    },
+    "guideSource": {
+      "ko": "공식 근거와 확인 창구 보기",
+      "en": "Open official sources and contacts",
+      "zh-CN": "查看官方依据与确认窗口"
+    }
+  },
+  "notice": {
+    "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
+    "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
+    "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
+  },
+  "dashboard": {
+    "title": {
+      "ko": "무엇을 도와드릴까요?",
+      "en": "What would you like to do?",
+      "zh-CN": "需要为您做些什么？"
+    },
+    "intro": {
+      "ko": "상황에 맞는 카드를 선택해 시작하세요. 각 도구는 입력하신 정보를 바탕으로 검토 방향을 정리할 뿐, 허가 여부를 결정하지 않습니다.",
+      "en": "Pick the card that fits your situation. Each tool organizes a direction to review from what you share — it does not decide approval.",
+      "zh-CN": "请选择符合您情况的卡片开始。每个工具只是根据您输入的信息整理审查方向，并不决定是否许可。"
+    }
+  },
+  "features": [
+    {
+      "id": "readiness",
+      "icon": "🧭",
+      "action": "open-readiness",
+      "label": {
+        "ko": "귀화 준비 점검",
+        "en": "Naturalization Readiness Check",
+        "zh-CN": "归化准备检查"
+      },
+      "desc": {
+        "ko": "체류, 가족관계, KIIP·평가 등 준비할 확인 항목을 한 질문씩 정리하고 해당 공식 경로로 연결합니다.",
+        "en": "Organize preparation checks on residence, family relationships, and KIIP/evaluations, then continue to the relevant official source.",
+        "zh-CN": "将居留、家庭关系、KIIP·评价等需准备的确认项目逐题整理，并连接到相应的官方路径。"
+      },
+      "cta": {
+        "ko": "준비 점검 시작",
+        "en": "Start check",
+        "zh-CN": "开始准备检查"
+      }
+    },
+    {
+      "id": "pathfinder",
+      "icon": "🛤️",
+      "action": "open-pathfinder",
+      "label": {
+        "ko": "귀화 경로 찾기",
+        "en": "Find Your Path to Korean Citizenship",
+        "zh-CN": "查找归化路径"
+      },
+      "desc": {
+        "ko": "법률 용어를 먼저 몰라도 됩니다. 지금 상황을 한 단계씩 고르면 검토할 수 있는 경로로 안내합니다.",
+        "en": "No legal terms needed first — choose your situation step by step and we point you to paths worth reviewing.",
+        "zh-CN": "无需先懂法律术语。逐步选择当前情况，即可为您指引可供审查的路径。"
+      },
+      "cta": {
+        "ko": "경로 찾기",
+        "en": "Find path",
+        "zh-CN": "查找路径"
+      }
+    },
+    {
+      "id": "kiip",
+      "icon": "📚",
+      "action": "scroll-kiip",
+      "label": {
+        "ko": "KIIP·평가 확인",
+        "en": "KIIP & Evaluation Guide",
+        "zh-CN": "KIIP·评价确认"
+      },
+      "desc": {
+        "ko": "사회통합프로그램의 교육·평가와 국적 절차가 서로 다른 점을 확인하고, Socinet과 법무부 공식 안내로 연결합니다.",
+        "en": "Understand how KIIP education, evaluations, and nationality procedures differ, then continue to Soci-Net and Ministry of Justice guidance.",
+        "zh-CN": "确认社会融合项目的教育·评价与国籍程序之间的不同，并连接到 Socinet 和法务部官方指引。"
+      },
+      "cta": {
+        "ko": "준비 항목 보기",
+        "en": "View prep",
+        "zh-CN": "查看准备项目"
+      }
+    },
+    {
+      "id": "after",
+      "icon": "✅",
+      "action": "scroll-after",
+      "label": {
+        "ko": "귀화 후 절차",
+        "en": "After Approval Checklist",
+        "zh-CN": "归化后程序"
+      },
+      "desc": {
+        "ko": "관보 고시 확인부터 가족관계등록, 주민등록, 외국국적 정리까지 허가 후 행정절차를 체크리스트로 짚어봅니다.",
+        "en": "A checklist of post-approval steps — from the official gazette to registration and resolving foreign nationality.",
+        "zh-CN": "从确认官报告示到家庭关系登记、居民登记、外国国籍处理，以清单形式梳理许可后的行政程序。"
+      },
+      "cta": {
+        "ko": "체크리스트 보기",
+        "en": "View checklist",
+        "zh-CN": "查看清单"
+      }
+    },
+    {
+      "id": "hub",
+      "icon": "🗂️",
+      "action": "scroll-hub",
+      "label": {
+        "ko": "국적업무 허브",
+        "en": "Nationality Center",
+        "zh-CN": "国籍业务中心"
+      },
+      "desc": {
+        "ko": "귀화·국적회복·국적판정·국적선택·복수국적·외국국적불행사서약 등 국적 업무 전반을 한곳에서 살펴봅니다.",
+        "en": "Browse the whole field — naturalization, restoration, determination, choice, dual nationality, the pledge, and more.",
+        "zh-CN": "在一处查看归化、国籍恢复、国籍判定、国籍选择、复数国籍、不行使外国国籍宣誓等国籍业务全貌。"
+      },
+      "cta": {
+        "ko": "허브 열기",
+        "en": "Open center",
+        "zh-CN": "打开中心"
+      }
+    },
+    {
+      "id": "waymaker",
+      "icon": "✦",
+      "action": "open-waymaker",
+      "label": {
+        "ko": "Waymaker — 내 절차 찾기",
+        "en": "Waymaker — Find my procedure",
+        "zh-CN": "Waymaker — 查找我的手续"
+      },
+      "desc": {
+        "ko": "체류자격과 상황을 선택해 준비할 일과 공식 근거를 확인하세요. 국적·귀화 영역도 함께 안내합니다.",
+        "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included.",
+        "zh-CN": "选择居留资格和情况，确认需准备的事项与官方依据。也一并提供国籍·归化领域的指引。"
+      },
+      "cta": {
+        "ko": "내 절차 찾기",
+        "en": "Find my procedure",
+        "zh-CN": "查找我的手续"
+      }
+    }
+  ],
+  "pathwayPreview": {
+    "title": {
+      "ko": "전체 흐름 미리보기",
+      "en": "How the journey flows",
+      "zh-CN": "整体流程预览"
+    },
+    "steps": {
+      "ko": [
+        "현재 체류상태 확인",
+        "귀화/국적 경로 분류",
+        "준비서류·평가·면접 확인",
+        "신청 후 절차",
+        "허가 후 행정절차"
+      ],
+      "en": [
+        "Check your current status",
+        "Classify your path",
+        "Review documents, evaluation & interview",
+        "Steps after applying",
+        "Administrative steps after approval"
+      ]
+    }
+  },
   "kiip": {
-    "title": { "ko": "KIIP·평가 공식 안내", "en": "Official KIIP & Evaluation Guide" },
+    "title": {
+      "ko": "KIIP·평가 공식 안내",
+      "en": "Official KIIP & Evaluation Guide",
+      "zh-CN": "KIIP·评价官方指引"
+    },
     "intro": {
       "ko": "사회통합프로그램(KIIP)의 교육·평가와 국적 절차는 서로 구분됩니다. 본인에게 적용되는 과정·평가·면접과 최신 일정은 Socinet 또는 관할기관에서 확인해야 합니다.",
-      "en": "KIIP education/evaluations and nationality procedures are distinct. Confirm which course, evaluation, or interview applies to you—and the current schedule—on Soci-Net or with the competent authority."
+      "en": "KIIP education/evaluations and nationality procedures are distinct. Confirm which course, evaluation, or interview applies to you—and the current schedule—on Soci-Net or with the competent authority.",
+      "zh-CN": "社会融合项目（KIIP）的教育·评价与国籍程序是相互区分的。适用于您本人的课程·评价·面试及最新日程，须在 Socinet 或管辖机关确认。"
     },
     "whatIs": {
       "ko": "KIIP는 법무부의 사회통합 교육·평가 프로그램입니다. 이수나 평가 결과가 일부 체류·국적 절차에서 고려될 수 있지만, 그 자체로 자격이나 허가를 자동으로 보장하지 않습니다.",
-      "en": "KIIP is the Ministry of Justice's social-integration education and evaluation program. Completion or scores may be considered in some stay or nationality procedures, but do not automatically establish eligibility or approval."
+      "en": "KIIP is the Ministry of Justice's social-integration education and evaluation program. Completion or scores may be considered in some stay or nationality procedures, but do not automatically establish eligibility or approval.",
+      "zh-CN": "KIIP 是法务部的社会融合教育·评价项目。修完或评价结果可能在部分居留·国籍程序中被考虑，但其本身并不自动保证资格或许可。"
     },
     "distinction": {
       "ko": "KIIP 과정 이수, 단계 배정을 위한 사전평가·중간평가, 영주·귀화용 종합평가는 서로 다른 절차입니다. 귀화면접과 종합평가도 같은 절차로 단정할 수 없습니다.",
-      "en": "KIIP course completion, placement/mid evaluations, and comprehensive evaluations for permanent residence or naturalization are different procedures. A naturalization interview should not be treated as the same thing as a comprehensive evaluation."
+      "en": "KIIP course completion, placement/mid evaluations, and comprehensive evaluations for permanent residence or naturalization are different procedures. A naturalization interview should not be treated as the same thing as a comprehensive evaluation.",
+      "zh-CN": "KIIP 课程修完、用于分配阶段的事前评价·中间评价，以及永住·归化用综合评价是不同的程序。归化面试与综合评价也不能断定为同一程序。"
     },
     "subsections": [
-      { "id": "kiip-stage", "label": { "ko": "내 KIIP 단계 확인", "en": "Check your KIIP stage" }, "desc": { "ko": "배정 단계와 다음 단계, 이수 현황을 사회통합정보망에서 확인하는 방법을 정리합니다.", "en": "How to check your placed stage, next stage, and completion status on Soci-Net." }, "sourceIds": ["socinet"] },
-      { "id": "kiip-exam", "label": { "ko": "평가 유형 확인", "en": "Identify the evaluation type" }, "desc": { "ko": "사전평가·중간평가·영주용 또는 귀화용 종합평가 중 어떤 평가가 관련되는지 공식 공지에서 확인합니다.", "en": "Use official notices to identify whether placement, mid-course, permanent-residence, or naturalization evaluation guidance is relevant." }, "sourceIds": ["kiiptest", "socinet"] },
-      { "id": "kiip-interview", "label": { "ko": "귀화면접 공식자료 찾기", "en": "Find official interview materials" }, "desc": { "ko": "법무부 국적업무 민원 안내에서 면접심사 관련 공식자료와 최신 안내가 있는지 확인합니다.", "en": "Check the Ministry of Justice nationality-service pages for current official interview materials and guidance." }, "sourceIds": ["minwon-moj", "moj-nationality"] },
-      { "id": "kiip-exempt", "label": { "ko": "면제·인정 여부 확인", "en": "Confirm exemptions or recognition" }, "desc": { "ko": "KIIP 이수·평가 결과가 본인 절차에서 어떻게 인정되는지 공식 안내와 관할기관에서 확인합니다. Paradiso는 면제를 판정하지 않습니다.", "en": "Confirm through official guidance and the competent authority how KIIP completion or evaluation results are recognized in your procedure. Paradiso does not determine exemptions." }, "sourceIds": ["moj-nationality", "hikorea-nationality"] },
-      { "id": "kiip-practice", "label": { "ko": "공식 면접자료 확인", "en": "Review official interview materials" }, "desc": { "ko": "비공식 예상문제 대신 법무부가 공개한 면접 관련 자료와 관할기관 안내를 우선 확인합니다.", "en": "Prioritize Ministry of Justice interview materials and competent-authority guidance over unofficial prediction lists." }, "sourceIds": ["minwon-moj", "moj-nationality"] },
-      { "id": "kiip-schedule", "label": { "ko": "공식 일정 확인", "en": "Check the official schedule" }, "desc": { "ko": "평가 일정과 신청은 사회통합정보망·평가 홈페이지에서 직접 확인하세요. Paradiso는 일정을 임의로 표기하지 않습니다.", "en": "Check schedules and applications directly on Soci-Net / the assessment site. Paradiso does not state schedules itself." }, "sourceIds": ["kiiptest", "socinet"] }
+      {
+        "id": "kiip-stage",
+        "label": {
+          "ko": "내 KIIP 단계 확인",
+          "en": "Check your KIIP stage",
+          "zh-CN": "确认我的 KIIP 阶段"
+        },
+        "desc": {
+          "ko": "배정 단계와 다음 단계, 이수 현황을 사회통합정보망에서 확인하는 방법을 정리합니다.",
+          "en": "How to check your placed stage, next stage, and completion status on Soci-Net.",
+          "zh-CN": "整理如何在社会融合信息网确认所分配的阶段、下一阶段及修完情况。"
+        },
+        "sourceIds": [
+          "socinet"
+        ]
+      },
+      {
+        "id": "kiip-exam",
+        "label": {
+          "ko": "평가 유형 확인",
+          "en": "Identify the evaluation type",
+          "zh-CN": "确认评价类型"
+        },
+        "desc": {
+          "ko": "사전평가·중간평가·영주용 또는 귀화용 종합평가 중 어떤 평가가 관련되는지 공식 공지에서 확인합니다.",
+          "en": "Use official notices to identify whether placement, mid-course, permanent-residence, or naturalization evaluation guidance is relevant.",
+          "zh-CN": "在官方公告中确认事前评价·中间评价·永住用或归化用综合评价中哪一项与您相关。"
+        },
+        "sourceIds": [
+          "kiiptest",
+          "socinet"
+        ]
+      },
+      {
+        "id": "kiip-interview",
+        "label": {
+          "ko": "귀화면접 공식자료 찾기",
+          "en": "Find official interview materials",
+          "zh-CN": "查找归化面试官方资料"
+        },
+        "desc": {
+          "ko": "법무부 국적업무 민원 안내에서 면접심사 관련 공식자료와 최신 안내가 있는지 확인합니다.",
+          "en": "Check the Ministry of Justice nationality-service pages for current official interview materials and guidance.",
+          "zh-CN": "在法务部国籍业务民愿指引中确认是否有面试审查相关的官方资料和最新指引。"
+        },
+        "sourceIds": [
+          "minwon-moj",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "kiip-exempt",
+        "label": {
+          "ko": "면제·인정 여부 확인",
+          "en": "Confirm exemptions or recognition",
+          "zh-CN": "确认是否免除·认定"
+        },
+        "desc": {
+          "ko": "KIIP 이수·평가 결과가 본인 절차에서 어떻게 인정되는지 공식 안내와 관할기관에서 확인합니다. Paradiso는 면제를 판정하지 않습니다.",
+          "en": "Confirm through official guidance and the competent authority how KIIP completion or evaluation results are recognized in your procedure. Paradiso does not determine exemptions.",
+          "zh-CN": "请通过官方指引和管辖机关确认 KIIP 修完·评价结果在您的程序中如何被认定。Paradiso 不判定免除。"
+        },
+        "sourceIds": [
+          "moj-nationality",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "kiip-practice",
+        "label": {
+          "ko": "공식 면접자료 확인",
+          "en": "Review official interview materials",
+          "zh-CN": "确认官方面试资料"
+        },
+        "desc": {
+          "ko": "비공식 예상문제 대신 법무부가 공개한 면접 관련 자료와 관할기관 안내를 우선 확인합니다.",
+          "en": "Prioritize Ministry of Justice interview materials and competent-authority guidance over unofficial prediction lists.",
+          "zh-CN": "请优先确认法务部公开的面试相关资料和管辖机关指引，而非非官方的预想题。"
+        },
+        "sourceIds": [
+          "minwon-moj",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "kiip-schedule",
+        "label": {
+          "ko": "공식 일정 확인",
+          "en": "Check the official schedule",
+          "zh-CN": "确认官方日程"
+        },
+        "desc": {
+          "ko": "평가 일정과 신청은 사회통합정보망·평가 홈페이지에서 직접 확인하세요. Paradiso는 일정을 임의로 표기하지 않습니다.",
+          "en": "Check schedules and applications directly on Soci-Net / the assessment site. Paradiso does not state schedules itself.",
+          "zh-CN": "评价日程和申请请直接在社会融合信息网·评价网站确认。Paradiso 不擅自标注日程。"
+        },
+        "sourceIds": [
+          "kiiptest",
+          "socinet"
+        ]
+      }
     ],
     "helps": {
-      "ko": ["교육·평가 구분 안내", "공식 신청·일정 링크", "국적 절차와의 관계 확인", "공식 면접자료 찾기", "관할기관 확인 항목"],
-      "en": ["Education/evaluation distinctions", "Official application and schedule links", "How KIIP relates to nationality procedures", "Where to find official interview materials", "What to confirm with the competent authority"]
+      "ko": [
+        "교육·평가 구분 안내",
+        "공식 신청·일정 링크",
+        "국적 절차와의 관계 확인",
+        "공식 면접자료 찾기",
+        "관할기관 확인 항목"
+      ],
+      "en": [
+        "Education/evaluation distinctions",
+        "Official application and schedule links",
+        "How KIIP relates to nationality procedures",
+        "Where to find official interview materials",
+        "What to confirm with the competent authority"
+      ]
     },
     "notClaims": {
-      "ko": ["자동 자격 인정", "면접 면제 또는 점수 인정 보장", "합격·허가 또는 현재 일정 보장"],
-      "en": ["Automatic eligibility", "Guaranteed interview exemption or score recognition", "Guaranteed pass, approval, or current schedule"]
+      "ko": [
+        "자동 자격 인정",
+        "면접 면제 또는 점수 인정 보장",
+        "합격·허가 또는 현재 일정 보장"
+      ],
+      "en": [
+        "Automatic eligibility",
+        "Guaranteed interview exemption or score recognition",
+        "Guaranteed pass, approval, or current schedule"
+      ]
     },
     "note": {
       "ko": "평가 일정과 세부 기준은 사회통합정보망 등 공식 출처 확인이 필요합니다.",
-      "en": "Assessment schedules and detailed criteria must be confirmed via official sources such as Soci-Net."
+      "en": "Assessment schedules and detailed criteria must be confirmed via official sources such as Soci-Net.",
+      "zh-CN": "评价日程和详细标准需通过社会融合信息网等官方出处确认。"
     },
-    "sourceIds": ["socinet", "kiiptest", "moj-socinet-prog", "immigration-social-integration"]
+    "sourceIds": [
+      "socinet",
+      "kiiptest",
+      "moj-socinet-prog",
+      "immigration-social-integration"
+    ]
   },
-
   "afterApproval": {
-    "title": { "ko": "귀화 후 절차", "en": "After Approval Checklist" },
+    "title": {
+      "ko": "귀화 후 절차",
+      "en": "After Approval Checklist",
+      "zh-CN": "归化后程序"
+    },
     "intro": {
       "ko": "허가 후 살펴볼 수 있는 행정절차 예시입니다. 개인 상황에 따라 항목과 순서가 달라질 수 있으며, 모든 분께 동일하게 적용되는 완전한 목록은 아닙니다.",
-      "en": "Examples of post-approval administrative steps. Items and order can differ by situation, and this is not an exhaustive list that applies identically to everyone."
+      "en": "Examples of post-approval administrative steps. Items and order can differ by situation, and this is not an exhaustive list that applies identically to everyone.",
+      "zh-CN": "这是许可后可查看的行政程序示例。项目和顺序会因个人情况而不同，并非对所有人完全适用的完整清单。"
     },
     "groups": [
-      { "id": "gazette", "label": { "ko": "관보 고시 확인", "en": "Confirm the official gazette notice" }, "explain": { "ko": "귀화·국적 관련 처분은 관보 고시로 확인됩니다.", "en": "Nationality decisions are confirmed via the official gazette." }, "prepare": { "ko": "전자관보에서 본인 관련 고시를 확인하세요.", "en": "Check the e-gazette for the notice that concerns you." }, "sourceIds": ["gwanbo"] },
-      { "id": "family-reg", "label": { "ko": "가족관계등록 관련 확인", "en": "Family-relation registration" }, "explain": { "ko": "가족관계등록 절차가 필요한지 확인합니다.", "en": "Check whether family-relation registration is needed." }, "prepare": { "ko": "관할 기관 안내에 따라 필요한 서류와 절차를 확인하세요.", "en": "Confirm needed documents and steps per the competent office." }, "sourceIds": ["moj-nationality"] },
-      { "id": "resident-reg", "label": { "ko": "주민등록 관련 확인", "en": "Resident registration" }, "explain": { "ko": "거주지 주민등록 절차를 확인합니다.", "en": "Check the resident-registration process for your address." }, "prepare": { "ko": "주소지 관할 행정기관에서 절차를 확인하세요.", "en": "Confirm the process at your local administrative office." }, "sourceIds": ["moj-nationality"] },
-      { "id": "id-card", "label": { "ko": "주민등록증 발급", "en": "Resident registration card" }, "explain": { "ko": "주민등록증 발급 절차를 확인합니다.", "en": "Check how to obtain the resident registration card." }, "prepare": { "ko": "발급 요건·장소를 관할 기관에서 확인하세요.", "en": "Confirm issuance requirements and place with the competent office." }, "sourceIds": ["moj-nationality"] },
-      { "id": "arc", "label": { "ko": "외국인등록증 처리", "en": "Resolve the alien registration card" }, "explain": { "ko": "기존 외국인등록증 처리 방법을 확인합니다.", "en": "Check how the previous ARC is handled." }, "prepare": { "ko": "처리 방법을 하이코리아·관할 출입국관서에서 확인하세요.", "en": "Confirm handling via HiKorea / the immigration office." }, "sourceIds": ["hikorea-nationality"] },
-      { "id": "passport", "label": { "ko": "대한민국 여권 발급", "en": "Korean passport issuance" }, "explain": { "ko": "대한민국 여권 발급 절차를 확인합니다.", "en": "Check the process for a Republic of Korea passport." }, "prepare": { "ko": "여권 발급 기관 안내에 따라 준비하세요.", "en": "Prepare per the passport office's guidance." }, "sourceIds": ["moj-nationality"] },
-      { "id": "records", "label": { "ko": "은행/통신/보험/학교/직장 정보 변경", "en": "Update bank, telecom, insurance, school & workplace records" }, "explain": { "ko": "신분 정보가 연결된 기관에 변경 사항을 반영합니다.", "en": "Reflect the change with institutions tied to your identity records." }, "prepare": { "ko": "각 기관별 신원 정보 변경 절차를 확인하세요.", "en": "Check each institution's identity-update process." }, "sourceIds": [] },
-      { "id": "foreign-nat", "label": { "ko": "외국국적 포기 또는 외국국적불행사서약 확인", "en": "Foreign-nationality renunciation or non-exercise pledge" }, "explain": { "ko": "본인에게 어떤 절차(포기 또는 서약)가 적용되는지 확인합니다.", "en": "Confirm which step (renunciation or the pledge) applies to you." }, "prepare": { "ko": "적용 절차와 기한을 관할기관에서 확인하세요.", "en": "Confirm the applicable step and deadline with the competent authority." }, "sourceIds": ["law-nationality-act", "moj-nationality"], "caution": { "ko": "기한이 있을 수 있어 시기 확인이 중요합니다.", "en": "There may be deadlines — timing matters." } },
-      { "id": "dual-duty", "label": { "ko": "복수국적 관련 후속 의무 확인", "en": "Dual-nationality follow-up duties" }, "explain": { "ko": "복수국적이 유지되는 경우 따르는 후속 의무를 확인합니다.", "en": "Check follow-up duties where dual nationality continues." }, "prepare": { "ko": "본인 유형의 의무를 국적법령·관할기관에서 확인하세요.", "en": "Confirm duties for your type via the Nationality Act / competent authority." }, "sourceIds": ["law-nationality-act"], "caution": { "ko": "유형에 따라 의무가 다릅니다.", "en": "Duties differ by type." } },
-      { "id": "military", "label": { "ko": "병역 관련 확인이 필요한 경우", "en": "Military-service matters, where applicable" }, "explain": { "ko": "해당될 수 있는 경우 병역 관련 안내를 별도로 확인합니다.", "en": "Where it may apply, confirm military-service guidance separately." }, "prepare": { "ko": "해당 여부와 절차를 관할기관에서 확인하세요.", "en": "Confirm applicability and steps with the competent authority." }, "sourceIds": ["moj-nationality"], "caution": { "ko": "개인 상황에 따라 적용이 다릅니다.", "en": "Application varies by situation." } },
-      { "id": "family-impact", "label": { "ko": "자녀/가족관계 영향 확인이 필요한 경우", "en": "Child / family-relation impacts, where applicable" }, "explain": { "ko": "자녀나 가족관계에 영향이 있을 수 있는지 확인합니다.", "en": "Check whether there may be effects on children or family relations." }, "prepare": { "ko": "해당 가능성을 관할기관에서 확인하세요.", "en": "Confirm any applicability with the competent authority." }, "sourceIds": ["moj-nationality"] }
+      {
+        "id": "gazette",
+        "label": {
+          "ko": "관보 고시 확인",
+          "en": "Confirm the official gazette notice",
+          "zh-CN": "确认官报告示"
+        },
+        "explain": {
+          "ko": "귀화·국적 관련 처분은 관보 고시로 확인됩니다.",
+          "en": "Nationality decisions are confirmed via the official gazette.",
+          "zh-CN": "归化·国籍相关处分通过官报告示确认。"
+        },
+        "prepare": {
+          "ko": "전자관보에서 본인 관련 고시를 확인하세요.",
+          "en": "Check the e-gazette for the notice that concerns you.",
+          "zh-CN": "请在电子官报中确认与您相关的告示。"
+        },
+        "sourceIds": [
+          "gwanbo"
+        ]
+      },
+      {
+        "id": "family-reg",
+        "label": {
+          "ko": "가족관계등록 관련 확인",
+          "en": "Family-relation registration",
+          "zh-CN": "家庭关系登记相关确认"
+        },
+        "explain": {
+          "ko": "가족관계등록 절차가 필요한지 확인합니다.",
+          "en": "Check whether family-relation registration is needed.",
+          "zh-CN": "确认是否需要家庭关系登记程序。"
+        },
+        "prepare": {
+          "ko": "관할 기관 안내에 따라 필요한 서류와 절차를 확인하세요.",
+          "en": "Confirm needed documents and steps per the competent office.",
+          "zh-CN": "请按管辖机关的指引确认所需材料和程序。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "resident-reg",
+        "label": {
+          "ko": "주민등록 관련 확인",
+          "en": "Resident registration",
+          "zh-CN": "居民登记相关确认"
+        },
+        "explain": {
+          "ko": "거주지 주민등록 절차를 확인합니다.",
+          "en": "Check the resident-registration process for your address.",
+          "zh-CN": "确认居住地的居民登记程序。"
+        },
+        "prepare": {
+          "ko": "주소지 관할 행정기관에서 절차를 확인하세요.",
+          "en": "Confirm the process at your local administrative office.",
+          "zh-CN": "请在住址所属的管辖行政机关确认程序。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "id-card",
+        "label": {
+          "ko": "주민등록증 발급",
+          "en": "Resident registration card",
+          "zh-CN": "居民登记证发放"
+        },
+        "explain": {
+          "ko": "주민등록증 발급 절차를 확인합니다.",
+          "en": "Check how to obtain the resident registration card.",
+          "zh-CN": "确认居民登记证的发放程序。"
+        },
+        "prepare": {
+          "ko": "발급 요건·장소를 관할 기관에서 확인하세요.",
+          "en": "Confirm issuance requirements and place with the competent office.",
+          "zh-CN": "请向管辖机关确认发放要件和地点。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "arc",
+        "label": {
+          "ko": "외국인등록증 처리",
+          "en": "Resolve the alien registration card",
+          "zh-CN": "外国人登录证处理"
+        },
+        "explain": {
+          "ko": "기존 외국인등록증 처리 방법을 확인합니다.",
+          "en": "Check how the previous ARC is handled.",
+          "zh-CN": "确认原有外国人登录证的处理方法。"
+        },
+        "prepare": {
+          "ko": "처리 방법을 하이코리아·관할 출입국관서에서 확인하세요.",
+          "en": "Confirm handling via HiKorea / the immigration office.",
+          "zh-CN": "请向 HiKorea·管辖出入境机关确认处理方法。"
+        },
+        "sourceIds": [
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "passport",
+        "label": {
+          "ko": "대한민국 여권 발급",
+          "en": "Korean passport issuance",
+          "zh-CN": "大韩民国护照发放"
+        },
+        "explain": {
+          "ko": "대한민국 여권 발급 절차를 확인합니다.",
+          "en": "Check the process for a Republic of Korea passport.",
+          "zh-CN": "确认大韩民国护照的发放程序。"
+        },
+        "prepare": {
+          "ko": "여권 발급 기관 안내에 따라 준비하세요.",
+          "en": "Prepare per the passport office's guidance.",
+          "zh-CN": "请按护照发放机关的指引准备。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "records",
+        "label": {
+          "ko": "은행/통신/보험/학교/직장 정보 변경",
+          "en": "Update bank, telecom, insurance, school & workplace records",
+          "zh-CN": "银行/通信/保险/学校/单位信息变更"
+        },
+        "explain": {
+          "ko": "신분 정보가 연결된 기관에 변경 사항을 반영합니다.",
+          "en": "Reflect the change with institutions tied to your identity records.",
+          "zh-CN": "向与身份信息关联的机构反映变更事项。"
+        },
+        "prepare": {
+          "ko": "각 기관별 신원 정보 변경 절차를 확인하세요.",
+          "en": "Check each institution's identity-update process.",
+          "zh-CN": "请确认各机构的身份信息变更程序。"
+        },
+        "sourceIds": []
+      },
+      {
+        "id": "foreign-nat",
+        "label": {
+          "ko": "외국국적 포기 또는 외국국적불행사서약 확인",
+          "en": "Foreign-nationality renunciation or non-exercise pledge",
+          "zh-CN": "放弃外国国籍或不行使外国国籍宣誓确认"
+        },
+        "explain": {
+          "ko": "본인에게 어떤 절차(포기 또는 서약)가 적용되는지 확인합니다.",
+          "en": "Confirm which step (renunciation or the pledge) applies to you.",
+          "zh-CN": "确认适用于您本人的是哪种程序（放弃或宣誓）。"
+        },
+        "prepare": {
+          "ko": "적용 절차와 기한을 관할기관에서 확인하세요.",
+          "en": "Confirm the applicable step and deadline with the competent authority.",
+          "zh-CN": "请向管辖机关确认适用程序和期限。"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ],
+        "caution": {
+          "ko": "기한이 있을 수 있어 시기 확인이 중요합니다.",
+          "en": "There may be deadlines — timing matters.",
+          "zh-CN": "可能有期限，确认时间很重要。"
+        }
+      },
+      {
+        "id": "dual-duty",
+        "label": {
+          "ko": "복수국적 관련 후속 의무 확인",
+          "en": "Dual-nationality follow-up duties",
+          "zh-CN": "复数国籍相关后续义务确认"
+        },
+        "explain": {
+          "ko": "복수국적이 유지되는 경우 따르는 후속 의무를 확인합니다.",
+          "en": "Check follow-up duties where dual nationality continues.",
+          "zh-CN": "确认在保留复数国籍的情况下需履行的后续义务。"
+        },
+        "prepare": {
+          "ko": "본인 유형의 의무를 국적법령·관할기관에서 확인하세요.",
+          "en": "Confirm duties for your type via the Nationality Act / competent authority.",
+          "zh-CN": "请向国籍法令·管辖机关确认您所属类型的义务。"
+        },
+        "sourceIds": [
+          "law-nationality-act"
+        ],
+        "caution": {
+          "ko": "유형에 따라 의무가 다릅니다.",
+          "en": "Duties differ by type.",
+          "zh-CN": "义务因类型而不同。"
+        }
+      },
+      {
+        "id": "military",
+        "label": {
+          "ko": "병역 관련 확인이 필요한 경우",
+          "en": "Military-service matters, where applicable",
+          "zh-CN": "需要兵役相关确认的情况"
+        },
+        "explain": {
+          "ko": "해당될 수 있는 경우 병역 관련 안내를 별도로 확인합니다.",
+          "en": "Where it may apply, confirm military-service guidance separately.",
+          "zh-CN": "如可能适用，请另行确认兵役相关指引。"
+        },
+        "prepare": {
+          "ko": "해당 여부와 절차를 관할기관에서 확인하세요.",
+          "en": "Confirm applicability and steps with the competent authority.",
+          "zh-CN": "请向管辖机关确认是否适用及程序。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ],
+        "caution": {
+          "ko": "개인 상황에 따라 적용이 다릅니다.",
+          "en": "Application varies by situation.",
+          "zh-CN": "适用情况因个人情况而不同。"
+        }
+      },
+      {
+        "id": "family-impact",
+        "label": {
+          "ko": "자녀/가족관계 영향 확인이 필요한 경우",
+          "en": "Child / family-relation impacts, where applicable",
+          "zh-CN": "需要确认对子女/家庭关系影响的情况"
+        },
+        "explain": {
+          "ko": "자녀나 가족관계에 영향이 있을 수 있는지 확인합니다.",
+          "en": "Check whether there may be effects on children or family relations.",
+          "zh-CN": "确认是否可能对子女或家庭关系产生影响。"
+        },
+        "prepare": {
+          "ko": "해당 가능성을 관할기관에서 확인하세요.",
+          "en": "Confirm any applicability with the competent authority.",
+          "zh-CN": "请向管辖机关确认是否存在相关可能性。"
+        },
+        "sourceIds": [
+          "moj-nationality"
+        ]
+      }
     ],
     "caution": {
       "ko": "이 체크리스트는 참고용이며 모든 분께 동일하게 적용되는 완전한 목록이 아닙니다. 기관별로 절차가 다를 수 있으니 최종 확인이 필요합니다.",
-      "en": "This checklist is for reference and is not exhaustive. Procedures can vary by office, so final confirmation is needed."
+      "en": "This checklist is for reference and is not exhaustive. Procedures can vary by office, so final confirmation is needed.",
+      "zh-CN": "此清单仅供参考，并非对所有人完全适用的完整清单。各机构的程序可能不同，需进行最终确认。"
     }
   },
-
   "hub": {
-    "title": { "ko": "국적업무 허브", "en": "Nationality Center" },
+    "title": {
+      "ko": "국적업무 허브",
+      "en": "Nationality Center",
+      "zh-CN": "国籍业务中心"
+    },
     "intro": {
       "ko": "국적 관련 주요 업무를 한곳에 정리했습니다. 각 항목을 누르면 짧은 설명과 먼저 확인할 사항, 공식 출처를 볼 수 있습니다. 세부 요건은 공식 출처 확인이 필요합니다.",
-      "en": "The main nationality matters in one place. Tap an item for a short explanation, what to check first, and official sources. Detailed requirements need official confirmation."
+      "en": "The main nationality matters in one place. Tap an item for a short explanation, what to check first, and official sources. Detailed requirements need official confirmation.",
+      "zh-CN": "将国籍相关的主要业务整理在一处。点击各项目可查看简短说明、需先确认的事项及官方出处。详细要件需通过官方出处确认。"
     },
     "items": [
-      { "id": "naturalization-general", "groupKo": "귀화", "groupEn": "Naturalization", "pathId": "general",
-        "label": { "ko": "일반귀화", "en": "General naturalization" },
-        "desc": { "ko": "특별한 사유 없이 일정 기간 이상 거주한 외국인이 검토하는 기본 귀화입니다.", "en": "Baseline naturalization for those who have resided for the required period without special grounds." },
-        "who": { "ko": "장기 거주 중이며 안정적 체류 기반을 갖춘 분", "en": "Long-term residents with a stable basis of stay" },
-        "firstCheck": { "ko": "거주 기간 요건과 영주(F-5) 등 체류 기반, KIIP/평가 이수 여부", "en": "The residence-period requirement, your basis such as F-5, and KIIP/evaluation status" },
-        "sourceIds": ["law-nationality-act", "hikorea-nationality"] },
-      { "id": "naturalization-simplified", "groupKo": "귀화", "groupEn": "Naturalization", "pathId": "marriage",
-        "label": { "ko": "간이귀화", "en": "Simplified naturalization" },
-        "desc": { "ko": "혼인 또는 가족관계 등 일정 사유가 있는 경우 검토하는 귀화입니다.", "en": "Naturalization reviewed when certain grounds exist, such as marriage or family relationship." },
-        "who": { "ko": "한국 국민 배우자가 있거나 가족 국적 이력이 있는 분", "en": "Those with a Korean spouse or family nationality history" },
-        "firstCheck": { "ko": "본인에게 적용되는 사유 유형(혼인·가족관계 등)과 관련 요건", "en": "Which ground applies (marriage/family) and its requirements" },
-        "sourceIds": ["law-nationality-act", "hikorea-nationality"] },
-      { "id": "naturalization-special", "groupKo": "귀화", "groupEn": "Naturalization", "pathId": "special",
-        "label": { "ko": "특별귀화", "en": "Special naturalization" },
-        "desc": { "ko": "공로·능력 등 특별한 사유가 인정될 때 검토하는 귀화입니다.", "en": "Naturalization reviewed when special grounds (merit, ability) are recognized." },
-        "who": { "ko": "특별 인정 사유가 있을 수 있는 분", "en": "Those who may have special grounds" },
-        "firstCheck": { "ko": "인정 사유 해당 여부와 분야별 공식 기준", "en": "Whether a recognized ground applies and field-specific criteria" },
-        "sourceIds": ["law-nationality-act", "moj-nationality"], "caution": { "ko": "기준이 분야·정책에 따라 다릅니다.", "en": "Criteria vary by field and policy." } },
-      { "id": "talent", "groupKo": "귀화", "groupEn": "Naturalization", "pathId": "special",
-        "label": { "ko": "우수인재 특별귀화", "en": "Outstanding-talent special naturalization" },
-        "desc": { "ko": "특정 분야 우수 인재로 인정되는 경우 검토하는 특별귀화 유형입니다.", "en": "A special-naturalization type for those recognized as outstanding talent in a field." },
-        "who": { "ko": "전문 분야 실적·추천이 있을 수 있는 분", "en": "Those who may have field achievements/recommendations" },
-        "firstCheck": { "ko": "분야별 인정 기준과 추천·증빙 요건", "en": "Field criteria and recommendation/evidence requirements" },
-        "sourceIds": ["moj-nationality", "hikorea-nationality"], "caution": { "ko": "정책에 따라 자주 갱신됩니다.", "en": "Updated often by policy." } },
-      { "id": "restoration", "groupKo": "회복·판정", "groupEn": "Restoration & Determination", "pathId": "restoration",
-        "label": { "ko": "국적회복", "en": "Nationality restoration" },
-        "desc": { "ko": "과거 한국 국적을 가졌다가 상실·이탈한 분이 국적을 회복하는 절차입니다.", "en": "For those who previously held and lost/renounced Korean nationality to restore it." },
-        "who": { "ko": "과거 한국 국적 보유 이력이 있는 분", "en": "Those who previously held Korean nationality" },
-        "firstCheck": { "ko": "과거 국적 보유·상실 경위와 결격사유, 복수국적 영향", "en": "How nationality was held/lost, disqualifiers, and dual-nationality effects" },
-        "sourceIds": ["law-nationality-act", "hikorea-nationality"] },
-      { "id": "determination", "groupKo": "회복·판정", "groupEn": "Restoration & Determination", "pathId": "determination",
-        "label": { "ko": "국적판정", "en": "Nationality determination" },
-        "desc": { "ko": "한국 국적 보유 여부가 불분명할 때 이를 판정받는 절차입니다.", "en": "A procedure to determine nationality when it is unclear whether one holds it." },
-        "who": { "ko": "출생·가족관계가 복잡해 국적 보유 여부가 불분명한 분", "en": "Those with complex history making nationality unclear" },
-        "firstCheck": { "ko": "출생·가족관계 기록과 국적 변동 이력", "en": "Birth/family records and nationality-change history" },
-        "sourceIds": ["law-nationality-act", "moj-nationality"] },
-      { "id": "acquisition", "groupKo": "취득·선택", "groupEn": "Acquisition & Choice",
-        "label": { "ko": "국적취득", "en": "Nationality acquisition" },
-        "desc": { "ko": "혼인·인지 등 일정한 사유로 국적을 취득하는 경우를 다룹니다.", "en": "Covers acquiring nationality through certain grounds such as recognition." },
-        "who": { "ko": "출생 외 사유로 국적 취득을 검토하는 분", "en": "Those acquiring nationality via grounds other than birth" },
-        "firstCheck": { "ko": "본인 사유에 맞는 취득 유형과 절차", "en": "The acquisition type and procedure matching your ground" },
-        "sourceIds": ["law-nationality-act", "minwon-moj"] },
-      { "id": "choice", "groupKo": "취득·선택", "groupEn": "Acquisition & Choice", "pathId": "dual",
-        "label": { "ko": "국적선택", "en": "Nationality choice" },
-        "desc": { "ko": "복수국적자가 정해진 기간 내 국적을 선택하는 절차입니다.", "en": "How a person with multiple nationalities chooses one within a set period." },
-        "who": { "ko": "복수국적이며 선택 시기가 다가오는 분", "en": "Dual nationals approaching the choice period" },
-        "firstCheck": { "ko": "본인의 국적선택 기간과 방법, 관련 의무", "en": "Your nationality-choice period, method, and related duties" },
-        "sourceIds": ["law-nationality-act", "law-nationality-decree"], "caution": { "ko": "기간 경과 시 불이익이 있을 수 있습니다.", "en": "Missing the period can have consequences." } },
-      { "id": "loss", "groupKo": "상실·이탈·보유", "groupEn": "Loss / Renunciation / Retention",
-        "label": { "ko": "국적상실", "en": "Loss of nationality" },
-        "desc": { "ko": "일정 사유로 한국 국적을 상실하는 경우의 확인 사항입니다.", "en": "Checks for cases where Korean nationality is lost on certain grounds." },
-        "who": { "ko": "외국국적 취득 등으로 상실 여부가 궁금한 분", "en": "Those wondering about loss, e.g., after acquiring a foreign nationality" },
-        "firstCheck": { "ko": "상실 사유 해당 여부와 신고·후속 절차", "en": "Whether a loss ground applies and reporting/follow-up steps" },
-        "sourceIds": ["law-nationality-act", "moj-nationality"] },
-      { "id": "renunciation", "groupKo": "상실·이탈·보유", "groupEn": "Loss / Renunciation / Retention",
-        "label": { "ko": "국적이탈", "en": "Renunciation of nationality" },
-        "desc": { "ko": "복수국적자가 한국 국적을 이탈(포기)하는 절차의 확인 사항입니다.", "en": "Checks for a dual national renouncing Korean nationality." },
-        "who": { "ko": "외국에서 거주하며 국적이탈을 검토하는 분", "en": "Those abroad considering renunciation" },
-        "firstCheck": { "ko": "이탈 가능 기간·요건과 병역 등 관련 의무", "en": "The renunciation period/requirements and related duties such as military service" },
-        "sourceIds": ["law-nationality-act"], "caution": { "ko": "기간·병역 등과 연결되어 복잡할 수 있습니다.", "en": "Can be complex (periods, military service)." } },
-      { "id": "retention", "groupKo": "상실·이탈·보유", "groupEn": "Loss / Renunciation / Retention",
-        "label": { "ko": "국적보유", "en": "Retention of nationality" },
-        "desc": { "ko": "일정 경우 한국 국적을 계속 보유하기 위한 신고 등 확인 사항입니다.", "en": "Checks such as the retention declaration to keep Korean nationality in certain cases." },
-        "who": { "ko": "출생 등으로 복수국적이 되었고 보유를 원하는 분", "en": "Those who became dual-national (e.g., by birth) wishing to retain" },
-        "firstCheck": { "ko": "보유 신고 대상·기간 여부", "en": "Whether a retention declaration and its period apply" },
-        "sourceIds": ["law-nationality-act"] },
-      { "id": "dual", "groupKo": "복수국적·서약", "groupEn": "Dual Nationality & Pledge", "pathId": "dual",
-        "label": { "ko": "복수국적", "en": "Dual nationality" },
-        "desc": { "ko": "복수국적이 허용·제한되는 경우와 관련 확인 사항을 다룹니다.", "en": "Covers where dual nationality is allowed or restricted, and related checks." },
-        "who": { "ko": "복수국적 유지 가능 여부가 궁금한 분", "en": "Those wondering if they can keep dual nationality" },
-        "firstCheck": { "ko": "본인 유형의 허용·제한 여부와 관련 의무", "en": "Whether your type is allowed/restricted and related duties" },
-        "sourceIds": ["law-nationality-act", "moj-nationality"] },
-      { "id": "pledge", "groupKo": "복수국적·서약", "groupEn": "Dual Nationality & Pledge", "pathId": "dual",
-        "label": { "ko": "외국국적불행사서약", "en": "Non-exercise pledge" },
-        "desc": { "ko": "한국에서 외국국적을 행사하지 않겠다고 서약하는 제도의 확인 사항입니다.", "en": "Checks for the pledge not to exercise one's foreign nationality in Korea." },
-        "who": { "ko": "귀화·국적회복 후 서약 적용이 궁금한 분", "en": "Those wondering if the pledge applies after naturalization/restoration" },
-        "firstCheck": { "ko": "서약 적용 대상 여부와 절차·기한", "en": "Whether the pledge applies, and its procedure/deadline" },
-        "sourceIds": ["law-nationality-act", "moj-nationality"] },
-      { "id": "eligibility-review", "groupKo": "심사·진행", "groupEn": "Review & Progress",
-        "label": { "ko": "귀화적격심사", "en": "Naturalization eligibility review" },
-        "desc": { "ko": "귀화 신청 후 요건·품행 등을 확인하는 심사 단계에 대한 안내입니다.", "en": "About the review stage that checks requirements and conduct after applying." },
-        "who": { "ko": "귀화 신청을 준비하거나 심사를 앞둔 분", "en": "Those preparing to apply or facing review" },
-        "firstCheck": { "ko": "심사에서 확인될 수 있는 항목과 본인 준비 상태", "en": "What the review may check and your readiness" },
-        "sourceIds": ["moj-nationality", "hikorea-nationality"] },
-      { "id": "progress-inquiry", "groupKo": "심사·진행", "groupEn": "Review & Progress",
-        "label": { "ko": "국적 심사 진행상황 조회", "en": "Nationality review progress inquiry" },
-        "desc": { "ko": "신청 후 진행 상태를 온라인으로 확인하는 서비스 안내입니다.", "en": "About checking your application's progress online." },
-        "who": { "ko": "이미 신청하고 결과를 기다리는 분", "en": "Those who applied and are awaiting results" },
-        "firstCheck": { "ko": "조회에 필요한 정보와 접속 경로", "en": "The info needed and where to access the inquiry" },
-        "sourceIds": ["moj-status-inquiry", "hikorea-nationality"] },
-      { "id": "gazette", "groupKo": "심사·진행", "groupEn": "Review & Progress",
-        "label": { "ko": "관보 고시 확인", "en": "Official gazette confirmation" },
-        "desc": { "ko": "귀화허가 등 처분은 관보 고시로 확인합니다.", "en": "Decisions such as naturalization approval are confirmed via the official gazette." },
-        "who": { "ko": "허가 여부·시점을 확인하려는 분", "en": "Those confirming approval and its timing" },
-        "firstCheck": { "ko": "전자관보 국적·귀화 테마에서 본인 관련 고시", "en": "Your notice in the e-gazette nationality theme" },
-        "sourceIds": ["gwanbo"] }
+      {
+        "id": "naturalization-general",
+        "groupKo": "귀화",
+        "groupEn": "Naturalization",
+        "pathId": "general",
+        "label": {
+          "ko": "일반귀화",
+          "en": "General naturalization",
+          "zh-CN": "一般归化"
+        },
+        "desc": {
+          "ko": "특별한 사유 없이 일정 기간 이상 거주한 외국인이 검토하는 기본 귀화입니다.",
+          "en": "Baseline naturalization for those who have resided for the required period without special grounds.",
+          "zh-CN": "无特别事由、居住达一定期限以上的外国人所考虑的基本归化。"
+        },
+        "who": {
+          "ko": "장기 거주 중이며 안정적 체류 기반을 갖춘 분",
+          "en": "Long-term residents with a stable basis of stay",
+          "zh-CN": "长期居住且具备稳定居留基础的人"
+        },
+        "firstCheck": {
+          "ko": "거주 기간 요건과 영주(F-5) 등 체류 기반, KIIP/평가 이수 여부",
+          "en": "The residence-period requirement, your basis such as F-5, and KIIP/evaluation status",
+          "zh-CN": "居住期限要件、永住（F-5）等居留基础，以及 KIIP/评价修完情况"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "naturalization-simplified",
+        "groupKo": "귀화",
+        "groupEn": "Naturalization",
+        "pathId": "marriage",
+        "label": {
+          "ko": "간이귀화",
+          "en": "Simplified naturalization",
+          "zh-CN": "简易归化"
+        },
+        "desc": {
+          "ko": "혼인 또는 가족관계 등 일정 사유가 있는 경우 검토하는 귀화입니다.",
+          "en": "Naturalization reviewed when certain grounds exist, such as marriage or family relationship.",
+          "zh-CN": "在存在婚姻或家庭关系等一定事由时所考虑的归化。"
+        },
+        "who": {
+          "ko": "한국 국민 배우자가 있거나 가족 국적 이력이 있는 분",
+          "en": "Those with a Korean spouse or family nationality history",
+          "zh-CN": "有韩国国民配偶或有家庭国籍经历的人"
+        },
+        "firstCheck": {
+          "ko": "본인에게 적용되는 사유 유형(혼인·가족관계 등)과 관련 요건",
+          "en": "Which ground applies (marriage/family) and its requirements",
+          "zh-CN": "适用于您本人的事由类型（婚姻·家庭关系等）及相关要件"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "naturalization-special",
+        "groupKo": "귀화",
+        "groupEn": "Naturalization",
+        "pathId": "special",
+        "label": {
+          "ko": "특별귀화",
+          "en": "Special naturalization",
+          "zh-CN": "特别归化"
+        },
+        "desc": {
+          "ko": "공로·능력 등 특별한 사유가 인정될 때 검토하는 귀화입니다.",
+          "en": "Naturalization reviewed when special grounds (merit, ability) are recognized.",
+          "zh-CN": "在功劳·能力等特别事由被认定时所考虑的归化。"
+        },
+        "who": {
+          "ko": "특별 인정 사유가 있을 수 있는 분",
+          "en": "Those who may have special grounds",
+          "zh-CN": "可能存在特别认定事由的人"
+        },
+        "firstCheck": {
+          "ko": "인정 사유 해당 여부와 분야별 공식 기준",
+          "en": "Whether a recognized ground applies and field-specific criteria",
+          "zh-CN": "是否符合认定事由及各领域的官方标准"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ],
+        "caution": {
+          "ko": "기준이 분야·정책에 따라 다릅니다.",
+          "en": "Criteria vary by field and policy.",
+          "zh-CN": "标准因领域·政策而不同。"
+        }
+      },
+      {
+        "id": "talent",
+        "groupKo": "귀화",
+        "groupEn": "Naturalization",
+        "pathId": "special",
+        "label": {
+          "ko": "우수인재 특별귀화",
+          "en": "Outstanding-talent special naturalization",
+          "zh-CN": "优秀人才特别归化"
+        },
+        "desc": {
+          "ko": "특정 분야 우수 인재로 인정되는 경우 검토하는 특별귀화 유형입니다.",
+          "en": "A special-naturalization type for those recognized as outstanding talent in a field.",
+          "zh-CN": "在被认定为特定领域优秀人才时所考虑的特别归化类型。"
+        },
+        "who": {
+          "ko": "전문 분야 실적·추천이 있을 수 있는 분",
+          "en": "Those who may have field achievements/recommendations",
+          "zh-CN": "可能有专业领域业绩·推荐的人"
+        },
+        "firstCheck": {
+          "ko": "분야별 인정 기준과 추천·증빙 요건",
+          "en": "Field criteria and recommendation/evidence requirements",
+          "zh-CN": "各领域的认定标准及推荐·证明要件"
+        },
+        "sourceIds": [
+          "moj-nationality",
+          "hikorea-nationality"
+        ],
+        "caution": {
+          "ko": "정책에 따라 자주 갱신됩니다.",
+          "en": "Updated often by policy.",
+          "zh-CN": "会随政策频繁更新。"
+        }
+      },
+      {
+        "id": "restoration",
+        "groupKo": "회복·판정",
+        "groupEn": "Restoration & Determination",
+        "pathId": "restoration",
+        "label": {
+          "ko": "국적회복",
+          "en": "Nationality restoration",
+          "zh-CN": "国籍恢复"
+        },
+        "desc": {
+          "ko": "과거 한국 국적을 가졌다가 상실·이탈한 분이 국적을 회복하는 절차입니다.",
+          "en": "For those who previously held and lost/renounced Korean nationality to restore it.",
+          "zh-CN": "曾持有韩国国籍后丧失·脱离者恢复国籍的程序。"
+        },
+        "who": {
+          "ko": "과거 한국 국적 보유 이력이 있는 분",
+          "en": "Those who previously held Korean nationality",
+          "zh-CN": "曾持有韩国国籍经历的人"
+        },
+        "firstCheck": {
+          "ko": "과거 국적 보유·상실 경위와 결격사유, 복수국적 영향",
+          "en": "How nationality was held/lost, disqualifiers, and dual-nationality effects",
+          "zh-CN": "过去持有·丧失国籍的经过、缺格事由，以及复数国籍的影响"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "determination",
+        "groupKo": "회복·판정",
+        "groupEn": "Restoration & Determination",
+        "pathId": "determination",
+        "label": {
+          "ko": "국적판정",
+          "en": "Nationality determination",
+          "zh-CN": "国籍判定"
+        },
+        "desc": {
+          "ko": "한국 국적 보유 여부가 불분명할 때 이를 판정받는 절차입니다.",
+          "en": "A procedure to determine nationality when it is unclear whether one holds it.",
+          "zh-CN": "在是否持有韩国国籍不明确时进行判定的程序。"
+        },
+        "who": {
+          "ko": "출생·가족관계가 복잡해 국적 보유 여부가 불분명한 분",
+          "en": "Those with complex history making nationality unclear",
+          "zh-CN": "因出生·家庭关系复杂而国籍归属不明确的人"
+        },
+        "firstCheck": {
+          "ko": "출생·가족관계 기록과 국적 변동 이력",
+          "en": "Birth/family records and nationality-change history",
+          "zh-CN": "出生·家庭关系记录及国籍变动经历"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "acquisition",
+        "groupKo": "취득·선택",
+        "groupEn": "Acquisition & Choice",
+        "label": {
+          "ko": "국적취득",
+          "en": "Nationality acquisition",
+          "zh-CN": "国籍取得"
+        },
+        "desc": {
+          "ko": "혼인·인지 등 일정한 사유로 국적을 취득하는 경우를 다룹니다.",
+          "en": "Covers acquiring nationality through certain grounds such as recognition.",
+          "zh-CN": "涉及因婚姻·认知等一定事由取得国籍的情形。"
+        },
+        "who": {
+          "ko": "출생 외 사유로 국적 취득을 검토하는 분",
+          "en": "Those acquiring nationality via grounds other than birth",
+          "zh-CN": "考虑因出生以外事由取得国籍的人"
+        },
+        "firstCheck": {
+          "ko": "본인 사유에 맞는 취득 유형과 절차",
+          "en": "The acquisition type and procedure matching your ground",
+          "zh-CN": "符合您本人事由的取得类型和程序"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "minwon-moj"
+        ]
+      },
+      {
+        "id": "choice",
+        "groupKo": "취득·선택",
+        "groupEn": "Acquisition & Choice",
+        "pathId": "dual",
+        "label": {
+          "ko": "국적선택",
+          "en": "Nationality choice",
+          "zh-CN": "国籍选择"
+        },
+        "desc": {
+          "ko": "복수국적자가 정해진 기간 내 국적을 선택하는 절차입니다.",
+          "en": "How a person with multiple nationalities chooses one within a set period.",
+          "zh-CN": "复数国籍者在规定期限内选择国籍的程序。"
+        },
+        "who": {
+          "ko": "복수국적이며 선택 시기가 다가오는 분",
+          "en": "Dual nationals approaching the choice period",
+          "zh-CN": "具有复数国籍且临近选择时期的人"
+        },
+        "firstCheck": {
+          "ko": "본인의 국적선택 기간과 방법, 관련 의무",
+          "en": "Your nationality-choice period, method, and related duties",
+          "zh-CN": "您本人的国籍选择期限、方法及相关义务"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "law-nationality-decree"
+        ],
+        "caution": {
+          "ko": "기간 경과 시 불이익이 있을 수 있습니다.",
+          "en": "Missing the period can have consequences.",
+          "zh-CN": "逾期可能会有不利后果。"
+        }
+      },
+      {
+        "id": "loss",
+        "groupKo": "상실·이탈·보유",
+        "groupEn": "Loss / Renunciation / Retention",
+        "label": {
+          "ko": "국적상실",
+          "en": "Loss of nationality",
+          "zh-CN": "国籍丧失"
+        },
+        "desc": {
+          "ko": "일정 사유로 한국 국적을 상실하는 경우의 확인 사항입니다.",
+          "en": "Checks for cases where Korean nationality is lost on certain grounds.",
+          "zh-CN": "因一定事由丧失韩国国籍时的确认事项。"
+        },
+        "who": {
+          "ko": "외국국적 취득 등으로 상실 여부가 궁금한 분",
+          "en": "Those wondering about loss, e.g., after acquiring a foreign nationality",
+          "zh-CN": "因取得外国国籍等而想了解是否丧失的人"
+        },
+        "firstCheck": {
+          "ko": "상실 사유 해당 여부와 신고·후속 절차",
+          "en": "Whether a loss ground applies and reporting/follow-up steps",
+          "zh-CN": "是否符合丧失事由及申报·后续程序"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "renunciation",
+        "groupKo": "상실·이탈·보유",
+        "groupEn": "Loss / Renunciation / Retention",
+        "label": {
+          "ko": "국적이탈",
+          "en": "Renunciation of nationality",
+          "zh-CN": "国籍脱离"
+        },
+        "desc": {
+          "ko": "복수국적자가 한국 국적을 이탈(포기)하는 절차의 확인 사항입니다.",
+          "en": "Checks for a dual national renouncing Korean nationality.",
+          "zh-CN": "复数国籍者脱离（放弃）韩国国籍程序的确认事项。"
+        },
+        "who": {
+          "ko": "외국에서 거주하며 국적이탈을 검토하는 분",
+          "en": "Those abroad considering renunciation",
+          "zh-CN": "在国外居住并考虑脱离国籍的人"
+        },
+        "firstCheck": {
+          "ko": "이탈 가능 기간·요건과 병역 등 관련 의무",
+          "en": "The renunciation period/requirements and related duties such as military service",
+          "zh-CN": "可脱离的期限·要件及兵役等相关义务"
+        },
+        "sourceIds": [
+          "law-nationality-act"
+        ],
+        "caution": {
+          "ko": "기간·병역 등과 연결되어 복잡할 수 있습니다.",
+          "en": "Can be complex (periods, military service).",
+          "zh-CN": "与期限·兵役等关联，可能较为复杂。"
+        }
+      },
+      {
+        "id": "retention",
+        "groupKo": "상실·이탈·보유",
+        "groupEn": "Loss / Renunciation / Retention",
+        "label": {
+          "ko": "국적보유",
+          "en": "Retention of nationality",
+          "zh-CN": "国籍保留"
+        },
+        "desc": {
+          "ko": "일정 경우 한국 국적을 계속 보유하기 위한 신고 등 확인 사항입니다.",
+          "en": "Checks such as the retention declaration to keep Korean nationality in certain cases.",
+          "zh-CN": "在一定情况下为继续保留韩国国籍而进行申报等的确认事项。"
+        },
+        "who": {
+          "ko": "출생 등으로 복수국적이 되었고 보유를 원하는 분",
+          "en": "Those who became dual-national (e.g., by birth) wishing to retain",
+          "zh-CN": "因出生等成为复数国籍且希望保留的人"
+        },
+        "firstCheck": {
+          "ko": "보유 신고 대상·기간 여부",
+          "en": "Whether a retention declaration and its period apply",
+          "zh-CN": "是否属于保留申报对象及其期限"
+        },
+        "sourceIds": [
+          "law-nationality-act"
+        ]
+      },
+      {
+        "id": "dual",
+        "groupKo": "복수국적·서약",
+        "groupEn": "Dual Nationality & Pledge",
+        "pathId": "dual",
+        "label": {
+          "ko": "복수국적",
+          "en": "Dual nationality",
+          "zh-CN": "复数国籍"
+        },
+        "desc": {
+          "ko": "복수국적이 허용·제한되는 경우와 관련 확인 사항을 다룹니다.",
+          "en": "Covers where dual nationality is allowed or restricted, and related checks.",
+          "zh-CN": "涉及复数国籍被允许·限制的情形及相关确认事项。"
+        },
+        "who": {
+          "ko": "복수국적 유지 가능 여부가 궁금한 분",
+          "en": "Those wondering if they can keep dual nationality",
+          "zh-CN": "想了解能否保留复数国籍的人"
+        },
+        "firstCheck": {
+          "ko": "본인 유형의 허용·제한 여부와 관련 의무",
+          "en": "Whether your type is allowed/restricted and related duties",
+          "zh-CN": "您所属类型是否被允许·限制及相关义务"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "pledge",
+        "groupKo": "복수국적·서약",
+        "groupEn": "Dual Nationality & Pledge",
+        "pathId": "dual",
+        "label": {
+          "ko": "외국국적불행사서약",
+          "en": "Non-exercise pledge",
+          "zh-CN": "不行使外国国籍宣誓"
+        },
+        "desc": {
+          "ko": "한국에서 외국국적을 행사하지 않겠다고 서약하는 제도의 확인 사항입니다.",
+          "en": "Checks for the pledge not to exercise one's foreign nationality in Korea.",
+          "zh-CN": "承诺在韩国不行使外国国籍的制度的确认事项。"
+        },
+        "who": {
+          "ko": "귀화·국적회복 후 서약 적용이 궁금한 분",
+          "en": "Those wondering if the pledge applies after naturalization/restoration",
+          "zh-CN": "想了解归化·国籍恢复后是否适用宣誓的人"
+        },
+        "firstCheck": {
+          "ko": "서약 적용 대상 여부와 절차·기한",
+          "en": "Whether the pledge applies, and its procedure/deadline",
+          "zh-CN": "是否属于宣誓适用对象及其程序·期限"
+        },
+        "sourceIds": [
+          "law-nationality-act",
+          "moj-nationality"
+        ]
+      },
+      {
+        "id": "eligibility-review",
+        "groupKo": "심사·진행",
+        "groupEn": "Review & Progress",
+        "label": {
+          "ko": "귀화적격심사",
+          "en": "Naturalization eligibility review",
+          "zh-CN": "归化适格审查"
+        },
+        "desc": {
+          "ko": "귀화 신청 후 요건·품행 등을 확인하는 심사 단계에 대한 안내입니다.",
+          "en": "About the review stage that checks requirements and conduct after applying.",
+          "zh-CN": "关于归化申请后确认要件·品行等的审查阶段的指引。"
+        },
+        "who": {
+          "ko": "귀화 신청을 준비하거나 심사를 앞둔 분",
+          "en": "Those preparing to apply or facing review",
+          "zh-CN": "正在准备归化申请或即将接受审查的人"
+        },
+        "firstCheck": {
+          "ko": "심사에서 확인될 수 있는 항목과 본인 준비 상태",
+          "en": "What the review may check and your readiness",
+          "zh-CN": "审查中可能被确认的项目及您本人的准备状态"
+        },
+        "sourceIds": [
+          "moj-nationality",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "progress-inquiry",
+        "groupKo": "심사·진행",
+        "groupEn": "Review & Progress",
+        "label": {
+          "ko": "국적 심사 진행상황 조회",
+          "en": "Nationality review progress inquiry",
+          "zh-CN": "国籍审查进度查询"
+        },
+        "desc": {
+          "ko": "신청 후 진행 상태를 온라인으로 확인하는 서비스 안내입니다.",
+          "en": "About checking your application's progress online.",
+          "zh-CN": "关于申请后在线确认进度状态的服务指引。"
+        },
+        "who": {
+          "ko": "이미 신청하고 결과를 기다리는 분",
+          "en": "Those who applied and are awaiting results",
+          "zh-CN": "已申请并等待结果的人"
+        },
+        "firstCheck": {
+          "ko": "조회에 필요한 정보와 접속 경로",
+          "en": "The info needed and where to access the inquiry",
+          "zh-CN": "查询所需的信息及访问路径"
+        },
+        "sourceIds": [
+          "moj-status-inquiry",
+          "hikorea-nationality"
+        ]
+      },
+      {
+        "id": "gazette",
+        "groupKo": "심사·진행",
+        "groupEn": "Review & Progress",
+        "label": {
+          "ko": "관보 고시 확인",
+          "en": "Official gazette confirmation",
+          "zh-CN": "确认官报告示"
+        },
+        "desc": {
+          "ko": "귀화허가 등 처분은 관보 고시로 확인합니다.",
+          "en": "Decisions such as naturalization approval are confirmed via the official gazette.",
+          "zh-CN": "归化许可等处分通过官报告示确认。"
+        },
+        "who": {
+          "ko": "허가 여부·시점을 확인하려는 분",
+          "en": "Those confirming approval and its timing",
+          "zh-CN": "想确认是否许可及其时点的人"
+        },
+        "firstCheck": {
+          "ko": "전자관보 국적·귀화 테마에서 본인 관련 고시",
+          "en": "Your notice in the e-gazette nationality theme",
+          "zh-CN": "在电子官报国籍·归化主题中与您相关的告示"
+        },
+        "sourceIds": [
+          "gwanbo"
+        ]
+      }
     ],
     "expansionNote": {
       "ko": "각 항목의 상세 요건·서류·절차는 공식 출처 확인 후 단계적으로 보강됩니다.",
-      "en": "Detailed requirements, documents, and procedures for each item will be strengthened in stages after official-source verification."
+      "en": "Detailed requirements, documents, and procedures for each item will be strengthened in stages after official-source verification.",
+      "zh-CN": "各项目的详细要件·材料·程序将在确认官方出处后分阶段补充。"
     }
   },
-
   "waymaker": {
-    "title": { "ko": "Waymaker — 내 절차 찾기", "en": "Waymaker — Find my immigration procedure" },
+    "title": {
+      "ko": "Waymaker — 내 절차 찾기",
+      "en": "Waymaker — Find my immigration procedure",
+      "zh-CN": "Waymaker — 查找我的手续"
+    },
     "desc": {
       "ko": "체류자격과 상황을 선택해 준비할 일과 공식 근거를 확인하세요. 국적·귀화 영역도 함께 안내합니다.",
-      "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included."
+      "en": "Choose your status and situation to get a source-backed action packet. Nationality and naturalization topics are included.",
+      "zh-CN": "选择居留资格和情况，确认需准备的事项与官方依据。也一并提供国籍·归化领域的指引。"
     },
-    "cta": { "ko": "내 절차 찾기", "en": "Find my immigration procedure" },
+    "cta": {
+      "ko": "내 절차 찾기",
+      "en": "Find my immigration procedure",
+      "zh-CN": "查找我的手续"
+    },
     "note": {
       "ko": "Waymaker는 공식 출처를 바탕으로 내 절차, 서류, 예약, 다음 행동을 정리하는 절차 길찾기입니다. AI는 생성된 안내를 설명하는 보조 역할만 하며, 서류·수수료·기한을 새로 만들지 않습니다. 최종 확인은 HiKorea·1345·관할 출입국기관에서 하세요.",
-      "en": "Waymaker is a procedure navigator that turns your status and situation into a source-backed procedure, checklist, booking path, and next action. AI only helps explain what was generated and never invents documents, fees, or deadlines. Confirm finally with HiKorea, 1345, or the competent immigration office."
+      "en": "Waymaker is a procedure navigator that turns your status and situation into a source-backed procedure, checklist, booking path, and next action. AI only helps explain what was generated and never invents documents, fees, or deadlines. Confirm finally with HiKorea, 1345, or the competent immigration office.",
+      "zh-CN": "Waymaker 是以官方出处为基础，整理您的手续、材料、预约和下一步行动的手续向导。AI 仅起到说明所生成指引的辅助作用，不会新造材料·手续费·期限。最终确认请在 HiKorea·1345·管辖出入境机关进行。"
     }
   },
-
   "interviewBridge": {
-    "title": { "ko": "국적민원·귀화면접 준비", "en": "Nationality services & interview prep" },
+    "title": {
+      "ko": "국적민원·귀화면접 준비",
+      "en": "Nationality services & interview prep",
+      "zh-CN": "国籍民愿·归化面试准备"
+    },
     "desc": {
       "ko": "귀화, 국적회복, 국적상실·이탈, 복수국적, 국민선서와 귀화면접 준비까지 한곳에서 확인하세요. 공식 법령과 안내를 바탕으로 내 상황에 가까운 흐름을 살펴볼 수 있습니다.",
-      "en": "Naturalization, nationality restoration, loss/renunciation, multiple nationality, the citizen oath and interview prep — all in one place, based on official law and guidance for a flow close to your situation."
+      "en": "Naturalization, nationality restoration, loss/renunciation, multiple nationality, the citizen oath and interview prep — all in one place, based on official law and guidance for a flow close to your situation.",
+      "zh-CN": "从归化、国籍恢复、国籍丧失·脱离、复数国籍、国民宣誓到归化面试准备，都可在一处确认。可基于官方法令和指引，查看与您情况相近的流程。"
     },
     "bullets": {
       "ko": "예상 질문 카드 · 모의면접 연습 · 참고 영상 · Waymaker 코치",
-      "en": "Practice questions · mock interview · reference videos · Waymaker coach"
+      "en": "Practice questions · mock interview · reference videos · Waymaker coach",
+      "zh-CN": "预想问题卡片 · 模拟面试练习 · 参考视频 · Waymaker 教练"
     },
-    "cta": { "ko": "준비 시작하기", "en": "Start preparing" }
-  },
-
-  "caution": {
-    "title": { "ko": "꼭 확인하세요", "en": "Please keep in mind" },
-    "body": {
-      "ko": "국적 취득·귀화의 결과는 개인의 구체적 사실관계와 관할기관의 심사에 따라 달라집니다. Paradiso의 안내는 방향을 정리하는 참고 자료이며, 최종 자격·허가 여부를 단정하거나 법률 자문을 대신하지 않습니다.",
-      "en": "Outcomes of nationality acquisition and naturalization depend on each person's specific facts and the competent authority's review. Paradiso's guidance is reference material that helps organize a direction; it does not determine final eligibility or approval, nor replace legal advice."
+    "cta": {
+      "ko": "준비 시작하기",
+      "en": "Start preparing",
+      "zh-CN": "开始准备"
     }
   },
-
+  "caution": {
+    "title": {
+      "ko": "꼭 확인하세요",
+      "en": "Please keep in mind",
+      "zh-CN": "请务必确认"
+    },
+    "body": {
+      "ko": "국적 취득·귀화의 결과는 개인의 구체적 사실관계와 관할기관의 심사에 따라 달라집니다. Paradiso의 안내는 방향을 정리하는 참고 자료이며, 최종 자격·허가 여부를 단정하거나 법률 자문을 대신하지 않습니다.",
+      "en": "Outcomes of nationality acquisition and naturalization depend on each person's specific facts and the competent authority's review. Paradiso's guidance is reference material that helps organize a direction; it does not determine final eligibility or approval, nor replace legal advice.",
+      "zh-CN": "国籍取得·归化的结果取决于个人的具体事实关系和管辖机关的审查。Paradiso 的指引是用于整理方向的参考资料，不会断定最终资格·是否许可，也不替代法律咨询。"
+    }
+  },
   "sourcesPanel": {
-    "title": { "ko": "공식 출처", "en": "Official sources" },
+    "title": {
+      "ko": "공식 출처",
+      "en": "Official sources",
+      "zh-CN": "官方出处"
+    },
     "intro": {
       "ko": "국적·KIIP 관련 공식 출처를 종류와 적용 범위별로 정리했습니다. 링크와 공개 메타데이터는 2026-06-28에 확인했으며, 신청 전 각 공식 페이지의 최신 공지를 다시 확인하세요.",
-      "en": "Official nationality and KIIP sources are grouped by type and scope. Links and public metadata were checked on 2026-06-28; recheck the latest official notice before applying."
+      "en": "Official nationality and KIIP sources are grouped by type and scope. Links and public metadata were checked on 2026-06-28; recheck the latest official notice before applying.",
+      "zh-CN": "已按种类和适用范围整理国籍·KIIP 相关的官方出处。链接和公开元数据于 2026-06-28 确认，申请前请再次确认各官方页面的最新公告。"
     },
     "disclaimer": {
       "ko": "Paradiso는 법무부·HiKorea·Socinet·비자포털·재외공관과 제휴 또는 소속 관계가 없습니다. 이 링크는 관할 공식기관의 최신 안내를 확인하기 위한 연결입니다.",
-      "en": "Paradiso is not affiliated with the Ministry of Justice, HiKorea, Soci-Net, the Korea Visa Portal, or any overseas mission. These links are handoffs for checking current guidance from the competent official authority."
+      "en": "Paradiso is not affiliated with the Ministry of Justice, HiKorea, Soci-Net, the Korea Visa Portal, or any overseas mission. These links are handoffs for checking current guidance from the competent official authority.",
+      "zh-CN": "Paradiso 与法务部·HiKorea·Socinet·签证门户·驻外公馆无合作或隶属关系。这些链接是用于确认管辖官方机关最新指引的跳转。"
     }
   },
-
   "footer": {
     "notice": {
       "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
-      "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority."
+      "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
+      "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
     },
-    "back": { "ko": "Paradiso 메인으로 돌아가기", "en": "Back to the Paradiso main page" }
+    "back": {
+      "ko": "Paradiso 메인으로 돌아가기",
+      "en": "Back to the Paradiso main page",
+      "zh-CN": "返回 Paradiso 主页"
+    }
   }
 }
