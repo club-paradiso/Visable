@@ -106,6 +106,7 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
   transition: border-color 0.18s, background 0.18s, transform 0.18s;
 }
 .nh-back:hover { border-color: var(--ac); transform: translateX(-2px); }
+.nh-back-label-short { display: none; }
 .nh-controls { display: flex; gap: 0.4rem; }
 .nh-ctl {
   min-height: 40px; min-width: 40px; padding: 0 0.75rem;
@@ -440,18 +441,120 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
 /* ── Responsive ── */
 @media (max-width: 720px) {
-  .nh-section-nav { top: 65px; justify-content: flex-start; }
-  .nh-hero { padding-top: 2rem; }
+  body { font-size: 16px; line-height: 1.65; }
+  .nh-topbar {
+    min-height: 56px; gap: 0.5rem; padding: 0.375rem 0.75rem;
+    background: color-mix(in srgb, var(--bg1) 94%, transparent);
+  }
+  .nh-back {
+    min-width: 0; min-height: 44px; padding: 0 0.75rem; gap: 0.35rem;
+    border-radius: var(--r-md); font-size: 0.82rem; line-height: 1.2; white-space: nowrap;
+  }
+  .nh-back-label-full { display: none; }
+  .nh-back-label-short { display: inline; }
+  .nh-controls { gap: 0.35rem; margin-left: auto; }
+  .nh-ctl {
+    width: 44px; min-width: 44px; min-height: 44px; padding: 0;
+    border-radius: var(--r-md); font-size: 0.86rem; line-height: 1;
+  }
+  #langBtn { position: relative; overflow: hidden; color: transparent; font-size: 0; }
+  #langBtn::after { color: var(--t2); font-size: 0.78rem; font-weight: 850; line-height: 1; }
+  html[lang="ko"] #langBtn::after { content: "EN"; }
+  html[lang="en"] #langBtn::after { content: "한"; }
+  #themeBtnLabel { display: none; }
+  .nh-section-nav {
+    top: 56px; min-height: 48px; justify-content: flex-start; gap: 0.2rem;
+    padding: 0.25rem 0.75rem; scroll-padding-inline: 0.75rem; scroll-snap-type: x proximity;
+  }
+  .nh-section-nav a {
+    min-height: 40px; padding: 0 0.7rem; display: inline-flex; align-items: center;
+    scroll-snap-align: start; font-size: 0.8rem; line-height: 1.2;
+  }
+  #dashboard, #kiip, #after, #hub, #sources { scroll-margin-top: 7.25rem; }
+  .nh-wrap { padding-inline: 1rem; }
+  .nh-hero { padding: 1.75rem 1rem 1.6rem; }
   .nh-hero-inner { grid-template-columns: 1fr; gap: 1rem; }
+  .nh-kicker { margin-bottom: 0.7rem; font-size: 0.74rem; line-height: 1.3; }
+  .nh-title { font-size: clamp(1.85rem, 8.5vw, 2.2rem); line-height: 1.18; letter-spacing: -0.025em; word-break: keep-all; }
+  .nh-tagline { margin-top: 0.45rem; font-size: 1.03rem; line-height: 1.4; }
+  .nh-lead { margin-top: 0.9rem; font-size: 0.96rem; line-height: 1.72; word-break: keep-all; }
+  .nh-cta-row { gap: 0.6rem; margin-top: 1.25rem; }
   .nh-cta-row .nh-btn { flex: 1 1 100%; }
+  .nh-btn { min-height: 54px; padding: 0 1rem; font-size: 0.98rem; line-height: 1.3; }
+  .nh-proof-row { gap: 0.4rem; margin-top: 0.75rem; }
+  .nh-proof-row span {
+    min-height: 32px; padding: 0.35rem 0.68rem; display: inline-flex; align-items: center;
+    font-size: 0.78rem; line-height: 1.3;
+  }
+  .nh-notice { margin-top: 1.35rem; padding: 0.85rem 0.9rem; font-size: 0.88rem; line-height: 1.65; }
+  .nh-hero-guide { padding: 1rem; }
+  .nh-hero-guide h2 { font-size: 1.04rem; line-height: 1.35; }
+  .nh-hero-guide p { font-size: 0.86rem; line-height: 1.55; }
+  .nh-guide-link { min-height: 52px; padding: 0.72rem 0.8rem; gap: 0.65rem; }
+  .nh-guide-link strong { font-size: 0.9rem; line-height: 1.45; }
+  section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding: 2.25rem 0; }
+  .nh-section-h { align-items: flex-start; gap: 0.45rem; }
+  .nh-section-h h2 { font-size: 1.5rem; line-height: 1.25; }
+  .nh-section-intro { margin: 0.65rem 0 1.2rem; font-size: 0.94rem; line-height: 1.68; word-break: keep-all; }
+  .nh-grid { gap: 0.7rem; }
+  .nh-card {
+    min-height: 0; padding: 1rem; display: grid;
+    grid-template-columns: 42px minmax(0, 1fr); grid-template-rows: auto auto auto;
+    column-gap: 0.85rem; row-gap: 0.35rem; align-items: start;
+  }
+  .nh-card-icon { width: 42px; height: 42px; grid-column: 1; grid-row: 1 / span 2; border-radius: 11px; }
+  .nh-card-label { grid-column: 2; font-size: 1.02rem; line-height: 1.35; }
+  .nh-card-desc { grid-column: 2; font-size: 0.88rem; line-height: 1.62; }
+  .nh-card-cta { grid-column: 2; margin-top: 0.15rem; font-size: 0.88rem; line-height: 1.4; }
+  .nh-pathway-steps { gap: 0.55rem; }
+  .nh-pathway-steps li { flex-basis: 100%; padding: 0.85rem 0.9rem 0.85rem 2.7rem; font-size: 0.9rem; line-height: 1.55; }
+  .nh-sub-grid, .nh-hub-grid { gap: 0.7rem; }
+  .nh-sub-item, .nh-hub-item { padding: 1rem; }
+  .nh-sub-item h3, .nh-hub-item h3 { font-size: 1rem; line-height: 1.4; }
+  .nh-sub-item p, .nh-hub-item p { font-size: 0.88rem; line-height: 1.62; }
+  .nh-checklist { gap: 0.6rem; }
+  .nh-checklist li { padding: 0.9rem; gap: 0.75rem; }
+  .nh-check-body strong { font-size: 0.96rem; line-height: 1.42; }
+  .nh-check-body span { display: block; margin-top: 0.18rem; font-size: 0.86rem; line-height: 1.6; }
+  .nh-waymaker .nh-waymaker-inner, .nh-caution .nh-caution-inner { padding: 1.1rem; }
+  .nh-waymaker-text h3, .nh-caution h2 { line-height: 1.35; }
+  .nh-waymaker-text p, .nh-caution p { font-size: 0.9rem; line-height: 1.65; }
+  .nh-source-disclaimer { padding: 0.9rem 1rem; font-size: 0.86rem; line-height: 1.65; }
+  .nh-source-group { margin-bottom: 1.5rem; }
+  .nh-source-group-title { margin-bottom: 0.7rem; font-size: 0.96rem; line-height: 1.4; }
+  .nh-source-card { gap: 0.48rem; padding: 1rem; margin-bottom: 0.7rem; }
+  .nh-source-card-top { align-items: flex-start; gap: 0.4rem 0.5rem; }
+  .nh-source-link { flex-basis: 100%; font-size: 0.96rem; line-height: 1.45; }
+  .nh-source-type, .nh-source-flag { min-height: 24px; padding: 0.2rem 0.52rem; display: inline-flex; align-items: center; font-size: 0.7rem; line-height: 1.25; }
+  .nh-source-scope { font-size: 0.88rem; line-height: 1.65; word-break: keep-all; }
+  .nh-source-nav { font-size: 0.82rem; line-height: 1.55; }
+  .nh-source-meta { gap: 0.3rem 0.65rem; font-size: 0.76rem; line-height: 1.5; }
   .nh-path-head { display: grid; grid-template-columns: 2rem minmax(0, 1fr) auto; align-items: start; gap: 0.55rem; }
   .nh-path-head .nh-chip { grid-column: 2; justify-self: start; }
   .nh-path-toggle { grid-column: 3; grid-row: 1; }
   .nh-path-head-text strong { line-height: 1.35; }
   .nh-path-head-text span { display: block; margin-top: 0.16rem; line-height: 1.45; }
-  .nh-modal { max-height: 94vh; }
-  .nh-modal-overlay { padding: 0.5rem; align-items: flex-end; }
-  .nh-modal { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+  .nh-path-body p, .nh-path-body li, .nh-path-detail li, .nh-path-caution { line-height: 1.6; }
+  .nh-modal { max-height: 92vh; max-height: 92dvh; }
+  .nh-modal-overlay { padding: 0; align-items: flex-end; }
+  .nh-modal { border-radius: var(--r-xl) var(--r-xl) 0 0; }
+  .nh-modal-header { padding: 1rem; }
+  .nh-modal-title { font-size: 1.08rem; line-height: 1.35; }
+  .nh-modal-close { width: 44px; height: 44px; }
+  .nh-modal-body { padding: 1rem; }
+  .nh-modal-foot { padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px)); background: var(--bg1); }
+  .nh-modal-disclaimer { flex-basis: 100%; font-size: 0.8rem; line-height: 1.55; }
+  .nh-btn-sm { min-height: 48px; flex: 1 1 8rem; font-size: 0.92rem; }
+  .nh-modal-foot > .nh-btn-sm:only-child { flex-basis: 100%; }
+  .nh-q legend { font-size: 1.02rem; line-height: 1.45; }
+  .nh-option { min-height: 50px; padding: 0.75rem 0.85rem; font-size: 0.92rem; line-height: 1.5; }
+}
+@media (max-width: 370px) {
+  .nh-topbar { padding-inline: 0.6rem; }
+  .nh-back { padding-inline: 0.6rem; }
+  .nh-controls { gap: 0.25rem; }
+  .nh-section-nav { padding-inline: 0.6rem; }
+  .nh-title { font-size: 1.78rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
@@ -462,7 +565,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 <a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
 
 <header class="nh-topbar">
-  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span data-c="ui.backToParadiso">Paradiso로 돌아가기</span></a>
+  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span class="nh-back-label-full" data-c="ui.backToParadiso">Paradiso로 돌아가기</span><span class="nh-back-label-short">Paradiso</span></a>
   <div class="nh-controls">
     <button type="button" class="nh-ctl" data-action="toggle-lang" id="langBtn">English</button>
     <button type="button" class="nh-ctl" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환">✦ <span id="themeBtnLabel">Editorial</span></button>

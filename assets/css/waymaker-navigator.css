@@ -299,19 +299,51 @@ html[data-editorial-theme="archive_diary"] .wm-cov-none { background: rgba(138,4
   /* Override the padding TOKEN (not padding directly) so the sticky action bar's
      negative margin (calc(-1 * var(--wm-pad))) stays edge-aligned with the root
      padding — otherwise the bar overhangs and forces horizontal scroll. */
-  .wm-root { --wm-pad: 0.85rem; }
-  .wm-packet-title { font-size: 1.12rem; }
+  .wm-root { --wm-pad: 1rem; --wm-gap: 0.8rem; line-height: 1.65; }
+  .wm-head { gap: 0.75rem; padding-top: 0.85rem; padding-bottom: 0.75rem; }
+  .wm-title { font-size: 1.06rem; line-height: 1.35; letter-spacing: -0.015em; }
+  .wm-subtitle { margin-top: 0.3rem; font-size: 0.84rem; line-height: 1.55; word-break: keep-all; }
+  .wm-lang-toggle { min-width: 44px; min-height: 44px; border-radius: 12px; }
+  .wm-body { padding-top: 0.65rem; }
+  .wm-step { gap: 0.8rem; padding-top: 0.6rem; }
+  .wm-step-heading { margin-top: 0.25rem; font-size: 1.18rem; line-height: 1.38; letter-spacing: -0.015em; }
+  .wm-empty { font-size: 1rem; line-height: 1.68; word-break: keep-all; }
+  .wm-muted { font-size: 0.92rem; line-height: 1.62; word-break: keep-all; }
+  .wm-context-line { font-size: 0.92rem; line-height: 1.5; }
+  .wm-group-label { margin-top: 0.7rem; font-size: 0.76rem; line-height: 1.35; }
+  .wm-btn { min-height: 50px; padding: 0.72rem 1rem; font-size: 0.96rem; line-height: 1.35; }
+  .wm-btn-lg { min-height: 54px; font-size: 1rem; }
+  .wm-btn-sm { min-height: 46px; font-size: 0.86rem; }
+  .wm-step-nav { gap: 0.6rem; margin-top: 0.55rem; }
+  .wm-chip-grid { gap: 0.65rem; }
+  .wm-chip { min-height: 56px; padding: 0.8rem 1rem; font-size: 0.98rem; line-height: 1.4; }
+  .wm-search { min-height: 50px; padding: 0.72rem 0.9rem; line-height: 1.4; }
+  .wm-status-results { gap: 0.5rem; }
+  .wm-status-row, .wm-proc-row { min-height: 52px; padding: 0.72rem 0.85rem; font-size: 0.94rem; line-height: 1.42; }
+  .wm-card { padding: 1rem; border-radius: 14px; }
+  .wm-packet { gap: 0.8rem; }
+  .wm-packet-title { font-size: 1.15rem; line-height: 1.4; }
+  .wm-hero-summary, .wm-next-list li, .wm-warn-body, .wm-acc-body, .wm-ai-out { line-height: 1.65; }
+  .wm-acc-head { min-height: 52px; padding: 0.75rem 0.85rem; font-size: 0.96rem; line-height: 1.4; }
+  .wm-acc-body { padding: 0 0.85rem 0.9rem; font-size: 0.92rem; }
+  .wm-doc-row { gap: 0.7rem; padding: 0.55rem 0; }
+  .wm-doc-name { line-height: 1.5; }
+  .wm-doc-cond, .wm-doc-where, .wm-final-note, .wm-ai-note { line-height: 1.58; }
+  .wm-actionbar {
+    gap: 0.6rem; padding: 0.8rem var(--wm-pad) calc(0.8rem + env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, transparent, var(--wm-bg) 22%);
+  }
 }
 @media (max-width: 390px) {
-  .wm-title { font-size: 1rem; }
-  .wm-subtitle { font-size: 0.78rem; }
+  .wm-title { font-size: 1.02rem; }
+  .wm-subtitle { font-size: 0.82rem; }
   .wm-status-code { min-width: 3.2rem; }
 }
 @media (max-width: 360px) {
-  .wm-root { --wm-pad: 0.7rem; }
-  .wm-btn { font-size: 0.9rem; }
+  .wm-root { --wm-pad: 0.85rem; }
+  .wm-btn { font-size: 0.92rem; }
   .wm-chip { min-height: 52px; }
-  .wm-cov-badge { font-size: 0.82rem; }
+  .wm-cov-badge { font-size: 0.78rem; }
 }
 
 /* =====================================================================
