@@ -53,6 +53,29 @@ PREC_JSON = json.dumps({
         "판례상세링크": "https://www.law.go.kr/precInfoP.do?precSeq=999",
     }]},
 })
+PREC_RELATIVE_DUP_JSON = json.dumps({
+    "PrecSearch": {"prec": [
+        {
+            "사건명": "출입국관리법위반", "사건번호": "2021도404", "법원명": "대법원",
+            "선고일자": "20211028", "판례일련번호": "231051",
+            "판시사항": "목록 응답의 판시사항은 본문이 아니다",
+            "판례상세링크": "/DRF/lawService.do?target=prec&ID=231051&type=HTML",
+        },
+        {
+            "사건명": "출입국관리법위반", "사건번호": "2021도404", "법원명": "대법원",
+            "선고일자": "2021.10.28", "판례일련번호": "231052",
+            "판례상세링크": "/DRF/lawService.do?target=prec&ID=231052&type=HTML",
+        },
+    ]},
+}, ensure_ascii=False)
+PREC_BODY_JSON = json.dumps({
+    "PrecService": {"prec": {
+        "사건명": "출입국관리법위반", "사건번호": "2021도404", "법원명": "대법원",
+        "선고일자": "20211028", "판례일련번호": "231051",
+        "판시사항": "쟁점", "판결요지": "공식 상세 본문에서 확인된 요지",
+        "판례상세링크": "/DRF/lawService.do?target=prec&ID=231051&type=HTML",
+    }},
+}, ensure_ascii=False)
 
 
 def _transport(payload, *, ok=True, status=200, err=""):
@@ -132,6 +155,28 @@ class LegalSourceSearchApiTests(unittest.TestCase):
             self.assertIn(field, card)
         self.assertEqual(card["court"], "대법원")
         self.assertEqual(card["caseNumber"], "2020두12345")
+        self.assertEqual(card["summary"], "", "list-only results must not expose holding text")
+
+    def test_relative_precedent_url_is_clickable_and_duplicate_removed(self):
+        law_tools._default_transport = _transport(PREC_RELATIVE_DUP_JSON)
+        r = self.client.get("/api/legal/precedents/search", params={"q": "출입국관리법"})
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["count"], 1)
+        card = body["results"][0]
+        self.assertEqual(
+            card["sourceUrl"],
+            "https://www.law.go.kr/DRF/lawService.do?target=prec&ID=231051&type=HTML",
+        )
+        self.assertEqual(card["summary"], "")
+
+    def test_precedent_detail_exposes_bounded_body_only_after_detail_lookup(self):
+        law_tools._default_transport = _transport(PREC_BODY_JSON)
+        r = self.client.get("/api/legal/precedents/detail", params={"id": "231051"})
+        body = r.json()
+        self.assertTrue(body["ok"])
+        self.assertEqual(body["count"], 1)
+        self.assertIn("공식 상세 본문", body["results"][0]["summary"])
 
     # ---- credential never leaks ---------------------------------------
     def test_oc_never_appears_in_response_body(self):

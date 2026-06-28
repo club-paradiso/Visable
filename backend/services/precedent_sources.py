@@ -16,8 +16,8 @@ Scope (scaffold-first — see
   list-search scaffold for ``precedent`` using the documented
   ``DRF/lawSearch.do?target=prec`` endpoint.
 * The two-step precedent design is explicit: list search yields candidate
-  cases; a body/detail lookup (NOT implemented here) would use the stable
-  identifiers from the list result. The normalizer distinguishes
+  cases; a bounded body/detail lookup uses the stable identifiers from the
+  list result. The normalizer distinguishes
   ``list_result`` from ``body_result`` so a list-only result is never presented
   as a full-text citation.
 * Only ``precedent`` has a confirmed list-search target (``prec``). The other
@@ -40,7 +40,9 @@ Hard guarantees (shared with ``law_tools``):
 from __future__ import annotations
 
 from datetime import datetime, timezone
+import re
 from typing import Any, Dict, List, Optional
+from urllib.parse import unquote, urlsplit
 
 from .grounding_config import GroundingConfig, load_grounding_config
 from . import law_tools as lt
@@ -50,7 +52,7 @@ from .evidence_ontology import (
     source_family_public_unavailable_label,
 )
 
-PRECEDENT_SOURCES_VERSION = "2026-06-law-open-data-precedent-scaffold-v1"
+PRECEDENT_SOURCES_VERSION = "2026-06-law-open-data-precedent-v2-detail-safe"
 
 # Confirmed list-search target for court precedent (판례) on lawSearch.do.
 # Documented hint (Open Law API guide + community implementation notes); live
@@ -72,6 +74,70 @@ CITATION_GRADES = ("direct", "contextual", "background", "unavailable")
 PUBLIC_STATUSES = ("available", "temporarily_unavailable", "unavailable", "not_relevant")
 
 _PRECEDENT_FAMILIES = frozenset(SOURCE_FAMILY_LIST_TARGETS)
+
+
+def normalize_law_go_kr_url(value: Any) -> str:
+    """Return a safe absolute official URL, or ``""`` for anything else."""
+    raw = str(value or "").strip()
+    if not raw or any(ord(ch) < 32 or ord(ch) == 127 for ch in raw):
+        return ""
+    if raw.startswith("//"):
+        return ""
+    if raw.startswith("/"):
+        parsed = urlsplit(raw)
+        decoded_path = unquote(parsed.path or "")
+        if parsed.scheme or parsed.netloc or not decoded_path.startswith("/DRF/lawService.do"):
+            return ""
+        if decoded_path != "/DRF/lawService.do" or ".." in decoded_path.split("/"):
+            return ""
+        return "https://www.law.go.kr" + raw
+    parsed = urlsplit(raw)
+    if parsed.scheme.lower() not in {"http", "https"} or not parsed.hostname:
+        return ""
+    host = parsed.hostname.lower().rstrip(".")
+    if not (host == "law.go.kr" or host.endswith(".law.go.kr")):
+        return ""
+    if parsed.username or parsed.password:
+        return ""
+    decoded_path = unquote(parsed.path or "")
+    if ".." in decoded_path.split("/"):
+        return ""
+    return raw
+
+
+def _precedent_identity(item: Dict[str, Any]) -> tuple:
+    source_id = re.sub(r"\s+", "", str(item.get("serialNumber") or "")).lower()
+    if source_id:
+        return ("source_id", source_id)
+    return (
+        "case",
+        re.sub(r"\s+", "", str(item.get("caseNumber") or item.get("decisionNumber") or "")).lower(),
+        re.sub(r"\s+", "", str(item.get("courtOrAgency") or item.get("sourceName") or "")).lower(),
+        re.sub(r"\D", "", str(item.get("decisionDate") or "")),
+    )
+
+
+def dedupe_precedent_items(items: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    seen: set = set()
+    out: List[Dict[str, Any]] = []
+    for item in items or []:
+        if not isinstance(item, dict):
+            continue
+        primary = _precedent_identity(item)
+        case_key = (
+            "case",
+            re.sub(r"\s+", "", str(item.get("caseNumber") or item.get("decisionNumber") or "")).lower(),
+            re.sub(r"\s+", "", str(item.get("courtOrAgency") or item.get("sourceName") or "")).lower(),
+            re.sub(r"\D", "", str(item.get("decisionDate") or "")),
+        )
+        keys = [primary]
+        if case_key[1]:
+            keys.append(case_key)
+        if any(key in seen for key in keys):
+            continue
+        seen.update(keys)
+        out.append(item)
+    return out
 
 
 def _now_iso() -> str:
@@ -274,7 +340,7 @@ def build_source_family_evidence_item(
         "serialNumber": _clean(serial_number, limit=80),
         "decisionDate": _clean(decision_date, limit=40),
         "courtOrAgency": _clean(court_or_agency, limit=120),
-        "url": lt._sanitize_url(url) if url else "",
+        "url": normalize_law_go_kr_url(lt._sanitize_url(url)) if url else "",
         "snippet": _clean(snippet, limit=700),
         "holdingSummary": _clean(holding_summary, limit=700),
         "retrievedAt": _now_iso(),
@@ -305,6 +371,11 @@ def _normalize_family_item(obj: Dict[str, Any], *, source_family: str, result_ki
     decision_date = _pick(obj, *_DATE_KEYS)
     holding_summary = _pick_join(obj, _HOLDING_KEYS, max_parts=2)
     snippet = _pick(obj, *_SNIPPET_KEYS)
+    if result_kind != "body_result":
+        # List responses identify candidate cases only. They are never a safe
+        # substitute for the official body/holding.
+        holding_summary = ""
+        snippet = ""
     url = _pick(obj, *_URL_KEYS)
     issue_tag = _pick(obj, *_ISSUE_TAG_KEYS)
     # A candidate must carry at least a title or some identity to be useful.
@@ -499,6 +570,7 @@ def normalize_source_family_response(
             target=target, sanitized_url=sanitized_url,
             response_shape_hint=shape, parser_status=parser_status,
         )
+    items = dedupe_precedent_items(items)
     return _envelope(
         family=fam, status="results_found", public_status="available",
         result_kind=result_kind, query=query, items=items,
@@ -583,5 +655,57 @@ def search_precedents(
     return normalize_source_family_response(
         fam, response.text, result_kind="list_result",
         http_status=response.status_code, query=q, sanitized_url=sanitized,
+        target=PRECEDENT_LIST_TARGET,
+    )
+
+
+def get_precedent_detail(
+    source_id: str,
+    *,
+    config: Optional[GroundingConfig] = None,
+    transport: Optional[lt.LawTransport] = None,
+) -> Dict[str, Any]:
+    """Fetch one official precedent body by stable source ID.
+
+    Only normalized, bounded fields survive. If the service returns no body,
+    callers receive metadata/unavailable state and must not synthesize a
+    holding, summary, or quoted text.
+    """
+    cfg = config or load_grounding_config()
+    ident = re.sub(r"[^A-Za-z0-9_-]", "", str(source_id or ""))[:80]
+    if not cfg.law_api_configured:
+        return _envelope(
+            family="precedent", status="not_configured", public_status="unavailable",
+            result_kind="unavailable", query=ident,
+            items=[_unavailable_item("precedent", internal_status="not_configured", transient=False)],
+            error_type=lt.LAW_API_NOT_CONFIGURED,
+        )
+    if not ident:
+        return _envelope(
+            family="precedent", status="no_results", public_status="unavailable",
+            result_kind="body_result", query="", items=[], error_type=lt.LAW_API_NO_RESULTS,
+        )
+    params = {"target": PRECEDENT_LIST_TARGET, "type": "JSON", "ID": ident}
+    url = lt._build_request_url(cfg, lt._SERVICE_PATH, params)
+    sanitized = lt._sanitize_url(url)
+    send = transport or lt._default_transport
+    try:
+        response = send(url, cfg.timeout_seconds)
+    except Exception:  # pragma: no cover
+        response = lt.LawHttpResponse(ok=False, error_type="network")
+    if not response.ok:
+        status = "timeout" if response.error_type == "timeout" else "bad_response"
+        error_type = lt.LAW_API_TIMEOUT if response.error_type == "timeout" else lt.LAW_API_BAD_RESPONSE
+        return _envelope(
+            family="precedent", status=status, public_status="temporarily_unavailable",
+            result_kind="unavailable", query=ident, sanitized_url=sanitized,
+            items=[_unavailable_item("precedent", internal_status=status, transient=True)],
+            error_type=error_type,
+        )
+    return normalize_precedent_body_response(
+        response.text,
+        http_status=response.status_code,
+        query=ident,
+        sanitized_url=sanitized,
         target=PRECEDENT_LIST_TARGET,
     )

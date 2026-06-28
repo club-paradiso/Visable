@@ -3,7 +3,11 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Sequence
 
-from .citation_verifier import build_law_evidence_citation_verification, verify_citations
+from .citation_verifier import (
+    build_law_evidence_citation_verification,
+    extract_korean_legal_citations,
+    verify_citations,
+)
 from .grounding_config import load_grounding_config
 
 
@@ -65,17 +69,18 @@ _INTENT_PATTERNS = [
 
     # Nationality / naturalization (국적/귀화).
     ("국적/귀화", re.compile(r"귀화|국적상실|국적\s*취득|국적법|naturaliz|nationality|citizenship", re.IGNORECASE)),
+    ("KIIP", re.compile(r"사회통합프로그램|귀화\s*면접|기본소양|\bKIIP\b", re.IGNORECASE)),
 
     # Reporting / registration duties not already covered above
     # (근무처 변경/추가, 체류지 변경, 신고의무).
-    ("신고/등록 의무", re.compile(r"근무처\s*변경|근무처\s*추가|체류지\s*변경|신고의무|시간제\s*취업", re.IGNORECASE)),
+    ("신고/등록 의무", re.compile(r"근무처(?:를|을)?\s*변경|근무처(?:를|을)?\s*추가|체류지\s*변경|신고의무|시간제\s*취업", re.IGNORECASE)),
 
     # Workplace change / job transfer (근무처 변경·추가, 이직/전직/퇴사, 고용주 변경).
     # E-7 (특정활동) holders changing employers is the canonical case: a move to a
     # *different* company — even in the same industry — can trigger a 근무처
     # 변경허가 or 변경신고 duty, so attempt official grounding before answering.
     ("근무처변경/이직", re.compile(
-        r"근무처\s*변경|근무처\s*추가|직장\s*변경|직장\s*이동|이직|전직|퇴사|퇴직|"
+        r"근무처(?:를|을)?\s*변경|근무처(?:를|을)?\s*추가|직장\s*변경|직장\s*이동|이직|전직|퇴사|퇴직|"
         r"동종\s*업계|동종업종|같은\s*업종|다른\s*회사|타\s*회사|타사|새\s*회사|새로운\s*회사|"
         r"회사를?\s*옮|회사\s*이동|고용주\s*변경|사업주\s*변경|특정활동|"
         r"change\s+(?:of\s+)?(?:employer|workplace|jobs?|companies)|switch(?:ing)?\s+(?:employer|company|companies|jobs?)|"
@@ -148,6 +153,93 @@ def _dedupe(items: Sequence[str]) -> List[str]:
     return seen
 
 
+_MAX_LAW_SEARCH_QUERIES = 6
+_MAX_LAW_RESULTS = 12
+
+_QUERY_ANCHORS_BY_REASON: Dict[str, Sequence[str]] = {
+    "근무처변경/이직": (
+        "출입국관리법 근무처 변경 추가 허가",
+        "출입국관리법 근무처 변경 추가 신고",
+        "출입국관리법 시행령 근무처 변경 추가",
+        "특정활동 근무처 변경 추가 허가 신고",
+        "체류기간 연장허가 근무처 변경",
+    ),
+    "체류기간연장/연장허가": ("출입국관리법 체류기간 연장허가",),
+    "체류자격 변경/status change": ("출입국관리법 체류자격 변경허가",),
+    "활동범위/자격외활동": ("출입국관리법 체류자격외활동 허가",),
+    "취업/근로 활동": ("출입국관리법 체류자격외활동 취업 활동범위",),
+    "신고/등록 의무": ("출입국관리법 외국인등록 체류지 변경 신고",),
+    "외국인등록": ("출입국관리법 외국인등록 국내거소신고 체류자격",),
+    "출국/해외여행": ("출입국관리법 재입국허가",),
+    "travel/re-entry": ("출입국관리법 재입국허가",),
+    "국적/귀화": ("국적법 귀화 국적회복 국적판정",),
+    "KIIP": ("국적법 귀화 기본소양 사회통합프로그램",),
+    "G-1": ("난민법 난민신청 인도적 체류", "출입국관리법 G-1 재입국"),
+    "인도적/의료/소송": ("난민법 인도적 체류 난민신청",),
+    "단기체류/사증면제": ("출입국관리법 사증면제 단기방문 단기취업 활동범위",),
+    "관광취업/워킹홀리데이/H-1": ("출입국관리법 시행령 관광취업 활동범위 체류자격외활동",),
+    "유학/수강/계절학기": ("출입국관리법 시행령 유학 수강 계절학기 시간제취업",),
+    "결혼/가족 체류": ("출입국관리법 결혼이민 체류기간 연장허가",),
+    "위반/처벌": ("출입국관리법 과태료 범칙금 강제퇴거 출국명령",),
+    "체류위험": ("출입국관리법 체류자격 체류기간",),
+}
+
+
+def _status_codes(text: str) -> List[str]:
+    return _dedupe(
+        re.sub(r"\s+", "", match.group(0)).upper()
+        for match in re.finditer(r"(?<![A-Za-z0-9])[A-H]\s*-\s*\d{1,2}(?:\s*-\s*[A-Za-z0-9]+)?", text or "", re.IGNORECASE)
+    )
+
+
+def build_law_search_queries(
+    question: str,
+    reasons: Sequence[str] | None = None,
+    *,
+    max_queries: int = _MAX_LAW_SEARCH_QUERIES,
+) -> List[str]:
+    """Plan bounded, discrete Open Law searches for a legal issue.
+
+    Each returned string is one API call.  The planner is issue-based; status
+    codes are optional context and never select a status-specific fixture.
+    Conversational user text is intentionally excluded from the live plan so
+    unrelated words cannot turn several useful searches into one overlong
+    zero-result query.
+    """
+    text = (question or "").strip()
+    reason_list = list(reasons or [])
+    queries: List[str] = []
+    extracted = extract_korean_legal_citations(text)
+    for citation in extracted.get("citations", []):
+        law_name = str(citation.get("law_name") or "").strip()
+        if law_name:
+            queries.append(law_name)
+    anchor_groups = [list(_QUERY_ANCHORS_BY_REASON.get(reason, ())) for reason in reason_list]
+    anchor_groups = [group for group in anchor_groups if group]
+    # Balance issue coverage before spending remaining calls on synonyms for a
+    # single issue (notably workplace-change). This keeps extension/registration
+    # anchors from being crowded out by five variants of the first issue.
+    depth = 0
+    while any(depth < len(group) for group in anchor_groups):
+        for group in anchor_groups:
+            if depth < len(group):
+                queries.append(group[depth])
+        depth += 1
+
+    codes = _status_codes(text)
+    if codes and any(r not in _LEGAL_BASIS_REASON_LABELS for r in reason_list):
+        queries.append("출입국관리법 시행령 " + codes[0])
+
+    if not queries:
+        # Last-resort live query: keep only a short, whitespace-normalized
+        # phrase. Explicit citations have already been reduced to law names.
+        compact = " ".join(text.split())[:120]
+        if compact:
+            queries.append(compact)
+    cap = max(1, min(int(max_queries or 1), _MAX_LAW_SEARCH_QUERIES))
+    return _dedupe(queries)[:cap]
+
+
 def should_attempt_law_grounding(question: str) -> Dict[str, Any]:
     text = (question or "").strip()
     if not text:
@@ -163,93 +255,167 @@ def should_attempt_law_grounding(question: str) -> Dict[str, Any]:
 
 
 def build_law_search_query(question: str, reasons: Sequence[str] | None = None) -> str:
-    """Build a compact Korean law-search query from a user question.
-
-    Public/legal-data APIs tend to search better with statutory terms than
-    conversational phrasing like "일본 갈 수 있나요". This helper preserves the
-    user question while adding conservative immigration-law anchors.
-    """
+    """Backward-compatible diagnostic string; not used for live retrieval."""
     text = (question or "").strip()
     reason_set = set(reasons or [])
-    queries: List[str] = []
-
-    if reason_set & _STAY_RISK_REASON_LABELS:
-        queries.append("출입국관리법 체류자격 체류기간 외국인")
-
-    if {"출국/해외여행", "travel/re-entry"} & reason_set:
-        queries.append("출입국관리법 출국 재입국 재입국허가 체류자격")
-
-    if "외국인등록" in reason_set:
-        queries.append("출입국관리법 외국인등록 외국인등록증 국내거소신고 체류자격")
-
-    if "G-1" in reason_set:
-        queries.append("출입국관리법 시행령 G-1 기타 난민 인도적 체류")
-        queries.append("출입국관리법 재입국허가 체류자격 G-1")
-
-    if "활동범위/자격외활동" in reason_set:
-        queries.append("출입국관리법 체류자격외활동 활동범위 체류자격")
-
-    if "유학/수강/계절학기" in reason_set:
-        queries.append("출입국관리법 시행령 유학 수강 계절학기 체류자격 활동범위")
-
-    if "관광취업/워킹홀리데이/H-1" in reason_set:
-        queries.append("출입국관리법 시행령 관광취업 H-1 체류자격 활동범위 체류자격외활동")
-
-    if "체류자격 변경/status change" in reason_set:
-        queries.append("출입국관리법 체류자격 변경허가 체류자격 변경")
-
-    if "결혼/가족 체류" in reason_set:
-        queries.append("출입국관리법 결혼이민 체류기간 연장 체류자격 변경 체류자격 유지")
-
-    if "인도적/의료/소송" in reason_set:
-        queries.append("출입국관리법 시행령 기타 G-1 인도적 사유 난민 체류")
-
-    if "단기체류/사증면제" in reason_set:
-        queries.append("출입국관리법 사증면제 단기방문 단기취업 활동범위")
-
-    if "국적/귀화" in reason_set:
-        queries.append("국적법 귀화 요건 절차 국적상실")
-
-    if "신고/등록 의무" in reason_set:
-        queries.append("출입국관리법 외국인등록 체류지 변경 근무처 변경 신고의무")
-
-    if "근무처변경/이직" in reason_set:
-        # Official law-search anchors for an E-7 / 특정활동 job transfer. The model
-        # must NOT invent article numbers — these queries fetch the real
-        # 근무처 변경·추가 허가/신고 provisions from the Open Law API.
-        queries.append("출입국관리법 근무처 변경 추가 허가")
-        queries.append("출입국관리법 근무처 변경 추가 신고")
-        queries.append("출입국관리법 시행령 근무처 변경 추가")
-        queries.append("특정활동 E-7 근무처 변경 추가 허가 신고")
-        queries.append("체류기간 연장허가 근무처 변경")
-
-    if "체류기간연장/연장허가" in reason_set:
-        queries.append("출입국관리법 체류기간 연장허가 체류자격 연장")
-
-    if {"취업/근로 활동", "체류자격 활동 질문"} & reason_set:
-        queries.append("출입국관리법 체류자격외활동 활동범위 취업활동 체류자격")
-
-    if "위반/처벌" in reason_set:
-        queries.append("출입국관리법 체류기간 도과 범칙금 과태료 강제퇴거 출국명령")
-
-    if reason_set & _LEGAL_BASIS_REASON_LABELS:
-        queries.append(text)
-
-    if not queries:
-        queries.append(text)
-
-    # Keep the outgoing query compact. The client currently accepts one query
-    # string, so join the best anchors rather than issuing multiple requests.
+    queries = build_law_search_queries(text, reasons, max_queries=_MAX_LAW_SEARCH_QUERIES)
+    for reason in reasons or []:
+        queries.extend(_QUERY_ANCHORS_BY_REASON.get(reason, ()))
+    # Historic diagnostics/tests expect the original explicit legal question to
+    # be visible. Keep it here only; ``build_law_grounding_context`` executes the
+    # discrete plan above and never sends this concatenation to law.go.kr.
+    if text and reason_set & _LEGAL_BASIS_REASON_LABELS:
+        queries = [*queries, text]
     return " ".join(_dedupe(queries))[:500]
+
+
+def _law_result_key(item: Dict[str, Any]) -> tuple:
+    return (
+        str(item.get("source_type") or "law").strip().lower(),
+        re.sub(r"\s+", "", str(item.get("law_name") or item.get("title") or "")).lower(),
+        str(item.get("law_id") or "").strip(),
+        str(item.get("law_serial_no") or item.get("reference") or "").strip(),
+        str(item.get("article") or "").strip(),
+    )
+
+
+def _dedupe_law_results(items: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    seen: set = set()
+    out: List[Dict[str, Any]] = []
+    for item in items:
+        if not isinstance(item, dict):
+            continue
+        key = _law_result_key(item)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(item)
+    return out[:_MAX_LAW_RESULTS]
+
+
+def _verify_requested_articles(
+    question: str,
+    law_results: Sequence[Dict[str, Any]],
+    *,
+    law_tools: Any,
+    config: Any,
+    detail_cache: Dict[tuple, Dict[str, Any]] | None = None,
+) -> Dict[str, Any]:
+    extracted = extract_korean_legal_citations(question)
+    requested = extracted.get("citations", [])
+    if not requested:
+        return build_law_evidence_citation_verification(
+            list(law_results), law_api_attempted=True,
+        )
+
+    citations: List[Dict[str, Any]] = []
+    article_evidence: List[Dict[str, Any]] = []
+    cache = detail_cache if detail_cache is not None else {}
+    cache_hits = 0
+    for requested_item in requested[:3]:
+        law_name = str(requested_item.get("law_name") or "").strip()
+        article = str(requested_item.get("article") or "").strip()
+        normalized_name = re.sub(r"\s+", "", law_name).lower()
+        candidate = next((
+            item for item in law_results
+            if re.sub(r"\s+", "", str(item.get("law_name") or item.get("title") or "")).lower() == normalized_name
+        ), None)
+        citation: Dict[str, Any] = {
+            "raw": requested_item.get("matched_text") or f"{law_name} {article}",
+            "law_name": law_name,
+            "article": article,
+            "source_type": "law",
+            "verification_status": "extracted_only",
+            "warnings": [],
+        }
+        if not candidate:
+            citation["verification_status"] = "failed_verification"
+            citation["warnings"].append("CITED_LAW_NOT_FOUND")
+            citations.append(citation)
+            continue
+        citation["source_url"] = candidate.get("source_url") or ""
+        detail_key = (
+            str(candidate.get("law_serial_no") or candidate.get("law_id") or ""),
+            law_name,
+            article,
+        )
+        if detail_key in cache:
+            detail = cache[detail_key]
+            cache_hits += 1
+        else:
+            detail = law_tools.get_law_detail(
+                law_id=detail_key[0], law_name=law_name, article=article, config=config,
+            )
+            cache[detail_key] = detail
+        if detail.get("status") != "ok":
+            citation["verification_status"] = "failed_verification"
+            citation["warnings"].append(str(detail.get("error_type") or "LAW_DETAIL_UNAVAILABLE").upper())
+            citations.append(citation)
+            continue
+        detail_item = detail.get("detail") or {}
+        detail_name = re.sub(r"\s+", "", str(detail_item.get("law_name") or detail_item.get("title") or "")).lower()
+        articles = detail_item.get("articles") or []
+        matched_article = next((
+            item for item in articles
+            if str(item.get("article_label") or item.get("article_no") or "").replace(" ", "") == article.replace(" ", "")
+            and str(item.get("text") or "").strip()
+        ), None)
+        if detail_name != normalized_name or not matched_article:
+            citation["verification_status"] = "source_linked_unverified"
+            citation["warnings"].append("ARTICLE_TEXT_NOT_FOUND")
+            citations.append(citation)
+            continue
+        snippet = " ".join(str(matched_article.get("text") or "").split())[:600]
+        citation.update({
+            "verification_status": "verified",
+            "article_title": str(matched_article.get("article_title") or "")[:200],
+            "snippet": snippet,
+            "source_url": detail.get("source_url") or candidate.get("source_url") or "",
+        })
+        article_evidence.append({
+            **candidate,
+            "article": article,
+            "summary": snippet,
+            "query": law_name,
+            "relevance": "direct",
+            "article_verification_status": "verified",
+        })
+        citations.append(citation)
+
+    statuses = {item.get("verification_status") for item in citations}
+    if statuses == {"verified"}:
+        overall = "verified"
+    elif "failed_verification" in statuses:
+        overall = "failed_verification"
+    elif "source_linked_unverified" in statuses:
+        overall = "source_linked_unverified"
+    else:
+        overall = "extracted_only"
+    warnings = _dedupe([
+        warning
+        for item in citations
+        for warning in (item.get("warnings") or [])
+    ])
+    return {
+        "status": overall,
+        "citation_specific": True,
+        "citations": citations,
+        "article_evidence": article_evidence,
+        "request_cache_hits": cache_hits,
+        "warnings": warnings,
+    }
 
 
 def build_law_grounding_context(question: str) -> Dict[str, Any]:
     intent = should_attempt_law_grounding(question)
+    law_search_queries = build_law_search_queries(question, intent.get("reasons", []))
+    law_search_query = build_law_search_query(question, intent.get("reasons", []))
     if not intent["should_attempt"]:
         return {
             "attempted": False,
             "intent_reasons": [],
             "law_search_query": "",
+            "law_search_queries": [],
             "law_grounding_used": False,
             "law_grounding": [],
             "citation_verification": {"status": "extracted_only", "citations": [], "warnings": []},
@@ -257,16 +423,16 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
             "grounding_warnings": [],
         }
 
-    law_search_query = build_law_search_query(question, intent["reasons"])
     config = load_grounding_config()
     if config.mode == "disabled":
         return {
             "attempted": False,
             "intent_reasons": intent["reasons"],
             "law_search_query": law_search_query,
+            "law_search_queries": law_search_queries,
             "law_grounding_used": False,
             "law_grounding": [],
-            "citation_verification": {"status": "extracted_only", "citations": [], "warnings": []},
+            "citation_verification": extract_korean_legal_citations(question),
             "grounding_sources": [],
             "grounding_warnings": ["LAW_GROUNDING_DISABLED", *config.warnings],
         }
@@ -277,21 +443,41 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
         # API adapter (DRF endpoints + OC); it never exposes the OC value.
         from . import law_tools
 
-        law_result = law_tools.search_laws(law_search_query, config=config)
-        if law_result.get("status") == "ok":
-            citation_verification = build_law_evidence_citation_verification(
-                law_result.get("results", []), query=law_search_query, law_api_attempted=True,
-            )
-        else:
-            citation_verification = build_law_evidence_citation_verification(
-                [], query=law_search_query,
-                law_error_type=law_result.get("error_type", ""), law_api_attempted=True,
-            )
+        outcomes: List[Dict[str, Any]] = []
+        aggregate_results: List[Dict[str, Any]] = []
+        search_cache: Dict[str, Dict[str, Any]] = {}
+        request_cache_hits = 0
+        for query in law_search_queries[:_MAX_LAW_SEARCH_QUERIES]:
+            if query in search_cache:
+                outcome = search_cache[query]
+                request_cache_hits += 1
+            else:
+                outcome = law_tools.search_laws(query, config=config)
+                search_cache[query] = outcome
+            outcomes.append(outcome)
+            if outcome.get("status") == "ok":
+                for item in outcome.get("results", []):
+                    if isinstance(item, dict):
+                        aggregate_results.append({**item, "query": query})
+        aggregate_results = _dedupe_law_results(aggregate_results)
+        citation_verification = _verify_requested_articles(
+            question,
+            aggregate_results,
+            law_tools=law_tools,
+            config=config,
+            detail_cache={},
+        )
+        request_cache_hits += int(citation_verification.get("request_cache_hits") or 0)
+        aggregate_results = _dedupe_law_results([
+            *(citation_verification.get("article_evidence") or []),
+            *aggregate_results,
+        ])
     except Exception:
         return {
             "attempted": True,
             "intent_reasons": intent["reasons"],
             "law_search_query": law_search_query,
+            "law_search_queries": law_search_queries,
             "law_grounding_used": False,
             "law_grounding": [],
             "citation_verification": {"status": "error", "citations": [], "warnings": ["SOURCE_UNAVAILABLE"]},
@@ -299,27 +485,52 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
             "grounding_warnings": ["SOURCE_UNAVAILABLE"],
         }
 
-    used = law_result.get("status") == "ok"
+    used = bool(aggregate_results)
     tool_warnings: List[str] = []
-    if not used:
+    failed_outcomes = [outcome for outcome in outcomes if outcome.get("status") != "ok"]
+    if failed_outcomes:
+        if used:
+            tool_warnings.append("LAW_API_PARTIAL_FAILURE")
+        else:
+            tool_warnings.append("SOURCE_UNAVAILABLE")
+        for outcome in failed_outcomes:
+            error_type = outcome.get("error_type") or ""
+            if error_type:
+                tool_warnings.append(str(error_type).upper())
+    if not used and not failed_outcomes:
         tool_warnings.append("SOURCE_UNAVAILABLE")
-        error_type = law_result.get("error_type") or ""
-        if error_type:
-            # Typed, non-secret marker (e.g. LAW_API_NO_RESULTS). Never the OC.
-            tool_warnings.append(error_type.upper())
     warnings = [*tool_warnings, *citation_verification.get("warnings", []), *config.warnings]
+    source_attempts = [
+        {
+            "source_type": "law",
+            "status": outcome.get("status"),
+            "query": query,
+            "error_type": outcome.get("error_type", ""),
+            "parser_status": outcome.get("parser_status", ""),
+            "response_shape_hint": outcome.get("response_shape_hint", ""),
+            "source_url": outcome.get("source_url", ""),
+        }
+        for query, outcome in zip(law_search_queries, outcomes)
+    ]
+    representative = next((o for o in outcomes if o.get("status") == "ok"), outcomes[0] if outcomes else {})
+    overall_error = ""
+    if not used and failed_outcomes:
+        non_empty = [str(o.get("error_type") or "") for o in failed_outcomes if o.get("error_type")]
+        overall_error = next((e for e in non_empty if e.lower() != "law_api_no_results"), non_empty[0] if non_empty else "")
     return {
         "attempted": True,
         "intent_reasons": intent["reasons"],
         "law_search_query": law_search_query,
+        "law_search_queries": law_search_queries,
         "law_grounding_used": used,
-        "law_grounding": law_result.get("results", []) if used else [],
+        "law_grounding": aggregate_results if used else [],
         "citation_verification": citation_verification,
-        "grounding_sources": [{"source_type": "law", "status": law_result.get("status"), "query": law_search_query, "error_type": law_result.get("error_type", ""), "parser_status": law_result.get("parser_status", ""), "response_shape_hint": law_result.get("response_shape_hint", ""), "source_url": law_result.get("source_url", "")}],
-        "parser_status": law_result.get("parser_status", ""),
-        "response_shape_hint": law_result.get("response_shape_hint", ""),
-        "source_url": law_result.get("source_url", ""),
-        "error_type": law_result.get("error_type", ""),
+        "grounding_sources": source_attempts,
+        "parser_status": representative.get("parser_status", ""),
+        "response_shape_hint": representative.get("response_shape_hint", ""),
+        "source_url": representative.get("source_url", ""),
+        "error_type": overall_error,
+        "request_cache_hits": request_cache_hits,
         "grounding_warnings": list(dict.fromkeys(warnings)),
     }
 
@@ -335,6 +546,7 @@ def build_law_grounding_context(question: str) -> Dict[str, Any]:
 LAW_GROUNDING_STATUS_NOT_ATTEMPTED = "law_grounding_not_attempted"
 LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS = "law_grounding_attempted_no_results"
 LAW_GROUNDING_STATUS_ATTEMPTED_FAILED = "law_grounding_attempted_failed"
+LAW_GROUNDING_STATUS_SOURCE_LINKED_UNVERIFIED = "law_grounding_source_linked_unverified"
 LAW_GROUNDING_STATUS_VERIFIED = "law_grounding_verified"
 LAW_GROUNDING_STATUS_AUDIT_ONLY = "law_grounding_audit_only"
 LAW_GROUNDING_STATUS_DISABLED = "law_grounding_disabled"
@@ -343,6 +555,7 @@ LAW_GROUNDING_STATUS_DETAILS = (
     LAW_GROUNDING_STATUS_NOT_ATTEMPTED,
     LAW_GROUNDING_STATUS_ATTEMPTED_NO_RESULTS,
     LAW_GROUNDING_STATUS_ATTEMPTED_FAILED,
+    LAW_GROUNDING_STATUS_SOURCE_LINKED_UNVERIFIED,
     LAW_GROUNDING_STATUS_VERIFIED,
     LAW_GROUNDING_STATUS_AUDIT_ONLY,
     LAW_GROUNDING_STATUS_DISABLED,
@@ -361,6 +574,8 @@ def derive_law_grounding_status_detail(
     intent_attempted: bool,
     lookup_attempted: bool,
     lookup_used: bool,
+    citation_specific: bool = False,
+    citation_verified: bool = False,
     error_type: str = "",
     warnings: Sequence[str] | None = None,
 ) -> str:
@@ -390,6 +605,8 @@ def derive_law_grounding_status_detail(
         # Audit is the diagnostics/verifier posture; never "verified" grounding.
         return LAW_GROUNDING_STATUS_AUDIT_ONLY
     # configured/effective enabled (credentialed) from here on.
+    if lookup_used and citation_specific and not citation_verified:
+        return LAW_GROUNDING_STATUS_SOURCE_LINKED_UNVERIFIED
     if lookup_used:
         return LAW_GROUNDING_STATUS_VERIFIED
     error_u = str(error_type or "").upper()
@@ -537,4 +754,3 @@ def classify_law_host_reachability(probes: Dict[str, bool]) -> str:
     if law_tcp_443_ok and not law_tcp_80_ok:
         return NETDIAG_HTTP_PORT_80_BLOCKED
     return NETDIAG_HTTP_LAYER_ISSUE
-

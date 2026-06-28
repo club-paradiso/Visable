@@ -73,7 +73,7 @@ from .source_grounding import (
     render_grounding_context_for_prompt,
 )
 
-LAW_TOOL_LAYER_VERSION = "2026-05-law-tools-v4-official-source-family-adapters"
+LAW_TOOL_LAYER_VERSION = "2026-06-law-tools-v5-article-verification"
 
 # ---------------------------------------------------------------------------
 # Stable error types (Part B contract). Returned in tool output ``error_type``.
@@ -835,6 +835,40 @@ def get_law_detail(
 _ARTICLE_KEYS = ("조문내용", "조문제목", "조문번호", "조문가지번호")
 
 
+def _article_parts(value: Any, branch_value: Any = "") -> Tuple[Optional[int], Optional[int]]:
+    """Normalize Open Law and human article numbers to ``(article, branch)``.
+
+    Open Law detail payloads commonly encode 제21조 as ``002100`` and put the
+    가지번호 in a separate field, while user text uses ``제21조`` or
+    ``제21조의2``.  Comparing normalized integers prevents a list hit from
+    being mistaken for a verified article merely because those encodings look
+    different.
+    """
+    text = str(value or "").strip()
+    branch_text = str(branch_value or "").strip()
+    human = re.search(r"제?\s*(\d+)\s*조(?:\s*의\s*(\d+))?", text)
+    if human:
+        article_no = int(human.group(1))
+        branch_no = int(human.group(2)) if human.group(2) else None
+        return article_no, branch_no
+    digits = re.sub(r"\D", "", text)
+    if not digits:
+        return None, None
+    if len(digits) >= 6:
+        # DRF 조문번호 uses a zero-padded four-digit article plus two-digit
+        # branch marker (e.g. 002100). A separate 조문가지번호 wins when set.
+        article_no = int(digits[:4])
+        encoded_branch = int(digits[4:6])
+        branch_no = encoded_branch or None
+    else:
+        article_no = int(digits)
+        branch_no = None
+    branch_digits = re.sub(r"\D", "", branch_text)
+    if branch_digits and int(branch_digits):
+        branch_no = int(branch_digits)
+    return article_no, branch_no
+
+
 def _extract_articles(result: Dict[str, Any], article_filter: str) -> List[Dict[str, Any]]:
     """Best-effort article normalization from a service response (tolerant)."""
     # The normalized candidate path does not retain raw articles; service
@@ -842,15 +876,29 @@ def _extract_articles(result: Dict[str, Any], article_filter: str) -> List[Dict[
     raw = result.get("_raw_payload")
     articles: List[Dict[str, Any]] = []
     target_no = (article_filter or "").strip()
+    target_parts = _article_parts(target_no) if target_no else (None, None)
 
     def visit(node: Any) -> None:
         if isinstance(node, dict):
             if any(k in node for k in _ARTICLE_KEYS):
-                no = _first(node, "조문번호", "조문가지번호") or ""
+                no = _first(node, "조문번호") or ""
+                branch = _first(node, "조문가지번호") or ""
                 title = _first(node, "조문제목") or ""
                 text = _first(node, "조문내용") or ""
-                if not target_no or target_no in no or target_no in title:
-                    articles.append({"article_no": no, "article_title": title, "text": text[:600]})
+                parts = _article_parts(no, branch)
+                matches = not target_no or parts == target_parts
+                if matches:
+                    article_no, branch_no = parts
+                    label = (
+                        f"제{article_no}조" + (f"의{branch_no}" if branch_no else "")
+                        if article_no is not None else str(no)
+                    )
+                    articles.append({
+                        "article_no": str(no),
+                        "article_label": label,
+                        "article_title": title[:200],
+                        "text": " ".join(str(text or "").split())[:600],
+                    })
             for value in node.values():
                 visit(value)
         elif isinstance(node, list):
@@ -1913,7 +1961,9 @@ def build_law_evidence_pack(
             normalized = _normalize_candidate(candidate, "law") if isinstance(candidate, dict) else None
             if normalized:
                 law_sources.append(normalized)
-        law_queries_attempted = [law_context.get("law_search_query", "")] if law_context.get("law_search_query") else []
+        law_queries_attempted = list(law_context.get("law_search_queries") or [])
+        if not law_queries_attempted and law_context.get("law_search_query"):
+            law_queries_attempted = [law_context.get("law_search_query", "")]
         law_grounding_warnings = list(law_context.get("grounding_warnings") or [])
         law_grounding_error = law_context.get("error_type", "") or law_context.get("law_grounding_error", "") or ""
         # Derive a granular statute-family status from the single reused law call
@@ -2127,6 +2177,7 @@ def build_law_evidence_pack(
         "related_statuses_not_sources": list(quality.get("related_statuses_not_sources") or related_statuses),
         "source_confidence_level": quality.get("source_confidence_level", "none"),
         "answer_quality_mode": quality.get("answer_quality_mode", "generic_advisory"),
+        "requires_official_confirmation": bool(quality.get("requires_official_confirmation", True)),
         "official_confirmation_questions": list(quality.get("official_confirmation_questions") or []),
         "official_confirmation_questions_localized": localized_confirm,
         "law_evidence_count": len(law_sources),
@@ -2201,12 +2252,18 @@ def build_law_evidence_pack(
     pack["public_official_sources"] = pack["public_source_status"].get("sources", [])
     pack["developer_source_diagnostics"] = developer_source_diagnostics(normalized_official_sources)
 
-    pack["citation_verification"] = build_law_evidence_citation_verification(
-        law_sources,
-        query=(law_queries_attempted[0] if law_queries_attempted else ""),
-        law_error_type=law_grounding_error,
-        law_api_attempted=law_api_attempted,
-    )
+    if law_context is not None and isinstance(law_context.get("citation_verification"), dict):
+        # Article-level verification is performed during the bounded live
+        # fan-out. Preserve that strict result; never replace it with the
+        # weaker list-evidence projection below.
+        pack["citation_verification"] = law_context["citation_verification"]
+    else:
+        pack["citation_verification"] = build_law_evidence_citation_verification(
+            law_sources,
+            query=(law_queries_attempted[0] if law_queries_attempted else ""),
+            law_error_type=law_grounding_error,
+            law_api_attempted=law_api_attempted,
+        )
     pack["case_decision_citation_verification"] = verify_case_decision_citations(
         "",
         evidence_items=pack.get("precedent_evidence_items") or [],

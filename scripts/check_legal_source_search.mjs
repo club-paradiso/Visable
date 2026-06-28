@@ -45,11 +45,16 @@ ok(L.escapeHtml('<script>x</script>') === '&lt;script&gt;x&lt;/script&gt;', 'esc
 ok(L.escapeHtml('a&b"c\'d') === 'a&amp;b&quot;c&#39;d', 'escapeHtml handles & " \'');
 ok(L.safeSourceUrl('https://www.law.go.kr/법령/출입국관리법') === 'https://www.law.go.kr/법령/출입국관리법', 'allows www.law.go.kr');
 ok(L.safeSourceUrl('http://law.go.kr/x') === 'http://law.go.kr/x', 'allows law.go.kr');
+ok(L.safeSourceUrl('/DRF/lawService.do?target=prec&ID=123') === 'https://www.law.go.kr/DRF/lawService.do?target=prec&ID=123', 'normalizes official relative precedent detail URL');
 ok(L.safeSourceUrl('javascript:alert(1)') === '', 'rejects javascript: URL');
 ok(L.safeSourceUrl('data:text/html,x') === '', 'rejects data: URL');
 ok(L.safeSourceUrl('https://evil.com/x') === '', 'rejects non-law.go.kr host');
 ok(L.safeSourceUrl('https://law.go.kr.evil.com/x') === '', 'rejects look-alike host law.go.kr.evil.com');
 ok(L.safeSourceUrl('https://evillaw.go.kr/x') === '', 'rejects look-alike host evillaw.go.kr');
+ok(L.safeSourceUrl('//evil.com/x') === '', 'rejects protocol-relative external URL');
+ok(L.safeSourceUrl('/DRF/../lawService.do?target=prec') === '', 'rejects relative path traversal');
+ok(L.safeSourceUrl('https://law.go.kr/%2e%2e/x') === '', 'rejects encoded path traversal');
+ok(L.safeSourceUrl('https://law.go.kr/x\njavascript:alert(1)') === '', 'rejects control characters');
 ok(L.safeSourceUrl('') === '', 'empty URL → empty');
 
 section('law card builder');

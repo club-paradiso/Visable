@@ -92,7 +92,7 @@ class E7IntentAndQueryTests(unittest.TestCase):
             "출입국관리법 근무처 변경 추가 허가",
             "출입국관리법 근무처 변경 추가 신고",
             "출입국관리법 시행령 근무처 변경 추가",
-            "특정활동 E-7 근무처 변경 추가 허가 신고",
+            "특정활동 근무처 변경 추가 허가 신고",
             "체류기간 연장허가 근무처 변경",
         ):
             self.assertIn(anchor, query, anchor)

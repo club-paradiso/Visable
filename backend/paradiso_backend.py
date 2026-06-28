@@ -23,7 +23,7 @@ import re
 import time
 import dataclasses
 from contextlib import asynccontextmanager
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 from urllib.parse import quote
 
 from fastapi import FastAPI, HTTPException
@@ -34,6 +34,7 @@ from services import legal_evidence
 from services.law_grounding import (
     build_law_grounding_context,
     build_law_search_query,
+    build_law_search_queries,
     classify_law_host_reachability,
     derive_law_grounding_status_detail,
     law_grounding_preflight,
@@ -50,12 +51,13 @@ from services.law_tools import build_law_evidence_pack, search_laws
 from services import precedent_sources
 from services import legal_research
 from services import legal_synthesis
-from services.citation_verifier import verify_case_decision_citations
+from services.citation_verifier import extract_korean_legal_citations, verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
     ANSWER_STYLE_VERSION,
     build_answer_directives,
     classify_answer_quality,
+    enforce_source_confidence_invariants,
 )
 from services import answer_quality as _answer_quality
 from services.answer_shape import (
@@ -431,6 +433,7 @@ class AskResponse(BaseModel):
     law_citation_guard_action: str = "none"
     law_grounding_intent_reasons: List[str] = Field(default_factory=list)
     law_search_query: str = ""
+    law_search_queries: List[str] = Field(default_factory=list)
     law_grounding_warnings: List[str] = Field(default_factory=list)
     citation_verification: Optional[Dict[str, Any]] = None
     case_decision_citation_verification: Optional[Dict[str, Any]] = None
@@ -466,6 +469,7 @@ class AskResponse(BaseModel):
     official_confirmation_questions: List[str] = Field(default_factory=list)
     related_statuses_not_sources: List[str] = Field(default_factory=list)
     grounded_answer_limited: bool = True
+    source_confidence_invariant_reasons: List[str] = Field(default_factory=list)
     answer_style_version: str = ANSWER_STYLE_VERSION
     question_type_detected: str = "general"
     # Structured law/manual evidence pack (Part D). Non-secret: sanitized source
@@ -2940,7 +2944,10 @@ def _detect_task_type(text: str) -> Optional[str]:
         return "status_change"
 
     # --- workplace_change ---
-    workplace_ko = ("근무처 변경", "근무처 추가", "근무처 변경신고", "이직", "직장을 바꾸", "직장 변경")
+    workplace_ko = (
+        "근무처 변경", "근무처를 변경", "근무처를 바꾸", "근무처 추가", "근무처를 추가",
+        "근무처 변경신고", "이직", "직장을 바꾸", "직장 변경", "고용주 변경",
+    )
     workplace_en = r"\b(change (?:of )?workplace|change employer|switch (?:jobs?|employer)|add (?:a )?second job)\b"
     if any(sig in text for sig in workplace_ko) or re.search(workplace_en, text, flags=re.IGNORECASE):
         return "workplace_change"
@@ -3563,9 +3570,79 @@ def _build_procedure_variant_context_block(
     return header + "\n" + "\n".join(lines)
 
 
+_STRUCTURED_PROCEDURE_BY_TASK = {
+    "extension": "extension",
+    "foreigner_registration": "registration",
+}
+
+
+def _matching_source_confirmed_structured_requirements(
+    visa_code: Optional[str],
+    visa_sub_code: Optional[str] = None,
+    task_type: Optional[str] = None,
+) -> List[Dict[str, Any]]:
+    """Return direct structured evidence only for the asked procedure/scope."""
+    if _structured_requirements is None or not visa_code:
+        return []
+    procedure_type = _STRUCTURED_PROCEDURE_BY_TASK.get(task_type or "")
+    # A classified procedure with no exact structured equivalent is a mismatch,
+    # not permission to use every record for the same status.
+    if task_type and procedure_type is None:
+        return []
+    options = {"procedureType": procedure_type} if procedure_type else None
+    try:
+        entries = _structured_requirements.get_source_confirmed_structured_requirements(
+            visa_code, options
+        )
+    except Exception:  # pragma: no cover - defensive only
+        return []
+    if not visa_sub_code:
+        return entries
+    scoped: List[Dict[str, Any]] = []
+    for entry in entries:
+        exact = entry.get("subCode")
+        covered = entry.get("subCodesCovered") or []
+        # Parent-code-level entries apply to every sub-code; explicitly scoped
+        # entries must match the user's exact sub-code.
+        if not exact and not covered:
+            scoped.append(entry)
+        elif exact == visa_sub_code or visa_sub_code in covered:
+            scoped.append(entry)
+    return scoped
+
+
+def _structured_requirement_source_summaries(
+    entries: Sequence[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    summaries: List[Dict[str, Any]] = []
+    for entry in entries:
+        manual = entry.get("manualSource") or {}
+        start, end = manual.get("pageStart"), manual.get("pageEnd")
+        page_range = f"{start}-{end}" if start and end and start != end else str(start or "")
+        summaries.append({
+            "source_type": "manual",
+            "source_file": manual.get("file") or "",
+            "source_title": manual.get("manualName") or "Stay Manual",
+            "source_date": manual.get("manualVersion") or "",
+            "visa_code": entry.get("statusCode") or "",
+            "procedure_type": entry.get("procedureType") or "",
+            "section": manual.get("sectionTitle") or "",
+            "page_range": page_range,
+            "source_verification_status": "verified",
+            "source_confidence": "HIGH",
+            "query": " ".join(filter(None, [
+                str(entry.get("statusCode") or ""),
+                str(entry.get("procedureType") or ""),
+                str(manual.get("sectionTitle") or ""),
+            ])),
+        })
+    return summaries
+
+
 def _build_source_confirmed_structured_requirements_block(
     visa_code: Optional[str],
     visa_sub_code: Optional[str] = None,
+    task_type: Optional[str] = None,
 ) -> str:
     """Build a prompt block from SOURCE-CONFIRMED structured requirements.
 
@@ -3578,14 +3655,9 @@ def _build_source_confirmed_structured_requirements_block(
     This block SUPPLEMENTS existing manual grounding; it must not override
     canonical warnings, disclaimers, or manualRefs.
     """
-    if _structured_requirements is None or not visa_code:
-        return ""
-    try:
-        entries = _structured_requirements.get_source_confirmed_structured_requirements(
-            visa_code
-        )
-    except Exception:  # pragma: no cover - defensive only
-        return ""
+    entries = _matching_source_confirmed_structured_requirements(
+        visa_code, visa_sub_code, task_type
+    )
     if not entries:
         return ""
 
@@ -4264,8 +4336,33 @@ async def ask(req: AskRequest) -> AskResponse:
         selected_procedure_key=req.selected_procedure_key,
         selected_procedure_variant_id=req.selected_procedure_variant_id,
     )
-    structured_block = _build_source_confirmed_structured_requirements_block(
-        visa_code_detected, visa_sub_code_detected
+    # The API path must know which procedure the user is asking about before
+    # promoting same-status structured records to direct evidence.  The helper
+    # retains its task-less compatibility behavior for internal/reporting
+    # callers, but an unclassified /api/ask request gets no direct structured
+    # evidence rather than every record for that status.
+    structured_entries = (
+        _matching_source_confirmed_structured_requirements(
+            visa_code_detected, visa_sub_code_detected, task_type_detected
+        )
+        if task_type_detected
+        else []
+    )
+    structured_procedure_mismatch = False
+    if _structured_requirements is not None and visa_code_detected and task_type_detected:
+        try:
+            structured_procedure_mismatch = bool(
+                _structured_requirements.get_source_confirmed_structured_requirements(visa_code_detected)
+            ) and not bool(structured_entries)
+        except Exception:  # pragma: no cover - optional evidence must not break /api/ask
+            structured_procedure_mismatch = False
+    structured_sources = _structured_requirement_source_summaries(structured_entries)
+    structured_block = (
+        _build_source_confirmed_structured_requirements_block(
+            visa_code_detected, visa_sub_code_detected, task_type_detected
+        )
+        if task_type_detected
+        else ""
     )
     if grounding is not None:
         bundle = _load_stay_manual_grounding() or {}
@@ -4314,6 +4411,7 @@ async def ask(req: AskRequest) -> AskResponse:
     law_grounding_status = "not_attempted"
     law_grounding_intent_reasons: List[str] = []
     law_search_query = ""
+    law_search_queries: List[str] = []
     law_grounding_warnings: List[str] = []
     citation_verification: Optional[Dict[str, Any]] = None
     law_context: Dict[str, Any] = {}
@@ -4341,6 +4439,7 @@ async def ask(req: AskRequest) -> AskResponse:
             law_grounding_warnings = law_context.get("grounding_warnings", []) or []
             citation_verification = law_context.get("citation_verification")
             law_search_query = law_context.get("law_search_query", "") or ""
+            law_search_queries = list(law_context.get("law_search_queries") or [])
             law_grounding_status = "used" if law_grounding_used else "unavailable"
             # The normalized law evidence is injected below via the structured
             # evidence pack (a single compact summary), not as a second raw dump.
@@ -4349,10 +4448,20 @@ async def ask(req: AskRequest) -> AskResponse:
             # issued, make NO external call, and do NOT degrade the answer.
             law_grounding_status = "disabled"
             law_search_query = build_law_search_query(prompt, law_grounding_intent_reasons)
+            law_search_queries = build_law_search_queries(prompt, law_grounding_intent_reasons)
             law_grounding_warnings = (
                 ["LAW_GROUNDING_DISABLED"] if mode == "disabled"
                 else ["LAW_GROUNDING_NOT_CONFIGURED"]
             )
+
+    if citation_verification is None:
+        extracted_citations = extract_korean_legal_citations(prompt)
+        if extracted_citations.get("citations"):
+            citation_verification = {
+                **extracted_citations,
+                "citation_specific": True,
+            }
+            law_context["citation_verification"] = citation_verification
 
     # Granular, user-visible law-grounding status (single source of truth). This
     # distinguishes not_attempted / disabled / audit_only / verified /
@@ -4365,6 +4474,8 @@ async def ask(req: AskRequest) -> AskResponse:
         intent_attempted=bool(intent.get("should_attempt")),
         lookup_attempted=law_grounding_attempted,
         lookup_used=law_grounding_used,
+        citation_specific=bool((citation_verification or {}).get("citation_specific")),
+        citation_verified=(citation_verification or {}).get("status") == "verified",
         error_type=(law_context or {}).get("error_type", ""),
         warnings=law_grounding_warnings,
     )
@@ -4434,7 +4545,7 @@ async def ask(req: AskRequest) -> AskResponse:
             visa_code=visa_code_detected,
             task_type=task_type_detected,
             lang=req.lang or "",
-            manual_evidence={"direct": grounding_sources, "related": []},
+            manual_evidence={"direct": [*grounding_sources, *structured_sources], "related": []},
             manual_present=(grounding is not None),
             structured_present=bool(structured_block),
             procedure_variant_present=bool(procedure_variant_block),
@@ -4449,6 +4560,42 @@ async def ask(req: AskRequest) -> AskResponse:
 
     if law_evidence_pack and law_evidence_pack.get("citation_verification"):
         citation_verification = law_evidence_pack.get("citation_verification")
+
+    citation_status = str((citation_verification or {}).get("status") or "")
+    citation_specific = bool((citation_verification or {}).get("citation_specific"))
+    direct_evidence_count = int((law_evidence_pack or {}).get("direct_evidence_count", 0) or 0)
+    related_evidence_count = int((law_evidence_pack or {}).get("related_evidence_count", 0) or 0)
+    missing_direct_authority = bool(
+        (law_evidence_pack or {}).get("missing_direct_authority", direct_evidence_count == 0)
+    )
+    law_lookup_failed = law_grounding_status_detail in {
+        "law_grounding_attempted_no_results",
+        "law_grounding_attempted_failed",
+        "law_grounding_source_linked_unverified",
+    }
+    quality = enforce_source_confidence_invariants(
+        quality,
+        prompt=prompt,
+        visa_code=visa_code_detected,
+        task_type=task_type_detected,
+        direct_evidence_count=direct_evidence_count,
+        related_evidence_count=related_evidence_count,
+        missing_direct_authority=missing_direct_authority,
+        law_lookup_failed=law_lookup_failed,
+        citation_specific=citation_specific,
+        citation_verification_status=citation_status,
+        structured_procedure_mismatch=structured_procedure_mismatch,
+    )
+    if law_evidence_pack is not None:
+        law_evidence_pack["answer_quality_mode"] = quality["answer_quality_mode"]
+        law_evidence_pack["source_confidence_level"] = quality["source_confidence_level"]
+        law_evidence_pack["requires_official_confirmation"] = quality["requires_official_confirmation"]
+        law_evidence_pack["official_confirmation_questions"] = quality["official_confirmation_questions"]
+        law_evidence_pack["source_confidence_invariant_reasons"] = quality.get(
+            "source_confidence_invariant_reasons", []
+        )
+        if isinstance(law_evidence_pack.get("legal_analysis"), dict):
+            law_evidence_pack["legal_analysis"]["confidence"] = quality["source_confidence_level"]
 
     # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
     # Gated + Fast-mode-skipped; never breaks the request (see helper).
@@ -4654,6 +4801,7 @@ async def ask(req: AskRequest) -> AskResponse:
         law_grounding_display=law_grounding_display,
         law_grounding_intent_reasons=law_grounding_intent_reasons,
         law_search_query=law_search_query,
+        law_search_queries=law_search_queries,
         law_grounding_warnings=law_grounding_warnings,
         citation_verification=citation_verification,
         manual_grounding_status=manual_grounding_status,
@@ -4665,6 +4813,7 @@ async def ask(req: AskRequest) -> AskResponse:
         official_confirmation_questions=quality["official_confirmation_questions"],
         related_statuses_not_sources=quality["related_statuses_not_sources"],
         grounded_answer_limited=quality["grounded_answer_limited"],
+        source_confidence_invariant_reasons=quality.get("source_confidence_invariant_reasons", []),
         answer_style_version=quality["answer_style_version"],
         question_type_detected=quality["question_type"],
         # Answer-shape contract (Part A). Gate pass/warnings are filled on the
@@ -5011,7 +5160,7 @@ def _public_law_url(law_name: str) -> str:
 
 def _public_precedent_url(item: Dict[str, Any], query: str) -> str:
     """Prefer the API-provided (already OC-redacted) detail link; else a search link."""
-    url = (item.get("url") or "").strip()
+    url = precedent_sources.normalize_law_go_kr_url(item.get("url") or "")
     if url:
         return url
     return "https://www.law.go.kr/LSW/precSc.do?menuId=7&query=" + quote((query or "").strip(), safe="")
@@ -5036,14 +5185,22 @@ def _map_law_result(r: Dict[str, Any]) -> Dict[str, Any]:
 
 def _map_precedent_item(item: Dict[str, Any], query: str) -> Dict[str, Any]:
     """Normalize one precedent_sources item into the frontend LegalPrecedentResult shape."""
+    source_id = str(item.get("serialNumber") or "")
+    display_id = source_id or str(item.get("caseNumber") or item.get("decisionNumber") or "")
+    body_available = item.get("resultKind") == "body_result"
     return {
-        "id": str(item.get("serialNumber") or item.get("caseNumber") or item.get("decisionNumber") or ""),
+        "id": display_id,
         "title": item.get("title") or "",
         "court": item.get("courtOrAgency") or item.get("sourceName") or "",
         "decisionDate": item.get("decisionDate") or "",
         "caseNumber": item.get("caseNumber") or "",
-        "summary": (item.get("holdingSummary") or item.get("snippet") or "")[:500],
+        "summary": (
+            (item.get("holdingSummary") or item.get("snippet") or "")[:500]
+            if body_available else ""
+        ),
         "sourceUrl": _public_precedent_url(item, query),
+        "detailAvailable": bool(source_id),
+        "detailApiPath": "/api/legal/precedents/detail?id=" + quote(source_id, safe="") if source_id else "",
         "rawSource": "law.go.kr",
     }
 
@@ -5102,7 +5259,7 @@ async def legal_precedents_search(q: str = "") -> Any:
     if status == "not_configured":
         return _legal_not_configured_response()
     if status == "results_found":
-        items = env.get("items") or []
+        items = precedent_sources.dedupe_precedent_items(env.get("items") or [])
         results = [
             _map_precedent_item(it, query)
             for it in items
@@ -5116,6 +5273,35 @@ async def legal_precedents_search(q: str = "") -> Any:
         content={"ok": False, "error": "search_failed",
                  "reason": env.get("errorType") or status or "unknown", "query": query, "results": []},
     )
+
+
+@app.get("/api/legal/precedents/detail")
+async def legal_precedent_detail(id: str = "") -> Any:
+    """Return bounded official precedent body fields for one stable source ID."""
+    cfg = load_grounding_config()
+    if not cfg.law_api_configured:
+        return _legal_not_configured_response()
+    source_id = re.sub(r"[^A-Za-z0-9_-]", "", str(id or ""))[:80]
+    if not source_id:
+        return UTF8JSONResponse(status_code=400, content={"ok": False, "error": "empty_id", "results": []})
+    env = precedent_sources.get_precedent_detail(source_id, config=cfg)
+    if env.get("status") == "results_found":
+        items = [
+            _map_precedent_item(item, source_id)
+            for item in (env.get("items") or [])
+            if isinstance(item, dict) and item.get("resultKind") == "body_result"
+        ]
+        if items:
+            return {"ok": True, "kind": "precedent_detail", "id": source_id, "count": len(items), "results": items, "rawSource": "law.go.kr"}
+    if env.get("status") == "no_results":
+        return {"ok": True, "kind": "precedent_detail", "id": source_id, "count": 0, "results": [], "rawSource": "law.go.kr"}
+    return UTF8JSONResponse(content={
+        "ok": False,
+        "error": "detail_failed",
+        "reason": env.get("errorType") or env.get("status") or "unknown",
+        "id": source_id,
+        "results": [],
+    })
 
 
 class LegalResearchRequest(BaseModel):
