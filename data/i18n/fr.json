@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "50 millions de wons ou plus",
   "jobCodeCopyMemo": "📋 Copier la note pour la saisie HiKorea",
   "agentRegionFilterAria": "Filtre par région des collectivités locales de grande échelle",
-  "retryButton": "Réessayer"
+  "retryButton": "Réessayer",
+  "easyModeLabel": "Affichage",
+  "easyModeStandard": "Standard",
+  "easyModeEasy": "Mode simple",
+  "easyModeOfficial": "Source officielle",
+  "easyModeToggleAria": "Choisir comment afficher ce guide",
+  "easyModeNotice": "Ceci est une explication simple. Vérifiez toujours la source officielle avant de faire votre demande.",
+  "easyModeSummaryTitle": "De quoi s'agit-il ?",
+  "easyModeWhoTitle": "Pour qui est-ce ?",
+  "easyModeNextStepsTitle": "Que faire ensuite",
+  "easyModeDocumentsTitle": "Documents dont vous pourriez avoir besoin",
+  "easyModeWarningsTitle": "Points d'attention",
+  "easyModeAskAtOfficeTitle": "Vous pouvez demander ceci au bureau",
+  "easyModeOfficialSourceTitle": "Vérifier la source officielle",
+  "easyModeSummaryGeneric": "Ceci est un guide sur {code}. Pour les détails, voir la vue Standard et la source officielle.",
+  "easyModeWhoBody": "C'est pour les personnes qui ont {code}, ou qui veulent passer à ce statut ou le prolonger.",
+  "easyModeDocsUsuallyTitle": "Habituellement nécessaires",
+  "easyModeDocsMaybeTitle": "Peuvent être nécessaires, selon votre cas",
+  "easyModeDocsDependsBody": "Les documents nécessaires peuvent varier d'une personne à l'autre. Consultez les documents de la vue Standard et la source officielle pour la liste exacte.",
+  "easyModeDocsPointer": "Vous pouvez voir la liste complète des documents pour ce statut dans la vue Standard.",
+  "easyModeOfficialSourceBody": "Ce guide simple est un court résumé pour vous aider à comprendre. Vérifiez toujours la source officielle pour les règles exactes et les informations les plus récentes.",
+  "easyModeOpenOfficialSource": "Voir la source officielle",
+  "easyModeSourceReminder": "En cas de doute, appelez le 1345 ou consultez le guide officiel HiKorea.",
+  "easyModeFallbackNotice": "Le guide simple pour ce statut n'est pas encore détaillé ; ceci est donc basé sur l'explication standard.",
+  "easyModeNoDataTitle": "Pas encore d'informations détaillées",
+  "easyModeNoDataBody": "Il n'y a pas encore assez de détails pour afficher ceci en mode simple. Veuillez consulter la vue Standard et la source officielle.",
+  "easyModeAskAtOfficeShowKo": "Montrez cette phrase en coréen à l'agent de l'immigration.",
+  "easyModeAiAnswerTitle": "Réponse simple",
+  "easyModeAiAnswerInstruction": "Ceci est une version courte et simple d'une réponse plus longue. Consultez la réponse standard pour les détails et les sources.",
+  "easyModeNextSteps": [
+    "Vérifiez votre statut actuel et sa date d'expiration.",
+    "Préparez à l'avance les documents nécessaires.",
+    "Vérifiez sur HiKorea si vous devez prendre rendez-vous.",
+    "Rendez-vous au bureau de l'immigration à la date de votre rendez-vous.",
+    "En cas de doute, appelez le 1345 pour demander."
+  ],
+  "easyModeWarnings": [
+    "N'attendez pas la fin de votre période de séjour. Préparez-vous tôt.",
+    "Les documents nécessaires peuvent être différents pour chaque personne.",
+    "Vérifiez toujours la source officielle avant de faire votre demande."
+  ],
+  "easyModeAskAtOffice": [
+    "Je voudrais des conseils sur ce statut de séjour.",
+    "Je veux savoir quels documents je dois fournir pour ma situation."
+  ]
 }

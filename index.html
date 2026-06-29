@@ -2577,6 +2577,55 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .docs-list-note { grid-column: 2; color: var(--t3); font-size: 0.78rem; word-break: keep-all; overflow-wrap: anywhere; }
 .docs-list-missing { color: var(--t3); font-style: italic; }
 .docs-missing-notice { border: 1px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1)); color: var(--t1); border-radius: 8px; padding: 0.85rem 0.95rem; font-size: 0.84rem; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
+
+/* ===== Easy Mode (쉬운 안내) — per-card Standard / Easy / Official view ===== */
+.view-mode-toggle { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45rem 0.75rem; }
+.view-mode-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; color: var(--t3); text-transform: uppercase; }
+.view-mode-btns { display: inline-flex; gap: 0.2rem; background: var(--acL); border: 1px solid var(--bd2); border-radius: 999px; padding: 0.2rem; }
+.view-mode-btn { appearance: none; border: 0; background: transparent; color: var(--t2); font: inherit; font-size: 0.82rem; font-weight: 800; padding: 0.34rem 0.85rem; border-radius: 999px; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
+.view-mode-btn:hover { color: var(--ac); }
+.view-mode-btn.active { background: var(--bg0); color: var(--ac); box-shadow: var(--sh1); }
+.view-mode-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
+/* visibility switching by card mode — Standard is the default and needs no class */
+.easy-mode-panel { display: none; }
+.manual-result.card-mode-easy .manual-layout > :not(.view-mode-toggle):not(.easy-mode-panel) { display: none; }
+.manual-result.card-mode-easy .easy-mode-panel { display: block; border-top: 0; }
+.manual-result.card-mode-official .manual-layout > :not(.view-mode-toggle):not(.source-evidence-panel):not(.manual-actions) { display: none; }
+.manual-result.card-mode-official .source-evidence-panel { border-top: 0; }
+.easy-notice, .easy-fallback-notice { font-size: 0.82rem; line-height: 1.6; border: 1px solid var(--bd2); border-radius: 10px; padding: 0.6rem 0.8rem; margin: 0 0 0.85rem; color: var(--t2); background: var(--acL); }
+.easy-fallback-notice { background: transparent; border-style: dashed; }
+.easy-card { border: 1px solid var(--bd2); border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 0.7rem; background: var(--bg0); }
+.easy-card:last-child { margin-bottom: 0; }
+.easy-card-title { margin: 0 0 0.5rem; font-size: 0.96rem; font-weight: 800; color: var(--t1); }
+.easy-card p { margin: 0.25rem 0; line-height: 1.7; font-size: 0.9rem; color: var(--t2); }
+.easy-summary { margin: 0 0 0.35rem; }
+.easy-code { font-weight: 800; color: var(--ac); }
+.easy-name { color: var(--t2); font-weight: 600; }
+.easy-subtitle { font-weight: 800; font-size: 0.85rem; color: var(--t1); margin: 0.55rem 0 0.2rem; }
+.easy-note { font-size: 0.82rem; color: var(--t3); line-height: 1.6; }
+.easy-list { margin: 0.2rem 0 0; padding-inline-start: 1.4rem; line-height: 1.75; font-size: 0.9rem; color: var(--t2); }
+.easy-list--steps { padding-inline-start: 1.5rem; }
+.easy-list--bullet { list-style: disc; }
+.easy-list--check { list-style: none; padding-inline-start: 0; }
+.easy-list--check li { position: relative; padding-inline-start: 1.6rem; margin-bottom: 0.3rem; }
+.easy-list--check li::before { content: "\2713"; position: absolute; inset-inline-start: 0; top: 0; color: var(--ac); font-weight: 900; }
+.easy-ask-list { list-style: none; padding-inline-start: 0; }
+.easy-ask-list li { margin-bottom: 0.55rem; padding-inline-start: 0.9rem; border-inline-start: 2px solid color-mix(in srgb, var(--ac) 40%, var(--bd2)); }
+.easy-ask-local { display: block; color: var(--t2); }
+.easy-ask-ko { display: block; font-weight: 800; color: var(--t1); margin-top: 0.1rem; }
+.easy-ask-hint { margin-bottom: 0.4rem; }
+.easy-official-btn { margin-top: 0.55rem; appearance: none; border: 1px solid var(--ac); background: transparent; color: var(--ac); font: inherit; font-weight: 800; font-size: 0.85rem; padding: 0.45rem 0.95rem; border-radius: 8px; cursor: pointer; transition: var(--btn-tr); }
+.easy-official-btn:hover { background: var(--acL); }
+.easy-official-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
+.manual-result .manual-layout > .view-mode-toggle { padding: 1rem 1.35rem; margin: 0; }
+.manual-result .manual-layout > .easy-mode-panel { padding: 1.1rem 1.35rem 1.35rem; margin: 0; }
+@media (max-width: 600px) {
+    .manual-result .manual-layout > .view-mode-toggle { padding: 0.8rem 0.85rem; }
+    .manual-result .manual-layout > .easy-mode-panel { padding: 0.85rem 0.85rem 1rem; }
+    .easy-card { padding: 0.75rem 0.8rem; }
+    .view-mode-btn { padding: 0.3rem 0.7rem; }
+}
+
 @media (max-width: 768px) {
     /* Mobile: collapse three tabs into a vertical accordion.
        The .docs-tabs and .docs-panels wrappers become display:contents so each
@@ -20350,6 +20399,167 @@ function renderSourceEvidencePanel(v) {
     </details>`;
 }
 
+/* ===== Easy Mode (쉬운 안내) ===============================================
+   A user-facing accessibility view that re-explains the status detail in
+   short, plain, action-oriented language. It sits BESIDE the Standard and
+   Official Source views as a 3-way per-card toggle and never replaces official
+   guidance. Every label/copy string is resolved through tx() from
+   data/i18n/*.json (no hardcoded multilingual UI text here); the dynamic parts
+   (summary, document names) are DERIVED from the existing status record at
+   render time, so no canonical data is duplicated, invented, or mutated. The
+   selected view is remembered per code (EASY_MODE_CARD_STATE) and re-applied
+   after renderResults() rebuilds the list — including on a language switch, so
+   switching language while Easy Mode is active keeps Easy Mode and updates the
+   visible copy. */
+const EASY_MODE_SKIP_CATS = ['faq', 'scn', 'nhis'];
+const EASY_MODE_VIEW_MODES = ['standard', 'easy', 'official'];
+const EASY_MODE_CARD_STATE = new Map(); // visa code -> 'standard' | 'easy' | 'official'
+
+function easyModeApplies(v, isVisaCode) {
+    return !!isVisaCode && !!v && !EASY_MODE_SKIP_CATS.includes(v.cat);
+}
+
+function renderViewModeToggle(v, isVisaCode) {
+    if (!easyModeApplies(v, isVisaCode)) return '';
+    const btn = (mode, key, selected) =>
+        `<button type="button" role="tab" class="view-mode-btn${selected ? ' active' : ''}" data-action="set-card-mode" data-card-mode="${mode}" aria-selected="${selected ? 'true' : 'false'}">${escapeHtml(tx(key))}</button>`;
+    return `<div class="view-mode-toggle">
+        <span class="view-mode-label">${escapeHtml(tx('easyModeLabel'))}</span>
+        <div class="view-mode-btns" role="tablist" aria-label="${escapeHtml(tx('easyModeToggleAria'))}">
+            ${btn('standard', 'easyModeStandard', true)}${btn('easy', 'easyModeEasy', false)}${btn('official', 'easyModeOfficial', false)}
+        </div>
+    </div>`;
+}
+
+/* Concrete document names the Standard view would already surface for this
+   status. Reuses the existing resolvers so Easy Mode never invents a document
+   or asserts a requirement the source data does not already carry. */
+function getEasyModeDocNames(v) {
+    const names = [];
+    const seen = new Set();
+    const push = (raw) => {
+        const name = String(raw || '').trim();
+        if (!name || seen.has(name) || isDocPlaceholder(name)) return;
+        seen.add(name);
+        names.push(name);
+    };
+    for (const cfg of DOCUMENT_TAB_CONFIG) {
+        for (const item of getDocumentTabItems(v, cfg)) push(item && item.name);
+        if (names.length >= 8) return names.slice(0, 8);
+    }
+    if (!names.length && Array.isArray(PROCEDURE_CONFIG)) {
+        for (const cfg of PROCEDURE_CONFIG) {
+            const proc = getProcedure(v, cfg);
+            if (!proc || !proc.available) continue;
+            for (const id of flattenDocGroups(proc.docs)) {
+                if (!isDocPlaceholder(id)) push(DOC_DICT[id] || '');
+            }
+            if (names.length >= 8) break;
+        }
+    }
+    return names.slice(0, 8);
+}
+
+function renderEasyModePanel(v) {
+    if (!easyModeApplies(v, true)) return '';
+    const code = v.code || '';
+    const lang = normalizeLocaleCode(currentLanguage);
+    const isKo = lang === 'ko';
+    // Localized status name only — never a Korean fallback name in a non-Korean
+    // Easy panel. The canonical name/summary always remain in the Standard view.
+    let name = '';
+    if (isKo) name = getVisaNameKo(v);
+    else if (lang === 'en') name = getVisaNameEn(v) || '';
+    else name = localizedVisaNameFromPack(v.code, lang) || '';
+    const summaryRaw = normalizeManualText(v.summary || '');
+    const hasNativeSummary = !!summaryRaw;
+    // The status summary is Korean canonical prose. Show it natively only on the
+    // Korean UI; other locales keep the Easy summary in the user's language
+    // (generic) and point to the Standard view for the full canonical text — so
+    // Easy Mode never dumps untranslated Korean paragraphs into a non-ko panel.
+    const summaryText = (isKo && hasNativeSummary)
+        ? summaryRaw.split(/(?<=[.!?。])\s+/).filter(Boolean).slice(0, 2).join(' ')
+        : tx('easyModeSummaryGeneric', { code });
+    const docNames = getEasyModeDocNames(v);
+    const koAsk = (UI_TRANSLATIONS.ko && Array.isArray(UI_TRANSLATIONS.ko.easyModeAskAtOffice)) ? UI_TRANSLATIONS.ko.easyModeAskAtOffice : [];
+
+    const section = (title, bodyHtml) =>
+        `<section class="easy-card"><h4 class="easy-card-title">${escapeHtml(title)}</h4>${bodyHtml}</section>`;
+    const listFrom = (key, cls) =>
+        `<ul class="easy-list ${cls}">${txArray(key).map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>`;
+
+    // Documents: only the derived names are concrete ("usually needed"); the
+    // rest is honest guidance — Easy Mode does not classify items as required.
+    let docsBody;
+    if (docNames.length) {
+        // Document names stay Korean canonical (official terminology is not
+        // translated where unverified, per data/i18n policy); lang="ko" marks
+        // them so screen readers and the non-ko leak guard treat them correctly.
+        docsBody = `<p class="easy-subtitle">${escapeHtml(tx('easyModeDocsUsuallyTitle'))}</p>
+            <ul class="easy-list easy-list--check"${isKo ? '' : ' lang="ko"'}>${docNames.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
+            <p class="easy-subtitle">${escapeHtml(tx('easyModeDocsMaybeTitle'))}</p>
+            <p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>`;
+    } else {
+        docsBody = `<p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>
+            <p class="easy-note">${escapeHtml(tx('easyModeDocsPointer'))}</p>`;
+    }
+
+    // Ask-at-office: show the localized phrase (so the user understands) and,
+    // for non-Korean UIs, the Korean canonical line (to show the officer).
+    const askItems = txArray('easyModeAskAtOffice').map((phrase, i) => {
+        const koLine = (!isKo && koAsk[i] && koAsk[i] !== phrase)
+            ? `<span class="easy-ask-ko" lang="ko">${escapeHtml(koAsk[i])}</span>` : '';
+        return `<li><span class="easy-ask-local">${escapeHtml(phrase)}</span>${koLine}</li>`;
+    }).join('');
+    const askKoHint = isKo ? '' : `<p class="easy-note easy-ask-hint">${escapeHtml(tx('easyModeAskAtOfficeShowKo'))}</p>`;
+
+    // Notices key off genuinely-missing summary data, not the non-ko generic path
+    // (where the canonical summary still exists in the Standard view).
+    const fallbackNotice = !hasNativeSummary ? `<p class="easy-fallback-notice" role="note">${escapeHtml(tx('easyModeFallbackNotice'))}</p>` : '';
+    const noData = (!hasNativeSummary && !docNames.length)
+        ? section(tx('easyModeNoDataTitle'), `<p>${escapeHtml(tx('easyModeNoDataBody'))}</p>`) : '';
+
+    return `<div class="easy-mode-panel" aria-label="${escapeHtml(tx('easyModeEasy'))}">
+        <p class="easy-notice" role="note">${escapeHtml(tx('easyModeNotice'))}</p>
+        ${fallbackNotice}
+        ${section(tx('easyModeSummaryTitle'), `<p class="easy-summary"><span class="easy-code">${escapeHtml(code)}</span>${name ? ` <span class="easy-name">${escapeHtml(name)}</span>` : ''}</p><p>${escapeHtml(summaryText)}</p>`)}
+        ${noData}
+        ${section(tx('easyModeWhoTitle'), `<p>${escapeHtml(tx('easyModeWhoBody', { code }))}</p>`)}
+        ${section(tx('easyModeNextStepsTitle'), `<ol class="easy-list easy-list--steps">${txArray('easyModeNextSteps').map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>`)}
+        ${section(tx('easyModeDocumentsTitle'), docsBody)}
+        ${section(tx('easyModeWarningsTitle'), listFrom('easyModeWarnings', 'easy-list--bullet'))}
+        ${section(tx('easyModeAskAtOfficeTitle'), `${askKoHint}<ul class="easy-list easy-ask-list">${askItems}</ul>`)}
+        ${section(tx('easyModeOfficialSourceTitle'), `<p>${escapeHtml(tx('easyModeOfficialSourceBody'))}</p><p class="easy-note">${escapeHtml(tx('easyModeSourceReminder'))}</p><button type="button" class="easy-official-btn" data-action="set-card-mode" data-card-mode="official">${escapeHtml(tx('easyModeOpenOfficialSource'))}</button>`)}
+    </div>`;
+}
+
+function setCardMode(card, mode) {
+    if (!card) return;
+    if (!EASY_MODE_VIEW_MODES.includes(mode)) mode = 'standard';
+    EASY_MODE_VIEW_MODES.forEach(m => card.classList.toggle('card-mode-' + m, m === mode));
+    card.querySelectorAll('.view-mode-btn').forEach(btn => {
+        const active = btn.dataset.cardMode === mode;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+    });
+    // The Official Source view surfaces the existing source-evidence panel; open
+    // it so the official basis is visible without an extra click.
+    if (mode === 'official') {
+        const sep = card.querySelector('.source-evidence-panel');
+        if (sep) sep.open = true;
+    }
+    const code = card.dataset.code;
+    if (code) EASY_MODE_CARD_STATE.set(code, mode);
+}
+
+function restoreCardViewModes(root) {
+    if (!root || !root.querySelectorAll) return;
+    root.querySelectorAll('.manual-result').forEach(card => {
+        const mode = EASY_MODE_CARD_STATE.get(card.dataset.code);
+        if (mode && mode !== 'standard') setCardMode(card, mode);
+    });
+}
+
 function copyVisaResult(btnEl, code) {
     const v = VISA_DATA.find(x => x.code === code);
     if (!v) return;
@@ -20719,6 +20929,7 @@ function renderResults(query){
             <div class="vc-cw"><div class="vc-c">
                 ${v.cat === 'scn' ? `<div class="ai-cta" style="flex-direction:column; align-items:center; text-align:center; padding:2.5rem 1rem; background:var(--bg0);"><h4 style="color:var(--t1); font-weight:800; font-size:1.1rem; margin-bottom:0.5rem;">${tx('specialCaseTitle')}</h4><p style="font-size:0.85rem; color:var(--t3); margin-bottom:1.5rem; word-break:keep-all; max-width:400px;">${tx('specialCaseBody')}</p><button type="button" class="ai-btn" style="width:100%; max-width:320px; justify-content:center; box-shadow:var(--shD);" data-action="open-ai-modal" data-visa-code="${escapeHtml(v.code)}">${tx('specialCaseButton')}</button></div>` : `
                 <div class="manual-layout">
+                    ${renderViewModeToggle(v, isVisaCode)}
                     ${renderNextActionArea(v, isVisaCode)}
                     ${renderCardSummary(v, kw)}
                     <div class="external-guide-slot" data-guide-slot="${escapeHtml(v.code || '')}"></div>
@@ -20731,11 +20942,13 @@ function renderResults(query){
                     ${renderSourceEvidencePanel(v)}
                     ${renderManualActions(v, isVisaCode)}
                     ${ddHtml}
+                    ${renderEasyModePanel(v)}
                 </div>`}
             </div></div>`;
         fg.appendChild(c);
     });
     box.innerHTML=''; box.appendChild(fg);
+    restoreCardViewModes(box);
     rc.textContent=(st ? tx('resultCountWithSub', { count: filtered.length, subcount: st }) : tx('resultCount', { count: filtered.length })) + ` · ${tx('resultTotalSuffix', { count: VISA_DATA.length })}`;
     const modeStr=currentSearchMode==='and'?'AND':'OR';
     const catLabels = txArray('searchedCategoryLabels');
@@ -21909,6 +22122,9 @@ document.addEventListener('DOMContentLoaded', async () => {
                     const section = actionBtn.closest('.docs-section');
                     if (!section || actionBtn.disabled) return;
                     activateDocsTab(section, actionBtn.dataset.docsTab);
+                },
+                'set-card-mode': () => {
+                    setCardMode(actionBtn.closest('.manual-result'), actionBtn.dataset.cardMode);
                 },
                 'search-hint': () => { document.getElementById('q').value = actionBtn.dataset.query; executeSearch(); },
                 'quick-filter': () => { document.getElementById('q').value = actionBtn.dataset.query; document.getElementById('xb').classList.add('v'); renderResults(actionBtn.dataset.query); },

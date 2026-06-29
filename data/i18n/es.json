@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "50 millones de wones o más",
   "jobCodeCopyMemo": "📋 Copiar la nota para introducir en HiKorea",
   "agentRegionFilterAria": "Filtro de región por entidad autónoma metropolitana",
-  "retryButton": "Reintentar"
+  "retryButton": "Reintentar",
+  "easyModeLabel": "Vista",
+  "easyModeStandard": "Estándar",
+  "easyModeEasy": "Modo fácil",
+  "easyModeOfficial": "Fuente oficial",
+  "easyModeToggleAria": "Elige cómo ver esta guía",
+  "easyModeNotice": "Esta es una explicación sencilla. Consulta siempre la fuente oficial antes de presentar tu solicitud.",
+  "easyModeSummaryTitle": "¿Qué es esto?",
+  "easyModeWhoTitle": "¿Para quién es?",
+  "easyModeNextStepsTitle": "Qué hacer a continuación",
+  "easyModeDocumentsTitle": "Documentos que podrías necesitar",
+  "easyModeWarningsTitle": "Cosas que debes tener en cuenta",
+  "easyModeAskAtOfficeTitle": "Puedes preguntar esto en la oficina",
+  "easyModeOfficialSourceTitle": "Consulta la fuente oficial",
+  "easyModeSummaryGeneric": "Esta es una guía sobre {code}. Para más detalles, consulta la vista Estándar y la fuente oficial.",
+  "easyModeWhoBody": "Es para personas que tienen {code}, o que quieren cambiar a este estatus o prorrogarlo.",
+  "easyModeDocsUsuallyTitle": "Normalmente necesarios",
+  "easyModeDocsMaybeTitle": "Pueden ser necesarios, según tu caso",
+  "easyModeDocsDependsBody": "Los documentos necesarios pueden variar según la persona. Consulta los documentos de la vista Estándar y la fuente oficial para ver la lista exacta.",
+  "easyModeDocsPointer": "Puedes ver la lista completa de documentos para este estatus en la vista Estándar.",
+  "easyModeOfficialSourceBody": "Esta guía fácil es solo un resumen breve para ayudarte a entender. Consulta siempre la fuente oficial para conocer las reglas exactas y la información más reciente.",
+  "easyModeOpenOfficialSource": "Ver fuente oficial",
+  "easyModeSourceReminder": "Si no estás seguro, llama al 1345 o consulta la guía oficial de HiKorea.",
+  "easyModeFallbackNotice": "La guía fácil para este estatus aún no está detallada, por eso se muestra a partir de la explicación estándar.",
+  "easyModeNoDataTitle": "Aún no hay información detallada",
+  "easyModeNoDataBody": "Todavía no hay suficientes detalles para mostrar esto en modo fácil. Consulta la vista Estándar y la fuente oficial.",
+  "easyModeAskAtOfficeShowKo": "Muestra esta frase en coreano al funcionario de inmigración.",
+  "easyModeAiAnswerTitle": "Respuesta fácil",
+  "easyModeAiAnswerInstruction": "Esta es una versión corta y sencilla de una respuesta más larga. Consulta la respuesta estándar para ver los detalles y las fuentes.",
+  "easyModeNextSteps": [
+    "Comprueba tu estatus actual y su fecha de vencimiento.",
+    "Prepara con antelación los documentos que necesitas.",
+    "Comprueba en HiKorea si necesitas reservar una cita.",
+    "Acude a la oficina de inmigración en la fecha de tu cita.",
+    "Si no estás seguro, llama al 1345 y pregunta."
+  ],
+  "easyModeWarnings": [
+    "No esperes a que termine tu período de estancia. Prepárate con tiempo.",
+    "Los documentos necesarios pueden ser diferentes para cada persona.",
+    "Consulta siempre la fuente oficial antes de presentar tu solicitud."
+  ],
+  "easyModeAskAtOffice": [
+    "Quisiera asesoramiento sobre este estatus de residencia.",
+    "Quiero saber qué documentos necesito para mi situación."
+  ]
 }

@@ -1307,5 +1307,49 @@
   "jobCodeIncome6": "Từ 50 triệu won trở lên",
   "jobCodeCopyMemo": "📋 Sao chép ghi chú để nhập vào HiKorea",
   "agentRegionFilterAria": "Bộ lọc khu vực đơn vị hành chính cấp tỉnh",
-  "retryButton": "Thử lại"
+  "retryButton": "Thử lại",
+  "easyModeLabel": "Cách xem",
+  "easyModeStandard": "Bản chuẩn",
+  "easyModeEasy": "Bản dễ hiểu",
+  "easyModeOfficial": "Nguồn chính thức",
+  "easyModeToggleAria": "Chọn cách xem hướng dẫn này",
+  "easyModeNotice": "Đây là phần giải thích đơn giản. Hãy luôn kiểm tra nguồn chính thức trước khi nộp hồ sơ.",
+  "easyModeSummaryTitle": "Đây là gì?",
+  "easyModeWhoTitle": "Dành cho ai?",
+  "easyModeNextStepsTitle": "Việc cần làm tiếp theo",
+  "easyModeDocumentsTitle": "Giấy tờ bạn có thể cần",
+  "easyModeWarningsTitle": "Điều cần lưu ý",
+  "easyModeAskAtOfficeTitle": "Bạn có thể hỏi như thế này tại văn phòng",
+  "easyModeOfficialSourceTitle": "Kiểm tra nguồn chính thức",
+  "easyModeSummaryGeneric": "Đây là hướng dẫn về {code}. Xem chi tiết ở bản chuẩn và nguồn chính thức.",
+  "easyModeWhoBody": "Dành cho người đang có {code}, hoặc muốn chuyển sang hoặc gia hạn tư cách này.",
+  "easyModeDocsUsuallyTitle": "Thường cần",
+  "easyModeDocsMaybeTitle": "Có thể cần, tùy trường hợp của bạn",
+  "easyModeDocsDependsBody": "Giấy tờ cần thiết có thể khác nhau ở mỗi người. Xem danh sách chính xác ở phần giấy tờ trong bản chuẩn và nguồn chính thức.",
+  "easyModeDocsPointer": "Bạn có thể xem danh sách giấy tờ đầy đủ của tư cách này trong bản chuẩn.",
+  "easyModeOfficialSourceBody": "Hướng dẫn dễ hiểu này là bản tóm tắt ngắn để giúp bạn hiểu. Hãy luôn kiểm tra nguồn chính thức để biết quy định chính xác và thông tin mới nhất.",
+  "easyModeOpenOfficialSource": "Xem nguồn chính thức",
+  "easyModeSourceReminder": "Khi không chắc chắn, hãy gọi 1345 hoặc xem hướng dẫn chính thức của HiKorea.",
+  "easyModeFallbackNotice": "Hướng dẫn dễ hiểu cho tư cách này chưa được chuẩn bị chi tiết, nên phần này dựa trên giải thích của bản chuẩn.",
+  "easyModeNoDataTitle": "Chưa có thông tin chi tiết",
+  "easyModeNoDataBody": "Mục này chưa có đủ thông tin để hiển thị ở Bản dễ hiểu. Vui lòng xem bản chuẩn và nguồn chính thức.",
+  "easyModeAskAtOfficeShowKo": "Hãy đưa câu tiếng Hàn này cho nhân viên xuất nhập cảnh xem.",
+  "easyModeAiAnswerTitle": "Câu trả lời dễ hiểu",
+  "easyModeAiAnswerInstruction": "Đây là bản ngắn gọn, dễ hiểu của một câu trả lời dài hơn. Xem câu trả lời chuẩn để biết chi tiết và nguồn.",
+  "easyModeNextSteps": [
+    "Kiểm tra tư cách hiện tại của bạn và ngày hết hạn.",
+    "Chuẩn bị sẵn các giấy tờ cần thiết từ trước.",
+    "Kiểm tra trên HiKorea xem bạn có cần đặt lịch hẹn không.",
+    "Đến văn phòng xuất nhập cảnh đúng ngày đã hẹn.",
+    "Nếu không chắc chắn, hãy gọi 1345 để hỏi."
+  ],
+  "easyModeWarnings": [
+    "Đừng đợi đến khi hết thời hạn lưu trú. Hãy chuẩn bị sớm.",
+    "Giấy tờ cần thiết có thể khác nhau ở mỗi người.",
+    "Hãy luôn kiểm tra nguồn chính thức trước khi nộp hồ sơ."
+  ],
+  "easyModeAskAtOffice": [
+    "Tôi muốn được tư vấn về tư cách lưu trú này.",
+    "Tôi muốn biết mình cần giấy tờ gì cho trường hợp của tôi."
+  ]
 }

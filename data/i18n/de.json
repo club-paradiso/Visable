@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "50 Mio. Won oder mehr",
   "jobCodeCopyMemo": "📋 Notiz für die HiKorea-Eingabe kopieren",
   "agentRegionFilterAria": "Regionsfilter der Großverwaltungseinheiten",
-  "retryButton": "Erneut versuchen"
+  "retryButton": "Erneut versuchen",
+  "easyModeLabel": "Ansicht",
+  "easyModeStandard": "Standard",
+  "easyModeEasy": "Einfacher Modus",
+  "easyModeOfficial": "Offizielle Quelle",
+  "easyModeToggleAria": "Wählen Sie, wie Sie diese Anleitung ansehen",
+  "easyModeNotice": "Dies ist eine einfache Erklärung. Prüfen Sie vor dem Antrag immer die offizielle Quelle.",
+  "easyModeSummaryTitle": "Was ist das?",
+  "easyModeWhoTitle": "Für wen ist das?",
+  "easyModeNextStepsTitle": "Was als Nächstes zu tun ist",
+  "easyModeDocumentsTitle": "Unterlagen, die Sie brauchen könnten",
+  "easyModeWarningsTitle": "Worauf Sie achten sollten",
+  "easyModeAskAtOfficeTitle": "So können Sie im Amt fragen",
+  "easyModeOfficialSourceTitle": "Offizielle Quelle prüfen",
+  "easyModeSummaryGeneric": "Dies ist eine Anleitung zu {code}. Einzelheiten finden Sie in der Standardansicht und in der offiziellen Quelle.",
+  "easyModeWhoBody": "Das ist für Personen mit {code} oder die zu diesem Aufenthaltstitel wechseln oder ihn verlängern möchten.",
+  "easyModeDocsUsuallyTitle": "Normalerweise erforderlich",
+  "easyModeDocsMaybeTitle": "Je nach Ihrer Situation möglicherweise erforderlich",
+  "easyModeDocsDependsBody": "Die benötigten Unterlagen können von Person zu Person unterschiedlich sein. Die genaue Liste finden Sie bei den Unterlagen in der Standardansicht und in der offiziellen Quelle.",
+  "easyModeDocsPointer": "Die vollständige Liste der Unterlagen für diesen Aufenthaltstitel finden Sie in der Standardansicht.",
+  "easyModeOfficialSourceBody": "Diese einfache Anleitung ist nur eine kurze Zusammenfassung zum besseren Verständnis. Prüfen Sie für die genauen Regeln und die neuesten Informationen immer die offizielle Quelle.",
+  "easyModeOpenOfficialSource": "Offizielle Quelle ansehen",
+  "easyModeSourceReminder": "Wenn Sie unsicher sind, rufen Sie 1345 an oder sehen Sie sich die offizielle HiKorea-Anleitung an.",
+  "easyModeFallbackNotice": "Die einfache Anleitung für diesen Aufenthaltstitel ist noch nicht ausführlich vorbereitet, daher wird sie auf Basis der Standarderklärung angezeigt.",
+  "easyModeNoDataTitle": "Noch keine detaillierten Informationen",
+  "easyModeNoDataBody": "Es gibt noch nicht genug Details, um dies im einfachen Modus anzuzeigen. Bitte sehen Sie sich die Standardansicht und die offizielle Quelle an.",
+  "easyModeAskAtOfficeShowKo": "Zeigen Sie diesen koreanischen Satz dem Mitarbeiter der Einwanderungsbehörde.",
+  "easyModeAiAnswerTitle": "Einfache Antwort",
+  "easyModeAiAnswerInstruction": "Dies ist eine kurze, einfache Version einer längeren Antwort. Einzelheiten und Quellen finden Sie in der Standardantwort.",
+  "easyModeNextSteps": [
+    "Prüfen Sie Ihren aktuellen Aufenthaltstitel und sein Ablaufdatum.",
+    "Bereiten Sie die benötigten Unterlagen frühzeitig vor.",
+    "Prüfen Sie auf HiKorea, ob Sie einen Termin buchen müssen.",
+    "Gehen Sie am gebuchten Termin zur Einwanderungsbehörde.",
+    "Wenn Sie unsicher sind, rufen Sie 1345 an und fragen Sie."
+  ],
+  "easyModeWarnings": [
+    "Warten Sie nicht, bis Ihre Aufenthaltsdauer endet. Bereiten Sie sich früh vor.",
+    "Die benötigten Unterlagen können für jede Person unterschiedlich sein.",
+    "Prüfen Sie vor dem Antrag immer die offizielle Quelle."
+  ],
+  "easyModeAskAtOffice": [
+    "Ich möchte eine Beratung zu diesem Aufenthaltstitel.",
+    "Ich möchte wissen, welche Unterlagen ich für meine Situation brauche."
+  ]
 }
