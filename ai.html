@@ -218,6 +218,27 @@
         .answer-context { display: flex; flex-wrap: wrap; gap: var(--sp-2); padding: 0 var(--sp-4) var(--sp-3); border-bottom: 1px solid var(--bd2); }
         .context-pill { display: inline-flex; align-items: center; min-height: 30px; max-width: 100%; padding: 0.28rem 0.6rem; border: 1px solid rgba(199,191,168,0.25); border-radius: 999px; color: var(--t2); background: rgba(244,238,224,0.04); font-size: 0.76rem; font-weight: 750; overflow-wrap: anywhere; }
         .answer-body { padding: var(--sp-4); color: var(--t1); font-size: 1rem; line-height: 1.78; }
+        /* Easy Mode (쉬운 답변) — per-answer Standard/Easy framing toggle. Additive:
+           it never hides the answer body, source panel, or disclaimers. */
+        .answer-mode-row { padding: var(--sp-3) var(--sp-4) 0; }
+        .answer-mode-toggle { display: inline-flex; gap: 0.2rem; background: var(--bg2); border: 1px solid var(--bd); border-radius: 999px; padding: 0.18rem; }
+        .answer-mode-btn { appearance: none; border: 0; background: transparent; color: var(--t2); font: inherit; font-size: 0.78rem; font-weight: 800; padding: 0.28rem 0.75rem; border-radius: 999px; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
+        .answer-mode-btn:hover { color: var(--ac); }
+        .answer-mode-btn.is-active { background: var(--bg0); color: var(--ac); }
+        .answer-mode-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 60%, white); outline-offset: 2px; }
+        .ai-easy-only { display: none; }
+        .answer-card.ai-mode-easy .ai-easy-only { display: block; }
+        .ai-easy-frame { margin: var(--sp-3) var(--sp-4) 0; padding: 0.85rem 1rem; border: 1px solid var(--bd); border-radius: 12px; background: var(--acL); }
+        .ai-easy-head { font-size: 0.95rem; font-weight: 850; color: var(--ac); margin-bottom: 0.35rem; }
+        .ai-easy-instruction { font-size: 0.86rem; line-height: 1.7; color: var(--t2); margin: 0.2rem 0; }
+        .ai-easy-notice { font-size: 0.84rem; line-height: 1.6; color: var(--t3); margin: 0.2rem 0; }
+        .ai-easy-sub { font-weight: 800; font-size: 0.84rem; color: var(--t1); margin: 0.6rem 0 0.2rem; }
+        .ai-easy-list { margin: 0.2rem 0 0; padding-inline-start: 1.3rem; line-height: 1.7; font-size: 0.86rem; color: var(--t2); }
+        .ai-easy-ask { list-style: none; padding-inline-start: 0; }
+        .ai-easy-ask li { margin-bottom: 0.45rem; padding-inline-start: 0.8rem; border-inline-start: 2px solid color-mix(in srgb, var(--ac) 45%, var(--bd)); }
+        .ai-easy-ask-ko { display: block; font-weight: 800; color: var(--t1); margin-top: 0.1rem; }
+        .ai-easy-hint { font-size: 0.8rem; color: var(--t3); margin: 0.3rem 0; }
+        .ai-easy-reminder { font-size: 0.84rem; color: var(--t2); margin-top: 0.6rem; padding-top: 0.5rem; border-top: 1px dashed var(--bd); }
         .answer-body p { margin: 0 0 0.95rem; }
         .answer-body p:last-child { margin-bottom: 0; }
         .answer-body ul { margin: 0.4rem 0 1rem 1.15rem; padding: 0; }
@@ -2161,6 +2182,84 @@ select:focus-visible {
             return map.ko;
         }
 
+        /* ===== Easy Mode (쉬운 답변) shared i18n ==============================
+           ai.html historically localizes via the inline t()/tt() helpers
+           (ko/en/zh only). The Easy Mode chrome must cover all 12 supported
+           locales, so it pulls from the SAME shared data/i18n packs as
+           index.html — no competing i18n system, single source of truth. The
+           active UI locale comes from the shared 'paradiso:language' preference
+           (zh-TW resolves to the zh-CN pack, matching index.html). */
+        const EASY_I18N = { locale: 'ko', active: null, ko: null, ready: false };
+        function easyUiLocale(manifest) {
+            let raw = '';
+            try { raw = (localStorage.getItem('paradiso:language') || '').trim(); } catch (e) {}
+            try { const u = (new URLSearchParams(location.search).get('lang') || '').trim(); if (u) raw = u; } catch (e) {}
+            const supported = (manifest && manifest.supportedLocales) || ['ko'];
+            const aliases = (manifest && manifest.localeAliases) || {};
+            let code = raw;
+            if (!supported.includes(code)) code = aliases[code] || code;
+            if (code === 'zh-TW') code = 'zh-CN';
+            return supported.includes(code) ? code : 'ko';
+        }
+        async function loadEasyModeI18n() {
+            const fetchJson = async (u) => { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(u); return r.json(); };
+            let manifest = null;
+            try { manifest = await fetchJson('./data/i18n/manifest.json'); } catch (e) {}
+            const locale = easyUiLocale(manifest);
+            EASY_I18N.locale = locale;
+            const files = (manifest && manifest.files) || { ko: 'ko.json' };
+            try { EASY_I18N.ko = await fetchJson('./data/i18n/' + (files.ko || 'ko.json')); } catch (e) {}
+            if (locale !== 'ko') {
+                try { EASY_I18N.active = await fetchJson('./data/i18n/' + (files[locale] || (locale + '.json'))); } catch (e) {}
+            }
+            EASY_I18N.ready = Boolean(EASY_I18N.ko || EASY_I18N.active);
+        }
+        function txEasy(key, vars) {
+            const a = EASY_I18N.active, k = EASY_I18N.ko;
+            let val = (a && a[key] != null) ? a[key] : (k && k[key] != null ? k[key] : null);
+            if (val == null) return '';
+            if (typeof val === 'string' && vars) { for (const n in vars) val = val.split('{' + n + '}').join(vars[n]); }
+            return val;
+        }
+        function txEasyArr(key) { const v = txEasy(key); return Array.isArray(v) ? v : []; }
+        // ai.html's shell only localizes ko/en/zh, so it never flips to RTL. The
+        // Easy Mode chrome covers RTL locales (e.g. Arabic), so direction is set
+        // on the Easy elements themselves rather than the whole ko/en shell.
+        const EASY_RTL = ['ar', 'fa', 'he', 'ur'];
+        function easyDirAttr() { return EASY_RTL.indexOf(EASY_I18N.locale) >= 0 ? ' dir="rtl"' : ''; }
+
+        // Standard / Easy toggle for one answer card (labels from the shared packs).
+        function buildAnswerModeToggle() {
+            if (!EASY_I18N.ready) return '';
+            const btn = (mode, key, on) => `<button type="button" class="answer-mode-btn${on ? ' is-active' : ''}" data-ai-action="set-answer-mode" data-answer-mode="${mode}" role="tab" aria-selected="${on ? 'true' : 'false'}">${escapeHtml(txEasy(key))}</button>`;
+            return `<div class="answer-mode-row"${easyDirAttr()}><div class="answer-mode-toggle" role="tablist" aria-label="${escapeHtml(txEasy('easyModeToggleAria'))}">${btn('standard', 'easyModeStandard', true)}${btn('easy', 'easyModeEasy', false)}</div></div>`;
+        }
+        // Plain-language framing shown only in Easy view. ADDITIVE: it never
+        // replaces the answer body, source panel, or disclaimers — it adds a short
+        // orientation (what this is, practical cautions, what to ask at the office,
+        // a reminder to confirm official sources) in the user's language.
+        function buildAiEasyFrame() {
+            if (!EASY_I18N.ready) return '';
+            const isKo = EASY_I18N.locale === 'ko';
+            const koAsk = (EASY_I18N.ko && Array.isArray(EASY_I18N.ko.easyModeAskAtOffice)) ? EASY_I18N.ko.easyModeAskAtOffice : [];
+            const warnings = txEasyArr('easyModeWarnings').map(s => `<li>${escapeHtml(s)}</li>`).join('');
+            const asks = txEasyArr('easyModeAskAtOffice').map((p, i) => {
+                const ko = (!isKo && koAsk[i] && koAsk[i] !== p) ? `<span class="ai-easy-ask-ko" lang="ko">${escapeHtml(koAsk[i])}</span>` : '';
+                return `<li><span>${escapeHtml(p)}</span>${ko}</li>`;
+            }).join('');
+            return `<section class="ai-easy-frame ai-easy-only"${easyDirAttr()} aria-label="${escapeHtml(txEasy('easyModeEasy'))}">
+                <div class="ai-easy-head">${escapeHtml(txEasy('easyModeAiAnswerTitle'))}</div>
+                <p class="ai-easy-instruction">${escapeHtml(txEasy('easyModeAiAnswerInstruction'))}</p>
+                <p class="ai-easy-notice">${escapeHtml(txEasy('easyModeNotice'))}</p>
+                <div class="ai-easy-sub">${escapeHtml(txEasy('easyModeWarningsTitle'))}</div>
+                <ul class="ai-easy-list">${warnings}</ul>
+                <div class="ai-easy-sub">${escapeHtml(txEasy('easyModeAskAtOfficeTitle'))}</div>
+                ${isKo ? '' : `<p class="ai-easy-hint">${escapeHtml(txEasy('easyModeAskAtOfficeShowKo'))}</p>`}
+                <ul class="ai-easy-list ai-easy-ask">${asks}</ul>
+                <p class="ai-easy-reminder">${escapeHtml(txEasy('easyModeSourceReminder'))}</p>
+            </section>`;
+        }
+
         // Single source of truth for the footer/disclaimer text in four languages
         // (Part E i18n fix). Official Korean institution names stay in Korean.
         const SHELL_FOOTER_DISCLAIMER = {
@@ -2970,6 +3069,8 @@ select:focus-visible {
                         </div>
                         <span class="grounding-badge ${grounded ? 'grounded' : ''}">${grounded ? t(lang, '공식 매뉴얼 근거', 'Grounded in official manual') : t(lang, '일반 AI 답변', 'General AI answer')}</span>
                     </header>
+                    ${buildAnswerModeToggle()}
+                    ${buildAiEasyFrame()}
                     ${buildContextRow(result, lang)}
                     ${buildDegradedStateBanner(result, lang)}
                     ${buildSafetyNotice(result, lang)}
@@ -3479,6 +3580,21 @@ select:focus-visible {
         document.addEventListener('DOMContentLoaded', () => {
             loadVisaData();
             setupAiModeSelector();
+            // Easy Mode: load the shared i18n packs and wire the per-answer toggle.
+            loadEasyModeI18n();
+            document.addEventListener('click', function (e) {
+                const b = e.target.closest && e.target.closest('[data-ai-action="set-answer-mode"]');
+                if (!b) return;
+                const card = b.closest('.answer-card');
+                if (!card) return;
+                const mode = b.dataset.answerMode;
+                card.classList.toggle('ai-mode-easy', mode === 'easy');
+                card.querySelectorAll('.answer-mode-btn').forEach(function (x) {
+                    const on = x.dataset.answerMode === mode;
+                    x.classList.toggle('is-active', on);
+                    x.setAttribute('aria-selected', on ? 'true' : 'false');
+                });
+            });
             // Apply the chosen UI language to the static chat shell on load so a
             // Chinese (or English) selection isn't left behind a Korean shell.
             try {

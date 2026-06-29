@@ -349,6 +349,25 @@ main{flex:1;padding:0 1rem 3rem}
 .fh-output-body{padding:.85rem 1rem;font-size:var(--p-fs-sm);line-height:1.65;color:var(--p-ink-2)}
 .fh-output-body ul{margin:.35rem 0 .35rem 1.1rem;display:grid;gap:.2rem}
 .fh-output-body li{word-break:keep-all}
+/* Easy Mode (쉬운 안내) — Standard/Easy toggle + plain-language panel. Standard
+   stays one tap away; the Easy panel restates cautions in plain language. */
+.fh-view-toggle{margin:0 0 var(--p-s-4)}
+.fh-view-btns{display:inline-flex;gap:.2rem;background:var(--p-paper-2);border:1px solid var(--p-line-2);border-radius:999px;padding:.2rem}
+.fh-view-btn{appearance:none;border:0;background:transparent;color:var(--p-ink-2);font:inherit;font-size:.85rem;font-weight:700;padding:.35rem .9rem;border-radius:999px;cursor:pointer}
+.fh-view-btn.selected{background:var(--p-green);color:#fff}
+.fh-view-btn:focus-visible{outline:2px solid var(--p-green);outline-offset:2px}
+.fh-step-panel.fh-mode-easy #fhOutputContent,.fh-step-panel.fh-mode-easy #fhOutputActions,.fh-step-panel.fh-mode-easy #fhF06PreviewWrap{display:none}
+.fh-easy-content{display:none}
+.fh-step-panel.fh-mode-easy .fh-easy-content{display:block}
+.fh-easy-notice{font-size:.84rem;line-height:1.6;color:var(--p-ink-3);border:1px solid var(--p-line-2);border-radius:var(--p-r-sm);padding:.6rem .8rem;margin-bottom:.8rem;background:var(--p-mint-soft)}
+.fh-easy-card{border:1px solid var(--p-line-2);border-radius:var(--p-r-md);padding:.9rem 1rem;margin-bottom:.8rem;background:var(--p-paper)}
+.fh-easy-card h4{margin:0 0 .4rem;font-size:.98rem;font-weight:800;color:var(--p-ink)}
+.fh-easy-card p{margin:.25rem 0;line-height:1.7;font-size:.9rem;color:var(--p-ink-2)}
+.fh-easy-list{margin:.2rem 0 0;padding-inline-start:1.4rem;line-height:1.75;font-size:.9rem;color:var(--p-ink-2)}
+.fh-easy-ask{list-style:none;padding-inline-start:0}
+.fh-easy-ask li{margin-bottom:.5rem;padding-inline-start:.85rem;border-inline-start:2px solid var(--p-green-soft)}
+.fh-easy-ask-ko{display:block;font-weight:800;color:var(--p-ink);margin-top:.1rem}
+.fh-easy-hint{font-size:.82rem;color:var(--p-ink-3);margin:.3rem 0}
 .fh-output-row{
   display:flex;flex-wrap:wrap;gap:.25rem .5rem;
   border-bottom:1px solid var(--p-line-2);
@@ -744,6 +763,14 @@ main{flex:1;padding:0 1rem 3rem}
       <section class="fh-step-panel" id="fhStep6" aria-labelledby="fhStep6Heading">
         <h2 class="fh-step-heading" id="fhStep6Heading">작성 가이드</h2>
         <p class="fh-step-subheading">아래 내용을 참고하여 통합신청서를 작성하세요. 복사 또는 인쇄 후 출입국·외국인청 방문 시 활용하세요.</p>
+
+        <!-- Easy Mode: Standard/Easy toggle + plain-language panel. data-s2t="off"
+             keeps the form-helper-i18n overlay from re-translating it; all copy is
+             resolved from the shared data/i18n packs (txEasy), covering 12 locales. -->
+        <div class="fh-view-toggle" id="fhViewToggle" data-s2t="off" hidden>
+          <div class="fh-view-btns" role="tablist" id="fhViewBtns"></div>
+        </div>
+        <div id="fhEasyContent" class="fh-easy-content" data-s2t="off" hidden></div>
 
         <!-- F06 A4 canvas preview (shown only for 거주/숙소제공확인서) -->
         <div id="fhF06PreviewWrap" class="f06-preview-section" hidden>
@@ -1890,6 +1917,87 @@ function renderOutput() {
   </div>`;
 
   el.innerHTML = html;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   EASY MODE (쉬운 안내) — shared i18n + plain-language output panel
+   The wizard output is Korean-canonical (translated at the DOM layer by the
+   form-helper-i18n overlay). The Easy panel instead pulls localized copy from
+   the SAME shared data/i18n packs as index.html (txEasy), covering all 12
+   supported locales, and is fenced with data-s2t="off" so the overlay leaves it
+   intact. Standard stays one tap away; cautions are restated in plain language.
+   ═══════════════════════════════════════════════════════════════ */
+const EASY_I18N = { locale: 'ko', active: null, ko: null, ready: false };
+function easyUiLocale(manifest) {
+  let raw = '';
+  try { raw = (localStorage.getItem('paradiso:language') || '').trim(); } catch (e) {}
+  const supported = (manifest && manifest.supportedLocales) || ['ko'];
+  const aliases = (manifest && manifest.localeAliases) || {};
+  let code = raw;
+  if (supported.indexOf(code) < 0) code = aliases[code] || code;
+  if (code === 'zh-TW') code = 'zh-CN';
+  return supported.indexOf(code) >= 0 ? code : 'ko';
+}
+async function loadEasyModeI18n() {
+  const fetchJson = async (u) => { const r = await fetch(u, { cache: 'no-store' }); if (!r.ok) throw new Error(u); return r.json(); };
+  let manifest = null;
+  try { manifest = await fetchJson('./data/i18n/manifest.json'); } catch (e) {}
+  const locale = easyUiLocale(manifest);
+  EASY_I18N.locale = locale;
+  const files = (manifest && manifest.files) || { ko: 'ko.json' };
+  EASY_I18N.active = null;
+  try { EASY_I18N.ko = await fetchJson('./data/i18n/' + (files.ko || 'ko.json')); } catch (e) {}
+  if (locale !== 'ko') { try { EASY_I18N.active = await fetchJson('./data/i18n/' + (files[locale] || (locale + '.json'))); } catch (e) {} }
+  EASY_I18N.ready = Boolean(EASY_I18N.ko || EASY_I18N.active);
+}
+function txEasy(key, vars) {
+  const a = EASY_I18N.active, k = EASY_I18N.ko;
+  let val = (a && a[key] != null) ? a[key] : (k && k[key] != null ? k[key] : null);
+  if (val == null) return '';
+  if (typeof val === 'string' && vars) { for (const n in vars) val = val.split('{' + n + '}').join(vars[n]); }
+  return val;
+}
+function txEasyArr(key) { const v = txEasy(key); return Array.isArray(v) ? v : []; }
+
+function renderEasyOutput() {
+  const el = document.getElementById('fhEasyContent');
+  if (!el || !EASY_I18N.ready) return;
+  const isKo = EASY_I18N.locale === 'ko';
+  const koAsk = (EASY_I18N.ko && Array.isArray(EASY_I18N.ko.easyModeAskAtOffice)) ? EASY_I18N.ko.easyModeAskAtOffice : [];
+  const steps = txEasyArr('easyModeNextSteps').map(s => `<li>${esc(s)}</li>`).join('');
+  const warns = txEasyArr('easyModeWarnings').map(s => `<li>${esc(s)}</li>`).join('');
+  const asks = txEasyArr('easyModeAskAtOffice').map((p, i) => {
+    const ko = (!isKo && koAsk[i] && koAsk[i] !== p) ? `<span class="fh-easy-ask-ko" lang="ko">${esc(koAsk[i])}</span>` : '';
+    return `<li><span>${esc(p)}</span>${ko}</li>`;
+  }).join('');
+  const card = (title, body) => `<div class="fh-easy-card"><h4>${esc(title)}</h4>${body}</div>`;
+  el.innerHTML =
+    `<p class="fh-easy-notice">${esc(txEasy('easyModeNotice'))}</p>`
+    + card(txEasy('easyModeNextStepsTitle'), `<ol class="fh-easy-list">${steps}</ol>`)
+    + card(txEasy('easyModeWarningsTitle'), `<ul class="fh-easy-list">${warns}</ul>`)
+    + card(txEasy('easyModeAskAtOfficeTitle'), `${isKo ? '' : `<p class="fh-easy-hint">${esc(txEasy('easyModeAskAtOfficeShowKo'))}</p>`}<ul class="fh-easy-list fh-easy-ask">${asks}</ul>`)
+    + card(txEasy('easyModeOfficialSourceTitle'), `<p>${esc(txEasy('easyModeOfficialSourceBody'))}</p><p>${esc(txEasy('easyModeSourceReminder'))}</p>`);
+}
+
+function renderEasyToggle() {
+  const wrap = document.getElementById('fhViewToggle');
+  const btns = document.getElementById('fhViewBtns');
+  if (!wrap || !btns || !EASY_I18N.ready) return;
+  const panel = document.getElementById('fhStep6');
+  const easyOn = !!(panel && panel.classList.contains('fh-mode-easy'));
+  const mk = (mode, key) => {
+    const on = (mode === 'easy') === easyOn;
+    return `<button type="button" class="fh-view-btn${on ? ' selected' : ''}" data-fh-view="${mode}" role="tab" aria-selected="${on ? 'true' : 'false'}">${esc(txEasy(key))}</button>`;
+  };
+  btns.setAttribute('aria-label', txEasy('easyModeToggleAria'));
+  btns.innerHTML = mk('standard', 'easyModeStandard') + mk('easy', 'easyModeEasy');
+  wrap.hidden = false;
+}
+
+async function setupEasyMode() {
+  await loadEasyModeI18n();
+  renderEasyOutput();
+  renderEasyToggle();
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -3072,6 +3180,25 @@ document.addEventListener('DOMContentLoaded', function () {
   renderPicker();
   const autoSelected = initURLParams();
   if (!autoSelected) showPicker();
+
+  // Easy Mode: load shared packs, render the plain-language panel + toggle, and
+  // wire the per-view switch. Re-load + re-render when the UI language changes
+  // (the language button updates localStorage before this listener fires).
+  setupEasyMode();
+  document.addEventListener('click', function (e) {
+    const b = e.target.closest && e.target.closest('[data-fh-view]');
+    if (!b) return;
+    const panel = document.getElementById('fhStep6');
+    if (!panel) return;
+    panel.classList.toggle('fh-mode-easy', b.dataset.fhView === 'easy');
+    panel.querySelectorAll('.fh-view-btn').forEach(function (x) {
+      const on = x.dataset.fhView === b.dataset.fhView;
+      x.classList.toggle('selected', on);
+      x.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  });
+  const langBtn = document.getElementById('fhLangBtn');
+  if (langBtn) langBtn.addEventListener('click', function () { setupEasyMode(); });
 
   document.getElementById('fhDocChange').addEventListener('click', showPicker);
   document.getElementById('fhDownloadBtn').addEventListener('click', () => {
