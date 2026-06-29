@@ -1,0 +1,191 @@
+/* Visable by Paradiso · Aurora Mesh hero background
+   -------------------------------------------------
+   Additive landing-only visual layer from the Figma workspace:
+   https://www.figma.com/design/uvBtkjmzzceqRZzytvX8ZM
+
+   This file is intentionally selector-light and reversible. It does not touch
+   result, document, source, or modal surfaces. Those are reading surfaces, not
+   a place to make the user's phone cosplay as a space heater.
+*/
+
+:root {
+  --visable-blue: #4E5FBA;
+  --visable-blue-deep: #2F3E8F;
+  --visable-blue-ink: #6872A6;
+  --visable-cream: #FFF9EF;
+  --visable-paper: #FCFAF5;
+  --visable-mint: #7DD8B8;
+  --visable-coral: #FF6B5B;
+  --visable-emerald: #0EA37B;
+  --visable-emerald-deep: #085E48;
+  --visable-ink: #0E1F1A;
+  --visable-line: #C9BFA5;
+  --visable-aurora-mx: 0px;
+  --visable-aurora-my: 0px;
+  --visable-aurora-scroll: 0;
+}
+
+/* The layer is injected by assets/js/visable-aurora-hero.js. */
+.visable-aurora-hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+  border-radius: inherit;
+  contain: paint;
+  background:
+    radial-gradient(circle at 72% 12%, rgba(78, 95, 186, 0.10), transparent 32%),
+    radial-gradient(circle at 78% 60%, rgba(125, 216, 184, 0.12), transparent 34%),
+    linear-gradient(135deg, var(--visable-cream) 0%, var(--visable-paper) 60%, rgba(244, 238, 224, 0.92) 100%);
+}
+
+.visable-aurora-hero-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.085;
+  background-image:
+    radial-gradient(circle, rgba(14, 31, 26, 0.55) 0 1px, transparent 1.4px);
+  background-size: 19px 19px;
+  mix-blend-mode: multiply;
+}
+
+.visable-aurora-blob {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  filter: blur(72px);
+  opacity: 0.74;
+  transform: translate3d(var(--visable-aurora-mx), var(--visable-aurora-my), 0);
+  transition: transform 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+.visable-aurora-blob--blue {
+  width: min(48vw, 680px);
+  height: min(48vw, 680px);
+  left: 44%;
+  top: -20%;
+  background: rgba(78, 95, 186, 0.24);
+  transform: translate3d(calc(var(--visable-aurora-mx) * 1.05), calc(var(--visable-aurora-my) * 0.8), 0);
+}
+
+.visable-aurora-blob--mint {
+  width: min(42vw, 560px);
+  height: min(42vw, 560px);
+  right: 6%;
+  top: 28%;
+  background: rgba(125, 216, 184, 0.22);
+  transform: translate3d(calc(var(--visable-aurora-mx) * -0.75), calc(var(--visable-aurora-my) * 1.15), 0);
+}
+
+.visable-aurora-blob--coral {
+  width: min(31vw, 420px);
+  height: min(31vw, 420px);
+  left: 14%;
+  bottom: -13%;
+  background: rgba(255, 107, 91, 0.12);
+  transform: translate3d(calc(var(--visable-aurora-mx) * 0.45), calc(var(--visable-aurora-scroll) * -10px), 0);
+}
+
+.visable-aurora-blob--emerald {
+  width: min(22vw, 280px);
+  height: min(22vw, 280px);
+  right: 12%;
+  bottom: 11%;
+  background: rgba(14, 163, 123, 0.16);
+  transform: translate3d(calc(var(--visable-aurora-mx) * -0.55), calc(var(--visable-aurora-my) * 0.55), 0);
+}
+
+.visable-aurora-mesh {
+  position: absolute;
+  inset: 7% 2% 3% 5%;
+  opacity: 0.16;
+  background-image:
+    linear-gradient(112deg, transparent 0 46%, rgba(78, 95, 186, 0.55) 47%, transparent 48% 100%),
+    linear-gradient(78deg, transparent 0 48%, rgba(201, 191, 165, 0.55) 49%, transparent 50% 100%);
+  background-size: 118px 100%, 154px 100%;
+  transform: translate3d(calc(var(--visable-aurora-mx) * 0.18), 0, 0);
+}
+
+/* Keep existing hero content above the decorative layer without relying on a
+   brittle list of child selectors. */
+header#hero,
+#hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+
+#hero > :not(.visable-aurora-hero-bg) {
+  position: relative;
+  z-index: 1;
+}
+
+body:not(.landing) .visable-aurora-hero-bg,
+body.searching .visable-aurora-hero-bg,
+body.searched .visable-aurora-hero-bg {
+  display: none;
+}
+
+[data-theme="dark"] .visable-aurora-hero-bg {
+  background:
+    radial-gradient(circle at 72% 12%, rgba(78, 95, 186, 0.24), transparent 34%),
+    radial-gradient(circle at 78% 60%, rgba(52, 212, 168, 0.18), transparent 38%),
+    linear-gradient(135deg, #0B2A24 0%, #113B32 68%, #172F38 100%);
+}
+
+[data-theme="dark"] .visable-aurora-hero-bg::after {
+  opacity: 0.10;
+  mix-blend-mode: screen;
+  background-image: radial-gradient(circle, rgba(243, 238, 223, 0.42) 0 1px, transparent 1.4px);
+}
+
+[data-theme="dark"] .visable-aurora-blob--blue { background: rgba(78, 95, 186, 0.30); }
+[data-theme="dark"] .visable-aurora-blob--mint { background: rgba(52, 212, 168, 0.22); }
+[data-theme="dark"] .visable-aurora-blob--coral { background: rgba(255, 139, 122, 0.12); }
+[data-theme="dark"] .visable-aurora-blob--emerald { background: rgba(52, 212, 168, 0.18); }
+
+@media (max-width: 720px) {
+  .visable-aurora-hero-bg {
+    background:
+      radial-gradient(circle at 62% 10%, rgba(78, 95, 186, 0.14), transparent 45%),
+      radial-gradient(circle at 82% 56%, rgba(125, 216, 184, 0.14), transparent 42%),
+      linear-gradient(160deg, var(--visable-cream), var(--visable-paper));
+  }
+  .visable-aurora-blob {
+    filter: blur(54px);
+  }
+  .visable-aurora-blob--coral,
+  .visable-aurora-blob--emerald,
+  .visable-aurora-mesh {
+    display: none;
+  }
+  .visable-aurora-blob--blue {
+    width: 78vw;
+    height: 78vw;
+    left: 32%;
+    top: -13%;
+  }
+  .visable-aurora-blob--mint {
+    width: 70vw;
+    height: 70vw;
+    right: -20%;
+    top: 28%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --visable-aurora-mx: 0px !important;
+    --visable-aurora-my: 0px !important;
+    --visable-aurora-scroll: 0 !important;
+  }
+  .visable-aurora-blob,
+  .visable-aurora-mesh {
+    transition: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+}
