@@ -1584,22 +1584,22 @@ select:focus-visible {
         // sink so Chinese/English shells don't show Korean status text. zh-TW
         // reuses zh and is converted by zh-traditional.js.
         const STATUS_I18N = {
-            '시스템 대기 중': { en: 'System ready', zh: '系统待机中' },
-            '매뉴얼 DB 로딩 중...': { en: 'Loading manual DB...', zh: '正在加载手册数据库…' },
-            '분석 준비 완료': { en: 'Ready to analyze', zh: '分析准备完成' },
-            '답변 생성 중...': { en: 'Generating answer...', zh: '正在生成答复…' },
-            '분석 완료': { en: 'Analysis complete', zh: '分析完成' },
-            '표시 오류 — 재시도 요망': { en: 'Display error — please retry', zh: '显示错误 — 请重试' },
-            '응답 없음 — 재시도 요망': { en: 'No response — please retry', zh: '无响应 — 请重试' },
-            '법령 분석 및 데이터 맵핑 중...': { en: 'Analyzing law and mapping data...', zh: '正在进行法令分析与数据映射…' },
-            '오류 발생 — 재시도 요망': { en: 'An error occurred — please retry', zh: '发生错误 — 请重试' }
+            '시스템 대기 중': { en: 'System ready', zh: '系统待机中', ja: 'システム待機中', vi: 'Hệ thống sẵn sàng', tl: 'Handa ang sistema', id: 'Sistem siap', ru: 'Система готова', fr: 'Système prêt', es: 'Sistema listo', ar: 'النظام جاهز', de: 'System bereit' },
+            '매뉴얼 DB 로딩 중...': { en: 'Loading manual DB...', zh: '正在加载手册数据库…', ja: 'マニュアルDBを読み込み中…', vi: 'Đang tải cơ sở dữ liệu sổ tay…', tl: 'Nilo-load ang manwal na DB…', id: 'Memuat basis data manual…', ru: 'Загрузка базы данных руководств…', fr: 'Chargement de la base de données des manuels…', es: 'Cargando la base de datos de manuales…', ar: 'جارٍ تحميل قاعدة بيانات الأدلة…', de: 'Handbuch-Datenbank wird geladen…' },
+            '분석 준비 완료': { en: 'Ready to analyze', zh: '分析准备完成', ja: '分析の準備完了', vi: 'Sẵn sàng phân tích', tl: 'Handa nang suriin', id: 'Siap menganalisis', ru: 'Готово к анализу', fr: 'Prêt à analyser', es: 'Listo para analizar', ar: 'جاهز للتحليل', de: 'Bereit zur Analyse' },
+            '답변 생성 중...': { en: 'Generating answer...', zh: '正在生成答复…', ja: '回答を生成中…', vi: 'Đang tạo câu trả lời…', tl: 'Bumubuo ng sagot…', id: 'Membuat jawaban…', ru: 'Формирование ответа…', fr: 'Génération de la réponse…', es: 'Generando respuesta…', ar: 'جارٍ إنشاء الإجابة…', de: 'Antwort wird erstellt…' },
+            '분석 완료': { en: 'Analysis complete', zh: '分析完成', ja: '分析完了', vi: 'Phân tích hoàn tất', tl: 'Tapos na ang pagsusuri', id: 'Analisis selesai', ru: 'Анализ завершён', fr: 'Analyse terminée', es: 'Análisis completado', ar: 'اكتمل التحليل', de: 'Analyse abgeschlossen' },
+            '표시 오류 — 재시도 요망': { en: 'Display error — please retry', zh: '显示错误 — 请重试', ja: '表示エラー — 再試行してください', vi: 'Lỗi hiển thị — vui lòng thử lại', tl: 'Error sa pagpapakita — pakisubukang muli', id: 'Galat tampilan — silakan coba lagi', ru: 'Ошибка отображения — повторите попытку', fr: "Erreur d'affichage — veuillez réessayer", es: 'Error de visualización — vuelva a intentarlo', ar: 'خطأ في العرض — يرجى إعادة المحاولة', de: 'Anzeigefehler — bitte erneut versuchen' },
+            '응답 없음 — 재시도 요망': { en: 'No response — please retry', zh: '无响应 — 请重试', ja: '応答なし — 再試行してください', vi: 'Không có phản hồi — vui lòng thử lại', tl: 'Walang tugon — pakisubukang muli', id: 'Tidak ada respons — silakan coba lagi', ru: 'Нет ответа — повторите попытку', fr: 'Aucune réponse — veuillez réessayer', es: 'Sin respuesta — vuelva a intentarlo', ar: 'لا توجد استجابة — يرجى إعادة المحاولة', de: 'Keine Antwort — bitte erneut versuchen' },
+            '법령 분석 및 데이터 맵핑 중...': { en: 'Analyzing law and mapping data...', zh: '正在进行法令分析与数据映射…', ja: '法令分析とデータ照合中…', vi: 'Đang phân tích pháp luật và ánh xạ dữ liệu…', tl: 'Sinusuri ang batas at minamapa ang datos…', id: 'Menganalisis hukum dan memetakan data…', ru: 'Анализ законодательства и сопоставление данных…', fr: 'Analyse de la loi et mise en correspondance des données…', es: 'Analizando la ley y asignando datos…', ar: 'جارٍ تحليل القانون ومطابقة البيانات…', de: 'Recht wird analysiert und Daten werden zugeordnet…' },
+            '오류 발생 — 재시도 요망': { en: 'An error occurred — please retry', zh: '发生错误 — 请重试', ja: 'エラーが発生しました — 再試行してください', vi: 'Đã xảy ra lỗi — vui lòng thử lại', tl: 'May naganap na error — pakisubukang muli', id: 'Terjadi kesalahan — silakan coba lagi', ru: 'Произошла ошибка — повторите попытку', fr: "Une erreur s'est produite — veuillez réessayer", es: 'Se produjo un error — vuelva a intentarlo', ar: 'حدث خطأ — يرجى إعادة المحاولة', de: 'Ein Fehler ist aufgetreten — bitte erneut versuchen' }
         };
         function setStatus(msg) {
             const statusEl = document.getElementById('systemStatus');
             if (!statusEl) return;
             const m = STATUS_I18N[msg];
             const lang = (typeof getChosenLang === 'function' && getChosenLang()) || 'ko';
-            statusEl.textContent = m ? tt(lang, { ko: msg, en: m.en, zh: m.zh }) : msg;
+            statusEl.textContent = m ? tt(lang, Object.assign({ ko: msg }, m)) : msg;
         }
 
         function showToast(message) {
@@ -1868,12 +1868,13 @@ select:focus-visible {
         // Home). Lets a Simplified/Traditional Chinese selection drive the answer
         // language and resolve the Simplified-vs-Traditional ambiguity that short
         // Chinese text cannot. 'zh-CN' | 'zh-TW' | 'en' | 'ko' | ''.
+        const SUPPORTED_LANGS = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
         function getChosenLang() {
             try {
                 const u = (new URLSearchParams(location.search).get('lang') || '').trim();
-                if (u === 'zh-CN' || u === 'zh-TW' || u === 'en' || u === 'ko') return u;
+                if (SUPPORTED_LANGS.indexOf(u) !== -1) return u;
                 const s = (localStorage.getItem('paradiso:language') || '').trim();
-                if (s === 'zh-CN' || s === 'zh-TW' || s === 'en' || s === 'ko') return s;
+                if (SUPPORTED_LANGS.indexOf(s) !== -1) return s;
             } catch (e) {}
             return '';
         }
@@ -1883,8 +1884,19 @@ select:focus-visible {
             if (!text) return chosen || 'ko';
             // Hangul wins first (Korean text often mixes in Han/Hanja).
             if (/[가-힯ᄀ-ᇿ㄰-㆏]/.test(text)) return 'ko';
-            // Han ideographs without Hangul → Chinese; honor the chosen variant.
-            if (/[一-鿿]/.test(text)) return chosen && chosen.indexOf('zh') === 0 ? chosen : chosenZh;
+            // Han ideographs without Hangul → Chinese, unless the user explicitly
+            // chose Japanese (which also uses Han kanji); honor the chosen variant.
+            if (/[一-鿿]/.test(text)) {
+                if (chosen === 'ja') return 'ja';
+                return chosen && chosen.indexOf('zh') === 0 ? chosen : chosenZh;
+            }
+            // Japanese kana → Japanese regardless of the chosen language.
+            if (/[ぁ-ゟ゠-ヿ]/.test(text)) return 'ja';
+            // For the chosen non-Latin-default locales (ja, vi, tl, id, ru, fr, es,
+            // ar, de) keep replies in that locale so they stay locked in. Russian
+            // and Arabic carry their own scripts; the Latin-script locales would
+            // otherwise be misread as English, so honor the explicit choice.
+            if (chosen && chosen !== 'ko' && chosen !== 'en' && chosen.indexOf('zh') !== 0) return chosen;
             if (/[A-Za-z]/.test(text)) return 'en';
             return chosen || 'ko';
         }
@@ -1930,30 +1942,94 @@ select:focus-visible {
             const ref = [s.visaCode, s.label].filter(Boolean).join(' · ');
             if (String(lang).indexOf('zh') === 0)
                 return '[已选情景] 用户在签证详情页选择某一情景后打开了 Waymaker：' + ref + '（程序键：' + s.procedureKey + '，变体 ID：' + s.variantId + '）。请将其视为最相关的情景，并据此整理所需材料和注意事项。但这只是供参考的选择，并非对资格·许可的认定；请勿断定是否最终满足条件，并建议向 HiKorea、1345 或管辖出入境·外国人机关确认。仅传递了识别信息，不包含清单·个人信息。';
-            return lang === 'en'
-                ? '[Selected scenario] The user opened Waymaker from a selected scenario on the visa detail page: ' + ref + ' (procedure key: ' + s.procedureKey + ', variant id: ' + s.variantId + '). Treat this as the most relevant scenario and tailor required documents and cautions to it. This is a needs-review reference selection, not an eligibility or approval determination; do not assert final sufficiency and recommend confirming with HiKorea, 1345, or the competent immigration office. Only these identifiers were shared — no checklist or personal data.'
-                : '[선택한 시나리오] 사용자가 비자 상세 페이지에서 선택한 시나리오로 Waymaker를 열었습니다: ' + ref + ' (절차 키: ' + s.procedureKey + ', 변형 ID: ' + s.variantId + '). 이 시나리오를 가장 관련성 높은 상황으로 보고 필요한 서류와 주의사항을 그에 맞게 정리하십시오. 단, 이는 참고용 선택이며 자격·허가 여부를 단정하는 것이 아닙니다. 최종 충족 여부를 단정하지 말고 HiKorea, 1345 또는 관할 출입국·외국인관서 확인을 안내하십시오. 식별 정보만 전달되었으며 체크리스트·개인정보는 포함되지 않았습니다.';
+            if (lang !== 'ko')
+                return '[Selected scenario] The user opened Waymaker from a selected scenario on the visa detail page: ' + ref + ' (procedure key: ' + s.procedureKey + ', variant id: ' + s.variantId + '). Treat this as the most relevant scenario and tailor required documents and cautions to it. This is a needs-review reference selection, not an eligibility or approval determination; do not assert final sufficiency and recommend confirming with HiKorea, 1345, or the competent immigration office. Only these identifiers were shared — no checklist or personal data.';
+            return '[선택한 시나리오] 사용자가 비자 상세 페이지에서 선택한 시나리오로 Waymaker를 열었습니다: ' + ref + ' (절차 키: ' + s.procedureKey + ', 변형 ID: ' + s.variantId + '). 이 시나리오를 가장 관련성 높은 상황으로 보고 필요한 서류와 주의사항을 그에 맞게 정리하십시오. 단, 이는 참고용 선택이며 자격·허가 여부를 단정하는 것이 아닙니다. 최종 충족 여부를 단정하지 말고 HiKorea, 1345 또는 관할 출입국·외국인관서 확인을 안내하십시오. 식별 정보만 전달되었으며 체크리스트·개인정보는 포함되지 않았습니다.';
         }
 
         function nationalityContextLine(lang) {
             if (AI_DOMAIN !== 'nationality') return '';
             if (String(lang).indexOf('zh') === 0)
                 return '[咨询领域：国籍·归化] 用户来自 Paradiso New Home 国籍平台。请聚焦韩国国籍相关主题（一般/婚姻/家庭关系/特别归化、国籍恢复、国籍判定、复数国籍及不行使外国国籍宣誓、社会融合项目（KIIP）·面试、归化后行政程序），并注意不要将国籍业务与居留资格（签证）程序混淆。请勿断定最终是否许可，并建议向管辖机关确认。';
-            return lang === 'en'
-                ? '[Domain: nationality] The user arrived from the Paradiso New Home nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.'
-                : '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
+            if (lang !== 'ko')
+                return '[Domain: nationality] The user arrived from the Paradiso New Home nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.';
+            return '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
         }
 
         function interviewPrepContextLine(lang) {
             if (AI_MODE !== 'naturalization_interview_prep') return '';
             if (String(lang).indexOf('zh') === 0)
                 return '[模式：归化面试准备] 用户前来练习归化面试与基本素养学习。请作为以文字为主的面试教练：审阅练习答复，提出一个更自然的示例答复、一个后续问题和一条学习提示。这是练习，并非实际审查 —— 切勿预测合格·不合格，切勿保证许可，也切勿声称练习题是官方历年真题。';
-            return lang === 'en'
-                ? '[Mode: naturalization interview prep] The user arrived to practice for the naturalization interview and basic-knowledge study. Act as a text-first interview coach: review practice answers, suggest a more natural example answer, give one follow-up question and a study tip. This is practice, not official adjudication — never predict pass/fail, never guarantee approval, and never claim a practice question is an official past question.'
-                : '[모드: 귀화면접 준비] 사용자는 귀화면접과 기본소양 학습을 연습하러 왔습니다. 텍스트 기반 면접 코치로서 연습 답변을 검토하고, 더 자연스러운 예시 답변과 후속 질문 하나, 학습 팁을 제시하십시오. 이는 연습이며 실제 심사가 아닙니다. 합격·불합격을 예측하지 말고, 허가를 보장하지 말며, 연습 질문을 공식 기출문제라고 말하지 마십시오.';
+            if (lang !== 'ko')
+                return '[Mode: naturalization interview prep] The user arrived to practice for the naturalization interview and basic-knowledge study. Act as a text-first interview coach: review practice answers, suggest a more natural example answer, give one follow-up question and a study tip. This is practice, not official adjudication — never predict pass/fail, never guarantee approval, and never claim a practice question is an official past question.';
+            return '[모드: 귀화면접 준비] 사용자는 귀화면접과 기본소양 학습을 연습하러 왔습니다. 텍스트 기반 면접 코치로서 연습 답변을 검토하고, 더 자연스러운 예시 답변과 후속 질문 하나, 학습 팁을 제시하십시오. 이는 연습이며 실제 심사가 아닙니다. 합격·불합격을 예측하지 말고, 허가를 보장하지 말며, 연습 질문을 공식 기출문제라고 말하지 마십시오.';
         }
 
+        // Per-locale [requirement] / [language lock] / [fallback] instruction sets
+        // for the 9 added locales. Each lock is written natively in its language and
+        // tells the model to answer ONLY in that language; proper nouns, agency
+        // names, law names and visa codes may stay in the original. HiKorea and 1345
+        // are kept verbatim.
+        const ASK_CONTEXT_I18N = {
+            ja: {
+                req: '[要件] 韓国の出入国管理法および実務マニュアルに基づき、利用者の状況を客観的かつ論理的に診断し、必要な提出書類と手続きを明確に提示してください。',
+                lock: '[言語ロック] 利用者は日本語で質問しました。回答は必ず日本語のみで作成し、韓国語・中国語・英語その他の言語は使用しないでください（固有名詞・機関名・法令名・ビザコードは原文のまま可）。',
+                fallback: '[資料が不足する場合] 参考資料が不足していても、検出されたビザコードや主題は認識していることを示し、質問を理解できないかのように応答しないでください。具体的な数値や法的結論を勝手に断定せず、1345 外国人総合案内センター、HiKorea（hikorea.go.kr）または管轄の出入国・外国人官署で最終確認するよう案内してください。'
+            },
+            vi: {
+                req: '[Yêu cầu] Dựa trên Luật Quản lý Xuất nhập cảnh Hàn Quốc và các sổ tay nghiệp vụ, hãy chẩn đoán tình huống của người dùng một cách khách quan và logic, đồng thời trình bày rõ các giấy tờ cần chuẩn bị và quy trình thực hiện.',
+                lock: '[Khóa ngôn ngữ] Người dùng đã hỏi bằng tiếng Việt. Hãy trả lời chỉ bằng tiếng Việt; không dùng tiếng Hàn, tiếng Trung, tiếng Anh hay bất kỳ ngôn ngữ nào khác (tên riêng, tên cơ quan, tên luật và mã visa có thể giữ nguyên bản gốc).',
+                fallback: '[Khi thiếu dữ liệu] Ngay cả khi dữ liệu tham khảo còn thiếu, hãy cho thấy bạn đã nhận diện được mã visa hoặc chủ đề được phát hiện, đừng phản hồi như thể không hiểu câu hỏi. Không tự ý khẳng định con số cụ thể hay kết luận pháp lý, và hãy hướng dẫn người dùng xác nhận cuối cùng với Tổng đài tư vấn cho người nước ngoài 1345, HiKorea (hikorea.go.kr) hoặc cơ quan xuất nhập cảnh có thẩm quyền.'
+            },
+            tl: {
+                req: '[Kinakailangan] Batay sa Korean Immigration Control Act at mga manwal sa praktika, suriin nang obhetibo at lohikal ang sitwasyon ng user, at malinaw na ipakita ang mga kinakailangang dokumento at proseso.',
+                lock: '[Lock ng wika] Nagtanong ang user sa Tagalog. Sumagot lamang sa Tagalog; huwag gumamit ng Korean, Chinese, English o iba pang wika (maaaring manatili sa orihinal ang mga pangngalang pantangi, pangalan ng ahensiya, pangalan ng batas at mga visa code).',
+                fallback: '[Kapag kulang ang datos] Kahit kulang ang sangguniang datos, ipakitang nakilala mo ang natukoy na visa code o paksa, at huwag tumugon na para bang hindi naintindihan ang tanong. Huwag basta magtakda ng partikular na numero o legal na konklusyon, at gabayan ang user na kumpirmahin sa 1345 immigration call center, HiKorea (hikorea.go.kr), o sa may-kapangyarihang immigration office.'
+            },
+            id: {
+                req: '[Persyaratan] Berdasarkan Undang-Undang Pengawasan Imigrasi Korea dan manual praktik, diagnosislah situasi pengguna secara objektif dan logis, serta sampaikan dengan jelas dokumen yang diperlukan dan prosedurnya.',
+                lock: '[Kunci bahasa] Pengguna bertanya dalam bahasa Indonesia. Jawablah hanya dalam bahasa Indonesia; jangan gunakan bahasa Korea, Tionghoa, Inggris, atau bahasa lain (nama diri, nama lembaga, nama undang-undang, dan kode visa boleh tetap dalam bahasa aslinya).',
+                fallback: '[Saat data kurang] Meskipun data rujukan kurang, tunjukkan bahwa Anda mengenali kode visa atau topik yang terdeteksi, dan jangan merespons seolah pertanyaan tidak dipahami. Jangan menetapkan angka spesifik atau kesimpulan hukum secara sepihak, dan arahkan pengguna untuk mengonfirmasi akhir ke pusat layanan orang asing 1345, HiKorea (hikorea.go.kr), atau kantor imigrasi yang berwenang.'
+            },
+            ru: {
+                req: '[Требование] На основании Закона Республики Корея об иммиграционном контроле и практических руководств объективно и логично оцените ситуацию пользователя и чётко перечислите необходимые документы и порядок действий.',
+                lock: '[Фиксация языка] Пользователь задал вопрос на русском языке. Отвечайте только на русском языке; не используйте корейский, китайский, английский или другие языки (имена собственные, названия учреждений, названия законов и коды виз можно оставить в оригинале).',
+                fallback: '[При нехватке данных] Даже если справочных данных недостаточно, покажите, что распознали обнаруженный код визы или тему, и не отвечайте так, будто вопрос не понят. Не утверждайте конкретные числа или правовые выводы произвольно и порекомендуйте пользователю окончательно уточнить информацию в центре обслуживания иностранцев 1345, на HiKorea (hikorea.go.kr) или в компетентном иммиграционном управлении.'
+            },
+            fr: {
+                req: "[Exigence] Sur la base de la loi coréenne sur le contrôle de l'immigration et des manuels pratiques, diagnostiquez la situation de l'utilisateur de manière objective et logique, et présentez clairement les documents requis et les démarches.",
+                lock: "[Verrouillage de la langue] L'utilisateur a posé sa question en français. Répondez uniquement en français ; n'utilisez ni le coréen, ni le chinois, ni l'anglais, ni aucune autre langue (les noms propres, les noms d'organismes, les intitulés de lois et les codes de visa peuvent rester dans leur langue d'origine).",
+                fallback: "[En cas de données insuffisantes] Même si les données de référence sont insuffisantes, montrez que vous avez reconnu le code de visa ou le sujet détecté et ne répondez pas comme si la question n'était pas comprise. N'affirmez pas arbitrairement de chiffres précis ni de conclusions juridiques, et invitez l'utilisateur à confirmer auprès du centre d'appel pour étrangers 1345, de HiKorea (hikorea.go.kr) ou du bureau d'immigration compétent."
+            },
+            es: {
+                req: '[Requisito] Con base en la Ley de Control de Inmigración de Corea y los manuales prácticos, diagnostique la situación del usuario de forma objetiva y lógica, y presente con claridad los documentos necesarios y los trámites.',
+                lock: '[Bloqueo de idioma] El usuario preguntó en español. Responda únicamente en español; no use coreano, chino, inglés ni ningún otro idioma (los nombres propios, los nombres de organismos, los nombres de leyes y los códigos de visado pueden mantenerse en su idioma original).',
+                fallback: '[Si faltan datos] Aunque los datos de referencia sean insuficientes, muestre que ha reconocido el código de visado o el tema detectado y no responda como si no entendiera la pregunta. No afirme cifras concretas ni conclusiones legales de forma arbitraria, y recomiende al usuario confirmar finalmente con el centro de atención al extranjero 1345, HiKorea (hikorea.go.kr) o la oficina de inmigración competente.'
+            },
+            ar: {
+                req: '[المتطلب] استنادًا إلى قانون مراقبة الهجرة الكوري والأدلة العملية، شخّص حالة المستخدم بموضوعية ومنطق، واعرض بوضوح المستندات المطلوبة والإجراءات.',
+                lock: '[قفل اللغة] طرح المستخدم سؤاله بالعربية. أجب بالعربية فقط؛ لا تستخدم الكورية أو الصينية أو الإنجليزية أو أي لغة أخرى (يجوز إبقاء أسماء الأعلام وأسماء الجهات وأسماء القوانين ورموز التأشيرات بلغتها الأصلية).',
+                fallback: '[عند نقص البيانات] حتى إذا كانت البيانات المرجعية غير كافية، أظهر أنك تعرّفت على رمز التأشيرة أو الموضوع المكتشف، ولا ترد وكأنك لم تفهم السؤال. لا تجزم بأرقام محددة أو استنتاجات قانونية من تلقاء نفسك، وانصح المستخدم بالتأكيد النهائي لدى مركز خدمة الأجانب 1345 أو HiKorea (hikorea.go.kr) أو مكتب الهجرة المختص.'
+            },
+            de: {
+                req: '[Anforderung] Diagnostizieren Sie die Situation des Nutzers auf Grundlage des koreanischen Einwanderungskontrollgesetzes und der Praxishandbücher objektiv und logisch und stellen Sie die erforderlichen Unterlagen und Verfahren klar dar.',
+                lock: '[Sprachsperre] Der Nutzer hat auf Deutsch gefragt. Antworten Sie ausschließlich auf Deutsch; verwenden Sie kein Koreanisch, Chinesisch, Englisch oder eine andere Sprache (Eigennamen, Behördennamen, Gesetzesnamen und Visumcodes dürfen in der Originalsprache bleiben).',
+                fallback: '[Bei unzureichenden Daten] Auch wenn die Referenzdaten unzureichend sind, zeigen Sie, dass Sie den erkannten Visumcode oder das Thema erkannt haben, und antworten Sie nicht so, als wäre die Frage nicht verstanden worden. Behaupten Sie keine konkreten Zahlen oder rechtlichen Schlussfolgerungen eigenmächtig und empfehlen Sie dem Nutzer, dies abschließend beim Ausländer-Servicecenter 1345, bei HiKorea (hikorea.go.kr) oder beim zuständigen Einwanderungsamt zu bestätigen.'
+            }
+        };
+
         function buildAskContext(lang) {
+            if (ASK_CONTEXT_I18N[lang]) {
+                const c = ASK_CONTEXT_I18N[lang];
+                return [
+                    c.req,
+                    c.lock,
+                    c.fallback,
+                    nationalityContextLine(lang),
+                    interviewPrepContextLine(lang),
+                    scenarioContextLine(lang)
+                ].filter(Boolean).join('\n');
+            }
             if (lang === 'zh-CN' || lang === 'zh-TW') {
                 const trad = lang === 'zh-TW';
                 const scriptLock = trad
@@ -2158,6 +2234,11 @@ select:focus-visible {
             if (norm === 'zh-tw' || norm === 'zh-hant' || norm === 'zh-hk' || norm === 'zh-mo') {
                 return map.zhHant != null ? map.zhHant : (map.zh != null ? map.zh : map.ko);
             }
+            // The 9 added locales: resolve by exact code, fall back to ko if a map
+            // is missing the entry (so nothing renders blank).
+            if (['ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'].indexOf(norm) !== -1) {
+                return map[norm] != null ? map[norm] : map.ko;
+            }
             return map.ko;
         }
 
@@ -2167,30 +2248,49 @@ select:focus-visible {
             ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
             en: 'Paradiso provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
             zh: 'Paradiso 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
-            zhHant: 'Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
+            zhHant: 'Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。',
+            ja: '本サービスは公開された法令・マニュアルに基づく参考用の情報提供ツールであり、法的助言や民願代行ではありません。最終的な判断は管轄の出入国・外国人庁、HiKorea、1345、または有資格の専門家に確認してください。',
+            vi: 'Paradiso cung cấp thông tin tham khảo dựa trên luật và sổ tay công khai, không phải là tư vấn pháp lý hay dịch vụ nộp hồ sơ thay. Hãy xác nhận quyết định cuối cùng với cơ quan xuất nhập cảnh có thẩm quyền, HiKorea, 1345 hoặc chuyên gia đủ năng lực.',
+            tl: 'Nagbibigay ang Paradiso ng sangguniang impormasyong batay sa pampublikong batas/manwal at hindi ito legal na payo o serbisyo sa paghahain. Kumpirmahin ang panghuling desisyon sa may-kapangyarihang immigration office, HiKorea, 1345, o isang kwalipikadong propesyonal.',
+            id: 'Paradiso menyediakan informasi rujukan berbasis hukum/manual publik dan bukan nasihat hukum atau jasa pengurusan. Konfirmasikan keputusan akhir kepada kantor imigrasi yang berwenang, HiKorea, 1345, atau profesional yang memenuhi syarat.',
+            ru: 'Paradiso предоставляет справочную информацию на основе общедоступных законов и руководств и не является юридической консультацией или услугой по подаче документов. Окончательные решения подтверждайте в компетентном иммиграционном управлении, на HiKorea, по телефону 1345 или у квалифицированного специалиста.',
+            fr: "Paradiso fournit des informations de référence fondées sur les lois et manuels publics et ne constitue ni un conseil juridique ni un service de dépôt de dossiers. Confirmez les décisions finales auprès du bureau d'immigration compétent, de HiKorea, du 1345 ou d'un professionnel qualifié.",
+            es: 'Paradiso ofrece información de referencia basada en leyes y manuales públicos y no constituye asesoramiento jurídico ni un servicio de gestión de trámites. Confirme las decisiones finales con la oficina de inmigración competente, HiKorea, el 1345 o un profesional cualificado.',
+            ar: 'يوفّر Paradiso معلومات مرجعية مستندة إلى القوانين والأدلة العامة، وهو ليس استشارة قانونية ولا خدمة لتقديم المعاملات. أكّد القرارات النهائية لدى مكتب الهجرة المختص أو HiKorea أو 1345 أو مختص مؤهل.',
+            de: 'Paradiso stellt Referenzinformationen auf Grundlage öffentlicher Gesetze und Handbücher bereit und ist weder eine Rechtsberatung noch ein Antragsservice. Bestätigen Sie endgültige Entscheidungen beim zuständigen Einwanderungsamt, bei HiKorea, unter 1345 oder bei einer qualifizierten Fachperson.'
         };
 
         // Static chat-shell chrome in four languages. Traditional (zh-TW) reuses
         // the zh (Simplified) text and is converted to Traditional by
         // zh-traditional.js (activated on load for zh-TW), matching index.html.
         const SHELL_CHROME = {
-            titleSub: { ko: '공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345', en: 'Guidance based on public law/manuals · Confirm finally with HiKorea·1345', zh: '基于公开法令·手册的指引 · 最终判断请向 HiKorea·1345 确认' },
-            refChip: { ko: '참고용', en: 'Reference', zh: '仅供参考' },
-            systemStatus: { ko: '시스템 대기 중', en: 'System ready', zh: '系统待机中' },
+            backToMain: { ko: '메인 화면으로 돌아가기', en: 'Back to main', zh: '返回主页', ja: 'メイン画面に戻る', vi: 'Quay lại trang chính', tl: 'Bumalik sa pangunahing screen', id: 'Kembali ke layar utama', ru: 'Вернуться на главную', fr: "Retour à l'accueil", es: 'Volver a la pantalla principal', ar: 'العودة إلى الشاشة الرئيسية', de: 'Zurück zum Hauptbildschirm' },
+            titleSub: { ko: '공개 법령·매뉴얼 기반 안내 · 최종 판단은 HiKorea·1345', en: 'Guidance based on public law/manuals · Confirm finally with HiKorea·1345', zh: '基于公开法令·手册的指引 · 最终判断请向 HiKorea·1345 确认', ja: '公開法令・マニュアルに基づく案内 · 最終判断は HiKorea・1345 で確認', vi: 'Hướng dẫn dựa trên luật/sổ tay công khai · Xác nhận cuối cùng với HiKorea·1345', tl: 'Gabay batay sa pampublikong batas/manwal · Kumpirmahin sa HiKorea·1345', id: 'Panduan berbasis hukum/manual publik · Konfirmasi akhir ke HiKorea·1345', ru: 'Рекомендации на основе публичных законов/руководств · Окончательно уточняйте на HiKorea·1345', fr: 'Conseils fondés sur lois/manuels publics · Confirmation finale via HiKorea·1345', es: 'Orientación basada en leyes/manuales públicos · Confirme finalmente con HiKorea·1345', ar: 'إرشادات مستندة إلى القوانين/الأدلة العامة · التأكيد النهائي عبر HiKorea·1345', de: 'Hinweise auf Basis öffentlicher Gesetze/Handbücher · Abschließend bei HiKorea·1345 bestätigen' },
+            refChip: { ko: '참고용', en: 'Reference', zh: '仅供参考', ja: '参考用', vi: 'Tham khảo', tl: 'Sanggunian', id: 'Referensi', ru: 'Справочно', fr: 'Référence', es: 'Referencia', ar: 'للمرجعية', de: 'Referenz' },
+            systemStatus: { ko: '시스템 대기 중', en: 'System ready', zh: '系统待机中', ja: 'システム待機中', vi: 'Hệ thống sẵn sàng', tl: 'Handa ang sistema', id: 'Sistem siap', ru: 'Система готова', fr: 'Système prêt', es: 'Sistema listo', ar: 'النظام جاهز', de: 'System bereit' },
             welcome: {
                 ko: '안녕하세요. <strong>Waymaker by Paradiso</strong>는 공개 법령·매뉴얼을 기반으로 비자·체류 절차를 정리해 드리는 참고용 도우미입니다.<br><br>국적, 현재 체류자격, 상황을 가능한 한 상세히 적어주시면, 관련 출처를 함께 안내해 드립니다.<br><br>답변은 법적 효력을 갖지 아니하며, 최종 판단은 HiKorea·1345·관할 출입국기관에서 확인하세요.',
                 en: 'Hello. <strong>Waymaker by Paradiso</strong> is a reference helper that organizes visa/residence procedures based on public law and manuals.<br><br>Describe your nationality, current status, and situation in as much detail as possible, and we will point you to the relevant sources.<br><br>Answers have no legal effect; confirm final decisions with HiKorea, 1345, or the competent immigration office.',
-                zh: '您好。<strong>Waymaker by Paradiso</strong> 是一款基于公开法令·手册、为您梳理签证·居留程序的参考助手。<br><br>请尽可能详细地写明您的国籍、当前居留资格和情况，我们会一并为您指引相关出处。<br><br>答复不具法律效力，最终判断请向 HiKorea·1345·管辖出入境机关确认。'
+                zh: '您好。<strong>Waymaker by Paradiso</strong> 是一款基于公开法令·手册、为您梳理签证·居留程序的参考助手。<br><br>请尽可能详细地写明您的国籍、当前居留资格和情况，我们会一并为您指引相关出处。<br><br>答复不具法律效力，最终判断请向 HiKorea·1345·管辖出入境机关确认。',
+                ja: 'こんにちは。<strong>Waymaker by Paradiso</strong> は、公開された法令・マニュアルに基づいてビザ・滞在手続きを整理してご案内する参考用アシスタントです。<br><br>国籍、現在の在留資格、状況をできるだけ詳しくご記入いただければ、関連する出典も併せてご案内します。<br><br>回答に法的効力はありません。最終的な判断は HiKorea・1345・管轄の出入国機関でご確認ください。',
+                vi: 'Xin chào. <strong>Waymaker by Paradiso</strong> là trợ lý tham khảo giúp sắp xếp các thủ tục visa·cư trú dựa trên luật và sổ tay công khai.<br><br>Hãy mô tả quốc tịch, tư cách lưu trú hiện tại và tình huống của bạn càng chi tiết càng tốt, chúng tôi sẽ chỉ dẫn các nguồn liên quan.<br><br>Câu trả lời không có hiệu lực pháp lý; hãy xác nhận quyết định cuối cùng với HiKorea, 1345 hoặc cơ quan xuất nhập cảnh có thẩm quyền.',
+                tl: 'Kumusta. Ang <strong>Waymaker by Paradiso</strong> ay isang sangguniang katulong na nag-aayos ng mga proseso ng visa·paninirahan batay sa pampublikong batas at mga manwal.<br><br>Ilarawan nang detalyado hangga\'t maaari ang inyong nasyonalidad, kasalukuyang status, at sitwasyon, at ituturo namin sa inyo ang mga kaugnay na sanggunian.<br><br>Walang legal na bisa ang mga sagot; kumpirmahin ang panghuling desisyon sa HiKorea, 1345, o sa may-kapangyarihang immigration office.',
+                id: 'Halo. <strong>Waymaker by Paradiso</strong> adalah asisten rujukan yang merapikan prosedur visa·tinggal berdasarkan hukum dan manual publik.<br><br>Jelaskan kewarganegaraan, status izin tinggal saat ini, dan situasi Anda sedetail mungkin, dan kami akan menunjukkan sumber terkait.<br><br>Jawaban tidak memiliki kekuatan hukum; konfirmasikan keputusan akhir ke HiKorea, 1345, atau kantor imigrasi yang berwenang.',
+                ru: 'Здравствуйте. <strong>Waymaker by Paradiso</strong> — это справочный помощник, который упорядочивает визовые процедуры и процедуры пребывания на основе публичных законов и руководств.<br><br>Опишите своё гражданство, текущий статус пребывания и ситуацию как можно подробнее, и мы укажем соответствующие источники.<br><br>Ответы не имеют юридической силы; окончательные решения подтверждайте на HiKorea, по телефону 1345 или в компетентном иммиграционном управлении.',
+                fr: "Bonjour. <strong>Waymaker by Paradiso</strong> est un assistant de référence qui organise les démarches de visa et de séjour à partir des lois et manuels publics.<br><br>Décrivez votre nationalité, votre statut de séjour actuel et votre situation aussi précisément que possible, et nous vous indiquerons les sources pertinentes.<br><br>Les réponses n'ont aucune valeur juridique ; confirmez les décisions finales auprès de HiKorea, du 1345 ou du bureau d'immigration compétent.",
+                es: 'Hola. <strong>Waymaker by Paradiso</strong> es un asistente de referencia que organiza los trámites de visado y residencia a partir de leyes y manuales públicos.<br><br>Describa su nacionalidad, su estatus de residencia actual y su situación con el mayor detalle posible, y le indicaremos las fuentes pertinentes.<br><br>Las respuestas no tienen efecto legal; confirme las decisiones finales con HiKorea, el 1345 o la oficina de inmigración competente.',
+                ar: 'مرحبًا. <strong>Waymaker by Paradiso</strong> مساعد مرجعي ينظّم إجراءات التأشيرة والإقامة استنادًا إلى القوانين والأدلة العامة.<br><br>يرجى وصف جنسيتك ووضع إقامتك الحالي وحالتك بأكبر قدر من التفصيل، وسنرشدك إلى المصادر ذات الصلة.<br><br>الإجابات ليست لها أي أثر قانوني؛ أكّد القرارات النهائية لدى HiKorea أو 1345 أو مكتب الهجرة المختص.',
+                de: 'Hallo. <strong>Waymaker by Paradiso</strong> ist ein Referenzassistent, der Visa- und Aufenthaltsverfahren auf Grundlage öffentlicher Gesetze und Handbücher aufbereitet.<br><br>Beschreiben Sie Ihre Staatsangehörigkeit, Ihren aktuellen Aufenthaltsstatus und Ihre Situation möglichst ausführlich, und wir verweisen Sie auf die einschlägigen Quellen.<br><br>Antworten haben keine rechtliche Wirkung; bestätigen Sie endgültige Entscheidungen bei HiKorea, unter 1345 oder beim zuständigen Einwanderungsamt.'
             },
-            welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题' },
-            msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。' },
-            modeFastSub: { ko: '빠른 답변', en: 'Fast answer', zh: '快速答复' },
-            modeBasicSub: { ko: '기본(권장)', en: 'Standard (recommended)', zh: '标准（推荐）' },
-            inputLabel: { ko: '상황 분석 요청 입력창', en: 'Situation analysis request input', zh: '情况分析请求输入框' },
-            placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……' },
-            sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求' },
-            send: { ko: '전송', en: 'Send', zh: '发送' },
-            quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数' }
+            welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题', ja: '質問例', vi: 'Câu hỏi mẫu', tl: 'Mga halimbawang tanong', id: 'Contoh pertanyaan', ru: 'Примеры вопросов', fr: 'Exemples de questions', es: 'Preguntas de ejemplo', ar: 'أمثلة على الأسئلة', de: 'Beispielfragen' },
+            msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。', ja: 'システムメッセージ · 質問例は入力欄に自動で入力されます。', vi: 'Thông báo hệ thống · Câu hỏi mẫu sẽ tự động điền vào ô nhập.', tl: 'Mensahe ng sistema · Awtomatikong pinupuno ng mga halimbawang tanong ang input box.', id: 'Pesan sistem · Contoh pertanyaan otomatis terisi di kotak input.', ru: 'Системное сообщение · Примеры вопросов автоматически подставляются в поле ввода.', fr: "Message système · Les exemples de questions se remplissent automatiquement dans le champ de saisie.", es: 'Mensaje del sistema · Las preguntas de ejemplo se rellenan automáticamente en el cuadro de entrada.', ar: 'رسالة النظام · تُملأ أمثلة الأسئلة تلقائيًا في حقل الإدخال.', de: 'Systemmeldung · Beispielfragen werden automatisch in das Eingabefeld eingetragen.' },
+            modeFastSub: { ko: '빠른 답변', en: 'Fast answer', zh: '快速答复', ja: '速い回答', vi: 'Trả lời nhanh', tl: 'Mabilis na sagot', id: 'Jawaban cepat', ru: 'Быстрый ответ', fr: 'Réponse rapide', es: 'Respuesta rápida', ar: 'إجابة سريعة', de: 'Schnelle Antwort' },
+            modeBasicSub: { ko: '기본(권장)', en: 'Standard (recommended)', zh: '标准（推荐）', ja: '標準（推奨）', vi: 'Tiêu chuẩn (khuyến nghị)', tl: 'Standard (inirerekomenda)', id: 'Standar (disarankan)', ru: 'Стандартный (рекомендуется)', fr: 'Standard (recommandé)', es: 'Estándar (recomendado)', ar: 'قياسي (موصى به)', de: 'Standard (empfohlen)' },
+            inputLabel: { ko: '상황 분석 요청 입력창', en: 'Situation analysis request input', zh: '情况分析请求输入框', ja: '状況分析リクエスト入力欄', vi: 'Ô nhập yêu cầu phân tích tình huống', tl: 'Input para sa kahilingan ng pagsusuri ng sitwasyon', id: 'Kotak input permintaan analisis situasi', ru: 'Поле ввода запроса на анализ ситуации', fr: "Champ de demande d'analyse de situation", es: 'Cuadro de solicitud de análisis de situación', ar: 'حقل طلب تحليل الحالة', de: 'Eingabefeld für Anfrage zur Situationsanalyse' },
+            placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……', ja: '例：米国籍、梨泰院在住、D-10ビザですが E-7 就労を希望しています…', vi: 'ví dụ: quốc tịch Mỹ, sống ở Itaewon, đang ở visa D-10 và muốn chuyển sang việc làm E-7…', tl: 'hal.: US national, nakatira sa Itaewon, nasa D-10 visa at nais lumipat sa E-7 na trabaho…', id: 'mis.: warga negara AS, tinggal di Itaewon, dengan visa D-10 dan ingin beralih ke pekerjaan E-7…', ru: 'напр.: гражданин США, живу в Итхэвоне, виза D-10, хочу перейти на трудоустройство E-7…', fr: "ex. : ressortissant américain, vivant à Itaewon, sous visa D-10 et souhaitant passer à un emploi E-7…", es: 'p. ej.: nacional de EE. UU., residente en Itaewon, con visado D-10 y deseo cambiar a empleo E-7…', ar: 'مثال: مواطن أمريكي، أقيم في إيتايون، أحمل تأشيرة D-10 وأرغب في الانتقال إلى عمل E-7…', de: 'z. B.: US-Staatsbürger, wohnhaft in Itaewon, mit D-10-Visum und Wunsch zum Wechsel in eine E-7-Beschäftigung…' },
+            sendAria: { ko: '분석 요청 전송', en: 'Send analysis request', zh: '发送分析请求', ja: '分析リクエストを送信', vi: 'Gửi yêu cầu phân tích', tl: 'Ipadala ang kahilingan sa pagsusuri', id: 'Kirim permintaan analisis', ru: 'Отправить запрос на анализ', fr: "Envoyer la demande d'analyse", es: 'Enviar solicitud de análisis', ar: 'إرسال طلب التحليل', de: 'Analyseanfrage senden' },
+            send: { ko: '전송', en: 'Send', zh: '发送', ja: '送信', vi: 'Gửi', tl: 'Ipadala', id: 'Kirim', ru: 'Отправить', fr: 'Envoyer', es: 'Enviar', ar: 'إرسال', de: 'Senden' },
+            quotaLabel: { ko: '남은 분석 횟수', en: 'Remaining analyses', zh: '剩余分析次数', ja: '残りの分析回数', vi: 'Số lần phân tích còn lại', tl: 'Natitirang pagsusuri', id: 'Sisa analisis', ru: 'Осталось анализов', fr: "Analyses restantes", es: 'Análisis restantes', ar: 'عمليات التحليل المتبقية', de: 'Verbleibende Analysen' }
         };
         const SHELL_CHIPS = {
             ko: [['D-2 연장 서류', 'D-2 연장에 필요한 서류는?'], ['E-7 근무처 변경', 'E-7 근무처 변경은 어떻게 확인하나요?'], ['F-6 연장 준비', 'F-6 체류기간 연장 전에 무엇을 준비해야 하나요?'], ['HiKorea 예약 전 체크', 'HiKorea 예약 전에 무엇을 확인해야 하나요?']],
@@ -2235,6 +2335,9 @@ select:focus-visible {
             const ta = document.getElementById('aiQ'); if (ta) ta.setAttribute('placeholder', tt(lang, SHELL_CHROME.placeholder));
             const sendBtn = document.getElementById('sendBtn'); if (sendBtn) { sendBtn.setAttribute('aria-label', tt(lang, SHELL_CHROME.sendAria)); sendBtn.textContent = tt(lang, SHELL_CHROME.send); }
             const quota = document.querySelector('.quota-badge'); if (quota) quota.setAttribute('aria-label', tt(lang, SHELL_CHROME.quotaLabel));
+            const backTxt = document.querySelector('.back-btn-text'); if (backTxt) backTxt.textContent = tt(lang, SHELL_CHROME.backToMain);
+            const backLink = document.querySelector('.back-btn'); if (backLink) backLink.setAttribute('aria-label', tt(lang, SHELL_CHROME.backToMain));
+            try { document.documentElement.dir = (String(lang).toLowerCase() === 'ar') ? 'rtl' : 'ltr'; } catch (e) {}
             // Traditional Chinese: convert the freshly-set Simplified chrome.
             try { if (String(lang).toLowerCase() === 'zh-tw' && window.ParadisoZhT && !window.ParadisoZhT.isActive()) window.ParadisoZhT.start(); } catch (e) {}
         }
