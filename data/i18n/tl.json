@@ -1307,5 +1307,49 @@
   "jobCodeIncome6": "50 milyong won pataas",
   "jobCodeCopyMemo": "📋 Kopyahin ang memo para sa input sa HiKorea",
   "agentRegionFilterAria": "Filter ng rehiyon ng metropolitan na lokal na pamahalaan",
-  "retryButton": "Subukang muli"
+  "retryButton": "Subukang muli",
+  "easyModeLabel": "Paraan ng pagtingin",
+  "easyModeStandard": "Standard",
+  "easyModeEasy": "Madaling Gabay",
+  "easyModeOfficial": "Opisyal na Sanggunian",
+  "easyModeToggleAria": "Piliin kung paano titingnan ang gabay na ito",
+  "easyModeNotice": "Isa itong simpleng paliwanag. Laging tingnan ang opisyal na sanggunian bago mag-apply.",
+  "easyModeSummaryTitle": "Ano ito?",
+  "easyModeWhoTitle": "Para kanino ito?",
+  "easyModeNextStepsTitle": "Ano ang susunod na gagawin",
+  "easyModeDocumentsTitle": "Mga dokumentong maaaring kailanganin",
+  "easyModeWarningsTitle": "Mga dapat ingatan",
+  "easyModeAskAtOfficeTitle": "Maaari mong itanong ito sa opisina",
+  "easyModeOfficialSourceTitle": "Tingnan ang opisyal na sanggunian",
+  "easyModeSummaryGeneric": "Gabay ito tungkol sa {code}. Para sa detalye, tingnan ang Standard at ang opisyal na sanggunian.",
+  "easyModeWhoBody": "Para ito sa mga may {code}, o sa gustong lumipat o mag-extend ng status na ito.",
+  "easyModeDocsUsuallyTitle": "Karaniwang kailangan",
+  "easyModeDocsMaybeTitle": "Maaaring kailanganin, depende sa sitwasyon mo",
+  "easyModeDocsDependsBody": "Maaaring magkaiba ang kailangang dokumento sa bawat tao. Tingnan ang mga dokumento sa Standard at ang opisyal na sanggunian para sa tamang listahan.",
+  "easyModeDocsPointer": "Makikita mo ang buong listahan ng dokumento para sa status na ito sa Standard.",
+  "easyModeOfficialSourceBody": "Ang madaling gabay na ito ay maikling buod lang para matulungan kang maintindihan. Laging tingnan ang opisyal na sanggunian para sa tamang patakaran at pinakabagong impormasyon.",
+  "easyModeOpenOfficialSource": "Tingnan ang opisyal na sanggunian",
+  "easyModeSourceReminder": "Kapag hindi sigurado, tumawag sa 1345 o tingnan ang opisyal na gabay ng HiKorea.",
+  "easyModeFallbackNotice": "Hindi pa handa nang detalyado ang madaling gabay para sa status na ito, kaya nakabatay ito sa standard na paliwanag.",
+  "easyModeNoDataTitle": "Wala pang detalyadong impormasyon",
+  "easyModeNoDataBody": "Wala pang sapat na detalye para ipakita ito sa Madaling Gabay. Pakitingnan ang Standard at ang opisyal na sanggunian.",
+  "easyModeAskAtOfficeShowKo": "Ipakita ang pangungusap na Korean na ito sa opisyal ng immigration.",
+  "easyModeAiAnswerTitle": "Madaling sagot",
+  "easyModeAiAnswerInstruction": "Ito ang maikli at simpleng bersyon ng mas mahabang sagot. Tingnan ang standard na sagot para sa detalye at pinagmulan.",
+  "easyModeNextSteps": [
+    "Tingnan ang kasalukuyang status mo at ang petsa ng pagtatapos nito.",
+    "Ihanda nang maaga ang mga dokumentong kailangan mo.",
+    "Tingnan sa HiKorea kung kailangan mong mag-book ng pagbisita.",
+    "Pumunta sa immigration office sa petsang naka-book.",
+    "Kung hindi sigurado, tumawag sa 1345 at magtanong."
+  ],
+  "easyModeWarnings": [
+    "Huwag hintayin matapos ang panahon ng iyong pananatili. Maghanda nang maaga.",
+    "Maaaring magkaiba ang kailangang dokumento sa bawat tao.",
+    "Laging tingnan ang opisyal na sanggunian bago mag-apply."
+  ],
+  "easyModeAskAtOffice": [
+    "Gusto kong magpa-konsulta tungkol sa visa o status na ito.",
+    "Gusto kong malaman kung anong dokumento ang kailangan ko para sa sitwasyon ko."
+  ]
 }

@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "₩50M or more/year",
   "jobCodeCopyMemo": "📋 Copy memo for HiKorea entry",
   "agentRegionFilterAria": "Province/metropolitan region filter",
-  "retryButton": "Retry"
+  "retryButton": "Retry",
+  "easyModeLabel": "View",
+  "easyModeStandard": "Standard",
+  "easyModeEasy": "Easy Mode",
+  "easyModeOfficial": "Official Source",
+  "easyModeToggleAria": "Choose how to view this guide",
+  "easyModeNotice": "This is a simple explanation. Always check the official source before you apply.",
+  "easyModeSummaryTitle": "What is this?",
+  "easyModeWhoTitle": "Who is this for?",
+  "easyModeNextStepsTitle": "What to do next",
+  "easyModeDocumentsTitle": "Documents you may need",
+  "easyModeWarningsTitle": "Things to be careful about",
+  "easyModeAskAtOfficeTitle": "What to say at the office",
+  "easyModeOfficialSourceTitle": "Check the official source",
+  "easyModeSummaryGeneric": "This is guidance about {code}. For details, see the Standard view and the official source.",
+  "easyModeWhoBody": "This is for people who have {code}, or who want to change to or extend this status.",
+  "easyModeDocsUsuallyTitle": "Usually needed",
+  "easyModeDocsMaybeTitle": "May be needed, depending on your case",
+  "easyModeDocsDependsBody": "The documents you need can differ from person to person. Check the documents in the Standard view and the official source for the exact list.",
+  "easyModeDocsPointer": "You can see the full document list for this status in the Standard view.",
+  "easyModeOfficialSourceBody": "This easy guide is a short summary to help you understand. Always check the official source for the exact rules and the latest information.",
+  "easyModeOpenOfficialSource": "View official source",
+  "easyModeSourceReminder": "When you are not sure, check 1345 or the official HiKorea guidance.",
+  "easyModeFallbackNotice": "A detailed easy guide for this status is not ready yet, so this is based on the standard explanation.",
+  "easyModeNoDataTitle": "No detailed information yet",
+  "easyModeNoDataBody": "There is not enough detail to show this in Easy Mode yet. Please check the Standard view and the official source.",
+  "easyModeAskAtOfficeShowKo": "Show this Korean sentence to the immigration officer.",
+  "easyModeAiAnswerTitle": "Easy answer",
+  "easyModeAiAnswerInstruction": "This is a short, simple version of a longer answer. Check the standard answer for details and sources.",
+  "easyModeNextSteps": [
+    "Check your current status and its expiry date.",
+    "Get the documents you need ready in advance.",
+    "Check on HiKorea whether you need to book a visit.",
+    "Go to the immigration office on your booked date.",
+    "If you are unsure, call 1345 and ask."
+  ],
+  "easyModeWarnings": [
+    "Do not wait until your stay period ends. Prepare early.",
+    "The documents you need can be different for each person.",
+    "Always check the official source before you apply."
+  ],
+  "easyModeAskAtOffice": [
+    "I would like advice about this visa or status.",
+    "I want to know which documents I need for my situation."
+  ]
 }

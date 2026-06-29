@@ -1307,5 +1307,49 @@
   "jobCodeIncome6": "5千万ウォン以上",
   "jobCodeCopyMemo": "📋 HiKorea入力用のメモをコピー",
   "agentRegionFilterAria": "広域自治体の地域フィルター",
-  "retryButton": "再試行"
+  "retryButton": "再試行",
+  "easyModeLabel": "表示方法",
+  "easyModeStandard": "標準案内",
+  "easyModeEasy": "やさしい案内",
+  "easyModeOfficial": "公式の根拠",
+  "easyModeToggleAria": "表示方法を選ぶ",
+  "easyModeNotice": "これはやさしい説明です。申請の前に必ず公式の根拠を確認してください。",
+  "easyModeSummaryTitle": "これは何ですか？",
+  "easyModeWhoTitle": "だれのための案内ですか？",
+  "easyModeNextStepsTitle": "次に何をしますか",
+  "easyModeDocumentsTitle": "どんな書類が必要かもしれません",
+  "easyModeWarningsTitle": "気をつけること",
+  "easyModeAskAtOfficeTitle": "窓口ではこう聞いてください",
+  "easyModeOfficialSourceTitle": "公式の根拠を確認する",
+  "easyModeSummaryGeneric": "{code} についての案内です。詳しい内容は標準案内と公式の根拠で確認してください。",
+  "easyModeWhoBody": "{code} を持っている方や、この資格に変更・延長したい方のための内容です。",
+  "easyModeDocsUsuallyTitle": "ふつう必要な書類",
+  "easyModeDocsMaybeTitle": "状況によって必要になる書類",
+  "easyModeDocsDependsBody": "必要な書類は人によって違います。正確なリストは標準案内の書類と公式の根拠で確認してください。",
+  "easyModeDocsPointer": "この資格の書類リストは標準案内でもっと詳しく見られます。",
+  "easyModeOfficialSourceBody": "このやさしい案内は、わかりやすくするための短いまとめです。正確な基準と最新の情報は必ず公式の根拠で確認してください。",
+  "easyModeOpenOfficialSource": "公式の根拠を見る",
+  "easyModeSourceReminder": "わからないときは 1345 または HiKorea の公式案内を確認してください。",
+  "easyModeFallbackNotice": "この資格のやさしい案内はまだ詳しく用意できていないため、標準の説明をもとに表示しています。",
+  "easyModeNoDataTitle": "詳しい資料はまだありません",
+  "easyModeNoDataBody": "この項目はやさしい案内で見せる詳しい資料がまだありません。標準案内と公式の根拠を確認してください。",
+  "easyModeAskAtOfficeShowKo": "この韓国語の文を入国管理の職員に見せてください。",
+  "easyModeAiAnswerTitle": "やさしい回答",
+  "easyModeAiAnswerInstruction": "長い回答を短くやさしい言葉にまとめたものです。詳しい内容と出典は標準の回答で確認してください。",
+  "easyModeNextSteps": [
+    "今の在留資格と期限の日付を確認しましょう。",
+    "必要な書類を前もって準備しましょう。",
+    "HiKorea で予約が必要か確認しましょう。",
+    "予約した日に出入国・外国人官署へ行きましょう。",
+    "わからないときは 1345 に電話して聞きましょう。"
+  ],
+  "easyModeWarnings": [
+    "在留期限ぎりぎりまで待たず、早めに準備しましょう。",
+    "必要な書類は人によって違うことがあります。",
+    "申請の前に必ず公式の根拠を確認してください。"
+  ],
+  "easyModeAskAtOffice": [
+    "この在留資格について相談したいです。",
+    "私の状況でどんな書類が必要か知りたいです。"
+  ]
 }

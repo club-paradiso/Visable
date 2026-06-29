@@ -1307,5 +1307,49 @@
   "jobCodeIncome6": "5,000 万韩元以上",
   "jobCodeCopyMemo": "📋 复制 HiKorea 录入用备注",
   "agentRegionFilterAria": "广域自治团体地区筛选",
-  "retryButton": "重试"
+  "retryButton": "重试",
+  "easyModeLabel": "查看方式",
+  "easyModeStandard": "标准说明",
+  "easyModeEasy": "简易说明",
+  "easyModeOfficial": "官方依据",
+  "easyModeToggleAria": "选择查看方式",
+  "easyModeNotice": "这是简单的说明。申请前请务必查看官方依据。",
+  "easyModeSummaryTitle": "这是什么？",
+  "easyModeWhoTitle": "适用于谁？",
+  "easyModeNextStepsTitle": "接下来怎么做",
+  "easyModeDocumentsTitle": "可能需要哪些材料？",
+  "easyModeWarningsTitle": "需要注意的地方",
+  "easyModeAskAtOfficeTitle": "在办事处可以这样问",
+  "easyModeOfficialSourceTitle": "查看官方依据",
+  "easyModeSummaryGeneric": "这是关于 {code} 的说明。详细内容请查看标准说明和官方依据。",
+  "easyModeWhoBody": "适用于持有 {code}，或想转换为该资格、想延长该资格的人。",
+  "easyModeDocsUsuallyTitle": "通常需要的材料",
+  "easyModeDocsMaybeTitle": "视情况可能需要的材料",
+  "easyModeDocsDependsBody": "需要的材料因人而异。准确清单请查看标准说明中的材料和官方依据。",
+  "easyModeDocsPointer": "该资格的完整材料清单可在标准说明中查看。",
+  "easyModeOfficialSourceBody": "这份简易说明只是帮助理解的简短整理。准确的标准和最新信息请务必查看官方依据。",
+  "easyModeOpenOfficialSource": "查看官方依据",
+  "easyModeSourceReminder": "不确定时，请拨打 1345 或查看 HiKorea 官方指引。",
+  "easyModeFallbackNotice": "该资格的简易说明尚未详细整理，这里根据标准说明显示。",
+  "easyModeNoDataTitle": "暂无详细资料",
+  "easyModeNoDataBody": "该项目暂时没有足够的资料用简易说明展示。请查看标准说明和官方依据。",
+  "easyModeAskAtOfficeShowKo": "请把这句韩语出示给出入境工作人员。",
+  "easyModeAiAnswerTitle": "简易回答",
+  "easyModeAiAnswerInstruction": "这是把较长回答整理成简短易懂的版本。详细内容和出处请查看标准回答。",
+  "easyModeNextSteps": [
+    "先确认自己当前的居留资格和到期日期。",
+    "提前准备好需要的材料。",
+    "在 HiKorea 上确认是否需要预约。",
+    "在预约日期前往出入境·外国人办事处。",
+    "不确定时拨打 1345 咨询。"
+  ],
+  "easyModeWarnings": [
+    "不要拖到居留期限快结束才办，请提前准备。",
+    "需要的材料可能因人而异。",
+    "申请前请务必查看官方依据。"
+  ],
+  "easyModeAskAtOffice": [
+    "我想咨询这个居留资格。",
+    "我想知道我的情况需要哪些材料。"
+  ]
 }

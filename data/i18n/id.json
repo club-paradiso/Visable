@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "50 juta won atau lebih",
   "jobCodeCopyMemo": "📋 Salin memo untuk pengisian HiKorea",
   "agentRegionFilterAria": "Filter wilayah pemerintah daerah tingkat provinsi",
-  "retryButton": "Coba lagi"
+  "retryButton": "Coba lagi",
+  "easyModeLabel": "Cara lihat",
+  "easyModeStandard": "Standar",
+  "easyModeEasy": "Panduan Mudah",
+  "easyModeOfficial": "Sumber Resmi",
+  "easyModeToggleAria": "Pilih cara melihat panduan ini",
+  "easyModeNotice": "Ini penjelasan sederhana. Selalu periksa sumber resmi sebelum mengajukan.",
+  "easyModeSummaryTitle": "Ini apa?",
+  "easyModeWhoTitle": "Untuk siapa ini?",
+  "easyModeNextStepsTitle": "Apa yang harus dilakukan",
+  "easyModeDocumentsTitle": "Dokumen yang mungkin diperlukan",
+  "easyModeWarningsTitle": "Hal yang perlu diperhatikan",
+  "easyModeAskAtOfficeTitle": "Anda bisa bertanya begini di kantor",
+  "easyModeOfficialSourceTitle": "Periksa sumber resmi",
+  "easyModeSummaryGeneric": "Ini panduan tentang {code}. Untuk detail, lihat tampilan Standar dan sumber resmi.",
+  "easyModeWhoBody": "Ini untuk orang yang memiliki {code}, atau yang ingin beralih ke atau memperpanjang status ini.",
+  "easyModeDocsUsuallyTitle": "Biasanya diperlukan",
+  "easyModeDocsMaybeTitle": "Mungkin diperlukan, tergantung kondisi Anda",
+  "easyModeDocsDependsBody": "Dokumen yang diperlukan bisa berbeda untuk tiap orang. Lihat dokumen di tampilan Standar dan sumber resmi untuk daftar yang tepat.",
+  "easyModeDocsPointer": "Anda bisa melihat daftar dokumen lengkap untuk status ini di tampilan Standar.",
+  "easyModeOfficialSourceBody": "Panduan mudah ini hanya ringkasan singkat untuk membantu Anda memahami. Selalu periksa sumber resmi untuk aturan yang tepat dan informasi terbaru.",
+  "easyModeOpenOfficialSource": "Lihat sumber resmi",
+  "easyModeSourceReminder": "Jika ragu, hubungi 1345 atau lihat panduan resmi HiKorea.",
+  "easyModeFallbackNotice": "Panduan mudah untuk status ini belum disiapkan secara detail, jadi ini berdasarkan penjelasan standar.",
+  "easyModeNoDataTitle": "Belum ada informasi detail",
+  "easyModeNoDataBody": "Belum ada cukup detail untuk menampilkan ini dalam Panduan Mudah. Silakan lihat tampilan Standar dan sumber resmi.",
+  "easyModeAskAtOfficeShowKo": "Tunjukkan kalimat bahasa Korea ini kepada petugas imigrasi.",
+  "easyModeAiAnswerTitle": "Jawaban mudah",
+  "easyModeAiAnswerInstruction": "Ini versi singkat dan sederhana dari jawaban yang lebih panjang. Lihat jawaban standar untuk detail dan sumbernya.",
+  "easyModeNextSteps": [
+    "Periksa status Anda saat ini dan tanggal berakhirnya.",
+    "Siapkan dokumen yang diperlukan lebih awal.",
+    "Periksa di HiKorea apakah Anda perlu membuat janji kunjungan.",
+    "Datang ke kantor imigrasi pada tanggal janji Anda.",
+    "Jika ragu, hubungi 1345 dan tanyakan."
+  ],
+  "easyModeWarnings": [
+    "Jangan menunggu sampai masa tinggal Anda habis. Siapkan lebih awal.",
+    "Dokumen yang diperlukan bisa berbeda untuk tiap orang.",
+    "Selalu periksa sumber resmi sebelum mengajukan."
+  ],
+  "easyModeAskAtOffice": [
+    "Saya ingin berkonsultasi tentang visa atau status ini.",
+    "Saya ingin tahu dokumen apa yang saya perlukan untuk situasi saya."
+  ]
 }

@@ -1305,5 +1305,49 @@
   "jobCodeIncome6": "5천만 원 이상",
   "jobCodeCopyMemo": "📋 HiKorea 입력용 메모 복사",
   "agentRegionFilterAria": "광역자치단체 지역 필터",
-  "retryButton": "다시 시도"
+  "retryButton": "다시 시도",
+  "easyModeLabel": "안내 방식",
+  "easyModeStandard": "기본 안내",
+  "easyModeEasy": "쉬운 안내",
+  "easyModeOfficial": "공식 근거",
+  "easyModeToggleAria": "안내 방식 선택",
+  "easyModeNotice": "이것은 쉬운 설명이에요. 신청하기 전에 공식 근거를 꼭 확인하세요.",
+  "easyModeSummaryTitle": "이건 무엇인가요?",
+  "easyModeWhoTitle": "누구를 위한 건가요?",
+  "easyModeNextStepsTitle": "이제 무엇을 하나요?",
+  "easyModeDocumentsTitle": "어떤 서류가 필요할 수 있나요?",
+  "easyModeWarningsTitle": "조심할 점",
+  "easyModeAskAtOfficeTitle": "사무소에서 이렇게 물어보세요",
+  "easyModeOfficialSourceTitle": "공식 근거 확인하기",
+  "easyModeSummaryGeneric": "{code}에 대한 안내예요. 자세한 내용은 기본 안내와 공식 근거에서 확인하세요.",
+  "easyModeWhoBody": "{code} 자격이 있거나, 이 자격으로 바꾸거나 기간을 늘리려는 분을 위한 내용이에요.",
+  "easyModeDocsUsuallyTitle": "보통 필요한 서류",
+  "easyModeDocsMaybeTitle": "상황에 따라 필요할 수 있는 서류",
+  "easyModeDocsDependsBody": "필요한 서류는 사람마다 달라요. 정확한 목록은 기본 안내의 서류와 공식 근거에서 확인하세요.",
+  "easyModeDocsPointer": "이 자격의 서류 목록은 기본 안내에서 더 자세히 볼 수 있어요.",
+  "easyModeOfficialSourceBody": "이 쉬운 안내는 이해를 돕기 위해 짧게 정리한 설명이에요. 정확한 기준과 최신 정보는 공식 근거에서 꼭 확인하세요.",
+  "easyModeOpenOfficialSource": "공식 근거 보기",
+  "easyModeSourceReminder": "잘 모를 때는 1345 또는 HiKorea 공식 안내를 확인하세요.",
+  "easyModeFallbackNotice": "이 자격의 쉬운 안내는 아직 자세히 준비되지 않아, 기본 설명을 바탕으로 보여드려요.",
+  "easyModeNoDataTitle": "자세한 자료가 아직 없어요",
+  "easyModeNoDataBody": "이 항목은 쉬운 안내로 보여줄 자세한 자료가 아직 없어요. 기본 안내와 공식 근거를 확인해 주세요.",
+  "easyModeAskAtOfficeShowKo": "이 한국어 문장을 출입국 직원에게 보여주세요.",
+  "easyModeAiAnswerTitle": "쉬운 답변",
+  "easyModeAiAnswerInstruction": "복잡한 답변을 짧고 쉬운 말로 정리한 거예요. 자세한 내용과 출처는 기본 답변에서 확인하세요.",
+  "easyModeNextSteps": [
+    "지금 내 체류자격과 끝나는 날짜를 확인하세요.",
+    "필요한 서류를 미리 준비하세요.",
+    "HiKorea에서 방문 예약이 필요한지 확인하세요.",
+    "예약한 날짜에 출입국·외국인 관서에 가세요.",
+    "잘 모를 때는 1345에 전화해 물어보세요."
+  ],
+  "easyModeWarnings": [
+    "체류 기간이 끝날 때까지 미루지 말고 미리 준비하세요.",
+    "필요한 서류는 사람마다 다를 수 있어요.",
+    "신청하기 전에 공식 근거를 꼭 확인하세요."
+  ],
+  "easyModeAskAtOffice": [
+    "저는 이 체류자격에 대해 상담받고 싶어요.",
+    "제 상황에서 어떤 서류가 필요한지 알고 싶어요."
+  ]
 }
