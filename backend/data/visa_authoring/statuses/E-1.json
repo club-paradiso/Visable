@@ -47,7 +47,14 @@
       "summaryHiddenInUi": true,
       "summaryCleanupStatus": "compat_only",
       "requiredDocs": {
-        "commonDocs": [],
+        "commonDocs": [
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "표준규격사진 1매",
+          "수수료",
+          "‘부가가치세법’에 따른 사업자등록증",
+          "체류지 입증서류"
+        ],
         "requiredDocs": [],
         "additionalDocs": [],
         "conditionalDocs": []

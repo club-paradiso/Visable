@@ -526,119 +526,15 @@
     },
     {
       "code": "F-2-1",
-      "name": "F-2-1 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "결혼이민 (기존 코드, 현 F-6)",
+      "addReq": "F-2-1은 결혼이민자에게 부여되던 기존(구) 코드로 현재 결혼이민(F-6)으로 통합되었다. 매뉴얼은 재입국허가 조항에서 결혼이민(F-6) 자격에 \"기존 F-2-1, F-2-10 포함\"으로만 언급한다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "",
       "searchAliases": [
         "F-2-1",
         "F21"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
-      "manualRefs": [
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 497",
-          "section": "- 결혼이민(F-6, 기존 F-2-1, F-2-10 포함)자격으로 등록을 필한 사람으",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 497",
-          "section": "- 결혼이민(F-6, 기존 F-2-1, F-2-10 포함)자격으로",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
-    },
-    {
-      "code": "F-2-4",
-      "name": "F-2-4 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "searchAliases": [
-        "F-2-4",
-        "F24"
-      ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
-      "manualRefs": [
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 408",
-          "section": "(F-2-4)",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
-    },
-    {
-      "code": "F-2-5",
-      "name": "F-2-5 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "searchAliases": [
-        "F-2-5",
-        "F25"
-      ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
-      "manualRefs": [
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 408",
-          "section": "(F-2-5)",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
-    },
-    {
-      "code": "F-2-6",
-      "name": "F-2-6 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "searchAliases": [
-        "F-2-6",
-        "F26"
-      ],
-      "status": "abolished",
-      "statusNote": "2026.6 외국인체류 안내매뉴얼에서 숙련기능 거주인력(F-2-6)은 2019.10.1부로 폐지된 것으로 확인됩니다. 현재 활성 일반 세부코드로 안내하지 않습니다.",
+      "status": "active",
       "needsManualReview": false,
       "manualRefs": [
         {
@@ -647,12 +543,84 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 414",
-          "section": "○ 숙련기능 거주(F-2-6)* 체류자격 외국인",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 499",
+          "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가"
+        }
+      ]
+    },
+    {
+      "code": "F-2-4",
+      "name": "난민인정자",
+      "addReq": "난민법에 따라 난민으로 인정받은 사람에게 부여되는 거주(F-2) 체류자격이다. 난민인정자 본인이 해당하며, 체류기간 연장 시 신청서·여권·외국인등록증·수수료와 체류지 입증서류를 제출한다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_address"
+      ],
+      "note": "",
+      "searchAliases": [
+        "F-2-4",
+        "F24"
+      ],
+      "status": "active",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 410",
+          "section": "체류기간 연장허가 — 거주(F-2) 체류기간연장 첨부서류 (난민인정자 F-2-4)"
+        }
+      ]
+    },
+    {
+      "code": "F-2-5",
+      "name": "고액투자자",
+      "addReq": "「외국인투자촉진법」에 따라 미화 50만 달러 이상을 투자하고 기업투자(D-8) 자격으로 3년 이상 계속 체류한 외국인(또는 그러한 외국법인이 국내 외국인투자기업에 파견한 임직원), 또는 미화 30만 달러 이상을 투자하여 국민 2명 이상을 고용하고 있는 사람이 거주(F-2) 자격으로 변경할 수 있는 고액투자자 유형이다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fee",
+        "doc_invest",
+        "doc_dispatch",
+        "doc_emp_certificate",
+        "doc_income_tax",
+        "doc_emp_contract"
+      ],
+      "note": "",
+      "searchAliases": [
+        "F-2-5",
+        "F25"
+      ],
+      "status": "active",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 410",
+          "section": "체류기간 연장허가 — 제출서류 표 (고액투자자(F-2-5))"
         },
         {
           "manualName": "체류민원",
@@ -660,28 +628,68 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 414",
-          "section": "※ 숙련기능 거주인력(F-2-6) 체류자격은 ‘19. 10. 1.부로 폐지됨",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 370",
+          "section": "4. 고액투자자에 대한 거주자격 변경허가"
+        }
+      ]
+    },
+    {
+      "code": "F-2-6",
+      "name": "숙련기능 거주",
+      "addReq": "숙련기능 분야 외국인근로자에게 부여되던 거주(F-2) 자격으로, 연간소득 요건(최근 2년 연평균 임금소득이 근로자 연간 임금총액 이상) 또는 기술·기능 자격 요건을 갖춘 자에게 부여되었다. 다만 이 체류자격은 2019. 10. 1.부로 폐지되었으며, 매뉴얼은 기존 취득자의 체류기간 연장(최초 연장 후 장기거주로 직권정정) 처리만 규정한다.",
+      "addReqDocs": [],
+      "note": "",
+      "searchAliases": [
+        "F-2-6",
+        "F26"
+      ],
+      "status": "active",
+      "needsManualReview": false,
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 416",
+          "section": "기타 장기체류자에 대한 거주 체류기간 연장허가"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 420",
+          "section": "거주(F-2) 체류기간 연장 심사 기준 - 연간소득"
         }
       ]
     },
     {
       "code": "F-2-10",
-      "name": "F-2-10 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "결혼이민 (기존 코드, 현 F-6)",
+      "addReq": "F-2-10은 독립적으로 정의된 활성 체류자격이 아니라 결혼이민자에게 부여되던 기존(구) 코드로, 현재는 결혼이민(F-6)으로 통합되었다. 매뉴얼은 재입국허가 관련 조항에서 결혼이민(F-6) 자격에 \"기존 F-2-1, F-2-10 포함\"으로만 이 코드를 언급한다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "",
       "searchAliases": [
         "F-2-10",
         "F210"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -689,41 +697,26 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 497",
-          "section": "- 결혼이민(F-6, 기존 F-2-1, F-2-10 포함)자격으로 등록을 필한 사람으",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 497",
-          "section": "- 결혼이민(F-6, 기존 F-2-1, F-2-10 포함)자격으로",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 499",
+          "section": "재입국허가 — 재입국허가 면제 / 복수 재입국허가"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-2-12",
-      "name": "F-2-12 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "공익사업투자 외국인",
+      "addReq": "법무부장관이 정한 투자대상에 기준금액 이상의 투자를 마친 외국인(또는 법인의 임원·주주)과 그 동반가족에게 부여되는 거주(F-2) 자격으로, 투자 기준금액을 잠식하지 않고 투자 상태를 유지하면 체류기간 연장이 가능하며 5년 이상 투자 유지 시 일정 기준에 따라 영주(F-5) 자격을 받을 수 있다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 매뉴얼 원문 대조로 정정·반영했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-2-12",
         "F212"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -732,12 +725,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 380",
-          "section": "7. 공익사업투자 외국인에 대한 거주(F-2-12,13,14) 체류자격 변경",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 382",
+          "section": "7. 공익사업투자 외국인에 대한 거주(F-2-12,13,14) 체류자격 변경허가"
         },
         {
           "manualName": "체류민원",
@@ -745,28 +738,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 413",
-          "section": "5. 공익사업투자 외국인에 대한 거주(F-2-12) 체류기간 연장허가",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 415",
+          "section": "5. 공익사업투자 외국인에 대한 거주(F-2-12) 체류기간 연장허가"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 416",
+          "section": "다. (신청 및 첨부서류)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-2-13",
-      "name": "F-2-13 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "공익사업 투자이민 투자자의 배우자 및 미혼자녀",
+      "addReq": "공익사업 투자이민으로 거주(F-2) 자격을 취득한 투자자의 배우자 및 미혼자녀(동반가족)가 대상이다. 투자자가 영주(F-5-21/23) 취득 후 투자를 유지 중인 경우 동반가족 초청 시 F-2-3 또는 F-2-13 중 택하여 신청할 수 있으며, 투자금을 회수한 경우에는 F-2-3 신청 대상이 된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 매뉴얼 원문 대조로 정정·반영했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-2-13",
         "F213"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -775,29 +779,35 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 384",
-          "section": "F-2-3 또는 F-2-13 중 택하여 신청 가능하나, 투자금을 회수한 경우 F-2-3 신",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 386",
+          "section": "거주(F-2)자격 변경 신청대상 — 공익사업투자 외국인의 거주(F-2) 체류자격변경 등 관리기준"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-2-16",
-      "name": "F-2-16 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "대한민국에 특별한 기여를 했거나 공익 증진에 이바지한 자",
+      "addReq": "법무부장관이 대한민국에 특별한 기여를 했거나 공익의 증진에 이바지했다고 인정하는 자(예: 국가 독립·발전 기여로 훈·포장을 받은 사람, 국제관계 개선 기여자, 사회·복지·고용·국가안전·사회질서 분야 기여자 등 추천을 받은 자) 및 그 배우자·자녀(법무부장관이 정하는 요건을 갖춘 자녀)가 대상이다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_photo",
+        "doc_fee",
+        "doc_address",
+        "doc_crim",
+        "doc_fam_rel"
+      ],
+      "note": "",
       "searchAliases": [
         "F-2-16",
         "F216"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -805,15 +815,40 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 386",
-          "section": "(F-2-16) 체류자격 변경허가",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 388",
+          "section": "8. 대한민국에 특별한 기여를 했거나 공익 증진에 이바지한(F-2-16) 체류자격 변경허가 - 가. 신청대상"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 389",
+          "section": "나. 허가요건 (국가 독립·발전, 국제관계, 사회·복지·고용, 국가안전·사회질서, 기타분야 기여)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 391",
+          "section": "라. 제출서류 (공통서류 및 추가서류)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     }
   ],
   "procedures": {

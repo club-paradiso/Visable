@@ -93,21 +93,31 @@
     },
     {
       "code": "E-2-91",
-      "name": "FTA영어",
-      "addReq": "FTA 요건.",
-      "addReqDocs": [
-        "doc_purpose"
-      ],
+      "name": "FTA 영어보조교사",
+      "addReq": "FTA에 따른 영어보조교사(회화지도 E-2)에게 부여하는 세부분류 약호로, 시·도 교육감 등과 고용계약을 체결하고 초·중·고등학교에서 영어회화지도를 하는 FTA 영어보조교사가 대상이다. 미국인의 경우 복수사증을 발급한다.",
+      "addReqDocs": [],
       "note": "",
       "searchAliases": [
         "E-2-91",
         "E291"
       ],
-      "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "needsManualReview": false,
+      "status": "active",
+      "manualRefs": [
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf",
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 146",
+          "section": "공관장 재량으로 발급할 수 있는 사증 (회화지도 E-2)"
+        }
+      ]
     }
   ],
   "procedures": {
@@ -186,7 +196,7 @@
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [
-          "통합신청서(별지 제34호 서식)",
+          "통합신청서 (별지 제34호 서식)",
           "여권 원본",
           "외국인등록증",
           "doc_fee_generic"

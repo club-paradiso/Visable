@@ -295,25 +295,48 @@
     {
       "code": "E-9-JS",
       "name": "구직신청자 특례",
-      "addReq": "① 통합신청서(별지 제34호 서식), 여권, 외국인등록증, 수수료 없음 ② 자진출국 각서 ③ 구직등록필증 ④ 체류지 입증서류.",
+      "addReq": "비전문취업(E-9) 자격자로서 구직등록 유효기간(구직신청일로부터 3개월) 이전에 체류기간 만료일이 도래하는 자로서 사업장변경 가능 횟수가 남아 있는 자. 허가기간은 구직등록필증 발급일로부터 90일 범위 내.",
       "addReqDocs": [
         "doc_app_form",
         "doc_passport",
         "doc_id",
-        "doc_consent",
-        "doc_purpose",
         "doc_address"
       ],
-      "note": "체류민원 안내매뉴얼 2026.6 기준 — 정확한 항목·페이지 수동 검토 필요.",
+      "note": "",
       "searchAliases": [
         "E-9-JS",
         "E9JS"
       ],
-      "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "needsManualReview": false,
+      "status": "active",
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 330",
+          "section": "비전문취업(E-9) 체류기간 연장허가 — 3. 구직신청자 특례 가. 대상"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 331",
+          "section": "구직신청자 특례 — 나. 허가기간 / 다. 제출서류"
+        }
+      ]
     }
   ],
   "procedures": {
