@@ -226,6 +226,44 @@
       "notes": [
         "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
       ]
+    },
+    "workplaceChange": {
+      "available": true,
+      "summary": "교수(E-1)가 자격요건을 갖추고 근무처를 변경·추가하는 경우 신고사유 발생일부터 15일 이내 관할 출입국·외국인관서에 신고합니다(대리 신고 허용). 다만 대학교수가 전공과 관련하여 일시적인 강연·강의·연구를 다른 대학에서 하는 경우에는 근무처 추가신고가 면제됩니다.",
+      "summaryQuality": "source_backed",
+      "requiredDocs": {
+        "commonDocs": [],
+        "requiredDocs": [
+          "근무처변경·추가 신고서(별지 제38호의3 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "외국인등록증",
+          "수수료",
+          "사업자등록증",
+          "고용계약서"
+        ],
+        "additionalDocs": [],
+        "conditionalDocs": [
+          "원 근무처 장의 동의서(원 근무처가 있는 경우 해당; 계약기간 만료일까지 근무 등 정당한 사유 시 면제)"
+        ]
+      },
+      "manualRefs": [
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "pageRange": "p. 171",
+          "section": "교수(E-1) 근무처의 변경·추가 신고",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false
+        }
+      ],
+      "notes": [
+        "2026.6 체류민원 매뉴얼 교수(E-1) 근무처 변경·추가 신고 항목(p.171) 기준입니다. 세부 사항은 관할 출입국·외국인관서에서 확인하시기 바랍니다."
+      ]
     }
   },
   "sourceManualStatus": {
@@ -430,7 +468,8 @@
     "procOrder": [
       "extension",
       "registration",
-      "statusChange"
+      "statusChange",
+      "workplaceChange"
     ],
     "procKeyOrder": {
       "extension": [
@@ -452,6 +491,13 @@
         "summary",
         "requiredDocs",
         "variants",
+        "manualRefs",
+        "notes"
+      ],
+      "workplaceChange": [
+        "available",
+        "summary",
+        "requiredDocs",
         "manualRefs",
         "notes"
       ]
