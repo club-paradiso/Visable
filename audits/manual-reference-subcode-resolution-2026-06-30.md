@@ -261,3 +261,31 @@ source-gap + 레거시 안내 노트 유지(2026.2부터 H-2→F-4 통합, F-4-4
 
 검증: build `--check` · validate(42) · subcode-parity · procedure-doc-semantics · **`check_repo.sh`(CI 동등)
 EXIT=0**, `check_subcode_modal` refs=210 / source-gap=13 양 경로 통과.
+
+---
+
+## 부록 — 5차 보완 (2026.6.30 현행 및 향후 법령 기준 정합)
+
+F-4-11~30(13개)을 현행 법령 체계에 맞추어 최종 정리했습니다.
+
+### 조치: F-4-11~30 → `legacy`(구 분류 약호) 확정
+- 2026.2.12. 방문취업(H-2)의 재외동포(F-4) 자격 통합 이후, 현행 재외동포(F-4) 사증 세부대상은
+  **출생 국적보유자(F-4-41)·직계비속(F-4-42)** 으로 운영(출입국관리법 시행령 별표 1의2 제26호).
+  F-4-11~30(재외동포 본인·OECD영주자·법인대표·교원·공무원·60세 이상자 등)은 과거 분류 약호로 확인.
+- 각 코드: `status: "legacy"`, `needsManualReview: false`(해소), 명칭에 `(구 분류·레거시)` 표기,
+  `statusNote`/`note`에 현행 F-4-41/42 체계 안내. (선례: D-3-1 구 약호 → 현행 D-3-11/12/13 패턴 동일)
+- 렌더러는 비-active 세부코드를 **inactive(별도 표시)**로 분리하므로, 현행 F-4 화면에는 F-4-41/42만
+  활성으로 노출되고 구 약호는 레거시로 구분 표시됨.
+- 현행 매뉴얼·공식자료에 구 약호 자체가 없어 임의의 출처는 부여하지 않고(정보 오류 방지),
+  현행 근거(F-4-41/42·시행령 별표)는 statusNote로 안내. (정직한 source-gap 13건 유지 → `check_subcode_modal` 통과)
+
+### 최종 집계 (원 플레이스홀더 78개)
+- needsManualReview=false: **77** (F-1-11만 본문 근거가 단편적이어서 검토권장 유지)
+- status: active **65** / legacy(구 분류 약호, F-4-11~30) **13**
+- 잔존 `매뉴얼 참조 코드` 플레이스홀더: **0**
+
+참고(현행 법령 반영 확인): H-2는 `방문취업 (신규발급 중단)` / `기존 체류자 한정`으로 2026.2 통합을
+이미 반영, F-4-41/42는 active(현행 출처 보유).
+
+검증: build `--check` · validate(42) · subcode-parity · procedure-doc-semantics · **`check_repo.sh`(CI) EXIT=0**,
+`check_subcode_modal` refs=210 / source-gap=13 양 경로 통과.
