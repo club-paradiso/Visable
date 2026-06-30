@@ -461,17 +461,21 @@
     },
     {
       "code": "F-5-1",
-      "name": "F-5-1 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "일반 영주자",
+      "addReq": "대한민국 민법상 성년으로서 주재(D-7)부터 특정활동(E-7)까지의 체류자격 또는 거주(F-2) 자격으로 신청일 기준 5년 이상 계속 체류하고 해당 자격의 경제활동을 유지하고 있는 사람이 대상이며, 생계유지능력(전년도 1인당 GNI 2배 이상의 소득 또는 전년도 평균 순자산 1.5배 이상)을 갖추어야 한다.",
+      "addReqDocs": [
+        "doc_emp_certificate",
+        "doc_dispatch",
+        "doc_degree",
+        "doc_emp_contract"
+      ],
+      "note": "",
       "searchAliases": [
         "F-5-1",
         "F51"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -479,12 +483,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 429",
-          "section": "F-5-1 5년 이상 대한민국에 체류하고 있는 사람(이하 “일반 영주자”라 함)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 449",
+          "section": "1. 일반 영주자〔F-5-1〕 가. 대상 / 나. 요건"
         },
         {
           "manualName": "체류민원",
@@ -492,29 +496,27 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "F-5-1",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 450",
+          "section": "다. 제출서류 (D-7/D-8·D-9/D-10·E-7)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-3",
       "name": "국민의 미성년 자녀",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "addReq": "대한민국 국민의 미성년 자녀에게 부여되는 영주(F-5) 세부자격으로, 시행령 별표1의3 제2호에 해당한다. 국민의 미성년 자녀로서 법령준수·품행단정 등 영주자격 요건을 갖춘 사람이 대상이다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "",
       "searchAliases": [
         "F-5-3",
         "F53"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -522,12 +524,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 431",
-          "section": "F-5-3 국민의 미성년 자녀",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 431",
+          "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여)"
         },
         {
           "manualName": "체류민원",
@@ -535,29 +537,27 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 450",
-          "section": "결혼이민자(F-5-2), 국민의 미성년 자녀(F-5-3)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 450",
+          "section": "2. 결혼이민자(F-5-2), 국민의 미성년 자녀(F-5-3)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-4",
-      "name": "F-5-4 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "일반 영주자의 배우자 또는 미성년 자녀",
+      "addReq": "영주(F-5)자격을 가진 사람의 배우자 또는 미성년 자녀로서 대한민국에 2년 이상 체류하고 있는 사람 중 법무부장관이 인정하는 사람. 단, 점수제 영주자(F-5-16)·관광·휴양시설 투자자(F-5-17)·공익사업투자자(F-5-21/23)의 배우자와 자녀는 별도 규정에 따른다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "",
       "searchAliases": [
         "F-5-4",
         "F54"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -565,12 +565,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 429",
-          "section": "F-5-4 영주자격(점주제 영주자격 취득 제외) 소지자의 배우자 또는 미성년 자녀",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 456",
+          "section": "3. 일반 영주자의 배우자 또는 미성년 자녀〔F-5-4〕"
         },
         {
           "manualName": "체류민원",
@@ -578,28 +578,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 일반 영주자(F-5-1) 및 일반 영주자의 배우자(F-5-4)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 431",
+          "section": "영주자격 종류 및 세부 약호 (체류자격 변경허가)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 444",
+          "section": "영주(F-5)자격 신청자 기본 정보 (공통 제출 서류)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-6",
-      "name": "F-5-6 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "재외동포 영주자(2년 이상 체류)",
+      "addReq": "재외동포(F-4) 자격으로 대한민국에 2년 이상 계속 체류한 사람으로서 일정 소득(연간소득 GNI 이상)·연금·재산·교역실적(20억 원 이상)·투자(미화 50만 불 이상)·동포단체 대표 추천 등 생계유지 요건 중 하나를 갖춘 외국적동포(별도 지침 적용). 국내 거소신고한 경우 국외 거주기간도 2년 계속 체류기간에 포함.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 매뉴얼 원문 대조로 정정·반영했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-6",
         "F56"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -608,12 +619,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 429",
-          "section": "F-5-6 재외동포 자격으로 2년 이상 체류한 사람(※ 별도 지침 적용)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 431",
+          "section": "영주자격 종류 및 세부 약호 — 외국적동포를 제외한 영주(F-5) 체류자격 부여"
         },
         {
           "manualName": "체류민원",
@@ -621,54 +632,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 541",
+          "section": "나. 외국국적동포로서 영주자격(F-5)을 부여 대상 및 신청서류 (체류자격 약호: F-5-6)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 400",
-          "section": "- 재외동포 2년 이상 자격소지(F-5-6) 중",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 401",
-          "section": "- 재외동포 2년 이상 자격 소지자(F-5-6)",
-          "confidence": "manual_reconciled_260617_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 631",
+          "section": "재외동포 영주(F-5-6) 공통서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-7",
-      "name": "F-5-7 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "국적취득 요건 구비 동포",
+      "addReq": "「재외동포의 출입국과 법적지위에 관한 법률」제2조제2호의 외국국적동포로서 「국적법」에 따른 국적취득요건(일반귀화·간이귀화 등)을 갖춘 사람. 일반 영주 요건과 달리 별도 지침에 따르며, 국적회복·특별귀화 요건을 갖춘 사람은 생계유지능력 및 기본소양 요건이 면제된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-7",
         "F57"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -677,12 +673,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 429",
-          "section": "F-5-7 외국적동포로서 국적취득 요건을 갖춘 사람(※ 별도 지침 적용)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 431",
+          "section": "영주자격 종류 및 세부 약호 (외국적동포를 제외한 영주(F-5) 체류자격 부여 표)"
         },
         {
           "manualName": "체류민원",
@@ -690,54 +686,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 542",
+          "section": "외국국적동포로서 국적취득요건을 갖춘 사람(F-5-7) 대상 및 제출서류"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 400",
-          "section": "- 국적취득 요건 구비 동포(F-5-7) 중",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 401",
-          "section": "- 국적취득 요건 구비 동포(F-5-7) 중",
-          "confidence": "manual_reconciled_260617_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 539",
+          "section": "생계유지능력·기본소양 면제 대상 (국적취득 요건 구비 동포 F-5-7)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-8",
-      "name": "F-5-8 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "대한민국 출생 재한화교",
+      "addReq": "대한민국에서 출생한 재한화교로서 종전 「출입국관리법 시행령」(2002.4.18. 이전) 별표 1 제27호의 거주(F-2) 체류자격을 가졌던 사람(종전 체류자격 포함)으로, 완전출국하지 않고 주재(D-7)~특정활동(E-7) 또는 거주(F-2) 자격으로 국내에 계속 체류 중이거나 과거 거주(F-2)로 체류하다 완전출국 후 재입국한 경우 등에 해당하며, 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-8",
         "F58"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -746,12 +727,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 429",
-          "section": "F-5-8 대한민국 출생 재한화교",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 458",
+          "section": "5. 대한민국 출생 재한화교〔F-5-8〕 (대상/요건)"
         },
         {
           "manualName": "체류민원",
@@ -759,28 +740,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 대한민국 출생 재한화교(F-5-8)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 431",
+          "section": "영주자격 종류 및 세부 약호 (F-5-8 대한민국 출생 재한화교, 시행령 별표1의3 6호)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류 (F-5-8: 화교협회 발행 호적등본, 출생증명서)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-9",
-      "name": "F-5-9 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "첨단분야 박사",
+      "addReq": "국외에서 첨단기술 분야의 박사학위를 취득한 후, 국내기업 등에서 소지 학위와 관련된 분야에 신청일까지 1년 이상 전일제 상용근로 형태로 계속 근무 중인 사람으로서 법무부장관이 인정하는 사람. 생계유지능력 요건(전년도 1인당 GNI 이상 소득 또는 전년도 평균 순자산 이상 자산 중 하나)도 충족해야 함.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-9",
         "F59"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -789,12 +781,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "F-5-9 첨단산업 분야 박사학위 소지하고 국내기업에 고용된 사람(이하 “첨단분야 박사”라 함) 7.가호",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 459",
+          "section": "체류자격 변경허가 — 6. 첨단분야 박사〔F-5-9〕 및 일반분야 박사〔F-5-15〕"
         },
         {
           "manualName": "체류민원",
@@ -802,41 +794,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 432",
-          "section": "(1) 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15),",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 460",
+          "section": "F-5-9 요건·생계유지능력·제출서류"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 412",
-          "section": "- 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15), 특정분야",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 432",
+          "section": "영주 세부약호 표 — F-5-9 첨단산업 분야 박사학위 소지자"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-10",
-      "name": "F-5-10 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "학사·석사 및 자격증 소지자",
+      "addReq": "법무부장관이 정하는 분야의 학사 이상 학위증 또는 기술자격증을 소지한 사람으로서, 국내 체류기간이 3년 이상이고 영주자격(F-5) 신청 시 국내기업에 고용되어 법무부장관이 정하는 금액 이상의 임금을 받는 사람. (출입국관리법 시행령 별표 1의3 8호 — 첨단산업 분야 학사, 일반 분야 석사 이상 학위 또는 기술자격증 소지하고 국내 기업에 고용된 사람)",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-10",
         "F510"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -845,12 +835,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 433",
-          "section": "학사·석사 학위증 및 자격증 소지자(F-5-10) 또는 연금 수혜자 영주",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 460",
+          "section": "7. 학사·석사 학위증 및 자격증 소지자〔F-5-10〕 가. 대상"
         },
         {
           "manualName": "체류민원",
@@ -858,28 +848,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 학사·석사 및 자격증 소지자(F-5-10)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주자격 세부약호 일람"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 444",
+          "section": "영주(F-5)자격 신청자 기본 정보 — 영주자격세부약호 표"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-12",
-      "name": "F-5-12 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "특별 공로자",
+      "addReq": "대한민국에 특별한 공로가 있다고 법무부장관이 인정하는 사람(출입국관리법 시행령 별표 1의3 10호). 우리나라 독립에 공헌하거나 국가발전에 기여한 공로로 훈·포장을 받은 국가유공자와 그 배우자·자녀, 국가유공자의 직계존비속 자격으로 특별귀화한 사람의 배우자·자녀, 일정 요건을 갖춘 국가유공자의 직계비속 등이 해당하며 생계유지능력 요건이 면제된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-12",
         "F512"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -888,12 +889,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 432",
-          "section": "특정분야 능력 소유자(F-5-11), 특별공로자(F-5-12) 중 어느",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 466",
+          "section": "9. 특별 공로자〔F-5-12〕"
         },
         {
           "manualName": "체류민원",
@@ -901,41 +902,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 특별 공로자(F-5-12)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 - 영주(F-5) 세부약호 일람"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 412",
-          "section": "능력소유자(F-5-11), 특별공로자(F-5-12)",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 444",
+          "section": "영주(F-5)자격 신청자 기본 정보 - 세부약호 표"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-13",
-      "name": "F-5-13 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "연금 수혜자",
+      "addReq": "60세 이상으로서 법무부장관이 정하는 금액 이상의 연금을 국외로부터 받고 있는 영주(F-5) 신청자. 신청일 이전 최근 1년 동안 국외로부터 받는 연간 연금액이 전년도 1인당 국민총소득(GNI)의 2배 이상이어야 한다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-13",
         "F513"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -944,12 +943,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 403",
-          "section": "** 연금수혜자(F-5-13) 영주자격을 신청한 사람 해당",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 466",
+          "section": "10. 연금 수혜자〔F-5-13〕 (대상/요건/제출서류)"
         },
         {
           "manualName": "체류민원",
@@ -957,28 +956,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 433",
-          "section": "(F-5-13) 자격을 신청한 경우는 신청인만 소득주체로 인정",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 439",
+          "section": "기본소양 요건 면제 대상 — 연금수혜자(F-5-13)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 443",
+          "section": "영주자격별 연간 소득 요건 — 연금 수혜자(F-5-13)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-14",
-      "name": "F-5-14 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "방문취업 4년 이상 자격 소지자",
+      "addReq": "방문취업(H-2) 자격으로 제조업·농축산업·어업·간병인·가사보조인 취업활동을 하면서 동일업체에서 근무처를 변경하지 않고 4년 이상 계속 근무하고 있는 사람(재외동포 F-4 자격 변경자 포함). 생계유지·기본소양 등 영주자격 일반요건은 별도 지침에 따라 완화·면제됨.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-14",
         "F514"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -987,12 +997,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "※ F-5-2/3, F-5-6, F-5-7, F-5-14, F-5-27은 별도 지침에 따름",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 543",
+          "section": "방문취업(H-2) 4년 이상 계속 근무자 영주자격 (약호 F-5-14)"
         },
         {
           "manualName": "체류민원",
@@ -1000,54 +1010,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 521",
-          "section": "【별첨9】영주(F-5-14) 부여 자격 종목 및 등급 ························································· 59",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 432",
+          "section": "영주(F-5) 체류자격 변경허가 대상 코드표 — F-5-14 방문취업자격 4년 이상 제조업종 등 근무자"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 384",
-          "section": "【별첨9】영주(F-5-14) 부여 자격 종목 및 등급 ······························································· 59",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
-        },
-        {
-          "manualName": "사증민원",
-          "manualType": "visa",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 400",
-          "section": "- 방문취업 4년 이상 자격 소지자(F-5-14)는 GNI 70% 이상인 경우 인정",
-          "confidence": "manual_reconciled_260617_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 585",
+          "section": "별첨9 영주(F-5-14) 부여 자격 종목 및 등급"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-15",
-      "name": "F-5-15 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "일반분야 박사",
+      "addReq": "국내 대학원에서 정규 박사과정을 이수하여 박사학위를 취득한 후 국내기업에 고용된 사람. (영주자격 변경허가 대상으로, 기본소양 요건은 면제됨)",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-15",
         "F515"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1056,12 +1051,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 432",
-          "section": "(1) 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15),",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주자격 종류 및 세부 약호(별표1의3)"
         },
         {
           "manualName": "체류민원",
@@ -1069,41 +1064,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 연금수혜자(F-5-13) ○ 일반분야 박사(F-5-15)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 445",
+          "section": "체류자격 변경허가 — 영주자격별 제출 서류"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 412",
-          "section": "- 고액 투자자(F-5-5), 첨단분야 박사(F-5-9), 일반분야 박사(F-5-15), 특정분야",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 439",
+          "section": "체류자격 변경허가 — 기본소양 요건 면제 대상"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-17",
-      "name": "F-5-17 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "관광·휴양시설 투자자",
+      "addReq": "관광·휴양시설 투자 거주(F-2-8)자격을 받은 후 신청일 당시 총 5년 이상 계속 투자 상태를 유지하고 있는 사람으로서 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람. ('체류'가 아닌 '투자' 5년 이상 유지에 중점을 두며, 생계유지능력 요건은 면제됨)",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-17",
         "F517"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1112,12 +1105,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "관광‧휴양시설 투자자(F-5-17)의 배우자 또는 미혼 자녀(이하 “관광‧휴양시설 투자자의 배우자 또는 미혼 자녀”라 함)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 목록"
         },
         {
           "manualName": "체류민원",
@@ -1125,28 +1118,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 관광‧휴양시설 투자자(F-5-17)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 468",
+          "section": "12. 관광·휴양시설 투자자〔F-5-17〕 및 그 배우자와 미혼 자녀〔F-5-19〕 — 대상·요건"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 469",
+          "section": "관광·휴양시설 투자자(F-5-17) — 제출서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-18",
-      "name": "F-5-18 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "점수제 영주자의 배우자 또는 미성년 자녀",
+      "addReq": "점수제 거주(F-2-7)자격에서 점수제 영주자격(F-5-16)으로 변경한 사람의 배우자 또는 미성년 자녀로, 거주자격(F-2-71)을 소지하고 2년 이상 혼인관계 또는 가족관계를 계속 유지하며 대한민국에 체류 중인 사람. 배우자는 심사결정일까지 혼인관계를 유지해야 하고, 미성년 자녀는 신청일 기준 민법상 미성년이며 점수제 영주자가 친권·양육권을 가져야 한다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-18",
         "F518"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1155,12 +1159,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 점수제 영주자(F-5-16) 및 점수제 영주자의 배우자(F-5-18)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표"
         },
         {
           "manualName": "체류민원",
@@ -1168,41 +1172,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 441",
-          "section": "•점수제 영주자의 배우자 또는 미성년 자녀(F-5-18)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 467",
+          "section": "11. 점수제 영주자〔F-5-16〕 및 그 배우자와 미성년 자녀〔F-5-18〕"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 468",
-          "section": "❍ 점수제 영주자의 배우자·미성년자녀(F-5-18)에 대한 체류지침 적용",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 468",
+          "section": "F-5-18 미성년 자녀 요건 및 제출서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-19",
-      "name": "F-5-19 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "관광·휴양시설 투자자의 배우자 또는 미혼 자녀",
+      "addReq": "관광·휴양시설 투자 거주(F-2-8) 자격으로 5년 이상 계속 투자를 유지하여 영주자격(F-5-17)을 받은 관광·휴양시설 투자자의 배우자 및 미혼(미성년) 자녀로서 법무부장관이 정하는 요건을 갖춘 사람. 생계유지능력 요건은 면제된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-19",
         "F519"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1211,12 +1213,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 관광‧휴양시설 투자자의 배우자 또는 미혼 자녀(F-5-19)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 468",
+          "section": "12. 관광·휴양시설 투자자〔F-5-17〕 및 그 배우자와 미혼 자녀〔F-5-19〕"
         },
         {
           "manualName": "체류민원",
@@ -1224,28 +1226,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 관광‧휴양시설 투자자의 배우자 또는 미혼 자녀(F-5-19)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호표"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "나) 영주자격별 제출 서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-20",
-      "name": "F-5-20 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "영주권자의 국내 출생 자녀",
+      "addReq": "대한민국에서 출생할 당시 부 또는 모가 영주자격(F-5)으로 국내 체류 중이던 사람의 친생자녀로서, 부모가 법률상 혼인관계에 있고 신청인과 함께 국내에서 실제로 생활하며 출생일로부터 1년 미만에 신청하는 등의 요건을 충족하면 인정된다. 영주자격을 가지지 않은 부 또는 모는 계절근로(E-8)·비전문취업(E-9)·선원취업(E-10)·관광취업(H-1)·기타(G-1)를 제외한 장기 체류자격으로 합법 체류 중이어야 한다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-20",
         "F520"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1254,12 +1267,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 영주권자의 국내 출생 자녀(F-5-20)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 470",
+          "section": "13. 영주권자의 국내 출생자녀〔F-5-20〕"
         },
         {
           "manualName": "체류민원",
@@ -1267,28 +1280,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 영주권자의 국내 출생 자녀(F-5-20)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 일람"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-21",
-      "name": "F-5-21 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "공익사업 일반투자자",
+      "addReq": "공익사업 투자 거주(F-2 차목) 자격으로 신청일 당시 총 5년 이상 계속 투자 상태를 유지하고 있는 사람으로서 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람. 투자 기준금액을 회수하지 않은 상태로 5년간 투자를 유지해야 하며(체류가 아닌 투자 유지에 중점), 생계유지능력 요건은 면제됨.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-21",
         "F521"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1297,12 +1321,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 384",
-          "section": "※ 투자자가 영주(F-5-21/23) 취득 후 투자를 유지하고 있는 경우 동반가족 초청 시",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표"
         },
         {
           "manualName": "체류민원",
@@ -1310,28 +1334,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 471",
+          "section": "14. 공익사업 투자자〔F-5-21/23〕 가. 대상 / 나. 요건 — 1) 공익사업 일반투자자〔F-5-21〕"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 472",
+          "section": "14. 공익사업 투자자 다. 제출서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-22",
-      "name": "F-5-22 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "공익사업 투자자의 배우자 또는 미혼 자녀",
+      "addReq": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는 미혼 자녀로서, 법무부장관이 정하는 요건을 갖춘 사람이 대상이다(출입국관리법 시행령 별표 1의3 제14호). 생계유지능력(연간소득) 요건과 기본소양 요건이 면제된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-22",
         "F522"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1340,12 +1375,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 공익사업 투자자의 배우자 또는 미혼 자녀(F-5-22)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-22)"
         },
         {
           "manualName": "체류민원",
@@ -1353,28 +1388,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 공익사업 투자자의 배우자 또는 미혼 자녀(F-5-22)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 471",
+          "section": "14. 공익사업 투자자〔F-5-21/23〕 및 그 배우자와 미혼 자녀〔F-5-22〕 — 대상/요건"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "나) 영주자격별 제출 서류 (F-5-22)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-23",
-      "name": "F-5-23 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "공익사업 은퇴이민 투자자",
+      "addReq": "은퇴이민 투자 거주(F-2) 자격으로 공익사업에 총 5년 이상 계속 투자를 유지하고, 투자금 이외에 본인 또는 배우자의 국내 보유자산(부동산 등)이 3억원 이상인 사람. 5년 이상 '체류'가 아닌 '투자 유지'에 중점을 두며, 국외 자산은 제외하고 국내 자산만 인정함.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-23",
         "F523"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1383,12 +1429,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 430",
-          "section": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호표"
         },
         {
           "manualName": "체류민원",
@@ -1396,28 +1442,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 공익사업 은퇴이민투자자(F-5-23)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 471",
+          "section": "14. 공익사업 투자자〔F-5-21/23〕 및 그 배우자와 미혼 자녀〔F-5-22〕 — 2) 공익사업 은퇴이민 투자자〔F-5-23〕"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류 — F-5-17/21/23"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-24",
-      "name": "F-5-24 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "기술창업 투자자",
+      "addReq": "기술창업(D-8-4) 자격으로 3년 이상 계속 국내 체류 중이며, 국내·외 투자자로부터 3억원 이상의 투자금을 유치(또는 이에 준하는 자본금 확보)하고 2명 이상의 국민을 6개월 이상 계속 전일제로 상용 고용하고 있는 사람. 생계유지능력요건은 면제됨.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-24",
         "F524"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1426,12 +1483,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 기술창업 투자자(F-5-24)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 — 영주(F-5) 세부약호 표 (F-5-24 기술창업 투자자, 시행령 별표1의3 15호)"
         },
         {
           "manualName": "체류민원",
@@ -1439,28 +1496,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 기술창업 투자자(F-5-24) ○ 조건부 고액투자자(F-5-25)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 473",
+          "section": "15. 기술창업 투자자〔F-5-24〕 — 대상·요건·제출서류"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류 — F-5-24 투자금 유치 관련 서류 및 고용 입증 서류"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-25",
-      "name": "F-5-25 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "조건부 고액투자자",
+      "addReq": "5년 이상 투자 상태를 유지할 것을 조건으로 법무부장관이 정하여 고시하는 금액 이상을 투자한 사람으로서 법무부장관이 정하는 요건을 갖춘 사람. 구체적으로 신청일 이전 한국산업은행의 공익사업 투자이민 펀드(원금보장 무이자형)에 30억 원 이상을 예치하고, 투자상태를 5년간 유지할 것을 서약하여야 함(생계유지능력요건 면제).",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-25",
         "F525"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1469,12 +1537,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 436",
-          "section": "○ 조건부 고액투자자(F-5-25)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 473",
+          "section": "16. 조건부 고액투자자〔F-5-25〕 (대상·요건)"
         },
         {
           "manualName": "체류민원",
@@ -1482,28 +1550,39 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 기술창업 투자자(F-5-24) ○ 조건부 고액투자자(F-5-25)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류 (F-5-25)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 448",
+          "section": "조건부 영주(F-5-25) 펀드 인출 관련 규정"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-5-26",
-      "name": "F-5-26 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "외국인투자기업의 연구개발 인력",
+      "addReq": "기업투자(D-8 가목) 체류자격으로 「외국인투자촉진법 시행령」 제25조제1항제4호에 따른 연구개발시설의 필수전문인력으로서 대한민국에 3년 이상 계속 체류·근무하고, 국내·외 학사학위 이상을 소지하며 생계유지능력(전년도 1인당 GNI 2배 이상 소득 또는 전년도 평균 순자산 1.5배 이상)을 갖춘 사람.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-5-26",
         "F526"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
@@ -1512,12 +1591,12 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 437",
-          "section": "○ 외국인투자기업의 연구개발 인력(F-5-26)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 474",
+          "section": "17. 외국인투자기업의 연구개발 인력〔F-5-26〕 (체류자격 변경허가)"
         },
         {
           "manualName": "체류민원",
@@ -1525,15 +1604,27 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 441",
-          "section": "•외국인투자기업의 연구개발 인력(F-5-26)",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
+          "pageRange": "p. 445",
+          "section": "영주자격별 제출 서류 (F-5-26 연구개발시설 지정서·파견명령서/재직증명서)"
+        },
+        {
+          "manualName": "체류민원",
+          "manualType": "stay",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
           "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 432",
+          "section": "체류자격 변경허가 영주세부약호 목록"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     }
   ],
   "procedures": {
@@ -1545,7 +1636,10 @@
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [
-          "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료",
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "외국인등록증",
+          "수수료",
           "체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)",
           "위 항목은 영주증 재발급 등 절차 기준으로 자동 추출되었으며, 세부 사안은 공식 확인이 필요합니다."
         ],

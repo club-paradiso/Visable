@@ -246,141 +246,88 @@
     },
     {
       "code": "F-4-41",
-      "name": "F-4-41 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
-      "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "출생에 의하여 대한민국 국적을 보유하였던 자로서 외국국적을 취득한 사람",
+      "addReq": "출생에 의하여 대한민국 국적을 보유하였던 사람으로서 이후 외국국적을 취득한 외국국적동포 본인이 해당됩니다. 본인이 대한민국의 국민이었던 사실 및 외국국적 취득 원인·연월일을 증명해야 합니다.",
+      "addReqDocs": [
+        "doc_f4_proof",
+        "doc_fam_rel"
+      ],
+      "note": "",
       "searchAliases": [
         "F-4-41",
         "F441"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 530",
-          "section": "자로서 외국국적을 취득한 사람(F-4-41)",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 530",
-          "section": "재외동포(F-4-41, F-4-42) 자격으로 변경을 희망하는 경우 변경이 가능",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 393",
-          "section": "자로서 외국국적을 취득한 사람(F-4-41)",
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf",
           "confidence": "manual_reconciled_260617_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 393",
+          "section": "재외동포 사증발급 세부대상 및 추가 신청서류"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 393",
-          "section": "재외동포(F-4-41, F-4-42) 자격으로 변경을 희망하는 경우 변경이 가능",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 532",
+          "section": "재외동포(F-4) 자격 변경 절차 / 세부대상"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     },
     {
       "code": "F-4-42",
-      "name": "F-4-42 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "재외동포(F-4-41)의 직계비속 외국국적 취득자",
+      "addReq": "출생에 의하여 대한민국 국적을 보유하였던 자로서 외국국적을 취득한 사람(F-4-41)의 직계비속으로서 외국국적을 취득한 사람. 즉 부모 등 직계존속이 대한민국 국민이었던 재외동포의 자녀로 외국국적자인 경우가 해당된다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "명칭은 매뉴얼 원문 대조로 정정·반영했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
       "searchAliases": [
         "F-4-42",
         "F442"
       ],
-      "status": "manual_review_required",
-      "statusNote": "수동검토 필요: 세부코드 활성 여부와 제출서류를 확정하지 않은 검색 연결용 항목입니다.",
+      "status": "active",
       "needsManualReview": true,
       "manualRefs": [
         {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 530",
-          "section": "(F-4-42)",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
-          "manualName": "체류민원",
-          "manualType": "stay",
-          "manualVersion": "2026.6",
-          "sourceDate": "2026-06-23",
-          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 530",
-          "section": "재외동포(F-4-41, F-4-42) 자격으로 변경을 희망하는 경우 변경이 가능",
-          "confidence": "manual_reconciled_260623_pdf",
-          "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
-        },
-        {
           "manualName": "사증민원",
           "manualType": "visa",
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-17",
           "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 393",
-          "section": "(F-4-42)",
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf",
           "confidence": "manual_reconciled_260617_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 393",
+          "section": "재외동포 사증발급 세부대상 및 추가 신청서류"
         },
         {
-          "manualName": "사증민원",
-          "manualType": "visa",
+          "manualName": "체류민원",
+          "manualType": "stay",
           "manualVersion": "2026.6",
-          "sourceDate": "2026-06-17",
-          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
-          "pageRange": "p. 393",
-          "section": "재외동포(F-4-41, F-4-42) 자격으로 변경을 희망하는 경우 변경이 가능",
-          "confidence": "manual_reconciled_260617_pdf",
+          "sourceDate": "2026-06-23",
+          "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
+          "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
-          "sourceId": "visa_manual_2026_06_17_pdf"
+          "pageRange": "p. 532",
+          "section": "재외동포(F-4) 사증발급 세부대상 및 자격 변경 절차"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     }
   ],
   "procedures": {
@@ -390,9 +337,12 @@
       "summaryHiddenInUi": true,
       "summaryCleanupStatus": "compat_only",
       "requiredDocs": {
-        "commonDocs": [],
+        "commonDocs": [
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본"
+        ],
         "requiredDocs": [
-          "신청서, 수수료, 한국어능력 입증서류, 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비) 등 □ 재외동포(F-4) 자격 소지자의 취업"
+          "통합신청서 (별지 제34호 서식), 수수료, 한국어능력 입증서류, 체류지 입증서류(예: 임대차계약서, 거주/숙소 제공 확인서, 체류기간 만료예고 통지우편물, 공공요금 납부영수증, 기숙사비 영수증 또는 기숙사 거주확인서 등. 가족·배우자·지인·고용주 등 타인이 제공하는 주소지에 거주하거나 신청자 명의의 임대차계약서·기숙사 자료만으로 체류지를 입증하기 어려운 경우에는 거주/숙소 제공 확인서와 임대차계약서 또는 부동산등기사항전부증명서(등기부등본) 등 제공자의 주거지 사용권한 입증자료를 준비)"
         ],
         "additionalDocs": [],
         "conditionalDocs": []

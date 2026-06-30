@@ -208,7 +208,10 @@
       "summaryHiddenInUi": true,
       "summaryCleanupStatus": "compat_only",
       "requiredDocs": {
-        "commonDocs": [],
+        "commonDocs": [
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본"
+        ],
         "requiredDocs": [
           "체류기간 연장허가가. 첨부서류 1-1) 일반 구직(D-10-1): 점수제 적용 대상자",
           "공통서류(신청서, 사진, 여권 사본, 수수료, 신분증 사본)",

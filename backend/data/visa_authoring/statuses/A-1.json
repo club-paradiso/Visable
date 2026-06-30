@@ -9,7 +9,10 @@
       "summary": "재임기간 범위 내에서 체류기간을 연장할 수 있으며, 제출서류는 체류자격 변경허가와 동일하고 수수료는 면제됩니다.",
       "summaryQuality": "source_backed",
       "requiredDocs": {
-        "commonDocs": [],
+        "commonDocs": [
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본"
+        ],
         "requiredDocs": [],
         "additionalDocs": [],
         "conditionalDocs": []
@@ -40,7 +43,7 @@
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [
-          "신청서(별지 제34호)",
+          "통합신청서 (별지 제34호 서식)",
           "여권 원본",
           "반명함판 천연색 사진(3.5×4.5㎝)",
           "주한외국공관원 신분증 등 신분 입증서류"

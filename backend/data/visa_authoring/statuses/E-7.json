@@ -643,17 +643,16 @@
     },
     {
       "code": "E-7-91FTA",
-      "name": "E-7-91FTA 매뉴얼 참조 코드 (수동검토 필요)",
-      "addReq": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "name": "FTA 독립전문가",
+      "addReq": "한·미 FTA 등 자유무역협정에 따라 입국·체류가 허용되는 독립전문가(independent professional)로 분류되는 E-7 특정활동 인력으로, 구 약호 T6에 해당한다. 해당 페이지는 E-7 세부 약호 분류표만 제시하며 별도의 세부 자격요건은 명시하지 않는다.",
       "addReqDocs": [],
-      "note": "매뉴얼 추출본에는 등장하지만 아직 Paradiso의 활성 세부코드/필수서류로 검증되지 않았습니다. 현재 신청 가능 여부와 필수서류는 공식 매뉴얼 원문, HiKorea, 1345 또는 관할 출입국기관에서 확인하세요.",
+      "note": "",
       "searchAliases": [
         "E-7-91FTA",
         "E791FTA"
       ],
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "needsManualReview": true,
+      "status": "active",
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -661,15 +660,27 @@
           "manualVersion": "2026.6",
           "sourceDate": "2026-06-23",
           "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
-          "pageRange": "p. 14",
-          "section": "󰋻특정활동(E-7) [단, 숙련기능점수제(E-7-4) 제외]",
+          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+          "sourceId": "stay_manual_2026_06_23_pdf",
           "confidence": "manual_reconciled_260623_pdf",
           "needsManualReview": false,
-          "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
-          "sourceId": "stay_manual_2026_06_23_pdf"
+          "pageRange": "p. 214",
+          "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)"
+        },
+        {
+          "manualName": "사증민원",
+          "manualType": "visa",
+          "manualVersion": "2026.6",
+          "sourceDate": "2026-06-17",
+          "sourceFile": "backend/data/sources/manuals/260617_visa_manual_readable.txt",
+          "sourcePdf": "backend/data/sources/manuals/260617_visa_manual_exported.pdf",
+          "sourceId": "visa_manual_2026_06_17_pdf",
+          "confidence": "manual_reconciled_260617_pdf",
+          "needsManualReview": false,
+          "pageRange": "p. 171",
+          "section": "E-7 적용대상 및 도입기준 등 (신 약호 분류기준 표)"
         }
-      ],
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified."
+      ]
     }
   ],
   "procedures": {
@@ -681,7 +692,10 @@
       "requiredDocs": {
         "commonDocs": [],
         "requiredDocs": [
-          "통합신청서(별지 제34호 서식), 여권 및 외국인등록증, 수수료",
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본",
+          "외국인등록증",
+          "수수료",
           "개인 소득금액 증명(필수)",
           "소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급)",
           "사업자등록증 사본 또는 법인등기부등본",
