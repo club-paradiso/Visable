@@ -2227,12 +2227,15 @@ select:focus-visible {
         // on the Easy elements themselves rather than the whole ko/en shell.
         const EASY_RTL = ['ar', 'fa', 'he', 'ur'];
         function easyDirAttr() { return EASY_RTL.indexOf(EASY_I18N.locale) >= 0 ? ' dir="rtl"' : ''; }
+        // Shared global Easy Mode preference (set by the header toggle on index.html).
+        function easyGlobalPref() { try { return localStorage.getItem('paradiso:easyMode') === '1'; } catch (e) { return false; } }
 
         // Standard / Easy toggle for one answer card (labels from the shared packs).
         function buildAnswerModeToggle() {
             if (!EASY_I18N.ready) return '';
+            const pref = easyGlobalPref();
             const btn = (mode, key, on) => `<button type="button" class="answer-mode-btn${on ? ' is-active' : ''}" data-ai-action="set-answer-mode" data-answer-mode="${mode}" role="tab" aria-selected="${on ? 'true' : 'false'}">${escapeHtml(txEasy(key))}</button>`;
-            return `<div class="answer-mode-row"${easyDirAttr()}><div class="answer-mode-toggle" role="tablist" aria-label="${escapeHtml(txEasy('easyModeToggleAria'))}">${btn('standard', 'easyModeStandard', true)}${btn('easy', 'easyModeEasy', false)}</div></div>`;
+            return `<div class="answer-mode-row"${easyDirAttr()}><div class="answer-mode-toggle" role="tablist" aria-label="${escapeHtml(txEasy('easyModeToggleAria'))}">${btn('standard', 'easyModeStandard', !pref)}${btn('easy', 'easyModeEasy', pref)}</div></div>`;
         }
         // Plain-language framing shown only in Easy view. ADDITIVE: it never
         // replaces the answer body, source panel, or disclaimers — it adds a short
@@ -3061,7 +3064,7 @@ select:focus-visible {
             const row = document.createElement('div');
             row.className = 'msg-row ai answer';
             row.innerHTML = `
-                <article class="msg-bubble answer-card">
+                <article class="msg-bubble answer-card${easyGlobalPref() ? ' ai-mode-easy' : ''}">
                     <header class="answer-head">
                         <div>
                             <span class="answer-kicker">${t(lang, 'Waymaker by Paradiso 안내', 'Waymaker by Paradiso guidance')}</span>

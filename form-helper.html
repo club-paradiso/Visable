@@ -1997,6 +1997,11 @@ function renderEasyToggle() {
 async function setupEasyMode() {
   await loadEasyModeI18n();
   renderEasyOutput();
+  // Honor the shared global Easy Mode preference (header toggle on index.html).
+  try {
+    const panel = document.getElementById('fhStep6');
+    if (panel && localStorage.getItem('paradiso:easyMode') === '1') panel.classList.add('fh-mode-easy');
+  } catch (e) {}
   renderEasyToggle();
 }
 
