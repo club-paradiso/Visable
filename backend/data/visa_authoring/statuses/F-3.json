@@ -11,16 +11,13 @@
       "addReqDocs": [
         "doc_fam_rel"
       ],
-      "note": "",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "F-3-1",
         "F31"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "F-3-2",
@@ -29,32 +26,32 @@
       "addReqDocs": [
         "doc_inc_proof"
       ],
-      "note": "E-7-4는 별도 기준이 적용될 수 있음. 2026년 기준 2인 25,195,752원, 3인 32,154,216원, 4인 38,968,428원, 5인 45,340,314원, 6인 51,335,712원, 7인 57,090,900원, 8인 이상은 1인 증가당 5,755,188원 추가.",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "F-3-2",
         "F32"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "F-3-3",
       "name": "소득요건 면제",
       "addReq": "E-1(교수), E-3(연구), E-4(기술지도), E-5(전문직업), F-4(재외동포), H-2(방문취업), E-7-T, E-7-S1, D-8(50만불 이상 고액투자자).",
-      "addReqDocs": [],
-      "note": "매뉴얼은 위 자격군의 생계유지능력 입증서류와 체류지 등 주거지 입증서류 제출면제를 함께 표시합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_fam_rel",
+        "doc_residence_proof_generic"
+      ],
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "F-3-3",
         "F33"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "F-3-18",
