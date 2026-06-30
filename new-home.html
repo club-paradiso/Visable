@@ -945,8 +945,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     html += '</div>';
     var helps = (pick(k.helps) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
     var nots = (pick(k.notClaims) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
-    var helpsTitle = lang === 'zh-CN' ? 'Paradiso 能帮的' : lang === 'en' ? 'What Paradiso helps with' : 'Paradiso가 돕는 것';
-    var notsTitle = lang === 'zh-CN' ? 'Paradiso 不会断定的' : lang === 'en' ? "What Paradiso won't claim" : 'Paradiso가 단정하지 않는 것';
+    var helpsTitle = lang === 'zh-CN' ? 'New Home by Paradiso 能帮的' : lang === 'en' ? 'What New Home by Paradiso helps with' : 'New Home by Paradiso가 돕는 것';
+    var notsTitle = lang === 'zh-CN' ? 'New Home by Paradiso 不会断定的' : lang === 'en' ? "What New Home by Paradiso won't claim" : 'New Home by Paradiso가 단정하지 않는 것';
     html += '<div class="nh-cols">' +
       '<div class="nh-pill-card"><h4>' + esc(helpsTitle) + '</h4><ul class="nh-pill-list yes">' + helps + '</ul></div>' +
       '<div class="nh-pill-card"><h4>' + esc(notsTitle) + '</h4><ul class="nh-pill-list no">' + nots + '</ul></div>' +
@@ -1495,7 +1495,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var main = document.getElementById('nhMain');
     if (main) {
       main.innerHTML = '<div class="nh-loaderr"><p>콘텐츠를 불러오지 못했습니다. / Content could not be loaded.</p>' +
-        '<p><a href="index.html">← Paradiso</a></p></div>';
+        '<p><a href="index.html">← Visable</a></p></div>';
     }
   }
 

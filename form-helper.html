@@ -1885,7 +1885,7 @@ function renderOutput() {
       <li>수수료 납부 방법(현장·인터넷)을 미리 확인하세요.</li>
       <li>방문 전 온라인 예약(HiKorea)을 권장합니다.</li>
       <li>신청 가능 기간(체류기간 만료 전 등)이 지나지 않았는지 확인하세요.</li>
-      <li>Paradiso 검색 또는 AI 검색에서 해당 절차의 서류 안내를 함께 확인하세요.</li>
+      <li>Visable 검색 또는 AI 검색에서 해당 절차의 서류 안내를 함께 확인하세요.</li>
     </ul></div>
   </div>`;
 
@@ -1995,7 +1995,7 @@ function buildCopyText() {
   if (!t) return '신청 유형을 먼저 선택하세요.';
   const f = currentForm();
   const lines = [];
-  lines.push(`=== ${f ? f.nameKo : '필수서류'} 작성 가이드 (Paradiso 참고용) ===`);
+  lines.push(`=== ${f ? f.nameKo : '필수서류'} 작성 가이드 (Visable 참고용) ===`);
   lines.push(`신청 유형: ${t.ko} (${t.formCheckbox})`);
   lines.push('');
   lines.push('[기본 인적사항]');
@@ -2180,7 +2180,7 @@ function buildF06CopyText() {
   const L = [];
   const own = { own: '자가', rent: '임대', other: '기타' }[state.f6_resType] || '(미선택)';
   const hold = { self: '본인(외국인)', family: '가족·지인', company: '회사·기관' }[state.f6_holder] || '(미선택)';
-  L.push('=== 거주/숙소제공확인서 작성 안내 (Paradiso 참고용) ===');
+  L.push('=== 거주/숙소제공확인서 작성 안내 (Visable 참고용) ===');
   L.push(`거주 형태: ${own} / 계약자·제공 주체: ${hold}`);
   L.push('');
   L.push('[거주자(외국인) — 서식 ① 구획]');
@@ -2281,7 +2281,7 @@ function updateF07Preview() {
 }
 function buildF07CopyText() {
   const L = [];
-  L.push('=== 신원보증서 작성 안내 (Paradiso 참고용) ===');
+  L.push('=== 신원보증서 작성 안내 (Visable 참고용) ===');
   L.push('※ 신원보증서는 특정 체류자격·신청에서만 요구됩니다. 필요 여부를 먼저 확인하세요.');
   L.push(`보증인과의 관계: ${f07RelText() || '(미선택)'}`);
   L.push('');
@@ -2698,7 +2698,7 @@ async function drawF06OnCanvas(canvas, vals, scale) {
   ctx.fillStyle = '#bbb';
   ctx.textAlign = 'left';
   ctx.textBaseline = 'bottom';
-  ctx.fillText('※ Paradiso 참고용 초안. 제출 전 HiKorea(www.hikorea.go.kr)에서 최신 공식 서식을 확인하세요.', p(ML), p(1123 - 14));
+  ctx.fillText('※ Visable 참고용 초안. 제출 전 HiKorea(www.hikorea.go.kr)에서 최신 공식 서식을 확인하세요.', p(ML), p(1123 - 14));
   ctx.restore();
 }
 
