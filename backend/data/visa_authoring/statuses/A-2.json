@@ -9,7 +9,10 @@
       "summary": "체류기간 연장허가 주재 목적이 아니라 단기 공무수행 목적으로 입국한 공무(A-2) 체류자격 소지자가 90일 이상 장기체류를 희망할 경우 출국하여 장기사증을 발급받아 입국하여야 함. 단, 대한민국과의 협정 또는 상호주의에 따라 예외적으로 장기 체류자격으로 변경 또는 체류기간 연장 허용",
       "summaryQuality": "source_backed",
       "requiredDocs": {
-        "commonDocs": [],
+        "commonDocs": [
+          "통합신청서 (별지 제34호 서식)",
+          "여권 원본 및 인적사항면 사본"
+        ],
         "requiredDocs": [],
         "additionalDocs": [],
         "conditionalDocs": []
