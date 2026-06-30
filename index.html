@@ -2258,9 +2258,35 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 @media (prefers-reduced-motion: reduce) { .subcode-expand-caret { transition: none; } }
 .subcode-expand-body { margin-top: 0.55rem; display: grid; gap: 0.5rem; }
 .subcode-expand-body[hidden] { display: none; }
+
+/* ── Retired / inactive sub-codes → one compact, collapsible chip cluster ──
+   Some statuses (e.g. F-5) carry 20+ deprecated placeholder sub-codes. Rendering
+   each as a full card with identical boilerplate buried the few active ones, so
+   they now collapse into a single muted chip cluster. The per-code detail — incl.
+   the full uncertainty notice — stays one tap away via the subcode detail modal. */
+.subcode-inactive-cluster { margin-top: 0.6rem; }
+.subcode-inactive-toggle { display: inline-flex; align-items: center; gap: 0.42rem; min-height: 40px; padding: 0.35rem 0.72rem; font: inherit; font-size: 0.78rem; font-weight: 800; color: var(--t3); background: transparent; border: 1px dashed var(--bd2); border-radius: 8px; cursor: pointer; max-width: 100%; text-align: left; }
+.subcode-inactive-toggle:hover { color: var(--t2); border-color: var(--t3); }
+.subcode-inactive-toggle:focus-visible { outline: 3px solid var(--ac); outline-offset: 2px; }
+.subcode-inactive-caret { transition: transform 0.18s ease; line-height: 1; flex: none; }
+.subcode-inactive-toggle[aria-expanded="true"] .subcode-inactive-caret { transform: rotate(180deg); }
+@media (prefers-reduced-motion: reduce) { .subcode-inactive-caret { transition: none; } }
+.subcode-inactive-body { margin-top: 0.55rem; }
+.subcode-inactive-body[hidden] { display: none; }
+.subcode-inactive-note { margin: 0 0 0.6rem; font-size: 0.76rem; line-height: 1.55; color: var(--t3); word-break: keep-all; }
+.subcode-mini-grid { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.subcode-mini-chip { display: inline-flex; align-items: baseline; gap: 0.4rem; min-height: 36px; padding: 0.3rem 0.62rem; font: inherit; font-size: 0.78rem; color: var(--t2); background: var(--bg1); border: 1px solid var(--bd2); border-radius: 8px; cursor: pointer; max-width: 100%; text-align: left; }
+.subcode-mini-chip:hover { border-color: var(--ac); color: var(--t1); }
+.subcode-mini-chip:focus-visible { outline: 3px solid var(--ac); outline-offset: 1px; }
+.subcode-mini-chip.match { border-color: color-mix(in srgb, var(--ac) 55%, var(--bd)); }
+.subcode-mini-code { font-weight: 900; color: var(--t2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.subcode-mini-chip:hover .subcode-mini-code { color: var(--ac); }
+.subcode-mini-name { color: var(--t3); word-break: keep-all; }
+
 @media (max-width: 480px) {
   .subcode-preview-chip { font-size: 0.76rem; padding: 0.3rem 0.6rem; }
   .subcode-expand-btn { width: 100%; justify-content: center; }
+  .subcode-inactive-toggle { width: 100%; justify-content: center; }
 }
 .procedure-tabs { display: flex; flex-wrap: wrap; gap: 0.45rem; overflow-x: auto; padding: 0.12rem 0 0.25rem; scrollbar-width: thin; }
 .procedure-tab { flex: 0 0 auto; min-height: 38px; border: 1px solid var(--bd2); background: var(--bg1); color: var(--t2); border-radius: 999px; padding: 0 0.78rem; font: inherit; font-size: 0.76rem; font-weight: 850; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
@@ -19690,6 +19716,39 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         }).join('');
     };
 
+    // Retired/inactive sub-codes (status !== active) collapse into ONE compact
+    // chip cluster with a single shared note, instead of repeating the same
+    // boilerplate card per code. Each chip still opens the per-code detail modal
+    // (which keeps the full uncertainty notice), so nothing is hidden — only
+    // de-cluttered. Active codes stay as full cards.
+    const splitByActivity = (list) => ({
+        active: list.filter(s => !s.status || s.status === 'active'),
+        inactive: list.filter(s => s.status && s.status !== 'active')
+    });
+    const renderInactiveCluster = (list) => {
+        if (!list.length) return '';
+        const chips = list.map(s => {
+            const rawLabel = paradisoStripInternalReviewArtifacts(s.nameKo || s.name || '');
+            const meaningful = rawLabel && !/매뉴얼\s*참조\s*코드|manual\s*review\s*code/i.test(rawLabel);
+            const nameHtml = meaningful ? `<span class="subcode-mini-name">${hl(rawLabel, keywords)}</span>` : '';
+            return `<button type="button" class="subcode-mini-chip${matchSet.has(s.code) ? ' match' : ''}" data-action="open-subcode-detail" data-parent="${escapeHtml(visaCode)}" data-subcode="${escapeHtml(s.code)}" aria-label="${escapeHtml(tx('subcodeModalOpenAria', { code: s.code }))}"><span class="subcode-mini-code">${hl(s.code, keywords)}</span>${nameHtml}</button>`;
+        }).join('');
+        const heading = zh ? `已废止·非活跃细分代码 ${list.length}个` : en ? `Retired / inactive sub-codes (${list.length})` : `폐지·비활성 세부코드 ${list.length}개`;
+        const note = zh ? '出现在手册提取本中，但尚未核实为活跃细分代码。点击任一代码可查看其详情与注意事项。'
+            : en ? 'Present in the manual extract but not yet verified as active sub-codes. Tap any code for its detail and cautions.'
+            : '매뉴얼 추출본에는 있으나 아직 활성 세부코드로 검증되지 않았습니다. 각 코드를 누르면 상세·주의사항을 확인할 수 있습니다.';
+        const groupId = `subinactive-${normalizeVisaCode(visaCode)}`;
+        return `<div class="subcode-inactive-cluster">
+            <button type="button" class="subcode-inactive-toggle" data-action="toggle-subcode-group" aria-expanded="false" aria-controls="${groupId}">
+                <span class="subcode-inactive-caret" aria-hidden="true">▾</span><span>${escapeHtml(heading)}</span>
+            </button>
+            <div id="${groupId}" class="subcode-inactive-body" hidden>
+                <p class="subcode-inactive-note">${escapeHtml(note)}</p>
+                <div class="subcode-mini-grid">${chips}</div>
+            </div>
+        </div>`;
+    };
+
     const title = `<h4 class="manual-section-title">${escapeHtml(tx('subcodesTitle'))}</h4>`;
 
     // A) Broad parent-code query (e.g. "C-3" on the C-3 card): parent-first.
@@ -19703,9 +19762,15 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
             .filter(name => name && !/매뉴얼\s*참조\s*코드|manual\s*review\s*code/i.test(name));
         const names = summaryNames.slice(0, 4).join(', ')
             || summarySubs.slice(0, 4).map(s => s.code).filter(Boolean).join(', ');
-        const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: subs.length, names }))}</p>`;
+        // Count + expandable group cover the ACTIVE sub-codes (the meaningful set);
+        // deprecated placeholders move to the compact cluster below so the summary,
+        // the preview chips, and the expand toggle all line up on the same number.
+        const inactiveSubs = subs.filter(s => s.status && s.status !== 'active');
+        const groupSubs = activeSubs.length ? activeSubs : subs;
+        const summary = `<p class="subcode-group-summary">${escapeHtml(tx('subcodeGroupSummary', { count: groupSubs.length, names }))}</p>`;
         const hint = `<p class="subcode-group-hint">${escapeHtml(tx('subcodeGroupHint', { example: (activeSubs[0] && activeSubs[0].code) || `${visaCode}-1` }))}</p>`;
-        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode, v.code)}${renderExpandableSubcodeGroup(v, subs, buildGroupedHtml(subs), opts.queryCode)}${hint}</div>`;
+        const inactiveCluster = activeSubs.length ? renderInactiveCluster(inactiveSubs) : '';
+        return `<div class="manual-section" data-subcode-section="broad">${title}${summary}${renderSubcodePreview(subs, opts.queryCode, v.code)}${renderExpandableSubcodeGroup(v, groupSubs, buildGroupedHtml(groupSubs), opts.queryCode)}${inactiveCluster}${hint}</div>`;
     }
 
     // B) Matched subcodes are lifted into their own labeled group up top
@@ -19720,10 +19785,14 @@ function renderSubcodes(v, keywords, matchingSubcodes, opts) {
         matchedHtml = `<div class="manual-subcode-group"><div class="manual-subcode-group-title">${zh ? '与您情况相关' : en ? 'Related to your situation' : '내 상황과 관련'}</div>${renderExpandableSubcodeGroup(v, matched, `<div class="manual-subcode-grid">${matched.map(renderCard).join('')}</div>`, opts.queryCode, 'match')}</div>`;
         if (rest.length) matchedHtml += `<hr class="subcode-match-divider"><div class="manual-subcode-group-title">${zh ? '全部细分代码' : en ? 'All sub-codes' : '전체 세부코드'}</div>`;
     }
-    const restHtml = rest.length
-        ? renderExpandableSubcodeGroup(v, rest, buildGroupedHtml(rest), opts.queryCode)
+    // Active rest → full grouped cards; inactive rest → compact chip cluster.
+    const { active: restActive, inactive: restInactive } = splitByActivity(rest);
+    const restGroup = restActive.length ? restActive : rest;
+    const restHtml = restGroup.length
+        ? renderExpandableSubcodeGroup(v, restGroup, buildGroupedHtml(restGroup), opts.queryCode)
         : '';
-    return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}</div>`;
+    const restInactiveHtml = restActive.length ? renderInactiveCluster(restInactive) : '';
+    return `<div class="manual-section" data-subcode-section>${title}${matchedHtml}${restHtml}${restInactiveHtml}</div>`;
 }
 
 function renderCommonWarnings(v) {
