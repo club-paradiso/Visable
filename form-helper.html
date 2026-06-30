@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>통합신청서 작성 도우미 — Paradiso</title>
+<title>통합신청서 작성 도우미 — Visable by Paradiso</title>
 <script>
 (function(){
   var KEY='paradiso:editorial-theme';
@@ -649,11 +649,11 @@ main{flex:1;padding:0 1rem 3rem}
 <!-- Header -->
 <header class="fh-header" role="banner">
   <div class="fh-header-left">
-    <a class="fh-back" href="index.html" aria-label="Paradiso 메인으로 돌아가기">
+    <a class="fh-back" href="index.html" aria-label="Visable 메인으로 돌아가기">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
       메인
     </a>
-    <a class="fh-logo" href="index.html" aria-label="Paradiso 홈">Para<span>diso</span></a>
+    <a class="fh-logo" href="index.html" aria-label="Visable by Paradiso 홈">Visable <span>by Paradiso</span></a>
   </div>
   <div class="fh-header-right">
     <button class="fh-lang-btn" id="fhLangBtn" type="button" aria-label="언어 / Language">
@@ -677,7 +677,7 @@ main{flex:1;padding:0 1rem 3rem}
     </div>
     <div class="fh-source-meta" id="fhSourceMeta" aria-label="참고 서식 정보">
       <span>필수서류 작성 도우미</span>
-      <span>Paradiso 참고용 도구 · 법적 효력 없음</span>
+      <span>Visable by Paradiso 참고용 도구 · 법적 효력 없음</span>
     </div>
   </div>
 
@@ -2846,7 +2846,7 @@ function updateDocChrome() {
   const f = currentForm(); if (!f) return;
   document.getElementById('fhDocChipName').textContent = f.nameKo;
   document.getElementById('fhSourceMeta').innerHTML =
-    `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Paradiso 참고용 도구 · 법적 효력 없음</span>`;
+    `<span>${esc(f.nameKo)}</span><span>${esc(f.legalKo)}</span><span>서식 기준: ${esc(f.rev)}</span><span>Visable by Paradiso 참고용 도구 · 법적 효력 없음</span>`;
   const dlBtn = document.getElementById('fhDownloadBtn');
   if (dlBtn) dlBtn.textContent = f.id === 'F06'
     ? (state.f6ExportFormat === 'png' ? '⬇ PNG로 저장' : '⬇ PDF로 저장')
