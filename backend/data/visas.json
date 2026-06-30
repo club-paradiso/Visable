@@ -12990,6 +12990,43 @@
         "notes": [
           "세부 자격 또는 신청 사유에 따라 제출서류가 달라질 수 있습니다."
         ]
+      },
+      "workplaceChange": {
+        "available": true,
+        "summary": "교수(E-1)가 자격요건을 갖추고 근무처를 변경·추가하는 경우 신고사유 발생일부터 15일 이내 관할 출입국·외국인관서에 신고합니다(대리 신고 허용). 다만 대학교수가 전공과 관련하여 일시적인 강연·강의·연구를 다른 대학에서 하는 경우에는 근무처 추가신고가 면제됩니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [
+            "근무처변경·추가 신고서(별지 제38호의3 서식)",
+            "여권 원본 및 인적사항면 사본",
+            "외국인등록증",
+            "수수료",
+            "사업자등록증",
+            "고용계약서"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": [
+            "원 근무처 장의 동의서(원 근무처가 있는 경우 해당; 계약기간 만료일까지 근무 등 정당한 사유 시 면제)"
+          ]
+        },
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.6",
+            "sourceDate": "2026-06-23",
+            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+            "sourceId": "stay_manual_2026_06_23_pdf",
+            "pageRange": "p. 171",
+            "section": "교수(E-1) 근무처의 변경·추가 신고",
+            "confidence": "manual_reconciled_260623_pdf",
+            "needsManualReview": false
+          }
+        ],
+        "notes": [
+          "2026.6 체류민원 매뉴얼 교수(E-1) 근무처 변경·추가 신고 항목(p.171) 기준입니다. 세부 사항은 관할 출입국·외국인관서에서 확인하시기 바랍니다."
+        ]
       }
     },
     "sourceManualStatus": {
@@ -21161,6 +21198,45 @@
             "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
             "sourceId": "stay_manual_2026_06_23_pdf"
           }
+        ]
+      },
+      "workplaceChange": {
+        "available": true,
+        "summary": "선원취업(E-10) 근로자가 사업장의 휴·폐업 등으로 정상적인 근로관계를 지속하기 곤란한 때 지방해양수산청장의 추천을 받아 근무처 변경을 신청할 수 있습니다. 동일 선사(선주)의 선박 간 이동근무 시에도 미리 근무처변경 허가를 받아야 하며, 이 경우 수수료는 면제됩니다.",
+        "requiredDocs": {
+          "commonDocs": [],
+          "requiredDocs": [
+            "통합신청서 (별지 제34호 서식)",
+            "여권 원본 및 인적사항면 사본",
+            "외국인등록증",
+            "수수료",
+            "한국해운조합 또는 수산업협동조합중앙회 발급 외국인 고용추천서",
+            "고용계약서",
+            "사업자등록증",
+            "신원보증서"
+          ],
+          "additionalDocs": [],
+          "conditionalDocs": [
+            "산재서류 또는 진단서(필요시)"
+          ]
+        },
+        "manualRefs": [
+          {
+            "manualName": "체류민원",
+            "manualType": "stay",
+            "manualVersion": "2026.6",
+            "sourceDate": "2026-06-23",
+            "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+            "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+            "sourceId": "stay_manual_2026_06_23_pdf",
+            "pageRange": "pp. 337-341",
+            "section": "선원취업(E-10) 근무처의 변경·추가",
+            "confidence": "manual_reconciled_260623_pdf",
+            "needsManualReview": false
+          }
+        ],
+        "notes": [
+          "2026.6 체류민원 매뉴얼 선원취업(E-10) 근무처의 변경·추가 항목 기준입니다. 세부 사항은 관할 출입국·외국인관서에서 확인하시기 바랍니다."
         ]
       }
     },
