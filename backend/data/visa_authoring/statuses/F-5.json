@@ -509,7 +509,14 @@
       "code": "F-5-3",
       "name": "국민의 미성년 자녀",
       "addReq": "대한민국 국민의 미성년 자녀에게 부여되는 영주(F-5) 세부자격으로, 시행령 별표1의3 제2호에 해당한다. 국민의 미성년 자녀로서 법령준수·품행단정 등 영주자격 요건을 갖춘 사람이 대상이다.",
-      "addReqDocs": [],
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel",
+        "doc_basic"
+      ],
       "note": "",
       "searchAliases": [
         "F-5-3",
@@ -550,7 +557,14 @@
       "code": "F-5-4",
       "name": "일반 영주자의 배우자 또는 미성년 자녀",
       "addReq": "영주(F-5)자격을 가진 사람의 배우자 또는 미성년 자녀로서 대한민국에 2년 이상 체류하고 있는 사람 중 법무부장관이 인정하는 사람. 단, 점수제 영주자(F-5-16)·관광·휴양시설 투자자(F-5-17)·공익사업투자자(F-5-21/23)의 배우자와 자녀는 별도 규정에 따른다.",
-      "addReqDocs": [],
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel",
+        "doc_basic"
+      ],
       "note": "",
       "searchAliases": [
         "F-5-4",
@@ -604,14 +618,23 @@
       "code": "F-5-6",
       "name": "재외동포 영주자(2년 이상 체류)",
       "addReq": "재외동포(F-4) 자격으로 대한민국에 2년 이상 계속 체류한 사람으로서 일정 소득(연간소득 GNI 이상)·연금·재산·교역실적(20억 원 이상)·투자(미화 50만 불 이상)·동포단체 대표 추천 등 생계유지 요건 중 하나를 갖춘 외국적동포(별도 지침 적용). 국내 거소신고한 경우 국외 거주기간도 2년 계속 체류기간에 포함.",
-      "addReqDocs": [],
-      "note": "명칭은 매뉴얼 원문 대조로 정정·반영했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_f4_proof",
+        "doc_income_tax",
+        "doc_property_proof",
+        "doc_crim"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-6",
         "F56"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -658,14 +681,20 @@
       "code": "F-5-7",
       "name": "국적취득 요건 구비 동포",
       "addReq": "「재외동포의 출입국과 법적지위에 관한 법률」제2조제2호의 외국국적동포로서 「국적법」에 따른 국적취득요건(일반귀화·간이귀화 등)을 갖춘 사람. 일반 영주 요건과 달리 별도 지침에 따르며, 국적회복·특별귀화 요건을 갖춘 사람은 생계유지능력 및 기본소양 요건이 면제된다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_f4_proof"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-7",
         "F57"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -712,14 +741,21 @@
       "code": "F-5-8",
       "name": "대한민국 출생 재한화교",
       "addReq": "대한민국에서 출생한 재한화교로서 종전 「출입국관리법 시행령」(2002.4.18. 이전) 별표 1 제27호의 거주(F-2) 체류자격을 가졌던 사람(종전 체류자격 포함)으로, 완전출국하지 않고 주재(D-7)~특정활동(E-7) 또는 거주(F-2) 자격으로 국내에 계속 체류 중이거나 과거 거주(F-2)로 체류하다 완전출국 후 재입국한 경우 등에 해당하며, 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel",
+        "doc_basic"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-8",
         "F58"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -766,14 +802,23 @@
       "code": "F-5-9",
       "name": "첨단분야 박사",
       "addReq": "국외에서 첨단기술 분야의 박사학위를 취득한 후, 국내기업 등에서 소지 학위와 관련된 분야에 신청일까지 1년 이상 전일제 상용근로 형태로 계속 근무 중인 사람으로서 법무부장관이 인정하는 사람. 생계유지능력 요건(전년도 1인당 GNI 이상 소득 또는 전년도 평균 순자산 이상 자산 중 하나)도 충족해야 함.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_degree",
+        "doc_biz_reg",
+        "doc_emp_certificate",
+        "doc_employment_insurance_list"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-9",
         "F59"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -820,14 +865,28 @@
       "code": "F-5-10",
       "name": "학사·석사 및 자격증 소지자",
       "addReq": "법무부장관이 정하는 분야의 학사 이상 학위증 또는 기술자격증을 소지한 사람으로서, 국내 체류기간이 3년 이상이고 영주자격(F-5) 신청 시 국내기업에 고용되어 법무부장관이 정하는 금액 이상의 임금을 받는 사람. (출입국관리법 시행령 별표 1의3 8호 — 첨단산업 분야 학사, 일반 분야 석사 이상 학위 또는 기술자격증 소지하고 국내 기업에 고용된 사람)",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_degree",
+        "doc_specialty",
+        "doc_biz_reg",
+        "doc_emp_certificate",
+        "doc_employment_insurance_list",
+        "doc_crim",
+        "doc_guarantee",
+        "doc_income_tax",
+        "doc_kiip_cert"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-10",
         "F510"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -874,14 +933,19 @@
       "code": "F-5-12",
       "name": "특별 공로자",
       "addReq": "대한민국에 특별한 공로가 있다고 법무부장관이 인정하는 사람(출입국관리법 시행령 별표 1의3 10호). 우리나라 독립에 공헌하거나 국가발전에 기여한 공로로 훈·포장을 받은 국가유공자와 그 배우자·자녀, 국가유공자의 직계존비속 자격으로 특별귀화한 사람의 배우자·자녀, 일정 요건을 갖춘 국가유공자의 직계비속 등이 해당하며 생계유지능력 요건이 면제된다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-12",
         "F512"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -928,14 +992,20 @@
       "code": "F-5-13",
       "name": "연금 수혜자",
       "addReq": "60세 이상으로서 법무부장관이 정하는 금액 이상의 연금을 국외로부터 받고 있는 영주(F-5) 신청자. 신청일 이전 최근 1년 동안 국외로부터 받는 연간 연금액이 전년도 1인당 국민총소득(GNI)의 2배 이상이어야 한다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_finance"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-13",
         "F513"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -982,14 +1052,19 @@
       "code": "F-5-14",
       "name": "방문취업 4년 이상 자격 소지자",
       "addReq": "방문취업(H-2) 자격으로 제조업·농축산업·어업·간병인·가사보조인 취업활동을 하면서 동일업체에서 근무처를 변경하지 않고 4년 이상 계속 근무하고 있는 사람(재외동포 F-4 자격 변경자 포함). 생계유지·기본소양 등 영주자격 일반요건은 별도 지침에 따라 완화·면제됨.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-14",
         "F514"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1036,14 +1111,23 @@
       "code": "F-5-15",
       "name": "일반분야 박사",
       "addReq": "국내 대학원에서 정규 박사과정을 이수하여 박사학위를 취득한 후 국내기업에 고용된 사람. (영주자격 변경허가 대상으로, 기본소양 요건은 면제됨)",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_degree",
+        "doc_biz_reg",
+        "doc_emp_certificate",
+        "doc_employment_insurance_list"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-15",
         "F515"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1090,14 +1174,20 @@
       "code": "F-5-17",
       "name": "관광·휴양시설 투자자",
       "addReq": "관광·휴양시설 투자 거주(F-2-8)자격을 받은 후 신청일 당시 총 5년 이상 계속 투자 상태를 유지하고 있는 사람으로서 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람. ('체류'가 아닌 '투자' 5년 이상 유지에 중점을 두며, 생계유지능력 요건은 면제됨)",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_invest"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-17",
         "F517"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1144,14 +1234,25 @@
       "code": "F-5-18",
       "name": "점수제 영주자의 배우자 또는 미성년 자녀",
       "addReq": "점수제 거주(F-2-7)자격에서 점수제 영주자격(F-5-16)으로 변경한 사람의 배우자 또는 미성년 자녀로, 거주자격(F-2-71)을 소지하고 2년 이상 혼인관계 또는 가족관계를 계속 유지하며 대한민국에 체류 중인 사람. 배우자는 심사결정일까지 혼인관계를 유지해야 하고, 미성년 자녀는 신청일 기준 민법상 미성년이며 점수제 영주자가 친권·양육권을 가져야 한다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel",
+        "doc_basic",
+        "doc_crim",
+        "doc_guarantee",
+        "doc_income_tax",
+        "doc_kiip_cert"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-18",
         "F518"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1198,14 +1299,20 @@
       "code": "F-5-19",
       "name": "관광·휴양시설 투자자의 배우자 또는 미혼 자녀",
       "addReq": "관광·휴양시설 투자 거주(F-2-8) 자격으로 5년 이상 계속 투자를 유지하여 영주자격(F-5-17)을 받은 관광·휴양시설 투자자의 배우자 및 미혼(미성년) 자녀로서 법무부장관이 정하는 요건을 갖춘 사람. 생계유지능력 요건은 면제된다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-19",
         "F519"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1252,14 +1359,21 @@
       "code": "F-5-20",
       "name": "영주권자의 국내 출생 자녀",
       "addReq": "대한민국에서 출생할 당시 부 또는 모가 영주자격(F-5)으로 국내 체류 중이던 사람의 친생자녀로서, 부모가 법률상 혼인관계에 있고 신청인과 함께 국내에서 실제로 생활하며 출생일로부터 1년 미만에 신청하는 등의 요건을 충족하면 인정된다. 영주자격을 가지지 않은 부 또는 모는 계절근로(E-8)·비전문취업(E-9)·선원취업(E-10)·관광취업(H-1)·기타(G-1)를 제외한 장기 체류자격으로 합법 체류 중이어야 한다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel",
+        "doc_basic"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-20",
         "F520"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1306,14 +1420,20 @@
       "code": "F-5-21",
       "name": "공익사업 일반투자자",
       "addReq": "공익사업 투자 거주(F-2 차목) 자격으로 신청일 당시 총 5년 이상 계속 투자 상태를 유지하고 있는 사람으로서 대한민국에 계속 거주할 필요가 있다고 법무부장관이 인정하는 사람. 투자 기준금액을 회수하지 않은 상태로 5년간 투자를 유지해야 하며(체류가 아닌 투자 유지에 중점), 생계유지능력 요건은 면제됨.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_invest"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-21",
         "F521"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1360,14 +1480,20 @@
       "code": "F-5-22",
       "name": "공익사업 투자자의 배우자 또는 미혼 자녀",
       "addReq": "공익사업 일반투자자(F-5-21) 또는 공익사업 은퇴이민 투자자(F-5-23)의 배우자 또는 미혼 자녀로서, 법무부장관이 정하는 요건을 갖춘 사람이 대상이다(출입국관리법 시행령 별표 1의3 제14호). 생계유지능력(연간소득) 요건과 기본소양 요건이 면제된다.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_fam_rel"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-22",
         "F522"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1414,14 +1540,21 @@
       "code": "F-5-23",
       "name": "공익사업 은퇴이민 투자자",
       "addReq": "은퇴이민 투자 거주(F-2) 자격으로 공익사업에 총 5년 이상 계속 투자를 유지하고, 투자금 이외에 본인 또는 배우자의 국내 보유자산(부동산 등)이 3억원 이상인 사람. 5년 이상 '체류'가 아닌 '투자 유지'에 중점을 두며, 국외 자산은 제외하고 국내 자산만 인정함.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_invest",
+        "doc_property_proof"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-23",
         "F523"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1468,14 +1601,25 @@
       "code": "F-5-24",
       "name": "기술창업 투자자",
       "addReq": "기술창업(D-8-4) 자격으로 3년 이상 계속 국내 체류 중이며, 국내·외 투자자로부터 3억원 이상의 투자금을 유치(또는 이에 준하는 자본금 확보)하고 2명 이상의 국민을 6개월 이상 계속 전일제로 상용 고용하고 있는 사람. 생계유지능력요건은 면제됨.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_invest",
+        "doc_corp_reg",
+        "doc_biz_reg",
+        "doc_income_tax",
+        "doc_emp_contract",
+        "doc_employment_insurance_list"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-24",
         "F524"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1522,14 +1666,20 @@
       "code": "F-5-25",
       "name": "조건부 고액투자자",
       "addReq": "5년 이상 투자 상태를 유지할 것을 조건으로 법무부장관이 정하여 고시하는 금액 이상을 투자한 사람으로서 법무부장관이 정하는 요건을 갖춘 사람. 구체적으로 신청일 이전 한국산업은행의 공익사업 투자이민 펀드(원금보장 무이자형)에 30억 원 이상을 예치하고, 투자상태를 5년간 유지할 것을 서약하여야 함(생계유지능력요건 면제).",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_invest"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-25",
         "F525"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",
@@ -1576,14 +1726,21 @@
       "code": "F-5-26",
       "name": "외국인투자기업의 연구개발 인력",
       "addReq": "기업투자(D-8 가목) 체류자격으로 「외국인투자촉진법 시행령」 제25조제1항제4호에 따른 연구개발시설의 필수전문인력으로서 대한민국에 3년 이상 계속 체류·근무하고, 국내·외 학사학위 이상을 소지하며 생계유지능력(전년도 1인당 GNI 2배 이상 소득 또는 전년도 평균 순자산 1.5배 이상)을 갖춘 사람.",
-      "addReqDocs": [],
-      "note": "명칭은 영주 자격 요약표(2026.6 체류매뉴얼 p.439·443) 기준으로 확정했습니다. 세부 자격요건·제출서류는 매뉴얼 원문 및 하이코리아(HiKorea)에서 추가 확인을 권장합니다.",
+      "addReqDocs": [
+        "doc_app_form",
+        "doc_passport",
+        "doc_id",
+        "doc_residence_proof_generic",
+        "doc_dispatch",
+        "doc_emp_certificate"
+      ],
+      "note": "명칭·자격요건·제출서류를 2026.6 체류매뉴얼 영주(F-5) 제출서류표(p.444–445) 및 자격별 항목 기준으로 반영했습니다. 세부 가감은 관할 출입국·외국인관서에서 최종 확인하시기 바랍니다.",
       "searchAliases": [
         "F-5-26",
         "F526"
       ],
       "status": "active",
-      "needsManualReview": true,
+      "needsManualReview": false,
       "manualRefs": [
         {
           "manualName": "체류민원",

@@ -54,16 +54,13 @@
       "addReqDocs": [
         "doc_emp_contract"
       ],
-      "note": "",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "D-9-2",
         "D92"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "D-9-3",
@@ -72,16 +69,13 @@
       "addReqDocs": [
         "doc_emp_contract"
       ],
-      "note": "",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "D-9-3",
         "D93"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "D-9-4",

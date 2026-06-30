@@ -21,7 +21,7 @@
       "name": "일반 무사증 (45개국·지역)",
       "addReq": "사증면제협정, 상호주의, 일방 면제 여부와 K-ETA 적용 여부 확인. [30일] 바레인, 브루나이, 사우디아라비아, 오만, 가이아나, 온두라스, 파라과이, 모나코, 몬테네그로, 교황청, 보스니아-헤르체고비나, 사이프러스, 산마리노, 안도라, 알바니아, 나우루, 뉴칼레도니아, 마셜제도, 마이크로네시아연방, 사모아, 솔로몬제도, 키리바시, 통가, 투발루, 팔라우, 피지, 남아프리카공화국, 모리셔스, 세이셸, 에스와티니. [90일] 마카오, 일본, 쿠웨이트, 대만, 홍콩, 미국, 아르헨티나, 에콰도르, 세르비아, 슬로베니아, 크로아티아, 호주, 보츠와나. [6개월] 캐나다.",
       "addReqDocs": [],
-      "note": "일반 무사증은 제주 특례와 구분해서 안내. PDF 기준일: B-2 목록 2022.11.01.",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "aliases": [
         "일반무비자",
         "일반 무비자",
@@ -32,17 +32,14 @@
         "B21"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "B-2-2",
       "name": "제주 무사증 입국",
       "addReq": "법무부장관 지정국 여부, 제주 직항 또는 제주 입도 경로, K-ETA 적용 여부를 먼저 확인. 제외국 23개국(시리아, 수단, 이란, 쿠바, 코소보, 팔레스타인, 아프가니스탄, 이라크, 나이지리아, 가나, 예멘, 감비아, 세네갈, 방글라데시, 키르기스, 파키스탄, 소말리아, 우즈베키스탄, 네팔, 카메룬, 스리랑카, 미얀마, 이집트)은 제주 무사증 적용 불가.",
       "addReqDocs": [],
-      "note": "⚠ 제주 한정 체계로 안내되므로, 타 지역 이동 가능 여부는 별도 확인 필요. 체류기간 30일.",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "aliases": [
         "제주무사증",
         "제주 무사증",
@@ -56,10 +53,7 @@
         "B22"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     }
   ],
   "procedures": {

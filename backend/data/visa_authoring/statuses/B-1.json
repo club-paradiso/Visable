@@ -19,32 +19,26 @@
       "name": "B-1 일반여권 유효 67개국",
       "addReq": "말레이시아(3개월), 싱가포르(90일), 아랍에미리트(90일), 이스라엘(90일), 카자흐스탄(30일/180일 내 60일), 태국(90일), 튀르키예(90일), 카타르(90일), 과테말라(90일), 그레나다(90일), 니카라과(90일), 도미니카공화국(90일), 도미니카연방(90일), 멕시코(3개월), 바베이도스(90일), 바하마(90일), 베네수엘라(90일), 브라질(90일), 세인트루시아(90일), 세인트빈센트그레나딘(90일), 세인트키츠네비스(90일), 수리남(3개월), 아이티(90일), 앤티가바부다(90일), 엘살바도르(90일), 우루과이(90일), 자메이카(90일), 칠레(90일), 코스타리카(90일), 콜롬비아(90일), 트리니다드토바고(90일), 파나마(90일), 페루(90일), 그리스(3개월), 네덜란드(3개월), 노르웨이(90일), 덴마크(90일), 독일(90일), 라트비아(90일), 러시아(60일/180일 내 90일), 루마니아(90일), 룩셈부르크(3개월), 리투아니아(90일), 리히텐슈타인(3개월), 몰타(90일), 벨기에(3개월), 불가리아(90일), 스웨덴(90일), 스위스(3개월), 스페인(90일), 슬로바키아(90일), 아이슬란드(90일), 아일랜드(90일), 에스토니아(90일), 영국(90일), 오스트리아(90일), 이탈리아(90일), 체코(90일), 포르투갈(90일), 폴란드(90일), 프랑스(90일), 핀란드(90일), 헝가리(90일), 레소토(60일), 모로코(90일), 튀니지(30일), 뉴질랜드(3개월).",
       "addReqDocs": [],
-      "note": "PDF 기준일 2024.12.04. 일시정지 3개국(방글라데시, 파키스탄, 라이베리아) 제외.",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "B-1-1",
         "B11"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     },
     {
       "code": "B-1-2",
       "name": "B-1 일시정지 3개국",
       "addReq": "방글라데시(90일, 불체 급증 사유), 파키스탄(3개월, 2001.10.1~ 일시정지), 라이베리아(90일).",
       "addReqDocs": [],
-      "note": "협정은 유효하나 일반여권 대상 일시정지 상태.",
+      "note": "세부약호 명칭·자격요건·제출서류는 기존 데이터를 유지했습니다. 2026.6 매뉴얼 본문에서 해당 약호의 특정 출처가 확인되지 않아 공식 근거는 '출처 확인 필요'로 표시됩니다. 관할 출입국·외국인관서 또는 하이코리아(HiKorea)에서 확인하시기 바랍니다.",
       "searchAliases": [
         "B-1-2",
         "B12"
       ],
       "needsManualReview": true,
-      "status": "manual_review_required",
-      "statusNote": "Not matched by the 2026-06-17 manual code inventory; retained for compatibility/search pending manual review.",
-      "manualReviewReason": "2026-06-17 manual source locators are attached, but this subcode’s eligibility/document wording has not been line-by-line certified against every applicant-condition branch; keep under review before treating it as fully verified.",
-      "manualRefs": []
+      "status": "active"
     }
   ],
   "procedures": {
