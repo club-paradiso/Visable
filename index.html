@@ -305,6 +305,13 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 .city-list-item:hover { background: var(--bg2); transform: translateX(4px); }
 .theme-btn { background: var(--bg2); border: 1px solid var(--bd); color: var(--t1); height: var(--btn-h-md); min-width: var(--btn-h-md); padding: var(--btn-pad-sm); border-radius: var(--btn-r-md); cursor: pointer; font-weight: var(--btn-fw); transition: var(--btn-tr); display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2); line-height: 1; }
 .language-wrap { position: relative; }
+/* Global Easy Mode toggle (header). Active state uses BOTH a filled colour and a
+   trailing ✓ glyph so the on/off state is not communicated by colour alone. */
+.easy-mode-btn { min-width: auto; padding-inline: 0.8rem; }
+.easy-mode-btn-text { font-size: 0.78rem; font-weight: 800; }
+.easy-mode-btn.is-on { background: var(--color-accent, var(--ac)); border-color: var(--color-accent, var(--ac)); color: #fff; }
+.easy-mode-btn.is-on .easy-mode-btn-text::after { content: " ✓"; font-weight: 900; }
+.easy-mode-btn:focus-visible { outline: 2px solid var(--color-accent, var(--ac)); outline-offset: 2px; }
 .language-btn { min-width: auto; padding-inline: 0.8rem; }
 .language-btn-code { color: var(--color-accent); font-family: var(--ff-display); font-weight: 900; font-size: 0.78rem; letter-spacing: 0.04em; }
 .language-btn-native { font-size: 0.78rem; color: var(--t2); font-weight: 800; }
@@ -13183,6 +13190,9 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <button id="editorialThemeBtn" class="theme-btn" data-action="toggle-editorial-theme" aria-label="인터페이스 테마">
         <span aria-hidden="true">🗂</span> <span class="editorial-theme-btn-text">모던</span>
     </button>
+    <button id="easyModeBtn" class="theme-btn easy-mode-btn" data-action="toggle-easy-mode" aria-pressed="false" aria-label="쉬운 안내">
+        <span aria-hidden="true">✦</span> <span class="easy-mode-btn-text">쉬운 안내</span>
+    </button>
     <button id="mainThemeBtn" class="theme-btn" data-action="toggle-theme" aria-label="테마 변경">
         ◐ <span class="theme-btn-text">테마 변경</span>
     </button>
@@ -20414,6 +20424,10 @@ function renderSourceEvidencePanel(v) {
 const EASY_MODE_SKIP_CATS = ['faq', 'scn', 'nhis'];
 const EASY_MODE_VIEW_MODES = ['standard', 'easy', 'official'];
 const EASY_MODE_CARD_STATE = new Map(); // visa code -> 'standard' | 'easy' | 'official'
+// Global Easy Mode preference (shared across pages via localStorage). When on,
+// every result card defaults to the Easy view; per-card toggles still override.
+const EASY_MODE_PREF_KEY = 'paradiso:easyMode';
+let globalEasyMode = (() => { try { return localStorage.getItem(EASY_MODE_PREF_KEY) === '1'; } catch (e) { return false; } })();
 
 function easyModeApplies(v, isVisaCode) {
     return !!isVisaCode && !!v && !EASY_MODE_SKIP_CATS.includes(v.cat);
@@ -20533,7 +20547,9 @@ function renderEasyModePanel(v) {
     </div>`;
 }
 
-function setCardMode(card, mode) {
+// Apply a view mode to the card DOM (no persistence). Used both for the global
+// default and for an explicit per-card choice.
+function applyCardMode(card, mode) {
     if (!card) return;
     if (!EASY_MODE_VIEW_MODES.includes(mode)) mode = 'standard';
     EASY_MODE_VIEW_MODES.forEach(m => card.classList.toggle('card-mode-' + m, m === mode));
@@ -20548,16 +20564,40 @@ function setCardMode(card, mode) {
         const sep = card.querySelector('.source-evidence-panel');
         if (sep) sep.open = true;
     }
+}
+
+// Explicit per-card choice (remembered, overrides the global default).
+function setCardMode(card, mode) {
+    if (!card) return;
+    if (!EASY_MODE_VIEW_MODES.includes(mode)) mode = 'standard';
+    applyCardMode(card, mode);
     const code = card.dataset.code;
     if (code) EASY_MODE_CARD_STATE.set(code, mode);
 }
 
 function restoreCardViewModes(root) {
     if (!root || !root.querySelectorAll) return;
+    const fallback = globalEasyMode ? 'easy' : 'standard';
     root.querySelectorAll('.manual-result').forEach(card => {
-        const mode = EASY_MODE_CARD_STATE.get(card.dataset.code);
-        if (mode && mode !== 'standard') setCardMode(card, mode);
+        const override = EASY_MODE_CARD_STATE.get(card.dataset.code);
+        applyCardMode(card, override || fallback);
     });
+}
+
+// Header global Easy Mode toggle: flips the preference, resets per-card overrides
+// for a uniform switch, and re-renders so every open card reflects the default.
+function updateEasyModeButton() {
+    const btn = document.getElementById('easyModeBtn');
+    if (!btn) return;
+    btn.classList.toggle('is-on', globalEasyMode);
+    btn.setAttribute('aria-pressed', globalEasyMode ? 'true' : 'false');
+}
+function toggleGlobalEasyMode() {
+    globalEasyMode = !globalEasyMode;
+    try { localStorage.setItem(EASY_MODE_PREF_KEY, globalEasyMode ? '1' : '0'); } catch (e) {}
+    EASY_MODE_CARD_STATE.clear();
+    updateEasyModeButton();
+    if (document.body.classList.contains('searched') && dataReady) renderResults(qEl ? qEl.value : '');
 }
 
 function copyVisaResult(btnEl, code) {
@@ -21450,6 +21490,9 @@ function applyLanguage(code, options = {}) {
     setText('#languageBtnCode', lang.short);
     setText('#languageBtnNative', lang.name);
     renderLanguageMenu();
+    setText('.easy-mode-btn-text', tx('easyModeEasy'));
+    setAttr('#easyModeBtn', 'aria-label', tx('easyModeEasy'));
+    updateEasyModeButton();
 
     if (!hasFullKoI18nPack()) {
         updateSearchMetaText();
@@ -22126,6 +22169,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'set-card-mode': () => {
                     setCardMode(actionBtn.closest('.manual-result'), actionBtn.dataset.cardMode);
                 },
+                'toggle-easy-mode': () => toggleGlobalEasyMode(),
                 'search-hint': () => { document.getElementById('q').value = actionBtn.dataset.query; executeSearch(); },
                 'quick-filter': () => { document.getElementById('q').value = actionBtn.dataset.query; document.getElementById('xb').classList.add('v'); renderResults(actionBtn.dataset.query); },
                 'set-search-mode': () => setSearchMode(actionBtn.dataset.mode),
