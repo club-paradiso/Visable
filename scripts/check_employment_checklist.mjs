@@ -44,8 +44,9 @@ function assertInvariants(id, st) {
   }
   // HiKorea final check is NEVER complete.
   expect(id, stepById(st, 'hikorea').status !== 'complete', 'HiKorea final check must never be complete');
-  // No visa-eligibility step exists.
-  expect(id, !st.steps.some((s) => /visa|eligib|체류자격 허용|취업 가능/i.test(s.label + s.reason)), 'no eligibility judgment in checklist');
+  // No visa-eligibility step exists. Strip the product brand "Visable" first —
+  // it contains the substring "visa" and would otherwise false-trip this guard.
+  expect(id, !st.steps.some((s) => /visa|eligib|체류자격 허용|취업 가능/i.test((s.label + s.reason).replace(/Visable/gi, ''))), 'no eligibility judgment in checklist');
 }
 
 /* 1 · initial state — nothing entered */
