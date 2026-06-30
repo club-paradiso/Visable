@@ -896,10 +896,17 @@
     t8c: '即使切换语言，部分界面仍可能仅显示韩文。',
     t8f: '请参考本指引的屏幕说明和“英文界面对照”备注。若仍受阻，1345 也提供外语咨询。'
   };
+  // Only KO / EN / 'zh-CN' have dedicated packs in this module. The locales below
+  // are fully translated elsewhere in the site but not (yet) here, so they fall
+  // back to the English pack rather than to undefined STR_* identifiers — the
+  // latter threw a ReferenceError while building this literal, which aborted the
+  // whole IIFE and left window.ParadisoReservationHelper unassigned (the modal
+  // opened but rendered nothing). English is the safer universal fallback for
+  // non-Korean speakers than the per-key STR_KO fallback in the Proxy below.
   var STR_PACKS = {
     ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH,
-    ja: STR_JA, vi: STR_VI, tl: STR_TL, id: STR_ID, ru: STR_RU,
-    fr: STR_FR, es: STR_ES, ar: STR_AR, de: STR_DE
+    ja: STR_EN, vi: STR_EN, tl: STR_EN, id: STR_EN, ru: STR_EN,
+    fr: STR_EN, es: STR_EN, ar: STR_EN, de: STR_EN
   };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[prhLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })

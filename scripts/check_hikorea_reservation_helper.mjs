@@ -109,6 +109,31 @@ if (typeof compute === 'function') {
     'deterministic: identical input → identical output');
 }
 
+/* ------------------------------------ whole-module load (regression guard) */
+// The pure-function extraction above never evaluates the rest of the module, so
+// a load-time ReferenceError (e.g. STR_PACKS pointing at an undefined STR_*
+// pack) would sail past every other check while breaking the live feature: the
+// IIFE throws before `window.ParadisoReservationHelper = …`, so the card opens
+// an empty modal. Execute the full module against minimal DOM/window stubs and
+// assert the public API is actually published.
+section('Whole-module load publishes window.ParadisoReservationHelper');
+{
+  const noop = () => {};
+  const win = { addEventListener: noop };
+  const doc = { addEventListener: noop, getElementById: () => null, querySelector: () => null, querySelectorAll: () => [] };
+  const storage = { getItem: () => null, setItem: noop, removeItem: noop };
+  let threw = null;
+  try {
+    // eslint-disable-next-line no-new-func
+    new Function('window', 'document', 'localStorage', 'navigator', 'Proxy', src)(
+      win, doc, storage, { language: 'ko' }, Proxy
+    );
+  } catch (e) { threw = e; }
+  ok(!threw, 'full module evaluates without throwing at load time', threw ? String(threw.message || threw) : '');
+  ok(win.ParadisoReservationHelper && typeof win.ParadisoReservationHelper.open === 'function',
+    'window.ParadisoReservationHelper.open published after load');
+}
+
 /* --------------------------------------------- status-specific suggestions */
 section('Visa/status integration — common reservation purposes');
 function suggestionIds(code) {
