@@ -75,6 +75,46 @@
       }
     }
   },
+  "special_program_manuals": [
+    {
+      "title_ko": "「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼",
+      "title_en": "Cultivation-type Professional Technical Personnel System (K-CORE) Visa/Stay Management Manual",
+      "version": "2026.6",
+      "source_date": "2026-06-29",
+      "effective_date": "2026-03-05",
+      "source_label": "2026-06-29 「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼 (2026.6; 시행일 2026-03-05; standard/non-distribution HWP, body fully extracted)",
+      "authority": "법무부 외국인정책과",
+      "role": "special_program_manual",
+      "status": "current",
+      "program": "K-CORE (육성형 전문기술인력)",
+      "introduces_status_codes": [
+        "E-7-M"
+      ],
+      "related_status_codes": [
+        "D-2-1",
+        "E-7-M",
+        "F-2"
+      ],
+      "new_job_code": "9991 (육성형 전문기술이민)",
+      "file": "backend/data/sources/manuals/260629_kcore_manual.hwp",
+      "file_format": "hwp",
+      "file_sha256": "391bb05c5a848285e4ed6b8dba545c4c33dcacdb592cae3f147fb176af8a9f3e",
+      "file_size_bytes": 130560,
+      "hwp_distribution_mode": false,
+      "extraction_primary_format": "hwp",
+      "extraction_tooling": "python3 olefile 0.47 builtin HWPTAG_PARA_TEXT parser via scripts/extract_kcore_manual_260629.py; standard (non-distribution) HWP, FileHeader flag 0x1 (no 0x4) — BodyText fully and deterministically extracted.",
+      "extracted_text_file": "backend/data/sources/manuals/260629_kcore_manual_readable.txt",
+      "extracted_text_sha256": "156224395214d1fc99a0e798d21977a433cd523e2af06dd50a6eca5013bbadfd",
+      "sections_file": "backend/data/sources/manuals/260629_kcore_manual_sections.json",
+      "sections_sha256": "51035cc11617c8ca5033cb72e1d35749e626dc84078d5ecbe67c3f4c271cc0d9",
+      "meta_file": "backend/data/sources/manuals/260629_kcore_manual_meta.json",
+      "verification_status": "source_file_received_hwp_body_fully_extracted",
+      "verification_note": "User-provided HWP installed at backend/data/sources/manuals/260629_kcore_manual.hwp. Unlike the large HiKorea 사증/체류 안내 매뉴얼 (distribution-mode HWP whose body cannot be extracted on Linux), this K-CORE program manual is a standard non-distribution HWP (FileHeader flag 0x1, no 0x4); its BodyText was fully extracted with the builtin olefile HWPTAG_PARA_TEXT parser into ...readable.txt (15,970 chars / 9,534 Korean) and segmented into 13 logical sections. Identity checked by Hancom HWP v5 file type, SHA-256 391bb05c…, byte size 130,560, and PrvText cover match. Introduces a new status sub-code E-7-M (K-CORE) and job code 9991; 시행일 2026-03-05, 배포 2026-06-29.",
+      "official_notice_url": null,
+      "source_intake": "user_provided_file_installed_2026_07_01",
+      "original_filename": "「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼.hwp"
+    }
+  ],
   "audit_history": [
     {
       "audit_date": "2026-05-24",
@@ -203,6 +243,46 @@
       },
       "page_count_check": "passed (487 visa / 780 stay)",
       "decision": "advance current manual source metadata to readable 2026.6 PDFs; preserve needsManualReview flags until line-by-line legal field certification."
+    },
+    {
+      "audit_date": "2026-07-01",
+      "branch": "claude/new-manual-extraction-integration-401psb",
+      "scope": "Install user-provided 「육성형 전문기술인력 제도」(K-CORE) 사증·체류관리 매뉴얼 as a special-program source artifact; extract full HWP body text + section index; integrate the newly-created E-7-M(K-CORE) sub-code into visa_data.json under its E-7 parent; stage a draft manual-grounding candidate for the E-7-M 체류자격 변경 procedure.",
+      "files_installed": [
+        "backend/data/sources/manuals/260629_kcore_manual.hwp",
+        "backend/data/sources/manuals/260629_kcore_manual_readable.txt",
+        "backend/data/sources/manuals/260629_kcore_manual_sections.json",
+        "backend/data/sources/manuals/260629_kcore_manual_meta.json"
+      ],
+      "extraction_tooling": "python3 olefile 0.47 builtin HWPTAG_PARA_TEXT parser (scripts/extract_kcore_manual_260629.py).",
+      "hwp_body_extraction": "SUCCESS — standard non-distribution HWP (flag 0x1); 15,970 chars / 9,534 Korean / 13 sections.",
+      "hashes": {
+        "hwp": "391bb05c5a848285e4ed6b8dba545c4c33dcacdb592cae3f147fb176af8a9f3e",
+        "readable_txt": "156224395214d1fc99a0e798d21977a433cd523e2af06dd50a6eca5013bbadfd",
+        "sections_json": "51035cc11617c8ca5033cb72e1d35749e626dc84078d5ecbe67c3f4c271cc0d9"
+      },
+      "status_codes_detected": [
+        "A-1",
+        "A-3",
+        "D-2",
+        "D-2-1",
+        "D-4",
+        "E-7",
+        "E-7-1",
+        "E-7-4",
+        "E-7-M",
+        "E-7-Y",
+        "E-9",
+        "F-2"
+      ],
+      "decision": "Store as canonical special-program source; add E-7-M sub-code under E-7 in visa_data.json (needsManualReview=true, source-grounded to this manual); do NOT alter general D-2-1 requirements (pilot 특례 rules must not become universal D-2-1 requirements); keep 사증/체류 current manuals unchanged.",
+      "constraints_observed": [
+        "manifest.current unchanged (still exactly visa_issuance_manual + stay_residence_manual)",
+        "no broad rewrite of visa_data.json (single E-7-M sub-code appended, byte-identical serialization elsewhere)",
+        "doc_master.json not modified (E-7-M reuses existing doc_* ids)",
+        "backend runtime grounding fixture unchanged (candidate staged as draft only)",
+        "no invented legal content; E-7-M fields grounded verbatim to the committed K-CORE manual"
+      ]
     }
   ],
   "schema_notes": [

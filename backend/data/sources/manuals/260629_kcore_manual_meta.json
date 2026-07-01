@@ -1,0 +1,35 @@
+{
+  "source_id": "kcore_manual_2026_06_29",
+  "source_hwp": "backend/data/sources/manuals/260629_kcore_manual.hwp",
+  "source_sha256": "sha256:391bb05c5a848285e4ed6b8dba545c4c33dcacdb592cae3f147fb176af8a9f3e",
+  "chars": 15970,
+  "korean_chars": 9534,
+  "sections": 13,
+  "status_codes_detected": [
+    "A-1",
+    "A-3",
+    "D-2",
+    "D-2-1",
+    "D-4",
+    "E-7",
+    "E-7-1",
+    "E-7-4",
+    "E-7-M",
+    "E-7-Y",
+    "E-9",
+    "F-2"
+  ],
+  "subcodes_detected": [
+    "D-2-1",
+    "E-7-1",
+    "E-7-4",
+    "E-7-M",
+    "E-7-Y"
+  ],
+  "title_ko": "「육성형 전문기술인력 제도」 사증·체류관리 매뉴얼",
+  "title_en": "Cultivation-type Professional Technical Personnel System (K-CORE) Visa/Stay Management Manual",
+  "authority": "법무부 외국인정책과",
+  "version": "2026.6",
+  "effective_date": "2026-03-05",
+  "distributed_date": "2026-06-29"
+}
