@@ -3677,6 +3677,20 @@ select:focus-visible {
         try { if (localStorage.getItem('paradisoDevDiagnostics') === '1' && params.get('nav') !== '1') legacy = true; } catch (e) {}
         if (legacy) return; // leave the legacy chat as-is; do not mount the navigator
 
+        // Optional handoff from index.html's floating Waymaker CTA
+        // (buildWaymakerHandoffUrl()): visa_code + selected_procedure_key +
+        // scenario_label. Unlike AI_SCENARIO above (used for the legacy chat's
+        // free-text AI context), the navigator only needs a status code to be
+        // useful, so this does not require selected_procedure_variant_id. When
+        // absent, the navigator behaves exactly as before (starts at "intro").
+        var navInitialScenario = (function () {
+            var visaCode = (params.get('visa_code') || '').trim();
+            if (!visaCode) return null;
+            var procedureKey = (params.get('selected_procedure_key') || '').trim();
+            var label = (params.get('scenario_label') || '').trim();
+            return { visaCode: visaCode, procedureKey: procedureKey || null, label: label || null };
+        })();
+
         // Mirror ai.html's API base resolution (the const is module-scoped above).
         var DEFAULT_API_BASE = "https://web-production-14f9a.up.railway.app";
         var apiBase = (window.PARADISO_BACKEND_URL && window.PARADISO_BACKEND_URL.trim())
@@ -3712,9 +3726,12 @@ select:focus-visible {
             // to /api/ask before they have accepted the privacy/disclaimer notice.
             if (!isWaymakerConsentGranted()) {
                 try { if (typeof showConsent === 'function') showConsent(); } catch (e) {}
-                return Promise.resolve(context && context.locale === 'en'
-                    ? 'Please accept the privacy & disclaimer notice, then tap “Ask” again.'
-                    : '개인정보·면책 동의 후 ‘질문하기’를 다시 눌러 주세요.');
+                return Promise.resolve({
+                    ok: false,
+                    message: context && context.locale === 'en'
+                        ? 'Please accept the privacy & disclaimer notice, then tap “Ask” again.'
+                        : '개인정보·면책 동의 후 ‘질문하기’를 다시 눌러 주세요.'
+                });
             }
             var body = {
                 question: question,
@@ -3728,14 +3745,32 @@ select:focus-visible {
                          '). Explain the already-generated deterministic packet only; do not invent ' +
                          'documents, fees, deadlines, citations, or HiKorea tasks; recommend official confirmation.'
             };
+            // Returns a structured result so the navigator can render the same
+            // trust/safety card the legacy chat shows (renderSafetyResponse) and
+            // a visible failure notice instead of silently swallowing errors —
+            // a plain string collapses safety_blocked/safety_alternatives and
+            // a nested {detail:{...}} error body (e.g. 503 no-provider-configured)
+            // into an empty string with no user-visible feedback.
             return fetch(apiBase + '/api/ask', {
                 method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
             }).then(function (r) { return r.json().catch(function () { return {}; }); })
               .then(function (res) {
-                  if (!res) return '';
-                  // Prefer the copy-safe, gate-approved answer fields.
-                  return res.copy_safe_answer || res.answer || (res.safety_notice || '');
-              }).catch(function () { return ''; });
+                  if (!res || (res.detail && typeof res.detail === 'object')) return { ok: false };
+                  var answer = res.copy_safe_answer || res.answer || (res.safety_notice || '');
+                  var safetyBlocked = !!res.safety_blocked;
+                  var safetyAlternatives = Array.isArray(res.safety_alternatives) ? res.safety_alternatives : [];
+                  // The backend's blocked answer is "<refusal paragraph>\n\n<alt heading>\n- ...".
+                  // Keep only the refusal paragraph here — safetyAlternatives is rendered as its
+                  // own structured list, mirroring renderSafetyResponse()'s split above so the
+                  // two never duplicate the same content.
+                  if (safetyBlocked && answer) answer = answer.split('\n\n')[0] || answer;
+                  return {
+                      ok: !!answer,
+                      answer: answer,
+                      safetyBlocked: safetyBlocked,
+                      safetyAlternatives: safetyAlternatives
+                  };
+              }).catch(function () { return { ok: false }; });
         }
 
         // HiKorea handoff — reuse the deterministic helper's pure logic if present;
@@ -3764,7 +3799,8 @@ select:focus-visible {
         try {
             window.__waymakerNav = window.WaymakerNavigator.createNavigator({
                 root: root, apiBase: apiBase, getRecords: getRecords,
-                onAskFollowup: onAskFollowup, openHiKorea: openHiKorea, analytics: analytics
+                onAskFollowup: onAskFollowup, openHiKorea: openHiKorea, analytics: analytics,
+                initialScenario: navInitialScenario
             }).mount();
         } catch (e) {
             // If the navigator fails to mount, fall back to the legacy chat surface

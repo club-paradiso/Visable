@@ -405,6 +405,13 @@
       aiFollowupPlaceholder: '이 패킷에서 이해되지 않는 점을 물어보세요. 예: 재정서류가 면제될 수 있나요?',
       aiPrivacyNote: '개인정보(이름, 여권·외국인등록번호, 주소, 전화번호 등)는 입력하지 마세요. 이 도우미는 패킷을 설명할 뿐 새로운 공식 요건을 만들지 않습니다.',
       aiSend: '질문하기',
+      aiFollowupFailed: '지금은 답변을 가져오지 못했습니다. 잠시 후 다시 시도하거나 1345 또는 HiKorea에서 확인하세요.',
+      aiSafetyKicker: '안전상 답변할 수 없는 요청',
+      aiSafetyAltTitle: '대신 안내할 수 있는 정보',
+      resumeScenarioTitle: '이어서 진행할까요?',
+      resumeScenarioLabelPrefix: '이전에 선택한 상황: ',
+      resumeScenarioContinue: '이어서 진행하기',
+      resumeScenarioRestart: '처음부터 시작하기',
       noDocs: '이 절차의 공식 서류 목록이 아직 구조화되지 않았습니다.',
       verifyIntro: '아래 항목은 공식 근거로 확정 표시할 수 없으므로 관할기관/1345/HiKorea에서 확인하세요.',
       generatedOn: '생성일',
@@ -457,6 +464,13 @@
       aiFollowupPlaceholder: 'Ask about this packet. Example: Could the financial-evidence item be waived?',
       aiPrivacyNote: 'Do not enter personal identifiers (name, passport/ARC number, address, phone). This helper only explains the packet; it does not create new official requirements.',
       aiSend: 'Ask',
+      aiFollowupFailed: "We couldn't get an answer right now. Try again in a moment, or check with 1345 or HiKorea.",
+      aiSafetyKicker: "A request we can't help with for safety reasons",
+      aiSafetyAltTitle: 'What I can help with instead',
+      resumeScenarioTitle: 'Continue where you left off?',
+      resumeScenarioLabelPrefix: 'Previously selected: ',
+      resumeScenarioContinue: 'Continue',
+      resumeScenarioRestart: 'Start over',
       noDocs: 'The official document list for this procedure is not yet structured.',
       verifyIntro: 'The items below cannot be confirmed from official sources here. Confirm with the competent office, 1345, or HiKorea.',
       generatedOn: 'Generated',
@@ -1099,6 +1113,12 @@
     var onAskFollowup = options.onAskFollowup; // (contextObj, questionText) => Promise|void
     var openHiKorea = options.openHiKorea; // (statusCode, procedureKey, packetType) => void
     var track = makeAnalytics(options.analytics);
+    // Optional handoff from a host page (e.g. index.html's floating Waymaker
+    // CTA): { visaCode, procedureKey, label }. Only offered as a confirmable
+    // resume prompt on the intro step, never auto-applied without the user
+    // choosing "continue" — the navigator never assumes an eligibility/status
+    // match on its own.
+    var initialScenario = (options.initialScenario && options.initialScenario.visaCode) ? options.initialScenario : null;
     var CHECKLIST_NS = 'paradiso_waymaker_checklist_v1';
     var LOCALE_KEY = 'paradiso_waymaker_locale';
     // Content locales the navigator can render (ko is the fallback). zh-TW is a
@@ -1121,7 +1141,8 @@
       exactStatusCode: null,
       subStatusKnown: false,
       procedureKey: null,
-      packet: null
+      packet: null,
+      pendingScenario: initialScenario
     };
 
     // Raw selection across all sources, including the global Paradiso language
@@ -1305,13 +1326,32 @@
 
     function renderIntro() {
       track('waymaker_flow_started', { locale: state.locale });
-      return h('section', { class: 'wm-step wm-intro' }, [
-        h('p', { class: 'wm-empty', text: L('empty') }),
-        h('button', {
-          class: 'wm-btn wm-btn-primary wm-btn-lg', type: 'button',
-          onclick: function () { goto('language'); }
-        }, [L('start')])
-      ]);
+      var nodes = [];
+      var scenario = state.pendingScenario;
+      var matchedEntry = scenario ? findCatalogEntry(scenario.visaCode) : null;
+      if (scenario && matchedEntry) {
+        var label = scenario.label || (matchedEntry.code + ' · ' + matchedEntry.name);
+        nodes.push(h('div', { class: 'wm-card', role: 'note' }, [
+          h('p', { class: 'wm-context-line', text: L('resumeScenarioTitle') }),
+          h('p', { class: 'wm-muted', text: L('resumeScenarioLabelPrefix') + label }),
+          h('div', { class: 'wm-step-nav' }, [
+            h('button', {
+              class: 'wm-btn wm-btn-primary', type: 'button',
+              onclick: function () { resumeScenario(scenario, matchedEntry); }
+            }, [L('resumeScenarioContinue')]),
+            h('button', {
+              class: 'wm-btn wm-btn-ghost', type: 'button',
+              onclick: function () { state.pendingScenario = null; goto('language'); }
+            }, [L('resumeScenarioRestart')])
+          ])
+        ]));
+      }
+      nodes.push(h('p', { class: 'wm-empty', text: L('empty') }));
+      nodes.push(h('button', {
+        class: 'wm-btn wm-btn-primary wm-btn-lg', type: 'button',
+        onclick: function () { state.pendingScenario = null; goto('language'); }
+      }, [L('start')]));
+      return h('section', { class: 'wm-step wm-intro' }, nodes);
     }
 
     function renderLanguage() {
@@ -1480,12 +1520,42 @@
     function restart() {
       state.location = null; state.statusEntry = null; state.statusCode = null;
       state.exactStatusCode = null; state.subStatusKnown = false; state.procedureKey = null; state.packet = null;
+      state.pendingScenario = null;
       goto('language');
     }
     function chooseStatus(m) {
       state.statusEntry = m; state.statusCode = m.code; state.exactStatusCode = m.code; state.subStatusKnown = false;
       track('waymaker_status_selected', { locale: state.locale, statusFamily: parentCode(m.code), isProgram: !!m.isProgram });
       goto('procedure');
+    }
+    // Resolve a handed-off visa code against the loaded catalog. Subcodes
+    // (e.g. D-2-1) are resolved to their parent entry for matching, same as
+    // status selection elsewhere in this file — the exact subcode is not
+    // asserted here; the existing sub-status clarification step still runs.
+    function findCatalogEntry(rawCode) {
+      if (!rawCode || !catalog) return null;
+      var code = String(rawCode).trim().toUpperCase();
+      var i;
+      for (i = 0; i < catalog.length; i++) { if (catalog[i].code === code) return catalog[i]; }
+      var parent = parentCode(code);
+      if (parent && parent !== code) {
+        for (i = 0; i < catalog.length; i++) { if (catalog[i].code === parent) return catalog[i]; }
+      }
+      return null;
+    }
+    // Continue from a handed-off scenario: select the matched status, and the
+    // handed-off procedure only if it is actually offered for that status.
+    // Never skips the existing sub-status clarification step — this only
+    // saves re-picking status + procedure, it does not assert an exact match.
+    function resumeScenario(scenario, entry) {
+      state.pendingScenario = null;
+      chooseStatus(entry);
+      var procedureKey = scenario.procedureKey;
+      if (!procedureKey) return;
+      var procs = proceduresForStatus(entry);
+      var i, valid = false;
+      for (i = 0; i < procs.length; i++) { if (procs[i].procedureKey === procedureKey) { valid = true; break; } }
+      if (valid) chooseProcedure(procedureKey);
     }
     function chooseFirstEntry() {
       // Route first-entry to the status step with visa issuance pre-intent: pick a
@@ -1957,10 +2027,13 @@
         var context = buildAiFollowupContext(c.state, packet);
         out.textContent = '…';
         if (typeof c.onAskFollowup === 'function') {
-          Promise.resolve(c.onAskFollowup(context, q)).then(function (answer) {
+          Promise.resolve(c.onAskFollowup(context, q)).then(function (res) {
             c.clear(out);
-            if (answer && typeof answer === 'string') out.appendChild(c.h('p', { text: answer }));
-          }).catch(function () { out.textContent = ''; });
+            self.renderFollowupResult(c, out, res);
+          }).catch(function () {
+            c.clear(out);
+            self.renderFollowupResult(c, out, { ok: false });
+          });
         }
       } }, [c.L('aiSend')]);
       panel.appendChild(note);
@@ -1968,6 +2041,34 @@
       panel.appendChild(send);
       panel.appendChild(out);
       return c.h('div', { class: 'wm-ai-wrap' }, [toggle, panel]);
+    },
+
+    // Renders the onAskFollowup() result. Expects { ok, answer, safetyBlocked,
+    // safetyAlternatives, message } (see ai.html's onAskFollowup). Tolerates a
+    // bare string for any other host implementation. Never renders nothing on
+    // failure — a silent blank was the original bug (no error, no retry hint).
+    renderFollowupResult: function (c, out, res) {
+      if (typeof res === 'string') res = { ok: !!res, answer: res };
+      res = res || {};
+      if (res.safetyBlocked) {
+        var card = c.h('div', { class: 'wm-card wm-card-warn', role: 'note' }, [
+          c.h('p', { class: 'wm-warn-title', text: c.L('aiSafetyKicker') }),
+          c.h('p', { class: 'wm-warn-body', text: res.answer || c.L('aiFollowupFailed') })
+        ]);
+        if (res.safetyAlternatives && res.safetyAlternatives.length) {
+          card.appendChild(c.h('div', { class: 'wm-warn-channels' }, [
+            c.h('p', { class: 'wm-warn-title', text: c.L('aiSafetyAltTitle') }),
+            c.h('ul', { class: 'wm-verify-list' }, res.safetyAlternatives.map(function (a) {
+              return c.h('li', { text: String(a) });
+            }))
+          ]));
+        }
+        out.appendChild(card);
+        return;
+      }
+      if (res.message) { out.appendChild(c.h('p', { class: 'wm-ai-note', text: res.message })); return; }
+      if (res.ok && res.answer) { out.appendChild(c.h('p', { text: res.answer })); return; }
+      out.appendChild(c.h('p', { class: 'wm-ai-note', text: c.L('aiFollowupFailed') }));
     }
   };
 
