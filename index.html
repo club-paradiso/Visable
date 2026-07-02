@@ -17043,7 +17043,15 @@ const PROCEDURE_CONFIG = [
     { key: 'registration', labelIndex: 5, label: '외국인등록', oldType: 'new', oldDocs: ['registrationReqDocs'] },
     { key: 'activitiesOutsideStatus', labelIndex: 6, label: '자격외활동', oldType: 'change', oldDocs: ['activitiesOutsideStatusReqDocs'] },
     { key: 'workplaceChange', labelIndex: 7, label: '근무처 변경·추가', oldType: 'change', oldDocs: ['workplaceChangeReqDocs'] },
-    { key: 'reentry', labelIndex: 8, label: '재입국', oldType: 'ext', oldDocs: ['reentryReqDocs'] }
+    { key: 'reentry', labelIndex: 8, label: '재입국', oldType: 'ext', oldDocs: ['reentryReqDocs'] },
+    /* PARADISO_PROCEDURE_EXPOSE_20260702: these keys already existed in the
+       authoring data (D-2 carries fully structured, manual-grounded
+       partTimeWork/schoolChange procedures — stay manual 2026.6 pp.37-40),
+       but renderProcedures only iterates PROCEDURE_CONFIG, so the content was
+       never shown to users. Only records that actually declare these
+       procedures get the tab — nothing is forced onto other statuses. */
+    { key: 'partTimeWork', labelIndex: 9, label: '시간제취업(아르바이트)', oldType: 'change', oldDocs: ['partTimeWorkReqDocs'] },
+    { key: 'schoolChange', labelIndex: 10, label: '학교·과정 변경', oldType: 'change', oldDocs: ['schoolChangeReqDocs'] }
 ];
 
 const COMMON_MANUAL_WARNINGS = [
@@ -17345,7 +17353,9 @@ const PROCEDURE_LABEL_INDEX = {
     registration: 5,
     activitiesOutsideStatus: 6,
     workplaceChange: 7,
-    reentry: 8
+    reentry: 8,
+    partTimeWork: 9,
+    schoolChange: 10
 };
 
 function getProcedureLabelByKey(key, fallback = '') {
