@@ -5216,7 +5216,10 @@
       "일-학습연계",
       "시간제취업",
       "외국인 유학생",
-      "유학생"
+      "유학생",
+      "아르바이트",
+      "알바",
+      "유학생 아르바이트"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -7764,7 +7767,10 @@
       "D-4-5",
       "D-4-6",
       "D-4-7",
-      "F-1-13"
+      "F-1-13",
+      "아르바이트",
+      "알바",
+      "시간제취업"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [
@@ -17590,7 +17596,8 @@
       "E-7-Y",
       "지역특화 숙련기능",
       "E-7-91FTA",
-      "E791FTA"
+      "E791FTA",
+      "고용사유서"
     ],
     "_searchAliasAudit": {
       "generatedAliases": [

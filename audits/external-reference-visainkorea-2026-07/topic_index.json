@@ -1,0 +1,172 @@
+{
+  "source_site": "visainkorea.com (VISA in KOREA · 장행닷컴행정사)",
+  "requested_domain": "visainfo-korea.com",
+  "domain_resolution_note": "사용자가 지목한 visainfo-korea.com은 정확 일치 웹검색 0건·직접 접속 불가로 실체 확인 불가. 사용자 확인을 거쳐 유사 도메인 visainkorea.com으로 진행 (2026-07-02).",
+  "collection_method": "이 작업 환경은 보안 프록시가 모든 외부 HTTP 접근을 차단하므로 직접 크롤링 불가. WebSearch 도메인 필터(allowed_domains=visainkorea.com) 스니펫 스윕 9회로 페이지 URL·주제·핵심 주장(스니펫 수준)을 수집.",
+  "content_policy": "본 사이트는 민간 행정사 사이트로, 이 프로젝트의 공식 출처 정책(unofficialSourcesAllowed: false)상 법적 근거로 사용 불가. 수집물은 '사용자 질문 수요 주제 발굴' 전용이며, 제품 데이터에 들어가는 모든 문구는 공식 매뉴얼 대조 후에만 반영.",
+  "collected_at": "2026-07-02",
+  "pages": [
+    {
+      "topic": "F-2-7 점수제 거주비자",
+      "urls": [
+        "https://www.visainkorea.com/f-2-7-visa-...",
+        "https://www.visainkorea.com/f-2-7-%EB%B9%84%EC%9E%90-..."
+      ],
+      "themes": [
+        "점수표",
+        "소득요건",
+        "3년 체류",
+        "벌금 결격(300만원/3년)"
+      ]
+    },
+    {
+      "topic": "F-2-99 장기체류 거주",
+      "urls": [
+        "https://www.visainkorea.com/f-2-visa-korea-..."
+      ],
+      "themes": [
+        "5년 합법체류",
+        "생계능력",
+        "E·D 비자 기간 합산"
+      ]
+    },
+    {
+      "topic": "F-5 영주 (F-5-1/9/10/15/16)",
+      "urls": [
+        "https://www.visainkorea.com/f-5-visa-1-9-10-15-16-korea-..."
+      ],
+      "themes": [
+        "GNI 소득기준(2023 GNI 44,051,000원 표기)",
+        "F-2-7S 3년+90점 → F-5-S1"
+      ]
+    },
+    {
+      "topic": "E-7 특정활동",
+      "urls": [
+        "https://www.visainkorea.com/e7-%EB%B9%84%EC%9E%90-..."
+      ],
+      "themes": [
+        "고용사유서(통칭)",
+        "학력·경력 요건",
+        "세계 500대 기업 특례"
+      ]
+    },
+    {
+      "topic": "E-7-4 숙련기능 점수제 (E-9 전환)",
+      "urls": [
+        "https://www.visainkorea.com/e-7-4-visa-korea-eps-e9-..."
+      ],
+      "themes": [
+        "점수제",
+        "E-9→E-7-4 경로"
+      ]
+    },
+    {
+      "topic": "E-9 장기근속 특례(10년)",
+      "urls": [
+        "(정책 업데이트 페이지)"
+      ],
+      "themes": [
+        "5년 근속/KIIP 3단계",
+        "출국 없이 최대 10년",
+        "결격(벌금 50만원+, 체납, 불법체류 3개월+)"
+      ]
+    },
+    {
+      "topic": "D-8/D-9 투자·개인사업",
+      "urls": [
+        "https://www.visainkorea.com/d-8-visa-korea-..."
+      ],
+      "themes": [
+        "최소 1억원",
+        "법인 vs 개인사업 구분"
+      ]
+    },
+    {
+      "topic": "F-6 결혼이민 (F-6-1/2/3)",
+      "urls": [
+        "https://www.visainkorea.com/f-6-visa-f6-..."
+      ],
+      "themes": [
+        "세부코드 구분",
+        "취업 무제한"
+      ]
+    },
+    {
+      "topic": "F-1/F-3 초청·동반",
+      "urls": [
+        "https://www.visainkorea.com/f-3-visa-korea-f3-f1-visa-..."
+      ],
+      "themes": [
+        "D/E 비자 소지자의 배우자·미성년 자녀 초청"
+      ]
+    },
+    {
+      "topic": "귀화 (영주 선행)",
+      "urls": [
+        "https://www.visainkorea.com/naturalization-%EA%B7%80%ED%99%94-korea-korean.html"
+      ],
+      "themes": [
+        "귀화 전 F-5 선행 원칙",
+        "수반취득"
+      ]
+    },
+    {
+      "topic": "번역공증·영사확인",
+      "urls": [
+        "https://www.visainkorea.com/%EC%9E%A5%ED%96%89%EB%8B%B7%EC%BB%B4-...-korea-translation-notary-visa-b-2.html"
+      ],
+      "themes": [
+        "서류 준비 실무",
+        "아포스티유"
+      ]
+    },
+    {
+      "topic": "연장 지연 과태료 사례",
+      "urls": [
+        "(블로그 사례 페이지)"
+      ],
+      "themes": [
+        "E-9 15일 지연 70만원, 5일 지연 30만원 사례(비공식)"
+      ]
+    },
+    {
+      "topic": "출국을 위한 연장(최대 60일, HiKorea 온라인)",
+      "urls": [
+        "(블로그)"
+      ],
+      "themes": [
+        "출국기한 유예"
+      ]
+    },
+    {
+      "topic": "D-10 제한",
+      "urls": [
+        "(블로그)"
+      ],
+      "themes": [
+        "전문분야(E-1~E-7)만 가능",
+        "시간제/단순 아르바이트 불가(D-10-1 예외 표기)"
+      ]
+    },
+    {
+      "topic": "유학생 경로 D-2→D-10→E-7-1",
+      "urls": [
+        "(블로그)"
+      ],
+      "themes": [
+        "관할 사무소",
+        "졸업 후 경로"
+      ]
+    },
+    {
+      "topic": "정책 업데이트 모음(2023.12.8~)",
+      "urls": [
+        "https://www.visainkorea.com/immigration_visa_policy_updated_since_dec.8,_2023.html"
+      ],
+      "themes": [
+        "연도별 정책 변경 타임라인"
+      ]
+    }
+  ]
+}
