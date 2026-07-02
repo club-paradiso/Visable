@@ -2,10 +2,20 @@
 
 The Ministry of Justice immigration manuals in this directory are Paradiso's official source artifacts for extraction and grounding work. `source_manifest.json` is the canonical current/archived pointer.
 
-Current manuals:
+Current manuals (see `source_manifest.json` for the authoritative pointer):
 
-- `2026-05/visa_manual_2026_05.pdf` - 사증발급 안내매뉴얼, 2026.5. (PDF, primary extraction source; installed from the 2026-05-21 source PDF)
-- `2026-06/stay_manual_2026_06_01.pdf` - 외국인체류 안내매뉴얼, 2026.5 / source file 2026-06-01. (PDF, current primary extraction source; 숙련기능인력 제도 개선사항 반영)
+- `backend/data/sources/manuals/260617_visa_manual_exported.pdf` - 사증발급 안내매뉴얼, 2026.6 / source date 2026-06-17. (PDF, current primary extraction source; readable extraction + section index alongside it)
+- `backend/data/sources/manuals/260623_stay_manual_exported.pdf` - 외국인체류 안내매뉴얼, 2026.6 / source date 2026-06-23. (PDF, current primary extraction source; readable extraction + section index alongside it)
+
+Special program manuals (also registered in `source_manifest.json` under `special_program_manuals`):
+
+- `backend/data/sources/manuals/260629_kcore_manual.hwp` - 「육성형 전문기술인력 제도」(K-CORE / E-7-M) 사증·체류관리 매뉴얼, 2026.6 (시행 2026-03-05, 배포 2026-06-29; standard HWP, body fully extracted)
+- `backend/data/sources/manuals/260421_dongpo_manual.pdf` - 알기쉬운 외국국적동포 업무 매뉴얼, 2026.2 (standalone 붙임 배포본; 별첨 1–10 원문 대조용. 동일 계열 내용이 2026-06-23 체류 매뉴얼 pp. 529-579에 내장되어 있으며, 문구가 다를 경우 최신 체류 매뉴얼 내장본이 우선)
+
+Superseded (archived) primary manuals:
+
+- `2026-05/visa_manual_2026_05.pdf` - 사증발급 안내매뉴얼, 2026.5. (superseded by the 2026-06-17 visa manual)
+- `2026-06/stay_manual_2026_06_01.pdf` - 외국인체류 안내매뉴얼, 2026.5 / source file 2026-06-01. (superseded by the 2026-06-23 stay manual)
 
 Stored companion artifacts:
 
