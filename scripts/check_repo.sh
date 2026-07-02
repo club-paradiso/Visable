@@ -339,7 +339,7 @@ KEY_FILES=(
   "moonshot_backend_fastapi.py"
 )
 
-FORBIDDEN_REGEX='Moonshot|moonshot|Paradiso 39|PARADISO 39|paradiso 39|Paradiso39|PARADISO39|paradiso39|P/39|p39'
+FORBIDDEN_REGEX='Moonshot|moonshot|Paradiso 39|PARADISO 39|paradiso 39|Paradiso39|PARADISO39|paradiso39|P/39|p39|Visable 39|VISABLE 39|visable 39|Visable39|VISABLE39|visable39'
 
 EXISTING_FILES=()
 for file in "${KEY_FILES[@]}"; do
