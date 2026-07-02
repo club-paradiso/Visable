@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#f5f2ea">
-<meta name="description" content="Paradiso: New Home — 귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램(KIIP), 면접, 귀화 후 절차까지 단계별 안내. Step-by-step guidance for Korean nationality and naturalization.">
-<title>Paradiso: New Home — 국적·귀화 안내</title>
+<meta name="description" content="New Home by Paradiso — 귀화, 국적회복, 국적판정, 복수국적, 사회통합프로그램(KIIP), 면접, 귀화 후 절차까지 단계별 안내. Step-by-step guidance for Korean nationality and naturalization.">
+<title>New Home by Paradiso — 국적·귀화 안내</title>
 <link rel="icon" type="image/png" href="assets/brand/paradiso-favicon-o.png?v=2">
 
 <!-- Editorial theme bootstrap (shared with the Paradiso main page). Runs before
@@ -565,7 +565,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 <a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
 
 <header class="nh-topbar">
-  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span class="nh-back-label-full" data-c="ui.backToParadiso">Paradiso로 돌아가기</span><span class="nh-back-label-short">Paradiso</span></a>
+  <a class="nh-back" href="index.html" id="nhBack"><span aria-hidden="true">←</span> <span class="nh-back-label-full" data-c="ui.backToParadiso">Visable로 돌아가기</span><span class="nh-back-label-short">Visable</span></a>
   <div class="nh-controls">
     <button type="button" class="nh-ctl" data-action="toggle-lang" id="langBtn">English</button>
     <button type="button" class="nh-ctl" data-action="toggle-theme" id="themeBtn" aria-label="테마 전환">✦ <span id="themeBtnLabel">Editorial</span></button>
@@ -585,8 +585,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   <section class="nh-hero">
     <div class="nh-hero-inner">
       <div class="nh-hero-copy">
-        <span class="nh-kicker" data-c="hero.kicker">Paradiso 국적·귀화 플랫폼</span>
-        <h1 class="nh-title" data-c="hero.title">Paradiso: New Home</h1>
+        <span class="nh-kicker" data-c="hero.kicker">New Home by Paradiso 국적·귀화 플랫폼</span>
+        <h1 class="nh-title" data-c="hero.title">New Home by Paradiso</h1>
         <p class="nh-tagline">You Belong Here.</p>
         <p class="nh-lead" data-c="hero.lead"></p>
         <div class="nh-cta-row">
@@ -945,8 +945,8 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     html += '</div>';
     var helps = (pick(k.helps) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
     var nots = (pick(k.notClaims) || []).map(function (h) { return '<li>' + esc(h) + '</li>'; }).join('');
-    var helpsTitle = lang === 'zh-CN' ? 'Paradiso 能帮的' : lang === 'en' ? 'What Paradiso helps with' : 'Paradiso가 돕는 것';
-    var notsTitle = lang === 'zh-CN' ? 'Paradiso 不会断定的' : lang === 'en' ? "What Paradiso won't claim" : 'Paradiso가 단정하지 않는 것';
+    var helpsTitle = lang === 'zh-CN' ? 'New Home by Paradiso 能帮的' : lang === 'en' ? 'What New Home by Paradiso helps with' : 'New Home by Paradiso가 돕는 것';
+    var notsTitle = lang === 'zh-CN' ? 'New Home by Paradiso 不会断定的' : lang === 'en' ? "What New Home by Paradiso won't claim" : 'New Home by Paradiso가 단정하지 않는 것';
     html += '<div class="nh-cols">' +
       '<div class="nh-pill-card"><h4>' + esc(helpsTitle) + '</h4><ul class="nh-pill-list yes">' + helps + '</ul></div>' +
       '<div class="nh-pill-card"><h4>' + esc(notsTitle) + '</h4><ul class="nh-pill-list no">' + nots + '</ul></div>' +
@@ -1495,7 +1495,7 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     var main = document.getElementById('nhMain');
     if (main) {
       main.innerHTML = '<div class="nh-loaderr"><p>콘텐츠를 불러오지 못했습니다. / Content could not be loaded.</p>' +
-        '<p><a href="index.html">← Paradiso</a></p></div>';
+        '<p><a href="index.html">← Visable</a></p></div>';
     }
   }
 

@@ -143,8 +143,8 @@
     "資格ごとの提出書類の流れを確認し、公式の出典確認へつなげます。",
     "HiKorea、1345、管轄の出入国の案内で最終確認します。"
   ],
-  "sourceTitle": "Paradisoの一文は、出典へ向かいます。",
-  "sourceCopy": "Paradisoは参考用の情報探索プラットフォームです。最終的な判断は、管轄の出入国・外国人官署、HiKorea、1345、または資格のある専門家にご確認ください。",
+  "sourceTitle": "Visableの一文は、出典へ向かいます。",
+  "sourceCopy": "Visableは参考用の情報探索プラットフォームです。最終的な判断は、管轄の出入国・外国人官署、HiKorea、1345、または資格のある専門家にご確認ください。",
   "sourceGridAria": "参考の出典",
   "sourceCards": [
     "<h3>出入国管理法</h3><p>滞在資格と基本手続きの法令上の基準。</p>",
@@ -153,7 +153,7 @@
     "<h3>職業・産業分類</h3><p>韓国標準職業分類と産業分類の確認。</p>",
     "<h3>1345案内</h3><p>外国人総合案内センターでの相談確認。</p>"
   ],
-  "sourceNote": "Paradisoは法律相談や手続き代行を提供せず、それに伴ういかなる法的責任も負いません。",
+  "sourceNote": "Visableは法律相談や手続き代行を提供せず、それに伴ういかなる法的責任も負いません。",
   "manualTitle": "法務部マニュアルに基づく、<br>構造化された案内",
   "manualCopy": "出入国・外国人政策本部が公開したマニュアルと施行案内を、参考用に構造化しました。結果画面に表示された出典を確認したうえで、最終的な判断はHiKorea、1345、管轄の出入国機関でご確認ください。",
   "manualCardTitles": [
@@ -180,7 +180,7 @@
     "入国前の査証の種類、利用できる電子申請の経路や申請状況を公式ポータルで確認してください。",
     "出入国・滞在の手続きや管轄機関への取り次ぎが必要なときは、公式の多言語相談窓口を確認してください。"
   ],
-  "manualNote": "上記のマニュアルリンクは、HiKoreaが公開した最新版(査証発給 2026-06-17、外国人滞在 2026-06-23 の案内マニュアル)につながります。画面の構造化された案内は、読み取り可能な2026年6月の公式PDF抽出版で出典を更新しています。在外公館ごとの追加書類や受付方法は公館によって異なる場合があるため、実際の申請前に管轄の在外公館の告知を確認してください。Paradisoは、法務部・HiKorea・ビザポータル・在外公館と提携または所属関係のない参考サービスです。",
+  "manualNote": "上記のマニュアルリンクは、HiKoreaが公開した最新版(査証発給 2026-06-17、外国人滞在 2026-06-23 の案内マニュアル)につながります。画面の構造化された案内は、読み取り可能な2026年6月の公式PDF抽出版で出典を更新しています。在外公館ごとの追加書類や受付方法は公館によって異なる場合があるため、実際の申請前に管轄の在外公館の告知を確認してください。Visableは、法務部・HiKorea・ビザポータル・在外公館と提携または所属関係のない参考サービスです。",
   "toolsTitle": "必要な道具は、流れのすぐそばに置きます。",
   "toolsCopy": "すでに実装された道具は既存のモーダルや検索に接続し、まだ準備中の機能は計画中として表示します。",
   "toolCards": [
@@ -207,7 +207,7 @@
   ],
   "agentTitle": "近くの行政サポートを探す",
   "agentSectionCopy": "公式に登録された出入国民願代行機関を地域別に確認し、NAVERマップまたはカカオマップで位置を開くことができます。",
-  "agentDisclaimerPrefix": "この一覧は、HiKorea/法務部の公開資料をもとに整理した公式登録の代行機関情報です。Paradisoは特定の機関を推薦したり、業務の結果を保証したりはしません。訪問または依頼の前に",
+  "agentDisclaimerPrefix": "この一覧は、HiKorea/法務部の公開資料をもとに整理した公式登録の代行機関情報です。Visableは特定の機関を推薦したり、業務の結果を保証したりはしません。訪問または依頼の前に",
   "agentOfficialLink": "HiKorea公式の照会",
   "agentDisclaimerSuffix": "で電話確認、相談範囲および手数料の確認をおすすめします。",
   "agentRegionLabel": "地域",
@@ -236,11 +236,11 @@
   "aboutTitle": "プラットフォーム紹介",
   "aboutBrandTitle": "ブランド哲学と語源 <span class=\"en-label\" lang=\"en\">- Brand Philosophy &amp; Etymology</span>",
   "aboutPhilosophy": [
-    "<strong>Diaspora</strong> - 「Diaspora」は移住者を意味する英単語です。",
-    "<strong>Paradiso</strong> - 「Paradiso」はイタリア語で「楽園(Paradise)」を意味し、「Diaspora」のつづりをアナグラム(Anagram)で並べ替えた言葉でもあります。それぞれの想いと夢を抱いて韓国に到着したすべての方へ、安らぎと慰めのあいさつをお伝えします。"
+    "<strong>Visable</strong> — 「ビザ(visa)」を「見える(visible)」ようにするという意味です。散らばって見えにくかったビザ・滞在の情報を一目で整理し、あなたの状況に必要なものをはっきりと示します。",
+    "<strong>Paradiso</strong> — Visableをつくるチーム「Club Paradiso」です。「Paradiso」はイタリア語で「楽園(Paradise)」を意味し、「Diaspora」のつづりをアナグラム(Anagram)で並べ替えた言葉でもあります。それぞれの想いと夢を抱いて韓国に到着したすべての方へ、安らぎと慰めのあいさつをお伝えします。"
   ],
-  "aboutStartTitle": "Paradisoのはじまり",
-  "aboutStartBody": "大韓民国には39種類の滞在資格がありますが、関連する法令やマニュアルは分散しており、情報を探すのに時間がかかります。Paradisoは、散らばったビザ・滞在の情報を構造化し、利用者の立場から一度に確認できる案内の流れを提供し、情報の非対称を減らす利用者案内のレイヤーをめざします。",
+  "aboutStartTitle": "Visableのはじまり",
+  "aboutStartBody": "大韓民国には39種類の滞在資格がありますが、関連する法令やマニュアルは分散しており、情報を探すのに時間がかかります。Visableは、散らばったビザ・滞在の情報を構造化し、利用者の立場から一度に確認できる案内の流れを提供し、情報の非対称を減らす利用者案内のレイヤーをめざします。",
   "aboutValuesTitle": "中核となる価値とビジョン",
   "aboutValuesBody": "単なる情報の羅列を超えて、構造化された滞在資格データと利用者の入力に基づく案内を通じて、情報探索の負担を減らし、公式資料の確認まで自然につながるように設計します。",
   "aboutValueAria": [
@@ -281,7 +281,7 @@
     "1345 Hotline"
   ],
   "footerCtaTitle": "難しく感じていた滞在管理を、<br>これからは手軽に確認しましょう。",
-  "footerCtaBody": "複雑な滞在行政と散らばった資料を、Paradisoが目的別に整理します。最終的な判断は、HiKorea、1345、管轄の出入国機関でご確認ください。",
+  "footerCtaBody": "複雑な滞在行政と散らばった資料を、Visableが目的別に整理します。最終的な判断は、HiKorea、1345、管轄の出入国機関でご確認ください。",
   "footerCtaButtons": [
     "検索を始める",
     "局番なしで1345"
@@ -436,7 +436,7 @@
     "統合申請書・国内居所申告書などの正本書式を段階的に作成し、入力値が正本のレイアウト上に配置されたPDFとしてダウンロードします。"
   ],
   "agentSourceNote": "出典: 出入国業務 民願申請代行 登録機関の現況(2026.04.30.付)",
-  "agentDisclaimer": "Paradisoは特定の機関を推薦したり、業務の結果を保証したりはしません。訪問または依頼の前に、電話確認、相談範囲および手数料の確認をおすすめします。",
+  "agentDisclaimer": "Visableは特定の機関を推薦したり、業務の結果を保証したりはしません。訪問または依頼の前に、電話確認、相談範囲および手数料の確認をおすすめします。",
   "agentRegionAll": "すべての地域",
   "agentLoading": "データを読み込み中です。",
   "agentPrompt": "地域名、事務所名、住所の一部を入力して、登録された民願代行機関を探してみてください。",
@@ -453,7 +453,7 @@
   "medKicker": "Medical guidance",
   "medCopy": "採用身体検査・健康診断が可能な医療機関を、地域・機関名・住所で検索します。",
   "medSourceNote": "出典: 法務部指定 採用身体検査および健康診断 医療機関の現況、2026.04.30.",
-  "medDisclaimer": "訪問前に必ず電話で、検査の可否、予約の要否、検査項目、持ち物を確認してください。Paradisoは医療機関を推薦したり、検査の可否を保証したりはしません。",
+  "medDisclaimer": "訪問前に必ず電話で、検査の可否、予約の要否、検査項目、持ち物を確認してください。Visableは医療機関を推薦したり、検査の可否を保証したりはしません。",
   "medCallNotice": "この一覧は案内を目的としたものであり、医療上の助言や検査の可否を保証するものではありません。",
   "medChipsAria": "地域のクイック選択",
   "medKeywordLabel": "検索語",
@@ -486,8 +486,8 @@
   "anagramAria": "DiasporaからParadisoへつながるアナグラム",
   "philosophyTitle": "ブランド哲学と語源 <span class=\"en-label\" lang=\"en\">— Brand Philosophy &amp; Etymology</span>",
   "philosophyItems": [
-    "<strong>Diaspora</strong> — 「Diaspora」は移住者を意味する英単語です。",
-    "<strong>Paradiso</strong> — 「Paradiso」はイタリア語で「楽園(Paradise)」を意味し、「Diaspora」のつづりをアナグラム(Anagram)で並べ替えた言葉でもあります。それぞれの想いと夢を抱いて韓国に到着したすべての方へ、安らぎと慰めのあいさつをお伝えします。"
+    "<strong>Visable</strong> — 「ビザ(visa)」を「見える(visible)」ようにするという意味です。散らばって見えにくかったビザ・滞在の情報を一目で整理し、あなたの状況に必要なものをはっきりと示します。",
+    "<strong>Paradiso</strong> — Visableをつくるチーム「Club Paradiso」です。「Paradiso」はイタリア語で「楽園(Paradise)」を意味し、「Diaspora」のつづりをアナグラム(Anagram)で並べ替えた言葉でもあります。それぞれの想いと夢を抱いて韓国に到着したすべての方へ、安らぎと慰めのあいさつをお伝えします。"
   ],
   "valuesTitle": "中核となる価値とビジョン",
   "valuesBody": "単なる情報の羅列を超えて、構造化された滞在資格データと利用者の入力に基づく案内を通じて、情報探索の負担を減らし、公式資料の確認まで自然につながるように設計します。",
@@ -503,8 +503,8 @@
   ],
   "footerStart": "今すぐ探索を始める",
   "footerHotline": "1345へ直接問い合わせ",
-  "footerCtaCopy": "複雑な滞在行政と散らばった資料を、Paradisoが目的別に整理します。最終的な判断は、HiKorea、1345、管轄の出入国機関でご確認ください。",
-  "footerCtaNote": "Paradisoは公式の政府サービスではありません。提供する情報は参考用です。",
+  "footerCtaCopy": "複雑な滞在行政と散らばった資料を、Visableが目的別に整理します。最終的な判断は、HiKorea、1345、管轄の出入国機関でご確認ください。",
+  "footerCtaNote": "Visableは公式の政府サービスではありません。提供する情報は参考用です。",
   "quickFiltersAria": "よく検索されるキーワードのまとめ",
   "footerLegal": "ベータサービスです。提供される情報は法的効力を持たず、最終的な判断はHiKorea・1345・管轄の出入国・外国人官署にご確認ください。",
   "closeModal": "閉じる",
@@ -524,7 +524,7 @@
   "jobCodeSearchLabel": "職種または業種を検索",
   "jobCodePlaceholder": "例: ゴルフ場で清掃をしています / イカ釣り船で働いています / カフェでバリスタとして働いています / English teacher at a hagwon",
   "jobCodeAskHeading": "どんな仕事をしていますか?",
-  "jobCodeAskHelper": "例のように気軽に書いてください。Paradisoが職種と業種の候補に分けて探します。",
+  "jobCodeAskHelper": "例のように気軽に書いてください。Visableが職種と業種の候補に分けて探します。",
   "jobCodeConceptExplain": "職種は「自分がする仕事」、業種は「会社や事業所がする仕事」です。",
   "jobCodeConceptExpand": "たとえばゴルフ場で清掃をする場合、職種は清掃業務に近く、業種はゴルフ場の運営なのか、清掃・施設管理の業者なのかによって変わることがあります。",
   "jobCodeExamplesLabel": "このように書いてみてください",
@@ -535,7 +535,7 @@
   "jobCodeFinalOcc": "職種 — 自分がする仕事",
   "jobCodeFinalInd": "業種 — 会社や事業所がする仕事",
   "jobCodeFinalIncome": "年間所得の区分 — HiKoreaで選択",
-  "jobCodeFinalConfirm": "最終的な申告はHiKoreaで直接行います — Paradisoが申告を代わりに完了することはありません。",
+  "jobCodeFinalConfirm": "最終的な申告はHiKoreaで直接行います — Visableが申告を代わりに完了することはありません。",
   "jobCodeNaturalSearchApi": "自然な言葉で職種・業種の候補を探す (AI)",
   "jobCodeNaturalSearchLocal": "自然な言葉で職種・業種の候補を探す",
   "jobCodeLoading": "データを読み込み中です…(最初の1回のみ)",
@@ -561,7 +561,7 @@
     "状況別の追加書類",
     "機関への確認が必要な書類"
   ],
-  "docGroupingNote": "画面のまとまりは理解を助けるためのParadisoの分類であり、原文マニュアルの表現は資格・手続きごとに異なる場合があります。",
+  "docGroupingNote": "画面のまとまりは理解を助けるためのVisableの分類であり、原文マニュアルの表現は資格・手続きごとに異なる場合があります。",
   "procedureLabels": [
     "査証発給",
     "査証発給認定書",
@@ -715,7 +715,7 @@
   "sourceVerifiedNote": "表示された項目は、現在の構造化データを基準に、公式マニュアルの出典が確認された項目です。管轄の出入国官署で追加書類を求められることがあります。",
   "sourcePendingReviewNote": "この項目は、まだ公式マニュアルとの照合が完了していません。申請前にHiKoreaまたは管轄の出入国・外国人官署で確認してください。",
   "sourceNeedLinkingNote": "ページまたは出典の手がかりはありますが、項目別の公式根拠の紐づけはまだ整理中です。",
-  "sourceUnverifiedNote": "Paradiso内部の構造化データに整理された案内です。公式の決定や法律相談ではありません。",
+  "sourceUnverifiedNote": "Visable内部の構造化データに整理された案内です。公式の決定や法律相談ではありません。",
   "sourceProvisionalNote": "別の手続きや類似の滞在資格の基準を参考にした暫定案内である可能性があります。実際の申請前に、公式マニュアルと管轄機関の確認が必要です。",
   "cautionText": "審査の過程で提出書類は増減することがあり、最終的な許可の可否は管轄の出入国・外国人庁の審査によります。",
   "procedureExpansionNote": "手続き別の提出書類案内は、マニュアルに基づく検証を拡張中です。",
@@ -809,7 +809,7 @@
   "hkPhase5": "保存/仕上げ",
   "hkPrimaryCta": "HiKorea 訪問予約へ移動",
   "hkSecondaryCta": "1345へ問い合わせる前の確認事項",
-  "hkDisc1": "Paradisoは公式の政府サービスではありません。",
+  "hkDisc1": "Visableは公式の政府サービスではありません。",
   "hkDisc2": "提供する情報は参考用です。",
   "hkDisc3": "最終的な判断は、HiKorea・1345・管轄の出入国機関でご確認ください。",
   "hkDisc4": "提出書類や予約の可否は、審査・機関の案内によって変わることがあります。",
@@ -954,7 +954,7 @@
     "外国人登録",
     "滞在期間の延長"
   ],
-  "docTabMissingNotice": "構造化された書類データなし: この手続きの提出書類は、まだParadisoの構造化データに十分に整理されていません。最新の滞在・査証手続きの案内マニュアル、または管轄の出入国・外国人官署を確認してください。",
+  "docTabMissingNotice": "構造化された書類データなし: この手続きの提出書類は、まだVisableの構造化データに十分に整理されていません。最新の滞在・査証手続きの案内マニュアル、または管轄の出入国・外国人官署を確認してください。",
   "deadlineCalcTitle": "期限計算機",
   "deadlineCalcIntro": "入国日と滞在満了日を入力すると、準備に役立つ予定の目安を計算します。公式の期限ではなく、入力した値は保存・送信されません。",
   "deadlineEntryDate": "入国日",
@@ -1069,7 +1069,7 @@
   "reminderErrDate": "日付を入力してください。",
   "reminderBannerToday": "本日です",
   "reminderBannerDaysLeft": "あと{days}日です",
-  "reminderCalendarDesc": "Paradiso 期限の通知",
+  "reminderCalendarDesc": "Visable 期限の通知",
   "reminderBefore7": "(7日前)",
   "reminderBefore1": "(1日前)",
   "scenarioToastWarning": "⚠ [警告] このシナリオ検索結果は、実務者向けの事前案内および単純な参考用です。",
@@ -1089,7 +1089,7 @@
   "languagePreparingNotice": "中国語版は準備中です。",
   "deadlineSourceCommonRule": "共通ルールに基づく準備参考日",
   "deadlineSourceCustom": "ユーザー指定の通知",
-  "deadlineCalendarCaution": "Paradisoの準備用通知です。公式の期限ではなく、HiKorea・1345・管轄の出入国・外国人官署でご確認ください。",
+  "deadlineCalendarCaution": "Visableの準備用通知です。公式の期限ではなく、HiKorea・1345・管轄の出入国・外国人官署でご確認ください。",
   "nextActionTitle": "今できること",
   "nextActionHikoreaKicker": "訪問予約",
   "nextActionHikoreaTitle": "HiKorea 予約ヘルパー",
@@ -1104,9 +1104,9 @@
   "lawSourceRetrieved": "補助的な法令の根拠を照会しました",
   "lawSourceNoDirect": "現在確認できる資料の中で、この具体的な状況を直接扱う根拠は限られています。関連する論点の分析へご案内します。",
   "lawSourceUnavailableDeploy": "この配備環境では、法令の出典照会を利用できません。",
-  "lawSourceBadResponse": "法令の出典照会が、サポートされていない応答形式を返しました。修正されるまで、Paradisoは限定的な案内を使用します。",
-  "lawSourceOfficialError": "公式の法令出典サービスがエラーを返しました。Paradisoは限定的な案内を使用します。",
-  "lawSourceTimeout": "法令の出典照会がタイムアウトしました。Paradisoは限定的な案内を使用します。",
+  "lawSourceBadResponse": "法令の出典照会が、サポートされていない応答形式を返しました。修正されるまで、Visableは限定的な案内を使用します。",
+  "lawSourceOfficialError": "公式の法令出典サービスがエラーを返しました。Visableは限定的な案内を使用します。",
+  "lawSourceTimeout": "法令の出典照会がタイムアウトしました。Visableは限定的な案内を使用します。",
   "lawAnalysisDirectAuthority": "直接の公式根拠を確認",
   "lawAnalysisRelatedContext": "関連する法的な文脈を確認",
   "lawAnalysisAnalogical": "類推による法律分析",
@@ -1114,7 +1114,7 @@
   "lawAnalysisLookupUnavailable": "出典照会を利用できません",
   "lawAnalysisTechnicalIssue": "出典照会の技術的な問題",
   "sourcePanelStructuredFallbackLabel": "構造化された法律分析メモ",
-  "sourcePanelStructuredFallbackSubtext": "AIモデルの応答が制限されたため、Paradisoが抽出した滞在資格・活動類型・論点の分析を基準に、準備メモを表示します。",
+  "sourcePanelStructuredFallbackSubtext": "AIモデルの応答が制限されたため、Visableが抽出した滞在資格・活動類型・論点の分析を基準に、準備メモを表示します。",
   "sourcePanelStructuredAnalysisUsedLabel": "構造化された法律分析を使用",
   "sourcePanelStructuredAnalysisUsedSubtext": "直接の法令引用は限られますが、回答は滞在資格・活動類型・論点の分析を基準に構成されています。",
   "sourcePanelRelatedContextLabel": "関連する法的な文脈の分析",

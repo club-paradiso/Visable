@@ -1,20 +1,20 @@
 {
   "_meta": {
     "schemaVersion": "2.0",
-    "title": "Paradiso: New Home — nationality & citizenship content",
+    "title": "New Home by Paradiso: nationality & citizenship content",
     "generatedAt": "2026-06-28",
     "purpose": "User-facing copy for the dedicated nationality/citizenship platform. References sourceIds in data/nationality_sources.json. Cautious, orientation-level content — no statutory thresholds, fees, schedules, or approval claims.",
     "note": "Where specifics are needed, content points users to official sources rather than asserting them. Deeper legal content is marked for future official-source expansion."
   },
   "brand": {
-    "title": "Paradiso: New Home",
+    "title": "New Home by Paradiso",
     "tagline": "You Belong Here."
   },
   "ui": {
     "backToParadiso": {
-      "ko": "Paradiso로 돌아가기",
-      "en": "Back to Paradiso",
-      "zh-CN": "返回 Paradiso"
+      "ko": "Visable로 돌아가기",
+      "en": "Back to Visable",
+      "zh-CN": "返回 Visable"
     },
     "langToggle": {
       "ko": "English",
@@ -178,9 +178,9 @@
       "zh-CN": "查找我的手续（Waymaker）"
     },
     "loadError": {
-      "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Paradiso 메인에서 접속해 주세요.",
-      "en": "Content could not be loaded. Please try again shortly or return via the Paradiso main page.",
-      "zh-CN": "无法加载内容。请稍后重试，或从 Paradiso 主页进入。"
+      "ko": "콘텐츠를 불러오지 못했습니다. 잠시 후 다시 시도하거나 Visable 메인에서 접속해 주세요.",
+      "en": "Content could not be loaded. Please try again shortly or return via the Visable main page.",
+      "zh-CN": "无法加载内容。请稍后重试，或从 Visable 主页进入。"
     }
   },
   "nav": {
@@ -212,9 +212,9 @@
   },
   "hero": {
     "kicker": {
-      "ko": "Paradiso 국적·귀화 플랫폼",
-      "en": "Paradiso nationality platform",
-      "zh-CN": "Paradiso 国籍·归化平台"
+      "ko": "New Home by Paradiso 국적·귀화 플랫폼",
+      "en": "New Home by Paradiso nationality platform",
+      "zh-CN": "New Home by Paradiso 国籍·归化平台"
     },
     "title": {
       "ko": "나에게 맞는 국적·귀화 경로를 찾으세요",
@@ -278,9 +278,9 @@
     }
   },
   "notice": {
-    "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
-    "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
-    "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
+    "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. New Home by Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
+    "en": "Nationality matters can vary by personal circumstances and current official rules. New Home by Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
+    "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。New Home by Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
   },
   "dashboard": {
     "title": {
@@ -519,9 +519,9 @@
           "zh-CN": "确认是否免除·认定"
         },
         "desc": {
-          "ko": "KIIP 이수·평가 결과가 본인 절차에서 어떻게 인정되는지 공식 안내와 관할기관에서 확인합니다. Paradiso는 면제를 판정하지 않습니다.",
-          "en": "Confirm through official guidance and the competent authority how KIIP completion or evaluation results are recognized in your procedure. Paradiso does not determine exemptions.",
-          "zh-CN": "请通过官方指引和管辖机关确认 KIIP 修完·评价结果在您的程序中如何被认定。Paradiso 不判定免除。"
+          "ko": "KIIP 이수·평가 결과가 본인 절차에서 어떻게 인정되는지 공식 안내와 관할기관에서 확인합니다. New Home by Paradiso는 면제를 판정하지 않습니다.",
+          "en": "Confirm through official guidance and the competent authority how KIIP completion or evaluation results are recognized in your procedure. New Home by Paradiso does not determine exemptions.",
+          "zh-CN": "请通过官方指引和管辖机关确认 KIIP 修完·评价结果在您的程序中如何被认定。New Home by Paradiso 不判定免除。"
         },
         "sourceIds": [
           "moj-nationality",
@@ -553,9 +553,9 @@
           "zh-CN": "确认官方日程"
         },
         "desc": {
-          "ko": "평가 일정과 신청은 사회통합정보망·평가 홈페이지에서 직접 확인하세요. Paradiso는 일정을 임의로 표기하지 않습니다.",
-          "en": "Check schedules and applications directly on Soci-Net / the assessment site. Paradiso does not state schedules itself.",
-          "zh-CN": "评价日程和申请请直接在社会融合信息网·评价网站确认。Paradiso 不擅自标注日程。"
+          "ko": "평가 일정과 신청은 사회통합정보망·평가 홈페이지에서 직접 확인하세요. New Home by Paradiso는 일정을 임의로 표기하지 않습니다.",
+          "en": "Check schedules and applications directly on Soci-Net / the assessment site. New Home by Paradiso does not state schedules itself.",
+          "zh-CN": "评价日程和申请请直接在社会融合信息网·评价网站确认。New Home by Paradiso 不擅自标注日程。"
         },
         "sourceIds": [
           "kiiptest",
@@ -1427,9 +1427,9 @@
       "zh-CN": "请务必确认"
     },
     "body": {
-      "ko": "국적 취득·귀화의 결과는 개인의 구체적 사실관계와 관할기관의 심사에 따라 달라집니다. Paradiso의 안내는 방향을 정리하는 참고 자료이며, 최종 자격·허가 여부를 단정하거나 법률 자문을 대신하지 않습니다.",
-      "en": "Outcomes of nationality acquisition and naturalization depend on each person's specific facts and the competent authority's review. Paradiso's guidance is reference material that helps organize a direction; it does not determine final eligibility or approval, nor replace legal advice.",
-      "zh-CN": "国籍取得·归化的结果取决于个人的具体事实关系和管辖机关的审查。Paradiso 的指引是用于整理方向的参考资料，不会断定最终资格·是否许可，也不替代法律咨询。"
+      "ko": "국적 취득·귀화의 결과는 개인의 구체적 사실관계와 관할기관의 심사에 따라 달라집니다. New Home by Paradiso의 안내는 방향을 정리하는 참고 자료이며, 최종 자격·허가 여부를 단정하거나 법률 자문을 대신하지 않습니다.",
+      "en": "Outcomes of nationality acquisition and naturalization depend on each person's specific facts and the competent authority's review. New Home by Paradiso's guidance is reference material that helps organize a direction; it does not determine final eligibility or approval, nor replace legal advice.",
+      "zh-CN": "国籍取得·归化的结果取决于个人的具体事实关系和管辖机关的审查。New Home by Paradiso 的指引是用于整理方向的参考资料，不会断定最终资格·是否许可，也不替代法律咨询。"
     }
   },
   "sourcesPanel": {
@@ -1444,21 +1444,21 @@
       "zh-CN": "已按种类和适用范围整理国籍·KIIP 相关的官方出处。链接和公开元数据于 2026-06-28 确认，申请前请再次确认各官方页面的最新公告。"
     },
     "disclaimer": {
-      "ko": "Paradiso는 법무부·HiKorea·Socinet·비자포털·재외공관과 제휴 또는 소속 관계가 없습니다. 이 링크는 관할 공식기관의 최신 안내를 확인하기 위한 연결입니다.",
-      "en": "Paradiso is not affiliated with the Ministry of Justice, HiKorea, Soci-Net, the Korea Visa Portal, or any overseas mission. These links are handoffs for checking current guidance from the competent official authority.",
-      "zh-CN": "Paradiso 与法务部·HiKorea·Socinet·签证门户·驻外公馆无合作或隶属关系。这些链接是用于确认管辖官方机关最新指引的跳转。"
+      "ko": "New Home by Paradiso는 법무부·HiKorea·Socinet·비자포털·재외공관과 제휴 또는 소속 관계가 없습니다. 이 링크는 관할 공식기관의 최신 안내를 확인하기 위한 연결입니다.",
+      "en": "New Home by Paradiso is not affiliated with the Ministry of Justice, HiKorea, Soci-Net, the Korea Visa Portal, or any overseas mission. These links are handoffs for checking current guidance from the competent official authority.",
+      "zh-CN": "New Home by Paradiso 与法务部·HiKorea·Socinet·签证门户·驻外公馆无合作或隶属关系。这些链接是用于确认管辖官方机关最新指引的跳转。"
     }
   },
   "footer": {
     "notice": {
-      "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
-      "en": "Nationality matters can vary by personal circumstances and current official rules. Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
-      "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
+      "ko": "국적 업무는 개인 사정과 최신 법령·지침에 따라 달라질 수 있습니다. New Home by Paradiso는 공식 근거 기반의 안내를 제공하며, 최종 판단은 관할기관 확인이 필요합니다.",
+      "en": "Nationality matters can vary by personal circumstances and current official rules. New Home by Paradiso provides official-source-grounded guidance, but final confirmation should be made with the competent authority.",
+      "zh-CN": "国籍业务会因个人情况和最新法令·指针而不同。New Home by Paradiso 提供基于官方依据的指引，最终判断需向管辖机关确认。"
     },
     "back": {
-      "ko": "Paradiso 메인으로 돌아가기",
-      "en": "Back to the Paradiso main page",
-      "zh-CN": "返回 Paradiso 主页"
+      "ko": "Visable 메인으로 돌아가기",
+      "en": "Back to the Visable main page",
+      "zh-CN": "返回 Visable 主页"
     }
   }
 }
