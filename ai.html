@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Waymaker — 한국 체류 절차 길찾기 | Paradiso</title>
+    <title>Waymaker by Paradiso — 한국 체류 절차 길찾기</title>
     <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
     <link rel="icon" href="assets/brand/paradiso-favicon-o.png?v=2" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
@@ -1959,10 +1959,10 @@ select:focus-visible {
         function nationalityContextLine(lang) {
             if (AI_DOMAIN !== 'nationality') return '';
             if (String(lang).indexOf('zh') === 0)
-                return '[咨询领域：国籍·归化] 用户来自 Paradiso New Home 国籍平台。请聚焦韩国国籍相关主题（一般/婚姻/家庭关系/特别归化、国籍恢复、国籍判定、复数国籍及不行使外国国籍宣誓、社会融合项目（KIIP）·面试、归化后行政程序），并注意不要将国籍业务与居留资格（签证）程序混淆。请勿断定最终是否许可，并建议向管辖机关确认。';
+                return '[咨询领域：国籍·归化] 用户来自 New Home by Paradiso 国籍平台。请聚焦韩国国籍相关主题（一般/婚姻/家庭关系/特别归化、国籍恢复、国籍判定、复数国籍及不行使外国国籍宣誓、社会融合项目（KIIP）·面试、归化后行政程序），并注意不要将国籍业务与居留资格（签证）程序混淆。请勿断定最终是否许可，并建议向管辖机关确认。';
             return lang === 'en'
-                ? '[Domain: nationality] The user arrived from the Paradiso New Home nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.'
-                : '[상담 영역: 국적·귀화] 사용자는 Paradiso New Home 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
+                ? '[Domain: nationality] The user arrived from the New Home by Paradiso nationality platform. Focus on Korean nationality topics — naturalization (general / marriage-based / family-based / special), nationality restoration, nationality determination, dual nationality and the pledge not to exercise foreign nationality, the Korea Immigration & Integration Program (KIIP) and interviews, and post-approval administrative steps. Distinguish nationality matters from status-of-stay (visa) procedures. Do not state final eligibility or approval; recommend confirming with the competent authority.'
+                : '[상담 영역: 국적·귀화] 사용자는 New Home by Paradiso 국적 플랫폼에서 넘어왔습니다. 한국 국적 관련 주제(일반/혼인/가족관계/특별 귀화, 국적회복, 국적판정, 복수국적 및 외국국적불행사 서약, 사회통합프로그램(KIIP)·면접, 귀화 후 행정절차)에 초점을 맞추되, 국적 업무와 체류자격(비자) 절차를 혼동하지 마십시오. 최종 허가 여부를 단정하지 말고 관할기관 확인을 안내하십시오.';
         }
 
         function interviewPrepContextLine(lang) {
@@ -2267,9 +2267,9 @@ select:focus-visible {
         // (Part E i18n fix). Official Korean institution names stay in Korean.
         const SHELL_FOOTER_DISCLAIMER = {
             ko: '본 서비스는 공개 법령·매뉴얼 기반 참고용 정보 제공 도구이며, 법적 상담이나 민원 대행이 아닙니다. 최종 판단은 출입국·외국인청, 하이코리아, 또는 자격 있는 전문가에게 확인하세요.',
-            en: 'Paradiso provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
-            zh: 'Paradiso 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
-            zhHant: 'Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
+            en: 'Waymaker by Paradiso provides public law/manual-based reference information and is not legal advice or a filing service. Confirm final decisions with the competent immigration office, HiKorea, 1345, or a qualified professional.',
+            zh: 'Waymaker by Paradiso 提供基于公开法令与手册的参考信息，并非法律咨询或代办服务。最终决定请向管辖出入境·外国人机构、HiKorea、1345 或有资质的专业人士确认。',
+            zhHant: 'Waymaker by Paradiso 提供基於公開法令與手冊的參考資訊，並非法律諮詢或代辦服務。最終決定請向管轄出入境·外國人機構、HiKorea、1345 或具資格的專業人士確認。'
         };
 
         // Static chat-shell chrome in four languages. Traditional (zh-TW) reuses
@@ -2569,13 +2569,13 @@ select:focus-visible {
             const errorType = String(safe.law_lookup_error_type || safe.law_grounding_error || '').toUpperCase();
             const hasBadLawResponse = warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR' || errorType === 'SOURCE_UNAVAILABLE';
             if (state === 'structured_fallback_available' || key === 'structured_fallback') {
-                return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
+                return { cls: 'state-needs-review', label: tt(lang, { ko: '구조화된 법률 분석 메모', en: 'Structured legal analysis note', zh: '结构化法律分析备忘', zhHant: '結構化法律分析備忘' }), subtext: tt(lang, { ko: 'AI 모델 응답이 제한되어, Waymaker by Paradiso가 추출한 체류자격·활동유형·쟁점 분석을 기준으로 준비 메모를 표시합니다.', en: 'The live AI response was unavailable, so Waymaker by Paradiso is showing a preparation note based on extracted status, activity type, and legal issue analysis.', zh: '实时 AI 响应不可用，因此 Waymaker by Paradiso 正显示基于已提取居留资格、活动类型和法律争点分析的准备备忘。', zhHant: '即時 AI 回應不可用，因此 Waymaker by Paradiso 正顯示基於已提取居留資格、活動類型與法律爭點分析的準備備忘。' }) };
             }
             if ((safe.legal_analysis_exists || key === 'structured_legal_analysis_law_lookup_issue') && hasBadLawResponse) {
                 return { cls: 'state-partial', label: tt(lang, { ko: '구조화된 법률 분석 사용', en: 'Structured legal analysis used', zh: '已使用结构化法律分析', zhHant: '已使用結構化法律分析' }), subtext: tt(lang, { ko: '직접 법령 인용은 제한되지만, 답변은 체류자격·활동유형·쟁점 분석을 기준으로 구성되었습니다.', en: 'Live legal-source lookup encountered a technical issue, so direct citation is limited. The answer still uses extracted status, activity, and issue analysis.', zh: '实时法律来源查询遇到技术问题，因此直接引用受限。答复仍基于已提取的居留资格、活动和争点分析。', zhHant: '即時法律來源查詢遇到技術問題，因此直接引用受限。答覆仍基於已提取的居留資格、活動與爭點分析。' }) };
             }
             if (state === 'related_legal_context_available' || key === 'related_legal_context') {
-                return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Paradiso separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
+                return { cls: 'state-partial', label: tt(lang, { ko: '관련 법적 맥락 분석', en: 'Related legal context analysis', zh: '相关法律背景分析', zhHant: '相關法律背景分析' }), subtext: tt(lang, { ko: '직접 조문 또는 매뉴얼 근거가 충분하지 않은 경우에도, 관련 쟁점과 비교 체류자격을 분리해 분석합니다.', en: 'When direct provisions or manual authority are limited, Waymaker by Paradiso separates related issues and comparison statuses for analysis.', zh: '即使直接条文或手册依据不足，也会区分相关争点和比较居留资格进行分析。', zhHant: '即使直接條文或手冊依據不足，也會區分相關爭點與比較居留資格進行分析。' }) };
             }
             return null;
         }
@@ -2606,10 +2606,10 @@ select:focus-visible {
             if (analogicalCount > 0 || mode === 'analogical_analysis') return { cls: 'state-partial', text: tt(lang, { ko: '유추 법률 분석', en: 'Analogical legal analysis', zh: '类比法律分析', zhHant: '類比法律分析' }) };
             if (missingDirect && (hasEvidence || mode === 'limited_authority')) return { cls: 'state-needs-review', text: tt(lang, { ko: '직접 근거 제한', en: 'Direct authority limited', zh: '未找到直接针对该情形的依据', zhHant: '未找到直接針對該情形的依據' }) };
             if (warnings.indexOf('LAW_API_TIMEOUT') !== -1 || errorType === 'LAW_API_TIMEOUT') {
-                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Paradiso is using limited guidance.', zh: '法律来源查询超时。Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Paradiso 將使用有限指引。' }) };
+                return { cls: 'state-partial', text: tt(lang, { ko: '법령 출처 조회 시간이 초과되었습니다. Waymaker by Paradiso는 제한적 안내를 사용합니다.', en: 'Legal source lookup timed out. Waymaker by Paradiso is using limited guidance.', zh: '法律来源查询超时。Waymaker by Paradiso 将使用有限指引。', zhHant: '法律來源查詢逾時。Waymaker by Paradiso 將使用有限指引。' }) };
             }
             if (warnings.indexOf('LAW_API_OFFICIAL_ERROR') !== -1 || errorType === 'LAW_API_OFFICIAL_ERROR') {
-                return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Paradiso는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Paradiso is using limited guidance.', zh: '官方法律来源服务返回错误。Paradiso 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Paradiso 將使用有限指引。' }) };
+                return { cls: 'state-partial', text: tt(lang, { ko: '공식 법령 출처 서비스가 오류를 반환했습니다. Waymaker by Paradiso는 제한적 안내를 사용합니다.', en: 'The official legal source service returned an error. Waymaker by Paradiso is using limited guidance.', zh: '官方法律来源服务返回错误。Waymaker by Paradiso 将使用有限指引。', zhHant: '官方法律來源服務回傳錯誤。Waymaker by Paradiso 將使用有限指引。' }) };
             }
             if (warnings.indexOf('LAW_API_BAD_RESPONSE') !== -1 || warnings.indexOf('LAW_API_PARSE_ERROR') !== -1 || errorType === 'LAW_API_BAD_RESPONSE' || errorType === 'LAW_API_PARSE_ERROR') {
                 return { cls: 'state-partial', text: tt(lang, { ko: '출처 조회 기술 문제', en: 'Source lookup technical issue', zh: '来源查询技术问题', zhHant: '來源查詢技術問題' }) };

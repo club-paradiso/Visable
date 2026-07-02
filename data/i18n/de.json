@@ -143,8 +143,8 @@
     "Sehen Sie sich den Unterlagenablauf je Status an und gelangen Sie zur Prüfung offizieller Quellen.",
     "Bestätigen Sie die endgültige Antwort über HiKorea, 1345 oder das zuständige Einwanderungsamt."
   ],
-  "sourceTitle": "Jeder Satz von Paradiso verweist auf eine Quelle.",
-  "sourceCopy": "Paradiso ist eine Plattform zur Informationssuche zu Referenzzwecken. Die endgültige Entscheidung muss beim zuständigen Einwanderungs- und Ausländeramt, bei HiKorea, 1345 oder einer qualifizierten Fachkraft bestätigt werden.",
+  "sourceTitle": "Jeder Satz von Visable verweist auf eine Quelle.",
+  "sourceCopy": "Visable ist eine Plattform zur Informationssuche zu Referenzzwecken. Die endgültige Entscheidung muss beim zuständigen Einwanderungs- und Ausländeramt, bei HiKorea, 1345 oder einer qualifizierten Fachkraft bestätigt werden.",
   "sourceGridAria": "Referenzquellen",
   "sourceCards": [
     "<h3>Einwanderungsgesetz</h3><p>Gesetzliche Grundlage für Aufenthaltstitel und grundlegende Verfahren.</p>",
@@ -153,7 +153,7 @@
     "<h3>Berufs- und Branchenklassifikation</h3><p>Prüfung der koreanischen Standard-Berufs- und Branchenklassifikation.</p>",
     "<h3>1345-Auskunft</h3><p>Beratung über das Beratungszentrum für Ausländer prüfen.</p>"
   ],
-  "sourceNote": "Paradiso bietet weder Rechtsberatung noch eine Vertretung bei Behördengängen an und übernimmt hierfür keinerlei rechtliche Haftung.",
+  "sourceNote": "Visable bietet weder Rechtsberatung noch eine Vertretung bei Behördengängen an und übernimmt hierfür keinerlei rechtliche Haftung.",
   "manualTitle": "Strukturierte Hinweise<br>auf Grundlage der Handbücher des Justizministeriums",
   "manualCopy": "Wir haben die vom Korea Immigration Service veröffentlichten Handbücher und Durchführungshinweise zu Referenzzwecken strukturiert. Prüfen Sie die im Ergebnis angegebene Quelle und bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
   "manualCardTitles": [
@@ -180,7 +180,7 @@
     "Prüfen Sie Visumarten vor der Einreise, mögliche Wege zur Online-Beantragung und den Antragsstatus im offiziellen Portal.",
     "Wenn Sie Hilfe bei Einwanderungs- und Aufenthaltsanliegen oder die Vermittlung an die zuständige Stelle benötigen, prüfen Sie die offizielle mehrsprachige Beratungsstelle."
   ],
-  "manualNote": "Die obigen Handbuch-Links führen zur jeweils neuesten von HiKorea veröffentlichten Fassung (Visumerteilung 2026-06-17, Ausländeraufenthalt 2026-06-23 Hinweishandbuch). Die strukturierten Hinweise auf dem Bildschirm wurden quellenmäßig anhand der lesbaren offiziellen PDF-Auszüge von 2026.6 aktualisiert. Zusätzliche Unterlagen und Einreichungsweisen können sich je Auslandsvertretung unterscheiden; prüfen Sie daher vor der tatsächlichen Antragstellung die Bekanntmachung der zuständigen Auslandsvertretung. Paradiso ist ein Referenzdienst ohne Partnerschaft oder Zugehörigkeit zum Justizministerium, zu HiKorea, zum Visumportal oder zu Auslandsvertretungen.",
+  "manualNote": "Die obigen Handbuch-Links führen zur jeweils neuesten von HiKorea veröffentlichten Fassung (Visumerteilung 2026-06-17, Ausländeraufenthalt 2026-06-23 Hinweishandbuch). Die strukturierten Hinweise auf dem Bildschirm wurden quellenmäßig anhand der lesbaren offiziellen PDF-Auszüge von 2026.6 aktualisiert. Zusätzliche Unterlagen und Einreichungsweisen können sich je Auslandsvertretung unterscheiden; prüfen Sie daher vor der tatsächlichen Antragstellung die Bekanntmachung der zuständigen Auslandsvertretung. Visable ist ein Referenzdienst ohne Partnerschaft oder Zugehörigkeit zum Justizministerium, zu HiKorea, zum Visumportal oder zu Auslandsvertretungen.",
   "toolsTitle": "Die nötigen Werkzeuge sind nah am Ablauf platziert.",
   "toolsCopy": "Bereits umgesetzte Werkzeuge sind mit den bestehenden Dialogen und der Suche verknüpft; noch in Vorbereitung befindliche Funktionen sind als geplant gekennzeichnet.",
   "toolCards": [
@@ -207,7 +207,7 @@
   ],
   "agentTitle": "Verwaltungshilfe in der Nähe finden",
   "agentSectionCopy": "Prüfen Sie offiziell registrierte Vertretungsstellen für Einwanderungsanliegen nach Region und öffnen Sie ihren Standort in Naver Map oder Kakao Map.",
-  "agentDisclaimerPrefix": "Diese Liste enthält Angaben zu offiziell registrierten Vertretungsstellen, die anhand der öffentlich von HiKorea/dem Justizministerium bereitgestellten Daten zusammengestellt wurden. Paradiso empfiehlt keine bestimmte Stelle und gewährleistet keine Ergebnisse. Vor einem Besuch oder einer Beauftragung",
+  "agentDisclaimerPrefix": "Diese Liste enthält Angaben zu offiziell registrierten Vertretungsstellen, die anhand der öffentlich von HiKorea/dem Justizministerium bereitgestellten Daten zusammengestellt wurden. Visable empfiehlt keine bestimmte Stelle und gewährleistet keine Ergebnisse. Vor einem Besuch oder einer Beauftragung",
   "agentOfficialLink": "offizielle HiKorea-Abfrage",
   "agentDisclaimerSuffix": "empfehlen wir, telefonisch nachzufragen und Beratungsumfang sowie Gebühren zu bestätigen.",
   "agentRegionLabel": "Region",
@@ -236,11 +236,11 @@
   "aboutTitle": "Über die Plattform",
   "aboutBrandTitle": "Markenphilosophie und Wortherkunft <span class=\"en-label\" lang=\"en\">- Brand Philosophy &amp; Etymology</span>",
   "aboutPhilosophy": [
-    "<strong>Diaspora</strong> - „Diaspora“ ist ein englisches Wort für Migrantinnen und Migranten.",
-    "<strong>Paradiso</strong> - „Paradiso“ bedeutet im Italienischen „Paradies (Paradise)“ und ist zugleich ein Wort, das durch anagrammatische Umstellung der Buchstaben von „Diaspora“ entsteht. Es ist ein Gruß voller Frieden und Trost an alle, die mit eigenen Vorstellungen und Träumen in Korea angekommen sind."
+    "<strong>Visable</strong> — Eine Verschmelzung von „visa“ und „visible (sichtbar)“: Es bündelt verstreute, schwer erkennbare Visa- und Aufenthaltsinformationen zu einer klaren Ansicht und zeigt deutlich, was Ihre Situation braucht.",
+    "<strong>Paradiso</strong> — Club Paradiso, das Team, das Visable macht. „Paradiso“ bedeutet im Italienischen „Paradies (Paradise)“ und ist zugleich ein Wort, das durch anagrammatische Umstellung der Buchstaben von „Diaspora“ entsteht. Es ist ein Gruß voller Frieden und Trost an alle, die mit eigenen Vorstellungen und Träumen in Korea angekommen sind."
   ],
-  "aboutStartTitle": "Wie Paradiso begann",
-  "aboutStartBody": "In der Republik Korea gibt es 39 Aufenthaltstitel, doch die zugehörigen Gesetze und Handbücher sind verstreut, sodass die Informationssuche Zeit kostet. Paradiso strukturiert die verstreuten Visa- und Aufenthaltsinformationen, bietet einen Hinweisablauf, der aus Nutzersicht alles auf einen Blick zeigt, und versteht sich als Hinweisschicht, die das Informationsgefälle verringert.",
+  "aboutStartTitle": "Wie Visable begann",
+  "aboutStartBody": "In der Republik Korea gibt es 39 Aufenthaltstitel, doch die zugehörigen Gesetze und Handbücher sind verstreut, sodass die Informationssuche Zeit kostet. Visable strukturiert die verstreuten Visa- und Aufenthaltsinformationen, bietet einen Hinweisablauf, der aus Nutzersicht alles auf einen Blick zeigt, und versteht sich als Hinweisschicht, die das Informationsgefälle verringert.",
   "aboutValuesTitle": "Kernwerte und Vision",
   "aboutValuesBody": "Über das bloße Auflisten von Informationen hinaus ist der Dienst so gestaltet, dass strukturierte Aufenthaltsdaten und auf Nutzereingaben gestützte Hinweise den Aufwand der Informationssuche verringern und natürlich bis zur Prüfung offizieller Unterlagen führen.",
   "aboutValueAria": [
@@ -281,7 +281,7 @@
     "1345 Hotline"
   ],
   "footerCtaTitle": "Die einst schwierige Aufenthaltsverwaltung<br>prüfen Sie jetzt ganz einfach.",
-  "footerCtaBody": "Komplexe Aufenthaltsverwaltung und verstreute Unterlagen ordnet Paradiso nach Zweck. Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
+  "footerCtaBody": "Komplexe Aufenthaltsverwaltung und verstreute Unterlagen ordnet Visable nach Zweck. Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
   "footerCtaButtons": [
     "Suche starten",
     "1345 (ohne Vorwahl)"
@@ -436,7 +436,7 @@
     "Füllen Sie amtliche Formulare wie den integrierten Antrag und die Inlandsaufenthaltsmeldung Schritt für Schritt aus und laden Sie die Eingaben als PDF herunter, das über das Originallayout gelegt ist."
   ],
   "agentSourceNote": "Quelle: Stand der registrierten Stellen für die Vertretung bei Einwanderungsanliegen (Stand 30.04.2026)",
-  "agentDisclaimer": "Paradiso empfiehlt keine bestimmte Stelle und gewährleistet keine Ergebnisse. Vor einem Besuch oder einer Beauftragung empfehlen wir, telefonisch nachzufragen sowie Beratungsumfang und Gebühren zu bestätigen.",
+  "agentDisclaimer": "Visable empfiehlt keine bestimmte Stelle und gewährleistet keine Ergebnisse. Vor einem Besuch oder einer Beauftragung empfehlen wir, telefonisch nachzufragen sowie Beratungsumfang und Gebühren zu bestätigen.",
   "agentRegionAll": "Alle Regionen",
   "agentLoading": "Die Daten werden geladen.",
   "agentPrompt": "Geben Sie einen Regionsnamen, Büronamen oder Teil einer Adresse ein, um registrierte Vertretungsstellen zu finden.",
@@ -453,7 +453,7 @@
   "medKicker": "Medical guidance",
   "medCopy": "Suchen Sie nach Region, Einrichtungsname oder Adresse nach Einrichtungen für Einstellungsuntersuchungen und Gesundheitschecks.",
   "medSourceNote": "Quelle: Stand der vom Justizministerium benannten Einrichtungen für Einstellungsuntersuchungen und Gesundheitschecks, 30.04.2026.",
-  "medDisclaimer": "Erkundigen Sie sich vor dem Besuch unbedingt telefonisch, ob die Untersuchung möglich ist, ob ein Termin nötig ist, welche Untersuchungspunkte es gibt und was mitzubringen ist. Paradiso empfiehlt keine Einrichtungen und gewährleistet nicht, dass eine Untersuchung möglich ist.",
+  "medDisclaimer": "Erkundigen Sie sich vor dem Besuch unbedingt telefonisch, ob die Untersuchung möglich ist, ob ein Termin nötig ist, welche Untersuchungspunkte es gibt und was mitzubringen ist. Visable empfiehlt keine Einrichtungen und gewährleistet nicht, dass eine Untersuchung möglich ist.",
   "medCallNotice": "Diese Liste dient nur zur Information und gewährleistet weder eine medizinische Beratung noch, dass eine Untersuchung möglich ist.",
   "medChipsAria": "Schnellauswahl der Region",
   "medKeywordLabel": "Suchbegriff",
@@ -486,8 +486,8 @@
   "anagramAria": "Anagramm von Diaspora zu Paradiso",
   "philosophyTitle": "Markenphilosophie und Wortherkunft <span class=\"en-label\" lang=\"en\">— Brand Philosophy &amp; Etymology</span>",
   "philosophyItems": [
-    "<strong>Diaspora</strong> — „Diaspora“ ist ein englisches Wort für Migrantinnen und Migranten.",
-    "<strong>Paradiso</strong> — „Paradiso“ bedeutet im Italienischen „Paradies (Paradise)“ und ist zugleich ein Wort, das durch anagrammatische Umstellung der Buchstaben von „Diaspora“ entsteht. Es ist ein Gruß voller Frieden und Trost an alle, die mit eigenen Vorstellungen und Träumen in Korea angekommen sind."
+    "<strong>Visable</strong> — Eine Verschmelzung von „visa“ und „visible (sichtbar)“: Es bündelt verstreute, schwer erkennbare Visa- und Aufenthaltsinformationen zu einer klaren Ansicht und zeigt deutlich, was Ihre Situation braucht.",
+    "<strong>Paradiso</strong> — Club Paradiso, das Team, das Visable macht. „Paradiso“ bedeutet im Italienischen „Paradies (Paradise)“ und ist zugleich ein Wort, das durch anagrammatische Umstellung der Buchstaben von „Diaspora“ entsteht. Es ist ein Gruß voller Frieden und Trost an alle, die mit eigenen Vorstellungen und Träumen in Korea angekommen sind."
   ],
   "valuesTitle": "Kernwerte und Vision",
   "valuesBody": "Über das bloße Auflisten von Informationen hinaus ist der Dienst so gestaltet, dass strukturierte Aufenthaltsdaten und auf Nutzereingaben gestützte Hinweise den Aufwand der Informationssuche verringern und natürlich bis zur Prüfung offizieller Unterlagen führen.",
@@ -503,8 +503,8 @@
   ],
   "footerStart": "Jetzt mit der Suche beginnen",
   "footerHotline": "1345 direkt anfragen",
-  "footerCtaCopy": "Komplexe Aufenthaltsverwaltung und verstreute Unterlagen ordnet Paradiso nach Zweck. Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
-  "footerCtaNote": "Paradiso ist kein offizieller staatlicher Dienst. Die bereitgestellten Informationen dienen nur zu Referenzzwecken.",
+  "footerCtaCopy": "Komplexe Aufenthaltsverwaltung und verstreute Unterlagen ordnet Visable nach Zweck. Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
+  "footerCtaNote": "Visable ist kein offizieller staatlicher Dienst. Die bereitgestellten Informationen dienen nur zu Referenzzwecken.",
   "quickFiltersAria": "Sammlung häufiger Suchbegriffe",
   "footerLegal": "Beta-Dienst. Die bereitgestellten Informationen haben keine rechtliche Wirkung; bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungs- und Ausländeramt.",
   "closeModal": "Schließen",
@@ -524,7 +524,7 @@
   "jobCodeSearchLabel": "Beruf oder Branche suchen",
   "jobCodePlaceholder": "z. B. Ich putze auf einem Golfplatz / Ich arbeite auf einem Tintenfischfangboot / Ich arbeite als Barista in einem Café / English teacher at a hagwon",
   "jobCodeAskHeading": "Welche Arbeit machen Sie?",
-  "jobCodeAskHelper": "Schreiben Sie es so locker wie in den Beispielen. Paradiso teilt es für Sie in Berufs- und Branchenkandidaten auf.",
+  "jobCodeAskHelper": "Schreiben Sie es so locker wie in den Beispielen. Visable teilt es für Sie in Berufs- und Branchenkandidaten auf.",
   "jobCodeConceptExplain": "Der Beruf ist „das, was ich tue“, die Branche ist „das, was das Unternehmen oder der Betrieb tut“.",
   "jobCodeConceptExpand": "Wenn Sie zum Beispiel auf einem Golfplatz putzen, liegt der Beruf nahe bei der Reinigungstätigkeit, während die Branche davon abhängt, ob es sich um den Betrieb des Golfplatzes oder um ein Reinigungs- bzw. Gebäudemanagementunternehmen handelt.",
   "jobCodeExamplesLabel": "Schreiben Sie es so",
@@ -535,7 +535,7 @@
   "jobCodeFinalOcc": "Beruf — das, was ich tue",
   "jobCodeFinalInd": "Branche — das, was das Unternehmen oder der Betrieb tut",
   "jobCodeFinalIncome": "Jahreseinkommensstufe — bei HiKorea auswählen",
-  "jobCodeFinalConfirm": "Die endgültige Meldung erfolgt direkt bei HiKorea — Paradiso schließt die Meldung nicht für Sie ab.",
+  "jobCodeFinalConfirm": "Die endgültige Meldung erfolgt direkt bei HiKorea — Visable schließt die Meldung nicht für Sie ab.",
   "jobCodeNaturalSearchApi": "Berufs-/Branchenkandidaten in natürlicher Sprache finden (KI)",
   "jobCodeNaturalSearchLocal": "Berufs-/Branchenkandidaten in natürlicher Sprache finden",
   "jobCodeLoading": "Die Daten werden geladen … (nur beim ersten Mal)",
@@ -561,7 +561,7 @@
     "Situationsabhängige zusätzliche Unterlagen",
     "Bei der Stelle zu bestätigende Unterlagen"
   ],
-  "docGroupingNote": "Die Gruppierung auf dem Bildschirm ist eine Einteilung von Paradiso zum besseren Verständnis; die Formulierungen im Originalhandbuch können sich je Status und Verfahren unterscheiden.",
+  "docGroupingNote": "Die Gruppierung auf dem Bildschirm ist eine Einteilung von Visable zum besseren Verständnis; die Formulierungen im Originalhandbuch können sich je Status und Verfahren unterscheiden.",
   "procedureLabels": [
     "Visumerteilung",
     "Bescheinigung über die Bestätigung der Visumerteilung",
@@ -715,7 +715,7 @@
   "sourceVerifiedNote": "Der angezeigte Punkt ist ein Punkt, für den derzeit auf Basis strukturierter Daten eine offizielle Handbuchquelle bestätigt ist. Das zuständige Einwanderungsamt kann zusätzliche Unterlagen verlangen.",
   "sourcePendingReviewNote": "Für diesen Punkt ist der Abgleich mit dem offiziellen Handbuch noch nicht abgeschlossen. Bestätigen Sie ihn vor der Antragstellung bei HiKorea oder dem zuständigen Einwanderungs- und Ausländeramt.",
   "sourceNeedLinkingNote": "Es gibt einen Hinweis auf Seite oder Quelle, doch die Verknüpfung der offiziellen Grundlage je Punkt wird noch aufbereitet.",
-  "sourceUnverifiedNote": "Dies ist ein Hinweis, der in den internen strukturierten Daten von Paradiso aufbereitet wurde. Es ist keine offizielle Entscheidung und keine Rechtsberatung.",
+  "sourceUnverifiedNote": "Dies ist ein Hinweis, der in den internen strukturierten Daten von Visable aufbereitet wurde. Es ist keine offizielle Entscheidung und keine Rechtsberatung.",
   "sourceProvisionalNote": "Dies kann ein vorläufiger Hinweis sein, der sich an den Vorgaben eines anderen Verfahrens oder eines ähnlichen Aufenthaltstitels orientiert. Vor der tatsächlichen Antragstellung sind das offizielle Handbuch und eine Prüfung bei der zuständigen Stelle erforderlich.",
   "cautionText": "Im Laufe der Prüfung können einzureichende Unterlagen hinzukommen oder entfallen; die endgültige Genehmigung richtet sich nach der Prüfung des zuständigen Einwanderungs- und Ausländeramts.",
   "procedureExpansionNote": "Die Hinweise zu den je Verfahren einzureichenden Unterlagen werden im Zuge der handbuchgestützten Prüfung erweitert.",
@@ -773,7 +773,7 @@
   "hkPhase5": "Speichern/Abschluss",
   "hkPrimaryCta": "Zur HiKorea-Terminvereinbarung",
   "hkSecondaryCta": "Vor dem 1345-Anruf zu prüfen",
-  "hkDisc1": "Paradiso ist kein offizieller staatlicher Dienst.",
+  "hkDisc1": "Visable ist kein offizieller staatlicher Dienst.",
   "hkDisc2": "Die bereitgestellten Informationen dienen zu Referenzzwecken.",
   "hkDisc3": "Bestätigen Sie die endgültige Entscheidung bei HiKorea, 1345 oder dem zuständigen Einwanderungsamt.",
   "hkDisc4": "Einzureichende Unterlagen und die Verfügbarkeit von Terminen können sich je nach Prüfung und Hinweisen der Stelle ändern.",
@@ -918,7 +918,7 @@
     "Ausländerregistrierung",
     "Aufenthaltsverlängerung"
   ],
-  "docTabMissingNotice": "Keine strukturierten Unterlagendaten: Die Pflichtunterlagen für dieses Verfahren sind in den strukturierten Daten von Paradiso noch nicht ausreichend aufbereitet. Prüfen Sie das neueste Hinweishandbuch für Aufenthalts- und Visumanliegen oder das zuständige Einwanderungs- und Ausländeramt.",
+  "docTabMissingNotice": "Keine strukturierten Unterlagendaten: Die Pflichtunterlagen für dieses Verfahren sind in den strukturierten Daten von Visable noch nicht ausreichend aufbereitet. Prüfen Sie das neueste Hinweishandbuch für Aufenthalts- und Visumanliegen oder das zuständige Einwanderungs- und Ausländeramt.",
   "deadlineCalcTitle": "Fristenrechner",
   "deadlineCalcIntro": "Wenn Sie Einreisedatum und Aufenthaltsablaufdatum eingeben, berechnen wir einen voraussichtlichen Zeitplan, der bei der Vorbereitung hilft. Es handelt sich nicht um offizielle Fristen, und die Eingaben werden weder gespeichert noch übermittelt.",
   "deadlineEntryDate": "Einreisedatum",
@@ -1033,7 +1033,7 @@
   "reminderErrDate": "Bitte geben Sie ein Datum ein.",
   "reminderBannerToday": "ist heute",
   "reminderBannerDaysLeft": "Es sind noch {days} Tage",
-  "reminderCalendarDesc": "Paradiso Fristerinnerung",
+  "reminderCalendarDesc": "Visable Fristerinnerung",
   "reminderBefore7": "(7 Tage vorher)",
   "reminderBefore1": "(1 Tag vorher)",
   "scenarioToastWarning": "⚠ [Warnung] Die Szenario-Suchergebnisse dienen Praktikern als Vorabhinweis und nur zu einfachen Referenzzwecken.",
@@ -1053,7 +1053,7 @@
   "languagePreparingNotice": "Die chinesische Version ist in Vorbereitung.",
   "deadlineSourceCommonRule": "Vorbereitungs-Referenzdatum auf Basis allgemeiner Regeln",
   "deadlineSourceCustom": "Benutzerdefinierte Erinnerung",
-  "deadlineCalendarCaution": "Paradiso Vorbereitungserinnerung. Keine offizielle Frist; bestätigen Sie sie bei HiKorea, 1345 oder dem zuständigen Einwanderungs- und Ausländeramt.",
+  "deadlineCalendarCaution": "Visable Vorbereitungserinnerung. Keine offizielle Frist; bestätigen Sie sie bei HiKorea, 1345 oder dem zuständigen Einwanderungs- und Ausländeramt.",
   "nextActionTitle": "Was Sie jetzt tun können",
   "nextActionHikoreaKicker": "Besuchstermin",
   "nextActionHikoreaTitle": "HiKorea Terminassistent",
@@ -1068,9 +1068,9 @@
   "lawSourceRetrieved": "Unterstützende Gesetzesgrundlage abgefragt",
   "lawSourceNoDirect": "In den derzeit bestätigten Unterlagen ist die Grundlage, die genau diese Situation direkt behandelt, begrenzt. Wir leiten zur Analyse verwandter Streitpunkte über.",
   "lawSourceUnavailableDeploy": "In dieser Bereitstellungsumgebung ist die Abfrage von Gesetzesquellen nicht verfügbar.",
-  "lawSourceBadResponse": "Die Abfrage der Gesetzesquelle hat ein nicht unterstütztes Antwortformat zurückgegeben. Bis zur Behebung verwendet Paradiso eingeschränkte Hinweise.",
-  "lawSourceOfficialError": "Der offizielle Gesetzesquellendienst hat einen Fehler zurückgegeben. Paradiso verwendet eingeschränkte Hinweise.",
-  "lawSourceTimeout": "Bei der Abfrage der Gesetzesquelle ist eine Zeitüberschreitung aufgetreten. Paradiso verwendet eingeschränkte Hinweise.",
+  "lawSourceBadResponse": "Die Abfrage der Gesetzesquelle hat ein nicht unterstütztes Antwortformat zurückgegeben. Bis zur Behebung verwendet Visable eingeschränkte Hinweise.",
+  "lawSourceOfficialError": "Der offizielle Gesetzesquellendienst hat einen Fehler zurückgegeben. Visable verwendet eingeschränkte Hinweise.",
+  "lawSourceTimeout": "Bei der Abfrage der Gesetzesquelle ist eine Zeitüberschreitung aufgetreten. Visable verwendet eingeschränkte Hinweise.",
   "lawAnalysisDirectAuthority": "Direkte offizielle Grundlage bestätigt",
   "lawAnalysisRelatedContext": "Verwandter rechtlicher Kontext geprüft",
   "lawAnalysisAnalogical": "Analoge rechtliche Analyse",
@@ -1078,11 +1078,11 @@
   "lawAnalysisLookupUnavailable": "Quellenabfrage nicht verfügbar",
   "lawAnalysisTechnicalIssue": "Technisches Problem bei der Quellenabfrage",
   "sourcePanelStructuredFallbackLabel": "Strukturierte rechtliche Analysenotiz",
-  "sourcePanelStructuredFallbackSubtext": "Da die Antwort des KI-Modells eingeschränkt ist, zeigt Paradiso eine Vorbereitungsnotiz auf Basis der extrahierten Analyse von Aufenthaltstitel, Tätigkeitsart und Streitpunkten an.",
+  "sourcePanelStructuredFallbackSubtext": "Da die Antwort des KI-Modells eingeschränkt ist, zeigt Visable eine Vorbereitungsnotiz auf Basis der extrahierten Analyse von Aufenthaltstitel, Tätigkeitsart und Streitpunkten an.",
   "sourcePanelStructuredAnalysisUsedLabel": "Strukturierte rechtliche Analyse verwendet",
   "sourcePanelStructuredAnalysisUsedSubtext": "Direkte Gesetzeszitate sind begrenzt, doch die Antwort wurde auf Basis der Analyse von Aufenthaltstitel, Tätigkeitsart und Streitpunkten erstellt.",
   "sourcePanelRelatedContextLabel": "Analyse des verwandten rechtlichen Kontexts",
-  "sourcePanelRelatedContextSubtext": "Auch wenn direkte Vorschriften oder eine Handbuchgrundlage nicht ausreichen, trennt Paradiso verwandte Streitpunkte und vergleichbare Aufenthaltstitel und analysiert sie.",
+  "sourcePanelRelatedContextSubtext": "Auch wenn direkte Vorschriften oder eine Handbuchgrundlage nicht ausreichen, trennt Visable verwandte Streitpunkte und vergleichbare Aufenthaltstitel und analysiert sie.",
   "aiDeveloperDiagnostics": "Entwickler-Diagnoseinformationen anzeigen",
   "aiModalContextLabel": "Ausgewählter Kontext",
   "aiModalContextNote": "Nur die Kennung des ausgewählten Szenarios wird mitübergeben; persönliche Eingaben wie Checkliste und Erinnerungen werden nicht übermittelt.",
