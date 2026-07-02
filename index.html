@@ -17382,7 +17382,7 @@ function localizeResultCount(n, subtypeCount = 0) {
 function getRecordSearchText(v) {
     const subText = getVisaSubcodes(v).map(s => `${s.code || ''} ${s.nameKo || s.name || ''} ${s.nameEn || ''} ${s.summary || ''} ${(s.eligibility || []).join(' ')} ${s.addReq || ''} ${s.note || ''}`).join(' ');
     const procedures = v.procedures ? Object.values(v.procedures).map(p => `${(p.eligibility || []).join(' ')} ${JSON.stringify(p.requiredDocs || '')} ${JSON.stringify(p.variants || '')} ${(p.notes || []).join(' ')}`).join(' ') : '';
-    return `${v.code || ''} ${getVisaNameKo(v)} ${getVisaNameEn(v)} ${(v.aliases || []).join(' ')} ${v.newReq || ''} ${v.extReq || ''} ${v.changeReq || ''} ${v.faq || ''} ${v.period || ''} ${subText} ${procedures}`;
+    return `${v.code || ''} ${getVisaNameKo(v)} ${getVisaNameEn(v)} ${(v.aliases || []).join(' ')} ${(v.searchAliases || []).join(' ')} ${v.newReq || ''} ${v.extReq || ''} ${v.changeReq || ''} ${v.faq || ''} ${v.period || ''} ${subText} ${procedures}`;
 }
 
 function keywordMatchesCode(code, keywords) {
@@ -20711,7 +20711,12 @@ function copyVisaResult(btnEl, code) {
 function calculateScore(item,keywords){
     if(!keywords || !keywords.length) return 1;
     let score=0; const cL=(item.code||'').toLowerCase(), nL=getVisaNameKo(item).toLowerCase(), codeNorm=normalizeVisaCode(item.code);
-    const aliasL=(item.aliases||[]).map(x=>String(x).toLowerCase());
+    /* PARADISO_SEARCH_ALIAS_FIX_20260702: searchAliases (the curated Korean
+       alias field on records/subcodes) previously counted only for exact
+       code-like queries — keyword scoring scanned the legacy `aliases` field
+       alone, so curated terms like "산재"/"고용사유서" were invisible to word
+       search. Include them here and in the subcode text below. */
+    const aliasL=[...(item.aliases||[]),...(item.searchAliases||[])].map(x=>String(x).toLowerCase());
     const content=getRecordSearchText(item).toLowerCase();
     let isAnd=true;
     for(const kw of keywords){
@@ -20721,7 +20726,7 @@ function calculateScore(item,keywords){
         const subs = getVisaSubcodes(item);
         if(subs.length){
             for(const s of subs){
-                const sCode=(s.code||'').toLowerCase(), sName=(s.name||'').toLowerCase(), sAliases=(s.aliases||[]).join(' ').toLowerCase();
+                const sCode=(s.code||'').toLowerCase(), sName=(s.name||'').toLowerCase(), sAliases=[...(s.aliases||[]),...(s.searchAliases||[])].join(' ').toLowerCase();
                 const sNorm = normalizeVisaCode(s.code);
                 if(sCode===kw||sName===kw||(kwNorm && sNorm===kwNorm)){score+=130; m=true;} else if(sCode.includes(kw)||sName.includes(kw)||(kwNorm && sNorm.includes(kwNorm))){score+=80; m=true;}
                 const sc=`${s.nameKo||''} ${s.nameEn||''} ${s.summary||''} ${(s.eligibility||[]).join(' ')} ${s.addReq||''} ${s.note||''} ${sAliases}`.toLowerCase();
