@@ -3675,6 +3675,13 @@ select:focus-visible {
         var params = new URLSearchParams(location.search);
         var legacy = params.get('legacyChat') === '1';
         try { if (localStorage.getItem('paradisoDevDiagnostics') === '1' && params.get('nav') !== '1') legacy = true; } catch (e) {}
+        // Nationality-platform deep links (new-home.html / nationality-interview-hub.html
+        // → ai.html?domain=nationality[&mode=naturalization_interview_prep]) advertise
+        // the CHAT coach surface: applyNationalityDomainHint() seeds the chat subtitle,
+        // composer placeholder, and starter chips. Mounting the navigator would hide
+        // that chat behind body.wm-active and strand the user on an unrelated surface,
+        // so these links keep the chat visible. ?nav=1 still forces the navigator.
+        if ((params.get('domain') || '').toLowerCase() === 'nationality' && params.get('nav') !== '1') legacy = true;
         if (legacy) return; // leave the legacy chat as-is; do not mount the navigator
 
         // Optional handoff from index.html's floating Waymaker CTA
