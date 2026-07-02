@@ -1759,9 +1759,14 @@
   }
 
   // Escape closes the lightbox first (without closing the whole modal).
-  function onKeyup(e) {
+  // Must run on KEYDOWN in the capture phase: index.html's global Escape
+  // handler is a bubble-phase document keydown listener that closes the whole
+  // #hikoreaGuideOverlay — the old keyup listener always fired after it, so
+  // Escape tore down the modal instead of just dismissing the lightbox.
+  function onZoomKeydown(e) {
     if (e.key === 'Escape' && state.zoom) {
       e.stopPropagation();
+      e.preventDefault();
       state.zoom = '';
       render();
     }
@@ -1805,7 +1810,7 @@
   document.addEventListener('click', onClick);
   document.addEventListener('change', onChange);
   document.addEventListener('keydown', onKeydown);
-  document.addEventListener('keyup', onKeyup, true);
+  document.addEventListener('keydown', onZoomKeydown, true);
 
   // Live language switch: re-render whatever view is open.
   window.addEventListener('paradiso-language-applied', function () {
