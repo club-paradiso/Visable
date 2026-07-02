@@ -36,6 +36,9 @@ SMOKE = [
     "F-5-S1", "F-5-S2", "H-2-7", "D-10-T", "E-7-T", "F-2-T", "F-5-T",
     "A-3-99", "F-4-R", "F-5-6R", "E-7-4R",
     "K-STAR", "REGION-S",
+    # compact code forms (PARADISO_SEARCH_QUERY_FIX_20260702: the frontend now
+    # resolves these via dash-less compact equality; keep them covered here)
+    "G15", "D21", "E74", "F442", "D10T", "E7M", "D42K", "H27", "C38",
     # natural-language program queries
     "국내 성장 기반 외국인 청소년", "디지털노마드",
 ]
@@ -127,7 +130,7 @@ def main():
     for q in SMOKE:
         hits = resolve(data, q)
         if not hits:
-            if re.match(r"^[A-Za-z]", q) and "-" in q:  # looks like a code
+            if re.match(r"^[A-Za-z]+-?\d", q) or "-" in q:  # code or compact code
                 if q in SMOKE_SOFT:
                     print(f"  soft-miss (documented): {q}")
                     continue
@@ -145,6 +148,23 @@ def main():
             looks_inactive = any(w in name for w in ["폐지", "발급중단", "발급 중단", "레거시"])
             if looks_inactive and (st is None or st == "active"):
                 failures.append(f"subcode looks inactive but status not set: {s.get('code')}")
+
+    # 5. ALIAS_MAP targets in index.html must resolve to real records.
+    #    (PARADISO_SEARCH_QUERY_FIX_20260702: the old RF-1/OVS-1 targets pointed
+    #    at removed records, silently zeroing "난민"/"불법체류" searches.)
+    index_html = (REPO / "index.html").read_text(encoding="utf-8")
+    m = re.search(r"const ALIAS_MAP = \{(.*?)\};", index_html, re.S)
+    if not m:
+        failures.append("ALIAS_MAP not found in index.html")
+    else:
+        # FAQ-0 is injected at runtime by injectLocalData(); accept it.
+        runtime_codes = {"FAQ-0", "K-ETA"}
+        targets = set(re.findall(r':\s*"([A-Z0-9-]+)"', m.group(1)))
+        for t in sorted(targets):
+            if t in runtime_codes:
+                continue
+            if not resolve(data, t):
+                failures.append(f"ALIAS_MAP target does not resolve to any record: {t}")
 
     print("exact-code search coverage check:")
     print(f"  records: {len(data)}; smoke queries: {len(SMOKE)}")
