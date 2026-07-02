@@ -3815,6 +3815,77 @@ select:focus-visible {
             document.body.classList.remove('wm-active');
             if (window.console && console.error) console.error('Waymaker navigator failed to mount:', e);
         }
+        // Deep link ai.html#legalSourceSearchRoot → scroll to the research panel
+        // once the navigator surface (which makes it visible) has mounted.
+        try {
+            if (location.hash === '#legalSourceSearchRoot') {
+                var lr = document.getElementById('legalSourceSearchRoot');
+                if (lr) setTimeout(function () { lr.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 250);
+            }
+        } catch (e) {}
+    })();
+    </script>
+    <script>
+    /* Waymaker surface switcher — a small, always-visible nav that links the
+       EXISTING user-facing surfaces (procedure navigator, nationality coach
+       chat, naturalization-interview coach chat, legal research panel). It
+       adds no new AI mode and does not resurrect the operator-only legacy
+       chat: every target was already reachable via deep links; this only
+       makes the switching visible to normal users. */
+    (function () {
+        'use strict';
+        var header = document.querySelector('.chat-header');
+        if (!header || document.getElementById('wmSurfaceSwitch')) return;
+
+        var params = new URLSearchParams(location.search);
+        var domain = (params.get('domain') || '').toLowerCase();
+        var mode = (params.get('mode') || '').toLowerCase();
+        var current = 'navigator';
+        if (domain === 'nationality' && params.get('nav') !== '1') {
+            current = mode === 'naturalization_interview_prep' ? 'interview' : 'coach';
+        }
+
+        var items = [
+            { key: 'navigator', href: 'ai.html', label: '절차 내비게이터' },
+            { key: 'coach', href: 'ai.html?domain=nationality', label: '국적·귀화 상담 코치' },
+            { key: 'interview', href: 'ai.html?domain=nationality&mode=naturalization_interview_prep', label: '귀화면접 모의연습' },
+            { key: 'research', href: 'ai.html#legalSourceSearchRoot', label: '법령·판례 리서치' }
+        ];
+
+        var css = document.createElement('style');
+        css.textContent = '#wmSurfaceSwitch{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;padding:.45rem .9rem;background:var(--bg1,#111);border-bottom:1px solid var(--bd1,rgba(255,255,255,.08));}'
+            + '#wmSurfaceSwitch .wm-ss-label{font-size:.72rem;color:var(--t3,#888);margin-right:.15rem;}'
+            + '#wmSurfaceSwitch a{font-size:.78rem;line-height:1;padding:.42rem .7rem;border-radius:999px;border:1px solid var(--bd1,rgba(255,255,255,.14));color:var(--t2,#bbb);text-decoration:none;white-space:nowrap;}'
+            + '#wmSurfaceSwitch a[aria-current="page"]{background:var(--acc,#4f7cff);border-color:var(--acc,#4f7cff);color:#fff;font-weight:700;}'
+            + '#wmSurfaceSwitch a:focus-visible{outline:2px solid var(--acc,#4f7cff);outline-offset:2px;}'
+            + '@media (max-width:480px){#wmSurfaceSwitch{padding:.4rem .6rem;}#wmSurfaceSwitch a{font-size:.74rem;padding:.4rem .55rem;}}';
+        document.head.appendChild(css);
+
+        var nav = document.createElement('nav');
+        nav.id = 'wmSurfaceSwitch';
+        nav.setAttribute('aria-label', 'Waymaker 화면 전환');
+        var label = document.createElement('span');
+        label.className = 'wm-ss-label';
+        label.textContent = '바로가기';
+        nav.appendChild(label);
+        items.forEach(function (item) {
+            var a = document.createElement('a');
+            a.href = item.href;
+            a.textContent = item.label;
+            if (item.key === current) a.setAttribute('aria-current', 'page');
+            // Same-surface research link: just scroll if the panel is already visible.
+            if (item.key === 'research') {
+                a.addEventListener('click', function (ev) {
+                    var lr = document.getElementById('legalSourceSearchRoot');
+                    if (lr && document.body.classList.contains('wm-active')) {
+                        ev.preventDefault();
+                        lr.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+            nav.appendChild(a);
+        });
+        header.insertAdjacentElement('afterend', nav);
     })();
     </script>
 </body>
