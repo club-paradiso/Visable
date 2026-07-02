@@ -1084,7 +1084,7 @@ const PERSONAL_F01 = [
   { field: F('nationality','국적','Nationality','text',true,{ph:'예: United States of America', help:'여권에 기재된 국적을 입력하세요.'}) },
   { section:'여권 Passport' },
   { row:[ F('passportNumber','여권번호','Passport number','text',true,{ph:'M12345678'}),
-          F('arcNumber','외국인등록번호','Foreign resident registration number','text',false,{ph:'000000-0000000', help:'이미 등록한 경우 입력. 최초 신청자는 빈칸.'}) ] },
+          F('arcNumber','외국인등록번호','Foreign resident registration number','text',false,{ph:'000000-0000000', help:'이미 등록한 경우 입력. 최초 신청자는 빈칸. 하이픈 없이 13자리를 붙여넣어도 자동으로 정리되며, 13자리를 모두 입력하면 정본 PDF의 자리칸에 한 칸씩 인쇄됩니다.'}) ] },
   { row:[ F('passportIssueDate','여권 발급일','Passport issue date','date',false),
           F('passportExpiryDate','여권 유효기간','Passport expiry date','date',true,{help:'신청일보다 이전이면 갱신이 필요합니다.'}) ] },
   { section:'연락처 Contact' },
@@ -1107,7 +1107,7 @@ const PERSONAL_F04 = [
           F('nationality','국적','Nationality','text',true,{ph:'예: United States of America'}) ] },
   { row:[ F('dob','생년월일','Date of birth','date',true),
           F('sex','성별','Sex','select',true,{options:[{value:'',label:'— 선택 —'},{value:'M',label:'남(Male)'},{value:'F',label:'여(Female)'}]}) ] },
-  { field: F('arcNumber','외국인등록번호(국내거소신고번호)','Foreign resident / overseas Korean No.','text',false,{ph:'000000-0000000', help:'이미 등록·신고한 경우 입력. 최초 신청자는 빈칸.'}) },
+  { field: F('arcNumber','외국인등록번호(국내거소신고번호)','Foreign resident / overseas Korean No.','text',false,{ph:'000000-0000000', help:'이미 등록·신고한 경우 입력. 최초 신청자는 빈칸. 하이픈 없이 13자리를 붙여넣어도 자동으로 정리되며, 13자리를 모두 입력하면 정본 PDF의 자리칸에 한 칸씩 인쇄됩니다.'}) },
   { section:'여권 Passport' },
   { row:[ F('passportNumber','여권번호','Passport number','text',true,{ph:'M12345678'}),
           F('passportIssueDate','여권 발급일','Passport issue date','date',false) ] },
@@ -1600,6 +1600,15 @@ function renderStep3() {
   bindStep3Events();
 }
 
+/* 외국인등록번호 normalization: accept 000000-0000000 or 0000000000000 (or any
+   spacing/dash variant), keep at most 13 digits, and display as 6-7 with a
+   hyphen. Only digits are kept — the value is never stored anywhere except the
+   in-memory wizard state (browser-only privacy behavior unchanged). */
+function normalizeArcInput(raw) {
+  const digits = String(raw || '').replace(/\D/g, '').slice(0, 13);
+  return digits.length > 6 ? digits.slice(0, 6) + '-' + digits.slice(6) : digits;
+}
+
 function bindStep3Events() {
   const f = currentForm(); if (!f) return;
   const ids = [];
@@ -1609,7 +1618,17 @@ function bindStep3Events() {
   });
   ids.forEach(id => {
     const el = document.getElementById(id);
-    if (el) el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
+    if (!el) return;
+    if (id === 'arcNumber') {
+      el.addEventListener('input', e => {
+        const norm = normalizeArcInput(e.target.value);
+        if (norm !== e.target.value) e.target.value = norm;
+        state[id] = norm;
+        updatePreview();
+      });
+      return;
+    }
+    el.addEventListener('input', e => { state[id] = e.target.value; updatePreview(); });
   });
 }
 
@@ -1628,8 +1647,10 @@ function renderStep4() {
 
   if (t.needsCurrentExpiry) {
     hasFields = true;
-    html += fieldHTML('currentExpiryDate', '현재 체류기간 만료일', 'Current sojourn expiry date', 'date', state.currentExpiryDate,
-      '등록증 또는 허가서에 기재된 현재 체류기간 만료일입니다.', true);
+    // Guidance-only input: the official 통합신청서 has no 만료일 cell, so this value
+    // is never printed on the PDF — it only powers the "언제까지 신청해야 하나" 안내.
+    html += fieldHTML('currentExpiryDate', '현재 체류기간 만료일 (안내용, 서식에는 인쇄되지 않음)', 'Current sojourn expiry date (guidance only)', 'date', state.currentExpiryDate,
+      '등록증에 기재된 만료일을 입력하면 신청 시기 안내에 활용됩니다. 이 값은 공식 서식에 인쇄되지 않으며, 비워 두어도 PDF 생성에는 지장이 없습니다. 연장은 반드시 만료일 전에 신청해야 하며, 신청 가능 시기는 HiKorea 또는 1345에서 확인하세요.', false);
     html += fieldHTML('extensionReason', '연장 사유', 'Reason for extension', 'textarea', state.extensionReason,
       '계속 체류해야 하는 이유를 간략히 적어두면 실제 작성 시 도움이 됩니다.', false);
   }
@@ -1727,8 +1748,9 @@ function runValidation() {
   }
 
   if (t.needsCurrentExpiry) {
+    // Guidance-only value (not printed on the official form) — never a blocking error.
     if (!state.currentExpiryDate) {
-      issues.push({ type: 'error', msg: '현재 체류기간 만료일이 입력되지 않았습니다.' });
+      issues.push({ type: 'ok', msg: '현재 체류기간 만료일은 서식에 인쇄되지 않는 안내용 항목입니다. 입력하면 신청 시기 안내에 활용됩니다.' });
     } else if (state.currentExpiryDate < today) {
       issues.push({ type: 'warn', msg: '현재 체류기간 만료일이 오늘보다 이전입니다. 이미 기간이 지났다면 관할 출입국·외국인청에 즉시 문의하세요.' });
     }
@@ -3080,6 +3102,26 @@ async function generateOfficialPdf(targetId) {
       if (o.wbox) {
         const [x0, y0, x1, y1] = o.wbox;
         page.drawRectangle({ x:x0, y:H-y1, width:x1-x0, height:y1-y0, color:white });
+      }
+      // Per-digit grid drawing (외국인등록번호 etc.): when the overlay declares the
+      // official form's digit-cell centers and the value has exactly that many
+      // digits, center one digit in each printed box instead of a single text
+      // run that ignores the cell dividers. Partial values fall through to the
+      // legacy single-run rendering so nothing is ever silently dropped.
+      if (o.digits && Array.isArray(o.digits.cells)) {
+        const digitsOnly = String(val).replace(/\D/g, '');
+        if (digitsOnly.length === o.digits.cells.length) {
+          const dSize = o.digits.size || 10;
+          const dy = H - o.digits.y;
+          try {
+            for (let i = 0; i < digitsOnly.length; i++) {
+              const ch = digitsOnly[i];
+              const w = font.widthOfTextAtSize(ch, dSize);
+              page.drawText(ch, { x: o.digits.cells[i] - w / 2, y: dy, size: dSize, font, color: ink });
+            }
+            return;
+          } catch (e) { /* fall through to single-run rendering */ }
+        }
       }
       let size = o.size || 9;
       const text = String(val);

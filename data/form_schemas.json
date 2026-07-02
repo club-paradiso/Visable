@@ -491,7 +491,27 @@
         "frn_reg_no": {
           "x": 200,
           "y": 361,
-          "size": 9
+          "size": 9,
+          "digits": {
+            "cells": [
+              196.5,
+              216.9,
+              237.3,
+              257.3,
+              277.35,
+              297.4,
+              316.2,
+              333.85,
+              351.5,
+              369.1,
+              386.7,
+              404.35,
+              422.0
+            ],
+            "y": 358.25,
+            "size": 10,
+            "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
+          }
         },
         "passport_no": {
           "x": 140,
@@ -964,7 +984,27 @@
         "frn_reg_no": {
           "x": 210,
           "y": 329,
-          "size": 9
+          "size": 9,
+          "digits": {
+            "cells": [
+              201.25,
+              220.0,
+              238.75,
+              257.55,
+              276.35,
+              295.1,
+              313.9,
+              332.7,
+              351.5,
+              370.25,
+              389.0,
+              407.85,
+              426.95
+            ],
+            "y": 321.4,
+            "size": 10,
+            "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
+          }
         },
         "passport_no": {
           "x": 130,
@@ -2299,7 +2339,27 @@
         "frn_reg_no": {
           "x": 200,
           "y": 335,
-          "size": 9
+          "size": 9,
+          "digits": {
+            "cells": [
+              196.5,
+              216.9,
+              237.3,
+              257.3,
+              277.35,
+              297.4,
+              316.2,
+              333.85,
+              351.5,
+              369.1,
+              386.7,
+              404.35,
+              422.0
+            ],
+            "y": 330.95,
+            "size": 10,
+            "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
+          }
         },
         "passport_no": {
           "x": 140,
@@ -2744,7 +2804,27 @@
         "frn_reg_no": {
           "x": 210,
           "y": 315,
-          "size": 9
+          "size": 9,
+          "digits": {
+            "cells": [
+              201.25,
+              220.0,
+              238.75,
+              257.55,
+              276.35,
+              295.1,
+              313.9,
+              332.7,
+              351.5,
+              370.25,
+              389.0,
+              407.85,
+              426.95
+            ],
+            "y": 313.85,
+            "size": 10,
+            "_note": "13-digit 외국인등록번호 grid measured from the official PDF vector dividers (scripts: PR post-submission stabilization 2026-07). Falls back to the single-run x/y when the value is not exactly 13 digits."
+          }
         },
         "passport_no": {
           "x": 140,

@@ -17214,8 +17214,16 @@ function normalizeCodeLikeQuery(value) {
     if (!raw) return '';
     const compact = raw.replace(/\s+/g, '').replace(/_/g, '-');
     if (compact === 'KETA') return 'K-ETA';
+    /* PARADISO_SEARCH_QUERY_FIX_20260702: also split compact forms with a
+       trailing letter segment (D10T → D-10-T, E7M → E-7-M). Multi-digit
+       compacts such as G15/D21 stay ambiguous here (G-15 vs G-1-5) — the
+       compact-equality comparison in getExactQueryMatchRank resolves them
+       against real codes, so G15 still lands on G-1-5. */
     if (/^[A-Z]+\d+$/.test(compact)) {
         return compact.replace(/^([A-Z]+)(\d+)$/, '$1-$2');
+    }
+    if (/^[A-Z]+\d+[A-Z][A-Z0-9]*$/.test(compact)) {
+        return compact.replace(/^([A-Z]+)(\d+)([A-Z][A-Z0-9]*)$/, '$1-$2-$3');
     }
     return compact;
 }
@@ -17239,7 +17247,10 @@ function getPrimaryCodeLikeQuery(value) {
     const direct = normalizeCodeLikeQuery(raw);
     if (isCodeLikeQuery(direct)) return direct;
 
-    const match = raw.toUpperCase().match(/^\s*([A-Z]+[-_\s]?\d+(?:[-_\s]?[A-Z0-9]+)*)(?=$|[^A-Z0-9])/);
+    /* PARADISO_SEARCH_QUERY_FIX_20260702 (3/3): the code may appear anywhere
+       in the query, not only at the start — "숙련기능(E-7-4)" or "재외동포 F-4"
+       should route to the code exactly like "E-7-4 숙련기능" does. */
+    const match = raw.toUpperCase().match(/(?:^|[^A-Z0-9가-힣])([A-Z]+[-_\s]?\d+(?:[-_\s]?[A-Z0-9]+)*)(?=$|[^A-Z0-9])/);
     if (!match) return '';
     const compact = match[1].replace(/\s+/g, '').replace(/_/g, '-');
     const normalized = normalizeCodeLikeQuery(compact);
@@ -17249,26 +17260,36 @@ function getPrimaryCodeLikeQuery(value) {
 function getExactQueryMatchRank(item, query) {
     const qNorm = normalizeVisaCode(query);
     if (!qNorm) return 0;
+    /* PARADISO_SEARCH_QUERY_FIX_20260702: dash-less compact comparison so
+       compact subcode queries resolve regardless of where the user (or the
+       normalizer) would place dashes: G15/G-15 → G-1-5, D21 → D-2-1,
+       F442 → F-4-42, D10T → D-10-T. Equality only — prefix/substring ranks
+       are unchanged. */
+    const qCompact = qNorm.replace(/-/g, '');
+    const codeEq = (value) => {
+        const norm = normalizeVisaCode(value);
+        return !!norm && (norm === qNorm || norm.replace(/-/g, '') === qCompact);
+    };
     const codeNorm = normalizeVisaCode(item.code);
     const isHelperRecord = ['faq', 'scn', 'nhis'].includes(item.cat);
-    if (codeNorm === qNorm) return 10000;
+    if (codeEq(item.code)) return 10000;
 
     for (const s of getVisaSubcodes(item)) {
-        if (normalizeVisaCode(s.code) === qNorm) return 5000;
+        if (codeEq(s.code)) return 5000;
     }
 
     const aliases = [
         ...(Array.isArray(item.aliases) ? item.aliases : []),
         ...(Array.isArray(item.searchAliases) ? item.searchAliases : [])
     ];
-    if (aliases.some(a => normalizeVisaCode(a) === qNorm)) return isHelperRecord ? 200 : 4000;
+    if (aliases.some(codeEq)) return isHelperRecord ? 200 : 4000;
 
     for (const s of getVisaSubcodes(item)) {
         const subAliases = [
             ...(Array.isArray(s.aliases) ? s.aliases : []),
             ...(Array.isArray(s.searchAliases) ? s.searchAliases : [])
         ];
-        if (subAliases.some(a => normalizeVisaCode(a) === qNorm)) return 3000;
+        if (subAliases.some(codeEq)) return 3000;
     }
     // Procedure-variant statusCodes: some official codes live only inside a
     // procedure variant (e.g. status-change scenarios). Index them so an exact
@@ -20728,13 +20749,18 @@ function getExactCodeMatchRank(item, keywords) {
     return 0;
 }
 
+/* PARADISO_SEARCH_QUERY_FIX_20260702: alias targets must be codes that exist
+   in the loaded data. The old RF-1/OVS-1 targets were removed records, which
+   made "난민"/"불법체류" searches return zero results in AND mode. 난민* now
+   routes to the real refugee-applicant subcode G-1-5; the 불법체류 aliases are
+   dropped so those words fall through to normal keyword search over record
+   text. FAQ-0 is injected at runtime by injectLocalData(). */
 const ALIAS_MAP = {
     "제주무사증":"B-2-2","제주 무사증":"B-2-2","제주무비자":"B-2-2","제주 무비자":"B-2-2","제주직항":"B-2-2","제주입도":"B-2-2",
     "사증면제협정국":"B-1","사증면제협정":"B-1","비자면제협정":"B-1","무사증협정":"B-1","협정국":"B-1",
-    "전자여행허가":"K-ETA","케이이티에이":"K-ETA","무사증":"B-2","무비자":"B-2","난민":"RF-1","난민신청":"RF-1","난민서류":"RF-1",
-    "불법체류":"OVS-1","불체":"OVS-1","다발국가":"OVS-1","불법체류다발":"OVS-1","중점관리국가":"OVS-1",
+    "전자여행허가":"K-ETA","케이이티에이":"K-ETA","무사증":"B-2","무비자":"B-2","난민":"G-1-5","난민신청":"G-1-5","난민서류":"G-1-5","인도적체류":"G-1-6",
     "동포비자통합":"H-2","H2폐지":"H-2","방문취업폐지":"H-2","동포통합":"F-4",
-    "비예약업무":"FAQ-0","예약없이":"FAQ-0","당일방문":"FAQ-0","주민센터":"FAQ-0","체류지변경":"FAQ-0","여권변경":"FAQ-0"
+    "비예약업무":"FAQ-0","예약없이":"FAQ-0","당일방문":"FAQ-0","비예약방문":"FAQ-0","주민센터":"FAQ-0","체류지변경":"FAQ-0","여권변경":"FAQ-0"
 };
 
 function expandKeywords(keywords){
@@ -20763,10 +20789,15 @@ function expandKeywords(keywords){
     return [...expanded];
 }
 
+/* PARADISO_SEARCH_QUERY_FIX_20260702: every suggestion below must actually
+   resolve to at least one result when searched verbatim (covered by
+   scripts/check_exact_code_search_coverage.py). The old parenthetical/slash
+   phrasings ("체류지 변경(주민센터)", "만료 당일/임산부 등", "오버스테이") returned
+   zero results when clicked. */
 const PREDEF_KEYWORDS = [
-"체류지 변경(주민센터)", "여권 갱신(비예약)", "등록증 재발급", "만료 당일/임산부 등",
+"체류지 변경", "여권 변경", "등록증 재발급", "체류기간 연장",
 "제주 무사증", "K-ETA 발급", "숙련기능(E-7-4)", "결혼이민(F-6)",
-"동반(F-3) 소득요건", "결핵 제출 대상", "비전문취업(E-9)", "오버스테이",
+"동반(F-3) 소득요건", "결핵 제출 대상", "비전문취업(E-9)", "재입국 허가",
 "D-2 유학", "영주권(F-5)", "E-9 이직", "점수제 비자"
 ];
 
@@ -20970,9 +21001,21 @@ function renderResults(query){
     const box=document.getElementById('rlist'), rc=document.getElementById('rc');
     const rawQuery = String(query || '').trim();
     const normalizedQuery = normalizeCodeLikeQuery(rawQuery);
-    const primaryQuery = normalizedQuery || rawQuery;
+    /* PARADISO_SEARCH_QUERY_FIX_20260702 (1/3): only substitute the compacted
+       code form when the whole query IS code-like. Previously every query was
+       whitespace-stripped into one token ("체류기간 연장" → "체류기간연장"), which
+       made most multi-word searches — including the app's own suggestion
+       chips — return zero results. */
+    const primaryQuery = (normalizedQuery && isCodeLikeQuery(rawQuery)) ? normalizedQuery : rawQuery;
     const kw=primaryQuery.split(/\s+/).filter(Boolean), kwL=expandKeywords(kw.map(k=>k.toLowerCase()));
-    const primaryCodeQuery = getPrimaryCodeLikeQuery(rawQuery) || (kw.length === 1 && isCodeLikeQuery(kw[0]) ? normalizeCodeLikeQuery(kw[0]) : '');
+    /* PARADISO_SEARCH_QUERY_FIX_20260702 (2/3): a whole-query ALIAS_MAP hit
+       (e.g. "체류지 변경" → FAQ-0, "난민" → G-1-5) routes through the exact-code
+       pipeline, so alias targets rank like a direct code search instead of
+       being an extra AND-required keyword that can never co-match. */
+    const wholeAliasTarget = ALIAS_MAP[rawQuery.replace(/\s+/g, '')] || '';
+    const primaryCodeQuery = getPrimaryCodeLikeQuery(rawQuery)
+        || (wholeAliasTarget ? normalizeCodeLikeQuery(wholeAliasTarget) : '')
+        || (kw.length === 1 && isCodeLikeQuery(kw[0]) ? normalizeCodeLikeQuery(kw[0]) : '');
     const queryIsCodeLike = !!primaryCodeQuery;
     let scored=VISA_DATA.map(v=>{
         const exactRank = queryIsCodeLike ? getExactQueryMatchRank(v, primaryCodeQuery) : 0;
@@ -21940,7 +21983,12 @@ function renderCmdChips(){
 }
 
 function injectLocalData(arr) {
-    if (!arr.some(v => v.code === "FAQ-0")) arr.unshift({ code: "FAQ-0", name: "방문 예약 예외", cat: "faq", newReq: "1345 문의" });
+    if (!arr.some(v => v.code === "FAQ-0")) arr.unshift({
+        code: "FAQ-0",
+        name: "방문 예약 없이 가능한 업무 안내",
+        cat: "faq",
+        newReq: "체류지 변경 신고, 여권 정보 변경 신고 등 일부 업무는 방문예약 없이 처리할 수 있는 경우가 있습니다. 업무별 가능 여부와 필요한 서류는 외국인종합안내센터 1345 또는 관할 출입국·외국인관서에서 확인하세요."
+    });
     return arr;
 }
 function setSearchEnabled(enabled) {
