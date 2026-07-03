@@ -416,6 +416,15 @@ class CitationVerifierTests(unittest.TestCase):
         self.assertEqual(r["status"], "failed")
         self.assertIn("FABRICATED_CASE_CITATION", r["warnings"])
 
+    def test_placeholder_precedent_citation_fails(self):
+        r = verify_case_decision_citations(
+            "판례상 위반 소지가 있습니다(대법원 2017두XXXX 등).",
+            [self.prec_list],
+        )
+        self.assertEqual(r["status"], "failed")
+        self.assertIn("2017두XXXX", r["extracted"]["caseNumbers"])
+        self.assertIn("FABRICATED_CASE_CITATION", r["warnings"])
+
     def test_fake_admin_appeal_citation_fails(self):
         r = verify_case_decision_citations("행정심판 재결(2099-99999)에서 인용 판단되었습니다.", [])
         self.assertEqual(r["status"], "failed")
@@ -464,6 +473,14 @@ class CitationVerifierTests(unittest.TestCase):
         self.assertEqual(r["status"], "failed")
         self.assertIn("CONTEXTUAL_EVIDENCE_OVERCLAIMED", r["warnings"])
 
+    def test_contextual_list_hit_cannot_support_generic_holding_claim(self):
+        r = verify_case_decision_citations(
+            "판례상 활동 범위를 벗어난 근로는 강제퇴거 사유가 됩니다.",
+            [self.prec_list],
+        )
+        self.assertEqual(r["status"], "failed")
+        self.assertIn("CONTEXTUAL_EVIDENCE_OVERCLAIMED", r["warnings"])
+
     # ---- procedure mentions are not authority claims ----
     def test_procedure_mention_is_not_flagged(self):
         r = verify_case_decision_citations("불허 처분을 받으면 행정심판을 청구할 수 있습니다.", [])
@@ -502,6 +519,19 @@ class PrecedentWiredIntoEvidencePackTests(unittest.TestCase):
         # Precedent list results are contextual, never verbatim "direct" citations.
         for item in pack["precedent_evidence_items"]:
             self.assertNotEqual(item.get("citationGrade"), "direct")
+
+    def test_workplace_question_filters_unrelated_generic_precedents(self):
+        cfg = GroundingConfig(mode="enabled", law_api_oc="secret-oc")
+        transport = _transport(fixture("precedent_list.json"))
+        pack = lt.build_law_evidence_pack(
+            "E-7-1 체류자격으로 새 회사 근무처 변경허가가 필요한가요?",
+            visa_code="E-7",
+            config=cfg,
+            transport=transport,
+            retrieve=True,
+        )
+        self.assertEqual(pack.get("precedent_evidence_items"), [])
+        self.assertEqual(pack["source_family_statuses"].get("precedent"), "no_results")
 
     def test_routine_document_question_does_not_fetch_precedent(self):
         cfg = GroundingConfig(mode="enabled", law_api_oc="secret-oc")
