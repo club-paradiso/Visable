@@ -14079,8 +14079,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="영상 편집하고 유튜브 콘텐츠 만들어요" data-i18n="jobCodeChip5">영상 편집하고 유튜브 콘텐츠 만들어요</button>
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="카페에서 음료 만들어요" data-i18n="jobCodeChip6">카페에서 음료 만들어요</button>
                     <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="중식당에서 서빙해요" data-i18n="jobCodeChip9">중식당에서 서빙해요</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="아이돌 연습생" data-i18n="jobCodeChip7">아이돌 연습생</button>
-                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="타투이스트" data-i18n="jobCodeChip8">타투이스트</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="편의점에서 계산해요" data-i18n="jobCodeChip7">편의점에서 계산해요</button>
+                    <button type="button" class="jc2-chip" data-action="search-jobcode-chip" data-jc-chip="택배 상하차 해요" data-i18n="jobCodeChip8">택배 상하차 해요</button>
                 </div>
                 <button type="button" class="jc2-ai-btn" data-action="search-jobcode-ai">
                     <span id="jcNaturalSearchLabel">자연어로 직종·업종 후보 찾기</span>
@@ -15438,16 +15438,29 @@ function jcIsLeaf(r) {
 // 공식 명칭 조각이 너무 일반적이어서 쿼리 토큰 안에 들어 있어도 관련성 근거가 안 되는 단어들
 // (아래 scoreJobcodeRow의 복합어 포함 매칭에서 제외).
 const JC_GENERIC_NAME_WORDS = new Set(['및','기타','관련','일반','유사','전문','서비스','종사자','종사원']);
-function jcNameWords(row) {
-    if (!row._nameWords) row._nameWords = normalizeJobcodeText(jcName(row)).split(' ')
-        .filter(w => w.length >= 2 && !JC_GENERIC_NAME_WORDS.has(w));
-    return row._nameWords;
-}
-function scoreJobcodeRow(row, query, terms) {
+// 행(row) 하나당 정규화된 명칭/코드/동의어/명칭단어를 1회만 계산해 원본 데이터셋 객체에
+// 캐싱한다. 검색은 키 입력마다 전체 풀(~1,400건/타입)을 다시 스코어링하므로, 매번
+// 동일한 정규식 정규화를 반복하던 부분을 없애 타이핑 반응성을 높인다.
+function jcNormalizedRow(row) {
+    if (row._jcNorm) return row._jcNorm;
     const name = normalizeJobcodeText(jcName(row));
-    const code = normalizeJobcodeText(jcCode(row));
-    const synonyms = jcTerms(row).map(normalizeJobcodeText);
-    const q = normalizeJobcodeText(query);
+    const cache = {
+        name,
+        code: normalizeJobcodeText(jcCode(row)),
+        synonyms: jcTerms(row).map(normalizeJobcodeText),
+        nameWords: name.split(' ').filter(w => w.length >= 2 && !JC_GENERIC_NAME_WORDS.has(w))
+    };
+    row._jcNorm = cache;
+    return cache;
+}
+function jcNameWords(row) { return jcNormalizedRow(row).nameWords; }
+// normalizedQuery: getScoredJobcodeRows already normalizes the query ONCE for the
+// whole pool; pass it through so this per-row function doesn't re-run the same
+// regex-heavy normalization for every row (previously O(pool size) redundant work
+// per keystroke). Falls back to normalizing `query` itself for any other caller.
+function scoreJobcodeRow(row, query, terms, normalizedQuery) {
+    const { name, code, synonyms } = jcNormalizedRow(row);
+    const q = normalizedQuery !== undefined ? normalizedQuery : normalizeJobcodeText(query);
     let score = 0;
     if (q && code === q) score += 1200;
     else if (q && code.startsWith(q)) score += 220;
@@ -15494,7 +15507,7 @@ function getScoredJobcodeRows(type, query, terms, limit = 60) {
             .sort((a, b) => jcCode(a).localeCompare(jcCode(b)));
     }
     return pool
-        .map(r => ({ row: r, score: scoreJobcodeRow(r, query, terms || []) }))
+        .map(r => ({ row: r, score: scoreJobcodeRow(r, query, terms || [], q) }))
         .filter(x => x.score > 0)
         // 점수 동률이면 더 구체적인 단계(세세분류)를 먼저 노출.
         .sort((a, b) => b.score - a.score || jcLevelRank(b.row) - jcLevelRank(a.row) || jcCode(a.row).localeCompare(jcCode(b.row)))
@@ -15660,9 +15673,14 @@ function jcLooksNaturalQuery(q) {
 function searchJobcodeChip(term) {
     const input = document.getElementById('jcSearchInput');
     if (!input) return;
+    // Cancel any debounced render/auto-analyze still pending from prior typing —
+    // setting .value here doesn't fire an 'input' event, so a stale timer from
+    // before this click could otherwise fire afterward and clobber this chip's
+    // results with an outdated (or empty-query browse) render.
+    clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce);
     input.value = term;
     input.focus();
-    // Multi-word / natural-language chips (e.g. "아이돌 연습생", "카페 바리스타")
+    // Multi-word / natural-language chips (e.g. "택배 상하차 해요", "카페 바리스타")
     // run the full analyzer so interpretation + decomposition + cautions show;
     // single keyword chips keep the instant filter.
     if (/\s/.test(term.trim()) || term.trim().length >= 3) searchJobcodeWithAI();
@@ -15969,6 +15987,7 @@ function renderEmploymentFollowupChips(analysis) {
         btn.onclick = () => {
             const inp = document.getElementById('jcSearchInput');
             if (!inp) return;
+            clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce);
             const cleaned = (btn.dataset.jcRefine || '').replace(/\([^)]*\)/g, '').trim();
             inp.value = (inp.value.trim() + ' ' + cleaned).trim();
             searchJobcodeWithAI();
@@ -16040,6 +16059,7 @@ function renderEmploymentRefine(analysis) {
         btn.onclick = () => {
             const inp = document.getElementById('jcSearchInput');
             if (!inp) return;
+            clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce);
             const cleaned = (btn.dataset.jcRefine || '').replace(/\([^)]*\)/g, '').trim();
             inp.value = (inp.value.trim() + ' ' + cleaned).trim();
             searchJobcodeWithAI();
@@ -16136,7 +16156,7 @@ function renderEmploymentWeakHelp(analysis, occCount, indCount) {
         + `<div class="jc2-weak-chips">` + JC_WEAK_EXAMPLES.map((ex) =>
             `<button type="button" class="jc2-weak-chip" data-jc-example="${escapeHtml(ex)}">${escapeHtml(ex)}</button>`).join('') + `</div>`;
     el.querySelectorAll('.jc2-weak-chip').forEach((b) => {
-        b.onclick = () => { const inp = document.getElementById('jcSearchInput'); if (!inp) return; inp.value = b.dataset.jcExample || ''; searchJobcodeWithAI(); };
+        b.onclick = () => { const inp = document.getElementById('jcSearchInput'); if (!inp) return; clearTimeout(_jcSearchDebounce); clearTimeout(_jcAutoAnalyzeDebounce); inp.value = b.dataset.jcExample || ''; searchJobcodeWithAI(); };
     });
 }
 function clearEmploymentAnalysisUI() {

@@ -503,8 +503,12 @@ export function buildIndex(dataset) {
  * Score one indexed row against the raw query + expanded terms.
  * Returns { score, matchedTerms } where matchedTerms explains the hit.
  */
-function scoreRow(entry, rawQuery, terms) {
-  const q = normalize(rawQuery);
+// normalizedQuery: searchTrack normalizes rawQuery ONCE per call and passes it
+// through here, since this function runs once per dataset entry (up to ~1,400
+// per track) — re-normalizing the same query string on every entry was pure
+// redundant regex work. Falls back to normalizing rawQuery for any other caller.
+function scoreRow(entry, rawQuery, terms, normalizedQuery) {
+  const q = normalizedQuery !== undefined ? normalizedQuery : normalize(rawQuery);
   const matched = new Set();
   let score = 0;
 
@@ -632,10 +636,11 @@ function toCandidate(entry, scored, classificationType, sourceMeta, topScore, op
 export function searchTrack(index, classificationType, rawQuery, terms, options = {}) {
   const limit = options.limit || 5;
   const sourceMeta = options.sourceMeta || null;
+  const normalizedQuery = normalize(rawQuery);
   const scoredRows = [];
   for (const entry of index.indexed) {
     if (entry.type !== classificationType) continue;
-    const scored = scoreRow(entry, rawQuery, terms);
+    const scored = scoreRow(entry, rawQuery, terms, normalizedQuery);
     if (scored.score > 0) scoredRows.push({ entry, scored });
   }
   scoredRows.sort((a, b) => {
