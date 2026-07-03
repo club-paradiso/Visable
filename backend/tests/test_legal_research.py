@@ -185,6 +185,21 @@ class FactExtractionTests(unittest.TestCase):
         self.assertIn("강제퇴거", facts["procedureTypes"])
         self.assertIn("출국명령", facts["procedureTypes"])
 
+    def test_workplace_change_is_not_misclassified_as_e7_occupation(self):
+        question = "E-7 체류자격으로 근무처를 변경할 때 사전허가가 필요한가요? 관련 법령과 판례도 알려주세요."
+        plan = LR.build_research_plan(question)
+        self.assertIn("workplace_change", plan["matchedConcepts"])
+        self.assertNotIn("e7_occupation", plan["matchedConcepts"])
+        self.assertEqual(plan["lawTerms"][:3], ["출입국관리법", "출입국관리법 시행령", "출입국관리법 시행규칙"])
+        self.assertTrue(any("사전허가" in issue for issue in plan["issuesKo"]))
+        self.assertIn("근무처 변경·추가", plan["extractedFacts"]["procedureTypes"])
+
+    def test_workplace_change_english_bridge_uses_korean_search_anchors(self):
+        plan = LR.build_research_plan("Can an E-7 holder change employer before starting the new job?", locale="en")
+        self.assertIn("workplace_change", plan["matchedConcepts"])
+        self.assertIn("출입국관리법", plan["lawTerms"])
+        self.assertTrue(any("prior permission" in issue for issue in plan["issuesEn"]))
+
 
 class ResearchEndpointTests(unittest.TestCase):
     def setUp(self):
@@ -231,6 +246,19 @@ class ResearchEndpointTests(unittest.TestCase):
         self.assertTrue(body["laws"])
         self.assertTrue(body["precedents"], "pro runs precedents by default")
         self.assertTrue(body["sourceGroups"])
+
+    def test_workplace_change_research_retrieves_law_and_candidate_precedent(self):
+        law_tools._default_transport = _transport()
+        r = self.client.post("/api/legal/research", json={
+            "question": "E-7 근무처 변경의 사전허가 여부와 관련 판례를 확인해줘",
+            "depth": "pro",
+        })
+        self.assertEqual(r.status_code, 200)
+        body = r.json()
+        self.assertIn("근무처 변경·추가", body["extractedFacts"]["procedureTypes"])
+        self.assertTrue(any("사전허가" in issue for issue in body["issues"]))
+        self.assertTrue(body["laws"])
+        self.assertTrue(body["precedents"])
 
     def test_fast_does_not_run_precedents_by_default(self):
         law_tools._default_transport = _transport()
