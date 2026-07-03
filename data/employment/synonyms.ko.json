@@ -52,6 +52,50 @@
       "industry_terms": []
     },
     {
+      "id": "baker",
+      "type": "role",
+      "surface": [
+        "제빵사",
+        "제빵",
+        "제과사",
+        "파티시에",
+        "베이킹",
+        "빵 만들",
+        "빵을 만들",
+        "케이크 만들",
+        "케이크를 만들"
+      ],
+      "label_ko": "제빵사 / 제과원",
+      "occupation_terms": [
+        "제빵사",
+        "제과원",
+        "제빵",
+        "제과"
+      ],
+      "industry_terms": []
+    },
+    {
+      "id": "food_prep",
+      "type": "role",
+      "surface": [
+        "음식 만들",
+        "음식을 만들",
+        "요리해요",
+        "요리를 해요",
+        "요리하고",
+        "떡볶이 만들",
+        "김밥 만들",
+        "김밥 싸"
+      ],
+      "label_ko": "조리(음식 만들기)",
+      "occupation_terms": [
+        "조리",
+        "주방",
+        "음식 서비스"
+      ],
+      "industry_terms": []
+    },
+    {
       "id": "cook_assistant",
       "type": "role",
       "surface": [
@@ -63,9 +107,10 @@
       ],
       "label_ko": "주방보조 / 조리 보조",
       "occupation_terms": [
+        "주방 보조원",
+        "보조원",
         "조리",
         "주방",
-        "조리사",
         "음식 서비스"
       ],
       "industry_terms": []
@@ -102,7 +147,11 @@
         "영어회화",
         "어학강사",
         "원어민 강사",
-        "외국어 강사"
+        "외국어 강사",
+        "영어 가르",
+        "영어를 가르",
+        "영어 수업",
+        "외국어 가르"
       ],
       "label_ko": "외국어 강사 / 회화지도",
       "occupation_terms": [
@@ -111,7 +160,9 @@
         "회화지도",
         "어학강사"
       ],
-      "industry_terms": []
+      "industry_terms": [
+        "외국어학원"
+      ]
     },
     {
       "id": "instructor",
@@ -646,9 +697,7 @@
       "industry_terms": [
         "음식점",
         "식당",
-        "음식점업",
-        "한식",
-        "기타 간이"
+        "음식점업"
       ],
       "occupation_terms": [],
       "ambiguous_roles": [
@@ -656,6 +705,286 @@
         "주방보조",
         "홀서빙",
         "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "korean_restaurant",
+      "type": "workplace",
+      "surface": [
+        "한식당",
+        "한식집",
+        "한정식",
+        "백반집",
+        "국밥집",
+        "고깃집",
+        "삼겹살집",
+        "갈비집"
+      ],
+      "label_ko": "한식당",
+      "business_label_ko": "한식 음식점업",
+      "industry_terms": [
+        "한식",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "chinese_restaurant",
+      "type": "workplace",
+      "surface": [
+        "중식당",
+        "중국집",
+        "중국식당",
+        "중국음식점",
+        "중화요리",
+        "짜장면집",
+        "마라탕집"
+      ],
+      "label_ko": "중식당(중국음식점)",
+      "business_label_ko": "중식 음식점업",
+      "industry_terms": [
+        "중식",
+        "외국식",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "japanese_restaurant",
+      "type": "workplace",
+      "surface": [
+        "일식당",
+        "일식집",
+        "일본식당",
+        "일본음식점",
+        "초밥집",
+        "스시집",
+        "돈까스집"
+      ],
+      "label_ko": "일식당(일본음식점)",
+      "business_label_ko": "일식 음식점업",
+      "industry_terms": [
+        "일식",
+        "외국식",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "western_restaurant",
+      "type": "workplace",
+      "surface": [
+        "양식당",
+        "양식집",
+        "이탈리안 레스토랑",
+        "이탈리안 식당",
+        "파스타집",
+        "스테이크집",
+        "스테이크하우스",
+        "브런치 카페"
+      ],
+      "label_ko": "양식당(서양음식점)",
+      "business_label_ko": "서양식 음식점업",
+      "industry_terms": [
+        "서양식",
+        "외국식",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "other_foreign_restaurant",
+      "type": "workplace",
+      "surface": [
+        "베트남 음식점",
+        "베트남식당",
+        "쌀국수집",
+        "태국 음식점",
+        "태국식당",
+        "인도 음식점",
+        "인도식당",
+        "아시안 레스토랑"
+      ],
+      "label_ko": "기타 외국음식점",
+      "business_label_ko": "기타 외국식 음식점업",
+      "industry_terms": [
+        "기타 외국식",
+        "외국식",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "매니저",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "snack_bar",
+      "type": "workplace",
+      "surface": [
+        "분식집",
+        "분식점",
+        "분식",
+        "김밥집",
+        "떡볶이집",
+        "포장마차"
+      ],
+      "label_ko": "분식집",
+      "business_label_ko": "김밥 및 기타 간이 음식점업",
+      "industry_terms": [
+        "김밥",
+        "간이 음식점",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "요리사",
+        "주방보조",
+        "홀서빙",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "chicken_shop",
+      "type": "workplace",
+      "surface": [
+        "치킨집",
+        "치킨가게",
+        "치킨전문점",
+        "통닭집"
+      ],
+      "label_ko": "치킨집",
+      "business_label_ko": "치킨 전문점",
+      "industry_terms": [
+        "치킨",
+        "치킨 전문점",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "조리",
+        "홀서빙",
+        "배달",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "pizza_burger_shop",
+      "type": "workplace",
+      "surface": [
+        "피자집",
+        "피자가게",
+        "햄버거집",
+        "버거집",
+        "샌드위치가게",
+        "패스트푸드점",
+        "패스트푸드"
+      ],
+      "label_ko": "피자·햄버거·패스트푸드점",
+      "business_label_ko": "피자, 햄버거, 샌드위치 및 유사 음식점업",
+      "industry_terms": [
+        "피자",
+        "햄버거",
+        "샌드위치",
+        "음식점",
+        "음식점업"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "조리",
+        "홀서빙",
+        "카운터",
+        "배달",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "bakery",
+      "type": "workplace",
+      "surface": [
+        "빵집",
+        "베이커리",
+        "제과점",
+        "케이크가게",
+        "디저트가게"
+      ],
+      "label_ko": "빵집 / 제과점",
+      "business_label_ko": "제과점업",
+      "industry_terms": [
+        "제과점",
+        "제과점업",
+        "음식점"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "제빵사",
+        "판매",
+        "홀서빙",
+        "사장(자영업)"
+      ]
+    },
+    {
+      "id": "pub",
+      "type": "workplace",
+      "surface": [
+        "술집",
+        "주점",
+        "호프집",
+        "이자카야",
+        "포차",
+        "바에서"
+      ],
+      "label_ko": "술집 / 주점",
+      "business_label_ko": "주점업",
+      "industry_terms": [
+        "주점",
+        "주점업",
+        "음식점"
+      ],
+      "occupation_terms": [],
+      "ambiguous_roles": [
+        "홀서빙",
+        "주방보조",
+        "조리",
         "사장(자영업)"
       ]
     },

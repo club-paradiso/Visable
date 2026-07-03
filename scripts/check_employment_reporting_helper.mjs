@@ -44,8 +44,11 @@ has('data-jc-filter="occupation"', 'filter: occupation missing');
 has('data-jc-filter="industry"', 'filter: industry missing');
 ['전체', '직종만', '업종만'].forEach(t => has(`>${t}<`, `filter label ${t} missing`));
 // friendly natural-language example chips (field + service + professional +
-// entertainment + tattoo coverage), each runs the analyzer
-['골프장 청소해요', '한치잡이 배에서 일해요', '학원에서 영어 가르쳐요', '카페에서 음료 만들어요', '아이돌 연습생', '타투이스트'].forEach(c =>
+// retail + logistics coverage), each runs the analyzer. Entertainment/tattoo
+// (아이돌 연습생/타투이스트) are intentionally NOT featured as main-screen chips —
+// they're legally-sensitive umbrella terms; the decomposition + caution logic
+// is still fully covered by scripts/check_employment_code_analyzer.mjs fixtures.
+['골프장 청소해요', '한치잡이 배에서 일해요', '학원에서 영어 가르쳐요', '카페에서 음료 만들어요', '편의점에서 계산해요', '택배 상하차 해요'].forEach(c =>
   has(`data-jc-chip="${c}"`, `example chip ${c} missing`));
 // separate panes + badges
 has('data-pane="occupation"', 'occupation pane missing');
