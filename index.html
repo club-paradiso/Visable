@@ -18725,6 +18725,21 @@ function normalizeManualText(value) {
     return stripManualArtifacts(value).replace(/\s+/g, ' ').trim();
 }
 
+// Shared sentence splitter for the "2-sentence preview" pattern used by the
+// card summary, the procedure summary, and the Easy panel — one regex, so the
+// three views can never truncate the same canonical text differently.
+function paradisoSplitSentences(text) {
+    return String(text || '').split(/(?<=[.!?。])\s+/).filter(Boolean);
+}
+
+/* Canonical status-summary fallback chain. Records carry the status
+   description in newReq/extReq (no `summary` field exists in current data);
+   the compact card, the copy action, and the Easy panel must all resolve the
+   same source text or they describe the same status from different fields. */
+function getCanonicalStatusSummarySource(v) {
+    return v.summary || v.newReq || v.extReq || '';
+}
+
 function makeManualPreview(value, max = MANUAL_PREVIEW_LENGTH) {
     const normalized = normalizeManualText(value);
     if (normalized.length <= max) return normalized;
@@ -18763,7 +18778,7 @@ function renderProcedureSummaryBlock(value, keywords) {
     // default exposure is trimmed.
     const normalized = normalizeManualText(value);
     if (!normalized) return '';
-    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    const sentences = paradisoSplitSentences(normalized);
     if (sentences.length <= 2) {
         return `<div class="procedure-summary">${hl(normalized, keywords)}</div>`;
     }
@@ -20240,7 +20255,7 @@ function renderCardSummary(v, kw) {
     if (!raw) return '';
     const normalized = normalizeManualText(raw);
     if (!normalized) return '';
-    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    const sentences = paradisoSplitSentences(normalized);
     if (sentences.length <= 2) {
         return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
     }
@@ -20881,16 +20896,21 @@ function renderViewModeToggle(v, isVisaCode) {
 }
 
 /* Rows the Standard document tabs carry that are NOT submittable documents —
-   fee lines ("수수료…") and caution markers ("…주의"). The Standard view keeps
-   them (they render with their notes/context); the Easy view must not present
-   them as "documents to prepare". Render-time filter only — data untouched. */
+   fee lines and caution markers. The Standard view keeps them (they render
+   with their notes/context); the Easy view must not present them as
+   "documents to prepare". Render-time filter only — data untouched. */
+const EASY_MODE_CAUTION_ROW_RE = /(^|\s)주의$/;
+const EASY_MODE_FOOTNOTE_MARK_RE = /[\s*＊]+$/;
 function isEasyModeNonDocRow(name) {
-    return /수수료/.test(name) || /(^|\s)주의$/.test(name);
+    // Fee rows reuse the same '수수료' family classifier the Standard checklist
+    // dedupe already relies on, so 정부수입인지/인지대 variants are caught too
+    // and the two views cannot drift on what counts as a fee.
+    return normalizeDocumentRequirementKey(name) === '수수료' || EASY_MODE_CAUTION_ROW_RE.test(name);
 }
 // Trailing footnote markers ("체류지 입증서류*") point at footnotes the Easy
 // view does not render; strip the dangling marker, keep the document name.
 function cleanEasyModeDocName(raw) {
-    return String(raw || '').trim().replace(/[*＊]+$/, '').trim();
+    return String(raw || '').replace(EASY_MODE_FOOTNOTE_MARK_RE, '').trim();
 }
 
 const EASY_MODE_DOCS_PER_STAGE = 5;
@@ -20914,7 +20934,7 @@ function getEasyModeDocGroups(v) {
         }
         if (!names.length) return;
         groups.push({
-            label: String(label || '').trim(),
+            label,
             names: names.slice(0, EASY_MODE_DOCS_PER_STAGE),
             more: Math.max(0, names.length - EASY_MODE_DOCS_PER_STAGE)
         });
@@ -20926,8 +20946,14 @@ function getEasyModeDocGroups(v) {
         for (const cfg of PROCEDURE_CONFIG) {
             const proc = getProcedure(v, cfg);
             if (!proc || !proc.available) continue;
-            addGroup(proc.label || getProcedureLabel(cfg), flattenDocGroups(proc.docs).map(id => (isDocPlaceholder(id) ? '' : (DOC_DICT[id] || ''))));
-            if (groups.length >= 3) break;
+            // Procedure docs mix doc_* ids and raw Korean bucket strings
+            // ("신청서"); resolve through the shared display-label resolver so
+            // bucket strings render instead of vanishing, and drop only ids
+            // with no DOC_DICT label (rendering a raw doc_* id is worse).
+            addGroup(proc.label, flattenDocGroups(proc.docs).map(id => {
+                const label = paradisoResolveDocDisplayLabel(id);
+                return label.indexOf('doc_') === 0 ? '' : label;
+            }));
         }
     }
     return groups;
@@ -20944,12 +20970,10 @@ function renderEasyModePanel(v) {
     if (isKo) name = getVisaNameKo(v);
     else if (lang === 'en') name = getVisaNameEn(v) || '';
     else name = localizedVisaNameFromPack(v.code, lang) || '';
-    // Same canonical-summary resolution chain the compact result card and the
-    // copy action already use (summary → newReq → extReq): records carry the
-    // status description in newReq/extReq, not in a `summary` field, so reading
-    // only v.summary made EVERY Easy panel claim "쉬운 안내가 아직 준비되지
-    // 않았다" and render a content-free summary.
-    const summaryRaw = normalizeManualText(v.summary || v.newReq || v.extReq || '');
+    // Reading only v.summary (a field no current record carries) made EVERY
+    // Easy panel claim "쉬운 안내가 아직 준비되지 않았다" and render a
+    // content-free summary; resolve through the shared canonical chain instead.
+    const summaryRaw = normalizeManualText(getCanonicalStatusSummarySource(v));
     const hasNativeSummary = !!summaryRaw;
     // The status summary is Korean canonical prose. Show it natively only on the
     // Korean UI; other locales keep the Easy summary in the user's language
@@ -20957,7 +20981,7 @@ function renderEasyModePanel(v) {
     // Easy Mode never dumps untranslated Korean paragraphs into a non-ko panel.
     let summaryText = tx('easyModeSummaryGeneric', { code });
     if (isKo && hasNativeSummary) {
-        const sentences = summaryRaw.split(/(?<=[.!?。])\s+/).filter(Boolean);
+        const sentences = paradisoSplitSentences(summaryRaw);
         const two = sentences.slice(0, 2).join(' ');
         summaryText = (two.length > 240 && sentences.length > 1) ? sentences[0] : two;
     }
@@ -21042,6 +21066,15 @@ function setCardMode(card, mode) {
     if (!card) return;
     if (!EASY_MODE_VIEW_MODES.includes(mode)) mode = 'standard';
     applyCardMode(card, mode);
+    // If the control that triggered this switch got hidden by the view swap
+    // (e.g. the Easy panel's "공식 근거 보기" button), keyboard/screen-reader
+    // focus would silently drop to <body>; hand it to the always-visible
+    // switcher button for the new mode instead.
+    const active = document.activeElement;
+    if (active && active !== document.body && card.contains(active) && active.getClientRects().length === 0) {
+        const switcherBtn = card.querySelector(`.view-mode-btn[data-card-mode="${mode}"]`);
+        if (switcherBtn) switcherBtn.focus();
+    }
     const code = card.dataset.code;
     if (code) EASY_MODE_CARD_STATE.set(code, mode);
 }
@@ -21076,7 +21109,7 @@ function copyVisaResult(btnEl, code) {
     if (!v) return;
     const name = getLocalizedVisaName(v);
     const period = v.period || '';
-    const summary = stripManualArtifacts(v.summary || v.newReq || v.extReq || '');
+    const summary = stripManualArtifacts(getCanonicalStatusSummarySource(v));
     const parts = [v.code, name, period ? `(${period})` : '', summary].filter(Boolean);
     const text = parts.join('\n');
     const done = () => {
@@ -21348,7 +21381,7 @@ function renderCompactResults(filtered, kw){
         const subs = getVisaSubcodes(v);
         const docCount = subs.length;
         const reviewLabel = reviewStateLabel(v);
-        const rawSum = normalizeManualText(v.summary || v.newReq || v.extReq || '');
+        const rawSum = normalizeManualText(getCanonicalStatusSummarySource(v));
         const sum = rawSum ? (rawSum.length > 110 ? rawSum.slice(0, 110).replace(/\s+\S*$/, '') + '…' : rawSum) : '';
         const color = (typeof CC !== 'undefined' && CC[v.cat]) ? CC[v.cat] : '#0EA37B';
         const codeHtml = hl(v.code || '', kw);
@@ -22695,17 +22728,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     activateDocsTab(section, actionBtn.dataset.docsTab);
                 },
                 'set-card-mode': () => {
-                    const modeCard = actionBtn.closest('.manual-result');
-                    const cameFromEasyPanel = !!actionBtn.closest('.easy-mode-panel');
-                    setCardMode(modeCard, actionBtn.dataset.cardMode);
-                    // The in-panel "공식 근거 보기" button hides itself when the
-                    // view switches, which would silently drop keyboard/screen-
-                    // reader focus to <body>. Hand focus to the corresponding
-                    // view-switcher button, which stays visible in every view.
-                    if (cameFromEasyPanel && modeCard) {
-                        const switcherBtn = modeCard.querySelector(`.view-mode-btn[data-card-mode="${CSS.escape(actionBtn.dataset.cardMode || '')}"]`);
-                        if (switcherBtn) switcherBtn.focus();
-                    }
+                    setCardMode(actionBtn.closest('.manual-result'), actionBtn.dataset.cardMode);
                 },
                 'toggle-easy-mode': () => toggleGlobalEasyMode(),
                 'search-hint': () => { document.getElementById('q').value = actionBtn.dataset.query; executeSearch(); },

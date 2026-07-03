@@ -16,15 +16,15 @@ import { test, expect } from '@playwright/test';
 
 async function searchStatus(page, code) {
   await page.goto('/index.html');
-  await page.waitForFunction(() => (typeof dataReady !== 'undefined' && dataReady) === true, null, { timeout: 30_000 });
+  await page.waitForFunction(() => typeof dataReady !== 'undefined' && dataReady, null, { timeout: 30_000 });
   await page.evaluate((c) => {
     const q = document.getElementById('q'); if (q) { q.disabled = false; q.value = c; }
     document.body.classList.add('searched');
     renderResults(c);
   }, code);
-  const card = page.locator(`#rlist .vc[data-code="${code}"]`);
-  await card.first().waitFor({ timeout: 15_000 });
-  return card.first();
+  const card = page.locator(`#rlist .vc[data-code="${code}"]`).first();
+  await card.waitFor({ timeout: 15_000 });
+  return card;
 }
 
 async function openEasyView(page, code) {
