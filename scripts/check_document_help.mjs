@@ -61,7 +61,8 @@ for (const marker of [
   'renderDocumentHelpButton(key, officialName)',
   'renderDocumentHelpButton(rawText, text)',
   'renderDocumentHelpButton(rawName, rawName)',
-  'renderDocumentHelpButton(label, label)'
+  'renderDocumentHelpButton(label, label)',
+  '!focusable.includes(document.activeElement)'
 ]) {
   assert.ok(indexHtml.includes(marker), `index integration marker missing: ${marker}`);
 }

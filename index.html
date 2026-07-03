@@ -22495,7 +22495,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 if (focusable.length) {
                     const first = focusable[0];
                     const last = focusable[focusable.length - 1];
-                    if (e.shiftKey && (document.activeElement === first || !helpOverlay.contains(document.activeElement))) {
+                    if (e.shiftKey && (document.activeElement === first || !focusable.includes(document.activeElement))) {
                         e.preventDefault();
                         last.focus();
                     } else if (!e.shiftKey && (document.activeElement === last || !helpOverlay.contains(document.activeElement))) {
