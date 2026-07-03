@@ -2678,7 +2678,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .view-mode-toggle { display: flex; align-items: center; flex-wrap: wrap; gap: 0.45rem 0.75rem; }
 .view-mode-label { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.04em; color: var(--t3); text-transform: uppercase; }
 .view-mode-btns { display: inline-flex; gap: 0.2rem; background: var(--acL); border: 1px solid var(--bd2); border-radius: 999px; padding: 0.2rem; }
-.view-mode-btn { appearance: none; border: 0; background: transparent; color: var(--t2); font: inherit; font-size: 0.82rem; font-weight: 800; padding: 0.34rem 0.85rem; border-radius: 999px; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
+.view-mode-btn { appearance: none; border: 0; background: transparent; color: var(--t2); font: inherit; font-size: 0.82rem; font-weight: 800; padding: 0.34rem 0.85rem; min-height: 2.1rem; border-radius: 999px; cursor: pointer; transition: var(--btn-tr); white-space: nowrap; }
 .view-mode-btn:hover { color: var(--ac); }
 .view-mode-btn.active { background: var(--bg0); color: var(--ac); box-shadow: var(--sh1); }
 .view-mode-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
@@ -2692,7 +2692,12 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .easy-fallback-notice { background: transparent; border-style: dashed; }
 .easy-card { border: 1px solid var(--bd2); border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 0.7rem; background: var(--bg0); }
 .easy-card:last-child { margin-bottom: 0; }
-.easy-card-title { margin: 0 0 0.5rem; font-size: 0.96rem; font-weight: 800; color: var(--t1); }
+.easy-card-title { margin: 0 0 0.5rem; font-size: 0.96rem; font-weight: 800; color: var(--t1); display: flex; align-items: baseline; gap: 0.5rem; }
+.easy-card-title::before { content: ""; flex: none; width: 0.28rem; height: 0.95em; border-radius: 2px; background: var(--ac); align-self: center; }
+.easy-doc-group { margin: 0 0 0.6rem; }
+.easy-doc-group:last-of-type { margin-bottom: 0.2rem; }
+.easy-doc-group .easy-subtitle { margin-top: 0.3rem; }
+.easy-list--steps li::marker { color: var(--ac); font-weight: 800; }
 .easy-card p { margin: 0.25rem 0; line-height: 1.7; font-size: 0.9rem; color: var(--t2); }
 .easy-summary { margin: 0 0 0.35rem; }
 .easy-code { font-weight: 800; color: var(--ac); }
@@ -2710,7 +2715,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .easy-ask-local { display: block; color: var(--t2); }
 .easy-ask-ko { display: block; font-weight: 800; color: var(--t1); margin-top: 0.1rem; }
 .easy-ask-hint { margin-bottom: 0.4rem; }
-.easy-official-btn { margin-top: 0.55rem; appearance: none; border: 1px solid var(--ac); background: transparent; color: var(--ac); font: inherit; font-weight: 800; font-size: 0.85rem; padding: 0.45rem 0.95rem; border-radius: 8px; cursor: pointer; transition: var(--btn-tr); }
+.easy-official-btn { margin-top: 0.55rem; appearance: none; border: 1px solid var(--ac); background: transparent; color: var(--ac); font: inherit; font-weight: 800; font-size: 0.85rem; padding: 0.45rem 0.95rem; min-height: 2.4rem; border-radius: 8px; cursor: pointer; transition: var(--btn-tr); }
 .easy-official-btn:hover { background: var(--acL); }
 .easy-official-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
 .manual-result .manual-layout > .view-mode-toggle { padding: 1rem 1.35rem; margin: 0; }
@@ -2719,7 +2724,8 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
     .manual-result .manual-layout > .view-mode-toggle { padding: 0.8rem 0.85rem; }
     .manual-result .manual-layout > .easy-mode-panel { padding: 0.85rem 0.85rem 1rem; }
     .easy-card { padding: 0.75rem 0.8rem; }
-    .view-mode-btn { padding: 0.3rem 0.7rem; }
+    .view-mode-btn { padding: 0.3rem 0.7rem; min-height: 2.5rem; }
+    .easy-official-btn { width: 100%; }
 }
 
 @media (max-width: 768px) {
@@ -18719,6 +18725,21 @@ function normalizeManualText(value) {
     return stripManualArtifacts(value).replace(/\s+/g, ' ').trim();
 }
 
+// Shared sentence splitter for the "2-sentence preview" pattern used by the
+// card summary, the procedure summary, and the Easy panel — one regex, so the
+// three views can never truncate the same canonical text differently.
+function paradisoSplitSentences(text) {
+    return String(text || '').split(/(?<=[.!?。])\s+/).filter(Boolean);
+}
+
+/* Canonical status-summary fallback chain. Records carry the status
+   description in newReq/extReq (no `summary` field exists in current data);
+   the compact card, the copy action, and the Easy panel must all resolve the
+   same source text or they describe the same status from different fields. */
+function getCanonicalStatusSummarySource(v) {
+    return v.summary || v.newReq || v.extReq || '';
+}
+
 function makeManualPreview(value, max = MANUAL_PREVIEW_LENGTH) {
     const normalized = normalizeManualText(value);
     if (normalized.length <= max) return normalized;
@@ -18757,7 +18778,7 @@ function renderProcedureSummaryBlock(value, keywords) {
     // default exposure is trimmed.
     const normalized = normalizeManualText(value);
     if (!normalized) return '';
-    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    const sentences = paradisoSplitSentences(normalized);
     if (sentences.length <= 2) {
         return `<div class="procedure-summary">${hl(normalized, keywords)}</div>`;
     }
@@ -20234,7 +20255,7 @@ function renderCardSummary(v, kw) {
     if (!raw) return '';
     const normalized = normalizeManualText(raw);
     if (!normalized) return '';
-    const sentences = normalized.split(/(?<=[.!?。])\s+/).filter(Boolean);
+    const sentences = paradisoSplitSentences(normalized);
     if (sentences.length <= 2) {
         return `<div class="vc-summary">${hl(normalized, kw)}</div>`;
     }
@@ -20836,7 +20857,11 @@ function renderSourceEvidencePanel(v) {
    guidance. Every label/copy string is resolved through tx() from
    data/i18n/*.json (no hardcoded multilingual UI text here); the dynamic parts
    (summary, document names) are DERIVED from the existing status record at
-   render time, so no canonical data is duplicated, invented, or mutated. The
+   render time, so no canonical data is duplicated, invented, or mutated.
+   Accuracy contract: the summary resolves through the same chain as the
+   compact card (summary → newReq → extReq), and document names are grouped
+   per procedure stage under the Standard view's own stage labels — stages are
+   never merged into one flat list (procedure-scope rule). The
    selected view is remembered per code (EASY_MODE_CARD_STATE) and re-applied
    after renderResults() rebuilds the list — including on a language switch, so
    switching language while Easy Mode is active keeps Easy Mode and updates the
@@ -20855,43 +20880,83 @@ function easyModeApplies(v, isVisaCode) {
 
 function renderViewModeToggle(v, isVisaCode) {
     if (!easyModeApplies(v, isVisaCode)) return '';
+    // Toggle-button group, NOT tabs: the three views swap the whole card body,
+    // there are no persistent tabpanels to wire aria-controls to, and the old
+    // role="tablist"/role="tab" markup lacked the roving tabindex + arrow-key
+    // behaviour that role obliges — screen readers announced tabs that did not
+    // behave like tabs. Buttons with aria-pressed are natively keyboardable.
     const btn = (mode, key, selected) =>
-        `<button type="button" role="tab" class="view-mode-btn${selected ? ' active' : ''}" data-action="set-card-mode" data-card-mode="${mode}" aria-selected="${selected ? 'true' : 'false'}">${escapeHtml(tx(key))}</button>`;
+        `<button type="button" class="view-mode-btn${selected ? ' active' : ''}" data-action="set-card-mode" data-card-mode="${mode}" aria-pressed="${selected ? 'true' : 'false'}">${escapeHtml(tx(key))}</button>`;
     return `<div class="view-mode-toggle">
         <span class="view-mode-label">${escapeHtml(tx('easyModeLabel'))}</span>
-        <div class="view-mode-btns" role="tablist" aria-label="${escapeHtml(tx('easyModeToggleAria'))}">
+        <div class="view-mode-btns" role="group" aria-label="${escapeHtml(tx('easyModeToggleAria'))}">
             ${btn('standard', 'easyModeStandard', true)}${btn('easy', 'easyModeEasy', false)}${btn('official', 'easyModeOfficial', false)}
         </div>
     </div>`;
 }
 
-/* Concrete document names the Standard view would already surface for this
-   status. Reuses the existing resolvers so Easy Mode never invents a document
-   or asserts a requirement the source data does not already carry. */
-function getEasyModeDocNames(v) {
-    const names = [];
-    const seen = new Set();
-    const push = (raw) => {
-        const name = String(raw || '').trim();
-        if (!name || seen.has(name) || isDocPlaceholder(name)) return;
-        seen.add(name);
-        names.push(name);
+/* Rows the Standard document tabs carry that are NOT submittable documents —
+   fee lines and caution markers. The Standard view keeps them (they render
+   with their notes/context); the Easy view must not present them as
+   "documents to prepare". Render-time filter only — data untouched. */
+const EASY_MODE_CAUTION_ROW_RE = /(^|\s)주의$/;
+const EASY_MODE_FOOTNOTE_MARK_RE = /[\s*＊]+$/;
+function isEasyModeNonDocRow(name) {
+    // Fee rows reuse the same '수수료' family classifier the Standard checklist
+    // dedupe already relies on, so 정부수입인지/인지대 variants are caught too
+    // and the two views cannot drift on what counts as a fee.
+    return normalizeDocumentRequirementKey(name) === '수수료' || EASY_MODE_CAUTION_ROW_RE.test(name);
+}
+// Trailing footnote markers ("체류지 입증서류*") point at footnotes the Easy
+// view does not render; strip the dangling marker, keep the document name.
+function cleanEasyModeDocName(raw) {
+    return String(raw || '').replace(EASY_MODE_FOOTNOTE_MARK_RE, '').trim();
+}
+
+const EASY_MODE_DOCS_PER_STAGE = 5;
+/* Stage-scoped document names the Standard view already surfaces for this
+   status. Each group keeps the SAME localized stage label the Standard view
+   uses, and stages are never merged: 사증발급/입국 전 documents must not read
+   as in-Korea 체류 requirements (procedure-scope rule) — the old flat list did
+   exactly that and silently dropped later stages once 8 names accumulated.
+   Reuses the existing resolvers so Easy Mode never invents a document or
+   asserts a requirement the source data does not already carry. */
+function getEasyModeDocGroups(v) {
+    const groups = [];
+    const addGroup = (label, rawNames) => {
+        const seen = new Set();
+        const names = [];
+        for (const raw of rawNames) {
+            const name = cleanEasyModeDocName(raw);
+            if (!name || seen.has(name) || isDocPlaceholder(name) || isEasyModeNonDocRow(name)) continue;
+            seen.add(name);
+            names.push(name);
+        }
+        if (!names.length) return;
+        groups.push({
+            label,
+            names: names.slice(0, EASY_MODE_DOCS_PER_STAGE),
+            more: Math.max(0, names.length - EASY_MODE_DOCS_PER_STAGE)
+        });
     };
     for (const cfg of DOCUMENT_TAB_CONFIG) {
-        for (const item of getDocumentTabItems(v, cfg)) push(item && item.name);
-        if (names.length >= 8) return names.slice(0, 8);
+        addGroup(getDocumentTabLabel(cfg), getDocumentTabItems(v, cfg).map(item => item && item.name));
     }
-    if (!names.length && Array.isArray(PROCEDURE_CONFIG)) {
+    if (!groups.length && Array.isArray(PROCEDURE_CONFIG)) {
         for (const cfg of PROCEDURE_CONFIG) {
             const proc = getProcedure(v, cfg);
             if (!proc || !proc.available) continue;
-            for (const id of flattenDocGroups(proc.docs)) {
-                if (!isDocPlaceholder(id)) push(DOC_DICT[id] || '');
-            }
-            if (names.length >= 8) break;
+            // Procedure docs mix doc_* ids and raw Korean bucket strings
+            // ("신청서"); resolve through the shared display-label resolver so
+            // bucket strings render instead of vanishing, and drop only ids
+            // with no DOC_DICT label (rendering a raw doc_* id is worse).
+            addGroup(proc.label, flattenDocGroups(proc.docs).map(id => {
+                const label = paradisoResolveDocDisplayLabel(id);
+                return label.indexOf('doc_') === 0 ? '' : label;
+            }));
         }
     }
-    return names.slice(0, 8);
+    return groups;
 }
 
 function renderEasyModePanel(v) {
@@ -20905,16 +20970,22 @@ function renderEasyModePanel(v) {
     if (isKo) name = getVisaNameKo(v);
     else if (lang === 'en') name = getVisaNameEn(v) || '';
     else name = localizedVisaNameFromPack(v.code, lang) || '';
-    const summaryRaw = normalizeManualText(v.summary || '');
+    // Reading only v.summary (a field no current record carries) made EVERY
+    // Easy panel claim "쉬운 안내가 아직 준비되지 않았다" and render a
+    // content-free summary; resolve through the shared canonical chain instead.
+    const summaryRaw = normalizeManualText(getCanonicalStatusSummarySource(v));
     const hasNativeSummary = !!summaryRaw;
     // The status summary is Korean canonical prose. Show it natively only on the
     // Korean UI; other locales keep the Easy summary in the user's language
     // (generic) and point to the Standard view for the full canonical text — so
     // Easy Mode never dumps untranslated Korean paragraphs into a non-ko panel.
-    const summaryText = (isKo && hasNativeSummary)
-        ? summaryRaw.split(/(?<=[.!?。])\s+/).filter(Boolean).slice(0, 2).join(' ')
-        : tx('easyModeSummaryGeneric', { code });
-    const docNames = getEasyModeDocNames(v);
+    let summaryText = tx('easyModeSummaryGeneric', { code });
+    if (isKo && hasNativeSummary) {
+        const sentences = paradisoSplitSentences(summaryRaw);
+        const two = sentences.slice(0, 2).join(' ');
+        summaryText = (two.length > 240 && sentences.length > 1) ? sentences[0] : two;
+    }
+    const docGroups = getEasyModeDocGroups(v);
     const koAsk = (UI_TRANSLATIONS.ko && Array.isArray(UI_TRANSLATIONS.ko.easyModeAskAtOffice)) ? UI_TRANSLATIONS.ko.easyModeAskAtOffice : [];
 
     const section = (title, bodyHtml) =>
@@ -20922,17 +20993,21 @@ function renderEasyModePanel(v) {
     const listFrom = (key, cls) =>
         `<ul class="easy-list ${cls}">${txArray(key).map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>`;
 
-    // Documents: only the derived names are concrete ("usually needed"); the
-    // rest is honest guidance — Easy Mode does not classify items as required.
+    // Documents: grouped per procedure stage under the SAME localized stage
+    // label the Standard view uses — never one merged list, so a pre-entry
+    // 사증발급 document can't read as an in-Korea 체류 requirement. Only the
+    // derived names are concrete; Easy Mode does not classify items as required.
     let docsBody;
-    if (docNames.length) {
+    if (docGroups.length) {
         // Document names stay Korean canonical (official terminology is not
         // translated where unverified, per data/i18n policy); lang="ko" marks
         // them so screen readers and the non-ko leak guard treat them correctly.
-        docsBody = `<p class="easy-subtitle">${escapeHtml(tx('easyModeDocsUsuallyTitle'))}</p>
-            <ul class="easy-list easy-list--check"${isKo ? '' : ' lang="ko"'}>${docNames.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
-            <p class="easy-subtitle">${escapeHtml(tx('easyModeDocsMaybeTitle'))}</p>
-            <p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>`;
+        docsBody = docGroups.map(g => `<div class="easy-doc-group">
+            <p class="easy-subtitle">${escapeHtml(g.label)}</p>
+            <ul class="easy-list easy-list--check"${isKo ? '' : ' lang="ko"'}>${g.names.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
+            ${g.more ? `<p class="easy-note">${escapeHtml(tx('easyModeDocsMore', { count: g.more }))}</p>` : ''}
+        </div>`).join('')
+            + `<p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>`;
     } else {
         docsBody = `<p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>
             <p class="easy-note">${escapeHtml(tx('easyModeDocsPointer'))}</p>`;
@@ -20950,10 +21025,10 @@ function renderEasyModePanel(v) {
     // Notices key off genuinely-missing summary data, not the non-ko generic path
     // (where the canonical summary still exists in the Standard view).
     const fallbackNotice = !hasNativeSummary ? `<p class="easy-fallback-notice" role="note">${escapeHtml(tx('easyModeFallbackNotice'))}</p>` : '';
-    const noData = (!hasNativeSummary && !docNames.length)
+    const noData = (!hasNativeSummary && !docGroups.length)
         ? section(tx('easyModeNoDataTitle'), `<p>${escapeHtml(tx('easyModeNoDataBody'))}</p>`) : '';
 
-    return `<div class="easy-mode-panel" aria-label="${escapeHtml(tx('easyModeEasy'))}">
+    return `<div class="easy-mode-panel" role="region" aria-label="${escapeHtml(tx('easyModeEasy'))}">
         <p class="easy-notice" role="note">${escapeHtml(tx('easyModeNotice'))}</p>
         ${fallbackNotice}
         ${section(tx('easyModeSummaryTitle'), `<p class="easy-summary"><span class="easy-code">${escapeHtml(code)}</span>${name ? ` <span class="easy-name">${escapeHtml(name)}</span>` : ''}</p><p>${escapeHtml(summaryText)}</p>`)}
@@ -20976,7 +21051,7 @@ function applyCardMode(card, mode) {
     card.querySelectorAll('.view-mode-btn').forEach(btn => {
         const active = btn.dataset.cardMode === mode;
         btn.classList.toggle('active', active);
-        btn.setAttribute('aria-selected', active ? 'true' : 'false');
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
     // The Official Source view surfaces the existing source-evidence panel; open
     // it so the official basis is visible without an extra click.
@@ -20991,6 +21066,15 @@ function setCardMode(card, mode) {
     if (!card) return;
     if (!EASY_MODE_VIEW_MODES.includes(mode)) mode = 'standard';
     applyCardMode(card, mode);
+    // If the control that triggered this switch got hidden by the view swap
+    // (e.g. the Easy panel's "공식 근거 보기" button), keyboard/screen-reader
+    // focus would silently drop to <body>; hand it to the always-visible
+    // switcher button for the new mode instead.
+    const active = document.activeElement;
+    if (active && active !== document.body && card.contains(active) && active.getClientRects().length === 0) {
+        const switcherBtn = card.querySelector(`.view-mode-btn[data-card-mode="${mode}"]`);
+        if (switcherBtn) switcherBtn.focus();
+    }
     const code = card.dataset.code;
     if (code) EASY_MODE_CARD_STATE.set(code, mode);
 }
@@ -21025,7 +21109,7 @@ function copyVisaResult(btnEl, code) {
     if (!v) return;
     const name = getLocalizedVisaName(v);
     const period = v.period || '';
-    const summary = stripManualArtifacts(v.summary || v.newReq || v.extReq || '');
+    const summary = stripManualArtifacts(getCanonicalStatusSummarySource(v));
     const parts = [v.code, name, period ? `(${period})` : '', summary].filter(Boolean);
     const text = parts.join('\n');
     const done = () => {
@@ -21297,7 +21381,7 @@ function renderCompactResults(filtered, kw){
         const subs = getVisaSubcodes(v);
         const docCount = subs.length;
         const reviewLabel = reviewStateLabel(v);
-        const rawSum = normalizeManualText(v.summary || v.newReq || v.extReq || '');
+        const rawSum = normalizeManualText(getCanonicalStatusSummarySource(v));
         const sum = rawSum ? (rawSum.length > 110 ? rawSum.slice(0, 110).replace(/\s+\S*$/, '') + '…' : rawSum) : '';
         const color = (typeof CC !== 'undefined' && CC[v.cat]) ? CC[v.cat] : '#0EA37B';
         const codeHtml = hl(v.code || '', kw);
