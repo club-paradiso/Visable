@@ -2688,23 +2688,28 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .manual-result.card-mode-easy .easy-mode-panel { display: block; border-top: 0; }
 .manual-result.card-mode-official .manual-layout > :not(.view-mode-toggle):not(.source-evidence-panel):not(.manual-actions) { display: none; }
 .manual-result.card-mode-official .source-evidence-panel { border-top: 0; }
-.easy-notice, .easy-fallback-notice { font-size: 0.82rem; line-height: 1.6; border: 1px solid var(--bd2); border-radius: 10px; padding: 0.6rem 0.8rem; margin: 0 0 0.85rem; color: var(--t2); background: var(--acL); }
+.easy-notice, .easy-fallback-notice { font-size: 0.88rem; line-height: 1.65; border: 1px solid var(--bd2); border-radius: 10px; padding: 0.65rem 0.85rem; margin: 0 0 0.7rem; color: var(--t2); background: var(--acL); }
+.easy-call-btn { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin: 0 0 0.85rem; padding: 0.72rem 1rem; min-height: 2.75rem; border-radius: 12px; background: var(--ac); border: 1px solid var(--ac); color: #fff; font-weight: 800; font-size: 0.98rem; text-decoration: none; transition: var(--btn-tr); }
+.easy-call-btn:hover { filter: brightness(1.07); }
+.easy-call-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
+.easy-call-icon { font-size: 1.05rem; line-height: 1; }
 .easy-fallback-notice { background: transparent; border-style: dashed; }
 .easy-card { border: 1px solid var(--bd2); border-radius: 12px; padding: 0.85rem 1rem; margin-bottom: 0.7rem; background: var(--bg0); }
 .easy-card:last-child { margin-bottom: 0; }
-.easy-card-title { margin: 0 0 0.5rem; font-size: 0.96rem; font-weight: 800; color: var(--t1); display: flex; align-items: baseline; gap: 0.5rem; }
-.easy-card-title::before { content: ""; flex: none; width: 0.28rem; height: 0.95em; border-radius: 2px; background: var(--ac); align-self: center; }
+.easy-card-title { margin: 0 0 0.55rem; font-size: 1.02rem; font-weight: 800; color: var(--t1); display: flex; align-items: center; gap: 0.5rem; }
+.easy-card-icon { flex: none; font-size: 1.05rem; line-height: 1; }
 .easy-doc-group { margin: 0 0 0.6rem; }
 .easy-doc-group:last-of-type { margin-bottom: 0.2rem; }
 .easy-doc-group .easy-subtitle { margin-top: 0.3rem; }
 .easy-list--steps li::marker { color: var(--ac); font-weight: 800; }
-.easy-card p { margin: 0.25rem 0; line-height: 1.7; font-size: 0.9rem; color: var(--t2); }
+.easy-card p { margin: 0.25rem 0; line-height: 1.75; font-size: 0.95rem; color: var(--t2); }
 .easy-summary { margin: 0 0 0.35rem; }
 .easy-code { font-weight: 800; color: var(--ac); }
 .easy-name { color: var(--t2); font-weight: 600; }
 .easy-subtitle { font-weight: 800; font-size: 0.85rem; color: var(--t1); margin: 0.55rem 0 0.2rem; }
 .easy-note { font-size: 0.82rem; color: var(--t3); line-height: 1.6; }
-.easy-list { margin: 0.2rem 0 0; padding-inline-start: 1.4rem; line-height: 1.75; font-size: 0.9rem; color: var(--t2); }
+.easy-list { margin: 0.2rem 0 0; padding-inline-start: 1.4rem; line-height: 1.8; font-size: 0.95rem; color: var(--t2); }
+.easy-list li { margin-bottom: 0.25rem; }
 .easy-list--steps { padding-inline-start: 1.5rem; }
 .easy-list--bullet { list-style: disc; }
 .easy-list--check { list-style: none; padding-inline-start: 0; }
@@ -2719,7 +2724,7 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .easy-official-btn:hover { background: var(--acL); }
 .easy-official-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 58%, white); outline-offset: 2px; }
 .manual-result .manual-layout > .view-mode-toggle { padding: 1rem 1.35rem; margin: 0; }
-.manual-result .manual-layout > .easy-mode-panel { padding: 1.1rem 1.35rem 1.35rem; margin: 0; }
+.manual-result .manual-layout > .easy-mode-panel { padding: 1.1rem 1.35rem 1.35rem; margin: 0; word-break: keep-all; overflow-wrap: anywhere; }
 @media (max-width: 600px) {
     .manual-result .manual-layout > .view-mode-toggle { padding: 0.8rem 0.85rem; }
     .manual-result .manual-layout > .easy-mode-panel { padding: 0.85rem 0.85rem 1rem; }
@@ -20988,10 +20993,18 @@ function renderEasyModePanel(v) {
     const docGroups = getEasyModeDocGroups(v);
     const koAsk = (UI_TRANSLATIONS.ko && Array.isArray(UI_TRANSLATIONS.ko.easyModeAskAtOffice)) ? UI_TRANSLATIONS.ko.easyModeAskAtOffice : [];
 
-    const section = (title, bodyHtml) =>
-        `<section class="easy-card"><h4 class="easy-card-title">${escapeHtml(title)}</h4>${bodyHtml}</section>`;
+    // The emoji icon is decorative (aria-hidden) — a language-independent
+    // visual anchor that helps low-literacy readers find a section again; the
+    // localized title remains the accessible name.
+    const section = (icon, title, bodyHtml) =>
+        `<section class="easy-card"><h4 class="easy-card-title"><span class="easy-card-icon" aria-hidden="true">${icon}</span><span>${escapeHtml(title)}</span></h4>${bodyHtml}</section>`;
     const listFrom = (key, cls) =>
         `<ul class="easy-list ${cls}">${txArray(key).map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>`;
+    // "누구를 위한 건가요" as short bullet points instead of one long sentence —
+    // one idea per line reads far better at low literacy. txArray does not
+    // interpolate, so substitute {code} per item here.
+    const whoItems = txArray('easyModeWhoList')
+        .map(s => `<li>${escapeHtml(String(s).split('{code}').join(code))}</li>`).join('');
 
     // Documents: grouped per procedure stage under the SAME localized stage
     // label the Standard view uses — never one merged list, so a pre-entry
@@ -21026,19 +21039,25 @@ function renderEasyModePanel(v) {
     // (where the canonical summary still exists in the Standard view).
     const fallbackNotice = !hasNativeSummary ? `<p class="easy-fallback-notice" role="note">${escapeHtml(tx('easyModeFallbackNotice'))}</p>` : '';
     const noData = (!hasNativeSummary && !docGroups.length)
-        ? section(tx('easyModeNoDataTitle'), `<p>${escapeHtml(tx('easyModeNoDataBody'))}</p>`) : '';
+        ? section('ℹ️', tx('easyModeNoDataTitle'), `<p>${escapeHtml(tx('easyModeNoDataBody'))}</p>`) : '';
+
+    // One always-visible escape hatch near the top: the 1345 immigration call
+    // line as a tel: button. The site already tells users to call 1345 when
+    // unsure — this only makes that advice a one-tap action.
+    const callBtn = `<a class="easy-call-btn" href="tel:1345"><span class="easy-call-icon" aria-hidden="true">📞</span><span>${escapeHtml(tx('easyModeCallHelp'))}</span></a>`;
 
     return `<div class="easy-mode-panel" role="region" aria-label="${escapeHtml(tx('easyModeEasy'))}">
         <p class="easy-notice" role="note">${escapeHtml(tx('easyModeNotice'))}</p>
         ${fallbackNotice}
-        ${section(tx('easyModeSummaryTitle'), `<p class="easy-summary"><span class="easy-code">${escapeHtml(code)}</span>${name ? ` <span class="easy-name">${escapeHtml(name)}</span>` : ''}</p><p>${escapeHtml(summaryText)}</p>`)}
+        ${callBtn}
+        ${section('📌', tx('easyModeSummaryTitle'), `<p class="easy-summary"><span class="easy-code">${escapeHtml(code)}</span>${name ? ` <span class="easy-name">${escapeHtml(name)}</span>` : ''}</p><p>${escapeHtml(summaryText)}</p>`)}
         ${noData}
-        ${section(tx('easyModeWhoTitle'), `<p>${escapeHtml(tx('easyModeWhoBody', { code }))}</p>`)}
-        ${section(tx('easyModeNextStepsTitle'), `<ol class="easy-list easy-list--steps">${txArray('easyModeNextSteps').map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>`)}
-        ${section(tx('easyModeDocumentsTitle'), docsBody)}
-        ${section(tx('easyModeWarningsTitle'), listFrom('easyModeWarnings', 'easy-list--bullet'))}
-        ${section(tx('easyModeAskAtOfficeTitle'), `${askKoHint}<ul class="easy-list easy-ask-list">${askItems}</ul>`)}
-        ${section(tx('easyModeOfficialSourceTitle'), `<p>${escapeHtml(tx('easyModeOfficialSourceBody'))}</p><p class="easy-note">${escapeHtml(tx('easyModeSourceReminder'))}</p><button type="button" class="easy-official-btn" data-action="set-card-mode" data-card-mode="official">${escapeHtml(tx('easyModeOpenOfficialSource'))}</button>`)}
+        ${section('🙋', tx('easyModeWhoTitle'), `<p>${escapeHtml(tx('easyModeWhoIntro'))}</p><ul class="easy-list easy-list--bullet">${whoItems}</ul>`)}
+        ${section('✅', tx('easyModeNextStepsTitle'), `<ol class="easy-list easy-list--steps">${txArray('easyModeNextSteps').map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ol>`)}
+        ${section('📄', tx('easyModeDocumentsTitle'), docsBody)}
+        ${section('⚠️', tx('easyModeWarningsTitle'), listFrom('easyModeWarnings', 'easy-list--bullet'))}
+        ${section('🗣️', tx('easyModeAskAtOfficeTitle'), `${askKoHint}<ul class="easy-list easy-ask-list">${askItems}</ul>`)}
+        ${section('🏛️', tx('easyModeOfficialSourceTitle'), `<p>${escapeHtml(tx('easyModeOfficialSourceBody'))}</p><p class="easy-note">${escapeHtml(tx('easyModeSourceReminder'))}</p><button type="button" class="easy-official-btn" data-action="set-card-mode" data-card-mode="official">${escapeHtml(tx('easyModeOpenOfficialSource'))}</button>`)}
     </div>`;
 }
 

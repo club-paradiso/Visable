@@ -1281,6 +1281,7 @@
   "easyModeOfficial": "공식 근거",
   "easyModeToggleAria": "안내 방식 선택",
   "easyModeNotice": "이것은 쉬운 설명이에요. 신청하기 전에 공식 근거를 꼭 확인하세요.",
+  "easyModeCallHelp": "1345에 전화해서 물어보기",
   "easyModeSummaryTitle": "이건 무엇인가요?",
   "easyModeWhoTitle": "누구를 위한 건가요?",
   "easyModeNextStepsTitle": "이제 무엇을 하나요?",
@@ -1289,7 +1290,12 @@
   "easyModeAskAtOfficeTitle": "사무소에서 이렇게 물어보세요",
   "easyModeOfficialSourceTitle": "공식 근거 확인하기",
   "easyModeSummaryGeneric": "{code}에 대한 안내예요. 자세한 내용은 기본 안내와 공식 근거에서 확인하세요.",
-  "easyModeWhoBody": "{code} 자격이 있거나, 이 자격으로 바꾸거나 기간을 늘리려는 분을 위한 내용이에요.",
+  "easyModeWhoIntro": "이런 분을 위한 안내예요.",
+  "easyModeWhoList": [
+    "지금 {code} 자격을 가지고 있는 분",
+    "{code} 자격으로 바꾸고 싶은 분",
+    "체류 기간을 늘리고 싶은 분"
+  ],
   "easyModeDocsDependsBody": "필요한 서류는 사람마다 달라요. 정확한 목록은 기본 안내의 서류와 공식 근거에서 확인하세요.",
   "easyModeDocsMore": "이 외 서류 {count}개가 더 있어요. 전체 목록은 기본 안내에서 확인하세요.",
   "easyModeDocsPointer": "이 자격의 서류 목록은 기본 안내에서 더 자세히 볼 수 있어요.",

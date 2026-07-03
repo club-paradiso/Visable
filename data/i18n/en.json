@@ -1281,6 +1281,7 @@
   "easyModeOfficial": "Official Source",
   "easyModeToggleAria": "Choose how to view this guide",
   "easyModeNotice": "This is a simple explanation. Always check the official source before you apply.",
+  "easyModeCallHelp": "Call 1345 to ask",
   "easyModeSummaryTitle": "What is this?",
   "easyModeWhoTitle": "Who is this for?",
   "easyModeNextStepsTitle": "What to do next",
@@ -1289,7 +1290,12 @@
   "easyModeAskAtOfficeTitle": "What to say at the office",
   "easyModeOfficialSourceTitle": "Check the official source",
   "easyModeSummaryGeneric": "This is guidance about {code}. For details, see the Standard view and the official source.",
-  "easyModeWhoBody": "This is for people who have {code}, or who want to change to or extend this status.",
+  "easyModeWhoIntro": "This guide is for people like this:",
+  "easyModeWhoList": [
+    "You have {code} status now",
+    "You want to change to {code} status",
+    "You want to stay longer"
+  ],
   "easyModeDocsDependsBody": "The documents you need can differ from person to person. Check the documents in the Standard view and the official source for the exact list.",
   "easyModeDocsMore": "There are {count} more documents. See the full list in the Standard view.",
   "easyModeDocsPointer": "You can see the full document list for this status in the Standard view.",

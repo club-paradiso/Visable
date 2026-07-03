@@ -1281,6 +1281,7 @@
   "easyModeOfficial": "公式の根拠",
   "easyModeToggleAria": "表示方法を選ぶ",
   "easyModeNotice": "これはやさしい説明です。申請の前に必ず公式の根拠を確認してください。",
+  "easyModeCallHelp": "1345に電話して聞く",
   "easyModeSummaryTitle": "これは何ですか？",
   "easyModeWhoTitle": "だれのための案内ですか？",
   "easyModeNextStepsTitle": "次に何をしますか",
@@ -1289,7 +1290,12 @@
   "easyModeAskAtOfficeTitle": "窓口ではこう聞いてください",
   "easyModeOfficialSourceTitle": "公式の根拠を確認する",
   "easyModeSummaryGeneric": "{code} についての案内です。詳しい内容は標準案内と公式の根拠で確認してください。",
-  "easyModeWhoBody": "{code} を持っている方や、この資格に変更・延長したい方のための内容です。",
+  "easyModeWhoIntro": "こんな方のための案内です。",
+  "easyModeWhoList": [
+    "いま {code} 資格を持っている方",
+    "{code} 資格に変えたい方",
+    "在留期間を延ばしたい方"
+  ],
   "easyModeDocsDependsBody": "必要な書類は人によって違います。正確なリストは標準案内の書類と公式の根拠で確認してください。",
   "easyModeDocsMore": "ほかに{count}件の書類があります。全体のリストは標準案内で確認してください。",
   "easyModeDocsPointer": "この資格の書類リストは標準案内でもっと詳しく見られます。",
