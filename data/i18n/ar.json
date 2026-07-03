@@ -1281,6 +1281,7 @@
   "easyModeOfficial": "المصدر الرسمي",
   "easyModeToggleAria": "اختر طريقة عرض هذا الدليل",
   "easyModeNotice": "هذا شرح مبسّط. تحقّق دائمًا من المصدر الرسمي قبل التقديم.",
+  "easyModeCallHelp": "اتصل بالرقم 1345 للسؤال",
   "easyModeSummaryTitle": "ما هذا؟",
   "easyModeWhoTitle": "لمن هذا؟",
   "easyModeNextStepsTitle": "ما الخطوة التالية",
@@ -1289,7 +1290,12 @@
   "easyModeAskAtOfficeTitle": "يمكنك أن تسأل هكذا في المكتب",
   "easyModeOfficialSourceTitle": "تحقّق من المصدر الرسمي",
   "easyModeSummaryGeneric": "هذا دليل حول {code}. للتفاصيل، راجع العرض القياسي والمصدر الرسمي.",
-  "easyModeWhoBody": "هذا لمن يحملون {code}، أو يرغبون في التحويل إلى هذه الإقامة أو تمديدها.",
+  "easyModeWhoIntro": "هذا الدليل مخصص لهؤلاء الأشخاص:",
+  "easyModeWhoList": [
+    "لديك الآن إقامة {code}",
+    "تريد التغيير إلى إقامة {code}",
+    "تريد البقاء لفترة أطول"
+  ],
   "easyModeDocsDependsBody": "قد تختلف المستندات المطلوبة من شخص لآخر. راجع المستندات في العرض القياسي والمصدر الرسمي للحصول على القائمة الدقيقة.",
   "easyModeDocsMore": "هناك {count} مستندات أخرى. راجع القائمة الكاملة في العرض القياسي.",
   "easyModeDocsPointer": "يمكنك رؤية قائمة المستندات الكاملة لهذه الإقامة في العرض القياسي.",

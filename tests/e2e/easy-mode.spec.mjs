@@ -82,6 +82,36 @@ test.describe('easy mode content contract', () => {
     expect(focused.mode).toBe('official');
   });
 
+  test('easy panel renders populated in every supported locale (incl. RTL)', async ({ page }) => {
+    const LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+    const card = await openEasyView(page, 'D-2');
+    for (const loc of LOCALES) {
+      await page.evaluate(async (l) => { await applyLanguage(l); }, loc);
+      // renderResults re-runs on language switch; the easy view must survive it.
+      await expect(card).toHaveClass(/card-mode-easy/);
+      const p = await card.evaluate((el) => {
+        const panel = el.querySelector('.easy-mode-panel');
+        const texts = [...panel.querySelectorAll('.easy-card')].map(c => c.innerText.replace(/\s+/g, ' ').trim());
+        return {
+          sections: texts.length,
+          empty: texts.filter(t => t.length < 4).length,
+          rawKeyLeak: texts.some(t => /easyMode[A-Z]/.test(t)),
+          koTitleLeak: texts.filter(t => /무엇인가요|누구를 위한|조심할 점/.test(t)).length,
+          callHref: panel.querySelector('.easy-call-btn')?.getAttribute('href'),
+          whoItems: panel.querySelectorAll('.easy-card:nth-of-type(2) li').length,
+          dir: document.documentElement.dir
+        };
+      });
+      expect(p.sections, `${loc}: section count`).toBeGreaterThanOrEqual(6);
+      expect(p.empty, `${loc}: empty sections`).toBe(0);
+      expect(p.rawKeyLeak, `${loc}: raw i18n key leaked`).toBe(false);
+      if (loc !== 'ko') expect(p.koTitleLeak, `${loc}: Korean section titles leaked`).toBe(0);
+      expect(p.callHref, `${loc}: 1345 call button`).toBe('tel:1345');
+      if (loc === 'ar') expect(p.dir, 'ar renders RTL').toBe('rtl');
+    }
+    await page.evaluate(async () => { await applyLanguage('ko'); });
+  });
+
   test('global Easy Mode toggle applies to result cards and persists', async ({ page }) => {
     const card = await searchStatus(page, 'E-7');
     await page.click('#easyModeBtn');
