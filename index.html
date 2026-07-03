@@ -21604,7 +21604,9 @@ const LANGUAGE_OPTIONS = [
     { code: 'fr', html: 'fr', short: 'FR', name: 'Français', local: 'French' },
     { code: 'es', html: 'es', short: 'ES', name: 'Español', local: 'Spanish' },
     { code: 'ar', html: 'ar', short: 'ع', name: 'العربية', local: 'Arabic', dir: 'rtl' },
-    { code: 'de', html: 'de', short: 'DE', name: 'Deutsch', local: 'German' }
+    { code: 'de', html: 'de', short: 'DE', name: 'Deutsch', local: 'German' },
+    { code: 'tr', html: 'tr', short: 'TR', name: 'Türkçe', local: 'Turkish' },
+    { code: 'uk', html: 'uk', short: 'UK', name: 'Українська', local: 'Ukrainian' }
 ];
 // The user's actual selection (drives the selector + persistence). For zh-TW
 // this differs from currentLanguage, which holds the *content* locale used by
@@ -21618,7 +21620,7 @@ function contentLocaleFor(code) { return code === 'zh-TW' ? 'zh-CN' : code; }
 // surfaces; every other selectable language is treated as `partial` (some text
 // still falls back to Korean). Drives the partial-language notice + selector
 // badge so users are told transparently rather than silently shown Korean.
-const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full', 'zh-TW': 'full', ja: 'full', vi: 'full', tl: 'full', id: 'full', ru: 'full', fr: 'full', es: 'full', ar: 'full', de: 'full' };
+const LANGUAGE_SUPPORT = { ko: 'full', en: 'full', 'zh-CN': 'full', 'zh-TW': 'full', ja: 'full', vi: 'full', tl: 'full', id: 'full', ru: 'full', fr: 'full', es: 'full', ar: 'full', de: 'full', tr: 'full', uk: 'full' };
 function languageSupportLevel(code) {
     const normalized = normalizeLocaleCode(code);
     const level = LANGUAGE_SUPPORT[normalized];
@@ -21671,8 +21673,8 @@ const BOOTSTRAP_KO_FALLBACK = {
 };
 let I18N_MANIFEST = {
     defaultLocale: 'ko', canonicalLocale: 'ko',
-    supportedLocales: ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'],
-    files: { ko: 'ko.json', en: 'en.json', 'zh-CN': 'zh-CN.json', ja: 'ja.json', vi: 'vi.json', tl: 'tl.json', id: 'id.json', ru: 'ru.json', fr: 'fr.json', es: 'es.json', ar: 'ar.json', de: 'de.json' },
+    supportedLocales: ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'],
+    files: { ko: 'ko.json', en: 'en.json', 'zh-CN': 'zh-CN.json', ja: 'ja.json', vi: 'vi.json', tl: 'tl.json', id: 'id.json', ru: 'ru.json', fr: 'fr.json', es: 'es.json', ar: 'ar.json', de: 'de.json', tr: 'tr.json', uk: 'uk.json' },
     localeAliases: { zh: 'zh-CN', zhHant: 'zh-CN' },
     pendingLocales: []
 };
