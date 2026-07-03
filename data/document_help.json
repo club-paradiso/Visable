@@ -1,0 +1,220 @@
+[
+  {
+    "id": "integrated_application_form",
+    "docIds": ["doc_app_form", "doc_unified_application_form", "doc_unified_application_form_change"],
+    "titleKo": "통합신청서(신고서)",
+    "titleEn": "Integrated Application / Report Form",
+    "aliasesKo": ["통합신청서", "통합신청서(신고서)", "신청서(별지 34호 서식)", "별지 제34호 서식", "별지 제34호의3 서식"],
+    "aliasesEn": ["Integrated Application Form", "Application Form (Report Form)"],
+    "category": "official_form",
+    "riskLevel": "frequent_mistakes",
+    "appliesTo": ["common"],
+    "summaryKo": "외국인등록, 체류기간 연장, 체류자격 변경·부여, 근무처 변경, 각종 신고 등 여러 체류민원에 공통으로 쓰이는 공식 신청·신고 서식입니다.",
+    "summaryEn": "This is the official application/report form used for several residence procedures, including registration, extension, change or grant of status, workplace matters, and certain reports.",
+    "whoPreparesKo": "원칙적으로 신청인이 본인 정보를 사실대로 작성하고 신청일과 서명 또는 날인을 확인합니다. 대리 작성·제출 또는 미성년자 서명 방식은 신청유형과 관계 서류에 따라 달라질 수 있으므로 접수기관에 확인하세요.",
+    "whoPreparesEn": "The applicant normally completes the applicant details and checks the application date and signature or seal. Rules for a minor or a representative may vary by procedure, so confirm them with the receiving office.",
+    "whenNeededKo": ["외국인등록 또는 등록증 재발급", "체류기간 연장이나 체류자격 변경·부여", "체류지·등록사항 변경신고, 근무처 변경·추가 등 서식의 업무선택란에 표시된 민원"],
+    "whenNeededEn": ["Foreign resident registration or card reissuance", "Extension, change, or grant of status of stay", "Procedures shown in the form's application/report selection area, such as address or registration changes and workplace matters"],
+    "howToPrepare": [
+      {"sectionTitleKo": "신청/신고 선택", "sectionTitleEn": "Select the procedure", "bodyKo": "상단의 업무선택란에서 실제 신청하려는 민원을 확인하고 해당 칸만 정확히 표시합니다. 변경·부여 신청은 희망 체류자격도 함께 확인합니다.", "bodyEn": "In the selection area, mark the procedure you are actually filing. For a change or grant of status, also check the status you are applying for."},
+      {"sectionTitleKo": "신청인 정보", "sectionTitleEn": "Applicant details", "bodyKo": "성명, 생년월일, 국적, 여권번호와 유효기간, 국내 주소를 여권·등록증·거주지 증빙과 일치하게 적습니다. 해당하지 않는 근무처·재학·소득 항목은 민원별 안내를 확인합니다.", "bodyEn": "Enter the name, date of birth, nationality, passport details, Korean address, and other applicable fields consistently with the passport, residence card, and supporting evidence."},
+      {"sectionTitleKo": "날짜·서명", "sectionTitleEn": "Date and signature", "bodyKo": "접수 전에 신청일과 신청인 서명 또는 날인이 빠지지 않았는지 확인합니다. 행정정보 공동이용 동의란의 서명은 신청인·배우자·부 또는 모 등 표시된 주체를 구분해 확인하세요.", "bodyEn": "Before filing, check the application date and the applicant's signature or seal. In the administrative-information consent area, distinguish the applicant, spouse, and parent signature fields."}
+    ],
+    "commonMistakesKo": ["신청하려는 업무를 표시하지 않거나 여러 업무를 불명확하게 표시", "여권·등록증과 다른 영문 성명, 여권번호 또는 주소 기재", "신청일 또는 신청인 서명·날인 누락", "사진이 필요하지 않은 민원까지 일률적으로 부착하거나, 필요한 등록·재발급 민원에서 사진 누락"],
+    "commonMistakesEn": ["Leaving the procedure unmarked or marking it ambiguously", "Entering a name, passport number, or address that does not match the evidence", "Missing application date, signature, or seal", "Assuming the photo rule is identical for every procedure"],
+    "userQuestionsKo": ["전자민원에서도 종이 서식을 제출하나요?", "미성년자는 어느 서명란을 사용하나요?", "대리인이 작성하거나 제출할 수 있나요?"],
+    "userQuestionsEn": ["Is the paper form also needed for an e-application?", "Which signature field applies to a minor?", "Can a representative prepare or submit the form?"],
+    "warningKo": "이 서식이 여러 민원에 쓰인다고 해서 모든 항목을 작성하는 것은 아닙니다. 신청유형별 제출서류와 작성 범위는 최신 안내를 함께 확인하세요.",
+    "warningEn": "Because the form covers several procedures, not every field applies to every filing. Check the current procedure-specific instructions as well.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 민원서식 — 통합신청서(신고서)", "labelEn": "HiKorea civil forms — Integrated Application / Report Form", "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt", "sourceType": "official_form_list", "checkedAt": "2026-07-02", "evidenceNoteKo": "한글 HWP·PDF·DOC 공식 서식과 사용 가능한 체류민원 서식을 확인했습니다.", "evidenceNoteEn": "Official Korean HWP, PDF, and DOC form entries were checked."},
+      {"labelKo": "국가법령정보센터 — 출입국관리법 시행규칙", "labelEn": "Korean Law Information Center — Enforcement Rule of the Immigration Act", "url": "https://www.law.go.kr/LSW/lsInfoP.do?lsiSeq=266161", "sourceType": "statute_form", "checkedAt": "2026-07-02"}
+    ],
+    "disclaimerKo": "공식 서식과 공개 자료를 바탕으로 한 작성 보조입니다. 접수 가능 여부와 추가서류는 체류자격, 신청유형, 개인 상황 및 관할 출입국관서 판단에 따라 달라질 수 있습니다.",
+    "disclaimerEn": "This practical guide is based on official forms and public guidance. Acceptance and additional evidence may vary by status, procedure, individual facts, and the competent immigration office."
+  },
+  {
+    "id": "identity_guarantee_form",
+    "docIds": ["doc_guarantee"],
+    "titleKo": "신원보증서",
+    "titleEn": "Letter of Guarantee / Identity Guarantee Form",
+    "aliasesKo": ["신원보증서", "보증서", "신분보증서", "국내 배우자의 신원보증서"],
+    "aliasesEn": ["Letter of Guarantee", "Identity Guarantee Form", "Guarantee Form"],
+    "category": "official_form",
+    "riskLevel": "high",
+    "appliesTo": ["C-3", "E-6", "E-7", "E-10", "F-1", "F-5", "F-6", "G-1"],
+    "summaryKo": "신청인이 아니라 신원보증인이 피보증 외국인의 체류와 관련된 정해진 사항을 확인하고 보증하는 공식 서식입니다.",
+    "summaryEn": "This official form is completed by a guarantor—not by the applicant acting as the guarantor—to confirm and guarantee specified matters relating to the foreign applicant's stay.",
+    "whoPreparesKo": "신원보증인 정보는 실제 보증인이 사실대로 작성하고 마지막에 서명 또는 날인합니다. 신청인은 피보증 외국인란의 본인 정보를 제공하되, 보증인 정보를 임의로 만들거나 대신 서명해서는 안 됩니다.",
+    "whoPreparesEn": "The actual guarantor completes the guarantor details and signs or seals the form. The applicant provides the guaranteed foreigner's details but must not invent guarantor information or sign for the guarantor.",
+    "whenNeededKo": ["체류자격별 공식 안내가 신원보증서를 요구하는 경우", "특정 직종·하위유형 또는 가족·초청 관계에 따라 요구되는 경우", "관할 출입국관서가 심사 과정에서 보완을 요구하는 경우"],
+    "whenNeededEn": ["When the official guidance for the status requires it", "When a specific occupation, subtype, family, or invitation route requires it", "When the competent office requests supplementation during review"],
+    "howToPrepare": [
+      {"sectionTitleKo": "피보증 외국인", "sectionTitleEn": "Guaranteed foreigner", "bodyKo": "성명, 생년월일, 국적, 여권번호, 국내 주소와 체류목적을 실제 신청자료와 일치하게 적습니다.", "bodyEn": "Enter the foreigner's name, birth date, nationality, passport number, Korean address, and purpose of stay consistently with the application evidence."},
+      {"sectionTitleKo": "신원보증인", "sectionTitleEn": "Guarantor", "bodyKo": "보증인의 성명·국적·식별정보·주소·연락처, 피보증인과의 관계, 근무처와 직위 등 공식 서식의 해당 항목을 사실대로 작성합니다.", "bodyEn": "Enter the guarantor's identity and contact details, relationship to the foreigner, workplace, position, and other applicable official-form fields accurately."},
+      {"sectionTitleKo": "보증기간과 서명", "sectionTitleEn": "Guarantee period and signature", "bodyKo": "보증기간을 실제 요구 범위에 맞춰 적고, 마지막 확인문 아래 날짜와 신원보증인의 서명 또는 날인을 확인합니다. 공식 서식에는 보증기간의 최장기간이 4년이라고 표시되어 있습니다.", "bodyEn": "State the applicable guarantee period and check the date and guarantor's signature or seal. The official form states that the maximum guarantee period is four years."}
+    ],
+    "commonMistakesKo": ["신청인과 신원보증인 정보를 뒤바꿔 작성", "보증인 서명 또는 날인, 작성일, 보증기간 누락", "관계·주소·근무처가 다른 제출서류와 불일치", "실제 동의하지 않은 사람의 정보를 쓰거나 서명을 대신함"],
+    "commonMistakesEn": ["Reversing applicant and guarantor details", "Missing the guarantor's signature or seal, date, or guarantee period", "Relationship, address, or workplace details conflicting with other evidence", "Using a person's details or signature without genuine agreement"],
+    "userQuestionsKo": ["보증인은 꼭 한국인이어야 하나요?", "가족이 보증인이 될 수 있나요?", "회사 대표나 담당자가 작성할 수 있나요?"],
+    "userQuestionsEn": ["Must the guarantor be Korean?", "Can a family member be the guarantor?", "Can a company representative prepare it?"],
+    "warningKo": "보증인 자격과 실제 요구 여부는 체류자격·하위유형·관계에 따라 달라집니다. 보증인 정보를 임의로 작성하거나 서명을 대신하지 마세요.",
+    "warningEn": "Guarantor eligibility and whether this form is required vary by status, subtype, and relationship. Never fabricate guarantor details or sign on the guarantor's behalf.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 민원서식 — 신원보증서(한글/영문)", "labelEn": "HiKorea civil forms — Letter of Guarantee (Korean/English)", "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt", "sourceType": "official_form_list", "checkedAt": "2026-07-02"},
+      {"labelKo": "국가법령정보센터 — 별지 제129호 신원보증서", "labelEn": "Korean Law Information Center — Form 129 Letter of Guarantee", "url": "https://www.law.go.kr/flDownload.do?flSeq=74517885&gubun=", "sourceType": "statute_form", "checkedAt": "2026-07-02", "evidenceNoteKo": "피보증 외국인·신원보증인·관계·보증기간·보증내용·서명란을 확인했습니다.", "evidenceNoteEn": "The guaranteed foreigner, guarantor, relationship, period, guarantee terms, and signature fields were checked."}
+    ],
+    "disclaimerKo": "공식 서식과 공개 자료를 바탕으로 한 작성 보조이며 법률자문이 아닙니다. 실제 요구 여부는 최신 자격별 안내와 관할 출입국관서에서 확인하세요.",
+    "disclaimerEn": "This practical aid is based on official forms and public guidance and is not legal advice. Confirm the actual requirement in the latest status-specific guidance and with the competent office."
+  },
+  {
+    "id": "residence_proof",
+    "docIds": ["doc_address", "doc_residence_proof_generic", "doc_address_change"],
+    "titleKo": "거주지·체류지 입증서류",
+    "titleEn": "Proof of Residence",
+    "aliasesKo": ["거주지 입증서류", "체류지 입증서류", "주소지 입증서류", "주거지 입증서류", "체류지 증빙", "거주 사실 입증서류"],
+    "aliasesEn": ["Proof of Residence", "Proof of Address", "Residence Evidence"],
+    "category": "evidence",
+    "riskLevel": "office_confirmation",
+    "appliesTo": ["common"],
+    "summaryKo": "한 장의 고정 서식이 아니라, 신청인이 실제로 머무는 주소를 보여 주는 여러 종류의 증빙을 묶어 부르는 말입니다.",
+    "summaryEn": "This is a category of evidence—not one fixed form—used to show the address where the applicant actually lives.",
+    "whoPreparesKo": "본인 명의 계약서는 신청인이 준비하고, 가족·지인·고용주·기숙사·숙박업체가 주소를 제공한 경우에는 제공자나 해당 기관의 확인서와 권한 증빙이 함께 필요할 수 있습니다.",
+    "whoPreparesEn": "The applicant provides a lease in their own name. When family, a friend, an employer, a dormitory, or an accommodation business provides the address, confirmation and evidence from the provider or institution may also be needed.",
+    "whenNeededKo": ["외국인등록, 체류기간 연장, 체류자격 변경·부여 등 자격별 안내에서 요구하는 경우", "체류지 변경신고 등 현재 주소 확인이 핵심인 민원", "관할 출입국관서가 실제 거주 여부를 추가 확인하는 경우"],
+    "whenNeededEn": ["When status-specific guidance requires it for registration, extension, change, or grant", "For procedures centered on the current address, such as an address change report", "When the competent office asks for more evidence of actual residence"],
+    "howToPrepare": [
+      {"sectionTitleKo": "주소 일치 확인", "sectionTitleEn": "Check the address", "bodyKo": "신청서에 적는 주소와 계약서·확인서·영수증의 주소가 같은지 확인합니다. 동·호수와 제공 시작일도 빠뜨리지 마세요.", "bodyEn": "Make sure the address on the application matches the lease, confirmation, or receipt, including unit details and the relevant start date."},
+      {"sectionTitleKo": "누가 사용할 권리가 있는지", "sectionTitleEn": "Show the right to use the premises", "bodyKo": "본인 명의가 아니라면 주소 제공자가 해당 주거지를 소유하거나 임차해 사용할 권리가 있음을 보여 주는 자료가 요구될 수 있습니다.", "bodyEn": "If the premises are not in the applicant's name, evidence may be needed to show that the provider owns or lawfully rents and uses the premises."},
+      {"sectionTitleKo": "최신 안내와 추가자료", "sectionTitleEn": "Current guidance and extra evidence", "bodyKo": "공식 매뉴얼은 임대차계약서, 숙소제공 확인서, 만료예고 우편물, 공공요금 영수증, 기숙사비 영수증 등을 예시합니다. 모든 예시가 모든 민원에서 항상 인정된다는 뜻은 아닙니다.", "bodyEn": "The official manual gives examples such as leases, accommodation confirmation, expiry-notice mail, utility receipts, and dormitory receipts. This does not mean every example is always accepted for every procedure."}
+    ],
+    "situationalGuidanceKo": [
+      {"sectionTitleKo": "내 명의 임대차계약이 있어요", "bodyKo": "계약서의 임차인, 주소, 계약기간이 신청내용과 일치하는지 확인해 준비합니다. 갱신·전대 등 특수한 사정이 있으면 추가 소명을 요구할 수 있습니다."},
+      {"sectionTitleKo": "가족 또는 지인 집에 살아요", "bodyKo": "거주/숙소 제공 확인서와 제공자의 신분·주소 또는 해당 주거지 사용권한을 보여 주는 자료가 요구될 수 있습니다."},
+      {"sectionTitleKo": "회사 제공 숙소에 살아요", "bodyKo": "회사·고용주가 작성한 숙소 제공 확인과 주거형태, 제공 시작일, 대표자 서명 또는 직인을 확인합니다. 추가 증빙은 자격별 안내가 우선입니다."},
+      {"sectionTitleKo": "기숙사에 살아요", "bodyKo": "학교·기관이 발급한 기숙사 거주확인서 또는 매뉴얼이 인정 예시로 든 기숙사비 영수증 등을 확인합니다."},
+      {"sectionTitleKo": "호텔·고시원 등 임시 숙소예요", "bodyKo": "숙박 영수증, 입실확인, 숙소 제공 확인 등 실제 체류를 보여 주는 자료가 필요할 수 있습니다. 임시 숙소 인정 범위는 신청유형과 관할청에 확인하세요."}
+    ],
+    "situationalGuidanceEn": [
+      {"sectionTitleEn": "I have a lease in my own name", "bodyEn": "Check that the tenant, address, and lease period match the application. Renewals, subleases, or unusual arrangements may need further explanation."},
+      {"sectionTitleEn": "I live with family or a friend", "bodyEn": "Accommodation confirmation and evidence of the provider's identity, address, or right to use the premises may be required."},
+      {"sectionTitleEn": "My employer provides housing", "bodyEn": "Check the employer or company confirmation, residence type, start date, and representative signature or company seal. Status-specific instructions take priority."},
+      {"sectionTitleEn": "I live in a dormitory", "bodyEn": "Check for a dormitory residence confirmation issued by the institution or evidence such as a dormitory fee receipt where the manual recognizes it as an example."},
+      {"sectionTitleEn": "I use temporary accommodation", "bodyEn": "Receipts, check-in confirmation, or provider confirmation may be needed. Ask the competent office whether the temporary arrangement is sufficient for your procedure."}
+    ],
+    "commonMistakesKo": ["신청서 주소와 증빙 주소 또는 동·호수가 다름", "타인 명의 주소인데 제공 확인이나 사용권한 자료가 없음", "숙박 영수증에 신청인·주소·기간을 확인할 정보가 부족함", "예시 서류 하나만 있으면 항상 충분하다고 단정함"],
+    "commonMistakesEn": ["The application address or unit does not match the evidence", "A third-party address is used without provider confirmation or right-to-use evidence", "A receipt lacks enough information to identify the applicant, address, or period", "Assuming that one example document is always sufficient"],
+    "userQuestionsKo": ["친구 집에 살면 무엇을 같이 내나요?", "기숙사 확인서만으로 충분한가요?", "호텔·고시원·단기임대도 인정되나요?"],
+    "userQuestionsEn": ["What do I submit if I live with a friend?", "Is a dormitory confirmation sufficient?", "Are hotels, goshiwon, or short-term rentals accepted?"],
+    "warningKo": "공식 매뉴얼의 예시는 대체 가능성을 보여 주지만, 모든 서류가 모든 신청에서 자동으로 인정되는 것은 아닙니다. 관할 출입국관서가 추가 확인을 요구할 수 있습니다.",
+    "warningEn": "Official examples show possible evidence, but not every item is automatically accepted for every filing. The competent office may request more evidence.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 — 2026.6 체류·사증 안내매뉴얼 공지", "labelEn": "HiKorea — June 2026 residence and visa manual notice", "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1", "sourceType": "official_manual", "checkedAt": "2026-07-02", "evidenceNoteKo": "저장소의 공식 2026.6 체류민원 안내매뉴얼에서 임대차계약서·숙소제공 확인서·만료예고 우편물·공공요금·기숙사비 영수증 예시를 교차 확인했습니다.", "evidenceNoteEn": "Cross-checked against the repository's official June 2026 residence manual examples."},
+      {"labelKo": "하이코리아 민원안내 — 가족·지인/숙박시설 체류지 증빙 사례", "labelEn": "HiKorea civil guidance — residence evidence examples", "url": "https://www.hikorea.go.kr/cvlappl/cvlapplInfoR.pt?CAT_SEQ=7197", "sourceType": "official_guidance", "checkedAt": "2026-07-02"}
+    ],
+    "disclaimerKo": "공식 자료에 제시된 일반적 준비 예시입니다. 실제 접수 가능 여부는 신청유형, 주소 형태, 제출자료와 관할 출입국관서 판단에 따라 달라질 수 있습니다.",
+    "disclaimerEn": "These are general preparation examples from official materials. Acceptance varies by procedure, housing arrangement, evidence, and the competent immigration office."
+  },
+  {
+    "id": "accommodation_provision_confirmation",
+    "docIds": ["doc_accom"],
+    "titleKo": "거주/숙소 제공 확인서",
+    "titleEn": "Confirmation of Residence / Accommodation",
+    "aliasesKo": ["거주숙소제공사실확인서", "거주/숙소제공확인서", "거주/숙소 제공 확인서", "숙소제공확인서", "숙소 제공 확인서", "거주숙소제공확인서"],
+    "aliasesEn": ["Confirmation of Residence/Accommodation", "Accommodation Provision Confirmation", "Accommodation Confirmation"],
+    "category": "official_form",
+    "riskLevel": "frequent_mistakes",
+    "appliesTo": ["common"],
+    "summaryKo": "신청인 명의의 임대차계약서만으로 체류지를 설명하기 어려울 때, 실제 거주·숙소 제공자가 누구에게 어떤 숙소를 제공했는지 확인하는 공식 서식입니다.",
+    "summaryEn": "This official form records who provides accommodation to the foreign applicant and what accommodation is provided, often when a lease in the applicant's own name does not establish the address.",
+    "whoPreparesKo": "외국인은 ‘제공 받는 외국인’ 정보를 확인하고, 실제 숙소 제공자는 제공자 정보·관계·소유형태·주거형태·제공일을 작성한 뒤 서명합니다. 회사 기숙사는 대표자 정보와 서명 또는 업체 직인 방식이 사용될 수 있습니다.",
+    "whoPreparesEn": "The foreign applicant checks the recipient details. The actual provider enters the provider, relationship, ownership, residence type, and start-date details and signs. Employer housing may use the representative's signature or company seal as indicated on the form.",
+    "whenNeededKo": ["가족·친척·지인·고용주 등 타인이 제공한 주소에서 거주하는 경우", "회사 기숙사나 숙박시설 등 제공자가 따로 있는 경우", "자격별 안내 또는 관할 출입국관서가 체류지 증빙으로 요구하는 경우"],
+    "whenNeededEn": ["When the applicant lives at an address provided by family, a relative, a friend, or an employer", "For employer housing, dormitory-style housing, or accommodation with a separate provider", "When status-specific guidance or the competent office requires it as residence evidence"],
+    "howToPrepare": [
+      {"sectionTitleKo": "제공 받는 외국인", "sectionTitleEn": "Foreign recipient", "bodyKo": "국적, 등록번호(있는 경우), 성명, 연락처와 실제 거주 주소를 신청서·여권·등록증과 일치하게 적습니다.", "bodyEn": "Enter nationality, residence registration number if applicable, name, contact details, and actual address consistently with the application and identity documents."},
+      {"sectionTitleKo": "숙소 제공자", "sectionTitleEn": "Accommodation provider", "bodyKo": "실제로 제공 권한이 있는 사람이나 회사 대표자의 인적사항, 외국인과의 관계, 소유·임차 형태, 주거형태와 제공 시작일을 사실대로 표시합니다.", "bodyEn": "The person with authority to provide the premises, or the company representative, enters accurate identity, relationship, ownership/rental, residence-type, and start-date information."},
+      {"sectionTitleKo": "첨부 증빙과 확인", "sectionTitleEn": "Supporting evidence and confirmation", "bodyKo": "공식 서식 안내에 따르면 제공자와 주소가 같으면 최신 주소가 표시된 제공자 신분증 사본, 주소가 다르면 제공자의 소유 또는 임차 권한을 보여 주는 등기·임대차 자료 등이 요구될 수 있습니다. 최종 날짜와 제공자의 서명 또는 직인을 확인합니다.", "bodyEn": "The form guidance indicates that a provider ID showing the current address may be needed when addresses match, while ownership or lease evidence may be needed when they differ. Check the final date and provider signature or seal."}
+    ],
+    "commonMistakesKo": ["신청인이 제공자란까지 임의로 작성하거나 대신 서명", "실제 거주 주소, 제공 시작일 또는 관계 누락", "제공자 주소와 제공 숙소 주소의 차이를 뒷받침할 권한 자료 누락", "회사 숙소인데 대표자 정보·서명 또는 업체 직인 확인이 없음"],
+    "commonMistakesEn": ["The applicant completes or signs the provider section without authority", "Missing actual address, start date, or relationship", "No evidence explaining the provider's right to a property at a different address", "Employer housing lacks the representative details, signature, or company seal indicated by the form"],
+    "userQuestionsKo": ["집주인이 아니라 임차인이 숙소를 제공해도 되나요?", "제공자 신분증 사본이 항상 필요한가요?", "회사 기숙사는 누가 서명하나요?"],
+    "userQuestionsEn": ["Can a tenant rather than an owner provide accommodation?", "Is a provider ID copy always required?", "Who signs for employer-provided housing?"],
+    "warningKo": "이 확인서 한 장만으로 체류지 입증이 항상 완료되는 것은 아닙니다. 제공자의 신분·주소 또는 주거지 사용권한 자료를 추가로 요구할 수 있습니다.",
+    "warningEn": "This confirmation alone does not always complete proof of residence. Additional evidence of the provider's identity, address, or right to use the premises may be requested.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 민원서식 — 거주숙소제공사실확인서(영문/중문 병기)", "labelEn": "HiKorea civil forms — Confirmation of Residence/Accommodation", "url": "https://www.hikorea.go.kr/board/BoardApplicationListR.pt", "sourceType": "official_form_list", "checkedAt": "2026-07-02", "evidenceNoteKo": "영문병기·중문병기 공식 양식과 PDF 항목을 확인했습니다.", "evidenceNoteEn": "Official Korean/English and Korean/Chinese form entries were checked."},
+      {"labelKo": "하이코리아 민원안내 — 체류지 신고 구비서류 사례", "labelEn": "HiKorea civil guidance — address-report evidence examples", "url": "https://www.hikorea.go.kr/cvlappl/cvlapplInfoR.pt?CAT_SEQ=7197", "sourceType": "official_guidance", "checkedAt": "2026-07-02"}
+    ],
+    "disclaimerKo": "공식 서식의 항목과 공개 안내를 바탕으로 한 작성 보조입니다. 신청유형에 따른 추가자료는 최신 자격별 안내와 관할 출입국관서에서 확인하세요.",
+    "disclaimerEn": "This aid is based on the official form and public guidance. Check current status-specific instructions and the competent office for additional evidence."
+  },
+  {
+    "id": "family_relationship_evidence",
+    "docIds": ["doc_fam_rel", "doc_fam_rel_kr", "doc_mar_rel", "doc_basic", "doc_f4_proof"],
+    "titleKo": "가족관계 입증서류",
+    "titleEn": "Evidence of Family Relationship",
+    "aliasesKo": ["가족관계 입증서류", "가족관계증명서", "혼인관계증명서", "결혼증명서", "출생증명서", "친족관계", "부모와의 가족관계를 입증", "가족관계 소명 서류"],
+    "aliasesEn": ["Family Relationship Evidence", "Marriage Certificate", "Birth Certificate", "Kinship Evidence"],
+    "category": "evidence",
+    "riskLevel": "original_confirmation",
+    "appliesTo": ["F-1", "F-2", "F-3", "F-4", "F-5", "F-6", "D-2", "E-8"],
+    "summaryKo": "배우자·자녀·부모·부양가족 등 신청에서 중요한 법률상 또는 공적 가족관계를 보여 주는 서류의 묶음입니다.",
+    "summaryEn": "This is a category of official evidence used to show a legal or publicly recorded relationship involving a spouse, child, parent, dependent, or other family member.",
+    "whoPreparesKo": "한국 서류는 관계에 맞는 명의와 종류의 증명서를 발급받고, 외국 서류는 해당 국가의 권한 있는 기관이 발급한 공적 서류를 준비합니다. 누가 기준 인물인지와 어느 관계를 증명해야 하는지부터 확인하세요.",
+    "whoPreparesEn": "For Korean records, obtain the certificate type and named person's record that proves the relationship. For foreign records, prepare an official document issued by the competent authority in that country. First identify whose relationship must be proved.",
+    "whenNeededKo": ["배우자·자녀·부모·부양가족 관계가 체류자격 또는 초청의 핵심인 경우", "부모 명의 재정증빙처럼 신청인과 서류 명의자의 관계를 추가로 보여야 하는 경우", "미성년자, 보호자, 양육·친권 관계를 확인해야 하는 경우"],
+    "whenNeededEn": ["When a spouse, child, parent, or dependent relationship is central to the status or invitation", "When another person's evidence—such as a parent's financial evidence—requires proof of the relationship", "When a minor, guardian, custody, or parental relationship must be established"],
+    "howToPrepare": [
+      {"sectionTitleKo": "한국에서 발급한 서류", "sectionTitleEn": "Korean-issued records", "bodyKo": "가족관계증명서·혼인관계증명서·기본증명서 등 중 어떤 서류와 누구 명의의 상세증명서가 필요한지 자격별 안내를 확인합니다.", "bodyEn": "Check the status-specific guidance for the required record—such as family, marriage, or basic certificate—and whose detailed record must be issued."},
+      {"sectionTitleKo": "외국에서 발급한 서류", "sectionTitleEn": "Foreign-issued records", "bodyKo": "출생증명서·결혼증명서·가족등록부 등 해당 국가의 공적 서류가 사용될 수 있습니다. 번역, 원본, 아포스티유 또는 영사확인 요구는 자격·국가·접수장소별 공식 안내를 확인하세요.", "bodyEn": "Official birth, marriage, or family-register records may be used. Translation, original-document, apostille, or consular-authentication requirements must be checked for the status, country, and place of filing."},
+      {"sectionTitleKo": "관계 연결 확인", "sectionTitleEn": "Connect the relationship", "bodyKo": "성명 표기·생년월일·부모 또는 배우자 정보가 서로 이어지는지 확인합니다. 한 장으로 관계가 보이지 않으면 여러 공적 서류가 필요할 수 있습니다.", "bodyEn": "Check that names, birth dates, and parent or spouse details connect across the records. More than one official record may be needed when one document does not show the full relationship."}
+    ],
+    "commonMistakesKo": ["신청인과 기준 가족의 관계를 직접 보여 주지 못하는 서류 제출", "한글·영문 성명 표기가 다른데 동일인 소명이 없음", "상세증명서·원본·번역·공적확인 요구를 자격별로 확인하지 않음", "특정 국가·특정 자격의 공적확인 기준을 모든 신청에 동일하게 적용"],
+    "commonMistakesEn": ["Submitting a record that does not directly connect the applicant and the relevant family member", "Name spelling differs without evidence that the records concern the same person", "Not checking status-specific requirements for detailed records, originals, translation, or authentication", "Applying one country's or one status's authentication rule to every application"],
+    "userQuestionsKo": ["한국 가족관계증명서와 외국 출생증명서는 어떻게 다른가요?", "번역·아포스티유·영사확인이 항상 필요한가요?", "부모·배우자·자녀 중 누구 명의로 발급해야 하나요?"],
+    "userQuestionsEn": ["How do Korean family certificates differ from a foreign birth certificate?", "Are translation, apostille, or consular authentication always required?", "Whose record should be issued—the parent, spouse, or child?"],
+    "warningKo": "해외 발급 서류의 번역·아포스티유·영사확인 요건은 체류자격과 발급국가에 따라 달라집니다. 개별 매뉴얼 근거 없이 일률적으로 적용하지 마세요.",
+    "warningEn": "Translation, apostille, and consular-authentication requirements for foreign records vary by status and issuing country. Do not apply them uniformly without procedure-specific official guidance.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 — 2026.6 체류·사증 안내매뉴얼 공지", "labelEn": "HiKorea — June 2026 residence and visa manual notice", "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1", "sourceType": "official_manual", "checkedAt": "2026-07-02", "evidenceNoteKo": "저장소의 공식 2026.6 체류·사증 매뉴얼에서 가족관계증명서, 출생·결혼증명서, 번역 및 자격별 공적확인 사례를 확인했습니다.", "evidenceNoteEn": "Cross-checked against the repository's official June 2026 residence and visa manuals."},
+      {"labelKo": "하이코리아 체류·민원 안내", "labelEn": "HiKorea residence and civil guidance", "url": "https://www.hikorea.go.kr/", "sourceType": "official_portal", "checkedAt": "2026-07-02"}
+    ],
+    "disclaimerKo": "가족관계 서류는 자격·국가·관계·접수장소별 차이가 큽니다. 화면의 자격별 근거와 최신 공식 안내를 우선하고, 불명확하면 관할 출입국관서 또는 1345에 확인하세요.",
+    "disclaimerEn": "Family evidence varies substantially by status, country, relationship, and place of filing. Follow the status-specific source and current official guidance, and ask the competent office or 1345 when unclear."
+  },
+  {
+    "id": "guardian_proxy_guidance",
+    "docIds": ["doc_family_guardian_proof"],
+    "titleKo": "미성년자·보호자·대리 작성/신청 확인",
+    "titleEn": "Minor, Guardian, and Representative Filing Check",
+    "aliasesKo": ["미성년자", "법정대리인", "보호자 입증서류", "가족관계·보호자 입증서류", "대리 신청", "대리인 신청", "위임장", "대리 작성", "대리 제출"],
+    "aliasesEn": ["Minor Applicant", "Legal Guardian", "Representative Filing", "Power of Attorney", "Proxy Application"],
+    "category": "caution",
+    "riskLevel": "office_confirmation",
+    "appliesTo": ["situational"],
+    "summaryKo": "미성년자이거나 본인이 직접 작성·방문하기 어려운 경우, 누가 작성·서명·제출할 수 있는지와 어떤 관계·위임 자료가 필요한지를 신청유형별로 확인하는 안내입니다.",
+    "summaryEn": "This guide helps identify what must be checked when a minor or someone unable to prepare or visit personally may need a guardian or representative to prepare, sign, or submit documents.",
+    "whoPreparesKo": "신청인, 법정대리인, 보호자, 가족, 회사 담당자, 행정사 등 역할에 따라 권한과 필요한 자료가 다를 수 있습니다. 실제 신청유형에 맞는 공식 안내 없이는 대리 가능 여부를 단정할 수 없습니다.",
+    "whoPreparesEn": "Authority and evidence may differ for the applicant, legal guardian, caregiver, family member, company employee, or licensed administrative agent. Representative filing cannot be assumed without procedure-specific official guidance.",
+    "whenNeededKo": ["신청인이 미성년자인 경우", "본인이 서식을 작성하거나 직접 방문하기 어려운 경우", "회사·학교 담당자, 가족 또는 전문 대리인이 신청에 관여하는 경우"],
+    "whenNeededEn": ["When the applicant is a minor", "When the applicant cannot prepare the form or visit personally", "When a company or school employee, family member, or professional representative is involved"],
+    "howToPrepare": [
+      {"sectionTitleKo": "확인이 필요한 항목", "sectionTitleEn": "Items to verify", "bodyKo": "① 누가 신청인인지 ② 누가 작성하는지 ③ 누가 서명해야 하는지 ④ 누가 방문·제출하는지 ⑤ 위임장·관계증명·대리인 신분증·재직증명 등이 필요한지를 각각 구분합니다.", "bodyEn": "Separate five questions: who is the applicant, who prepares the form, who must sign, who visits or submits it, and whether authority, relationship, ID, or employment evidence is required."},
+      {"sectionTitleKo": "미성년자", "sectionTitleEn": "Minor applicants", "bodyKo": "일부 공식 매뉴얼에는 미성년자의 법정대리인 동의서나 관계·양육권 자료가 별도로 적혀 있습니다. 그러나 모든 체류민원에 같은 규칙이 적용된다고 보기는 어려우므로 해당 자격 안내를 확인합니다.", "bodyEn": "Some official manual sections expressly require a legal-representative consent or relationship/custody evidence for a minor. The same rule should not be assumed for every residence procedure."},
+      {"sectionTitleKo": "대리 신청", "sectionTitleEn": "Representative filing", "bodyKo": "공식 매뉴얼의 일부 신청에는 대리인 신청 시 위임장, 대리인 재직증명서, 대리인 신분증을 추가한다고 명시되어 있습니다. 이는 그 절차의 근거이며 모든 민원에 대한 포괄적 허용은 아닙니다.", "bodyEn": "Some official manual procedures expressly add a power of attorney, representative employment certificate, and representative ID. That supports those specific procedures, not a blanket right to representative filing."}
+    ],
+    "commonMistakesKo": ["작성자·서명자·방문 제출자를 같은 개념으로 봄", "가족이면 별도 위임이나 관계증명 없이 항상 대리할 수 있다고 생각함", "회사 담당자가 신청인 또는 보증인을 대신해 서명", "행정사·대리인 제출 가능 범위를 다른 민원에 그대로 적용"],
+    "commonMistakesEn": ["Treating preparer, signer, and filing visitor as the same role", "Assuming a family member can always act without authority or relationship evidence", "A company employee signs as the applicant or guarantor", "Applying representative rules from one procedure to another"],
+    "userQuestionsKo": ["미성년자는 누가 서명하나요?", "부모가 대신 작성할 수 있나요?", "행정사나 대리인이 제출할 수 있나요?", "가족이 대신 방문해도 되나요?"],
+    "userQuestionsEn": ["Who signs for a minor?", "Can a parent prepare the form?", "Can an administrative agent or representative submit it?", "Can a family member visit instead?"],
+    "warningKo": "공식 자료 확인 필요: 대리 작성·서명·제출 가능 여부는 서로 다른 문제이며 신청유형별로 달라질 수 있습니다. 관할 출입국관서 또는 1345에 역할과 준비서류를 구체적으로 확인하세요.",
+    "warningEn": "Official confirmation required: preparation, signature, and submission by another person are different questions and may vary by procedure. Ask the competent office or 1345 about the exact role and evidence required.",
+    "sourceRefs": [
+      {"labelKo": "하이코리아 — 2026.6 체류·사증 안내매뉴얼 공지", "labelEn": "HiKorea — June 2026 residence and visa manual notice", "url": "https://www.hikorea.go.kr/board/BoardNtcDetailR.pt?BBS_SEQ=1&BBS_GB_CD=BS10&NTCCTT_SEQ=1062&page=1", "sourceType": "official_manual", "checkedAt": "2026-07-02", "evidenceNoteKo": "저장소의 공식 2026.6 매뉴얼에서 일부 절차의 대리신청 추가서류와 미성년자 법정대리인 동의서 사례를 확인했습니다. 포괄적 대리 허용 근거로 사용하지 않습니다.", "evidenceNoteEn": "Specific representative-filing documents and minor-consent examples were found; they are not treated as blanket permission."},
+      {"labelKo": "하이코리아 공식 포털", "labelEn": "HiKorea official portal", "url": "https://www.hikorea.go.kr/", "sourceType": "official_portal", "checkedAt": "2026-07-02"}
+    ],
+    "disclaimerKo": "이 안내는 법률자문이나 대리 가능 보장이 아닙니다. 본인의 신청유형·나이·관계·방문 여부를 설명하고 공식 채널에서 확인하세요.",
+    "disclaimerEn": "This is not legal advice or a guarantee that representative filing is allowed. Describe the exact procedure, age, relationship, and visit arrangement when seeking official confirmation."
+  }
+]

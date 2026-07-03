@@ -544,6 +544,66 @@ body.searched .results-area .qf { opacity: 1; transform: translateY(0); pointer-
 .doc-guide-source { margin: 0; font-size: 0.7rem; color: var(--t3, #777); border-top: 1px dashed var(--bd2, #ddd); padding-top: 6px; }
 [data-theme="dark"] .doc-guide-drawer { background: var(--bg2); border-color: var(--bd3); }
 [data-theme="dark"] .doc-guide-toggle { background: var(--bg2); border-color: var(--bd3); }
+
+/* Source-grounded document explainer: wide side panel on desktop, full-screen on mobile. */
+.document-help-trigger { margin-left: auto; flex: 0 0 auto; min-height: 34px; border: 1px solid color-mix(in srgb, var(--ac) 45%, var(--bd2)); background: color-mix(in srgb, var(--ac) 7%, var(--bg1)); color: var(--ac); border-radius: 8px; padding: 0.35rem 0.62rem; font: inherit; font-size: 0.72rem; font-weight: 850; line-height: 1.35; cursor: pointer; white-space: nowrap; }
+.document-help-trigger:hover, .document-help-trigger:focus-visible { background: color-mix(in srgb, var(--ac) 14%, var(--bg1)); border-color: var(--ac); outline: none; }
+.document-help-trigger:focus-visible { box-shadow: 0 0 0 3px color-mix(in srgb, var(--ac) 20%, transparent); }
+.document-help-overlay { position: fixed; inset: 0; z-index: 4100; display: flex; justify-content: flex-end; background: rgba(15, 23, 42, 0.48); opacity: 0; visibility: hidden; pointer-events: none; transition: opacity 0.2s ease, visibility 0.2s ease; }
+.document-help-overlay.is-open { opacity: 1; visibility: visible; pointer-events: auto; }
+.document-help-backdrop { position: absolute; inset: 0; border: 0; background: transparent; cursor: default; }
+.document-help-panel { position: relative; width: min(760px, 92vw); height: 100vh; height: 100dvh; display: flex; flex-direction: column; background: var(--bg1); border-left: 1px solid var(--bd2); box-shadow: -18px 0 54px rgba(15, 23, 42, 0.2); transform: translateX(100%); transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.document-help-overlay.is-open .document-help-panel { transform: translateX(0); }
+.document-help-header { flex: 0 0 auto; display: flex; align-items: flex-start; gap: 1rem; padding: 1.25rem clamp(1rem, 3vw, 1.75rem); border-bottom: 1px solid var(--bd2); background: var(--bg1); }
+.document-help-title-stack { flex: 1; min-width: 0; }
+.document-help-kicker { margin: 0 0 0.3rem; color: var(--ac); font-size: 0.72rem; font-weight: 850; letter-spacing: 0.04em; }
+.document-help-title { margin: 0; color: var(--t1); font-size: clamp(1.25rem, 1rem + 0.8vw, 1.6rem); line-height: 1.35; word-break: keep-all; }
+.document-help-title-en { margin: 0.28rem 0 0; color: var(--t3); font-size: 0.82rem; line-height: 1.4; }
+.document-help-close { flex: 0 0 auto; width: 42px; height: 42px; display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--bd2); border-radius: 50%; background: var(--bg1); color: var(--t2); font: inherit; font-size: 1.15rem; cursor: pointer; }
+.document-help-close:hover, .document-help-close:focus-visible { color: var(--t1); border-color: var(--ac); outline: none; }
+.document-help-body { flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; padding: 1.25rem clamp(1rem, 3vw, 1.75rem) 2.5rem; }
+.document-help-content { width: 100%; max-width: 680px; margin: 0 auto; display: grid; gap: 1rem; }
+.document-help-chips { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.document-help-chips span { display: inline-flex; align-items: center; border: 1px solid color-mix(in srgb, var(--ac) 35%, var(--bd2)); border-radius: 999px; padding: 0.25rem 0.62rem; background: color-mix(in srgb, var(--ac) 8%, var(--bg1)); color: var(--ac); font-size: 0.72rem; font-weight: 850; }
+.document-help-chips .is-risk { border-color: color-mix(in srgb, var(--color-warning) 45%, var(--bd2)); background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1)); color: color-mix(in srgb, var(--color-warning) 68%, var(--t1)); }
+.document-help-section { display: grid; gap: 0.55rem; padding-bottom: 1rem; border-bottom: 1px solid var(--bd3); }
+.document-help-section h3 { margin: 0; color: var(--t1); font-size: 0.96rem; line-height: 1.4; }
+.document-help-section p { margin: 0; color: var(--t2); font-size: 0.86rem; line-height: 1.72; word-break: keep-all; overflow-wrap: anywhere; }
+.document-help-section .document-help-lead { color: var(--t1); font-size: 0.93rem; font-weight: 750; }
+.document-help-warning { border: 1px solid color-mix(in srgb, var(--color-warning) 42%, var(--bd2)); border-left: 4px solid var(--color-warning); border-radius: 8px; padding: 0.85rem 0.95rem; background: color-mix(in srgb, var(--color-warning) 9%, var(--bg1)); color: var(--t1); font-size: 0.84rem; line-height: 1.65; word-break: keep-all; }
+.document-help-list { margin: 0; padding-left: 1.15rem; display: grid; gap: 0.42rem; color: var(--t2); font-size: 0.84rem; line-height: 1.62; }
+.document-help-list li::marker { color: var(--ac); }
+.document-help-mistakes li::marker { color: var(--color-error); }
+.document-help-questions { list-style: none; padding-left: 0; }
+.document-help-questions li { padding-left: 1.25rem; position: relative; }
+.document-help-questions li::before { content: 'Q'; position: absolute; left: 0; color: var(--ac); font-weight: 900; }
+.document-help-steps { display: grid; gap: 0.65rem; }
+.document-help-step { border-left: 2px solid color-mix(in srgb, var(--ac) 42%, var(--bd2)); padding-left: 0.8rem; }
+.document-help-step h4 { margin: 0 0 0.2rem; color: var(--t1); font-size: 0.84rem; }
+.document-help-sources { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.65rem; }
+.document-help-sources li { padding: 0.72rem 0.8rem; border: 1px solid var(--bd2); border-radius: 8px; background: var(--bg0); }
+.document-help-sources a { color: var(--ac); font-size: 0.84rem; font-weight: 850; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.document-help-source-meta { display: block; margin-top: 0.25rem; color: var(--t3); font-size: 0.68rem; }
+.document-help-sources p { margin-top: 0.35rem; font-size: 0.76rem; }
+.document-help-disclaimer { margin: 0; padding: 0.9rem 1rem; border-radius: 8px; background: var(--bg2); color: var(--t3); font-size: 0.76rem; line-height: 1.62; word-break: keep-all; }
+body.document-help-open { overflow: hidden; }
+.scenario-checklist-row, .issuance-doc-list li { display: flex; align-items: flex-start; gap: 0.55rem; }
+.scenario-checklist-row .scenario-checklist-label, .issuance-doc-list li > span:first-child { flex: 1 1 auto; min-width: 0; }
+.docs-list-name-row { grid-column: 2; display: flex; align-items: flex-start; gap: 0.6rem; }
+.docs-list-name-row .docs-list-name { flex: 1 1 auto; min-width: 0; grid-column: auto; }
+@media (max-width: 640px) {
+  .document-help-panel { width: 100vw; max-width: none; border-left: 0; }
+  .document-help-header { padding: 0.9rem 1rem; }
+  .document-help-body { padding: 1rem 1rem 2rem; }
+  .document-help-title { font-size: 1.18rem; }
+  .document-help-trigger { min-height: 36px; white-space: normal; text-align: center; }
+  .doc-chk-item { flex-wrap: wrap; }
+  .doc-chk-item .document-help-trigger { width: 100%; margin: 0.25rem 0 0 28px; }
+  .scenario-checklist-row, .issuance-doc-list li { flex-wrap: wrap; }
+  .scenario-checklist-row .document-help-trigger, .issuance-doc-list li .document-help-trigger { margin-left: 1.55rem; }
+  .docs-list-name-row { flex-wrap: wrap; }
+  .docs-list-name-row .document-help-trigger { margin-left: 0; }
+}
 .doc-chk-item svg { width: 18px; height: 18px; color: var(--ac); flex-shrink: 0; margin-top: 2px; }
 .doc-chk-item.critical { border-color: var(--color-error); background: #fef2f2; color: #991b1b; }
 .doc-chk-item.critical svg { color: var(--color-error); }
@@ -14429,12 +14489,30 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
 </aside>
 
+<aside class="document-help-overlay" id="documentHelpOverlay" role="dialog" aria-modal="true" aria-labelledby="documentHelpTitle" aria-hidden="true">
+    <button type="button" class="document-help-backdrop" data-action="close-document-help" tabindex="-1" aria-label="문서 안내 닫기"></button>
+    <div class="document-help-panel">
+        <header class="document-help-header">
+            <div class="document-help-title-stack">
+                <p class="document-help-kicker" id="documentHelpKicker">공식 출처 기반 문서 안내</p>
+                <h2 class="document-help-title" id="documentHelpTitle" tabindex="-1">문서 안내</h2>
+                <p class="document-help-title-en" id="documentHelpTitleEn"></p>
+            </div>
+            <button type="button" class="document-help-close" data-action="close-document-help" aria-label="문서 안내 닫기">✕</button>
+        </header>
+        <div class="document-help-body" id="documentHelpBody">
+            <div class="document-help-content" id="documentHelpContent"></div>
+        </div>
+    </div>
+</aside>
+
 <footer class="ft">
     <span class="ft-logo">Visable by Paradiso</span> · 베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.
 </footer>
 
 <a href="ai.html" class="ai-fab"><span class="fab-spark" aria-hidden="true">✦</span> AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
 
+<script src="assets/js/document-help.js"></script>
 <script>
 // (Legacy hero spotlight pointer-tracking removed 2026-06.)
 
@@ -16872,6 +16950,68 @@ async function submitAiAnalysis(actionType, btnEl) {
 }
 
 // --- Render Doc Checklists ---
+// ── Source-grounded document explainer (data/document_help.json) ────────────
+let documentHelpData = null;
+let documentHelpMatcher = null;
+let documentHelpLastTrigger = null;
+
+async function loadDocumentHelp() {
+    try {
+        const res = await fetch('./data/document_help.json', { cache: 'no-store' });
+        if (!res.ok) return;
+        const json = await res.json();
+        if (!Array.isArray(json) || !window.ParadisoDocumentHelp) return;
+        documentHelpData = json;
+        documentHelpMatcher = window.ParadisoDocumentHelp.createMatcher(json);
+    } catch (e) { /* optional enrichment: requirements must still render */ }
+    if (documentHelpMatcher && dataReady && qEl && qEl.value.trim() && document.body.classList.contains('searched')) {
+        renderResults(qEl.value.trim());
+    }
+}
+
+function findDocumentHelp(...candidates) {
+    return documentHelpMatcher ? documentHelpMatcher.find(...candidates) : null;
+}
+
+function renderDocumentHelpButton(docKey, label, className = '') {
+    const record = findDocumentHelp(docKey, label);
+    if (!record || !window.ParadisoDocumentHelp) return '';
+    const buttonLabel = window.ParadisoDocumentHelp.ui(currentLanguage).open;
+    return `<button type="button" class="document-help-trigger${className ? ` ${className}` : ''}" data-action="open-document-help" data-document-help-id="${escapeHtml(record.id)}" aria-haspopup="dialog">${escapeHtml(buttonLabel)}</button>`;
+}
+
+function openDocumentHelp(recordId, trigger) {
+    const record = findDocumentHelp(recordId);
+    const overlay = document.getElementById('documentHelpOverlay');
+    const content = document.getElementById('documentHelpContent');
+    if (!record || !overlay || !content || !window.ParadisoDocumentHelp) return;
+    const isEn = String(currentLanguage || '').toLowerCase().startsWith('en');
+    const labels = window.ParadisoDocumentHelp.ui(currentLanguage);
+    documentHelpLastTrigger = trigger || document.activeElement;
+    document.getElementById('documentHelpTitle').textContent = isEn ? (record.titleEn || record.titleKo) : record.titleKo;
+    document.getElementById('documentHelpTitleEn').textContent = isEn ? record.titleKo : (record.titleEn || '');
+    document.getElementById('documentHelpKicker').textContent = isEn ? 'Official-source-based document guide' : '공식 출처 기반 문서 안내';
+    content.innerHTML = window.ParadisoDocumentHelp.renderPanel(record, currentLanguage);
+    overlay.querySelectorAll('[data-action="close-document-help"]').forEach(btn => btn.setAttribute('aria-label', labels.close));
+    overlay.classList.add('is-open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('document-help-open');
+    const body = document.getElementById('documentHelpBody');
+    if (body) body.scrollTop = 0;
+    requestAnimationFrame(() => document.getElementById('documentHelpTitle')?.focus());
+}
+
+function closeDocumentHelp() {
+    const overlay = document.getElementById('documentHelpOverlay');
+    if (!overlay || !overlay.classList.contains('is-open')) return;
+    overlay.classList.remove('is-open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('document-help-open');
+    const restore = documentHelpLastTrigger;
+    documentHelpLastTrigger = null;
+    if (restore && typeof restore.focus === 'function' && restore.isConnected) restore.focus();
+}
+
 // ── Document preparation guide (data/doc_guide.json) ────────────────────────
 // Checklist enrichment only: when the guide file is missing or fails to load,
 // docGuideData stays null and checklists render exactly as before.
@@ -17006,8 +17146,9 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         // one grid cell — flag them so CSS can let them span the full row.
         const blockClass = String(officialName).length > 80 ? ' doc-chk-item--block' : '';
         const iconHtml = isCritical ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>`;
-        const guideAvailable = !isUnresolvedId && docGuideData && docGuideData[key];
-        const guideBtnHtml = guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'zh-CN' ? '指南' : currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '';
+        const documentHelpBtnHtml = !isUnresolvedId ? renderDocumentHelpButton(key, officialName) : '';
+        const guideAvailable = !documentHelpBtnHtml && !isUnresolvedId && docGuideData && docGuideData[key];
+        const guideBtnHtml = documentHelpBtnHtml || (guideAvailable ? `<button type="button" class="doc-guide-toggle" data-action="toggle-doc-guide" aria-expanded="false">${currentLanguage === 'zh-CN' ? '指南' : currentLanguage === 'en' ? 'Guide' : '가이드'}</button>` : '');
         const guideDrawerHtml = guideAvailable ? buildDocGuideDrawer(key, visaCode) : '';
         return `<div class="doc-chk-item${criticalClass}${blockClass}${isUnresolvedId ? ' doc-chk-item--undefined' : ''}"${debugAttr}>${iconHtml}<span>${hl(officialName, keywords)}</span>${guideBtnHtml}</div>${guideDrawerHtml}`;
     }).join('');
@@ -18895,11 +19036,13 @@ function renderScenarioChecklist(visaCode, procedureKey, variant) {
             const text = isDocId ? (DOC_DICT[rawText] || tx('docDefinitionNeeded')) : rawText;
             const storageKey = scenarioChecklistItemStorageKey(visaCode, procedureKey, variantId, group.key, rawText);
             const checked = scenarioChecklistStoreGet(storageKey) === '1' ? ' checked' : '';
+            const helpButton = renderDocumentHelpButton(rawText, text);
             return `<li class="scenario-checklist-row">
                 <label class="scenario-checklist-label">
                     <input type="checkbox" class="scenario-checklist-checkbox" data-scenario-checklist-item data-storage-key="${escapeHtml(storageKey)}"${checked}>
                     <span class="scenario-checklist-itemtext">${escapeHtml(text)}</span>
                 </label>
+                ${helpButton}
             </li>`;
         }).filter(Boolean).join('');
         if (!rows) return '';
@@ -19927,7 +20070,10 @@ function pickLocalizedManualText(item) {
 
 function renderIssuanceDocList(items, keywords) {
     if (!Array.isArray(items) || !items.length) return '';
-    return `<ul class="issuance-doc-list">${items.map(item => `<li>${hl(escapeHtml(item), keywords || [])}</li>`).join('')}</ul>`;
+    return `<ul class="issuance-doc-list">${items.map(item => {
+        const label = String(item || '');
+        return `<li><span>${hl(escapeHtml(label), keywords || [])}</span>${renderDocumentHelpButton(label, label)}</li>`;
+    }).join('')}</ul>`;
 }
 
 function renderIssuanceDocGroups(documents, keywords) {
@@ -20370,7 +20516,8 @@ function renderDocumentTabPanel(v, cfg, isActive) {
             // as if it were a checklist line is misleading.
             if (nameIsMissing) return '';
             const noteIsMissing = !rawNote || rawNote === 'DATA_MISSING';
-            const nameHtml = `<div class="docs-list-name">${escapeHtml(rawName)}</div>`;
+            const helpButton = renderDocumentHelpButton(rawName, rawName);
+            const nameHtml = `<div class="docs-list-name-row"><div class="docs-list-name">${escapeHtml(rawName)}</div>${helpButton}</div>`;
             // Drop the empty "비고 정보 없음" placeholder entirely; rendering
             // an explicit "no note" row buries the actual document name.
             const noteHtml = noteIsMissing
@@ -22109,6 +22256,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     await loadI18nTranslations();
     renderLanguageMenu();
     applyLanguage(getInitialLanguage(), { silent: true });
+    loadDocumentHelp();
     loadDocGuide();
     loadDocComposerMeta();
     loadVisaData();
@@ -22160,6 +22308,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     document.addEventListener('click', (e) => {
+        const documentHelpTrigger = e.target.closest('.document-help-trigger');
+        if (documentHelpTrigger) {
+            e.preventDefault();
+            e.stopPropagation();
+            openDocumentHelp(documentHelpTrigger.dataset.documentHelpId, documentHelpTrigger);
+            return;
+        }
+        const documentHelpClose = e.target.closest('[data-action="close-document-help"]');
+        if (documentHelpClose) {
+            e.preventDefault();
+            e.stopPropagation();
+            closeDocumentHelp();
+            return;
+        }
         // Document-guide toggle lives inside the .vc-h[data-action="toggle-su"]
         // wrapper, so it must be handled BEFORE the toggle-su branch — otherwise
         // the bubbled click collapses the result card and hides the drawer the
@@ -22325,7 +22487,31 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (e.key === 'Enter' && e.target.classList.contains('logo-area')) {
             if (document.body.classList.contains('searched')) resetToLanding();
         }
+        if (e.key === 'Tab') {
+            const helpOverlay = document.getElementById('documentHelpOverlay');
+            if (helpOverlay?.classList.contains('is-open')) {
+                const focusable = Array.from(helpOverlay.querySelectorAll('button:not([disabled]):not([tabindex="-1"]), a[href]'))
+                    .filter(el => !el.hidden && el.getClientRects().length > 0);
+                if (focusable.length) {
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (e.shiftKey && (document.activeElement === first || !helpOverlay.contains(document.activeElement))) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && (document.activeElement === last || !helpOverlay.contains(document.activeElement))) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+                return;
+            }
+        }
         if (e.key === 'Escape') {
+            if (document.getElementById('documentHelpOverlay')?.classList.contains('is-open')) {
+                e.preventDefault();
+                closeDocumentHelp();
+                return;
+            }
             const langMenu = document.getElementById('languageMenu');
             if (langMenu?.classList.contains('open')) {
                 toggleLanguageMenu(false);
