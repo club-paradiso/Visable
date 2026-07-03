@@ -14,7 +14,9 @@
     "fr",
     "es",
     "ar",
-    "de"
+    "de",
+    "tr",
+    "uk"
   ],
   "localeLabels": {
     "ko": "한국어",
@@ -29,9 +31,11 @@
     "fr": "Français",
     "es": "Español",
     "ar": "العربية",
-    "de": "Deutsch"
+    "de": "Deutsch",
+    "tr": "Türkçe",
+    "uk": "Українська"
   },
-  "policy": "Korean is canonical. English, Simplified Chinese, Japanese, Vietnamese, Tagalog, Indonesian, Russian, French, Spanish, Arabic, and German are active display languages with full UI packs. Traditional Chinese (zh-TW) is a display variant of zh-CN: the UI renders the zh-CN pack and assets/js/zh-traditional.js converts the displayed text to Traditional (OpenCC s2t), so it has no separate pack. Official legal, immigration, agency, and document terms must be resolved through data/i18n/official-terms.json when available; the glossary is maintained for en and zh-CN, and unverified official names render the Korean canonical for every other locale.",
+  "policy": "Korean is canonical. English, Simplified Chinese, Japanese, Vietnamese, Tagalog, Indonesian, Russian, French, Spanish, Arabic, German, Turkish, and Ukrainian are active display languages with full UI packs. Traditional Chinese (zh-TW) is a display variant of zh-CN: the UI renders the zh-CN pack and assets/js/zh-traditional.js converts the displayed text to Traditional (OpenCC s2t), so it has no separate pack. Official legal, immigration, agency, and document terms must be resolved through data/i18n/official-terms.json when available; the glossary is maintained for en and zh-CN, and unverified official names render the Korean canonical for every other locale.",
   "localeAliases": {
     "zh": "zh-CN",
     "zhHans": "zh-CN",
@@ -64,7 +68,9 @@
     "fr": "fr.json",
     "es": "es.json",
     "ar": "ar.json",
-    "de": "de.json"
+    "de": "de.json",
+    "tr": "tr.json",
+    "uk": "uk.json"
   },
-  "notes": "Korean canonical; en/zh-CN/ja/vi/tl/id/ru/fr/es/ar/de are full display packs. zh-TW is a runtime Traditional conversion of zh-CN. Remaining pendingLocales fall back to Korean until validated packs are added."
+  "notes": "Korean canonical; en/zh-CN/ja/vi/tl/id/ru/fr/es/ar/de/tr/uk are full display packs. zh-TW is a runtime Traditional conversion of zh-CN. Remaining pendingLocales fall back to Korean until validated packs are added."
 }

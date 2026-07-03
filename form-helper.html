@@ -3177,12 +3177,12 @@ function initTheme() {
 function initLang() {
   const btn = document.getElementById('fhLangBtn');
   const label = document.getElementById('fhLangLabel');
-  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch' };
+  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська' };
   // Locales the ko→target display overlay (form-helper-i18n.js) can render. The
   // wizard renderer is Korean-only; for these, the overlay translates the shown
   // text. ko = native; en has no overlay map yet, so it falls back to Korean.
-  const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
-  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+  const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   function readSel() {
     try { var s = localStorage.getItem('paradiso:language') || ''; if (OVERLAY.indexOf(s) >= 0) return s; } catch (e) {}
     return 'ko';
