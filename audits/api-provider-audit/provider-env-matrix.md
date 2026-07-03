@@ -1,0 +1,11 @@
+# Provider environment matrix
+
+| Integration | Documented variables | Posture |
+|---|---|---|
+| OpenRouter | `OPENROUTER_API_KEY`<br>`OPENROUTER_MODEL`<br>`OPENROUTER_MODEL_CANDIDATES`<br>`OPENROUTER_TIMEOUT_SECONDS`<br>`OPENROUTER_MODEL_COOLDOWN_SECONDS` | primary when keyed |
+| Groq | `GROQ_API_KEY`<br>`GROQ_MODEL`<br>`ALLOW_GROQ_FALLBACK` | fallback default off |
+| NVIDIA NIM | `ENABLE_NVIDIA_NIM_EXPERIMENTAL`<br>`NVIDIA_API_KEY`<br>`NVIDIA_NIM_BASE_URL`<br>`NVIDIA_NIM_MODEL`<br>`NVIDIA_NIM_TIMEOUT_SECONDS`<br>`NVIDIA_NIM_MAX_TOKENS`<br>`NVIDIA_NIM_REASONING_ENABLED`<br>`NVIDIA_NIM_ALLOWED_MODES`<br>`NVIDIA_NIM_ALLOW_PERSONAL_DATA` | experimental; off; not /api/ask |
+| Open Law | `LAW_API_OC`<br>`LAW_API_KEY`<br>`LAW_GROUNDING_MODE`<br>`LAW_GROUNDING_TIMEOUT_SECONDS`<br>`LAW_GROUNDING_CACHE_TTL_SECONDS` | disabled/audit/enabled |
+| Legal evidence | `LAW_API_ADMIN_APPEAL_TARGET`<br>`LAW_API_SPECIAL_ADMIN_APPEAL_TARGET` | supplementary; shared OC |
+| Public data | `PUBLIC_DATA_API_KEY`<br>`PUBLIC_DATA_BASE_URL`<br>`PUBLIC_DATA_VISA_PATH`<br>`PUBLIC_DATA_JOB_PATH` | placeholder |
+| DB/Supabase | `DATABASE_URL`<br>`SUPABASE_URL`<br>`SUPABASE_SERVICE_KEY` | config flags only |
