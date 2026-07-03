@@ -1,5 +1,5 @@
 // Real-browser QA for the Waymaker procedure navigator (assets/js/waymaker-navigator.js
-// mounted as the default surface of ai.html).
+// mounted on the explicit ai.html?nav=1 route).
 //
 // Covers what the offline/jsdom harness cannot: actual layout at the mobile
 // breakpoints (360 / 390 / 430 / 768 / desktop), no horizontal overflow,
@@ -74,7 +74,7 @@ async function stubBackend(page) {
 }
 
 async function mountAndStart(page) {
-  await page.goto('/ai.html');
+  await page.goto('/ai.html?nav=1');
   await page.waitForSelector('#waymakerNavigatorRoot.wm-root', { timeout: 20_000 });
   // intake catalog loaded → Start button present
   const start = page.locator('.wm-intro .wm-btn-primary');
@@ -174,6 +174,16 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
     await page.locator('.wm-ai button', { hasText: '질문하기' }).click();
     await expect.poll(() => askCalled, { timeout: 10_000 }).toBe(true);
   });
+});
+
+test('Waymaker default route restores the evidence-grounded AI workspace', async ({ page }) => {
+  await page.goto('/ai.html');
+  await expect(page.locator('#chatHistory')).toBeVisible();
+  await expect(page.locator('.chat-input-area')).toBeVisible();
+  await expect(page.locator('#waymakerNavigatorRoot')).toBeHidden();
+  await expect(page.locator('[data-workspace-route="chat"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('#welcomeMessage')).toContainText('공개 법령·매뉴얼');
+  await noHorizontalOverflow(page);
 });
 
 // Layout must hold across the mobile breakpoints (run via the per-viewport

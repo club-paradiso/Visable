@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Waymaker by Paradiso — 한국 체류 절차 길찾기</title>
-    <meta name="description" content="공개 법령·매뉴얼 기반으로 체류자격 및 절차 탐색을 지원합니다.">
+    <title>Waymaker by Paradiso — 판례·법령 기반 이민 AI</title>
+    <meta name="description" content="공개 법령·판례·출입국 매뉴얼을 근거로 한국 비자·체류 질문과 절차 준비를 돕는 AI 상담 도구입니다.">
     <link rel="icon" href="assets/brand/visable-favicon.svg?v=1" type="image/svg+xml">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-    <!-- Waymaker procedure navigator (default surface). The legacy AI chat is
-         demoted to an operator-only diagnostics surface; see waymaker-navigator.js. -->
+    <!-- Waymaker procedure navigator (optional guided surface). The public
+         default is the unified chat workspace; ?nav=1 opens this navigator. -->
     <link rel="stylesheet" href="assets/css/waymaker-navigator.css?v=20260628-mobile">
     <style>
-      /* When the navigator is the active surface (default), the legacy chat-first
-         chrome — model tiers, quota merchandising, "AI 도우미" subtitle, the chat
-         transcript and composer — is hidden. It remains in the DOM (operator flag
-         ?legacyChat=1 or localStorage paradisoDevDiagnostics='1' keeps it visible). */
+      /* When the optional navigator is active, the chat transcript and composer
+         are hidden so the guided packet can use the main workspace canvas. */
       body.wm-active { display: block; overflow-y: auto; height: auto; min-height: 100vh; background: var(--bg0); }
       body.wm-active .chat-header { position: sticky; top: 0; z-index: 20; }
       body.wm-active #chatHistory,
@@ -23,7 +21,7 @@
       body.wm-active .quota-badge,
       body.wm-active #aiModeSelector,
       body.wm-active .ai-title { display: none !important; }
-      /* The legacy "비자·체류 정보 AI 도우미" title block is hidden; the navigator
+      /* The unified "비자·체류 정보 AI 도우미" title block is hidden; the navigator
          renders its own "Waymaker - 한국 체류 절차 길찾기" title, so the app bar keeps
          only the back link + Paradiso wordmark. */
       #waymakerNavigatorRoot { display: none; }
@@ -1324,7 +1322,8 @@ select:focus-visible {
             .modal-footer { padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom, 0px)); }
             .btn-cancel, .btn-agree { min-height: 50px; font-size: 0.92rem; line-height: 1.3; }
         }
-</style>
+    </style>
+    <link rel="stylesheet" href="assets/css/waymaker-workspace.css?v=20260703-chat-first">
 </head>
 <body>
 
@@ -1354,7 +1353,50 @@ select:focus-visible {
         </div>
     </header>
 
-    <!-- Waymaker procedure navigator (default surface) -->
+    <div class="wm-workspace-shell" id="wmWorkspaceShell">
+      <aside class="wm-workspace-sidebar" aria-label="Waymaker 작업공간">
+        <nav class="wm-workspace-nav" aria-label="Waymaker 주요 기능">
+          <a class="wm-workspace-nav-link is-active" href="ai.html" data-workspace-route="chat">
+            <span class="wm-workspace-nav-kicker">Ask</span>
+            <span>AI 상담</span>
+          </a>
+          <a class="wm-workspace-nav-link" href="ai.html?nav=1" data-workspace-route="navigator">
+            <span class="wm-workspace-nav-kicker">Plan</span>
+            <span>절차 안내</span>
+          </a>
+          <a class="wm-workspace-nav-link" href="ai.html#legalSourceSearchRoot" data-workspace-route="research">
+            <span class="wm-workspace-nav-kicker">Sources</span>
+            <span>법령·판례 검색</span>
+          </a>
+          <a class="wm-workspace-nav-link" href="form-helper.html">
+            <span class="wm-workspace-nav-kicker">Forms</span>
+            <span>서식·제출서류</span>
+          </a>
+        </nav>
+        <section class="wm-workspace-trust" aria-label="Waymaker 안내 원칙">
+          <strong>출처가 보이는 답변</strong>
+          <p>직접 근거, 맥락 근거, 후보 판례를 구분해 표시합니다.</p>
+          <p class="wm-workspace-trust-note">최종 판단은 HiKorea · 1345 · 관할 출입국기관에서 확인하세요.</p>
+        </section>
+      </aside>
+
+      <section class="wm-workspace-main" aria-label="Waymaker AI 상담">
+        <div class="wm-context-strip" id="wmContextStrip" aria-live="polite">
+          <div class="wm-context-item">
+            <span class="wm-context-label">현재 상태</span>
+            <strong id="wmContextStatus">질문에서 자동 감지</strong>
+          </div>
+          <div class="wm-context-item">
+            <span class="wm-context-label">목표</span>
+            <strong id="wmContextGoal">절차 자동 분류</strong>
+          </div>
+          <div class="wm-context-item wm-context-item-wide">
+            <span class="wm-context-label">확인 필요</span>
+            <strong id="wmContextMissing">구체적인 상황을 알려주시면 좁혀 드립니다</strong>
+          </div>
+        </div>
+
+    <!-- Waymaker procedure navigator (optional ?nav=1 surface) -->
     <section id="waymakerNavigatorRoot" class="wm-root" aria-live="polite"></section>
 
     <!-- Legal source search (법령·판례 근거 검색) — supporting source-checking layer.
@@ -1400,8 +1442,11 @@ select:focus-visible {
         </div>
         <div class="input-footer">
             <span class="char-counter" id="charCount">0 / 500자</span>
+            <span class="composer-hint">Enter 전송 · Shift+Enter 줄바꿈</span>
         </div>
     </footer>
+      </section>
+    </div>
 
     <!--
       Waymaker by Paradiso structured answer card shell — HTML/CSS preparation only.
@@ -1568,6 +1613,7 @@ select:focus-visible {
         let CHAT_TURNS = [];
         let _abortController = null;
         let _isConsentGranted = false;
+        let _pendingConsentSubmit = false;
         let _lastUserQuestion = '';
         const COPY_PAYLOADS = {};
 
@@ -2024,13 +2070,20 @@ select:focus-visible {
 
         function handleConsent(agree) {
             if (agree) {
+                const shouldSubmit = _pendingConsentSubmit;
+                _pendingConsentSubmit = false;
                 _isConsentGranted = true;
                 safeSet(STORE_KEYS.CONSENT, { agreed: true, at: Date.now() });
                 const m = document.getElementById('consentModal');
                 if (m) m.classList.remove('active');
                 const inp = document.getElementById('aiQ');
                 if (inp) inp.focus();
+                // The user's first Send action should remain a Send action. Once
+                // consent is granted, continue the pending request automatically
+                // instead of making the user discover that a second click is needed.
+                if (shouldSubmit) setTimeout(sendAi, 0);
             } else {
+                _pendingConsentSubmit = false;
                 // Canvas 샌드박스 호환을 위해 window.location.href 대신 history.back() 사용
                 if (window.history.length > 1) {
                     window.history.back();
@@ -2779,18 +2832,17 @@ select:focus-visible {
                 rows.push(`<div class="source-row state-partial" data-row-kind="law-evidence"><strong>${escapeHtml(head)}</strong>: ${names}<div class="source-subnote">${escapeHtml(note)}</div></div>`);
             }
 
-            // Supplementary case-law / adjudication evidence (관련 판례 / 관련 재결례).
-            // Separate cards from the statute "보조 법령 근거" row above, so the user
-            // can tell manuals/statutes apart from individual case decisions. Case
-            // law is contextual only and never guarantees an outcome.
+            // Supplementary case-law / adjudication candidates. These retrieval
+            // hits are never presented as support for the answer until a human or
+            // citation verifier confirms issue-level relevance to this question.
             const legalCases = Array.isArray(safe.legal_evidence_cases)
                 ? safe.legal_evidence_cases.filter((c) => c && (c.case_name || c.case_number)) : [];
             if (legalCases.length) {
                 const caution = tt(lang, {
-                    ko: '주의: 개별 사건 판단이며 결과를 보장하지 않습니다.',
-                    en: 'Caution: these are individual case decisions and do not guarantee any outcome.',
-                    zh: '注意：这些是个案裁决，不保证任何结果。',
-                    zhHant: '注意：這些為個案裁決，不保證任何結果。'
+                    ko: '검색 후보입니다. 답변의 직접 근거가 아니며 원문 관련성을 먼저 확인해야 합니다.',
+                    en: 'Search candidates only. They are not direct support for the answer; verify relevance in the official text.',
+                    zh: '仅为检索候选，并非答复的直接依据；请先核对官方原文的相关性。',
+                    zhHant: '僅為檢索候選，並非答覆的直接依據；請先核對官方原文的相關性。'
                 });
                 const fmt = (c) => {
                     const name = escapeHtml(String(c.case_name || c.retrieved_source_id || ''));
@@ -2799,15 +2851,15 @@ select:focus-visible {
                     return meta ? `${name} <span class="source-subnote">(${meta})</span>` : name;
                 };
                 const groups = [
-                    { kind: 'precedent', head: tt(lang, { ko: '관련 판례', en: 'Related case law', zh: '相关判例', zhHant: '相關判例' }),
+                    { kind: 'precedent', head: tt(lang, { ko: '후보 판례 · 원문 확인 필요', en: 'Candidate case law · verify source', zh: '候选判例 · 需核对原文', zhHant: '候選判例 · 需核對原文' }),
                       items: legalCases.filter((c) => c.source_type === 'precedent') },
-                    { kind: 'admin', head: tt(lang, { ko: '관련 재결례', en: 'Related administrative decisions', zh: '相关裁决例', zhHant: '相關裁決例' }),
+                    { kind: 'admin', head: tt(lang, { ko: '후보 재결례 · 원문 확인 필요', en: 'Candidate administrative decisions · verify source', zh: '候选裁决例 · 需核对原文', zhHant: '候選裁決例 · 需核對原文' }),
                       items: legalCases.filter((c) => c.source_type === 'administrative_appeal' || c.source_type === 'special_administrative_appeal') },
                 ];
                 groups.forEach((g) => {
                     if (!g.items.length) return;
                     const list = g.items.slice(0, 3).map(fmt).join(' / ');
-                    rows.push(`<div class="source-row state-partial" data-row-kind="case-law" data-case-kind="${g.kind}"><strong>${escapeHtml(g.head)}</strong>: ${list}<div class="source-subnote">${escapeHtml(caution)}</div></div>`);
+                    rows.push(`<div class="source-row state-candidate" data-row-kind="case-law-candidate" data-case-kind="${g.kind}"><strong>${escapeHtml(g.head)}</strong>: ${list}<div class="source-subnote">${escapeHtml(caution)}</div></div>`);
                 });
             }
 
@@ -3354,7 +3406,10 @@ select:focus-visible {
         }
 
         async function sendAi() {
-            if (!_isConsentGranted) return showConsent();
+            if (!_isConsentGranted) {
+                _pendingConsentSubmit = true;
+                return showConsent();
+            }
 
             const state = getQuota();
             if (state.count >= QUOTA_LIMIT) {
@@ -3671,7 +3726,8 @@ select:focus-visible {
         'use strict';
         if (!window.WaymakerNavigator) return;
 
-        // Operator escape hatch: keep the legacy chat-first surface visible.
+        // The unified chat workspace is the public default. The deterministic
+        // navigator is an explicit guided mode opened with ?nav=1.
         var params = new URLSearchParams(location.search);
         var legacy = params.get('legacyChat') === '1';
         try { if (localStorage.getItem('paradisoDevDiagnostics') === '1' && params.get('nav') !== '1') legacy = true; } catch (e) {}
@@ -3682,7 +3738,8 @@ select:focus-visible {
         // that chat behind body.wm-active and strand the user on an unrelated surface,
         // so these links keep the chat visible. ?nav=1 still forces the navigator.
         if ((params.get('domain') || '').toLowerCase() === 'nationality' && params.get('nav') !== '1') legacy = true;
-        if (legacy) return; // leave the legacy chat as-is; do not mount the navigator
+        var navigatorRequested = params.get('nav') === '1';
+        if (legacy || !navigatorRequested) return; // keep the unified chat workspace visible
 
         // Optional handoff from index.html's floating Waymaker CTA
         // (buildWaymakerHandoffUrl()): visa_code + selected_procedure_key +
@@ -3827,11 +3884,9 @@ select:focus-visible {
     </script>
     <script>
     /* Waymaker surface switcher — a small, always-visible nav that links the
-       EXISTING user-facing surfaces (procedure navigator, nationality coach
+       EXISTING user-facing surfaces (AI consultation, procedure navigator, nationality coach
        chat, naturalization-interview coach chat, legal research panel). It
-       adds no new AI mode and does not resurrect the operator-only legacy
-       chat: every target was already reachable via deep links; this only
-       makes the switching visible to normal users. */
+       adds no new AI mode; every target was already reachable via deep links. */
     (function () {
         'use strict';
         var header = document.querySelector('.chat-header');
@@ -3840,13 +3895,14 @@ select:focus-visible {
         var params = new URLSearchParams(location.search);
         var domain = (params.get('domain') || '').toLowerCase();
         var mode = (params.get('mode') || '').toLowerCase();
-        var current = 'navigator';
+        var current = params.get('nav') === '1' ? 'navigator' : 'chat';
         if (domain === 'nationality' && params.get('nav') !== '1') {
             current = mode === 'naturalization_interview_prep' ? 'interview' : 'coach';
         }
 
         var items = [
-            { key: 'navigator', href: 'ai.html', label: '절차 내비게이터' },
+            { key: 'chat', href: 'ai.html', label: 'AI 상담' },
+            { key: 'navigator', href: 'ai.html?nav=1', label: '절차 내비게이터' },
             { key: 'coach', href: 'ai.html?domain=nationality', label: '국적·귀화 상담 코치' },
             { key: 'interview', href: 'ai.html?domain=nationality&mode=naturalization_interview_prep', label: '귀화면접 모의연습' },
             { key: 'research', href: 'ai.html#legalSourceSearchRoot', label: '법령·판례 리서치' }
@@ -3888,5 +3944,6 @@ select:focus-visible {
         header.insertAdjacentElement('afterend', nav);
     })();
     </script>
+    <script src="assets/js/waymaker-workspace.js?v=20260703-chat-first"></script>
 </body>
 </html>

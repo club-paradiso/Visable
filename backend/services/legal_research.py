@@ -212,6 +212,35 @@ _CONCEPTS: List[Dict[str, Any]] = [
         "facts_en": ["Expected graduation/completion date", "Current stay expiry date", "Attendance / GPA status"],
     },
     {
+        "id": "workplace_change",
+        "keywords": [
+            "근무처 변경", "근무처를 변경", "근무처 추가", "이직", "고용주 변경", "사업장 변경",
+            "workplace change", "change employer", "job transfer",
+        ],
+        # Open Law's law-name search is materially more reliable with canonical
+        # titles than with one long natural-language phrase. Search the three
+        # governing instruments first, then the procedure terms.
+        "law_terms": [
+            "출입국관리법", "출입국관리법 시행령", "출입국관리법 시행규칙",
+            "근무처 변경허가", "근무처 변경 신고",
+        ],
+        "prec_terms": ["근무처 변경허가 취소", "특정활동 근무처 변경", "고용주 변경 체류자격"],
+        "issues_ko": [
+            "근무처 변경·추가의 사전허가와 사후신고 구분",
+            "현재 세부 직종과 새 사업장의 허용 범위",
+            "신청·신고 시점과 근무 개시 전후의 법적 위험",
+        ],
+        "issues_en": [
+            "Whether the workplace change/addition requires prior permission or post-reporting",
+            "Whether the current sub-occupation and new employer fall within the permitted scope",
+            "Application/reporting timing and the risk of starting work too early",
+        ],
+        "risk_ko": ["허가 전 근무 개시 위험", "세부 직종·사업장 요건 불일치", "신고기한 도과"],
+        "risk_en": ["Risk of starting work before permission", "Sub-occupation or employer mismatch", "Missing the reporting deadline"],
+        "facts_ko": ["E-7 세부코드와 정확한 직종", "새 사업장의 업종·직무", "변경 예정일과 근무 개시일", "기존 고용관계 종료 사유"],
+        "facts_en": ["E-7 sub-code and exact occupation", "New employer's industry and duties", "Planned change and work-start dates", "Reason the prior employment ended"],
+    },
+    {
         "id": "e7_occupation",
         "keywords": ["e-7", "특정활동", "직종", "고용 필요성", "학력", "경력"],
         "law_terms": ["출입국관리법 시행령 특정활동 E-7 체류자격", "E-7 직종 고용 학력 경력 요건", "특정활동 체류자격 변경허가"],
@@ -284,6 +313,15 @@ def _match_concepts(question: str, visa_hint: Optional[str]) -> List[Dict[str, A
             if hit:
                 matched.append(concept)
                 break
+    # A visa-family token such as E-7 is broad. When the user asks a specific
+    # procedure question, do not let that broad token replace the actual issue
+    # with the generic occupation/education profile. Keep e7_occupation only
+    # when the question itself names an occupation-eligibility dimension.
+    ids = {c["id"] for c in matched}
+    if "workplace_change" in ids and "e7_occupation" in ids:
+        occupation_terms = ("직종", "고용 필요성", "학력", "경력", "occupation", "education", "experience")
+        if not any(term in low for term in occupation_terms):
+            matched = [c for c in matched if c["id"] != "e7_occupation"]
     return matched
 
 
@@ -325,6 +363,9 @@ _VISA_CODE_RE = re.compile(r"\b([A-H]-\d{1,2}(?:-\d{1,2}[A-Z]?)?)\b")
 # law APIs match Korean statutory terms far better than English, so an English
 # question still gets Korean queries. Order: most specific phrases first.
 _EN_KO_QUERY_TERMS = (
+    ("workplace change", ["근무처 변경허가", "근무처 변경 신고"]),
+    ("change employer", ["고용주 변경", "근무처 변경허가"]),
+    ("job transfer", ["이직", "근무처 변경"]),
     ("deportation order", ["강제퇴거명령", "출입국관리법 강제퇴거"]),
     ("departure order", ["출국명령", "출입국관리법 출국명령"]),
     ("change of status", ["체류자격 변경", "출입국관리법 체류자격 변경허가"]),
@@ -348,6 +389,7 @@ _EN_KO_QUERY_TERMS = (
 
 # Procedure-type detection for extracted facts (KO + EN keywords -> a KO label).
 _PROCEDURE_KEYWORDS = (
+    (("근무처 변경", "근무처를 변경", "근무처 추가", "이직", "고용주 변경", "workplace change", "change employer", "job transfer"), "근무처 변경·추가"),
     (("체류자격 변경", "변경허가", "change of status", "status change"), "체류자격 변경허가"),
     (("체류기간 연장", "연장", "extension"), "체류기간 연장허가"),
     (("불허", "취소", "refusal", "denial", "revocation"), "불허·취소 처분 대응"),
