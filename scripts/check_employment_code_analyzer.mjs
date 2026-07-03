@@ -79,6 +79,18 @@ for (const tc of fixtures.cases) {
     if (!includesIn(res.occupationCandidates, needle)) fail(tc.id, `occupation candidates missing "${needle}"`);
   for (const needle of exp.industryIncludes || [])
     if (!includesIn(res.industryCandidates, needle)) fail(tc.id, `industry candidates missing "${needle}"`);
+  // Ranking assertions: the TOP candidate must carry the needle (e.g. "중식당
+  // 서빙" must rank 중식 음식점업 first, not a sibling cuisine).
+  for (const needle of exp.topOccupationIncludes || [])
+    if (!includesIn(res.occupationCandidates.slice(0, 1), needle)) {
+      const top = res.occupationCandidates[0];
+      fail(tc.id, `top occupation candidate missing "${needle}" (got ${top ? top.code + ' ' + top.officialName : 'none'})`);
+    }
+  for (const needle of exp.topIndustryIncludes || [])
+    if (!includesIn(res.industryCandidates.slice(0, 1), needle)) {
+      const top = res.industryCandidates[0];
+      fail(tc.id, `top industry candidate missing "${needle}" (got ${top ? top.code + ' ' + top.officialName : 'none'})`);
+    }
   for (const sens of exp.expectLegalSensitivity || [])
     if (!(res.extracted.legalSensitivity || []).includes(sens)) fail(tc.id, `expected legalSensitivity "${sens}", got ${JSON.stringify(res.extracted.legalSensitivity)}`);
   if (exp.expectRoleStatus && res.extracted.roleStatus !== exp.expectRoleStatus)

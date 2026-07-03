@@ -306,9 +306,14 @@ const FIELD_LABOR_SECTORS = new Set([
 // signals / legal sensitivity, so they are not listed here.
 const SERVICE_CONCEPT_IDS = new Set([
   // Korean concept ids
-  'barista', 'server', 'cook', 'cook_assistant', 'sales_clerk', 'customer_service',
+  'barista', 'server', 'cook', 'cook_assistant', 'baker', 'food_prep', 'sales_clerk', 'customer_service',
   'hotel_front', 'cleaner', 'driver', 'delivery', 'cafe', 'restaurant', 'convenience_store',
   'retail_store', 'online_shopping', 'hotel', 'beauty_shop',
+  // cuisine-specific eateries (all classify as service workplaces)
+  'korean_restaurant', 'chinese_restaurant', 'japanese_restaurant', 'western_restaurant',
+  'other_foreign_restaurant', 'snack_bar', 'chicken_shop', 'pizza_burger_shop', 'bakery', 'pub',
+  'korean_restaurant_en', 'chinese_restaurant_en', 'japanese_restaurant_en', 'western_restaurant_en',
+  'other_foreign_restaurant_en', 'pizza_burger_shop_en', 'chicken_shop_en', 'bakery_en', 'pub_en',
   // English concept ids (synonyms.en.json)
   'barista_en', 'server_en', 'cook_en', 'cook_assistant_en', 'sales_clerk_en',
   'customer_service_en', 'front_desk_en', 'cleaner_en', 'delivery_en', 'cafe_en',
@@ -460,6 +465,10 @@ function buildParsedInterpretation(entities, fieldSig, mode, locale) {
 
 const LEVEL_RANK = { major: 1, middle: 2, minor: 3, unit: 4, detailed_unit: 5 };
 
+// Name fragments too generic to prove relevance when found INSIDE a query token
+// (see the compound-containment rule in scoreRow).
+const GENERIC_NAME_WORDS = new Set(['및', '기타', '관련', '일반', '유사', '전문', '서비스', '종사자', '종사원']);
+
 /**
  * Build a reusable search index from the canonical dataset. Precomputes
  * normalized name/terms and the TYPE-SEGREGATED set of parent codes (KSCO8 and
@@ -471,16 +480,22 @@ export function buildIndex(dataset) {
   rows.forEach((r) => {
     if (r.parent_code != null && parentByType[r.type]) parentByType[r.type].add(String(r.parent_code));
   });
-  const indexed = rows.map((r) => ({
-    row: r,
-    type: r.type,
-    code: String(r.code || ''),
-    normName: normalize(r.name_ko || r.name_en || ''),
-    normTerms: (Array.isArray(r.search_terms_ko) ? r.search_terms_ko : []).map(normalize),
-    level: r.level || '',
-    levelRank: LEVEL_RANK[r.level] || 0,
-    isLeaf: !parentByType[r.type] || !parentByType[r.type].has(String(r.code || ''))
-  }));
+  const indexed = rows.map((r) => {
+    const normName = normalize(r.name_ko || r.name_en || '');
+    return {
+      row: r,
+      type: r.type,
+      code: String(r.code || ''),
+      normName,
+      // Distinctive words of the official name ("중식 음식점업" → ["중식",
+      // "음식점업"]), used by the compound-containment rule in scoreRow.
+      nameWords: normName.split(' ').filter((w) => w.length >= 2 && !GENERIC_NAME_WORDS.has(w)),
+      normTerms: (Array.isArray(r.search_terms_ko) ? r.search_terms_ko : []).map(normalize),
+      level: r.level || '',
+      levelRank: LEVEL_RANK[r.level] || 0,
+      isLeaf: !parentByType[r.type] || !parentByType[r.type].has(String(r.code || ''))
+    };
+  });
   return { indexed, parentByType, meta: dataset && !Array.isArray(dataset) ? dataset : null };
 }
 
@@ -513,6 +528,19 @@ function scoreRow(entry, rawQuery, terms) {
     if (entry.normName === term) { score += 240; matched.add(term); }
     else if (term.length >= 2 && entry.normName.includes(term)) { score += 60 + Math.min(term.length * 4, 32); matched.add(term); }
     if (entry.normTerms.includes(term)) { score += 110; matched.add(term); }
+    // Compound-word containment: agglutinated Korean tokens often EMBED an
+    // official name word — "중식당" ⊃ "중식", "일식집" ⊃ "일식", "요리사" ⊃
+    // "요리". The includes() checks above only look for name ⊇ term, so give
+    // credit for term ⊇ name-word too (Hangul only; capped at one hit per term
+    // so generic fragments can't stack). Particle-suffixed tokens ("학원에서")
+    // are excluded — their stripped twin ("학원") already participates, and the
+    // raw form would unevenly reward rows whose name happens to keep the word
+    // standalone.
+    if (term.length >= 3 && /[가-힣]/.test(term) && !KO_SUFFIX_RE.test(term)) {
+      for (const w of entry.nameWords) {
+        if (w !== term && term.includes(w)) { score += 70; matched.add(w); break; }
+      }
+    }
   }
 
   if (score > 0) {
