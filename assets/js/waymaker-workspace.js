@@ -57,6 +57,11 @@
     setActiveRoute('research');
     var root = document.getElementById('legalSourceSearchRoot');
     if (root) root.style.display = 'block';
+    try {
+      if (window.ParadisoLegalSearch && typeof window.ParadisoLegalSearch.openPanel === 'function') {
+        window.ParadisoLegalSearch.openPanel();
+      }
+    } catch (e) { /* panel remains visible; its own toggle still works */ }
     if (options.updateHash !== false && location.hash !== '#legalSourceSearchRoot') {
       history.replaceState(null, '', location.pathname + location.search + '#legalSourceSearchRoot');
     }

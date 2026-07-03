@@ -383,7 +383,7 @@
       subStatusHelp: '세부 유형에 따라 서류와 기준이 달라질 수 있습니다. 확실하지 않으면 "잘 모르겠어요"를 선택하세요.',
       generating: '공식 근거 기반 절차 패킷을 준비하는 중…',
       // packet section titles
-      secProcedure: '나의 절차', secNext: '지금 할 일', secApplicability: '적용 가능성',
+      secProcedure: '나의 절차', secNext: '지금 할 일', secDecision: '판단 전에 정리할 정보', secApplicability: '적용 가능성',
       secDocs: '준비 서류', secConditional: '상황별 추가서류', secWhere: '발급처·준비 방법',
       secTiming: '기한·주의사항', secFees: '수수료', secChannel: 'HiKorea / 방문 경로',
       secJurisdiction: '관할', secCoverage: '공식 근거 범위', secVerify: '확인 필요 항목',
@@ -401,6 +401,7 @@
       officialChannels: '공식 확인 경로',
       call1345: '1345 (외국인종합안내센터)',
       hikoreaCta: 'HiKorea 예약 경로 확인',
+      formHelperCta: '통합신청서 작성 도우미로 이어가기',
       aiFollowupCta: '이 패킷에서 헷갈리는 점 묻기',
       aiFollowupPlaceholder: '이 패킷에서 이해되지 않는 점을 물어보세요. 예: 재정서류가 면제될 수 있나요?',
       aiPrivacyNote: '개인정보(이름, 여권·외국인등록번호, 주소, 전화번호 등)는 입력하지 마세요. 이 도우미는 패킷을 설명할 뿐 새로운 공식 요건을 만들지 않습니다.',
@@ -443,7 +444,7 @@
       stepSubStatus: 'Which sub-type applies to you?',
       subStatusHelp: 'Documents and criteria can differ by sub-type. If unsure, choose "I\'m not sure".',
       generating: 'Preparing your source-backed procedure packet…',
-      secProcedure: 'My procedure', secNext: 'What to do next', secApplicability: 'Applicability',
+      secProcedure: 'My procedure', secNext: 'What to do next', secDecision: 'Information to prepare before deciding', secApplicability: 'Applicability',
       secDocs: 'Documents to prepare', secConditional: 'Conditional documents', secWhere: 'Where to get each document',
       secTiming: 'Timing and risks', secFees: 'Fees', secChannel: 'HiKorea / visit channel',
       secJurisdiction: 'Jurisdiction', secCoverage: 'Official-source coverage', secVerify: 'Items to verify',
@@ -460,6 +461,7 @@
       officialChannels: 'Where to confirm officially',
       call1345: '1345 (Immigration Contact Center)',
       hikoreaCta: 'Check my HiKorea booking path',
+      formHelperCta: 'Continue to the application-form helper',
       aiFollowupCta: 'Ask about this packet',
       aiFollowupPlaceholder: 'Ask about this packet. Example: Could the financial-evidence item be waived?',
       aiPrivacyNote: 'Do not enter personal identifiers (name, passport/ARC number, address, phone). This helper only explains the packet; it does not create new official requirements.',
@@ -1142,7 +1144,8 @@
       subStatusKnown: false,
       procedureKey: null,
       packet: null,
-      pendingScenario: initialScenario
+      pendingScenario: initialScenario,
+      returnStep: 'location'
     };
 
     // Raw selection across all sources, including the global Paradiso language
@@ -1286,7 +1289,9 @@
     }
 
     function renderHeader() {
-      var steps = ['language', 'location', 'status', 'procedure', 'subStatus'];
+      // Language is a preference, not work the user must complete.  The actual
+      // procedure flow is location → status → goal → optional subtype.
+      var steps = ['location', 'status', 'procedure', 'subStatus'];
       var idx = steps.indexOf(state.step);
       var showProgress = idx !== -1;
       var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
@@ -1304,7 +1309,10 @@
       var langBtn = h('button', {
         class: 'wm-lang-toggle', type: 'button', 'data-s2t': 'off',
         aria: { label: LANG_ARIA[curLang] || LANG_ARIA.ko },
-        onclick: function () { setLocale(nextLang); }
+        onclick: function () {
+          state.returnStep = (state.step && state.step !== 'language') ? state.step : 'location';
+          goto('language');
+        }
       }, [LANG_SHORT[curLang] || '한']);
       var head = h('div', { class: 'wm-head' }, [
         h('div', { class: 'wm-head-titles' }, [
@@ -1341,7 +1349,7 @@
             }, [L('resumeScenarioContinue')]),
             h('button', {
               class: 'wm-btn wm-btn-ghost', type: 'button',
-              onclick: function () { state.pendingScenario = null; goto('language'); }
+              onclick: function () { state.pendingScenario = null; goto('location'); }
             }, [L('resumeScenarioRestart')])
           ])
         ]));
@@ -1349,7 +1357,7 @@
       nodes.push(h('p', { class: 'wm-empty', text: L('empty') }));
       nodes.push(h('button', {
         class: 'wm-btn wm-btn-primary wm-btn-lg', type: 'button',
-        onclick: function () { state.pendingScenario = null; goto('language'); }
+        onclick: function () { state.pendingScenario = null; goto('location'); }
       }, [L('start')]));
       return h('section', { class: 'wm-step wm-intro' }, nodes);
     }
@@ -1357,7 +1365,12 @@
     function renderLanguage() {
       var curLang = state.tradCN ? 'zh-TW' : state.locale;
       function langChip(label, loc) {
-        return chip(label, curLang === loc, function () { setLocale(loc); track('waymaker_language_selected', { locale: loc }); goto('location'); });
+        return chip(label, curLang === loc, function () {
+          var target = state.returnStep || 'location';
+          setLocale(loc);
+          track('waymaker_language_selected', { locale: loc });
+          goto(target === 'language' ? 'location' : target);
+        });
       }
       var ko = langChip('한국어', 'ko');
       var en = langChip('English', 'en');
@@ -1386,7 +1399,7 @@
           chip(L('locOut'), state.location === 'outside', function () { pick('outside'); }),
           chip(L('locUnsure'), state.location === 'unsure', function () { pick('unsure'); })
         ])
-      ], 'language');
+      ], 'intro');
     }
 
     function renderStatus() {
@@ -1521,7 +1534,7 @@
       state.location = null; state.statusEntry = null; state.statusCode = null;
       state.exactStatusCode = null; state.subStatusKnown = false; state.procedureKey = null; state.packet = null;
       state.pendingScenario = null;
-      goto('language');
+      goto('intro');
     }
     function chooseStatus(m) {
       state.statusEntry = m; state.statusCode = m.code; state.exactStatusCode = m.code; state.subStatusKnown = false;
@@ -1669,6 +1682,10 @@
       }
       // Section 2 — What to do next (always near top)
       wrap.appendChild(this.sectionNext(c, packet, cov));
+      // The packet may be source-limited, but it can still tell the user which
+      // facts to collect and which exact questions to ask the competent office.
+      var decisionSupport = this.sectionDecisionSupport(c, packet);
+      if (decisionSupport) wrap.appendChild(decisionSupport);
 
       if (cov.isLimited) {
         wrap.appendChild(this.coverageLimitedCard(c, packet, false));
@@ -1719,6 +1736,30 @@
       return c.h('div', { class: 'wm-card wm-card-next' }, [
         c.h('div', { class: 'wm-kicker', text: c.L('secNext') }),
         actions.length ? list : c.h('p', { class: 'wm-muted', text: c.L('coverageLimited') })
+      ]);
+    },
+
+    sectionDecisionSupport: function (c, packet) {
+      var support = packet.decisionSupport || {};
+      var facts = support.factsKo || [];
+      var questions = support.officialQuestionsKo || [];
+      if (!facts.length && !questions.length) return null;
+      var nodes = [];
+      if (facts.length) {
+        nodes.push(c.h('div', { class: 'wm-decision-col' }, [
+          c.h('div', { class: 'wm-subhead', text: c.locale === 'en' ? 'Facts to collect' : '먼저 정리할 사실' }),
+          c.h('ul', { class: 'wm-decision-list' }, facts.map(function (item) { return c.h('li', { text: item }); }))
+        ]));
+      }
+      if (questions.length) {
+        nodes.push(c.h('div', { class: 'wm-decision-col' }, [
+          c.h('div', { class: 'wm-subhead', text: c.locale === 'en' ? 'Ask 1345 / the office' : '1345·관할기관에 물을 질문' }),
+          c.h('ul', { class: 'wm-decision-list' }, questions.map(function (item) { return c.h('li', { text: item }); }))
+        ]));
+      }
+      return c.h('div', { class: 'wm-card wm-card-decision' }, [
+        c.h('div', { class: 'wm-kicker', text: c.L('secDecision') }),
+        c.h('div', { class: 'wm-decision-grid' }, nodes)
       ]);
     },
 
@@ -1996,6 +2037,18 @@
         else global.open('https://www.hikorea.go.kr', '_blank');
       } }, [c.L('hikoreaCta')]);
       bar.appendChild(hk);
+      var fh = packet.formHelper || {};
+      if (fh.formId && fh.type) {
+        var formUrl = 'form-helper.html?source=waymaker&visa=' + encodeURIComponent(packet.statusCode || '')
+          + '&procedure=' + encodeURIComponent(packet.packetType || '')
+          + '&form=' + encodeURIComponent(fh.formId)
+          + '&type=' + encodeURIComponent(fh.type);
+        bar.appendChild(c.h('a', {
+          class: 'wm-btn wm-btn-secondary wm-btn-block wm-form-helper-link',
+          href: formUrl,
+          text: c.L('formHelperCta')
+        }));
+      }
       // AI follow-up — SECONDARY, appears only after a packet is shown, and only
       // calls /api/ask when the user opens it and submits.
       bar.appendChild(self.aiFollowup(c, packet));

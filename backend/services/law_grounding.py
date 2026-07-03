@@ -214,6 +214,16 @@ def build_law_search_queries(
         law_name = str(citation.get("law_name") or "").strip()
         if law_name:
             queries.append(law_name)
+
+    # Open Law title search is materially more reliable than a single long
+    # natural-language phrase for workplace-change questions.  Seed the three
+    # controlling immigration instruments first; the issue-specific searches
+    # below then narrow the context.  The cap still keeps the request bounded.
+    if "근무처변경/이직" in reason_list:
+        # Reserve one highly reliable title lookup without crowding out the
+        # first query for every other detected issue (extension, reporting,
+        # employment conditions, etc.).
+        queries.append("출입국관리법")
     anchor_groups = [list(_QUERY_ANCHORS_BY_REASON.get(reason, ())) for reason in reason_list]
     anchor_groups = [group for group in anchor_groups if group]
     # Balance issue coverage before spending remaining calls on synonyms for a

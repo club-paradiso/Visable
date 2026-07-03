@@ -224,6 +224,8 @@
         .answer-mode-btn:hover { color: var(--ac); }
         .answer-mode-btn.is-active { background: var(--bg0); color: var(--ac); }
         .answer-mode-btn:focus-visible { outline: 2px solid color-mix(in srgb, var(--ac) 60%, white); outline-offset: 2px; }
+        .answer-routing-note { margin: var(--sp-3) var(--sp-4) 0; padding: 0.72rem 0.85rem; border: 1px solid rgba(52,212,168,0.26); border-radius: 10px; background: rgba(52,212,168,0.07); color: var(--t2); font-size: 0.82rem; line-height: 1.55; }
+        .answer-routing-note strong { color: var(--ac); }
         .ai-easy-only { display: none; }
         .answer-card.ai-mode-easy .ai-easy-only { display: block; }
         .ai-easy-frame { margin: var(--sp-3) var(--sp-4) 0; padding: 0.85rem 1rem; border: 1px solid var(--bd); border-radius: 12px; background: var(--acL); }
@@ -1428,7 +1430,7 @@ select:focus-visible {
         <div class="ai-mode-selector" role="radiogroup" aria-label="답변 속도 모드" id="aiModeSelector">
             <button type="button" class="ai-mode-btn" data-mode="fast" role="radio" aria-checked="false">
                 <span class="ai-mode-title">⚡ Fast</span>
-                <span class="ai-mode-sub">빠른 답변</span>
+                <span class="ai-mode-sub">간단 질문 즉답 · 복잡하면 Basic</span>
             </button>
             <button type="button" class="ai-mode-btn is-active" data-mode="basic" role="radio" aria-checked="true">
                 <span class="ai-mode-title">⚖️ Basic</span>
@@ -2339,7 +2341,7 @@ select:focus-visible {
             },
             welcomeAria: { ko: '예시 질문', en: 'Example questions', zh: '示例问题' },
             msgTime: { ko: '시스템 메시지 · 예시 질문은 입력창에 자동으로 채워집니다.', en: 'System message · Example questions auto-fill the input box.', zh: '系统消息 · 示例问题会自动填入输入框。' },
-            modeFastSub: { ko: '빠른 답변', en: 'Fast answer', zh: '快速答复' },
+            modeFastSub: { ko: '간단 질문 즉답 · 복잡하면 Basic', en: 'Quick for simple questions · complex routes to Basic', zh: '简单问题快速答复 · 复杂问题转 Basic' },
             modeBasicSub: { ko: '기본(권장)', en: 'Standard (recommended)', zh: '标准（推荐）' },
             inputLabel: { ko: '상황 분석 요청 입력창', en: 'Situation analysis request input', zh: '情况分析请求输入框' },
             placeholder: { ko: '예: 미국 국적, 이태원 거주, D-10 비자 상태인데 E-7 취업을 희망합니다...', en: 'e.g. US national, living in Itaewon, on a D-10 visa and hoping to switch to E-7 employment...', zh: '例：美国国籍，居住在梨泰院，持 D-10 签证，希望转为 E-7 就业……' },
@@ -2553,6 +2555,7 @@ select:focus-visible {
                 law_sources: asArray(m.law_sources),
                 legal_evidence_cases: asArray(m.legal_evidence_cases),
                 legal_evidence_status: asString(m.legal_evidence_status),
+                answer_mode_escalation_reasons: asArray(m.answer_mode_escalation_reasons),
                 legal_evidence_used: Boolean(m.legal_evidence_used),
                 grounding_sources: asArray(m.grounding_sources),
                 related_statuses_not_sources: asArray(m.related_statuses_not_sources),
@@ -3039,6 +3042,17 @@ select:focus-visible {
             return `<div class="safety-notice" role="note">${escapeHtml(notice)}</div>`;
         }
 
+        function buildAnswerRoutingNotice(result, lang) {
+            if (!result || !result.answer_mode_auto_escalated) return '';
+            const copy = tt(lang, {
+                ko: '<strong>Basic으로 자동 전환</strong> · 법령·판례 확인이나 여러 사실관계 판단이 필요한 질문이라 Fast 대신 더 신중한 답변 경로를 사용했습니다.',
+                en: '<strong>Automatically routed to Basic</strong> · This question needs source checking or multi-factor analysis, so Waymaker used the more careful answer path.',
+                zh: '<strong>已自动切换到 Basic</strong> · 此问题需要核对来源或进行多因素分析，因此采用了更审慎的答复路径。',
+                zhHant: '<strong>已自動切換到 Basic</strong> · 此問題需要核對來源或進行多因素分析，因此採用了更審慎的答覆路徑。'
+            });
+            return `<div class="answer-routing-note" role="status">${copy}</div>`;
+        }
+
         // Render a blocked/escalated/emergency safety response as a distinct but
         // non-alarming card. No "reported"/"criminal" language is ever shown; the
         // copy is the backend's neutral refusal plus the lawful topics we CAN help
@@ -3127,6 +3141,7 @@ select:focus-visible {
                     ${buildAnswerModeToggle()}
                     ${buildAiEasyFrame()}
                     ${buildContextRow(result, lang)}
+                    ${buildAnswerRoutingNotice(result, lang)}
                     ${buildDegradedStateBanner(result, lang)}
                     ${buildSafetyNotice(result, lang)}
                     <div class="answer-body">${formatAnswerText(answer, lang)}</div>

@@ -14,9 +14,10 @@ catalog identifiers from environment variables.
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List
+import re
+from typing import Any, Dict, List, Optional, Sequence
 
-MODEL_POLICY_VERSION = "2026-06-hermes-basic-gemma-fast-extended"
+MODEL_POLICY_VERSION = "2026-07-fast-complexity-escalation-v1"
 
 DEFAULT_ROUTER_MODEL = "google/gemma-4-31b-it:free"
 DEFAULT_TRANSLATION_MODEL = "google/gemma-4-31b-it:free"
@@ -47,6 +48,43 @@ DEFAULT_FINAL_ANSWER_MODEL_CANDIDATES: List[str] = [
 # Random routing stays forbidden; every tier is an explicit, auditable chain.
 ANSWER_MODES = ("fast", "basic", "pro")
 DEFAULT_ANSWER_MODE = "basic"
+
+# Fast is a latency promise for genuinely small questions, not a request to
+# answer a source-heavy or multi-factor immigration problem with a weaker
+# model.  These issue families are deterministic signals that the Basic chain
+# is the safer minimum.  The list intentionally uses issue *types* produced by
+# legal_analysis rather than visa-code exceptions.
+_BASIC_MINIMUM_ISSUES = frozenset({
+    "denial_revocation_or_remedy",
+    "constitutional_or_fundamental_rights",
+    "discretionary_or_ambiguous_interpretation",
+    "overstay_or_risk",
+    "nationality_or_refugee_context",
+    "workplace_change_addition",
+    "status_change",
+    "outside_status_activity",
+    "work_on_non_work_status",
+    "employment_restriction",
+    "approval_condition",
+    "post_status_change_residual_duty",
+})
+
+_SOURCE_HEAVY_RE = re.compile(
+    r"판례|재결례|행정심판|행정소송|불허|취소처분|강제퇴거|출국명령|"
+    r"난민|귀화\s*불허|법령\s*(?:과|및|·)?\s*판례|조문|법적\s*근거|"
+    r"precedent|case\s+law|administrative\s+appeal|litigation|denial|"
+    r"revocation|deportation|statutory\s+basis",
+    re.IGNORECASE,
+)
+
+_PROCEDURE_RISK_RE = re.compile(
+    r"근무처\s*(?:변경|추가)|고용주\s*변경|체류자격\s*변경|"
+    r"체류자격\s*외\s*활동|사전\s*허가|신고\s*기한|허가\s*전|"
+    r"과태료|범칙금|벌금|위반|"
+    r"change\s+(?:of\s+)?(?:employer|workplace|status)|"
+    r"activities?\s+outside\s+status|prior\s+permission|reporting\s+deadline|penalt",
+    re.IGNORECASE,
+)
 
 # Fast tier: a light, low-latency primary with a 4-deep fallback chain.
 # Each fallback is tried in order when the previous model is rate-limited
@@ -141,6 +179,70 @@ def normalize_answer_mode(mode: Any) -> str:
     if value in ANSWER_MODES:
         return value
     return DEFAULT_ANSWER_MODE
+
+
+def resolve_question_answer_mode(
+    mode: Any,
+    *,
+    question: str = "",
+    legal_issue_types: Optional[Sequence[str]] = None,
+    risk_level: str = "",
+) -> Dict[str, Any]:
+    """Resolve the user-requested tier into the minimum safe answer tier.
+
+    Only Fast can be automatically promoted.  Basic is never downgraded, and
+    the existing Pro-unavailable behavior remains explicit.  The router is
+    deterministic, secret-free, and returns public reason codes so the client
+    can explain why a question took the more careful path.
+    """
+    requested = normalize_answer_mode(mode)
+    if requested == "pro":
+        return {
+            "requested_mode": "pro",
+            "effective_mode": "basic",
+            "auto_escalated": False,
+            "available": False,
+            "escalation_reasons": ["pro_unavailable_basic_fallback"],
+            "version": MODEL_POLICY_VERSION,
+        }
+    if requested != "fast":
+        return {
+            "requested_mode": requested,
+            "effective_mode": requested,
+            "auto_escalated": False,
+            "available": True,
+            "escalation_reasons": [],
+            "version": MODEL_POLICY_VERSION,
+        }
+
+    text = " ".join(str(question or "").split())
+    reasons: List[str] = []
+    issues = {str(v or "").strip() for v in (legal_issue_types or []) if str(v or "").strip()}
+    if issues & _BASIC_MINIMUM_ISSUES:
+        reasons.append("complex_legal_issue")
+    if str(risk_level or "").strip().lower() == "high":
+        reasons.append("high_risk_question")
+    if _SOURCE_HEAVY_RE.search(text):
+        reasons.append("source_heavy_question")
+    if _PROCEDURE_RISK_RE.search(text):
+        reasons.append("permission_or_deadline_risk")
+
+    clause_count = (
+        text.count("?") + text.count("？") + text.count(",") + text.count("、")
+        + text.count("그리고") + text.lower().count(" and ") + text.count("동시에")
+    )
+    if len(text) >= 80 or clause_count >= 3:
+        reasons.append("multi_factor_question")
+
+    reasons = list(dict.fromkeys(reasons))
+    return {
+        "requested_mode": "fast",
+        "effective_mode": "basic" if reasons else "fast",
+        "auto_escalated": bool(reasons),
+        "available": True,
+        "escalation_reasons": reasons,
+        "version": MODEL_POLICY_VERSION,
+    }
 
 
 def resolve_answer_mode_models(mode: Any) -> Dict[str, Any]:

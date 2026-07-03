@@ -101,6 +101,12 @@
 .wm-btn-restart { margin-left: auto; }
 
 .wm-step-nav { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+.wm-card-decision { border-color: color-mix(in srgb, var(--wm-ac) 38%, var(--wm-bd)); }
+.wm-decision-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 0.7rem; }
+.wm-decision-col { min-width: 0; }
+.wm-decision-list { margin: 0.55rem 0 0; padding-left: 1.15rem; color: var(--wm-t2); }
+.wm-decision-list li { margin: 0.42rem 0; line-height: 1.55; }
+.wm-form-helper-link { text-decoration: none; }
 
 /* ---------- chips (language / location) ---------- */
 .wm-chip-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
@@ -296,6 +302,7 @@ html[data-editorial-theme="archive_diary"] .wm-cov-none { background: rgba(138,4
   .wm-actionbar .wm-btn-block { width: auto; flex: 1 1 12rem; }
 }
 @media (max-width: 430px) {
+  .wm-decision-grid { grid-template-columns: 1fr; }
   /* Override the padding TOKEN (not padding directly) so the sticky action bar's
      negative margin (calc(-1 * var(--wm-pad))) stays edge-aligned with the root
      padding — otherwise the bar overhangs and forces horizontal scroll. */
