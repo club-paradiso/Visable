@@ -255,6 +255,10 @@ class RegressionFixtureTests(unittest.TestCase):
         p = ppb.build_procedure_packet("E-7", "workplaceChange")
         self.assertEqual(p["packetType"], "workplace_change")
         self.assertIn(p["sourceLens"]["overallLevel"], ppb.SOURCE_LENS_LEVELS)
+        self.assertIn("세부코드", " ".join(p["decisionSupport"]["factsKo"]))
+        self.assertTrue(any("허가" in q and "신고" in q for q in p["decisionSupport"]["officialQuestionsKo"]))
+        self.assertEqual(p["formHelper"], {"formId": "F01", "type": "workplace_change"})
+        self.assertTrue(any("새 근무" in action for action in p["nextActions"]))
 
     def test_f6_status_change_is_valid_packet(self):
         p = ppb.build_procedure_packet("F-6", "statusChange")

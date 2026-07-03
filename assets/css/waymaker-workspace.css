@@ -169,6 +169,10 @@ body:not(.wm-active) {
 
 body:not(.wm-active) #waymakerNavigatorRoot { display: none; }
 body:not(.wm-active) #legalSourceSearchRoot { display: none; }
+/* The procedure navigator is a focused task flow.  The research tool lives on
+   its own sidebar route and must not appear as a second accordion under every
+   intake step or result packet. */
+body.wm-active #legalSourceSearchRoot { display: none !important; }
 body.wm-research-open #legalSourceSearchRoot {
   display: block;
   flex: 1 1 auto;

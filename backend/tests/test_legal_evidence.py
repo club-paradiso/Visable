@@ -481,6 +481,37 @@ def _fake_case_law_result():
     return r
 
 
+class IssueRelevanceGateTests(unittest.TestCase):
+    def test_workplace_question_rejects_generic_status_change_case(self):
+        case = le.LegalCase(
+            source_type=ST.PRECEDENT,
+            source_id="187813",
+            case_name="체류자격변경불허가처분취소",
+            holding="체류자격 변경허가 여부는 행정청의 재량에 속한다.",
+            summary="재량권 일탈·남용 여부를 판단한다.",
+        )
+        case.score = 0.65
+        case.score_breakdown = {"keyword": 0.3, "issue": 0.2, "statute": 0.0}
+        self.assertFalse(le.case_is_relevant(
+            case,
+            query="E-7 근무처 변경허가 전 새 회사에서 일할 수 있나요?",
+        ))
+
+    def test_workplace_question_accepts_workplace_specific_case(self):
+        case = le.LegalCase(
+            source_type=ST.PRECEDENT,
+            source_id="workplace-1",
+            case_name="특정활동 근무처 변경허가 처분 취소",
+            holding="새 고용주의 사업장과 담당 직무가 쟁점이다.",
+        )
+        case.score = 0.42
+        case.score_breakdown = {"keyword": 0.25, "issue": 0.2, "statute": 0.0}
+        self.assertTrue(le.case_is_relevant(
+            case,
+            query="E-7 근무처 변경허가 전 새 회사에서 일할 수 있나요?",
+        ))
+
+
 class WaymakerIntegrationTests(unittest.TestCase):
     QUESTION = "체류자격 변경 불허가 처분을 행정심판으로 다툴 수 있나요? 판례가 궁금합니다."
 
@@ -547,9 +578,9 @@ class WaymakerIntegrationTests(unittest.TestCase):
         # No OC leaks anywhere in the response.
         self.assertNotIn("oc-", resp.text.lower().replace("or-sentinel", ""))
 
-    def test_fast_mode_also_retrieves_case_law(self):
-        # Fast mode now performs real-time case-law lookup too (lighter budget),
-        # so the retrieval IS called and the evidence is surfaced.
+    def test_source_heavy_fast_request_escalates_and_retrieves_basic_case_budget(self):
+        # A source-heavy Fast request is promoted to Basic before retrieval, so
+        # the model and evidence budgets cannot disagree.
         pb = _pb()
         calls = {"n": 0, "max_cases": None}
 
@@ -564,8 +595,10 @@ class WaymakerIntegrationTests(unittest.TestCase):
         self.assertEqual(body["legal_evidence_status"], "available")
         self.assertTrue(body["legal_evidence_used"])
         self.assertEqual(calls["n"], 1, "case law MUST be retrieved in Fast mode")
-        # Fast mode uses the lighter budget.
-        self.assertEqual(calls["max_cases"], 2)
+        self.assertTrue(body["answer_mode_auto_escalated"])
+        self.assertEqual(body["answer_mode_requested"], "fast")
+        self.assertEqual(body["answer_mode"], "basic")
+        self.assertEqual(calls["max_cases"], 3)
 
     def test_missing_oc_degrades_without_breaking_request(self):
         pb = _pb()

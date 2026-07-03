@@ -326,6 +326,22 @@ class CandidateFallbackBehaviorTests(unittest.TestCase):
         self.assertEqual(body["answer_mode"], "fast")
         self.assertEqual(body["answer_mode_requested"], "fast")
 
+    def test_complex_fast_question_uses_basic_chain_and_reports_auto_escalation(self):
+        pb = _pb()
+        resp, calls = self._ask(
+            pb,
+            {},
+            question="E-7 근무처 변경허가 전 새 회사에서 일할 위험과 관련 판례를 근거로 설명해 주세요.",
+            answer_mode="fast",
+        )
+        self.assertEqual(resp.status_code, 200, resp.text)
+        body = resp.json()
+        self.assertEqual(calls[0], CANDS[0])
+        self.assertEqual(body["answer_mode_requested"], "fast")
+        self.assertEqual(body["answer_mode"], "basic")
+        self.assertTrue(body["answer_mode_auto_escalated"])
+        self.assertIn("source_heavy_question", body["answer_mode_escalation_reasons"])
+
     def test_fast_mode_falls_through_dead_primary_to_fast_fallback(self):
         # Regression for the reported bug: Fast mode showed only the
         # "all online model candidates failed" preparation note when the fast

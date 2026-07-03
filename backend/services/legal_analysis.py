@@ -351,7 +351,18 @@ def classify_activity_types(question: str) -> List[str]:
         add("document_preparation")
     if _has_any(text, "연장", "extension", "extend"):
         add("status_extension")
-    if _has_any(text, "변경", "전환", "switch", "change status", "status change") or _TRANSITION_RE.search(text):
+    # A workplace/address/passport *change* is not a change of sojourn status.
+    # Require status/visa wording (or an explicit A→B transition) once another
+    # specific change activity has already been detected.
+    specific_change = bool(set(activities) & {"workplace_change", "workplace_addition", "registration_or_reporting"})
+    explicit_status_change = _has_any(
+        text,
+        "체류자격 변경", "비자 변경", "자격변경", "체류자격 전환",
+        "change status", "status change", "change of status", "switch visa",
+    )
+    if explicit_status_change or _TRANSITION_RE.search(text) or (
+        not specific_change and _has_any(text, "변경", "전환", "switch")
+    ):
         add("status_change_route")
     if not activities and not registration_deadline and has_explicit_work_query(text):
         add("paid_work")
@@ -388,7 +399,11 @@ def extract_immigration_facts(question: str, *, visa_code: Optional[str] = None)
         previous_status = _norm_code(transition.group(1))
         target_status = _norm_code(transition.group(2))
         current_status = target_status
-    elif explicit_hint and codes and len(codes) < 2 and _asks_status_change_to_target(text):
+    elif explicit_hint and codes and len(codes) < 2 and _has_any(
+        text,
+        "체류자격 변경", "비자 변경", "자격변경", "체류자격 전환",
+        "change status", "status change", "change of status", "switch visa",
+    ):
         target_candidates = [code for code in codes if code != explicit_hint]
         if target_candidates:
             previous_status = explicit_hint
@@ -459,7 +474,16 @@ def classify_legal_issue_types(question: str, immigration_facts: Optional[Dict[s
         add("registration_deadline"); add("deadline_trigger")
         add("reporting_duty"); add("registration_or_residence_report")
     elif acts & {"registration_or_reporting"}:
-        add("reporting_duty"); add("registration_or_residence_report")
+        add("reporting_duty")
+        # Generic 신고 language also appears in workplace-change questions.
+        # Only classify foreigner registration/residence reporting when the
+        # user actually names that procedure.
+        if _has_any(
+            text,
+            "외국인등록", "외국인 등록", "거소신고", "체류지 변경",
+            "alien registration", "foreigner registration", "residence report", "ARC",
+        ):
+            add("registration_or_residence_report")
     if acts & {"workplace_change", "workplace_addition", "additional_employment"}:
         add("reporting_duty"); add("workplace_change_addition")
         # A change of employer/workplace is not just a reporting duty: for a
