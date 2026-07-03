@@ -75,6 +75,7 @@ from services.model_policy import (
     resolve_answer_mode_models,
     sanitize_model_role_policy_for_public,
 )
+from services.providers.nvidia_nim import NvidiaNimProvider
 
 # First-stage Trust & Safety guardrail. Imported UNGUARDED on purpose: safety is
 # not an optional feature, so a broken safety module must fail the deploy (fail
@@ -3876,11 +3877,19 @@ async def health() -> Dict[str, Any]:
             "law_api_key_fallback_configured": bool(LAW_API_KEY),
             "law_api_credential_source": "LAW_API_KEY" if LAW_API_KEY else "",
         }
+    provider_status = {
+        "openrouter": {"configured": bool(OPENROUTER_API_KEY), "enabled": llm["provider"] == "openrouter"},
+        "groq": {"configured": bool(GROQ_API_KEY), "fallback_allowed": ALLOW_GROQ_FALLBACK},
+        "law_grounding": {"mode": law_mode, "effective_mode": law_effective_mode},
+        "legal_evidence": {"configured": bool(law_api_status["law_api_configured"])},
+        "nvidia_nim": NvidiaNimProvider().health_check(),
+    }
     return {
         "status": "ok",
         "service": "paradiso-backend",
         "version": app.version,
         "providers": _providers_configured(),
+        "provider_status": provider_status,
         # Non-secret active LLM descriptor. Model ids are public catalog
         # identifiers; API keys are never included here. ``warnings`` flags the
         # Groq-fallback posture (e.g. GROQ_FALLBACK_ENABLED) so operators can see
