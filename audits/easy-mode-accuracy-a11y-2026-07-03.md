@@ -106,3 +106,71 @@
 - easyModeWhoBody 키는 12개 로케일 전부에서 새 키로 대체.
 - 12개 로케일(ar RTL 포함) 실브라우저 전수 렌더 검증 + e2e에 전 로케일
   루프 테스트 추가(빈 섹션/키 누출/한국어 제목 누출/전화 버튼/RTL 확인).
+
+## 후속: 서류명 이중 표기(한국어 + 검증된 번역) — Easy Mode + 일반 모드
+
+요청: 언어 설정을 바꿨을 때 서류 이름을 한국어만 보여주지 말고 괄호로 해당
+언어 번역을 병기. 단, CLAUDE.md의 "법률/이민 콘텐츠를 임의로 만들지 않는다"
+원칙과 이 리포 고유의 `data/i18n/official-terms.json` 정책("공식 영어/중국어
+명칭을 절대 임의로 만들지 않는다. confidence가 canonical/official/
+manual-derived/curated일 때만 노출하고, needs-verification/fallback은
+저장만 하고 한국어로 렌더링한다")을 그대로 지켰다 — 새 번역을 만들지 않고,
+**이미 검증되어 존재하는 용어집을 두 화면(Easy Mode, 일반 모드)에 추가로
+연결**했을 뿐이다.
+
+### 발견한 사실
+- 서류명 이중 표기 메커니즘(`annotateOfficialDocLabel` + `officialTermTranslation`)
+  은 이미 존재했지만 호출처가 `renderDocTags` 단 한 곳(직접 doc_* id가 붙은
+  경우만)이었고, doc_* id가 없는 대부분의 원문 서류명(`documents_initial` 등
+  직접 필드, 전체 서류행의 약 90%)과 Easy Mode는 전혀 연결돼 있지 않았다.
+- 전체 42개 상태 중 41개는 절차(Procedures) 섹션이 구비서류를 소유해
+  (`procedureSectionOwnsDocuments`) 독립 "구비서류" 탭 UI 자체가 렌더링되지
+  않는다 — 즉 실사용자가 보는 "일반 모드" 서류 표시는 거의 전부
+  `renderDocTags`(절차 체크리스트) 경로다. 독립 탭 UI(`renderDocumentTabPanel`)
+  경로는 현재 데이터셋에서 어느 레코드도 실제 콘텐츠로 도달하지 않아
+  (YOUTH-STAY만 비-절차소유이나 서류 필드 자체가 비어 있음) 유닛 테스트로
+  직접 검증했다.
+
+### 구현 (렌더러 전용, 데이터 미변경)
+- `findOfficialTermIdForKoreanLabel(koreanLabel)`: doc_* id 없이도 용어집과
+  매칭하는 새 조회 경로. ① 공백만 정규화한 전체 텍스트 완전일치, ② 그래도
+  없으면 기존 서류 패밀리 분류기(`normalizeDocumentRequirementKey`, 이미
+  Standard 체크리스트 중복제거에 쓰이던 코드)의 결과가 용어집 `ko` 필드와
+  **글자 그대로 동일할 때만** 신뢰. 어떤 경우도 새로운 매핑을 주장하지 않고,
+  이미 사람이 검증한 두 값이 우연히 일치하는지만 확인한다.
+- `renderAnnotatedDocLabel(koreanLabel)`: Standard 구비서류 탭(`.docs-list-name`)
+  과 Easy Mode(`.easy-doc-group`)가 공용으로 쓰는 안전한 HTML 조각 생성기 —
+  번역이 있으면 `<span class="doc-name-i18n" lang="{현재언어}">(번역)</span>`
+  을 추가하고, 없으면 기존과 동일하게 한국어만 표시.
+- `renderDocTags`(절차 체크리스트, 실질적 "일반 모드" 대부분)는 `hl()`이
+  내부적으로 `escapeHtml()`을 다시 적용하는 구조라 위 span 방식을 쓸 수 없어,
+  기존 `annotateOfficialDocLabel`과 동일한 방식(순수 텍스트 `이름 (번역)`)으로
+  폴백을 추가 — doc_* id 매칭이 없을 때만 텍스트/패밀리 폴백을 시도.
+- 한국어 UI는 `officialTermTranslation()`이 `locale==='ko'`일 때 항상 null을
+  반환하므로 구조적으로 완전히 영향받지 않음(브라우저 테스트로도 확인).
+
+### 현재 실제 커버리지 (en/zh-CN만 데이터 보유)
+용어집(`official-terms.json`)은 21개 용어 중 en/zh-CN만 값이 있고 나머지
+10개 언어(ja, vi, tl, id, ru, fr, es, ar, de)는 값이 없다 — 메커니즘은
+12개 언어 전부에서 동일하게 동작하지만(안전하게 무동작), **실제로 괄호
+번역이 보이는 것은 오늘 기준 en/zh-CN 사용자뿐**이다. 전체 서류 행 기준
+여권/수수료/외국인등록증/통합신청서 등 고빈도 항목이 겹치며 D-2 절차
+체크리스트에서 69행 중 17행(EN)/19행(ZH-CN)이 즉시 이중 표기됨.
+
+### 검증
+- `tests/e2e/bilingual-doc-names.spec.mjs` 신설(6개 테스트: EN/ZH-CN 절차
+  체크리스트 이중 표기, KO 무변화, Easy Mode lang 속성, 독립 탭 렌더러
+  유닛 테스트, 12개 언어 E-9 무크래시) — 전부 통과.
+- 기존 `easy-mode.spec.mjs`(8개) + `search-smoke.spec.mjs`(2개) 회귀 통과,
+  `npm run test:i18n`(1191키 패리티) 통과, `npm run validate` 통과.
+
+### 알려진 한계 (범위 내 정직한 트레이드오프)
+- `renderDocTags` 경로(전체 서류의 대다수)에서 추가되는 번역 텍스트는
+  `lang` 속성으로 별도 표시되지 않는다(`hl()`의 escapeHtml 재적용 제약).
+  이는 새로 만든 문제가 아니라 기존 `annotateOfficialDocLabel`이 이미
+  가지고 있던 특성을 동일하게 확장한 것— 완전한 접근성 개선은 `hl()`
+  리팩터가 필요해 범위 밖으로 남겨둠.
+- 10개 언어(en/zh-CN 제외) 및 나머지 ~90%의 서류명에 실제 번역을 채우는
+  일은 데이터(용어집) 확장 작업이며, "공식 명칭을 임의로 만들지 않는다"는
+  원칙상 검증되지 않은 번역을 새로 생성해 넣는 것은 이 커밋의 범위에서
+  의도적으로 제외했다 — 사용자에게 별도로 확인 요청.

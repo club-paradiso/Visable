@@ -83,8 +83,12 @@ test.describe('easy mode content contract', () => {
   });
 
   test('easy panel renders populated in every supported locale (incl. RTL)', async ({ page }) => {
-    const LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
     const card = await openEasyView(page, 'D-2');
+    // Read the live-supported locale list from the manifest rather than a
+    // hardcoded array, so a future locale addition (e.g. tr/uk) is covered
+    // automatically instead of silently going untested. Must run AFTER the
+    // page has loaded the app (I18N_MANIFEST doesn't exist on a blank page).
+    const LOCALES = await page.evaluate(() => I18N_MANIFEST.supportedLocales);
     for (const loc of LOCALES) {
       await page.evaluate(async (l) => { await applyLanguage(l); }, loc);
       // renderResults re-runs on language switch; the easy view must survive it.
