@@ -2671,6 +2671,11 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
 .docs-list-row::before { content: "✓"; grid-column: 1; display: inline-flex; align-items: center; justify-content: center; width: 1.35rem; height: 1.35rem; border-radius: 50%; color: var(--ac); background: color-mix(in srgb, var(--ac) 10%, white); border: 1px solid color-mix(in srgb, var(--ac) 28%, var(--bd2)); font-weight: 700; font-size: 0.78rem; text-align: center; line-height: 1; margin-top: 0.08rem; }
 .docs-list-name { grid-column: 2; color: var(--t1); font-weight: 800; font-size: 0.88rem; word-break: keep-all; overflow-wrap: anywhere; }
 .docs-list-note { grid-column: 2; color: var(--t3); font-size: 0.78rem; word-break: keep-all; overflow-wrap: anywhere; }
+/* Glossary-verified translation appended after a Korean document name
+   (renderAnnotatedDocLabel) — de-emphasized relative to the bold Korean
+   canonical name so the Korean stays the visually primary label. */
+.doc-name-i18n { font-weight: 600; color: var(--t2); }
+.easy-list--check .doc-name-i18n { font-weight: 500; }
 .docs-list-missing { color: var(--t3); font-style: italic; }
 .docs-missing-notice { border: 1px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1)); color: var(--t1); border-radius: 8px; padding: 0.85rem 0.95rem; font-size: 0.84rem; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
 
@@ -17309,8 +17314,22 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
         // Non-Korean locales: append a glossary-verified translation after the
         // canonical Korean name (data/i18n/official-terms.json). Unverified
         // terms keep Korean-only rendering — official names are never invented.
-        if (!isUnresolvedId && typeof key === 'string' && key.startsWith('doc_') && typeof annotateOfficialDocLabel === 'function') {
-            officialName = annotateOfficialDocLabel(key, officialName);
+        // Tries the doc_*-id index first (exact term binding); if that finds
+        // nothing, falls back to the same text/family-based lookup the
+        // Standard 구비서류 tabs and Easy Mode use, so the identical document
+        // reads the same bilingual way wherever it appears on the site.
+        if (!isUnresolvedId) {
+            const beforeGlossary = officialName;
+            if (typeof key === 'string' && key.startsWith('doc_') && typeof annotateOfficialDocLabel === 'function') {
+                officialName = annotateOfficialDocLabel(key, officialName);
+            }
+            if (officialName === beforeGlossary && typeof findOfficialTermIdForKoreanLabel === 'function') {
+                const fallbackTermId = findOfficialTermIdForKoreanLabel(officialName);
+                const fallbackTranslation = fallbackTermId ? officialTermTranslation(fallbackTermId) : null;
+                if (fallbackTranslation && !officialName.toLowerCase().includes(fallbackTranslation.toLowerCase())) {
+                    officialName = officialName + ' (' + fallbackTranslation + ')';
+                }
+            }
         }
         // D6 (항목 16): the foreign-resident occupation/income report moved to
         // HiKorea online filing (외국인 취업정보 온라인 신고제, 2026-01-02 시행;
@@ -20747,7 +20766,9 @@ function renderDocumentTabPanel(v, cfg, isActive) {
             if (nameIsMissing) return '';
             const noteIsMissing = !rawNote || rawNote === 'DATA_MISSING';
             const helpButton = renderDocumentHelpButton(rawName, rawName);
-            const nameHtml = `<div class="docs-list-name-row"><div class="docs-list-name">${escapeHtml(rawName)}</div>${helpButton}</div>`;
+            // helpButton keeps the pure Korean rawName for its own lookup;
+            // only the visible label gets the glossary-verified translation.
+            const nameHtml = `<div class="docs-list-name-row"><div class="docs-list-name">${renderAnnotatedDocLabel(rawName)}</div>${helpButton}</div>`;
             // Drop the empty "비고 정보 없음" placeholder entirely; rendering
             // an explicit "no note" row buries the actual document name.
             const noteHtml = noteIsMissing
@@ -21015,9 +21036,12 @@ function renderEasyModePanel(v) {
         // Document names stay Korean canonical (official terminology is not
         // translated where unverified, per data/i18n policy); lang="ko" marks
         // them so screen readers and the non-ko leak guard treat them correctly.
+        // renderAnnotatedDocLabel appends a glossary-verified translation in
+        // parens when one exists — its own <span> carries the correct lang
+        // override so it reads right even inside this lang="ko" <ul>.
         docsBody = docGroups.map(g => `<div class="easy-doc-group">
             <p class="easy-subtitle">${escapeHtml(g.label)}</p>
-            <ul class="easy-list easy-list--check"${isKo ? '' : ' lang="ko"'}>${g.names.map(n => `<li>${escapeHtml(n)}</li>`).join('')}</ul>
+            <ul class="easy-list easy-list--check"${isKo ? '' : ' lang="ko"'}>${g.names.map(n => `<li>${renderAnnotatedDocLabel(n)}</li>`).join('')}</ul>
             ${g.more ? `<p class="easy-note">${escapeHtml(tx('easyModeDocsMore', { count: g.more }))}</p>` : ''}
         </div>`).join('')
             + `<p class="easy-note">${escapeHtml(tx('easyModeDocsDependsBody'))}</p>`;
@@ -21756,16 +21780,53 @@ const OFFICIAL_TERMS_PATH = './data/i18n/official-terms.json';
 const OFFICIAL_TERM_DISPLAY_CONFIDENCE = ['canonical', 'official', 'manual-derived', 'curated'];
 let OFFICIAL_TERMS = {};
 let OFFICIAL_DOC_TERM_INDEX = {};
+// Whitespace-normalized Korean-text -> termId index, keyed on each glossary
+// entry's own canonical `ko` field. This is the SAME glossary as the docId
+// index above; it only adds a second, independent way to reach an already-
+// vetted term for document names that never carry a doc_* id (the direct
+// documents_initial/extension/registration string fields most records use).
+let OFFICIAL_TERM_BY_KO_TEXT = {};
+function normalizeOfficialTermMatchText(s) {
+    return String(s || '').replace(/\s+/g, '');
+}
 
 function indexOfficialTerms() {
     OFFICIAL_DOC_TERM_INDEX = {};
+    OFFICIAL_TERM_BY_KO_TEXT = {};
     Object.keys(OFFICIAL_TERMS).forEach((termId) => {
         const entry = OFFICIAL_TERMS[termId];
         const docIds = entry && Array.isArray(entry.docIds) ? entry.docIds : [];
         docIds.forEach((docId) => {
             if (docId && !OFFICIAL_DOC_TERM_INDEX[docId]) OFFICIAL_DOC_TERM_INDEX[docId] = termId;
         });
+        const koKey = normalizeOfficialTermMatchText(entry && entry.ko);
+        if (koKey && !OFFICIAL_TERM_BY_KO_TEXT[koKey]) OFFICIAL_TERM_BY_KO_TEXT[koKey] = termId;
     });
+}
+
+/* Resolve a rendered Korean document-name string to a glossary termId without
+   requiring a doc_* id. Two lookup passes, both grounded in the SAME curated
+   glossary — neither can ever assert a translation the glossary doesn't
+   already carry:
+     1. Whitespace-normalized full-text match against a term's `ko` field
+        (tolerates incidental spacing differences, e.g. DOC_DICT's
+        "통합신청서 (별지 제34호 서식)" vs the glossary's "통합신청서(별지 제34호 서식)").
+     2. Fallback to the existing document-family classifier
+        (normalizeDocumentRequirementKey, already used by the Standard
+        checklist's own fee/dedupe logic) — trusted ONLY when the family
+        label it returns is itself textually identical to a glossary term's
+        `ko` field (e.g. family '여권' === term ko '여권'). This never invents
+        a new mapping; it only confirms two already-vetted labels agree, so a
+        specific numbered form (별지 제34호) can never be over-generalized
+        from a generic family match. */
+function findOfficialTermIdForKoreanLabel(koreanLabel) {
+    const directKey = normalizeOfficialTermMatchText(koreanLabel);
+    if (directKey && OFFICIAL_TERM_BY_KO_TEXT[directKey]) return OFFICIAL_TERM_BY_KO_TEXT[directKey];
+    if (typeof normalizeDocumentRequirementKey === 'function') {
+        const familyKey = normalizeOfficialTermMatchText(normalizeDocumentRequirementKey(koreanLabel));
+        if (familyKey && OFFICIAL_TERM_BY_KO_TEXT[familyKey]) return OFFICIAL_TERM_BY_KO_TEXT[familyKey];
+    }
+    return '';
 }
 
 function officialTermTranslation(termId, locale = currentLanguage) {
@@ -21788,6 +21849,25 @@ function annotateOfficialDocLabel(docId, koreanLabel) {
     const label = String(koreanLabel);
     if (label.toLowerCase().includes(translation.toLowerCase())) return label;
     return label + ' (' + translation + ')';
+}
+
+/* Safe-HTML document-name label: Korean canonical name, plus a glossary
+   translation in parentheses when (and only when) findOfficialTermIdForKoreanLabel
+   resolves one — the Standard 구비서류 tabs and the Easy Mode checklist both use
+   this so a document name reads the same bilingual way in both views. Returns
+   pre-escaped HTML (both parts individually escaped) — callers must NOT wrap
+   the result in escapeHtml() again. The translation span carries its own
+   explicit lang so it reads correctly even inside a Korean-lang ancestor
+   (Easy Mode's <ul lang="ko">). */
+function renderAnnotatedDocLabel(koreanLabel) {
+    const label = String(koreanLabel || '');
+    const escaped = escapeHtml(label);
+    if (!label) return escaped;
+    const termId = findOfficialTermIdForKoreanLabel(label);
+    const translation = termId ? officialTermTranslation(termId) : null;
+    if (!translation || label.toLowerCase().includes(translation.toLowerCase())) return escaped;
+    const lang = normalizeLocaleCode(currentLanguage);
+    return `${escaped} <span class="doc-name-i18n" lang="${escapeHtml(lang)}">(${escapeHtml(translation)})</span>`;
 }
 
 function hasFullKoI18nPack() {
