@@ -126,6 +126,30 @@
         missionNotices: [
           {
             country: '베트남',
+            post: '주베트남 대한민국 대사관',
+            title: '사증 종류별 첨부서류 게시판',
+            url: 'https://overseas.mofa.go.kr/vn-ko/brd/m_2198/list.do',
+            fetchedAt: null,
+            language: 'ko',
+            textSnippet: '공식 원문 확인 필요 — 게시판 경로·제목은 검색 색인 기준이며, 서류 목록은 이 샘플에 수록하지 않았습니다.',
+            sourceType: 'overseas_mofa_public_web',
+            evidenceLevel: 'official_public_web',
+            extractionStatus: 'curated_reference_pending_fetch'
+          },
+          {
+            country: '베트남',
+            post: '주베트남 대한민국 대사관',
+            title: '베트남인 유학비자 서류 및 절차 안내(어학연수비자 포함)',
+            url: 'https://overseas.mofa.go.kr/vn-ko/brd/m_2197/view.do?seq=759500',
+            fetchedAt: null,
+            language: 'ko',
+            textSnippet: '공식 원문 확인 필요 — 게시글 제목은 검색 색인 기준입니다. 본문·서류 목록은 수록하지 않았으며, 완전한 공식 체크리스트가 아닙니다.',
+            sourceType: 'overseas_mofa_public_web',
+            evidenceLevel: 'official_public_web',
+            extractionStatus: 'curated_reference_pending_fetch'
+          },
+          {
+            country: '베트남',
             post: '주호치민 대한민국 총영사관',
             title: '공지사항 게시판',
             url: 'https://overseas.mofa.go.kr/vn-hochiminh-ko/brd/m_4024/list.do',
@@ -214,6 +238,18 @@
             '국가별 안전정보·여행경보는 외교부 공공데이터로 제공됩니다. 이 MVP 샘플에는 실시간 안전정보를 수록하지 않았습니다. 공식 원문 확인 필요.'
         },
         missionNotices: [
+          {
+            country: '몽골',
+            post: '주몽골 대한민국 대사관',
+            title: '사증(사증발급절차안내) — 공지사항 게시글',
+            url: 'https://overseas.mofa.go.kr/mn-ko/brd/m_373/view.do?seq=572641',
+            fetchedAt: null,
+            language: 'ko',
+            textSnippet: '공식 원문 확인 필요 — 게시글 제목은 검색 색인 기준입니다. 본문은 수록하지 않았으며, 완전한 공식 체크리스트가 아닙니다.',
+            sourceType: 'overseas_mofa_public_web',
+            evidenceLevel: 'official_public_web',
+            extractionStatus: 'curated_reference_pending_fetch'
+          },
           {
             country: '몽골',
             post: '주몽골 대한민국 대사관',
