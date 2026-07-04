@@ -918,6 +918,2307 @@
         "doc_degree"
       ],
       "notes": "May require apostille/consular confirmation per the source manuals. '학위증명서' (degree certificate) is standard terminology; the combined '학위/학력' phrasing is compositional."
+    },
+    "extension_necessity_statement": {
+      "ko": "체류기간 연장의 필요성을 소명하는 서류",
+      "en": "Document explaining the need for a stay extension",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "part_time_work_confirmation_intl_student": {
+      "ko": "외국인 유학생 시간제 취업 확인서",
+      "en": "Part-Time Work Confirmation for International Students",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "biz_reg_and_employer_id": {
+      "ko": "사업자등록증 사본 및 고용주 신분증 사본",
+      "en": "Business Registration Certificate and Employer's ID (copies)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "attendance_certificate": {
+      "ko": "출석확인서",
+      "en": "Certificate of Attendance",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Standard, unambiguous English rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_attend"
+      ],
+      "notes": ""
+    },
+    "attendance_certificate_rate": {
+      "ko": "출석확인서 (출석률 명시)",
+      "en": "Certificate of Attendance (stating attendance rate)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as attendance_certificate",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "diplomatic_mission_id_proof": {
+      "ko": "주한외국공관원 신분증 등 신분 입증서류",
+      "en": "ID proof such as a foreign diplomatic mission ID card (for staff of foreign missions in Korea)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "internship_training_plan": {
+      "ko": "인턴십(연수) 계획서",
+      "en": "Internship (Training) Plan",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_internship_plan"
+      ],
+      "notes": ""
+    },
+    "training_continuation_evidence": {
+      "ko": "연수계속 입증서류",
+      "en": "Evidence of Continued Training (e.g. attendance record, progress report)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_training_cont"
+      ],
+      "notes": ""
+    },
+    "parent_bank_balance_family_relation": {
+      "ko": "부모의 잔고증명서 등을 제출하는 경우 가족관계 입증서류",
+      "en": "Family Relation evidence (required if submitting a parent's bank balance certificate, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "education_requirement_evidence": {
+      "ko": "학력요건 입증서류",
+      "en": "Evidence of Educational Qualification",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "academic_progress_evidence": {
+      "ko": "학업을 정상적으로 수행하고 있음을 입증하는 서류",
+      "en": "Document proving normal academic progress",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "academic_progress_evidence_examples": {
+      "ko": "학업을 정상적으로 수행하고 있음을 입증하는 서류(성적증명서, 출석확인서 등)",
+      "en": "Document proving normal academic progress (transcript, attendance certificate, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "enrollment_or_research_student_certificate": {
+      "ko": "재학증명서 또는 연구생증명서",
+      "en": "Certificate of Enrollment or Research Student Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Combines enrollment_certificate (curated, see prior term) with a plain descriptive rendering of 연구생증명서",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "grades_or_attendance_certificate": {
+      "ko": "성적 또는 출석 증명서",
+      "en": "Transcript or Certificate of Attendance",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "korean_or_english_proficiency_evidence": {
+      "ko": "한국어 능력 또는 영어 능력 증빙서류",
+      "en": "Evidence of Korean or English Language Proficiency",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "manufacturing_construction_part_time_compliance": {
+      "ko": "사업자등록증에 제조업 또는 건설업이 포함된 경우 외국인 유학생 시간제취업 요건 준수 확인서",
+      "en": "Part-Time Work Requirement Compliance Confirmation (if the business registration covers manufacturing or construction)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "extension_reason_and_internship": {
+      "ko": "기간연장 사유서 및 인턴",
+      "en": "Statement of reason for extension and internship-related document",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "training_activity_plan": {
+      "ko": "연수 활동 계획서",
+      "en": "Training Activity Plan",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "vat_tax_base_certificate": {
+      "ko": "부가가치세 과세표준증명",
+      "en": "Certificate of VAT Tax Base",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "job_seeking_activity_plan": {
+      "ko": "구직활동계획서",
+      "en": "Job-Seeking Activity Plan",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_job_search_plan"
+      ],
+      "notes": ""
+    },
+    "points_system_self_assessment": {
+      "ko": "점수제 자기평가표 및 증빙서류",
+      "en": "Points-System Self-Assessment Table and supporting evidence",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_point_table"
+      ],
+      "notes": ""
+    },
+    "vat_act_business_registration": {
+      "ko": "‘부가가치세법’에 따른 사업자등록증",
+      "en": "Business Registration Certificate (under the Value-Added Tax Act)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Combines the already-curated business_registration_certificate rendering with the cited statute",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "vat_act_business_registration_copy": {
+      "ko": "‘부가가치세법’에 따른 사업자등록증 사본",
+      "en": "Business Registration Certificate (under the Value-Added Tax Act), copy",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as vat_act_business_registration",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "residence_or_accommodation_confirmation": {
+      "ko": "거주/숙소 제공 확인서",
+      "en": "Confirmation of Residence / Accommodation Provided",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "residence_or_accommodation_confirmation_id": {
+      "ko": "거주/숙소 제공 확인서 및 제공자 신분증 사본",
+      "en": "Confirmation of Residence / Accommodation Provided, and the provider's ID (copy)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "overseas_korean_status_evidence": {
+      "ko": "외국국적동포 입증서류",
+      "en": "Evidence of Overseas Korean (Foreign-National Compatriot) Status",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_f4_proof"
+      ],
+      "notes": ""
+    },
+    "overseas_korean_status_evidence_public_record": {
+      "ko": "외국국적동포 입증서류 (공적장부 등)",
+      "en": "Evidence of Overseas Korean (Foreign-National Compatriot) Status (public records, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "foreign_worker_online_job_report": {
+      "ko": "외국인 직업 신고서",
+      "en": "Foreign Resident Occupation Report",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "foreign_worker_online_job_report_online": {
+      "ko": "외국인 취업정보 온라인 신고 내역",
+      "en": "Online Report of Foreign Employment Information (via HiKorea)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "A newly (2026) rolled-out HiKorea online system; independent research this session found no single settled official English name",
+      "confidence": {
+        "ko": "canonical",
+        "en": "needs-verification",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_job_report"
+      ],
+      "notes": "Naming is genuinely unsettled for this system as of this session (per research agent findings) — kept at needs-verification rather than picking one candidate."
+    },
+    "child_family_relation_certificate": {
+      "ko": "(부부 사이 출생 자녀가 있을 경우) 자녀 명의 가족관계증명서",
+      "en": "Family Relation Certificate in the child's name (if the couple has a child)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "local_government_recommendation": {
+      "ko": "지자체 추천서",
+      "en": "Local Government Recommendation Letter",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_local_recommendation"
+      ],
+      "notes": ""
+    },
+    "domestic_stay_schedule": {
+      "ko": "국내 체류 일정표 (일자별 작성)",
+      "en": "Domestic Stay Schedule (day-by-day)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_schedule"
+      ],
+      "notes": ""
+    },
+    "domestic_stay_schedule_plain": {
+      "ko": "국내 체류 일정표",
+      "en": "Domestic Stay Schedule",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as domestic_stay_schedule",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "visa_application_form_bare": {
+      "ko": "사증발급(인정)신청서",
+      "en": "Visa Issuance (Confirmation) Application Form",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "highest_education_evidence_generic": {
+      "ko": "최종학력 입증서류",
+      "en": "Evidence of Highest Educational Background",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "apostille_education_documents": {
+      "ko": "아포스티유 또는 영사확인 대상 학력서류",
+      "en": "Educational documents requiring Apostille or Consular Confirmation",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "prior_school_grades_or_attendance": {
+      "ko": "D-4에서 D-2로 변경하는 경우 이전 과정의 성적 또는 출석",
+      "en": "Grades or attendance from the prior program (for a D-4 to D-2 status change)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "training_completion_certificate": {
+      "ko": "연수 증명서",
+      "en": "Certificate of Training Completion",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "visa_review_reinforced_university": {
+      "ko": "비자심사강화대학 입학",
+      "en": "Admission to a university under enhanced visa screening",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "designated_country_language_requirement": {
+      "ko": "진학 예정자로 장관 고시국가 및 중점관리국가 국민인 경우 한국어 또는 영어 능력 요건 증빙",
+      "en": "Korean or English proficiency evidence (for prospective students who are nationals of a ministry-designated or priority-managed country)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "advisor_confirmation": {
+      "ko": "지도교수 및 유학담당자 확인서",
+      "en": "Confirmation from Academic Advisor and International Student Officer",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_prof_conf"
+      ],
+      "notes": ""
+    },
+    "completion_and_advisor_confirmation": {
+      "ko": "수료증명서, 지도교수 및 유학담당자 확인서",
+      "en": "Certificate of Completion, and confirmation from academic advisor and international student officer",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "prior_school_enrollment_or_withdrawal": {
+      "ko": "변경 전 학교 재학증명서 또는 자퇴증명서",
+      "en": "Certificate of Enrollment or Withdrawal from the previous school",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "prior_school_transcript": {
+      "ko": "변경 전 학교 성적증명서",
+      "en": "Transcript from the previous school",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "new_school_admission_letter": {
+      "ko": "변경된 학교의 표준입학허가서",
+      "en": "Standard Admission Letter from the new school",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Uses the same needs-verification 'Standard Admission Letter' rendering as the existing standard_admission_letter term",
+      "confidence": {
+        "ko": "canonical",
+        "en": "needs-verification",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "non_accredited_university_language_evidence": {
+      "ko": "인증대학이 아닌 경우 한국어능력 입증서류",
+      "en": "Evidence of Korean-language proficiency (if the school is not an accredited university)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "non_accredited_university_finance_evidence": {
+      "ko": "인증대학이 아닌 경우 재정능력 입증서류",
+      "en": "Evidence of Financial Capacity (if the school is not an accredited university)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "government_scholarship_evidence": {
+      "ko": "정부초청장학생 입증서류",
+      "en": "Evidence of Government-Invited Scholarship Student status",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "school_change_necessity_evidence": {
+      "ko": "과정 폐지 등 학교 변경의 필요성 또는 부득이함을 증빙하는 서류",
+      "en": "Evidence of the necessity for a school change (e.g. program discontinuation)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "normal_academic_progress_evidence_bare": {
+      "ko": "정상 학업 수행 입증서류",
+      "en": "Evidence of Normal Academic Progress",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "training_extension_reason_form": {
+      "ko": "연수기간 연장신청 사유서(별도서식)",
+      "en": "Statement of reason for training-period extension (separate form)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "factory_registration_certificate": {
+      "ko": "사업자등록증과 공장등록증(또는 공장등록증명서, 해당자만 제출)",
+      "en": "Business Registration Certificate and Factory Registration Certificate (where applicable)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "domestic_corp_tax_certificate": {
+      "ko": "국내법인 납세증명서",
+      "en": "Tax Payment Certificate (domestic corporation)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Uses the same curated 'Certificate of Tax Payment' rendering as tax_payment_certificate",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "foreign_corp_tax_proof": {
+      "ko": "현지법인 납세사실 관련 증명 서류",
+      "en": "Proof of tax payment (local/host-country corporation)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "vat_corp_tax_receipt": {
+      "ko": "영업활동에 따른 세금(법인세, 부가가치세) 납입영수증",
+      "en": "Tax payment receipt from business activity (corporate tax, VAT)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "utility_bill_receipt": {
+      "ko": "각종공과금 납입영수증 (전기요금, 수도요금, 건물세, 토지세 중 1)",
+      "en": "Utility/tax bill payment receipt (electricity, water, building tax, or land tax — any one)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "trainee_wage_payment_evidence": {
+      "ko": "연수생 임금 및 연수수당 지급 여부 확인서류",
+      "en": "Evidence confirming payment of trainee wages/allowances",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "trainee_wage_ledger_local": {
+      "ko": "현지법인에서 지급한 연수생 임금대장(최근 1개월분): 연수 후 근무자 및 한국파견 연수생 체크 요망",
+      "en": "Trainee wage ledger paid by the local corporation (most recent month)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "trainee_allowance_ledger_domestic": {
+      "ko": "국내기업에서 지급한 연수수당 지급 대장",
+      "en": "Training allowance payment ledger paid by the domestic company",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "insurance_for_unpaid_wages": {
+      "ko": "산업재해보상보험, 국민건강보험 가입증명서류 및 연수수당 등 체불에 대비한 보증보험 가입증명서류",
+      "en": "Proof of Industrial Accident Compensation Insurance and National Health Insurance enrollment, and guarantee-insurance proof against unpaid allowances",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "enrollment_proof_generic": {
+      "ko": "재학을 입증하는 서류",
+      "en": "Document proving enrollment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "enrollment_proof_examples": {
+      "ko": "재학을 입증하는 서류(재학증명서, 교환학생 연장증명서, 연구생 증명서 등)",
+      "en": "Document proving enrollment (enrollment certificate, exchange-student extension certificate, research-student certificate, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "recruitment_guideline_or_training_plan": {
+      "ko": "모집요강 (연수일정 명시) 또는 연수계획서 (어학연수생에 한함)",
+      "en": "Recruitment guidelines (with training schedule) or Training Plan (for language-training students only)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "recruitment_guideline_or_training_plan_2": {
+      "ko": "모집요강(연수일정 명시) 또는 연수계획서(어학연수생에 한함)",
+      "en": "Recruitment guidelines (with training schedule) or Training Plan (for language-training students only)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as recruitment_guideline_or_training_plan (spacing variant)",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "tuition_payment_statement": {
+      "ko": "학비 납부 내역서 (수업료, 기숙사비, 입학금 등 유학 관련 비용 일체)",
+      "en": "Tuition Payment Statement (tuition, dormitory fees, admission fees, and other study-abroad costs)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "training_institution_schedule": {
+      "ko": "연수기관이 작성한 연수일정표",
+      "en": "Training Schedule prepared by the training institution",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "purpose_of_entry_evidence": {
+      "ko": "거래실적, 초청장, 계약서, 수출입관련서류 등 입국목적을 증명하는 서류",
+      "en": "Documents proving the purpose of entry (trade record, letter of invitation, contract, import/export documents, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "culture_arts_org_vat_business_registration": {
+      "ko": "부가가치세법에 따른 사업자등록증 등 문화예술단체 입증서류",
+      "en": "Business Registration Certificate (under the VAT Act) or other evidence of a cultural/arts organization",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "national_corp_tax_certificate_2": {
+      "ko": "국내지점 등 설치 신고서 및 사업자등록증",
+      "en": "Domestic Branch Establishment Report and Business Registration Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "foreign_law_firm_registration": {
+      "ko": "외국법자문법률사무소 및 외국법자문사 등록증 사본",
+      "en": "Registration Certificate of Foreign Legal Consulting Office and Foreign Legal Consultant (copy)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "financial_holding_company_approval": {
+      "ko": "금융지주회사의 인가서 및 외국인투자기업등록증",
+      "en": "Financial Holding Company Approval and Foreign-Invested Company Registration Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "subsidiary_corp_registry_and_shareholders": {
+      "ko": "자회사의 법인등기사항전부증명서 및 주주명부(금융지주회사가 100% 출자한 자회사임을 입증하는 서류)",
+      "en": "Subsidiary's Certificate of All Registered Matters and shareholder register (proving 100% ownership by the financial holding company)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "overseas_hq_dispatch_order_third_country": {
+      "ko": "해외본사의 파견명령서(해외본사의 제3국 지사 발행 파견명령서도 인정)",
+      "en": "Dispatch Order from the overseas headquarters (a dispatch order issued by the HQ's third-country branch is also accepted)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "holding_and_subsidiary_biz_reg": {
+      "ko": "금융지주회사 및 자회사의 사업자등록증 사본",
+      "en": "Business Registration Certificates of the financial holding company and subsidiary (copies)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "shareholder_change_statement": {
+      "ko": "주주변동상황명세서 원본",
+      "en": "Statement of Changes in Shareholders (original)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "investment_company_registration": {
+      "ko": "투자기업등록증 사본",
+      "en": "Foreign-Invested Company Registration Certificate (copy)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "resident_dispatch_and_employment_cert": {
+      "ko": "주재활동의 경우 파견명령서(파견기간이 명시된 해외 본사 및 해외 본사의 제3국 소재 지사 발행) 및 재직증명서",
+      "en": "For resident (D-7) activity: Dispatch Order (stating the dispatch period, issued by the overseas HQ or its third-country branch) and Certificate of Employment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "investment_fund_evidence": {
+      "ko": "투자자금 도입관련 입증서류",
+      "en": "Evidence related to the introduction of investment funds",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "investment_fund_details": {
+      "ko": "투자자금 도입 내역서 (송금확인증, 외국환 매입증명서, 세관신고서 등)",
+      "en": "Statement of Investment Fund Inflow (remittance confirmation, foreign exchange purchase certificate, customs declaration, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "biz_reg_and_workplace_evidence": {
+      "ko": "사업자등록증 사본, 사업장 존재 입증서류(임대차계약서 등)",
+      "en": "Business Registration Certificate (copy) and evidence of workplace existence (lease contract, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "residence_evidence_lease": {
+      "ko": "주거지 입증 서류 (임대차계약서, 월세 지급 입증서류 등)",
+      "en": "Proof of Residence (lease contract, rent-payment evidence, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "points_system_score_evidence": {
+      "ko": "점수제 해당 점수 입증서류",
+      "en": "Evidence supporting the claimed points-system score",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "trade_performance_evidence_choice": {
+      "ko": "무역실적 입증서류(택1)",
+      "en": "Evidence of Trade Performance (choose one)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "trade_assoc_import_export_certificate": {
+      "ko": "한국무역협회장 또는 한국무역통계진흥원장이 발행하는 “수출입실적증명서”",
+      "en": "Certificate of Import/Export Performance, issued by the Korea International Trade Association or the Korea Trade Statistics Promotion Institute",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "bank_export_performance_certificate": {
+      "ko": "외국환 은행 발행 “수출실적 증명원”",
+      "en": "Certificate of Export Performance, issued by a foreign-exchange bank",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "online_marketplace_transaction_record": {
+      "ko": "온라인몰 거래내역(단, 수출입실적 미신고 내역 중 최대 40%까지 인정)",
+      "en": "Online marketplace transaction record (up to 40% of undeclared import/export performance accepted)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "domestic_hiring_evidence": {
+      "ko": "내국인 고용 입증은 고용보험관련 서류 제출(정규직으로 6개월 이상 계속고용)",
+      "en": "Evidence of hiring Korean nationals: employment-insurance-related documents (continuous regular employment for 6+ months)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "tax_performance_income_tax_cert": {
+      "ko": "납세실적은 국세청 발급 “소득세 납세사실증명” 제출",
+      "en": "Tax performance: submit the National Tax Service's 'Certificate of Income Tax Payment'",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "dispatch_or_employment_cert_hq": {
+      "ko": "파견명령서 또는 재직증명서(본사 발행)",
+      "en": "Dispatch Order or Certificate of Employment (issued by the head office)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "living_expense_evidence_formula": {
+      "ko": "체재비(체류경비) 입증서류(‘연도별 1인 가구 주거급여 기준액 × 체류개월 수’ 이상 금액이 예치된 은행잔고증명서 등)",
+      "en": "Evidence of living/stay expenses (e.g. a bank balance certificate showing at least the annual single-person housing benefit rate × months of stay)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "points_evaluation_supporting_docs": {
+      "ko": "기타 점수제 평가를 위해 필요하다고 인정되는 서류",
+      "en": "Other documents deemed necessary for the points-system evaluation",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_contract_and_review_materials": {
+      "ko": "고용계약서 원본 및 사본, 기타 심사에 필요한 자료*(필요시 1~2종 제출) * 교원활용계획서, 수강생 현황, 근로소득원천징수부 등",
+      "en": "Employment Contract (original and copy), and other materials needed for review (e.g. teacher-utilization plan, student roster, wage-withholding record)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "workplace_change_addition_report": {
+      "ko": "근무처변경·추가 신고서(별지 제38호의3 서식)",
+      "en": "Report of Workplace Change or Addition (Annex Form No. 38-3)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_contract_or_appointment_confirmation": {
+      "ko": "고용계약서 또는 임용예정확인서",
+      "en": "Employment Contract or Confirmation of Prospective Appointment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employer_establishment_documents": {
+      "ko": "고용기관 설립 관련 서류(사업자등록증 또는 법인등기사항전부증명서 또는 연구기관 입증서류 등)",
+      "en": "Documents on the employer's establishment (Business Registration Certificate, Certificate of All Registered Matters, or research-institution evidence, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "original_employment_contract_evidence": {
+      "ko": "원 소속 고용계약 입증 서류(해당자)",
+      "en": "Evidence of employment contract with the original employer (where applicable)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "dispatch_or_employment_cert_hq_2": {
+      "ko": "파견명령서(본사발행) 또는 재직증명서",
+      "en": "Dispatch Order (issued by the head office) or Certificate of Employment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "technology_intro_contract_or_defense_designation": {
+      "ko": "기술도입계약신고수리서, 기술도입계약서(또는 용역거래인증서) 또는 방위산업체지정서 사본",
+      "en": "Acceptance of Technology-Introduction Contract Report, Technology-Introduction Contract (or Service Transaction Certificate), or Defense Industry Designation Certificate (copy)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_or_performance_recommendation": {
+      "ko": "고용추천서 또는 공연추천서",
+      "en": "Employment Recommendation Letter or Performance Recommendation Letter",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "additional_review_materials_employment": {
+      "ko": "기타 심사에 필요한 자료 (필요 시 1~2종 제출): 재직증명서, 외국인 고용현황, 근로소득원천징수부 등",
+      "en": "Other materials needed for review (e.g. Certificate of Employment, foreign-employment status, wage-withholding record)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "special_health_insurance_confirmation": {
+      "ko": "건강보험특실 확인서(E-6-2자격만 징구)",
+      "en": "Special Health Insurance Ward Confirmation (E-6-2 status only)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "personal_income_certificate_required": {
+      "ko": "개인 소득금액 증명(필수)",
+      "en": "Certificate of Personal Income Amount (required)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "income_certificate_or_withholding": {
+      "ko": "소득금액증명원(세무서 발급) 또는 근로소득원천징수부(소속회사 발급)",
+      "en": "Certificate of Income Amount (issued by the tax office) or wage-income withholding record (issued by the employer)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employer_tax_payment_confirmation": {
+      "ko": "고용주 납부내역증명, 납세증명서, 지방세 납세증명서(정상영업 및 세금체납여부확인)",
+      "en": "Employer's tax payment record, Certificate of Tax Payment, local tax payment certificate (confirming normal operation and no tax arrears)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "purpose_of_stay_application_reason": {
+      "ko": "신청 사유 입증서류",
+      "en": "Evidence supporting the reason for the application",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_reason_proof"
+      ],
+      "notes": ""
+    },
+    "employment_insurance_enrollee_list": {
+      "ko": "고용보험 가입자 명부",
+      "en": "Employment Insurance Enrollee Roster",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_employment_insurance_list"
+      ],
+      "notes": ""
+    },
+    "seasonal_worker_extension_application": {
+      "ko": "외국인 계절근로자(E-8) 체류기간 연장 추천 신청서",
+      "en": "Application for Recommendation to Extend Stay for a Seasonal Worker (E-8)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employer_id_card": {
+      "ko": "고용주 신분증",
+      "en": "Employer's ID Card",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "human_trafficking_indicator_form": {
+      "ko": "인신매매 피해 식별지표",
+      "en": "Human Trafficking Victim Identification Checklist",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "seasonal_worker_extension_recommendation": {
+      "ko": "체류기간 만료 계절근로자 체류기간 연장 추천서",
+      "en": "Recommendation for Stay-Period Extension for a seasonal worker whose stay has expired",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "fishery_worker_insurance": {
+      "ko": "산재보험 가입증명원(사업장 가입 신청 입증서류) 또는 농·어업인 안전보험 보험증권(안전보험 가입 확약서)",
+      "en": "Industrial Accident Insurance enrollment certificate, or Farmers'/Fishers' Safety Insurance policy (safety-insurance enrollment pledge)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "travel_insurance_certificate": {
+      "ko": "여행자보험 가입증명서",
+      "en": "Travel Insurance Enrollment Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "drug_test_confirmation_sealed": {
+      "ko": "마약검사 확인서(밀봉상태로 제출)",
+      "en": "Drug Test Confirmation (submitted sealed)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "drug_test_confirmation_sealed_2": {
+      "ko": "마약검사 확인서(밀봉된 상태로 제출, 개봉 불가)",
+      "en": "Drug Test Confirmation (submitted sealed, must not be opened)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as drug_test_confirmation_sealed",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "housing_inspection_confirmation": {
+      "ko": "(지자체) 숙소점검 확인서",
+      "en": "Housing Inspection Confirmation (by the local government)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_period_extension_confirmation": {
+      "ko": "취업기간만료자 취업활동기간 연장확인서(고용노동부 발급, 입국 후 3년 만료 재고용에 따른 최대 1년 10개월 추가 연장 시 해당)",
+      "en": "Employment-Period Extension Confirmation for a worker whose term has expired (issued by the Ministry of Employment and Labor; for the up-to-1-year-10-month extension after re-hiring at the 3-year mark)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "coastal_transport_license": {
+      "ko": "내항여객운송사업면허증 또는 내항화물운송등록증",
+      "en": "Coastal Passenger Transport Business License or Coastal Cargo Transport Registration Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "health_checkup_sealed": {
+      "ko": "건강검진서(밀봉된 상태로 제출, 개봉 불가)",
+      "en": "Health Checkup Certificate (submitted sealed, must not be opened)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "industrial_or_injury_insurance_certificate": {
+      "ko": "산업재해보상보험 또는 상해보험 가입증명원",
+      "en": "Industrial Accident Compensation Insurance or Injury Insurance enrollment certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "shipping_or_fisheries_assoc_recommendation": {
+      "ko": "한국해운조합 또는 수산업협동조합중앙회 발급 외국인 고용추천서",
+      "en": "Foreign Worker Employment Recommendation, issued by the Korea Shipping Association or the National Federation of Fisheries Cooperatives",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "industrial_accident_docs_or_diagnosis": {
+      "ko": "산재서류 또는 진단서(필요시)",
+      "en": "Industrial accident documents or a medical certificate (if needed)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "korean_proficiency_evidence_bare": {
+      "ko": "한국어능력 입증서류",
+      "en": "Evidence of Korean-Language Proficiency",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "additional_spouse_parent_arc": {
+      "ko": "추가서류: 배우자 또는 부모의 외국인등록증 등(사안별 해당 시)",
+      "en": "Additional documents: spouse's or parent's Residence Card, etc. (where applicable)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated 'Residence Card' rendering for 외국인등록증",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "property_tax_or_real_estate_evidence": {
+      "ko": "재산세 과세증명 또는 부동산 보유 입증서류",
+      "en": "Property Tax Assessment Certificate or evidence of real-estate ownership",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_property_proof"
+      ],
+      "notes": ""
+    },
+    "employment_or_work_fact_evidence": {
+      "ko": "재직증명서 또는 근무사실 입증서류",
+      "en": "Certificate of Employment or other evidence of employment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated employment_certificate rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_employment_proof"
+      ],
+      "notes": ""
+    },
+    "other_docs_deemed_necessary": {
+      "ko": "그 밖에 심사에 필요하다고 인정되는 서류(요청 시 제출)",
+      "en": "Other documents deemed necessary for review (submitted upon request)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "spouse_marriage_and_resident_registration": {
+      "ko": "한국인 배우자의 혼인관계증명서(상세) 및 주민등록등본",
+      "en": "Korean spouse's Marriage Relation Certificate and Copy of Resident Registration",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated marriage_relation_certificate and resident_registration_copy renderings",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "credit_report_or_financial_status": {
+      "ko": "신용정보조회서 또는 신용상태 입증서류",
+      "en": "Credit Information Report or evidence of financial standing",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_credit_report"
+      ],
+      "notes": ""
+    },
+    "income_tax_certificate_or_filing": {
+      "ko": "소득세 납세사실증명서 또는 소득세 신고내역",
+      "en": "Certificate of Income Tax Payment or income tax filing record",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_income_tax"
+      ],
+      "notes": ""
+    },
+    "medical_diagnosis_treatment_period": {
+      "ko": "의료기관 진단서 (상병명, 요양기간 명시)",
+      "en": "Medical Diagnosis Certificate (stating diagnosis and treatment period)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_medical"
+      ],
+      "notes": ""
+    },
+    "medical_diagnosis_bare": {
+      "ko": "의료기관 진단서",
+      "en": "Medical Diagnosis Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as medical_diagnosis_treatment_period",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "travel_itinerary_and_activity_plan": {
+      "ko": "여행일정 및 활동계획서",
+      "en": "Travel Itinerary and Activity Plan",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "workplace_biz_reg_and_contract": {
+      "ko": "근무처의 사업자등록증 사본 및 계약서 등(취업 중인 경우)",
+      "en": "Workplace's Business Registration Certificate (copy) and contract, etc. (if currently employed)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "fulbright_id_card": {
+      "ko": "Fulbright I/D 카드",
+      "en": "Fulbright I/D Card",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Fulbright is the program's own established English name",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "korean_american_educational_commission_letter": {
+      "ko": "한미교육위원단 협조공한",
+      "en": "Cooperation Letter from the Korean-American Educational Commission (Fulbright Korea)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Korean-American Educational Commission is the Fulbright Korea office's established English name",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "extension_necessity_press_docs": {
+      "ko": "체류기간 연장 필요성 소명 서류(본사의 취재명령서 또는 파견증명서, 외신 보도증 사본 또는 본사발생 재직증명서 등)",
+      "en": "Evidence supporting the need for a stay extension (head office's assignment order or dispatch certificate, foreign press credential copy, or Certificate of Employment from the head office, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_or_dispatch_cert_hq_press": {
+      "ko": "재직증명서 또는 파견명령서(본사발행)",
+      "en": "Certificate of Employment or Dispatch Order (issued by the head office)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated employment_certificate rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "employment_or_dispatch_org": {
+      "ko": "재직증명서 또는 파송명령서(파송단체 발행)",
+      "en": "Certificate of Employment or Dispatch Order (issued by the sending organization)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated employment_certificate rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "branch_installation_permit_moc": {
+      "ko": "지사의 설치허가증(문화체육관광부 발행) 또는 ‘부가가치세법’에 따른 사업자등록증",
+      "en": "Branch Establishment Permit (issued by the Ministry of Culture, Sports and Tourism) or Business Registration Certificate (under the Value-Added Tax Act)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "phd_track_evidence_by_type": {
+      "ko": "석·박사 통합과정·박사과정 수료생·박사후연구원 등 해당 유형별 입증서류",
+      "en": "Evidence by applicant type (integrated Master's-PhD program, PhD candidate having completed coursework, postdoctoral researcher, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "photo_recent_headshot": {
+      "ko": "사진(6개월 내 촬영 반명함) 1장",
+      "en": "One recent (within 6 months) passport-style photo",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "university_president_recommendation": {
+      "ko": "대학 총장 추천서(발급일로부터 1년간 유효)",
+      "en": "University President's Recommendation Letter (valid for 1 year from issuance)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "phd_degree_or_graduation_certificate": {
+      "ko": "박사 학위 취득(예정)증명서 또는 졸업(예정)증명서",
+      "en": "Certificate of (Expected) Doctoral Degree or (Expected) Graduation",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "case_specific_evidence_manual_ref": {
+      "ko": "개별 사안별 증빙서류(매뉴얼 해당 항목 및 관할기관 안내 기준)",
+      "en": "Case-specific supporting documents (per the relevant manual section and competent authority's guidance)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_case_specific_evidence"
+      ],
+      "notes": ""
+    },
+    "marriage_dissolution_case_evidence": {
+      "ko": "별거 사유를 입증하는 서류",
+      "en": "Documents proving the reason for separation",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "dispatch_order_or_overseas_hq_employment": {
+      "ko": "파견명령서(외국본사 발행) 또는 외국본사 재직증명서",
+      "en": "Dispatch Order (issued by the foreign head office) or Certificate of Employment from the foreign head office",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated 'Certificate of Employment' rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "domestic_branch_or_liaison_office_permit": {
+      "ko": "국내지사설치허가서 사본 또는 연락사무소 설치허가서 사본 (외국환은행 발행)",
+      "en": "Domestic Branch Establishment Permit or Liaison Office Establishment Permit (copy, issued by a foreign-exchange bank)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "business_fund_introduction_evidence": {
+      "ko": "영업자금도입실적증빙서류: 외국환매입증명서, 임대차계약서 등",
+      "en": "Evidence of business-fund introduction: foreign-exchange purchase certificate, lease contract, etc.",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of the Korean source wording; not an official-terminology claim.",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "personal_tax_payment_fact_certificate": {
+      "ko": "개인 납세사실증명 서류",
+      "en": "Personal Certificate of Tax Payment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated 'Certificate of Tax Payment' rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "personal_tax_payment_or_withholding_or_income": {
+      "ko": "개인 납세사실증명원 원본 또는 근로소득원천징수영수증(작년의 기록) 또는 소득금액증명원",
+      "en": "Personal Certificate of Tax Payment (original), wage-income withholding receipt (last year's record), or Certificate of Income Amount",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated 'Certificate of Tax Payment' rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
+    },
+    "tax_payment_fact_certificate_generic": {
+      "ko": "납세사실증명 서류",
+      "en": "Certificate of Tax Payment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Reuses the already-curated 'Certificate of Tax Payment' rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": ""
     }
   }
 }

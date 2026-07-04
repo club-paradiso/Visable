@@ -20773,6 +20773,18 @@ function renderDocumentTabPanel(v, cfg, isActive) {
             // Skip rows whose document name is missing — rendering "문서명 미상"
             // as if it were a checklist line is misleading.
             if (nameIsMissing) return '';
+            // A pure caution marker (e.g. "체류민원 기준 주의") is not a
+            // submittable document; showing it with a checkmark bullet next to
+            // real documents misrepresents it as one regardless of view. Easy
+            // Mode already excludes these (isEasyModeNonDocRow) — apply the
+            // same caution-row check here so Standard view doesn't show it as
+            // a fake checklist tile either. Fee rows are untouched: Standard
+            // view intentionally keeps those visible with their own note.
+            if (EASY_MODE_CAUTION_ROW_RE.test(rawName)) {
+                return rawNote && rawNote !== 'DATA_MISSING'
+                    ? `<li class="docs-list-row docs-list-row--note"><div class="docs-list-note">${renderManualDetailBlock(rawNote, [], 120)}</div></li>`
+                    : '';
+            }
             const noteIsMissing = !rawNote || rawNote === 'DATA_MISSING';
             const helpButton = renderDocumentHelpButton(rawName, rawName);
             // helpButton keeps the pure Korean rawName for its own lookup;
