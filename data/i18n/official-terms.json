@@ -1,8 +1,24 @@
 {
   "schemaVersion": "1.0",
   "policy": "Korean is canonical. Translations are display aids only. Never fabricate official English or Chinese names: a translation is shown only when its confidence is canonical/official/manual-derived/curated. Entries marked needs-verification or fallback are stored for review but render Korean. Visa/status codes (D-2, F-4, E-7, G-1, G-1-5, ...) are never translated.",
-  "confidenceValues": ["canonical", "official", "manual-derived", "curated", "fallback", "needs-verification"],
-  "sourceTypes": ["law-api", "english-law", "manual-derived", "hikorea", "visa-portal", "mofa", "curated", "unknown"],
+  "confidenceValues": [
+    "canonical",
+    "official",
+    "manual-derived",
+    "curated",
+    "fallback",
+    "needs-verification"
+  ],
+  "sourceTypes": [
+    "law-api",
+    "english-law",
+    "manual-derived",
+    "hikorea",
+    "visa-portal",
+    "mofa",
+    "curated",
+    "unknown"
+  ],
   "terms": {
     "integrated_application_form_34": {
       "ko": "통합신청서(별지 제34호 서식)",
@@ -10,9 +26,17 @@
       "zh-CN": null,
       "sourceType": "manual-derived",
       "source": "stay_manual_260601",
-      "confidence": { "ko": "canonical", "en": "manual-derived", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "manual-derived",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
-      "docIds": ["doc_app_form", "doc_unified_application_form", "doc_unified_application_form_change"],
+      "docIds": [
+        "doc_app_form",
+        "doc_unified_application_form",
+        "doc_unified_application_form_change"
+      ],
       "notes": "English follows the bilingual heading printed on the official 별지 제34호 form (APPLICATION FORM (REPORT FORM)). Do not invent a Chinese official translation without a verified source."
     },
     "foreign_resident_registration_card": {
@@ -21,7 +45,11 @@
       "zh-CN": null,
       "sourceType": "curated",
       "source": "card_face_bilingual_title",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "The card itself prints '외국인등록증 RESIDENCE CARD'. Older materials use 'Alien Registration Card (ARC)'. Needs one-time confirmation against current HiKorea English pages; no verified Chinese official name recorded."
@@ -32,7 +60,11 @@
       "zh-CN": "延长滞留期限许可",
       "sourceType": "curated",
       "source": "data/ops/translation_glossary.template.json TERM-004",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "zh-CN value is a glossary candidate carried over from the repo template, which flags it as requiring native/legal QA — stored but not displayed. Must preserve permission/approval meaning (never 'automatic extension')."
@@ -43,7 +75,11 @@
       "zh-CN": "变更滞留资格许可",
       "sourceType": "curated",
       "source": "data/ops/translation_glossary.template.json TERM-005",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "zh-CN value is a template candidate pending native/legal QA — stored but not displayed. Approval is discretionary; never render as guaranteed conversion."
@@ -54,7 +90,11 @@
       "zh-CN": null,
       "sourceType": "curated",
       "source": "stay_manual_260601",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Descriptive English rendering of the stay-manual term; not presented as a statutory English title. No verified Chinese name recorded."
@@ -65,9 +105,15 @@
       "zh-CN": null,
       "sourceType": "manual-derived",
       "source": "stay_manual_260601",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
-      "docIds": ["doc_residence_proof_generic"],
+      "docIds": [
+        "doc_residence_proof_generic"
+      ],
       "notes": "Descriptive English only. The decorated DOC_DICT label doc_address ('체류지 입증서류 (임대차계약서, …)') is intentionally not linked to avoid annotating only part of a composite label."
     },
     "accommodation_provision_confirmation": {
@@ -76,7 +122,11 @@
       "zh-CN": null,
       "sourceType": "manual-derived",
       "source": "stay_manual_260601",
-      "confidence": { "ko": "canonical", "en": "needs-verification", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "needs-verification",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Specific official form name — do not machine-translate. Renders Korean until an official/manual-derived English title is verified."
@@ -87,7 +137,11 @@
       "zh-CN": null,
       "sourceType": "manual-derived",
       "source": "stay_manual_260601",
-      "confidence": { "ko": "canonical", "en": "needs-verification", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "needs-verification",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "English candidate widely used by Korean universities, but not yet verified against an official bilingual source — stored, renders Korean."
@@ -98,7 +152,11 @@
       "zh-CN": "签证签发确认书",
       "sourceType": "manual-derived",
       "source": "visa_manual_260521; data/i18n procedureLabels[1]",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Both translations already shipped in the reviewed locale packs (procedureLabels). doc_cvi is not linked because its DOC_DICT label already embeds an English gloss."
@@ -109,7 +167,11 @@
       "zh-CN": "签证",
       "sourceType": "curated",
       "source": "data/i18n locale packs",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Common safe vocabulary; already used throughout the reviewed en/zh-CN packs."
@@ -120,7 +182,11 @@
       "zh-CN": "滞留资格",
       "sourceType": "curated",
       "source": "data/ops/translation_glossary.template.json TERM-001",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "zh-CN value is a template candidate pending native/legal QA — stored but not displayed. Forbidden renderings: 'tourist visa', 'citizenship status', 'guaranteed visa'."
@@ -131,7 +197,11 @@
       "zh-CN": "护照",
       "sourceType": "curated",
       "source": "data/i18n locale packs",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Common safe vocabulary. Composite DOC_DICT passport labels (원본/사본 variants) are intentionally not linked."
@@ -142,9 +212,15 @@
       "zh-CN": "手续费",
       "sourceType": "curated",
       "source": "data/i18n locale packs",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
-      "docIds": ["doc_fee_generic"],
+      "docIds": [
+        "doc_fee_generic"
+      ],
       "notes": "Common safe vocabulary; linked only to the bare 수수료 label, not the decorated fee labels with amounts."
     },
     "hikorea": {
@@ -153,7 +229,11 @@
       "zh-CN": "HiKorea",
       "sourceType": "hikorea",
       "source": "https://www.hikorea.go.kr",
-      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "official" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "official",
+        "zh-CN": "official"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Official service brand name; kept as the Latin brand in all locales."
@@ -164,7 +244,11 @@
       "zh-CN": null,
       "sourceType": "visa-portal",
       "source": "https://www.visa.go.kr",
-      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "official",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "English name is the portal's own branding. Chinese site naming not verified — renders Korean."
@@ -175,7 +259,11 @@
       "zh-CN": null,
       "sourceType": "curated",
       "source": "data/i18n locale packs ('competent immigration office')",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Descriptive English consistent with the reviewed en pack. No verified Chinese administrative name recorded."
@@ -186,7 +274,11 @@
       "zh-CN": "法务部",
       "sourceType": "curated",
       "source": "moj.go.kr branding; data/i18n zh-CN pack (法务部指定医疗机构)",
-      "confidence": { "ko": "canonical", "en": "official", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "official",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Both names already used in the reviewed locale packs."
@@ -197,7 +289,11 @@
       "zh-CN": "驻外使领馆",
       "sourceType": "mofa",
       "source": "data/i18n locale packs (preTrackTitle/preTrackDesc)",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "curated" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "curated"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Both translations already shipped in the reviewed locale packs."
@@ -208,7 +304,11 @@
       "zh-CN": null,
       "sourceType": "english-law",
       "source": "data/i18n en pack (sourceCardTitles); pending law.go.kr elaw verification via scripts/sync_official_terms.py",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "English title matches the MOLEG English-statute convention; confirm via the law-API sync when credentials are available. Statutes have no official Chinese translation — renders Korean."
@@ -219,7 +319,11 @@
       "zh-CN": null,
       "sourceType": "english-law",
       "source": "MOLEG English-statute naming convention; pending law.go.kr elaw verification",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Convention-based English title; confirm via the law-API sync. No official Chinese translation — renders Korean."
@@ -230,10 +334,590 @@
       "zh-CN": null,
       "sourceType": "english-law",
       "source": "MOLEG English-statute naming convention; pending law.go.kr elaw verification",
-      "confidence": { "ko": "canonical", "en": "curated", "zh-CN": "needs-verification" },
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
       "preserveKoreanWhenUnverified": true,
       "docIds": [],
       "notes": "Convention-based English title; confirm via the law-API sync. No official Chinese translation — renders Korean."
+    },
+    "family_relation_certificate": {
+      "ko": "가족관계입증서류",
+      "en": "Family Relation Certificate",
+      "zh-CN": null,
+      "sourceType": "law-api",
+      "source": "Act on Registration of Family Relations, Art. 15(1)1 (English translation via law.go.kr/KLRI, retrieved via Legal_Data_Hunter MCP)",
+      "confidence": {
+        "ko": "canonical",
+        "en": "official",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Statute wording is lowercase 'family relation certificate'; Title-Cased here for document-name consistency with the rest of the glossary. Embassy/apostille sources (unverified) also use 'Certificate of Family Relations' — same meaning, different word order."
+    },
+    "marriage_relation_certificate": {
+      "ko": "혼인관계증명서",
+      "en": "Marriage Relation Certificate",
+      "zh-CN": null,
+      "sourceType": "law-api",
+      "source": "Act on Registration of Family Relations, Art. 15(1)3 (via Legal_Data_Hunter MCP -> law.go.kr/KLRI)",
+      "confidence": {
+        "ko": "canonical",
+        "en": "official",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Statute wording is lowercase 'Marriage relation certificate'; Title-Cased for consistency. Court-registry system (scourt.go.kr) may render 'Marriage Relations Certificate' per unverified search leads."
+    },
+    "basic_certificate": {
+      "ko": "기본증명서",
+      "en": "Basic Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Widely used in Korean administrative/embassy/apostille contexts",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "The underlying statute (Act on Registration of Family Relations Art. 15(1)2, verified via law.go.kr/KLRI this session) literally translates this document type as 'Identification certificate'. Chose the practically-used 'Basic Certificate' instead because it is what applicants actually encounter on Korean administrative/embassy checklists; flagging the statute's literal wording here for transparency rather than silently picking one."
+    },
+    "resident_registration_copy": {
+      "ko": "주민등록등본",
+      "en": "Copy of Resident Registration",
+      "zh-CN": null,
+      "sourceType": "law-api",
+      "source": "Enforcement Decree of the Resident Registration Act (e.g. Arts. 8, 47, 49 — 'certified copy ... of a resident registration record card'), via Legal_Data_Hunter MCP -> law.go.kr/KLRI",
+      "confidence": {
+        "ko": "canonical",
+        "en": "manual-derived",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Compressed from the statute's fuller phrasing into a document-name form. Distinguish from 초본 (abstract/extract), which the same statute treats as a different document."
+    },
+    "certificate_of_all_registered_matters": {
+      "ko": "법인등기사항전부증명서",
+      "en": "Certificate of All Registered Matters",
+      "zh-CN": null,
+      "sourceType": "law-api",
+      "source": "Commercial Registration Act, Art. 15 ('an application for perusal of all or part of matters recorded in a registered record and the issuance of a certificate of registered matters'), via Legal_Data_Hunter MCP -> law.go.kr/KLRI",
+      "confidence": {
+        "ko": "canonical",
+        "en": "manual-derived",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "The exact compound 'Certificate of All Registered Matters' is a reasonable construction from adjacent statute language ('all ... matters' + 'certificate of registered matters'), not a verbatim quoted phrase — hence manual-derived rather than official."
+    },
+    "employment_certificate": {
+      "ko": "재직증명서",
+      "en": "Certificate of Employment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Standard term for this Korean HR/civil document",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Corroborated by unverified WebSearch leads referencing HiKorea-adjacent guidance; the page itself could not be independently fetched this session (WebFetch was blocked in this environment)."
+    },
+    "enrollment_certificate": {
+      "ko": "재학증명서",
+      "en": "Certificate of Enrollment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "WebSearch surfaced a specific HiKorea URL using this term (hikorea.go.kr/info/InfoDatail.pt?CAT_SEQ=282&PARENT_ID=155&locale=EN) for F-4 residence-reporting rules",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "The page itself could not be independently fetched this session (WebFetch was blocked in this environment) — treated as a strong unverified lead, not a confirmed citation."
+    },
+    "tax_payment_certificate": {
+      "ko": "납세증명서",
+      "en": "Certificate of Tax Payment",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "WebSearch leads point to nts.go.kr English 'Requesting certificates' guidance and an English translation of the Framework Act on National Taxes using this phrasing",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Neither page could be independently fetched this session (WebFetch was blocked in this environment)."
+    },
+    "tax_payment_certificate_local_national": {
+      "ko": "국세지방세납세증명서",
+      "en": "Certificate of Tax Payment (National and Local Taxes)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same underlying document as tax_payment_certificate",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Covers the '국세·지방세' (national + local tax) wording variant, which the document-family classifier keys separately from the bare '납세증명서' form."
+    },
+    "employment_permit": {
+      "ko": "고용허가서",
+      "en": "Employment Permit",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Standard English name for the EPS (Employment Permit System, 고용허가제) document",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_eps"
+      ],
+      "notes": "Converging unverified WebSearch leads reference eps.go.kr and the Act on the Employment of Foreign Workers; government pages returned HTTP 403 on fetch this session (WebFetch was blocked in this environment)."
+    },
+    "standard_labor_contract": {
+      "ko": "표준근로계약서",
+      "en": "Standard Labor Contract",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Converging unverified WebSearch leads (law.go.kr, work24.go.kr) reference this as the literal bilingual form heading",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "Pages returned HTTP 403 on fetch this session (WebFetch was blocked in this environment)."
+    },
+    "standard_labor_or_employment_contract": {
+      "ko": "표준근로계약서또는고용계약서/",
+      "en": "Standard Labor Contract or Employment Contract (original/copy)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Covers the combined doc_emp_contract wording ('표준근로계약서 또는 고용계약서 원본/사본')",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_emp_contract"
+      ],
+      "notes": "The 'ko' match-key here is the exact document-family-classifier output for that string (normalizeDocumentRequirementKey), not a display string — see findOfficialTermIdForKoreanLabel in index.html."
+    },
+    "employment_contract": {
+      "ko": "고용계약서",
+      "en": "Employment Contract",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Generic, unambiguous English rendering",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [],
+      "notes": "No single official bilingual form pairing found, but no real translation risk either."
+    },
+    "employment_recommendation_letter": {
+      "ko": "주무부처고용추천서",
+      "en": "Employment Recommendation Letter (from the competent ministry)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Unverified WebSearch lead (HiKorea E-7 page) also phrases this as 'recommendation letter from the head of the competent central administrative agency'",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_emp_recom"
+      ],
+      "notes": "Page could not be fetched this session (WebFetch was blocked in this environment); no single fixed official phrasing confirmed."
+    },
+    "topik_score_report": {
+      "ko": "TOPIK성적표또는한국어능력입증서류",
+      "en": "TOPIK Score Report or Korean-language proficiency evidence",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "TOPIK is itself the official test name",
+      "confidence": {
+        "ko": "canonical",
+        "en": "needs-verification",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_topik"
+      ],
+      "notes": "Unverified WebSearch leads disagree on 'Score Report' vs 'Certificate' for the issued document (topik.go.kr could not be fetched — WebFetch was blocked in this environment) — genuinely unsettled rendering, not just an absent citation."
+    },
+    "social_integration_program_certificate": {
+      "ko": "사회통합프로그램이수증/합격증",
+      "en": "Social Integration Program (KIIP) Certificate of Completion",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Converging unverified WebSearch lead (an immigration.go.kr guide title) uses 'Certificate of Completion'; KIIP is the program's own established abbreviation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_kiip"
+      ],
+      "notes": "Government/socinet.go.kr pages could not be fetched this session (WebFetch was blocked in this environment)."
+    },
+    "social_integration_program_certificate_2": {
+      "ko": "사회통합프로그램이수증/합격증명서",
+      "en": "Social Integration Program (KIIP) Certificate of Completion",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Same document as social_integration_program_certificate",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_kiip_cert"
+      ],
+      "notes": "Covers the '...합격증명서' wording variant."
+    },
+    "letter_of_guarantee": {
+      "ko": "신원보증서",
+      "en": "Letter of Guarantee",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Unverified WebSearch leads (KVAC / visaforkorea.eu, .mn bilingual PDF application forms) consistently point to this phrasing",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_guarantee"
+      ],
+      "notes": "Pages could not be fetched this session (WebFetch was blocked in this environment)."
+    },
+    "letter_of_invitation": {
+      "ko": "초청장",
+      "en": "Letter of Invitation",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Unverified WebSearch leads point uniformly to this phrasing",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_invitation"
+      ],
+      "notes": "overseas.mofa.go.kr pages could not be fetched this session (WebFetch was blocked in this environment)."
+    },
+    "tb_medical_certificate": {
+      "ko": "결핵진단서",
+      "en": "Tuberculosis (TB) Medical Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Unverified WebSearch lead: a MOFA-Philippines embassy PDF titled 'Certificate of TB (tuberculosis) Screening'",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_tb"
+      ],
+      "notes": "Possible variation with 'Tuberculosis Screening Certificate'. Pages could not be fetched this session (WebFetch was blocked in this environment)."
+    },
+    "round_trip_air_ticket": {
+      "ko": "왕복항공권",
+      "en": "Round-Trip Air Ticket",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Plain descriptive English",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_flight"
+      ],
+      "notes": "No government-specific terminology or translation ambiguity."
+    },
+    "refugee_status_application": {
+      "ko": "난민인정신청서",
+      "en": "Application for Recognition of Refugee Status",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Unverified WebSearch lead: a law.go.kr form-index title, '[별지 제2호서식] Application for Recognition of Refugee Status' (Enforcement Rules of the Refugee Act)",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_refugee"
+      ],
+      "notes": "The strongest unverified lead found this session, but the download link itself returned HTTP 403 and could not be directly confirmed (WebFetch was blocked in this environment)."
+    },
+    "standard_photo": {
+      "ko": "표준규격사진",
+      "en": "Standard-Format Photo",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Plain descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_photo",
+        "doc_standard_photo_one",
+        "doc_photo_one_optional"
+      ],
+      "notes": "A standard ID/visa photo requirement (commonly 3.5×4.5cm, taken within the last 6 months per the source manuals) — not an official-terminology claim."
+    },
+    "business_registration_certificate": {
+      "ko": "사업자등록증",
+      "en": "Business Registration Certificate",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Standard, unambiguous English rendering for this National Tax Service document",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_biz_reg"
+      ],
+      "notes": "Corroborated by unverified WebSearch leads (nts.go.kr, could not be fetched this session — WebFetch was blocked in this environment)."
+    },
+    "financial_capacity_documents": {
+      "ko": "재정입증서류",
+      "en": "Proof of Financial Capacity (bank balance certificate, income certificate, etc.)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_finance",
+        "doc_bank_bal"
+      ],
+      "notes": "This is itself a catch-all category label in the Korean source text (not one specific named form), so a single descriptive English gloss for the category is accurate rather than lossy."
+    },
+    "other_purpose_of_stay_evidence": {
+      "ko": "기타체류목적입증서류",
+      "en": "Other supporting documents for the purpose of stay",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_purpose"
+      ],
+      "notes": "Catch-all category label in the Korean source text, not a specific named form — a descriptive English gloss for the category is accurate."
+    },
+    "overseas_domestic_career_certificate": {
+      "ko": "해외및국내경력증명서",
+      "en": "Certificate of Overseas and Domestic Work Experience",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_career"
+      ],
+      "notes": ""
+    },
+    "stay_jobseeking_training_plan": {
+      "ko": "체류/구직/연수계획서또는사유서",
+      "en": "Plan or statement of reason for stay / job-seeking / training",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of a composite document-category label",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_plan"
+      ],
+      "notes": ""
+    },
+    "overseas_criminal_record_certificate": {
+      "ko": "해외범죄경력증명서",
+      "en": "Certificate of No Criminal Record (issued by home country)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Standard visa-document terminology (also commonly called a 'police clearance certificate')",
+      "confidence": {
+        "ko": "canonical",
+        "en": "curated",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_crim"
+      ],
+      "notes": "No real translation ambiguity."
+    },
+    "dispatch_order": {
+      "ko": "파견명령서",
+      "en": "Dispatch Order (assignment order issued by the home company)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_dispatch"
+      ],
+      "notes": "Less internationally standardized than e.g. 'employment contract', hence fallback rather than curated."
+    },
+    "medical_health_certificate": {
+      "ko": "의료기관건강진단서",
+      "en": "Medical Health Certificate (from a designated institution)",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_health"
+      ],
+      "notes": "Composite requirement (may include a mandatory drug test per the source manuals)."
+    },
+    "field_expertise_evidence": {
+      "ko": "해당분야전문성입증서류",
+      "en": "Evidence of professional expertise in the relevant field",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_specialty"
+      ],
+      "notes": "Composite/category requirement."
+    },
+    "foreign_investment_registration": {
+      "ko": "외국인투자기업등록증및투자금도입입증서류",
+      "en": "Foreign-Invested Company Registration Certificate and proof of capital inflow",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation of a composite requirement",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_invest"
+      ],
+      "notes": ""
+    },
+    "income_amount_certificate": {
+      "ko": "소득금액증명원등소득입증서류",
+      "en": "Certificate of Income Amount or other income-proof documents",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_inc_proof"
+      ],
+      "notes": "'소득금액증명원' is a specific National Tax Service certificate name; the composite phrase also covers unspecified alternative income-proof documents, so kept as a single descriptive gloss."
+    },
+    "highest_degree_certificate": {
+      "ko": "최종 학위/학력증명서",
+      "en": "Certificate of Highest Academic Degree",
+      "zh-CN": null,
+      "sourceType": "curated",
+      "source": "Direct descriptive translation",
+      "confidence": {
+        "ko": "canonical",
+        "en": "fallback",
+        "zh-CN": "needs-verification"
+      },
+      "preserveKoreanWhenUnverified": true,
+      "docIds": [
+        "doc_degree"
+      ],
+      "notes": "May require apostille/consular confirmation per the source manuals. '학위증명서' (degree certificate) is standard terminology; the combined '학위/학력' phrasing is compositional."
     }
   }
 }

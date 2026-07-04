@@ -31,18 +31,40 @@ async function gotoReady(page) {
 }
 
 test.describe('bilingual document names', () => {
-  test('EN: Standard procedure checklist appends verified translations, skips needs-verification', async ({ page }) => {
+  test('EN: Standard procedure checklist appends verified translations', async ({ page }) => {
     await gotoReady(page);
     await page.evaluate(async () => { await applyLanguage('en'); });
     const card = await openCard(page, 'D-2');
     const rows = await card.locator('.doc-chk-item span').allTextContents();
     expect(rows.some(r => r.includes('여권') && r.includes('(Passport)'))).toBeTruthy();
     expect(rows.some(r => r.includes('수수료') && r.includes('(Fee)'))).toBeTruthy();
-    // 표준입학허가서's English candidate is marked needs-verification in the
-    // glossary — it must stay Korean-only, never silently promoted to render.
-    const admissionRow = rows.find(r => r.includes('표준입학허가서'));
-    expect(admissionRow, '표준입학허가서 row present').toBeTruthy();
-    expect(admissionRow).not.toContain('Admission Letter');
+  });
+
+  test('EN: needs-verification/fallback-tier translations still render, marked with the unverified style', async ({ page }) => {
+    // By explicit product decision, a translation renders even when its
+    // confidence is below the "verified" tier — but renderAnnotatedDocLabel
+    // must mark it apart from a confirmed name (dotted underline + tooltip).
+    await gotoReady(page);
+    await page.evaluate(async () => { await applyLanguage('en'); });
+    const html = await page.evaluate(() => {
+      const fakeV = { code: 'TEST', cat: 'work', documents_initial: ['표준입학허가서', '신원보증서'] };
+      return renderDocumentTabPanel(fakeV, DOCUMENT_TAB_CONFIG[0], true);
+    });
+    expect(html).toContain('Standard Admission Letter');
+    expect(html).toMatch(/doc-name-i18n doc-name-i18n--unverified[^>]*>\(Standard Admission Letter\)/);
+    // 신원보증서 (Letter of Guarantee) is 'curated' confidence — no unverified marker.
+    expect(html).toMatch(/class="doc-name-i18n" lang="en">\(Letter of Guarantee\)/);
+    expect(html).not.toMatch(/doc-name-i18n--unverified[^>]*>\(Letter of Guarantee\)/);
+  });
+
+  test('EN: newly-expanded glossary terms cover common labor/registration documents', async ({ page }) => {
+    await gotoReady(page);
+    await page.evaluate(async () => { await applyLanguage('en'); });
+    const card = await openCard(page, 'E-9');
+    const rows = await card.locator('.doc-chk-item span').allTextContents();
+    expect(rows.some(r => r.includes('고용허가서') && r.includes('(Employment Permit)'))).toBeTruthy();
+    expect(rows.some(r => r.includes('표준근로계약서') && r.includes('(Standard Labor Contract)'))).toBeTruthy();
+    expect(rows.some(r => r.includes('사업자등록증') && r.includes('(Business Registration Certificate)'))).toBeTruthy();
   });
 
   test('ZH-CN: same procedure checklist shows Chinese translations', async ({ page }) => {
@@ -59,7 +81,7 @@ test.describe('bilingual document names', () => {
     await page.evaluate(async () => { await applyLanguage('ko'); });
     const card = await openCard(page, 'D-2');
     const rows = await card.locator('.doc-chk-item span').allTextContents();
-    const KNOWN_TRANSLATIONS = ['Passport', 'Fee', 'Application Form', 'Residence Card'];
+    const KNOWN_TRANSLATIONS = ['Passport', 'Fee', 'Application Form', 'Residence Card', 'Employment Permit', 'Business Registration Certificate', 'Standard Admission Letter'];
     expect(rows.some(r => KNOWN_TRANSLATIONS.some(t => r.includes(t)))).toBeFalsy();
   });
 
@@ -72,12 +94,15 @@ test.describe('bilingual document names', () => {
     const items = card.locator('.easy-doc-group li');
     const html = (await items.allInnerTexts()).join(' | ');
     expect(html).toContain('통합신청서');
-    const i18nSpan = card.locator('.easy-doc-group .doc-name-i18n').first();
+    // Locate by content rather than position — the expanded glossary now
+    // annotates more rows, so 통합신청서's span is no longer necessarily the
+    // first .doc-name-i18n element in DOM order.
+    const i18nSpan = card.locator('.easy-doc-group li', { hasText: '통합신청서' }).locator('.doc-name-i18n').first();
     await expect(i18nSpan).toHaveAttribute('lang', 'en');
     await expect(i18nSpan).toHaveText(/Application Form/);
   });
 
-  test('renderDocumentTabPanel (standalone docs-tabs path) annotates bilingual names directly', async ({ page }) => {
+  test('renderDocumentTabPanel (standalone docs-tabs path) annotates bilingual names, including unverified-tier ones', async ({ page }) => {
     // No current visa record exercises this renderer with non-empty document
     // fields end-to-end (the one non-procedure-owned record, YOUTH-STAY, has
     // empty documents_* fields) — unit-test the renderer function directly so
@@ -91,7 +116,10 @@ test.describe('bilingual document names', () => {
     expect(html).toContain('doc-name-i18n');
     expect(html).toContain('(Passport)');
     expect(html).toContain('(Fee)');
-    expect(html).not.toContain('Standard Admission Letter');
+    // 표준입학허가서's English candidate is needs-verification confidence —
+    // by product decision it still renders, but with the unverified marker.
+    expect(html).toContain('Standard Admission Letter');
+    expect(html).toMatch(/doc-name-i18n doc-name-i18n--unverified[^>]*>\(Standard Admission Letter\)/);
   });
 
   test('every supported locale renders the E-9 procedure checklist without crashing or leaking raw objects', async ({ page }) => {
