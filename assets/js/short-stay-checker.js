@@ -29,7 +29,7 @@
    * the project i18n policy (manifest.json) — flagged for a dedicated review.
    * STR stays accessed as STR.key; a Proxy resolves language at access time so
    * reopening the popup after a language switch shows the right text. */
-  var SSC_SUPPORTED_LANGS = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+  var SSC_SUPPORTED_LANGS = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   function sscLang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
     return SSC_SUPPORTED_LANGS.indexOf(l) !== -1 ? l : 'ko';
@@ -694,10 +694,120 @@
     link1345: 'Bestätigung über 1345 empfohlen',
     linkMission: 'Bei einer koreanischen Auslandsvertretung prüfen'
   };
+  var STR_TR = {
+    "title": "Kısa süreli giriş rotası kontrolü",
+    "titleEn": "Kısa süreli giriş kontrolü",
+    "subtitle": "Uyruk, pasaport, gidilecek bölge ve amaca göre vizesiz giriş, Jeju vizesiz giriş ve C-3 vize olanaklarını kontrol edin.",
+    "eyebrow": "Kısa süreli giriş",
+    "countryLabel": "1. Uyruk (pasaportu veren ülke)",
+    "countryPlaceholder": "örn. Vietnam, Japonya, Amerika Birleşik Devletleri",
+    "countryHelper": "Aday ülkeleri görmek için bir ülke adı yazın.",
+    "countryMissing": "Lütfen önce uyruğunuzu girin.",
+    "countryNotFound": "Ülke bulunamadı. İngilizce veya Korece ülke adıyla tekrar deneyin.",
+    "passportLabel": "2. Pasaport türü",
+    "purposeLabel": "3. Ziyaret amacı",
+    "destinationLabel": "4. Gidilecek bölge",
+    "stayLabel": "5. Planlanan kalış süresi",
+    "stayHelper": "Yaklaşık kaç gün kalmayı planlıyorsunuz?",
+    "ageLabel": "Yaş grubu (isteğe bağlı)",
+    "submit": "Rotayı kontrol et",
+    "reset": "Baştan başla",
+    "loading": "Resmi liste verileri yükleniyor…",
+    "fetchFail": "Ülke listesi verileri yüklenemedi. Bu durumda vizesiz girişin mümkün olup olmadığını size bildiremeyiz. Lütfen doğrudan resmi K-ETA sitesinden, Vize Portalı'ndan veya yetkili Kore temsilciliğinden teyit edin.",
+    "resultPath": "Önerilen yol",
+    "resultWhy": "Neden bu yol?",
+    "resultNext": "Sonra yapılacaklar",
+    "resultWarn": "Mutlaka kontrol edin",
+    "resultOfficial": "Resmi doğrulama",
+    "resultAlt": "Diğer olasılıklar",
+    "sourceBadgeVerified": "Resmi standart doğrulandı",
+    "sourceBadgeNeedsRefresh": "Resmi güncelliği doğrulayın",
+    "sourceBadgePartial": "Kısmi kaynaklara dayalı",
+    "sourceDatePrefix": "Kaynak tarihi",
+    "statusLikely": "Olası rota",
+    "statusJejuFree": "Jeju vizesiz giriş mümkün",
+    "statusTransitNoVisa": "Transit — vize gerekmez",
+    "statusTransitVisa": "Salt transit — vize gerekli",
+    "statusVisaRequired": "Vize gerekli",
+    "statusNotAvailable": "Mevcut değil",
+    "statusCheck": "Resmi kontrol gerekli",
+    "srcItemDate": "geçerlilik tarihi",
+    "srcItemConfidence": "güven düzeyi",
+    "dataNote": "Veri notu",
+    "srcDetailsSummary": "Kaynaklar ve veri dayanağı (ayrıntılar)",
+    "srcBasisLine": "Bu yanıtın dayandığı resmi kaynaklar:",
+    "srcMetaLine": "Tam kaynak meta verileri: data/short-stay/sources.json",
+    "srcLegalLine": "Bu rehber, resmi listelerin saklanan kopyalarına dayanan referans bilgisidir ve hukuki bir etkisi yoktur. Son teyidi K-ETA, Vize Portalı, bir Kore temsilciliği veya 1345 üzerinden yapın.",
+    "countrySuggestAria": "Aday ülkeler",
+    "dataLoadFailBadge": "Veri yüklemesi başarısız — resmi siteden doğrudan doğrulayın",
+    "ctaSuffix": " — uyruğunuz için vizesiz / Jeju / C-3 olanaklarını kontrol edin",
+    "similarCountry": "Benzer ülkeler",
+    "notInListNote": "Bir ülke şu anda yüklü liste verilerinde yoksa, genellikle bir vize (örneğin C-3) başvurusu yapmanız veya bir Kore temsilciliği ya da 1345 üzerinden resmi olarak teyit etmeniz gerekir.",
+    "linkKeta": "K-ETA'yı kontrol et",
+    "linkVisaPortal": "Vize Portalı'nı kontrol et",
+    "linkHikorea": "HiKorea",
+    "link1345": "1345 üzerinden doğrula",
+    "linkMission": "Kore temsilciliğine danışın"
+  };
+  var STR_UK = {
+    "title": "Перевірка маршруту короткострокового в'їзду",
+    "titleEn": "Перевірка короткострокового в'їзду",
+    "subtitle": "Перевірте можливості безвізового в'їзду, безвізового в'їзду на Чеджу та візи C-3 на основі громадянства, паспорта, регіону призначення та мети.",
+    "eyebrow": "Короткостроковий в'їзд",
+    "countryLabel": "1. Громадянство (країна видачі паспорта)",
+    "countryPlaceholder": "напр. В'єтнам, Японія, Сполучені Штати",
+    "countryHelper": "Введіть назву країни, щоб побачити варіанти.",
+    "countryMissing": "Будь ласка, спочатку вкажіть своє громадянство.",
+    "countryNotFound": "Країну не знайдено. Спробуйте ще раз, вказавши назву країни англійською або корейською.",
+    "passportLabel": "2. Тип паспорта",
+    "purposeLabel": "3. Мета візиту",
+    "destinationLabel": "4. Регіон призначення",
+    "stayLabel": "5. Запланована тривалість перебування",
+    "stayHelper": "Приблизно скільки днів ви плануєте залишитися?",
+    "ageLabel": "Вікова група (необов'язково)",
+    "submit": "Перевірити маршрут",
+    "reset": "Почати спочатку",
+    "loading": "Завантаження офіційних даних списку…",
+    "fetchFail": "Не вдалося завантажити дані списку країн. У такому стані ми не можемо повідомити, чи можливий безвізовий в'їзд. Будь ласка, перевірте безпосередньо на офіційному сайті K-ETA, у Візовому порталі або у відповідному корейському представництві.",
+    "resultPath": "Рекомендований шлях",
+    "resultWhy": "Чому цей шлях?",
+    "resultNext": "Що робити далі",
+    "resultWarn": "Обов'язково перевірте",
+    "resultOfficial": "Офіційна перевірка",
+    "resultAlt": "Інші можливості",
+    "sourceBadgeVerified": "Офіційний стандарт підтверджено",
+    "sourceBadgeNeedsRefresh": "Перевірте офіційну актуальність",
+    "sourceBadgePartial": "На основі часткових джерел",
+    "sourceDatePrefix": "Джерело станом на",
+    "statusLikely": "Можливий маршрут",
+    "statusJejuFree": "Можливий безвізовий в'їзд на Чеджу",
+    "statusTransitNoVisa": "Транзит — віза не потрібна",
+    "statusTransitVisa": "Чистий транзит — потрібна віза",
+    "statusVisaRequired": "Потрібна віза",
+    "statusNotAvailable": "Недоступно",
+    "statusCheck": "Потрібна офіційна перевірка",
+    "srcItemDate": "станом на",
+    "srcItemConfidence": "достовірність",
+    "dataNote": "Примітка щодо даних",
+    "srcDetailsSummary": "Джерела та основа даних (детально)",
+    "srcBasisLine": "Офіційні джерела, на які спирається ця відповідь:",
+    "srcMetaLine": "Повні метадані джерел: data/short-stay/sources.json",
+    "srcLegalLine": "Ця настанова є довідковою інформацією на основі збережених копій офіційних списків і не має юридичної сили. Остаточно підтвердьте через K-ETA, Візовий портал, корейське представництво або 1345.",
+    "countrySuggestAria": "Варіанти країн",
+    "dataLoadFailBadge": "Не вдалося завантажити дані — перевірте безпосередньо на офіційному сайті",
+    "ctaSuffix": " — перевірте можливості безвізового / Чеджу / C-3 для вашого громадянства",
+    "similarCountry": "Схожі країни",
+    "notInListNote": "Якщо країни немає в наразі завантажених даних списку, зазвичай потрібно подати заявку на візу (наприклад, C-3) або офіційно підтвердити через корейське представництво чи 1345.",
+    "linkKeta": "Перевірити K-ETA",
+    "linkVisaPortal": "Перевірити Візовий портал",
+    "linkHikorea": "HiKorea",
+    "link1345": "Перевірити через 1345",
+    "linkMission": "Уточніть у корейському представництві"
+  };
   var STR_PACKS = {
     ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH,
     ja: STR_JA, vi: STR_VI, tl: STR_TL, id: STR_ID, ru: STR_RU,
-    fr: STR_FR, es: STR_ES, ar: STR_AR, de: STR_DE
+    fr: STR_FR, es: STR_ES, ar: STR_AR, de: STR_DE, tr: STR_TR, uk: STR_UK
   };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[sscLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })
@@ -707,7 +817,7 @@
   // picks the active-language label at render time.
   var OPT_LABEL_FIELD = {
     en: 'labelEn', 'zh-CN': 'labelZh', ja: 'labelJa', vi: 'labelVi', tl: 'labelTl',
-    id: 'labelId', ru: 'labelRu', fr: 'labelFr', es: 'labelEs', ar: 'labelAr', de: 'labelDe'
+    id: 'labelId', ru: 'labelRu', fr: 'labelFr', es: 'labelEs', ar: 'labelAr', de: 'labelDe', tr: 'labelTr', uk: 'labelUk'
   };
   function optLabel(o) {
     var field = OPT_LABEL_FIELD[sscLang()];
@@ -715,35 +825,35 @@
   }
 
   var PASSPORT_OPTIONS = [
-    { value: 'ordinary', label: '일반여권', labelEn: 'Ordinary passport', labelZh: '普通护照', labelJa: '一般旅券', labelVi: 'Hộ chiếu phổ thông', labelTl: 'Ordinaryong pasaporte', labelId: 'Paspor biasa', labelRu: 'Обычный паспорт', labelFr: 'Passeport ordinaire', labelEs: 'Pasaporte ordinario', labelAr: 'جواز سفر عادي', labelDe: 'Reisepass (gewöhnlich)' },
-    { value: 'diplomatic', label: '외교여권', labelEn: 'Diplomatic passport', labelZh: '外交护照', labelJa: '外交旅券', labelVi: 'Hộ chiếu ngoại giao', labelTl: 'Diplomatikong pasaporte', labelId: 'Paspor diplomatik', labelRu: 'Дипломатический паспорт', labelFr: 'Passeport diplomatique', labelEs: 'Pasaporte diplomático', labelAr: 'جواز سفر دبلوماسي', labelDe: 'Diplomatenpass' },
-    { value: 'official', label: '관용/공무여권', labelEn: 'Official/service passport', labelZh: '公务护照', labelJa: '公用旅券', labelVi: 'Hộ chiếu công vụ', labelTl: 'Official/service na pasaporte', labelId: 'Paspor dinas', labelRu: 'Служебный паспорт', labelFr: 'Passeport de service', labelEs: 'Pasaporte oficial/de servicio', labelAr: 'جواز سفر خدمة/رسمي', labelDe: 'Dienstpass' },
-    { value: 'special', label: '특별/서비스여권', labelEn: 'Special/service passport', labelZh: '特别/服务护照', labelJa: '特別/サービス旅券', labelVi: 'Hộ chiếu đặc biệt/dịch vụ', labelTl: 'Special/service na pasaporte', labelId: 'Paspor khusus/layanan', labelRu: 'Специальный/служебный паспорт', labelFr: 'Passeport spécial/de service', labelEs: 'Pasaporte especial/de servicio', labelAr: 'جواز سفر خاص/خدمة', labelDe: 'Sonder-/Servicepass' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher' }
+    { value: 'ordinary', label: '일반여권', labelEn: 'Ordinary passport', labelZh: '普通护照', labelJa: '一般旅券', labelVi: 'Hộ chiếu phổ thông', labelTl: 'Ordinaryong pasaporte', labelId: 'Paspor biasa', labelRu: 'Обычный паспорт', labelFr: 'Passeport ordinaire', labelEs: 'Pasaporte ordinario', labelAr: 'جواز سفر عادي', labelDe: 'Reisepass (gewöhnlich)', labelTr: "Umuma mahsus pasaport", labelUk: "Звичайний паспорт" },
+    { value: 'diplomatic', label: '외교여권', labelEn: 'Diplomatic passport', labelZh: '外交护照', labelJa: '外交旅券', labelVi: 'Hộ chiếu ngoại giao', labelTl: 'Diplomatikong pasaporte', labelId: 'Paspor diplomatik', labelRu: 'Дипломатический паспорт', labelFr: 'Passeport diplomatique', labelEs: 'Pasaporte diplomático', labelAr: 'جواز سفر دبلوماسي', labelDe: 'Diplomatenpass', labelTr: "Diplomatik pasaport", labelUk: "Дипломатичний паспорт" },
+    { value: 'official', label: '관용/공무여권', labelEn: 'Official/service passport', labelZh: '公务护照', labelJa: '公用旅券', labelVi: 'Hộ chiếu công vụ', labelTl: 'Official/service na pasaporte', labelId: 'Paspor dinas', labelRu: 'Служебный паспорт', labelFr: 'Passeport de service', labelEs: 'Pasaporte oficial/de servicio', labelAr: 'جواز سفر خدمة/رسمي', labelDe: 'Dienstpass', labelTr: "Hizmet/resmi pasaport", labelUk: "Службовий паспорт" },
+    { value: 'special', label: '특별/서비스여권', labelEn: 'Special/service passport', labelZh: '特别/服务护照', labelJa: '特別/サービス旅券', labelVi: 'Hộ chiếu đặc biệt/dịch vụ', labelTl: 'Special/service na pasaporte', labelId: 'Paspor khusus/layanan', labelRu: 'Специальный/служебный паспорт', labelFr: 'Passeport spécial/de service', labelEs: 'Pasaporte especial/de servicio', labelAr: 'جواز سفر خاص/خدمة', labelDe: 'Sonder-/Servicepass', labelTr: "Özel/hizmet pasaportu", labelUk: "Спеціальний/службовий паспорт" },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher', labelTr: "Emin değilim", labelUk: "Не впевнений(-а)" }
   ];
   var PURPOSE_OPTIONS = [
-    { value: 'tourism', label: '관광', labelEn: 'Tourism', labelZh: '观光', labelJa: '観光', labelVi: 'Du lịch', labelTl: 'Turismo', labelId: 'Wisata', labelRu: 'Туризм', labelFr: 'Tourisme', labelEs: 'Turismo', labelAr: 'سياحة', labelDe: 'Tourismus' },
-    { value: 'family_visit', label: '가족·지인 방문', labelEn: 'Visiting family/friends', labelZh: '探访家人·熟人', labelJa: '家族・知人の訪問', labelVi: 'Thăm gia đình/người quen', labelTl: 'Pagbisita sa pamilya/kakilala', labelId: 'Mengunjungi keluarga/kenalan', labelRu: 'Визит к семье/знакомым', labelFr: 'Visite à la famille/aux proches', labelEs: 'Visita a familiares/conocidos', labelAr: 'زيارة الأسرة/المعارف', labelDe: 'Besuch von Familie/Bekannten' },
-    { value: 'transit', label: '환승', labelEn: 'Transit', labelZh: '过境', labelJa: '乗り継ぎ', labelVi: 'Quá cảnh', labelTl: 'Transit', labelId: 'Transit', labelRu: 'Транзит', labelFr: 'Transit', labelEs: 'Tránsito', labelAr: 'عبور', labelDe: 'Transit' },
-    { value: 'business', label: '출장·상담·계약', labelEn: 'Business trip/consultation/contract', labelZh: '出差·洽谈·签约', labelJa: '出張・商談・契約', labelVi: 'Công tác/đàm phán/ký hợp đồng', labelTl: 'Business trip/konsultasyon/kontrata', labelId: 'Perjalanan dinas/konsultasi/kontrak', labelRu: 'Командировка/переговоры/договор', labelFr: 'Voyage d’affaires/consultation/contrat', labelEs: 'Viaje de negocios/consulta/contrato', labelAr: 'رحلة عمل/تشاور/تعاقد', labelDe: 'Geschäftsreise/Beratung/Vertrag' },
-    { value: 'medical', label: '의료관광', labelEn: 'Medical tourism', labelZh: '医疗观光', labelJa: '医療観光', labelVi: 'Du lịch y tế', labelTl: 'Medical tourism', labelId: 'Wisata medis', labelRu: 'Медицинский туризм', labelFr: 'Tourisme médical', labelEs: 'Turismo médico', labelAr: 'سياحة علاجية', labelDe: 'Medizintourismus' },
-    { value: 'event', label: '행사·회의', labelEn: 'Event/conference', labelZh: '活动·会议', labelJa: 'イベント・会議', labelVi: 'Sự kiện/hội nghị', labelTl: 'Event/kumperensya', labelId: 'Acara/konferensi', labelRu: 'Мероприятие/конференция', labelFr: 'Événement/conférence', labelEs: 'Evento/conferencia', labelAr: 'فعالية/مؤتمر', labelDe: 'Veranstaltung/Konferenz' },
-    { value: 'overseas_korean', label: '동포 방문', labelEn: 'Overseas Korean visit', labelZh: '同胞探访', labelJa: '同胞訪問', labelVi: 'Thăm kiều bào', labelTl: 'Pagbisita ng overseas Korean', labelId: 'Kunjungan etnis Korea perantauan', labelRu: 'Визит этнического корейца', labelFr: 'Visite de Coréen de l’étranger', labelEs: 'Visita de coreano en el extranjero', labelAr: 'زيارة من كوري مقيم بالخارج', labelDe: 'Besuch von Auslandskoreanern' },
-    { value: 'work_or_profit', label: '취업·영리활동', labelEn: 'Work/profit-making activity', labelZh: '就业·营利活动', labelJa: '就労・営利活動', labelVi: 'Làm việc/hoạt động sinh lợi', labelTl: 'Trabaho/aktibidad na pangkita', labelId: 'Kerja/kegiatan mencari laba', labelRu: 'Работа/коммерческая деятельность', labelFr: 'Travail/activité lucrative', labelEs: 'Trabajo/actividad lucrativa', labelAr: 'عمل/نشاط ربحي', labelDe: 'Arbeit/Erwerbstätigkeit' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher' }
+    { value: 'tourism', label: '관광', labelEn: 'Tourism', labelZh: '观光', labelJa: '観光', labelVi: 'Du lịch', labelTl: 'Turismo', labelId: 'Wisata', labelRu: 'Туризм', labelFr: 'Tourisme', labelEs: 'Turismo', labelAr: 'سياحة', labelDe: 'Tourismus', labelTr: "Turizm", labelUk: "Туризм" },
+    { value: 'family_visit', label: '가족·지인 방문', labelEn: 'Visiting family/friends', labelZh: '探访家人·熟人', labelJa: '家族・知人の訪問', labelVi: 'Thăm gia đình/người quen', labelTl: 'Pagbisita sa pamilya/kakilala', labelId: 'Mengunjungi keluarga/kenalan', labelRu: 'Визит к семье/знакомым', labelFr: 'Visite à la famille/aux proches', labelEs: 'Visita a familiares/conocidos', labelAr: 'زيارة الأسرة/المعارف', labelDe: 'Besuch von Familie/Bekannten', labelTr: "Aile/tanıdık ziyareti", labelUk: "Відвідування родини/знайомих" },
+    { value: 'transit', label: '환승', labelEn: 'Transit', labelZh: '过境', labelJa: '乗り継ぎ', labelVi: 'Quá cảnh', labelTl: 'Transit', labelId: 'Transit', labelRu: 'Транзит', labelFr: 'Transit', labelEs: 'Tránsito', labelAr: 'عبور', labelDe: 'Transit', labelTr: "Transit", labelUk: "Транзит" },
+    { value: 'business', label: '출장·상담·계약', labelEn: 'Business trip/consultation/contract', labelZh: '出差·洽谈·签约', labelJa: '出張・商談・契約', labelVi: 'Công tác/đàm phán/ký hợp đồng', labelTl: 'Business trip/konsultasyon/kontrata', labelId: 'Perjalanan dinas/konsultasi/kontrak', labelRu: 'Командировка/переговоры/договор', labelFr: 'Voyage d’affaires/consultation/contrat', labelEs: 'Viaje de negocios/consulta/contrato', labelAr: 'رحلة عمل/تشاور/تعاقد', labelDe: 'Geschäftsreise/Beratung/Vertrag', labelTr: "İş gezisi/görüşme/sözleşme", labelUk: "Відрядження/переговори/контракт" },
+    { value: 'medical', label: '의료관광', labelEn: 'Medical tourism', labelZh: '医疗观光', labelJa: '医療観光', labelVi: 'Du lịch y tế', labelTl: 'Medical tourism', labelId: 'Wisata medis', labelRu: 'Медицинский туризм', labelFr: 'Tourisme médical', labelEs: 'Turismo médico', labelAr: 'سياحة علاجية', labelDe: 'Medizintourismus', labelTr: "Sağlık turizmi", labelUk: "Медичний туризм" },
+    { value: 'event', label: '행사·회의', labelEn: 'Event/conference', labelZh: '活动·会议', labelJa: 'イベント・会議', labelVi: 'Sự kiện/hội nghị', labelTl: 'Event/kumperensya', labelId: 'Acara/konferensi', labelRu: 'Мероприятие/конференция', labelFr: 'Événement/conférence', labelEs: 'Evento/conferencia', labelAr: 'فعالية/مؤتمر', labelDe: 'Veranstaltung/Konferenz', labelTr: "Etkinlik/toplantı", labelUk: "Захід/конференція" },
+    { value: 'overseas_korean', label: '동포 방문', labelEn: 'Overseas Korean visit', labelZh: '同胞探访', labelJa: '同胞訪問', labelVi: 'Thăm kiều bào', labelTl: 'Pagbisita ng overseas Korean', labelId: 'Kunjungan etnis Korea perantauan', labelRu: 'Визит этнического корейца', labelFr: 'Visite de Coréen de l’étranger', labelEs: 'Visita de coreano en el extranjero', labelAr: 'زيارة من كوري مقيم بالخارج', labelDe: 'Besuch von Auslandskoreanern', labelTr: "Yurt dışı Koreli ziyareti", labelUk: "Візит закордонного корейця" },
+    { value: 'work_or_profit', label: '취업·영리활동', labelEn: 'Work/profit-making activity', labelZh: '就业·营利活动', labelJa: '就労・営利活動', labelVi: 'Làm việc/hoạt động sinh lợi', labelTl: 'Trabaho/aktibidad na pangkita', labelId: 'Kerja/kegiatan mencari laba', labelRu: 'Работа/коммерческая деятельность', labelFr: 'Travail/activité lucrative', labelEs: 'Trabajo/actividad lucrativa', labelAr: 'عمل/نشاط ربحي', labelDe: 'Arbeit/Erwerbstätigkeit', labelTr: "İş/kazanç sağlayan faaliyet", labelUk: "Праця/комерційна діяльність" },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher', labelTr: "Emin değilim", labelUk: "Не впевнений(-а)" }
   ];
   var DESTINATION_OPTIONS = [
-    { value: 'mainland', label: '한국 본토', labelEn: 'Korean mainland', labelZh: '韩国本土', labelJa: '韓国本土', labelVi: 'Đất liền Hàn Quốc', labelTl: 'Korean mainland', labelId: 'Daratan utama Korea', labelRu: 'Материковая Корея', labelFr: 'Corée continentale', labelEs: 'Corea continental', labelAr: 'البر الكوري الرئيسي', labelDe: 'Koreanisches Festland' },
-    { value: 'jeju_only', label: '제주만 방문', labelEn: 'Jeju only', labelZh: '仅访问济州', labelJa: '済州のみ訪問', labelVi: 'Chỉ thăm Jeju', labelTl: 'Jeju lamang', labelId: 'Hanya Jeju', labelRu: 'Только Чеджу', labelFr: 'Jeju uniquement', labelEs: 'Solo Jeju', labelAr: 'جيجو فقط', labelDe: 'Nur Jeju' },
-    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망', labelEn: 'Enter via Jeju, then move to the mainland', labelZh: '经济州入境后希望前往本土', labelJa: '済州から入国後、本土への移動を希望', labelVi: 'Nhập cảnh qua Jeju rồi đến đất liền', labelTl: 'Pumasok sa Jeju, tapos lumipat sa mainland', labelId: 'Masuk lewat Jeju lalu ke daratan utama', labelRu: 'Въезд через Чеджу, затем на материк', labelFr: 'Entrer par Jeju, puis aller sur le continent', labelEs: 'Entrar por Jeju y luego ir al continente', labelAr: 'الدخول عبر جيجو ثم الانتقال إلى البر الرئيسي', labelDe: 'Über Jeju einreisen, dann aufs Festland' },
-    { value: 'transit_only', label: '공항 환승만', labelEn: 'Airport transit only', labelZh: '仅机场过境', labelJa: '空港乗り継ぎのみ', labelVi: 'Chỉ quá cảnh sân bay', labelTl: 'Airport transit lamang', labelId: 'Hanya transit bandara', labelRu: 'Только транзит в аэропорту', labelFr: 'Transit aéroportuaire uniquement', labelEs: 'Solo tránsito en aeropuerto', labelAr: 'عبور المطار فقط', labelDe: 'Nur Flughafentransit' },
-    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher' }
+    { value: 'mainland', label: '한국 본토', labelEn: 'Korean mainland', labelZh: '韩国本土', labelJa: '韓国本土', labelVi: 'Đất liền Hàn Quốc', labelTl: 'Korean mainland', labelId: 'Daratan utama Korea', labelRu: 'Материковая Корея', labelFr: 'Corée continentale', labelEs: 'Corea continental', labelAr: 'البر الكوري الرئيسي', labelDe: 'Koreanisches Festland', labelTr: "Kore ana kıtası", labelUk: "Материкова Корея" },
+    { value: 'jeju_only', label: '제주만 방문', labelEn: 'Jeju only', labelZh: '仅访问济州', labelJa: '済州のみ訪問', labelVi: 'Chỉ thăm Jeju', labelTl: 'Jeju lamang', labelId: 'Hanya Jeju', labelRu: 'Только Чеджу', labelFr: 'Jeju uniquement', labelEs: 'Solo Jeju', labelAr: 'جيجو فقط', labelDe: 'Nur Jeju', labelTr: "Yalnızca Jeju", labelUk: "Лише Чеджу" },
+    { value: 'jeju_then_mainland', label: '제주 입국 후 본토 이동 희망', labelEn: 'Enter via Jeju, then move to the mainland', labelZh: '经济州入境后希望前往本土', labelJa: '済州から入国後、本土への移動を希望', labelVi: 'Nhập cảnh qua Jeju rồi đến đất liền', labelTl: 'Pumasok sa Jeju, tapos lumipat sa mainland', labelId: 'Masuk lewat Jeju lalu ke daratan utama', labelRu: 'Въезд через Чеджу, затем на материк', labelFr: 'Entrer par Jeju, puis aller sur le continent', labelEs: 'Entrar por Jeju y luego ir al continente', labelAr: 'الدخول عبر جيجو ثم الانتقال إلى البر الرئيسي', labelDe: 'Über Jeju einreisen, dann aufs Festland', labelTr: "Jeju üzerinden giriş, sonra ana kıtaya geçiş", labelUk: "Вʼїзд через Чеджу, потім перехід на материк" },
+    { value: 'transit_only', label: '공항 환승만', labelEn: 'Airport transit only', labelZh: '仅机场过境', labelJa: '空港乗り継ぎのみ', labelVi: 'Chỉ quá cảnh sân bay', labelTl: 'Airport transit lamang', labelId: 'Hanya transit bandara', labelRu: 'Только транзит в аэропорту', labelFr: 'Transit aéroportuaire uniquement', labelEs: 'Solo tránsito en aeropuerto', labelAr: 'عبور المطار فقط', labelDe: 'Nur Flughafentransit', labelTr: "Yalnızca havaalanı transiti", labelUk: "Лише транзит через аеропорт" },
+    { value: 'unknown', label: '잘 모르겠음', labelEn: 'Not sure', labelZh: '不太清楚', labelJa: 'よくわからない', labelVi: 'Không rõ', labelTl: 'Hindi sigurado', labelId: 'Tidak yakin', labelRu: 'Не знаю', labelFr: 'Je ne sais pas', labelEs: 'No estoy seguro', labelAr: 'غير متأكد', labelDe: 'Nicht sicher', labelTr: "Emin değilim", labelUk: "Не впевнений(-а)" }
   ];
   var AGE_OPTIONS = [
-    { value: 'unknown', label: '선택 안 함', labelEn: 'No selection', labelZh: '不选择', labelJa: '選択しない', labelVi: 'Không chọn', labelTl: 'Walang pinili', labelId: 'Tidak dipilih', labelRu: 'Не выбрано', labelFr: 'Aucune sélection', labelEs: 'Sin selección', labelAr: 'بدون اختيار', labelDe: 'Keine Auswahl' },
-    { value: '17_or_younger', label: '만 17세 이하', labelEn: '17 or younger', labelZh: '17 周岁以下', labelJa: '満17歳以下', labelVi: '17 tuổi trở xuống', labelTl: '17 o mas bata', labelId: '17 tahun ke bawah', labelRu: '17 лет и младше', labelFr: '17 ans ou moins', labelEs: '17 años o menos', labelAr: '17 عاماً فأقل', labelDe: '17 Jahre oder jünger' },
-    { value: '18_to_64', label: '만 18~64세', labelEn: '18 to 64', labelZh: '18~64 周岁', labelJa: '満18〜64歳', labelVi: '18 đến 64 tuổi', labelTl: '18 hanggang 64', labelId: '18 hingga 64 tahun', labelRu: 'От 18 до 64 лет', labelFr: '18 à 64 ans', labelEs: '18 a 64 años', labelAr: 'من 18 إلى 64 عاماً', labelDe: '18 bis 64 Jahre' },
-    { value: '65_or_older', label: '만 65세 이상', labelEn: '65 or older', labelZh: '65 周岁以上', labelJa: '満65歳以上', labelVi: '65 tuổi trở lên', labelTl: '65 o mas matanda', labelId: '65 tahun ke atas', labelRu: '65 лет и старше', labelFr: '65 ans ou plus', labelEs: '65 años o más', labelAr: '65 عاماً فأكثر', labelDe: '65 Jahre oder älter' }
+    { value: 'unknown', label: '선택 안 함', labelEn: 'No selection', labelZh: '不选择', labelJa: '選択しない', labelVi: 'Không chọn', labelTl: 'Walang pinili', labelId: 'Tidak dipilih', labelRu: 'Не выбрано', labelFr: 'Aucune sélection', labelEs: 'Sin selección', labelAr: 'بدون اختيار', labelDe: 'Keine Auswahl', labelTr: "Seçim yok", labelUk: "Без вибору" },
+    { value: '17_or_younger', label: '만 17세 이하', labelEn: '17 or younger', labelZh: '17 周岁以下', labelJa: '満17歳以下', labelVi: '17 tuổi trở xuống', labelTl: '17 o mas bata', labelId: '17 tahun ke bawah', labelRu: '17 лет и младше', labelFr: '17 ans ou moins', labelEs: '17 años o menos', labelAr: '17 عاماً فأقل', labelDe: '17 Jahre oder jünger', labelTr: "17 yaş ve altı", labelUk: "17 років або менше" },
+    { value: '18_to_64', label: '만 18~64세', labelEn: '18 to 64', labelZh: '18~64 周岁', labelJa: '満18〜64歳', labelVi: '18 đến 64 tuổi', labelTl: '18 hanggang 64', labelId: '18 hingga 64 tahun', labelRu: 'От 18 до 64 лет', labelFr: '18 à 64 ans', labelEs: '18 a 64 años', labelAr: 'من 18 إلى 64 عاماً', labelDe: '18 bis 64 Jahre', labelTr: "18-64 yaş", labelUk: "18-64 роки" },
+    { value: '65_or_older', label: '만 65세 이상', labelEn: '65 or older', labelZh: '65 周岁以上', labelJa: '満65歳以上', labelVi: '65 tuổi trở lên', labelTl: '65 o mas matanda', labelId: '65 tahun ke atas', labelRu: '65 лет и старше', labelFr: '65 ans ou plus', labelEs: '65 años o más', labelAr: '65 عاماً فأكثر', labelDe: '65 Jahre oder älter', labelTr: "65 yaş ve üzeri", labelUk: "65 років або старше" }
   ];
 
   /* ------------------------------------------------------------ pure utils */
