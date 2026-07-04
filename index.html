@@ -2676,6 +2676,10 @@ body.searched .qb { height: 26px; padding: 0 0.65rem; font-size: 0.68rem; backgr
    canonical name so the Korean stays the visually primary label. */
 .doc-name-i18n { font-weight: 600; color: var(--t2); }
 .easy-list--check .doc-name-i18n { font-weight: 500; }
+/* Fallback/needs-verification-tier translation: same position, but a dotted
+   underline + help cursor marks it as not officially confirmed (vs. the
+   solid, unmarked style for canonical/official/manual-derived/curated). */
+.doc-name-i18n--unverified { text-decoration: underline dotted color-mix(in srgb, var(--t3) 65%, transparent); text-underline-offset: 2px; cursor: help; }
 .docs-list-missing { color: var(--t3); font-style: italic; }
 .docs-missing-notice { border: 1px solid color-mix(in srgb, var(--color-warning) 38%, var(--bd)); background: color-mix(in srgb, var(--color-warning) 10%, var(--bg1)); color: var(--t1); border-radius: 8px; padding: 0.85rem 0.95rem; font-size: 0.84rem; line-height: 1.65; word-break: keep-all; overflow-wrap: anywhere; }
 
@@ -17311,9 +17315,14 @@ function renderDocTags(docKeys, keywords, isSubCode = false, visaCode = '') {
                 if (split.note) relocatedNotes.push(split.note);
             }
         }
-        // Non-Korean locales: append a glossary-verified translation after the
-        // canonical Korean name (data/i18n/official-terms.json). Unverified
-        // terms keep Korean-only rendering — official names are never invented.
+        // Non-Korean locales: append a glossary translation after the
+        // canonical Korean name (data/i18n/official-terms.json) — official
+        // names are never invented, only reused from that glossary. By
+        // product decision, this also shows fallback/needs-verification-tier
+        // translations (not just confirmed ones); this plain-text path (kept
+        // this way because the result flows through hl(), which re-escapes
+        // any HTML) cannot show the dotted "unverified" marker the other two
+        // surfaces (renderAnnotatedDocLabel) use — a known, accepted gap.
         // Tries the doc_*-id index first (exact term binding); if that finds
         // nothing, falls back to the same text/family-based lookup the
         // Standard 구비서류 tabs and Easy Mode use, so the identical document
@@ -21773,11 +21782,17 @@ function localizedVisaNameFromPack(code, locale = currentLanguage) {
 }
 
 /* Official terminology glossary (data/i18n/official-terms.json).
-   Korean stays canonical everywhere; a glossary translation is appended to a
-   label only when its confidence level is reviewable-safe. Unverified or
-   missing entries keep today's Korean-only rendering. */
+   Korean stays canonical everywhere; a glossary translation is appended
+   whenever the glossary has ANY value for the active locale (by explicit
+   product decision: showing a possibly-imprecise English name is preferred
+   over Korean-only). Entries whose confidence is below the "verified" tier
+   (fallback / needs-verification) still render, but renderAnnotatedDocLabel
+   marks them with a distinct, dotted-underline style + tooltip so a reader
+   can tell a machine/best-effort gloss from a confirmed official name. Only
+   a genuinely missing glossary entry falls back to Korean-only. */
 const OFFICIAL_TERMS_PATH = './data/i18n/official-terms.json';
-const OFFICIAL_TERM_DISPLAY_CONFIDENCE = ['canonical', 'official', 'manual-derived', 'curated'];
+const OFFICIAL_TERM_VERIFIED_CONFIDENCE = ['canonical', 'official', 'manual-derived', 'curated'];
+const OFFICIAL_TERM_DISPLAY_CONFIDENCE = [...OFFICIAL_TERM_VERIFIED_CONFIDENCE, 'fallback', 'needs-verification'];
 let OFFICIAL_TERMS = {};
 let OFFICIAL_DOC_TERM_INDEX = {};
 // Whitespace-normalized Korean-text -> termId index, keyed on each glossary
@@ -21841,6 +21856,17 @@ function officialTermTranslation(termId, locale = currentLanguage) {
     return value.trim();
 }
 
+// Whether a term's translation for this locale is at the "verified" tier
+// (canonical/official/manual-derived/curated) vs. a lower, still-displayed
+// tier (fallback/needs-verification) — drives the unverified visual marker.
+function isOfficialTermVerified(termId, locale = currentLanguage) {
+    const entry = OFFICIAL_TERMS[termId];
+    if (!entry) return false;
+    const code = normalizeLocaleCode(locale);
+    const confidence = entry.confidence && entry.confidence[code];
+    return OFFICIAL_TERM_VERIFIED_CONFIDENCE.includes(confidence);
+}
+
 function annotateOfficialDocLabel(docId, koreanLabel) {
     const termId = OFFICIAL_DOC_TERM_INDEX[docId];
     if (!termId) return koreanLabel;
@@ -21858,7 +21884,9 @@ function annotateOfficialDocLabel(docId, koreanLabel) {
    pre-escaped HTML (both parts individually escaped) — callers must NOT wrap
    the result in escapeHtml() again. The translation span carries its own
    explicit lang so it reads correctly even inside a Korean-lang ancestor
-   (Easy Mode's <ul lang="ko">). */
+   (Easy Mode's <ul lang="ko">). A fallback/needs-verification-tier
+   translation gets an extra modifier class + title tooltip so a reader can
+   tell it apart from a confirmed official name. */
 function renderAnnotatedDocLabel(koreanLabel) {
     const label = String(koreanLabel || '');
     const escaped = escapeHtml(label);
@@ -21867,7 +21895,10 @@ function renderAnnotatedDocLabel(koreanLabel) {
     const translation = termId ? officialTermTranslation(termId) : null;
     if (!translation || label.toLowerCase().includes(translation.toLowerCase())) return escaped;
     const lang = normalizeLocaleCode(currentLanguage);
-    return `${escaped} <span class="doc-name-i18n" lang="${escapeHtml(lang)}">(${escapeHtml(translation)})</span>`;
+    const verified = isOfficialTermVerified(termId);
+    const cls = verified ? 'doc-name-i18n' : 'doc-name-i18n doc-name-i18n--unverified';
+    const title = verified ? '' : ` title="${escapeHtml(tx('docNameTranslationUnverifiedHint') || 'Not an officially confirmed translation — check the Korean name with the office if unsure.')}"`;
+    return `${escaped} <span class="${cls}" lang="${escapeHtml(lang)}"${title}>(${escapeHtml(translation)})</span>`;
 }
 
 function hasFullKoI18nPack() {
