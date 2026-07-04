@@ -51,6 +51,7 @@ from services.law_tools import build_law_evidence_pack, search_laws
 from services import precedent_sources
 from services import legal_research
 from services import legal_synthesis
+from services import mofa_public_data
 from services.citation_verifier import extract_korean_legal_citations, verify_case_decision_citations
 from services.legal_analysis import first_sentence_quality_warning, is_registration_deadline_query, status_work_capability
 from services.answer_quality import (
@@ -6017,6 +6018,29 @@ async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
     parsed["provider"] = result["provider"]
     parsed["ai_available"] = True
     return parsed
+
+
+# ---------------------------------------------------------------------------
+# PreView by Paradiso — read-only MOFA public-data proxy
+# ---------------------------------------------------------------------------
+
+
+@app.get("/api/preview/mission")
+async def preview_mission(country: str = "", countryName: str = "") -> Any:
+    """Pre-arrival mission lookup for PreView (외교부_국가·지역별 재외공관 정보).
+
+    Read-only proxy: validates the query, resolves the portal service key
+    (MOFA_EMBASSY_SERVICE_KEY -> PUBLIC_DATA_SERVICE_KEY), and returns a safe
+    envelope in every case. The frontend falls back to labeled MVP sample
+    data whenever ``ok`` is false or ``items`` is empty.
+    """
+    outcome = mofa_public_data.fetch_mission_directory(
+        country_iso2=country or None,
+        country_name=countryName or None,
+    )
+    if outcome.get("error") == "invalid_query":
+        return UTF8JSONResponse(status_code=400, content=outcome)
+    return outcome
 
 
 # ---------------------------------------------------------------------------

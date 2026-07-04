@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-04",
+  "snapshotStatus": "dataset_reference_only_not_fetched",
+  "dataset": {
+    "titleKo": "외교부_국가별 사증 면제협정 체결현황",
+    "portalTitleObserved": "외교부_국가별 사증 면제협정 체결현황_20220324",
+    "provider": "외교부",
+    "portal": "공공데이터포털 (data.go.kr)",
+    "datasetPageUrl": "https://www.data.go.kr/data/15099235/fileData.do",
+    "sourceFamily": "public_data_portal_file",
+    "sourceType": "mofa_public_data_portal_file",
+    "fileFormat": null,
+    "updateCycle": null,
+    "columnSchema": null,
+    "autoConvertedApiEndpoint": null,
+    "verificationNoteKo": "데이터셋 페이지 URL과 제목은 복수의 독립 검색 결과로 확인했다. 파일 형식·갱신주기·컬럼 스키마·자동변환 API(uddi) 식별자는 이 빌드 환경에서 data.go.kr 접근이 차단되어(프록시 정책 403) 확인하지 못했으므로 null로 두었다. 추측으로 채우지 않는다."
+  },
+  "relatedOfficialReferences": [
+    {
+      "titleKo": "비자(사증) 면제 협정 체결현황 (2025.1월 업데이트) — 외교부 게시글",
+      "url": "https://www.mofa.go.kr/gq-ko/brd/m_10432/view.do?seq=1345182",
+      "urlVerification": "search_index_corroborated",
+      "noteKo": "본문 미수집. 외교부 체결현황 목록은 협정과 일방·상호주의를 함께 다루며, 한국 국민의 출국 방향 중심으로 서술되는 경우가 있어 '한국 입국 무사증'과 동일시하면 안 된다. 공식 원문 확인 필요."
+    }
+  ],
+  "usageBoundaryKo": "이 스냅샷은 입국 전 확인(Entry pre-check) 맥락 참고용이다. 사증발급 여부·심사 결과의 근거가 아니며, 특정 국가의 무사증 입국 가능 여부를 보증하지 않는다. 한국 입국의 무사증·전자여행허가 운영은 법무부 소관 안내가 별도로 존재한다. 최종 확인은 관할 재외공관 공식 안내를 따른다.",
+  "countries": [
+    {
+      "countryKo": "베트남",
+      "countryEn": "Vietnam",
+      "iso2": "VN",
+      "ordinaryPassportWaiverToKorea": "unverified",
+      "statusKo": "일반여권 소지자의 대한민국 입국 사증 면제 여부는 이 스냅샷에서 확인되지 않았습니다. 공식 원문 확인 필요.",
+      "checkPointsKo": [
+        "외교부 사증 면제협정 체결현황 원문에서 베트남 항목 확인",
+        "관할 재외공관(주베트남 대사관·주호치민 총영사관) 공지 확인"
+      ]
+    },
+    {
+      "countryKo": "몽골",
+      "countryEn": "Mongolia",
+      "iso2": "MN",
+      "ordinaryPassportWaiverToKorea": "unverified",
+      "statusKo": "일반여권 소지자의 대한민국 입국 사증 면제 여부는 이 스냅샷에서 확인되지 않았습니다. 공식 원문 확인 필요.",
+      "checkPointsKo": [
+        "외교부 사증 면제협정 체결현황 원문에서 몽골 항목 확인",
+        "관할 재외공관(주몽골 대사관) 공지 확인"
+      ]
+    },
+    {
+      "countryKo": "우즈베키스탄",
+      "countryEn": "Uzbekistan",
+      "iso2": "UZ",
+      "ordinaryPassportWaiverToKorea": "unverified",
+      "statusKo": "일반여권 소지자의 대한민국 입국 사증 면제 여부는 이 스냅샷에서 확인되지 않았습니다. 공식 원문 확인 필요.",
+      "checkPointsKo": [
+        "외교부 사증 면제협정 체결현황 원문에서 우즈베키스탄 항목 확인",
+        "관할 재외공관(주우즈베키스탄 대사관) 공지 확인"
+      ]
+    }
+  ],
+  "refreshInstructionsKo": "허용된 네트워크에서 data.go.kr 데이터셋 페이지(15099235)의 파일을 내려받아 컬럼 스키마를 기록하고, 국가별 행을 이 스냅샷의 countries 배열로 정규화한다. 외교부 2025.1 게시글 원문과 교차 확인하고, 불일치는 감사 노트로 남긴다."
+}
