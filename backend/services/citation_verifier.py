@@ -179,6 +179,17 @@ _CASE_NUMBER_RE = re.compile(
     r"|두|다|도|구|누|노|머|므|드|재|초|나|라)"
     r"\d{1,6}"
 )
+# Placeholder-shaped case numbers are never valid public citations.  Models
+# occasionally emit strings such as ``2017두XXXX`` when they know the format
+# but not an actual identifier.  The strict numeric detector above correctly
+# ignores those strings, so keep a second detector whose only purpose is to
+# reject them before an answer reaches the user.
+_PLACEHOLDER_CASE_NUMBER_RE = re.compile(
+    r"(?<![0-9A-Za-z])(?:19|20)\d{2}"
+    r"(?:구합|구단|가합|가단|가소|고합|고단|고정|헌마|헌바|헌가|헌라|헌나|헌사|헌아"
+    r"|두|다|도|구|누|노|머|므|드|재|초|나|라)"
+    r"(?:x{2,}|X{2,}|\?{2,}|#{2,}|0{3,})(?![0-9A-Za-z])"
+)
 # Generic decision / agenda numbers (행정심판 재결, 법령해석 안건번호 등): only
 # extracted when an adjudicative keyword sits in the same answer (attribution),
 # so unrelated hyphenated numbers (page 12-34) are not treated as citations.
@@ -225,6 +236,51 @@ _FAILING_STATUSES = frozenset({
 })
 
 
+_EVIDENCE_TOPIC_GATES = (
+    (
+        re.compile(r"근무처\s*(?:변경|추가)|고용주\s*변경|직장\s*(?:변경|이동)|이직|전직|새\s*회사|change\s+(?:of\s+)?(?:employer|workplace)|job\s+transfer", re.IGNORECASE),
+        re.compile(r"근무처|고용주|사업장|직장|이직|전직|근로계약|employer|workplace|job\s+transfer", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"귀화|국적|naturalization|nationality", re.IGNORECASE),
+        re.compile(r"귀화|국적|품행|naturalization|nationality", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"난민|인도적\s*체류|refugee|asylum", re.IGNORECASE),
+        re.compile(r"난민|인도적|refugee|asylum", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"강제퇴거|출국명령|deportation|departure\s+order", re.IGNORECASE),
+        re.compile(r"강제퇴거|출국명령|deportation|departure\s+order", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"외국인등록|거소신고|alien\s+registration|residence\s+report", re.IGNORECASE),
+        re.compile(r"외국인등록|거소신고|alien\s+registration|residence\s+report", re.IGNORECASE),
+    ),
+)
+
+
+def precedent_evidence_item_is_relevant(item: Dict[str, Any], *, query: str) -> bool:
+    """Return whether a normalized precedent-family item matches the named issue.
+
+    Broad law.go.kr searches frequently return famous immigration or criminal
+    cases that only share ``출입국관리법``.  For questions with a clear issue
+    anchor, those results must not be advertised as available precedent or used
+    to validate a model's authority claim.
+    """
+    hay = " ".join(
+        str(item.get(key) or "")
+        for key in (
+            "title", "caseName", "case_name", "holdingSummary",
+            "holding_summary", "snippet", "summary", "issueTags",
+        )
+    )
+    for question_re, evidence_re in _EVIDENCE_TOPIC_GATES:
+        if question_re.search(query or "") and not evidence_re.search(hay):
+            return False
+    return True
+
+
 def _norm_identifier(value: str) -> str:
     return re.sub(r"\s+", "", str(value or "")).strip().lower()
 
@@ -265,7 +321,10 @@ def extract_case_decision_citations(text: str) -> Dict[str, Any]:
     """
     body = text or ""
     has_adjudicative_kw = any(kw in body for kw in _ADJUDICATIVE_KEYWORDS)
-    case_numbers = list(dict.fromkeys(m.group(0) for m in _CASE_NUMBER_RE.finditer(body)))
+    case_numbers = list(dict.fromkeys([
+        *(m.group(0) for m in _CASE_NUMBER_RE.finditer(body)),
+        *(m.group(0) for m in _PLACEHOLDER_CASE_NUMBER_RE.finditer(body)),
+    ]))
     decision_numbers: List[str] = []
     if has_adjudicative_kw:
         decision_numbers = [
@@ -368,7 +427,20 @@ def verify_case_decision_citations(
             })
             continue
         best_grade = "direct" if any(str(i.get("citationGrade")) == "direct" for i in fam_items) else "contextual"
-        overclaim = extracted["hasBindingWording"] and best_grade != "direct"
+        # A phrase such as "판례상 X이다" asserts a holding.  List-only search
+        # hits contain no quote-safe holding and therefore cannot validate that
+        # assertion, even when the wording stops short of "binding".  A named,
+        # verified decision may still be described contextually ("참고할 수
+        # 있다") so existing exact-identifier citations keep working.
+        verified_identifier_for_family = any(
+            c.get("kind") in {"case_number", "decision_number"}
+            and c.get("family") == family
+            and c.get("verification_status") in {"verified", "verified_contextual"}
+            for c in citations
+        )
+        overclaim = best_grade != "direct" and (
+            extracted["hasBindingWording"] or not verified_identifier_for_family
+        )
         citations.append({
             "raw": family, "kind": "authority_claim", "family": family,
             "verification_status": "overclaimed_contextual" if overclaim else "verified",

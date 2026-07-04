@@ -123,6 +123,31 @@ class AnswerModeTierTests(unittest.TestCase):
         plan = model_policy.resolve_answer_mode_models("fast")
         self.assertEqual(plan["primary"], "openai/gpt-oss-120b:free")
 
+    def test_simple_fast_question_stays_fast(self):
+        route = model_policy.resolve_question_answer_mode(
+            "fast", question="F-4가 뭐예요?", legal_issue_types=[]
+        )
+        self.assertEqual(route["effective_mode"], "fast")
+        self.assertFalse(route["auto_escalated"])
+
+    def test_source_heavy_fast_question_auto_escalates_to_basic(self):
+        route = model_policy.resolve_question_answer_mode(
+            "fast",
+            question="E-7 근무처 변경허가와 관련 판례를 근거로 위험을 설명해 주세요.",
+            legal_issue_types=["workplace_change_addition", "activity_scope"],
+            risk_level="medium",
+        )
+        self.assertEqual(route["requested_mode"], "fast")
+        self.assertEqual(route["effective_mode"], "basic")
+        self.assertTrue(route["auto_escalated"])
+        self.assertIn("source_heavy_question", route["escalation_reasons"])
+        self.assertIn("complex_legal_issue", route["escalation_reasons"])
+
+    def test_basic_is_never_downgraded(self):
+        route = model_policy.resolve_question_answer_mode("basic", question="F-4가 뭐예요?")
+        self.assertEqual(route["effective_mode"], "basic")
+        self.assertFalse(route["auto_escalated"])
+
     def test_env_overrides_keep_primary_first_and_deduped(self):
         with patch.dict(
             os.environ,

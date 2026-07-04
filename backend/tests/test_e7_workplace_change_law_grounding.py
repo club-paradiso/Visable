@@ -84,10 +84,13 @@ class E7IntentAndQueryTests(unittest.TestCase):
                 self.assertTrue(intent["should_attempt"], term)
 
     def test_query_uses_official_workplace_change_anchors(self):
-        from services.law_grounding import build_law_search_query, should_attempt_law_grounding
+        from services.law_grounding import build_law_search_query, build_law_search_queries, should_attempt_law_grounding
 
         reasons = should_attempt_law_grounding(E7_QUESTION)["reasons"]
         query = build_law_search_query(E7_QUESTION, reasons)
+        queries = build_law_search_queries(E7_QUESTION, reasons)
+        self.assertEqual(queries[0], "출입국관리법")
+        self.assertTrue(any("근무처 변경" in q for q in queries))
         for anchor in (
             "출입국관리법 근무처 변경 추가 허가",
             "출입국관리법 근무처 변경 추가 신고",
@@ -99,6 +102,16 @@ class E7IntentAndQueryTests(unittest.TestCase):
 
 
 class E7IssueClassificationTests(unittest.TestCase):
+    def test_explicit_subcode_is_current_status_not_target_transition(self):
+        from services.legal_analysis import extract_immigration_facts
+
+        q = "E-7-1 체류자격으로 새 회사로 근무처 변경허가가 필요한가요?"
+        facts = extract_immigration_facts(q, visa_code="E-7")
+        self.assertEqual(facts["current_status"], "E-7-1")
+        self.assertIsNone(facts["previous_status"])
+        self.assertIsNone(facts["target_status"])
+        self.assertFalse(facts["status_transition_detected"])
+
     def test_classifies_required_issue_types(self):
         from services.legal_analysis import (
             classify_legal_issue_types,
@@ -114,6 +127,8 @@ class E7IssueClassificationTests(unittest.TestCase):
             "status_purpose_alignment",
         ):
             self.assertIn(required, issues, required)
+        self.assertNotIn("registration_or_residence_report", issues)
+        self.assertNotIn("status_change", issues)
 
     def test_employment_condition_is_a_known_ontology_dimension(self):
         # New issue type must be understood by the rest of the pipeline, not a

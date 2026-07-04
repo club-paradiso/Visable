@@ -41,6 +41,7 @@ from .grounding_config import GroundingConfig, load_grounding_config
 from .law_grounding import should_attempt_law_grounding
 from .citation_verifier import (
     build_law_evidence_citation_verification,
+    precedent_evidence_item_is_relevant,
     verify_case_decision_citations,
 )
 from .answer_quality import (
@@ -2041,6 +2042,36 @@ def build_law_evidence_pack(
                 source_family_retrieval["source_family_statuses"] = fam_statuses
         except Exception:  # pragma: no cover - precedent must never break the pack
             pass
+
+    # Topic-level precision gate.  A broad ``출입국관리법`` precedent search can
+    # return unrelated criminal or generic status cases.  Do not expose those
+    # results in the evidence pack and do not let them validate a model's
+    # ``판례상`` claim merely because they share the same statute family.
+    raw_precedent_items = list(source_family_retrieval.get("precedent_evidence_items") or [])
+    relevant_precedent_items = [
+        item for item in raw_precedent_items
+        if precedent_evidence_item_is_relevant(item, query=text)
+    ]
+    if raw_precedent_items != relevant_precedent_items:
+        source_family_retrieval["precedent_evidence_items"] = relevant_precedent_items
+        family_statuses = dict(source_family_retrieval.get("source_family_statuses") or {})
+        family_counts = dict(source_family_retrieval.get("source_family_result_counts") or {})
+        if not relevant_precedent_items:
+            family_statuses["precedent"] = SOURCE_STATUS_NO_RESULTS
+            family_counts["precedent"] = 0
+        source_family_retrieval["source_family_statuses"] = family_statuses
+        source_family_retrieval["source_family_result_counts"] = family_counts
+        for family_result in source_family_retrieval.get("source_family_results") or []:
+            if family_result.get("source_family") != "precedent":
+                continue
+            normalized = family_result.get("normalized_items") or []
+            family_result["normalized_items"] = [
+                item for item in normalized
+                if precedent_evidence_item_is_relevant(item, query=text)
+            ]
+            family_result["precedent_evidence_items"] = relevant_precedent_items
+            if not relevant_precedent_items:
+                family_result["status"] = SOURCE_STATUS_NO_RESULTS
 
     law_grounding_used = bool(law_sources) or context_used_hint
 

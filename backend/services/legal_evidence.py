@@ -621,6 +621,64 @@ def rank_cases(
     return sorted(cases, key=sort_key, reverse=True)
 
 
+# High-precision topic anchors used as a *gate*, not as a ranking boost.  A
+# broad immigration decision can otherwise outrank the actual issue simply
+# because it mentions "체류자격" and came from the Supreme Court.  When the
+# question clearly names one of these topics, the candidate itself must carry
+# at least one topic anchor before it may be shown to the model or user.
+_CASE_TOPIC_GATES: Tuple[Tuple[re.Pattern, re.Pattern], ...] = (
+    (
+        re.compile(r"근무처\s*(?:변경|추가)|고용주\s*변경|직장\s*(?:변경|이동)|이직|전직|새\s*회사|change\s+(?:of\s+)?(?:employer|workplace)|job\s+transfer", re.IGNORECASE),
+        re.compile(r"근무처|고용주|사업장|직장|이직|전직|근로계약|employer|workplace|job\s+transfer", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"귀화|국적|naturalization|nationality", re.IGNORECASE),
+        re.compile(r"귀화|국적|품행|naturalization|nationality", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"난민|인도적\s*체류|refugee|asylum", re.IGNORECASE),
+        re.compile(r"난민|인도적|refugee|asylum", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"강제퇴거|출국명령|deportation|departure\s+order", re.IGNORECASE),
+        re.compile(r"강제퇴거|출국명령|deportation|departure\s+order", re.IGNORECASE),
+    ),
+    (
+        re.compile(r"외국인등록|거소신고|alien\s+registration|residence\s+report", re.IGNORECASE),
+        re.compile(r"외국인등록|거소신고|alien\s+registration|residence\s+report", re.IGNORECASE),
+    ),
+)
+
+
+def case_is_relevant(case: LegalCase, *, query: str) -> bool:
+    """Conservative issue-level relevance gate for a ranked candidate.
+
+    Metadata-only search hits that fail this gate stay internal and are reported
+    as ``no_relevant_results``.  This is preferable to showing a famous but
+    unrelated immigration case as if it supported the user's answer.
+    """
+    hay = " ".join(
+        x for x in (
+            case.case_name,
+            case.holding,
+            case.summary,
+            case.reference_statutes,
+            case.case_type_name,
+        ) if x
+    )
+    for question_re, evidence_re in _CASE_TOPIC_GATES:
+        if question_re.search(query or "") and not evidence_re.search(hay):
+            return False
+
+    breakdown = case.score_breakdown or {}
+    substantive = max(
+        float(breakdown.get("keyword") or 0.0),
+        float(breakdown.get("statute") or 0.0),
+        float(breakdown.get("issue") or 0.0),
+    )
+    return bool(case.score >= 0.22 and substantive > 0.0)
+
+
 # ---------------------------------------------------------------------------
 # Safety — asylum-gaming / deception detection
 # ---------------------------------------------------------------------------
@@ -975,7 +1033,12 @@ def retrieve_legal_evidence(
         return result
 
     ranked = rank_cases(collected, query=q, issue_concepts=issue_concepts, statute_refs=statute_refs)
-    top = ranked[: max(1, int(max_cases))]
+    relevant = [case for case in ranked if case_is_relevant(case, query=q)]
+    if not relevant:
+        result.status = "no_relevant_results"
+        result.warnings.append("NO_ISSUE_RELEVANT_CASES")
+        return result
+    top = relevant[: max(1, int(max_cases))]
 
     if fetch_bodies:
         query_tokens = _tokenize(q)

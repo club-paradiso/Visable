@@ -166,7 +166,7 @@
 
   /* ------------------------------------------------------------------ i18n */
   // Locales with a full chrome pack below. Anything not listed falls back to ko.
-  var PRH_SUPPORTED = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+  var PRH_SUPPORTED = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   function prhLang() {
     var l = (typeof currentLanguage !== 'undefined' && currentLanguage) ? currentLanguage : 'ko';
     return PRH_SUPPORTED.indexOf(l) !== -1 ? l : 'ko';
@@ -906,7 +906,7 @@
   var STR_PACKS = {
     ko: STR_KO, en: STR_EN, 'zh-CN': STR_ZH,
     ja: STR_EN, vi: STR_EN, tl: STR_EN, id: STR_EN, ru: STR_EN,
-    fr: STR_EN, es: STR_EN, ar: STR_EN, de: STR_EN
+    fr: STR_EN, es: STR_EN, ar: STR_EN, de: STR_EN, tr: STR_EN, uk: STR_EN
   };
   var STR = (typeof Proxy === 'function')
     ? new Proxy({}, { get: function (_t, k) { var p = STR_PACKS[prhLang()] || STR_KO; return (p[k] != null) ? p[k] : STR_KO[k]; } })

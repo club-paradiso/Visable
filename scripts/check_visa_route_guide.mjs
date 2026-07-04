@@ -37,7 +37,7 @@ const byCode = (c) => visas.find((v) => v.code === c);
 const subsOf = (v) => (Array.isArray(v.subcodes) ? v.subcodes : (Array.isArray(v.subCodes) ? v.subCodes : []));
 
 const ALLOWED_STATUS = ['available', 'conditional', 'not_applicable', 'source_limited'];
-const LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+const LOCALES = ['ko', 'en', 'zh-CN', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
 const DUMMY_RE = /(lorem ipsum|\bTODO\b|\bFIXME\b|placeholder|dummy|샘플텍스트|테스트텍스트|xxxxx|#####|\bTBD\b)/i;
 
 /* -------------------------------------------------------------- 1. module API */

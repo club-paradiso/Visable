@@ -74,6 +74,7 @@ from services.model_policy import (
     MODEL_POLICY_VERSION,
     normalize_answer_mode,
     resolve_answer_mode_models,
+    resolve_question_answer_mode,
     sanitize_model_role_policy_for_public,
 )
 from services.providers.nvidia_nim import NvidiaNimProvider
@@ -575,6 +576,12 @@ class AskResponse(BaseModel):
     answer_mode: str = ""
     answer_mode_requested: str = ""
     answer_mode_available: bool = True
+    # Fast may be promoted to Basic when the question is source-heavy,
+    # high-risk, or multi-factor.  These public reason codes let the UI explain
+    # the routing decision without exposing prompts or provider internals.
+    answer_mode_auto_escalated: bool = False
+    answer_mode_escalation_reasons: List[str] = Field(default_factory=list)
+    answer_mode_route_version: str = ""
     requested_model: Optional[str] = None
     primary_model: Optional[str] = None
     model_candidates: List[str] = Field(default_factory=list)
@@ -1592,13 +1599,19 @@ def _korean_practical_fallback(issues: List[str], facts: Dict[str, Any], activit
         )
     if "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
         return _format_registration_deadline_formula(facts, is_ko=True) or ""
+    if "workplace_change_addition" in issues:
+        return (
+            "근무처 변경·추가는 현재 E-7 세부자격과 직종, 새 사업장의 업종·직무, 기존 근로관계 종료일과 "
+            "새 근무 시작일을 기준으로 사전 허가 대상인지 사후 신고 대상인지 먼저 구분해야 합니다. "
+            "공식 확인 전에는 새 근무를 시작하지 않는 쪽이 안전합니다."
+        )
     if "registration_or_residence_report" in issues:
         return (
             f"{current} 외국인등록은 보통 입국일 또는 체류자격 부여·변경일을 기준으로, 체류기간이 90일을 초과하는 "
             "경우 등록 대상이 되는 신고성 절차로 접근하는 것이 실무적입니다. 다만 정확한 등록 기한과 대상 여부는 "
             "개별 체류자격과 부여받은 체류기간에 따라 달라질 수 있으므로, 아래 사실관계를 먼저 확인해야 합니다."
         )
-    if "workplace_change_addition" in issues or "reporting_duty" in issues:
+    if "reporting_duty" in issues:
         return "신고 대상 사건인지, 신고 기산일이 언제인지, 사전 허가가 필요한지부터 확인해야 합니다."
     return "추출된 체류자격, 활동 유형, 신고·허가 쟁점을 기준으로 공식 확인 질문을 준비해야 합니다."
 
@@ -1621,6 +1634,8 @@ def _korean_main_issue_fallback(issues: List[str], facts: Dict[str, Any], activi
         )
     if "registration_deadline" in issues and facts.get("entry_date") and facts.get("registration_deadline_date"):
         return f"{current} 보유자의 입국일 기준 외국인등록 기한 계산입니다."
+    if "workplace_change_addition" in issues:
+        return "현재 E-7 세부자격·직종과 새 사업장의 직무가 허용 범위에 맞는지, 그리고 근무 시작 전에 허가 또는 신고가 필요한지입니다."
     if "registration_or_residence_report" in issues:
         return f"{current} 보유자의 외국인등록·체류 신고 시점과 절차입니다."
     if "workplace_change_addition" in issues or "reporting_duty" in issues:
@@ -1652,7 +1667,7 @@ def _fallback_activity_kinds(issues: List[str], activities: List[str]) -> Dict[s
     work = bool(act_set & _WORK_ACTS) or bool(
         issue_set & {"work_on_non_work_status", "workplace_change_addition", "post_status_change_residual_duty"}
     )
-    registration = bool(issue_set & {"registration_or_residence_report", "registration_deadline", "deadline_trigger", "reporting_duty"}) and not study
+    registration = bool(issue_set & {"registration_or_residence_report", "registration_deadline", "deadline_trigger"}) and not study and "workplace_change_addition" not in issue_set
     status_change = "status_change" in issue_set
     return {"study": study, "work": work, "registration": registration, "status_change": status_change}
 
@@ -1750,6 +1765,15 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
                 f"출입국이 이를 {current} 체류 목적과 양립 가능한 활동으로 보는지",
                 "자격외활동허가 또는 체류자격 변경이 필요한지",
             ]
+        if "workplace_change_addition" in issue_set:
+            return [
+                f"현재 ARC상 {current}의 정확한 세부코드와 승인 직종이 무엇인지",
+                "기존 회사의 퇴사일과 새 회사의 근무 시작 예정일이 언제인지",
+                "새 사업장의 업종과 실제 담당 직무가 무엇인지",
+                "새 근로계약의 임금·근무시간·계약기간이 승인 기준에 맞는지",
+                "근무 시작 전에 허가가 필요한지, 사후 신고가 가능한 유형인지",
+                "관할 출입국기관이 요구하는 공식 제출서류와 접수 경로가 무엇인지",
+            ]
         if kinds["registration"]:
             questions = []
             if not facts.get("entry_date"):
@@ -1804,6 +1828,15 @@ def _fallback_confirmation_questions_localized(issues: List[str], facts: Dict[st
             "whether the school requires D-2 / D-4 or another study status",
             f"whether immigration sees it as compatible with the purpose of {current}",
             "whether it needs permission for activities outside status or a change of status",
+        ]
+    if "workplace_change_addition" in issue_set:
+        return [
+            f"the exact {current} sub-code and approved occupation shown on your ARC/approval",
+            "the prior employment end date and planned start date with the new employer",
+            "the new employer's industry and your actual duties",
+            "the wage, hours, and contract term in the new employment agreement",
+            "whether permission is required before work starts or post-reporting is accepted",
+            "the official document list and filing channel required by the competent office",
         ]
     if kinds["registration"]:
         questions = []
@@ -4607,11 +4640,27 @@ async def ask(req: AskRequest) -> AskResponse:
         if isinstance(law_evidence_pack.get("legal_analysis"), dict):
             law_evidence_pack["legal_analysis"]["confidence"] = quality["source_confidence_level"]
 
+    # Resolve answer depth before supplementary case retrieval.  Fast remains
+    # genuinely fast for short, low-risk questions, but source-heavy,
+    # permission/deadline-sensitive, high-risk, or multi-factor questions are
+    # promoted to Basic.  The *effective* tier also controls the evidence
+    # budget, so an escalated question gets the same case-law depth as Basic.
+    answer_mode_route = resolve_question_answer_mode(
+        req.answer_mode,
+        question=prompt,
+        legal_issue_types=(law_evidence_pack or {}).get("legal_issue_types") or [],
+        risk_level=risk_level_detected or "",
+    )
+    answer_mode_requested = answer_mode_route["requested_mode"]
+    _model_plan_mode = answer_mode_requested if answer_mode_requested == "pro" else answer_mode_route["effective_mode"]
+    answer_mode_plan = resolve_answer_mode_models(_model_plan_mode)
+    answer_mode_used = answer_mode_plan["mode"]
+
     # Supplementary case-law / administrative-decision evidence (판례 / 재결례).
-    # Gated + Fast-mode-skipped; never breaks the request (see helper).
+    # Gated and relevance-filtered; never breaks the request (see helper).
     legal_evidence_meta = _maybe_retrieve_legal_evidence(
         prompt,
-        answer_mode=normalize_answer_mode(req.answer_mode),
+        answer_mode=answer_mode_used,
         effective_mode=effective_mode,
         grounding_cfg=grounding_cfg,
         law_intent=bool(intent.get("should_attempt")),
@@ -4695,6 +4744,14 @@ async def ask(req: AskRequest) -> AskResponse:
     # context only and is governed by the case-law safety directive.
     if legal_evidence_meta.get("legal_evidence_prompt"):
         final_prompt += "\n\n" + legal_evidence_meta["legal_evidence_prompt"]
+
+    if answer_mode_route.get("auto_escalated"):
+        final_prompt += (
+            "\n\n[Answer-depth routing]\n"
+            "- The user selected Fast, but this question was automatically promoted to Basic because it "
+            "requires a more careful multi-factor or source-grounded answer.\n"
+            "- Prefer correctness, issue separation, and explicit evidence limits over brevity."
+        )
 
     final_prompt += "\n\n" + build_answer_directives(quality, lang=req.lang)
 
@@ -4886,19 +4943,20 @@ async def ask(req: AskRequest) -> AskResponse:
         **safety_meta,
     )
 
-    # Resolve the answer-speed tier (Fast / Basic / Pro). Fast uses a smaller,
-    # low-latency candidate chain and a tighter output cap; Pro is coming-soon
-    # and transparently answers on the Basic chain.
-    answer_mode_plan = resolve_answer_mode_models(req.answer_mode)
-    answer_mode_used = answer_mode_plan["mode"]
-    answer_mode_requested = normalize_answer_mode(req.answer_mode)
+    # Apply the already-resolved question-aware tier.  This is deliberately
+    # computed before case-law retrieval above so evidence depth and model depth
+    # cannot disagree.
     answer_mode_max_tokens = (
         OPENROUTER_FAST_MAX_TOKENS if answer_mode_used == "fast" else OPENROUTER_MAX_TOKENS
     )
     base_meta.update(
         answer_mode=answer_mode_used,
         answer_mode_requested=answer_mode_requested,
-        answer_mode_available=bool(answer_mode_plan.get("available", True)),
+        answer_mode_available=bool(answer_mode_route.get("available", True))
+        and bool(answer_mode_plan.get("available", True)),
+        answer_mode_auto_escalated=bool(answer_mode_route.get("auto_escalated")),
+        answer_mode_escalation_reasons=list(answer_mode_route.get("escalation_reasons") or []),
+        answer_mode_route_version=str(answer_mode_route.get("version") or MODEL_POLICY_VERSION),
     )
 
     # Streaming path (SSE): snappier perceived response. Only OpenRouter supports

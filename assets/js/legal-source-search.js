@@ -1168,8 +1168,15 @@
     root.innerHTML = panelHtml(lang);
     wire();
     syncDepthUI();
-    // Re-open + re-run if we already had a query/research (e.g. language switch).
-    if (state.lastQuery || state.lastResearch) {
+    // Re-open when this is the selected workspace route.  Previously the
+    // sidebar took users to the research screen and then made them discover a
+    // second collapsed disclosure before they could search.
+    var routeOpen = false;
+    try {
+      routeOpen = (location.hash === '#legalSourceSearchRoot')
+        || !!(document.body && document.body.classList.contains('wm-research-open'));
+    } catch (e) { routeOpen = false; }
+    if (state.lastQuery || state.lastResearch || routeOpen) {
       var body = root.querySelector('#lssBody');
       var toggle = root.querySelector('[data-lss-toggle]');
       if (body) body.removeAttribute('hidden');
@@ -1192,6 +1199,13 @@
   api.setShowOriginal = setShowOriginal;
   api.doSearch = function (q) { if (root) doSearch(q); };
   api.doResearch = function (q) { if (!root && !mount()) return; setTab('research'); doResearch(q); };
+  api.openPanel = function () {
+    if (!root && !mount()) return;
+    var bodyEl = root.querySelector('#lssBody');
+    var toggleEl = root.querySelector('[data-lss-toggle]');
+    if (bodyEl) bodyEl.removeAttribute('hidden');
+    if (toggleEl) toggleEl.setAttribute('aria-expanded', 'true');
+  };
   api.openWith = function (q, kind) { if (!root && !mount()) return; if (kind) state.kind = kind; doSearch(q); };
   // Waymaker → Legal Research handoff (§6): open the Research tab prefilled with
   // the visa code + question + suggested depth, then run.

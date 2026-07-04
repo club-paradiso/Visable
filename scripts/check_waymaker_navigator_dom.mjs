@@ -123,30 +123,27 @@ async function run() {
   ok(askCalls.length === 0 && fetchUrls.length === 0, 'no network before intake starts');
   startBtn.click(); await sleep(5);
 
-  // 2. language step -> pick Korean
-  const koBtn = [...root.querySelectorAll('button')].find((b) => b.textContent.trim() === '한국어');
-  ok(!!koBtn, 'language step shows 한국어'); koBtn.click(); await sleep(5);
-
-  // 3. location -> In Korea
+  // 2. Location is the first real task step. Language is an optional header
+  // preference, not a mandatory extra page in the critical path.
   const inKorea = [...root.querySelectorAll('button')].find((b) => /한국 내/.test(b.textContent));
-  ok(!!inKorea, 'location step shows 한국 내'); inKorea.click(); await sleep(5);
+  ok(!!inKorea, 'start moves directly to the location step'); inKorea.click(); await sleep(5);
 
-  // 4. status -> search D-2
+  // 3. status -> search D-2
   const search = root.querySelector('.wm-search');
   ok(!!search, 'status step shows search input');
   search.value = 'D-2'; search.dispatchEvent(new window.Event('input')); await sleep(5);
   const d2row = [...root.querySelectorAll('.wm-status-row')].find((r) => /D-2\b/.test(r.textContent) && !/D-2-/.test(r.textContent));
   ok(!!d2row, 'D-2 appears in status results'); d2row.click(); await sleep(5);
 
-  // 5. procedure -> extension
+  // 4. procedure -> extension
   const extRow = [...root.querySelectorAll('.wm-proc-row')].find((r) => /체류기간 연장/.test(r.textContent));
   ok(!!extRow, 'procedure step shows 체류기간 연장'); extRow.click(); await sleep(5);
 
-  // 6. D-2 is materially ambiguous -> sub-status step. Choose "잘 모르겠어요".
+  // 5. D-2 is materially ambiguous -> sub-status step. Choose "잘 모르겠어요".
   const dontKnow = [...root.querySelectorAll('.wm-status-row')].find((r) => /잘 모르겠어요/.test(r.textContent));
   ok(!!dontKnow, 'D-2 extension asks sub-status clarification'); dontKnow.click(); await sleep(30);
 
-  // 7. packet rendered, deterministic, no /api/ask
+  // 6. packet rendered, deterministic, no /api/ask
   ok(fetchUrls.some((u) => /\/api\/procedure-packet\?/.test(u)), 'fetched /api/procedure-packet');
   ok(fetchUrls.every((u) => !/\/api\/ask/.test(u)), 'never fetched /api/ask during deterministic flow');
   ok(askCalls.length === 0, 'AI follow-up NOT called before user opens it');
@@ -155,7 +152,7 @@ async function run() {
   ok([...root.querySelectorAll('.wm-next-list li')].length >= 1, 'next actions rendered');
   ok(!!root.querySelector('.wm-cov-badge'), 'source coverage badge rendered');
 
-  // 8. checklist persists to localStorage only
+  // 7. checklist persists to localStorage only
   // expand documents accordion (open by default for non-limited), toggle a checkbox
   const docCheck = root.querySelector('.wm-doc-check');
   ok(!!docCheck, 'document checklist rendered');
@@ -165,12 +162,12 @@ async function run() {
   for (let i = 0; i < window.localStorage.length; i++) storedKeys.push(window.localStorage.key(i));
   ok(storedKeys.some((k) => /paradiso_waymaker_checklist/.test(k)), 'checklist state persisted to localStorage only');
 
-  // 9. HiKorea CTA
+  // 8. HiKorea CTA
   const hk = [...root.querySelectorAll('button')].find((b) => /HiKorea 예약 경로 확인/.test(b.textContent));
   ok(!!hk, 'HiKorea CTA present'); hk.click(); await sleep(5);
   ok(hikoreaOpened.length === 1 && hikoreaOpened[0][0] === 'D-2', 'HiKorea handoff prefilled with status');
 
-  // 10. AI follow-up: open, then submit -> /api/ask via onAskFollowup with safe ctx
+  // 9. AI follow-up: open, then submit -> /api/ask via onAskFollowup with safe ctx
   const aiToggle = [...root.querySelectorAll('button')].find((b) => /이 패킷에서 헷갈리는 점 묻기/.test(b.textContent));
   ok(!!aiToggle, 'AI follow-up CTA present (secondary)');
   aiToggle.click(); await sleep(5);
@@ -194,7 +191,6 @@ async function run() {
   const ctrl2 = WM.createNavigator({ root: root2, apiBase: '', getRecords: () => Promise.resolve(records), onAskFollowup, openHiKorea });
   ctrl2.mount(); await sleep(20);
   [...root2.querySelectorAll('button')].find((b) => /내 상황 선택하기|Choose my situation/.test(b.textContent)).click(); await sleep(5);  // start
-  [...root2.querySelectorAll('button')].find((b) => b.textContent.trim() === '한국어').click(); await sleep(5);
   [...root2.querySelectorAll('button')].find((b) => /한국 내/.test(b.textContent)).click(); await sleep(5);
   const s2 = root2.querySelector('.wm-search'); s2.value = 'D-2'; s2.dispatchEvent(new window.Event('input')); await sleep(5);
   [...root2.querySelectorAll('.wm-status-row')].find((r) => /D-2\b/.test(r.textContent) && !/D-2-/.test(r.textContent)).click(); await sleep(5);

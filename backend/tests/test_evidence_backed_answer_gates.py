@@ -298,6 +298,22 @@ class DeterministicRepairIntegrationTests(_AskHarness):
             b,
         )
 
+    def test_placeholder_case_and_contextual_holding_claim_are_repaired(self):
+        fabricated = (
+            "판례상 체류자격 범위를 벗어난 근로는 강제퇴거 사유가 될 수 있습니다"
+            "(대법원 2017두XXXX 등). 따라서 사전 근무는 고위험입니다."
+        )
+        b = self._ask(
+            "E-7-1 체류자격으로 새 회사 근무처 변경허가 전 일할 수 있나요?",
+            visa_code="E-7",
+            model_answer=fabricated,
+        )
+        self.assertNotIn("2017두XXXX", b["answer"])
+        self.assertTrue(
+            b["case_decision_citation_repaired"] or b["case_decision_citation_rejected"],
+            b,
+        )
+
     def test_weak_h1_registration_answer_is_repaired(self):
         b = self._ask("H-1 외국인등록은 언제 해야 하나요?", visa_code="H-1")
         # Provider/model untouched; this is a quality repair, not an outage.

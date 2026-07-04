@@ -178,6 +178,9 @@ main{flex:1;padding:0 1rem 3rem}
 /* ── Step panels ── */
 .fh-step-panel{display:none}
 .fh-step-panel.visible{display:block}
+.fh-waymaker-context{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:var(--p-s-4) 0;padding:.85rem 1rem;border:1px solid rgba(31,79,61,.22);border-radius:12px;background:rgba(31,79,61,.06);color:var(--p-ink-2)}
+.fh-waymaker-context strong{display:block;color:var(--p-green);margin-bottom:.2rem}
+.fh-waymaker-context a{flex:0 0 auto;color:var(--p-green);font-weight:750;text-decoration:none;border:1px solid rgba(31,79,61,.25);border-radius:9px;padding:.55rem .75rem}
 .fh-step-heading{
   font-size:var(--p-fs-lg);font-weight:800;
   color:var(--p-ink);margin-bottom:.25rem;word-break:keep-all;
@@ -653,6 +656,7 @@ main{flex:1;padding:0 1rem 3rem}
 
 /* ── Responsive ── */
 @media(max-width:640px){
+  .fh-waymaker-context{align-items:flex-start;flex-direction:column}
   .fh-stepper .fh-step-label{display:none}
   .fh-type-grid{grid-template-columns:1fr 1fr}
   .fh-hero-title{font-size:1.3rem}
@@ -694,6 +698,10 @@ main{flex:1;padding:0 1rem 3rem}
     <div class="fh-privacy-notice" role="note">
       <strong>개인정보 안내</strong> — 입력하신 정보는 이 페이지(브라우저 메모리) 안에서만 사용됩니다. 서버로 전송되거나 저장되지 않으며, localStorage에도 저장하지 않습니다. PDF는 브라우저 안에서 빈 정본 서식 위에 직접 작성됩니다. 제출 전 최신 공식 서식과 관할 출입국·외국인청 안내를 확인하세요.
     </div>
+    <aside class="fh-waymaker-context" id="fhWaymakerContext" hidden aria-label="Waymaker에서 이어서 작성">
+      <div><strong>Waymaker에서 이어서 작성</strong><span id="fhWaymakerContextText"></span></div>
+      <a href="ai.html?nav=1">절차 안내로 돌아가기</a>
+    </aside>
     <div class="fh-source-meta" id="fhSourceMeta" aria-label="참고 서식 정보">
       <span>필수서류 작성 도우미</span>
       <span>Visable by Paradiso 참고용 도구 · 법적 효력 없음</span>
@@ -704,7 +712,7 @@ main{flex:1;padding:0 1rem 3rem}
   <section class="fh-picker" id="fhPicker" aria-label="서류 선택">
     <h2 class="fh-step-heading">어떤 서류를 작성하시나요?</h2>
     <p class="fh-step-subheading">작성할 서류를 선택하세요. 서류별로 근거 법령과 작성 흐름이 다릅니다.</p>
-    <div class="fh-doc-grid" id="fhDocGrid" role="list"></div>
+    <div class="fh-doc-grid" id="fhDocGrid"></div>
     <div id="fhBranch" hidden></div>
   </section>
 
@@ -2934,7 +2942,7 @@ function setStepHeadings() {
 function renderPicker() {
   const grid = document.getElementById('fhDocGrid');
   grid.innerHTML = DOCS.map(d => `
-    <button type="button" class="fh-doc-card${state.docType === d.id ? ' selected' : ''}" data-doc="${d.id}" role="listitem"
+    <button type="button" class="fh-doc-card${state.docType === d.id ? ' selected' : ''}" data-doc="${d.id}"
       ${d.ready ? '' : 'disabled aria-disabled="true"'} aria-label="${esc(d.ko)} (${esc(d.en)})">
       ${d.ready ? '' : '<span class="fh-doc-soon">준비 중 · Soon</span>'}
       <span class="fh-doc-num">${esc(d.num)}</span>
@@ -3177,12 +3185,12 @@ function initTheme() {
 function initLang() {
   const btn = document.getElementById('fhLangBtn');
   const label = document.getElementById('fhLangLabel');
-  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch' };
+  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська' };
   // Locales the ko→target display overlay (form-helper-i18n.js) can render. The
   // wizard renderer is Korean-only; for these, the overlay translates the shown
   // text. ko = native; en has no overlay map yet, so it falls back to Korean.
-  const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
-  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de'];
+  const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   function readSel() {
     try { var s = localStorage.getItem('paradiso:language') || ''; if (OVERLAY.indexOf(s) >= 0) return s; } catch (e) {}
     return 'ko';
@@ -3207,6 +3215,27 @@ function initLang() {
 function initURLParams() {
   try {
     const params = new URLSearchParams(window.location.search);
+    const fromWaymaker = (params.get('source') || '').toLowerCase() === 'waymaker';
+    const visaParam = (params.get('visa') || '').trim().toUpperCase();
+    const procedureParam = (params.get('procedure') || '').trim();
+    const procedureLabels = {
+      workplace_change: '근무처 변경·추가',
+      status_change: '체류자격 변경',
+      extension: '체류기간 연장',
+      registration: '외국인등록',
+      address_change: '체류지 변경',
+      reentry: '재입국 허가',
+    };
+    if (fromWaymaker) {
+      const banner = document.getElementById('fhWaymakerContext');
+      const text = document.getElementById('fhWaymakerContextText');
+      if (banner) banner.hidden = false;
+      if (text) text.textContent = [
+        visaParam,
+        procedureLabels[procedureParam] || procedureParam,
+        '선택한 절차를 신청서 흐름에 반영했습니다.',
+      ].filter(Boolean).join(' · ');
+    }
     const formParam = (params.get('form') || '').toUpperCase();
     if (FORMS[formParam]) {
       state.docType = 'integrated';

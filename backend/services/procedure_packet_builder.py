@@ -656,8 +656,100 @@ def _normalize_packet_type(procedure_key: str) -> Optional[str]:
     return alias
 
 
+_FORM_HELPER_TYPE_BY_PACKET = {
+    "foreigner_registration": "foreign_registration",
+    "extension": "sojourn_extension",
+    "status_change": "status_change",
+    "workplace_change": "workplace_change",
+    "activities_outside_status": "activity_outside_status",
+    "reentry_permit": "reentry_permission",
+    "address_report": "address_change",
+}
+
+
+def _decision_support(packet_type: str, status_code: str) -> Dict[str, Any]:
+    """Facts and office questions that make a limited packet actionable.
+
+    These are preparation prompts, never legal conclusions.  They stay useful
+    even when a source-confirmed document list is unavailable.
+    """
+    code = status_code or "현재 체류자격"
+    facts_by_type = {
+        "workplace_change": [
+            f"{code} 정확한 세부코드와 승인 직종",
+            "기존 근로관계 종료일과 새 근무 시작 예정일",
+            "새 사업장의 업종·실제 담당 직무",
+            "새 근로계약의 임금·근무시간·계약기간",
+        ],
+        "extension": [
+            "현재 체류기간 만료일",
+            "직전 허가 이후 고용주·학교·주소 등 변경사항",
+            "연장하려는 체류 목적이 계속되는 근거",
+            "온라인 신청 또는 방문예약 가능 여부",
+        ],
+        "status_change": [
+            f"현재 {code}와 변경하려는 목표 체류자격",
+            "새 활동·고용·학교의 시작 예정일",
+            "목표 체류자격의 핵심 요건을 보여 주는 자료",
+            "국내 변경 가능 여부와 접수 시점",
+        ],
+        "foreigner_registration": [
+            "입국일과 부여받은 체류기간",
+            "현재 국내 체류지와 숙소 입증자료",
+            "여권·사증·체류자격 부여 정보",
+            "온라인 예약 또는 방문 접수 가능일",
+        ],
+        "reentry_permit": [
+            "출국·재입국 예정일",
+            "현재 체류기간 만료일",
+            "단수·복수 재입국 필요 여부",
+            "면제 대상 여부와 출국 전 신청 필요성",
+        ],
+    }
+    questions_by_type = {
+        "workplace_change": [
+            "새 근무 시작 전에 허가가 필요한가요, 사후 신고가 가능한가요?",
+            "이 세부코드·직종에서 새 사업장의 업종과 직무가 허용 범위에 맞나요?",
+            "정확한 신고·허가 기한과 공식 제출서류는 무엇인가요?",
+        ],
+        "extension": [
+            "언제부터 연장 신청이 가능하고 온라인 신청이 가능한가요?",
+            "최근 변경사항 때문에 추가로 필요한 서류가 있나요?",
+        ],
+        "status_change": [
+            "국내에서 이 목표 체류자격으로 변경할 수 있나요?",
+            "변경 전 새 활동을 시작해도 되는지와 공식 서류 목록은 무엇인가요?",
+        ],
+        "foreigner_registration": [
+            "등록 대상과 정확한 기산일·마감일은 언제인가요?",
+            "현재 체류지 기준 관할기관과 예약 경로는 어디인가요?",
+        ],
+        "reentry_permit": [
+            "재입국허가가 면제되는지, 출국 전에 별도 신청이 필요한가요?",
+        ],
+    }
+    facts = facts_by_type.get(packet_type, [
+        "현재 체류자격과 세부코드",
+        "원하는 결과와 예정일",
+        "직전 허가 이후 달라진 사실",
+        "관할기관에 확인할 공식 제출서류",
+    ])
+    questions = questions_by_type.get(packet_type, [
+        "이 절차의 접수 가능 시점과 공식 제출서류는 무엇인가요?",
+        "온라인·방문 중 가능한 접수 경로와 관할기관은 어디인가요?",
+    ])
+    return {"titleKo": "판단 전에 정리할 정보", "factsKo": facts, "officialQuestionsKo": questions}
+
+
 def _next_actions(packet_type: str, has_docs: bool) -> List[str]:
     actions: List[str] = []
+    if packet_type == "workplace_change":
+        return [
+            "정확한 E-7 세부코드·승인 직종과 새 사업장의 업종·직무를 나란히 정리하세요.",
+            "기존 회사 퇴사일과 새 회사 근무 시작 예정일을 확인하세요.",
+            "새 근무를 시작하기 전에 1345 또는 관할 출입국기관에 허가·신고 유형을 확인하세요.",
+            "확인된 유형에 맞춰 통합신청서와 공식 제출서류를 준비하세요.",
+        ]
     if has_docs:
         actions.append("준비 서류 목록을 공식 기준에 맞춰 하나씩 확인·준비하세요.")
     else:
@@ -864,6 +956,11 @@ def build_procedure_packet(
         ),
         "applicationTypingHelper": helper,
         "nextActions": _next_actions(packet_type, _doc_count(doc_groups) > 0),
+        "decisionSupport": _decision_support(packet_type, exact_code),
+        "formHelper": {
+            "formId": "F01",
+            "type": _FORM_HELPER_TYPE_BY_PACKET.get(packet_type, ""),
+        } if packet_type in _FORM_HELPER_TYPE_BY_PACKET else None,
         "finalAgencyNoteKo": FINAL_AGENCY_NOTE_KO,
         "finalAgencyNoteEn": FINAL_AGENCY_NOTE_EN,
         "version": PROCEDURE_PACKET_VERSION,
