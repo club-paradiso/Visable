@@ -49,7 +49,13 @@ const TARGETS = [
     country: '베트남',
     post: '주베트남 대한민국 대사관',
     language: 'ko',
-    urls: [{ title: '공관 대표 페이지', url: 'https://overseas.mofa.go.kr/vn-ko/index.do' }],
+    urls: [
+      { title: '사증 종류별 첨부서류 게시판', url: 'https://overseas.mofa.go.kr/vn-ko/brd/m_2198/list.do' },
+      {
+        title: '베트남인 유학비자 서류 및 절차 안내(어학연수비자 포함)',
+        url: 'https://overseas.mofa.go.kr/vn-ko/brd/m_2197/view.do?seq=759500',
+      },
+    ],
   },
   {
     country: '베트남',
@@ -64,7 +70,10 @@ const TARGETS = [
     country: '몽골',
     post: '주몽골 대한민국 대사관',
     language: 'ko',
-    urls: [{ title: '공관 대표 페이지', url: 'https://overseas.mofa.go.kr/mn-ko/index.do' }],
+    urls: [
+      { title: '공관 대표 페이지', url: 'https://overseas.mofa.go.kr/mn-ko/index.do' },
+      { title: '사증(사증발급절차안내) 게시글', url: 'https://overseas.mofa.go.kr/mn-ko/brd/m_373/view.do?seq=572641' },
+    ],
   },
   {
     country: '우즈베키스탄',
