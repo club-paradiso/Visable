@@ -241,16 +241,25 @@ def build_records(text: str, codes: List[str]) -> List[Dict[str, object]]:
         match = HEADING_RE.match(line.strip())
         if not match:
             continue
-        name, code, _tail = match.groups()
+        name, code, tail = match.groups()
         if code not in wanted or code in seen:
             continue
-        # Skip table-of-contents hits: TOC lines contain many codes at once.
+        # Skip table-of-contents hits:
+        # (a) dense TOC lines carry many codes at once;
+        # (b) one-entry-per-line TOCs end in leader dots and/or a page number
+        #     (e.g. "단기방문(C-3) ······· 27").
         if len(re.findall(r"\([A-H]-\d", line)) > 2:
             continue
-        seen.add(code)
+        if re.search(r"[·.]{3,}", tail) or re.search(r"\d+\s*$", tail):
+            continue
         heading = re.sub(r"\s+", "", name) + f"({code})"
         section = "\n".join(lines[index: index + SECTION_SCAN_LINES])
         found_markers = [label for marker, label in ROUTE_MARKERS if marker in section]
+        # A real body heading is followed by substantive section text; short
+        # marker-free tails are TOC-like — keep scanning for the real one.
+        if not found_markers and len(section) < 800:
+            continue
+        seen.add(code)
         if found_markers:
             summary = (
                 "매뉴얼 해당 절에서 확인된 발급 경로 단서: "
@@ -367,7 +376,7 @@ def main() -> int:
         )
         print(f"[import_visa_issuance_manual] input not found: {source}")
         print(f"[import_visa_issuance_manual] report written: {report_path}")
-        return 0
+        return 1
 
     text, method = extract_text(source, tool_log)
     if not text or len(text.strip()) < 500:
@@ -379,7 +388,7 @@ def main() -> int:
         )
         print("[import_visa_issuance_manual] extraction blocked/empty — no snapshot written")
         print(f"[import_visa_issuance_manual] report written: {report_path}")
-        return 0
+        return 2
 
     ratio = korean_ratio(text)
     version = detect_version(text)

@@ -75,7 +75,7 @@ ok(html.includes('한국 입국 전, 첫 공식 절차를 미리 확인하세요
 
 /* -------------------------------------------------- independence ------- */
 console.log('[check_preview_mvp] independence (no Visable / HiKorea CTA)');
-ok(!/visable/i.test(html), 'preview.html contains no Visable reference');
+ok(!/visable/i.test(frontendBlob), 'preview frontend contains no Visable reference');
 ok(!/hikorea/i.test(frontendBlob), 'preview frontend contains no HiKorea reference');
 const internalLinks = [...html.matchAll(/href="([^"]+)"/g)]
   .map((m) => m[1])
@@ -105,6 +105,18 @@ ok(
   frontendBlob.includes('현재 공공데이터 API 응답을 불러오지 못해 MVP 샘플 데이터를 표시합니다.'),
   'API fallback copy present',
 );
+const HERO_BADGES = ['MOFA public data', 'Korean missions', 'Pre-arrival checklist', 'Source-grounded', 'Official web materials', 'Manual reference'];
+for (const badgeText of HERO_BADGES) {
+  ok(html.includes(badgeText), `hero badge present: "${badgeText}"`);
+}
+const CARD_TITLES = [
+  ['공관', 'Mission'], ['입국 전 확인', 'Entry pre-check'], ['공관 공개 안내', 'Mission notice'],
+  ['매뉴얼 기준 참고', 'Manual reference'], ['안전 참고', 'Safety note'], ['준비 체크리스트', 'Checklist'],
+  ['문의 문장', 'Contact script'], ['출처', 'Sources'],
+];
+for (const [ko, en] of CARD_TITLES) {
+  ok(appJs.includes(`card('${ko}', '${en}'`), `result card wired: ${ko} / ${en}`);
+}
 
 /* ------------------------------------------------- forbidden copy ------ */
 console.log('[check_preview_mvp] forbidden user-facing strings');

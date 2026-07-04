@@ -65,6 +65,16 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
 }
+/* Skip link becomes visible while focused so sighted keyboard users see it. */
+a.pv-sr-only:focus,
+a.pv-sr-only:focus-visible {
+  position: fixed; top: 0.6rem; left: 0.6rem; z-index: 100;
+  width: auto; height: auto; margin: 0; padding: 0.55rem 1rem;
+  clip: auto; overflow: visible;
+  background: var(--bg1); color: var(--t1);
+  border: 2px solid var(--ac); border-radius: var(--r-md);
+  font-weight: 700; text-decoration: none;
+}
 :focus-visible { outline: 2px solid var(--ac); outline-offset: 2px; border-radius: 4px; }
 
 .pv-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 1.1rem; }
@@ -81,7 +91,7 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 .pv-brand { display: flex; align-items: baseline; gap: 0.45rem; font-weight: 800; font-size: 1.05rem; color: var(--t1); }
 .pv-brand-sub { font-weight: 600; font-size: 0.8rem; color: var(--t3); }
 .pv-ctl {
-  min-width: 40px; min-height: 40px; padding: 0.3rem 0.7rem;
+  min-width: 44px; min-height: 44px; padding: 0.3rem 0.7rem;
   border: 1px solid var(--bd); border-radius: 999px;
   background: var(--bg1); color: var(--t1);
   font-family: var(--ff); font-size: 0.85rem; font-weight: 600; cursor: pointer;
@@ -230,7 +240,7 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 .pv-source-state {
   flex-shrink: 0; padding: 0.1rem 0.5rem; border-radius: 999px;
   background: var(--bg2); border: 1px solid var(--bd);
-  font-size: 0.68rem; font-weight: 800; letter-spacing: 0.03em; color: var(--t3);
+  font-size: 0.74rem; font-weight: 800; letter-spacing: 0.03em; color: var(--t2);
 }
 .pv-source-live { background: color-mix(in srgb, var(--ok) 12%, var(--bg1)); border-color: color-mix(in srgb, var(--ok) 45%, transparent); color: var(--t1); }
 .pv-source-title { color: var(--t2); }

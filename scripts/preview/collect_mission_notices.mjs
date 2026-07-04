@@ -145,6 +145,16 @@ async function main() {
     return;
   }
 
+  // Keep previously curated/fetched items for URLs that fail this run,
+  // so a partial-failure run never downgrades existing snapshot entries.
+  let previousByUrl = new Map();
+  if (existsSync(SNAPSHOT_PATH)) {
+    try {
+      const previous = JSON.parse(readFileSync(SNAPSHOT_PATH, 'utf8'));
+      previousByUrl = new Map((previous.items ?? []).map((item) => [item.url, item]));
+    } catch { /* unreadable previous snapshot — treat as absent */ }
+  }
+
   const items = [];
   let successes = 0;
   for (const entry of plan) {
@@ -167,6 +177,8 @@ async function main() {
         evidenceLevel: 'official_public_web',
         extractionStatus: 'partial_snippet_extracted',
       });
+    } else if (previousByUrl.has(entry.url)) {
+      items.push({ ...previousByUrl.get(entry.url), retainedFromPreviousRun: true });
     } else {
       items.push({
         country: entry.country,

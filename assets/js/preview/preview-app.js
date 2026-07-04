@@ -217,7 +217,9 @@
     var section = el('section', 'pv-card');
     var head = el('div', 'pv-card-head');
     var title = el('h3', 'pv-card-title', titleKo);
-    title.appendChild(el('span', 'pv-card-title-en', titleEn));
+    var titleEnNode = el('span', 'pv-card-title-en', titleEn);
+    titleEnNode.setAttribute('lang', 'en');
+    title.appendChild(titleEnNode);
     head.appendChild(title);
     if (badgeText) head.appendChild(badge(badgeText, badgeVariant));
     section.appendChild(head);
@@ -275,7 +277,9 @@
   }
 
   function renderEntryPrecheckCard(container, bundle, data) {
-    var c = card('입국 전 확인', 'Entry pre-check', '공식 공개자료 기반', 'official');
+    // Entry pre-check content comes from the curated sample layer until the
+    // waiver file data is fetched for real — badge stays honest about that.
+    var c = card('입국 전 확인', 'Entry pre-check', data.sampleBadgeKo, 'sample');
     if (bundle && bundle.entryPrecheck) {
       c.appendChild(el('p', 'pv-pill-line', '상태: ' + bundle.entryPrecheck.statusKo));
       c.appendChild(el('p', 'pv-card-body', bundle.entryPrecheck.summaryKo));
@@ -298,7 +302,9 @@
   }
 
   function renderNoticeCard(container, bundle, data) {
-    var c = card('공관 공개 안내', 'Mission notice', '공식 공개자료 기반', 'official');
+    // Notice items are official-path references whose bodies are not yet
+    // fetched — label as sample rather than claiming collected materials.
+    var c = card('공관 공개 안내', 'Mission notice', data.sampleBadgeKo, 'sample');
     var notices = (bundle && bundle.missionNotices) || [];
     if (!notices.length) {
       c.appendChild(el('p', 'pv-card-body',
@@ -358,7 +364,11 @@
     var list = el('ol', 'pv-checklist');
     buildChecklist(purposeKey, bundle).forEach(function (item) {
       var li = el('li', null, item.ko);
-      if (langPref === 'en' && item.en) li.appendChild(el('span', 'pv-check-en', item.en));
+      if (langPref === 'en' && item.en) {
+        var en = el('span', 'pv-check-en', item.en);
+        en.setAttribute('lang', 'en');
+        li.appendChild(en);
+      }
       list.appendChild(li);
     });
     c.appendChild(list);
@@ -373,8 +383,12 @@
     c.appendChild(el('p', 'pv-script-label', '한국어 문의 예시'));
     c.appendChild(el('p', 'pv-script', script.ko));
     if (langPref !== 'ko') {
-      c.appendChild(el('p', 'pv-script-label', 'English example'));
-      c.appendChild(el('p', 'pv-script', script.en));
+      var enLabel = el('p', 'pv-script-label', 'English example');
+      enLabel.setAttribute('lang', 'en');
+      c.appendChild(enLabel);
+      var enScript = el('p', 'pv-script', script.en);
+      enScript.setAttribute('lang', 'en');
+      c.appendChild(enScript);
     }
     c.appendChild(el('p', 'pv-card-note',
       '공관마다 문의 채널(이메일·게시판·전화)이 다릅니다. 공식 홈페이지의 안내 채널을 이용하세요.'));
@@ -416,7 +430,9 @@
     var headline = bundle
       ? bundle.countryKo + ' (' + bundle.countryEn + ') 체류자 기준 입국 전 확인사항'
       : '입국 전 확인사항';
-    summary.appendChild(el('h2', 'pv-result-title', headline));
+    var titleNode = el('h2', 'pv-result-title', headline);
+    titleNode.setAttribute('tabindex', '-1');
+    summary.appendChild(titleNode);
     summary.appendChild(el('p', 'pv-result-meta',
       '방문 목적: ' + purposeLabel(formValues.purpose, 'ko') +
       (formValues.nationality ? ' · 국적: ' + formValues.nationality : '')));
@@ -454,6 +470,7 @@
 
     container.hidden = false;
     try {
+      titleNode.focus({ preventScroll: true });
       container.scrollIntoView({ behavior: 'smooth', block: 'start' });
     } catch (e) { /* ignore */ }
   }
@@ -497,25 +514,45 @@
     };
   }
 
+  var submitBusy = false;
+  var requestSeq = 0;
+
+  function setSubmitBusy(busy) {
+    submitBusy = busy;
+    var button = document.querySelector('#pvForm button[type="submit"]');
+    if (button) button.disabled = busy;
+  }
+
   function onSubmit(event) {
     event.preventDefault();
+    if (submitBusy) return;
     var values = readForm();
     var data = getData();
     var bundle = findBundle(data, values.country);
 
     if (!bundle) {
-      setStatus('fallback', apiFallbackMessage(data));
+      // No API attempt is made for out-of-scope countries — say so honestly
+      // instead of claiming an API failure.
+      setStatus('fallback', 'MVP 샘플 범위 밖 국가입니다. 일반 안내를 표시하며, 관할 재외공관 공식 안내를 확인해 주세요.');
       renderResults(values, null);
       return;
     }
 
+    setSubmitBusy(true);
     setStatus('checking', '공공데이터 API 확인 중…');
+    var seq = ++requestSeq;
     fetchMissionFromApi(bundle.iso2).then(function (payload) {
+      if (seq !== requestSeq) return; // a newer submit superseded this one
+      setSubmitBusy(false);
       var live = payload && payload.ok === true && payload.mode === 'live_api' &&
         Array.isArray(payload.items) && payload.items.length > 0;
       if (live) {
         setStatus('live', (data && data.apiLiveMessageKo) || '공공데이터 API 기반');
         renderResults(values, payload);
+      } else if (payload && payload.ok === true && payload.mode === 'live_api') {
+        setStatus('fallback',
+          '공공데이터 API는 응답했지만 해당 국가의 공관 레코드를 찾지 못해 MVP 샘플 데이터를 표시합니다. 관할 재외공관은 공식 안내에서 확인해 주세요.');
+        renderResults(values, null);
       } else {
         setStatus('fallback', apiFallbackMessage(data));
         renderResults(values, null);
@@ -526,6 +563,10 @@
   function initThemeToggle() {
     var button = document.getElementById('pvBrightToggle');
     if (!button) return;
+    var syncPressed = function () {
+      button.setAttribute('aria-pressed', document.body.getAttribute('data-theme') === 'dark' ? 'true' : 'false');
+    };
+    syncPressed();
     button.addEventListener('click', function () {
       var body = document.body;
       var isDark = body.getAttribute('data-theme') === 'dark';
@@ -534,6 +575,7 @@
       } else {
         body.setAttribute('data-theme', 'dark');
       }
+      syncPressed();
       try {
         localStorage.setItem('paradiso:brightness', isDark ? 'light' : 'dark');
       } catch (e) { /* ignore */ }

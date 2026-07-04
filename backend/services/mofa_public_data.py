@@ -55,6 +55,12 @@ _DEFAULT_TIMEOUT_SECONDS = 6.0
 _MAX_UPSTREAM_BYTES = 2_000_000
 _MAX_ITEMS = 20
 
+# Small success-only TTL cache: the endpoint is anonymous, so without it every
+# page hit would spend the shared data.go.kr daily quota.
+_CACHE_TTL_SECONDS = 600.0
+_CACHE_MAX_ENTRIES = 64
+_cache: Dict[Tuple[str, Optional[str], Optional[str]], Tuple[float, Dict[str, Any]]] = {}
+
 _ISO2_RE = re.compile(r"^[A-Za-z]{2}$")
 # Korean or Latin country names, spaces and a few punctuation marks only.
 _COUNTRY_NAME_RE = re.compile(r"^[0-9A-Za-z가-힣 ·().,\-]{1,40}$")
@@ -243,17 +249,29 @@ def _matches_query(item: Dict[str, Any], iso2: Optional[str], name: Optional[str
         item_iso = (item.get("countryIso2") or "").upper()
         if item_iso:
             return item_iso == iso2
-        # No ISO field on the record: fall through to name matching if any.
+        # No ISO field on the record: fall through to name matching if any;
+        # with no name either, trust the upstream cond[] filter.
+        if not name:
+            return True
     if name:
         country = item.get("countryNameKo") or ""
         country_en = (item.get("countryNameEn") or "").lower()
-        return name in country or name.lower() in country_en
+        if name == country or name.lower() == country_en:
+            return True
+        # Substring match only for longer queries, to avoid short names
+        # (e.g. 2-char Korean names) matching unrelated countries.
+        return len(name) >= 3 and (name in country or name.lower() in country_en)
     # cond[] filter already applied upstream and record carries no ISO field.
-    return not iso2
+    return True
 
 
 def _endpoint() -> str:
-    return os.environ.get("MOFA_EMBASSY_ENDPOINT", "").strip() or DEFAULT_ENDPOINT
+    override = os.environ.get("MOFA_EMBASSY_ENDPOINT", "").strip()
+    # Only accept overrides that stay on the official portal host, so a
+    # misconfigured env var can never redirect the service key elsewhere.
+    if override.startswith("https://apis.data.go.kr/"):
+        return override
+    return DEFAULT_ENDPOINT
 
 
 def _timeout_seconds() -> float:
@@ -263,6 +281,41 @@ def _timeout_seconds() -> float:
     except ValueError:
         value = _DEFAULT_TIMEOUT_SECONDS
     return min(max(value, 1.0), 20.0)
+
+
+def _reset_cache() -> None:
+    """Clear the success cache (used by tests and ops tooling)."""
+    _cache.clear()
+
+
+def _cache_get(cache_key: Tuple[str, Optional[str], Optional[str]]) -> Optional[Dict[str, Any]]:
+    entry = _cache.get(cache_key)
+    if not entry:
+        return None
+    stored_at, envelope = entry
+    if time.monotonic() - stored_at > _CACHE_TTL_SECONDS:
+        _cache.pop(cache_key, None)
+        return None
+    return json.loads(json.dumps(envelope))  # defensive copy
+
+
+def _cache_put(cache_key: Tuple[str, Optional[str], Optional[str]], envelope: Dict[str, Any]) -> None:
+    if len(_cache) >= _CACHE_MAX_ENTRIES:
+        oldest = min(_cache.items(), key=lambda item: item[1][0])[0]
+        _cache.pop(oldest, None)
+    _cache[cache_key] = (time.monotonic(), json.loads(json.dumps(envelope)))
+
+
+def _scrub_secret(envelope: Dict[str, Any], secrets: List[str]) -> Dict[str, Any]:
+    """Defense in depth: even if the upstream echoes the service key inside a
+    field value, it must never be forwarded to clients."""
+    serialized = json.dumps(envelope, ensure_ascii=False)
+    dirty = False
+    for secret in secrets:
+        if secret and secret in serialized:
+            serialized = serialized.replace(secret, "[redacted]")
+            dirty = True
+    return json.loads(serialized) if dirty else envelope
 
 
 def fetch_mission_directory(
@@ -285,13 +338,20 @@ def fetch_mission_directory(
     if not key:
         return _fallback_envelope("missing_service_key", SAFE_MESSAGE_MISSING_KEY_KO)
 
+    cache_key = (_endpoint(), iso2, name)
+    cached = _cache_get(cache_key)
+    if cached is not None:
+        cached["servedFromCache"] = True
+        return cached
+
     params: Dict[str, str] = {
         "serviceKey": _prepare_key_for_transport(key),
         "returnType": "JSON",
         "pageNo": "1",
         "numOfRows": "50",
-        # Portal docs: cond[country_nm::EQ] accepts Korean country name or
-        # ISO 3166-1 alpha-2 code.
+        # Portal page snippet (search-corroborated, not yet re-verified with a
+        # live key): cond[country_nm::EQ] accepts Korean country name or ISO
+        # alpha-2 code. Results are re-filtered locally in _matches_query.
         "cond[country_nm::EQ]": iso2 or name or "",
     }
 
@@ -337,4 +397,7 @@ def fetch_mission_directory(
             "요청한 국가에 대한 재외공관 레코드를 찾지 못했습니다. "
             "관할 재외공관은 외교부 공식 안내에서 확인해 주세요."
         )
+    envelope = _scrub_secret(envelope, [key, _prepare_key_for_transport(key)])
+    if items:
+        _cache_put(cache_key, envelope)
     return envelope

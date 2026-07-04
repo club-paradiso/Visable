@@ -6026,13 +6026,17 @@ async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
 
 
 @app.get("/api/preview/mission")
-async def preview_mission(country: str = "", countryName: str = "") -> Any:
+def preview_mission(country: str = "", countryName: str = "") -> Any:
     """Pre-arrival mission lookup for PreView (외교부_국가·지역별 재외공관 정보).
 
     Read-only proxy: validates the query, resolves the portal service key
     (MOFA_EMBASSY_SERVICE_KEY -> PUBLIC_DATA_SERVICE_KEY), and returns a safe
     envelope in every case. The frontend falls back to labeled MVP sample
     data whenever ``ok`` is false or ``items`` is empty.
+
+    Deliberately a sync route: the upstream call uses a blocking httpx
+    client, so FastAPI must run it in the threadpool instead of stalling
+    the event loop while data.go.kr responds.
     """
     outcome = mofa_public_data.fetch_mission_directory(
         country_iso2=country or None,

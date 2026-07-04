@@ -37,6 +37,9 @@ client = TestClient(paradiso_backend.app)
 
 SECRET_KEY = "PREVIEW-TEST-SECRET-KEY-12345"
 
+# All contact values below are OBVIOUSLY SYNTHETIC fixture data (TEST markers,
+# zeroed digits, round coordinates). They exercise field mapping only and must
+# never be mistaken for real embassy contact facts.
 SAMPLE_UPSTREAM_FLAT = {
     "resultCode": 0,
     "resultMsg": "NORMAL SERVICE",
@@ -52,12 +55,12 @@ SAMPLE_UPSTREAM_FLAT = {
             "embassy_kor_nm": "주베트남 대한민국 대사관",
             "embassy_ty_cd_nm": "대사관",
             "embassy_manage_ty_cd_nm": "직할",
-            "emblgbd_addr": "SEV building, 7th fl., 28 Lang Ha",
-            "embassy_lat": "21.0154",
-            "embassy_lng": "105.8163",
-            "tel_no": "+84-24-3771-0404",
-            "urgency_tel_no": "+84-90-402-6126",
-            "center_tel_no": "+82-2-3210-0404",
+            "emblgbd_addr": "테스트 픽스처 샘플 주소 1 (실제 주소 아님)",
+            "embassy_lat": "10.5",
+            "embassy_lng": "100.25",
+            "tel_no": "+00-TEST-0000-0001",
+            "urgency_tel_no": "+00-TEST-0000-0002",
+            "center_tel_no": "+00-TEST-0000-0003",
             "free_tel_no": "",
         },
         {
@@ -66,8 +69,8 @@ SAMPLE_UPSTREAM_FLAT = {
             "country_iso_alp2": "MN",
             "embassy_kor_nm": "주몽골 대한민국 대사관",
             "embassy_ty_cd_nm": "대사관",
-            "emblgbd_addr": "Ulaanbaatar",
-            "tel_no": "+976-7007-1020",
+            "emblgbd_addr": "테스트 픽스처 샘플 주소 2 (실제 주소 아님)",
+            "tel_no": "+00-TEST-0000-0004",
         },
     ],
 }
@@ -101,6 +104,7 @@ class _EnvGuardTestCase(unittest.TestCase):
         for name in self._ENV_NAMES:
             os.environ.pop(name, None)
         self._saved_transport = mofa_public_data._default_transport
+        mofa_public_data._reset_cache()
 
     def tearDown(self) -> None:
         for name, value in self._saved_env.items():
@@ -109,6 +113,7 @@ class _EnvGuardTestCase(unittest.TestCase):
             else:
                 os.environ[name] = value
         mofa_public_data._default_transport = self._saved_transport
+        mofa_public_data._reset_cache()
 
 
 class MissingKeyTests(_EnvGuardTestCase):
@@ -181,9 +186,9 @@ class SuccessNormalizationTests(_EnvGuardTestCase):
         self.assertEqual(item["missionTypeKo"], "대사관")
         self.assertEqual(item["countryIso2"], "VN")
         self.assertEqual(item["countryNameEn"], "Vietnam")
-        self.assertEqual(item["phone"], "+84-24-3771-0404")
-        self.assertEqual(item["emergencyPhone"], "+84-90-402-6126")
-        self.assertAlmostEqual(item["latitude"], 21.0154)
+        self.assertEqual(item["phone"], "+00-TEST-0000-0001")
+        self.assertEqual(item["emergencyPhone"], "+00-TEST-0000-0002")
+        self.assertAlmostEqual(item["latitude"], 10.5)
         self.assertIsNone(item["freePhone"])
         source = payload["source"]
         self.assertEqual(source["datasetName"], "외교부_국가·지역별 재외공관 정보")
@@ -355,6 +360,56 @@ class KeyHygieneTests(_EnvGuardTestCase):
         mofa_public_data._default_transport = _fake
         client.get("/api/preview/mission", params={"country": "VN"})
         self.assertEqual(seen["key"], "abc+def==")
+
+    def test_key_echoed_inside_success_body_is_redacted(self) -> None:
+        os.environ["PUBLIC_DATA_SERVICE_KEY"] = SECRET_KEY
+        dirty = {
+            "data": [
+                {
+                    "country_iso_alp2": "VN",
+                    "embassy_kor_nm": f"주베트남 대한민국 대사관 {SECRET_KEY}",
+                }
+            ]
+        }
+
+        def _fake(url, params, timeout):
+            return 200, json.dumps(dirty, ensure_ascii=False)
+
+        mofa_public_data._default_transport = _fake
+        response = client.get("/api/preview/mission", params={"country": "VN"})
+        self.assertNotIn(SECRET_KEY, response.text)
+        self.assertIn("[redacted]", response.json()["items"][0]["missionNameKo"])
+
+
+class CacheBehaviorTests(_EnvGuardTestCase):
+    def test_successful_lookup_is_cached_and_marked(self) -> None:
+        os.environ["PUBLIC_DATA_SERVICE_KEY"] = SECRET_KEY
+        calls = {"n": 0}
+
+        def _fake(url, params, timeout):
+            calls["n"] += 1
+            return 200, json.dumps(SAMPLE_UPSTREAM_FLAT, ensure_ascii=False)
+
+        mofa_public_data._default_transport = _fake
+        first = client.get("/api/preview/mission", params={"country": "VN"}).json()
+        second = client.get("/api/preview/mission", params={"country": "VN"}).json()
+        self.assertEqual(calls["n"], 1)
+        self.assertNotIn("servedFromCache", first)
+        self.assertTrue(second.get("servedFromCache"))
+        self.assertEqual(second["items"], first["items"])
+
+    def test_failures_are_not_cached(self) -> None:
+        os.environ["PUBLIC_DATA_SERVICE_KEY"] = SECRET_KEY
+        calls = {"n": 0}
+
+        def _fake(url, params, timeout):
+            calls["n"] += 1
+            return 500, "boom"
+
+        mofa_public_data._default_transport = _fake
+        client.get("/api/preview/mission", params={"country": "VN"})
+        client.get("/api/preview/mission", params={"country": "VN"})
+        self.assertEqual(calls["n"], 2)
 
 
 if __name__ == "__main__":

@@ -21,12 +21,23 @@
 <link rel="stylesheet" href="assets/css/preview.css?v=20260704">
 </head>
 <body>
+<script>
+/* Pre-paint brightness restore: body exists here, so persisted dark mode
+   applies before first paint (no light flash). */
+(function () {
+  try {
+    if (localStorage.getItem('paradiso:brightness') === 'dark') {
+      document.body.setAttribute('data-theme', 'dark');
+    }
+  } catch (e) {}
+})();
+</script>
 <a class="pv-sr-only" href="#pvMain">본문으로 건너뛰기</a>
 
 <header class="pv-topbar">
-  <span class="pv-brand">PreView <span class="pv-brand-sub">by Paradiso</span></span>
+  <span class="pv-brand">PreView <span class="pv-brand-sub" lang="en">by Paradiso</span></span>
   <div>
-    <button class="pv-ctl" id="pvBrightToggle" type="button" aria-label="밝기 전환">◐</button>
+    <button class="pv-ctl" id="pvBrightToggle" type="button" aria-label="어두운 화면 전환" aria-pressed="false">◐</button>
   </div>
 </header>
 
@@ -34,14 +45,14 @@
   <!-- ───────────────────────── Hero ───────────────────────── -->
   <section class="pv-wrap pv-hero" aria-labelledby="pvHeroTitle">
     <p class="pv-hero-kicker">Pre-arrival · 입국 전 확인사항</p>
-    <h1 id="pvHeroTitle">Before Korea, PreView your first official step.</h1>
+    <h1 id="pvHeroTitle" lang="en">Before Korea, PreView your first official step.</h1>
     <p class="pv-hero-ko">한국 입국 전, 첫 공식 절차를 미리 확인하세요.</p>
     <p class="pv-hero-lead">
       PreView는 외교부 공공데이터와 재외공관 공식 공개자료를 바탕으로, 한국 방문을 준비하는 분들의
       입국 전 확인사항을 한 화면에 정리해 주는 사전 확인 서비스입니다.
       <span lang="en">A pre-arrival pre-check built on MOFA public data and official Korean mission web materials.</span>
     </p>
-    <ul class="pv-hero-badges" aria-label="서비스 기반">
+    <ul class="pv-hero-badges" aria-label="서비스 기반" lang="en">
       <li>MOFA public data</li>
       <li>Korean missions</li>
       <li>Pre-arrival checklist</li>
@@ -64,7 +75,7 @@
   <section class="pv-wrap" aria-labelledby="pvFormTitle">
     <form class="pv-panel" id="pvForm">
       <h2 class="pv-panel-title" id="pvFormTitle">어디에서, 어떤 목적으로 준비하시나요?</h2>
-      <p class="pv-panel-sub">입력하신 내용은 저장·전송되지 않으며, 브라우저 안에서만 사용됩니다. <span lang="en">Nothing you enter is stored or sent anywhere beyond the mission lookup.</span></p>
+      <p class="pv-panel-sub">입력하신 내용은 저장되지 않습니다. 공관 조회를 위해 선택한 국가 값만 백엔드 공공데이터 조회에 사용되며, 그 외 입력은 브라우저 안에서만 사용됩니다. <span lang="en">Nothing is stored; only your selected country is sent, for the mission lookup.</span></p>
       <div class="pv-form-grid">
         <div class="pv-field">
           <label for="pvCountry">현재 체류국 <span class="pv-label-en" lang="en">Current country</span></label>
@@ -116,7 +127,7 @@
   </section>
 
   <!-- ────────────────────── Result panel ───────────────────── -->
-  <section class="pv-wrap pv-results" id="pvResults" hidden aria-live="polite"></section>
+  <section class="pv-wrap pv-results" id="pvResults" hidden role="region" aria-label="입국 전 확인사항 결과"></section>
 
   <!-- ────────────────── Official source panel ──────────────── -->
   <section class="pv-wrap pv-section" aria-labelledby="pvSourcesTitle">
