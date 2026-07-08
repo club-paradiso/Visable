@@ -4939,6 +4939,25 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:hover,
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:focus-visible {
   border-color: #0B7357; background: rgba(11,115,87,0.08); color: #073B32;
 }
+/* "국적·귀화 안내" (New Home by Paradiso) banner — same issue as .p-gw-util
+   above: near-white text (#fffaf2 etc.) sized for the old dark hero, with
+   only a very faint coral/mint tint over the light cream surface, so the
+   title, "New Home by Paradiso" badge, description and tagline were all
+   washed out to the point of being unreadable. */
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-label,
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-arrow {
+  color: #073B32;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-desc {
+  color: #3A544C;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-brand,
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-tagline {
+  color: #B23A2E;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-newhome-brand {
+  border-color: rgba(178,58,46,0.45);
+}
 /* neutralise the dark top scrim (::after) — it existed only for legibility over
    the dark photo hero; on the light hero it becomes a soft lavender bloom */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
