@@ -4830,6 +4830,91 @@ html[dir="rtl"] .language-menu {
   font-weight: 760;
 }
 
+/* ════════════════════════════════════════════════════════════════
+   Visable light hero — Figma finishing-pass (Cream surface + soft
+   aurora, Ink text). High-specificity override of the dark cinematic
+   landing hero; scoped to the landing (body.landing:not([data-theme="dark"]):not(.searched)).
+   ════════════════════════════════════════════════════════════════ */
+body.landing:not([data-theme="dark"]):not(.searched) .hero-container::before {
+  background:
+    radial-gradient(circle at 84% 14%, rgba(59,228,184,.30), transparent 42%),
+    radial-gradient(circle at 99% 52%, rgba(116,133,255,.20), transparent 46%),
+    radial-gradient(circle at 62% 98%, rgba(255,107,94,.09), transparent 42%),
+    #F4EFE4 !important;
+}
+/* de-emphasise the heavy kitsch decor on the clean light hero */
+body.landing:not([data-theme="dark"]):not(.searched) .k-decor,
+body.landing:not([data-theme="dark"]):not(.searched) .k-masthead,
+body.landing:not([data-theme="dark"]):not(.searched) .k-marquee { opacity: 0 !important; }
+/* hero copy → Ink */
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-copy { color: #073B32; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-eyebrow { color: #0E8A6B; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title { color: #073B32; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title em { color: #FF6B5E; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-sub { color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-proof-chip {
+  border-color: #E0D6C2; background: #FFFCF5; color: #3A544C;
+}
+/* gateway search box → light */
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search {
+  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  box-shadow: 0 8px 28px -10px rgba(7,59,50,.16);
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search:hover,
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search:focus-visible {
+  background: #FFFCF5; border-color: #0E8A6B;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-title { color: #073B32; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-sub { color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-icon { background: #E5F7F0; color: #0E8A6B; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-kbd { color: #3A544C; }
+/* gateway tool cards → light with colored accent icons */
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card {
+  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  box-shadow: 0 6px 20px -12px rgba(7,59,50,.20);
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-label { color: #073B32; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-sub { color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-doc .p-gw-card-icon { color: #0E8A6B; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-hikorea .p-gw-card-icon { color: #5867E0; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-ai .p-gw-card-icon { color: #E85446; }
+/* hero action buttons + search bar (direct-search) → light */
+body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn {
+  background: rgba(255,252,245,.9); border: 1px solid #E0D6C2; color: #073B32;
+  box-shadow: 0 4px 16px rgba(7,59,50,.06);
+}
+body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn:hover {
+  background: #FFFCF5; border-color: #0E8A6B; color: #073B32;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .sbar {
+  background: #FFFCF5; border: 1px solid #E0D6C2; box-shadow: 0 6px 20px rgba(7,59,50,.06);
+}
+body.landing:not([data-theme="dark"]):not(.searched) #q { color: #073B32; }
+body.landing:not([data-theme="dark"]):not(.searched) #q::placeholder { color: #6E7A74; }
+body.landing:not([data-theme="dark"]):not(.searched) .sbar-icon,
+body.landing:not([data-theme="dark"]):not(.searched) .sbar-go { color: #0E8A6B; }
+body.landing:not([data-theme="dark"]):not(.searched) .xb { color: #6E7A74; }
+body.landing:not([data-theme="dark"]):not(.searched) .search-toggle-btn { border-color: #E0D6C2; color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .landing-hints-title { color: #6E7A74; }
+/* neutralise the dark top scrim (::after) — it existed only for legibility over
+   the dark photo hero; on the light hero it becomes a soft lavender bloom */
+body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
+  background:
+    radial-gradient(circle at 92% 6%, rgba(116,133,255,.10), transparent 38%) !important;
+}
+/* top-right control pills sit on cream now — keep them light */
+body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .city-btn,
+body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .theme-btn,
+body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .language-btn {
+  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+}
+/* the hero-container's own dark background was covering the cream ::before
+   aurora (which sits at z-index:-2); make it transparent so the light hero
+   surface shows through */
+body.landing:not([data-theme="dark"]):not(.searched) .hero-container { background-color: transparent !important; }
+/* light hero uses the dark (ink) wordmark; dark mode keeps the white one (HTML default) */
+body.landing:not([data-theme="dark"]):not(.searched) .brand-wordmark-img { content: url("assets/brand/visable-wordmark.svg"); }
+
 .p-entry-rail {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
