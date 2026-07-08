@@ -13356,6 +13356,12 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
 <body class="landing" data-theme="light">
+<script>
+/* Restore the persisted brightness (light/dark) before first paint to avoid a
+   flash. Runs as soon as <body> is parsed. Brightness lives on body[data-theme]
+   and is independent of the editorial style theme set on <html>. */
+(function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
+</script>
 <div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
 
@@ -22529,6 +22535,10 @@ function updateThemeColorMeta(){
 function toggleTheme(){
     const newTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.body.setAttribute('data-theme', newTheme);
+    // Persist the brightness choice so it survives reloads and carries across
+    // the other Visable pages (shared key). Brightness is independent of the
+    // editorial style theme (paradiso:editorial-theme).
+    try { localStorage.setItem('paradiso:brightness', newTheme); } catch (e) {}
     updateThemeLabel();
     updateThemeColorMeta();
 }

@@ -3255,8 +3255,12 @@ function initTheme() {
     themeBtn.textContent = isDark ? '☀' : '☾';
     themeBtn.setAttribute('aria-label', isDark ? '라이트 모드로 전환' : '다크 모드로 전환');
   }
+  // Restore the shared brightness choice (carries across the Visable pages).
+  try { if (localStorage.getItem('paradiso:brightness') === 'dark') applyTheme(true); } catch (e) {}
   themeBtn.addEventListener('click', () => {
-    applyTheme(document.body.getAttribute('data-theme') !== 'dark');
+    const next = document.body.getAttribute('data-theme') !== 'dark';
+    applyTheme(next);
+    try { localStorage.setItem('paradiso:brightness', next ? 'dark' : 'light'); } catch (e) {}
   });
 }
 
