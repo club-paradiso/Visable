@@ -104,6 +104,14 @@ body{
   font-family:var(--ff);transition:all var(--p-dur-1);
 }
 .fh-lang-btn:hover{color:var(--p-ink);border-color:var(--p-line)}
+/* 선택 언어가 이 페이지에서 아직 번역되지 않을 때의 안내 (H-3) */
+.fh-lang-note{
+  position:absolute;top:100%;inset-inline-end:0;margin-top:.3rem;z-index:30;
+  max-width:280px;padding:.35rem .55rem;border:1px solid var(--p-line-2);
+  border-radius:var(--p-r-sm);background:var(--p-paper);box-shadow:var(--p-shadow-2);
+  font-size:.7rem;line-height:1.45;color:var(--p-ink-3);text-align:start;
+}
+.fh-header-right{position:relative}
 
 /* ── Main layout ── */
 main{flex:1;padding:0 1rem 3rem}
@@ -583,6 +591,16 @@ main{flex:1;padding:0 1rem 3rem}
 }
 .fh-dl-status.err{color:var(--color-error)}
 .fh-dl-status.ok{color:var(--p-green-soft)}
+/* 폰트 미수록 문자 경고: 성공 문구 대신 경고 박스로 결과를 알린다 (H-2) */
+.fh-dl-status.warn{
+  display:block;color:var(--p-ink-2);
+  border-inline-start:3px solid var(--color-warning);
+  background:rgba(230,138,58,.07);border-radius:6px;padding:.55rem .75rem;
+}
+.fh-dl-status.warn strong{color:var(--color-warning)}
+.fh-dl-status.warn ul{margin:.35rem 0;padding-inline-start:1.2rem}
+.fh-dl-status.warn li{margin:.15rem 0}
+.fh-dl-warn-chars{font-weight:700;letter-spacing:.15em}
 .fh-spinner{
   width:13px;height:13px;border:2px solid var(--p-line);border-top-color:var(--p-green);
   border-radius:50%;animation:fhspin .7s linear infinite;flex-shrink:0;
@@ -3044,6 +3062,11 @@ function loadSchema() {
     _schemaPromise = fetch('data/form_schemas.json').then(r => {
       if (!r.ok) throw new Error('스키마 로드 실패 (' + r.status + ')');
       return r.json();
+    }).catch(e => {
+      // 실패한 Promise를 캐시에 남기면 새로고침 전까지 모든 재시도가 같은 오류로
+      // 실패한다(입력값은 메모리에만 있어 새로고침 시 소실). 캐시를 비워 재시도 허용.
+      _schemaPromise = null;
+      throw e;
     });
   }
   return _schemaPromise;
@@ -3055,8 +3078,12 @@ function loadScript(src) {
     const el = document.createElement('script');
     el.src = src;
     el.onload = () => res();
-    el.onerror = () => rej(new Error('스크립트 로드 실패: ' + src));
+    el.onerror = () => { el.remove(); rej(new Error('스크립트 로드 실패: ' + src)); };
     document.head.appendChild(el);
+  }).catch(e => {
+    // 일시적 네트워크 오류가 영구화되지 않도록 실패한 항목은 캐시에서 제거 (재시도 가능).
+    delete _scriptCache[src];
+    throw e;
   });
   return _scriptCache[src];
 }
@@ -3065,6 +3092,26 @@ function dlStatus(msg, cls, spinner) {
   if (!el) return;
   el.className = 'fh-dl-status' + (cls ? ' ' + cls : '');
   el.innerHTML = (spinner ? '<span class="fh-spinner" aria-hidden="true"></span>' : '') + (msg ? esc(msg) : '');
+}
+
+/* ── 폰트 미수록 문자 경고 (H-2) ──
+   내장 NanumGothic 서브셋은 영문 알파벳+한글만 수록한다. 베트남어 성조 부호,
+   키릴·아랍 문자, 터키어 특수문자, 한자 등은 글리프가 없어 해당 칸이 빈칸이
+   된다. 생성 전에 감지해 성공 문구 대신 경고로 알린다(자동 로마자 변환은 하지
+   않음 — 표기는 이용자가 여권 기재대로 직접 다시 입력해야 한다).
+   아래 두 문구는 form-helper-i18n.js 사전의 키와 정확히 일치해야 한다. */
+const FONT_WARN_HEAD = '⚠ 정본 PDF가 생성되었지만, 내장 폰트(영문·한글)에 없는 문자가 있어 아래 칸은 비워 두었습니다. / The PDF was generated, but the fields below contain characters the embedded font (Latin letters + Korean) cannot print, so they were left blank.';
+const FONT_WARN_ADVICE = '해당 칸은 여권 기재와 같은 영문 알파벳(A–Z) 로마자 표기로 다시 입력한 뒤 PDF를 다시 내려받거나, 출력 후 수기로 기재하세요. 자동 로마자 변환은 하지 않습니다. / Re-enter those fields using basic Latin letters A–Z (romanized as in your passport — the spelling accepted on Korean immigration forms) and download the PDF again, or write them in by hand after printing. Nothing is transliterated automatically.';
+function dlFontWarning(items) {
+  const el = document.getElementById('fhDlStatus');
+  if (!el) return;
+  el.className = 'fh-dl-status warn';
+  const rows = items.map(it =>
+    `<li><strong>${esc(it.label)}</strong>${it.chars.length ? ` · <span class="fh-dl-warn-chars" data-s2t="off">${esc(it.chars.join(' '))}</span>` : ''}</li>`
+  ).join('');
+  // 문장은 각각 별도 텍스트 노드로 두어 i18n 표시 레이어(정확 일치 사전)가 번역할
+  // 수 있게 하고, 이용자 입력 문자는 data-s2t="off"로 번역 대상에서 제외한다.
+  el.innerHTML = `<span>${esc(FONT_WARN_HEAD)}</span><ul>${rows}</ul><span>${esc(FONT_WARN_ADVICE)}</span>`;
 }
 
 async function generateOfficialPdf(targetId) {
@@ -3095,6 +3142,27 @@ async function generateOfficialPdf(targetId) {
     const white = PDFLib.rgb(1, 1, 1);
     const H = spec.pageHeight;
     const values = f.overlay();
+    // 폰트 수록 문자 집합 (H-2). 이 pdf-lib/fontkit 빌드는 미수록 문자를 던지지
+    // 않고 .notdef(빈 글리프)로 조용히 그리므로, 문자 집합으로 사전 감지한다.
+    let fontCharSet = null;
+    try { fontCharSet = new Set(font.getCharacterSet()); } catch (e) { /* 구버전 대비 — 감지 불가 시 기존 동작 유지 */ }
+    const findBadChars = (text) => {
+      if (!fontCharSet) return [];
+      const bad = [];
+      for (const ch of String(text)) {
+        if (!fontCharSet.has(ch.codePointAt(0)) && bad.indexOf(ch) < 0) bad.push(ch);
+      }
+      return bad;
+    };
+    const fieldLabels = {};
+    (spec.fields || []).forEach(fd => {
+      // ko 라벨에 이미 영문이 들어 있으면(예: '성 Surname') 그대로 쓰고, 아니면 병기.
+      fieldLabels[fd.key] = (fd.en && fd.ko.indexOf(fd.en) < 0) ? `${fd.ko} (${fd.en})` : fd.ko;
+    });
+    const fontIssues = []; // { label, chars } — 폰트 미수록 문자로 비워 둔 칸
+    const noteFontIssue = (key, chars) => {
+      fontIssues.push({ label: fieldLabels[key] || key, chars: chars });
+    };
     Object.keys(values).forEach(key => {
       const o = spec.overlay[key];
       const val = values[key];
@@ -3134,12 +3202,17 @@ async function generateOfficialPdf(targetId) {
       let size = o.size || 9;
       const text = String(val);
       const maxW = o.maxWidth || (spec.pageWidth - o.x - 6);
+      // 내장 폰트(영문+한글)에 없는 문자(예: 漢字, 성조·움라우트 등 결합 부호 문자)는
+      // 빈 글리프로 출력되므로, 해당 칸은 그리지 않고 비워 둔 뒤 경고에 모아 알린다 (H-2).
+      const badChars = findBadChars(text);
+      if (badChars.length) { noteFontIssue(key, badChars); return; }
       try {
-        // The embedded font covers Latin + Hangul; characters it cannot encode (e.g. 漢字)
-        // would otherwise throw and abort the whole PDF — skip just that field instead.
         while (size > 5 && font.widthOfTextAtSize(text, size) > maxW) size -= 0.5;
         page.drawText(text, { x:o.x, y:H - o.y, size, font, color:ink });
-      } catch (e) { /* unencodable field — leave blank for hand-writing */ }
+      } catch (e) {
+        // 인코딩 실패 예비 경로 — 칸은 빈칸(수기 기재)으로 두고 경고 목록에 포함한다.
+        noteFontIssue(key, badChars);
+      }
     });
     const out = await pdfDoc.save();
     const blob = new Blob([out], { type: 'application/pdf' });
@@ -3157,9 +3230,14 @@ async function generateOfficialPdf(targetId) {
     setTimeout(() => URL.revokeObjectURL(url), 4000);
     const issues = isConfirmation() ? (state.formId === 'F07' ? f07Issues() : f06Issues()) : runValidation();
     const errs = issues.filter(i => i.type === 'error').length;
-    dlStatus(errs
-      ? `정본 PDF가 생성되었습니다. 미입력 필수항목 ${errs}건은 출력 후 현장에서 직접 보완하세요.`
-      : '정본 PDF가 생성되었습니다. 다운로드 폴더를 확인하세요. 서명/날인은 제출 시 직접 하세요.', 'ok');
+    if (fontIssues.length) {
+      // 폰트 미수록 문자로 비워 둔 칸이 있으면 성공 문구 대신 경고를 표시한다 (H-2).
+      dlFontWarning(fontIssues);
+    } else {
+      dlStatus(errs
+        ? `정본 PDF가 생성되었습니다. 미입력 필수항목 ${errs}건은 출력 후 현장에서 직접 보완하세요.`
+        : '정본 PDF가 생성되었습니다. 다운로드 폴더를 확인하세요. 서명/날인은 제출 시 직접 하세요.', 'ok');
+    }
   } catch (e) {
     dlStatus('PDF 생성 중 오류가 발생했습니다: ' + (e && e.message ? e.message : e), 'err');
   } finally {
@@ -3185,15 +3263,39 @@ function initTheme() {
 function initLang() {
   const btn = document.getElementById('fhLangBtn');
   const label = document.getElementById('fhLangLabel');
-  const LABEL = { ko: '한국어', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська' };
+  const LABEL = { ko: '한국어', en: 'English', 'zh-CN': '简体中文', 'zh-TW': '繁體中文', ja: '日本語', vi: 'Tiếng Việt', tl: 'Tagalog', id: 'Bahasa Indonesia', ru: 'Русский', fr: 'Français', es: 'Español', ar: 'العربية', de: 'Deutsch', tr: 'Türkçe', uk: 'Українська' };
   // Locales the ko→target display overlay (form-helper-i18n.js) can render. The
   // wizard renderer is Korean-only; for these, the overlay translates the shown
-  // text. ko = native; en has no overlay map yet, so it falls back to Korean.
+  // text. ko = native; en has no overlay map yet, so it falls back to Korean
+  // (with a visible "not yet translated" note — never silently coerced to ko).
   const OVERLAY = ['zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
-  const ORDER = ['ko', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  // Full site locale list, in the exact order of index.html's LANGUAGE_OPTIONS.
+  // The cycle must cover every site locale (incl. en) so a click from any stored
+  // global choice advances to the genuine next locale instead of destroying it.
+  const ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
   function readSel() {
-    try { var s = localStorage.getItem('paradiso:language') || ''; if (OVERLAY.indexOf(s) >= 0) return s; } catch (e) {}
+    // Read the shared global choice WITHOUT coercion: any canonical site locale
+    // stays selected as-is (content falls back to ko below if untranslated here).
+    try { var s = localStorage.getItem('paradiso:language') || ''; if (ORDER.indexOf(s) >= 0) return s; } catch (e) {}
     return 'ko';
+  }
+  function updateLangNote(sel) {
+    const holder = btn ? btn.parentElement : null;
+    if (!holder) return;
+    let note = document.getElementById('fhLangNote');
+    const untranslated = sel !== 'ko' && OVERLAY.indexOf(sel) < 0;
+    if (untranslated) {
+      if (!note) {
+        note = document.createElement('div');
+        note.id = 'fhLangNote';
+        note.className = 'fh-lang-note';
+        note.setAttribute('role', 'note');
+        holder.appendChild(note);
+      }
+      note.textContent = '이 페이지는 선택한 언어 번역 준비 중입니다 · This page is not yet translated into the selected language.';
+    } else if (note) {
+      note.remove();
+    }
   }
   function apply(sel) {
     state.lang = sel;
@@ -3202,8 +3304,12 @@ function initLang() {
     if (label) { label.textContent = LABEL[sel] || LABEL.ko; label.setAttribute('data-s2t', 'off'); }
     // Korean → target display layer (assets/js/form-helper-i18n.js). The wizard
     // renderer stays Korean-only; this translates the displayed text instead.
+    // setMode() itself falls back to 'ko' for locales without an overlay map.
     if (window.ParadisoFormI18n) window.ParadisoFormI18n.setMode(sel);
+    updateLangNote(sel);
   }
+  // On load: reflect the stored choice only — the shared key is written
+  // exclusively on an explicit user click below.
   apply(readSel());
   if (btn) btn.addEventListener('click', () => {
     var next = ORDER[(ORDER.indexOf(state.lang) + 1) % ORDER.length];
