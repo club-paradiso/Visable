@@ -1726,23 +1726,34 @@ select:focus-visible {
         // ==========================================
         async function loadVisaData() {
             setStatus('매뉴얼 DB 로딩 중...');
+            // Parse either a bare array or an {data:[...]} envelope.
+            const parse = (raw) => Array.isArray(raw) ? raw : (Array.isArray(raw && raw.data) ? raw.data : []);
             try {
                 if (!API_BASE) throw new Error("Local");
                 const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store' });
-                if (res.ok) {
-                    const raw = await res.json();
-                    VISA_DATA = Array.isArray(raw) ? raw : (Array.isArray(raw.data) ? raw.data : []);
-                }
+                // A non-200 must fall through to the local fallback. The old
+                // `if (res.ok)` swallowed a failed API response yet still reported
+                // "분석 준비 완료", so the local visa_data.json fallback never ran
+                // and the status lied about readiness (M-3). Mirror index.html:
+                // non-ok -> throw -> catch loads the local file.
+                if (!res.ok) throw new Error('API Fail');
+                VISA_DATA = parse(await res.json());
+                setStatus('분석 준비 완료');
+                return;
             } catch (e) {
                 try {
                     const res = await fetch('./visa_data.json', { cache: 'no-store' });
-                    if (res.ok) {
-                        const raw = await res.json();
-                        VISA_DATA = Array.isArray(raw) ? raw : (Array.isArray(raw.data) ? raw.data : []);
-                    }
-                } catch (err) {}
+                    if (!res.ok) throw new Error('JSON Fail');
+                    VISA_DATA = parse(await res.json());
+                    setStatus('분석 준비 완료');
+                } catch (err) {
+                    // Both sources failed. Stay honest instead of claiming readiness;
+                    // chat still works in a degraded mode (empty local visa context),
+                    // exactly as before — buildVisaDataPayload tolerates an empty set.
+                    if (!Array.isArray(VISA_DATA)) VISA_DATA = [];
+                    setStatus('매뉴얼 DB 로딩 실패 — 제한 모드로 상담은 계속 가능합니다');
+                }
             }
-            setStatus('분석 준비 완료');
         }
 
         // ==========================================
@@ -3496,6 +3507,26 @@ select:focus-visible {
                 if (!response.ok) {
                     let errPayload = null;
                     try { errPayload = await response.json(); } catch (jsonErr) { errPayload = null; }
+                    // Rate limited (backend rate_limited envelope, HTTP 429): show the
+                    // same calm daily-quota notice style instead of the alarming
+                    // generic error card. The finally block re-enables the composer.
+                    if (response.status === 429) {
+                        const loaderRL = document.getElementById(lid);
+                        if (loaderRL) loaderRL.remove();
+                        showToast(tt(userLang, {
+                            ko: '요청이 많아 잠시 제한되었습니다. 잠시 후 다시 시도해 주세요.',
+                            en: 'Too many requests right now. Please wait a moment and try again.',
+                            zh: '请求过于频繁，暂时受限。请稍后再试。',
+                            zhHant: '請求過於頻繁，暫時受限。請稍後再試。'
+                        }));
+                        setStatus(tt(userLang, {
+                            ko: '요청 제한 — 잠시 후 재시도',
+                            en: 'Rate limited — try again shortly',
+                            zh: '请求受限 — 请稍后重试',
+                            zhHant: '請求受限 — 請稍後重試'
+                        }));
+                        return;
+                    }
                     const apiError = new Error(`서버 응답 오류 (${response.status})`);
                     apiError.status = response.status;
                     apiError.payload = errPayload;
@@ -3797,6 +3828,18 @@ select:focus-visible {
             } catch (e) { return false; }
         }
 
+        // Follow-up request coordination (M-6). Rapid taps on the packet's "Ask"
+        // button must not race each other:
+        //   * abort any earlier in-flight request (re-entry guard),
+        //   * a 75s timeout budget (mirrors the main sendAi path) so a hung server
+        //     never leaves the "…" spinner spinning forever,
+        //   * a monotonic sequence token so ONLY the latest request renders — a
+        //     superseded request adopts a never-settling promise so the navigator
+        //     never clears a newer answer with a stale earlier one.
+        var _followupController = null;
+        var _followupSeq = 0;
+        var FOLLOWUP_TIMEOUT_MS = 75000; // same budget as sendAi's AI_REQUEST_TIMEOUT_MS
+
         // AI follow-up — SECONDARY support. Sends ONLY safe categorical identifiers
         // + the user's typed question. No checklist, no personal identifiers, and
         // ALWAYS stream:false so the buffered, fully-gated path runs (Phase 10).
@@ -3824,6 +3867,23 @@ select:focus-visible {
                          '). Explain the already-generated deterministic packet only; do not invent ' +
                          'documents, fees, deadlines, citations, or HiKorea tasks; recommend official confirmation.'
             };
+            // Abort any earlier in-flight follow-up so a slow earlier response can
+            // never overwrite a newer one, then claim the next sequence token.
+            if (_followupController) { try { _followupController.abort(); } catch (e) {} }
+            var controller = new AbortController();
+            _followupController = controller;
+            var mySeq = ++_followupSeq;
+            var didTimeout = false;
+            var timeoutId = setTimeout(function () {
+                didTimeout = true;
+                try { controller.abort(); } catch (e) {}
+            }, FOLLOWUP_TIMEOUT_MS);
+            var localeEn = !!(context && context.locale === 'en');
+            // A superseded request must not render at all: its late resolution would
+            // clear the newer answer (the navigator clears `out` before rendering).
+            // Adopt a never-settling promise so the navigator's .then never fires.
+            var stale = function () { return new Promise(function () {}); };
+            var isStale = function () { return mySeq !== _followupSeq; };
             // Returns a structured result so the navigator can render the same
             // trust/safety card the legacy chat shows (renderSafetyResponse) and
             // a visible failure notice instead of silently swallowing errors —
@@ -3831,9 +3891,23 @@ select:focus-visible {
             // a nested {detail:{...}} error body (e.g. 503 no-provider-configured)
             // into an empty string with no user-visible feedback.
             return fetch(apiBase + '/api/ask', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-            }).then(function (r) { return r.json().catch(function () { return {}; }); })
-              .then(function (res) {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+                signal: controller.signal
+            }).then(function (r) {
+                var status = r.status;
+                return r.json().catch(function () { return {}; }).then(function (b) { return { status: status, body: b }; });
+            }).then(function (payload) {
+                  clearTimeout(timeoutId);
+                  if (isStale()) return stale();
+                  var status = payload.status;
+                  var res = payload.body || {};
+                  // Rate limited (backend rate_limited envelope, HTTP 429): a calm,
+                  // localized notice — never a hard failure.
+                  if (status === 429) {
+                      return { ok: false, message: localeEn
+                          ? 'Too many requests right now. Please wait a moment and try again.'
+                          : '요청이 많아 잠시 제한되었습니다. 잠시 후 다시 시도해 주세요.' };
+                  }
                   if (!res || (res.detail && typeof res.detail === 'object')) return { ok: false };
                   var answer = res.copy_safe_answer || res.answer || (res.safety_notice || '');
                   var safetyBlocked = !!res.safety_blocked;
@@ -3849,7 +3923,18 @@ select:focus-visible {
                       safetyBlocked: safetyBlocked,
                       safetyAlternatives: safetyAlternatives
                   };
-              }).catch(function () { return { ok: false }; });
+              }).catch(function () {
+                  clearTimeout(timeoutId);
+                  if (isStale()) return stale();
+                  // Hard timeout: surface a localized "took too long" note (matching
+                  // the main path's timeout card intent) instead of a silent blank.
+                  if (didTimeout) {
+                      return { ok: false, message: localeEn
+                          ? 'The response is taking too long, so the request was stopped. Please try again shortly; for urgent matters, confirm via HiKorea (hikorea.go.kr) or 1345.'
+                          : 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr) 또는 1345로 확인하십시오.' };
+                  }
+                  return { ok: false };
+              });
         }
 
         // HiKorea handoff — reuse the deterministic helper's pure logic if present;
