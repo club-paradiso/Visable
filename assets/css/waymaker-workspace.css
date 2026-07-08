@@ -367,3 +367,14 @@ html[data-editorial-theme="archive_diary"] .answer-card { background: rgba(255, 
 @media (prefers-reduced-motion: reduce) {
   .wm-workspace-nav-link { transition: none; }
 }
+
+/* ── Light brightness (shared paradiso:brightness): flip the workspace's
+   hardcoded dark-teal surfaces to the Figma light palette so ai.html supports
+   light mode like the rest of the app. ── */
+body[data-theme="light"] .chat-header { background: rgba(255, 252, 245, 0.92); }
+body[data-theme="light"] .wm-workspace-sidebar { background: #F4EFE4; }
+body[data-theme="light"] .wm-context-strip { background: #F4EFE4; }
+body[data-theme="light"] .msg-row.ai .msg-bubble { background: #F4EFE4; }
+body[data-theme="light"] .answer-card,
+body[data-theme="light"] .msg-row.ai .answer-card { background: #FFFCF5; }
+body[data-theme="light"] .chat-input-area { background: rgba(255, 252, 245, 0.94); }

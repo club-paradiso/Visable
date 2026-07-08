@@ -97,12 +97,52 @@
             --p-dur-2: 320ms;
         }
 
+        /* ═══════════════════════════════════════════════════════════
+           ai.html LIGHT MODE (shared paradiso:brightness). Dark-first chat
+           UI flipped to the Figma Cream/Paper/Ink light palette. Token-based
+           surfaces flip via the token overrides; the hardcoded dark gradients
+           are overridden per-surface (with !important + high specificity).
+           ═══════════════════════════════════════════════════════════ */
+        body[data-theme="light"] {
+            --bg0: #F4EFE4; --bg1: #FFFCF5; --bg2: #ECE5D6;
+            --bd: #E0D6C2; --bd2: #E8DECB;
+            --t1: #073B32; --t2: #3A544C; --t3: #6E7A74;
+            --ac: #0E8A6B; --ac2: #073B32; --acL: #E5F7F0;
+            --acG: rgba(14,138,107,0.10);
+            --cy: #FF6B5E;
+            --error: #E05B4A; --warning: #E68A3A;
+            --sh-modal: 0 12px 48px rgba(7,59,50,0.14);
+            --p-paper: #FFFCF5; --p-paper-2: #F4EFE4;
+            background:
+                radial-gradient(120% 80% at 100% 0%, rgba(59,228,184,.16), transparent 60%),
+                radial-gradient(100% 70% at 0% 100%, rgba(116,133,255,.12), transparent 65%),
+                #F4EFE4 !important;
+            color: #073B32 !important;
+        }
+        html:has(body[data-theme="light"]) { background: #F4EFE4; }
+        body[data-theme="light"] .chat-header { background: rgba(255,252,245,0.92) !important; border-bottom-color: #E0D6C2 !important; }
+        body[data-theme="light"] .ai-title-main { color: #0E8A6B !important; }
+        body[data-theme="light"] .ai-title-sub { color: #3A544C !important; }
+        body[data-theme="light"] .chat-input-area { background: rgba(255,252,245,0.94) !important; }
+        body[data-theme="light"] .ai-textarea { background: #FFFCF5 !important; color: #073B32 !important; }
+        body[data-theme="light"] .answer-card,
+        body[data-theme="light"] .msg-row.ai .answer-card { background: #FFFCF5 !important; border-color: #E0D6C2 !important; }
+        body[data-theme="light"] .modal-box { background: linear-gradient(180deg, #FFFCF5, #F4EFE4) !important; color: #073B32; }
+        /* message + answer body text is light (--p-paper) by default for the dark
+           chat; force it to Ink on the light surface (accents via --ac stay). */
+        body[data-theme="light"] .msg-bubble,
+        body[data-theme="light"] .answer-body,
+        body[data-theme="light"] .msg-row.ai .msg-bubble { color: #073B32 !important; }
+        body[data-theme="light"] .msg-row.user .msg-bubble { color: #073B32 !important; }
+        body[data-theme="light"] .reference-disclaimer,
+        body[data-theme="light"] .msg-time { color: #3A544C !important; }
+
         :root {
             --ff: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
             --bg0: #0B2A24; --bg1: #113B32; --bg2: #184B40;
             --bd: #2D5A50; --bd2: #224A41;
             --t1: #F3EEDF; --t2: #C7BFA8; --t3: #8C8572;
-            --ac: #34D4A8; --ac2: #17B388; --acL: #163E36;
+            --ac: #3BE4B8; --ac2: #22C9A0; --acL: #163E36;
             --acG: rgba(52,212,168,0.18);
             --cy: #FF8B7A;
             --error: #FF6B5B; --warning: #E68A3A;
@@ -1328,6 +1368,11 @@ select:focus-visible {
     <link rel="stylesheet" href="assets/css/waymaker-workspace.css?v=20260703-chat-first">
 </head>
 <body>
+<script>
+/* Follow the shared brightness (light/dark) chosen on the other Visable pages.
+   ai.html is dark-first, so it defaults to dark when nothing is stored. */
+(function(){try{var b=localStorage.getItem('paradiso:brightness');document.body.setAttribute('data-theme', b==='light' ? 'light' : 'dark');}catch(e){document.body.setAttribute('data-theme','dark');}})();
+</script>
 
     <!-- Header -->
     <header class="chat-header">
@@ -1337,7 +1382,6 @@ select:focus-visible {
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
                 <span class="back-btn-text">메인 화면으로 돌아가기</span>
             </a>
-            <img class="ai-header-logo" src="assets/brand/visable-wordmark-white.svg" alt="Visable by Paradiso" height="18" loading="eager" decoding="async">
             <div class="ai-title">
                 <div class="ai-title-row">
                     <h1 class="ai-title-main">Waymaker by Paradiso — 비자·체류 정보 AI 도우미</h1>
@@ -1351,9 +1395,22 @@ select:focus-visible {
             </div>
         </div>
         <div class="header-right">
+            <button type="button" id="aiThemeBtn" aria-label="라이트/다크 전환" title="라이트/다크 전환"
+                style="background:var(--bg2);border:1px solid var(--bd);color:var(--t2);min-width:34px;height:34px;border-radius:999px;cursor:pointer;font-size:0.95rem;line-height:1;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;">◐</button>
             <span class="quota-badge" aria-label="남은 분석 횟수" title="일일 분석 횟수">잔여: <span id="quotaCount">0</span>회</span>
         </div>
     </header>
+    <script>
+    (function(){
+      var btn = document.getElementById('aiThemeBtn');
+      if (!btn) return;
+      btn.addEventListener('click', function(){
+        var next = document.body.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+        document.body.setAttribute('data-theme', next);
+        try { localStorage.setItem('paradiso:brightness', next); } catch (e) {}
+      });
+    })();
+    </script>
 
     <div class="wm-workspace-shell" id="wmWorkspaceShell">
       <aside class="wm-workspace-sidebar" aria-label="Waymaker 작업공간">
@@ -1726,23 +1783,34 @@ select:focus-visible {
         // ==========================================
         async function loadVisaData() {
             setStatus('매뉴얼 DB 로딩 중...');
+            // Parse either a bare array or an {data:[...]} envelope.
+            const parse = (raw) => Array.isArray(raw) ? raw : (Array.isArray(raw && raw.data) ? raw.data : []);
             try {
                 if (!API_BASE) throw new Error("Local");
                 const res = await fetch(`${API_BASE}/api/visas`, { cache: 'no-store' });
-                if (res.ok) {
-                    const raw = await res.json();
-                    VISA_DATA = Array.isArray(raw) ? raw : (Array.isArray(raw.data) ? raw.data : []);
-                }
+                // A non-200 must fall through to the local fallback. The old
+                // `if (res.ok)` swallowed a failed API response yet still reported
+                // "분석 준비 완료", so the local visa_data.json fallback never ran
+                // and the status lied about readiness (M-3). Mirror index.html:
+                // non-ok -> throw -> catch loads the local file.
+                if (!res.ok) throw new Error('API Fail');
+                VISA_DATA = parse(await res.json());
+                setStatus('분석 준비 완료');
+                return;
             } catch (e) {
                 try {
                     const res = await fetch('./visa_data.json', { cache: 'no-store' });
-                    if (res.ok) {
-                        const raw = await res.json();
-                        VISA_DATA = Array.isArray(raw) ? raw : (Array.isArray(raw.data) ? raw.data : []);
-                    }
-                } catch (err) {}
+                    if (!res.ok) throw new Error('JSON Fail');
+                    VISA_DATA = parse(await res.json());
+                    setStatus('분석 준비 완료');
+                } catch (err) {
+                    // Both sources failed. Stay honest instead of claiming readiness;
+                    // chat still works in a degraded mode (empty local visa context),
+                    // exactly as before — buildVisaDataPayload tolerates an empty set.
+                    if (!Array.isArray(VISA_DATA)) VISA_DATA = [];
+                    setStatus('매뉴얼 DB 로딩 실패 — 제한 모드로 상담은 계속 가능합니다');
+                }
             }
-            setStatus('분석 준비 완료');
         }
 
         // ==========================================
@@ -3496,6 +3564,26 @@ select:focus-visible {
                 if (!response.ok) {
                     let errPayload = null;
                     try { errPayload = await response.json(); } catch (jsonErr) { errPayload = null; }
+                    // Rate limited (backend rate_limited envelope, HTTP 429): show the
+                    // same calm daily-quota notice style instead of the alarming
+                    // generic error card. The finally block re-enables the composer.
+                    if (response.status === 429) {
+                        const loaderRL = document.getElementById(lid);
+                        if (loaderRL) loaderRL.remove();
+                        showToast(tt(userLang, {
+                            ko: '요청이 많아 잠시 제한되었습니다. 잠시 후 다시 시도해 주세요.',
+                            en: 'Too many requests right now. Please wait a moment and try again.',
+                            zh: '请求过于频繁，暂时受限。请稍后再试。',
+                            zhHant: '請求過於頻繁，暫時受限。請稍後再試。'
+                        }));
+                        setStatus(tt(userLang, {
+                            ko: '요청 제한 — 잠시 후 재시도',
+                            en: 'Rate limited — try again shortly',
+                            zh: '请求受限 — 请稍后重试',
+                            zhHant: '請求受限 — 請稍後重試'
+                        }));
+                        return;
+                    }
                     const apiError = new Error(`서버 응답 오류 (${response.status})`);
                     apiError.status = response.status;
                     apiError.payload = errPayload;
@@ -3797,6 +3885,18 @@ select:focus-visible {
             } catch (e) { return false; }
         }
 
+        // Follow-up request coordination (M-6). Rapid taps on the packet's "Ask"
+        // button must not race each other:
+        //   * abort any earlier in-flight request (re-entry guard),
+        //   * a 75s timeout budget (mirrors the main sendAi path) so a hung server
+        //     never leaves the "…" spinner spinning forever,
+        //   * a monotonic sequence token so ONLY the latest request renders — a
+        //     superseded request adopts a never-settling promise so the navigator
+        //     never clears a newer answer with a stale earlier one.
+        var _followupController = null;
+        var _followupSeq = 0;
+        var FOLLOWUP_TIMEOUT_MS = 75000; // same budget as sendAi's AI_REQUEST_TIMEOUT_MS
+
         // AI follow-up — SECONDARY support. Sends ONLY safe categorical identifiers
         // + the user's typed question. No checklist, no personal identifiers, and
         // ALWAYS stream:false so the buffered, fully-gated path runs (Phase 10).
@@ -3824,6 +3924,23 @@ select:focus-visible {
                          '). Explain the already-generated deterministic packet only; do not invent ' +
                          'documents, fees, deadlines, citations, or HiKorea tasks; recommend official confirmation.'
             };
+            // Abort any earlier in-flight follow-up so a slow earlier response can
+            // never overwrite a newer one, then claim the next sequence token.
+            if (_followupController) { try { _followupController.abort(); } catch (e) {} }
+            var controller = new AbortController();
+            _followupController = controller;
+            var mySeq = ++_followupSeq;
+            var didTimeout = false;
+            var timeoutId = setTimeout(function () {
+                didTimeout = true;
+                try { controller.abort(); } catch (e) {}
+            }, FOLLOWUP_TIMEOUT_MS);
+            var localeEn = !!(context && context.locale === 'en');
+            // A superseded request must not render at all: its late resolution would
+            // clear the newer answer (the navigator clears `out` before rendering).
+            // Adopt a never-settling promise so the navigator's .then never fires.
+            var stale = function () { return new Promise(function () {}); };
+            var isStale = function () { return mySeq !== _followupSeq; };
             // Returns a structured result so the navigator can render the same
             // trust/safety card the legacy chat shows (renderSafetyResponse) and
             // a visible failure notice instead of silently swallowing errors —
@@ -3831,9 +3948,23 @@ select:focus-visible {
             // a nested {detail:{...}} error body (e.g. 503 no-provider-configured)
             // into an empty string with no user-visible feedback.
             return fetch(apiBase + '/api/ask', {
-                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body)
-            }).then(function (r) { return r.json().catch(function () { return {}; }); })
-              .then(function (res) {
+                method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+                signal: controller.signal
+            }).then(function (r) {
+                var status = r.status;
+                return r.json().catch(function () { return {}; }).then(function (b) { return { status: status, body: b }; });
+            }).then(function (payload) {
+                  clearTimeout(timeoutId);
+                  if (isStale()) return stale();
+                  var status = payload.status;
+                  var res = payload.body || {};
+                  // Rate limited (backend rate_limited envelope, HTTP 429): a calm,
+                  // localized notice — never a hard failure.
+                  if (status === 429) {
+                      return { ok: false, message: localeEn
+                          ? 'Too many requests right now. Please wait a moment and try again.'
+                          : '요청이 많아 잠시 제한되었습니다. 잠시 후 다시 시도해 주세요.' };
+                  }
                   if (!res || (res.detail && typeof res.detail === 'object')) return { ok: false };
                   var answer = res.copy_safe_answer || res.answer || (res.safety_notice || '');
                   var safetyBlocked = !!res.safety_blocked;
@@ -3849,7 +3980,18 @@ select:focus-visible {
                       safetyBlocked: safetyBlocked,
                       safetyAlternatives: safetyAlternatives
                   };
-              }).catch(function () { return { ok: false }; });
+              }).catch(function () {
+                  clearTimeout(timeoutId);
+                  if (isStale()) return stale();
+                  // Hard timeout: surface a localized "took too long" note (matching
+                  // the main path's timeout card intent) instead of a silent blank.
+                  if (didTimeout) {
+                      return { ok: false, message: localeEn
+                          ? 'The response is taking too long, so the request was stopped. Please try again shortly; for urgent matters, confirm via HiKorea (hikorea.go.kr) or 1345.'
+                          : 'AI 응답이 지연되어 요청을 중단했습니다. 잠시 후 다시 시도해 주세요. 급한 경우 HiKorea(hikorea.go.kr) 또는 1345로 확인하십시오.' };
+                  }
+                  return { ok: false };
+              });
         }
 
         // HiKorea handoff — reuse the deterministic helper's pure logic if present;

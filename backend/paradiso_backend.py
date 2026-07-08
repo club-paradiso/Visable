@@ -26,10 +26,11 @@ from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional, Sequence
 from urllib.parse import quote
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 from pydantic import BaseModel, Field
+from rate_limit import rate_limit
 from services import legal_evidence
 from services.law_grounding import (
     build_law_grounding_context,
@@ -274,6 +275,52 @@ ALLOW_GROQ_FALLBACK: bool = (
     in _GROQ_FALLBACK_TRUE_TOKENS
 )
 
+# ---------------------------------------------------------------------------
+# Client-supplied model allowlist (pre-launch hardening, finding H-1b)
+# ---------------------------------------------------------------------------
+# ``req.model`` used to be forwarded verbatim into the OpenRouter/Groq payload,
+# letting any anonymous caller run arbitrary (including paid) model ids on the
+# server's API keys. A client-requested model is now honored ONLY when it is
+# one of the model ids this deployment already references (the configured
+# primary + candidate chains and the answer-mode tiers). Anything else is
+# silently ignored with a warning log — never a 400, because the normal UI
+# paths do not send `model` at all and must keep working unchanged.
+
+
+def _allowed_client_models(provider: str) -> set:
+    """Public model ids a client may explicitly request for one provider."""
+    allowed: set = set()
+    if provider == "openrouter":
+        allowed.add(OPENROUTER_MODEL)
+        allowed.update(OPENROUTER_MODEL_CANDIDATES)
+        for mode in ("fast", "basic"):
+            try:
+                plan = resolve_answer_mode_models(mode) or {}
+            except Exception:  # pragma: no cover - policy resolution is total
+                plan = {}
+            allowed.update(plan.get("candidates") or [])
+            if plan.get("primary"):
+                allowed.add(plan["primary"])
+    elif provider == "groq":
+        allowed.add(GROQ_MODEL)
+    return {m for m in allowed if isinstance(m, str) and m.strip()}
+
+
+def _sanitize_requested_model(requested: Optional[str], provider: str) -> Optional[str]:
+    """Return the requested model only if allowlisted; else None (use default)."""
+    clean = (requested or "").strip()
+    if not clean:
+        return None
+    if clean in _allowed_client_models(provider):
+        return clean
+    logger.warning(
+        "Ignoring client-requested model not in the configured %s allowlist: %r",
+        provider,
+        clean[:120],
+    )
+    return None
+
+
 SITE_URL: str = os.environ.get("SITE_URL", "")
 SITE_TITLE: str = os.environ.get("SITE_TITLE", "Paradiso")
 
@@ -288,6 +335,51 @@ CORS_ALLOW_ORIGINS = [
     for origin in os.environ.get("CORS_ALLOW_ORIGINS", "*").split(",")
     if origin.strip()
 ] or ["*"]
+
+# ---------------------------------------------------------------------------
+# /api/ask input caps (pre-launch hardening, finding H-1c)
+# ---------------------------------------------------------------------------
+# Sized comfortably ABOVE every legitimate frontend payload so no real user is
+# ever rejected, while stopping megabyte-scale prompt/context abuse:
+#   * prompt      — ai.html caps the question at 500 chars client-side
+#                   (MAX_CHARS); the index.html AI panel and the Waymaker
+#                   navigator follow-up have no client cap but send short typed
+#                   questions. 4000 chars = 8x the largest client cap.
+#   * history     — ai.html sends at most 12 turns of <=1200 chars each
+#                   (rememberTurn); caps are 24 items / 2000 chars. Oversize is
+#                   safely TRUNCATED (newest kept): history feeds only the
+#                   Trust & Safety repeat-abuse classifier, never the prompt.
+#   * context     — buildAskContext() tops out around ~2.5k chars (directives +
+#                   optional nationality/interview/scenario lines); the field
+#                   is currently unused server-side, so oversize is truncated.
+#   * visa_data   — the largest legitimate compactVisaRecord payload measured
+#                   from visa_data.json is ~116k chars serialized (F-5), so the
+#                   300k cap leaves ~2.5x headroom for data growth; beyond it a
+#                   structured 400 is returned (silently dropping the record
+#                   could degrade answer grounding without the user knowing).
+ASK_MAX_PROMPT_CHARS: int = int(_env_float("PARADISO_ASK_MAX_PROMPT_CHARS", 4000.0))
+ASK_MAX_HISTORY_ITEMS: int = int(_env_float("PARADISO_ASK_MAX_HISTORY_ITEMS", 24.0))
+ASK_MAX_HISTORY_ITEM_CHARS: int = int(_env_float("PARADISO_ASK_MAX_HISTORY_ITEM_CHARS", 2000.0))
+ASK_MAX_CONTEXT_CHARS: int = int(_env_float("PARADISO_ASK_MAX_CONTEXT_CHARS", 8000.0))
+ASK_MAX_VISA_DATA_CHARS: int = int(_env_float("PARADISO_ASK_MAX_VISA_DATA_CHARS", 300000.0))
+
+
+def _debug_endpoints_enabled() -> bool:
+    """Live env read so the flag can be flipped without code changes (M-10)."""
+    return _env_bool("PARADISO_ENABLE_DEBUG_ENDPOINTS", False)
+
+
+def _require_debug_endpoints_enabled() -> None:
+    """Gate for diagnostic endpoints that reveal deployment/network topology.
+
+    Default OFF: the gated endpoints answer with the same plain 404 an unknown
+    route gets, so their existence is not advertised to anonymous scanners.
+    Operators set PARADISO_ENABLE_DEBUG_ENDPOINTS=true (e.g. temporarily on
+    Railway) when they need the live selftest/netdiag/grounding debug views.
+    The boolean-only readiness preflight stays open.
+    """
+    if not _debug_endpoints_enabled():
+        raise HTTPException(status_code=404, detail="Not Found")
 
 
 # ---------------------------------------------------------------------------
@@ -390,8 +482,11 @@ class AskRequest(BaseModel):
     answer_mode: Optional[str] = None
     # When true, the answer is streamed back token-by-token as Server-Sent
     # Events (text/event-stream) for a far snappier perceived response. The
-    # in-prompt safety/confidence directives still apply; the streamed path does
-    # not run the post-hoc answer-shape repair gate (which needs the full text).
+    # in-prompt safety/confidence directives still apply, and the post-hoc
+    # safety review runs on the fully-accumulated text after the final token
+    # (a tripped review replaces the answer via SSE before the stream closes).
+    # The post-hoc answer-shape repair gate stays buffered-only: its repair
+    # rewrites the complete answer, which is not meaningful after streaming.
     stream: Optional[bool] = None
 
 
@@ -1155,9 +1250,24 @@ async def _call_openrouter(
                 "message": resp.text[:500],
             },
         )
-    data = resp.json()
     try:
-        return data["choices"][0]["message"]["content"]
+        data = resp.json()
+    except ValueError:
+        # A 2xx response with a non-JSON body is an upstream contract
+        # violation. Parsing used to happen OUTSIDE any guard, so it surfaced
+        # as a bare 500 without CORS headers; keep it a structured 502 like
+        # the malformed-payload path below so the candidate loop / frontend
+        # error cards handle it normally.
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "error": "openrouter_bad_response",
+                "status": 502,
+                "message": "OpenRouter returned a non-JSON response body.",
+            },
+        )
+    try:
+        content = data["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as exc:
         raise HTTPException(
             status_code=502,
@@ -1166,6 +1276,20 @@ async def _call_openrouter(
                 "message": f"Unexpected OpenRouter payload: {exc}",
             },
         )
+    if not isinstance(content, str) or not content.strip():
+        # `content: null` (or empty) is valid JSON but unusable: it used to
+        # flow into AskResponse(answer=None) and crash with a 500-producing
+        # ValidationError. A retryable 502 lets the candidate loop try the
+        # next model and, ultimately, the deterministic fallback note.
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "error": "openrouter_empty_completion",
+                "status": 502,
+                "message": "OpenRouter returned an empty completion.",
+            },
+        )
+    return content
 
 
 async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
@@ -1221,9 +1345,21 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
                 "message": resp.text[:500],
             },
         )
-    data = resp.json()
     try:
-        return data["choices"][0]["message"]["content"]
+        data = resp.json()
+    except ValueError:
+        # Same guard as _call_openrouter: a 2xx non-JSON body must be a
+        # structured 502 (CORS + friendly error card), never a bare 500.
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "error": "groq_bad_response",
+                "status": 502,
+                "message": "Groq returned a non-JSON response body.",
+            },
+        )
+    try:
+        content = data["choices"][0]["message"]["content"]
     except (KeyError, IndexError, TypeError) as exc:
         raise HTTPException(
             status_code=502,
@@ -1232,6 +1368,16 @@ async def _call_groq(prompt: str, model: Optional[str] = None) -> str:
                 "message": f"Unexpected Groq payload: {exc}",
             },
         )
+    if not isinstance(content, str) or not content.strip():
+        raise HTTPException(
+            status_code=502,
+            detail={
+                "error": "groq_empty_completion",
+                "status": 502,
+                "message": "Groq returned an empty completion.",
+            },
+        )
+    return content
 
 
 # ---------------------------------------------------------------------------
@@ -2438,6 +2584,90 @@ async def _stream_openrouter_text(
         raise HTTPException(status_code=503, detail={"error": "openrouter_network_error", "status": 503, "message": f"OpenRouter stream failed: {str(exc)[:200]}"})
 
 
+def _post_stream_safety_review_frames(
+    full_text: str,
+    base_meta: Dict[str, Any],
+    *,
+    prompt: str,
+    lang: Optional[str],
+) -> Optional[List[str]]:
+    """Post-generation Trust & Safety re-check for the streamed path (H-7).
+
+    The buffered /api/ask path runs ``safety_guardrails.post_generation_review``
+    on the complete answer; the streamed path historically skipped it. This
+    helper runs the SAME review over the fully-accumulated streamed text AFTER
+    the final token, so it adds zero latency before the first token. When the
+    review trips it returns the SSE frames that replace the on-screen answer
+    with the neutral safety refusal, reusing ONLY events ai.html already
+    handles (no frontend change needed):
+
+      * ``meta``     — the original stream metadata plus the same safety_*
+                       fields the buffered refusal response carries
+                       (safety_blocked etc.), so the client's existing
+                       renderSafetyResponse card takes over on finalize.
+      * ``fallback`` — carries the refusal text; the client replaces the
+                       accumulated answer with it (matching the buffered
+                       path's answer-replacement semantics).
+
+    Returns None when the answer passes review. Any internal error also
+    returns None — a review crash must never break stream termination; the
+    review is trip-only defense-in-depth, exactly like the buffered path's.
+    Note: the buffered path's answer-shape repair gate is intentionally NOT
+    applied post-stream — its repair rewrites the full (already watched)
+    answer via deterministic synthesis, which is not meaningful after
+    streaming. Safety review is covered; the shape gate remains buffered-only.
+    """
+    try:
+        if not (full_text or "").strip():
+            return None
+        postgen = safety_guardrails.post_generation_review(full_text)
+        if postgen is None:
+            return None
+        postgen.language = safety_guardrails.detect_language(prompt, lang)
+        try:
+            event_id = safety_events.log_safety_event(
+                action=safety_guardrails.ACTION_ESCALATE,
+                category=postgen.category,
+                severity=postgen.severity,
+                reason=postgen.reason,
+                matched_signals=postgen.matched_signals,
+                input_text=prompt,
+                language=postgen.language,
+                route="/api/ask:post_generation_stream",
+                request_id=None,
+            )
+        except Exception:  # pragma: no cover - logging must not break the stream
+            event_id = ""
+        refusal = _build_safety_refusal_response(postgen, lang=lang, event_id=event_id)
+        refusal_payload = refusal.model_dump()
+        refusal_meta = dict(base_meta)
+        for key in (
+            "safety_action",
+            "safety_blocked",
+            "safety_category",
+            "safety_severity",
+            "safety_reason",
+            "safety_alternatives",
+            "safety_event_id",
+            "answer_quality_mode",
+            "source_confidence_level",
+            "requires_official_confirmation",
+            "grounded_answer_limited",
+            "question_type_detected",
+            "copy_safe_answer",
+        ):
+            if key in refusal_payload:
+                refusal_meta[key] = refusal_payload[key]
+        refusal_meta["post_generation_review_blocked"] = True
+        return [
+            _sse("meta", refusal_meta),
+            _sse("fallback", {"answer": refusal_payload.get("answer") or ""}),
+        ]
+    except Exception:  # pragma: no cover - review must never break the stream
+        logger.exception("post-stream safety review failed; keeping streamed answer")
+        return None
+
+
 async def _sse_answer_stream(
     final_prompt: str,
     candidates: List[str],
@@ -2454,6 +2684,11 @@ async def _sse_answer_stream(
     skips to the next candidate (mirroring the non-streaming loop). If every
     candidate fails it emits a ``fallback`` event carrying the same deterministic
     preparation note the non-streaming path uses, so the client never hangs.
+
+    After the final token, the accumulated answer runs through the SAME
+    post-generation safety review as the buffered path (see
+    ``_post_stream_safety_review_frames``); a tripped review replaces the
+    answer with the neutral refusal via existing ``meta`` + ``fallback`` events.
     """
     # Non-secret meta event (grounding/answer-mode/source panel state).
     yield _sse("meta", base_meta)
@@ -2466,6 +2701,7 @@ async def _sse_answer_stream(
     for model in runnable:
         attempted.append(model)
         committed = False
+        answer_parts: List[str] = []
         try:
             async for delta in _stream_openrouter_text(final_prompt, model=model, max_tokens=max_tokens):
                 if not committed:
@@ -2481,8 +2717,19 @@ async def _sse_answer_stream(
                         "answer_mode": base_meta.get("answer_mode", ""),
                         "attempted_models": list(attempted),
                     })
+                answer_parts.append(delta)
                 yield _sse("delta", {"text": delta})
             if committed:
+                # Post-generation safety re-check on the COMPLETE accumulated
+                # answer (H-7) — zero added latency before the first token.
+                review_frames = _post_stream_safety_review_frames(
+                    "".join(answer_parts), base_meta, prompt=prompt, lang=lang,
+                )
+                if review_frames:
+                    for frame in review_frames:
+                        yield frame
+                    yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "post_review_blocked": True})
+                    return
                 yield _sse("done", {"final_model": model, "attempted_models": list(attempted)})
                 return
             # Stream ended with zero tokens: treat as a soft failure, try next.
@@ -2491,7 +2738,15 @@ async def _sse_answer_stream(
         except HTTPException as exc:
             if committed:
                 # Failure AFTER partial output: stop cleanly (can't switch models
-                # mid-answer) and let the client keep what it has.
+                # mid-answer) and let the client keep what it has — unless the
+                # partial text already trips the post-generation safety review,
+                # in which case it is replaced by the refusal before closing.
+                review_frames = _post_stream_safety_review_frames(
+                    "".join(answer_parts), base_meta, prompt=prompt, lang=lang,
+                )
+                if review_frames:
+                    for frame in review_frames:
+                        yield frame
                 yield _sse("done", {"final_model": model, "attempted_models": list(attempted), "interrupted": True})
                 return
             detail = exc.detail if isinstance(exc.detail, dict) else {}
@@ -4303,7 +4558,12 @@ def _evaluate_request_safety(
         )
 
 
-@app.post("/api/ask", response_model=AskResponse)
+@app.post(
+    "/api/ask",
+    response_model=AskResponse,
+    # Per-client sliding-window limit (H-1a); covers stream AND buffered paths.
+    dependencies=[Depends(rate_limit("ask", per_minute=8, per_day=300))],
+)
 async def ask(req: AskRequest) -> AskResponse:
     prompt = (req.message or req.query or req.question or "").strip()
     if not prompt:
@@ -4314,6 +4574,56 @@ async def ask(req: AskRequest) -> AskResponse:
                 "message": "Provide a non-empty 'message', 'query', or 'question'.",
             },
         )
+    # ------------------------------------------------------------------
+    # Input caps (H-1c). Every limit sits comfortably above the largest
+    # legitimate frontend payload (see the ASK_MAX_* constants): a too-long
+    # prompt is a clear 400; oversized history/context are safely truncated
+    # (they never feed the answer prompt); an absurdly large visa_data blob
+    # is a 400 rather than silently degraded grounding.
+    # ------------------------------------------------------------------
+    if len(prompt) > ASK_MAX_PROMPT_CHARS:
+        raise HTTPException(
+            status_code=400,
+            detail={
+                "error": "prompt_too_long",
+                "status": 400,
+                "message": (
+                    f"The question is too long ({len(prompt)} chars); "
+                    f"the maximum is {ASK_MAX_PROMPT_CHARS} characters."
+                ),
+            },
+        )
+    if isinstance(req.history, list) and req.history:
+        capped_history: List[Dict[str, Any]] = []
+        for item in req.history[-ASK_MAX_HISTORY_ITEMS:]:
+            if not isinstance(item, dict):
+                continue
+            # Only role/content are ever consumed (safety repeat-abuse check);
+            # keeping just those two bounds memory regardless of extra keys.
+            content = item.get("content")
+            if isinstance(content, str) and len(content) > ASK_MAX_HISTORY_ITEM_CHARS:
+                content = content[:ASK_MAX_HISTORY_ITEM_CHARS]
+            capped_history.append({"role": item.get("role"), "content": content})
+        req.history = capped_history
+    if isinstance(req.context, str) and len(req.context) > ASK_MAX_CONTEXT_CHARS:
+        req.context = req.context[:ASK_MAX_CONTEXT_CHARS]
+    if req.visa_data is not None:
+        try:
+            visa_data_size = len(json.dumps(req.visa_data, ensure_ascii=False))
+        except (TypeError, ValueError):  # non-serializable shapes handled downstream
+            visa_data_size = 0
+        if visa_data_size > ASK_MAX_VISA_DATA_CHARS:
+            raise HTTPException(
+                status_code=400,
+                detail={
+                    "error": "visa_data_too_large",
+                    "status": 400,
+                    "message": (
+                        f"The visa_data payload is too large ({visa_data_size} chars serialized); "
+                        f"the maximum is {ASK_MAX_VISA_DATA_CHARS} characters."
+                    ),
+                },
+            )
 
     # ------------------------------------------------------------------
     # First-stage Trust & Safety guardrail (deterministic, pre-generation).
@@ -4961,8 +5271,10 @@ async def ask(req: AskRequest) -> AskResponse:
 
     # Streaming path (SSE): snappier perceived response. Only OpenRouter supports
     # it here; other providers fall through to the normal buffered path. The
-    # in-prompt safety/confidence directives still apply; the post-hoc answer-
-    # shape repair gate is skipped (it needs the complete answer text).
+    # in-prompt safety/confidence directives still apply, and the post-generation
+    # safety review runs on the accumulated text after the final token (H-7,
+    # see _post_stream_safety_review_frames). Only the post-hoc answer-shape
+    # repair gate stays buffered-only (its repair rewrites the complete answer).
     if req.stream and llm["provider"] == "openrouter":
         stream_meta = dict(base_meta)
         stream_meta["streamed"] = True
@@ -4980,9 +5292,11 @@ async def ask(req: AskRequest) -> AskResponse:
         )
 
     if llm["provider"] == "openrouter":
+        # H-1b: honor req.model ONLY when it is an allowlisted, already-
+        # configured model id; anything else silently uses the default chain.
         result = await _openrouter_complete_with_candidates(
             final_prompt,
-            requested_model=req.model,
+            requested_model=_sanitize_requested_model(req.model, "openrouter"),
             candidate_models=answer_mode_plan["candidates"],
             max_tokens=answer_mode_max_tokens,
         )
@@ -5153,8 +5467,11 @@ async def ask(req: AskRequest) -> AskResponse:
         return AskResponse(**fallback_payload)
 
     if llm["provider"] == "groq":
-        answer = await _call_groq(final_prompt, model=req.model)
-        groq_model = req.model or GROQ_MODEL
+        # H-1b: same allowlist rule as OpenRouter — an unlisted client model id
+        # silently falls back to the configured GROQ_MODEL.
+        groq_requested_model = _sanitize_requested_model(req.model, "groq")
+        answer = await _call_groq(final_prompt, model=groq_requested_model)
+        groq_model = groq_requested_model or GROQ_MODEL
         response_meta = dict(base_meta)
         answer = _confidence_gate_answer_text(answer, response_meta)
         response_meta["answer_first_sentence"] = (answer or "").strip().split(".", 1)[0].strip()
@@ -5164,7 +5481,7 @@ async def ask(req: AskRequest) -> AskResponse:
             provider="groq",
             model=groq_model,
             llm_provider="groq",
-            requested_model=req.model,
+            requested_model=groq_requested_model,
             primary_model=GROQ_MODEL,
             model_candidates=[groq_model],
             attempted_models=[groq_model],
@@ -5432,7 +5749,10 @@ def _run_research_precedent_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[st
     return out[:8]
 
 
-@app.post("/api/legal/research")
+@app.post(
+    "/api/legal/research",
+    dependencies=[Depends(rate_limit("legal_research", per_minute=4, per_day=60))],
+)
 async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
     """Deterministic, source-grounded legal research scaffold (no LLM).
 
@@ -5536,7 +5856,14 @@ async def legal_research_endpoint(req: LegalResearchRequest) -> Any:
     return result
 
 
-@app.get("/api/debug/law-grounding/preflight")
+# Shared per-client limiter for ALL /api/debug/law-grounding* endpoints (H-1a).
+_debug_rate_limit = rate_limit("debug", per_minute=5)
+
+
+@app.get(
+    "/api/debug/law-grounding/preflight",
+    dependencies=[Depends(_debug_rate_limit)],
+)
 async def debug_law_grounding_preflight(question: Optional[str] = None) -> Dict[str, Any]:
     """Operator-safe law-grounding readiness preflight (no external call, no secrets).
 
@@ -5549,9 +5876,16 @@ async def debug_law_grounding_preflight(question: Optional[str] = None) -> Dict[
     return law_grounding_preflight(question or "")
 
 
-@app.get("/api/debug/law-grounding/selftest")
+@app.get(
+    "/api/debug/law-grounding/selftest",
+    dependencies=[Depends(_debug_rate_limit)],
+)
 async def debug_law_grounding_selftest(question: Optional[str] = None) -> Dict[str, Any]:
     """Browser-friendly, one-call LIVE check of Open Law API grounding.
+
+    Gated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404): it can
+    trigger a live outbound call and reveals deployment readiness detail that
+    anonymous callers have no business probing (M-10).
 
     Unlike the preflight (which makes NO external call), this performs the same
     mode-gated, secret-free law.go.kr search the answer path uses — against a
@@ -5563,8 +5897,9 @@ async def debug_law_grounding_selftest(question: Optional[str] = None) -> Dict[s
     (outbound/egress blocked), timeout, or reachable-but-no-results.
 
     The OC value is NEVER returned; the source URL is sanitized at the tool
-    boundary. Read-only; never raises.
+    boundary. Read-only; never raises (beyond the availability gate above).
     """
+    _require_debug_endpoints_enabled()
     sample = (question or "").strip() or "출입국관리법"
     cfg = load_grounding_config()
     result: Dict[str, Any] = {}
@@ -5635,9 +5970,16 @@ async def debug_law_grounding_selftest(question: Optional[str] = None) -> Dict[s
     }
 
 
-@app.get("/api/debug/law-grounding/netdiag")
+@app.get(
+    "/api/debug/law-grounding/netdiag",
+    dependencies=[Depends(_debug_rate_limit)],
+)
 async def debug_law_grounding_netdiag() -> Dict[str, Any]:
     """Deep, read-only network diagnostic for the Open Law API host.
+
+    Gated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404): it
+    returns resolved outbound IPs / network topology and triggers external
+    probes, which must not be available to anonymous callers (M-10).
 
     When the selftest reports UNREACHABLE (HTTP status 0 / law_api_bad_response)
     the failure is below HTTP and could be DNS, a fully-blocked egress, the
@@ -5647,8 +5989,10 @@ async def debug_law_grounding_netdiag() -> Dict[str, Any]:
     recommended remediation.
 
     The OC is NEVER sent in any probe and NEVER returned. Each probe is bounded
-    by ``LAW_NETDIAG_TIMEOUT_SECONDS`` (default 4s). Never raises.
+    by ``LAW_NETDIAG_TIMEOUT_SECONDS`` (default 4s). Never raises (beyond the
+    availability gate above).
     """
+    _require_debug_endpoints_enabled()
     import socket as _socket
     import urllib.error as _uerr
     import urllib.request as _ureq
@@ -5755,13 +6099,18 @@ async def debug_law_grounding_netdiag() -> Dict[str, Any]:
     }
 
 
-@app.post("/api/debug/law-grounding")
+@app.post(
+    "/api/debug/law-grounding",
+    dependencies=[Depends(_debug_rate_limit)],
+)
 async def debug_law_grounding(req: DebugLawGroundingRequest) -> Dict[str, Any]:
     """Development/debug endpoint only, not a legal-advice production route.
 
+    Gated behind PARADISO_ENABLE_DEBUG_ENDPOINTS (default OFF -> 404, M-10).
     Always includes a non-secret `preflight` readiness block. When a question
     is supplied, also returns the (mode-gated, non-crashing) grounding context.
     """
+    _require_debug_endpoints_enabled()
     prompt = (req.question or req.text or "").strip()
     if not prompt:
         # Empty body keeps the documented 400 contract. Operators who want a
@@ -6000,7 +6349,10 @@ async def _coach_complete(system_prompt: str, user_prompt: str) -> Dict[str, str
     )
 
 
-@app.post("/api/nationality-coach")
+@app.post(
+    "/api/nationality-coach",
+    dependencies=[Depends(rate_limit("nationality_coach", per_minute=6, per_day=100))],
+)
 async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
     mode = (req.mode or "naturalization_interview_prep").strip()
     lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
@@ -6083,7 +6435,10 @@ async def nationality_coach(req: NationalityCoachRequest) -> Dict[str, Any]:
 # ---------------------------------------------------------------------------
 
 
-@app.get("/api/preview/mission")
+@app.get(
+    "/api/preview/mission",
+    dependencies=[Depends(rate_limit("preview_mission", per_minute=20))],
+)
 def preview_mission(country: str = "", countryName: str = "") -> Any:
     """Pre-arrival mission lookup for PreView (외교부_국가·지역별 재외공관 정보).
 

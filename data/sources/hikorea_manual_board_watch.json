@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "generated_for": "HiKorea manual-board change detection (scripts/monitor_hikorea_manual_board.py)",
+  "notes": [
+    "Watches the official HiKorea boards where 자격별 안내 매뉴얼 are published, so a",
+    "new manual (or a changed board listing) is detected automatically instead of a",
+    "maintainer having to check the site by hand.",
+    "Only hikorea.go.kr / immigration.go.kr hosts are permitted; the fetcher blocks",
+    "off-host redirects and caps the response size. Detection NEVER downloads or",
+    "promotes a manual and NEVER edits production data — on a change it only opens a",
+    "tracking issue for a human to look.",
+    "baseline_content_hash follows the same human-bumped-baseline pattern as",
+    "data/sources/hikorea_manual_sync.json: after a maintainer processes a detected",
+    "change, they update the baseline here so the next change is detected fresh.",
+    "A null baseline means 'not yet established' — the first run records the current",
+    "fingerprint in its report but does not raise a change."
+  ],
+  "targets": [
+    {
+      "id": "hikorea_materials_board",
+      "title_ko": "하이코리아 자료실 (매뉴얼 게시)",
+      "title_en": "HiKorea materials board (manual publications)",
+      "url": "https://www.hikorea.go.kr/board/BoardDataListR.pt?page=1",
+      "baseline_content_hash": null
+    },
+    {
+      "id": "hikorea_notice_board",
+      "title_ko": "하이코리아 공지사항",
+      "title_en": "HiKorea notices board",
+      "url": "https://www.hikorea.go.kr/board/BoardNtcListR.pt?page=1",
+      "baseline_content_hash": null
+    }
+  ]
+}

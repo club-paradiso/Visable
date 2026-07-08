@@ -35,6 +35,11 @@ def _client():
     # real upstream call. We only assert on schema-level behavior here.
     for key in ("OPENROUTER_API_KEY", "GROQ_API_KEY"):
         os.environ.pop(key, None)
+    # The debug/diagnostic endpoints are gated OFF by default in production
+    # (PARADISO_ENABLE_DEBUG_ENDPOINTS, M-10); the behavioral tests below
+    # exercise the endpoints themselves, so enable them here. The gating
+    # default is covered explicitly by DebugEndpointGatingTests.
+    os.environ["PARADISO_ENABLE_DEBUG_ENDPOINTS"] = "1"
     from fastapi.testclient import TestClient  # type: ignore
 
     import paradiso_backend  # noqa: WPS433 — late import after sys.path setup
@@ -2940,6 +2945,144 @@ class AnswerQualityGoldenSuiteTests(unittest.TestCase):
         src_text = repr(d.get("grounding_sources") or [])
         self.assertNotIn("D-2", src_text)
         self.assertNotIn("D-4", src_text)
+
+
+class DebugEndpointGatingTests(unittest.TestCase):
+    """PARADISO_ENABLE_DEBUG_ENDPOINTS gate (pre-launch finding M-10).
+
+    selftest / netdiag / POST law-grounding are OFF by default in production
+    (they return the same plain 404 an unknown route gets); the boolean-only
+    readiness preflight stays open.
+    """
+
+    def tearDown(self):
+        os.environ.pop("PARADISO_ENABLE_DEBUG_ENDPOINTS", None)
+
+    def test_gated_debug_endpoints_404_by_default(self):
+        client, _ = _client()
+        os.environ.pop("PARADISO_ENABLE_DEBUG_ENDPOINTS", None)  # production default
+        for method, path in (
+            ("GET", "/api/debug/law-grounding/selftest"),
+            ("GET", "/api/debug/law-grounding/netdiag"),
+            ("POST", "/api/debug/law-grounding"),
+        ):
+            with self.subTest(path=path):
+                if method == "GET":
+                    resp = client.get(path)
+                else:
+                    resp = client.post(path, json={"question": "출입국관리법 제10조"})
+                self.assertEqual(resp.status_code, 404, resp.text)
+                # Indistinguishable from an unknown route: no readiness detail.
+                self.assertEqual(resp.json(), {"detail": "Not Found"})
+
+    def test_preflight_stays_open_without_flag(self):
+        client, _ = _client()
+        os.environ.pop("PARADISO_ENABLE_DEBUG_ENDPOINTS", None)
+        resp = client.get("/api/debug/law-grounding/preflight")
+        self.assertEqual(resp.status_code, 200, resp.text)
+
+    def test_flag_enables_gated_endpoints(self):
+        client, _ = _client()  # _client() sets the flag
+        resp = client.post("/api/debug/law-grounding", json={"question": "출입국관리법 제10조"})
+        self.assertEqual(resp.status_code, 200, resp.text)
+
+
+class RateLimitTests(unittest.TestCase):
+    """Per-client sliding-window rate limiting (pre-launch finding H-1a).
+
+    The in-process TestClient peer ("testclient") is exempt so the rest of the
+    suite is unaffected; a real client identity is simulated via the
+    X-Forwarded-For header the Railway proxy sets in production.
+    """
+
+    def setUp(self):
+        import rate_limit
+        rate_limit._reset_rate_limits_for_tests()
+
+    def tearDown(self):
+        import rate_limit
+        rate_limit._reset_rate_limits_for_tests()
+        os.environ.pop("PARADISO_RL_DEBUG_PER_MIN", None)
+
+    def test_debug_scope_limits_per_forwarded_ip(self):
+        client, _ = _client()
+        headers = {"X-Forwarded-For": "203.0.113.7"}
+        for i in range(5):
+            resp = client.get("/api/debug/law-grounding/preflight", headers=headers)
+            self.assertEqual(resp.status_code, 200, f"request {i + 1}: {resp.text}")
+        resp = client.get("/api/debug/law-grounding/preflight", headers=headers)
+        self.assertEqual(resp.status_code, 429, resp.text)
+        detail = resp.json()["detail"]
+        self.assertEqual(detail["error"], "rate_limited")
+        self.assertEqual(detail["status"], 429)
+        self.assertGreaterEqual(int(detail["retry_after_seconds"]), 1)
+        self.assertIn("Retry-After", resp.headers)
+        # A DIFFERENT client IP is not affected by the first client's window.
+        other = client.get(
+            "/api/debug/law-grounding/preflight",
+            headers={"X-Forwarded-For": "198.51.100.9"},
+        )
+        self.assertEqual(other.status_code, 200, other.text)
+
+    def test_env_override_and_testclient_exemption(self):
+        client, _ = _client()
+        os.environ["PARADISO_RL_DEBUG_PER_MIN"] = "2"
+        headers = {"X-Forwarded-For": "203.0.113.8"}
+        self.assertEqual(client.get("/api/debug/law-grounding/preflight", headers=headers).status_code, 200)
+        self.assertEqual(client.get("/api/debug/law-grounding/preflight", headers=headers).status_code, 200)
+        self.assertEqual(client.get("/api/debug/law-grounding/preflight", headers=headers).status_code, 429)
+        # Without a forwarded IP the in-process TestClient peer is exempt, so
+        # the wider suite never trips the production limits.
+        self.assertEqual(client.get("/api/debug/law-grounding/preflight").status_code, 200)
+
+    def test_ask_returns_429_with_envelope_when_limited(self):
+        client, _ = _client()
+        os.environ["PARADISO_RL_ASK_PER_MIN"] = "1"
+        try:
+            headers = {"X-Forwarded-For": "203.0.113.10"}
+            first = client.post("/api/ask", json={"question": "D-2 연장 서류 알려줘"}, headers=headers)
+            self.assertIn(first.status_code, (200, 503), first.text)  # no provider -> 503 detail
+            second = client.post("/api/ask", json={"question": "D-2 연장 서류 알려줘"}, headers=headers)
+            self.assertEqual(second.status_code, 429, second.text)
+            self.assertEqual(second.json()["detail"]["error"], "rate_limited")
+        finally:
+            os.environ.pop("PARADISO_RL_ASK_PER_MIN", None)
+
+
+class AskInputCapTests(unittest.TestCase):
+    """/api/ask input caps (pre-launch finding H-1c)."""
+
+    def test_over_cap_prompt_returns_400_envelope(self):
+        client, pb = _client()
+        resp = client.post("/api/ask", json={"question": "가" * (pb.ASK_MAX_PROMPT_CHARS + 1)})
+        self.assertEqual(resp.status_code, 400, resp.text)
+        detail = resp.json()["detail"]
+        self.assertEqual(detail["error"], "prompt_too_long")
+        self.assertEqual(detail["status"], 400)
+
+    def test_prompt_at_cap_is_accepted(self):
+        client, pb = _client()
+        resp = client.post("/api/ask", json={"question": "가" * pb.ASK_MAX_PROMPT_CHARS})
+        # No provider configured in tests -> the normal 503 detail envelope,
+        # never a 400 input rejection.
+        self.assertEqual(resp.status_code, 503, resp.text)
+
+    def test_oversized_history_is_truncated_not_rejected(self):
+        client, pb = _client()
+        history = [{"role": "user", "content": "질문 " * 1000} for _ in range(40)]
+        resp = client.post(
+            "/api/ask", json={"question": "D-2 연장 서류 알려줘", "history": history}
+        )
+        self.assertEqual(resp.status_code, 503, resp.text)  # not a 400
+
+    def test_oversized_visa_data_returns_400(self):
+        client, pb = _client()
+        blob = {"junk": "x" * (pb.ASK_MAX_VISA_DATA_CHARS + 100)}
+        resp = client.post(
+            "/api/ask", json={"question": "D-2 연장 서류 알려줘", "visa_data": blob}
+        )
+        self.assertEqual(resp.status_code, 400, resp.text)
+        self.assertEqual(resp.json()["detail"]["error"], "visa_data_too_large")
 
 
 if __name__ == "__main__":
