@@ -17926,6 +17926,29 @@ function isSuppressedProcedureForStatus(v, cfg) {
     return isVisaIssuanceNotApplicable(v);
 }
 
+// 사증발급(입국 전) 서류의 권위 있는 출처는 data/visa_issuance_records.json 의
+// issuanceModes[].documents 입니다(재외공관 신청 서류: 사증발급신청서 별지 제17호
+// 등). 레코드에 절차 범위(procedures.visaIssuance)·source-confirmed 서류가 없을 때,
+// 렌더러가 레거시 최상위 newReqDocs/initialReqDocs(입국 후 체류 절차용 통합신청서
+// 별지 제34호·외국인등록증·체류자격 부여 수수료 등 — 사증발급 단계에 부적합)로
+// 폴백하면 안 되므로, 이 발급-출처 서류를 사증발급 탭/모달의 폴백 문서로
+// 사용합니다. 발명 없음 — 보호 데이터(visa_data.json/visas.json)는 변경하지 않습니다.
+function getVisaIssuanceModeDocGroups(v) {
+    if (!v) return null;
+    const record = getVisaIssuanceRecord(v.code);
+    if (!record) return null;
+    const modes = Array.isArray(record.issuanceModes) ? record.issuanceModes : [];
+    const groups = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
+    for (const mode of modes) {
+        const docs = mode && mode.documents;
+        if (!docs) continue;
+        if (Array.isArray(docs.common)) groups.commonDocs.push(...docs.common);
+        if (Array.isArray(docs.additional)) groups.additionalDocs.push(...docs.additional);
+        if (Array.isArray(docs.conditional)) groups.conditionalDocs.push(...docs.conditional);
+    }
+    return hasAnyDocs(groups) ? mergeDocGroups(groups) : null;
+}
+
 function getProcedure(v, cfg) {
     cfg = remapPermanentResidenceAcquisition(v, cfg);
     const hidden = isSuppressedProcedureForStatus(v, cfg);
@@ -17950,9 +17973,19 @@ function getProcedure(v, cfg) {
     // are a fallback only; merging them into explicit procedure docs can pool
     // scenario/status-specific requirements into the basic/common section.
     const emptyLegacyDocs = { commonDocs: [], requiredDocs: [], additionalDocs: [], conditionalDocs: [] };
-    const docs = hasProcedureScopedDocs
-        ? mergeDocGroups(structuredDocs, rawDocs, emptyLegacyDocs)
-        : mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
+    let docs;
+    if (hasProcedureScopedDocs) {
+        docs = mergeDocGroups(structuredDocs, rawDocs, emptyLegacyDocs);
+    } else if (cfg.key === 'visaIssuance') {
+        // H-5: 사증발급 탭/모달은 레거시 최상위 newReqDocs/initialReqDocs(체류 절차용
+        // 서류)로 폴백하지 않습니다. 절차 범위 서류가 없으면 발급-출처
+        // (visa_issuance_records.json) 서류가 우선하고, 그마저 없으면 빈 목록으로
+        // 두어 렌더러가 기존 '확인 필요/공식 출처에서 확인' 안내를 노출하게 합니다.
+        const issuanceDocs = getVisaIssuanceModeDocGroups(v);
+        docs = mergeDocGroups(structuredDocs, rawDocs, issuanceDocs || emptyLegacyDocs);
+    } else {
+        docs = mergeDocGroups(structuredDocs, rawDocs, legacyDocs);
+    }
     return {
         key: cfg.key,
         label: txAt('procedureLabels', cfg.labelIndex, cfg.label),
@@ -24033,7 +24066,7 @@ function showVisaDocForAction(visaCode) {
     } catch (e) { return []; }
   }
   function save(items) {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); } catch (e) {}
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(items)); return true; } catch (e) { return false; }
   }
   function uid() { return 'r_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
 
@@ -24203,7 +24236,9 @@ function showVisaDocForAction(visaCode) {
   function showBanner() {
     if (!banner) return;
     var today = new Date().toISOString().slice(0, 10);
-    if (localStorage.getItem(DISMISS_KEY) === today) { banner.hidden = true; return; }
+    var dismissed = null;
+    try { dismissed = localStorage.getItem(DISMISS_KEY); } catch (e) { dismissed = null; }
+    if (dismissed === today) { banner.hidden = true; return; }
     var items = load().map(function (it) {
       return { it: it, n: daysUntil(it.date) };
     }).filter(function (x) { return x.n >= 0 && x.n <= 30; })
@@ -24235,7 +24270,11 @@ function showVisaDocForAction(visaCode) {
     if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { errorEl.textContent = rtx('reminderErrDate', '날짜를 입력해 주세요.'); errorEl.hidden = false; dateEl.focus(); return; }
     var items = load();
     items.push({ id: uid(), type: type, date: date, memo: memo, createdAt: Date.now() });
-    save(items);
+    if (!save(items)) {
+      errorEl.textContent = rtx('reminderErrSave', '저장하지 못했습니다. 브라우저 저장소가 차단되어 있을 수 있습니다.');
+      errorEl.hidden = false;
+      return;
+    }
     form.reset();
     render();
     successEl.hidden = false;
@@ -24267,35 +24306,67 @@ function showVisaDocForAction(visaCode) {
     return out;
   }
 
-  async function loadVisaDataForDetailResolver() {
-    if (window.__paradisoDetailAliasData) return window.__paradisoDetailAliasData;
+  function compact(value) {
+    return norm(value).replace(/-/g, "");
+  }
+
+  // Warm a background copy of visa_data.json only as a fallback for the rare
+  // case where the in-page dataset (VISA_DATA) is not reachable from this
+  // script; the resolver prefers the already-loaded in-page records.
+  function warmFallbackRecords() {
+    if (window.__paradisoDetailAliasData) return;
     try {
-      const res = await fetch("visa_data.json", { cache: "no-store" });
-      if (!res.ok) throw new Error("visa_data.json fetch failed: " + res.status);
-      const data = await res.json();
-      window.__paradisoDetailAliasData = Array.isArray(data) ? data : [];
-      return window.__paradisoDetailAliasData;
+      fetch("visa_data.json", { cache: "no-store" })
+        .then(function (res) {
+          if (!res.ok) throw new Error("visa_data.json fetch failed: " + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          window.__paradisoDetailAliasData = Array.isArray(data) ? data : [];
+        })
+        .catch(function (err) {
+          console.warn("[Paradiso] detail-code resolver fallback unavailable:", err);
+          window.__paradisoDetailAliasData = [];
+        });
     } catch (err) {
-      console.warn("[Paradiso] detail-code resolver unavailable:", err);
       window.__paradisoDetailAliasData = [];
-      return window.__paradisoDetailAliasData;
     }
   }
 
+  // The loaded dataset the primary search pipeline itself searches. Preferring
+  // it (over a second fetch) keeps the resolver in lock-step with what the user
+  // can actually reach, and lets resolution run synchronously.
+  function getResolverRecords() {
+    try {
+      if (typeof VISA_DATA !== "undefined" && Array.isArray(VISA_DATA) && VISA_DATA.length) {
+        return VISA_DATA;
+      }
+    } catch (err) { /* VISA_DATA not in scope — fall through to the fetched copy */ }
+    return Array.isArray(window.__paradisoDetailAliasData) ? window.__paradisoDetailAliasData : null;
+  }
+
+  // Build the set of dash-less code forms the PRIMARY pipeline already resolves
+  // exactly (record codes, subcodes, aliases, subcode aliases and procedure
+  // variant status codes — i.e. everything getExactQueryMatchRank ranks > 0),
+  // plus a compact→canonical map of valid top-level reroute targets. The
+  // resolver must never demote any query the primary pipeline can resolve on
+  // its own, so those codes are excluded from rerouting.
   function buildAliasMap(records) {
-    const top = new Map();
-    const alias = new Map();
+    const resolvable = new Set();
+    const topByCompact = new Map();
+    const addResolvable = function (value) {
+      const c = compact(value);
+      if (c) resolvable.add(c);
+    };
 
     for (const record of records) {
       if (!record || !record.code) continue;
       const code = norm(record.code);
-      top.set(code, code);
+      topByCompact.set(compact(code), code);
+      addResolvable(code);
 
-      const aliases = Array.isArray(record.searchAliases) ? record.searchAliases : [];
-      for (const item of aliases) {
-        const a = norm(item);
-        if (a && !top.has(a) && !alias.has(a)) alias.set(a, code);
-      }
+      if (Array.isArray(record.aliases)) for (const a of record.aliases) addResolvable(a);
+      if (Array.isArray(record.searchAliases)) for (const a of record.searchAliases) addResolvable(a);
 
       // Prefer canonical `subcodes`, but also include any legacy compat
       // `subCodes` entries so no exact-search code is dropped during the
@@ -24305,26 +24376,46 @@ function showVisaDocForAction(visaCode) {
         ...(Array.isArray(record.subCodes) ? record.subCodes : []),
       ];
       for (const sub of subcodes) {
-        const sc = norm(sub && sub.code);
-        if (sc && !top.has(sc) && !alias.has(sc)) alias.set(sc, code);
+        if (!sub) continue;
+        addResolvable(sub.code);
+        if (Array.isArray(sub.aliases)) for (const a of sub.aliases) addResolvable(a);
+        if (Array.isArray(sub.searchAliases)) for (const a of sub.searchAliases) addResolvable(a);
+      }
+
+      // Procedure-variant status codes also resolve to the parent card in the
+      // primary pipeline (getExactQueryMatchRank rank 3), so never reroute them.
+      const procs = record.procedures && typeof record.procedures === "object" ? record.procedures : {};
+      for (const key of Object.keys(procs)) {
+        const proc = procs[key];
+        const variants = proc && Array.isArray(proc.variants) ? proc.variants : [];
+        for (const variant of variants) {
+          if (!variant) continue;
+          if (variant.statusCode) addResolvable(variant.statusCode);
+          if (Array.isArray(variant.statusCodes)) for (const c of variant.statusCodes) addResolvable(c);
+        }
       }
     }
 
-    return { top, alias };
+    return { resolvable, topByCompact };
   }
 
-  async function resolveDetailCodeQuery(query) {
+  // Returns a parent code ONLY for detail-shaped queries the primary pipeline
+  // cannot resolve at all (unknown / mistyped subcodes whose parent card does
+  // exist). Any query already resolvable in the loaded data returns null so the
+  // primary pipeline renders its exact record/subcode view untouched.
+  function resolveDetailCodeQuery(query) {
     const q = norm(query);
     if (!DETAIL_CODE_EXACT.test(q)) return null;
 
-    const records = await loadVisaDataForDetailResolver();
-    const maps = buildAliasMap(records);
+    const records = getResolverRecords();
+    if (!records || !records.length) return null;
 
-    if (maps.top.has(q)) return null;
-    if (maps.alias.has(q)) return maps.alias.get(q);
+    const maps = buildAliasMap(records);
+    if (maps.resolvable.has(compact(q))) return null;
 
     for (const parent of deriveParents(q)) {
-      if (maps.top.has(parent)) return parent;
+      const pc = compact(parent);
+      if (maps.topByCompact.has(pc)) return maps.topByCompact.get(pc);
     }
 
     return null;
@@ -24336,30 +24427,24 @@ function showVisaDocForAction(visaCode) {
     if (!form || !input || form.dataset.detailCodeResolverInstalled === "1") return;
 
     form.dataset.detailCodeResolverInstalled = "1";
+    warmFallbackRecords();
 
-    form.addEventListener("submit", async function (event) {
-      if (form.dataset.detailCodeResolving === "1") return;
-
+    // Capture phase on the form fires before the primary bubble-phase submit
+    // handler on the same element, so we can rewrite the query in place and let
+    // the existing search pipeline run EXACTLY ONCE with the parent code. No
+    // preventDefault / re-dispatch (which previously double-submitted and
+    // briefly flashed the correct subcode view before the parent overview).
+    form.addEventListener("submit", function () {
       const original = input.value;
-      const resolved = await resolveDetailCodeQuery(original);
+      const resolved = resolveDetailCodeQuery(original);
+      if (!resolved || compact(resolved) === compact(original)) return;
 
-      if (!resolved || norm(resolved) === norm(original)) return;
-
-      event.preventDefault();
-      event.stopImmediatePropagation();
-
-      form.dataset.detailCodeResolving = "1";
-      form.dataset.originalDetailCodeQuery = original;
       input.value = resolved;
-
-      try {
-        form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
-      } finally {
-        window.setTimeout(function () {
-          form.dataset.detailCodeResolving = "0";
-          input.value = original;
-        }, 280);
-      }
+      // Restore the text the user typed once the primary handler (which reads
+      // qEl.value synchronously during this same dispatch) has consumed it.
+      window.setTimeout(function () {
+        if (input.value === resolved) input.value = original;
+      }, 0);
     }, true);
   }
 
