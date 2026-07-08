@@ -262,10 +262,15 @@ class HealthAndDebugSecurityTests(unittest.TestCase):
 
     def tearDown(self):
         _clear_law_env()
+        os.environ.pop("PARADISO_ENABLE_DEBUG_ENDPOINTS", None)
 
     def _client(self):
         from fastapi.testclient import TestClient
         import paradiso_backend
+        # POST /api/debug/law-grounding is gated OFF by default in production
+        # (PARADISO_ENABLE_DEBUG_ENDPOINTS, M-10); enable it for these
+        # behavioral secret-leak assertions.
+        os.environ["PARADISO_ENABLE_DEBUG_ENDPOINTS"] = "1"
         paradiso_backend._reset_visas_cache_for_tests()
         paradiso_backend._reset_grounding_cache_for_tests()
         return TestClient(paradiso_backend.app)
