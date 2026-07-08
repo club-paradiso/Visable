@@ -625,7 +625,7 @@ body.document-help-open { overflow: hidden; }
 .rlist { display: flex; flex-direction: column; gap: 0.85rem; padding-bottom: 5rem; padding-top: 0.5rem; }
 /* Figma frame: HeroGateway.tsx GatewayTile / Landing.tsx StatCard — softening result card from 4px → 14px to match Figma rounded-2xl tiles (inner .vc-h already assumes 16px)
    mobile: DATA_MISSING — no dedicated mobile frame in Figma Make; radius bump inherits to all viewports without override */
-.vc { background: color-mix(in srgb, var(--bg1) 98%, white); border: 1px solid var(--bd2); border-radius: 14px; box-shadow: none; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), box-shadow 0.28s cubic-bezier(0.4,0,0.2,1), border-color 0.28s; animation: cIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 40ms); overflow: hidden; }
+.vc { background: color-mix(in srgb, var(--bg1) 98%, white); border: 1px solid var(--bd2); border-radius: 20px; box-shadow: none; transition: transform 0.28s cubic-bezier(0.4,0,0.2,1), box-shadow 0.28s cubic-bezier(0.4,0,0.2,1), border-color 0.28s; animation: cIn 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 40ms); overflow: hidden; }
 [data-theme="dark"] .vc { box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 .vc:hover { transform: none; box-shadow: none; border-color: color-mix(in srgb, var(--ac) 18%, var(--bd2)); }
 [data-theme="dark"] .vc:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.55), 0 2px 8px rgba(0,0,0,0.3); }
