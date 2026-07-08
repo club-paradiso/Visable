@@ -2088,7 +2088,7 @@ function updatePreview() {
   if (t.needsCurrentExpiry && state.currentExpiryDate) html += prow('만료일', state.currentExpiryDate);
   if (t.needsWorkplace && state.newWorkplace) html += prow('새 근무처', state.newWorkplace);
   if (t.needsReentryPeriod && state.reentryPeriod) html += prow('재입국 기간', state.reentryPeriod);
-  if (t.needsAddressChange && state.newAddress) html += prow('변경 주소', state.newAddress.slice(0,18)+'…');
+  if (t.needsAddressChange && state.newAddress) html += prow('변경 주소', state.newAddress.length>18 ? state.newAddress.slice(0,18)+'…' : state.newAddress);
   if (t.needsPhoto) html += `<div class="fh-preview-row"><span class="fh-preview-k" style="color:var(--p-coral)">사진</span><span class="fh-preview-v" style="color:var(--p-coral)">필요</span></div>`;
 
   body.innerHTML = html;

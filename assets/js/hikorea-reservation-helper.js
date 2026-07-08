@@ -1326,7 +1326,6 @@
       '<span class="prh-shot-ph-icon" aria-hidden="true">🖼️</span>' +
       '<span class="prh-shot-ph-title">' + esc(STR.shotPending) + '</span>' +
       '<span class="prh-shot-ph-sub">' + esc(STR.shotPendingSub) + '</span>' +
-      '<code class="prh-shot-ph-file">' + esc(shot.file) + '</code>' +
       '</div></figure>';
   }
 
@@ -1632,7 +1631,16 @@
     var m = state.lastModel || {};
     var lines = [];
     lines.push(STR.headerTitle);
-    lines.push(STR.resultLabel + ': ' + purposeLabel(m.recommendedPurpose));
+    // Mirror the on-screen card: for a low-confidence / unsure result it does
+    // NOT assert a specific 추천 목적 (it shows the cautious lead instead), so
+    // the copied text must not either.
+    var isLow = m.confidence === 'low' || m.recommendedPurpose === 'unsure';
+    if (isLow) {
+      lines.push(STR.resultLabel);
+      lines.push(STR.resultLeadLow);
+    } else {
+      lines.push(STR.resultLabel + ': ' + purposeLabel(m.recommendedPurpose));
+    }
     lines.push('');
     lines.push(STR.secClick + ':');
     (m.hikoreaClickSteps || []).forEach(function (id, i) { lines.push((i + 1) + '. ' + STR['click' + (i + 1)]); });

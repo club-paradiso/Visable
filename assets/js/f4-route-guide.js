@@ -2346,7 +2346,7 @@
     return '<div class="f4g-recstart">' +
       '<p class="f4h-eyebrow">' + esc(STR.entryEyebrow) + '</p>' +
       '<h2 class="f4g-rec-title" id="f4RouteGuideTitle">' + esc(STR.recStartTitle) + '</h2>' +
-      '<div class="f4h-badges">' + stateBadge(b.sourceStatus) + '<span class="f4h-badge">' + esc(STR.sourceDatePrefix + ': ' + b.lastUpdated) + '</span></div>' +
+      '<div class="f4h-badges">' + stateBadge(b.sourceStatus) + (b.lastUpdated ? '<span class="f4h-badge">' + esc(STR.sourceDatePrefix + ': ' + b.lastUpdated) + '</span>' : '') + '</div>' +
       '<p class="f4g-rec-body">' + esc(STR.recStartBody) + '</p>' +
       '<button type="button" class="f4g-primary-cta" data-f4g-start>' + esc(STR.primaryCta) + '<span class="f4g-cta-go" aria-hidden="true">→</span></button>' +
       '<p class="f4g-rec-microcopy">' + esc(STR.ctaMicrocopy) + '</p>' +

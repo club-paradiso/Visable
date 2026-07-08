@@ -1060,8 +1060,12 @@
   // Locales this page renders natively (I18N packs; zh-TW is a display layer over
   // zh-CN). A selected locale outside this set keeps its selection but renders via
   // the ko fallback in t(), flagged by the note below — never silently coerced.
+  // Derive from the locales that actually have an I18N pack (plus zh-TW, a
+  // display layer over zh-CN) — NOT SUPPORTED_LANGS, which also lists locales
+  // the page accepts but has no pack for (e.g. tr/uk). Those fall back to ko in
+  // t(), so they must be flagged untranslated and get the note below.
   var LANG_TRANSLATED = { 'zh-TW': true };
-  for (var _li = 0; _li < SUPPORTED_LANGS.length; _li++) LANG_TRANSLATED[SUPPORTED_LANGS[_li]] = true;
+  for (var _lk in I18N) { if (Object.prototype.hasOwnProperty.call(I18N, _lk)) LANG_TRANSLATED[_lk] = true; }
   // Selected site locale — may differ from the content `lang` (zh-TW selects
   // zh-CN content + the Traditional display layer).
   function selectedLang() { return langTrad ? 'zh-TW' : lang; }
