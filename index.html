@@ -129,7 +129,7 @@
   --color-surface-dark: #073B32;
   --color-text: #073B32;
   --color-text-muted: #3A544C;
-  --color-border: #E0D6C2;
+  --color-border: #998058;
   --color-success: #0B7357;
   --color-warning: #E68A3A;
   --color-error:   #E05B4A;
@@ -138,7 +138,7 @@
 
   /* Legacy Mapped Vars */
   --bg0: #F4EFE4; --bg1: #FFFCF5; --bg2: #ECE5D6; --bg3: #E0D8C6;
-  --bgI: #FFFCF5; --bd: #E0D6C2; --bd2: #E8DECB; --bd3: #D6CAB2;
+  --bgI: #FFFCF5; --bd: #998058; --bd2: #998058; --bd3: #A6906A;
   --t1: #073B32; --t2: #3A544C; --t3: #5A655D;
   --ac: #0B7357; --ac2: #073B32;
   --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
@@ -4307,7 +4307,7 @@ body.searched .search-wrap {
 body.searched .sbar {
   background:
     linear-gradient(135deg, rgba(255,255,255,0.92), rgba(252,250,245,0.82)) !important;
-  border: 1px solid rgba(8, 94, 72, 0.15) !important;
+  border: 1px solid rgba(8, 94, 72, 0.5) !important;
   border-radius: 999px !important;
   box-shadow:
     0 8px 24px rgba(8, 94, 72, 0.08),
@@ -4332,7 +4332,7 @@ body.searched #q::placeholder {
 body.searched .ctrls .cb,
 body.searched .cb {
   background: rgba(255,255,255,0.72) !important;
-  border: 1px solid rgba(8, 94, 72, 0.14) !important;
+  border: 1px solid rgba(8, 94, 72, 0.62) !important;
   color: var(--color-primary-ink, #085E48) !important;
   border-radius: 999px !important;
   box-shadow: 0 4px 14px rgba(8, 94, 72, 0.055) !important;
@@ -4343,6 +4343,30 @@ body.searched .cb:hover {
   background: rgba(232, 244, 238, 0.92) !important;
   border-color: rgba(14, 163, 123, 0.42) !important;
   color: var(--color-primary, #0EA37B) !important;
+}
+
+/* The blanket "searched .cb" rule above (!important) was flattening the
+   AND/OR filter chip's selected state (.cb.on) to the same pale pill as the
+   unselected one — users couldn't tell which was active. Restore the solid
+   filled selected state, matching !important so it wins. */
+body.searched .ctrls .cb.on,
+body.searched .cb.on {
+  background: var(--ac) !important;
+  border-color: var(--ac) !important;
+  color: #fff !important;
+}
+body.searched .ctrls .cb.on:hover,
+body.searched .cb.on:hover {
+  background: var(--ac2, var(--ac)) !important;
+  border-color: var(--ac2, var(--ac)) !important;
+  color: #fff !important;
+}
+/* Dark mode's --ac is a bright mint (#3BE4B8) — white text on it (the
+   pre-existing .cb.on rule above and at its base definition) fails contrast.
+   Use dark ink instead, same pattern as [data-theme="dark"] .cb below. */
+[data-theme="dark"] .cb.on,
+[data-theme="dark"] body.searched .cb.on {
+  color: #06231C !important;
 }
 
 /* Make searched results feel less like the old mode */
@@ -4575,7 +4599,7 @@ body:not(.searched) .brand-hero-stats .stat-num {
 }
 body:not(.searched) .brand-hero-stats .stat-code-chip {
   background: rgba(255,255,255,0.92) !important;
-  border: 1px solid rgba(8, 94, 72, 0.14) !important;
+  border: 1px solid rgba(8, 94, 72, 0.65) !important;
   color: #0b5f50 !important;
   box-shadow: 0 2px 8px rgba(8, 94, 72, 0.06);
 }
@@ -4860,11 +4884,11 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title { color: #073
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title em { color: #E85446; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-sub { color: #3A544C; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-proof-chip {
-  border-color: #E0D6C2; background: #FFFCF5; color: #3A544C;
+  border-color: #998058; background: #FFFCF5; color: #3A544C;
 }
 /* gateway search box → light */
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
   box-shadow: 0 8px 28px -10px rgba(7,59,50,.16);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search:hover,
@@ -4877,7 +4901,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-icon { backgro
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-kbd { color: #3A544C; }
 /* gateway tool cards → light with colored accent icons */
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
   box-shadow: 0 6px 20px -12px rgba(7,59,50,.20);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-label { color: #073B32; }
@@ -4887,22 +4911,34 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-hikorea .p-gw-ca
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-ai .p-gw-card-icon { color: #E85446; }
 /* hero action buttons + search bar (direct-search) → light */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn {
-  background: rgba(255,252,245,.9); border: 1px solid #E0D6C2; color: #073B32;
+  background: rgba(255,252,245,.9); border: 1px solid #998058; color: #073B32;
   box-shadow: 0 4px 16px rgba(7,59,50,.06);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn:hover {
   background: #FFFCF5; border-color: #0E8A6B; color: #073B32;
 }
 body.landing:not([data-theme="dark"]):not(.searched) .sbar {
-  background: #FFFCF5; border: 1px solid #E0D6C2; box-shadow: 0 6px 20px rgba(7,59,50,.06);
+  background: #FFFCF5; border: 1px solid #998058; box-shadow: 0 6px 20px rgba(7,59,50,.06);
 }
 body.landing:not([data-theme="dark"]):not(.searched) #q { color: #073B32; }
 body.landing:not([data-theme="dark"]):not(.searched) #q::placeholder { color: #6E7A74; }
 body.landing:not([data-theme="dark"]):not(.searched) .sbar-icon,
 body.landing:not([data-theme="dark"]):not(.searched) .sbar-go { color: #0E8A6B; }
 body.landing:not([data-theme="dark"]):not(.searched) .xb { color: #6E7A74; }
-body.landing:not([data-theme="dark"]):not(.searched) .search-toggle-btn { border-color: #E0D6C2; color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .search-toggle-btn { border-color: #998058; color: #3A544C; }
 body.landing:not([data-theme="dark"]):not(.searched) .landing-hints-title { color: #6E7A74; }
+/* gateway utility row (국적별 단기입국 경로 확인 등) — base .p-gw-util styling is
+   near-white text on a transparent/dark-tinted border meant for the old dark
+   hero; it was never given a light-hero override like the other gateway
+   buttons, so it rendered as washed-out, barely visible text on the cream
+   surface. */
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util {
+  border-color: #998058; color: #073B32;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:hover,
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:focus-visible {
+  border-color: #0B7357; background: rgba(11,115,87,0.08); color: #073B32;
+}
 /* neutralise the dark top scrim (::after) — it existed only for legibility over
    the dark photo hero; on the light hero it becomes a soft lavender bloom */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
@@ -4913,7 +4949,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .city-btn,
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .theme-btn,
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .language-btn {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
 }
 /* the hero-container's own dark background was covering the cream ::before
    aurora (which sits at z-index:-2); make it transparent so the light hero
@@ -10963,7 +10999,7 @@ button[data-keyword]:focus-visible {
 button[data-keyword] {
   background: rgba(252, 250, 245, 0.94) !important;
   color: #152823 !important;
-  border-color: rgba(216, 202, 176, 0.95) !important;
+  border-color: rgba(153, 128, 88, 0.95) !important;
   font-weight: 800 !important;
   opacity: 1 !important;
 }
