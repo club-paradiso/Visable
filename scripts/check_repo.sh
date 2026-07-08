@@ -133,6 +133,15 @@ echo "[5/12] Running source-monitoring report (local-only)..."
 # data/source_registry.json itself is malformed.
 python3 scripts/check_source_updates.py --local-only > /dev/null
 
+echo "[5a2/14] Validating manual-sync pipeline (structured diff + board monitor)..."
+# Stdlib-only, offline. Unit tests for the manual-version structured diff and the
+# HiKorea board-change detector, plus an offline run of the detector to confirm
+# its watch config parses and the offline default is a safe no-op. None of these
+# touch the network or any production/protected data file.
+python3 scripts/tests/test_diff_manual_versions.py
+python3 scripts/tests/test_monitor_hikorea_manual_board.py
+python3 scripts/monitor_hikorea_manual_board.py > /dev/null
+
 echo "[5b/14] Validating source-grounding metadata model (schema + registry/manifest parity)..."
 # Stdlib-only, offline. Enforces the SourceRecord/EvidenceRecord/AnswerGrounding
 # model in data/schemas/source_grounding_schema.json. Fails only on schema/enum

@@ -28,6 +28,74 @@ report; the reviewer performs the real extraction before anything is promoted.
 | `scripts/tests/test_convert_manual_hwp.py` | Tests: missing backends, stub output, fake-confident backend, blocked-distribution classification, benchmark generation, production data untouched. |
 | `scripts/sync_hikorea_manuals.py` | Obtain candidate HWP (manual input or best-effort download), sha256-compare to baseline, stage + convert changed ones, emit `build/manual-sync/{summary.json,pr_body.md}`. No production writes. |
 | `.github/workflows/hikorea-manual-sync.yml` | Twice-monthly + `workflow_dispatch`; installs tooling; on change opens a draft PR. |
+| `scripts/diff_manual_versions.py` | Structured diff between two extractions of the same manual → which pages changed and which 체류자격 codes they touch. Review artifact only. |
+| `scripts/tests/test_diff_manual_versions.py` | Tests: both extraction schemas, change/insert/delete code mapping with no false positives, mismatch heuristic, protected-file immutability. |
+| `data/sources/hikorea_manual_board_watch.json` | Board watch config: HiKorea 자료실/공지 board URLs + committed baseline fingerprints. |
+| `scripts/monitor_hikorea_manual_board.py` | Fetches (allowlisted) the watched boards, fingerprints them, flags a change vs baseline. Advisory only; never downloads a manual. |
+| `scripts/tests/test_monitor_hikorea_manual_board.py` | Tests: unchanged/changed/baseline-unset/unreachable, host allowlist, offline default, protected-file immutability. |
+| `.github/workflows/hikorea-manual-board-monitor.yml` | Weekly + `workflow_dispatch`; runs the board monitor and opens/updates a tracking issue on change. |
+
+## End-to-end automation flow
+
+```
+                    ┌─────────────────────────────────────────────┐
+   weekly cron ───▶ │ hikorea-manual-board-monitor.yml            │
+                    │  monitor_hikorea_manual_board.py            │
+                    │  fingerprint 자료실/공지 board vs baseline  │
+                    └───────────────┬─────────────────────────────┘
+                       change?      │ opens/updates a tracking ISSUE
+                                    ▼   (unreachable → no issue, brief in artifact)
+              ┌──────────────────────────────────────────────────┐
+   human ───▶ │ downloads the new HWP, does a verified extraction │
+              │ (distribution HWP cannot be auto-extracted)       │
+              └───────────────┬──────────────────────────────────┘
+                              │ workflow_dispatch with the HWP + --new-extract
+                              ▼
+              ┌──────────────────────────────────────────────────┐
+              │ hikorea-manual-sync.yml → sync_hikorea_manuals.py │
+              │  detect (sha256) · stage · best-effort convert    │
+              │  + diff_manual_versions.py → affected 체류자격     │
+              │  opens a DRAFT PR (never edits production data)    │
+              └───────────────┬──────────────────────────────────┘
+                              │ human reviews affected codes, promotes with review
+                              ▼
+                    verified data update (authoring pipeline)
+```
+
+The automation covers everything *around* the two irreducibly-human steps
+(verified extraction of the distribution HWP, and promotion of legal content):
+**detection**, **structured diffing**, **affected-code mapping**, and **PR
+assembly**. What used to be "notice the update, download it, and diff a
+487/780-page manual by hand" is now a tracking issue plus an affected-code table
+in the draft PR.
+
+### Structured diff — usage
+
+```
+python3 scripts/diff_manual_versions.py \
+  --old backend/data/sources/manuals/<old>_sections.json \
+  --new backend/data/sources/manuals/<new>_sections.json \
+  --role stay \
+  --out-md build/manual-diff/stay.md --out-json build/manual-diff/stay.json
+```
+
+Accepts either `*_sections.json` (preferred — carries per-page
+`status_codes_detected`) or the page-anchored `*_readable.txt`, in either
+extraction schema. Compare **same-pipeline** extractions: a diff between two
+differently-extracted files is dominated by extraction noise, which the tool
+flags as `extraction_mismatch_suspected`. `sync_hikorea_manuals.py` runs this
+automatically when a maintainer passes `--new-extract id=PATH`.
+
+### Board monitor — reachability
+
+The monitor only ever contacts `hikorea.go.kr` / `immigration.go.kr` (host
+allowlist + blocked off-host redirects + size cap). Korean government sites may
+block CI egress; an unreachable target is reported as `unreachable` (never a
+false "changed") and does **not** open an issue — the brief is uploaded as a
+run artifact so the operator can see monitoring could not run. After handling a
+detected change, bump `baseline_content_hash` in the watch config so the next
+change is detected fresh (same human-bumped-baseline pattern as
+`baseline_sha256`).
 
 ## Optional converter backends
 
