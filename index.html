@@ -13988,18 +13988,31 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
       border: 1px solid rgba(255,255,255,0.09);
       box-shadow: 0 26px 64px -20px rgba(8,60,48,.55), inset 0 1px 0 rgba(255,255,255,.07); }
     .bi-name-lab { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+      color: rgba(255,255,255,0.78); margin-bottom: 1.5rem; }
     .bi-name-eq { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: clamp(0.5rem, 2vw, 1.3rem);
-      font-size: clamp(1.4rem, 4.2vw, 2.3rem); font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: -0.01em; }
+      font-size: clamp(1.4rem, 4.2vw, 2.3rem); font-weight: 500; color: rgba(255,255,255,0.8); letter-spacing: -0.01em; }
     .bi-name-frag i { font-style: normal; color: #7DD8B8; font-weight: 700; }
-    .bi-name-frag span { color: rgba(255,255,255,0.72); }
+    .bi-name-frag span { color: rgba(255,255,255,0.85); }
     .bi-name-op { color: #FF8B7A; font-weight: 600; transform: translateY(-0.05em); }
     .bi-name-out { margin-top: clamp(0.7rem, 2vw, 1.2rem); font-size: clamp(3rem, 9.5vw, 5.6rem); font-weight: 800;
       letter-spacing: -0.035em; line-height: 1; color: #FBF5E6; }
     .bi-name-out i { font-style: normal; color: #7DD8B8; }
     .bi-name-out em { font-style: normal; color: #FF8B7A; }
     .bi-name-cap { margin: clamp(1.2rem, 3vw, 1.7rem) auto 0; max-width: 34ch; font-size: 0.98rem; line-height: 1.7;
-      color: rgba(255,255,255,0.66); word-break: keep-all; }
+      color: rgba(255,255,255,0.85); word-break: keep-all; }
+    /* .bi-name is a self-contained dark-gradient card with its own light-on-
+       dark palette (see .bi-name above). The Phase 12C/12D blanket "readable
+       contrast" rules (both !important) force every p/span/strong inside
+       .about-me to an ink color meant for the surrounding LIGHT paper cards —
+       they predate/don't know about this nested dark sub-card, so they were
+       clobbering .bi-name-cap, .bi-name-lab and .bi-name-frag span to
+       near-invisible ink-on-dark-green. Restore this card's own palette,
+       matching !important so it actually wins the cascade. */
+    body:not(.searched) .about-me span.bi-name-lab { color: rgba(255,255,255,0.78) !important; }
+    body:not(.searched) .about-me .bi-name-eq { color: rgba(255,255,255,0.8) !important; }
+    body:not(.searched) .about-me .bi-name-frag span { color: rgba(255,255,255,0.85) !important; }
+    body:not(.searched) .about-me p.bi-name-cap { color: rgba(255,255,255,0.85) !important; }
+    body:not(.searched) .about-me span.bi-name-op { color: #FFB199 !important; }
     /* clean up the legacy dotted texture on value cards */
     #aboutMe.bi-upgraded .hobby-card { background-image: none; }
 
