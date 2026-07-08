@@ -35,6 +35,58 @@ CONFIG = ROOT / "data/sources/hikorea_manual_sync.json"
 INCOMING = ROOT / "docs/source-manuals/incoming"
 OUTDIR = ROOT / "build/manual-sync"
 CONVERT = ROOT / "scripts/convert_manual_hwp.py"
+DIFF_TOOL = ROOT / "scripts/diff_manual_versions.py"
+
+# Maps a sync-config manual id to the --role the structured diff expects.
+_MANUAL_ROLE = {"visa_manual": "visa", "stay_manual": "stay"}
+
+
+def _resolve_extract(spec_map: dict, mid: str, config_entry: dict) -> Path | None:
+    """Resolve the extracted-text path for one side of the structured diff.
+
+    Preference: an explicit --old-extract/--new-extract mapping wins; otherwise
+    fall back to a path declared in the sync config (``sections_path`` preferred
+    for its per-page code mapping, else the verified ``txt_path``).
+    """
+    if mid in spec_map and spec_map[mid].exists():
+        return spec_map[mid]
+    for key in ("sections_path", "txt_path"):
+        rel = config_entry.get(key)
+        if rel:
+            p = ROOT / rel
+            if p.exists():
+                return p
+    return None
+
+
+def run_structured_diff(mid: str, old_extract: Path, new_extract: Path) -> dict:
+    """Run diff_manual_versions.py for a changed manual; return a compact summary.
+
+    Writes the full Markdown + JSON report under build/manual-sync/<id>.manual-diff.*
+    and returns {ok, summary, md_path, affected_codes} for the PR body. Never
+    raises — a diff failure degrades to {ok: False, error: ...}.
+    """
+    role = _MANUAL_ROLE.get(mid, "stay")
+    md_path = OUTDIR / f"{mid}.manual-diff.md"
+    json_path = OUTDIR / f"{mid}.manual-diff.json"
+    cmd = [
+        sys.executable, str(DIFF_TOOL),
+        "--old", str(old_extract), "--new", str(new_extract),
+        "--role", role,
+        "--out-md", str(md_path), "--out-json", str(json_path),
+    ]
+    try:
+        subprocess.run(cmd, check=True, capture_output=True, timeout=300)
+        report = json.loads(json_path.read_text(encoding="utf-8"))
+        return {
+            "ok": True,
+            "summary": report.get("summary", {}),
+            "affected_codes": [a["code"] for a in report.get("affected_codes", [])],
+            "md_path": str(md_path.relative_to(ROOT)),
+            "json_path": str(json_path.relative_to(ROOT)),
+        }
+    except Exception as e:  # noqa: BLE001 - diff is advisory; never break sync
+        return {"ok": False, "error": str(e)}
 
 
 def sha256_file(path: Path) -> str:
@@ -61,15 +113,27 @@ def main() -> int:
                     help="permit best-effort download from configured download_url")
     ap.add_argument("--input", action="append", default=[], metavar="id=PATH",
                     help="manually-provided HWP for a manual id (repeatable)")
+    ap.add_argument("--new-extract", action="append", default=[], metavar="id=PATH",
+                    help="verified NEW extracted text (*_sections.json or *_readable.txt) "
+                         "for a changed manual; enables the structured diff (repeatable)")
+    ap.add_argument("--old-extract", action="append", default=[], metavar="id=PATH",
+                    help="override the OLD extracted-text baseline for the structured diff "
+                         "(defaults to the config's sections_path/txt_path; repeatable)")
     args = ap.parse_args()
 
-    manual_inputs = {}
-    for spec in args.input:
-        if "=" not in spec:
-            print(f"ERROR: --input must be id=PATH, got {spec!r}", file=sys.stderr)
-            return 0
-        mid, p = spec.split("=", 1)
-        manual_inputs[mid.strip()] = Path(p).expanduser()
+    def _parse_id_paths(specs, flag):
+        out = {}
+        for spec in specs:
+            if "=" not in spec:
+                print(f"ERROR: {flag} must be id=PATH, got {spec!r}", file=sys.stderr)
+                continue
+            mid, p = spec.split("=", 1)
+            out[mid.strip()] = Path(p).expanduser()
+        return out
+
+    manual_inputs = _parse_id_paths(args.input, "--input")
+    new_extracts = _parse_id_paths(args.new_extract, "--new-extract")
+    old_extracts = _parse_id_paths(args.old_extract, "--old-extract")
 
     config = json.loads(CONFIG.read_text(encoding="utf-8"))
     INCOMING.mkdir(parents=True, exist_ok=True)
@@ -133,6 +197,23 @@ def main() -> int:
                     entry["candidate_backend"] = b.get("candidate_backend")
             except Exception as e:  # noqa: BLE001
                 entry["detail"] += f" · conversion error: {e}"
+
+            # Structured diff (advisory review artifact). Runs when a verified
+            # NEW extraction is available (maintainer-supplied via --new-extract,
+            # since distribution HWP cannot be auto-extracted) and an OLD
+            # extraction baseline exists. Never edits production data.
+            new_extract = _resolve_extract(new_extracts, mid, m)
+            old_extract = _resolve_extract(old_extracts, mid, m)
+            # Only treat an explicitly-supplied new extraction as "new"; the
+            # config fallbacks are baselines, not the incoming version.
+            if mid in new_extracts and new_extract and old_extract:
+                entry["structured_diff"] = run_structured_diff(mid, old_extract, new_extract)
+            else:
+                entry["structured_diff"] = {
+                    "ok": False,
+                    "error": "no verified new extraction supplied (--new-extract id=PATH); "
+                             "structured diff pending human/AI extraction of the distribution HWP",
+                }
             results.append(entry)
 
     changed = [r for r in results if r["status"] == "changed"]
@@ -159,6 +240,32 @@ def main() -> int:
             ]
             if r.get("report"):
                 lines += ["<details><summary>converter benchmark</summary>", "", r["report"], "</details>", ""]
+
+            sd = r.get("structured_diff") or {}
+            if sd.get("ok"):
+                s = sd.get("summary", {})
+                codes = sd.get("affected_codes", [])
+                lines += [
+                    "#### 구조적 diff — 영향받는 체류자격",
+                    f"- 변경 페이지 **{s.get('pages_changed', 0)}**, 추가 "
+                    f"**{s.get('pages_added', 0)}**, 삭제 **{s.get('pages_removed', 0)}** · "
+                    f"영향 코드 **{s.get('affected_code_count', 0)}** "
+                    f"(상위코드 {s.get('affected_base_code_count', 0)})",
+                ]
+                if s.get("extraction_mismatch_suspected"):
+                    lines.append(
+                        "- ⚠️ 변경률이 매우 높습니다 — 두 추출본이 서로 다른 파이프라인으로 "
+                        "만들어졌을 수 있습니다(diff가 추출 노이즈에 지배). 같은 방식으로 추출한 "
+                        "두 버전을 비교하세요.")
+                if codes:
+                    preview = ", ".join(codes[:40]) + (f" …(+{len(codes) - 40})" if len(codes) > 40 else "")
+                    lines.append(f"- 영향 코드: {preview}")
+                lines += [
+                    f"- 전체 리포트: `{sd.get('md_path')}` (+ JSON `{sd.get('json_path')}`)",
+                    "",
+                ]
+            elif sd.get("error"):
+                lines += [f"#### 구조적 diff: 생략 — {sd['error']}", ""]
         if not any_confident:
             lines += [
                 "> **Do not merge as a verified manual text update.** This PR only"
@@ -170,6 +277,7 @@ def main() -> int:
             "## Reviewer checklist (before merge)",
             "- [ ] Confirm the staged HWP under `docs/source-manuals/incoming/` is the genuine official file.",
             "- [ ] These are 배포용(distribution) HWP — perform a verified (human/AI-assisted) full extraction; do NOT trust the best-effort text.",
+            "- [ ] Review the structured diff (affected 체류자격 above / `build/manual-sync/*.manual-diff.md`) and re-check each affected status record against the manual source.",
             "- [ ] Move the HWP to its canonical `docs/source-manuals/...` path and update the verified `*_hwp_full.txt`.",
             "- [ ] Update `baseline_sha256` in `data/sources/hikorea_manual_sync.json`.",
             "- [ ] Run the data audits and decide, with review, whether any grounding data changes follow.",
