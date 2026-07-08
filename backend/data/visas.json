@@ -23067,6 +23067,57 @@
             "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
             "sourceId": "stay_manual_2026_06_23_pdf"
           }
+        ],
+        "variants": [
+          {
+            "id": "f-1-5-extension",
+            "labelKo": "결혼이민자의 부모 등 가족(F-1-5) 체류기간 연장",
+            "scenarioKo": "자녀 양육지원 목적으로 결혼이민자의 부모 등 가족(F-1-5) 자격으로 체류 중인 결혼이민자의 본국 가족이 체류기간 연장을 신청하는 경우",
+            "requiredDocs": {
+              "commonDocs": [
+                "통합신청서 (별지 제34호 서식)",
+                "여권",
+                "증명사진(단, 체류연장할 때 등록증에 칸이 남아있으면 사진 없어도 됨)",
+                "신원보증서",
+                "거주/숙소 제공 확인서",
+                "초청인의 기본증명서",
+                "초청인의 가족관계증명서",
+                "초청인의 혼인관계증명서(상세)",
+                "초청인의 주민등록등본",
+                "자녀명의 가족관계증명서(자녀 1명당 1개)",
+                "수입인지 6만원"
+              ],
+              "requiredDocs": [],
+              "additionalDocs": [],
+              "conditionalDocs": [
+                "임신진단서",
+                "자녀 재학증명서"
+              ]
+            },
+            "manualRefs": [
+              {
+                "manualName": "체류민원",
+                "manualType": "stay",
+                "manualVersion": "2026.6",
+                "sourceDate": "2026-06-23",
+                "sourceFile": "backend/data/sources/manuals/260623_stay_manual_readable.txt",
+                "pageRange": "p. 359",
+                "section": "12. 자녀양육 지원 등 목적으로 입국한 결혼이민자의 부모 등 가족(F-1-5) - 나. 체류기간 연장",
+                "confidence": "status_source_map_260623_pdf",
+                "needsManualReview": true,
+                "reviewReason": "증명사진 생략 조건, 신원보증서, 거주/숙소 제공 확인서, 수입인지 금액은 편집자 지시로 추가되어 매뉴얼 원문 페이지 대조가 아직 필요합니다. '초청인' 표기는 매뉴얼 원문 용어를 따랐습니다.",
+                "sourcePdf": "backend/data/sources/manuals/260623_stay_manual_exported.pdf",
+                "sourceId": "stay_manual_2026_06_23_pdf"
+              }
+            ],
+            "notes": [
+              "이 항목은 자녀 양육지원 목적의 F-1-5 체류기간 연장 시나리오에만 적용됩니다. 중증질환·중증장애 등 인도적 사정 시나리오는 별도 확인이 필요합니다.",
+              "초청인은 F-1-5 신청인을 초청한 결혼이민자(F-6 등)를 의미합니다.",
+              "자녀가 2명 이상인 경우 모든 자녀의 가족관계증명서를 제출하며, 친양자인 경우 초청인의 친양자입양관계증명서를 추가 제출합니다.",
+              "자녀가 취학연령인데 초청인이 취학의무를 이행하지 않을 경우 신청인의 체류기간 연장이 제한될 수 있습니다."
+            ],
+            "statusCode": "F-1-5"
+          }
         ]
       },
       "registration": {
