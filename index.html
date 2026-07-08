@@ -55,7 +55,7 @@
   --p-ink:        #0E1F1A;
   --p-ink-2:      #233530;
   --p-ink-3:      #4A5852;
-  --p-ink-mute:   #7A8580;
+  --p-ink-mute:   #5E6961;
   --p-paper:      #F4EEE0;
   --p-paper-2:    #EAE2D0;
   --p-paper-3:    #DDD4BD;
@@ -110,7 +110,7 @@
      Lavender #7485FF, Cream #F4EFE4, Paper #FFFCF5, Coral #FF6B5E. On the light
      (cream) surface, raw Mint fails text contrast, so --color-primary stays an
      accessible mint-green; raw Mint (--color-mint) is for bright accents only. */
-  --color-primary: #0E8A6B;
+  --color-primary: #0B7357;
   --color-primary-ink: #073B32;
   --color-primary-soft: #B8F2E0;
   --color-mint: #3BE4B8;
@@ -121,13 +121,16 @@
   --color-accent:  #FF6B5E;
   --color-accent-deep: #E85446;
   --color-accent-soft: #FFC4B8;
+  /* Accessible accent tone for SMALL accent-coloured text (labels, time,
+     language codes). Raw --color-accent fails contrast at body sizes. */
+  --accent-strong: #B23A2E;
   --color-surface: #FFFCF5;
   --color-surface-2: #F4EFE4;
   --color-surface-dark: #073B32;
   --color-text: #073B32;
   --color-text-muted: #3A544C;
-  --color-border: #E0D6C2;
-  --color-success: #0E8A6B;
+  --color-border: #998058;
+  --color-success: #0B7357;
   --color-warning: #E68A3A;
   --color-error:   #E05B4A;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 16px; --radius-full: 9999px;
@@ -135,15 +138,15 @@
 
   /* Legacy Mapped Vars */
   --bg0: #F4EFE4; --bg1: #FFFCF5; --bg2: #ECE5D6; --bg3: #E0D8C6;
-  --bgI: #FFFCF5; --bd: #E0D6C2; --bd2: #E8DECB; --bd3: #D6CAB2;
-  --t1: #073B32; --t2: #3A544C; --t3: #6E7A74;
-  --ac: #0E8A6B; --ac2: #073B32;
+  --bgI: #FFFCF5; --bd: #998058; --bd2: #998058; --bd3: #A6906A;
+  --t1: #073B32; --t2: #3A544C; --t3: #5A655D;
+  --ac: #0B7357; --ac2: #073B32;
   --acG: rgba(47,94,103,0.10); --acL: #e1eaec;
   --cy: #FF6B5B; --cyL: #FFE2DB;
   --hlB: #FFE2DB; --hlT: #8A3426;
-  --cSh: #8FA69E; --cSt: #0EA37B; --cWk: #E68A3A;
-  --cIn: #0EA37B; --cFm: #A84A6B; --cOt: #6d28d9;
-  --cDp: #4A5954; --cNh: #0EA37B; --cFq: #E05B4A; --cSc: #7c3aed;
+  --cSh: #8FA69E; --cSt: #0B7357; --cWk: #E68A3A;
+  --cIn: #0B7357; --cFm: #A84A6B; --cOt: #6d28d9;
+  --cDp: #4A5954; --cNh: #0B7357; --cFq: #E05B4A; --cSc: #7c3aed;
   --sh1: 0 1px 2px rgba(24,28,26,0.04);
   --sh2: 0 8px 20px rgba(24,28,26,0.10);
   --shG: 0 0 0 3px rgba(255,107,91,0.25);
@@ -175,6 +178,7 @@
   --ac: #3BE4B8; --ac2: #22C9A0;
   --acG: rgba(52,212,168,0.14); --acL: #163E36;
   --cy: #FF8B7A; --cyL: #3A1E1A;
+  --accent-strong: #FF8B7A;
   --hlB: #3A1E1A; --hlT: #FFB5A5;
   --cNh: #34D4A8; --cFq: #FF8B7A; --cSc: #c084fc;
   --sh1: 0 1px 4px rgba(0,0,0,0.35);
@@ -237,11 +241,14 @@
   /* Foundational surfaces / ink / borders */
   --bg0: #EEF3FF;  --bg1: #FFFFFF;  --bg2: #F4F7FF;  --bg3: #E6EDFF;
   --bgI: #FFFFFF;  --bd: #C2D2EE;   --bd2: #DCE5F8;  --bd3: #AEC2E6;
-  --t1: #141414;   --t2: #353A45;   --t3: #6B7280;
+  --t1: #141414;   --t2: #353A45;   --t3: #606A7A;
 
   /* Links / active states — cyber blue */
   --ac: #2F5EFC;   --ac2: #1B36C9;
   --acG: rgba(47,94,252,0.12); --acL: #E3EAFF;
+  /* Accessible accent tone for SMALL accent-coloured text — raw pink
+     (--color-accent #FF8ED1) drops to ~2:1 on the light pop surfaces. */
+  --accent-strong: #C81E8A;
 
   /* Secondary accent (violet) + lime highlight */
   --cy: #8A74FF;   --cyL: #ECE7FF;
@@ -322,7 +329,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 .easy-mode-btn.is-on .easy-mode-btn-text::after { content: " ✓"; font-weight: 700; }
 .easy-mode-btn:focus-visible { outline: 2px solid var(--color-accent, var(--ac)); outline-offset: 2px; }
 .language-btn { min-width: auto; padding-inline: 0.8rem; }
-.language-btn-code { color: var(--color-accent); font-family: var(--ff-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; }
+.language-btn-code { color: var(--accent-strong, var(--color-accent)); font-family: var(--ff-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; }
 .language-btn-native { font-size: 0.78rem; color: var(--t2); font-weight: 800; }
 .language-menu { display: none; position: absolute; top: calc(100% + 0.5rem); right: 0; width: min(18rem, calc(100vw - 1.5rem)); max-height: min(70vh, 30rem); overflow-y: auto; padding: 0.45rem; border: 1px solid var(--bd); border-radius: 12px; background: color-mix(in srgb, var(--bg1) 94%, white); box-shadow: var(--sh2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 .language-menu.open { display: grid; gap: 0.2rem; }
@@ -330,7 +337,7 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 .language-option:hover,
 .language-option:focus-visible { background: var(--bg2); transform: translateX(2px); }
 .language-option[aria-selected="true"] { background: color-mix(in srgb, var(--ac) 12%, var(--bg2)); color: var(--ac2); }
-.language-option-code { font-family: var(--ff-display); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--color-accent); }
+.language-option-code { font-family: var(--ff-display); font-weight: 700; font-size: 0.72rem; letter-spacing: 0.06em; color: var(--accent-strong, var(--color-accent)); }
 .language-option-name { font-weight: 850; font-size: 0.86rem; }
 .language-option-local { color: var(--t3); font-size: 0.74rem; }
 .language-option-badge { display: inline-block; margin-left: 0.4rem; padding: 0.02rem 0.4rem; border: 1px solid var(--bd2); border-radius: 999px; background: var(--bg0); color: var(--t3); font-size: 0.62rem; font-weight: 800; vertical-align: middle; }
@@ -684,7 +691,7 @@ body.searched .ft { opacity: 1; }
 .ft-logo { font-family: var(--ff-logo) !important; font-size: 0.85rem; font-weight: 400; color: var(--t2); }
 .ai-fab { position: fixed; bottom: 1.5rem; right: 1.5rem; background: transparent; color: var(--t2); border: 1px solid var(--bd2); border-radius: 4px; padding: 0.7rem 1.1rem; min-height: 44px; font-size: 0.83rem; font-weight: 700; font-family: var(--ff) !important; box-shadow: var(--sh2); cursor: pointer; z-index: 1000; transition: background 0.2s, transform 0.2s; display: flex; align-items: center; gap: 0.4rem; text-decoration: none; }
 .ai-fab:hover { background: color-mix(in srgb, var(--ac) 8%, transparent); color: var(--ac2); transform: none; }
-.ai-fab .fab-spark { color: var(--color-accent); font-size: 0.95rem; line-height: 1; }
+.ai-fab .fab-spark { color: var(--accent-strong, var(--color-accent)); font-size: 0.95rem; line-height: 1; }
 
 /* Modals */
 .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 2000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; transition: opacity 0.3s; padding: 1rem; }
@@ -1151,7 +1158,7 @@ body.searched .brand-hero, body.searched .brand-feature, body.searched .about-me
 .brand-hero-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; width: calc(100% - 4rem); max-width: 960px; margin: 0 auto; background: rgba(255,255,255,0.97); border: none; border-radius: 24px; padding: 2.5rem 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.14), 0 4px 16px rgba(0,0,0,0.08); transform: translateY(50%); position: relative; z-index: 10; }
 .stat-card { background: transparent; border: none; border-radius: 0; padding: 1.5rem 1rem; box-shadow: none; transition: transform 0.3s, box-shadow 0.3s, background 0.3s, border-radius 0.3s; } .stat-card:not(:last-child) { border-right: 1px solid #e8e8e8; }
 .stat-card:hover { transform: translateY(-4px); box-shadow: var(--sh2); border-color: color-mix(in srgb, var(--ac) 40%, var(--bd2)); background: var(--bg1, #fff); border-radius: 14px; }
-.stat-num { font-family: var(--ff-display); font-size: 3rem; font-weight: 800; color: var(--color-accent); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
+.stat-num { font-family: var(--ff-display); font-size: 3rem; font-weight: 800; color: var(--color-accent-deep); line-height: 1; margin-bottom: 0.5rem; letter-spacing: -0.02em; }
 .stat-label { font-size: 0.85rem; color: #444; line-height: 1.3; font-weight: 600; }
 .stat-label span[lang="en"] { display: block; font-size: 0.75rem; color: var(--t3); font-weight: 500; margin-top: 0.3rem; }
 
@@ -4300,7 +4307,7 @@ body.searched .search-wrap {
 body.searched .sbar {
   background:
     linear-gradient(135deg, rgba(255,255,255,0.92), rgba(252,250,245,0.82)) !important;
-  border: 1px solid rgba(8, 94, 72, 0.15) !important;
+  border: 1px solid rgba(8, 94, 72, 0.5) !important;
   border-radius: 999px !important;
   box-shadow:
     0 8px 24px rgba(8, 94, 72, 0.08),
@@ -4325,7 +4332,7 @@ body.searched #q::placeholder {
 body.searched .ctrls .cb,
 body.searched .cb {
   background: rgba(255,255,255,0.72) !important;
-  border: 1px solid rgba(8, 94, 72, 0.14) !important;
+  border: 1px solid rgba(8, 94, 72, 0.62) !important;
   color: var(--color-primary-ink, #085E48) !important;
   border-radius: 999px !important;
   box-shadow: 0 4px 14px rgba(8, 94, 72, 0.055) !important;
@@ -4336,6 +4343,30 @@ body.searched .cb:hover {
   background: rgba(232, 244, 238, 0.92) !important;
   border-color: rgba(14, 163, 123, 0.42) !important;
   color: var(--color-primary, #0EA37B) !important;
+}
+
+/* The blanket "searched .cb" rule above (!important) was flattening the
+   AND/OR filter chip's selected state (.cb.on) to the same pale pill as the
+   unselected one — users couldn't tell which was active. Restore the solid
+   filled selected state, matching !important so it wins. */
+body.searched .ctrls .cb.on,
+body.searched .cb.on {
+  background: var(--ac) !important;
+  border-color: var(--ac) !important;
+  color: #fff !important;
+}
+body.searched .ctrls .cb.on:hover,
+body.searched .cb.on:hover {
+  background: var(--ac2, var(--ac)) !important;
+  border-color: var(--ac2, var(--ac)) !important;
+  color: #fff !important;
+}
+/* Dark mode's --ac is a bright mint (#3BE4B8) — white text on it (the
+   pre-existing .cb.on rule above and at its base definition) fails contrast.
+   Use dark ink instead, same pattern as [data-theme="dark"] .cb below. */
+[data-theme="dark"] .cb.on,
+[data-theme="dark"] body.searched .cb.on {
+  color: #06231C !important;
 }
 
 /* Make searched results feel less like the old mode */
@@ -4568,7 +4599,7 @@ body:not(.searched) .brand-hero-stats .stat-num {
 }
 body:not(.searched) .brand-hero-stats .stat-code-chip {
   background: rgba(255,255,255,0.92) !important;
-  border: 1px solid rgba(8, 94, 72, 0.14) !important;
+  border: 1px solid rgba(8, 94, 72, 0.65) !important;
   color: #0b5f50 !important;
   box-shadow: 0 2px 8px rgba(8, 94, 72, 0.06);
 }
@@ -4591,7 +4622,7 @@ body:not(.searched) .hero-ai-secondary {
   color: var(--color-accent, #FF6B5B);
 }
 .ai-fab .fab-spark {
-  color: var(--color-accent, #FF6B5B);
+  color: var(--accent-strong, var(--color-accent, #FF6B5B));
 }
 body:not(.searched) .figma-anagram-section #anagram-bot .anagram-letter,
 .figma-anagram-section .anagram-letter.anagram-bot {
@@ -4848,16 +4879,16 @@ body.landing:not([data-theme="dark"]):not(.searched) .k-masthead,
 body.landing:not([data-theme="dark"]):not(.searched) .k-marquee { opacity: 0 !important; }
 /* hero copy → Ink */
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-copy { color: #073B32; }
-body.landing:not([data-theme="dark"]):not(.searched) .p-hero-eyebrow { color: #0E8A6B; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-eyebrow { color: #0B7357; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title { color: #073B32; }
-body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title em { color: #FF6B5E; }
+body.landing:not([data-theme="dark"]):not(.searched) .p-hero-title em { color: #E85446; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-hero-sub { color: #3A544C; }
 body.landing:not([data-theme="dark"]):not(.searched) .p-proof-chip {
-  border-color: #E0D6C2; background: #FFFCF5; color: #3A544C;
+  border-color: #998058; background: #FFFCF5; color: #3A544C;
 }
 /* gateway search box → light */
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
   box-shadow: 0 8px 28px -10px rgba(7,59,50,.16);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search:hover,
@@ -4870,7 +4901,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-icon { backgro
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-search-kbd { color: #3A544C; }
 /* gateway tool cards → light with colored accent icons */
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
   box-shadow: 0 6px 20px -12px rgba(7,59,50,.20);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-label { color: #073B32; }
@@ -4880,22 +4911,34 @@ body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-hikorea .p-gw-ca
 body.landing:not([data-theme="dark"]):not(.searched) .p-gw-card-ai .p-gw-card-icon { color: #E85446; }
 /* hero action buttons + search bar (direct-search) → light */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn {
-  background: rgba(255,252,245,.9); border: 1px solid #E0D6C2; color: #073B32;
+  background: rgba(255,252,245,.9); border: 1px solid #998058; color: #073B32;
   box-shadow: 0 4px 16px rgba(7,59,50,.06);
 }
 body.landing:not([data-theme="dark"]):not(.searched) .hero-action-btn:hover {
   background: #FFFCF5; border-color: #0E8A6B; color: #073B32;
 }
 body.landing:not([data-theme="dark"]):not(.searched) .sbar {
-  background: #FFFCF5; border: 1px solid #E0D6C2; box-shadow: 0 6px 20px rgba(7,59,50,.06);
+  background: #FFFCF5; border: 1px solid #998058; box-shadow: 0 6px 20px rgba(7,59,50,.06);
 }
 body.landing:not([data-theme="dark"]):not(.searched) #q { color: #073B32; }
 body.landing:not([data-theme="dark"]):not(.searched) #q::placeholder { color: #6E7A74; }
 body.landing:not([data-theme="dark"]):not(.searched) .sbar-icon,
 body.landing:not([data-theme="dark"]):not(.searched) .sbar-go { color: #0E8A6B; }
 body.landing:not([data-theme="dark"]):not(.searched) .xb { color: #6E7A74; }
-body.landing:not([data-theme="dark"]):not(.searched) .search-toggle-btn { border-color: #E0D6C2; color: #3A544C; }
+body.landing:not([data-theme="dark"]):not(.searched) .search-toggle-btn { border-color: #998058; color: #3A544C; }
 body.landing:not([data-theme="dark"]):not(.searched) .landing-hints-title { color: #6E7A74; }
+/* gateway utility row (국적별 단기입국 경로 확인 등) — base .p-gw-util styling is
+   near-white text on a transparent/dark-tinted border meant for the old dark
+   hero; it was never given a light-hero override like the other gateway
+   buttons, so it rendered as washed-out, barely visible text on the cream
+   surface. */
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util {
+  border-color: #998058; color: #073B32;
+}
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:hover,
+body.landing:not([data-theme="dark"]):not(.searched) .p-gw-util:focus-visible {
+  border-color: #0B7357; background: rgba(11,115,87,0.08); color: #073B32;
+}
 /* neutralise the dark top scrim (::after) — it existed only for legibility over
    the dark photo hero; on the light hero it becomes a soft lavender bloom */
 body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
@@ -4906,7 +4949,7 @@ body.landing:not([data-theme="dark"]):not(.searched) .hero-container::after {
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .city-btn,
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .theme-btn,
 body.landing:not([data-theme="dark"]):not(.searched) .top-ctrls .language-btn {
-  background: #FFFCF5; border: 1px solid #E0D6C2; color: #073B32;
+  background: #FFFCF5; border: 1px solid #998058; color: #073B32;
 }
 /* the hero-container's own dark background was covering the cream ::before
    aurora (which sits at z-index:-2); make it transparent so the light hero
@@ -6956,8 +6999,10 @@ body.searched .hikorea-landing-cta { display: none; }
    ============================================================ */
 
 :root {
-  /* canonical emerald CTA family (HiKorea + visit reservation) */
-  --p-emerald:      #0EA37B;
+  /* canonical emerald CTA family (HiKorea + visit reservation).
+     Deepened from #0EA37B so white button text and green label text both
+     clear WCAG AA at body sizes on the light paper surface. */
+  --p-emerald:      #0B7357;
   --p-emerald-deep: #085E48;
   --p-emerald-glow: 0 4px 18px rgba(14,163,123,0.42), 0 2px 6px rgba(14,163,123,0.22);
   --p-emerald-glow-hover: 0 8px 24px rgba(14,163,123,0.52), 0 4px 10px rgba(14,163,123,0.28);
@@ -10954,7 +10999,7 @@ button[data-keyword]:focus-visible {
 button[data-keyword] {
   background: rgba(252, 250, 245, 0.94) !important;
   color: #152823 !important;
-  border-color: rgba(216, 202, 176, 0.95) !important;
+  border-color: rgba(153, 128, 88, 0.95) !important;
   font-weight: 800 !important;
   opacity: 1 !important;
 }
@@ -11777,6 +11822,10 @@ body.searched .hero-container::before {
   pointer-events: none;
 }
 :root[data-theme="archive_diary"] body:not(.searched) .brand-wordmark-img { filter: none !important; }
+/* Pop (archive_diary) landing: the wordmark sits on the blue sky→blue logo
+   board above, so it must stay WHITE for legibility. This overrides the
+   light-hero rule that swaps to the ink wordmark for every non-dark theme. */
+:root[data-theme="archive_diary"] body.landing:not(.searched) .brand-wordmark-img { content: url("assets/brand/visable-wordmark-white.svg") !important; }
 
 /* Hero copy — pixel eyebrow (1 of 2 pixel spots), giant display title, blue-tint highlighter */
 :root[data-theme="archive_diary"] .p-hero-eyebrow {
@@ -13381,7 +13430,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <button id="cityBtn" class="city-btn" aria-label="위치 및 시간 설정" data-action="toggle-city">
             <span id="cityBtnFlag" style="font-size:0.95rem;">🌐</span>
             <span id="cityBtnLabel">Seoul</span>
-            <span id="cityBtnTime" style="font-family:var(--ff-display); font-variant-numeric:tabular-nums; color:var(--color-accent); font-weight:700; letter-spacing:0.02em;">—:—</span>
+            <span id="cityBtnTime" style="font-family:var(--ff-display); font-variant-numeric:tabular-nums; color:var(--accent-strong); font-weight:700; letter-spacing:0.02em;">—:—</span>
         </button>
         <div id="cityMenu" class="city-menu">
             <input type="text" id="citySearch" class="city-search-input" placeholder="도시 검색..." aria-label="도시 이름 검색">
@@ -13975,18 +14024,31 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
       border: 1px solid rgba(255,255,255,0.09);
       box-shadow: 0 26px 64px -20px rgba(8,60,48,.55), inset 0 1px 0 rgba(255,255,255,.07); }
     .bi-name-lab { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.28em; text-transform: uppercase;
-      color: rgba(255,255,255,0.5); margin-bottom: 1.5rem; }
+      color: rgba(255,255,255,0.78); margin-bottom: 1.5rem; }
     .bi-name-eq { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: clamp(0.5rem, 2vw, 1.3rem);
-      font-size: clamp(1.4rem, 4.2vw, 2.3rem); font-weight: 500; color: rgba(255,255,255,0.55); letter-spacing: -0.01em; }
+      font-size: clamp(1.4rem, 4.2vw, 2.3rem); font-weight: 500; color: rgba(255,255,255,0.8); letter-spacing: -0.01em; }
     .bi-name-frag i { font-style: normal; color: #7DD8B8; font-weight: 700; }
-    .bi-name-frag span { color: rgba(255,255,255,0.72); }
+    .bi-name-frag span { color: rgba(255,255,255,0.85); }
     .bi-name-op { color: #FF8B7A; font-weight: 600; transform: translateY(-0.05em); }
     .bi-name-out { margin-top: clamp(0.7rem, 2vw, 1.2rem); font-size: clamp(3rem, 9.5vw, 5.6rem); font-weight: 800;
       letter-spacing: -0.035em; line-height: 1; color: #FBF5E6; }
     .bi-name-out i { font-style: normal; color: #7DD8B8; }
     .bi-name-out em { font-style: normal; color: #FF8B7A; }
     .bi-name-cap { margin: clamp(1.2rem, 3vw, 1.7rem) auto 0; max-width: 34ch; font-size: 0.98rem; line-height: 1.7;
-      color: rgba(255,255,255,0.66); word-break: keep-all; }
+      color: rgba(255,255,255,0.85); word-break: keep-all; }
+    /* .bi-name is a self-contained dark-gradient card with its own light-on-
+       dark palette (see .bi-name above). The Phase 12C/12D blanket "readable
+       contrast" rules (both !important) force every p/span/strong inside
+       .about-me to an ink color meant for the surrounding LIGHT paper cards —
+       they predate/don't know about this nested dark sub-card, so they were
+       clobbering .bi-name-cap, .bi-name-lab and .bi-name-frag span to
+       near-invisible ink-on-dark-green. Restore this card's own palette,
+       matching !important so it actually wins the cascade. */
+    body:not(.searched) .about-me span.bi-name-lab { color: rgba(255,255,255,0.78) !important; }
+    body:not(.searched) .about-me .bi-name-eq { color: rgba(255,255,255,0.8) !important; }
+    body:not(.searched) .about-me .bi-name-frag span { color: rgba(255,255,255,0.85) !important; }
+    body:not(.searched) .about-me p.bi-name-cap { color: rgba(255,255,255,0.85) !important; }
+    body:not(.searched) .about-me span.bi-name-op { color: #FFB199 !important; }
     /* clean up the legacy dotted texture on value cards */
     #aboutMe.bi-upgraded .hobby-card { background-image: none; }
 
