@@ -107,7 +107,13 @@ h1, h2, h3 { line-height: 1.25; letter-spacing: -0.01em; }
 }
 .nh-back:hover { border-color: var(--ac); transform: translateX(-2px); }
 .nh-back-label-short { display: none; }
-.nh-controls { display: flex; gap: 0.4rem; }
+.nh-controls { display: flex; gap: 0.4rem; position: relative; }
+.nh-lang-note {
+  position: absolute; top: 100%; inset-inline-end: 0; margin-top: 0.35rem; z-index: 60;
+  max-width: 280px; padding: 0.35rem 0.55rem;
+  border: 1px solid var(--bd); border-radius: 10px; background: var(--bg1); box-shadow: var(--sh2);
+  font-size: 0.7rem; line-height: 1.45; font-weight: 400; color: var(--t3); text-align: start;
+}
 .nh-ctl {
   min-height: 40px; min-width: 40px; padding: 0 0.75rem;
   font-family: var(--ff); font-weight: 700; font-size: 0.85rem;
@@ -739,11 +745,30 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   var THEME_KEY = 'paradiso:editorial-theme';
   var BRIGHT_KEY = 'paradiso:nh-brightness';
   var SUPPORTED = ['ko', 'en', 'zh-CN', 'zh-TW'];
+  // Full canonical site locale cycle, in index.html LANGUAGE_OPTIONS order. The
+  // toggle must advance through EVERY site locale so a click from a globally
+  // stored ja/vi/etc. lands on the genuine next locale instead of overwriting
+  // the shared paradiso:language key with a coerced ko/en/zh value.
+  var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  var LANG_SHORT = {
+    ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
+    tl: 'TL', id: 'ID', ru: 'RU', fr: 'FR', es: 'ES', ar: 'ع', de: 'DE', tr: 'TR', uk: 'UK'
+  };
+  // Locales this page renders natively (content JSON carries ko/en/zh-CN; zh-TW is
+  // a display layer over zh-CN). A selected locale outside this set stays selected
+  // but renders via the ko fallback in pick(), flagged by the note — never coerced.
+  var LANG_TRANSLATED = { ko: true, en: true, 'zh-CN': true, 'zh-TW': true };
+  // Content locale that actually drives pick(): untranslated selections render ko.
+  function contentLocaleFor(sel) {
+    if (sel === 'zh-TW' || sel === 'zh-CN') return 'zh-CN';
+    if (sel === 'en') return 'en';
+    return 'ko';
+  }
   // Traditional Chinese is a display layer over zh-CN content (zh-traditional.js).
   // `lang` is the content locale; `tradTW` activates the converter.
   var selectedLocale = initialSelection();
   var tradTW = (selectedLocale === 'zh-TW');
-  var lang = (selectedLocale === 'zh-TW' || selectedLocale === 'zh-CN') ? 'zh-CN' : (selectedLocale === 'en' ? 'en' : 'ko');
+  var lang = contentLocaleFor(selectedLocale);
   var content = null;     // nationality_content.json
   var paths = null;       // nationality_paths.json (path catalog)
   var flows = null;       // nationality_flows.json (wizards)
@@ -757,11 +782,11 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
 
   function initialSelection() {
     try {
+      // Read the shared global choice WITHOUT coercion: any canonical site locale
+      // stays selected as-is (content falls back to ko via pick() if untranslated
+      // here). Garbage/unknown falls through to the navigator hint, then ko.
       var raw = (localStorage.getItem(LANG_KEY) || '');
-      if (raw === 'zh-CN' || raw === 'zh-TW') return raw;
-      var s = raw.toLowerCase();
-      if (s.indexOf('en') === 0) return 'en';
-      if (s.indexOf('ko') === 0) return 'ko';
+      if (LANG_ORDER.indexOf(raw) >= 0) return raw;
     } catch (e) {}
     try {
       if ((navigator.language || '').toLowerCase().indexOf('en') === 0) return 'en';
@@ -817,8 +842,10 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       if (val != null) node.textContent = pick(val);
     });
     var langBtn = document.getElementById('langBtn');
-    // The cycle button shows a per-script indicator (kept in its own script).
-    if (langBtn) { langBtn.textContent = LANG_BTN_LABEL[tradTW ? 'zh-TW' : lang] || 'EN'; langBtn.setAttribute('data-s2t', 'off'); }
+    // The cycle button shows the CURRENT selected locale (not the content locale,
+    // so an untranslated selection like ja still reads 日, not the ko fallback).
+    if (langBtn) { langBtn.textContent = LANG_SHORT[selectedLocale] || LANG_SHORT.ko; langBtn.setAttribute('data-s2t', 'off'); }
+    updateLangNote(selectedLocale);
     var themeLabel = document.getElementById('themeBtnLabel');
     if (themeLabel) themeLabel.textContent = currentTheme() === 'archive_diary' ? 'Editorial-pop' : 'Editorial';
     // Locale-aware accessibility labels. These are attributes, so applyStatic's
@@ -1032,6 +1059,11 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   }
 
   function renderAll() {
+    // The delegated click handler (incl. the language toggle) is live before the
+    // content JSON resolves; without content the renderers below dereference null
+    // (content.features/…) and throw. No-op until the payload has loaded — boot()
+    // calls renderAll again once it is ready.
+    if (!content) return;
     applyStatic();
     renderFeatures();
     renderPathway();
@@ -1433,13 +1465,34 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
     try { localStorage.setItem(BRIGHT_KEY, dark ? 'light' : 'dark'); } catch (e) {}
     syncMeta();
   }
-  var LANG_CYCLE = { ko: 'en', en: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
-  var LANG_BTN_LABEL = { ko: 'EN', en: '简', 'zh-CN': '繁', 'zh-TW': '한' };
+  // Show an unobtrusive note near the control when the selected locale is not
+  // fully translated on this page (rendered via the ko fallback).
+  function updateLangNote(sel) {
+    var langBtn = document.getElementById('langBtn');
+    var holder = langBtn ? langBtn.parentElement : null;
+    if (!holder) return;
+    var note = document.getElementById('nhLangNote');
+    var untranslated = sel !== 'ko' && !LANG_TRANSLATED[sel];
+    if (untranslated) {
+      if (!note) {
+        note = document.createElement('div');
+        note.id = 'nhLangNote';
+        note.className = 'nh-lang-note';
+        note.setAttribute('role', 'note');
+        note.setAttribute('data-s2t', 'off');
+        holder.appendChild(note);
+      }
+      note.textContent = '이 페이지는 선택한 언어 번역 준비 중입니다 · This page is not yet translated into the selected language.';
+    } else if (note) {
+      note.remove();
+    }
+  }
   function toggleLang() {
-    var cur = tradTW ? 'zh-TW' : lang;
-    selectedLocale = LANG_CYCLE[cur] || 'en';
+    var idx = LANG_ORDER.indexOf(selectedLocale);
+    selectedLocale = idx < 0 ? 'ko' : LANG_ORDER[(idx + 1) % LANG_ORDER.length];
     tradTW = (selectedLocale === 'zh-TW');
-    lang = (selectedLocale === 'zh-TW' || selectedLocale === 'zh-CN') ? 'zh-CN' : (selectedLocale === 'en' ? 'en' : 'ko');
+    lang = contentLocaleFor(selectedLocale);
+    // Write the shared global key ONLY here, on an explicit user click.
     try { localStorage.setItem(LANG_KEY, selectedLocale); } catch (e) {}
     applyTradLayer(tradTW);
     renderAll();

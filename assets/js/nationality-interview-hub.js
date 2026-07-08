@@ -1047,8 +1047,44 @@
   var sourceById = {};
 
   /* ----------------------------------------------------------- i18n apply */
-  var LANG_TOGGLE_NEXT = { ko: 'en', en: 'zh-CN', 'zh-CN': 'zh-TW', 'zh-TW': 'ko' };
-  var LANG_TOGGLE_LABEL = { ko: 'EN', en: '简', 'zh-CN': '繁', 'zh-TW': '한국어' };
+  // Full canonical site locale cycle, in index.html LANGUAGE_OPTIONS order. The
+  // toggle must advance through EVERY site locale (not a ko/en/zh subset) so a
+  // click starting from a globally-stored ja/vi/etc. lands on the genuine next
+  // locale instead of overwriting the shared paradiso:language key with a
+  // coerced value and destroying the user's real choice.
+  var LANG_ORDER = ['ko', 'en', 'zh-CN', 'zh-TW', 'ja', 'vi', 'tl', 'id', 'ru', 'fr', 'es', 'ar', 'de', 'tr', 'uk'];
+  var LANG_SHORT = {
+    ko: '한', en: 'EN', 'zh-CN': '简', 'zh-TW': '繁', ja: '日', vi: 'VI',
+    tl: 'TL', id: 'ID', ru: 'RU', fr: 'FR', es: 'ES', ar: 'ع', de: 'DE', tr: 'TR', uk: 'UK'
+  };
+  // Locales this page renders natively (I18N packs; zh-TW is a display layer over
+  // zh-CN). A selected locale outside this set keeps its selection but renders via
+  // the ko fallback in t(), flagged by the note below — never silently coerced.
+  var LANG_TRANSLATED = { 'zh-TW': true };
+  for (var _li = 0; _li < SUPPORTED_LANGS.length; _li++) LANG_TRANSLATED[SUPPORTED_LANGS[_li]] = true;
+  // Selected site locale — may differ from the content `lang` (zh-TW selects
+  // zh-CN content + the Traditional display layer).
+  function selectedLang() { return langTrad ? 'zh-TW' : lang; }
+  function updateLangNote(sel) {
+    var lt = el('langToggle');
+    var holder = lt ? lt.parentElement : null;
+    if (!holder) return;
+    var note = el('niLangNote');
+    var untranslated = sel !== 'ko' && !LANG_TRANSLATED[sel];
+    if (untranslated) {
+      if (!note) {
+        note = document.createElement('div');
+        note.id = 'niLangNote';
+        note.className = 'ni-lang-note';
+        note.setAttribute('role', 'note');
+        note.setAttribute('data-s2t', 'off');
+        holder.appendChild(note);
+      }
+      note.textContent = '이 페이지는 선택한 언어 번역 준비 중입니다 · This page is not yet translated into the selected language.';
+    } else if (note) {
+      note.remove();
+    }
+  }
   function applyStatic() {
     document.documentElement.lang = langTrad ? 'zh-TW' : lang;
     applyTradLayer(langTrad);
@@ -1058,8 +1094,9 @@
       var val = t(key);
       if (val != null) nodes[i].textContent = val;
     }
-    var cur = langTrad ? 'zh-TW' : lang;
-    var lt = el('langToggle'); if (lt) { lt.textContent = LANG_TOGGLE_LABEL[cur] || 'EN'; lt.setAttribute('data-s2t', 'off'); }
+    var cur = selectedLang();
+    var lt = el('langToggle'); if (lt) { lt.textContent = LANG_SHORT[cur] || LANG_SHORT.ko; lt.setAttribute('data-s2t', 'off'); }
+    updateLangNote(cur);
   }
 
   /* --------------------------------------------------- 1. guide browsing */
@@ -1453,11 +1490,19 @@
   }
 
   // Waymaker coach: structured request with timeout + graceful fallback.
+  var coachPending = false; // in-flight guard: one /api/nationality-coach at a time
   function requestCoachFeedback() {
+    if (coachPending) return; // ignore clicks while a request is in flight
     var ans = el('mockAnswer').value;
     var box = el('mockFeedback');
     if (analyzeAnswer(ans).empty) { box.innerHTML = '<div class="ni-fb-card ni-fb-improve">' + esc(t('mock.noAnswer')) + '</div>'; return; }
     box.innerHTML = '<div class="ni-loading"><span class="ni-spinner" aria-hidden="true"></span>' + esc(t('mock.loading')) + '</div>';
+    var btn = el('mockWaymaker');
+    coachPending = true;
+    if (btn) { btn.disabled = true; btn.setAttribute('aria-busy', 'true'); }
+    // Re-enable on BOTH success and failure so the button never sticks; the last
+    // in-flight response can no longer be silently overwritten by a stale click.
+    var done = function () { coachPending = false; if (btn) { btn.disabled = false; btn.removeAttribute('aria-busy'); } };
     var controller = new AbortController();
     var timer = setTimeout(function () { controller.abort(); }, 14000);
     var payload = {
@@ -1471,8 +1516,8 @@
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload), signal: controller.signal
     }).then(function (r) { if (!r.ok) throw new Error('coach ' + r.status); return r.json(); })
-      .then(function (data) { clearTimeout(timer); renderCoachFeedback(data); })
-      .catch(function () { clearTimeout(timer); renderCoachFallback(); });
+      .then(function (data) { clearTimeout(timer); done(); renderCoachFeedback(data); })
+      .catch(function () { clearTimeout(timer); done(); renderCoachFallback(); });
   }
   function listCard(cls, title, items) {
     if (!items || !items.length) return '';
@@ -1480,6 +1525,7 @@
   }
   function renderCoachFeedback(d) {
     var box = el('mockFeedback');
+    d = d || {};
     var html = '';
     html += listCard('ni-fb-good', t('mock.strengths'), d.strengths);
     html += listCard('ni-fb-improve', t('mock.improvements'), d.improvements);
@@ -1487,8 +1533,11 @@
     if (d.revisedAnswer) html += '<div class="ni-fb-card ni-fb-revised"><h4>' + esc(t('mock.revised')) + '</h4><p>' + esc(d.revisedAnswer) + '</p></div>';
     if (d.followUpQuestion) html += '<div class="ni-fb-card"><h4>' + esc(t('mock.followup')) + '</h4><p>' + esc(d.followUpQuestion) + '</p></div>';
     if (d.studyTip) html += '<div class="ni-fb-card"><h4>' + esc(t('mock.tip')) + '</h4><p>' + esc(d.studyTip) + '</p></div>';
-    html += '<p class="ni-fb-meta">' + esc(d.caution || t('cautionCoach')) + (d.provider ? ' · ' + esc(d.provider) : '') + '</p>';
+    // Check for empty coach content BEFORE the always-present meta line is
+    // appended — otherwise the fallback below is dead code and a 200 with an
+    // empty body would render a nearly empty card instead of the local rubric.
     if (!html) { renderCoachFallback(); return; }
+    html += '<p class="ni-fb-meta">' + esc(d.caution || t('cautionCoach')) + (d.provider ? ' · ' + esc(d.provider) : '') + '</p>';
     box.innerHTML = html;
   }
   function renderCoachFallback() {
@@ -1522,11 +1571,13 @@
   /* --------------------------------------------------------- bootstrapping */
   function wireGlobal() {
     el('langToggle').addEventListener('click', function () {
-      var cur = langTrad ? 'zh-TW' : lang;
-      var nextSel = LANG_TOGGLE_NEXT[cur] || 'en';
-      langTrad = (nextSel === 'zh-TW');
-      lang = (nextSel === 'zh-TW' || nextSel === 'zh-CN') ? 'zh-CN' : nextSel;
-      try { localStorage.setItem('paradiso:language', nextSel); } catch (e) {}
+      var cur = selectedLang();
+      var idx = LANG_ORDER.indexOf(cur);
+      var next = idx < 0 ? 'ko' : LANG_ORDER[(idx + 1) % LANG_ORDER.length];
+      langTrad = (next === 'zh-TW');
+      lang = (next === 'zh-TW' || next === 'zh-CN') ? 'zh-CN' : next;
+      // Write the shared global key ONLY here, on an explicit user click.
+      try { localStorage.setItem('paradiso:language', next); } catch (e) {}
       applyTradLayer(langTrad);
       renderAll();
     });

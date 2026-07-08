@@ -367,6 +367,7 @@
       back: '이전',
       next: '다음',
       restart: '처음부터',
+      retry: '다시 시도',
       dontKnow: '잘 모르겠어요',
       stepLanguage: '언어를 선택하세요',
       stepLocation: '지금 어디에 계신가요?',
@@ -429,6 +430,7 @@
       back: 'Back',
       next: 'Next',
       restart: 'Start over',
+      retry: 'Try again',
       dontKnow: "I'm not sure",
       stepLanguage: 'Choose your language',
       stepLocation: 'Where are you right now?',
@@ -489,6 +491,7 @@
       back: '上一步',
       next: '下一步',
       restart: '从头开始',
+      retry: '重试',
       dontKnow: '不太清楚',
       stepLanguage: '请选择语言',
       stepLocation: '您现在在哪里？',
@@ -1768,17 +1771,34 @@
       track('waymaker_substatus_selected', { locale: state.locale, statusFamily: parentCode(state.statusCode), subStatusKnown: !!subCode });
       generatePacket();
     }
+    // A packet is renderable only if it is a real object: the render path
+    // dereferences packet fields (packet._unknownStatus, packet.documents,
+    // packet.titleKo …) and would throw on a null/non-object body, stranding
+    // the user on the loading spinner. Guard against that shape here.
+    function isRenderablePacket(packet) {
+      return !!packet && typeof packet === 'object';
+    }
+    // Route any generate failure — a 200 with a malformed body, or the render
+    // path throwing — to the SAME safe coverage-limited shell that fetchPacket's
+    // own network failures produce, flagged so the packet view offers a retry.
+    function generatePacketFailed(code) {
+      var shell = makeCoverageLimitedShell(code, state.procedureKey, null);
+      shell._error = true;
+      state.packet = shell;
+      goto('packet');
+    }
     function generatePacket() {
       goto('loading');
       var code = state.exactStatusCode || state.statusCode;
       fetchPacket(code, state.procedureKey).then(function (packet) {
+        if (!isRenderablePacket(packet)) { generatePacketFailed(code); return; }
         state.packet = packet;
         var cov = deriveCoverage(packet);
         track('waymaker_packet_rendered', { locale: state.locale, statusFamily: parentCode(state.statusCode), procedureKey: state.procedureKey, packetType: packet.packetType, coverageLevel: cov.level });
         track('waymaker_source_coverage_level', { coverageLevel: cov.level });
         if (cov.isLimited) track('waymaker_packet_limited', { locale: state.locale, procedureKey: state.procedureKey, coverageLevel: cov.level });
         goto('packet');
-      });
+      }).catch(function () { generatePacketFailed(code); });
     }
 
     // =====================================================================
@@ -1793,7 +1813,8 @@
         h: h, clear: clear, L: L, locale: state.locale, state: state, packet: state.packet,
         track: track, openHiKorea: openHiKorea, onAskFollowup: onAskFollowup,
         loadChecklist: loadChecklist, saveChecklist: saveChecklist, restart: restart,
-        backToProcedure: function () { goto('procedure'); }
+        backToProcedure: function () { goto('procedure'); },
+        retry: function () { generatePacket(); }
       };
     }
 
@@ -1929,7 +1950,7 @@
         c.h('li', {}, [c.h('a', { href: 'https://www.hikorea.go.kr', target: '_blank', rel: 'noopener', text: 'HiKorea (hikorea.go.kr)' })]),
         c.h('li', { text: c.L('call1345') })
       ]);
-      return c.h('div', { class: 'wm-card wm-card-warn', role: 'note' }, [
+      var card = c.h('div', { class: 'wm-card wm-card-warn', role: 'note' }, [
         c.h('div', { class: 'wm-warn-title', text: c.L('coverageLimitedTitle') }),
         c.h('p', { class: 'wm-warn-body', text: c.L('coverageLimited') }),
         c.h('div', { class: 'wm-warn-channels' }, [
@@ -1937,6 +1958,15 @@
           channels
         ])
       ]);
+      // A shell produced by a failed generate (not a real 400/503 coverage gap)
+      // offers a retry so a transient error isn't terminal — reusing the same
+      // generate path. Official-channel guidance above stays intact either way.
+      if (packet && packet._error && typeof c.retry === 'function') {
+        card.appendChild(c.h('button', {
+          class: 'wm-btn wm-btn-secondary', type: 'button', onclick: c.retry
+        }, [c.L('retry')]));
+      }
+      return card;
     },
 
     accordion: function (c, titleKey, level, bodyNodes, openByDefault) {
@@ -2230,16 +2260,25 @@
       var ta = c.h('textarea', { class: 'wm-ai-input', rows: '3', placeholder: c.L('aiFollowupPlaceholder'), aria: { label: c.L('aiFollowupCta') } });
       var note = c.h('p', { class: 'wm-ai-note', text: c.L('aiPrivacyNote') });
       var out = c.h('div', { class: 'wm-ai-out', aria: { live: 'polite' } }, []);
+      var pending = false; // in-flight guard: one /api/ask request at a time
       var send = c.h('button', { class: 'wm-btn wm-btn-primary', type: 'button', onclick: function () {
+        if (pending) return; // ignore clicks while a request is in flight
         var q = (ta.value || '').trim();
         if (!q) return;
         var context = buildAiFollowupContext(c.state, packet);
         out.textContent = '…';
         if (typeof c.onAskFollowup === 'function') {
+          pending = true;
+          send.disabled = true;
+          send.setAttribute('aria-busy', 'true');
+          // Re-enable on BOTH success and failure so the button never sticks.
+          var done = function () { pending = false; send.disabled = false; send.removeAttribute('aria-busy'); };
           Promise.resolve(c.onAskFollowup(context, q)).then(function (res) {
+            done();
             c.clear(out);
             self.renderFollowupResult(c, out, res);
           }).catch(function () {
+            done();
             c.clear(out);
             self.renderFollowupResult(c, out, { ok: false });
           });
