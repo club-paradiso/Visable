@@ -1,6 +1,6 @@
 # AI 디자인 스킬 활용 개선 전략 — Visable · New Home · Waymaker
 
-**작성일:** 2026-07-09
+**작성일:** 2026-07-09 (rev.2 — 표현 예산 프레임 전환)
 **대상 표면:** `index.html`(Visable) · `new-home.html`(New Home) · `ai.html` + `assets/js/waymaker-navigator.js`(Waymaker)
 **출처 자료:** [trenddalkak] "에이전트 스킬 라이브러리 오픈소스 공개 — AI 디자인 스킬 75개"
 (Meng To / Design+Code, `github.com/MengTo/Skills`)
@@ -10,219 +10,242 @@
 
 ## 0. 한 줄 전략
 
-> Meng To의 75개 AI 디자인 스킬을 **선별 도입**한다.
-> **크래프트를 올리는 "프로세스" 스킬은 채택**하고, **장식을 더하는 "데코" 스킬은 거부**한다.
-> 그리고 세 표면의 성격 — **Visable(이성·명료) / New Home(감성·서정) / Waymaker(과업·안내)** — 에
-> 맞춰 같은 스킬을 서로 다른 강도로 적용한다.
+> **신뢰와 감동은 대립하지 않는다.**
+> 데코를 카테고리로 거부하는 대신, 모든 표현이 **감정(emotion) · 길찾기(wayfinding) · 품질 지각(perceived quality)**
+> 중 하나 이상을 사도록 요구하고, **성능·접근성·신뢰 예산** 안에서 최고 수준의 크래프트로 실행한다.
+> Meng To의 75개 스킬(WebGL·모션·CSS 효과 포함)을 **팔레트로 되찾되**, 세 표면의 성격
+> — **Visable(이성·명료) / New Home(감성·서정) / Waymaker(과업·안내)** — 에 맞춰 시그니처 모먼트에 배치한다.
 
-이 전략의 핵심은 "AI 스킬을 얼마나 쓰느냐"가 아니라 **"무엇을 거부하느냐"** 다.
-Paradiso는 시민·법률 인접 신뢰 제품이고, 신뢰는 절제에서 나온다.
+핵심 질문은 "이 효과가 civic 제품에 허용되나?"가 아니라
+**"이 효과가 사용자에게 무엇을 사주고, 그 값을 예산 안에서 치르는가?"** 다.
 
 ---
 
-## 1. 노션 소스 분석 — 무엇이 공개됐나
+## 1. 관점 전환 — 왜 rev.1의 "거부"를 버리는가
+
+rev.1은 WebGL·파티클·신규 폰트를 카테고리로 ❌ 처리했다. 이는 **"civic = 밋밋해야 신뢰"라는 낡은 전제**였고,
+최고 수준 프로덕트 디자인의 실제와 어긋난다:
+
+- **고크래프트가 신뢰를 만든다.** Linear·Stripe·Arc·Vercel은 정교한 모션·깊이·머티리얼로 *신뢰 지각*을 올린다. 밋밋함은 안전이 아니라 무관심으로 읽힌다.
+- **이민자 사용자에게 "관공서 폼" 미학은 오히려 위협**이다. 차갑고 딱딱한 화면은 소외·불안을 주고, 그 감정이야말로 이 제품이 해소하려는 것이다. New Home의 `You Belong Here`는 **따뜻하고 살아있는 화면**을 요구한다.
+- **절제는 목표가 아니라 도구**다. 프로는 "덜 쓴다"가 아니라 **"정확한 곳에 정확한 강도로 쓴다."** 한 화면에 시그니처 모먼트 1–2개를 두고 나머지를 조용히 둘 때 그 하나가 빛난다.
+
+그래서 rev.2는 **표현을 팔레트로 복원**한다. 단, 아마추어처럼 흩뿌리지 않고 **프로처럼 예산으로 관리**한다.
+
+> **바뀌지 않는 것:** 접근성(WCAG·reduced-motion·키보드), 성능(LCP/INP), 그리고 **신뢰 레이어**(면책·공식 출처·불확실성 고지·다크패턴 금지). 이건 "제약"이 아니라 크래프트의 일부다. 세계 최고의 디자이너도 다크패턴은 쓰지 않고, 접근성을 깨지 않는다.
+
+---
+
+## 2. 노션 소스 — 되찾는 팔레트
 
 | 항목 | 내용 |
 |---|---|
-| 정체 | Meng To(Design+Code 창업자, Aura 제작자)가 오픈소스로 공개한 **Agent Skills 라이브러리** |
-| 규모 | 스킬 75개. `Claude Code`·`Cursor`·`Codex`에서 `SKILL.md`를 붙여넣어 사용 |
+| 정체 | Meng To(Design+Code 창업자, Aura 제작자)의 오픈소스 **Agent Skills** 라이브러리 |
+| 규모 | 스킬 75개 — `Claude Code`·`Cursor`·`Codex`에 `SKILL.md` 붙여넣어 사용 |
 | 카테고리 | `web-design` 62 · `codex` 10 · `ui` 1 · `media` 2 |
-| 커버리지 | 랜딩페이지, 애니메이션/모션, WebGL, CSS 효과, 레이아웃, UI 프롬프트, 이미지 소싱 |
-| 제작자 추천 "베스트 4" | `video-to-superprompt`(영상→프롬프트), `html-to-interaction-prompts`(HTML→인터랙션 스펙), `stitched-full-page-capture`(전체 페이지 스티치 캡처), `daily-ui-inspiration-capture`(개인 저장소 전용, 재현 난이도 높음) |
-| 권장 파이프라인 | 스킬로 프롬프트 추출 → **Fable 5**(claude.ai 모델 선택)로 실제 결과물 생성 |
+| **rev.2 재해석** | `web-design` 62개(랜딩·**모션·WebGL·CSS 효과**·레이아웃)를 **표면별 시그니처 모먼트의 팔레트**로 사용. `codex`(캡처·인터랙션 스펙·영상→프롬프트)는 프로세스로. `media`(Unsplash/Aura 에셋)는 감정 이미지 소싱으로 |
+| 베스트 4 | `video-to-superprompt` · `html-to-interaction-prompts` · `stitched-full-page-capture` · `daily-ui-inspiration`(개인 저장소 전용) |
+| 파이프라인 | 스킬로 프롬프트 추출 → **Fable 5**로 프로토타이핑 → 예산·보존 게이트 통과 후 이식 |
 
-### 1.1 핵심 통찰 (그리고 함정)
-
-이 라이브러리는 62/75가 `web-design` — 즉 **마케팅 랜딩페이지·모션·WebGL 플래시** 지향이다.
-Meng To의 미학은 화려하고 감각적이다(Aura의 그라데이션·글로우가 대표). 이것은 스타트업 랜딩엔 강력하지만,
-**Visable/New Home/Waymaker의 하드 제약과 정면 충돌**한다:
-
-- `CLAUDE.md`: "법적/이민 콘텐츠 창작 금지, 면책·경고·불확실성 고지 약화 금지."
-- `REBRAND_VISABLE_DESIGN.md` §4/§6: "**장식 파티클·과한 그라데이션 금지**, 한 화면 핵심 그래픽 1개, 다크패턴 5종 전면 차단."
-- `PARADISO_UX_DIRECTION_LOCK.md` §2: "메인 `<script>` 바이트 보존, `id`·`data-action` 불변, **신규 웹폰트·React/Babel·새 런타임 금지**."
-
-따라서 이 라이브러리를 **"보이는 결과물(HTML/CSS 데코)"로 소비하면 실패**한다.
-정답은 라이브러리의 **"작업 방식(capture → analyze → spec → prompt → verify)"을 소비**하는 것이다 —
-Meng To가 브랜딩·톤을 토스에서 *자산*이 아닌 *원칙*만 가져오라 한 리브랜드 문서(REBRAND §2)와 **정확히 같은 논리**다.
+Meng To의 미학(Aura의 그라데이션·글로우·깊이)은 이제 **참고 대상**이지 회피 대상이 아니다.
+그의 스킬이 만드는 결과물을 civic 톤으로 *조율*해서 쓴다.
 
 ---
 
-## 2. 선별 매트릭스 — 채택 / 조건부 / 거부
+## 3. 표현 예산 프레임워크 (rev.1 매트릭스 대체)
 
-| 스킬군 | 판정 | 이유 | 적용 표면 |
+모든 시각 효과는 **통화로 값을 치르고, 예산 안에 머문다.**
+
+### 3.1 세 통화 — 무엇을 사는가
+
+효과를 넣기 전 묻는다: 이건 아래 중 무엇을 사는가?
+
+1. **감정(Emotion)** — 소속·안도·따뜻함·희망. (New Home 히어로, 정착 여정)
+2. **길찾기(Wayfinding)** — 지금 어디에 있고 다음이 무엇인지. (Waymaker 스텝 전환, 검색→결과 전환)
+3. **품질 지각(Perceived quality)** — "잘 만든 제품이다"라는 신뢰 신호. (마이크로 인터랙션, 깊이, 머티리얼)
+
+**세 통화 중 아무 것도 못 사는 효과는 뺀다.** 이건 카테고리 금지가 아니라 **모든 프로가 적용하는 보편 필터**다.
+"멋있어서" 넣는 파티클은 컷, "도착의 안도를 만들려고" 넣는 앰비언트 배경은 채택.
+
+### 3.2 세 예산 — 값을 어떻게 치르는가 (비협상)
+
+| 예산 | 한도 | 실행 규칙 |
+|---|---|---|
+| **성능** | 히어로 효과가 LCP를 지연시키지 않음. INP < 200ms. 추가 웹폰트 ≤ ~50KB woff2/표면 | transform·opacity만 애니메이트(레이아웃 스래시 금지). WebGL/canvas는 `IntersectionObserver`로 오프스크린 정지·DPR 캡(≤2)·`requestIdleCallback` 지연 초기화. 스크롤 연동은 스크롤 리스너가 아니라 `animation-timeline`/IO |
+| **접근성** | reduced-motion에서 **동등하게 아름다운 정적 대체**(단순 off 아님). WCAG AA 최소, 주 CTA는 AAA(`primary-deep`+`neutral` 기존 규칙) | 애니메이션 배경 위 텍스트도 대비 유지. 저사양(`navigator.deviceMemory`↓, 저전력) 자동 폴백. 키보드·포커스 링 불변 |
+| **신뢰** | 면책·공식 출처·불확실성·검토필요 고지 톤 불변. 다크패턴 5종 금지 | 효과는 신뢰 카피 위/뒤에 얹지 않고, 읽기·이해를 절대 방해하지 않음. CTA는 결과를 말함 |
+
+### 3.3 팔레트 배치표 — 어디에 어떤 강도로
+
+| 스킬군 | 배치·강도 | 사는 통화 | 표면 |
 |---|---|---|---|
-| `stitched-full-page-capture` (전체 페이지 캡처) | ✅ **채택** | 저장소는 이미 감사 문화가 강함(`docs/audits/*`, `docs/design/*_QA.md`). 3표면 × 2테마(civic_editorial/archive_diary) × 다크/라이트 × 다국어의 **시각 회귀 베이스라인**을 자동화. 픽셀을 바꾸지 않으므로 보존 계약과 무충돌 | 3표면 전부 |
-| `html-to-interaction-prompts` (인터랙션 스펙 추출) | ✅ **채택** | 현재 트랜지션이 표면마다 제각각(`0.15s`/`0.18s`/`0.2s`/`0.25s`). 현 마크업에서 인터랙션 스펙을 추출→**모션 토큰 통일**의 입력으로. CSS만 건드리므로 안전 | 3표면 전부 |
-| `video-to-superprompt` (영상→프롬프트) | ✅ **채택(비-프로덕션)** | Waymaker 과업 플로우 화면녹화→온보딩/설명 프롬프트. **제품 코드가 아닌 마케팅·문서·데모** 산출물로 한정 | Waymaker(외부 데모) |
-| 레이아웃/여백/타이포 리듬 스킬 (`web-design`) | ⚠️ **조건부** | 8pt 그리드·컨테이너 3종·Pretendard 스케일이 이미 캐노니컬(UX Lock §3). 신규 토큰 도입이 아니라 **기존 토큰 정합성 점검**으로만 사용 | Visable·New Home |
-| CSS 효과·그라데이션 스킬 | ⚠️ **조건부** | REBRAND §6 기준 통과 시만: 핵심 그래픽 1개, 중간 명도, 라이트/다크 양쪽 가독. New Home 히어로의 기존 `radial-gradient` 워시 정도가 상한선 | New Home 한정 |
-| WebGL / 파티클 / 커서 트레일 / 히어로 대형 애니메이션 | ❌ **거부** | REBRAND §6 "장식 파티클 금지" + 성능·다크패턴·`prefers-reduced-motion` 리스크. Visable의 `starCanvas`·스포트라이트는 *기존 보존 대상*이지 확장 대상이 아님 | 없음 |
-| 신규 디스플레이 폰트 도입 스킬 | ❌ **거부** | UX Lock §2 "신규 웹폰트 금지." archive_diary용 Unbounded/Pixelify/Space Mono는 *이미 로드된 예외*이며 그 이상 추가 불가 | 없음 |
-| `daily-ui-inspiration-capture` | ❌ **거부** | 노션 원문도 "멩투 개인 저장소 전용, 사실상 재현 불가"로 분류 | 없음 |
-
-**규칙:** 위 표에서 ❌인 스킬이 만든 산출물은 리뷰에서 폐기한다(REBRAND 프롬프트의 "위반 시 산출물 폐기" 게이트와 동일).
+| **WebGL / 제너러티브 배경 / gradient mesh** | ✅ 시그니처 히어로 1곳/표면, 텍스트 뒤 앰비언트. reduced-motion=정적 그라데이션·이미지 폴백 | 감정·품질 | **New Home(최우선)** · Visable(은은) · Waymaker(다크 앰비언스) |
+| **모션 / 마이크로 인터랙션 / view transition** | ✅ 상태 전환·리빌·choreography. §4.1 모션 토큰으로 통일 | 길찾기·품질 | 3표면 |
+| **CSS 효과(글래스·깊이·그림자·글로우)** | ✅ 조율해서. 다크(Waymaker)는 절제된 글로우, 라이트는 은은한 깊이 | 품질 | 3표면 |
+| **표현형 디스플레이 타입** | ✅ 브랜드·감정 모먼트에 1종까지. 서브셋·`swap`·above-fold만 preload. 본문은 Pretendard 유지 | 감정·품질 | New Home · Visable 워드마크 |
+| **감정 이미지 소싱(Unsplash/Aura)** | ⚠️ 조건부. 저작권·문맥 적합·중간 명도. 스톡 남용 금지 | 감정 | New Home |
+| **의미 없는 데코(무맥락 파티클·커서 트레일)** | ❌ 컷 — 세 통화 중 아무 것도 못 삼 | — | 없음 |
+| `stitched-full-page-capture` / `html-to-interaction-prompts` | ✅ 프로세스(캡처·스펙). 픽셀 불변, 보존 무충돌 | (프로세스) | 3표면 |
+| `video-to-superprompt` | ✅ 온보딩·마케팅 데모(비-프로덕션) | (외부) | Waymaker |
 
 ---
 
-## 3. 표면별 전략
+## 4. 표면별 전략 — 시그니처 모먼트 중심
 
-세 표면은 **같은 팔레트, 다른 온도·밀도·장식**(REBRAND §2)이다. 개선도 같은 원칙으로 차등한다.
+세 표면은 **같은 팔레트, 다른 온도·밀도·장식**. 이제 각 표면에 **기억에 남는 순간 1–2개**를 설계한다.
 
-### 3.1 Visable — 이성·명료 (`index.html`)
+### 4.1 Visable — "명료함의 순간" (`index.html`)
 
-**정체:** 비자·체류 정보. `clarity-forward`. near-white 베이스, 높은 위계 대비, 장식 최소.
-**현 강점:** 캐노니컬 토큰 고정, 결과 카드 9단계 위계(UX Lock §4), 상태 머신 `landing→searching→searched`, 스포트라이트 히어로.
-**제약(절대):** UX Lock §2 보존 계약 — 메인 `<script>` 바이트 보존, `id`/`data-action`/`data-vcode` 불변, Emerald 단일·화면당 ≤3, WCAG는 `primary-deep`+`neutral`.
+**정체:** 비자·체류 정보. `clarity-forward`. 명료가 곧 감정인 곳.
+**시그니처 모먼트:** ① 히어로 게이트웨이의 **깊이 있는 고요함** ② 검색→결과의 **자신감 있는 전환**.
 
-**개선 기회 → 적용 스킬**
+1. **히어로 depth(P1).** 기존 스포트라이트(`--mx`/`--my` IIFE, 보존 대상)를 **계승·강화**. 뒤에 은은한 gradient mesh / 얕은 시차(parallax)로 "잘 만든 도구" 지각을 준다. WebGL은 가벼운 shader background까지 허용하되 텍스트 LCP 뒤·reduced-motion 정적 폴백. **화면당 Emerald ≤3은 유지**(강조는 여전히 희소).
+2. **검색→결과 view transition(P0/P1).** 상태 머신 `landing→searching→searched`(보존 대상)의 전환에 **View Transitions API**를 얹어 결과 카드가 stagger로 조립되게. 마크업·`data-*` 불변, CSS/전환만 추가. → 길찾기+품질.
+3. **결과 카드 머티리얼(P1).** 내부 handoff 노트(`index.html` L42–43)가 이미 `IMPROVE`로 표시한 `rounded-2xl` 글래스 타일 + 은은한 그림자 + accent 호버. 스캔 경로(코드→도메인→절차→문서→출처)는 불변.
+4. **워드마크 타입(P2).** `Visable` set-type 워드마크에 표현형 디스플레이 1종 검토(성능 예산 내). REBRAND의 800/-0.02em 방향 위에서.
 
-1. **인터랙션 일관성(P0).** `html-to-interaction-prompts`로 검색바(`.sbar`)·결과카드(`.vc`)·모달 5종의 현 인터랙션을 스펙화 → **호버/포커스/전환 타이밍을 하나의 모션 토큰 세트로 수렴**(§4.1). CSS만 수정, 마크업 불변.
-2. **검색 결과 카드 밀도(P1).** 내부 design-handoff 노트(`index.html` L42–43)가 이미 `IMPROVE`로 표시: `.sbar`·`.vc`를 `rounded-2xl(16–24px)` 글래스 타일 + 은은한 그림자 + accent 호버로. **스캔 경로(코드→도메인→절차→문서→출처)는 불변**, 표면 질감만 상승.
-3. **히어로 게이트웨이 리듬(P2).** `stitched-full-page-capture` 베이스라인으로 히어로 수직 리듬(UX Lock §6)을 캡처→토스식 여백 규율과 대조. 서사 골격(HeroGateway→StatBridge→FeatureTrust)은 유지.
+### 4.2 New Home — "도착과 소속의 순간" (`new-home.html`)
 
-**하지 말 것:** 스포트라이트·`starCanvas` 확장, 데코 그라데이션 추가, 아나그램/브러시 잔존(→ 하우스로), 토스 블루 차용.
+**정체:** 국적·귀화. `paradiso-warm` editorial. **세 표면 중 감정 레버가 가장 큰 곳** — 여기에 가장 과감하게 투자한다.
 
-### 3.2 New Home — 감성·서정 (`new-home.html`)
+1. **히어로 앰비언트 배경(P0, 최우선 시그니처).** `You Belong Here` 아래에 **따뜻한 빛의 살아있는 배경**(제너러티브/WebGL gradient, 느린 호흡). 여기가 라이브러리의 `web-design`/WebGL 스킬이 **가장 값하는 단 하나의 지점**이다. 기존 `radial-gradient` 워시(L149–153)를 정적 폴백으로 재사용. reduced-motion·저사양에서 그 정적 워시로 자동 강등.
+2. **정착 여정 시각화(P1).** `.nh-pathway-steps`를 단순 목록이 아니라 **살아있는 여정**으로 — 스크롤 연동 라인 드로잉, 단계 도달 시 절제된 도착 모션. `html-to-interaction-prompts`로 스펙화 → §4.4 토큰.
+3. **editorial 타입 자유도(P1).** archive_diary 키치 테마(오프셋 그림자 `4px 4px 0`)와 civic_editorial을 **둘 다 더 대담하게**. 표현형 타입·컬러 대비를 감정 도구로.
+4. **감정 이미지(P2, 조건부).** `media` 스킬로 소속·가족·정착 이미지 소싱(저작권·중간 명도·문맥 적합).
 
-**정체:** 국적·귀화. `paradiso-warm` editorial. warm paper 베이스, "You Belong Here", 도착·정착의 감성적 결과.
-**현 강점:** `radial-gradient` 히어로 워시(L149–153), archive_diary 키치 테마(오프셋 그림자 `4px 4px 0`), 강한 반응형·접근성(색 비의존 칩, `focus-visible`, `word-break: keep-all`).
-**제약:** editorial 장식은 **허용되지만** 여전히 REBRAND §6(핵심 그래픽 1개·중간 명도)와 다크패턴 금지 아래.
+**신뢰 불변:** `.nh-caution`·`.nh-source-disclaimer`의 공식 톤은 그대로. 감정은 히어로·여정에, 보호는 경고 블록에.
 
-**개선 기회 → 적용 스킬**
+### 4.3 Waymaker — "안내받는 순간" (`ai.html` + `waymaker-navigator.js/css`)
 
-1. **감성 서사의 시각적 밀도(P1).** New Home은 세 표면 중 **유일하게 데코 여지가 있는 곳**이다. 조건부 CSS 효과 스킬로 히어로·`pathway-steps`(정착 여정)를 *여정(journey)* 은유로 강화 — 단, 그라데이션은 기존 `--cyL`/`--acL` 워시 수준을 상한으로.
-2. **스크롤 리빌 모션(P2).** 섹션 진입 시 절제된 페이드/슬라이드. **`@media (prefers-reduced-motion: reduce)` 필수**(이미 L565 존재 — 패턴 재사용). `html-to-interaction-prompts`로 New Home과 Visable의 리빌을 **동일 타이밍 토큰**으로 묶어 하우스 일관성 확보.
-3. **키치(archive_diary) 테마 정합성(P2).** `stitched-full-page-capture`로 civic_editorial ↔ archive_diary ↔ 다크 3상태를 나란히 캡처, 오프셋 그림자·네오브루탈 보더의 대비를 감사.
+**정체:** AI 안내 도우미. `visable-dark`. 다크는 **몰입·집중·프리미엄**의 기회다.
 
-**하지 말 것:** 감성을 이유로 파티클/WebGL 도입, 면책·주의 카피(`.nh-caution`·`.nh-source-disclaimer`)의 공식 톤 약화.
-
-### 3.3 Waymaker — 과업·안내 (`ai.html` + `waymaker-navigator.js/css`)
-
-**정체:** AI 안내 도우미. `visable-dark`. 두 제품 공통 진입. 모바일-퍼스트 스텝 위저드.
-**현 강점:** 철저한 모바일 우선(360/390/430 명시), ≥44px 터치 타겟, 안전영역 sticky 액션바, **커버리지 배지가 색만이 아니라 아이콘+텍스트**(`✓`/`◐`/`!`/`—`), reduced-motion 전면 중화.
-**제약:** 다크 서피스, 커버리지 신뢰 표기(`CITATION_VERIFICATION_NOT_WIRED` 상태 고려 — 과대주장 금지, UX Lock §8).
-
-**개선 기회 → 적용 스킬**
-
-1. **스텝 전환 마이크로 인터랙션(P1).** 현재 위저드 스텝 전환이 정적. `html-to-interaction-prompts`로 진행바(`.wm-progress-bar`)·스텝 헤딩 포커스 이동을 스펙화 → **방향성 있는 전환**(다음=우슬라이드, 뒤=좌슬라이드)로 "안내받는" 감각 강화. 모두 reduced-motion 존중.
-2. **결과 패킷 스캔성(P1).** `.wm-packet` 결과가 정보 밀도 높음. 커버리지 배지·아코디언·문서 체크리스트의 **시각 위계를 캡처로 감사**(`stitched-full-page-capture`) 후 여백·그룹핑 조정. 신뢰 표기 카피는 불변.
-3. **온보딩 데모(P2, 비-프로덕션).** `video-to-superprompt`로 "체류자격 검색→절차 선택→서류 패킷" 플로우를 화면녹화→설명 프롬프트→**문서/마케팅용 데모**(Fable 5). 제품 코드에는 미반영.
-
-**하지 말 것:** 다크 배경에 글로우/네온 남발, 커버리지 색상만으로 상태 표현(현 아이콘+텍스트 원칙 훼손), 로딩 스피너 외 장식 애니메이션.
+1. **다크 앰비언스(P1).** 다크 서피스에 **절제된 depth·글로우**. 커버리지 배지·`.wm-card-hero` 그라데이션(기존 L167)을 시그니처 수준으로 끌어올리되 텍스트 대비 유지. 네온 남발 금지 — 조율된 한 톤.
+2. **스텝 choreography(P0/P1).** 위저드 전환을 **방향성 있게**(다음=우슬라이드, 뒤=좌슬라이드) → 사용자가 "안내받는" 공간 모델을 얻음. 진행바(`.wm-progress-bar`)·스텝 헤딩 포커스 이동과 동기화. reduced-motion 전면 중화(현 CSS L359 패턴).
+3. **답변 패킷 조립 리빌(P1).** `.wm-packet` 결과가 **조각조각 조립되는** 모션 — 정보가 "쌓여 완성되는" 감각이 신뢰를 준다. 신뢰·커버리지 카피는 불변(`CITATION_VERIFICATION_NOT_WIRED` 상태 고려, 과대주장 금지).
 
 ---
 
-## 4. 크로스-커팅 개선 (3표면 공통)
+## 5. 크로스커팅 — 하나의 규율로 수렴
 
-### 4.1 모션 토큰 통일 (가장 큰 단일 레버, P0)
+### 5.1 모션 토큰 통일 + choreography 레이어 (P0)
 
-현재 트랜지션 지속시간이 파일·컴포넌트마다 흩어져 있다(`0.1s`/`0.15s`/`0.16s`/`0.18s`/`0.2s`/`0.25s`).
-`html-to-interaction-prompts`로 3표면의 인터랙션을 일괄 추출 → **공유 모션 토큰**으로 수렴:
+`html-to-interaction-prompts`로 3표면 인터랙션 추출 → 산발된 duration(`0.1/0.15/0.16/0.18/0.2/0.25s`)을 공유 토큰으로:
 
 ```
---motion-fast:   120ms   /* 호버·포커스·칩 */
---motion-base:   180ms   /* 카드·버튼 트랜스폼 */
---motion-modal:  220ms   /* 모달 진입 scale(0.97→1) */
---ease-out:      cubic-bezier(0.22, 1, 0.36, 1)
+--motion-fast:    120ms   /* 호버·포커스·칩 */
+--motion-base:    180ms   /* 카드·버튼 트랜스폼 */
+--motion-modal:   220ms   /* 모달 진입 scale(0.97→1) */
+--motion-reveal:  340ms   /* 스크롤 리빌·패킷 조립 */
+--ease-out:       cubic-bezier(0.22, 1, 0.36, 1)
+--ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1)  /* 도착·조립 모먼트 */
 ```
 
-- **additive**만 허용 — 기존 값 삭제/리네임 금지(REBRAND 프롬프트 §산출 규칙).
-- 모든 모션은 `@media (prefers-reduced-motion: reduce)`에서 중화(Waymaker CSS L359 패턴이 레퍼런스).
+additive만. 모든 모션은 reduced-motion에서 **정적 대체 경로**를 가진다(off가 아니라 동등한 정적 상태).
 
-### 4.2 접근성 정례화
+### 5.2 접근성·성능은 크래프트 (양보 없음)
 
-세 표면 모두 이미 우수(색 비의존 라벨, focus-visible, keep-all). AI 스킬로 **회귀 방지**를 자동화:
-`stitched-full-page-capture` 결과에 대해 대비비(Emerald+흰텍스트 3.21:1 미달 재발 감시)·터치타겟·포커스 링을 체크리스트화.
+- 모든 시그니처 효과 = 모션 버전 + **정적 아름다운 버전** 쌍으로 설계.
+- WebGL/canvas: 오프스크린 정지, DPR 캡, idle 초기화, 저사양 폴백, LCP 비차단.
+- `stitched-full-page-capture` 베이스라인에 대비비·터치타겟·포커스 링을 체크리스트화(회귀 방지).
 
-### 4.3 성능 가드
+### 5.3 신뢰·다크패턴 가드 (불변)
 
-- Pretendard 단독 유지. archive_diary 3폰트(Unbounded/Pixelify/Space Mono)는 **키치 테마 활성 시에만** 필요 → 지연 로드 여부 점검(추가 폰트 도입은 금지, 기존 로드 최적화만).
-- WebGL/파티클 거부로 메인 스레드 부담 원천 차단.
-
-### 4.4 다크패턴 가드 (불변)
-
-REBRAND §6 5종은 civic 제품에서 절대선. AI가 생성한 어떤 CTA/모달/바텀시트도 이 게이트를 통과해야 채택:
-진입 인터럽트 금지 · 뒤로가기 트랩 금지 · 탈출구 상시 · 예상 못한 광고 금지 · **CTA는 결과를 말한다**.
+REBRAND §6 다크패턴 5종은 절대선. AI가 생성한 CTA/모달/배경이 신뢰 카피를 가리거나 읽기를 방해하면 채택 불가.
 
 ---
 
-## 5. 실행 워크플로우 — AI 스킬을 파이프라인에 넣는 법
+## 6. 거버넌스 노트 — 정직한 트레이드오프
 
-노션 글의 "SKILL.md 복사→붙여넣기→요청"을 저장소의 감사·검증 문화에 맞게 정식화한다:
+이 rev.2는 두 기존 문서의 스탠스를 **의도적으로 진화**시킨다. 승인 시 아래도 함께 개정해야 한다:
+
+| 문서 | 기존 스탠스 | rev.2 제안 | 필요 조치 |
+|---|---|---|---|
+| `REBRAND_VISABLE_DESIGN.md` §6 | "장식 파티클·과한 그라데이션 금지, 핵심 그래픽 1개" | "무의미한 데코 금지"로 정밀화 + **시그니처 모먼트에 예산 내 표현 허용** | §6 개정 PR |
+| `PARADISO_UX_DIRECTION_LOCK.md` §2 | "신규 웹폰트 금지" | "본문 Pretendard 유지 + **브랜드/감정 모먼트에 디스플레이 1종, 성능 예산 내 허용**" | §2 각주 개정 |
+
+⚠️ **UX Lock §2의 코드 보존 계약**(메인 `<script>` 바이트 보존, `id`/`data-action`/`data-vcode` 불변, React/Babel 미도입, `PARADISO_*` 식별자 유지)은 **그대로 절대선**이다. 진화하는 건 *표현 스탠스*이지 *코드 보존*이 아니다.
+
+> 이 트레이드오프(표현 야심 ↑ ↔ 거버넌스 문서 개정 필요)를 오너 승인 사항으로 명시한다.
+
+---
+
+## 7. 실행 워크플로우 — 스킬 풀 활용
 
 ```
 ① CAPTURE   stitched-full-page-capture
-            → 3표면 × {civic_editorial, archive_diary} × {light, dark} × {ko,en,zh} 베이스라인
-            → docs/design/ 하위 감사 이미지로 보관
+            → 3표면 × {civic_editorial, archive_diary} × {light,dark} × {ko,en,zh} 베이스라인
       │
-② AUDIT     캡처 vs REBRAND_VISABLE_DESIGN.md / UX_DIRECTION_LOCK.md 대조
-            → 개선 지점 = "IMPROVE" 태깅 (index.html L42 handoff 노트 형식 재사용)
+② AUDIT     캡처 vs 표현 예산(§3) 대조 → 시그니처 모먼트 후보 태깅
       │
-③ SPEC      html-to-interaction-prompts
-            → 현 인터랙션을 스펙화 → §4.1 모션 토큰 초안
+③ EXPLORE   web-design/WebGL/모션 스킬 + Fable 5로 시그니처 모먼트 프로토타입
+            (감정·길찾기·품질 중 무엇을 사는지 명시; 성능·접근성 폴백 동반 설계)
       │
-④ PROMPT    REBRAND_CLAUDE_DESIGN_PROMPT.md에 캡처·스펙·개선 태그를 첨부해 실행
-            (필요 시 산출 프롬프트를 Fable 5로 프로토타이핑 — 프로덕션 직행 금지)
+④ SPEC      html-to-interaction-prompts → §5.1 모션 토큰·choreography 스펙
       │
-⑤ IMPLEMENT 표면별 개별 PR. additive CSS·표면 문자열만. 한 번에 한 파일, 작게.
+⑤ IMPLEMENT 표면별 개별 PR. additive CSS·전환·효과 레이어. 마크업·data-* 불변. 한 번에 하나.
       │
-⑥ VERIFY    bash scripts/check_repo.sh (4단계)
-            grep 보존 계약 게이트 (react/babel/금칙어 = 빈 결과)
-            tests/e2e/*.spec.mjs (new-home / waymaker-navigator)
+⑥ VERIFY    scripts/check_repo.sh (4단계) · 보존 grep(react/babel/금칙어=0)
+            · tests/e2e/*.spec.mjs · 성능(LCP/INP)·reduced-motion 폴백 실측
             → 통과 전 다음 표면 착수 금지
 ```
 
-**요지:** AI 스킬은 ①③(캡처·스펙)과 ④(프롬프트)에만 투입한다. ⑤⑥(구현·검증)은 기존 보존 계약·CI가 지배한다.
+AI 스킬은 ①②③④(캡처·탐색·스펙)에 풀 투입, ⑤⑥(구현·검증)은 보존 계약·CI·예산이 지배.
 
 ---
 
-## 6. 우선순위 로드맵
+## 8. 우선순위 로드맵
 
-| 우선 | 작업 | 스킬 | 표면 | 리스크 |
+| 우선 | 작업 | 사는 통화 | 표면 | 리스크 |
 |---|---|---|---|---|
-| **P0** | 시각 회귀 베이스라인 구축 | stitched-full-page-capture | 3표면 | 없음(캡처만) |
-| **P0** | 모션 토큰 통일(additive) | html-to-interaction-prompts | 3표면 | 낮음(CSS만) |
-| **P1** | Visable 검색바·결과카드 질감 상승 | 조건부 CSS | Visable | 중(보존 계약 준수 필요) |
-| **P1** | Waymaker 스텝 전환·패킷 스캔성 | interaction-prompts | Waymaker | 중(신뢰 카피 불변) |
-| **P1** | New Home 여정 서사 밀도 | 조건부 CSS/효과 | New Home | 중(§6 명도 기준) |
-| **P2** | 스크롤 리빌 모션 | interaction-prompts | Visable·New Home | 중(reduced-motion 필수) |
-| **P2** | 온보딩/데모 영상 | video-to-superprompt | Waymaker(외부) | 낮음(비-프로덕션) |
+| **P0** | 시각 회귀 베이스라인 캡처 | (프로세스) | 3표면 | 없음 |
+| **P0** | 모션 토큰 + choreography 스펙 | 길찾기·품질 | 3표면 | 낮음(CSS만) |
+| **P0** | New Home 히어로 앰비언트 배경(대표 시그니처) | 감정 | New Home | 중(성능·폴백 예산) |
+| **P1** | Visable 검색→결과 view transition | 길찾기·품질 | Visable | 중(보존 계약) |
+| **P1** | Waymaker 스텝 choreography·패킷 조립 | 길찾기·품질 | Waymaker | 중(신뢰 카피 불변) |
+| **P1** | 3표면 CSS 깊이·머티리얼 조율 | 품질 | 3표면 | 낮음 |
+| **P2** | 표현형 디스플레이 타입 | 감정·품질 | New Home·Visable | 중(폰트 성능 예산) |
+| **P2** | 정착 여정 스크롤 연동 · 감정 이미지 | 감정 | New Home | 중 |
+| **P2** | 온보딩/데모 영상 | (외부) | Waymaker | 낮음 |
 
-각 P는 **독립 PR**. P0 두 건이 이후 모든 작업의 입력(베이스라인·토큰)이므로 선행.
-
----
-
-## 7. 완료 기준 / 측정 지표
-
-- **일관성:** 3표면의 트랜지션이 §4.1 토큰 4개로 100% 수렴(grep으로 산발 duration 0건 지향).
-- **접근성:** Emerald+흰텍스트 AA 미달 0건, 터치타겟 <44px 0건, 색-only 상태표기 0건.
-- **보존:** `scripts/check_repo.sh` 4단계 + 보존 grep 전 PR 통과, `tests/e2e` 그린.
-- **절제:** WebGL/파티클/신규폰트 도입 0건(거부 목록 준수).
-- **회귀:** stitched 캡처 베이스라인 대비 의도치 않은 시각 변화 0건.
+P0 3건(캡처·토큰·New Home 히어로)이 방향을 증명하는 대표 착수점.
 
 ---
 
-## 8. 리스크와 가드레일
+## 9. 완료 기준 / 측정 지표
+
+- **감동:** 각 표면에 기억에 남는 시그니처 모먼트 ≥1개(New Home 히어로가 대표).
+- **일관성:** 3표면 트랜지션이 §5.1 토큰으로 수렴, choreography 방향성 일치.
+- **성능:** 히어로 효과가 LCP 비차단, INP < 200ms, 추가 폰트 ≤~50KB/표면.
+- **접근성:** 모든 효과에 정적 대체 경로, WCAG AA(주 CTA AAA), 색-only 상태표기 0건, 저사양 폴백 동작.
+- **신뢰:** 면책·공식 톤 불변, 다크패턴 0건, 효과가 읽기 방해 0건.
+- **보존:** `scripts/check_repo.sh` 4단계 + 보존 grep + `tests/e2e` 그린.
+
+---
+
+## 10. 리스크와 가드레일
 
 | 리스크 | 완화 |
 |---|---|
-| AI 스킬이 화려한 데코를 유도해 civic 신뢰 톤 훼손 | §2 선별 매트릭스 ❌ 게이트, 산출물 폐기 규칙 |
-| `index.html` 단일 파일 보존 계약 위반 | 한 표면 = 한 PR, additive만, `scripts/check_repo.sh` 선통과 |
-| 모션 과다 → reduced-motion/성능 저하 | 모든 모션 reduced-motion 중화 의무, WebGL 원천 거부 |
-| 면책·출처·불확실성 카피 약화 | 라이팅 하이브리드(REBRAND §5): 돕는 말=해요체, 보호하는 말=공식 톤 불변 |
-| Fable 5 프로토타입의 프로덕션 직행 | 워크플로우 ④→⑤ 사이 보존 계약·CI 게이트 필수 |
+| 표현 야심이 신뢰 톤을 침식 | §3.2 신뢰 예산 비협상: 효과는 신뢰 카피를 가리거나 읽기 방해 불가 |
+| WebGL/모션 → 성능·배터리 저하 | 오프스크린 정지·DPR 캡·idle 초기화·저사양/reduced-motion 폴백 의무 |
+| "멋있어서" 데코가 다시 스며듦 | §3.1 세 통화 필터 — 아무 것도 못 사면 컷 |
+| `index.html` 단일파일 보존 계약 위반 | 표현 스탠스는 진화해도 **코드 보존은 불변**(§6 경고). 한 표면=한 PR, additive만 |
+| 거버넌스 문서와 모순 | §6대로 REBRAND §6·UX Lock §2를 함께 개정(오너 승인) |
+| Fable 5 프로토타입 프로덕션 직행 | ③→⑤ 사이 예산·보존·CI 게이트 필수 |
 
 ---
 
-## 9. 결론
+## 11. 결론
 
-Meng To의 75개 스킬은 **"어떻게 빠르게 화려하게 만드나"**를 가르친다.
-Visable·New Home·Waymaker에 필요한 건 **"어떻게 일관되고 신뢰감 있게 다듬나"**다.
+rev.1은 "civic이니까 데코를 거부한다"였다. rev.2는 **"civic이니까 더 잘 만든다"** 다.
 
-그래서 이 전략은 라이브러리에서 **캡처·스펙·프롬프트라는 프로세스만 뽑아** 저장소의 감사·보존 문화에 이식하고,
-데코 스킬은 명시적으로 거부한다. 세 표면은 성격(이성/감성/과업)에 따라 같은 스킬을 다른 강도로 받되,
-셋 다 **하나의 모션·접근성·다크패턴 규율** 아래 수렴한다 — 이것이 리브랜드가 목표한 *House-of-Brands 일관성*의 완성이다.
+이민자에게 필요한 건 밋밋한 관공서 폼이 아니라, **따뜻하고, 살아있고, 신뢰가 가는** 화면이다.
+그래서 Meng To의 스킬을 팔레트로 되찾아 세 표면에 시그니처 모먼트를 심되 — 아마추어처럼 흩뿌리지 않고,
+**세 통화(감정·길찾기·품질)로 값을 묻고 세 예산(성능·접근성·신뢰)으로 관리하는** 프로의 규율로 실행한다.
 
-> **다음 액션:** P0 두 건(캡처 베이스라인 + 모션 토큰 초안)을 착수 승인받는다. 나머지는 그 위에 쌓는다.
+New Home의 히어로에서 사용자가 처음으로 "여기가 내 집이 될 수 있겠다"고 느끼는 순간 —
+그 감정을 만드는 것이 이 전략의 성공 지표다. 그리고 그 감정은 접근성·성능·신뢰를 한 픽셀도 깎지 않고 만든다.
+
+> **다음 액션:** P0 3건(캡처 베이스라인 · 모션/choreography 토큰 · New Home 히어로 앰비언트 배경)과 §6 거버넌스 개정 승인을 받는다.
 
 *근거 문서: `docs/design/REBRAND_VISABLE_DESIGN.md` · `docs/design/PARADISO_UX_DIRECTION_LOCK.md` · `docs/design/REBRAND_CLAUDE_DESIGN_PROMPT.md` · `CLAUDE.md`*
