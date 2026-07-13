@@ -37,7 +37,8 @@ test.describe('bilingual document names', () => {
     const card = await openCard(page, 'D-2');
     const rows = await card.locator('.doc-chk-item span').allTextContents();
     expect(rows.some(r => r.includes('여권') && r.includes('(Passport)'))).toBeTruthy();
-    expect(rows.some(r => r.includes('수수료') && r.includes('(Fee)'))).toBeTruthy();
+    // Fees have their own procedure surface and must never be misclassified as documents.
+    expect(rows.some(r => r.includes('수수료'))).toBeFalsy();
   });
 
   test('EN: needs-verification/fallback-tier translations still render, marked with the unverified style', async ({ page }) => {
@@ -73,7 +74,7 @@ test.describe('bilingual document names', () => {
     const card = await openCard(page, 'D-2');
     const rows = await card.locator('.doc-chk-item span').allTextContents();
     expect(rows.some(r => r.includes('여권') && r.includes('(护照)'))).toBeTruthy();
-    expect(rows.some(r => r.includes('수수료') && r.includes('(手续费)'))).toBeTruthy();
+    expect(rows.some(r => r.includes('수수료'))).toBeFalsy();
   });
 
   test('KO: no translation text is ever appended to the procedure checklist', async ({ page }) => {
