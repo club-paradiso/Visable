@@ -76,6 +76,7 @@ async function stubBackend(page) {
 async function mountAndStart(page) {
   await page.goto('/ai.html?nav=1');
   await page.waitForSelector('#waymakerNavigatorRoot.wm-root', { timeout: 20_000 });
+  await expect(page.getByRole('button', { name: '언어: 한국어' })).toBeVisible();
   // intake catalog loaded → Start button present
   const start = page.locator('.wm-intro .wm-btn-primary');
   await expect(start).toBeVisible({ timeout: 20_000 });
@@ -97,7 +98,6 @@ async function touchTargetsOk(page, selector) {
 
 async function driveToD2Extension(page, start) {
   await start.click();
-  await page.locator('.wm-chip', { hasText: '한국어' }).click();
   await page.locator('.wm-chip', { hasText: '한국 내' }).click();
   await page.locator('.wm-search').fill('D-2');
   await page.locator('.wm-status-row', { hasText: 'D-2' }).first().click();
@@ -142,7 +142,6 @@ test.describe('Waymaker navigator — guided intake & deterministic packet', () 
   test('coverage-limited packet renders warning, fabricates nothing', async ({ page }) => {
     const start = await mountAndStart(page);
     await start.click();
-    await page.locator('.wm-chip', { hasText: '한국어' }).click();
     await page.locator('.wm-chip', { hasText: '한국 내' }).click();
     await page.locator('.wm-search').fill('D-2');
     await page.locator('.wm-status-row', { hasText: 'D-2' }).first().click();

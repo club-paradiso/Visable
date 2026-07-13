@@ -9298,6 +9298,15 @@ body:not(.searched) .p-reminder-section {
   display: none !important;
 }
 
+/* Previously hidden service flows can be reopened from the compact gateway.
+   Keep the calm default landing, but never strand functional tools in the DOM. */
+body:not(.searched) #visaManualSection.in-hero.is-home-revealed,
+body:not(.searched) .p-pathway-section.is-home-revealed,
+body:not(.searched) .p-reminder-section.is-home-revealed {
+  display: block !important;
+  scroll-margin-top: 6rem;
+}
+
 /* 민원대행기관·법무부지정 병원 찾기 are now page popups (modals): see
    #agentFinderModalOverlay / #medFinderModalOverlay. Modal-overlay visibility
    replaces the old landing-page hide + :target reveal mechanism. */
@@ -13420,15 +13429,16 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
   body:not(.searched) .p-proof-chip { padding-inline: 0.55rem; font-size: 0.7rem; }
 }
 </style>
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260713-figma-production">
 
 </head>
 <!-- Legacy grounding labels retained for regression tests: lawGroundingReassure: 'If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited.' | 법령 근거 확인 상태 | Law-grounding status | 法令依据确认状态 | 法令依據確認狀態 | If statutory search was not used, it does not mean the answer is wrong — only that grounding sources were limited. -->
-<body class="landing" data-theme="light">
+<body class="landing product-visable" data-theme="light">
 <script>
 /* Restore the persisted brightness (light/dark) before first paint to avoid a
    flash. Runs as soon as <body> is parsed. Brightness lives on body[data-theme]
    and is independent of the editorial style theme set on <html>. */
-(function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
+(function(){try{var b=localStorage.getItem('paradiso:brightness');if(b==='system'){b=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';}if(b==='dark'||b==='light'){document.body.setAttribute('data-theme',b);}}catch(e){}})();
 </script>
 <div class="k-grain" aria-hidden="true"></div>
 <div class="p-cmd-backdrop" data-action="close-cmd-palette" aria-hidden="true"></div>
@@ -13464,7 +13474,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </button>
         <div id="languageMenu" class="language-menu" role="listbox" aria-label="언어 선택" data-s2t="off"></div>
     </div>
-    <button id="editorialThemeBtn" class="theme-btn" data-action="toggle-editorial-theme" aria-label="인터페이스 테마">
+    <button id="editorialThemeBtn" class="theme-btn" data-action="open-global-settings" aria-label="인터페이스 테마" aria-haspopup="dialog" aria-controls="globalSettingsOverlay" aria-expanded="false">
         <span aria-hidden="true">🗂</span> <span class="editorial-theme-btn-text">모던</span>
     </button>
     <button id="easyModeBtn" class="theme-btn easy-mode-btn" data-action="toggle-easy-mode" aria-pressed="false" aria-label="쉬운 안내">
@@ -13474,6 +13484,53 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         ◐ <span class="theme-btn-text">테마 변경</span>
     </button>
 </header>
+
+<div class="p-settings-overlay" id="globalSettingsOverlay" role="dialog" aria-modal="true" aria-labelledby="globalSettingsTitle" hidden>
+    <section class="p-settings-panel">
+        <header class="p-settings-head">
+            <div>
+                <h2 id="globalSettingsTitle" data-i18n="globalSettingsTitle">전역 설정</h2>
+                <p class="p-settings-help" data-i18n="editorialThemeAria">인터페이스 테마 변경</p>
+            </div>
+            <button type="button" class="p-settings-close" data-action="close-global-settings" aria-label="닫기" data-i18n-attr="aria-label:closeModal">✕</button>
+        </header>
+        <div class="p-settings-grid">
+            <section class="p-settings-column">
+                <h3 data-i18n="languageMenu">언어 선택</h3>
+                <p class="p-settings-help">15 locales · 简体中文 · 繁體中文 · RTL</p>
+                <input class="p-settings-search" id="globalSettingsLanguageSearch" type="search" data-i18n-attr="placeholder:languageMenu;aria-label:languageMenu" placeholder="언어 선택" aria-label="언어 선택">
+                <div class="p-settings-languages" id="globalSettingsLanguages" role="listbox" data-s2t="off"></div>
+            </section>
+            <section class="p-settings-column">
+                <h3 data-i18n="editorialThemeAria">인터페이스 테마 변경</h3>
+                <p class="p-settings-help" data-i18n="cityButton">위치 및 시간 설정</p>
+                <div class="p-settings-block">
+                    <strong data-i18n="cityButton">위치 및 시간 설정</strong>
+                    <span><span id="globalSettingsCity">Seoul</span> · <span id="globalSettingsTime">—:—</span></span>
+                    <div class="p-settings-actions"><button type="button" class="p-settings-option" data-action="open-city-from-settings" data-i18n="cityButton">위치 및 시간 설정</button></div>
+                </div>
+                <div class="p-settings-block">
+                    <strong data-i18n="editorialThemeAria">인터페이스 테마 변경</strong>
+                    <div class="p-settings-actions">
+                        <button type="button" class="p-settings-option" data-action="toggle-editorial-theme" data-i18n="editorialThemeCivic">모던</button>
+                    </div>
+                </div>
+                <div class="p-settings-block">
+                    <strong data-i18n="easyModeLabel">안내 방식</strong>
+                    <div class="p-settings-actions"><button type="button" class="p-settings-option" data-action="toggle-easy-mode" id="globalSettingsEasy" data-i18n="easyModeEasy">쉬운 안내</button></div>
+                </div>
+                <div class="p-settings-block">
+                    <strong data-i18n="themeButton">테마 변경</strong>
+                    <div class="p-settings-actions" role="group" data-i18n-attr="aria-label:themeButton" aria-label="테마 변경">
+                        <button type="button" class="p-settings-option" data-action="set-brightness" data-brightness="light" data-i18n="themeLight">라이트 모드</button>
+                        <button type="button" class="p-settings-option" data-action="set-brightness" data-brightness="dark" data-i18n="themeDark">다크 모드</button>
+                        <button type="button" class="p-settings-option" data-action="set-brightness" data-brightness="system" data-i18n="themeSystem">시스템 설정</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+</div>
 
 <header class="hero-container" id="hero">
     <div class="k-decor" aria-hidden="true">
@@ -13545,6 +13602,10 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </span>
                 <span class="p-gw-search-kbd" aria-hidden="true">↵</span>
             </button>
+            <button type="button" class="p-gw-card p-gw-card-visa" data-action="toggle-search">
+                <span class="p-gw-card-label" data-i18n="gwSearchTitle">비자·체류 검색</span>
+                <span class="p-gw-card-sub" data-i18n="gwSearchSub">코드(D-2, E-7) 또는 상황 키워드로 시작</span>
+            </button>
             <div class="p-gw-primary" role="group" aria-label="주요 진입점">
                 <!-- Card order matters: applyLanguage() maps gwDocLabel / gwHikoreaLabel /
                      gwAiLabel onto .p-gw-card-label by index. -->
@@ -13585,6 +13646,11 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </span>
             </a>
 
+            <a class="p-gw-card p-gw-card-support" href="#pathwaySection">
+                <span class="p-gw-card-label" data-i18n="gwSupportLabel">생활·민원 보조 도구</span>
+                <span class="p-gw-card-sub" data-i18n="gwSupportSub">중요한 날짜와 단기입국·직업분류·관할관서·대행기관·지정병원을 확인합니다.</span>
+            </a>
+
             <div class="p-gw-utility" role="group" aria-label="보조 도구">
                 <button type="button" class="p-gw-util" data-action="open-short-stay">
                     <span class="p-gw-util-icon" aria-hidden="true">🛂</span>
@@ -13605,6 +13671,18 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <button type="button" class="p-gw-util" data-action="open-med-finder">
                     <span class="p-gw-util-icon" aria-hidden="true">🏥</span>
                     <span class="p-gw-util-label">법무부지정 병원 찾기</span>
+                </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="visaManualSection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">↔</span>
+                    <span class="p-gw-util-label" data-i18n="gwRestoredEntry">입국 전·후 절차</span>
+                </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="pathwaySection" aria-controls="pathwaySection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">⑧</span>
+                    <span class="p-gw-util-label" data-i18n="gwRestoredPathways">생활 경로 8종</span>
+                </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="reminderSection" aria-controls="reminderSection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">⏱</span>
+                    <span class="p-gw-util-label" data-i18n="gwRestoredReminder">체류 기한 계산·알림</span>
                 </button>
             </div>
         </section>
@@ -13838,7 +13916,27 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </p>
     </section>
 
-    <section class="p-section p-pathway-section" aria-labelledby="pPathwayTitle">
+    <section class="p-section p-pathway-section" id="pathwaySection" aria-labelledby="pPathwayTitle">
+        <div class="p-journey-entry-grid" aria-label="입국 전후 및 일정 관리">
+            <button type="button" class="p-journey-entry" data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="pre" aria-controls="visaManualSection" aria-expanded="false">
+                <small>01 · PRE-ENTRY</small>
+                <strong data-i18n="preTrackTitle">입국 전 — 재외공관 사증 발급</strong>
+                <span data-i18n="preTrackDesc">해외에서 재외공관을 통한 사증(비자) 신규 발급 절차</span>
+                <b data-i18n="preTrackAria">입국 전 사증 발급 트랙</b>
+            </button>
+            <button type="button" class="p-journey-entry" data-action="reveal-home-section" data-target="visaManualSection" data-journey-track="in" aria-controls="visaManualSection" aria-expanded="false">
+                <small>02 · POST-ENTRY</small>
+                <strong data-i18n="inTrackTitle">입국 후 — 외국인 등록·체류 연장</strong>
+                <span data-i18n="inTrackDesc">외국인등록, 체류기간 연장, 자격 변경 등 국내 체류 민원</span>
+                <b data-i18n="inTrackAria">입국 후 체류 관리 트랙</b>
+            </button>
+            <button type="button" class="p-journey-entry" data-action="reveal-home-section" data-target="reminderSection" aria-controls="reminderSection" aria-expanded="false">
+                <small>03 · IMPORTANT DATES</small>
+                <strong data-i18n="reminderSectionTitle">중요한 날짜를 미리 알려드립니다.</strong>
+                <span data-i18n="reminderSectionCopy">날짜를 저장하면 남은 일수를 보여드리고 캘린더로 이어갑니다.</span>
+                <b data-i18n="reminderSubmit">알림 저장</b>
+            </button>
+        </div>
         <div class="p-section-head">
             <div>
                 <p class="p-kicker">Pathways</p>
@@ -13931,7 +14029,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
     </section>
 
-    <section class="p-section p-tools-section" aria-labelledby="pToolsTitle">
+    <section class="p-section p-tools-section" id="supportTools" aria-labelledby="pToolsTitle">
         <div class="p-section-head">
             <div>
                 <p class="p-kicker">Practical tools</p>
@@ -14003,6 +14101,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 <input type="text" id="reminderMemo" maxlength="40" placeholder="예: 김민수 비자" data-i18n-attr="placeholder:reminderMemoPlaceholder">
             </div>
             <button type="submit" class="p-reminder-submit" data-i18n="reminderSubmit">알림 저장</button>
+            <button type="button" class="p-reminder-cancel" id="reminderCancelEdit" data-i18n="reminderCancelEdit" hidden>수정 취소</button>
             <p id="reminderFormError" class="p-reminder-error" role="alert" hidden></p>
         </form>
 
@@ -22404,9 +22503,10 @@ function applyLanguage(code, options = {}) {
     setAttr('.p-gw-utility', 'aria-label', tx('gwUtilityAria'));
     setText('.p-gw-search-title', tx('gwSearchTitle'));
     setText('.p-gw-search-sub', tx('gwSearchSub'));
-    setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
-    setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
+    setIndexedText('.p-gw-primary .p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
+    setIndexedText('.p-gw-primary .p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
     setIndexedText('.p-gw-util-label', [tx('gwShortStayLabel'), tx('gwJobcodeLabel'), tx('jurisdiction'), tx('gwAgentLabel'), tx('gwMedLabel')]);
+    setIndexedText('.p-gw-util-restored .p-gw-util-label', [tx('gwRestoredEntry'), tx('gwRestoredPathways'), tx('gwRestoredReminder')]);
     setText('#gwNewHomeLabel', tx('gwNewHomeLabel'));
     setText('#gwNewHomeSub', tx('gwNewHomeSub'));
     setText('#gwNewHomeDesc', tx('gwNewHomeDesc'));
@@ -23124,6 +23224,15 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'open-agent-finder': () => openModal('agentFinderModalOverlay'),
                 'open-med-finder': () => openModal('medFinderModalOverlay'),
                 'open-short-stay': () => { if (window.ParadisoShortStay && typeof window.ParadisoShortStay.open === 'function') window.ParadisoShortStay.open(); },
+                'reveal-home-section': () => {
+                    const target = document.getElementById(actionBtn.dataset.target || '');
+                    if (!target) return;
+                    target.classList.add('is-home-revealed');
+                    actionBtn.setAttribute('aria-expanded', 'true');
+                    if (actionBtn.dataset.journeyTrack === 'pre' && typeof startPreEntryTrack === 'function') startPreEntryTrack();
+                    if (actionBtn.dataset.journeyTrack === 'in' && typeof startInKoreaTrack === 'function') startInKoreaTrack();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
                 'set-jobcode-filter': () => setJobcodeFilter(actionBtn.dataset.jcFilter),
                 'set-jobcode-level': () => setJobcodeLevel(actionBtn.dataset.jcLevel),
@@ -23139,6 +23248,14 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'apply-language': () => { applyLanguage(actionBtn.dataset.lang); toggleLanguageMenu(false); },
                 'toggle-theme': () => toggleTheme(),
                 'toggle-editorial-theme': () => toggleEditorialTheme(),
+                'open-global-settings': () => window.openGlobalSettings && window.openGlobalSettings(),
+                'close-global-settings': () => window.closeGlobalSettings && window.closeGlobalSettings(),
+                'open-city-from-settings': () => {
+                    if (window.closeGlobalSettings) window.closeGlobalSettings();
+                    toggleCityMenu(true);
+                    document.getElementById('citySearch')?.focus();
+                },
+                'set-brightness': () => window.setGlobalBrightness && window.setGlobalBrightness(actionBtn.dataset.brightness),
                 'scroll-to-brand': () => document.getElementById('brandHero')?.scrollIntoView({ behavior: 'smooth' })
             };
             if (handlers[action]) {
@@ -24242,6 +24359,16 @@ function showVisaDocForAction(visaCode) {
   var banner = document.getElementById('reminderBanner');
   var bannerText = document.getElementById('reminderBannerText');
   var bannerClose = document.getElementById('reminderBannerClose');
+  var submitEl = form.querySelector('[type="submit"]');
+  var cancelEditEl = document.getElementById('reminderCancelEdit');
+  var editingId = null;
+
+  function resetEditState() {
+    editingId = null;
+    form.reset();
+    if (submitEl) submitEl.textContent = rtx('reminderSubmit', 'Save reminder');
+    if (cancelEditEl) cancelEditEl.hidden = true;
+  }
 
   function load() {
     try {
@@ -24399,6 +24526,22 @@ function showVisaDocForAction(visaCode) {
         gBtn.textContent = rtx('reminderGcalBtn', 'Google 캘린더에 추가');
         actions.appendChild(gBtn);
 
+        var editBtn = document.createElement('button');
+        editBtn.type = 'button';
+        editBtn.className = 'p-reminder-item__btn';
+        editBtn.textContent = rtx('reminderEditBtn', 'Edit');
+        editBtn.addEventListener('click', function () {
+          editingId = item.id;
+          typeEl.value = item.type;
+          dateEl.value = item.date;
+          memoEl.value = item.memo || '';
+          if (submitEl) submitEl.textContent = rtx('reminderUpdateBtn', 'Save changes');
+          if (cancelEditEl) cancelEditEl.hidden = false;
+          form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          typeEl.focus();
+        });
+        actions.appendChild(editBtn);
+
         var delBtn = document.createElement('button');
         delBtn.type = 'button';
         delBtn.className = 'p-reminder-item__btn p-reminder-item__btn--danger';
@@ -24406,6 +24549,7 @@ function showVisaDocForAction(visaCode) {
         delBtn.addEventListener('click', function () {
           if (!confirm(rtx('reminderDeleteConfirm', '이 기한을 삭제하시겠습니까?'))) return;
           save(load().filter(function (it) { return it.id !== item.id; }));
+          if (editingId === item.id) resetEditState();
           render();
           showBanner();
         });
@@ -24445,6 +24589,8 @@ function showVisaDocForAction(visaCode) {
     });
   }
 
+  if (cancelEditEl) cancelEditEl.addEventListener('click', resetEditState);
+
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     errorEl.hidden = true;
@@ -24454,19 +24600,31 @@ function showVisaDocForAction(visaCode) {
     if (!type) { errorEl.textContent = rtx('reminderErrType', '기한 종류를 선택해 주세요.'); errorEl.hidden = false; typeEl.focus(); return; }
     if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) { errorEl.textContent = rtx('reminderErrDate', '날짜를 입력해 주세요.'); errorEl.hidden = false; dateEl.focus(); return; }
     var items = load();
-    items.push({ id: uid(), type: type, date: date, memo: memo, createdAt: Date.now() });
+    if (editingId) {
+      items = items.map(function (item) {
+        return item.id === editingId
+          ? Object.assign({}, item, { type: type, date: date, memo: memo, updatedAt: Date.now() })
+          : item;
+      });
+    } else {
+      items.push({ id: uid(), type: type, date: date, memo: memo, createdAt: Date.now() });
+    }
     if (!save(items)) {
       errorEl.textContent = rtx('reminderErrSave', '저장하지 못했습니다. 브라우저 저장소가 차단되어 있을 수 있습니다.');
       errorEl.hidden = false;
       return;
     }
-    form.reset();
+    resetEditState();
     render();
     successEl.hidden = false;
     setTimeout(function () { successEl.hidden = true; }, 3500);
   });
 
-  window.addEventListener('paradiso-language-applied', render);
+  window.addEventListener('paradiso-language-applied', function () {
+    if (submitEl) submitEl.textContent = editingId ? rtx('reminderUpdateBtn', 'Save changes') : rtx('reminderSubmit', 'Save reminder');
+    if (cancelEditEl) cancelEditEl.textContent = rtx('reminderCancelEdit', 'Cancel edit');
+    render();
+  });
   render();
 })();
 </script>
@@ -24892,6 +25050,104 @@ function showVisaDocForAction(visaCode) {
     document.addEventListener("DOMContentLoaded", install);
   } else {
     install();
+  }
+})();
+</script>
+
+<script id="visable-global-settings-20260713">
+(function () {
+  'use strict';
+  var overlay = document.getElementById('globalSettingsOverlay');
+  var languageRoot = document.getElementById('globalSettingsLanguages');
+  var search = document.getElementById('globalSettingsLanguageSearch');
+  var trigger = document.getElementById('editorialThemeBtn');
+  var returnFocus = null;
+  var systemQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+  function activeBrightnessChoice() {
+    try { return localStorage.getItem('paradiso:brightness') || 'light'; } catch (e) { return 'light'; }
+  }
+
+  function renderLanguages(filter) {
+    if (!languageRoot || typeof LANGUAGE_OPTIONS === 'undefined') return;
+    var needle = String(filter || '').trim().toLowerCase();
+    languageRoot.innerHTML = '';
+    LANGUAGE_OPTIONS.forEach(function (lang) {
+      var haystack = [lang.code, lang.name, lang.local, lang.short].join(' ').toLowerCase();
+      if (needle && haystack.indexOf(needle) === -1) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'p-settings-language' + (lang.code === selectedLocale ? ' is-active' : '');
+      btn.dataset.action = 'apply-language';
+      btn.dataset.lang = lang.code;
+      btn.setAttribute('role', 'option');
+      btn.setAttribute('aria-selected', lang.code === selectedLocale ? 'true' : 'false');
+      btn.textContent = lang.name + ' · ' + lang.short;
+      languageRoot.appendChild(btn);
+    });
+  }
+
+  function syncSettingsState() {
+    var city = document.getElementById('cityBtnLabel');
+    var time = document.getElementById('cityBtnTime');
+    var cityOut = document.getElementById('globalSettingsCity');
+    var timeOut = document.getElementById('globalSettingsTime');
+    if (cityOut && city) cityOut.textContent = city.textContent;
+    if (timeOut && time) timeOut.textContent = time.textContent;
+    var easy = document.getElementById('globalSettingsEasy');
+    var easySource = document.getElementById('easyModeBtn');
+    if (easy && easySource) easy.setAttribute('aria-pressed', easySource.getAttribute('aria-pressed') || 'false');
+    var choice = activeBrightnessChoice();
+    document.querySelectorAll('[data-action="set-brightness"]').forEach(function (btn) {
+      btn.setAttribute('aria-pressed', btn.dataset.brightness === choice ? 'true' : 'false');
+    });
+    renderLanguages(search ? search.value : '');
+  }
+
+  window.setGlobalBrightness = function (choice) {
+    if (['light', 'dark', 'system'].indexOf(choice) === -1) return;
+    var resolved = choice === 'system'
+      ? (systemQuery && systemQuery.matches ? 'dark' : 'light')
+      : choice;
+    document.body.setAttribute('data-theme', resolved);
+    try { localStorage.setItem('paradiso:brightness', choice); } catch (e) {}
+    if (typeof updateThemeLabel === 'function') updateThemeLabel();
+    if (typeof updateThemeColorMeta === 'function') updateThemeColorMeta();
+    syncSettingsState();
+  };
+
+  window.openGlobalSettings = function () {
+    if (!overlay) return;
+    returnFocus = document.activeElement;
+    overlay.hidden = false;
+    trigger && trigger.setAttribute('aria-expanded', 'true');
+    syncSettingsState();
+    if (typeof localizeStaticDom === 'function') localizeStaticDom(overlay);
+    var close = overlay.querySelector('.p-settings-close');
+    if (close) close.focus();
+  };
+
+  window.closeGlobalSettings = function () {
+    if (!overlay || overlay.hidden) return;
+    overlay.hidden = true;
+    trigger && trigger.setAttribute('aria-expanded', 'false');
+    if (returnFocus && typeof returnFocus.focus === 'function') returnFocus.focus();
+  };
+
+  if (search) search.addEventListener('input', function () { renderLanguages(search.value); });
+  if (overlay) overlay.addEventListener('click', function (event) {
+    if (event.target === overlay) window.closeGlobalSettings();
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && overlay && !overlay.hidden) window.closeGlobalSettings();
+  });
+  window.addEventListener('paradiso-language-applied', syncSettingsState);
+  if (systemQuery) {
+    var onSystemChange = function () {
+      if (activeBrightnessChoice() === 'system') window.setGlobalBrightness('system');
+    };
+    if (typeof systemQuery.addEventListener === 'function') systemQuery.addEventListener('change', onSystemChange);
+    else if (typeof systemQuery.addListener === 'function') systemQuery.addListener(onSystemChange);
   }
 })();
 </script>

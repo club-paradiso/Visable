@@ -395,8 +395,8 @@
         "zh-CN": "打开中心"
       }
     },
-    {
-      "id": "waymaker",
+  {
+    "id": "waymaker",
       "icon": "✦",
       "action": "open-waymaker",
       "label": {
@@ -412,10 +412,50 @@
       "cta": {
         "ko": "내 절차 찾기",
         "en": "Find my procedure",
-        "zh-CN": "查找我的手续"
-      }
+      "zh-CN": "查找我的手续"
     }
-  ],
+  },
+  {
+    "id": "interview",
+    "icon": "🎙️",
+    "action": "scroll-interview",
+    "label": {
+      "ko": "국적민원·귀화면접 준비",
+      "en": "Nationality Services & Interview Prep",
+      "zh-CN": "国籍业务·归化面试准备"
+    },
+    "desc": {
+      "ko": "공식 안내를 바탕으로 연습 질문, 모의면접, 참고 영상과 Waymaker 코치를 한곳에서 확인합니다.",
+      "en": "Open practice questions, mock interviews, reference videos, and a Waymaker coach grounded in official guidance.",
+      "zh-CN": "基于官方指引，在一处查看练习题、模拟面试、参考视频和 Waymaker 教练。"
+    },
+    "cta": {
+      "ko": "면접 준비 시작",
+      "en": "Start preparing",
+      "zh-CN": "开始准备面试"
+    }
+  },
+  {
+    "id": "sources",
+    "icon": "↗",
+    "action": "scroll-sources",
+    "label": {
+      "ko": "공식 출처",
+      "en": "Official Sources",
+      "zh-CN": "官方来源"
+    },
+    "desc": {
+      "ko": "국적법·법무부·Socinet·HiKorea의 근거와 최신 확인 경로를 한곳에서 살펴봅니다.",
+      "en": "Review Nationality Act, Ministry of Justice, Soci-Net, and HiKorea sources and current verification routes.",
+      "zh-CN": "集中查看《国籍法》、法务部、Socinet、HiKorea 的依据及最新确认路径。"
+    },
+    "cta": {
+      "ko": "출처 보기",
+      "en": "View sources",
+      "zh-CN": "查看来源"
+    }
+  }
+],
   "pathwayPreview": {
     "title": {
       "ko": "전체 흐름 미리보기",

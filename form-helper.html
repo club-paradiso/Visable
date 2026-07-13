@@ -684,8 +684,9 @@ main{flex:1;padding:0 1rem 3rem}
   .fh-type-grid{grid-template-columns:1fr}
 }
 </style>
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260713-figma-production">
 </head>
-<body data-theme="light">
+<body class="product-form-helper" data-theme="light">
 
 <!-- Header -->
 <header class="fh-header" role="banner">
@@ -3256,7 +3257,11 @@ function initTheme() {
     themeBtn.setAttribute('aria-label', isDark ? '라이트 모드로 전환' : '다크 모드로 전환');
   }
   // Restore the shared brightness choice (carries across the Visable pages).
-  try { if (localStorage.getItem('paradiso:brightness') === 'dark') applyTheme(true); } catch (e) {}
+  try {
+    const savedBrightness = localStorage.getItem('paradiso:brightness');
+    applyTheme(savedBrightness === 'dark' ||
+      (savedBrightness === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches));
+  } catch (e) {}
   themeBtn.addEventListener('click', () => {
     const next = document.body.getAttribute('data-theme') !== 'dark';
     applyTheme(next);

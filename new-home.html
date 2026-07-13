@@ -566,8 +566,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
   * { transition: none !important; }
 }
 </style>
+<link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260713-figma-production">
 </head>
-<body>
+<body class="product-new-home">
 <a class="sr-only" href="#nhMain">본문 바로가기 / Skip to content</a>
 
 <header class="nh-topbar">
@@ -1520,7 +1521,9 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       'open-waymaker': function () { window.location.href = 'ai.html?domain=nationality'; },
       'scroll-kiip': function () { scrollTo('kiip'); },
       'scroll-after': function () { scrollTo('after'); },
-      'scroll-hub': function () { scrollTo('hub'); }
+      'scroll-hub': function () { scrollTo('hub'); },
+      'scroll-interview': function () { scrollTo('interviewBridge'); },
+      'scroll-sources': function () { scrollTo('sources'); }
     };
     if (handlers[action]) {
       if (t.tagName !== 'A') e.preventDefault();
@@ -1571,7 +1574,13 @@ section.nh-block, .nh-dashboard, .nh-pathway, .nh-caution, .nh-sources { padding
       (flows.resultCategories || []).forEach(function (c) { catMap[c.id] = c; });
       (sources.sources || []).forEach(function (s) { srcMap[s.sourceId] = s; });
       if (SUPPORTED.indexOf(lang) < 0) lang = 'ko';
-      try { if (localStorage.getItem(BRIGHT_KEY) === 'dark') document.body.setAttribute('data-theme', 'dark'); } catch (e) {}
+      try {
+        var savedBrightness = localStorage.getItem(BRIGHT_KEY);
+        var useDark = savedBrightness === 'dark' ||
+          (savedBrightness === 'system' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (useDark) document.body.setAttribute('data-theme', 'dark');
+        else document.body.removeAttribute('data-theme');
+      } catch (e) {}
       renderAll();
       syncMeta();
     }).catch(function () { showLoadError(); });
