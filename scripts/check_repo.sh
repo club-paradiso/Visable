@@ -229,6 +229,10 @@ if command -v node >/dev/null 2>&1; then
   # + result sections, cautious-wording/disclaimer/same-day guarantees, the
   # LLM-free guarantee, a11y/theme tokens, index wiring, and KO/EN pack parity.
   node scripts/check_hikorea_reservation_helper.mjs
+  # Public-service availability guard: every live entry must retain both a
+  # landing control and a working implementation hook, including restored
+  # track/pathway/deadline sections and HiKorea account preparation tools.
+  node scripts/check_live_feature_surface.mjs
 else
   echo "INFO: Node.js not found; skipping F-4 hub validation."
 fi

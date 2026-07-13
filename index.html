@@ -9298,6 +9298,15 @@ body:not(.searched) .p-reminder-section {
   display: none !important;
 }
 
+/* Previously hidden service flows can be reopened from the compact gateway.
+   Keep the calm default landing, but never strand functional tools in the DOM. */
+body:not(.searched) #visaManualSection.in-hero.is-home-revealed,
+body:not(.searched) .p-pathway-section.is-home-revealed,
+body:not(.searched) .p-reminder-section.is-home-revealed {
+  display: block !important;
+  scroll-margin-top: 6rem;
+}
+
 /* 민원대행기관·법무부지정 병원 찾기 are now page popups (modals): see
    #agentFinderModalOverlay / #medFinderModalOverlay. Modal-overlay visibility
    replaces the old landing-page hide + :target reveal mechanism. */
@@ -13606,6 +13615,18 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                     <span class="p-gw-util-icon" aria-hidden="true">🏥</span>
                     <span class="p-gw-util-label">법무부지정 병원 찾기</span>
                 </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="visaManualSection" aria-controls="visaManualSection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">↔</span>
+                    <span class="p-gw-util-label">입국 전·후 절차</span>
+                </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="pathwaySection" aria-controls="pathwaySection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">⑧</span>
+                    <span class="p-gw-util-label">생활 경로 8종</span>
+                </button>
+                <button type="button" class="p-gw-util p-gw-util-restored" data-action="reveal-home-section" data-target="reminderSection" aria-controls="reminderSection" aria-expanded="false">
+                    <span class="p-gw-util-icon" aria-hidden="true">⏱</span>
+                    <span class="p-gw-util-label">체류 기한 계산·알림</span>
+                </button>
             </div>
         </section>
 
@@ -13838,7 +13859,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </p>
     </section>
 
-    <section class="p-section p-pathway-section" aria-labelledby="pPathwayTitle">
+    <section class="p-section p-pathway-section" id="pathwaySection" aria-labelledby="pPathwayTitle">
         <div class="p-section-head">
             <div>
                 <p class="p-kicker">Pathways</p>
@@ -22407,6 +22428,9 @@ function applyLanguage(code, options = {}) {
     setIndexedText('.p-gw-card-label', [tx('gwDocLabel'), tx('gwHikoreaLabel'), tx('gwAiLabel')]);
     setIndexedText('.p-gw-card-sub', [tx('gwDocSub'), tx('gwHikoreaSub'), tx('gwAiSub')]);
     setIndexedText('.p-gw-util-label', [tx('gwShortStayLabel'), tx('gwJobcodeLabel'), tx('jurisdiction'), tx('gwAgentLabel'), tx('gwMedLabel')]);
+    setIndexedText('.p-gw-util-restored .p-gw-util-label', currentLanguage === 'ko'
+        ? ['입국 전·후 절차', '생활 경로 8종', '체류 기한 계산·알림']
+        : ['Entry · stay procedures', '8 life pathways', 'Stay deadline calculator']);
     setText('#gwNewHomeLabel', tx('gwNewHomeLabel'));
     setText('#gwNewHomeSub', tx('gwNewHomeSub'));
     setText('#gwNewHomeDesc', tx('gwNewHomeDesc'));
@@ -23124,6 +23148,13 @@ document.addEventListener('DOMContentLoaded', async () => {
                 'open-agent-finder': () => openModal('agentFinderModalOverlay'),
                 'open-med-finder': () => openModal('medFinderModalOverlay'),
                 'open-short-stay': () => { if (window.ParadisoShortStay && typeof window.ParadisoShortStay.open === 'function') window.ParadisoShortStay.open(); },
+                'reveal-home-section': () => {
+                    const target = document.getElementById(actionBtn.dataset.target || '');
+                    if (!target) return;
+                    target.classList.add('is-home-revealed');
+                    actionBtn.setAttribute('aria-expanded', 'true');
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                },
                 'search-jobcode-ai': () => searchJobcodeWithAI(),
                 'set-jobcode-filter': () => setJobcodeFilter(actionBtn.dataset.jcFilter),
                 'set-jobcode-level': () => setJobcodeLevel(actionBtn.dataset.jcLevel),

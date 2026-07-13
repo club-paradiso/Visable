@@ -46,6 +46,54 @@
     });
   }
 
+  /* ------------------------------------------------ account preparation */
+  function secureRandomInt(max, cryptoSource) {
+    if (!Number.isInteger(max) || max < 1) throw new RangeError('max must be a positive integer');
+    var source = cryptoSource || (typeof window !== 'undefined' ? window.crypto : null);
+    if (!source || typeof source.getRandomValues !== 'function') throw new Error('Secure random generation is unavailable');
+    var limit = Math.floor(0x100000000 / max) * max;
+    var values = new Uint32Array(1);
+    var value;
+    do {
+      source.getRandomValues(values);
+      value = values[0];
+    } while (value >= limit);
+    return value % max;
+  }
+
+  /* Generated only in memory. Ambiguous characters (i/l/o/I/L/O/0/1) are
+     excluded; every result has a letter, digit and supported special char. */
+  function generateHikoreaPassword(cryptoSource) {
+    var letters = 'abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ';
+    var digits = '23456789';
+    var specials = '!@#$%';
+    var all = letters + digits + specials;
+    var length = 10 + secureRandomInt(3, cryptoSource);
+    var out = [
+      letters[secureRandomInt(letters.length, cryptoSource)],
+      digits[secureRandomInt(digits.length, cryptoSource)],
+      specials[secureRandomInt(specials.length, cryptoSource)]
+    ];
+    while (out.length < length) out.push(all[secureRandomInt(all.length, cryptoSource)]);
+    for (var i = out.length - 1; i > 0; i--) {
+      var j = secureRandomInt(i + 1, cryptoSource);
+      var tmp = out[i]; out[i] = out[j]; out[j] = tmp;
+    }
+    return out.join('');
+  }
+
+  function validateHikoreaId(value) {
+    var v = String(value == null ? '' : value);
+    return {
+      value: v,
+      hasValue: v.length > 0,
+      chars: /^[a-z0-9]*$/.test(v),
+      length: v.length >= 4,
+      noSpace: !/\s/.test(v),
+      valid: v.length >= 4 && /^[a-z0-9]+$/.test(v)
+    };
+  }
+
   /* ------------------------------------------------------------------------ *
    * Deterministic core. Pure: same input → same output, no DOM/network/LLM.
    * Returns structured IDs/keys only; the UI layer maps them to localized copy.
@@ -345,6 +393,39 @@
     sgD4: '아이디, 비밀번호, 연락처 등 계정 정보를 입력하고 가입을 완료하세요.',
     sgC4: '비밀번호는 안전하게 보관하고, 가입에 쓴 이메일·전화번호를 기억해 두세요.',
 
+    acctPrepTitle: '가입 전에 계정 정보를 준비하세요',
+    acctPrepLead: '하이코리아 회원가입 화면을 열기 전에 이메일, 아이디 후보, 비밀번호를 한 번에 준비할 수 있습니다.',
+    acctEmailTitle: '1 · 이메일 준비',
+    acctEmailBody: '가입과 인증에 사용할 이메일 주소가 필요합니다. 본인이 계속 확인할 수 있는 주소를 사용하세요.',
+    acctGmail: 'Gmail 만들기',
+    acctNaver: '네이버 메일 만들기',
+    acctEmailCaution: '가입 후 인증 메일을 확인해야 할 수 있어요. 메일이 보이지 않으면 스팸함도 확인하세요.',
+    acctIdTitle: '2 · 아이디 만들기 가이드',
+    acctIdBody: '영문 소문자 또는 숫자로 4자리 이상 입력해 보세요. 이 검사는 형식만 확인하며, 실제 사용 가능 여부는 하이코리아에서 확인해야 합니다.',
+    acctIdPlaceholder: '예: jeju2024',
+    acctIdLabel: '아이디 후보',
+    acctIdRuleChars: '영문 소문자 또는 숫자만 사용',
+    acctIdRuleLength: '4자리 이상',
+    acctIdRuleNoSpace: '공백 없이 입력',
+    acctIdEmpty: '아이디 후보를 입력하면 규칙을 바로 확인할 수 있어요.',
+    acctIdValid: '형식 규칙을 충족합니다. 하이코리아에서 중복 여부를 확인하세요.',
+    acctIdInvalid: '아직 충족하지 않은 규칙이 있어요.',
+    acctIdExamples: '예시: jeju2024 · minho77',
+    acctIdNote: '아이디는 나중에 바꾸기 어려울 수 있으니 기억하기 쉬운 것으로 만드세요.',
+    acctPwTitle: '3 · 안전한 비밀번호 만들기',
+    acctPwBody: '10–12자리, 영문자·숫자·특수문자를 각각 포함한 비밀번호를 이 기기에서 생성합니다.',
+    acctPwGenerate: '강력한 비밀번호 생성',
+    acctPwRegenerate: '다시 생성',
+    acctPwCopy: '복사',
+    acctPwCopied: '복사됨',
+    acctPwCopyFail: '직접 선택해 복사하세요',
+    acctPwAria: '생성된 비밀번호',
+    acctPwRules: '10–12자리 · 영문자 · 숫자 · 특수문자(! @ # $ %)',
+    acctPwPrivacy: '생성한 비밀번호는 서버로 전송하거나 브라우저에 저장하지 않습니다. 이 창을 닫기 전에 안전한 비밀번호 관리자에 직접 보관하세요.',
+    acctVerifyTitle: '4 · 가입 뒤 이메일 인증',
+    acctVerifyItems: ['가입에 사용한 이메일 수신함 열기', '하이코리아 인증 메일의 인증 버튼 누르기', '메일이 없으면 스팸함과 입력한 주소 확인하기'],
+    acctOfficialCheck: '아이디·비밀번호 정책은 하이코리아에서 변경될 수 있으므로 가입 화면의 최신 조건을 최종 기준으로 확인하세요.',
+
     lgIntro: '계정이 있다면 로그인한 뒤 방문예약 메뉴로 이동합니다.',
     lgT1: '로그인 화면 열기',
     lgD1: '하이코리아 첫 화면에서 로그인을 누르고, 아이디와 비밀번호를 입력하세요.',
@@ -587,6 +668,39 @@
     sgD4: 'Enter your ID, password, and contact details, then finish signing up.',
     sgC4: 'Keep your password safe and remember the email and phone you used.',
 
+    acctPrepTitle: 'Prepare your account details first',
+    acctPrepLead: 'Before opening the HiKorea sign-up screen, prepare your email, an ID candidate, and a password in one place.',
+    acctEmailTitle: '1 · Prepare an email',
+    acctEmailBody: 'You need an email address for sign-up and verification. Use an address you can continue to access.',
+    acctGmail: 'Create Gmail',
+    acctNaver: 'Create Naver Mail',
+    acctEmailCaution: 'You may need to verify your email after signing up. If the message is missing, check your spam folder.',
+    acctIdTitle: '2 · Create an ID',
+    acctIdBody: 'Try an ID with at least 4 lowercase letters or numbers. This checks format only; confirm availability on HiKorea.',
+    acctIdPlaceholder: 'e.g., jeju2024',
+    acctIdLabel: 'ID candidate',
+    acctIdRuleChars: 'Lowercase letters or numbers only',
+    acctIdRuleLength: 'At least 4 characters',
+    acctIdRuleNoSpace: 'No spaces',
+    acctIdEmpty: 'Enter an ID candidate to check the rules.',
+    acctIdValid: 'The format rules are met. Check whether the ID is available on HiKorea.',
+    acctIdInvalid: 'Some format rules are not met yet.',
+    acctIdExamples: 'Examples: jeju2024 · minho77',
+    acctIdNote: 'Choose something memorable because changing the ID later may be difficult.',
+    acctPwTitle: '3 · Create a secure password',
+    acctPwBody: 'Generate a 10–12 character password on this device with letters, numbers, and special characters.',
+    acctPwGenerate: 'Generate a strong password',
+    acctPwRegenerate: 'Generate again',
+    acctPwCopy: 'Copy',
+    acctPwCopied: 'Copied',
+    acctPwCopyFail: 'Select and copy it manually',
+    acctPwAria: 'Generated password',
+    acctPwRules: '10–12 characters · letter · number · special character (! @ # $ %)',
+    acctPwPrivacy: 'The generated password is not sent to a server or stored by the browser. Save it yourself in a secure password manager before closing this window.',
+    acctVerifyTitle: '4 · Verify your email after sign-up',
+    acctVerifyItems: ['Open the inbox for the email used at sign-up', 'Use the verification button in the HiKorea email', 'If it is missing, check spam and confirm the address you entered'],
+    acctOfficialCheck: 'HiKorea may change its ID and password policy. Treat the latest requirements shown on the official sign-up screen as final.',
+
     lgIntro: 'If you have an account, log in and go to the visit reservation menu.',
     lgT1: 'Open the login screen',
     lgD1: 'On the HiKorea home screen, tap Login and enter your ID and password.',
@@ -827,6 +941,39 @@
     sgT4: '输入账号、密码等账户信息',
     sgD4: '输入账号、密码、联系方式等账户信息，完成注册。',
     sgC4: '请妥善保管密码，并记住注册时使用的邮箱·电话号码。',
+
+    acctPrepTitle: '注册前先准备账号信息',
+    acctPrepLead: '打开 HiKorea 注册页面前，可在此一次准备邮箱、用户名候选和密码。',
+    acctEmailTitle: '1 · 准备邮箱',
+    acctEmailBody: '注册和验证需要邮箱地址。请使用本人可持续查看的邮箱。',
+    acctGmail: '创建 Gmail',
+    acctNaver: '创建 Naver 邮箱',
+    acctEmailCaution: '注册后可能需要邮件验证。若未收到，请检查垃圾邮件箱。',
+    acctIdTitle: '2 · 创建用户名（ID）',
+    acctIdBody: '请尝试输入至少 4 位英文小写字母或数字。本工具仅检查格式，是否可用须在 HiKorea 确认。',
+    acctIdPlaceholder: '例：jeju2024',
+    acctIdLabel: '用户名候选',
+    acctIdRuleChars: '仅使用英文小写字母或数字',
+    acctIdRuleLength: '至少 4 位',
+    acctIdRuleNoSpace: '不含空格',
+    acctIdEmpty: '输入用户名候选即可检查规则。',
+    acctIdValid: '已满足格式规则，请在 HiKorea 确认是否重复。',
+    acctIdInvalid: '仍有尚未满足的规则。',
+    acctIdExamples: '示例：jeju2024 · minho77',
+    acctIdNote: '用户名之后可能难以更改，请选择容易记住的内容。',
+    acctPwTitle: '3 · 创建安全密码',
+    acctPwBody: '在本设备生成 10–12 位且包含字母、数字和特殊字符的密码。',
+    acctPwGenerate: '生成强密码',
+    acctPwRegenerate: '重新生成',
+    acctPwCopy: '复制',
+    acctPwCopied: '已复制',
+    acctPwCopyFail: '请手动选择并复制',
+    acctPwAria: '生成的密码',
+    acctPwRules: '10–12 位 · 字母 · 数字 · 特殊字符（! @ # $ %）',
+    acctPwPrivacy: '生成的密码不会发送到服务器，也不会保存在浏览器中。关闭窗口前请自行保存到安全的密码管理器。',
+    acctVerifyTitle: '4 · 注册后验证邮箱',
+    acctVerifyItems: ['打开注册邮箱的收件箱', '点击 HiKorea 验证邮件中的按钮', '若未收到，请检查垃圾邮件箱并确认邮箱地址'],
+    acctOfficialCheck: 'HiKorea 可能调整用户名和密码政策，请以官方注册页面显示的最新条件为准。',
 
     lgIntro: '如已有账户，登录后进入访问预约菜单。',
     lgT1: '打开登录界面',
@@ -1163,6 +1310,36 @@
       '#hikoreaGuideBody .prh-lightbox{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:1.2rem;background:rgba(0,0,0,.78);}',
       '#hikoreaGuideBody .prh-lightbox img{max-width:96vw;max-height:84vh;border-radius:8px;box-shadow:0 8px 40px rgba(0,0,0,.5);}',
       '#hikoreaGuideBody .prh-lightbox-close{position:absolute;top:1rem;right:1rem;min-height:44px;padding:.55rem 1rem;border-radius:999px;border:1.5px solid #fff;background:rgba(0,0,0,.5);color:#fff;font-family:inherit;font-weight:800;cursor:pointer;}',
+      /* ---- restored account-preparation tools ---- */
+      '#hikoreaGuideBody .prh-account-prep{display:flex;flex-direction:column;gap:.8rem;border:1px solid var(--bd2);border-radius:var(--radius-lg,14px);background:var(--bg0);padding:1rem;}',
+      '#hikoreaGuideBody .prh-account-prep-head{display:flex;flex-direction:column;gap:.25rem;}',
+      '#hikoreaGuideBody .prh-account-prep-title{font-size:1.08rem;font-weight:900;line-height:1.35;margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-account-prep-lead{font-size:.86rem;line-height:1.55;color:var(--t2);margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-account-grid{display:grid;grid-template-columns:1fr;gap:.7rem;}',
+      '@media (min-width:720px){#hikoreaGuideBody .prh-account-grid{grid-template-columns:1fr 1fr;}}',
+      '#hikoreaGuideBody .prh-account-card{display:flex;flex-direction:column;gap:.5rem;border:1px solid var(--bd2);border-radius:var(--radius-md,10px);background:var(--bg1);padding:.85rem .9rem;min-width:0;}',
+      '#hikoreaGuideBody .prh-account-card h5{font-size:.94rem;font-weight:850;line-height:1.35;margin:0;}',
+      '#hikoreaGuideBody .prh-account-card p{font-size:.82rem;line-height:1.55;color:var(--t2);margin:0;word-break:keep-all;}',
+      '#hikoreaGuideBody .prh-account-actions{display:flex;flex-wrap:wrap;gap:.45rem;align-items:center;}',
+      '#hikoreaGuideBody .prh-account-link,#hikoreaGuideBody .prh-account-action{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:.55rem .75rem;border:1px solid var(--bd);border-radius:8px;background:var(--bg0);color:var(--t1);font-family:inherit;font-size:.8rem;font-weight:800;text-decoration:none;cursor:pointer;}',
+      '#hikoreaGuideBody .prh-account-action.is-primary{background:var(--ac);border-color:var(--ac);color:#fff;}',
+      '#hikoreaGuideBody .prh-account-link:focus-visible,#hikoreaGuideBody .prh-account-action:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:2px;}',
+      '#hikoreaGuideBody .prh-account-input{width:100%;min-height:44px;padding:.65rem .75rem;border:1.5px solid var(--bd);border-radius:8px;background:var(--bgI,var(--bg0));color:var(--t1);font:inherit;font-size:.9rem;}',
+      '#hikoreaGuideBody .prh-account-input:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 45%,transparent);outline-offset:1px;border-color:var(--ac);}',
+      '#hikoreaGuideBody .prh-id-rules{display:flex;flex-direction:column;gap:.28rem;margin:.1rem 0 0;padding:0;list-style:none;}',
+      '#hikoreaGuideBody .prh-id-rule{display:flex;align-items:center;gap:.4rem;font-size:.78rem;line-height:1.4;color:var(--t3);}',
+      '#hikoreaGuideBody .prh-id-rule::before{content:"○";font-weight:900;color:var(--t3);}',
+      '#hikoreaGuideBody .prh-id-rule.is-pass{color:var(--ac2,var(--ac));}',
+      '#hikoreaGuideBody .prh-id-rule.is-pass::before{content:"✓";color:var(--ac);}',
+      '#hikoreaGuideBody .prh-id-status{font-size:.78rem!important;font-weight:750;color:var(--t3)!important;}',
+      '#hikoreaGuideBody .prh-id-status.is-valid{color:var(--ac2,var(--ac))!important;}',
+      '#hikoreaGuideBody .prh-id-status.is-invalid{color:var(--color-warning,#9a6700)!important;}',
+      '#hikoreaGuideBody .prh-pw-output{display:flex;gap:.45rem;align-items:stretch;flex-wrap:wrap;}',
+      '#hikoreaGuideBody .prh-pw-value{flex:1 1 180px;min-width:0;min-height:44px;padding:.62rem .72rem;border:1px solid var(--bd2);border-radius:8px;background:var(--bg0);color:var(--t1);font:700 .9rem ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.035em;}',
+      '#hikoreaGuideBody .prh-account-note{font-size:.76rem!important;color:var(--t3)!important;}',
+      '#hikoreaGuideBody .prh-account-note.is-caution{padding-left:.65rem;border-left:3px solid var(--color-warning,#b88600);}',
+      '#hikoreaGuideBody .prh-account-checklist{margin:.05rem 0 0;padding-left:1.1rem;display:flex;flex-direction:column;gap:.28rem;}',
+      '#hikoreaGuideBody .prh-account-checklist li{font-size:.8rem;line-height:1.5;color:var(--t2);}',
       // Mobile sticky action bar keeps the primary control reachable.
       '@media (max-width:560px){#hikoreaGuideBody .prh-nav{position:sticky;bottom:0;background:var(--bg0);padding:.6rem 0 .2rem;border-top:1px solid var(--bd2);z-index:2;}#hikoreaGuideBody .prh-ctas .prh-cta{flex:1 1 100%;}#hikoreaGuideBody .prh-tabs{gap:.3rem;overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;}#hikoreaGuideBody .prh-tab{flex:0 0 auto;}}'
     ].join('\n');
@@ -1185,7 +1362,9 @@
     tab: 'overview',
     view: 'guide',     // reservation tab sub-view: 'guide' | 'wizard' | 'result'
     done: {},
-    zoom: ''
+    zoom: '',
+    idCandidate: '',
+    generatedPassword: ''
   };
 
   function loadDone() {
@@ -1367,12 +1546,68 @@
       '<span class="prh-progress-label">' + doneCount + ' / ' + total + ' ' + esc(STR.progressDoneOf) + '</span></div>';
   }
 
+  function accountIdRulesHtml(check) {
+    var rules = [
+      [STR.acctIdRuleChars, check.chars && check.hasValue],
+      [STR.acctIdRuleLength, check.length],
+      [STR.acctIdRuleNoSpace, check.noSpace && check.hasValue]
+    ];
+    return '<ul class="prh-id-rules" aria-label="' + esc(STR.acctIdTitle) + '">' + rules.map(function (rule) {
+      return '<li class="prh-id-rule' + (rule[1] ? ' is-pass' : '') + '">' + esc(rule[0]) + '</li>';
+    }).join('') + '</ul>';
+  }
+
+  function accountPrepHtml() {
+    var idCheck = validateHikoreaId(state.idCandidate);
+    var idStatus = !idCheck.hasValue ? STR.acctIdEmpty : (idCheck.valid ? STR.acctIdValid : STR.acctIdInvalid);
+    var idStatusClass = !idCheck.hasValue ? '' : (idCheck.valid ? ' is-valid' : ' is-invalid');
+    var password = state.generatedPassword;
+    var verifyItems = Array.isArray(STR.acctVerifyItems) ? STR.acctVerifyItems : [];
+    var html = '<section class="prh-account-prep" aria-labelledby="prhAccountPrepTitle">';
+    html += '<div class="prh-account-prep-head"><h4 class="prh-account-prep-title" id="prhAccountPrepTitle">' + esc(STR.acctPrepTitle) + '</h4>' +
+      '<p class="prh-account-prep-lead">' + esc(STR.acctPrepLead) + '</p></div>';
+    html += '<div class="prh-account-grid">';
+
+    html += '<section class="prh-account-card"><h5>' + esc(STR.acctEmailTitle) + '</h5><p>' + esc(STR.acctEmailBody) + '</p>' +
+      '<div class="prh-account-actions"><a class="prh-account-link" href="https://accounts.google.com/signup" target="_blank" rel="noopener noreferrer">' + esc(STR.acctGmail) + ' ↗</a>' +
+      '<a class="prh-account-link" href="https://nid.naver.com/user2/join/agree" target="_blank" rel="noopener noreferrer">' + esc(STR.acctNaver) + ' ↗</a></div>' +
+      '<p class="prh-account-note is-caution">' + esc(STR.acctEmailCaution) + '</p></section>';
+
+    html += '<section class="prh-account-card"><h5>' + esc(STR.acctIdTitle) + '</h5><p>' + esc(STR.acctIdBody) + '</p>' +
+      '<label class="prh-step-label" for="prhAccountId">' + esc(STR.acctIdLabel) + '</label>' +
+      '<input class="prh-account-input" id="prhAccountId" type="text" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="32" placeholder="' + esc(STR.acctIdPlaceholder) + '" value="' + esc(state.idCandidate) + '" data-prh-account-id>' +
+      '<div id="prhAccountIdRules">' + accountIdRulesHtml(idCheck) + '</div>' +
+      '<p class="prh-id-status' + idStatusClass + '" id="prhAccountIdStatus" aria-live="polite">' + esc(idStatus) + '</p>' +
+      '<p class="prh-account-note">' + esc(STR.acctIdExamples) + '<br>' + esc(STR.acctIdNote) + '</p></section>';
+
+    html += '<section class="prh-account-card"><h5>' + esc(STR.acctPwTitle) + '</h5><p>' + esc(STR.acctPwBody) + '</p>' +
+      '<p class="prh-account-note">' + esc(STR.acctPwRules) + '</p><div class="prh-account-actions">' +
+      '<button type="button" class="prh-account-action is-primary" data-prh-action="generate-password">' + esc(password ? STR.acctPwRegenerate : STR.acctPwGenerate) + '</button></div>';
+    if (password) {
+      html += '<div class="prh-pw-output"><input class="prh-pw-value" id="prhGeneratedPassword" type="text" readonly autocomplete="off" spellcheck="false" aria-label="' + esc(STR.acctPwAria) + '" value="' + esc(password) + '">' +
+        '<button type="button" class="prh-account-action" data-prh-action="copy-password">' + esc(STR.acctPwCopy) + '</button></div>';
+    }
+    html += '<p class="prh-account-note is-caution">' + esc(STR.acctPwPrivacy) + '</p></section>';
+
+    html += '<section class="prh-account-card"><h5>' + esc(STR.acctVerifyTitle) + '</h5><ol class="prh-account-checklist">' + verifyItems.map(function (item) {
+      return '<li>' + esc(item) + '</li>';
+    }).join('') + '</ol><p class="prh-account-note is-caution">' + esc(STR.acctOfficialCheck) + '</p>' +
+      '<div class="prh-account-actions"><a class="prh-account-link" href="https://www.hikorea.go.kr" target="_blank" rel="noopener noreferrer">' + esc(STR.goHikorea) + ' ↗</a></div></section>';
+
+    html += '</div></section>';
+    return html;
+  }
+
   function guideTabHtml(tabId) {
     var steps = GUIDE_STEPS[tabId] || [];
     var html = '<div class="prh-guide-head">';
     if (GUIDE_INTRO_KEY[tabId]) html += '<p class="prh-guide-intro">' + esc(STR[GUIDE_INTRO_KEY[tabId]]) + '</p>';
     html += guideProgressHtml(steps);
     html += '</div>';
+
+    if (tabId === 'signup') {
+      html += accountPrepHtml();
+    }
 
     if (tabId === 'reservation') {
       html += '<div class="prh-finder">' +
@@ -1665,6 +1900,43 @@
     }
   }
 
+  function copyGeneratedPassword(btn) {
+    var input = document.getElementById('prhGeneratedPassword');
+    if (!input || !input.value) return;
+    function copied() {
+      if (!btn) return;
+      var original = btn.textContent;
+      btn.textContent = STR.acctPwCopied;
+      setTimeout(function () { btn.textContent = original; }, 1600);
+    }
+    function fallback() {
+      try {
+        input.focus();
+        input.select();
+        input.setSelectionRange(0, input.value.length);
+        if (document.execCommand && document.execCommand('copy')) { copied(); return; }
+      } catch (e) { /* surface the manual-copy state below */ }
+      if (btn) btn.textContent = STR.acctPwCopyFail;
+    }
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+      navigator.clipboard.writeText(input.value).then(copied).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  function updateAccountIdUi(value) {
+    state.idCandidate = String(value == null ? '' : value);
+    var check = validateHikoreaId(state.idCandidate);
+    var rules = document.getElementById('prhAccountIdRules');
+    if (rules) rules.innerHTML = accountIdRulesHtml(check);
+    var status = document.getElementById('prhAccountIdStatus');
+    if (status) {
+      status.className = 'prh-id-status' + (!check.hasValue ? '' : (check.valid ? ' is-valid' : ' is-invalid'));
+      status.textContent = !check.hasValue ? STR.acctIdEmpty : (check.valid ? STR.acctIdValid : STR.acctIdInvalid);
+    }
+  }
+
   /* ------------------------------------------------------ event handling */
   function onClick(e) {
     var root = e.target.closest && e.target.closest('[data-prh-root]');
@@ -1734,7 +2006,24 @@
       render();
     } else if (action === 'save-result') {
       saveResult(actionEl);
+    } else if (action === 'generate-password') {
+      try {
+        state.generatedPassword = generateHikoreaPassword();
+        render();
+        var generated = document.getElementById('prhGeneratedPassword');
+        if (generated && typeof generated.focus === 'function') generated.focus();
+      } catch (err) {
+        actionEl.textContent = STR.acctPwCopyFail;
+      }
+    } else if (action === 'copy-password') {
+      copyGeneratedPassword(actionEl);
     }
+  }
+
+  function onInput(e) {
+    var t = e.target;
+    if (!t || !t.hasAttribute || !t.hasAttribute('data-prh-account-id')) return;
+    updateAccountIdUi(t.value);
   }
 
   function onChange(e) {
@@ -1792,6 +2081,8 @@
     state.expiry = '';
     state.step = 1;
     state.zoom = '';
+    state.idCandidate = '';
+    state.generatedPassword = '';
     // Opened from a specific visa → jump straight to the reservation finder,
     // prefilled. Opened from the gateway card → start on the overview.
     if (opts.visaCode) {
@@ -1816,6 +2107,7 @@
   // Wire delegated listeners once. #hikoreaGuideBody exists in the initial HTML
   // (this script is deferred), so document-level delegation is timing-safe.
   document.addEventListener('click', onClick);
+  document.addEventListener('input', onInput);
   document.addEventListener('change', onChange);
   document.addEventListener('keydown', onKeydown);
   document.addEventListener('keydown', onZoomKeydown, true);
@@ -1834,6 +2126,8 @@
     render: render,
     reset: reset,
     computeReservationPath: computeReservationPath,
-    suggestionsFor: suggestionsFor
+    suggestionsFor: suggestionsFor,
+    generateHikoreaPassword: generateHikoreaPassword,
+    validateHikoreaId: validateHikoreaId
   };
 })();

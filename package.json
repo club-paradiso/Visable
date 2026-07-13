@@ -19,6 +19,7 @@
     "test:public-dummy": "node scripts/check_public_dummy_text.mjs",
     "test:legal-search": "node scripts/check_legal_source_search.mjs && node scripts/check_legal_source_search_dom.mjs",
     "test:hikorea-reservation-helper": "node scripts/check_hikorea_reservation_helper.mjs",
+    "test:feature-surface": "node scripts/check_live_feature_surface.mjs",
     "test:official-sources": "node scripts/check_official_external_sources.mjs && node scripts/validate_visa_issuance_enrichment.js",
     "test:e2e": "playwright test",
     "test:waymaker-navigator": "node scripts/check_waymaker_navigator.mjs && node scripts/check_waymaker_navigator_dom.mjs",

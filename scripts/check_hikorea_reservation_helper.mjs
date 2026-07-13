@@ -117,6 +117,7 @@ if (typeof compute === 'function') {
 // an empty modal. Execute the full module against minimal DOM/window stubs and
 // assert the public API is actually published.
 section('Whole-module load publishes window.ParadisoReservationHelper');
+let helperApi = null;
 {
   const noop = () => {};
   const win = { addEventListener: noop };
@@ -132,6 +133,46 @@ section('Whole-module load publishes window.ParadisoReservationHelper');
   ok(!threw, 'full module evaluates without throwing at load time', threw ? String(threw.message || threw) : '');
   ok(win.ParadisoReservationHelper && typeof win.ParadisoReservationHelper.open === 'function',
     'window.ParadisoReservationHelper.open published after load');
+  helperApi = win.ParadisoReservationHelper || null;
+}
+
+/* --------------------------------------- restored account preparation tools */
+section('Account preparation — ID guide + secure password generator');
+ok(src.includes('가입 전에 계정 정보를 준비하세요') && src.includes('Prepare your account details first'),
+  'account preparation panel is present in KO + EN');
+ok(src.includes('data-prh-account-id') && src.includes('validateHikoreaId'),
+  'ID candidate input is connected to a local format validator');
+ok(src.includes('영문 소문자 또는 숫자만 사용') && src.includes('4자리 이상') && src.includes('예시: jeju2024 · minho77'),
+  'restored ID rules and examples are visible');
+ok(src.includes('accounts.google.com/signup') && src.includes('nid.naver.com/user2/join/agree'),
+  'email preparation links for Gmail + Naver Mail are restored');
+ok(src.includes('data-prh-action="generate-password"') && src.includes('data-prh-action="copy-password"'),
+  'password generate + copy controls are rendered');
+ok(src.includes('서버로 전송하거나 브라우저에 저장하지 않습니다') && src.includes('not sent to a server or stored by the browser'),
+  'password privacy notice is explicit in KO + EN');
+
+if (helperApi) {
+  const goodId = helperApi.validateHikoreaId('jeju2024');
+  const upperId = helperApi.validateHikoreaId('Jeju2024');
+  const shortId = helperApi.validateHikoreaId('abc');
+  ok(goodId.valid, 'ID validator accepts lowercase letters + numbers with length >= 4');
+  ok(!upperId.valid && !upperId.chars, 'ID validator rejects uppercase letters');
+  ok(!shortId.valid && !shortId.length, 'ID validator rejects candidates shorter than 4 characters');
+
+  let seed = 0x12345678;
+  const deterministicCrypto = {
+    getRandomValues(view) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      view[0] = seed;
+      return view;
+    }
+  };
+  const generated = Array.from({ length: 50 }, () => helperApi.generateHikoreaPassword(deterministicCrypto));
+  ok(generated.every((pw) => pw.length >= 10 && pw.length <= 12), 'generated passwords are 10–12 characters');
+  ok(generated.every((pw) => /[A-Za-z]/.test(pw) && /[2-9]/.test(pw) && /[!@#$%]/.test(pw)),
+    'every generated password contains a letter, digit, and supported special character');
+  ok(generated.every((pw) => !/[iloILO01]/.test(pw)), 'ambiguous characters are excluded');
+  ok(new Set(generated).size > 45, 'generator produces varied results');
 }
 
 /* --------------------------------------------- status-specific suggestions */
@@ -233,7 +274,7 @@ ok(/window\.ParadisoReservationHelper\s*=/.test(src) && /open:\s*open/.test(src)
 ok(indexHtml.includes("openModal('hikoreaGuideOverlay')"), 'reuses the modal shell (focus trap / Escape / focus restore)');
 ok(indexHtml.includes('ParadisoReservationHelper'), 'index.html delegates the guide entry to the module');
 ok(!/hikoreaGuideState\b/.test(indexHtml), 'old inline guide state removed from index.html');
-ok(!/generateHikoreaPassword|renderHikoreaGuide\(\)\s*\{[^}]*hikoreaGuideState/.test(indexHtml), 'old password-gen / step renderer scaffold removed from index.html');
+ok(!/generateHikoreaPassword|renderHikoreaGuide\(\)\s*\{[^}]*hikoreaGuideState/.test(indexHtml), 'no duplicate legacy password generator / step renderer remains in index.html');
 
 /* ------------------------------------------------------ KO/EN pack parity */
 section('Chrome pack parity (KO/EN)');
