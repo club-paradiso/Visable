@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#153b2f">
+<meta name="description" content="2026년 6월 30일 기준 출입국업무 민원신청대행 등록기관 검색">
+<title>민원신청대행 등록기관 찾기 | Visable</title>
+<link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div class="top"><div class="shell topin"><div class="brand"><b>VISABLE</b> Directory</div><div class="date">2026.06.30 기준 정적 목록</div></div></div>
+<header><div class="shell"><h1>민원신청대행<br>등록기관 찾기</h1><p>기관명, 주소, 전화번호를 한 번에 검색하세요. 띄어쓰기와 하이픈을 무시하며 기관명과 주소는 초성 검색도 지원합니다.</p><div class="stats"><div class="stat"><b id="su">-</b><span>고유 기관</span></div><div class="stat"><b id="sr">-</b><span>원본 행</span></div><div class="stat"><b>17</b><span>시도</span></div><div class="stat"><b>4</b><span>중복 묶음</span></div></div></div></header>
+<section class="dock"><div class="shell"><div class="panel">
+<form id="form" class="searchrow"><div class="searchbox"><svg class="glass" viewBox="0 0 24 24"><path fill="currentColor" d="m21 20.3-5.2-5.2a7.5 7.5 0 1 0-.7.7l5.2 5.2.7-.7ZM4.5 10a5.5 5.5 0 1 1 11 0 5.5 5.5 0 0 1-11 0Z"/></svg><input id="q" type="search" autocomplete="off" placeholder="예: 제주 행정사, ㅈㅈ ㅎㅈㅅ, 064"><button id="clear" type="button" hidden>×</button><div id="suggest" class="suggest" hidden></div></div><button class="go">검색</button></form>
+<div class="filters"><select id="prov"><option value="">전체 시도</option></select><select id="city" disabled><option value="">전체 시군구</option></select><select id="sort"><option value="rel">관련도순</option><option value="name">기관명순</option><option value="addr">주소순</option></select><button id="dup" class="toggle" type="button">중복 행 제외</button></div>
+<div class="subrow"><div id="regions" class="chips"></div><div class="utils"><button id="share" class="util">링크 복사</button><button id="csv" class="util">CSV 저장</button><button id="reset" class="util">초기화</button></div></div><div id="recent" class="recent" hidden></div>
+</div></div></section>
+<main class="shell"><div class="head"><div><h2>검색 결과</h2><div id="meta">자료를 불러오는 중입니다.</div></div><div class="views"><button id="listv" class="on">☰</button><button id="gridv">▦</button></div></div><div id="active" hidden></div><div id="loading" class="loading">기관 목록을 불러오는 중입니다.</div><div id="list" hidden></div><div id="empty" class="empty" hidden><b>검색 결과가 없습니다.</b><br>검색어를 줄이거나 지역 필터를 초기화해 보세요.</div><div id="morewrap" class="morewrap" hidden><button id="more">결과 더 보기</button></div><div class="note"><b>자료 안내</b><br>업로드된 「민원대행 등록기관(2026.06.30.부).xlsx」를 재구성한 비공식 정적 스냅샷입니다. 실제 의뢰 전 등록 상태와 연락처를 해당 기관 또는 관할 출입국·외국인관서에 다시 확인하세요.</div></main>
+<footer class="shell">Visable by Paradiso · 데이터 기준일 2026년 6월 30일</footer><div id="toast"></div>
+<script>window.D=[]</script>
+<script src="./data/p0.js"></script>
+<script src="./data/p1.js"></script>
+<script src="./data/p2.js"></script>
+<script src="./data/p3.js"></script>
+<script src="./data/p4.js"></script>
+<script src="./data/p5.js"></script>
+<script src="./data/p6.js"></script>
+<script src="./data/p7.js"></script>
+<script src="./data/p8.js"></script>
+<script src="./data/p9.js"></script>
+<script src="./data/p10.js"></script>
+<script src="./app.js"></script>
+</body></html>
