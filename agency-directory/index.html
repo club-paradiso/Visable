@@ -11,8 +11,10 @@
 <body>
 <header>
   <div class="shell">
-    <h1>민원신청대행 등록기관 찾기</h1>
+    <p id="fieldBadge" class="field-badge" hidden>출입국 현장 안내</p>
+    <h1 id="pageTitle">민원신청대행 등록기관 찾기</h1>
     <p class="dataset-meta">2026.06.30 기준 · 고유 기관 <b id="su">-</b>곳 · 원본 <b id="sr">-</b>행</p>
+    <p id="fieldNote" class="field-note" hidden>등록된 행정사(민원신청대행) 사무소만 검색할 수 있어요. 휴대폰으로 기관명·지역·전화번호를 검색해 위치와 연락처를 확인하세요.</p>
   </div>
 </header>
 
@@ -76,6 +78,7 @@
   <div id="empty" class="empty" hidden><b>검색 결과가 없습니다.</b><br>검색어나 지역 조건을 조정해 보세요.</div>
   <div id="morewrap" class="morewrap" hidden><button id="more" type="button">결과 더 보기</button></div>
   <p class="disclaimer">비공식 정적 목록입니다. 실제 의뢰 전 등록 상태와 연락처를 다시 확인하세요.</p>
+  <p class="staff-link"><a href="./poster.html">현장 안내용 QR 포스터 (바로 인쇄) →</a> · <a href="./qr.html">주소 바꿔서 만들기</a></p>
 </main>
 
 <div id="toast"></div>

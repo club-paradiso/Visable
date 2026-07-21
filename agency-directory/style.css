@@ -402,4 +402,52 @@ body.grid .acts{max-width:220px}
   .acts{max-width:none}
   body.grid #list{grid-template-columns:1fr}
 }
+/* 스태프용 QR 포스터 링크 */
+.staff-link{margin:14px 0 0;text-align:center}
+.staff-link a{
+  color:#7a857e;
+  font-size:12px;
+  font-weight:750;
+  text-decoration:none;
+  border-bottom:1px dashed #b9c4bd;
+  padding-bottom:1px;
+}
+.staff-link a:hover{color:var(--brand);border-color:var(--brand)}
+
+/* ── 출입국 현장(kiosk) 모드 ── ?mode=field 로 진입 */
+.field-badge{
+  display:inline-block;
+  margin:0 0 8px;
+  padding:5px 11px;
+  border-radius:999px;
+  background:var(--brand);
+  color:#fff;
+  font-size:12px;
+  font-weight:850;
+  letter-spacing:.01em;
+}
+.field-note{
+  margin:12px 0 0;
+  padding:11px 13px;
+  border:1px solid var(--soft-strong);
+  border-radius:12px;
+  background:var(--soft);
+  color:#33513f;
+  font-size:13.5px;
+  font-weight:600;
+  line-height:1.5;
+}
+/* 현장 모드에서는 사무용 유틸리티(내보내기·링크복사·보기전환·정렬·중복)를 감춰
+   '검색 → 전화/지도'만 남긴다. */
+body.field .head-actions,
+body.field #sort,
+body.field #dup,
+body.field .staff-link{display:none!important}
+body.field .filters{grid-template-columns:1fr 1fr auto}
+body.field .reset{width:100%}
+@media(max-width:650px){
+  body.field .filters{grid-template-columns:1fr 1fr}
+  body.field .reset{grid-column:1 / -1}
+}
+
 [hidden]{display:none!important}
