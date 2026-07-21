@@ -205,7 +205,10 @@ a{color:var(--brand-hover)}
   };
 
   // 빠른 채우기 프리셋
-  var presets=[['현재 사이트 기준',defaultUrl()]];
+  var presets=[
+    ['운영 주소','https://visable-mu.vercel.app/agency-directory/index.html?mode=field'],
+    ['현재 사이트 기준',defaultUrl()]
+  ];
   $('presets').innerHTML=presets.map(function(p,i){
     return '<button type="button" class="preset" data-i="'+i+'">'+p[0]+'</button>';
   }).join('');

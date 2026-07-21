@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#163d2f">
+<meta name="description" content="출입국 현장용 '행정사 사무소 찾기' 안내 포스터 — 운영 주소 QR이 미리 박혀 있어 바로 인쇄할 수 있습니다.">
+<title>행정사 사무소 찾기 · 현장 안내 포스터 (바로 인쇄)</title>
+<style>
+:root{
+  --bg:#f7f8f6;--card:#fff;--ink:#17231d;--muted:#69756e;--line:#dce3de;
+  --line-strong:#c5d0c9;--brand:#163d2f;--brand-hover:#235844;--soft:#edf4f0;--shadow:0 14px 34px rgba(27,54,41,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 Pretendard,"Noto Sans KR","Apple SD Gothic Neo",Arial,sans-serif}
+button{font:inherit}
+a{color:var(--brand-hover)}
+.bar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
+  width:min(920px,calc(100% - 32px));margin:20px auto 0;
+}
+.bar .who{font-size:13px;color:var(--muted)}
+.bar .who b{color:var(--ink)}
+.bar .btns{display:flex;gap:8px}
+.btn{height:42px;padding:0 15px;border:1px solid var(--line-strong);border-radius:10px;background:#fff;color:var(--brand);font-weight:850;cursor:pointer}
+.btn:hover{background:var(--soft)}
+.btn.primary{border-color:var(--brand);background:var(--brand);color:#fff}
+.btn.primary:hover{background:var(--brand-hover)}
+
+.stage{width:min(920px,calc(100% - 32px));margin:18px auto 56px;display:flex;justify-content:center}
+.poster{
+  width:100%;max-width:620px;aspect-ratio:1 / 1.414; /* A4 세로 */
+  padding:48px 42px;border:1px solid var(--line);border-radius:18px;
+  background:linear-gradient(180deg,#ffffff 0%,#f4f8f5 100%);box-shadow:var(--shadow);
+  display:flex;flex-direction:column;align-items:center;text-align:center;
+}
+.brandline{font-size:15px;font-weight:850;letter-spacing:.02em;color:var(--brand)}
+.brandline span{color:var(--muted);font-weight:700}
+.poster h1{margin:20px 0 0;font-size:clamp(28px,5vw,42px);line-height:1.14;letter-spacing:-.03em}
+.poster .sub{margin:13px 0 0;font-size:16px;color:#41564b;font-weight:600;line-height:1.5}
+.qrbox{
+  margin:30px auto 0;width:min(62%,340px);aspect-ratio:1;padding:16px;background:#fff;
+  border:1px solid var(--line);border-radius:16px;display:flex;align-items:center;justify-content:center;
+}
+.qrbox svg{width:100%;height:100%;display:block}
+.scan{margin:22px 0 0;font-size:18px;font-weight:850;color:var(--ink)}
+.scan em{font-style:normal;color:var(--brand-hover)}
+.urltext{margin:9px 0 0;font-size:13px;color:var(--muted);word-break:break-all;max-width:92%}
+.foot{margin-top:auto;padding-top:22px;font-size:11.5px;color:#7a857e;line-height:1.55}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  body{background:#fff}
+  .bar{display:none!important}
+  .stage{width:auto;margin:0}
+  .poster{max-width:none;width:100%;aspect-ratio:auto;border:none;border-radius:0;box-shadow:none;background:#fff;padding:0}
+  .qrbox{border-color:#000}
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <div class="who">연결 주소(운영): <b id="who"></b> · <a href="./qr.html">주소 바꿔서 만들기</a></div>
+  <div class="btns">
+    <button class="btn primary" id="print" type="button">인쇄 / PDF로 저장</button>
+    <button class="btn" id="png" type="button">PNG 저장</button>
+    <button class="btn" id="svg" type="button">SVG 저장</button>
+  </div>
+</div>
+
+<div class="stage">
+  <article class="poster" id="poster">
+    <div class="brandline">Visable <span>· 출입국 민원 도우미</span></div>
+    <h1>행정사 사무소,<br>여기서 찾으세요</h1>
+    <p class="sub">등록된 행정사(민원신청대행) 사무소를<br>지역·이름으로 검색하세요</p>
+    <div class="qrbox" id="qrbox" role="img" aria-label="행정사 사무소 검색 QR 코드"></div>
+    <p class="scan">📱 휴대폰 카메라로 <em>QR을 스캔</em>하세요</p>
+    <p class="urltext" id="pUrl"></p>
+    <p class="foot">
+      공식 등록 정보(출입국업무 민원신청대행 등록기관 현황) 기반 · 특정 기관을 추천하거나 업무 결과를 보증하지 않습니다.<br>
+      비공식 안내 자료입니다. 의뢰 전 등록 상태와 연락처를 다시 확인하세요.
+    </p>
+  </article>
+</div>
+
+<script src="./vendor/qrcode.js"></script>
+<script>
+(function(){
+  // 운영 주소(현장 검색 전용 모드)를 미리 박아둔 버전 — 열면 바로 인쇄만 하면 됩니다.
+  var PROD_URL = 'https://visable-mu.vercel.app/agency-directory/index.html?mode=field';
+
+  var $=function(id){return document.getElementById(id)};
+  var qrbox=$('qrbox');
+  document.getElementById('who').textContent=PROD_URL;
+  document.getElementById('pUrl').textContent=PROD_URL;
+
+  var qr=qrcode(0,'M');       // 0 = 버전 자동, M = 오류복원 수준
+  qr.addData(PROD_URL); qr.make();
+  qrbox.innerHTML=qr.createSvgTag({cellSize:4,margin:0,scalable:true});
+
+  function download(blob,name){
+    var a=document.createElement('a');
+    a.href=URL.createObjectURL(blob); a.download=name; a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href)},1500);
+  }
+  $('print').onclick=function(){ window.print(); };
+  $('svg').onclick=function(){
+    var svg=qr.createSvgTag({cellSize:8,margin:4,scalable:false});
+    download(new Blob([svg],{type:'image/svg+xml'}),'행정사_사무소_찾기_QR.svg');
+  };
+  $('png').onclick=function(){
+    var n=qr.getModuleCount(), scale=16, quiet=4, size=(n+quiet*2)*scale;
+    var cv=document.createElement('canvas'); cv.width=cv.height=size;
+    var ctx=cv.getContext('2d');
+    ctx.fillStyle='#fff'; ctx.fillRect(0,0,size,size); ctx.fillStyle='#000';
+    for(var r=0;r<n;r++)for(var c=0;c<n;c++){ if(qr.isDark(r,c)) ctx.fillRect((c+quiet)*scale,(r+quiet)*scale,scale,scale); }
+    cv.toBlob(function(b){ if(b) download(b,'행정사_사무소_찾기_QR.png'); },'image/png');
+  };
+})();
+</script>
+</body>
+</html>
