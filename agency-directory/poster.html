@@ -48,6 +48,24 @@ a{color:var(--brand-hover)}
 .urltext{margin:9px 0 0;font-size:13px;color:var(--muted);word-break:break-all;max-width:92%}
 .foot{margin-top:auto;padding-top:22px;font-size:11.5px;color:#7a857e;line-height:1.55}
 
+@media(max-width:720px){
+  .bar{
+    flex-direction:column;flex-wrap:nowrap;align-items:stretch;
+    justify-content:flex-start;gap:10px;overflow-x:hidden;
+  }
+  .bar .who{font-size:12px;line-height:1.5;width:100%;min-width:0}
+  /* 링크는 항상 보이게 두고, 긴 URL만 한 줄로 줄여 표시 */
+  .bar .who b{
+    display:block;
+    width:100%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .bar .btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+  .btn.primary{grid-column:1 / -1}
+  .btn{height:46px}
+}
 @media print{
   @page{size:A4;margin:12mm}
   body{background:#fff}
