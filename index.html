@@ -329,6 +329,8 @@ img, svg, video, canvas { max-width: 100%; height: auto; }
 .easy-mode-btn.is-on .easy-mode-btn-text::after { content: " ✓"; font-weight: 700; }
 .easy-mode-btn:focus-visible { outline: 2px solid var(--color-accent, var(--ac)); outline-offset: 2px; }
 .language-btn { min-width: auto; padding-inline: 0.8rem; }
+/* de-slop: 도시 버튼의 국기 이모지 숨김 — 도시명+시간만으로 충분히 명확 */
+#cityBtnFlag { display: none; }
 .language-btn-code { color: var(--accent-strong, var(--color-accent)); font-family: var(--ff-display); font-weight: 700; font-size: 0.78rem; letter-spacing: 0.04em; }
 .language-btn-native { font-size: 0.78rem; color: var(--t2); font-weight: 800; }
 .language-menu { display: none; position: absolute; top: calc(100% + 0.5rem); right: 0; width: min(18rem, calc(100vw - 1.5rem)); max-height: min(70vh, 30rem); overflow-y: auto; padding: 0.45rem; border: 1px solid var(--bd); border-radius: 12px; background: color-mix(in srgb, var(--bg1) 94%, white); box-shadow: var(--sh2); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
@@ -13468,17 +13470,16 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     </div>
     <div class="language-wrap" id="languageWrap">
         <button id="languageBtn" class="theme-btn language-btn" data-action="toggle-language-menu" aria-label="언어 설정" aria-expanded="false" aria-haspopup="listbox" data-s2t="off">
-            <span aria-hidden="true">🌐</span>
             <span id="languageBtnCode" class="language-btn-code">KO</span>
             <span id="languageBtnNative" class="language-btn-native">한국어</span>
         </button>
         <div id="languageMenu" class="language-menu" role="listbox" aria-label="언어 선택" data-s2t="off"></div>
     </div>
     <button id="editorialThemeBtn" class="theme-btn" data-action="open-global-settings" aria-label="인터페이스 테마" aria-haspopup="dialog" aria-controls="globalSettingsOverlay" aria-expanded="false">
-        <span aria-hidden="true">🗂</span> <span class="editorial-theme-btn-text">모던</span>
+        <span class="editorial-theme-btn-text">모던</span>
     </button>
     <button id="easyModeBtn" class="theme-btn easy-mode-btn" data-action="toggle-easy-mode" aria-pressed="false" aria-label="쉬운 안내">
-        <span aria-hidden="true">✦</span> <span class="easy-mode-btn-text">쉬운 안내</span>
+        <span class="easy-mode-btn-text">쉬운 안내</span>
     </button>
     <button id="mainThemeBtn" class="theme-btn" data-action="toggle-theme" aria-label="테마 변경">
         ◐ <span class="theme-btn-text">테마 변경</span>
@@ -13585,8 +13586,8 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         <!-- Kitsch-only zine marquee tape (decorative) -->
         <div class="k-marquee" aria-hidden="true">
             <div class="k-marquee-track">
-                <span data-i18n="heroMarquee">VISABLE ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
-                <span data-i18n="heroMarquee">VISABLE ✦ 흩어진 정보를 한 곳에서 ✦ RESIDENCE GUIDE ✦ 슬기로운 한국생활 ✦ </span>
+                <span data-i18n="heroMarquee">VISABLE · 흩어진 정보를 한 곳에서 · RESIDENCE GUIDE · 슬기로운 한국생활 · </span>
+                <span data-i18n="heroMarquee">VISABLE · 흩어진 정보를 한 곳에서 · RESIDENCE GUIDE · 슬기로운 한국생활 · </span>
             </div>
         </div>
 
@@ -13622,7 +13623,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
                 </button>
 
                 <a class="p-gw-card p-gw-card-ai" href="ai.html">
-                    <span class="p-gw-card-icon" aria-hidden="true">✦</span>
+                    <span class="p-gw-card-icon" aria-hidden="true">🧭</span>
                     <span class="p-gw-card-label">Waymaker by Paradiso에게 묻기</span>
                     <span class="p-gw-card-sub">내 상황에 맞는 체류자격과 확인 절차를 정리합니다.</span>
                 </a>
@@ -13726,7 +13727,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
         </div>
 
         <div class="hero-ai-secondary" aria-label="선택형 AI 도우미">
-            <a href="ai.html" class="hero-ai-link"><span aria-hidden="true">✦</span> AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
+            <a href="ai.html" class="hero-ai-link">AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
         </div>
     </div>
 </header>
@@ -14888,7 +14889,7 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
     <span class="ft-logo">Visable by Paradiso</span> · 베타 서비스. 제공되는 정보는 법적 효력을 갖지 않으며, 최종 판단은 HiKorea·1345·관할 출입국·외국인관서에 확인하세요.
 </footer>
 
-<a href="ai.html" class="ai-fab"><span class="fab-spark" aria-hidden="true">✦</span> AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
+<a href="ai.html" class="ai-fab">AI로 더 자세히 묻기 <strong>Waymaker by Paradiso</strong></a>
 
 <script src="assets/js/document-help.js"></script>
 <script>
@@ -22557,8 +22558,8 @@ function applyLanguage(code, options = {}) {
     setText('#landingHintsTitle', tx('hintsTitle'));
     setAttr('#landingHints', 'aria-label', tx('hintsAria'));
     setAttr('.hero-ai-secondary', 'aria-label', tx('aiSecondaryAria'));
-    setHtml('.hero-ai-link', `<span aria-hidden="true">✦</span> ${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
-    setHtml('.ai-fab', `<span class="fab-spark" aria-hidden="true">✦</span> ${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
+    setHtml('.hero-ai-link', `${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
+    setHtml('.ai-fab', `${tx('aiLink')} <strong>Waymaker by Paradiso</strong>`);
     setText('.reference-disclaimer', tx('reference'));
     setHtml('#brandHeroTitle', tx('brandHeroTitle'));
     setText('.brand-hero-subtitle', tx('brandHeroSubtitle'));
