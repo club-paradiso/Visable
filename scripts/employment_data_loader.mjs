@@ -32,6 +32,10 @@ export function loadEmploymentAnalyzerDeps() {
       ...concepts(readJson('data/employment/aliases.tattoo.en.json'))
     ]
   };
+  // Chinese pool: Chinese-speaking residents describe their work in Chinese, and
+  // without this the analyzer returned nothing at all for those inputs. It adds
+  // retrieval surfaces only — the codes still come from jobcode_master.json.
+  const zh = { concepts: concepts(readJson('data/employment/synonyms.zh.json')) };
 
   const ambiguous = readJson('data/employment/ambiguous_inputs.json');
   const sources = readJson('data/employment/classification_sources.json');
@@ -48,7 +52,7 @@ export function loadEmploymentAnalyzerDeps() {
 
   return {
     data,
-    lexicon: { ko, en },
+    lexicon: { ko, en, zh },
     ambiguous,
     sources,
     legalSources: sources.legal_sources || [],

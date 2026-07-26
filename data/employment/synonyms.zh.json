@@ -1,0 +1,192 @@
+{
+  "schema_version": "1.0",
+  "locale": "zh",
+  "kind": "employment_concept_lexicon",
+  "purpose": "Chinese surface phrases for the deterministic employment-code analyzer. Chinese-speaking residents describe their work in Chinese; without this pool the analyzer returned nothing at all for inputs like 我在酒店打扫客房.",
+  "important": [
+    "This file contains NO official classification codes. It only maps Chinese",
+    "surface phrases onto the SAME occupation_terms / industry_terms already used",
+    "by the Korean lexicon, so retrieval reaches the identical official KSCO8 /",
+    "KSIC11 rows. A term with no match in the official table produces no candidate.",
+    "",
+    "occupation_terms describe what the PERSON does; industry_terms describe what",
+    "the EMPLOYER's business is. The two tracks are never mixed.",
+    "",
+    "Han surfaces are matched by substring from length 2 (see surfaceHits in",
+    "scripts/employment_code_analyzer.mjs) because Chinese is written without",
+    "spaces and a 2-character word is already specific."
+  ],
+  "concept_types": ["role", "workplace", "employment_type"],
+  "concepts": [
+    {
+      "id": "zh_barista",
+      "type": "role",
+      "surface": ["咖啡师", "做饮料", "调制饮料", "制作饮品"],
+      "label_ko": "바리스타 / 음료 조리",
+      "occupation_terms": ["바리스타", "음료 조리", "조리", "음료", "식음료 서비스"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_cafe",
+      "type": "workplace",
+      "surface": ["咖啡厅", "咖啡店", "咖啡馆"],
+      "label_ko": "카페",
+      "occupation_terms": ["음료 조리", "식음료 서비스"],
+      "industry_terms": ["커피 전문점", "비알코올 음료점업", "음료"]
+    },
+    {
+      "id": "zh_hotel",
+      "type": "workplace",
+      "surface": ["酒店", "饭店", "宾馆"],
+      "label_ko": "호텔 / 숙박업소",
+      "occupation_terms": [],
+      "industry_terms": ["숙박업", "호텔", "일반 및 생활 숙박시설 운영업"]
+    },
+    {
+      "id": "zh_room_cleaning",
+      "type": "role",
+      "surface": ["打扫客房", "客房清洁", "打扫房间", "保洁"],
+      "label_ko": "객실 청소 / 건물 청소",
+      "occupation_terms": ["청소", "건물 청소", "청소원"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_restaurant",
+      "type": "workplace",
+      "surface": ["餐厅", "餐馆", "饭馆"],
+      "label_ko": "음식점",
+      "occupation_terms": ["조리", "식음료 서비스"],
+      "industry_terms": ["음식점업", "한식", "음식점"]
+    },
+    {
+      "id": "zh_dishwashing",
+      "type": "role",
+      "surface": ["洗碗", "刷碗"],
+      "label_ko": "주방 보조 / 설거지",
+      "occupation_terms": ["주방 보조", "주방", "조리"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_cook",
+      "type": "role",
+      "surface": ["厨师", "做菜", "烹饪"],
+      "label_ko": "조리사",
+      "occupation_terms": ["조리사", "조리", "주방장"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_factory",
+      "type": "workplace",
+      "surface": ["工厂", "车间"],
+      "label_ko": "공장",
+      "occupation_terms": ["제조", "조립", "기계 조작"],
+      "industry_terms": ["제조업"]
+    },
+    {
+      "id": "zh_assembly",
+      "type": "role",
+      "surface": ["组装", "装配", "流水线"],
+      "label_ko": "조립원",
+      "occupation_terms": ["조립", "조립원", "기계 조작"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_farm",
+      "type": "workplace",
+      "surface": ["农场", "果园", "农田"],
+      "label_ko": "농장",
+      "occupation_terms": ["재배", "작물 재배", "농업"],
+      "industry_terms": ["작물 재배업", "농업"]
+    },
+    {
+      "id": "zh_construction",
+      "type": "workplace",
+      "surface": ["工地", "建筑工地"],
+      "label_ko": "건설 현장",
+      "occupation_terms": ["건설", "건설 노무"],
+      "industry_terms": ["건설업"]
+    },
+    {
+      "id": "zh_convenience_store",
+      "type": "workplace",
+      "surface": ["便利店", "超市"],
+      "label_ko": "편의점 / 소매점",
+      "occupation_terms": ["판매", "계산"],
+      "industry_terms": ["종합 소매업", "편의점"]
+    },
+    {
+      "id": "zh_teacher",
+      "type": "role",
+      "surface": ["老师", "教师", "教中文", "教汉语"],
+      "label_ko": "강사 / 교사",
+      "occupation_terms": ["강사", "교사", "언어 강사"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_academy",
+      "type": "workplace",
+      "surface": ["补习班", "学院", "培训机构"],
+      "label_ko": "학원",
+      "occupation_terms": ["강사"],
+      "industry_terms": ["학원", "교육 서비스업"]
+    },
+    {
+      "id": "zh_developer",
+      "type": "role",
+      "surface": ["程序员", "开发者", "软件开发"],
+      "label_ko": "개발자",
+      "occupation_terms": ["소프트웨어 개발", "개발자", "프로그래머"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_translator",
+      "type": "role",
+      "surface": ["翻译", "笔译", "口译"],
+      "label_ko": "번역가 / 통역사",
+      "occupation_terms": ["번역", "통역", "번역가"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_driver",
+      "type": "role",
+      "surface": ["司机", "开车", "送货"],
+      "label_ko": "운전원 / 배송원",
+      "occupation_terms": ["운전", "배송", "운전원"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_fishing",
+      "type": "role",
+      "surface": ["捕鱼", "打鱼", "渔船"],
+      "label_ko": "어부 / 어로",
+      "occupation_terms": ["어부", "어로", "어업"],
+      "industry_terms": ["어로 어업", "어업"]
+    },
+    {
+      "id": "zh_caregiver",
+      "type": "role",
+      "surface": ["护工", "看护", "照顾老人"],
+      "label_ko": "요양보호사 / 간병",
+      "occupation_terms": ["요양", "간병", "돌봄"],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_part_time",
+      "type": "employment_type",
+      "surface": ["兼职", "打工"],
+      "label_ko": "시간제 / 아르바이트",
+      "employment_type": "part_time",
+      "occupation_terms": [],
+      "industry_terms": []
+    },
+    {
+      "id": "zh_full_time",
+      "type": "employment_type",
+      "surface": ["全职", "正式员工"],
+      "label_ko": "전일제",
+      "employment_type": "full_time",
+      "occupation_terms": [],
+      "industry_terms": []
+    }
+  ]
+}

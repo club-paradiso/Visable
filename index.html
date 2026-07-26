@@ -16353,9 +16353,10 @@ async function ensureEmploymentAnalyzer() {
         // inputs + field-labor place/object/action lexicon + fork disambiguation
         // rules + income reminder + source/legal metadata, merged the same way the
         // Node loader (scripts/employment_data_loader.mjs) does.
-        const [koBase, enBase, koEnt, enEnt, koTat, enTat, amb, src, fieldKo, fieldEn, disamb, income] = await Promise.all([
+        const [koBase, enBase, zhBase, koEnt, enEnt, koTat, enTat, amb, src, fieldKo, fieldEn, disamb, income] = await Promise.all([
             grab('./data/employment/synonyms.ko.json'),
             grab('./data/employment/synonyms.en.json'),
+            grab('./data/employment/synonyms.zh.json'),
             grab('./data/employment/aliases.entertainment.ko.json'),
             grab('./data/employment/aliases.entertainment.en.json'),
             grab('./data/employment/aliases.tattoo.ko.json'),
@@ -16370,7 +16371,9 @@ async function ensureEmploymentAnalyzer() {
         const cc = (o) => (o && Array.isArray(o.concepts) ? o.concepts : []);
         _empLex = {
             ko: { concepts: [...cc(koBase), ...cc(koEnt), ...cc(koTat)] },
-            en: { concepts: [...cc(enBase), ...cc(enEnt), ...cc(enTat)] }
+            en: { concepts: [...cc(enBase), ...cc(enEnt), ...cc(enTat)] },
+            // Chinese pool — without it, Chinese descriptions matched nothing at all.
+            zh: { concepts: [...cc(zhBase)] }
         };
         _empSources = src;
         _empAnalyzer = window.EmploymentCodeAnalyzer.createEmploymentAnalyzer({

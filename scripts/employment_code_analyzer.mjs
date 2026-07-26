@@ -116,6 +116,11 @@ function surfaceHits(surface, normalizedText, tokenSet) {
   if (!s) return false;
   if (s.includes(' ')) return normalizedText.includes(s);
   if (/^[a-z0-9]+$/.test(s)) return tokenSet.has(s);
+  // Han (Chinese) is written without spaces, so a whole sentence normalizes to a
+  // single token and token matching never fires. Han characters are also dense —
+  // a 2-character word (酒店, 客房) is as specific as a 3-syllable Hangul word — so
+  // substring matching starts at length 2 instead of 3.
+  if (/^[一-鿿]+$/.test(s)) return s.length >= 2 && normalizedText.includes(s);
   return tokenSet.has(s) || (s.length >= 3 && normalizedText.includes(s));
 }
 
@@ -164,9 +169,12 @@ export function extractEntities(input, lex) {
   const tokenSet = new Set(tokens);
   const language = input.locale || detectLanguage(text);
 
+  // Every locale pool is merged unconditionally: mixed-language input
+  // ("카페에서 barista로 일해요") must match concepts from more than one pool.
   const concepts = [
     ...(lex.ko && Array.isArray(lex.ko.concepts) ? lex.ko.concepts : []),
-    ...(lex.en && Array.isArray(lex.en.concepts) ? lex.en.concepts : [])
+    ...(lex.en && Array.isArray(lex.en.concepts) ? lex.en.concepts : []),
+    ...(lex.zh && Array.isArray(lex.zh.concepts) ? lex.zh.concepts : [])
   ];
   const matches = matchConcepts(normalizedText, tokenSet, concepts);
 

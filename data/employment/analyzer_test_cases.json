@@ -19,74 +19,1051 @@
     "notSingleExactName": "no candidate officialName equals this umbrella term (e.g. 아이돌)"
   },
   "cases": [
-    { "id": "cafe_barista", "text": "카페에서 바리스타로 일해요", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["음료"], "industryIncludes": ["음료"] } },
-    { "id": "restaurant_kitchen", "text": "식당 주방보조", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["조리"], "industryIncludes": ["음식점"] } },
-    { "id": "english_academy_instructor", "text": "영어학원 강사", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["강사"], "industryIncludes": ["교육"] } },
-    { "id": "university_researcher", "text": "대학교 연구원", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["연구"], "industryIncludes": ["대학"] } },
-    { "id": "it_startup_developer", "text": "IT 스타트업 개발자", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["소프트웨어"], "industryIncludes": ["소프트웨어"] } },
-    { "id": "online_mall_cs", "text": "온라인 쇼핑몰 CS", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["소매"] } },
-    { "id": "farm_seasonal", "text": "농장 계절근로", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["재배"], "industryIncludes": ["재배"] } },
-    { "id": "factory_production", "text": "공장 생산직", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["제조"] } },
-    { "id": "hotel_front", "text": "호텔 프론트", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["숙박"] } },
-    { "id": "translator_freelancer", "text": "통번역 프리랜서", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "occupationIncludes": ["번역"] } },
-    { "id": "convenience_part_time", "text": "편의점 알바", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "industryIncludes": ["소매"] } },
-    { "id": "logistics_loading", "text": "택배 물류센터 상하차", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["하역"], "industryIncludes": ["운송"] } },
-    { "id": "daycare_assistant", "text": "어린이집 보조교사", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["보육"], "industryIncludes": ["보육"] } },
-    { "id": "caregiver", "text": "간병인", "expect": { "minOccupation": 1, "minIndustry": 0, "expectAmbiguity": true, "occupationIncludes": ["간병"] } },
-    { "id": "cafe_owner", "text": "사업자등록 내고 카페 운영", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "industryIncludes": ["음료"] } },
-
-    { "id": "dancer", "text": "댄서", "expect": { "minOccupation": 1, "minIndustry": 1, "expectAmbiguity": true, "expectFollowUpChips": true, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"] } },
-    { "id": "muyongsu", "text": "무용수", "expect": { "minOccupation": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"] } },
-    { "id": "choreographer_ko", "text": "안무가", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["안무"] } },
-    { "id": "backup_dancer", "text": "백댄서", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"] } },
-    { "id": "idol", "text": "아이돌", "expect": { "minOccupation": 2, "minIndustry": 1, "expectAmbiguity": true, "expectFollowUpChips": true, "expectLegalSensitivity": ["entertainment"], "expectMaxConfidence": "medium", "notSingleExactName": "아이돌" } },
-    { "id": "idol_trainee", "text": "아이돌 연습생", "expect": { "minOccupation": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["entertainment"], "expectRoleStatus": "trainee", "expectMaxConfidence": "low", "notSingleExactName": "아이돌" } },
-    { "id": "kpop_idol_ko", "text": "케이팝 아이돌", "expect": { "minOccupation": 2, "expectAmbiguity": true, "expectLegalSensitivity": ["entertainment"], "expectMaxConfidence": "medium", "notSingleExactName": "아이돌" } },
-    { "id": "singer", "text": "가수", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["가수"] } },
-    { "id": "rapper", "text": "래퍼", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["가수"] } },
-    { "id": "vocal_trainer", "text": "보컬 트레이너", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["강사"] } },
-    { "id": "dance_instructor_ko", "text": "댄스 강사", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["강사"] } },
-    { "id": "agency_artist", "text": "연예기획사 소속 아티스트", "expect": { "minIndustry": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["entertainment"], "industryIncludes": ["기획"] } },
-    { "id": "company_dancer", "text": "공연단체 무용수", "expect": { "minOccupation": 1, "minIndustry": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"], "industryIncludes": ["공연단체"] } },
-    { "id": "freelance_dancer", "text": "프리랜서 댄서", "expect": { "minOccupation": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"] } },
-    { "id": "musical_actor", "text": "뮤지컬 배우", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["배우"] } },
-    { "id": "model_ko", "text": "모델", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["모델"] } },
-
-    { "id": "tattooist_ko", "text": "타투이스트", "expect": { "minOccupation": 1, "expectAmbiguity": true, "expectFollowUpChips": true, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신사법", "별도"] } },
-    { "id": "munsinsa", "text": "문신사", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "munsin_artist", "text": "문신아티스트", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "tattoo_shop_worker", "text": "타투샵 직원", "expect": { "minIndustry": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "industryIncludes": ["미용"] } },
-    { "id": "tattoo_shop_op", "text": "타투샵 운영", "expect": { "minIndustry": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "cosmetic_tattoo_ko", "text": "반영구화장", "expect": { "minOccupation": 1, "expectAmbiguity": true, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "eyebrow_tattoo", "text": "눈썹문신", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-
-    { "id": "ambiguous_cafe_only", "text": "카페에서 일해요", "expect": { "minIndustry": 1, "expectAmbiguity": true } },
-    { "id": "ambiguous_academy_only", "text": "학원에서 일해요", "expect": { "minIndustry": 1, "expectAmbiguity": true } },
-    { "id": "ambiguous_freelancer_only", "text": "프리랜서", "expect": { "expectAmbiguity": true } },
-    { "id": "ambiguous_alba_only", "text": "알바", "expect": { "expectAmbiguity": true, "expectFollowUpChips": true } },
-
-    { "id": "english_software_engineer", "text": "software engineer at startup", "locale": "en", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["소프트웨어"] } },
-    { "id": "english_backup_dancer", "text": "backup dancer", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["무용"] } },
-    { "id": "english_choreographer", "text": "choreographer", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["안무"] } },
-    { "id": "english_dance_instructor", "text": "dance instructor", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["entertainment"], "occupationIncludes": ["강사"] } },
-    { "id": "english_kpop_trainee", "text": "K-pop idol trainee", "locale": "en", "expect": { "expectLegalSensitivity": ["entertainment"], "expectRoleStatus": "trainee", "expectMaxConfidence": "low" } },
-    { "id": "english_influencer", "text": "influencer", "locale": "en", "expect": { "minOccupation": 1 } },
-    { "id": "english_tattoo_artist", "text": "tattoo artist", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "english_cosmetic_tattoo", "text": "cosmetic tattoo artist", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low", "expectWarningIncludes": ["문신"] } },
-    { "id": "english_permanent_makeup", "text": "permanent makeup artist", "locale": "en", "expect": { "minOccupation": 1, "expectLegalSensitivity": ["tattoo"], "expectMaxConfidence": "low" } },
-
-    { "id": "chinese_restaurant_server", "text": "중식당 서빙", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["식음료"], "topOccupationIncludes": ["식음료"], "industryIncludes": ["중식"], "topIndustryIncludes": ["중식"] } },
-    { "id": "chinese_restaurant_gukjip", "text": "중국집에서 홀서빙 해요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["중식"], "topIndustryIncludes": ["중식"] } },
-    { "id": "japanese_restaurant_kitchen", "text": "일식집 주방보조", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["보조"], "topOccupationIncludes": ["주방 보조원"], "industryIncludes": ["일식"], "topIndustryIncludes": ["일식"] } },
-    { "id": "korean_restaurant_server", "text": "한식당에서 서빙해요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["한식"], "topIndustryIncludes": ["한식"] } },
-    { "id": "western_restaurant_cook", "text": "이탈리안 레스토랑 요리사", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["조리"], "industryIncludes": ["서양식"], "topIndustryIncludes": ["서양식"] } },
-    { "id": "snack_bar_tteokbokki", "text": "분식집에서 떡볶이 만들어요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["간이"], "topIndustryIncludes": ["간이"] } },
-    { "id": "vietnamese_restaurant", "text": "베트남 쌀국수집 주방에서 일해요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["외국식"], "topIndustryIncludes": ["외국식"] } },
-    { "id": "chicken_shop_delivery", "text": "치킨집에서 일해요", "expect": { "minOccupation": 0, "minIndustry": 1, "industryIncludes": ["치킨"], "topIndustryIncludes": ["치킨"], "expectAmbiguity": true } },
-    { "id": "pizza_shop_server", "text": "피자집에서 서빙해요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["피자"], "topIndustryIncludes": ["피자"] } },
-    { "id": "bakery_worker", "text": "빵집에서 빵 만들어요", "expect": { "minOccupation": 1, "minIndustry": 1, "occupationIncludes": ["제빵"], "topOccupationIncludes": ["제빵"], "industryIncludes": ["제과점"], "topIndustryIncludes": ["제과점"] } },
-    { "id": "pub_server", "text": "호프집에서 서빙해요", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["주점"], "topIndustryIncludes": ["주점"] } },
-    { "id": "chinese_restaurant_en", "text": "server at a chinese restaurant", "locale": "en", "expect": { "minOccupation": 1, "minIndustry": 1, "industryIncludes": ["중식"], "topIndustryIncludes": ["중식"] } },
-    { "id": "english_teach_at_academy", "text": "학원에서 영어 가르쳐요", "expect": { "minOccupation": 1, "minIndustry": 1, "topOccupationIncludes": ["외국어 강사"], "industryIncludes": ["외국어학원"] } }
+    {
+      "id": "cafe_barista",
+      "text": "카페에서 바리스타로 일해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "음료"
+        ],
+        "industryIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "restaurant_kitchen",
+      "text": "식당 주방보조",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "조리"
+        ],
+        "industryIncludes": [
+          "음식점"
+        ]
+      }
+    },
+    {
+      "id": "english_academy_instructor",
+      "text": "영어학원 강사",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "강사"
+        ],
+        "industryIncludes": [
+          "교육"
+        ]
+      }
+    },
+    {
+      "id": "university_researcher",
+      "text": "대학교 연구원",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "연구"
+        ],
+        "industryIncludes": [
+          "대학"
+        ]
+      }
+    },
+    {
+      "id": "it_startup_developer",
+      "text": "IT 스타트업 개발자",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "소프트웨어"
+        ],
+        "industryIncludes": [
+          "소프트웨어"
+        ]
+      }
+    },
+    {
+      "id": "online_mall_cs",
+      "text": "온라인 쇼핑몰 CS",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "소매"
+        ]
+      }
+    },
+    {
+      "id": "farm_seasonal",
+      "text": "농장 계절근로",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "재배"
+        ],
+        "industryIncludes": [
+          "재배"
+        ]
+      }
+    },
+    {
+      "id": "factory_production",
+      "text": "공장 생산직",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "제조"
+        ]
+      }
+    },
+    {
+      "id": "hotel_front",
+      "text": "호텔 프론트",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "숙박"
+        ]
+      }
+    },
+    {
+      "id": "translator_freelancer",
+      "text": "통번역 프리랜서",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "occupationIncludes": [
+          "번역"
+        ]
+      }
+    },
+    {
+      "id": "convenience_part_time",
+      "text": "편의점 알바",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "industryIncludes": [
+          "소매"
+        ]
+      }
+    },
+    {
+      "id": "logistics_loading",
+      "text": "택배 물류센터 상하차",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "하역"
+        ],
+        "industryIncludes": [
+          "운송"
+        ]
+      }
+    },
+    {
+      "id": "daycare_assistant",
+      "text": "어린이집 보조교사",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "보육"
+        ],
+        "industryIncludes": [
+          "보육"
+        ]
+      }
+    },
+    {
+      "id": "caregiver",
+      "text": "간병인",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 0,
+        "expectAmbiguity": true,
+        "occupationIncludes": [
+          "간병"
+        ]
+      }
+    },
+    {
+      "id": "cafe_owner",
+      "text": "사업자등록 내고 카페 운영",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "industryIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "dancer",
+      "text": "댄서",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "expectFollowUpChips": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ]
+      }
+    },
+    {
+      "id": "muyongsu",
+      "text": "무용수",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ]
+      }
+    },
+    {
+      "id": "choreographer_ko",
+      "text": "안무가",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "안무"
+        ]
+      }
+    },
+    {
+      "id": "backup_dancer",
+      "text": "백댄서",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ]
+      }
+    },
+    {
+      "id": "idol",
+      "text": "아이돌",
+      "expect": {
+        "minOccupation": 2,
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "expectFollowUpChips": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "expectMaxConfidence": "medium",
+        "notSingleExactName": "아이돌"
+      }
+    },
+    {
+      "id": "idol_trainee",
+      "text": "아이돌 연습생",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "expectRoleStatus": "trainee",
+        "expectMaxConfidence": "low",
+        "notSingleExactName": "아이돌"
+      }
+    },
+    {
+      "id": "kpop_idol_ko",
+      "text": "케이팝 아이돌",
+      "expect": {
+        "minOccupation": 2,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "expectMaxConfidence": "medium",
+        "notSingleExactName": "아이돌"
+      }
+    },
+    {
+      "id": "singer",
+      "text": "가수",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "가수"
+        ]
+      }
+    },
+    {
+      "id": "rapper",
+      "text": "래퍼",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "가수"
+        ]
+      }
+    },
+    {
+      "id": "vocal_trainer",
+      "text": "보컬 트레이너",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "강사"
+        ]
+      }
+    },
+    {
+      "id": "dance_instructor_ko",
+      "text": "댄스 강사",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "강사"
+        ]
+      }
+    },
+    {
+      "id": "agency_artist",
+      "text": "연예기획사 소속 아티스트",
+      "expect": {
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "industryIncludes": [
+          "기획"
+        ]
+      }
+    },
+    {
+      "id": "company_dancer",
+      "text": "공연단체 무용수",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ],
+        "industryIncludes": [
+          "공연단체"
+        ]
+      }
+    },
+    {
+      "id": "freelance_dancer",
+      "text": "프리랜서 댄서",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ]
+      }
+    },
+    {
+      "id": "musical_actor",
+      "text": "뮤지컬 배우",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "배우"
+        ]
+      }
+    },
+    {
+      "id": "model_ko",
+      "text": "모델",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "모델"
+        ]
+      }
+    },
+    {
+      "id": "tattooist_ko",
+      "text": "타투이스트",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectFollowUpChips": true,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신사법",
+          "별도"
+        ]
+      }
+    },
+    {
+      "id": "munsinsa",
+      "text": "문신사",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "munsin_artist",
+      "text": "문신아티스트",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "tattoo_shop_worker",
+      "text": "타투샵 직원",
+      "expect": {
+        "minIndustry": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "industryIncludes": [
+          "미용"
+        ]
+      }
+    },
+    {
+      "id": "tattoo_shop_op",
+      "text": "타투샵 운영",
+      "expect": {
+        "minIndustry": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "cosmetic_tattoo_ko",
+      "text": "반영구화장",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "eyebrow_tattoo",
+      "text": "눈썹문신",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "ambiguous_cafe_only",
+      "text": "카페에서 일해요",
+      "expect": {
+        "minIndustry": 1,
+        "expectAmbiguity": true
+      }
+    },
+    {
+      "id": "ambiguous_academy_only",
+      "text": "학원에서 일해요",
+      "expect": {
+        "minIndustry": 1,
+        "expectAmbiguity": true
+      }
+    },
+    {
+      "id": "ambiguous_freelancer_only",
+      "text": "프리랜서",
+      "expect": {
+        "expectAmbiguity": true
+      }
+    },
+    {
+      "id": "ambiguous_alba_only",
+      "text": "알바",
+      "expect": {
+        "expectAmbiguity": true,
+        "expectFollowUpChips": true
+      }
+    },
+    {
+      "id": "english_software_engineer",
+      "text": "software engineer at startup",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "소프트웨어"
+        ]
+      }
+    },
+    {
+      "id": "english_backup_dancer",
+      "text": "backup dancer",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "무용"
+        ]
+      }
+    },
+    {
+      "id": "english_choreographer",
+      "text": "choreographer",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "안무"
+        ]
+      }
+    },
+    {
+      "id": "english_dance_instructor",
+      "text": "dance instructor",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "occupationIncludes": [
+          "강사"
+        ]
+      }
+    },
+    {
+      "id": "english_kpop_trainee",
+      "text": "K-pop idol trainee",
+      "locale": "en",
+      "expect": {
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "expectRoleStatus": "trainee",
+        "expectMaxConfidence": "low"
+      }
+    },
+    {
+      "id": "english_influencer",
+      "text": "influencer",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1
+      }
+    },
+    {
+      "id": "english_tattoo_artist",
+      "text": "tattoo artist",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "english_cosmetic_tattoo",
+      "text": "cosmetic tattoo artist",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low",
+        "expectWarningIncludes": [
+          "문신"
+        ]
+      }
+    },
+    {
+      "id": "english_permanent_makeup",
+      "text": "permanent makeup artist",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "expectLegalSensitivity": [
+          "tattoo"
+        ],
+        "expectMaxConfidence": "low"
+      }
+    },
+    {
+      "id": "chinese_restaurant_server",
+      "text": "중식당 서빙",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "식음료"
+        ],
+        "topOccupationIncludes": [
+          "식음료"
+        ],
+        "industryIncludes": [
+          "중식"
+        ],
+        "topIndustryIncludes": [
+          "중식"
+        ]
+      }
+    },
+    {
+      "id": "chinese_restaurant_gukjip",
+      "text": "중국집에서 홀서빙 해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "중식"
+        ],
+        "topIndustryIncludes": [
+          "중식"
+        ]
+      }
+    },
+    {
+      "id": "japanese_restaurant_kitchen",
+      "text": "일식집 주방보조",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "보조"
+        ],
+        "topOccupationIncludes": [
+          "주방 보조원"
+        ],
+        "industryIncludes": [
+          "일식"
+        ],
+        "topIndustryIncludes": [
+          "일식"
+        ]
+      }
+    },
+    {
+      "id": "korean_restaurant_server",
+      "text": "한식당에서 서빙해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "한식"
+        ],
+        "topIndustryIncludes": [
+          "한식"
+        ]
+      }
+    },
+    {
+      "id": "western_restaurant_cook",
+      "text": "이탈리안 레스토랑 요리사",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "조리"
+        ],
+        "industryIncludes": [
+          "서양식"
+        ],
+        "topIndustryIncludes": [
+          "서양식"
+        ]
+      }
+    },
+    {
+      "id": "snack_bar_tteokbokki",
+      "text": "분식집에서 떡볶이 만들어요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "간이"
+        ],
+        "topIndustryIncludes": [
+          "간이"
+        ]
+      }
+    },
+    {
+      "id": "vietnamese_restaurant",
+      "text": "베트남 쌀국수집 주방에서 일해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "외국식"
+        ],
+        "topIndustryIncludes": [
+          "외국식"
+        ]
+      }
+    },
+    {
+      "id": "chicken_shop_delivery",
+      "text": "치킨집에서 일해요",
+      "expect": {
+        "minOccupation": 0,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "치킨"
+        ],
+        "topIndustryIncludes": [
+          "치킨"
+        ],
+        "expectAmbiguity": true
+      }
+    },
+    {
+      "id": "pizza_shop_server",
+      "text": "피자집에서 서빙해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "피자"
+        ],
+        "topIndustryIncludes": [
+          "피자"
+        ]
+      }
+    },
+    {
+      "id": "bakery_worker",
+      "text": "빵집에서 빵 만들어요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "제빵"
+        ],
+        "topOccupationIncludes": [
+          "제빵"
+        ],
+        "industryIncludes": [
+          "제과점"
+        ],
+        "topIndustryIncludes": [
+          "제과점"
+        ]
+      }
+    },
+    {
+      "id": "pub_server",
+      "text": "호프집에서 서빙해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "주점"
+        ],
+        "topIndustryIncludes": [
+          "주점"
+        ]
+      }
+    },
+    {
+      "id": "chinese_restaurant_en",
+      "text": "server at a chinese restaurant",
+      "locale": "en",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "중식"
+        ],
+        "topIndustryIncludes": [
+          "중식"
+        ]
+      }
+    },
+    {
+      "id": "english_teach_at_academy",
+      "text": "학원에서 영어 가르쳐요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "topOccupationIncludes": [
+          "외국어 강사"
+        ],
+        "industryIncludes": [
+          "외국어학원"
+        ]
+      }
+    },
+    {
+      "id": "nl_cafe_drinks",
+      "text": "카페에서 음료 만들어요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "음료"
+        ],
+        "industryIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "nl_restaurant_dishwashing",
+      "text": "식당에서 설거지해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "주방"
+        ],
+        "industryIncludes": [
+          "음식점"
+        ]
+      }
+    },
+    {
+      "id": "nl_tangerine_farm",
+      "text": "귤 농장에서 열매 따요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "재배"
+        ],
+        "industryIncludes": [
+          "재배"
+        ]
+      }
+    },
+    {
+      "id": "nl_fishing_boat",
+      "text": "어선에서 생선을 잡아요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "어부"
+        ],
+        "industryIncludes": [
+          "어"
+        ]
+      }
+    },
+    {
+      "id": "nl_factory_electronics",
+      "text": "공장에서 전자부품 조립해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "제조"
+        ]
+      }
+    },
+    {
+      "id": "nl_hotel_room_cleaning",
+      "text": "호텔 객실 청소해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "청소"
+        ],
+        "industryIncludes": [
+          "숙박"
+        ]
+      }
+    },
+    {
+      "id": "nl_freelance_translator",
+      "text": "프리랜서 번역가예요",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "occupationIncludes": [
+          "번역"
+        ]
+      }
+    },
+    {
+      "id": "nl_youtube_creator",
+      "text": "유튜브 영상을 만들어요",
+      "expect": {
+        "minOccupation": 1
+      }
+    },
+    {
+      "id": "nl_idol_trainee_sentence",
+      "text": "아이돌 연습생이에요",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true,
+        "expectLegalSensitivity": [
+          "entertainment"
+        ],
+        "expectRoleStatus": "trainee",
+        "expectMaxConfidence": "low",
+        "notSingleExactName": "아이돌"
+      }
+    },
+    {
+      "id": "nl_owner_who_also_develops",
+      "text": "회사 대표인데 직접 개발도 해요",
+      "expect": {
+        "minOccupation": 1,
+        "expectAmbiguity": true
+      }
+    },
+    {
+      "id": "nl_english_cafe",
+      "text": "I work at a cafe making drinks",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "industryIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "nl_chinese_hotel_cleaning",
+      "text": "我在酒店打扫客房",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "청소"
+        ],
+        "industryIncludes": [
+          "숙박"
+        ]
+      }
+    },
+    {
+      "id": "nl_mixed_ko_en",
+      "text": "카페에서 barista로 일해요",
+      "expect": {
+        "minOccupation": 1,
+        "minIndustry": 1,
+        "occupationIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "nl_role_only",
+      "text": "바리스타",
+      "expect": {
+        "minOccupation": 1,
+        "occupationIncludes": [
+          "음료"
+        ]
+      }
+    },
+    {
+      "id": "nl_employer_business_only",
+      "text": "회사가 호텔이에요",
+      "expect": {
+        "minIndustry": 1,
+        "industryIncludes": [
+          "숙박"
+        ]
+      }
+    }
   ]
 }

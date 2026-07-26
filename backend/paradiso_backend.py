@@ -54,6 +54,7 @@ from services import unified_search as _unified_search
 from services import manual_search as _manual_search
 from services import manual_registry as _manual_registry
 from services import statute_citation_guard as _statute_guard
+from services import employment_nl as _employment_nl
 from services import precedent_sources
 from services import legal_research
 from services import legal_synthesis
@@ -6713,6 +6714,100 @@ async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
         "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
         "fallbackAvailable": True,
         "latency": {"totalMs": elapsed_ms},
+    }
+
+
+class EmploymentInterpretRequest(BaseModel):
+    text: str = ""
+    lang: Optional[str] = None
+
+
+@app.post(
+    "/api/employment/interpret",
+    dependencies=[Depends(rate_limit("employment_interpret", per_minute=12, per_day=300))],
+)
+async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
+    """Extract structured job facts from free text for the 취업정보 신고 helper.
+
+    This endpoint NEVER returns a KSCO8 직종 code or a KSIC11 업종 code and never
+    decides whether reporting is required. It returns validated *facts* which the
+    frontend feeds into the existing deterministic analyzer — the only component
+    that may produce a code, because it retrieves codes from the official tables.
+
+    Anything the model emits outside the fixed schema is dropped, and every
+    removal is reported in ``warnings`` so the sanitization is auditable.
+    """
+    text = (req.text or "").strip()[:600]
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+
+    if not text:
+        return {"status": "empty_input", "extraction": _employment_nl.empty_extraction(),
+                "analyzerInput": None, "interpretation": "", "warnings": []}
+
+    if not any(_providers_configured().values()):
+        # The guided/deterministic flow in the UI is unaffected; only the
+        # free-sentence convenience layer is unavailable.
+        return {
+            "status": "unavailable",
+            "reason": "no_provider_configured",
+            "extraction": _employment_nl.empty_extraction(),
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": [],
+            "fallbackAvailable": True,
+        }
+
+    prompt = _employment_nl.build_extraction_prompt(text, lang=lang)
+    try:
+        raw, attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except Exception:
+        return {
+            "status": "unavailable",
+            "reason": "provider_error",
+            "extraction": _employment_nl.empty_extraction(),
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": [],
+            "fallbackAvailable": True,
+        }
+
+    try:
+        known_codes = {
+            str(r.get("code")).strip().upper()
+            for r in (_load_visas().get("visas") or [])
+            if isinstance(r, dict) and r.get("code")
+        }
+    except Exception:
+        known_codes = set()
+
+    validated = _employment_nl.validate_extraction(raw, allowed_visa_codes=known_codes or None)
+    if not validated["ok"]:
+        return {
+            "status": "extraction_failed",
+            "reason": validated["reason"],
+            "extraction": validated["data"],
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": validated["warnings"],
+            "fallbackAvailable": True,
+        }
+
+    data = validated["data"]
+    return {
+        "status": "ok",
+        "extraction": data,
+        "analyzerInput": _employment_nl.to_analyzer_input(data, original_text=text),
+        "interpretation": _employment_nl.build_interpretation_sentence(data, lang=lang),
+        "needsClarification": bool(data.get("needsClarification")),
+        "clarificationQuestion": data.get("clarificationQuestion", ""),
+        "warnings": validated["warnings"],
+        "fallbackAvailable": True,
+        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
+        "notice": ("직종·업종 코드는 이 단계에서 만들지 않습니다. 아래 후보는 공식 분류표에서 "
+                   "검색한 결과이며, 최종 확정은 하이코리아에서 확인하세요."
+                   if lang == "ko" else
+                   "No classification code is produced at this step. Candidates below are "
+                   "retrieved from the official tables; confirm the final code with HiKorea."),
     }
 
 
