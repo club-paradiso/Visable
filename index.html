@@ -13428,6 +13428,119 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
   body:not(.searched) .p-hero-title { font-size: 1.92rem; }
   body:not(.searched) .p-proof-chip { padding-inline: 0.55rem; font-size: 0.7rem; }
 }
+
+/* ════════════════════════════════════════════════════════════════════════
+   Unified search layer (assets/js/unified-search.js)
+   Renders above #rlist. Every colour resolves through an existing theme
+   custom property, so light/dark follow the page with no separate palette.
+   Wide content scrolls inside its own container — the page body never scrolls
+   horizontally at 390px.
+   ══════════════════════════════════════════════════════════════════════ */
+.us-layer { display: block; margin: 0 auto var(--sp-4, 1rem); max-width: 100%; }
+.us-layer:empty { display: none; }
+body:not(.searched) .us-layer { display: none; }
+
+.us-interpret {
+  display: flex; flex-direction: column; gap: 0.55rem;
+  padding: 0.85rem 1rem; margin-bottom: 0.9rem;
+  background: var(--bg2); border: 1px solid var(--bd);
+  border-radius: 14px; box-shadow: var(--sh1);
+}
+.us-interpret-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
+.us-interpret-label { font-size: 0.82rem; font-weight: 700; color: var(--t2); }
+.us-interpret-edit {
+  margin-left: auto; min-height: 32px; padding: 0 0.7rem;
+  background: transparent; border: 1px solid var(--bd);
+  border-radius: 999px; color: var(--t2); font-size: 0.78rem; cursor: pointer;
+}
+.us-interpret-edit:hover { border-color: var(--ac); color: var(--ac); }
+
+.us-chip {
+  display: inline-flex; align-items: center; min-height: 30px;
+  padding: 0 0.7rem; border-radius: 999px; border: 1px solid var(--bd);
+  background: var(--bg1); color: var(--t1);
+  font-size: 0.8rem; line-height: 1.2; cursor: pointer;
+  max-width: 100%; overflow-wrap: anywhere;
+}
+.us-chip--intent { background: var(--acL); border-color: var(--ac); color: var(--ac); font-weight: 700; cursor: default; }
+.us-chip--code { font-weight: 700; font-variant-numeric: tabular-nums; }
+.us-chip:hover:not(.us-chip--intent) { border-color: var(--ac); color: var(--ac); }
+
+.us-warn {
+  padding: 0.6rem 0.75rem; border-radius: 10px; font-size: 0.82rem; line-height: 1.5;
+  background: color-mix(in srgb, var(--ac) 8%, var(--bg1));
+  border: 1px solid color-mix(in srgb, var(--ac) 32%, var(--bd));
+  color: var(--t1);
+}
+
+.us-ai {
+  padding: 1rem 1.1rem; margin-bottom: 0.9rem;
+  background: var(--bg1); border: 1px solid var(--bd);
+  border-radius: 16px; box-shadow: var(--sh1);
+}
+.us-ai.is-unavailable, .us-ai.is-empty { background: var(--bg2); opacity: 0.92; }
+.us-ai-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+.us-ai-title { margin: 0; font-size: 0.98rem; font-weight: 800; color: var(--t1); }
+.us-ai-body { margin: 0 0 0.6rem; font-size: 0.92rem; line-height: 1.65; color: var(--t1); overflow-wrap: anywhere; }
+.us-ai-confirm { margin: 0.5rem 0 0; font-size: 0.78rem; color: var(--t3); }
+.us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-top: 0.6rem; }
+.us-ai-action {
+  min-height: 38px; padding: 0 0.9rem; border-radius: 10px;
+  border: 1px solid var(--bd); background: var(--bg2); color: var(--t1);
+  font-size: 0.83rem; font-weight: 700; cursor: pointer;
+}
+.us-ai-action:hover { border-color: var(--ac); color: var(--ac); }
+.us-ai-skeleton { display: flex; flex-direction: column; gap: 0.45rem; }
+.us-ai-skeleton span {
+  display: block; height: 12px; border-radius: 6px;
+  background: linear-gradient(90deg, var(--bd2) 25%, var(--bd) 50%, var(--bd2) 75%);
+  background-size: 200% 100%; animation: usShimmer 1.4s ease-in-out infinite;
+}
+.us-ai-skeleton span:nth-child(2) { width: 88%; }
+.us-ai-skeleton span:nth-child(3) { width: 64%; }
+@keyframes usShimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .us-ai-skeleton span { animation: none; } }
+
+.us-badge {
+  display: inline-flex; align-items: center; padding: 0.15rem 0.5rem;
+  border-radius: 999px; font-size: 0.7rem; font-weight: 700; white-space: nowrap;
+  border: 1px solid var(--bd); background: var(--bg2); color: var(--t2);
+}
+.us-badge--ref { border-color: var(--ac); color: var(--ac); background: var(--acL); }
+.us-badge--review { border-color: color-mix(in srgb, #b45309 55%, var(--bd)); color: #b45309; background: color-mix(in srgb, #b45309 10%, var(--bg1)); }
+body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-mix(in srgb, #fbbf24 45%, var(--bd)); background: color-mix(in srgb, #fbbf24 12%, var(--bg1)); }
+.us-badge--official { border-color: var(--bd); color: var(--t2); }
+
+.us-extra { margin-bottom: 0.9rem; }
+.us-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+.us-card {
+  padding: 0.8rem 0.95rem; border: 1px solid var(--bd); border-radius: 12px;
+  background: var(--bg1);
+}
+.us-card[data-us-tool] { cursor: pointer; }
+.us-card[data-us-tool]:hover { border-color: var(--ac); }
+.us-card-head { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+.us-card-title { font-size: 0.9rem; font-weight: 700; color: var(--t1); overflow-wrap: anywhere; }
+.us-card-page { font-size: 0.74rem; color: var(--t3); font-variant-numeric: tabular-nums; }
+.us-card-summary { margin: 0.35rem 0 0; font-size: 0.83rem; line-height: 1.55; color: var(--t2); overflow-wrap: anywhere; }
+
+.us-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; }
+.us-suggest-label { font-size: 0.78rem; font-weight: 700; color: var(--t3); }
+
+.us-sources { padding: 0.85rem 1rem; border: 1px solid var(--bd); border-radius: 14px; background: var(--bg2); }
+.us-sources-title { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 800; color: var(--t2); }
+.us-source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.us-source { display: flex; flex-direction: column; gap: 0.2rem; }
+.us-source-link { font-size: 0.86rem; font-weight: 700; color: var(--ac); text-decoration: none; overflow-wrap: anywhere; }
+.us-source-link:hover { text-decoration: underline; }
+.us-source-link--plain { color: var(--t1); }
+.us-source-note { margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--t3); overflow-wrap: anywhere; }
+
+@media (max-width: 480px) {
+  .us-interpret, .us-ai, .us-sources { padding: 0.75rem 0.8rem; border-radius: 12px; }
+  .us-interpret-edit { margin-left: 0; }
+  .us-ai-action { width: 100%; justify-content: center; }
+}
 </style>
 <link rel="stylesheet" href="assets/css/visable-product-2026.css?v=20260713-figma-production">
 
@@ -25164,6 +25277,12 @@ function showVisaDocForAction(visaCode) {
      data/f4/) and load lazily — index.html never embeds country lists. -->
 <script defer src="assets/js/short-stay-checker.js"></script>
 <script defer src="assets/js/f4-route-guide.js"></script>
+<!-- Unified search layer: renders the interpretation strip, the AI Overview slot
+     and the official-source panel ABOVE #rlist. It reacts to the existing
+     `paradiso:results-rendered` event rather than owning search, so organic
+     results always paint first and an AI outage removes only the overview card.
+     (window.ParadisoUnifiedSearch; pure builders unit-tested in plain Node.) -->
+<script defer src="assets/js/unified-search.js"></script>
 <!-- Unified visa/status route-guidance layer: search → (세부코드/상황) → (절차)
      → result drawer with the chosen subcode + procedure active. Self-contained
      (window.ParadisoRoute); degrades gracefully to the plain drawer if absent.
