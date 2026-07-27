@@ -39,6 +39,13 @@ from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
 
 from .grounding_config import GroundingConfig, load_grounding_config
 from .law_grounding import should_attempt_law_grounding
+from .law_query_normalizer import (
+    annotate_lifecycle,
+    expand_law_query,
+    normalize_law_search_text,
+    rank_law_candidates,
+    summarize_search_outcome,
+)
 from .citation_verifier import (
     build_law_evidence_citation_verification,
     precedent_evidence_item_is_relevant,
@@ -398,6 +405,9 @@ def _normalize_candidate(obj: Dict[str, Any], source_type: str) -> Optional[Dict
         "law_division": law_division,
         "promulgation_date": _first(obj, "공포일자") or "",
         "enforcement_date": _first(obj, "시행일자") or "",
+        # 현행연혁코드 distinguishes 현행 / 연혁 / 폐지 / 시행예정. Without it a
+        # repealed statute is indistinguishable from a live one downstream.
+        "law_status_code": _first(obj, "현행연혁코드", "제개정구분명", "법령상태") or "",
         "department": _first(obj, "소관부처명") or "",
         "retrieval_status": "ok",
         "relevance": "background",
@@ -735,7 +745,9 @@ def _coerce_limit(limit: int) -> int:
         value = int(limit)
     except (TypeError, ValueError):
         return _DEFAULT_DISPLAY
-    return max(1, min(value, 50))
+    # 100 is the Open Law API's own ``display`` ceiling. The wide window is what
+    # lets ``search_laws_ranked`` re-rank locally instead of trusting 가나다 order.
+    return max(1, min(value, 100))
 
 
 def search_laws(
@@ -769,6 +781,108 @@ def search_laws(
         source_type="law" if (target or "law") == "law" else "admin_rule",
         limit=capped,
     )
+
+
+# The Open Law API caps ``display`` at 100 and orders results 가나다 rather than by
+# relevance, so a short official title can sit far past a small window and never
+# reach the local re-ranker at all. One request costs the same at 100 as at 5.
+_RANKED_SEARCH_DISPLAY = 100
+
+
+def search_laws_ranked(
+    query: str,
+    *,
+    limit: int = 5,
+    config: Optional[GroundingConfig] = None,
+    transport: Optional[LawTransport] = None,
+    today: Optional[Any] = None,
+) -> Dict[str, Any]:
+    """Statute search with alias expansion, wide retrieval and local re-ranking.
+
+    Runs a fallback ladder (normalized query -> alias/canonical expansions), pulls
+    a wide result window, re-ranks locally by relevance, annotates each row with
+    its 법률/시행령/시행규칙 layer and lifecycle state, and collapses the outcome to a
+    machine-readable status.
+
+    Never raises. The returned ``status`` distinguishes ``not_found`` from
+    ``timeout`` / ``forbidden`` / ``unavailable`` / ``parse_failed`` so a caller can
+    never present an API outage as "this law does not exist". ``attempts`` records
+    every query actually issued, for operator diagnosis.
+    """
+    cfg = config or load_grounding_config()
+    raw = (query or "").strip()
+    if not raw:
+        outcome = summarize_search_outcome([], query="", error_type=LAW_API_NO_RESULTS)
+        outcome.update({"attempts": [], "source_url": "", "retrieved_at": _now_iso(),
+                        "hierarchy": {}, "results": []})
+        return outcome
+
+    expansion = expand_law_query(raw)
+    ladder: List[str] = [expansion.original]
+    for candidate in expansion.expanded:
+        if candidate and candidate not in ladder:
+            ladder.append(candidate)
+
+    attempts: List[Dict[str, Any]] = []
+    last_error_type = ""
+    last_http_status: Optional[int] = None
+    source_url = ""
+    rows: List[Dict[str, Any]] = []
+
+    for attempt_query in ladder:
+        result = search_laws(
+            attempt_query,
+            limit=_RANKED_SEARCH_DISPLAY,
+            config=cfg,
+            transport=transport,
+        )
+        attempts.append({
+            "query": attempt_query,
+            "status": result.get("status", ""),
+            "error_type": result.get("error_type", ""),
+            "result_count": result.get("result_count", 0),
+        })
+        source_url = result.get("source_url") or source_url
+        if result.get("status") == "ok":
+            rows = result.get("results") or []
+            last_error_type = ""
+            last_http_status = None
+            if rows:
+                break
+            # An empty OK is a real "no rows for this phrasing" — keep laddering.
+            last_error_type = LAW_API_NO_RESULTS
+            continue
+        # Infrastructure failures must not be laddered away into "not found";
+        # remember the last one so the outcome reports the real cause.
+        last_error_type = result.get("error_type") or LAW_API_BAD_RESPONSE
+        raw_status = result.get("raw_status")
+        last_http_status = raw_status if isinstance(raw_status, int) else None
+        if last_error_type == LAW_API_NOT_CONFIGURED:
+            break
+
+    ranked = annotate_lifecycle(rank_law_candidates(rows, expansion.original), today=today)
+    outcome = summarize_search_outcome(
+        ranked,
+        query=expansion.original,
+        error_type="" if rows else last_error_type,
+        http_status=last_http_status,
+    )
+
+    hierarchy: Dict[str, List[Dict[str, Any]]] = {}
+    for row in ranked[:limit * 4 if limit else None]:
+        hierarchy.setdefault(row.get("hierarchy_level", "statute"), []).append(row)
+
+    outcome.update({
+        "attempts": attempts,
+        "source_url": source_url,
+        "retrieved_at": _now_iso(),
+        "results": ranked[:limit] if limit else ranked,
+        "hierarchy": {k: v[:limit] if limit else v for k, v in hierarchy.items()},
+        "alias_alternatives": list(expansion.alternatives),
+        "normalized_query": expansion.original,
+        "requested_query": raw,
+    })
+    return outcome
 
 
 def get_law_detail(

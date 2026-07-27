@@ -18,6 +18,8 @@
     "test:complex-guide-qa": "node scripts/check_complex_status_guide_qa.mjs",
     "test:public-dummy": "node scripts/check_public_dummy_text.mjs",
     "test:legal-search": "node scripts/check_legal_source_search.mjs && node scripts/check_legal_source_search_dom.mjs",
+    "test:unified-search": "node scripts/check_unified_search.mjs",
+    "build:manual-index": "python3 scripts/build_manual_search_index.py",
     "test:hikorea-reservation-helper": "node scripts/check_hikorea_reservation_helper.mjs",
     "test:feature-surface": "node scripts/check_live_feature_surface.mjs",
     "test:official-sources": "node scripts/check_official_external_sources.mjs && node scripts/validate_visa_issuance_enrichment.js",

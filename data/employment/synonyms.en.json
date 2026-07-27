@@ -5,7 +5,7 @@
   "purpose": "Map everyday English job/business phrases to retrieval hints for the HiKorea employment-reporting 직종(KSCO8)/업종(KSIC11) analyzer. Search terms remain Korean because the canonical dataset (data/jobcode_master.json) is Korean.",
   "important": "This file contains NO official codes. occupation_terms/industry_terms are runtime search keywords against the real dataset only.",
   "concepts": [
-    { "id": "barista_en", "type": "role", "surface": ["barista", "coffee maker"], "label_ko": "바리스타 / 음료 조리", "occupation_terms": ["바리스타", "음료 조리", "조리", "음료", "식음료 서비스"], "industry_terms": [] },
+    { "id": "barista_en", "type": "role", "surface": ["barista", "coffee maker", "making drinks", "make drinks", "making beverages", "drink maker", "making coffee", "serving drinks"], "label_ko": "바리스타 / 음료 조리", "occupation_terms": ["바리스타", "음료 조리", "조리", "음료", "식음료 서비스"], "industry_terms": [] },
     { "id": "server_en", "type": "role", "surface": ["server", "waiter", "waitress", "wait staff", "hall staff"], "label_ko": "홀 서빙 / 식음료 서비스", "occupation_terms": ["식음료 서비스", "서빙", "음식 서비스"], "industry_terms": [] },
     { "id": "cook_assistant_en", "type": "role", "surface": ["kitchen assistant", "cook assistant", "kitchen helper", "dishwasher", "prep cook"], "label_ko": "주방보조 / 조리 보조", "occupation_terms": ["조리", "주방", "조리사", "음식 서비스"], "industry_terms": [] },
     { "id": "cook_en", "type": "role", "surface": ["cook", "chef", "kitchen", "line cook"], "label_ko": "요리사 / 조리사", "occupation_terms": ["조리사", "요리사", "주방장", "조리"], "industry_terms": [] },

@@ -21,6 +21,7 @@ import logging
 import os
 import re
 import time
+import uuid
 import dataclasses
 from contextlib import asynccontextmanager
 from typing import Any, Dict, List, Optional, Sequence
@@ -48,7 +49,12 @@ from services.law_citation_guard import (
     guard_answer_citations,
 )
 from services.grounding_config import load_grounding_config
-from services.law_tools import build_law_evidence_pack, search_laws
+from services.law_tools import build_law_evidence_pack, search_laws, search_laws_ranked
+from services import unified_search as _unified_search
+from services import manual_search as _manual_search
+from services import manual_registry as _manual_registry
+from services import statute_citation_guard as _statute_guard
+from services import employment_nl as _employment_nl
 from services import precedent_sources
 from services import legal_research
 from services import legal_synthesis
@@ -5565,6 +5571,12 @@ def _map_law_result(r: Dict[str, Any]) -> Dict[str, Any]:
         "effectiveDate": r.get("enforcement_date") or "",
         "sourceUrl": _public_law_url(title),
         "rawSource": "law.go.kr",
+        # Lifecycle + hierarchy annotations from the ranked search. A repealed or
+        # not-yet-in-force statute must be visibly labelled, and 법률 / 시행령 /
+        # 시행규칙 is a display layer, never a filter.
+        "lifecycleStatus": r.get("lifecycle_status") or "",
+        "hierarchyLevel": r.get("hierarchy_level") or "",
+        "nameMatch": bool(r.get("name_match", True)),
     }
 
 
@@ -5706,12 +5718,19 @@ _LEGAL_RESEARCH_MAX_QUESTION = 800
 
 
 def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted law searches for a plan and return deduped law cards."""
+    """Run the budgeted law searches for a plan and return deduped law cards.
+
+    Uses the ranked search so alias input resolves, substring noise is filtered by
+    the name guard, and each card carries its lifecycle state. A ranked outcome
+    whose status is a *failure* (timeout / forbidden / parse) contributes nothing
+    rather than being read as "this law does not exist".
+    """
     laws: List[Dict[str, Any]] = []
     seen = set()
     for term in plan.get("lawTerms", []):
-        outcome = search_laws(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
-        if outcome.get("status") != "ok":
+        outcome = search_laws_ranked(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        if outcome.get("status") in {"unavailable", "forbidden", "timeout",
+                                     "parse_failed", "not_found"}:
             continue
         for r in (outcome.get("results") or []):
             if not isinstance(r, dict):
@@ -6458,6 +6477,365 @@ def preview_mission(country: str = "", countryName: str = "") -> Any:
     if outcome.get("error") == "invalid_query":
         return UTF8JSONResponse(status_code=400, content=outcome)
     return outcome
+
+
+# ---------------------------------------------------------------------------
+# Unified search (Visable hero) — deterministic organic results + optional
+# AI Overview on a SEPARATE endpoint.
+#
+# The split is the whole point: /api/search/unified touches nothing but local
+# data and returns in milliseconds, so the frontend can paint results while the
+# overview is still in flight (or never arrives at all). An AI outage degrades
+# the page to "no overview", never to "no results".
+# ---------------------------------------------------------------------------
+class UnifiedSearchRequest(BaseModel):
+    query: str = ""
+    lang: Optional[str] = None
+    limit: Optional[int] = None
+    includeManualEvidence: Optional[bool] = True
+
+
+class UnifiedAiOverviewRequest(BaseModel):
+    query: str = ""
+    lang: Optional[str] = None
+    intent: Optional[str] = None
+    detectedVisaCodes: Optional[List[str]] = None
+
+
+_UNIFIED_SEARCH_MAX_QUERY = _unified_search.MAX_QUERY_LENGTH
+
+
+def _unified_manual_search(query: str) -> Dict[str, Any]:
+    """Manual-index lookup for unified search; never raises, never blocks."""
+    try:
+        return _manual_search.search_manuals(query, limit=5)
+    except Exception:
+        return {"status": "index_unavailable", "approved": [], "needs_review": []}
+
+
+@app.post(
+    "/api/search/unified",
+    dependencies=[Depends(rate_limit("search_unified", per_minute=60, per_day=2000))],
+)
+async def search_unified(req: UnifiedSearchRequest) -> Any:
+    """Deterministic unified search. Local data only — no LLM, no outbound HTTP.
+
+    Returns the organic result set, the detected intent, and an editable
+    interpretation. ``aiOverview`` is always ``null`` here and
+    ``aiOverviewStatus`` is ``pending``: the overview is fetched separately by
+    ``/api/search/unified/ai-overview`` so rendering never waits on it.
+    """
+    started = time.monotonic()
+    request_id = uuid.uuid4().hex[:16]
+    query = (req.query or "").strip()[:_UNIFIED_SEARCH_MAX_QUERY]
+
+    cached = _load_visas()
+    visa_data = cached.get("visas") or []
+
+    manual_search_fn = _unified_manual_search if (req.includeManualEvidence is not False) else None
+    result = _unified_search.run_unified_search(
+        query,
+        visa_data=visa_data,
+        valid_main_codes=set(_VALID_MAIN_CODES),
+        manual_search=manual_search_fn,
+        limit=max(1, min(int(req.limit or 10), 20)),
+    )
+
+    elapsed_ms = int((time.monotonic() - started) * 1000)
+    result.update({
+        "requestId": request_id,
+        "aiOverview": None,
+        "aiOverviewStatus": "pending" if query else "not_applicable",
+        "sourceCards": _unified_source_cards(result),
+        "latency": {"deterministicMs": elapsed_ms},
+        "version": _unified_search.UNIFIED_SEARCH_VERSION,
+    })
+    return result
+
+
+def _unified_source_cards(result: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Official-source cards for the result page. Public URLs only, no secrets."""
+    cards: List[Dict[str, Any]] = [
+        {
+            "id": "hikorea",
+            "title": "하이코리아 (HiKorea)",
+            "url": "https://www.hikorea.go.kr",
+            "sourceType": "official_portal",
+            "note": "체류·사증 민원의 공식 안내 및 신청 창구입니다.",
+        },
+        {
+            "id": "call1345",
+            "title": "외국인종합안내센터 1345",
+            "url": "https://www.immigration.go.kr",
+            "sourceType": "official_helpline",
+            "note": "다국어 상담. 개별 사안의 최종 확인은 이곳에서 받으세요.",
+        },
+    ]
+    if result.get("intent") == _unified_search.INTENT_LEGAL_QUESTION:
+        cards.append({
+            "id": "law_go_kr",
+            "title": "국가법령정보센터 (법제처)",
+            "url": "https://www.law.go.kr",
+            "sourceType": "official_law",
+            "note": "법령 원문은 공식 사이트에서 확인하세요.",
+        })
+    manual = result.get("manualEvidence") or {}
+    if manual.get("reviewPendingCount"):
+        cards.append({
+            "id": "manual_review_pending",
+            "title": "매뉴얼 본문 (검토 전)",
+            "url": "",
+            "sourceType": "manual_review_pending",
+            "note": "검색된 매뉴얼 본문은 아직 사람이 원문과 대조·승인하지 않은 상태입니다. "
+                    "참고용으로만 보시고, 확정 내용은 공식 출처에서 확인하세요.",
+        })
+    return cards
+
+
+@app.post(
+    "/api/search/unified/ai-overview",
+    dependencies=[Depends(rate_limit("search_unified_ai", per_minute=10, per_day=200))],
+)
+async def search_unified_ai_overview(req: UnifiedAiOverviewRequest) -> Any:
+    """AI Overview for a unified search result. Optional by construction.
+
+    Failure is a first-class, *quiet* outcome: a provider outage returns
+    ``status="unavailable"`` with a friendly reason and no answer text, so the
+    frontend hides the overview card and leaves the organic results untouched.
+
+    The model is never allowed to introduce a statute, article, case number or
+    visa code that is not already grounded — anything it emits is put through the
+    statute-citation guard against the retrieved evidence before it is returned.
+    """
+    started = time.monotonic()
+    request_id = uuid.uuid4().hex[:16]
+    query = (req.query or "").strip()[:_UNIFIED_SEARCH_MAX_QUERY]
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+
+    if not query:
+        return {"status": "not_applicable", "requestId": request_id,
+                "overview": None, "citationVerification": None}
+
+    providers = _providers_configured()
+    if not any(providers.values()):
+        return {
+            "status": "unavailable",
+            "reason": "no_provider_configured",
+            "requestId": request_id,
+            "overview": None,
+            "fallbackAvailable": True,
+            "message": ("AI 요약을 사용할 수 없습니다. 아래 검색 결과와 공식 출처를 확인하세요."
+                        if lang == "ko" else
+                        "The AI overview is unavailable. Please use the search results "
+                        "and official sources below."),
+        }
+
+    cached = _load_visas()
+    visa_data = cached.get("visas") or []
+    deterministic = _unified_search.run_unified_search(
+        query, visa_data=visa_data, valid_main_codes=set(_VALID_MAIN_CODES),
+        manual_search=_unified_manual_search, limit=8,
+    )
+
+    # Evidence the model is allowed to speak from. Anything outside this set is a
+    # citation failure by definition.
+    evidence_lines: List[str] = []
+    for card in deterministic.get("organicResults", []):
+        if card.get("code"):
+            evidence_lines.append(
+                f"- [{card['code']}] {card.get('title', '')}: {card.get('summary', '')[:180]}")
+    manual_state = (deterministic.get("manualEvidence") or {}).get("status", "not_queried")
+
+    if not evidence_lines:
+        return {
+            "status": "no_evidence",
+            "requestId": request_id,
+            "overview": None,
+            "fallbackAvailable": True,
+            "message": ("검색된 근거가 없어 요약을 만들지 않았습니다. 검색어를 바꾸거나 "
+                        "공식 출처에서 확인해 주세요." if lang == "ko" else
+                        "No grounded evidence was retrieved, so no overview was generated."),
+        }
+
+    language_line = ("Write in natural Korean." if lang == "ko"
+                     else "Write in natural English.")
+    prompt = (
+        "You summarize Korean immigration/status-of-stay search results for a "
+        "public information site. You are NOT giving legal advice.\n\n"
+        f"User query: {query}\n"
+        f"Detected intent: {deterministic.get('intent')}\n"
+        f"Retrieved evidence (the ONLY facts you may use):\n"
+        + "\n".join(evidence_lines[:8]) + "\n\n"
+        "HARD RULES:\n"
+        "1. Use ONLY the retrieved evidence above. Do not add requirements, "
+        "deadlines, fees or eligibility rules that are not present in it.\n"
+        "2. NEVER write a statute name, article number, case number, visa code, "
+        "occupation code or industry code that does not appear above.\n"
+        "3. Do not state whether the user is eligible or will be approved.\n"
+        "4. 2-5 sentences. Then one short line naming the single most useful "
+        "next action.\n"
+        "5. End by telling the reader to confirm with HiKorea or 1345.\n\n"
+        f"{language_line}"
+    )
+
+    try:
+        text, attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except HTTPException as exc:
+        return {
+            "status": "unavailable",
+            "reason": _classify_openrouter_error(exc)[0] if hasattr(exc, "detail") else "provider_error",
+            "requestId": request_id,
+            "overview": None,
+            "fallbackAvailable": True,
+            "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
+                        if lang == "ko" else
+                        "The AI overview could not be loaded. The search results below "
+                        "are unaffected."),
+        }
+    except Exception:
+        return {
+            "status": "unavailable", "reason": "provider_error",
+            "requestId": request_id, "overview": None, "fallbackAvailable": True,
+            "message": ("AI 요약을 불러오지 못했습니다. 아래 검색 결과는 정상입니다."
+                        if lang == "ko" else
+                        "The AI overview could not be loaded."),
+        }
+
+    # Citation guard: the overview is grounded in visa-data cards, not in fetched
+    # statute text, so ANY statute citation it emits is unverifiable here and is
+    # marked as such rather than rendered as a confirmed reference.
+    verification = _statute_guard.verify_statute_citations(text, [], evidence_available=False)
+    safe_text = _statute_guard.strip_failed_statute_citations(text, verification)
+
+    elapsed_ms = int((time.monotonic() - started) * 1000)
+    return {
+        "status": "ok",
+        "requestId": request_id,
+        "overview": safe_text,
+        "citationVerification": {
+            "status": verification["status"],
+            "unverifiableCount": verification["unverifiable_count"],
+            "failureCount": verification["failure_count"],
+        },
+        "evidenceState": {
+            "manual": manual_state,
+            "directEvidenceCount": len(evidence_lines),
+            "law": "not_queried",
+        },
+        "requiresOfficialConfirmation": True,
+        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
+        "model": attempt_meta.get("model", "") if isinstance(attempt_meta, dict) else "",
+        "fallbackAvailable": True,
+        "latency": {"totalMs": elapsed_ms},
+    }
+
+
+class EmploymentInterpretRequest(BaseModel):
+    text: str = ""
+    lang: Optional[str] = None
+
+
+@app.post(
+    "/api/employment/interpret",
+    dependencies=[Depends(rate_limit("employment_interpret", per_minute=12, per_day=300))],
+)
+async def employment_interpret(req: EmploymentInterpretRequest) -> Any:
+    """Extract structured job facts from free text for the 취업정보 신고 helper.
+
+    This endpoint NEVER returns a KSCO8 직종 code or a KSIC11 업종 code and never
+    decides whether reporting is required. It returns validated *facts* which the
+    frontend feeds into the existing deterministic analyzer — the only component
+    that may produce a code, because it retrieves codes from the official tables.
+
+    Anything the model emits outside the fixed schema is dropped, and every
+    removal is reported in ``warnings`` so the sanitization is auditable.
+    """
+    text = (req.text or "").strip()[:600]
+    lang = "en" if str(req.lang or "ko").lower().startswith("en") else "ko"
+
+    if not text:
+        return {"status": "empty_input", "extraction": _employment_nl.empty_extraction(),
+                "analyzerInput": None, "interpretation": "", "warnings": []}
+
+    if not any(_providers_configured().values()):
+        # The guided/deterministic flow in the UI is unaffected; only the
+        # free-sentence convenience layer is unavailable.
+        return {
+            "status": "unavailable",
+            "reason": "no_provider_configured",
+            "extraction": _employment_nl.empty_extraction(),
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": [],
+            "fallbackAvailable": True,
+        }
+
+    prompt = _employment_nl.build_extraction_prompt(text, lang=lang)
+    try:
+        raw, attempt_meta = await _openrouter_complete_with_candidates(prompt)
+    except Exception:
+        return {
+            "status": "unavailable",
+            "reason": "provider_error",
+            "extraction": _employment_nl.empty_extraction(),
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": [],
+            "fallbackAvailable": True,
+        }
+
+    try:
+        known_codes = {
+            str(r.get("code")).strip().upper()
+            for r in (_load_visas().get("visas") or [])
+            if isinstance(r, dict) and r.get("code")
+        }
+    except Exception:
+        known_codes = set()
+
+    validated = _employment_nl.validate_extraction(raw, allowed_visa_codes=known_codes or None)
+    if not validated["ok"]:
+        return {
+            "status": "extraction_failed",
+            "reason": validated["reason"],
+            "extraction": validated["data"],
+            "analyzerInput": {"text": text, "locale": "", "visaStatus": "", "employmentType": ""},
+            "interpretation": "",
+            "warnings": validated["warnings"],
+            "fallbackAvailable": True,
+        }
+
+    data = validated["data"]
+    return {
+        "status": "ok",
+        "extraction": data,
+        "analyzerInput": _employment_nl.to_analyzer_input(data, original_text=text),
+        "interpretation": _employment_nl.build_interpretation_sentence(data, lang=lang),
+        "needsClarification": bool(data.get("needsClarification")),
+        "clarificationQuestion": data.get("clarificationQuestion", ""),
+        "warnings": validated["warnings"],
+        "fallbackAvailable": True,
+        "provider": attempt_meta.get("provider", "") if isinstance(attempt_meta, dict) else "",
+        "notice": ("직종·업종 코드는 이 단계에서 만들지 않습니다. 아래 후보는 공식 분류표에서 "
+                   "검색한 결과이며, 최종 확정은 하이코리아에서 확인하세요."
+                   if lang == "ko" else
+                   "No classification code is produced at this step. Candidates below are "
+                   "retrieved from the official tables; confirm the final code with HiKorea."),
+    }
+
+
+@app.get("/api/search/manual-evidence-state")
+async def manual_evidence_state_endpoint() -> Dict[str, Any]:
+    """Operator-safe snapshot of the manual approval layer. No secrets, no bodies."""
+    summary = _manual_registry.registry_summary()
+    return {
+        "registryVersion": summary["registry_version"],
+        "documentCount": summary["document_count"],
+        "familyCount": summary["family_count"],
+        "approvalCounts": summary["approval_counts"],
+        "indexAvailable": _manual_search.index_available(),
+        "note": "Only approval_state='approved' content may back a direct assertion.",
+    }
 
 
 # ---------------------------------------------------------------------------

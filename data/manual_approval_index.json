@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "generated": "2026-07-26",
+  "description": "Review/approval layer over data/source_registry.json. Records whether a manual edition's EXTRACTED CONTENT has been compared against the original document by a human and approved for use as direct AI evidence. Document-level provenance (file authenticity, checksum, page count) is tracked separately in source_registry.json and is NOT the same thing as content approval.",
+  "notes": [
+    "approval_state is deliberately conservative. No edition is marked 'approved'",
+    "in this initial index: the current structured extracts are auto-parsed",
+    "(see 'auto-parsed item' markers in backend/data/manual_grounding/*.json) and",
+    "have not been certified line-by-line against the source PDF.",
+    "",
+    "Consequence, enforced by backend/services/manual_registry.py:",
+    "  - 'parsed' / 'needs_review' content is SEARCHABLE and is labelled 검토 전.",
+    "  - Only 'approved' content may back a direct assertion in an AI answer.",
+    "",
+    "Promoting an edition to 'approved' is a human action: compare the extracted",
+    "sections against the original document, record the reviewer and timestamp",
+    "here, and open a PR. Nothing in the automated pipeline may set 'approved'.",
+    "",
+    "A missing or corrupt copy of this file fails CLOSED — every document falls",
+    "back to needs_review — so a broken index can never widen what the assistant",
+    "is allowed to assert."
+  ],
+  "documents": {
+    "visa_manual_2026_06_17_pdf": {
+      "approval_state": "parsed",
+      "effective_date": "2026-06-17",
+      "parser": "scripts/extract_manual_sections (pdf text layer)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "page",
+      "extraction_warnings": [
+        "Heading text shows duplicated glyph runs on some pages (PDF text-layer artifact).",
+        "Downstream legal wording remains under manual review unless a field was separately line-by-line certified."
+      ],
+      "table_extraction_warnings": [
+        "별표/첨부서류 tables are extracted as flowed text; column boundaries are not preserved and must not be read as a structured table."
+      ]
+    },
+    "stay_manual_2026_06_23_pdf": {
+      "approval_state": "parsed",
+      "effective_date": "2026-06-23",
+      "parser": "scripts/extract_manual_sections (pdf text layer)",
+      "reviewer": "",
+      "reviewed_at": "",
+      "source_confidence": "high",
+      "has_tables_or_annexes": true,
+      "section_locator": "page",
+      "extraction_warnings": [
+        "Companion HWPX is stored-only: distribution-mode body extraction is blocked, so the PDF text layer is the only readable source."
+      ],
+      "table_extraction_warnings": [
+        "별표/서식 tables are extracted as flowed text; column boundaries are not preserved."
+      ]
+    },
+    "stay_manual_2026_06_01_pdf": {
+      "approval_state": "superseded",
+      "effective_date": "2026-06-01",
+      "superseded_date": "2026-06-23",
+      "parser": "scripts/extract_manual_sections (pdf text layer)",
+      "source_confidence": "medium",
+      "has_tables_or_annexes": true,
+      "section_locator": "page",
+      "extraction_warnings": [
+        "Retained for point-in-time questions about the rules in force before 2026-06-23. Not the default edition."
+      ]
+    },
+    "stay_manual_2026_05_pdf": {
+      "approval_state": "superseded",
+      "effective_date": "2026-05-01",
+      "superseded_date": "2026-06-01",
+      "source_confidence": "medium",
+      "section_locator": "page",
+      "extraction_warnings": [
+        "Retained for point-in-time questions only."
+      ]
+    },
+    "visa_manual_2026_05_pdf": {
+      "approval_state": "superseded",
+      "effective_date": "2026-05-01",
+      "superseded_date": "2026-06-17",
+      "source_confidence": "medium",
+      "section_locator": "page",
+      "extraction_warnings": [
+        "Retained for point-in-time questions only."
+      ]
+    },
+    "stay_manual_2026_06_17_txt": {
+      "approval_state": "superseded",
+      "effective_date": "2026-06-17",
+      "superseded_date": "2026-06-23",
+      "parser": "pdftotext",
+      "source_confidence": "medium",
+      "section_locator": "line"
+    },
+    "visa_manual_2026_06_17_txt": {
+      "approval_state": "superseded",
+      "effective_date": "2026-06-17",
+      "parser": "pdftotext",
+      "source_confidence": "medium",
+      "section_locator": "line"
+    },
+    "hikorea_latest_manual_notice_260623": {
+      "approval_state": "draft",
+      "source_confidence": "unknown",
+      "extraction_warnings": [
+        "Monitor target only. No content has been extracted from this source."
+      ]
+    },
+    "law_api_placeholder": {
+      "approval_state": "draft",
+      "extraction_warnings": [
+        "Monitor placeholder. Runtime law grounding reaches 법제처 independently via backend/services/law_tools.py."
+      ]
+    },
+    "hikorea_notice_placeholder": {
+      "approval_state": "draft"
+    },
+    "moj_immigration_notice_placeholder": {
+      "approval_state": "draft"
+    }
+  }
+}
