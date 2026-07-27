@@ -358,10 +358,20 @@ File `pInhK8Oyg04lpL4PMSCB4l` · page **UX-03 Unified Search · Components**
 | `Evidence / Confidence Badge` | `392:13` | 3 | `unified-search.js` `buildConfidenceHtml` |
 | `Evidence / Relevance Badge` | `392:26` | 4 | evidence-card `related` / `background` states |
 
-Palette: the UX-0x pages use the **emerald** system (`#177361` accent), not the
-indigo of `01 Design System`. Emerald is the agreed reconciliation target. The
-`.us-*` layer defines it as `--us-*` custom properties; the global `--ac` token
-is still indigo and is a separate, site-wide migration.
+Palette: the UX-0x pages use the **emerald** system (`#177361` accent), while
+the `01 Design System` page still shows indigo `#2f3e8f`. Emerald is the agreed
+reconciliation target.
+
+**The code was never indigo.** `index.html`'s default theme accent is already
+emerald — `--ac: #0B7357` (light) / `#3BE4B8` (dark) — and `#2f3e8f` appears
+nowhere in the repo. The blue accents in `index.html` (`--ac: #2F5EFC`,
+`#7FA6FF`) belong to alternate themes (`data-theme="archive_diary"`), which are
+deliberately their own palettes. So the indigo is a **Figma-side staleness** on
+`01 Design System`, not a pending code migration.
+
+What is genuinely unreconciled is smaller: `.us-layer` uses `--us-accent:
+#177361` (the UX-0x value) while the global default uses `#0B7357`. Two
+emeralds, one token unification — not a site-wide repaint.
 
 Category tints used by the Suggestion Row: visa/procedure `#177361`, legal
 `#7f89ce`, employment `#d95c47`, recent/correction `#4d5261` — avatar at 14%,
