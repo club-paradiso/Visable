@@ -13438,76 +13438,127 @@ body:not(.searched) .brand-hero-buttons .btn-secondary {
    Wide content scrolls inside its own container — the page body never scrolls
    horizontally at 390px.
    ══════════════════════════════════════════════════════════════════════ */
-.us-layer { display: block; margin: 0 auto var(--sp-4, 1rem); max-width: 100%; }
+/* Layer-level tokens — the emerald/neutral palette used by the UX-0x Figma
+   pages, confirmed as the standard. Scoped to `.us-layer` on purpose: the site's
+   global --ac is still indigo, and flipping that would restyle every screen.
+   Promoting these to global tokens is a separate change with a much larger
+   blast radius. */
+.us-layer {
+  --us-surface: #fffcf5;
+  --us-surface-alt: #f2f6f0;
+  --us-accent: #177361;
+  --us-accent-soft: #e5f5ed;
+  --us-accent-chip: #edf5f0;
+  --us-link: #0e8a6b;
+  --us-ink: #1c1f29;
+  --us-muted: #4d5261;
+  --us-line: #e5e5ed;
+  --us-chip: #fffcf5;
+  --us-amber: #b45309;
+  --us-coral: #c2410c;
+  display: block; margin: 0 auto var(--sp-4, 1rem); max-width: 100%;
+}
+body[data-theme="dark"] .us-layer {
+  --us-surface: #0b2a24;
+  --us-surface-alt: #10322b;
+  --us-accent: #7dd8b8;
+  --us-accent-soft: #16463b;
+  --us-accent-chip: #15433a;
+  --us-link: #7dd8b8;
+  --us-ink: #f3eedf;
+  --us-muted: #9db5ad;
+  --us-line: #23564a;
+  --us-chip: #0b2a24;
+  --us-amber: #fbbf24;
+  --us-coral: #fb923c;
+}
 .us-layer:empty { display: none; }
 body:not(.searched) .us-layer { display: none; }
 
+/* Interpretation — Figma UX-03 `Search / Interpretation` (node 397:93).
+   Row layout, not a chip row: each row is label + value + a right-aligned
+   "수정" text button, separated by hairlines. */
 .us-interpret {
-  display: flex; flex-direction: column; gap: 0.55rem;
-  padding: 0.85rem 1rem; margin-bottom: 0.9rem;
-  background: var(--bg2); border: 1px solid var(--bd);
-  border-radius: 14px; box-shadow: var(--sh1);
+  display: flex; flex-direction: column; gap: 16px;
+  padding: 22px 24px 20px; margin-bottom: 0.9rem;
+  background: var(--us-surface); border: 1px solid var(--us-line);
+  border-radius: 18px;
 }
-.us-interpret-head { display: flex; flex-wrap: wrap; align-items: center; gap: 0.45rem; }
-.us-interpret-label { font-size: 0.82rem; font-weight: 700; color: var(--t2); }
+.us-interpret-title {
+  margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.75px;
+  color: var(--us-muted);
+}
+.us-interpret-rows { display: flex; flex-direction: column; }
+.us-interpret-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 0;
+}
+.us-interpret-row + .us-interpret-row { border-top: 1px solid var(--us-line); }
+.us-interpret-left { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
+.us-interpret-label {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted);
+}
+.us-interpret-value {
+  font-size: 14.5px; font-weight: 500; color: var(--us-ink); overflow-wrap: anywhere;
+}
 .us-interpret-edit {
-  margin-left: auto; min-height: 32px; padding: 0 0.7rem;
-  background: transparent; border: 1px solid var(--bd);
-  border-radius: 999px; color: var(--t2); font-size: 0.78rem; cursor: pointer;
+  flex: 0 0 auto; min-height: 32px; padding: 0 4px;
+  background: transparent; border: 0; color: var(--us-link);
+  font-size: 13px; font-weight: 700; cursor: pointer;
 }
-.us-interpret-edit:hover { border-color: var(--ac); color: var(--ac); }
+.us-interpret-edit:hover { text-decoration: underline; }
+.us-interpret-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; padding-top: 6px;
+}
+.us-interpret-note { font-size: 12px; color: var(--us-muted); }
+
+/* Confidence badge — Figma `Status / Confidence` (node 392:13). */
+.us-confidence {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px 5px 10px; border-radius: 999px;
+  background: var(--us-accent-soft); color: var(--us-ink);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.us-confidence-dot {
+  width: 7px; height: 7px; border-radius: 999px; background: var(--us-accent);
+  flex: 0 0 auto;
+}
+.us-confidence.is-medium .us-confidence-dot { background: var(--us-amber); }
+.us-confidence.is-low .us-confidence-dot { background: var(--us-coral); }
 
 .us-chip {
   display: inline-flex; align-items: center; min-height: 30px;
-  padding: 0 0.7rem; border-radius: 999px; border: 1px solid var(--bd);
-  background: var(--bg1); color: var(--t1);
-  font-size: 0.8rem; line-height: 1.2; cursor: pointer;
+  padding: 6px 12px; border-radius: 999px; border: 1px solid var(--us-line);
+  background: var(--us-chip); color: var(--us-ink);
+  font-size: 13px; line-height: 1.2; cursor: pointer;
   max-width: 100%; overflow-wrap: anywhere;
 }
-.us-chip--intent { background: var(--acL); border-color: var(--ac); color: var(--ac); font-weight: 700; cursor: default; }
-.us-chip--code { font-weight: 700; font-variant-numeric: tabular-nums; }
-.us-chip:hover:not(.us-chip--intent) { border-color: var(--ac); color: var(--ac); }
+.us-chip--intent { background: var(--us-accent-chip); border-color: transparent; color: var(--us-accent); font-weight: 700; cursor: default; }
+.us-chip--code {
+  font-weight: 700; font-variant-numeric: tabular-nums;
+  background: var(--us-accent-chip); border-color: transparent; color: var(--us-accent);
+}
+.us-chip:hover:not(.us-chip--intent) { border-color: var(--us-accent); color: var(--us-accent); }
 
 .us-warn {
   padding: 0.6rem 0.75rem; border-radius: 10px; font-size: 0.82rem; line-height: 1.5;
-  background: color-mix(in srgb, var(--ac) 8%, var(--bg1));
-  border: 1px solid color-mix(in srgb, var(--ac) 32%, var(--bd));
-  color: var(--t1);
+  background: color-mix(in srgb, var(--us-coral) 8%, var(--us-surface));
+  border: 1px solid color-mix(in srgb, var(--us-coral) 32%, var(--us-line));
+  color: var(--us-ink);
 }
 
 /* AI Overview — implements Figma UX-03 `AI Overview` (node 406:92).
    That page uses a newer emerald/neutral palette than `01 Design System`, so the
-   values below are the design's own tokens, mapped to --us-ai-* custom
+   values below are the design's own tokens, mapped to --us-* custom
    properties. Dark mode re-points the same properties rather than duplicating
    the rules. */
 .us-ai {
-  --us-ai-surface: #f2f6f0;
-  --us-ai-accent: #177361;
-  --us-ai-accent-soft: #e5f5ed;
-  --us-ai-ink: #1c1f29;
-  --us-ai-muted: #4d5261;
-  --us-ai-line: #e5e5ed;
-  --us-ai-chip: #fffcf5;
-  --us-ai-link: #0e8a6b;
-  --us-ai-amber: #b45309;
-  --us-ai-coral: #c2410c;
   padding: 20px 24px 18px 26px; margin-bottom: 0.9rem;
-  background: var(--us-ai-surface);
-  border-left: 3px solid var(--us-ai-accent);
+  background: var(--us-surface);
+  border-left: 3px solid var(--us-accent);
   border-radius: 18px;
   display: flex; flex-direction: column; gap: 14px;
-}
-body[data-theme="dark"] .us-ai {
-  --us-ai-surface: #10322b;
-  --us-ai-accent: #7dd8b8;
-  --us-ai-accent-soft: #16463b;
-  --us-ai-ink: #f3eedf;
-  --us-ai-muted: #9db5ad;
-  --us-ai-line: #23564a;
-  --us-ai-chip: #0b2a24;
-  --us-ai-link: #7dd8b8;
-  --us-ai-amber: #fbbf24;
-  --us-ai-coral: #fb923c;
 }
 .us-ai.is-unavailable, .us-ai.is-blocked { opacity: 0.94; }
 .us-ai-head {
@@ -13516,21 +13567,21 @@ body[data-theme="dark"] .us-ai {
 }
 .us-ai-title {
   margin: 0; font-size: 12.5px; font-weight: 700; letter-spacing: 0.75px;
-  color: var(--us-ai-muted);
+  color: var(--us-muted);
 }
 .us-ai-body {
-  margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--us-ai-ink);
+  margin: 0; font-size: 14.5px; line-height: 1.5; color: var(--us-ink);
   overflow-wrap: anywhere;
 }
 .us-ai-sublabel {
   margin: 0; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px;
-  color: var(--us-ai-muted);
+  color: var(--us-muted);
 }
-.us-ai-sublabel--warn { font-weight: 400; color: var(--us-ai-amber); }
+.us-ai-sublabel--warn { font-weight: 400; color: var(--us-amber); }
 .us-ai-confirm {
-  margin: 0; font-size: 11px; line-height: 1.45; color: var(--us-ai-muted);
+  margin: 0; font-size: 11px; line-height: 1.45; color: var(--us-muted);
 }
-.us-ai-divider { height: 1px; background: var(--us-ai-line); }
+.us-ai-divider { height: 1px; background: var(--us-line); }
 
 /* Next steps — numbered circles per the design's `NextSteps` block. */
 .us-ai-steps { display: flex; flex-direction: column; gap: 8px; }
@@ -13538,11 +13589,11 @@ body[data-theme="dark"] .us-ai {
 .us-ai-step { display: flex; align-items: center; gap: 9px; }
 .us-ai-step-num {
   flex: 0 0 auto; width: 18px; height: 18px; border-radius: 999px;
-  background: var(--us-ai-accent-soft); color: var(--us-ai-accent);
+  background: var(--us-accent-soft); color: var(--us-accent);
   font-size: 10.5px; font-weight: 700;
   display: inline-flex; align-items: center; justify-content: center;
 }
-.us-ai-step-label { font-size: 13.5px; color: var(--us-ai-ink); overflow-wrap: anywhere; }
+.us-ai-step-label { font-size: 13.5px; color: var(--us-ink); overflow-wrap: anywhere; }
 
 /* Source chips. `is-muted` marks a source that could not be retrieved — it is
    dimmed, never removed, so the evidence set never looks larger than it is. */
@@ -13551,16 +13602,16 @@ body[data-theme="dark"] .us-ai {
 .us-ai-src {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 6px 12px 6px 11px; border-radius: 999px;
-  background: var(--us-ai-chip); border: 1px solid var(--us-ai-line);
-  font-size: 12px; font-weight: 500; color: var(--us-ai-ink);
+  background: var(--us-chip); border: 1px solid var(--us-line);
+  font-size: 12px; font-weight: 500; color: var(--us-ink);
   max-width: 100%; overflow-wrap: anywhere;
 }
 .us-ai-src-dot {
-  width: 6px; height: 6px; border-radius: 999px; background: var(--us-ai-accent);
+  width: 6px; height: 6px; border-radius: 999px; background: var(--us-accent);
   flex: 0 0 auto;
 }
 .us-ai-src.is-muted { opacity: 0.55; }
-.us-ai-src.is-muted .us-ai-src-dot { background: var(--us-ai-muted); }
+.us-ai-src.is-muted .us-ai-src-dot { background: var(--us-muted); }
 
 /* State banners: amber = official confirmation, coral = citation failure. */
 .us-ai-banner {
@@ -13568,23 +13619,23 @@ body[data-theme="dark"] .us-ai {
   border: 1px solid currentColor;
 }
 .us-ai-banner-title { font-weight: 700; }
-.us-ai-banner-body { font-weight: 400; color: var(--us-ai-ink); }
-.us-ai-banner--confirm { color: var(--us-ai-amber); background: color-mix(in srgb, currentColor 8%, transparent); }
-.us-ai-banner--citation { color: var(--us-ai-coral); background: color-mix(in srgb, currentColor 8%, transparent); }
+.us-ai-banner-body { font-weight: 400; color: var(--us-ink); }
+.us-ai-banner--confirm { color: var(--us-amber); background: color-mix(in srgb, currentColor 8%, transparent); }
+.us-ai-banner--citation { color: var(--us-coral); background: color-mix(in srgb, currentColor 8%, transparent); }
 
 .us-ai-actions { display: flex; flex-wrap: wrap; gap: 0.45rem; }
 .us-ai-action {
   min-height: 40px; padding: 11px 16px 11px 18px; border-radius: 999px;
-  border: 1px solid var(--us-ai-line); background: transparent;
-  color: var(--us-ai-ink); font-size: 13.5px; font-weight: 700; cursor: pointer;
+  border: 1px solid var(--us-line); background: transparent;
+  color: var(--us-ink); font-size: 13.5px; font-weight: 700; cursor: pointer;
 }
-.us-ai-action--cta { border: 1.5px solid var(--us-ai-accent); color: var(--us-ai-accent); }
-.us-ai-action:hover { border-color: var(--us-ai-accent); color: var(--us-ai-accent); }
+.us-ai-action--cta { border: 1.5px solid var(--us-accent); color: var(--us-accent); }
+.us-ai-action:hover { border-color: var(--us-accent); color: var(--us-accent); }
 
 /* Streaming caret — the design's "작성중·커서" affordance. */
 .us-ai-caret {
   display: inline-block; width: 2px; height: 1em; margin-left: 2px;
-  vertical-align: text-bottom; background: var(--us-ai-accent);
+  vertical-align: text-bottom; background: var(--us-accent);
   animation: usCaret 1s step-end infinite;
 }
 @keyframes usCaret { 50% { opacity: 0; } }
@@ -13592,7 +13643,7 @@ body[data-theme="dark"] .us-ai {
 .us-ai-skeleton { display: flex; flex-direction: column; gap: 0.45rem; }
 .us-ai-skeleton span {
   display: block; height: 12px; border-radius: 6px;
-  background: linear-gradient(90deg, var(--bd2) 25%, var(--bd) 50%, var(--bd2) 75%);
+  background: linear-gradient(90deg, var(--us-line) 25%, var(--us-accent-soft) 50%, var(--us-line) 75%);
   background-size: 200% 100%; animation: usShimmer 1.4s ease-in-out infinite;
 }
 .us-ai-skeleton span:nth-child(2) { width: 88%; }
@@ -13603,37 +13654,40 @@ body[data-theme="dark"] .us-ai {
 .us-badge {
   display: inline-flex; align-items: center; padding: 0.15rem 0.5rem;
   border-radius: 999px; font-size: 0.7rem; font-weight: 700; white-space: nowrap;
-  border: 1px solid var(--bd); background: var(--bg2); color: var(--t2);
+  border: 1px solid var(--us-line); background: var(--us-surface-alt); color: var(--us-muted);
 }
-.us-badge--ref { border-color: var(--ac); color: var(--ac); background: var(--acL); }
-.us-badge--review { border-color: color-mix(in srgb, #b45309 55%, var(--bd)); color: #b45309; background: color-mix(in srgb, #b45309 10%, var(--bg1)); }
-body[data-theme="dark"] .us-badge--review { color: #fbbf24; border-color: color-mix(in srgb, #fbbf24 45%, var(--bd)); background: color-mix(in srgb, #fbbf24 12%, var(--bg1)); }
-.us-badge--official { border-color: var(--bd); color: var(--t2); }
+.us-badge--ref { border-color: transparent; color: var(--us-accent); background: var(--us-accent-chip); }
+.us-badge--review {
+  border-color: color-mix(in srgb, var(--us-amber) 55%, var(--us-line));
+  color: var(--us-amber);
+  background: color-mix(in srgb, var(--us-amber) 10%, var(--us-surface));
+}
+.us-badge--official { border-color: var(--us-line); color: var(--us-muted); }
 
 .us-extra { margin-bottom: 0.9rem; }
 .us-card-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
 .us-card {
-  padding: 0.8rem 0.95rem; border: 1px solid var(--bd); border-radius: 12px;
-  background: var(--bg1);
+  padding: 14px 16px; border: 1px solid var(--us-line); border-radius: 14px;
+  background: var(--us-surface);
 }
 .us-card[data-us-tool] { cursor: pointer; }
-.us-card[data-us-tool]:hover { border-color: var(--ac); }
+.us-card[data-us-tool]:hover { border-color: var(--us-accent); }
 .us-card-head { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
-.us-card-title { font-size: 0.9rem; font-weight: 700; color: var(--t1); overflow-wrap: anywhere; }
-.us-card-page { font-size: 0.74rem; color: var(--t3); font-variant-numeric: tabular-nums; }
-.us-card-summary { margin: 0.35rem 0 0; font-size: 0.83rem; line-height: 1.55; color: var(--t2); overflow-wrap: anywhere; }
+.us-card-title { font-size: 14px; font-weight: 700; color: var(--us-ink); overflow-wrap: anywhere; }
+.us-card-page { font-size: 11.5px; color: var(--us-muted); font-variant-numeric: tabular-nums; }
+.us-card-summary { margin: 6px 0 0; font-size: 13px; line-height: 1.55; color: var(--us-muted); overflow-wrap: anywhere; }
 
 .us-suggest { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-bottom: 0.9rem; }
-.us-suggest-label { font-size: 0.78rem; font-weight: 700; color: var(--t3); }
+.us-suggest-label { font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
 
-.us-sources { padding: 0.85rem 1rem; border: 1px solid var(--bd); border-radius: 14px; background: var(--bg2); }
-.us-sources-title { margin: 0 0 0.5rem; font-size: 0.85rem; font-weight: 800; color: var(--t2); }
+.us-sources { padding: 18px 20px; border: 1px solid var(--us-line); border-radius: 18px; background: var(--us-surface-alt); }
+.us-sources-title { margin: 0 0 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.46px; color: var(--us-muted); }
 .us-source-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.5rem; }
 .us-source { display: flex; flex-direction: column; gap: 0.2rem; }
-.us-source-link { font-size: 0.86rem; font-weight: 700; color: var(--ac); text-decoration: none; overflow-wrap: anywhere; }
+.us-source-link { font-size: 14px; font-weight: 700; color: var(--us-link); text-decoration: none; overflow-wrap: anywhere; }
 .us-source-link:hover { text-decoration: underline; }
-.us-source-link--plain { color: var(--t1); }
-.us-source-note { margin: 0; font-size: 0.78rem; line-height: 1.5; color: var(--t3); overflow-wrap: anywhere; }
+.us-source-link--plain { color: var(--us-ink); }
+.us-source-note { margin: 0; font-size: 12px; line-height: 1.5; color: var(--us-muted); overflow-wrap: anywhere; }
 
 @media (max-width: 480px) {
   .us-interpret, .us-ai, .us-sources { padding: 0.75rem 0.8rem; border-radius: 12px; }

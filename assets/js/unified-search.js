@@ -45,6 +45,13 @@
     ko: {
       interpretedAs: '이렇게 이해했어요',
       edit: '수정',
+      detectedCodes: '감지된 비자코드',
+      whatYouWant: '하려는 일',
+      statusTransition: '현재 → 목표 상태',
+      interpretNote: 'AI가 질문을 해석한 결과예요 · 직접 수정할 수 있어요',
+      confidenceHigh: '확신도 높음',
+      confidenceMedium: '확신도 보통',
+      confidenceLow: '확신도 낮음',
       intentExactCode: '체류자격 코드',
       intentVisaKeyword: '체류자격 주제',
       intentVisaSituation: '상황 설명',
@@ -83,6 +90,13 @@
     en: {
       interpretedAs: 'How we read this',
       edit: 'Edit',
+      detectedCodes: 'Detected status code',
+      whatYouWant: 'What you want to do',
+      statusTransition: 'Current → target status',
+      interpretNote: 'This is how the AI read your question — you can correct it',
+      confidenceHigh: 'High confidence',
+      confidenceMedium: 'Medium confidence',
+      confidenceLow: 'Low confidence',
       intentExactCode: 'Status code',
       intentVisaKeyword: 'Status topic',
       intentVisaSituation: 'Situation',
@@ -167,26 +181,63 @@
 
   /* ------------------------------------------------- pure HTML builders --- */
 
-  /** Interpretation strip: detected chips + unrecognized-code warning. */
+  /** Confidence badge — Figma `Status / Confidence` (node 392:13). */
+  function buildConfidenceHtml(level) {
+    var key = level === 'high' ? 'confidenceHigh'
+      : level === 'medium' ? 'confidenceMedium'
+      : level === 'low' ? 'confidenceLow' : '';
+    if (!key) return '';
+    return '<span class="us-confidence is-' + escapeHtml(level) + '">' +
+      '<span class="us-confidence-dot" aria-hidden="true"></span>' +
+      escapeHtml(t(key)) + '</span>';
+  }
+
+  function interpretRowHtml(label, valueHtml, editable) {
+    return '<div class="us-interpret-row">' +
+      '<span class="us-interpret-left">' +
+      '<span class="us-interpret-label">' + escapeHtml(label) + '</span>' +
+      '<span class="us-interpret-value">' + valueHtml + '</span></span>' +
+      (editable
+        ? '<button type="button" class="us-interpret-edit" data-us-action="edit-query">' +
+          escapeHtml(t('edit')) + '</button>'
+        : '') +
+      '</div>';
+  }
+
+  /**
+   * Interpretation card — Figma UX-03 `Search / Interpretation` (node 397:93).
+   *
+   * Row layout: each row is a label, a value and a right-aligned "수정" button.
+   * Rows are emitted ONLY when the backend actually supplied that fact. The
+   * design also shows a "현재 → 목표 상태" row, which the router does not yet
+   * produce; rendering an empty or guessed one would be inventing a reading of
+   * the user's question, so the row simply appears once the data does.
+   */
   function buildInterpretationHtml(payload) {
     if (!payload || !payload.query) return '';
     var interpretation = payload.interpretation || {};
     var codes = payload.detectedVisaCodes || [];
     var unknown = interpretation.unrecognizedCodeLikeTokens || [];
+    var rows = '';
 
-    var chips = codes.map(function (code) {
-      return '<button type="button" class="us-chip us-chip--code" data-us-code="' +
-        escapeHtml(code) + '">' + escapeHtml(code) + '</button>';
-    }).join('');
+    if (codes.length) {
+      rows += interpretRowHtml(t('detectedCodes'), codes.map(function (code) {
+        return '<button type="button" class="us-chip us-chip--code" data-us-code="' +
+          escapeHtml(code) + '">' + escapeHtml(code) + '</button>';
+      }).join(' '), true);
+    }
+    rows += interpretRowHtml(t('whatYouWant'),
+      '<span class="us-chip us-chip--intent">' +
+      escapeHtml(intentLabel(payload.intent)) + '</span>', true);
 
-    var html = '<div class="us-interpret" role="status" aria-live="polite">' +
-      '<div class="us-interpret-head">' +
-      '<span class="us-interpret-label">' + escapeHtml(t('interpretedAs')) + '</span>' +
-      '<span class="us-chip us-chip--intent">' + escapeHtml(intentLabel(payload.intent)) + '</span>' +
-      chips +
-      '<button type="button" class="us-interpret-edit" data-us-action="edit-query">' +
-      escapeHtml(t('edit')) + '</button>' +
-      '</div>';
+    var transition = interpretation.statusTransition;
+    if (transition && transition.from && transition.to) {
+      rows += interpretRowHtml(t('statusTransition'),
+        escapeHtml(transition.from) + '  →  ' + escapeHtml(transition.to), true);
+    }
+
+    var html = '<section class="us-interpret" role="status" aria-live="polite">' +
+      '<p class="us-interpret-title">' + escapeHtml(t('interpretedAs')) + '</p>';
 
     if (unknown.length) {
       html += '<div class="us-warn" role="note">' +
@@ -194,7 +245,12 @@
         escapeHtml(t('unknownCodeBody').replace('%s', unknown.join(', '))) +
         '</div>';
     }
-    html += '</div>';
+
+    html += '<div class="us-interpret-rows">' + rows + '</div>' +
+      '<div class="us-interpret-foot">' +
+      buildConfidenceHtml(interpretation.confidence) +
+      '<span class="us-interpret-note">' + escapeHtml(t('interpretNote')) + '</span>' +
+      '</div></section>';
     return html;
   }
 
@@ -457,6 +513,7 @@
     safeOfficialUrl: safeOfficialUrl,
     intentLabel: intentLabel,
     buildInterpretationHtml: buildInterpretationHtml,
+    buildConfidenceHtml: buildConfidenceHtml,
     buildAiOverviewHtml: buildAiOverviewHtml,
     buildSourceCardsHtml: buildSourceCardsHtml,
     buildSuggestionsHtml: buildSuggestionsHtml,

@@ -267,6 +267,93 @@ check('blocked status is classified, not collapsed into unavailable', () => {
   assertEqual(US.classifyAiResponse({ status: 'blocked' }, true), 'blocked');
 });
 
+/* ------------------------------- Figma UX-03 Search / Interpretation ------ */
+check('the interpretation renders as labelled rows, not a chip strip', () => {
+  const html = US.buildInterpretationHtml({
+    query: 'D-10', intent: 'exact_visa_code', detectedVisaCodes: ['D-10'],
+    interpretation: { confidence: 'high', unrecognizedCodeLikeTokens: [] }
+  });
+  assert(html.includes('us-interpret-rows'), 'expected the row container');
+  assert(html.includes('us-interpret-label'), 'expected a row label');
+  assert(html.includes('감지된 비자코드'), 'expected the detected-code row label');
+});
+
+check('each row carries its own edit affordance', () => {
+  const html = US.buildInterpretationHtml({
+    query: 'D-10', intent: 'exact_visa_code', detectedVisaCodes: ['D-10'],
+    interpretation: { confidence: 'high', unrecognizedCodeLikeTokens: [] }
+  });
+  const edits = html.split('data-us-action="edit-query"').length - 1;
+  assert(edits >= 2, `expected an edit button per row, got ${edits}`);
+});
+
+check('the code row is omitted when nothing was detected', () => {
+  const html = US.buildInterpretationHtml({
+    query: '체류지 변경', intent: 'procedure_question', detectedVisaCodes: [],
+    interpretation: { confidence: 'medium', unrecognizedCodeLikeTokens: [] }
+  });
+  assert(!html.includes('감지된 비자코드'), 'an empty code row must not render');
+  assert(html.includes('하려는 일'), 'the intent row should still render');
+});
+
+check('the status-transition row appears only when the backend supplies it', () => {
+  const without = US.buildInterpretationHtml({
+    query: 'x', intent: 'visa_situation', detectedVisaCodes: [],
+    interpretation: { confidence: 'low', unrecognizedCodeLikeTokens: [] }
+  });
+  assert(!without.includes('현재 → 목표 상태'),
+    'the transition row must not be invented when there is no data');
+
+  const withData = US.buildInterpretationHtml({
+    query: 'x', intent: 'visa_situation', detectedVisaCodes: [],
+    interpretation: {
+      confidence: 'low', unrecognizedCodeLikeTokens: [],
+      statusTransition: { from: 'D-2', to: 'D-10' }
+    }
+  });
+  assert(withData.includes('현재 → 목표 상태'), 'the transition row should render with data');
+  assert(withData.includes('D-2') && withData.includes('D-10'));
+});
+
+check('a half-populated transition is not rendered', () => {
+  const html = US.buildInterpretationHtml({
+    query: 'x', intent: 'visa_situation', detectedVisaCodes: [],
+    interpretation: {
+      confidence: 'low', unrecognizedCodeLikeTokens: [],
+      statusTransition: { from: 'D-2' }
+    }
+  });
+  assert(!html.includes('현재 → 목표 상태'), 'a transition missing `to` must not render');
+});
+
+check('confidence renders its three levels and nothing else', () => {
+  assert(US.buildConfidenceHtml('high').includes('확신도 높음'));
+  assert(US.buildConfidenceHtml('medium').includes('is-medium'));
+  assert(US.buildConfidenceHtml('low').includes('is-low'));
+  assertEqual(US.buildConfidenceHtml('none'), '', 'unknown level renders nothing');
+  assertEqual(US.buildConfidenceHtml(undefined), '');
+});
+
+check('the unrecognized-code warning stays above the rows', () => {
+  const html = US.buildInterpretationHtml({
+    query: 'D-2-99', intent: 'exact_visa_code', detectedVisaCodes: ['D-2'],
+    interpretation: { confidence: 'high', unrecognizedCodeLikeTokens: ['D-2-99'] }
+  });
+  assert(html.indexOf('us-warn') < html.indexOf('us-interpret-rows'),
+    'the warning must precede the interpreted rows');
+});
+
+check('a status transition from upstream is escaped', () => {
+  const html = US.buildInterpretationHtml({
+    query: 'x', intent: 'visa_situation', detectedVisaCodes: [],
+    interpretation: {
+      confidence: 'low', unrecognizedCodeLikeTokens: [],
+      statusTransition: { from: '<img src=x onerror=alert(1)>', to: 'D-10' }
+    }
+  });
+  assert(!html.includes('<img'), 'transition values must be escaped');
+});
+
 /* ------------------------------------------------- evidence labelling ---- */
 check('review-pending manual cards are labelled, never shown as settled', () => {
   const html = US.buildExtraResultsHtml([
