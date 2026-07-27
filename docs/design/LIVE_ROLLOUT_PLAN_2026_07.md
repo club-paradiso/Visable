@@ -18,6 +18,11 @@
 > 즉 아래 "신규 기능 트랙"의 선행 조건(백엔드)이 상당 부분 충족된 상태다.
 > 다음 작업 시 **먼저 `#545`가 실제로 구현한 범위를 읽고**, `UX-10 Component Contract`의
 > 컴포넌트·상태와 대조해 **차이 나는 부분만** UI에 반영한다. 중복 구현을 만들지 않는다.
+>
+> **대조는 완료됐다.** 결과는 `docs/design/FIGMA_CODE_RECONCILIATION_2026_07.md` 에 있다.
+> #545가 함께 들여온 `UNIFIED_SEARCH_AND_LEGAL_RESEARCH_CONTRACT.md` 와 Figma UX Workspace가
+> 같은 것을 다른 이름으로 부르고 있었고, 계약에만 있고 시안에는 없던 상태(`no_evidence`,
+> `LinkState=PlainText`, 미인식 코드, 근거 배지 4척도 분리)를 Figma에 채웠다.
 
 ---
 
@@ -59,7 +64,14 @@
 
 `UX-02` ~ `UX-10`의 통합검색 · 리걸 리서치 · 취업신고는 **기존 화면 개선이 아니라 신규 기능**이다.
 `UX-10 Component Contract`의 컴포넌트↔코드↔API 매핑을 사양으로 삼아 별도 개발 트랙으로 진행한다.
-백엔드 엔드포인트(`/api/unified-search`, `/api/ai-overview`, legal endpoints)가 선행되어야 한다.
+
+백엔드 엔드포인트는 **#545에서 이미 구현됐다.** 실제 라우트는 다음과 같다
+(`backend/paradiso_backend.py` 기준 — 이전 판에 적혀 있던 `/api/unified-search`,
+`/api/ai-overview`는 존재하지 않는 경로였다):
+
+- `POST /api/search/unified` — 결정론적 오가닉 결과. AI·외부 HTTP 없음
+- `POST /api/search/unified/ai-overview` — `ok` · `unavailable` · `no_evidence` · `not_applicable`
+- `POST /api/employment/interpret` — 검증된 사실만. KSCO8/KSIC11 코드는 절대 포함하지 않는다
 
 ---
 
@@ -105,6 +117,12 @@
 
 **주의:** 라이트 카드(`#FFFCF5`)는 배경과 명도가 가까워 **1px 보더가 필수**다.
 다크의 "흰색 8%" 보더는 라이트에서 `#E6E6EE` 실선으로 대체한다.
+
+**더 중요한 주의:** 위 표는 **목표값이지 현황이 아니다.** 현재 `index.html`의 실제 값은 다르다
+(예: 라이트 보더 `--bd`가 지금은 회색이 아니라 갈색 `#998058`이다).
+Figma 토큰 ↔ CSS 변수 ↔ 현재 라이브 값의 대조표는
+`docs/design/FIGMA_CODE_RECONCILIATION_2026_07.md` §4.3 에 있다.
+색을 옮길 때는 규칙마다 하드코딩하지 말고 **변수 값을 바꾼다.**
 
 ---
 
