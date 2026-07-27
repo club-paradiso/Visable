@@ -5571,6 +5571,12 @@ def _map_law_result(r: Dict[str, Any]) -> Dict[str, Any]:
         "effectiveDate": r.get("enforcement_date") or "",
         "sourceUrl": _public_law_url(title),
         "rawSource": "law.go.kr",
+        # Lifecycle + hierarchy annotations from the ranked search. A repealed or
+        # not-yet-in-force statute must be visibly labelled, and 법률 / 시행령 /
+        # 시행규칙 is a display layer, never a filter.
+        "lifecycleStatus": r.get("lifecycle_status") or "",
+        "hierarchyLevel": r.get("hierarchy_level") or "",
+        "nameMatch": bool(r.get("name_match", True)),
     }
 
 
@@ -5712,12 +5718,19 @@ _LEGAL_RESEARCH_MAX_QUESTION = 800
 
 
 def _run_research_law_retrieval(plan: Dict[str, Any], cfg) -> List[Dict[str, Any]]:
-    """Run the budgeted law searches for a plan and return deduped law cards."""
+    """Run the budgeted law searches for a plan and return deduped law cards.
+
+    Uses the ranked search so alias input resolves, substring noise is filtered by
+    the name guard, and each card carries its lifecycle state. A ranked outcome
+    whose status is a *failure* (timeout / forbidden / parse) contributes nothing
+    rather than being read as "this law does not exist".
+    """
     laws: List[Dict[str, Any]] = []
     seen = set()
     for term in plan.get("lawTerms", []):
-        outcome = search_laws(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
-        if outcome.get("status") != "ok":
+        outcome = search_laws_ranked(term, limit=_LEGAL_SEARCH_MAX_RESULTS, config=cfg)
+        if outcome.get("status") in {"unavailable", "forbidden", "timeout",
+                                     "parse_failed", "not_found"}:
             continue
         for r in (outcome.get("results") or []):
             if not isinstance(r, dict):

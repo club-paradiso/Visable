@@ -57,6 +57,21 @@ PRO_TRIGGERS = (
     "appeal", "precedent", "refusal", "denial", "deportation",
 )
 
+# Questions that must never be answered at `fast` depth, however short they are.
+# A deadline, a reporting duty, whether something is permitted, a status change,
+# or the scope of allowed activity all carry a real cost when answered thinly —
+# "체류자격 변경" is 7 characters but is not a quick-lookup question.
+BASIC_TRIGGERS = (
+    "기한", "언제까지", "며칠", "기간 내", "이내에",
+    "신고 의무", "신고의무", "신고해야", "신고 대상",
+    "허가", "가능한가", "가능한지", "되나요", "해도 되",
+    "체류자격 변경", "자격변경", "자격 변경", "변경 신청",
+    "활동범위", "활동 범위", "체류자격 외 활동", "겸직", "아르바이트",
+    "근무처 변경", "근무처변경", "이직",
+    "deadline", "must i report", "do i need to report", "am i allowed",
+    "change of status", "status change", "scope of activity", "work permit",
+)
+
 # Pro loading steps (frontend may show these while a deep research runs).
 PRO_LOADING_STEPS_KO = ["쟁점 추출 중", "법령 검색 중", "판례 검색 중", "공식자료 대조 중", "리서치 메모 작성 중"]
 PRO_LOADING_STEPS_EN = ["Spotting issues", "Searching laws", "Searching precedents", "Cross-checking official materials", "Drafting research memo"]
@@ -123,6 +138,8 @@ def auto_select_depth(question: str) -> str:
 
     * a pro-trigger keyword (판례 / 불허 / 강제퇴거 / appeal / ...) -> pro
     * a long, multi-clause narrative -> pro
+    * a deadline / reporting-duty / permission / status-change / activity-scope
+      question -> at least basic, no matter how short it is
     * a very short, simple question -> fast
     * otherwise -> basic
     """
@@ -139,10 +156,40 @@ def auto_select_depth(question: str) -> str:
     clause_markers = text.count("?") + text.count("？") + text.count(",") + text.count("、") + text.count("그리고") + text.count("동시에")
     if len(text) >= 90 or clause_markers >= 3:
         return "pro"
+    # Consequential topics block the fast path even when the question is terse.
+    if _matches_any(text, low, BASIC_TRIGGERS):
+        return "basic"
     # Very short, simple -> fast.
     if len(text) <= 22:
         return "fast"
     return "basic"
+
+
+def _matches_any(text: str, low: str, keywords: tuple) -> bool:
+    for kw in keywords:
+        needle = kw.lower()
+        if needle.isascii():
+            if needle in low:
+                return True
+        elif kw in text:
+            return True
+    return False
+
+
+def depth_escalation_reason(question: str) -> str:
+    """Why the depth was chosen — surfaced in metadata so the choice is auditable."""
+    text = (question or "").strip()
+    low = _low(text)
+    if _matches_any(text, low, PRO_TRIGGERS):
+        return "pro_trigger_keyword"
+    clause_markers = text.count("?") + text.count("？") + text.count(",") + text.count("、") + text.count("그리고") + text.count("동시에")
+    if len(text) >= 90 or clause_markers >= 3:
+        return "complex_narrative"
+    if _matches_any(text, low, BASIC_TRIGGERS):
+        return "consequential_topic"
+    if len(text) <= 22:
+        return "short_simple_question"
+    return "default"
 
 
 # ---------------------------------------------------------------------------
